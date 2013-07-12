@@ -1,6 +1,6 @@
 [Activity]
-name = Turtle Test
+name = Connect the Dots
 activity_version = 1
-bundle_id = org.sugarlabs.TurtleTest
+bundle_id = org.sugarlabs.ConnectTheDots
 exec = sugar-activity-web
 icon = activity-icon

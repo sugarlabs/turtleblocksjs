@@ -3,7 +3,7 @@
   
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Turtle Test</title>
+    <title>Connect the Dots</title>
     <link rel="stylesheet" href="lib/sugar-web/graphics/css/sugar.css">
     <link rel="stylesheet" href="css/activity.css">
     <script data-main="js/loader" src="lib/require.js"></script>
@@ -38,6 +38,8 @@
     var stroke;
     var colors;
     var index;
+    var imagepos = new Array();
+    var myimages = new Array();
 
     function init() {
         if (window.top != window) {
@@ -68,16 +70,23 @@
         stage.enableMouseOver(10);
 
         // load the source images:
-        var ImageNames = [
-           "images/activity-turtleart.svg",
-           "images/activity-xo-editor.svg"
-        ];
-        var myimages = new Array();
+        var ImageNames = new Array();
+        for(i = 0; i < 10; i++){
+           ImageNames[i] = "images/dots-" + i + ".svg";
+        }
+        for(i = 0; i < 10; i++){
+           imagepos[i] = [canvas.width * Math.random()|0,
+                          canvas.height * Math.random()|0];
+        }
         for(i = 0; i < ImageNames.length; i++){
             myimages[i] = new Image();
-            myimages[i].src = ImageNames[i]
+            myimages[i].src = ImageNames[i];
             myimages[i].onload = handleImageLoad;
         }
+
+        pen = new Image();
+        pen.src = "images/pen.svg"
+        pen.onload = handlePenLoad;
 
         drawingCanvas = new createjs.Shape();
         stage.addChild(drawingCanvas);
@@ -104,25 +113,70 @@
         hitArea.x = imgW/2;
         hitArea.y = imgH/2;
 
-        // create and populate the screen with random Sugar icons:
-        for(var i = 0; i < 50; i++){
-            bitmap = new createjs.Bitmap(image);
-            container.addChild(bitmap);
-            bitmap.x = canvas.width * Math.random()|0;
-            bitmap.y = canvas.height * Math.random()|0;
-            bitmap.rotation = 360 * Math.random()|0;
-            bitmap.regX = imgW/2|0;
-            bitmap.regY = imgH/2|0;
-            bitmap.scaleX = bitmap.scaleY = bitmap.scale = Math.random()*0.4+0.6;
-            bitmap.name = "bmp_"+i;
+        i = myimages.indexOf(image)
+        // create and populate the screen with random Sugar icon
+        bitmap = new createjs.Bitmap(image);
+        container.addChild(bitmap);
+        bitmap.x = imagepos[i][0]
+        bitmap.y = imagepos[i][1]
+        bitmap.regX = imgW/2|0;
+        bitmap.regY = imgH/2|0;
+        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
+        bitmap.name = "bmp_"+i;
 
-            bitmap.cursor = "pointer";
+        bitmap.cursor = "pointer";
             
-            // assign the hitArea to each bitmap to use it for hit tests:
-            bitmap.hitArea = hitArea;
+        // assign the hitArea to each bitmap to use it for hit tests:
+        bitmap.hitArea = hitArea;
 
-            // wrapper function to provide scope for the event handlers:
-            (function(target) {
+        // wrapper function to provide scope for the event handlers:
+        (function(target) {
+                bitmap.onPress = function(evt) {
+                }
+                bitmap.onMouseOver = function() {
+                }
+                bitmap.onMouseOut = function() {
+                }
+            }
+        )(bitmap);
+
+        document.getElementById("loader").className = "";
+        createjs.Ticker.addEventListener("tick", tick);
+    }
+
+    function handlePenLoad(event) {
+        var image = event.target;
+        var imgW = image.width;
+        var imgH = image.height;
+        var bitmap;
+        var container = new createjs.Container();
+        stage.addChild(container);
+        
+        // create a shape that represents the center of the icon
+        var hitArea = new createjs.Shape();
+        hitArea.graphics.beginFill("#FFF").drawEllipse(-11,-14,24,18);
+        // position hitArea relative to the internal coordinate system
+        // of the target (bitmap instances):
+        hitArea.x = imgW/2;
+        hitArea.y = imgH/2;
+
+        // create a pen
+        bitmap = new createjs.Bitmap(image);
+        container.addChild(bitmap);
+        bitmap.x = imagepos[0][0]
+        bitmap.y = imagepos[0][1]
+        bitmap.regX = imgW/2|0;
+        bitmap.regY = imgH/2|0;
+        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
+        bitmap.name = "bmp_pen";
+
+        bitmap.cursor = "pointer";
+            
+        // assign the hitArea to each bitmap to use it for hit tests:
+        bitmap.hitArea = hitArea;
+
+        // wrapper function to provide scope for the event handlers:
+        (function(target) {
                 bitmap.onPress = function(evt) {
                     // bump the target in front of it's siblings:
                     container.addChild(target);
@@ -160,8 +214,8 @@
                     target.scaleX = target.scaleY = target.scale;
                     update = true;
                 }
-            })(bitmap);
-        }
+            }
+        )(bitmap);
 
         document.getElementById("loader").className = "";
         createjs.Ticker.addEventListener("tick", tick);
@@ -186,7 +240,7 @@
     <div id="loader"></div>
 
     <header id="header" class="EaselJS">
-      <h1><span class="text-product"><strong>XO</strong>color</span> Drag &amp; Drop</h1>
+      <h1>Click on the star to begin.</h1>
     </header>
 
     <div class="canvasHolder">

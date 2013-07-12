@@ -46,6 +46,9 @@ define(function (require) {
         var bitmaps = new Array();
 	var pen_bitmap;
 
+        var star = [[400,  100], [200, 500], [650, 300], [200, 100], [400, 550],
+                    [600, 100], [150, 300], [600, 500], [400, 50], [-100, -100]]
+
         function init() {
             if (window.top != window) {
                 document.getElementById("header").style.display = "none";
@@ -80,8 +83,7 @@ define(function (require) {
                 ImageNames[i] = "images/dots-" + i + ".svg";
             }
             for (i = 0; i < ImageNames.length; i++) {
-                imagepos[i] = [canvas.width * Math.random() | 0,
-                          canvas.height * Math.random() | 0];
+                imagepos[i] = star[i];
             }
             for (i = 0; i < ImageNames.length; i++) {
                 myimages[i] = new Image();

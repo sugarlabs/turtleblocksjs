@@ -46,8 +46,14 @@ define(function (require) {
         var bitmaps = new Array();
 	var pen_bitmap;
 
-        var star = [[400,  100], [200, 500], [650, 300], [200, 100], [400, 550],
-                    [600, 100], [150, 300], [600, 500], [400, 50], [-100, -100]]
+        var star = [[400, 100], [200, 500], [650, 300], [200, 100], [400, 550],
+                    [600, 100], [150, 300], [600, 500], [400, 50]];
+	var hand = [[175, 150], [200, 125], [280, 220], [330, 200], [425,  25],
+		    [440, 175], [540,  50], [480, 210], [620, 100], [520, 280],
+                    [680, 270], [520, 330], [420, 420], [400, 450], [280, 450],
+                    [260, 340], [200, 200]];
+	var shapes = [star, hand];
+	var shape = 0
 
         function init() {
             if (window.top != window) {
@@ -77,13 +83,18 @@ define(function (require) {
             // enabled mouse over / out events
             stage.enableMouseOver(10);
 
-            // load the source images:
+            // load the source images: 20 dots, a star and a turtle
             var ImageNames = new Array();
-            for (i = 0; i < 10; i++) {
+            for (i = 0; i < 20; i++) {
                 ImageNames[i] = "images/dots-" + i + ".svg";
             }
             for (i = 0; i < ImageNames.length; i++) {
-                imagepos[i] = star[i];
+		if (i < shapes[0].length){
+                    imagepos[i] = shapes[0][i];
+                }
+                else {
+                    imagepos[i] = [-100, -100];
+                }
             }
             for (i = 0; i < ImageNames.length; i++) {
                 myimages[i] = new Image();
@@ -235,10 +246,22 @@ define(function (require) {
         }
 
         function new_positions() {
-	    console.log('new')
+	    shape = shape + 1;
             for (i = 0; i < bitmaps.length; i++) {
-		bitmaps[i].x = canvas.width * Math.random() | 0;
-		bitmaps[i].y = canvas.height * Math.random() | 0;
+		if (shape < shapes.length) {
+		    if (i < shapes[shape].length) {
+                        bitmaps[i].x = shapes[shape][i][0];
+                        bitmaps[i].y = shapes[shape][i][1];
+                    }
+                    else {
+                        bitmaps[i].x = -100;
+                        bitmaps[i].y = -100;
+                    }
+                }
+                else {
+                    bitmaps[i].x = canvas.width * Math.random() | 0;
+		    bitmaps[i].y = canvas.height * Math.random() | 0;
+                }
             }
             pen_bitmap.x = bitmaps[0].x
             pen_bitmap.y = bitmaps[0].y

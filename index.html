@@ -2,27 +2,161 @@
 <html>
   
   <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Turtle Test</title>
     <link rel="stylesheet" href="lib/sugar-web/graphics/css/sugar.css">
     <link rel="stylesheet" href="css/activity.css">
     <script data-main="js/loader" src="lib/require.js"></script>
-  </head>
+    <script type="text/javascript" src="js/easeljs/utils/UID.js"></script>
+    <script type="text/javascript" src="js/easeljs/geom/Matrix2D.js"></script>
+    <script type="text/javascript" src="js/easeljs/events/EventDispatcher.js"></script>
+    <script type="text/javascript" src="js/easeljs/display/DisplayObject.js"></script>
+    <script type="text/javascript" src="js/easeljs/display/Container.js"></script>
+    <script type="text/javascript" src="js/easeljs/display/Stage.js"></script>
+    <script type="text/javascript" src="js/easeljs/events/MouseEvent.js"></script>
+    <script type="text/javascript" src="js/easeljs/display/Shape.js"></script>
+    <script type="text/javascript" src="js/easeljs/display/Graphics.js"></script>
+    <script type="text/javascript" src="js/easeljs/utils/Ticker.js"></script>
+    <script type="text/javascript" src="js/easeljs/display/Text.js"></script>
+    <script type="text/javascript" src="js/easeljs/ui/Touch.js"></script>
+    <script type="text/javascript" src="js/easeljs/display/Bitmap.js"></script>
+
+    <script>
+    var canvas, stage;
+
+    // the display object currently under the mouse, or being dragged
+    var mouseTarget;
+    // indicates whether we are currently in a drag operation
+    var dragStarted;
+    var offset;
+    var update = true;
+
+    function init() {
+        if (window.top != window) {
+            document.getElementById("header").style.display = "none";
+        }
+        document.getElementById("loader").className = "loader";
+        // create stage and point it to the canvas:
+        canvas = document.getElementById("testCanvas");
+
+        //check to see if we are running in a browser with touch support
+        stage = new createjs.Stage(canvas);
+
+        // enable touch interactions if supported on the current device:
+        createjs.Touch.enable(stage);
+
+        // keep tracking the mouse even when it leaves the canvas
+        stage.mouseMoveOutside = true; 
+
+        // enabled mouse over / out events
+        stage.enableMouseOver(10);
+
+        // load the source images:
+        var ImageNames = [
+           "images/activity-turtleart.svg",
+           "images/activity-xo-editor.svg"
+        ];
+        var myimages = new Array();
+        for(i = 0; i < ImageNames.length; i++){
+            myimages[i] = new Image();
+            myimages[i].src = ImageNames[i]
+            myimages[i].onload = handleImageLoad;
+        }
+    }
+
+    function stop() {
+        createjs.Ticker.removeEventListener("tick", tick);
+    }
+
+    function handleImageLoad(event) {
+        var image = event.target;
+        var imgW = image.width;
+        var imgH = image.height;
+        var bitmap;
+        var container = new createjs.Container();
+        stage.addChild(container);
+        
+        // create a shape that represents the center of the icon:
+        var hitArea = new createjs.Shape();
+        hitArea.graphics.beginFill("#FFF").drawEllipse(-11,-14,24,18);
+        // position hitArea relative to the internal coordinate system
+        // of the target (bitmap instances):
+        hitArea.x = imgW/2;
+        hitArea.y = imgH/2;
+
+        // create and populate the screen with random Sugar icons:
+        for(var i = 0; i < 50; i++){
+            bitmap = new createjs.Bitmap(image);
+            container.addChild(bitmap);
+            bitmap.x = canvas.width * Math.random()|0;
+            bitmap.y = canvas.height * Math.random()|0;
+            bitmap.rotation = 360 * Math.random()|0;
+            bitmap.regX = imgW/2|0;
+            bitmap.regY = imgH/2|0;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = Math.random()*0.4+0.6;
+            bitmap.name = "bmp_"+i;
+
+            bitmap.cursor = "pointer";
+            
+            // assign the hitArea to each bitmap to use it for hit tests:
+            bitmap.hitArea = hitArea;
+
+            // wrapper function to provide scope for the event handlers:
+            (function(target) {
+                bitmap.onPress = function(evt) {
+                    // bump the target in front of it's siblings:
+                    container.addChild(target);
+                    var offset = {x:target.x-evt.stageX, y:target.y-evt.stageY};
+
+                    // add a handler to the event object's onMouseMove callback
+                    // this will be active until the user releases the mouse button:
+                    evt.onMouseMove = function(ev) {
+                        target.x = ev.stageX+offset.x;
+                        target.y = ev.stageY+offset.y;
+                        // indicate that the stage should be updated on the next tick:
+                        update = true;
+                    }
+                }
+                bitmap.onMouseOver = function() {
+                    target.scaleX = target.scaleY = target.scale*1.2;
+                    update = true;
+                }
+                bitmap.onMouseOut = function() {
+                    target.scaleX = target.scaleY = target.scale;
+                    update = true;
+                }
+            })(bitmap);
+        }
+
+        document.getElementById("loader").className = "";
+        createjs.Ticker.addEventListener("tick", tick);
+    }
+
+    function tick(event) {
+        // this set makes it so the stage only re-renders when an event handler indicates a change has happened.
+        if (update) {
+            update = false; // only update once
+            stage.update(event);
+        }
+    }
+    </script>
+</head>
   
-  <body>
+<body onload="init();">
     <div id="main-toolbar" class="toolbar">
       <button class="toolbutton" id="activity-button" title="My Activity"></button>
-      <!-- Add more buttons here -->
-      <!-- Buttons with class="pull-right" will be right aligned -->
       <button class="toolbutton pull-right" id="stop-button" title="Stop"></button>
     </div>
-    <!-- The content of your activity goes inside the canvas -->
-    <div id="canvas">
-      <!-- Replace this message with your own content -->
-       <h1>Congratulations!</h1>
 
-      <p>You are ready to develop this activity. Go ahead and edit the files.</br>You can remove this message in the index.html.</p>
+    <div id="loader"></div>
+
+    <header id="header" class="EaselJS">
+      <h1><span class="text-product"><strong>XO</strong>color</span> Drag &amp; Drop</h1>
+    </header>
+
+    <div class="canvasHolder">
+      <canvas id="testCanvas" width="800" height="600"></canvas>
     </div>
-  </body>
+</body>
 
 </html>

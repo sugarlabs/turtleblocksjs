@@ -20,7 +20,7 @@
     <script type="text/javascript" src="js/easeljs/display/Text.js"></script>
     <script type="text/javascript" src="js/easeljs/ui/Touch.js"></script>
     <script type="text/javascript" src="js/easeljs/display/Bitmap.js"></script>
-
+    <script type="text/javascript" src="js/easeljs/geom/Point.js"></script>
     <script>
     var canvas, stage;
 
@@ -30,6 +30,14 @@
     var dragStarted;
     var offset;
     var update = true;
+    var drawingCanvas;
+    var oldPt;
+    var midPt;
+    var oldMidPt;
+    var color;
+    var stroke;
+    var colors;
+    var index;
 
     function init() {
         if (window.top != window) {
@@ -38,6 +46,14 @@
         document.getElementById("loader").className = "loader";
         // create stage and point it to the canvas:
         canvas = document.getElementById("testCanvas");
+
+        index = 0;
+        colors = ["#828b20", "#b0ac31", "#cbc53d", "#fad779", "#f9e4ad",
+                  "#faf2db", "#563512", "#9b4a0b", "#d36600", "#fe8a00",
+                  "#f9a71f"];
+        oldPt = new createjs.Point(400, 300);
+        midPt = oldPt;
+        oldMidPt = oldPt;
 
         //check to see if we are running in a browser with touch support
         stage = new createjs.Stage(canvas);
@@ -62,6 +78,10 @@
             myimages[i].src = ImageNames[i]
             myimages[i].onload = handleImageLoad;
         }
+
+        drawingCanvas = new createjs.Shape();
+        stage.addChild(drawingCanvas);
+        stage.update();
     }
 
     function stop() {
@@ -115,11 +135,26 @@
                         target.y = ev.stageY+offset.y;
                         // indicate that the stage should be updated on the next tick:
                         update = true;
+                        var midPt = new createjs.Point(oldPt.x + stage.mouseX>>1,
+                                       oldPt.y + stage.mouseY>>1);
+
+                        // drawingCanvas.graphics.clear();
+                        drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
+
+                        oldPt.x = stage.mouseX;
+                        oldPt.y = stage.mouseY;
+
+                        oldMidPt.x = midPt.x;
+                        oldMidPt.y = midPt.y;
                     }
                 }
                 bitmap.onMouseOver = function() {
                     target.scaleX = target.scaleY = target.scale*1.2;
                     update = true;
+                    color = colors[(index++)%colors.length];
+                    stroke = Math.random()*30 + 10 | 0;
+                    oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
+                    oldMidPt = oldPt;
                 }
                 bitmap.onMouseOut = function() {
                     target.scaleX = target.scaleY = target.scale;

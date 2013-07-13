@@ -107,8 +107,8 @@ define(function (require) {
 
             drawingCanvas = new createjs.Shape();
             stage.addChild(drawingCanvas);
-            stage.update();
             new_positions();
+            stage.update();
         }
 
         function stop() {
@@ -140,7 +140,11 @@ define(function (require) {
             bitmap.y = imagepos[i][1]
             bitmap.regX = imgW / 2 | 0;
             bitmap.regY = imgH / 2 | 0;
-            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.67
+	    if (i == 0) {
+	        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5
+            } else {
+	        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 2
+            }
             bitmap.name = "bmp_" + i;
 
             bitmap.cursor = "pointer";
@@ -250,46 +254,24 @@ define(function (require) {
                     } else {
                         bitmaps[i].x = -100;
                         bitmaps[i].y = -100;
-                        var pt = bitmaps[i].localToGlobal(0, 0);
-                        nlabels[i].style.left = Math.round(pt.x + canvas.offsetLeft - 10) + "px";
-                        nlabels[i].style.top = Math.round(pt.y + canvas.offsetTop - 10) + "px";
                     }
                 } else {
                     bitmaps[i].x = canvas.width * Math.random() | 0;
                     bitmaps[i].y = canvas.height * Math.random() | 0;
-                    var pt = bitmaps[i].localToGlobal(0, 20);
-                    nlabels[i].style.left = Math.round(pt.x + canvas.offsetLeft - 10) + "px";
-                    nlabels[i].style.top = Math.round(pt.y + canvas.offsetTop - 10) + "px";
                 }
             }
             for (i = 0; i < bitmaps.length; i++) {
-                if (shape < shapes.length) {
-                        // Put the label opposite the next dot 
-                        if (i < shapes[shape].length - 1) {
-			    dx = bitmaps[i+1].x - bitmaps[i].x
-			    dy = bitmaps[i+1].y - bitmaps[i].y
-			} else {
-			    dx = bitmaps[i-1].x - bitmaps[i].x
-			    dy = bitmaps[i-1].y - bitmaps[i].y
-			}
-                        if (dx > 0) {
-                                dx = -20
-                        } else {
-                                dx = 20
-                        }
-                        if (dy > 0) {
-                                dy = -30
-                        } else {
-                                dy = 10
-                        }
-                        var pt = bitmaps[i].localToGlobal(0, -25);
-                        nlabels[i].style.left = Math.round(pt.x + canvas.offsetLeft + dx) + "px";
-                        nlabels[i].style.top = Math.round(pt.y + canvas.offsetTop + dy) + "px";
-                   }
+                // Put the label in the dot 
+                if (i < 10) {
+                    nlabels[i].style.left = Math.round(bitmaps[i].x + canvas.offsetLeft - 5) + "px";
+                } else {
+                    nlabels[i].style.left = Math.round(bitmaps[i].x + canvas.offsetLeft - 11) + "px";
+                }
+                nlabels[i].style.top = Math.round(bitmaps[i].y + canvas.offsetTop - 30) + "px";
             }
 
-            pen_bitmap.x = bitmaps[0].x
-            pen_bitmap.y = bitmaps[0].y
+            pen_bitmap.x = bitmaps[0].x;
+            pen_bitmap.y = bitmaps[0].y;
 
             drawingCanvas.graphics.clear();
 

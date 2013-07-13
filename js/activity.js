@@ -45,7 +45,9 @@ define(function (require) {
         var myimages = new Array();
         var bitmaps = new Array();
         var pen_bitmap;
-
+	var Star = "images/star.svg";
+	var Dot = "images/dot.svg";
+	var Pen = "images/pen.svg";
         var star = [[400, 100], [200, 500], [650, 300], [200, 100], [400, 550],
                     [600, 100], [150, 300], [600, 500], [400, 50]];
         var hand = [[175, 150], [200, 125], [280, 220], [330, 200], [425, 25],
@@ -53,7 +55,9 @@ define(function (require) {
                     [680, 270], [520, 330], [420, 420], [400, 450], [280, 450],
                     [260, 340], [200, 200]];
         var shapes = [star, hand];
-        var shape = 0
+        var shape = 0;
+	var nlabels = [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
+                       n13, n14, n15, n16, n17, n18, n19, n20];
 
             function init() {
                 if (window.top != window) {
@@ -83,31 +87,28 @@ define(function (require) {
                 // enabled mouse over / out events
                 stage.enableMouseOver(10);
 
-                // load the source images: 20 dots, a star and a turtle
-                var ImageNames = new Array();
-                for (i = 0; i < 20; i++) {
-                    ImageNames[i] = "images/dots-" + i + ".svg";
+                // load the source images: a dot, a star and a turtle
+                for (i = 0; i < nlabels.length; i++) {
+                    imagepos[i] = [-100, -100];
                 }
-                for (i = 0; i < ImageNames.length; i++) {
-                    if (i < shapes[0].length) {
-                        imagepos[i] = shapes[0][i];
-                    } else {
-                        imagepos[i] = [-100, -100];
-                    }
-                }
-                for (i = 0; i < ImageNames.length; i++) {
+                for (i = 0; i < nlabels.length; i++) {
                     myimages[i] = new Image();
-                    myimages[i].src = ImageNames[i];
+                    if(i == 0) {
+			myimages[i].src = Star;
+                    } else {
+			myimages[i].src = Dot;
+                    }
                     myimages[i].onload = handleImageLoad;
                 }
 
                 pen = new Image();
-                pen.src = "images/pen.svg"
+                pen.src = Pen;
                 pen.onload = handlePenLoad;
 
                 drawingCanvas = new createjs.Shape();
                 stage.addChild(drawingCanvas);
                 stage.update();
+		new_positions();
             }
 
             function stop() {
@@ -139,7 +140,7 @@ define(function (require) {
                 bitmap.y = imagepos[i][1]
                 bitmap.regX = imgW / 2 | 0;
                 bitmap.regY = imgH / 2 | 0;
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
+                bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.67
                 bitmap.name = "bmp_" + i;
 
                 bitmap.cursor = "pointer";
@@ -241,19 +242,27 @@ define(function (require) {
             }
 
             function new_positions() {
-                shape = shape + 1;
                 for (i = 0; i < bitmaps.length; i++) {
                     if (shape < shapes.length) {
                         if (i < shapes[shape].length) {
                             bitmaps[i].x = shapes[shape][i][0];
                             bitmaps[i].y = shapes[shape][i][1];
+                            var pt = bitmaps[i].localToGlobal(0, 20);
+                            nlabels[i].style.left = Math.round(pt.x+canvas.offsetLeft-10) + "px";
+                            nlabels[i].style.top = Math.round(pt.y+canvas.offsetTop-10) + "px";
                         } else {
                             bitmaps[i].x = -100;
                             bitmaps[i].y = -100;
+                            var pt = bitmaps[i].localToGlobal(0, 0);
+                            nlabels[i].style.left = Math.round(pt.x+canvas.offsetLeft-10) + "px";
+                            nlabels[i].style.top = Math.round(pt.y+canvas.offsetTop-10) + "px";
                         }
                     } else {
                         bitmaps[i].x = canvas.width * Math.random() | 0;
                         bitmaps[i].y = canvas.height * Math.random() | 0;
+                            var pt = bitmaps[i].localToGlobal(0, 20);
+                            nlabels[i].style.left = Math.round(pt.x+canvas.offsetLeft-10) + "px";
+                            nlabels[i].style.top = Math.round(pt.y+canvas.offsetTop-10) + "px";
                     }
                 }
                 pen_bitmap.x = bitmaps[0].x
@@ -262,6 +271,7 @@ define(function (require) {
                 drawingCanvas.graphics.clear();
 
                 update = true;
+                shape = shape + 1;
             }
 
         // Get things started

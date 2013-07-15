@@ -2,6 +2,7 @@ define(function (require) {
     var activity = require("sugar-web/activity/activity");
     var icon = require("sugar-web/graphics/icon");
     require("easel");
+    require("handlebars")
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
@@ -25,6 +26,24 @@ define(function (require) {
         stopButton.addEventListener('click', function (e) {
             activity.close();
         });
+
+	// A handlebars template for generating the dot labels
+        var labelSource =
+            "<div>" +
+	    "{{#each labels}}" +
+	    "<h2 id=\"n{{this}}\" style=\"position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;\">{{this}}</h2>" +
+	    "{{/each}}" +
+	    "</div>"
+
+	// Create label elements for each of our dots
+        template = Handlebars.compile(labelSource);
+        var arrLabels = []
+        for (i = 0; i < 21; i++) {
+            arrLabels[i] = i
+        }
+        var labelElem = document.getElementById("labelDiv");
+        var html = template({labels:arrLabels});
+        labelElem.innerHTML = html;
 
         var canvas, stage;
 

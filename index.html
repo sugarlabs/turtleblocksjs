@@ -9,20 +9,9 @@
     <link rel="stylesheet" href="css/activity.css">
 
     <script data-main="js/loader" src="lib/require.js"></script>
-
-    <script src="lib/handlebars.js"></script>
-    // A script for generating the dot labels
-    <script id="result-template" type="text/x-handlebars-template">
-	<div>
-	  {{#each labels}}
-	  <h2 id="n{{this}}" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">{{this}}</h2>
-	  {{/each}}
-	</div>
-    </script>
-
 </head>
 
-<body onload="action();">
+<body>
     <div id="main-toolbar" class="toolbar">
         <button class="toolbutton" id="activity-button" title="My Activity"></button>
         <button class="toolbutton" id="new-button" title="New"></button>
@@ -38,18 +27,8 @@
     <div class="canvasHolder">
         <canvas id="testCanvas" width="800" height="600"></canvas>
 
-    <div id="resultDiv"></div>
-
-    <script id="action">
-        var source = document.querySelector("#result-template").innerHTML;
-        template = Handlebars.compile(source);
-        var arrLabels = []
-        for (i = 0; i < 21; i++) {
-            arrLabels[i] = i
-        }
-        var html = template({labels:arrLabels});
-        document.querySelector("#resultDiv").innerHTML = html;
-    </script>
+    // When we generate dot labels, they go here
+    <div id="labelDiv"></div>
 
 </body>
 

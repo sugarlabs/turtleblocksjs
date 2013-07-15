@@ -9,9 +9,20 @@
     <link rel="stylesheet" href="css/activity.css">
 
     <script data-main="js/loader" src="lib/require.js"></script>
+
+    <script src="lib/handlebars.js"></script>
+    // A script for generating the dot labels
+    <script id="result-template" type="text/x-handlebars-template">
+	<div>
+	  {{#each labels}}
+	  <h2 id="n{{this}}" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">{{this}}</h2>
+	  {{/each}}
+	</div>
+    </script>
+
 </head>
 
-<body>
+<body onload="action();">
     <div id="main-toolbar" class="toolbar">
         <button class="toolbutton" id="activity-button" title="My Activity"></button>
         <button class="toolbutton" id="new-button" title="New"></button>
@@ -26,29 +37,20 @@
 
     <div class="canvasHolder">
         <canvas id="testCanvas" width="800" height="600"></canvas>
-	<!-- This is an ugly kludge -->
-	<h2 id="n0" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;"></h2>
-	<h2 id="n1" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">1</h2>
-	<h2 id="n2" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">2</h2>
-	<h2 id="n3" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">3</h2>
-	<h2 id="n4" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">4</h2>
-	<h2 id="n5" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">5</h2>
-	<h2 id="n6" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">6</h2>
-	<h2 id="n7" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">7</h2>
-	<h2 id="n8" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">8</h2>
-	<h2 id="n9" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">9</h2>
-	<h2 id="n10" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">10</h2>
-	<h2 id="n11" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">11</h2>
-	<h2 id="n12" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">12</h2>
-	<h2 id="n13" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">13</h2>
-	<h2 id="n14" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">14</h2>
-	<h2 id="n15" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">15</h2>
-	<h2 id="n16" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">16</h2>
-	<h2 id="n17" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">17</h2>
-	<h2 id="n18" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">18</h2>
-	<h2 id="n19" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">19</h2>
-	<h2 id="n20" style="position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;">20</h2>
-    </div>
+
+    <div id="resultDiv"></div>
+
+    <script id="action">
+        var source = document.querySelector("#result-template").innerHTML;
+        template = Handlebars.compile(source);
+        var arrLabels = []
+        for (i = 0; i < 21; i++) {
+            arrLabels[i] = i
+        }
+        var html = template({labels:arrLabels});
+        document.querySelector("#resultDiv").innerHTML = html;
+    </script>
+
 </body>
 
 </html>

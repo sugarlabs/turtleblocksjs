@@ -7,7 +7,7 @@ requirejs.config({
     },
     paths: {
         activity: "../js",
-        easel: "../lib/easeljs"
+        easel: "../lib/easeljs",
     }
 });
 

@@ -5,17 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Connect the Dots</title>
 
-    <style>
-        #main-toolbar #new-button {
-          background-image: url(icons/new-button.svg);
-        }
-    </style>
-
     <link rel="stylesheet" href="lib/sugar-web/graphics/css/sugar.css">
     <link rel="stylesheet" href="css/activity.css">
 
     <script data-main="js/loader" src="lib/require.js"></script>
 
+    <!--
     <script type="text/javascript" src="js/easeljs/utils/UID.js"></script>
     <script type="text/javascript" src="js/easeljs/geom/Matrix2D.js"></script>
     <script type="text/javascript" src="js/easeljs/events/EventDispatcher.js"></script>
@@ -30,6 +25,8 @@
     <script type="text/javascript" src="js/easeljs/ui/Touch.js"></script>
     <script type="text/javascript" src="js/easeljs/display/Bitmap.js"></script>
     <script type="text/javascript" src="js/easeljs/geom/Point.js"></script>
+  -->
+
 </head>
 
 <body>
@@ -47,6 +44,7 @@
 
     <div class="canvasHolder">
         <canvas id="testCanvas" width="800" height="600"></canvas>
+	<!-- This is an ugly kludge -->
 	<h2 id="n0" style="position:absolute;"></h2>
 	<h2 id="n1" style="position:absolute;">1</h2>
 	<h2 id="n2" style="position:absolute;">2</h2>

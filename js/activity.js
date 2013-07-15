@@ -38,19 +38,26 @@ define(function (require) {
 
 	// Create label elements for each of our dots
         template = Handlebars.compile(labelSource);
-        var arrLabels = []
+        var arrLabels = [];
         for (i = 0; i < 21; i++) {
-            arrLabels[i] = i
+            arrLabels[i] = i;
         }
         var labelElem = document.getElementById("labelDiv");
         var html = template({labels:arrLabels});
         labelElem.innerHTML = html;
 
+	// Then create a list of the label elements
+        nlabels = [];
+        for (i = 0; i < arrLabels.length; i++) {
+	    nlabels[i] = document.getElementById("n" + i.toString());
+        }
+
+	// Stage is an Easel construct
         var canvas, stage;
 
-        // the display object currently under the mouse, or being dragged
+        // The display object currently under the mouse, or being dragged
         var mouseTarget;
-        // indicates whether we are currently in a drag operation
+        // Indicates whether we are currently in a drag operation
         var dragStarted;
         var offset;
         var update = true;
@@ -62,23 +69,24 @@ define(function (require) {
         var stroke;
         var colors;
         var index;
+
         var imagepos = new Array();
         var myimages = new Array();
         var bitmaps = new Array();
         var pen_bitmap;
+
         var Star = "images/star.svg";
         var Dot = "images/dot.svg";
         var Pen = "images/pen.svg";
-        var shape = 0;
-        var nlabels = [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12,
-                       n13, n14, n15, n16, n17, n18, n19, n20];
+
+        var shape = -1;
 
         function init() {
             if (window.top != window) {
                 document.getElementById("header").style.display = "none";
             }
             document.getElementById("loader").className = "loader";
-            // create stage and point it to the canvas:
+            // Create the stage and point it to the canvas:
             canvas = document.getElementById("myCanvas");
 
             index = 0;
@@ -89,19 +97,19 @@ define(function (require) {
             midPt = oldPt;
             oldMidPt = oldPt;
 
-            //check to see if we are running in a browser with touch support
+            // Check to see if we are running in a browser with touch support
             stage = new createjs.Stage(canvas);
 
-            // enable touch interactions if supported on the current device:
+            // Enable touch interactions if supported on the current device:
             createjs.Touch.enable(stage);
 
-            // keep tracking the mouse even when it leaves the canvas
+            // Keep tracking the mouse even when it leaves the canvas
             stage.mouseMoveOutside = true;
 
-            // enabled mouse over / out events
+            // Enabled mouse over and mouse out events
             stage.enableMouseOver(10);
 
-            // load the source images: a dot, a star and a turtle
+            // Load the source images: a dot, a star and a turtle
             for (i = 0; i < nlabels.length; i++) {
                 imagepos[i] = [-100, -100];
             }
@@ -119,6 +127,7 @@ define(function (require) {
             pen.src = Pen;
             pen.onload = handlePenLoad;
 
+            // Create a drawing canvas
             drawingCanvas = new createjs.Shape();
             stage.addChild(drawingCanvas);
             new_positions();
@@ -137,10 +146,10 @@ define(function (require) {
             var container = new createjs.Container();
             stage.addChild(container);
 
-            // create a shape that represents the center of the icon:
+            // Create a shape that represents the center of the icon:
             var hitArea = new createjs.Shape();
             hitArea.graphics.beginFill("#FFF").drawEllipse(-11, -14, 24, 18);
-            // position hitArea relative to the internal coordinate system
+            // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
             hitArea.x = imgW / 2;
             hitArea.y = imgH / 2;
@@ -181,33 +190,34 @@ define(function (require) {
             var container = new createjs.Container();
             stage.addChild(container);
 
-            // create a shape that represents the center of the icon
+            // Create a shape that represents the center of the icon
             var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill("#FFF").drawEllipse(-11, -14, 24, 18);
-            // position hitArea relative to the internal coordinate system
+            hitArea.graphics.beginFill("#FFF").drawEllipse(-22, -28, 48, 36);
+            // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
             hitArea.x = imgW / 2;
             hitArea.y = imgH / 2;
 
-            // create a pen
-            pen_bitmap = new createjs.Bitmap(image);
-            container.addChild(pen_bitmap);
-            pen_bitmap.x = imagepos[0][0]
-            pen_bitmap.y = imagepos[0][1]
-            pen_bitmap.regX = imgW / 2 | 0;
-            pen_bitmap.regY = imgH / 2 | 0;
-            pen_bitmap.scaleX = pen_bitmap.scaleY = pen_bitmap.scale = 1
-            pen_bitmap.name = "bmp_pen";
+            // Create a pen
+            bitmap = new createjs.Bitmap(image);
+	    pen_bitmap = bitmap
+            container.addChild(bitmap);
+            bitmap.x = imagepos[0][0]
+            bitmap.y = imagepos[0][1]
+            bitmap.regX = imgW / 2 | 0;
+            bitmap.regY = imgH / 2 | 0;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
+            bitmap.name = "bmp_pen";
 
-            pen_bitmap.cursor = "pointer";
+            bitmap.cursor = "pointer";
 
-            // assign the hitArea to each bitmap to use it for hit tests:
-            pen_bitmap.hitArea = hitArea;
+            // Assign the hitArea to bitmap to use it for hit tests:
+            bitmap.hitArea = hitArea;
 
-            // wrapper function to provide scope for the event handlers:
+            // Wrapper function to provide scope for the event handlers:
             (function (target) {
-                pen_bitmap.onPress = function (evt) {
-                    // bump the target in front of its siblings:
+                bitmap.onPress = function (evt) {
+                    // Bump the target in front of its siblings:
                     container.addChild(target);
                     var offset = {
                         x: target.x - evt.stageX,
@@ -217,7 +227,7 @@ define(function (require) {
                     evt.onMouseMove = function (ev) {
                         target.x = ev.stageX + offset.x;
                         target.y = ev.stageY + offset.y;
-                        // indicate that the stage should be updated
+                        // Indicate that the stage should be updated
                         // on the next tick:
                         update = true;
                         var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1,
@@ -232,7 +242,7 @@ define(function (require) {
                         oldMidPt.y = midPt.y;
                     }
                 }
-                pen_bitmap.onMouseOver = function () {
+                bitmap.onMouseOver = function () {
                     target.scaleX = target.scaleY = target.scale * 1.2;
                     update = true;
                     color = colors[(index++) % colors.length];
@@ -240,26 +250,31 @@ define(function (require) {
                     oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
                     oldMidPt = oldPt;
                 }
-                pen_bitmap.onMouseOut = function () {
+                bitmap.onMouseOut = function () {
                     target.scaleX = target.scaleY = target.scale;
                     update = true;
                 }
-            })(pen_bitmap);
+            })(bitmap);
 
             document.getElementById("loader").className = "";
             createjs.Ticker.addEventListener("tick", tick);
         }
 
         function tick(event) {
-            // this set makes it so the stage only re-renders when
+            // This set makes it so the stage only re-renders when
             // an event handler indicates a change has happened.
             if (update) {
-                update = false; // only update once
+                update = false; // Only update once
                 stage.update(event);
             }
         }
 
         function new_positions() {
+	    if( shape == -1 ) {
+                shape = 0
+                return
+            }
+
             for (i = 0; i < bitmaps.length; i++) {
                 if (shape < shapes.length) {
                     if (i < shapes[shape].length) {

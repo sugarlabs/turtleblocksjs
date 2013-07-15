@@ -81,6 +81,9 @@ define(function (require) {
 
         var shape = -1;
 
+	// Get things started
+	init();
+
         function init() {
             if (window.top != window) {
                 document.getElementById("header").style.display = "none";
@@ -308,8 +311,6 @@ define(function (require) {
             shape = shape + 1;
         }
 
-        // Get things started
-        init();
     });
 
 });

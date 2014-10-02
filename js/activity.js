@@ -3,7 +3,6 @@ define(function (require) {
     var icon = require("sugar-web/graphics/icon");
     require("easel");
     require("handlebars")
-    var shapes = require("activity/shapes")
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
@@ -28,58 +27,169 @@ define(function (require) {
             activity.close();
         });
 
-	// A handlebars template for generating the dot labels
+	// Define palette objects
+	function Palette (name) {
+	    this.name = name;
+	    this.color = "green";
+	    this.blockList = [];
+	}
+
+        Palette.prototype.getInfo = function() {
+            return this.color + ' ' + this.name + ' palette: ' + this.blockList;
+        };
+
+	// Instantiate the palettes
+        var paletteList = []
+
+	var turtlePalette = new Palette('Turtle');
+	paletteList[0] = turtlePalette
+	turtlePalette.color = "green"
+
+	var numberPalette = new Palette('Number');
+	paletteList[1] = numberPalette
+	numberPalette.color = "purple"
+
+	for (i = 0; i < paletteList.length; i++) {
+	    // alert(paletteList[i].getInfo());
+	}
+
+	// Define block proto objects
+	function ProtoBlock (name) {
+	    this.name = name;
+	    this.palette = null
+	    this.color = null
+	    this.style = null
+	    this.docks = []
+	}
+
+        ProtoBlock.prototype.getInfo = function() {
+            return this.color + ' ' + this.name + ' block';
+        };
+
+        ProtoBlock.prototype.getSvgPath = function() {
+            return 'images/' + this.style + '_' + this.color + '.svg';
+        };
+
+	// Instantiate the proto blocks
+	// TODO: make style/connections into objects
+        var protoBlockList = []
+
+	var forwardBlock = new ProtoBlock('forward');
+	protoBlockList[0] = forwardBlock
+	forwardBlock.palette = turtlePalette
+	forwardBlock.color = forwardBlock.palette.color
+	forwardBlock.style = 'basic1arg'
+	forwardBlock.docks = [[20, 0], [100, 20], [20, 40]]
+
+	var rightBlock = new ProtoBlock('right');
+	protoBlockList[1] = rightBlock
+	rightBlock.palette = turtlePalette
+	rightBlock.color = rightBlock.palette.color
+	rightBlock.style = 'basic1arg'
+	rightBlock.docks = [[20, 0], [100, 20], [20, 40]]
+
+	var numberBlock = new ProtoBlock('number');
+	protoBlockList[2] = numberBlock
+	numberBlock.palette = numberPalette
+	numberBlock.color = numberBlock.palette.color
+	numberBlock.style = 'box'
+	numberBlock.docks = [[0, 22]]
+
+	for (i = 0; i < protoBlockList.length; i++) {
+	    // alert(protoBlockList[i].getInfo() + ' ' + protoBlockList[i].getSvgPath());
+	}
+
+	// Define block instance objects
+	function Block (protoblock) {
+	    this.protoblock = protoblock;
+	    this.name = protoblock.name;
+	    this.label = null
+	    this.image = null
+	    this.bitmap = null
+	    this.x = 0
+	    this.y = 0
+	    this.connections = []
+	}
+
+        Block.prototype.getInfo = function() {
+            return this.name + ' block';
+        };
+
+	// Instantiate the blocks
+        var blockList = []
+	blockList[0] = new Block(forwardBlock);
+	blockList[0].x = 100
+	blockList[0].y = 100
+	blockList[0].connections = [null, 1, 2]
+	blockList[1] = new Block(numberBlock);
+	blockList[1].x = 200
+	blockList[1].y = 100
+	blockList[1].name = "100"
+	blockList[1].connections = [0]
+	blockList[2] = new Block(rightBlock);
+	blockList[2].x = 100
+	blockList[2].y = 200
+	blockList[2].connections = [0, 3, null]
+	blockList[3] = new Block(numberBlock);
+	blockList[3].x = 200
+	blockList[3].y = 200
+	blockList[3].name = "90"
+	blockList[3].connections = [2]
+
+	for (i = 0; i < blockList.length; i++) {
+	    // alert(blockList[i].getInfo());
+	}
+
+	// A handlebars template for generating the block labels
         var labelSource =
             "<div>" +
 	    "{{#each labels}}" +
-	    "<h2 id=\"n{{this}}\" style=\"position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;\">{{this}}</h2>" +
+	    "<h2 id=\"_{{this}}\" style=\"position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;\">{{this}}</h2>" +
 	    "{{/each}}" +
 	    "</div>"
 
-	// Create label elements for each of our dots
+	// Create label elements for each of our blocks
         template = Handlebars.compile(labelSource);
         var arrLabels = [];
-        for (i = 0; i < 21; i++) {
-            arrLabels[i] = i;
+        for (i = 0; i < blockList.length; i++) {
+            arrLabels[i] = blockList[i].name;
         }
         var labelElem = document.getElementById("labelDiv");
         var html = template({labels:arrLabels});
         labelElem.innerHTML = html;
 
 	// Then create a list of the label elements
-        nlabels = [];
-        for (i = 0; i < arrLabels.length; i++) {
-	    nlabels[i] = document.getElementById("n" + i.toString());
+        for (i = 0; i < blockList.length; i++) {
+	    blockList[i].label = document.getElementById("_" + blockList[i].name);
         }
 
 	// Stage is an Easel construct
         var canvas, stage;
+	// Need to update the stage
+        var update = true;
 
         // The display object currently under the mouse, or being dragged
         var mouseTarget;
+
         // Indicates whether we are currently in a drag operation
         var dragStarted;
+
+	// Group of blocks being dragged
+	var dragGroup = []
+
         var offset;
-        var update = true;
         var drawingCanvas;
         var oldPt;
         var midPt;
         var oldMidPt;
+	var j;
         var color;
         var stroke;
         var colors;
         var index;
 
-        var imagepos = new Array();
-        var myimages = new Array();
-        var bitmaps = new Array();
-        var pen_bitmap;
-
-        var Star = "images/star.svg";
-        var Dot = "images/dot.svg";
-        var Pen = "images/pen.svg";
-
-        var shape = -1;
+        var turtle_bitmap;
+        var Turtle = "images/turtle.svg";
 
 	// Get things started
 	init();
@@ -112,28 +222,24 @@ define(function (require) {
             // Enabled mouse over and mouse out events
             stage.enableMouseOver(10);
 
-            // Load the source images: a dot, a star and a turtle
-            for (i = 0; i < nlabels.length; i++) {
-                imagepos[i] = [-100, -100];
-            }
-            for (i = 0; i < nlabels.length; i++) {
-                myimages[i] = new Image();
-                if (i == 0) {
-                    myimages[i].src = Star;
-                } else {
-                    myimages[i].src = Dot;
-                }
-                myimages[i].onload = handleImageLoad;
+            // Load the source images
+            for (i = 0; i < blockList.length; i++) {
+                blockList[i].image = new Image();
+                blockList[i].image.src = blockList[i].protoblock.getSvgPath();
+                blockList[i].image.onload = handleImageLoad;
             }
 
-            pen = new Image();
-            pen.src = Pen;
-            pen.onload = handlePenLoad;
+            turtle = new Image();
+            turtle.src = Turtle;
+            turtle.onload = handleTurtleLoad;
+
+	    // Make sure blocks are aligned
+	    findDragGroup(0);
+	    adjustBlockPositions();
 
             // Create a drawing canvas
             drawingCanvas = new createjs.Shape();
             stage.addChild(drawingCanvas);
-            new_positions();
             stage.update();
         }
 
@@ -149,43 +255,114 @@ define(function (require) {
             var container = new createjs.Container();
             stage.addChild(container);
 
+	    j = -1
+            for (i = 0; i < blockList.length; i++) {
+		if (blockList[i].image == image) {
+		    j = i;
+		    break;
+                }
+            }
+            // Create and populate the screen with blocks
+            bitmap = new createjs.Bitmap(image);
+            blockList[j].bitmap = bitmap // Save now so we can reposition later.
+            container.addChild(bitmap);
+            bitmap.x = blockList[j].x
+            bitmap.y = blockList[j].y
+            bitmap.regX = imgW / 2 | 0;
+            bitmap.regY = imgH / 2 | 0;
+	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
+            bitmap.name = "bmp_" + j;
+
+            bitmap.cursor = "pointer";
+
+	    if (blockList[j].protoblock.name == "number") {
+		blockList[j].label.style.left = Math.round(bitmap.x + canvas.offsetLeft - 5) + "px";
+	    } else {
+		blockList[j].label.style.left = Math.round(bitmap.x + canvas.offsetLeft - 40) + "px";
+	    }
+            blockList[j].label.style.top = Math.round(bitmap.y + canvas.offsetTop - 30) + "px";
+
             // Create a shape that represents the center of the icon:
             var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill("#FFF").drawEllipse(-11, -14, 24, 18);
+            hitArea.graphics.beginFill("#FFF").drawEllipse(-22, -28, 48, 36);
             // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
             hitArea.x = imgW / 2;
             hitArea.y = imgH / 2;
-
-            i = myimages.indexOf(image)
-            // Create and populate the screen with number icons.
-            bitmap = new createjs.Bitmap(image);
-            bitmaps[i] = bitmap // Save now so we can reposition later.
-            container.addChild(bitmap);
-            bitmap.x = imagepos[i][0]
-            bitmap.y = imagepos[i][1]
-            bitmap.regX = imgW / 2 | 0;
-            bitmap.regY = imgH / 2 | 0;
-	    if (i == 0) {
-	        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5
-            } else {
-	        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.5
-            }
-            bitmap.name = "bmp_" + i;
-
-            bitmap.cursor = "pointer";
-
-            // Eventually, we can check this to make sure the number
-            // has been touched.
             bitmap.hitArea = hitArea;
 
-            (function (target) {})(bitmap);
+            // Wrapper function to provide scope for the event handlers:
+            (function (target) {
+                bitmap.onRelease = function (evt) {
+		    // TODO: Try to dock
+                    update = true;
+		    }
+                bitmap.onPress = function (evt) {
+                    // Bump the target in front of its siblings:
+                    container.addChild(target);
+                    var offset = {
+                        x: target.x - evt.stageX,
+                        y: target.y - evt.stageY
+                    };
+
+                    evt.onMouseMove = function (ev) {
+			// TODO: Disconnect from block above
+			var oldX = bitmap.x
+			var oldY = bitmap.y
+                        target.x = ev.stageX + offset.x;
+                        target.y = ev.stageY + offset.y;
+
+			// Move the label too
+			blk = -1
+			for (i = 0; i < blockList.length; i++) {
+			    if (blockList[i].bitmap == bitmap) {
+				blk = i;
+				break;
+			    }
+			}
+			// Move any connected blocks
+			findDragGroup(blk)
+			var dx = bitmap.x - oldX
+			var dy = bitmap.y - oldY
+			if (dragGroup.length > 0) {
+			    for (b = 0; b < dragGroup.length; b++) {
+				blk = dragGroup[b]
+				if (b == 0) {
+				    // already moved above
+				} else {
+				    blockList[blk].bitmap.x += dx
+				    blockList[blk].bitmap.y += dy
+				}
+				if (blockList[blk].protoblock.name == "number") {
+				    blockList[blk].label.style.left = Math.round(blockList[blk].bitmap.x + canvas.offsetLeft - 5) + "px";
+
+				} else {
+				    blockList[blk].label.style.left = Math.round(blockList[blk].bitmap.x + canvas.offsetLeft - 40) + "px";
+				}
+				blockList[blk].label.style.top = Math.round(blockList[blk].bitmap.y + canvas.offsetTop - 30) + "px";
+			    }
+			}
+
+                        // Indicate that the stage should be updated
+                        // on the next tick:
+                        update = true;
+                    }
+                }
+                bitmap.onMouseOver = function () {
+                    target.scaleX = target.scaleY = target.scale * 1.2;
+                    update = true;
+                }
+                bitmap.onMouseOut = function () {
+                    target.scaleX = target.scaleY = target.scale;
+                    update = true;
+                }
+            })(bitmap);
 
             document.getElementById("loader").className = "";
             createjs.Ticker.addEventListener("tick", tick);
         }
 
-        function handlePenLoad(event) {
+        function handleTurtleLoad(event) {
             var image = event.target;
             var imgW = image.width;
             var imgH = image.height;
@@ -201,16 +378,17 @@ define(function (require) {
             hitArea.x = imgW / 2;
             hitArea.y = imgH / 2;
 
-            // Create a pen
+            // Create a turtle
             bitmap = new createjs.Bitmap(image);
-	    pen_bitmap = bitmap
+	    turtle_bitmap = bitmap
             container.addChild(bitmap);
-            bitmap.x = imagepos[0][0]
-            bitmap.y = imagepos[0][1]
+	    // FIXME
+            bitmap.x = 200
+            bitmap.y = 200
             bitmap.regX = imgW / 2 | 0;
             bitmap.regY = imgH / 2 | 0;
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
-            bitmap.name = "bmp_pen";
+            bitmap.name = "bmp_turtle";
 
             bitmap.cursor = "pointer";
 
@@ -263,6 +441,112 @@ define(function (require) {
             createjs.Ticker.addEventListener("tick", tick);
         }
 
+        function adjustBlockPositions() {
+	    // Adjust the docking postions of all blocks in the drag group
+	    if (dragGroup.length < 2) {
+		return;
+	    }
+
+	    adjustDocks(dragGroup[0])
+	}
+
+	function adjustDocks(blk) {
+	    // Give a block, adjust the dock positions
+	    // of all of the blocks connected to it
+	    if (blockList[blk].connections == null) {
+		return;
+	    }
+	    if (blockList[blk].connections.length == 0) {
+		return;
+	    }
+	    for (c = 1; c < blockList[blk].connections.length; c++) {
+		var bdock = blockList[blk].protoblock.docks[c];
+		cblk = blockList[blk].connections[c];
+		if (cblk == null) {
+		    return
+		}
+		for (b = 0; b < blockList[cblk].connections.length; b++) {
+		    if (blockList[cblk].connections[b] == blk) {
+			break
+		    }
+		}
+		var cdock = blockList[cblk].protoblock.docks[b];
+		if (blockList[blk].bitmap == null) {
+                    nx = blockList[blk].x + bdock[0] - cdock[0]
+                    ny = blockList[blk].y + bdock[1] - cdock[1]
+		    blockList[cblk].x = nx
+		    blockList[cblk].y = ny
+		} else {
+                    nx = blockList[blk].bitmap.x + bdock[0] - cdock[0]
+                    ny = blockList[blk].bitmap.y + bdock[1] - cdock[1]
+		    blockList[cblk].bitmap.x = nx
+		    blockList[cblk].bitmap.y = ny
+		}
+		adjustDocks(cblk)
+	    }
+	}
+
+        function findDragGroup(blk) {
+	    // Generate a drag group from blocks connected to blk
+	    dragGroup = [];
+            calculateDragGroup(blk);
+        }
+
+        function calculateDragGroup(blk) {
+	    // Give a block, find all the blocks connected to it
+	    if (blk == null) {
+		return;
+	    }
+	    dragGroup.push(blk)
+	    if (blockList[blk].connections == null) {
+		return;
+	    }
+	    if (blockList[blk].connections.length == 0) {
+		return;
+	    }
+	    for (c = 1; c < blockList[blk].connections.length; c++) {
+		cblk = blockList[blk].connections[c];
+		if (cblk != null) {
+		    // Recurse
+		    calculateDragGroup(cblk);
+		}
+	    }
+	}
+
+        function findTopBlock(blk) {
+	    // Find the top block in a stack
+	    if (blk == null) {
+		return null;
+	    }
+	    if (blockList[blk].connections == null) {
+		return blk;
+	    }
+	    if (blockList[blk].connections.length == 0) {
+		return blk;
+	    }
+	    while (blockList[blk].connections[0] != null) {
+		blk = blockList[blk].connections[0];
+	    }
+	    return blk;
+        }
+
+        function findBottomBlock(blk) {
+	    // Find the bottom block in a stack
+	    if (blk == null) {
+		return null;
+	    }
+	    if (blockList[blk].connections == null) {
+		return blk;
+	    }
+	    if (blockList[blk].connections.length == 0) {
+		return blk;
+	    }
+	    while (blockList[blk].connections[-1] != null) {
+		blk = blockList[blk].connections[-1];
+	    }
+	    return blk;
+	}
+
         function tick(event) {
             // This set makes it so the stage only re-renders when
             // an event handler indicates a change has happened.
@@ -272,43 +556,11 @@ define(function (require) {
             }
         }
 
-        function new_positions() {
-	    if( shape == -1 ) {
-                shape = 0
-                return
-            }
-
-            for (i = 0; i < bitmaps.length; i++) {
-                if (shape < shapes.length) {
-                    if (i < shapes[shape].length) {
-                        bitmaps[i].x = shapes[shape][i][0];
-                        bitmaps[i].y = shapes[shape][i][1];
-                    } else {
-                        bitmaps[i].x = -100;
-                        bitmaps[i].y = -100;
-                    }
-                } else {
-                    bitmaps[i].x = canvas.width * Math.random() | 0;
-                    bitmaps[i].y = canvas.height * Math.random() | 0;
-                }
-            }
-            for (i = 0; i < bitmaps.length; i++) {
-                // Put the label in the dot 
-                if (i < 10) {
-                    nlabels[i].style.left = Math.round(bitmaps[i].x + canvas.offsetLeft - 5) + "px";
-                } else {
-                    nlabels[i].style.left = Math.round(bitmaps[i].x + canvas.offsetLeft - 11) + "px";
-                }
-                nlabels[i].style.top = Math.round(bitmaps[i].y + canvas.offsetTop - 30) + "px";
-            }
-
-            pen_bitmap.x = bitmaps[0].x;
-            pen_bitmap.y = bitmaps[0].y;
+        function runLogoCommands() {
+	    // run the logo commands here
 
             drawingCanvas.graphics.clear();
-
             update = true;
-            shape = shape + 1;
         }
 
     });

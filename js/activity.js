@@ -79,7 +79,9 @@ define(function (require) {
             // Create the stage and point it to the canvas:
             canvas = document.getElementById("myCanvas");
 
+	    // Load a project
 	    loadBlocks();
+
 	    // Make sure blocks are aligned
 	    findStacks();
 	    for (i = 0; i < stackList.length; i++) {
@@ -129,7 +131,7 @@ define(function (require) {
             var container = new createjs.Container();
             stage.addChild(container);
 
-	    j = -1
+	    var j = -1
             for (i = 0; i < blockList.length; i++) {
 		if (blockList[i].image == image) {
 		    j = i;
@@ -162,10 +164,7 @@ define(function (require) {
 
             // Wrapper function to provide scope for the event handlers:
             (function (target) {
-                bitmap.onRelease = function (evt) {
-		    // TODO: Try to dock
-                    update = true;
-		    }
+		var moved = false
                 bitmap.onPress = function (evt) {
                     // Bump the target in front of its siblings:
                     container.addChild(target);
@@ -176,6 +175,7 @@ define(function (require) {
 
                     evt.onMouseMove = function (ev) {
 			// TODO: Disconnect from block above
+			moved = true
 			var oldX = bitmap.x
 			var oldY = bitmap.y
                         target.x = ev.stageX + offset.x;
@@ -218,6 +218,65 @@ define(function (require) {
                     update = true;
                 }
                 bitmap.onMouseOut = function () {
+		    if (moved) {
+			// When a block is moved:
+			// (1) disconnect connection[0]
+			c = blockList[j].connections[0];
+			if (c != null) {
+			    // disconnect both ends of the connection
+			    for (i = 1;
+				 i < blockList[c].connections.length; i++) {
+				if (blockList[c].connections[i] == j) {
+				    blockList[c].connections[i] = null;
+				    break;
+				}
+			    }
+  			    blockList[j].connections[0] = null;
+			}
+                        // (2) look for a new connection
+			dx1 = blockList[j].bitmap.x + 
+				blockList[j].protoblock.docks[0][0];
+			dy1 = blockList[j].bitmap.y + 
+				blockList[j].protoblock.docks[0][1];
+			// Find the nearest dock; if it is close enough,
+			// connect;
+			var newBlock = null
+			var newConnection = null
+			var min = 400;
+			var jtype = blockList[j].protoblock.docks[0][2]
+			for (b = 0; b < blockList.length; b++) {
+			    // Don't connect to yourself
+			    if (b == j) {
+				continue;
+			    }
+			    for (c = 1; c < blockList[b].connections.length; c++) {
+				// TODO: handle cases where dock is already occupied;
+				// TODO: handle block expansion/contraction
+				// Look for available connections
+				if (testConnectionType(
+				    jtype,
+				    blockList[b].protoblock.docks[c][2])) {
+				    dx2 = blockList[b].bitmap.x + 
+					blockList[b].protoblock.docks[c][0];
+				    dy2 = blockList[b].bitmap.y + 
+					blockList[b].protoblock.docks[c][1];
+				    dist = (dx2 - dx1) * (dx2 - dx1) + 
+					(dy2 - dy1) * (dy2 - dy1);
+				    if (dist < min) {
+					newBlock = b;
+					newConnection = c;
+					min = dist;
+				    }
+				}
+			    }
+			}
+			if (newBlock != null) {
+			    // We found a match
+			    blockList[j].connections[0] = newBlock;
+			    blockList[newBlock].connections[newConnection] = j;
+			    adjustDocks(newBlock);
+			}
+                    }
                     target.scaleX = target.scaleY = target.scale;
                     update = true;
                 }
@@ -226,6 +285,23 @@ define(function (require) {
             document.getElementById("loader").className = "";
             createjs.Ticker.addEventListener("tick", tick);
         }
+
+	function testConnectionType(type1, type2) {
+	    // Can these two blocks dock?
+	    if (type1 == 'in' && type2 == 'out') {
+		return true;
+	    }
+	    if (type1 == 'out' && type2 == 'in') {
+		return true;
+	    }
+	    if (type1 == 'numberin' && type2 == 'numberout') {
+		return true;
+	    }
+	    if (type1 == 'numberout' && type2 == 'numberin') {
+		return true;
+	    }
+	    return false;
+	}
 
         function handleTurtleLoad(event) {
             var image = event.target;
@@ -279,7 +355,11 @@ define(function (require) {
                         var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1,
                             oldPt.y + stage.mouseY >> 1);
 
-                        drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
+                        drawingCanvas.graphics.setStrokeStyle(
+			    stroke, 'round', 'round'
+			).beginStroke(color).moveTo(
+			    midPt.x, midPt.y
+			).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
 
                         oldPt.x = stage.mouseX;
                         oldPt.y = stage.mouseY;
@@ -445,6 +525,7 @@ define(function (require) {
         }
 
         function loadBlocks() {
+	    // This is temporary code for testing
 
 	    // Add the blocks
 	    blockList[0] = new Block(forwardBlock);
@@ -462,6 +543,7 @@ define(function (require) {
 
 	    updateBlockLabels();
 
+	    // Simulate adding blocks
 	    blockList[4] = new Block(forwardBlock);
 	    blockList[4].x = 400;
 	    blockList[4].y = 200;

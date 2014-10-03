@@ -30,7 +30,7 @@ define(function (require) {
 
         var newButton = document.getElementById("new-button");
         newButton.onclick = function () {
-            new_positions();
+	    runLogoCommands();
         }
 
         // Make the activity stop with the stop button.
@@ -81,7 +81,7 @@ define(function (require) {
                     i.toString();
 		text = '<h2 id="_' + arrLabels[i] +
 		    '" style="position: absolute; ' + 
-		    '-webkit-user-select: none;">' +
+		    '-webkit-user-select: text;">' +
 		    blockList[i].value.toString() + '</h2>'
 	    } else {
 		arrLabels[i] = blockList[i].name + "_" + i.toString();
@@ -94,9 +94,6 @@ define(function (require) {
         }
         var labelElem = document.getElementById("labelDiv");
         labelElem.innerHTML = html;
-
-	// When we update the number, we will...
-	// document.getElementById("_" + arrLabels[i]).innerHTML = "New text!";
 
 	// Then create a list of the label elements
         for (i = 0; i < blockList.length; i++) {
@@ -503,6 +500,9 @@ define(function (require) {
 
         function runLogoCommands() {
 	    // run the logo commands here
+
+	    // When we update the number, we will...
+	    document.getElementById("_" + arrLabels[1]).innerHTML = "200";
 
             drawingCanvas.graphics.clear();
             update = true;

@@ -59,11 +59,14 @@ define(function (require) {
         var oldPt;
         var midPt;
         var oldMidPt;
+	var i;
 	var j;
         var color;
         var stroke;
         var colors;
         var index;
+
+	var activeBlock = null;
 
         var turtle_bitmap;
         var Turtle = "images/turtle.svg";
@@ -131,27 +134,27 @@ define(function (require) {
             var container = new createjs.Container();
             stage.addChild(container);
 
-	    var j = -1
+	    var thisBlock = -1
             for (i = 0; i < blockList.length; i++) {
 		if (blockList[i].image == image) {
-		    j = i;
+		    thisBlock = i;
 		    break;
                 }
             }
             // Create and populate the screen with blocks
             bitmap = new createjs.Bitmap(image);
-            blockList[j].bitmap = bitmap // Save now so we can reposition later.
+            blockList[thisBlock].bitmap = bitmap // Save now so we can reposition later.
             container.addChild(bitmap);
-            bitmap.x = blockList[j].x
-            bitmap.y = blockList[j].y
+            bitmap.x = blockList[thisBlock].x
+            bitmap.y = blockList[thisBlock].y
             bitmap.regX = imgW / 2 | 0;
             bitmap.regY = imgH / 2 | 0;
 	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
-            bitmap.name = "bmp_" + j;
+            bitmap.name = "bmp_" + thisBlock;
 
             bitmap.cursor = "pointer";
 
-	    adjustLabelPosition(j, bitmap.x, bitmap.y);
+	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
 
             // Create a shape that represents the center of the icon:
             var hitArea = new createjs.Shape();
@@ -214,47 +217,57 @@ define(function (require) {
                     }
                 }
                 bitmap.onMouseOver = function () {
-                    target.scaleX = target.scaleY = target.scale * 1.2;
-                    update = true;
+		    if (activeBlock == null) {
+			target.scaleX = target.scaleY = target.scale * 1.2;
+			activeBlock = thisBlock;
+			update = true;
+		    }
                 }
                 bitmap.onMouseOut = function () {
+		    if (activeBlock != thisBlock) {
+			console.log('not the active block');
+			return;
+		    }
 		    if (moved) {
 			// When a block is moved:
 			// (1) disconnect connection[0]
-			c = blockList[j].connections[0];
+			console.log('connections for block ' + thisBlock + ': ' + blockList[thisBlock].connections)
+			var c = blockList[thisBlock].connections[0];
 			if (c != null) {
+			    console.log('blk has a connection 0 with ' + c)
 			    // disconnect both ends of the connection
 			    for (i = 1;
 				 i < blockList[c].connections.length; i++) {
-				if (blockList[c].connections[i] == j) {
+				if (blockList[c].connections[i] == thisBlock) {
 				    blockList[c].connections[i] = null;
+				    console.log('disconnecting from ' + c);
 				    break;
 				}
 			    }
-  			    blockList[j].connections[0] = null;
+  			    blockList[thisBlock].connections[0] = null;
 			}
                         // (2) look for a new connection
-			dx1 = blockList[j].bitmap.x + 
-				blockList[j].protoblock.docks[0][0];
-			dy1 = blockList[j].bitmap.y + 
-				blockList[j].protoblock.docks[0][1];
+			var dx1 = blockList[thisBlock].bitmap.x + 
+				blockList[thisBlock].protoblock.docks[0][0];
+			var dy1 = blockList[thisBlock].bitmap.y + 
+				blockList[thisBlock].protoblock.docks[0][1];
 			// Find the nearest dock; if it is close enough,
 			// connect;
 			var newBlock = null
 			var newConnection = null
 			var min = 400;
-			var jtype = blockList[j].protoblock.docks[0][2]
+			var blkType = blockList[thisBlock].protoblock.docks[0][2]
 			for (b = 0; b < blockList.length; b++) {
 			    // Don't connect to yourself
-			    if (b == j) {
+			    if (b == thisBlock) {
 				continue;
 			    }
 			    for (c = 1; c < blockList[b].connections.length; c++) {
-				// TODO: handle cases where dock is already occupied;
+				// TODO: handle cases where number dock is already occupied;
 				// TODO: handle block expansion/contraction
 				// Look for available connections
 				if (testConnectionType(
-				    jtype,
+				    blkType,
 				    blockList[b].protoblock.docks[c][2])) {
 				    dx2 = blockList[b].bitmap.x + 
 					blockList[b].protoblock.docks[c][0];
@@ -271,13 +284,30 @@ define(function (require) {
 			    }
 			}
 			if (newBlock != null) {
+			    console.log(dist + ' ' + thisBlock + ' ' + newBlock + ' ' + newConnection);
 			    // We found a match
-			    blockList[j].connections[0] = newBlock;
-			    blockList[newBlock].connections[newConnection] = j;
+			    console.log('connecting ' + thisBlock + ' to ' + newBlock);
+			    blockList[thisBlock].connections[0] = newBlock;
+			    var connection = blockList[newBlock].connections[newConnection];
+			    // TODO: move number blocks to trash
+			    if(connection != null) {
+				console.log(connection);
+				bottom = findBottomBlock(thisBlock);
+				console.log('connection was ' + connection);
+				console.log('bottom block is ' + bottom);
+				console.log('connecting ' + connection + ' to ' + bottom);
+				blockList[connection].connections[0] = bottom;
+				console.log('connecting ' + bottom + ' to ' + connection);
+				blockList[bottom].connections[blockList[bottom].connections.length-1] = connection;
+			    }
+			    console.log('connecting ' + newBlock + ' to ' + thisBlock);
+			    blockList[newBlock].connections[newConnection] = thisBlock;
+			    console.log('adjustDocks beginning from ' + newBlock)
 			    adjustDocks(newBlock);
 			}
                     }
                     target.scaleX = target.scaleY = target.scale;
+		    activeBlock = null;
                     update = true;
                 }
             })(bitmap);
@@ -399,6 +429,7 @@ define(function (require) {
 	    // Give a block, adjust the dock positions
 	    // of all of the blocks connected to it
 	    // And their corresponding labels
+	    console.log('adjustDocks ' + blk)
 	    if (blockList[blk].connections == null) {
 		return;
 	    }
@@ -499,8 +530,8 @@ define(function (require) {
 	    if (blockList[blk].connections.length == 0) {
 		return blk;
 	    }
-	    while (blockList[blk].connections[-1] != null) {
-		blk = blockList[blk].connections[-1];
+	    while (blockList[blk].connections[blockList[blk].connections.length-1] != null) {
+		blk = blockList[blk].connections[blockList[blk].connections.length-1];
 	    }
 	    return blk;
 	}

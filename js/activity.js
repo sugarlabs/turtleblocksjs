@@ -1,8 +1,20 @@
+// Copyright (c) 2014 Walter Bender
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+//the Free Software Foundation; either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library; if not, write to the Free Software
+// Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
+
 define(function (require) {
     var activity = require("sugar-web/activity/activity");
     var icon = require("sugar-web/graphics/icon");
     require("easel");
-    require("handlebars")
+    // Palettes and Blocks are defined here
+    require("activity/blocks")
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
@@ -27,140 +39,67 @@ define(function (require) {
             activity.close();
         });
 
-	// Define palette objects
-	function Palette (name) {
-	    this.name = name;
-	    this.color = "green";
-	    this.blockList = [];
-	}
-
-        Palette.prototype.getInfo = function() {
-            return this.color + ' ' + this.name + ' palette: ' + this.blockList;
-        };
-
-	// Instantiate the palettes
-        var paletteList = []
-
-	var turtlePalette = new Palette('Turtle');
-	paletteList[0] = turtlePalette
-	turtlePalette.color = "green"
-
-	var numberPalette = new Palette('Number');
-	paletteList[1] = numberPalette
-	numberPalette.color = "purple"
-
-	for (i = 0; i < paletteList.length; i++) {
-	    // alert(paletteList[i].getInfo());
-	}
-
-	// Define block proto objects
-	function ProtoBlock (name) {
-	    this.name = name;
-	    this.palette = null
-	    this.color = null
-	    this.style = null
-	    this.docks = []
-	}
-
-        ProtoBlock.prototype.getInfo = function() {
-            return this.color + ' ' + this.name + ' block';
-        };
-
-        ProtoBlock.prototype.getSvgPath = function() {
-            return 'images/' + this.style + '_' + this.color + '.svg';
-        };
-
-	// Instantiate the proto blocks
-	// TODO: make style/connections into objects
-        var protoBlockList = []
-
-	var forwardBlock = new ProtoBlock('forward');
-	protoBlockList[0] = forwardBlock
-	forwardBlock.palette = turtlePalette
-	forwardBlock.color = forwardBlock.palette.color
-	forwardBlock.style = 'basic1arg'
-	forwardBlock.docks = [[20, 0], [100, 20], [20, 40]]
-
-	var rightBlock = new ProtoBlock('right');
-	protoBlockList[1] = rightBlock
-	rightBlock.palette = turtlePalette
-	rightBlock.color = rightBlock.palette.color
-	rightBlock.style = 'basic1arg'
-	rightBlock.docks = [[20, 0], [100, 20], [20, 40]]
-
-	var numberBlock = new ProtoBlock('number');
-	protoBlockList[2] = numberBlock
-	numberBlock.palette = numberPalette
-	numberBlock.color = numberBlock.palette.color
-	numberBlock.style = 'box'
-	numberBlock.docks = [[0, 22]]
-
-	for (i = 0; i < protoBlockList.length; i++) {
-	    // alert(protoBlockList[i].getInfo() + ' ' + protoBlockList[i].getSvgPath());
-	}
-
-	// Define block instance objects
-	function Block (protoblock) {
-	    this.protoblock = protoblock;
-	    this.name = protoblock.name;
-	    this.label = null
-	    this.image = null
-	    this.bitmap = null
-	    this.x = 0
-	    this.y = 0
-	    this.connections = []
-	}
-
-        Block.prototype.getInfo = function() {
-            return this.name + ' block';
-        };
-
-	// Instantiate the blocks
-        var blockList = []
 	blockList[0] = new Block(forwardBlock);
 	blockList[0].x = 100
 	blockList[0].y = 100
 	blockList[0].connections = [null, 1, 2]
 	blockList[1] = new Block(numberBlock);
-	blockList[1].x = 200
-	blockList[1].y = 100
-	blockList[1].name = "100"
+	blockList[1].value = 100
 	blockList[1].connections = [0]
 	blockList[2] = new Block(rightBlock);
-	blockList[2].x = 100
-	blockList[2].y = 200
 	blockList[2].connections = [0, 3, null]
 	blockList[3] = new Block(numberBlock);
-	blockList[3].x = 200
-	blockList[3].y = 200
-	blockList[3].name = "90"
+	blockList[3].value = 90
 	blockList[3].connections = [2]
+	// Make sure blocks are aligned
+	findDragGroup(0);
+	adjustBlockPositions();
+
+	blockList[4] = new Block(forwardBlock);
+	blockList[4].x = 400
+	blockList[4].y = 200
+	blockList[4].connections = [null, 5, null]
+	blockList[5] = new Block(numberBlock);
+	blockList[5].value = 100
+	blockList[5].connections = [4]
+	// Make sure blocks are aligned
+	findDragGroup(4);
+	adjustBlockPositions();
 
 	for (i = 0; i < blockList.length; i++) {
 	    // alert(blockList[i].getInfo());
 	}
 
-	// A handlebars template for generating the block labels
-        var labelSource =
-            "<div>" +
-	    "{{#each labels}}" +
-	    "<h2 id=\"_{{this}}\" style=\"position:absolute;-webkit-user-select: none;-moz-user-select: -moz-none;\">{{this}}</h2>" +
-	    "{{/each}}" +
-	    "</div>"
-
-	// Create label elements for each of our blocks
-        template = Handlebars.compile(labelSource);
+	// Create label elements for each of our blocks.
+	// The labels are stored in the DOM with a unique id for each block.
         var arrLabels = [];
+        var html = ''
         for (i = 0; i < blockList.length; i++) {
-            arrLabels[i] = blockList[i].name;
+	    if (blockList[i].name == "number") {
+		arrLabels[i] = blockList[i].value.toString() + "_" +
+                    i.toString();
+		text = '<h2 id="_' + arrLabels[i] +
+		    '" style="position: absolute; ' + 
+		    '-webkit-user-select: none;">' +
+		    blockList[i].value.toString() + '</h2>'
+	    } else {
+		arrLabels[i] = blockList[i].name + "_" + i.toString();
+		text = '<h2 id="_' + arrLabels[i] +
+		    '" style="position: absolute; ' + 
+		    '-webkit-user-select: none;">' +
+		    blockList[i].name + '</h2>'
+	    }
+	    html = html + text
         }
         var labelElem = document.getElementById("labelDiv");
-        var html = template({labels:arrLabels});
         labelElem.innerHTML = html;
+
+	// When we update the number, we will...
+	// document.getElementById("_" + arrLabels[i]).innerHTML = "New text!";
 
 	// Then create a list of the label elements
         for (i = 0; i < blockList.length; i++) {
-	    blockList[i].label = document.getElementById("_" + blockList[i].name);
+	    blockList[i].label = document.getElementById("_" + arrLabels[i])
         }
 
 	// Stage is an Easel construct
@@ -232,10 +171,6 @@ define(function (require) {
             turtle = new Image();
             turtle.src = Turtle;
             turtle.onload = handleTurtleLoad;
-
-	    // Make sure blocks are aligned
-	    findDragGroup(0);
-	    adjustBlockPositions();
 
             // Create a drawing canvas
             drawingCanvas = new createjs.Shape();

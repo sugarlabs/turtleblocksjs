@@ -2,7 +2,7 @@
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-//the Free Software Foundation; either version 3 of the License, or
+// the Free Software Foundation; either version 3 of the License, or
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU General Public License
@@ -40,31 +40,32 @@ define(function (require) {
         });
 
 	blockList[0] = new Block(forwardBlock);
-	blockList[0].x = 100
-	blockList[0].y = 100
-	blockList[0].connections = [null, 1, 2]
+	blockList[0].x = 100;
+	blockList[0].y = 100;
+	blockList[0].connections = [null, 1, 2];
 	blockList[1] = new Block(numberBlock);
-	blockList[1].value = 100
-	blockList[1].connections = [0]
+	blockList[1].value = 100;
+	blockList[1].connections = [0];
 	blockList[2] = new Block(rightBlock);
-	blockList[2].connections = [0, 3, null]
+	blockList[2].connections = [0, 3, null];
 	blockList[3] = new Block(numberBlock);
-	blockList[3].value = 90
-	blockList[3].connections = [2]
-	// Make sure blocks are aligned
-	findDragGroup(0);
-	adjustBlockPositions();
-
+	blockList[3].value = 90;
+	blockList[3].connections = [2];
 	blockList[4] = new Block(forwardBlock);
-	blockList[4].x = 400
-	blockList[4].y = 200
-	blockList[4].connections = [null, 5, null]
+	blockList[4].x = 400;
+	blockList[4].y = 200;
+	blockList[4].connections = [null, 5, null];
 	blockList[5] = new Block(numberBlock);
-	blockList[5].value = 100
-	blockList[5].connections = [4]
+	blockList[5].value = 100;
+	blockList[5].connections = [4];
+
 	// Make sure blocks are aligned
-	findDragGroup(4);
-	adjustBlockPositions();
+	var stackList = [];
+	findStacks();
+	for (i = 0; i < stackList.length; i++) {
+	    findDragGroup(stackList[i]);
+	    adjustBlockPositions();
+	}
 
 	for (i = 0; i < blockList.length; i++) {
 	    // alert(blockList[i].getInfo());
@@ -444,6 +445,15 @@ define(function (require) {
 		if (cblk != null) {
 		    // Recurse
 		    calculateDragGroup(cblk);
+		}
+	    }
+	}
+
+	function findStacks() {
+	    // Find any blocks with null in the first connection
+	    for (i = 0; i < blockList.length; i++) {
+		if (blockList[i].connections[0] == null) {
+		    stackList.push(i)
 		}
 	    }
 	}

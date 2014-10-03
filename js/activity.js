@@ -38,68 +38,6 @@ define(function (require) {
         stopButton.addEventListener('click', function (e) {
             activity.close();
         });
-
-	blockList[0] = new Block(forwardBlock);
-	blockList[0].x = 100;
-	blockList[0].y = 100;
-	blockList[0].connections = [null, 1, 2];
-	blockList[1] = new Block(numberBlock);
-	blockList[1].value = 100;
-	blockList[1].connections = [0];
-	blockList[2] = new Block(rightBlock);
-	blockList[2].connections = [0, 3, null];
-	blockList[3] = new Block(numberBlock);
-	blockList[3].value = 90;
-	blockList[3].connections = [2];
-	blockList[4] = new Block(forwardBlock);
-	blockList[4].x = 400;
-	blockList[4].y = 200;
-	blockList[4].connections = [null, 5, null];
-	blockList[5] = new Block(numberBlock);
-	blockList[5].value = 100;
-	blockList[5].connections = [4];
-
-	// Make sure blocks are aligned
-	var stackList = [];
-	findStacks();
-	for (i = 0; i < stackList.length; i++) {
-	    findDragGroup(stackList[i]);
-	    adjustBlockPositions();
-	}
-
-	for (i = 0; i < blockList.length; i++) {
-	    // alert(blockList[i].getInfo());
-	}
-
-	// Create label elements for each of our blocks.
-	// The labels are stored in the DOM with a unique id for each block.
-        var arrLabels = [];
-        var html = ''
-        for (i = 0; i < blockList.length; i++) {
-	    if (blockList[i].name == "number") {
-		arrLabels[i] = blockList[i].value.toString() + "_" +
-                    i.toString();
-		text = '<h2 id="_' + arrLabels[i] +
-		    '" style="position: absolute; ' + 
-		    '-webkit-user-select: text;">' +
-		    blockList[i].value.toString() + '</h2>'
-	    } else {
-		arrLabels[i] = blockList[i].name + "_" + i.toString();
-		text = '<h2 id="_' + arrLabels[i] +
-		    '" style="position: absolute; ' + 
-		    '-webkit-user-select: none;">' +
-		    blockList[i].name + '</h2>'
-	    }
-	    html = html + text
-        }
-        var labelElem = document.getElementById("labelDiv");
-        labelElem.innerHTML = html;
-
-	// Then create a list of the label elements
-        for (i = 0; i < blockList.length; i++) {
-	    blockList[i].label = document.getElementById("_" + arrLabels[i])
-        }
-
 	// Stage is an Easel construct
         var canvas, stage;
 	// Need to update the stage
@@ -112,7 +50,9 @@ define(function (require) {
         var dragStarted;
 
 	// Group of blocks being dragged
-	var dragGroup = []
+	var dragGroup = [];
+	// And the blocks at the tops of stacks
+        var stackList = [];
 
         var offset;
         var drawingCanvas;
@@ -139,6 +79,14 @@ define(function (require) {
             // Create the stage and point it to the canvas:
             canvas = document.getElementById("myCanvas");
 
+	    loadBlocks();
+	    // Make sure blocks are aligned
+	    findStacks();
+	    for (i = 0; i < stackList.length; i++) {
+		findDragGroup(stackList[i]);
+		adjustBlockPositions();
+	    }
+
             index = 0;
             colors = ["#828b20", "#b0ac31", "#cbc53d", "#fad779", "#f9e4ad",
                   "#faf2db", "#563512", "#9b4a0b", "#d36600", "#fe8a00",
@@ -158,13 +106,6 @@ define(function (require) {
 
             // Enabled mouse over and mouse out events
             stage.enableMouseOver(10);
-
-            // Load the source images
-            for (i = 0; i < blockList.length; i++) {
-                blockList[i].image = new Image();
-                blockList[i].image.src = blockList[i].protoblock.getSvgPath();
-                blockList[i].image.onload = handleImageLoad;
-            }
 
             turtle = new Image();
             turtle.src = Turtle;
@@ -208,12 +149,7 @@ define(function (require) {
 
             bitmap.cursor = "pointer";
 
-	    if (blockList[j].protoblock.name == "number") {
-		blockList[j].label.style.left = Math.round(bitmap.x + canvas.offsetLeft - 5) + "px";
-	    } else {
-		blockList[j].label.style.left = Math.round(bitmap.x + canvas.offsetLeft - 40) + "px";
-	    }
-            blockList[j].label.style.top = Math.round(bitmap.y + canvas.offsetTop - 30) + "px";
+	    adjustLabelPosition(j, bitmap.x, bitmap.y);
 
             // Create a shape that represents the center of the icon:
             var hitArea = new createjs.Shape();
@@ -266,13 +202,9 @@ define(function (require) {
 				    blockList[blk].bitmap.x += dx
 				    blockList[blk].bitmap.y += dy
 				}
-				if (blockList[blk].protoblock.name == "number") {
-				    blockList[blk].label.style.left = Math.round(blockList[blk].bitmap.x + canvas.offsetLeft - 5) + "px";
-
-				} else {
-				    blockList[blk].label.style.left = Math.round(blockList[blk].bitmap.x + canvas.offsetLeft - 40) + "px";
-				}
-				blockList[blk].label.style.top = Math.round(blockList[blk].bitmap.y + canvas.offsetTop - 30) + "px";
+				adjustLabelPosition(
+				    blk, blockList[blk].bitmap.x,
+				    blockList[blk].bitmap.y);
 			    }
 			}
 
@@ -386,6 +318,7 @@ define(function (require) {
 	function adjustDocks(blk) {
 	    // Give a block, adjust the dock positions
 	    // of all of the blocks connected to it
+	    // And their corresponding labels
 	    if (blockList[blk].connections == null) {
 		return;
 	    }
@@ -410,11 +343,14 @@ define(function (require) {
 		    blockList[cblk].x = nx
 		    blockList[cblk].y = ny
 		} else {
-                    nx = blockList[blk].bitmap.x + bdock[0] - cdock[0]
                     ny = blockList[blk].bitmap.y + bdock[1] - cdock[1]
+                    nx = blockList[blk].bitmap.x + bdock[0] - cdock[0]
+		    blockList[cblk].x = nx
+		    blockList[cblk].y = ny
 		    blockList[cblk].bitmap.x = nx
 		    blockList[cblk].bitmap.y = ny
 		}
+		adjustLabelPosition(cblk, nx, ny);
 		adjustDocks(cblk)
 	    }
 	}
@@ -507,6 +443,92 @@ define(function (require) {
             drawingCanvas.graphics.clear();
             update = true;
         }
+
+        function loadBlocks() {
+
+	    // Add the blocks
+	    blockList[0] = new Block(forwardBlock);
+	    blockList[0].x = 100;
+	    blockList[0].y = 100;
+	    blockList[0].connections = [null, 1, 2];
+	    blockList[1] = new Block(numberBlock);
+	    blockList[1].value = 100;
+	    blockList[1].connections = [0];
+	    blockList[2] = new Block(rightBlock);
+	    blockList[2].connections = [0, 3, null];
+	    blockList[3] = new Block(numberBlock);
+	    blockList[3].value = 90;
+	    blockList[3].connections = [2];
+
+	    updateBlockLabels();
+
+	    blockList[4] = new Block(forwardBlock);
+	    blockList[4].x = 400;
+	    blockList[4].y = 200;
+	    blockList[4].connections = [null, 5, null];
+	    blockList[5] = new Block(numberBlock);
+	    blockList[5].value = 100;
+	    blockList[5].connections = [4];
+
+	    updateBlockLabels();
+
+	    for (i = 0; i < blockList.length; i++) {
+		// alert(blockList[i].getInfo());
+	    }
+        }
+
+        function updateBlockLabels() {
+	    // The labels are stored in the DOM with a unique id for each block.
+            var html = ''
+            for (i = 0; i < blockList.length; i++) {
+		if (blockList[i].name == "number") {
+		    arrLabels[i] = blockList[i].value.toString() + "_" +
+			i.toString();
+		    text = '<h2 id="_' + arrLabels[i] +
+			'" style="position: absolute; ' + 
+			'-webkit-user-select: text;">' +
+			blockList[i].value.toString() + '</h2>'
+		} else {
+		    arrLabels[i] = blockList[i].name + "_" + i.toString();
+		    text = '<h2 id="_' + arrLabels[i] +
+			'" style="position: absolute; ' + 
+			'-webkit-user-select: none;">' +
+			blockList[i].name + '</h2>'
+		}
+		html = html + text
+            }
+            labelElem.innerHTML = html;
+
+	    // Then create a list of the label elements
+            for (i = 0; i < blockList.length; i++) {
+		blockList[i].label = document.getElementById("_" + arrLabels[i])
+		if (blockList[i].bitmap == null) {
+		    var x = blockList[i].x
+		    var y = blockList[i].y
+		} else {
+		    var x = blockList[i].bitmap.x
+		    var y = blockList[i].bitmap.y
+		}
+		adjustLabelPosition(i, x, y);
+		if (blockList[i].image == null) {
+		    blockList[i].image = new Image();
+		    blockList[i].image.src = blockList[i].protoblock.getSvgPath();
+		    blockList[i].image.onload = handleImageLoad;
+		}
+            }
+	}
+
+	function adjustLabelPosition(i, x, y) {
+	    if (blockList[i].protoblock.name == "number") {
+		blockList[i].label.style.left = Math.round(
+		    x + canvas.offsetLeft - 5) + "px";
+	    } else {
+		blockList[i].label.style.left = Math.round(
+		    x + canvas.offsetLeft - 40) + "px";
+	    }
+            blockList[i].label.style.top = Math.round(
+		y + canvas.offsetTop - 30) + "px";
+	}
 
     });
 

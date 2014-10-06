@@ -304,6 +304,10 @@ define(function (require) {
 			    blockList[newBlock].connections[newConnection] = thisBlock;
 			    console.log('adjustDocks beginning from ' + newBlock)
 			    adjustDocks(newBlock);
+
+			    var foo = document.getElementById("myNumber");
+			    console.log(foo)
+			    console.log(foo.value);
 			}
                     }
                     target.scaleX = target.scaleY = target.scale;
@@ -429,7 +433,6 @@ define(function (require) {
 	    // Give a block, adjust the dock positions
 	    // of all of the blocks connected to it
 	    // And their corresponding labels
-	    console.log('adjustDocks ' + blk)
 	    if (blockList[blk].connections == null) {
 		return;
 	    }

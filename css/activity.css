@@ -5,3 +5,21 @@
 #main-toolbar #new-button {
   background-image: url(../icons/new-button.svg);
 }
+
+textarea {
+   background-color: #fe55ff;
+   text-align: center;
+   font-size: 150% !important;
+   font-weight: bold !important;
+   resize: none;
+   border: 0 !important;
+}
+
+input {
+   font-family: inherit;
+   font-size: inherit;
+   background-color: #fe55ff !important;
+   text-align: center;
+   font-size: 150% !important;
+   font-weight: bold;
+}

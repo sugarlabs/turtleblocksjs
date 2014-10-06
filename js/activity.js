@@ -161,7 +161,7 @@ define(function (require) {
             hitArea.graphics.beginFill("#FFF").drawEllipse(-22, -28, 48, 36);
             // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
-            hitArea.x = imgW / 2;
+            hitArea.x = imgW - 24;
             hitArea.y = imgH / 2;
             bitmap.hitArea = hitArea;
 
@@ -637,7 +637,7 @@ define(function (require) {
 	function adjustLabelPosition(i, x, y) {
 	    if (blockList[i].protoblock.name == "number") {
 		blockList[i].label.style.left = Math.round(
-		    x + canvas.offsetLeft - 5) + "px";
+		    x + canvas.offsetLeft - 25) + "px";
 	    } else {
 		blockList[i].label.style.left = Math.round(
 		    x + canvas.offsetLeft - 40) + "px";

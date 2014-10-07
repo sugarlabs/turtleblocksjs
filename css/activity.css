@@ -11,16 +11,7 @@ textarea {
    text-align: center;
    font-size: 150% !important;
    font-weight: bold !important;
-   resize: none;
+   resize: none !important;
    padding: 0 !important;
    border: 0 !important;
-}
-
-input {
-   font-family: inherit;
-   font-size: inherit;
-   background-color: #fe55ff !important;
-   text-align: center;
-   font-size: 150% !important;
-   font-weight: bold;
 }

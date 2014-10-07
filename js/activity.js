@@ -669,36 +669,26 @@ define(function (require) {
 	    // This is temporary code for testing.
 
 	    // Add the blocks
-	    blockList[0] = new Block(forwardBlock);
-	    blockList[0].x = 100;
-	    blockList[0].y = 100;
-	    blockList[0].connections = [null, 1, 2];
-	    blockList[1] = new Block(numberBlock);
-	    blockList[1].value = 100;
-	    blockList[1].connections = [0];
-	    blockList[2] = new Block(rightBlock);
-	    blockList[2].connections = [0, 3, null];
-	    blockList[3] = new Block(numberBlock);
-	    blockList[3].value = 90;
-	    blockList[3].connections = [2];
+	    blockList[0] = new Block(clearBlock);
+	    blockList[0].x = 300;
+	    blockList[0].y = 50;
+	    blockList[0].connections = [null, 1];
+	    blockList[1] = new Block(forwardBlock);
+	    blockList[1].connections = [0, 2, 3];
+	    blockList[2] = new Block(numberBlock);
+	    blockList[2].value = 100;
+	    blockList[2].connections = [1];
+	    blockList[3] = new Block(rightBlock);
+	    blockList[3].connections = [1, 4, 5];
+	    blockList[4] = new Block(numberBlock);
+	    blockList[4].value = 90;
+	    blockList[4].connections = [3];
+	    blockList[5] = new Block(forwardBlock);
+	    blockList[5].connections = [3, 6, null];
+	    blockList[6] = new Block(numberBlock);
+	    blockList[6].value = 100;
+	    blockList[6].connections = [5];
 
-	    createBlockImages();
-	    updateBlockLabels();
-
-	    // Simulate adding blocks
-	    blockList[4] = new Block(forwardBlock);
-	    blockList[4].x = 400;
-	    blockList[4].y = 200;
-	    blockList[4].connections = [null, 5, null];
-	    blockList[5] = new Block(numberBlock);
-	    blockList[5].value = 100;
-	    blockList[5].connections = [4];
-
-	    blockList[6] = new Block(clearBlock);
-	    blockList[6].x = 300;
-	    blockList[6].y = 50;
-	    blockList[6].connections = [null, null];
-	    
 	    createBlockImages();
 	    updateBlockLabels();
 
@@ -744,6 +734,16 @@ define(function (require) {
 	    }
             update = true;
         }
+
+	function runFromBlock(blk) { 
+	    // Highlight current block by scaling
+	    if (turtle_delay == null) {
+		runFromBlockNow(blk);
+	    } else {
+		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1.2;
+		setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
+	    }
+	} 
 
         function runFromBlockNow(blk) {
 	    // Run a stack of blocks, beginning with blk.
@@ -796,16 +796,6 @@ define(function (require) {
 		}
 	    }
 	}
-
-	function runFromBlock(blk) { 
-	    // Highlight current block by scaling
-	    if (turtle_delay == null) {
-		runFromBlockNow(blk);
-	    } else {
-		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1.2;
-		setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
-	    }
-	} 
 
 	function parseArg(blk) {
 	    // Retrieve the value of a block.

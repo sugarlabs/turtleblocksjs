@@ -12,6 +12,7 @@ textarea {
    font-size: 150% !important;
    font-weight: bold !important;
    resize: none;
+   padding: 0 !important;
    border: 0 !important;
 }
 

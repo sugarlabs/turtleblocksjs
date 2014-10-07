@@ -59,6 +59,7 @@ define(function (require) {
         var oldPt;
         var midPt;
         var oldMidPt;
+	var blk;
 	var i;
 	var j;
         var color;
@@ -135,21 +136,21 @@ define(function (require) {
             stage.addChild(container);
 
 	    var thisBlock = -1
-            for (i = 0; i < blockList.length; i++) {
-		if (blockList[i].image == image) {
-		    thisBlock = i;
+            for (blk = 0; blk < blockList.length; blk++) {
+		if (blockList[blk].image == image) {
+		    thisBlock = blk;
 		    break;
                 }
             }
             // Create and populate the screen with blocks
             bitmap = new createjs.Bitmap(image);
-            blockList[thisBlock].bitmap = bitmap // Save now so we can reposition later.
+            blockList[thisBlock].bitmap = bitmap; // Save now so we can reposition later.
             container.addChild(bitmap);
-            bitmap.x = blockList[thisBlock].x
-            bitmap.y = blockList[thisBlock].y
+            bitmap.x = blockList[thisBlock].x;
+            bitmap.y = blockList[thisBlock].y;
             bitmap.regX = imgW / 2 | 0;
             bitmap.regY = imgH / 2 | 0;
-	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
+	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
             bitmap.name = "bmp_" + thisBlock;
 
             bitmap.cursor = "pointer";
@@ -187,14 +188,14 @@ define(function (require) {
 
                     evt.onMouseMove = function (ev) {
 			// TODO: Disconnect from block above
-			moved = true
-			var oldX = bitmap.x
-			var oldY = bitmap.y
+			moved = true;
+			var oldX = bitmap.x;
+			var oldY = bitmap.y;
                         target.x = ev.stageX + offset.x;
                         target.y = ev.stageY + offset.y;
 
 			// Move the label too
-			blk = -1
+			blk = -1;
 			for (i = 0; i < blockList.length; i++) {
 			    if (blockList[i].bitmap == bitmap) {
 				blk = i;
@@ -606,8 +607,8 @@ define(function (require) {
 	    createBlockImages();
 	    updateBlockLabels();
 
-	    for (i = 0; i < blockList.length; i++) {
-		// alert(blockList[i].getInfo());
+	    for (blk = 0; blk < blockList.length; blk++) {
+		// alert(blockList[blk].getInfo());
 	    }
         }
 
@@ -631,10 +632,13 @@ define(function (require) {
 		if (blockList[blk].name == "number") {
 		    arrLabels[blk] = blockList[blk].value.toString() + "_" +
 			blk.toString();
-		    text = '<h2 id="_' + arrLabels[blk] +
+		    text = '<textarea id="_' + arrLabels[blk] +
 			'" style="position: absolute; ' + 
-			'-webkit-user-select: text;">' +
-			blockList[blk].value.toString() + '</h2>'
+			'-webkit-user-select: text;" ' +
+			'onselect="labelSelected", ' +
+			'onchanged="labelChanged", ' +
+			'cols="6", rows="1", maxlength="6">' +
+			blockList[blk].value.toString() + '</textarea>'
 		} else {
 		    arrLabels[blk] = null
 		    text = ''
@@ -654,11 +658,21 @@ define(function (require) {
 		}
 		if (blockList[blk].name == "number") {
 		    blockList[blk].label = document.getElementById("_" + arrLabels[blk])
+		    blockList[blk].label.onselect=labelSelected
+
 		    adjustLabelPosition(blk, x, y);
 		} else {
 		    blockList[blk].label = null
 		}
             }
+	}
+
+        function labelSelected() {
+	    console.log('label selected, but which one?')
+	}
+
+        function labelChanged() {
+	    console.log('label changed, but which one?')
 	}
 
 	function adjustLabelPosition(blk, x, y) {
@@ -667,13 +681,13 @@ define(function (require) {
 	    }
 	    if (blockList[blk].protoblock.name == "number") {
 		blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft - 25) + "px";
+		    x + canvas.offsetLeft - 50) + "px";
 	    } else {
 	    	blockList[blk].label.style.left = Math.round(
 		    x + canvas.offsetLeft - 40) + "px";
 	    }
             blockList[blk].label.style.top = Math.round(
-		y + canvas.offsetTop - 30) + "px";
+		y + canvas.offsetTop - 15) + "px";
 	}
 
         function moveBlock(blk, x, y) {

@@ -39,7 +39,6 @@
 
         ProtoBlock.prototype.getSvgPath = function() {
             // return 'images/' + this.style + '_' + this.color + '.svg';
-	    console.log('images/' + this.name + '.svg');
 	    return 'images/' + this.name + '.svg';
         };
 
@@ -70,8 +69,8 @@
 	numberBlock.style = 'box'
 	numberBlock.docks = [[-16, 22, 'numberout']]
 
-	for (i = 0; i < protoBlockList.length; i++) {
-	    // alert(protoBlockList[i].getInfo());
+	for (blk = 0; blk < protoBlockList.length; blk++) {
+	    // alert(protoBlockList[blk].getInfo());
 	}
 
 	// Define block instance objects
@@ -97,14 +96,15 @@
         var arrLabels = [];
 	// and a place in the DOM to put them.
         var labelElem = document.getElementById("labelDiv");
-        var inputElem = document.getElementById("inputDiv");
+
+
+        // var inputElem = document.getElementById("inputDiv");
         // inputElem.innerHTML = '<input type="text" id="myNumber" name="myNumber" class="myNumber">';
-        inputElem.innerHTML = '<textarea id="myNumber" name="myNumber" class="myNumber" cols="6" rows="1" maxlength="6"></textarea>';
-        var foo = document.getElementById("myNumber");
-        foo.defaultValue = "666";
-        console.log(foo);
-        console.log(foo.value);
-        foo.onchange=textareaChanged
+        // We keep a textarea around to modify numbers
+        // inputElem.innerHTML = '<textarea id="myNumber" name="myNumber" class="myNumber" cols="6" rows="1" maxlength="6"></textarea>';
+        // var foo = document.getElementById("myNumber");
+        // foo.defaultValue = "666";
+        // foo.onchange=textareaChanged
 
         function textareaChanged() {
             var foo = document.getElementById("myNumber");

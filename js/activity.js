@@ -156,13 +156,22 @@ define(function (require) {
 
 	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
 
-            // Create a shape that represents the center of the icon:
+            // Create a shape that represents the center of the icon.
             var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill("#FFF").drawEllipse(-22, -28, 48, 36);
             // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
-            hitArea.x = imgW - 24;
-            hitArea.y = imgH / 2;
+	    // Number blocks have a handle on the right side
+	    // Other blocks should be sensitive in the middle
+	    if (blockList[thisBlock].name == "number") {
+		hitArea.graphics.beginFill("#FFF").drawEllipse(
+			-22, -28, 48, 36);
+		hitArea.x = imgW - 24;
+	    } else {
+		hitArea.graphics.beginFill("#FFF").drawEllipse(
+			-44, -28, 96, 36);
+		hitArea.x = imgW / 2;
+	    }
+	    hitArea.y = imgH / 2;
             bitmap.hitArea = hitArea;
 
             // Wrapper function to provide scope for the event handlers:
@@ -609,7 +618,12 @@ define(function (require) {
 		    text = '<h2 id="_' + arrLabels[i] +
 			'" style="position: absolute; ' + 
 			'-webkit-user-select: none;">' +
-			blockList[i].name + '</h2>'
+			'</h2>'
+		    // arrLabels[i] = blockList[i].name + "_" + i.toString();
+		    // text = '<h2 id="_' + arrLabels[i] +
+		    // '" style="position: absolute; ' + 
+		    // '-webkit-user-select: none;">' +
+		    // blockList[i].name + '</h2>'
 		}
 		html = html + text
             }
@@ -617,6 +631,9 @@ define(function (require) {
 
 	    // Then create a list of the label elements
             for (i = 0; i < blockList.length; i++) {
+		if (arrLabels[i] == "") {
+		    continue;
+		}
 		blockList[i].label = document.getElementById("_" + arrLabels[i])
 		if (blockList[i].bitmap == null) {
 		    var x = blockList[i].x
@@ -639,7 +656,7 @@ define(function (require) {
 		blockList[i].label.style.left = Math.round(
 		    x + canvas.offsetLeft - 25) + "px";
 	    } else {
-		blockList[i].label.style.left = Math.round(
+	    	blockList[i].label.style.left = Math.round(
 		    x + canvas.offsetLeft - 40) + "px";
 	    }
             blockList[i].label.style.top = Math.round(

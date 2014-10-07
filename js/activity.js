@@ -75,8 +75,11 @@ define(function (require) {
 	var activeBlock = null;
 
 	var turtle_delay = 1000;
-        var turtle_bitmap;
-        var Turtle = "images/turtle.svg";
+        var turtle_bitmaps = [];
+        var Turtles = ["images/turtle0.svg", "images/turtle15.svg",
+		       "images/turtle30.svg", "images/turtle45.svg",
+		       "images/turtle60.svg", "images/turtle75.svg",
+		       "images/turtle90.svg"];
 	var turtleX = 200;
 	var turtleY = 200;
 	var turtleOrientation = 0.0;
@@ -119,9 +122,12 @@ define(function (require) {
             // Enabled mouse over and mouse out events.
             stage.enableMouseOver(10);
 
-            turtle = new Image();
-            turtle.src = Turtle;
-            turtle.onload = handleTurtleLoad;
+	    turtles = [];
+	    for (i = 0; i < Turtles.length; i++) {
+		turtles.push(new Image());
+		turtles[i].src = Turtles[i];
+		turtles[i].onload = handleTurtleLoad;
+	    }
 
             // Create a drawing canvas
             drawingCanvas = new createjs.Shape();
@@ -361,9 +367,14 @@ define(function (require) {
 
             // Create a turtle
             bitmap = new createjs.Bitmap(image);
-	    turtle_bitmap = bitmap
+	    turtle_bitmaps.push(bitmap)
             container.addChild(bitmap);
-	    // FIXME
+
+	    // Hide all turtles except for turtle 0 on load().
+	    if (turtle_bitmaps.length > 1) {
+		turtle_bitmaps[turtle_bitmaps.length - 1].visible = false
+	    }
+
             bitmap.x = turtleX
             bitmap.y = turtleY
             bitmap.regX = imgW / 2 | 0;
@@ -405,8 +416,10 @@ define(function (require) {
                 }
                 bitmap.onMouseOut = function () {
                     target.scaleX = target.scaleY = target.scale;
-		    turtle_bitmap.x = stage.mouseX;
-		    turtle_bitmap.y = stage.mouseY;
+		    for (i = 0; i < turtle_bitmaps.length; i++) {
+			turtle_bitmaps[i].x = stage.mouseX;
+			turtle_bitmaps[i].y = stage.mouseY;
+		    }
                     update = true;
                 }
             })(bitmap);
@@ -806,26 +819,51 @@ define(function (require) {
 	    }
 	}
 
+	function hideBlocks() {
+	    // Hide all the blocks.
+	    for (blk = 0; blk < blockList.length; blk++) {
+		blockList[blk].bitmap.visible = false;
+	    }
+	}
+
+	function showBlocks() {
+	    // Show all the blocks.
+	    for (blk = 0; blk < blockList.length; blk++) {
+		blockList[blk].bitmap.visible = true;
+	    }
+	}
+
 	// TODO: Coordinate transforms
 
 	// Turtle functions
 
         function doForward(steps) {
             update = true;
-            oldPt = new createjs.Point(turtle_bitmap.x, turtle_bitmap.y);
+            oldPt = new createjs.Point(turtle_bitmaps[0].x, turtle_bitmaps[0].y);
             color = colors[turtleColor];
             stroke = turtleStroke;
 	    var newPt = new createjs.Point(
-		turtle_bitmap.x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
-		turtle_bitmap.y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
+		turtle_bitmaps[0].x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
+		turtle_bitmaps[0].y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
 	    moveTurtle(newPt.x, newPt.y);
-            turtle_bitmap.x = newPt.x;
-            turtle_bitmap.y = newPt.y;
+	    for (i = 0; i < turtle_bitmaps.length; i++) {
+		turtle_bitmaps[i].x = newPt.x;
+		turtle_bitmaps[i].y = newPt.y;
+	    }
 	}
 
 	function doRight(degrees) {
 	    turtleOrientation += Number(degrees);
 	    turtleOrientation %= 360;
+            t = Math.round(turtleOrientation + 7.5) % 360 / (360 / 24) | 0
+	    console.log('doRight: ' + turtleOrientation + ' ' + t)
+	    for (i = 0; i < turtle_bitmaps.length; i++) {
+		if (i == t) {
+		    turtle_bitmaps[i].visible = true;
+		} else {
+		    turtle_bitmaps[i].visible = false;
+		}
+	    }
 	}
 
 	function doClear() {
@@ -836,8 +874,15 @@ define(function (require) {
 	    turtleOrientation = 0.0;
 	    turtleColor = 0;
 	    turtleStroke = 5;
-            turtle_bitmap.x = turtleX;
-            turtle_bitmap.y = turtleY;
+	    for (i = 0; i < turtle_bitmaps.length; i++) {
+		if (i == 0) {
+		    turtle_bitmaps[i].visible = true;
+		} else {
+		    turtle_bitmaps[i].visible = false;
+		}
+		turtle_bitmaps[i].x = turtleX;
+		turtle_bitmaps[i].y = turtleY;
+	    }
 	}
 
     });

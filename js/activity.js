@@ -78,7 +78,7 @@ define(function (require) {
         var Turtle = "images/turtle.svg";
 	var turtleX = 200;
 	var turtleY = 200;
-	var turtleOrientation = 0;
+	var turtleOrientation = 0.0;
 	var turtleColor = 0;
 	var turtleStroke = 5;
         var oldPt;
@@ -693,6 +693,11 @@ define(function (require) {
 	    blockList[5].value = 100;
 	    blockList[5].connections = [4];
 
+	    blockList[6] = new Block(clearBlock);
+	    blockList[6].x = 300;
+	    blockList[6].y = 50;
+	    blockList[6].connections = [null, null];
+	    
 	    createBlockImages();
 	    updateBlockLabels();
 
@@ -703,7 +708,6 @@ define(function (require) {
 
         function runLogoCommands() {
 	    // We run the logo commands here.
-	    doClear();  // FIXME: TEMPORARY
 
 	    // First we need to reconcile the values in all the number blocks
 	    // with their associated textareas.
@@ -752,15 +756,30 @@ define(function (require) {
 
 	    // (2) Run function associated with the block;
 	    console.log('running ' + blockList[blk].name + ': ' + args);
-	    if (blockList[blk].name == 'forward') {
-		if (args.length == 1) {
+	    switch (blockList[blk].name) {
+	    case 'clear':
+		doClear();
+		break;
+            case 'forward':
+ 		if (args.length == 1) {
 		    doForward(args[0]);
 		}
-	    }
-	    if (blockList[blk].name == 'right') {
+		break;
+            case 'back':
+		if (args.length == 1) {
+		    doForward(-args[0]);
+         	}
+		break;
+            case 'right':
 		if (args.length == 1) {
 		    doRight(args[0]);
-		}
+         	}
+		break;
+            case 'left':
+		if (args.length == 1) {
+		    doRight(-args[0]);
+         	}
+		break;
 	    }
 
 	    // (3) Run block below this block, if any;
@@ -783,6 +802,8 @@ define(function (require) {
 
 	// TODO: Coordinate transforms
 
+	// Turtle functions
+
         function doForward(steps) {
             update = true;
             oldPt = new createjs.Point(turtle_bitmap.x, turtle_bitmap.y);
@@ -791,7 +812,6 @@ define(function (require) {
 	    var newPt = new createjs.Point(
 		turtle_bitmap.x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
 		turtle_bitmap.y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
-	    console.log('doForward ' + newPt.x + ' ' + newPt.y + ' (' + stage.mouseX + ', ' + stage.mouseY + ')');
 	    moveTurtle(newPt.x, newPt.y);
             turtle_bitmap.x = newPt.x;
             turtle_bitmap.y = newPt.y;
@@ -807,7 +827,9 @@ define(function (require) {
             drawingCanvas.graphics.clear();
 	    turtleX = 200;
 	    turtleY = 200;
-	    turtleOrientation = 0;
+	    turtleOrientation = 0.0;
+	    turtleColor = 0;
+	    turtleStroke = 5;
             turtle_bitmap.x = turtleX;
             turtle_bitmap.y = turtleY;
 	}

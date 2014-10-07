@@ -28,7 +28,6 @@
 	function ProtoBlock (name) {
 	    this.name = name;
 	    this.palette = null
-	    this.color = null
 	    this.style = null
 	    this.docks = []
 	}
@@ -38,35 +37,50 @@
         };
 
         ProtoBlock.prototype.getSvgPath = function() {
-            // return 'images/' + this.style + '_' + this.color + '.svg';
 	    return 'images/' + this.name + '.svg';
         };
 
 	// Instantiate the proto blocks
-	// TODO: make style/connections into objects
         var protoBlockList = []
+
+	var clearBlock = new ProtoBlock('clear');
+	protoBlockList.push(clearBlock)
+	clearBlock.palette = turtlePalette
+	clearBlock.args = 0
+	clearBlock.docks = [[20, 0, 'out'], [20, 40, 'in']]
 
 	var forwardBlock = new ProtoBlock('forward');
 	protoBlockList.push(forwardBlock)
 	forwardBlock.palette = turtlePalette
-	forwardBlock.color = forwardBlock.palette.color
-	forwardBlock.style = 'basic1arg'
+	forwardBlock.args = 1
 	forwardBlock.docks = [[20, 0, 'out'], [100, 20, 'numberin'],
 			      [20, 40, 'in']]
 
 	var rightBlock = new ProtoBlock('right');
 	protoBlockList.push(rightBlock)
 	rightBlock.palette = turtlePalette
-	rightBlock.color = rightBlock.palette.color
-	rightBlock.style = 'basic1arg'
+	rightBlock.args = 1
 	rightBlock.docks = [[20, 0, 'out'], [100, 20, 'numberin'],
 			    [20, 40, 'in']]
+
+	var backBlock = new ProtoBlock('back');
+	protoBlockList.push(backBlock)
+	backBlock.palette = turtlePalette
+	backBlock.args = 1
+	backBlock.docks = [[20, 0, 'out'], [100, 20, 'numberin'],
+			   [20, 40, 'in']]
+
+	var leftBlock = new ProtoBlock('left');
+	protoBlockList.push(leftBlock)
+	leftBlock.palette = turtlePalette
+	leftBlock.args = 1
+	leftBlock.docks = [[20, 0, 'out'], [100, 20, 'numberin'],
+			   [20, 40, 'in']]
 
 	var numberBlock = new ProtoBlock('number');
 	protoBlockList.push(numberBlock)
 	numberBlock.palette = numberPalette
-	numberBlock.color = numberBlock.palette.color
-	numberBlock.style = 'box'
+	numberBlock.args = 0
 	numberBlock.docks = [[-16, 22, 'numberout']]
 
 	for (blk = 0; blk < protoBlockList.length; blk++) {
@@ -97,7 +111,6 @@
 	// and a place in the DOM to put them.
         var labelElem = document.getElementById("labelDiv");
 
-
         // var inputElem = document.getElementById("inputDiv");
         // inputElem.innerHTML = '<input type="text" id="myNumber" name="myNumber" class="myNumber">';
         // We keep a textarea around to modify numbers
@@ -105,8 +118,7 @@
         // var foo = document.getElementById("myNumber");
         // foo.defaultValue = "666";
         // foo.onchange=textareaChanged
-
-        function textareaChanged() {
-            var foo = document.getElementById("myNumber");
-            console.log('textarea changed: ' + foo.value);
-        }
+        // function textareaChanged() {
+        //     var foo = document.getElementById("myNumber");
+        //     console.log('textarea changed: ' + foo.value);
+        // }

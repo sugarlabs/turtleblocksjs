@@ -320,10 +320,6 @@ define(function (require) {
 			    blockList[newBlock].connections[newConnection] = thisBlock;
 			    console.log('adjustDocks beginning from ' + newBlock)
 			    adjustDocks(newBlock);
-
-			    var foo = document.getElementById("myNumber");
-			    console.log(foo)
-			    console.log(foo.value);
 			}
                     }
                     target.scaleX = target.scaleY = target.scale;
@@ -556,25 +552,6 @@ define(function (require) {
 	    return blk;
 	}
 
-        function tick(event) {
-            // This set makes it so the stage only re-renders when
-            // an event handler indicates a change has happened.
-            if (update) {
-                update = false; // Only update once
-                stage.update(event);
-            }
-        }
-
-        function runLogoCommands() {
-	    // run the logo commands here
-
-	    // When we update the number, we will...
-	    document.getElementById("_" + arrLabels[1]).innerHTML = "200";
-
-            drawingCanvas.graphics.clear();
-            update = true;
-        }
-
         function loadBlocks() {
 	    // This is temporary code for testing
 
@@ -630,12 +607,13 @@ define(function (require) {
             var html = ''
             for (blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].name == "number") {
-		    arrLabels[blk] = blockList[blk].value.toString() + "_" +
-			blk.toString();
+		    // arrLabels[blk] = blockList[blk].value.toString() + "_" +
+		    // blk.toString();
+		    arrLabels[blk] = "_" + blk.toString();
 		    text = '<textarea id="_' + arrLabels[blk] +
 			'" style="position: absolute; ' + 
 			'-webkit-user-select: text;" ' +
-			'onselect="labelSelected", ' +
+			// 'onselect="labelSelected", ' +
 			'onchanged="labelChanged", ' +
 			'cols="6", rows="1", maxlength="6">' +
 			blockList[blk].value.toString() + '</textarea>'
@@ -658,7 +636,8 @@ define(function (require) {
 		}
 		if (blockList[blk].name == "number") {
 		    blockList[blk].label = document.getElementById("_" + arrLabels[blk])
-		    blockList[blk].label.onselect=labelSelected
+		    // Not sure why this event is not triggered.
+		    blockList[blk].label.onchanged=labelChanged
 
 		    adjustLabelPosition(blk, x, y);
 		} else {
@@ -715,6 +694,31 @@ define(function (require) {
 		}
 	    adjustLabelPosition(blk, blockList[blk].x, blockList[blk].y);
 	}
+
+        function tick(event) {
+            // This set makes it so the stage only re-renders when
+            // an event handler indicates a change has happened.
+            if (update) {
+                update = false; // Only update once
+                stage.update(event);
+            }
+        }
+
+        function runLogoCommands() {
+	    // run the logo commands here
+
+	    // First we need to reconcile the values in all the number blocks
+	    // with their associated textareas.
+	    for (blk = 0; blk < blockList.length; blk++) {
+		if (blockList[blk].label != null) {
+		    blockList[blk].value = blockList[blk].label.value;
+		    console.log('number blk ' + blk + ': ' + blockList[blk].value);
+		}
+	    }
+
+            drawingCanvas.graphics.clear();
+            update = true;
+        }
 
     });
 

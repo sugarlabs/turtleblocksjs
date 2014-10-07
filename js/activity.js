@@ -301,13 +301,19 @@ define(function (require) {
 			    // TODO: move number blocks to trash
 			    if(connection != null) {
 				console.log(connection);
-				bottom = findBottomBlock(thisBlock);
-				console.log('connection was ' + connection);
-				console.log('bottom block is ' + bottom);
-				console.log('connecting ' + connection + ' to ' + bottom);
-				blockList[connection].connections[0] = bottom;
-				console.log('connecting ' + bottom + ' to ' + connection);
-				blockList[bottom].connections[blockList[bottom].connections.length-1] = connection;
+				if (blockList[thisBlock].name == "number") {
+				    console.log('disconnecting number block ' + connection);
+				    blockList[connection].connections[0] = null;
+				    moveBlockRelative(connection, 20, 20);
+                                } else {
+				    bottom = findBottomBlock(thisBlock);
+				    console.log('connection was ' + connection);
+				    console.log('bottom block is ' + bottom);
+				    console.log('connecting ' + connection + ' to ' + bottom);
+				    blockList[connection].connections[0] = bottom;
+				    console.log('connecting ' + bottom + ' to ' + connection);
+				    blockList[bottom].connections[blockList[bottom].connections.length-1] = connection;
+				}
 			    }
 			    console.log('connecting ' + newBlock + ' to ' + thisBlock);
 			    blockList[newBlock].connections[newConnection] = thisBlock;
@@ -463,17 +469,18 @@ define(function (require) {
 		if (blockList[blk].bitmap == null) {
                     nx = blockList[blk].x + bdock[0] - cdock[0]
                     ny = blockList[blk].y + bdock[1] - cdock[1]
-		    blockList[cblk].x = nx
-		    blockList[cblk].y = ny
+		    // blockList[cblk].x = nx
+		    // blockList[cblk].y = ny
 		} else {
                     ny = blockList[blk].bitmap.y + bdock[1] - cdock[1]
                     nx = blockList[blk].bitmap.x + bdock[0] - cdock[0]
-		    blockList[cblk].x = nx
-		    blockList[cblk].y = ny
-		    blockList[cblk].bitmap.x = nx
-		    blockList[cblk].bitmap.y = ny
+		    // blockList[cblk].x = nx
+		    // blockList[cblk].y = ny
+		    // blockList[cblk].bitmap.x = nx
+		    // blockList[cblk].bitmap.y = ny
 		}
-		adjustLabelPosition(cblk, nx, ny);
+		// adjustLabelPosition(cblk, nx, ny);
+		moveBlock(cblk, nx, ny);
 		adjustDocks(cblk)
 	    }
 	}
@@ -661,6 +668,32 @@ define(function (require) {
 	    }
             blockList[i].label.style.top = Math.round(
 		y + canvas.offsetTop - 30) + "px";
+	}
+
+        function moveBlock(blk, x, y) {
+	    if (blockList[blk].bitmap == null) {
+		    blockList[blk].x = x
+		    blockList[blk].y = y
+		} else {
+		    blockList[blk].bitmap.x = x
+		    blockList[blk].bitmap.y = y
+		    blockList[blk].x = blockList[blk].bitmap.x
+		    blockList[blk].y = blockList[blk].bitmap.y
+		}
+	    adjustLabelPosition(blk, x, y);
+	}
+
+        function moveBlockRelative(blk, dx, dy) {
+	    if (blockList[blk].bitmap == null) {
+		    blockList[blk].x += dx
+		    blockList[blk].y += dy
+		} else {
+		    blockList[blk].bitmap.x += dx
+		    blockList[blk].bitmap.y += dy
+		    blockList[blk].x = blockList[blk].bitmap.x
+		    blockList[blk].y = blockList[blk].bitmap.y
+		}
+	    adjustLabelPosition(blk, blockList[blk].x, blockList[blk].y);
 	}
 
     });

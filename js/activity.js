@@ -79,7 +79,15 @@ define(function (require) {
         var Turtles = ["images/turtle0.svg", "images/turtle15.svg",
 		       "images/turtle30.svg", "images/turtle45.svg",
 		       "images/turtle60.svg", "images/turtle75.svg",
-		       "images/turtle90.svg"];
+		       "images/turtle90.svg", "images/turtle105.svg",
+		       "images/turtle120.svg", "images/turtle135.svg",
+		       "images/turtle150.svg", "images/turtle165.svg",
+		       "images/turtle180.svg", "images/turtle195.svg",
+		       "images/turtle210.svg", "images/turtle225.svg",
+		       "images/turtle240.svg", "images/turtle255.svg",
+		       "images/turtle270.svg", "images/turtle285.svg",
+		       "images/turtle300.svg", "images/turtle315.svg",
+		       "images/turtle330.svg", "images/turtle345.svg"];
 	var turtleX = 200;
 	var turtleY = 200;
 	var turtleOrientation = 0.0;
@@ -836,8 +844,8 @@ define(function (require) {
 	// TODO: Coordinate transforms
 
 	// Turtle functions
-
         function doForward(steps) {
+	    // Move forward.
             update = true;
             oldPt = new createjs.Point(turtle_bitmaps[0].x, turtle_bitmaps[0].y);
             color = colors[turtleColor];
@@ -853,10 +861,11 @@ define(function (require) {
 	}
 
 	function doRight(degrees) {
+	    // Turn right and display corresponding turtle graphic.
+            update = true;
 	    turtleOrientation += Number(degrees);
 	    turtleOrientation %= 360;
             t = Math.round(turtleOrientation + 7.5) % 360 / (360 / 24) | 0
-	    console.log('doRight: ' + turtleOrientation + ' ' + t)
 	    for (i = 0; i < turtle_bitmaps.length; i++) {
 		if (i == t) {
 		    turtle_bitmaps[i].visible = true;
@@ -867,6 +876,7 @@ define(function (require) {
 	}
 
 	function doClear() {
+	    // Clear all graphics and reset turtle.
             update = true;
             drawingCanvas.graphics.clear();
 	    turtleX = 200;
@@ -875,6 +885,7 @@ define(function (require) {
 	    turtleColor = 0;
 	    turtleStroke = 5;
 	    for (i = 0; i < turtle_bitmaps.length; i++) {
+		// Hide all the turtles except 0.
 		if (i == 0) {
 		    turtle_bitmaps[i].visible = true;
 		} else {

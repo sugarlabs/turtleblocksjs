@@ -40,8 +40,10 @@ define(function (require) {
         });
 	// Stage is an Easel construct
         var canvas, stage;
-	// Need to update the stage
+	// Do we need to update the stage?
         var update = true;
+	// We'll need an object to draw on
+        var drawingCanvas;
 
         // The display object currently under the mouse, or being dragged
         var mouseTarget;
@@ -54,11 +56,6 @@ define(function (require) {
 	// And the blocks at the tops of stacks
         var stackList = [];
 
-        var offset;
-        var drawingCanvas;
-        var oldPt;
-        var midPt;
-        var oldMidPt;
 	var blk;
 	var i;
 	var j;
@@ -79,6 +76,12 @@ define(function (require) {
 
         var turtle_bitmap;
         var Turtle = "images/turtle.svg";
+	var turtleX = 200;
+	var turtleY = 200;
+	var turtleOrientation = 0;
+	var turtleColor = 0;
+	var turtleStroke = 5;
+        var oldPt;
 
 	// Get things started
 	init();
@@ -88,13 +91,13 @@ define(function (require) {
                 document.getElementById("header").style.display = "none";
             }
             document.getElementById("loader").className = "loader";
-            // Create the stage and point it to the canvas:
+            // Create the stage and point it to the canvas.
             canvas = document.getElementById("myCanvas");
 
-	    // Load a project
+	    // Load a project.
 	    loadBlocks();
 
-	    // Make sure blocks are aligned
+	    // Make sure blocks are aligned.
 	    findStacks();
 	    for (i = 0; i < stackList.length; i++) {
 		findDragGroup(stackList[i]);
@@ -102,23 +105,17 @@ define(function (require) {
 	    }
 
             index = 0;
-            colors = ["#828b20", "#b0ac31", "#cbc53d", "#fad779", "#f9e4ad",
-                  "#faf2db", "#563512", "#9b4a0b", "#d36600", "#fe8a00",
-                  "#f9a71f"];
-            oldPt = new createjs.Point(400, 300);
-            midPt = oldPt;
-            oldMidPt = oldPt;
+            colors = ["#ff0000", "#828b20", "#b0ac31", "#cbc53d", "#fad779",
+		      "#f9e4ad", "#faf2db", "#563512", "#9b4a0b", "#d36600",
+		      "#fe8a00", "#f9a71f"];
 
-            // Check to see if we are running in a browser with touch support
+            // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
-
-            // Enable touch interactions if supported on the current device:
+            // Enable touch interactions if supported on the current device.
             createjs.Touch.enable(stage);
-
-            // Keep tracking the mouse even when it leaves the canvas
+            // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
-
-            // Enabled mouse over and mouse out events
+            // Enabled mouse over and mouse out events.
             stage.enableMouseOver(10);
 
             turtle = new Image();
@@ -132,6 +129,7 @@ define(function (require) {
         }
 
         function stop() {
+	    //
             createjs.Ticker.removeEventListener("tick", tick);
         }
 
@@ -151,9 +149,10 @@ define(function (require) {
 		    break;
                 }
             }
-            // Create and populate the screen with blocks
+            // Create and populate the screen with blocks.
             bitmap = new createjs.Bitmap(image);
-            blockList[thisBlock].bitmap = bitmap; // Save now so we can reposition later.
+	    // Save now so we can reposition later.
+            blockList[thisBlock].bitmap = bitmap;
             container.addChild(bitmap);
             bitmap.x = blockList[thisBlock].x;
             bitmap.y = blockList[thisBlock].y;
@@ -170,8 +169,8 @@ define(function (require) {
             var hitArea = new createjs.Shape();
             // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
-	    // Number blocks have a handle on the right side
-	    // Other blocks should be sensitive in the middle
+	    // * number blocks have a handle on the right side;
+	    // * other blocks should be sensitive in the middle.
 	    if (blockList[thisBlock].name == "number") {
 		hitArea.graphics.beginFill("#FFF").drawEllipse(
 			-22, -28, 48, 36);
@@ -184,11 +183,11 @@ define(function (require) {
 	    hitArea.y = imgH / 2;
             bitmap.hitArea = hitArea;
 
-            // Wrapper function to provide scope for the event handlers:
+            // Wrapper function to provide scope for the event handlers.
             (function (target) {
 		var moved = false
                 bitmap.onPress = function (evt) {
-                    // Bump the target in front of its siblings:
+                    // Bump the target in front of its siblings.
                     container.addChild(target);
                     var offset = {
                         x: target.x - evt.stageX,
@@ -196,14 +195,13 @@ define(function (require) {
                     };
 
                     evt.onMouseMove = function (ev) {
-			// TODO: Disconnect from block above
 			moved = true;
 			var oldX = bitmap.x;
 			var oldY = bitmap.y;
                         target.x = ev.stageX + offset.x;
                         target.y = ev.stageY + offset.y;
 
-			// Move the label too
+			// Which block is this?
 			blk = -1;
 			for (i = 0; i < blockList.length; i++) {
 			    if (blockList[i].bitmap == bitmap) {
@@ -211,7 +209,7 @@ define(function (require) {
 				break;
 			    }
 			}
-			// Move any connected blocks
+			// Move any connected blocks.
 			findDragGroup(blk)
 			var dx = bitmap.x - oldX
 			var dy = bitmap.y - oldY
@@ -219,7 +217,7 @@ define(function (require) {
 			    for (b = 0; b < dragGroup.length; b++) {
 				blk = dragGroup[b]
 				if (b == 0) {
-				    // already moved above
+				    // Already moved above.
 				} else {
 				    blockList[blk].bitmap.x += dx
 				    blockList[blk].bitmap.y += dy
@@ -231,7 +229,7 @@ define(function (require) {
 			}
 
                         // Indicate that the stage should be updated
-                        // on the next tick:
+                        // on the next tick.
                         update = true;
                     }
                 }
@@ -244,28 +242,24 @@ define(function (require) {
                 }
                 bitmap.onMouseOut = function () {
 		    if (activeBlock != thisBlock) {
-			console.log('not the active block');
 			return;
 		    }
 		    if (moved) {
 			// When a block is moved:
-			// (1) disconnect connection[0]
-			console.log('connections for block ' + thisBlock + ': ' + blockList[thisBlock].connections)
+			// (1) Disconnect connection[0];
 			var c = blockList[thisBlock].connections[0];
 			if (c != null) {
-			    console.log('blk has a connection 0 with ' + c)
 			    // disconnect both ends of the connection
 			    for (i = 1;
 				 i < blockList[c].connections.length; i++) {
 				if (blockList[c].connections[i] == thisBlock) {
 				    blockList[c].connections[i] = null;
-				    console.log('disconnecting from ' + c);
 				    break;
 				}
 			    }
   			    blockList[thisBlock].connections[0] = null;
 			}
-                        // (2) look for a new connection
+                        // (2) Look for a new connection;
 			var dx1 = blockList[thisBlock].bitmap.x + 
 				blockList[thisBlock].protoblock.docks[0][0];
 			var dy1 = blockList[thisBlock].bitmap.y + 
@@ -277,7 +271,7 @@ define(function (require) {
 			var min = 400;
 			var blkType = blockList[thisBlock].protoblock.docks[0][2]
 			for (b = 0; b < blockList.length; b++) {
-			    // Don't connect to yourself
+			    // Don't connect to yourself.
 			    if (b == thisBlock) {
 				continue;
 			    }
@@ -302,30 +296,20 @@ define(function (require) {
 			    }
 			}
 			if (newBlock != null) {
-			    console.log(dist + ' ' + thisBlock + ' ' + newBlock + ' ' + newConnection);
-			    // We found a match
-			    console.log('connecting ' + thisBlock + ' to ' + newBlock);
+			    // We found a match.
 			    blockList[thisBlock].connections[0] = newBlock;
 			    var connection = blockList[newBlock].connections[newConnection];
 			    if(connection != null) {
-				console.log(connection);
 				if (argBlocks.indexOf(blockList[thisBlock].name) != -1) {
-				    console.log('disconnecting number block ' + connection);
 				    blockList[connection].connections[0] = null;
 				    moveBlockRelative(connection, 20, 20);
                                 } else {
 				    bottom = findBottomBlock(thisBlock);
-				    console.log('connection was ' + connection);
-				    console.log('bottom block is ' + bottom);
-				    console.log('connecting ' + connection + ' to ' + bottom);
 				    blockList[connection].connections[0] = bottom;
-				    console.log('connecting ' + bottom + ' to ' + connection);
 				    blockList[bottom].connections[blockList[bottom].connections.length-1] = connection;
 				}
 			    }
-			    console.log('connecting ' + newBlock + ' to ' + thisBlock);
 			    blockList[newBlock].connections[newConnection] = thisBlock;
-			    console.log('adjustDocks beginning from ' + newBlock)
 			    loopCounter = 0
 			    adjustDocks(newBlock);
 			}
@@ -379,8 +363,8 @@ define(function (require) {
 	    turtle_bitmap = bitmap
             container.addChild(bitmap);
 	    // FIXME
-            bitmap.x = 200
-            bitmap.y = 200
+            bitmap.x = turtleX
+            bitmap.y = turtleY
             bitmap.regX = imgW / 2 | 0;
             bitmap.regY = imgH / 2 | 0;
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
@@ -407,20 +391,7 @@ define(function (require) {
                         // Indicate that the stage should be updated
                         // on the next tick:
                         update = true;
-                        var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1,
-                            oldPt.y + stage.mouseY >> 1);
-
-                        drawingCanvas.graphics.setStrokeStyle(
-			    stroke, 'round', 'round'
-			).beginStroke(color).moveTo(
-			    midPt.x, midPt.y
-			).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
-
-                        oldPt.x = stage.mouseX;
-                        oldPt.y = stage.mouseY;
-
-                        oldMidPt.x = midPt.x;
-                        oldMidPt.y = midPt.y;
+			moveTurtle(stage.mouseX, stage.mouseY);
                     }
                 }
                 bitmap.onMouseOver = function () {
@@ -433,6 +404,8 @@ define(function (require) {
                 }
                 bitmap.onMouseOut = function () {
                     target.scaleX = target.scaleY = target.scale;
+		    turtle_bitmap.x = stage.mouseX;
+		    turtle_bitmap.y = stage.mouseY;
                     update = true;
                 }
             })(bitmap);
@@ -440,6 +413,16 @@ define(function (require) {
             document.getElementById("loader").className = "";
             createjs.Ticker.addEventListener("tick", tick);
         }
+
+	function moveTurtle(nx, ny) {
+            drawingCanvas.graphics.setStrokeStyle(
+		stroke, 'round', 'round'
+	    ).beginStroke(color).moveTo(
+		oldPt.x, oldPt.y
+	    ).curveTo(oldPt.x, oldPt.y, nx, ny);
+	    oldPt.x = nx;
+            oldPt.y = ny;
+	}
 
         function adjustBlockPositions() {
 	    // Adjust the docking postions of all blocks in the drag group
@@ -520,7 +503,7 @@ define(function (require) {
 	}
 
 	function findStacks() {
-	    // Find any blocks with null in the first connection
+	    // Find any blocks with null in the first connection.
             stackList = [];
 	    for (i = 0; i < blockList.length; i++) {
 		if (blockList[i].connections[0] == null) {
@@ -530,7 +513,7 @@ define(function (require) {
 	}
 
         function findTopBlock(blk) {
-	    // Find the top block in a stack
+	    // Find the top block in a stack.
 	    if (blk == null) {
 		return null;
 	    }
@@ -547,7 +530,7 @@ define(function (require) {
         }
 
         function findBottomBlock(blk) {
-	    // Find the bottom block in a stack
+	    // Find the bottom block in a stack.
 	    if (blk == null) {
 		return null;
 	    }
@@ -557,8 +540,8 @@ define(function (require) {
 	    if (blockList[blk].connections.length == 0) {
 		return blk;
 	    }
-	    while (blockList[blk].connections[blockList[blk].connections.length-1] != null) {
-		blk = blockList[blk].connections[blockList[blk].connections.length-1];
+	    while (blockList[blk].connections[blockList[blk].connections.length - 1] != null) {
+		blk = blockList[blk].connections[blockList[blk].connections.length - 1];
 	    }
 	    return blk;
 	}
@@ -575,14 +558,12 @@ define(function (require) {
 	}
 
         function updateBlockLabels() {
-	    // The modifiable labels are stored in the DOM
-	    // with a unique id for each block.
-	    // For the moment, we only have labels for number blocks.
+	    // The modifiable labels are stored in the DOM with a
+	    // unique id for each block.  For the moment, we only have
+	    // labels for number blocks.
             var html = ''
             for (blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].name == "number") {
-		    // arrLabels[blk] = blockList[blk].value.toString() + "_" +
-		    // blk.toString();
 		    arrLabels[blk] = "_" + blk.toString();
 		    text = '<textarea id="_' + arrLabels[blk] +
 			'" style="position: absolute; ' + 
@@ -610,7 +591,9 @@ define(function (require) {
 		}
 		if (blockList[blk].name == "number") {
 		    blockList[blk].label = document.getElementById("_" + arrLabels[blk])
-		    // Not sure why this event is not triggered.
+		    // Not sure why this event is not triggered, but
+		    // it doesn't matter as long as we read from the
+		    // textareas before we run the blocks.
 		    blockList[blk].label.onchanged=labelChanged
 
 		    adjustLabelPosition(blk, x, y);
@@ -645,7 +628,7 @@ define(function (require) {
 	}
 
         function moveBlock(blk, x, y) {
-	    // Move a block (and its label) to x, y
+	    // Move a block (and its label) to x, y.
 	    if (blockList[blk].bitmap == null) {
 		    blockList[blk].x = x
 		    blockList[blk].y = y
@@ -659,7 +642,7 @@ define(function (require) {
 	}
 
         function moveBlockRelative(blk, dx, dy) {
-	    // Move a block (and its label) by dx, dy
+	    // Move a block (and its label) by dx, dy.
 	    if (blockList[blk].bitmap == null) {
 		    blockList[blk].x += dx
 		    blockList[blk].y += dy
@@ -673,8 +656,8 @@ define(function (require) {
 	}
 
         function tick(event) {
-            // This set makes it so the stage only re-renders when
-            // an event handler indicates a change has happened.
+            // This set makes it so the stage only re-renders when an
+            // event handler indicates a change has happened.
             if (update) {
                 update = false; // Only update once
                 stage.update(event);
@@ -682,7 +665,7 @@ define(function (require) {
         }
 
         function loadBlocks() {
-	    // This is temporary code for testing
+	    // This is temporary code for testing.
 
 	    // Add the blocks
 	    blockList[0] = new Block(forwardBlock);
@@ -719,7 +702,8 @@ define(function (require) {
         }
 
         function runLogoCommands() {
-	    // run the logo commands here
+	    // We run the logo commands here.
+	    doClear();  // FIXME: TEMPORARY
 
 	    // First we need to reconcile the values in all the number blocks
 	    // with their associated textareas.
@@ -733,7 +717,6 @@ define(function (require) {
 	    // (1) Find the start block (or the top of each stack).
 	    var startBlock = null
 	    findStacks();
-	    console.log('stackList: ' + stackList)
 	    for (blk = 0; blk < stackList.length; blk++) {
 		if (blockList[stackList[blk]].name == "start") {
 		    startBlock = blk;
@@ -754,14 +737,12 @@ define(function (require) {
 		    }
 		}
 	    }
-            drawingCanvas.graphics.clear();
             update = true;
         }
 
         function runFromBlock(blk) {
-	    // Run a stack of blocks, beginning with blk
-	    // (1) evaluate any arguments
-	    // Args always begin with connection 1
+	    // Run a stack of blocks, beginning with blk.
+	    // (1) Evaluate any arguments (beginning with connection[1]);
 	    var args = [];
 	    if(blockList[blk].protoblock.args > 0) {
 		for (arg = 0; arg < blockList[blk].protoblock.args; arg++) {
@@ -769,11 +750,21 @@ define(function (require) {
 		}
 	    }
 
-	    // (2) run function associated with the block
+	    // (2) Run function associated with the block;
 	    console.log('running ' + blockList[blk].name + ': ' + args);
+	    if (blockList[blk].name == 'forward') {
+		if (args.length == 1) {
+		    doForward(args[0]);
+		}
+	    }
+	    if (blockList[blk].name == 'right') {
+		if (args.length == 1) {
+		    doRight(args[0]);
+		}
+	    }
 
-	    // (3) run block below this block, if any
-	    var nextBlock = blockList[blk].connections[blockList[blk].connections.length - 1]
+	    // (3) Run block below this block, if any;
+	    var nextBlock = blockList[blk].connections[blockList[blk].connections.length - 1];
 	    if (nextBlock != null) {
 		if (argBlocks.indexOf(nextBlock) == -1) {
 		    runFromBlock(nextBlock);
@@ -782,11 +773,43 @@ define(function (require) {
 	}
 
 	function parseArg(blk) {
+	    // Retrieve the value of a block.
+	    // TODO: recurse while applying some operator
 	    if (blockList[blk].protoblock.args == 0) {
 		return blockList[blk].value;
 	    } else {
-		// TODO: recurse and perhaps apply some operator
 	    }
+	}
+
+	// TODO: Coordinate transforms
+
+        function doForward(steps) {
+            update = true;
+            oldPt = new createjs.Point(turtle_bitmap.x, turtle_bitmap.y);
+            color = colors[turtleColor];
+            stroke = turtleStroke;
+	    var newPt = new createjs.Point(
+		turtle_bitmap.x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
+		turtle_bitmap.y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
+	    console.log('doForward ' + newPt.x + ' ' + newPt.y + ' (' + stage.mouseX + ', ' + stage.mouseY + ')');
+	    moveTurtle(newPt.x, newPt.y);
+            turtle_bitmap.x = newPt.x;
+            turtle_bitmap.y = newPt.y;
+	}
+
+	function doRight(degrees) {
+	    turtleOrientation += Number(degrees);
+	    turtleOrientation %= 360;
+	}
+
+	function doClear() {
+            update = true;
+            drawingCanvas.graphics.clear();
+	    turtleX = 200;
+	    turtleY = 200;
+	    turtleOrientation = 0;
+            turtle_bitmap.x = turtleX;
+            turtle_bitmap.y = turtleY;
 	}
 
     });

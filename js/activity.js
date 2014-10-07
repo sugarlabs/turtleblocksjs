@@ -45,9 +45,9 @@ define(function (require) {
 	// We'll need an object to draw on
         var drawingCanvas;
 
+	// FIXME: Unused?
         // The display object currently under the mouse, or being dragged
         var mouseTarget;
-
         // Indicates whether we are currently in a drag operation
         var dragStarted;
 
@@ -74,6 +74,7 @@ define(function (require) {
 
 	var activeBlock = null;
 
+	var turtle_delay = 1000;
         var turtle_bitmap;
         var Turtle = "images/turtle.svg";
 	var turtleX = 200;
@@ -744,7 +745,7 @@ define(function (require) {
             update = true;
         }
 
-        function runFromBlock(blk) {
+        function runFromBlockNow(blk) {
 	    // Run a stack of blocks, beginning with blk.
 	    // (1) Evaluate any arguments (beginning with connection[1]);
 	    var args = [];
@@ -782,6 +783,11 @@ define(function (require) {
 		break;
 	    }
 
+	    if (turtle_delay != null) {
+		// Unhighlight current block by rescaling
+		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1;
+	    }
+
 	    // (3) Run block below this block, if any;
 	    var nextBlock = blockList[blk].connections[blockList[blk].connections.length - 1];
 	    if (nextBlock != null) {
@@ -790,6 +796,16 @@ define(function (require) {
 		}
 	    }
 	}
+
+	function runFromBlock(blk) { 
+	    // Highlight current block by scaling
+	    if (turtle_delay == null) {
+		runFromBlockNow(blk);
+	    } else {
+		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1.2;
+		setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
+	    }
+	} 
 
 	function parseArg(blk) {
 	    // Retrieve the value of a block.

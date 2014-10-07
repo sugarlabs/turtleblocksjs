@@ -591,6 +591,7 @@ define(function (require) {
 	    blockList[3].value = 90;
 	    blockList[3].connections = [2];
 
+	    createBlockImages();
 	    updateBlockLabels();
 
 	    // Simulate adding blocks
@@ -602,6 +603,7 @@ define(function (require) {
 	    blockList[5].value = 100;
 	    blockList[5].connections = [4];
 
+	    createBlockImages();
 	    updateBlockLabels();
 
 	    for (i = 0; i < blockList.length; i++) {
@@ -609,64 +611,68 @@ define(function (require) {
 	    }
         }
 
+        function createBlockImages() {
+            for (blk = 0; blk < blockList.length; blk++) {
+		// Create the block image if it doesn't yet exist.
+		if (blockList[blk].image == null) {
+		    blockList[blk].image = new Image();
+		    blockList[blk].image.src = blockList[blk].protoblock.getSvgPath();
+		    blockList[blk].image.onload = handleImageLoad;
+		}
+	    }
+	}
+
         function updateBlockLabels() {
-	    // The labels are stored in the DOM with a unique id for each block.
+	    // The modifiable labels are stored in the DOM
+	    // with a unique id for each block.
+	    // For the moment, we only have labels for number blocks.
             var html = ''
-            for (i = 0; i < blockList.length; i++) {
-		if (blockList[i].name == "number") {
-		    arrLabels[i] = blockList[i].value.toString() + "_" +
-			i.toString();
-		    text = '<h2 id="_' + arrLabels[i] +
+            for (blk = 0; blk < blockList.length; blk++) {
+		if (blockList[blk].name == "number") {
+		    arrLabels[blk] = blockList[blk].value.toString() + "_" +
+			blk.toString();
+		    text = '<h2 id="_' + arrLabels[blk] +
 			'" style="position: absolute; ' + 
 			'-webkit-user-select: text;">' +
-			blockList[i].value.toString() + '</h2>'
+			blockList[blk].value.toString() + '</h2>'
 		} else {
-		    arrLabels[i] = blockList[i].name + "_" + i.toString();
-		    text = '<h2 id="_' + arrLabels[i] +
-			'" style="position: absolute; ' + 
-			'-webkit-user-select: none;">' +
-			'</h2>'
-		    // arrLabels[i] = blockList[i].name + "_" + i.toString();
-		    // text = '<h2 id="_' + arrLabels[i] +
-		    // '" style="position: absolute; ' + 
-		    // '-webkit-user-select: none;">' +
-		    // blockList[i].name + '</h2>'
+		    arrLabels[blk] = null
+		    text = ''
 		}
 		html = html + text
             }
             labelElem.innerHTML = html;
 
 	    // Then create a list of the label elements
-            for (i = 0; i < blockList.length; i++) {
-		if (arrLabels[i] == "") {
-		    continue;
-		}
-		blockList[i].label = document.getElementById("_" + arrLabels[i])
-		if (blockList[i].bitmap == null) {
-		    var x = blockList[i].x
-		    var y = blockList[i].y
+            for (blk = 0; blk < blockList.length; blk++) {
+		if (blockList[blk].bitmap == null) {
+		    var x = blockList[blk].x
+		    var y = blockList[blk].y
 		} else {
-		    var x = blockList[i].bitmap.x
-		    var y = blockList[i].bitmap.y
+		    var x = blockList[blk].bitmap.x
+		    var y = blockList[blk].bitmap.y
 		}
-		adjustLabelPosition(i, x, y);
-		if (blockList[i].image == null) {
-		    blockList[i].image = new Image();
-		    blockList[i].image.src = blockList[i].protoblock.getSvgPath();
-		    blockList[i].image.onload = handleImageLoad;
+		if (blockList[blk].name == "number") {
+		    blockList[blk].label = document.getElementById("_" + arrLabels[blk])
+		    adjustLabelPosition(blk, x, y);
+		} else {
+		    blockList[blk].label = null
 		}
             }
 	}
 
-	function adjustLabelPosition(i, x, y) {
-	    if (blockList[i].protoblock.name == "number") {
-		blockList[i].label.style.left = Math.round(
+	function adjustLabelPosition(blk, x, y) {
+	    if (blockList[blk].label == null) {
+		return;
+	    }
+	    if (blockList[blk].protoblock.name == "number") {
+		blockList[blk].label.style.left = Math.round(
 		    x + canvas.offsetLeft - 25) + "px";
 	    } else {
-	    	blockList[i].label.style.left = Math.round(
+	    	blockList[blk].label.style.left = Math.round(
 		    x + canvas.offsetLeft - 40) + "px";
 	    }
-            blockList[i].label.style.top = Math.round(
+            blockList[blk].label.style.top = Math.round(
 		y + canvas.offsetTop - 30) + "px";
 	}
 

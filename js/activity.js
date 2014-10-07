@@ -38,8 +38,11 @@ define(function (require) {
         stopButton.addEventListener('click', function (e) {
             activity.close();
         });
+
+        var canvas = document.getElementById("myCanvas");
+
 	// Stage is an Easel construct
-        var canvas, stage;
+	var stage;
 	// Do we need to update the stage?
         var update = true;
 	// We'll need an object to draw on
@@ -88,12 +91,12 @@ define(function (require) {
 		       "images/turtle270.svg", "images/turtle285.svg",
 		       "images/turtle300.svg", "images/turtle315.svg",
 		       "images/turtle330.svg", "images/turtle345.svg"];
-	var turtleX = 200;
-	var turtleY = 200;
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
 	var turtleStroke = 5;
         var oldPt;
+	var turtleX = 0;
+	var turtleY = 0;
 
 	// Get things started
 	init();
@@ -104,7 +107,7 @@ define(function (require) {
             }
             document.getElementById("loader").className = "loader";
             // Create the stage and point it to the canvas.
-            canvas = document.getElementById("myCanvas");
+            // canvas = document.getElementById("myCanvas");
 
 	    // Load a project.
 	    loadBlocks();
@@ -383,8 +386,8 @@ define(function (require) {
 		turtle_bitmaps[turtle_bitmaps.length - 1].visible = false
 	    }
 
-            bitmap.x = turtleX
-            bitmap.y = turtleY
+            bitmap.x = turtleX2screenX(turtleX);
+            bitmap.y = invertY(turtleY);
             bitmap.regX = imgW / 2 | 0;
             bitmap.regY = imgH / 2 | 0;
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
@@ -411,7 +414,7 @@ define(function (require) {
                         // Indicate that the stage should be updated
                         // on the next tick:
                         update = true;
-			moveTurtle(stage.mouseX, stage.mouseY);
+			moveTurtle(stage.mouseX, stage.mouseY, false);
                     }
                 }
                 bitmap.onMouseOver = function () {
@@ -420,7 +423,6 @@ define(function (require) {
                     color = colors[(index++) % colors.length];
                     stroke = Math.random() * 30 + 10 | 0;
                     oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
-                    oldMidPt = oldPt;
                 }
                 bitmap.onMouseOut = function () {
                     target.scaleX = target.scaleY = target.scale;
@@ -436,14 +438,25 @@ define(function (require) {
             createjs.Ticker.addEventListener("tick", tick);
         }
 
-	function moveTurtle(nx, ny) {
+	function moveTurtle(x, y, invert) {
+	    if (invert) {
+		ox = turtleX2screenX(oldPt.x);
+		nx = turtleX2screenX(x);
+		oy = invertY(oldPt.y);
+		ny = invertY(y);
+	    } else {
+		ox = oldPt.x;
+		nx = x;
+		oy = oldPt.y;
+		ny = y;
+	    }
             drawingCanvas.graphics.setStrokeStyle(
 		stroke, 'round', 'round'
 	    ).beginStroke(color).moveTo(
-		oldPt.x, oldPt.y
-	    ).curveTo(oldPt.x, oldPt.y, nx, ny);
-	    oldPt.x = nx;
-            oldPt.y = ny;
+		ox, oy
+	    ).curveTo(ox, oy, nx, ny);
+	    oldPt.x = x;
+            oldPt.y = y;
 	}
 
         function adjustBlockPositions() {
@@ -847,16 +860,19 @@ define(function (require) {
         function doForward(steps) {
 	    // Move forward.
             update = true;
-            oldPt = new createjs.Point(turtle_bitmaps[0].x, turtle_bitmaps[0].y);
+	    // old turtle point
+            oldPt = new createjs.Point(screenX2turtleX(turtle_bitmaps[0].x),
+				       invertY(turtle_bitmaps[0].y));
             color = colors[turtleColor];
             stroke = turtleStroke;
+	    // new turtle point
 	    var newPt = new createjs.Point(
-		turtle_bitmaps[0].x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
-		turtle_bitmaps[0].y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
-	    moveTurtle(newPt.x, newPt.y);
+		oldPt.x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
+		oldPt.y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
+	    moveTurtle(newPt.x, newPt.y, true);
 	    for (i = 0; i < turtle_bitmaps.length; i++) {
-		turtle_bitmaps[i].x = newPt.x;
-		turtle_bitmaps[i].y = newPt.y;
+		turtle_bitmaps[i].x = turtleX2screenX(newPt.x);
+		turtle_bitmaps[i].y = invertY(newPt.y);
 	    }
 	}
 
@@ -879,8 +895,8 @@ define(function (require) {
 	    // Clear all graphics and reset turtle.
             update = true;
             drawingCanvas.graphics.clear();
-	    turtleX = 200;
-	    turtleY = 200;
+	    turtleX = 0;
+	    turtleY = 0;
 	    turtleOrientation = 0.0;
 	    turtleColor = 0;
 	    turtleStroke = 5;
@@ -891,9 +907,21 @@ define(function (require) {
 		} else {
 		    turtle_bitmaps[i].visible = false;
 		}
-		turtle_bitmaps[i].x = turtleX;
-		turtle_bitmaps[i].y = turtleY;
+		turtle_bitmaps[i].x = turtleX2screenX(turtleX);
+		turtle_bitmaps[i].y = invertY(turtleY);
 	    }
+	}
+
+	function screenX2turtleX(x) {
+	    return x - canvas.width / 2.0
+	}
+
+        function turtleX2screenX(x) {
+            return canvas.width / 2.0 + x
+	}
+
+        function invertY(y) {
+            return canvas.height / 2.0 - y;
 	}
 
     });

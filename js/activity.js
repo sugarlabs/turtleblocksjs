@@ -67,6 +67,14 @@ define(function (require) {
         var colors;
         var index;
 
+	// To avoid infinite loops
+	var loopCounter;
+
+	// Blocks that are used as arguments to other blocks
+	var argBlocks = ["number"];
+	// Blocks that cannot be run on their own
+	var noRunBlocks = ["hat"];
+
 	var activeBlock = null;
 
         var turtle_bitmap;
@@ -128,6 +136,7 @@ define(function (require) {
         }
 
         function handleImageLoad(event) {
+	    // Load a block
             var image = event.target;
             var imgW = image.width;
             var imgH = image.height;
@@ -273,7 +282,6 @@ define(function (require) {
 				continue;
 			    }
 			    for (c = 1; c < blockList[b].connections.length; c++) {
-				// TODO: handle cases where number dock is already occupied;
 				// TODO: handle block expansion/contraction
 				// Look for available connections
 				if (testConnectionType(
@@ -299,10 +307,9 @@ define(function (require) {
 			    console.log('connecting ' + thisBlock + ' to ' + newBlock);
 			    blockList[thisBlock].connections[0] = newBlock;
 			    var connection = blockList[newBlock].connections[newConnection];
-			    // TODO: move number blocks to trash
 			    if(connection != null) {
 				console.log(connection);
-				if (blockList[thisBlock].name == "number") {
+				if (argBlocks.indexOf(blockList[thisBlock].name) != -1) {
 				    console.log('disconnecting number block ' + connection);
 				    blockList[connection].connections[0] = null;
 				    moveBlockRelative(connection, 20, 20);
@@ -319,6 +326,7 @@ define(function (require) {
 			    console.log('connecting ' + newBlock + ' to ' + thisBlock);
 			    blockList[newBlock].connections[newConnection] = thisBlock;
 			    console.log('adjustDocks beginning from ' + newBlock)
+			    loopCounter = 0
 			    adjustDocks(newBlock);
 			}
                     }
@@ -350,6 +358,7 @@ define(function (require) {
 	}
 
         function handleTurtleLoad(event) {
+	    // Load the turtle
             var image = event.target;
             var imgW = image.width;
             var imgH = image.height;
@@ -438,18 +447,26 @@ define(function (require) {
 		return;
 	    }
 
+	    loopCounter = 0
 	    adjustDocks(dragGroup[0])
 	}
 
 	function adjustDocks(blk) {
 	    // Give a block, adjust the dock positions
 	    // of all of the blocks connected to it
-	    // And their corresponding labels
+	    // (and their corresponding labels).
+
+	    // FIXME: there is an infinite loop in here somewhere.
 	    if (blockList[blk].connections == null) {
 		return;
 	    }
 	    if (blockList[blk].connections.length == 0) {
 		return;
+	    }
+	    loopCounter += 1;
+	    if (loopCounter > blockList.length) {
+		console.log('infinite loop encountered while adjusting docks');
+		return
 	    }
 	    for (c = 1; c < blockList[blk].connections.length; c++) {
 		var bdock = blockList[blk].protoblock.docks[c];
@@ -466,17 +483,10 @@ define(function (require) {
 		if (blockList[blk].bitmap == null) {
                     nx = blockList[blk].x + bdock[0] - cdock[0]
                     ny = blockList[blk].y + bdock[1] - cdock[1]
-		    // blockList[cblk].x = nx
-		    // blockList[cblk].y = ny
 		} else {
                     ny = blockList[blk].bitmap.y + bdock[1] - cdock[1]
                     nx = blockList[blk].bitmap.x + bdock[0] - cdock[0]
-		    // blockList[cblk].x = nx
-		    // blockList[cblk].y = ny
-		    // blockList[cblk].bitmap.x = nx
-		    // blockList[cblk].bitmap.y = ny
 		}
-		// adjustLabelPosition(cblk, nx, ny);
 		moveBlock(cblk, nx, ny);
 		adjustDocks(cblk)
 	    }
@@ -511,6 +521,7 @@ define(function (require) {
 
 	function findStacks() {
 	    // Find any blocks with null in the first connection
+            stackList = [];
 	    for (i = 0; i < blockList.length; i++) {
 		if (blockList[i].connections[0] == null) {
 		    stackList.push(i)
@@ -552,46 +563,9 @@ define(function (require) {
 	    return blk;
 	}
 
-        function loadBlocks() {
-	    // This is temporary code for testing
-
-	    // Add the blocks
-	    blockList[0] = new Block(forwardBlock);
-	    blockList[0].x = 100;
-	    blockList[0].y = 100;
-	    blockList[0].connections = [null, 1, 2];
-	    blockList[1] = new Block(numberBlock);
-	    blockList[1].value = 100;
-	    blockList[1].connections = [0];
-	    blockList[2] = new Block(rightBlock);
-	    blockList[2].connections = [0, 3, null];
-	    blockList[3] = new Block(numberBlock);
-	    blockList[3].value = 90;
-	    blockList[3].connections = [2];
-
-	    createBlockImages();
-	    updateBlockLabels();
-
-	    // Simulate adding blocks
-	    blockList[4] = new Block(forwardBlock);
-	    blockList[4].x = 400;
-	    blockList[4].y = 200;
-	    blockList[4].connections = [null, 5, null];
-	    blockList[5] = new Block(numberBlock);
-	    blockList[5].value = 100;
-	    blockList[5].connections = [4];
-
-	    createBlockImages();
-	    updateBlockLabels();
-
-	    for (blk = 0; blk < blockList.length; blk++) {
-		// alert(blockList[blk].getInfo());
-	    }
-        }
-
         function createBlockImages() {
+	    // Create the block image if it doesn't yet exist.
             for (blk = 0; blk < blockList.length; blk++) {
-		// Create the block image if it doesn't yet exist.
 		if (blockList[blk].image == null) {
 		    blockList[blk].image = new Image();
 		    blockList[blk].image.src = blockList[blk].protoblock.getSvgPath();
@@ -655,6 +629,7 @@ define(function (require) {
 	}
 
 	function adjustLabelPosition(blk, x, y) {
+	    // Move the label when the block moves.
 	    if (blockList[blk].label == null) {
 		return;
 	    }
@@ -670,6 +645,7 @@ define(function (require) {
 	}
 
         function moveBlock(blk, x, y) {
+	    // Move a block (and its label) to x, y
 	    if (blockList[blk].bitmap == null) {
 		    blockList[blk].x = x
 		    blockList[blk].y = y
@@ -683,6 +659,7 @@ define(function (require) {
 	}
 
         function moveBlockRelative(blk, dx, dy) {
+	    // Move a block (and its label) by dx, dy
 	    if (blockList[blk].bitmap == null) {
 		    blockList[blk].x += dx
 		    blockList[blk].y += dy
@@ -704,6 +681,43 @@ define(function (require) {
             }
         }
 
+        function loadBlocks() {
+	    // This is temporary code for testing
+
+	    // Add the blocks
+	    blockList[0] = new Block(forwardBlock);
+	    blockList[0].x = 100;
+	    blockList[0].y = 100;
+	    blockList[0].connections = [null, 1, 2];
+	    blockList[1] = new Block(numberBlock);
+	    blockList[1].value = 100;
+	    blockList[1].connections = [0];
+	    blockList[2] = new Block(rightBlock);
+	    blockList[2].connections = [0, 3, null];
+	    blockList[3] = new Block(numberBlock);
+	    blockList[3].value = 90;
+	    blockList[3].connections = [2];
+
+	    createBlockImages();
+	    updateBlockLabels();
+
+	    // Simulate adding blocks
+	    blockList[4] = new Block(forwardBlock);
+	    blockList[4].x = 400;
+	    blockList[4].y = 200;
+	    blockList[4].connections = [null, 5, null];
+	    blockList[5] = new Block(numberBlock);
+	    blockList[5].value = 100;
+	    blockList[5].connections = [4];
+
+	    createBlockImages();
+	    updateBlockLabels();
+
+	    for (blk = 0; blk < blockList.length; blk++) {
+		// alert(blockList[blk].getInfo());
+	    }
+        }
+
         function runLogoCommands() {
 	    // run the logo commands here
 
@@ -712,13 +726,68 @@ define(function (require) {
 	    for (blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].label != null) {
 		    blockList[blk].value = blockList[blk].label.value;
-		    console.log('number blk ' + blk + ': ' + blockList[blk].value);
 		}
 	    }
 
+	    // Execute turtle code here...
+	    // (1) Find the start block (or the top of each stack).
+	    var startBlock = null
+	    findStacks();
+	    console.log('stackList: ' + stackList)
+	    for (blk = 0; blk < stackList.length; blk++) {
+		if (blockList[stackList[blk]].name == "start") {
+		    startBlock = blk;
+		    break;
+		}
+	    }
+
+	    // (2) Execute the stack.
+	    if (startBlock != null) {
+		runFromBlock(startBlock);
+	    } else {
+		for (blk = 0; blk < stackList.length; blk++) {
+		    if (noRunBlocks.indexOf(
+			blockList[stackList[blk]].name) != -1) {
+			continue;
+		    } else {
+			runFromBlock(stackList[blk]);
+		    }
+		}
+	    }
             drawingCanvas.graphics.clear();
             update = true;
         }
+
+        function runFromBlock(blk) {
+	    // Run a stack of blocks, beginning with blk
+	    // (1) evaluate any arguments
+	    // Args always begin with connection 1
+	    var args = [];
+	    if(blockList[blk].protoblock.args > 0) {
+		for (arg = 0; arg < blockList[blk].protoblock.args; arg++) {
+		    args.push(parseArg(blockList[blk].connections[arg + 1]));
+		}
+	    }
+
+	    // (2) run function associated with the block
+	    console.log('running ' + blockList[blk].name + ': ' + args);
+
+	    // (3) run block below this block, if any
+	    var nextBlock = blockList[blk].connections[blockList[blk].connections.length - 1]
+	    if (nextBlock != null) {
+		if (argBlocks.indexOf(nextBlock) == -1) {
+		    runFromBlock(nextBlock);
+		}
+	    }
+	}
+
+	function parseArg(blk) {
+	    if (blockList[blk].protoblock.args == 0) {
+		return blockList[blk].value;
+	    } else {
+		// TODO: recurse and perhaps apply some operator
+	    }
+	}
 
     });
 

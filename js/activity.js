@@ -65,9 +65,6 @@ define(function (require) {
 	// And the blocks at the tops of stacks
         var stackList = [];
 
-	var blk;
-	var i;
-	var j;
         var color;
         var stroke;
         var colors;
@@ -161,7 +158,7 @@ define(function (require) {
             stage.addChild(container);
 
 	    var thisBlock = -1
-            for (blk = 0; blk < blockList.length; blk++) {
+            for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].image == image) {
 		    thisBlock = blk;
 		    break;
@@ -261,7 +258,7 @@ define(function (require) {
 			target.y = event.stageY + offset.y;
 
 			// Which block is this?
-			blk = -1;
+			var blk = -1;
 			for (var i = 0; i < blockList.length; i++) {
 			    if (blockList[i].bitmap == bitmap) {
 				blk = i;
@@ -562,8 +559,8 @@ define(function (require) {
 	    if (loopCounter > blockList.length * 2) {
 		// FIXME: there is an infinite loop in here somewhere.
 		console.log('infinite loop encountered while adjusting docks');
-		for (blk = 0; blk < blockList.length; blk++) {
-		    console.log(blk + ': ' + blockList[blk].connections);
+		for (var i = 0; i < blockList.length; i++) {
+		    console.log(i + ': ' + blockList[i].connections);
 		}
 		return
 	    }
@@ -704,7 +701,7 @@ define(function (require) {
 
         function createBlockImages() {
 	    // Create the block image if it doesn't yet exist.
-            for (blk = 0; blk < blockList.length; blk++) {
+            for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].image == null) {
 		    blockList[blk].image = new Image();
 		    blockList[blk].image.src = blockList[blk].protoblock.getSvgPath();
@@ -725,7 +722,8 @@ define(function (require) {
 	    // unique id for each block.  For the moment, we only have
 	    // labels for number blocks.
             var html = ''
-            for (blk = 0; blk < blockList.length; blk++) {
+	    var text = ''
+            for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].name == "number") {
 		    arrLabels[blk] = "_" + blk.toString();
 		    text = '<textarea id="_' + arrLabels[blk] +
@@ -744,7 +742,7 @@ define(function (require) {
             labelElem.innerHTML = html;
 
 	    // Then create a list of the label elements
-            for (blk = 0; blk < blockList.length; blk++) {
+            for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].bitmap == null) {
 		    var x = blockList[blk].x
 		    var y = blockList[blk].y
@@ -897,7 +895,7 @@ define(function (require) {
 
 	    // First we need to reconcile the values in all the number blocks
 	    // with their associated textareas.
-	    for (blk = 0; blk < blockList.length; blk++) {
+	    for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].label != null) {
 		    blockList[blk].value = blockList[blk].label.value;
 		}
@@ -908,7 +906,7 @@ define(function (require) {
 	    var startBlock = null
 	    findStacks();
 	    console.log(stackList);
-	    for (blk = 0; blk < stackList.length; blk++) {
+	    for (var blk = 0; blk < stackList.length; blk++) {
 		if (blockList[stackList[blk]].name == "start") {
 		    console.log('found a start block');
 		    startBlock = stackList[blk];
@@ -920,7 +918,7 @@ define(function (require) {
 	    if (startBlock != null) {
 		runFromBlock(startBlock);
 	    } else {
-		for (blk = 0; blk < stackList.length; blk++) {
+		for (var blk = 0; blk < stackList.length; blk++) {
 		    if (isNoRunBlock(blk)) {
 			continue;
 		    } else {
@@ -1093,7 +1091,7 @@ define(function (require) {
             update = true;
 	    // old turtle point
             oldPt = new createjs.Point(screenX2turtleX(turtle_bitmaps[0].x),
-				       invertY(turtle_bitmaps[0].y));
+					   invertY(turtle_bitmaps[0].y));
             color = colors[turtleColor];
             stroke = turtleStroke;
 	    // new turtle point

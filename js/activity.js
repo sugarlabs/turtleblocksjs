@@ -70,11 +70,6 @@ define(function (require) {
 	// To avoid infinite loops
 	var loopCounter;
 
-	// Blocks that are used as arguments to other blocks
-	var argBlocks = ["number"];
-	// Blocks that cannot be run on their own
-	var noRunBlocks = ["hat"];
-
 	var activeBlock = null;
 
 	var turtle_delay = 1000;
@@ -165,23 +160,65 @@ define(function (require) {
 		if (blockList[blk].image == image) {
 		    thisBlock = blk;
 		    break;
-                }
+		}
             }
+
             // Create and populate the screen with blocks.
-            bitmap = new createjs.Bitmap(image);
-	    // Save now so we can reposition later.
-            blockList[thisBlock].bitmap = bitmap;
-            container.addChild(bitmap);
-            bitmap.x = blockList[thisBlock].x;
-            bitmap.y = blockList[thisBlock].y;
-            bitmap.regX = imgW / 2 | 0;
-            bitmap.regY = imgH / 2 | 0;
-	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-            bitmap.name = "bmp_" + thisBlock;
+	    if (expandableBlocks.indexOf(blockList[thisBlock].name) == -1) {
+		bitmap = new createjs.Bitmap(image);
+		blockList[thisBlock].bitmap = bitmap;
+		container.addChild(bitmap);
+		bitmap.x = blockList[thisBlock].x;
+		bitmap.y = blockList[thisBlock].y;
+		bitmap.regX = imgW / 2 | 0;
+		bitmap.regY = imgH / 2 | 0;
+		bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+		bitmap.name = "bmp_" + thisBlock;
+		bitmap.cursor = "pointer";
+		adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
+	    } else {
+		bitmap = new createjs.Bitmap(blockList[thisBlock].image);
+		blockList[thisBlock].bitmap = bitmap;
+		console.log(bitmap);
+		container.addChild(bitmap);
+		bitmap.x = blockList[thisBlock].x;
+		bitmap.y = blockList[thisBlock].y;
+		bitmap.regX = imgW / 2 | 0;
+		bitmap.regY = imgH / 2 | 0;
+		bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+		bitmap.name = "bmp_" + thisBlock + "_top";
+		bitmap.cursor = "pointer";
 
-            bitmap.cursor = "pointer";
+		blockList[thisBlock].extra_bitmaps = [];
 
-	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
+		extras = [];
+		for (i = 0; i < blockList[thisBlock].extra_images.length - 1; i++) {
+		    extras.push(new createjs.Bitmap(blockList[thisBlock].extra_images[i]));
+		    console.log(extras[i]);
+		    blockList[thisBlock].extra_bitmaps.push(extras[i]);
+		    container.addChild(extras[i]);
+		    extras[i].x = blockList[thisBlock].x;
+		    extras[i].y = blockList[thisBlock].y + 52 + i * 18;
+		    // extras[i].regX = imgW / 2 | 0;
+		    // extras[i].regY = imgH / 2 | 0;
+		    extras[i].scaleX = extras[i].scaleY = extras[i].scale = 1;
+		    extras[i].name = "bmp_" + thisBlock + "_filler";
+		    extras[i].cursor = "pointer";
+		}
+
+		i = blockList[thisBlock].extra_images.length - 1;
+		extras.push(new createjs.Bitmap(blockList[thisBlock].extra_images[i]));
+		console.log(extras[i]);
+		blockList[thisBlock].extra_bitmaps.push(extras[i]);
+		container.addChild(extras[i]);
+		extras[i].x = blockList[thisBlock].x;
+		extras[i].y = blockList[thisBlock].y + 52 + i * 18;
+		// extras[i].regX = imgW / 2 | 0;
+		// extras[i].regY = imgH / 2 | 0;
+		extras[i].scaleX = extras[i].scaleY = extras[i].scale = 1;
+		extras[i].name = "bmp_" + thisBlock + "_filler";
+		extras[i].cursor = "pointer";
+	    }
 
             // Create a shape that represents the center of the icon.
             var hitArea = new createjs.Shape();
@@ -588,6 +625,13 @@ define(function (require) {
 		    blockList[blk].image = new Image();
 		    blockList[blk].image.src = blockList[blk].protoblock.getSvgPath();
 		    blockList[blk].image.onload = handleImageLoad;
+		    if (expandableBlocks.indexOf(blockList[blk].name) != -1) {
+			blockList[blk].extra_images = [];
+			blockList[blk].extra_images.push(new Image());
+			blockList[blk].extra_images[0].src = blockList[blk].protoblock.getFillerSvgPath();
+			blockList[blk].extra_images.push(new Image());
+			blockList[blk].extra_images[1].src = blockList[blk].protoblock.getBottomSvgPath();
+		    }
 		}
 	    }
 	}
@@ -703,25 +747,39 @@ define(function (require) {
 	    // This is temporary code for testing.
 
 	    // Add the blocks
-	    blockList[0] = new Block(clearBlock);
+	    blockList.push(new Block(clearBlock));
 	    blockList[0].x = 300;
 	    blockList[0].y = 50;
 	    blockList[0].connections = [null, 1];
-	    blockList[1] = new Block(forwardBlock);
+	    blockList.push(new Block(forwardBlock));
 	    blockList[1].connections = [0, 2, 3];
-	    blockList[2] = new Block(numberBlock);
+	    blockList.push(new Block(numberBlock));
 	    blockList[2].value = 100;
 	    blockList[2].connections = [1];
-	    blockList[3] = new Block(rightBlock);
+	    blockList.push(new Block(rightBlock));
 	    blockList[3].connections = [1, 4, 5];
-	    blockList[4] = new Block(numberBlock);
+	    blockList.push(new Block(numberBlock));
 	    blockList[4].value = 90;
 	    blockList[4].connections = [3];
-	    blockList[5] = new Block(forwardBlock);
+	    blockList.push(new Block(forwardBlock));
 	    blockList[5].connections = [3, 6, null];
-	    blockList[6] = new Block(numberBlock);
+	    blockList.push(new Block(numberBlock));
 	    blockList[6].value = 100;
 	    blockList[6].connections = [5];
+
+	    blockList.push(new Block(repeatBlock));
+	    blockList[7].x = 100;
+	    blockList[7].y = 50;
+	    blockList[7].connections = [null, 8, null, null];
+
+	    blockList.push(new Block(numberBlock));
+	    blockList[8].value = 4;
+	    blockList[8].connections = [7];
+
+	    blockList.push(new Block(startBlock));
+	    blockList[9].x = 400;
+	    blockList[9].y = 50;
+	    blockList[9].connections = [null, null, null];
 
 	    createBlockImages();
 	    updateBlockLabels();
@@ -746,9 +804,11 @@ define(function (require) {
 	    // (1) Find the start block (or the top of each stack).
 	    var startBlock = null
 	    findStacks();
+	    console.log(stackList);
 	    for (blk = 0; blk < stackList.length; blk++) {
 		if (blockList[stackList[blk]].name == "start") {
-		    startBlock = blk;
+		    console.log('found a start block');
+		    startBlock = stackList[blk];
 		    break;
 		}
 	    }
@@ -771,7 +831,8 @@ define(function (require) {
 
 	function runFromBlock(blk) { 
 	    // Highlight current block by scaling
-	    if (turtle_delay == null) {
+	    if (true) { //  (turtle_delay == null) {
+		console.log('running blk ' + blockList[blk].name)
 		runFromBlockNow(blk);
 	    } else {
 		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1.2;
@@ -792,6 +853,16 @@ define(function (require) {
 	    // (2) Run function associated with the block;
 	    console.log('running ' + blockList[blk].name + ': ' + args);
 	    switch (blockList[blk].name) {
+	    case 'start':
+ 		if (args.length == 1) {
+		    doStart(args[0]);
+		}
+		break;
+	    case 'repeat':
+ 		if (args.length == 2) {
+		    doRepeat(args[0], args[1]);
+		}
+		break;
 	    case 'clear':
 		doClear();
 		break;
@@ -834,9 +905,12 @@ define(function (require) {
 	function parseArg(blk) {
 	    // Retrieve the value of a block.
 	    // TODO: recurse while applying some operator
-	    if (blockList[blk].protoblock.args == 0) {
+	    if (blk == null) {
+		return null
+	    } else if (blockList[blk].protoblock.args == 0) {
 		return blockList[blk].value;
 	    } else {
+		return blk;
 	    }
 	}
 
@@ -854,7 +928,17 @@ define(function (require) {
 	    }
 	}
 
-	// TODO: Coordinate transforms
+	// Logo functions
+	function doStart(blk) {
+	    runFromBlock(blk);
+	}
+
+        function doRepeat(count, blk) {
+	    for (var i = 0; i < count; i++) {
+		console.log('repeat: i = ' + i)
+		runFromBlock(blk);
+	    }
+	}
 
 	// Turtle functions
         function doForward(steps) {
@@ -870,7 +954,7 @@ define(function (require) {
 		oldPt.x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
 		oldPt.y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
 	    moveTurtle(newPt.x, newPt.y, true);
-	    for (i = 0; i < turtle_bitmaps.length; i++) {
+	    for (var i = 0; i < turtle_bitmaps.length; i++) {
 		turtle_bitmaps[i].x = turtleX2screenX(newPt.x);
 		turtle_bitmaps[i].y = invertY(newPt.y);
 	    }
@@ -881,8 +965,8 @@ define(function (require) {
             update = true;
 	    turtleOrientation += Number(degrees);
 	    turtleOrientation %= 360;
-            t = Math.round(turtleOrientation + 7.5) % 360 / (360 / 24) | 0
-	    for (i = 0; i < turtle_bitmaps.length; i++) {
+            var t = Math.round(turtleOrientation + 7.5) % 360 / (360 / 24) | 0
+	    for (var i = 0; i < turtle_bitmaps.length; i++) {
 		if (i == t) {
 		    turtle_bitmaps[i].visible = true;
 		} else {
@@ -900,7 +984,7 @@ define(function (require) {
 	    turtleOrientation = 0.0;
 	    turtleColor = 0;
 	    turtleStroke = 5;
-	    for (i = 0; i < turtle_bitmaps.length; i++) {
+	    for (var i = 0; i < turtle_bitmaps.length; i++) {
 		// Hide all the turtles except 0.
 		if (i == 0) {
 		    turtle_bitmaps[i].visible = true;

@@ -250,6 +250,9 @@ define(function (require) {
                     };
 
                     evt.onMouseMove = function (ev) {
+			// reset scale when moving (easier to dock that way)
+			bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+
 			moved = true;
 			var oldX = bitmap.x;
 			var oldY = bitmap.y;
@@ -761,10 +764,10 @@ define(function (require) {
 	    blockList.push(new Block(numberBlock));
 	    blockList[4].value = 90;
 	    blockList[4].connections = [3];
-	    blockList.push(new Block(forwardBlock));
+	    blockList.push(new Block(rightBlock));
 	    blockList[5].connections = [3, 6, null];
 	    blockList.push(new Block(numberBlock));
-	    blockList[6].value = 100;
+	    blockList[6].value = 45;
 	    blockList[6].connections = [5];
 
 	    blockList.push(new Block(repeatBlock));
@@ -780,6 +783,15 @@ define(function (require) {
 	    blockList[9].x = 400;
 	    blockList[9].y = 50;
 	    blockList[9].connections = [null, null, null];
+
+	    blockList.push(new Block(repeatBlock));
+	    blockList[10].x = 100;
+	    blockList[10].y = 200;
+	    blockList[10].connections = [null, 11, null, null];
+
+	    blockList.push(new Block(numberBlock));
+	    blockList[11].value = 8;
+	    blockList[11].connections = [10];
 
 	    createBlockImages();
 	    updateBlockLabels();
@@ -798,6 +810,10 @@ define(function (require) {
 		if (blockList[blk].label != null) {
 		    blockList[blk].value = blockList[blk].label.value;
 		}
+	    }
+
+	    for (blk = 0; blk < blockList.length; blk++) {
+		console.log(blk + ': ' + blockList[blk].connections);
 	    }
 
 	    // Execute turtle code here...
@@ -831,12 +847,20 @@ define(function (require) {
 
 	function runFromBlock(blk) { 
 	    // Highlight current block by scaling
-	    if (true) { //  (turtle_delay == null) {
-		console.log('running blk ' + blockList[blk].name)
+	    if (turtle_delay == null) {
 		runFromBlockNow(blk);
 	    } else {
+		console.log('running ' + blk);
+		if (blk == null) {
+		    activity.showAlert('WARNING',
+				       'trying to run null block', null,
+				       function() {});
+		    return;
+		}
+		console.log(blockList[blk].name)
 		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1.2;
-		setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
+		runFromBlockNow(blk);
+		// setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
 	    }
 	} 
 
@@ -845,8 +869,9 @@ define(function (require) {
 	    // (1) Evaluate any arguments (beginning with connection[1]);
 	    var args = [];
 	    if(blockList[blk].protoblock.args > 0) {
-		for (arg = 0; arg < blockList[blk].protoblock.args; arg++) {
-		    args.push(parseArg(blockList[blk].connections[arg + 1]));
+		for (arg = 1; arg < blockList[blk].protoblock.args + 1; arg++) {
+		    console.log('args.push: ' + parseArg(blockList[blk].connections[arg]));
+		    args.push(parseArg(blockList[blk].connections[arg]));
 		}
 	    }
 
@@ -906,8 +931,11 @@ define(function (require) {
 	    // Retrieve the value of a block.
 	    // TODO: recurse while applying some operator
 	    if (blk == null) {
+		activity.showAlert('WARNING',
+				   'missing argument', null,
+				   function() {});
 		return null
-	    } else if (blockList[blk].protoblock.args == 0) {
+	    } else if (valueBlocks.indexOf(blockList[blk].name) != -1) {
 		return blockList[blk].value;
 	    } else {
 		return blk;
@@ -930,6 +958,7 @@ define(function (require) {
 
 	// Logo functions
 	function doStart(blk) {
+	    console.log('doStart: calling runFromBlock(' + blk + ')');
 	    runFromBlock(blk);
 	}
 

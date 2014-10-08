@@ -28,10 +28,6 @@ var blockPalette = new Palette('Blocks');
 paletteList.push(blockPalette);
 blockPalette.color = "yellow";
 
-for (i = 0; i < paletteList.length; i++) {
-    // alert(paletteList[i].getInfo());
-}
-
 // Define block proto objects
 function ProtoBlock (name) {
     this.name = name;
@@ -137,6 +133,8 @@ var blockList = [];
 var expandableBlocks = [];
 // Blocks that are used as arguments to other blocks
 var argBlocks = ["number"];
+// Blocks that return values
+var valueBlocks = ["number"];
 // Blocks that cannot be run on their own
 var noRunBlocks = ["hat"];
 // Label elements for each of our blocks...

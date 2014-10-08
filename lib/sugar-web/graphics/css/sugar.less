@@ -125,6 +125,38 @@ a {
   background-image: url('../icons/actions/activity-stop.svg');
 }
 
+/* Alert */
+.alert {
+  position: absolute;
+  top: @toolbar-height;
+  z-index:10;
+  height: @toolbar-height;
+  width: 100%;
+  color: white;
+  background-color: black;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.alert p {
+  padding-left: @subcell-size;
+  vertical-align: middle;
+  width: 80%;
+}
+
+.alert .button-box{
+  position: fixed;
+  top: @toolbar-height;
+  right: 0px;
+  height: @toolbar-height;
+  width: 20%;
+  margin: @subcell-size;
+}
+
+.alert button {
+  float: right;
+}
+
 /* Canvas */
 
 #canvas {

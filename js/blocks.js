@@ -94,6 +94,7 @@ numberBlock.docks = [[-16, 22, 'numberout']];
 var repeatBlock = new ProtoBlock('repeat');
 protoBlockList.push(repeatBlock);
 repeatBlock.palette = flowPalette;
+repeatBlock.yoff = 52;
 repeatBlock.args = 2;
 repeatBlock.docks = [[20, 0, 'out'], [110, 17, 'numberin'], [26, 38, 'in'],
 		     [20, 80, 'in']];
@@ -101,6 +102,7 @@ repeatBlock.docks = [[20, 0, 'out'], [110, 17, 'numberin'], [26, 38, 'in'],
 var startBlock = new ProtoBlock('start');
 protoBlockList.push(startBlock);
 startBlock.palette = blockPalette;
+startBlock.yoff = 64;
 startBlock.args = 1;
 startBlock.docks = [[20, 0, 'unavailable'], [36, 48, 'in'],
 		    [20, 80, 'unavailable']];
@@ -129,8 +131,7 @@ Block.prototype.getInfo = function() {
 // A place to keep the blocks we create...
 var blockList = [];
 // Blocks that are expandable.
-// var expandableBlocks = ["repeat", "start"];
-var expandableBlocks = [];
+var expandableBlocks = ["repeat", "start"];
 // Blocks that are used as arguments to other blocks
 var argBlocks = ["number"];
 // Blocks that return values

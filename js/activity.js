@@ -149,8 +149,6 @@ define(function (require) {
         function handleImageLoad(event) {
 	    // Load a block
             var image = event.target;
-            var imgW = image.width;
-            var imgH = image.height;
             var bitmap;
             var container = new createjs.Container();
             stage.addChild(container);
@@ -163,61 +161,40 @@ define(function (require) {
 		}
             }
 
-            // Create and populate the screen with blocks.
-	    if (expandableBlocks.indexOf(blockList[thisBlock].name) == -1) {
-		bitmap = new createjs.Bitmap(image);
-		blockList[thisBlock].bitmap = bitmap;
-		container.addChild(bitmap);
-		bitmap.x = blockList[thisBlock].x;
-		bitmap.y = blockList[thisBlock].y;
-		bitmap.regX = imgW / 2 | 0;
-		bitmap.regY = imgH / 2 | 0;
-		bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-		bitmap.name = "bmp_" + thisBlock;
-		bitmap.cursor = "pointer";
-		adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
-	    } else {
-		bitmap = new createjs.Bitmap(blockList[thisBlock].image);
-		blockList[thisBlock].bitmap = bitmap;
-		console.log(bitmap);
-		container.addChild(bitmap);
-		bitmap.x = blockList[thisBlock].x;
-		bitmap.y = blockList[thisBlock].y;
-		bitmap.regX = imgW / 2 | 0;
-		bitmap.regY = imgH / 2 | 0;
-		bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-		bitmap.name = "bmp_" + thisBlock + "_top";
-		bitmap.cursor = "pointer";
+            // Create the bitmap for the block.
+	    bitmap = new createjs.Bitmap(image);
+	    blockList[thisBlock].bitmap = bitmap;
+	    container.addChild(bitmap);
+	    bitmap.x = blockList[thisBlock].x;
+	    bitmap.y = blockList[thisBlock].y;
+	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+	    bitmap.name = "bmp_" + thisBlock;
+	    bitmap.cursor = "pointer";
+	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
+	    console.log(bitmap);
 
+	    // Expandable blocks have some extra parts.
+	    if (isExpandableBlock(thisBlock)) {
 		blockList[thisBlock].extra_bitmaps = [];
-
-		extras = [];
-		for (i = 0; i < blockList[thisBlock].extra_images.length - 1; i++) {
-		    extras.push(new createjs.Bitmap(blockList[thisBlock].extra_images[i]));
-		    console.log(extras[i]);
-		    blockList[thisBlock].extra_bitmaps.push(extras[i]);
-		    container.addChild(extras[i]);
-		    extras[i].x = blockList[thisBlock].x;
-		    extras[i].y = blockList[thisBlock].y + 52 + i * 18;
-		    // extras[i].regX = imgW / 2 | 0;
-		    // extras[i].regY = imgH / 2 | 0;
-		    extras[i].scaleX = extras[i].scaleY = extras[i].scale = 1;
-		    extras[i].name = "bmp_" + thisBlock + "_filler";
-		    extras[i].cursor = "pointer";
+		extra_bitmaps = [];
+		var yoff = blockList[thisBlock].protoblock.yoff;
+		for (var i = 0; i < blockList[thisBlock].extra_images.length - 1; i++) {
+		    extra_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].extra_images[i]));
+		    blockList[thisBlock].extra_bitmaps.push(extra_bitmaps[i]);
+		    container.addChild(extra_bitmaps[i]);
+		    extra_bitmaps[i].x = blockList[thisBlock].x;
+		    extra_bitmaps[i].y = blockList[thisBlock].y + yoff + i * 18;
+		    extra_bitmaps[i].scaleX = extra_bitmaps[i].scaleY = extra_bitmaps[i].scale = 1;
+		    extra_bitmaps[i].name = "bmp_" + thisBlock + "_filler_" + i;
 		}
 
-		i = blockList[thisBlock].extra_images.length - 1;
-		extras.push(new createjs.Bitmap(blockList[thisBlock].extra_images[i]));
-		console.log(extras[i]);
-		blockList[thisBlock].extra_bitmaps.push(extras[i]);
-		container.addChild(extras[i]);
-		extras[i].x = blockList[thisBlock].x;
-		extras[i].y = blockList[thisBlock].y + 52 + i * 18;
-		// extras[i].regX = imgW / 2 | 0;
-		// extras[i].regY = imgH / 2 | 0;
-		extras[i].scaleX = extras[i].scaleY = extras[i].scale = 1;
-		extras[i].name = "bmp_" + thisBlock + "_filler";
-		extras[i].cursor = "pointer";
+		extra_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].extra_images[i]));
+		blockList[thisBlock].extra_bitmaps.push(extra_bitmaps[i]);
+		container.addChild(extra_bitmaps[i]);
+		extra_bitmaps[i].x = blockList[thisBlock].x;
+		extra_bitmaps[i].y = blockList[thisBlock].y + yoff + i * 18;
+		extra_bitmaps[i].scaleX = extra_bitmaps[i].scaleY = extra_bitmaps[i].scale = 1;
+		extra_bitmaps[i].name = "bmp_" + thisBlock + "_bottom";
 	    }
 
             // Create a shape that represents the center of the icon.
@@ -229,13 +206,13 @@ define(function (require) {
 	    if (blockList[thisBlock].name == "number") {
 		hitArea.graphics.beginFill("#FFF").drawEllipse(
 			-22, -28, 48, 36);
-		hitArea.x = imgW - 24;
+		hitArea.x = image.width - 24;
 	    } else {
 		hitArea.graphics.beginFill("#FFF").drawEllipse(
 			-44, -28, 96, 36);
-		hitArea.x = imgW / 2;
+		hitArea.x = image.width / 2;
 	    }
-	    hitArea.y = imgH / 2;
+	    hitArea.y = image.height / 2;
             bitmap.hitArea = hitArea;
 
             // Wrapper function to provide scope for the event handlers.
@@ -261,16 +238,26 @@ define(function (require) {
 
 			// Which block is this?
 			blk = -1;
-			for (i = 0; i < blockList.length; i++) {
+			for (var i = 0; i < blockList.length; i++) {
 			    if (blockList[i].bitmap == bitmap) {
 				blk = i;
 				break;
 			    }
 			}
+
+			var dx = bitmap.x - oldX;
+			var dy = bitmap.y - oldY;
+
+			// Move any extra parts.
+			if (isExpandableBlock(thisBlock)) {
+			    for (var i = 0; i < blockList[blk].extra_bitmaps.length; i++) {
+				blockList[blk].extra_bitmaps[i].x += dx;
+				blockList[blk].extra_bitmaps[i].y += dy;
+			    }
+			}
+
 			// Move any connected blocks.
 			findDragGroup(blk)
-			var dx = bitmap.x - oldX
-			var dy = bitmap.y - oldY
 			if (dragGroup.length > 0) {
 			    for (b = 0; b < dragGroup.length; b++) {
 				blk = dragGroup[b]
@@ -358,7 +345,7 @@ define(function (require) {
 			    blockList[thisBlock].connections[0] = newBlock;
 			    var connection = blockList[newBlock].connections[newConnection];
 			    if(connection != null) {
-				if (argBlocks.indexOf(blockList[thisBlock].name) != -1) {
+				if (isArgBlock(thisBlock)) {
 				    blockList[connection].connections[0] = null;
 				    moveBlockRelative(connection, 20, 20);
                                 } else {
@@ -628,7 +615,7 @@ define(function (require) {
 		    blockList[blk].image = new Image();
 		    blockList[blk].image.src = blockList[blk].protoblock.getSvgPath();
 		    blockList[blk].image.onload = handleImageLoad;
-		    if (expandableBlocks.indexOf(blockList[blk].name) != -1) {
+		    if (isExpandableBlock(blk)) {
 			blockList[blk].extra_images = [];
 			blockList[blk].extra_images.push(new Image());
 			blockList[blk].extra_images[0].src = blockList[blk].protoblock.getFillerSvgPath();
@@ -700,13 +687,13 @@ define(function (require) {
 	    }
 	    if (blockList[blk].protoblock.name == "number") {
 		blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft - 50) + "px";
+		    x + canvas.offsetLeft + 30) + "px";
 	    } else {
 	    	blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft - 40) + "px";
+		    x + canvas.offsetLeft + 10) + "px";
 	    }
             blockList[blk].label.style.top = Math.round(
-		y + canvas.offsetTop - 15) + "px";
+		y + canvas.offsetTop + 5) + "px";
 	}
 
         function moveBlock(blk, x, y) {
@@ -834,8 +821,7 @@ define(function (require) {
 		runFromBlock(startBlock);
 	    } else {
 		for (blk = 0; blk < stackList.length; blk++) {
-		    if (noRunBlocks.indexOf(
-			blockList[stackList[blk]].name) != -1) {
+		    if (isNoRunBlock(blk)) {
 			continue;
 		    } else {
 			runFromBlock(stackList[blk]);
@@ -921,7 +907,7 @@ define(function (require) {
 	    // (3) Run block below this block, if any;
 	    var nextBlock = blockList[blk].connections[blockList[blk].connections.length - 1];
 	    if (nextBlock != null) {
-		if (argBlocks.indexOf(nextBlock) == -1) {
+		if (!isArgBlock(nextBlock)) {
 		    runFromBlock(nextBlock);
 		}
 	    }
@@ -935,7 +921,7 @@ define(function (require) {
 				   'missing argument', null,
 				   function() {});
 		return null
-	    } else if (valueBlocks.indexOf(blockList[blk].name) != -1) {
+	    } else if (isValueBlock(blk)) {
 		return blockList[blk].value;
 	    } else {
 		return blk;
@@ -953,6 +939,38 @@ define(function (require) {
 	    // Show all the blocks.
 	    for (blk = 0; blk < blockList.length; blk++) {
 		blockList[blk].bitmap.visible = true;
+	    }
+	}
+
+	function isValueBlock(blk) {
+	    if (valueBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function isArgBlock(blk) {
+	    if (argBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function isNoRunBlock(blk) {
+	    if (noRunBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function isExpandableBlock(blk) {
+	    if (expandableBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
 	    }
 	}
 

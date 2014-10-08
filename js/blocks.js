@@ -89,22 +89,22 @@ var numberBlock = new ProtoBlock('number');
 protoBlockList.push(numberBlock);
 numberBlock.palette = numberPalette;
 numberBlock.args = 0;
-numberBlock.docks = [[-16, 22, 'numberout']];
+numberBlock.docks = [[0, 20, 'numberout']];
 
 var repeatBlock = new ProtoBlock('repeat');
 protoBlockList.push(repeatBlock);
 repeatBlock.palette = flowPalette;
 repeatBlock.yoff = 52;
 repeatBlock.args = 2;
-repeatBlock.docks = [[20, 0, 'out'], [110, 17, 'numberin'], [26, 38, 'in'],
-		     [20, 80, 'in']];
+repeatBlock.docks = [[20, 0, 'out'], [115, 20, 'numberin'], [37, 39, 'in'],
+		     [20, 96, 'in']];
 
 var startBlock = new ProtoBlock('start');
 protoBlockList.push(startBlock);
 startBlock.palette = blockPalette;
 startBlock.yoff = 64;
 startBlock.args = 1;
-startBlock.docks = [[20, 0, 'unavailable'], [36, 48, 'in'],
+startBlock.docks = [[20, 0, 'unavailable'], [37, 50, 'in'],
 		    [20, 80, 'unavailable']];
 
 for (blk = 0; blk < protoBlockList.length; blk++) {

@@ -19,6 +19,12 @@ define(function (require) {
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
 
+	if (!Array.prototype.last){
+	    Array.prototype.last = function(){
+		return this[this.length - 1];
+	    };
+	};
+
         // Initialize the activity.
         activity.setup();
 
@@ -147,6 +153,7 @@ define(function (require) {
         }
 
         function handleImageLoad(event) {
+	    // TODO: use shadow
 	    // Load a block
             var image = event.target;
             var bitmap;
@@ -171,30 +178,31 @@ define(function (require) {
 	    bitmap.name = "bmp_" + thisBlock;
 	    bitmap.cursor = "pointer";
 	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
-	    console.log(bitmap);
 
 	    // Expandable blocks have some extra parts.
 	    if (isExpandableBlock(thisBlock)) {
-		blockList[thisBlock].extra_bitmaps = [];
-		extra_bitmaps = [];
 		var yoff = blockList[thisBlock].protoblock.yoff;
-		for (var i = 0; i < blockList[thisBlock].extra_images.length - 1; i++) {
-		    extra_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].extra_images[i]));
-		    blockList[thisBlock].extra_bitmaps.push(extra_bitmaps[i]);
-		    container.addChild(extra_bitmaps[i]);
-		    extra_bitmaps[i].x = blockList[thisBlock].x;
-		    extra_bitmaps[i].y = blockList[thisBlock].y + yoff + i * 18;
-		    extra_bitmaps[i].scaleX = extra_bitmaps[i].scaleY = extra_bitmaps[i].scale = 1;
-		    extra_bitmaps[i].name = "bmp_" + thisBlock + "_filler_" + i;
+
+		blockList[thisBlock].filler_bitmaps = [];
+		var filler_bitmaps = [];
+		for (var i = 0; i < blockList[thisBlock].filler_images.length; i++) {
+		    filler_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].filler_images[i]));
+		    blockList[thisBlock].filler_bitmaps.push(filler_bitmaps[i]);
+		    container.addChild(filler_bitmaps[i]);
+		    filler_bitmaps[i].x = blockList[thisBlock].x;
+		    filler_bitmaps[i].y = blockList[thisBlock].y + yoff + i * 18;
+		    filler_bitmaps[i].scaleX = filler_bitmaps[i].scaleY = filler_bitmaps[i].scale = 1;
+		    filler_bitmaps[i].name = "bmp_" + thisBlock + "_filler_" + i;
 		}
 
-		extra_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].extra_images[i]));
-		blockList[thisBlock].extra_bitmaps.push(extra_bitmaps[i]);
-		container.addChild(extra_bitmaps[i]);
-		extra_bitmaps[i].x = blockList[thisBlock].x;
-		extra_bitmaps[i].y = blockList[thisBlock].y + yoff + i * 18;
-		extra_bitmaps[i].scaleX = extra_bitmaps[i].scaleY = extra_bitmaps[i].scale = 1;
-		extra_bitmaps[i].name = "bmp_" + thisBlock + "_bottom";
+		blockList[thisBlock].bottom_bitmap = null;
+		var bottom_bitmap = new createjs.Bitmap(blockList[thisBlock].bottom_image);
+		blockList[thisBlock].bottom_bitmap = bottom_bitmap;
+		container.addChild(bottom_bitmap);
+		bottom_bitmap.x = blockList[thisBlock].x;
+		bottom_bitmap.y = blockList[thisBlock].y + yoff + i * 18;
+		bottom_bitmap.scaleX = bottom_bitmap.scaleY = bottom_bitmap.scale = 1;
+		bottom_bitmap.name = "bmp_" + thisBlock + "_bottom";
 	    }
 
             // Create a shape that represents the center of the icon.
@@ -218,23 +226,39 @@ define(function (require) {
             // Wrapper function to provide scope for the event handlers.
             (function (target) {
 		var moved = false
-                bitmap.onPress = function (evt) {
-                    // Bump the target in front of its siblings.
-                    container.addChild(target);
-                    var offset = {
-                        x: target.x - evt.stageX,
-                        y: target.y - evt.stageY
-                    };
+		bitmap.addEventListener("click", handleClick);
+		bitmap.addEventListener("mousedown", handleMouseDown);
+		bitmap.addEventListener("mouseover", handleMouseOver);
+		bitmap.addEventListener("mouseout", handleMouseOut);
 
-                    evt.onMouseMove = function (ev) {
+		function handleClick(event) {
+		    if (!moved) {
+			// TODO: run block on click
+			console.log('click');
+		    }
+		}
+
+		function handleMouseDown(event) {
+		    // Bump the target in front of its siblings.
+		    moved = false
+		    container.addChild(target);
+		    var offset = {
+			x: target.x - event.stageX,
+			y: target.y - event.stageY
+		    };
+
+		    event.addEventListener("mousemove", handleMouseMove);
+
+		    // TODO: Use pressmove, pressup??
+		    function handleMouseMove(event) {
 			// reset scale when moving (easier to dock that way)
 			bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
 
 			moved = true;
 			var oldX = bitmap.x;
 			var oldY = bitmap.y;
-                        target.x = ev.stageX + offset.x;
-                        target.y = ev.stageY + offset.y;
+			target.x = event.stageX + offset.x;
+			target.y = event.stageY + offset.y;
 
 			// Which block is this?
 			blk = -1;
@@ -264,24 +288,34 @@ define(function (require) {
 			    }
 			}
 
-                        // Indicate that the stage should be updated
-                        // on the next tick.
-                        update = true;
-                    }
-                }
-                bitmap.onMouseOver = function () {
+			// Indicate that the stage should be updated
+			// on the next tick.
+			update = true;
+		    }
+		}
+
+		function handleMouseOver(event) {
 		    if (activeBlock == null) {
 			target.scaleX = target.scaleY = target.scale * 1.2;
 			activeBlock = thisBlock;
 			update = true;
 		    }
-                }
-                bitmap.onMouseOut = function () {
+		}
+
+		function handleMouseOut(event) {
 		    if (activeBlock != thisBlock) {
 			return;
 		    }
 		    if (moved) {
 			// When a block is moved:
+			// (0) Is it inside of a expandable block?
+			var checkExpandableBlocks = [];
+			var blk = insideExpandableBlock(thisBlock);
+			while (blk != null) {
+			    console.log('pushing ' + blk);
+			    checkExpandableBlocks.push(blk);
+			    blk = insideExpandableBlock(blk);
+			}
 			// (1) Disconnect connection[0];
 			var c = blockList[thisBlock].connections[0];
 			if (c != null) {
@@ -295,13 +329,12 @@ define(function (require) {
 			    }
   			    blockList[thisBlock].connections[0] = null;
 			}
-                        // (2) Look for a new connection;
+			// (2) Look for a new connection;
 			var dx1 = blockList[thisBlock].bitmap.x + 
-				blockList[thisBlock].protoblock.docks[0][0];
+			    blockList[thisBlock].protoblock.docks[0][0];
 			var dy1 = blockList[thisBlock].bitmap.y + 
-				blockList[thisBlock].protoblock.docks[0][1];
-			// Find the nearest dock; if it is close enough,
-			// connect;
+			    blockList[thisBlock].protoblock.docks[0][1];
+			// Find the nearest dock; if it is close enough, connect;
 			var newBlock = null
 			var newConnection = null
 			var min = 400;
@@ -340,8 +373,8 @@ define(function (require) {
 				    blockList[connection].connections[0] = null;
 				    // Fixme: could be more than one block.
 				    moveBlockRelative(connection, 20, 20);
-                                } else {
-				    bottom = findBottomBlock(thisBlock);
+				} else {
+				    var bottom = findBottomBlock(thisBlock);
 				    blockList[connection].connections[0] = bottom;
 				    blockList[bottom].connections[blockList[bottom].connections.length-1] = connection;
 				}
@@ -350,11 +383,22 @@ define(function (require) {
 			    loopCounter = 0
 			    adjustDocks(newBlock);
 			}
-                    }
-                    target.scaleX = target.scaleY = target.scale;
+			// (3) Recheck if it inside of a expandable block
+			var blk = insideExpandableBlock(thisBlock);
+			while (blk != null) {
+			    console.log('pushing ' + blk);
+			    checkExpandableBlocks.push(blk);
+			    blk = insideExpandableBlock(blk);
+			}
+			if (checkExpandableBlocks.length > 0) {
+			    console.log(checkExpandableBlocks);
+			}
+		    }
+		    target.scaleX = target.scaleY = target.scale;
 		    activeBlock = null;
-                    update = true;
-                }
+		    update = true;
+		}
+
             })(bitmap);
 
             document.getElementById("loader").className = "";
@@ -363,10 +407,12 @@ define(function (require) {
 
 	function moveExtraParts(blk, dx, dy) {
 	    // Expandable blocks have extra parts that need attention.
-	    for (var i = 0; i < blockList[blk].extra_bitmaps.length; i++) {
-		blockList[blk].extra_bitmaps[i].x += dx;
-		blockList[blk].extra_bitmaps[i].y += dy;
+	    for (var i = 0; i < blockList[blk].filler_bitmaps.length; i++) {
+		blockList[blk].filler_bitmaps[i].x += dx;
+		blockList[blk].filler_bitmaps[i].y += dy;
 	    }
+	    blockList[blk].bottom_bitmap.x += dx;
+	    blockList[blk].bottom_bitmap.y += dy;
 	}
 
 	function testConnectionType(type1, type2) {
@@ -387,6 +433,8 @@ define(function (require) {
 	}
 
         function handleTurtleLoad(event) {
+	    // TODO: use rotation attribute of bitmap
+
 	    // Load the turtle
             var image = event.target;
             var imgW = image.width;
@@ -410,7 +458,7 @@ define(function (require) {
 
 	    // Hide all turtles except for turtle 0 on load().
 	    if (turtle_bitmaps.length > 1) {
-		turtle_bitmaps[turtle_bitmaps.length - 1].visible = false
+		turtle_bitmaps.last().visible = false
 	    }
 
             bitmap.x = turtleX2screenX(turtleX);
@@ -499,43 +547,61 @@ define(function (require) {
 	function adjustDocks(blk) {
 	    // Give a block, adjust the dock positions
 	    // of all of the blocks connected to it
-	    // (and their corresponding labels).
 
-	    // FIXME: there is an infinite loop in here somewhere.
+	    // Do we need these? All blocks have connections.
 	    if (blockList[blk].connections == null) {
+		console.log('saw a block with null connections: ' + blk);
 		return;
 	    }
 	    if (blockList[blk].connections.length == 0) {
+		console.log('saw a block with [] connections: ' + blk);
 		return;
 	    }
+
 	    loopCounter += 1;
-	    if (loopCounter > blockList.length) {
+	    if (loopCounter > blockList.length * 2) {
+		// FIXME: there is an infinite loop in here somewhere.
 		console.log('infinite loop encountered while adjusting docks');
+		for (blk = 0; blk < blockList.length; blk++) {
+		    console.log(blk + ': ' + blockList[blk].connections);
+		}
 		return
 	    }
-	    for (c = 1; c < blockList[blk].connections.length; c++) {
+
+	    // Walk through each connection...
+	    for (var c = 1; c < blockList[blk].connections.length; c++) {
+		// Get the dock position for this connection.
 		var bdock = blockList[blk].protoblock.docks[c];
-		cblk = blockList[blk].connections[c];
+
+		// Find the connecting block.
+		var cblk = blockList[blk].connections[c];
+		// Nothing connected here so continue to the next connection.
 		if (cblk == null) {
-		    return
+		    continue;
 		}
-		for (b = 0; b < blockList[cblk].connections.length; b++) {
+
+		// Find the dock position in the connected block.
+		for (var b = 0; b < blockList[cblk].connections.length; b++) {
 		    if (blockList[cblk].connections[b] == blk) {
 			break
 		    }
 		}
 		var cdock = blockList[cblk].protoblock.docks[b];
-		dx = bdock[0] - cdock[0]
-		dy = bdock[1] - cdock[1]
+
+		// Move the connected block.
+		var dx = bdock[0] - cdock[0];
+		var dy = bdock[1] - cdock[1];
 		if (blockList[blk].bitmap == null) {
-                    nx = blockList[blk].x + dx;
-                    ny = blockList[blk].y + dy;
+                    var nx = blockList[blk].x + dx;
+                    var ny = blockList[blk].y + dy;
 		} else {
-                    nx = blockList[blk].bitmap.x + dx;
-                    ny = blockList[blk].bitmap.y + dy;
+                    var nx = blockList[blk].bitmap.x + dx;
+                    var ny = blockList[blk].bitmap.y + dy;
 		}
 		moveBlock(cblk, nx, ny);
-		adjustDocks(cblk)
+
+		// Recurse on connected blocks.
+		adjustDocks(cblk);
 	    }
 	}
 
@@ -543,6 +609,7 @@ define(function (require) {
 	    // Generate a drag group from blocks connected to blk
 	    dragGroup = [];
             calculateDragGroup(blk);
+	    console.log(dragGroup);
         }
 
         function calculateDragGroup(blk) {
@@ -550,18 +617,43 @@ define(function (require) {
 	    if (blk == null) {
 		return;
 	    }
-	    dragGroup.push(blk)
+	    dragGroup.push(blk);
+
+	    // As before, does these ever happen?
 	    if (blockList[blk].connections == null) {
 		return;
 	    }
 	    if (blockList[blk].connections.length == 0) {
 		return;
 	    }
-	    for (c = 1; c < blockList[blk].connections.length; c++) {
-		cblk = blockList[blk].connections[c];
+
+	    console.log(blockList[blk].connections);
+	    for (var c = 1; c < blockList[blk].connections.length; c++) {
+		var cblk = blockList[blk].connections[c];
 		if (cblk != null) {
 		    // Recurse
 		    calculateDragGroup(cblk);
+		}
+	    }
+	}
+
+        function insideExpandableBlock(blk) {
+	    // Returns containing expandable block or null
+	    if (blockList[blk].connections[0] == null) {
+		console.log('returning null')
+		return null;
+	    } else {
+		var cblk = blockList[blk].connections[0];
+		if (isExpandableBlock(cblk)) {
+		    // If it is the last connection, keep searching.
+		    if (blk == blockList[cblk].connections.last()) {
+			return insideExpandableBlock(cblk);
+		    } else {
+			console.log('returning ' + cblk)
+			return cblk;
+		    }
+		} else {
+		    return insideExpandableBlock(cblk);
 		}
 	    }
 	}
@@ -604,8 +696,8 @@ define(function (require) {
 	    if (blockList[blk].connections.length == 0) {
 		return blk;
 	    }
-	    while (blockList[blk].connections[blockList[blk].connections.length - 1] != null) {
-		blk = blockList[blk].connections[blockList[blk].connections.length - 1];
+	    while (blockList[blk].connections.last() != null) {
+		blk = blockList[blk].connections.last();
 	    }
 	    return blk;
 	}
@@ -618,11 +710,11 @@ define(function (require) {
 		    blockList[blk].image.src = blockList[blk].protoblock.getSvgPath();
 		    blockList[blk].image.onload = handleImageLoad;
 		    if (isExpandableBlock(blk)) {
-			blockList[blk].extra_images = [];
-			blockList[blk].extra_images.push(new Image());
-			blockList[blk].extra_images[0].src = blockList[blk].protoblock.getFillerSvgPath();
-			blockList[blk].extra_images.push(new Image());
-			blockList[blk].extra_images[1].src = blockList[blk].protoblock.getBottomSvgPath();
+			blockList[blk].filler_images = [];
+			blockList[blk].filler_images.push(new Image());
+			blockList[blk].filler_images[0].src = blockList[blk].protoblock.getFillerSvgPath();
+			blockList[blk].bottom_image = new Image();
+			blockList[blk].bottom_image.src = blockList[blk].protoblock.getBottomSvgPath();
 		    }
 		}
 	    }
@@ -811,10 +903,6 @@ define(function (require) {
 		}
 	    }
 
-	    for (blk = 0; blk < blockList.length; blk++) {
-		console.log(blk + ': ' + blockList[blk].connections);
-	    }
-
 	    // Execute turtle code here...
 	    // (1) Find the start block (or the top of each stack).
 	    var startBlock = null
@@ -917,7 +1005,7 @@ define(function (require) {
 	    }
 
 	    // (3) Run block below this block, if any;
-	    var nextBlock = blockList[blk].connections[blockList[blk].connections.length - 1];
+	    var nextBlock = blockList[blk].connections.last();
 	    if (nextBlock != null) {
 		if (!isArgBlock(nextBlock)) {
 		    runFromBlock(nextBlock);

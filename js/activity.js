@@ -250,26 +250,17 @@ define(function (require) {
 
 			// Move any extra parts.
 			if (isExpandableBlock(thisBlock)) {
-			    for (var i = 0; i < blockList[blk].extra_bitmaps.length; i++) {
-				blockList[blk].extra_bitmaps[i].x += dx;
-				blockList[blk].extra_bitmaps[i].y += dy;
-			    }
+			    moveExtraParts(thisBlock, dx, dy);
 			}
 
 			// Move any connected blocks.
 			findDragGroup(blk)
 			if (dragGroup.length > 0) {
-			    for (b = 0; b < dragGroup.length; b++) {
+			    for (var b = 0; b < dragGroup.length; b++) {
 				blk = dragGroup[b]
-				if (b == 0) {
-				    // Already moved above.
-				} else {
-				    blockList[blk].bitmap.x += dx
-				    blockList[blk].bitmap.y += dy
+				if (b != 0) {
+				    moveBlockRelative(blk, dx, dy);
 				}
-				adjustLabelPosition(
-				    blk, blockList[blk].bitmap.x,
-				    blockList[blk].bitmap.y);
 			    }
 			}
 
@@ -347,6 +338,7 @@ define(function (require) {
 			    if(connection != null) {
 				if (isArgBlock(thisBlock)) {
 				    blockList[connection].connections[0] = null;
+				    // Fixme: could be more than one block.
 				    moveBlockRelative(connection, 20, 20);
                                 } else {
 				    bottom = findBottomBlock(thisBlock);
@@ -368,6 +360,14 @@ define(function (require) {
             document.getElementById("loader").className = "";
             createjs.Ticker.addEventListener("tick", tick);
         }
+
+	function moveExtraParts(blk, dx, dy) {
+	    // Expandable blocks have extra parts that need attention.
+	    for (var i = 0; i < blockList[blk].extra_bitmaps.length; i++) {
+		blockList[blk].extra_bitmaps[i].x += dx;
+		blockList[blk].extra_bitmaps[i].y += dy;
+	    }
+	}
 
 	function testConnectionType(type1, type2) {
 	    // Can these two blocks dock?
@@ -525,12 +525,14 @@ define(function (require) {
 		    }
 		}
 		var cdock = blockList[cblk].protoblock.docks[b];
+		dx = bdock[0] - cdock[0]
+		dy = bdock[1] - cdock[1]
 		if (blockList[blk].bitmap == null) {
-                    nx = blockList[blk].x + bdock[0] - cdock[0]
-                    ny = blockList[blk].y + bdock[1] - cdock[1]
+                    nx = blockList[blk].x + dx;
+                    ny = blockList[blk].y + dy;
 		} else {
-                    ny = blockList[blk].bitmap.y + bdock[1] - cdock[1]
-                    nx = blockList[blk].bitmap.x + bdock[0] - cdock[0]
+                    nx = blockList[blk].bitmap.x + dx;
+                    ny = blockList[blk].bitmap.y + dy;
 		}
 		moveBlock(cblk, nx, ny);
 		adjustDocks(cblk)
@@ -699,14 +701,21 @@ define(function (require) {
         function moveBlock(blk, x, y) {
 	    // Move a block (and its label) to x, y.
 	    if (blockList[blk].bitmap == null) {
-		    blockList[blk].x = x
-		    blockList[blk].y = y
-		} else {
-		    blockList[blk].bitmap.x = x
-		    blockList[blk].bitmap.y = y
-		    blockList[blk].x = blockList[blk].bitmap.x
-		    blockList[blk].y = blockList[blk].bitmap.y
-		}
+		dx = x - blockList[blk].x;
+		dy = y - blockList[blk].y;
+		blockList[blk].x = x
+		blockList[blk].y = y
+	    } else {
+		dx = x - blockList[blk].bitmap.x;
+		dy = y - blockList[blk].bitmap.y;
+		blockList[blk].bitmap.x = x
+		blockList[blk].bitmap.y = y
+		blockList[blk].x = blockList[blk].bitmap.x
+		blockList[blk].y = blockList[blk].bitmap.y
+	    }
+	    if (isExpandableBlock(blk)) {
+		moveExtraParts(blk, dx, dy);
+	    }
 	    adjustLabelPosition(blk, x, y);
 	}
 
@@ -721,6 +730,9 @@ define(function (require) {
 		    blockList[blk].x = blockList[blk].bitmap.x
 		    blockList[blk].y = blockList[blk].bitmap.y
 		}
+	    if (isExpandableBlock(blk)) {
+		moveExtraParts(blk, dx, dy);
+	    }
 	    adjustLabelPosition(blk, blockList[blk].x, blockList[blk].y);
 	}
 

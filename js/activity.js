@@ -312,7 +312,6 @@ define(function (require) {
 			var checkExpandableBlocks = [];
 			var blk = insideExpandableBlock(thisBlock);
 			while (blk != null) {
-			    console.log('pushing ' + blk);
 			    checkExpandableBlocks.push(blk);
 			    blk = insideExpandableBlock(blk);
 			}
@@ -331,29 +330,28 @@ define(function (require) {
 			}
 			// (2) Look for a new connection;
 			var dx1 = blockList[thisBlock].bitmap.x + 
-			    blockList[thisBlock].protoblock.docks[0][0];
+			    blockList[thisBlock].docks[0][0];
 			var dy1 = blockList[thisBlock].bitmap.y + 
-			    blockList[thisBlock].protoblock.docks[0][1];
+			    blockList[thisBlock].docks[0][1];
 			// Find the nearest dock; if it is close enough, connect;
 			var newBlock = null
 			var newConnection = null
 			var min = 400;
-			var blkType = blockList[thisBlock].protoblock.docks[0][2]
+			var blkType = blockList[thisBlock].docks[0][2]
 			for (b = 0; b < blockList.length; b++) {
 			    // Don't connect to yourself.
 			    if (b == thisBlock) {
 				continue;
 			    }
 			    for (c = 1; c < blockList[b].connections.length; c++) {
-				// TODO: handle block expansion/contraction
 				// Look for available connections
 				if (testConnectionType(
 				    blkType,
-				    blockList[b].protoblock.docks[c][2])) {
+				    blockList[b].docks[c][2])) {
 				    dx2 = blockList[b].bitmap.x + 
-					blockList[b].protoblock.docks[c][0];
+					blockList[b].docks[c][0];
 				    dy2 = blockList[b].bitmap.y + 
-					blockList[b].protoblock.docks[c][1];
+					blockList[b].docks[c][1];
 				    dist = (dx2 - dx1) * (dx2 - dx1) + 
 					(dy2 - dy1) * (dy2 - dy1);
 				    if (dist < min) {
@@ -386,7 +384,6 @@ define(function (require) {
 			// (3) Recheck if it inside of a expandable block
 			var blk = insideExpandableBlock(thisBlock);
 			while (blk != null) {
-			    console.log('pushing ' + blk);
 			    checkExpandableBlocks.push(blk);
 			    blk = insideExpandableBlock(blk);
 			}
@@ -568,10 +565,13 @@ define(function (require) {
 		    filler_image = blockList[blk].filler_images.pop();
 		    filler_bitmap = blockList[blk].filler_bitmaps.pop();
 		    blockList[blk].myContainer.removeChild(filler_bitmap);
+		    blockList[blk].docks.last()[1] -= 40;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		blockList[blk].bottom_bitmap.y = blockList[blk].y + yoff + j * 18;
-		// adjust the docks when we are done
+		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + 18 + (j - 1) * 40;
+		if (blockList[blk].connections.last() != null) {
+		    adjustDocks(blk);
+		}
                 update = true;
 	    } else if (size > blockList[blk].filler_bitmaps.length) {
 		var n = size - j;
@@ -580,25 +580,28 @@ define(function (require) {
 		    var c = i + j;
 
 		    blockList[blk].filler_images.push(new Image());
-		    blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerSvgPath();
+		    blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerLargeSvgPath();
 		    filler_bitmap = new createjs.Bitmap(blockList[blk].filler_images.last())
 		    blockList[blk].filler_bitmaps.push(filler_bitmap);
 		    blockList[blk].myContainer.addChild(filler_bitmap);
-		    filler_bitmap.x = blockList[blk].x;
-		    filler_bitmap.y = blockList[blk].y + yoff + c * 18;
+		    filler_bitmap.x = blockList[blk].bitmap.x;
+		    filler_bitmap.y = blockList[blk].bitmap.y + yoff + 18 + i * 40;
 		    filler_bitmap.scaleX = filler_bitmap.scaleY = filler_bitmap.scale = 1;
 		    filler_bitmap.name = "bmp_" + blk + "_filler_" + c;
-
+		    blockList[blk].docks.last()[1] += 40;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		blockList[blk].bottom_bitmap.y = blockList[blk].y + yoff + j * 18;
-		// adjust the docks when we are done
+		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + 18 + (j - 1) * 40;
+		if (blockList[blk].connections.last() != null) {
+		    adjustDocks(blk);
+		}
                 update = true;
 	    }	    
 	}
 
 	function getStackSize(blk) {
 	    // how many block units in this stack?
+	    // TODO: Fix nesting
 	    var size = 0;
 	    if (blk == null) {
 		return size;
@@ -646,7 +649,7 @@ define(function (require) {
 	    // Walk through each connection...
 	    for (var c = 1; c < blockList[blk].connections.length; c++) {
 		// Get the dock position for this connection.
-		var bdock = blockList[blk].protoblock.docks[c];
+		var bdock = blockList[blk].docks[c];
 
 		// Find the connecting block.
 		var cblk = blockList[blk].connections[c];
@@ -661,7 +664,7 @@ define(function (require) {
 			break
 		    }
 		}
-		var cdock = blockList[cblk].protoblock.docks[b];
+		var cdock = blockList[cblk].docks[b];
 
 		// Move the connected block.
 		var dx = bdock[0] - cdock[0];
@@ -684,7 +687,6 @@ define(function (require) {
 	    // Generate a drag group from blocks connected to blk
 	    dragGroup = [];
             calculateDragGroup(blk);
-	    console.log(dragGroup);
         }
 
         function calculateDragGroup(blk) {
@@ -702,7 +704,6 @@ define(function (require) {
 		return;
 	    }
 
-	    console.log(blockList[blk].connections);
 	    for (var c = 1; c < blockList[blk].connections.length; c++) {
 		var cblk = blockList[blk].connections[c];
 		if (cblk != null) {
@@ -715,7 +716,6 @@ define(function (require) {
         function insideExpandableBlock(blk) {
 	    // Returns containing expandable block or null
 	    if (blockList[blk].connections[0] == null) {
-		console.log('returning null')
 		return null;
 	    } else {
 		var cblk = blockList[blk].connections[0];
@@ -724,7 +724,6 @@ define(function (require) {
 		    if (blk == blockList[cblk].connections.last()) {
 			return insideExpandableBlock(cblk);
 		    } else {
-			console.log('returning ' + cblk)
 			return cblk;
 		    }
 		} else {
@@ -913,50 +912,55 @@ define(function (require) {
             }
         }
 
+	function newBlock(proto) {
+	    blockList.push(new Block(proto));
+	    blockList.last().copyDocks();
+	}
+
         function loadBlocks() {
 	    // This is temporary code for testing.
 
 	    // Add the blocks
-	    blockList.push(new Block(clearBlock));
+	    newBlock(clearBlock);
 	    blockList[0].x = 300;
 	    blockList[0].y = 50;
 	    blockList[0].connections = [null, 1];
-	    blockList.push(new Block(forwardBlock));
+	    newBlock(forwardBlock);
 	    blockList[1].connections = [0, 2, 3];
-	    blockList.push(new Block(numberBlock));
+	    newBlock(numberBlock);
 	    blockList[2].value = 100;
 	    blockList[2].connections = [1];
-	    blockList.push(new Block(rightBlock));
+	    newBlock(rightBlock);
 	    blockList[3].connections = [1, 4, 5];
-	    blockList.push(new Block(numberBlock));
+	    newBlock(numberBlock);
 	    blockList[4].value = 90;
 	    blockList[4].connections = [3];
-	    blockList.push(new Block(rightBlock));
+	    newBlock(rightBlock);
 	    blockList[5].connections = [3, 6, null];
-	    blockList.push(new Block(numberBlock));
+	    newBlock(numberBlock);
 	    blockList[6].value = 45;
 	    blockList[6].connections = [5];
 
-	    blockList.push(new Block(repeatBlock));
+	    newBlock(repeatBlock);
 	    blockList[7].x = 100;
 	    blockList[7].y = 50;
 	    blockList[7].connections = [null, 8, null, null];
 
-	    blockList.push(new Block(numberBlock));
+	    newBlock(numberBlock);
 	    blockList[8].value = 4;
 	    blockList[8].connections = [7];
 
-	    blockList.push(new Block(startBlock));
+	    newBlock(startBlock);
 	    blockList[9].x = 400;
 	    blockList[9].y = 50;
 	    blockList[9].connections = [null, null, null];
 
-	    blockList.push(new Block(repeatBlock));
+	    newBlock(repeatBlock);
 	    blockList[10].x = 100;
 	    blockList[10].y = 200;
 	    blockList[10].connections = [null, 11, null, null];
 
-	    blockList.push(new Block(numberBlock));
+	    newBlock(numberBlock);
 	    blockList[11].value = 8;
 	    blockList[11].connections = [10];
 
@@ -983,10 +987,8 @@ define(function (require) {
 	    // (1) Find the start block (or the top of each stack).
 	    var startBlock = null
 	    findStacks();
-	    console.log(stackList);
 	    for (var blk = 0; blk < stackList.length; blk++) {
 		if (blockList[stackList[blk]].name == "start") {
-		    console.log('found a start block');
 		    startBlock = stackList[blk];
 		    break;
 		}
@@ -1012,14 +1014,13 @@ define(function (require) {
 	    if (turtle_delay == null) {
 		runFromBlockNow(blk);
 	    } else {
-		console.log('running ' + blk);
 		if (blk == null) {
 		    activity.showAlert('WARNING',
 				       'trying to run null block', null,
 				       function() {});
 		    return;
 		}
-		console.log(blockList[blk].name)
+		console.log('running ' + blk + ': ' + blockList[blk].name)
 		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1.2;
 		runFromBlockNow(blk);
 		// setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
@@ -1032,7 +1033,6 @@ define(function (require) {
 	    var args = [];
 	    if(blockList[blk].protoblock.args > 0) {
 		for (arg = 1; arg < blockList[blk].protoblock.args + 1; arg++) {
-		    console.log('args.push: ' + parseArg(blockList[blk].connections[arg]));
 		    args.push(parseArg(blockList[blk].connections[arg]));
 		}
 	    }
@@ -1158,7 +1158,6 @@ define(function (require) {
 
         function doRepeat(count, blk) {
 	    for (var i = 0; i < count; i++) {
-		console.log('repeat: i = ' + i)
 		runFromBlock(blk);
 	    }
 	}

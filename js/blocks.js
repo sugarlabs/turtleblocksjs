@@ -49,6 +49,10 @@ ProtoBlock.prototype.getFillerSvgPath = function() {
     return 'images/' + this.name + '-filler.svg';
 }
 
+ProtoBlock.prototype.getFillerLargeSvgPath = function() {
+    return 'images/' + this.name + '-filler-large.svg';
+}
+
 ProtoBlock.prototype.getBottomSvgPath = function() {
     return 'images/' + this.name + '-bottom.svg';
 }
@@ -106,7 +110,7 @@ protoBlockList.push(startBlock);
 startBlock.palette = blockPalette;
 startBlock.yoff = 64;
 startBlock.args = 1;
-startBlock.docks = [[20, 0, 'unavailable'], [37, 50, 'in'],
+startBlock.docks = [[20, 0, 'unavailable'], [37, 54, 'in'],
 		    [20, 80, 'unavailable']];
 
 for (blk = 0; blk < protoBlockList.length; blk++) {
@@ -123,7 +127,14 @@ function Block (protoblock) {
     this.bitmap = null;
     this.x = 0;
     this.y = 0;
+    this.docks = [];
     this.connections = [];
+}
+
+Block.prototype.copyDocks = function() {
+    for (var i = 0; i < this.protoblock.docks.length; i++) {
+	this.docks.push(this.protoblock.docks[i]);
+    }
 }
 
 Block.prototype.getInfo = function() {

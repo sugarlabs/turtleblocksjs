@@ -62,8 +62,12 @@ define(function (require) {
 
 	// Group of blocks being dragged
 	var dragGroup = [];
-	// And the blocks at the tops of stacks
+
+	// The blocks at the tops of stacks
         var stackList = [];
+
+	// Expandable blocks
+        var expandablesList = [];
 
         var color;
         var stroke;
@@ -619,35 +623,29 @@ define(function (require) {
 	function getStackSize(blk) {
 	    // How many block units (42 px) in this stack?
 	    var size = 0;
+
 	    if (blk == null) {
-		console.log('getStackSize: null block');
 		return size;
 	    }
 
-	    console.log('getStackSize: ' + blockList[blk].name);
-
 	    if (isExpandableBlock(blk)) {
 		// what is inside the clamp?
-		console.log('getStackSize: expandable');
 		c = blockList[blk].connections.length - 2;
-		console.log('checking connection ' + blockList[blk].connections[c]);
 		size = getStackSize(blockList[blk].connections[c]);
 		if (size == 0) {
 		    size = 1;  // minimum of 1 slot in clamp
 		}
 		size += 2;  // add top and bottom of clamp
-		console.log('getStackSize: expandable size is: ' + size);
-	    }
-	    if (size == 0) {
+	    } else {
 		size = blockList[blk].protoblock.size;
 	    }
 
+	    // check on any connected blocks
 	    var cblk = blockList[blk].connections.last();
 	    while (cblk != null) {
 		size += getStackSize(cblk);
 		cblk = blockList[cblk].connections.last();
 	    }
-	    console.log('getStackSize returning ' + size);
 	    return size;
 	}
 
@@ -771,6 +769,37 @@ define(function (require) {
 	    }
 	}
 
+	function findExpandables() {
+	    // Find any expandable blocks.
+	    expandablesList = [];
+	    
+	    findStacks();  // We start by finding the stacks
+	    for (i = 0; i < stackList.length; i++) {
+		searchForExpandables(stackList[i]);
+	    }
+	}
+
+	function searchForExpandables(blk) {
+	    // Find the expandable blocks below blk in a stack.
+	    while (blk != null) {
+		if (isExpandableBlock(blk)) {
+		    expandablesList.push(blk);
+		    c = blockList[blk].connections.length - 2;
+		    searchForExpandables(blockList[blk].connections[c]);
+		}
+		blk = blockList[blk].connections.last();
+	    }
+	}
+
+	function expandExpandables() {
+	    // Expand expandable blocks as needed.
+	    findExpandables();
+	    for (i = 0; i < expandablesList.length; i++) {
+		adjustExpandableBlock(expandablesList[i]);		
+	    }
+	    update = true;
+	}
+
         function findTopBlock(blk) {
 	    // Find the top block in a stack.
 	    if (blk == null) {
@@ -805,7 +834,7 @@ define(function (require) {
 	    return blk;
 	}
 
-        function createBlockImages() {
+        function updateBlockImages() {
 	    // Create the block image if it doesn't yet exist.
             for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].image == null) {
@@ -1002,18 +1031,18 @@ define(function (require) {
 	    blockList[15].value = 100;
 	    blockList[15].connections = [13];
 
-	    console.log(blockList);
-
-	    createBlockImages();
+	    updateBlockImages();
 	    updateBlockLabels();
 
-	    for (blk = 0; blk < blockList.length; blk++) {
-		// alert(blockList[blk].getInfo());
-	    }
+	    findExpandables();
+	    console.log(expandablesList);
         }
 
         function runLogoCommands() {
 	    // We run the logo commands here.
+
+	    // Where to put this???
+	    expandExpandables();
 
 	    // First we need to reconcile the values in all the number blocks
 	    // with their associated textareas.
@@ -1216,7 +1245,6 @@ define(function (require) {
 
 	// Math functions
 	function doPlus(a, b) {
-	    console.log(a + ' + ' + b);
 	    return Number(a) + Number(b);
 	}
 

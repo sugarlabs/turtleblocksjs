@@ -96,6 +96,12 @@ numberBlock.palette = numberPalette;
 numberBlock.args = 0;
 numberBlock.docks = [[0, 20, 'numberout']];
 
+var textBlock = new ProtoBlock('text');
+protoBlockList.push(textBlock);
+textBlock.palette = textPalette;
+textBlock.args = 0;
+textBlock.docks = [[0, 20, 'textout']];
+
 var plusBlock = new ProtoBlock('plus');
 protoBlockList.push(plusBlock);
 plusBlock.palette = numberPalette;
@@ -128,6 +134,22 @@ startBlock.args = 1;
 startBlock.docks = [[20, 0, 'unavailable'], [38, 55, 'in'],
 		    [20, 80, 'unavailable']];
 
+var runBlock = new ProtoBlock('run');
+protoBlockList.push(runBlock);
+runBlock.palette = blockPalette;
+runBlock.args = 1;
+runBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+
+var actionBlock = new ProtoBlock('action');
+protoBlockList.push(actionBlock);
+actionBlock.palette = blockPalette;
+actionBlock.yoff = 64;
+actionBlock.foff = 22;
+actionBlock.loff = 42;
+actionBlock.args = 1;
+actionBlock.docks = [[20, 0, 'unavailable'], [98, 20, 'textin'],
+		     [38, 55, 'in'], [20, 80, 'unavailable']];
+
 // Define block instance objects
 function Block (protoblock) {
     this.protoblock = protoblock;
@@ -156,16 +178,16 @@ Block.prototype.getInfo = function() {
 var blockList = [];
 
 // Blocks that are expandable.
-var expandableBlocks = ["repeat", "start", "plus"];
+var expandableBlocks = ["repeat", "start", "plus", "action"];
 
 // Blocks that are used as arguments to other blocks
-var argBlocks = ["number", "plus"];
+var argBlocks = ["number", "text", "plus"];
 
 // Blocks that return values
-var valueBlocks = ["number"];
+var valueBlocks = ["number", "text"];
 
 // Blocks that cannot be run on their own
-var noRunBlocks = ["hat"];
+var noRunBlocks = ["action"];
 
 // Label elements for each of our blocks...
 var arrLabels = [];

@@ -5,6 +5,7 @@
   * cascading of expandable blocks
   * arithmetic functions (arg parsing)
   * setting expandable blocks on run (should be on load)
+  * rotate turtle using easeljs rotation
 
 TODO:
   * expanding arithmetic blocks
@@ -13,7 +14,6 @@ TODO:
   * booleans
   * pen palette
   * sensors/media
-  * rotate turtle using easeljs rotation
   * decide on a palette strategy
   * implement more sophisticated blocks
   * add controls for rabbit vs turtle

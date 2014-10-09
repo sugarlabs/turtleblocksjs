@@ -66,6 +66,9 @@ define(function (require) {
 	// The blocks at the tops of stacks
         var stackList = [];
 
+	// The list of [action name, block]
+        var actionList = [];
+
 	// Expandable blocks
         var expandablesList = [];
 
@@ -198,9 +201,9 @@ define(function (require) {
             var hitArea = new createjs.Shape();
             // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
-	    // * number blocks have a handle on the right side;
+	    // * number and text blocks have a handle on the right side;
 	    // * other blocks should be sensitive in the middle.
-	    if (blockList[thisBlock].name == "number") {
+	    if (isValueBlock(thisBlock)) {
 		hitArea.graphics.beginFill("#FFF").drawEllipse(
 			-22, -28, 48, 36);
 		hitArea.x = image.width - 24;
@@ -423,6 +426,12 @@ define(function (require) {
 		return true;
 	    }
 	    if (type1 == 'numberout' && type2 == 'numberin') {
+		return true;
+	    }
+	    if (type1 == 'textin' && type2 == 'textout') {
+		return true;
+	    }
+	    if (type1 == 'textout' && type2 == 'textin') {
 		return true;
 	    }
 	    return false;
@@ -846,11 +855,20 @@ define(function (require) {
         function updateBlockLabels() {
 	    // The modifiable labels are stored in the DOM with a
 	    // unique id for each block.  For the moment, we only have
-	    // labels for number blocks.
+	    // labels for number and text blocks.
             var html = ''
 	    var text = ''
             for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].name == "number") {
+		    arrLabels[blk] = "_" + blk.toString();
+		    text = '<textarea id="_' + arrLabels[blk] +
+			'" style="position: absolute; ' + 
+			'-webkit-user-select: text;" ' +
+			// 'onselect="labelSelected", ' +
+			'onchanged="labelChanged", ' +
+			'cols="6", rows="1", maxlength="6">' +
+			blockList[blk].value.toString() + '</textarea>'
+		} else if (blockList[blk].name == "text") {
 		    arrLabels[blk] = "_" + blk.toString();
 		    text = '<textarea id="_' + arrLabels[blk] +
 			'" style="position: absolute; ' + 
@@ -876,7 +894,7 @@ define(function (require) {
 		    var x = blockList[blk].bitmap.x
 		    var y = blockList[blk].bitmap.y
 		}
-		if (blockList[blk].name == "number") {
+		if (isValueBlock(blk)) {
 		    blockList[blk].label = document.getElementById("_" + arrLabels[blk])
 		    // Not sure why this event is not triggered, but
 		    // it doesn't matter as long as we read from the
@@ -904,6 +922,9 @@ define(function (require) {
 		return;
 	    }
 	    if (blockList[blk].protoblock.name == "number") {
+		blockList[blk].label.style.left = Math.round(
+		    x + canvas.offsetLeft + 30) + "px";
+	    } else if (blockList[blk].protoblock.name == "text") {
 		blockList[blk].label.style.left = Math.round(
 		    x + canvas.offsetLeft + 30) + "px";
 	    } else {
@@ -1022,6 +1043,22 @@ define(function (require) {
 	    blockList[15].value = 100;
 	    blockList[15].connections = [13];
 
+	    newBlock(actionBlock);
+	    blockList[16].connections = [null, 17, null, null];
+	    blockList[16].x = 100;
+	    blockList[16].y = 50;
+	    newBlock(textBlock);
+	    blockList[17].connections = [16];
+	    blockList[17].value = "square";
+
+	    newBlock(runBlock);
+	    blockList[18].x = 100;
+	    blockList[18].y = 300;
+	    blockList[18].connections = [null, 19, null];
+	    newBlock(textBlock);
+	    blockList[19].connections = [18];
+	    blockList[19].value = "square";
+
 	    updateBlockImages();
 	    updateBlockLabels();
         }
@@ -1032,7 +1069,7 @@ define(function (require) {
 	    // Where to put this???
 	    expandExpandables();
 
-	    // First we need to reconcile the values in all the number blocks
+	    // First we need to reconcile the values in all the value blocks
 	    // with their associated textareas.
 	    for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].label != null) {
@@ -1040,14 +1077,23 @@ define(function (require) {
 		}
 	    }
 
-	    // Execute turtle code here...
-	    // (1) Find the start block (or the top of each stack).
+	    // Execute turtle code here...  (1) Find the start block
+	    // (or the top of each stack) and build a list of all of
+	    // the named action stacks (wishing I had a Python
+	    // dictionary about now.)
 	    var startBlock = null
 	    findStacks();
+	    actionList = [];
 	    for (var blk = 0; blk < stackList.length; blk++) {
 		if (blockList[stackList[blk]].name == "start") {
 		    startBlock = stackList[blk];
-		    break;
+		} else if (blockList[stackList[blk]].name == "action") {
+		    // does the action stack have a name?
+		    c = blockList[stackList[blk]].connections[1];
+		    b = blockList[stackList[blk]].connections[2];
+		    if (c != null && b != null) {
+			actionList.push([blockList[c].value, b]);
+		    }
 		}
 	    }
 
@@ -1095,11 +1141,15 @@ define(function (require) {
 	    }
 
 	    // (2) Run function associated with the block;
-	    console.log('running ' + blockList[blk].name + ': ' + args);
 	    switch (blockList[blk].name) {
 	    case 'start':
  		if (args.length == 1) {
 		    doStart(args[0]);
+		}
+		break;
+	    case 'run':
+ 		if (args.length == 1) {
+		    doRun(args[0]);
 		}
 		break;
 	    case 'repeat':
@@ -1225,6 +1275,16 @@ define(function (require) {
 	    runFromBlock(blk);
 	}
 
+	function doRun(name) {
+	    // run the stack with name == name
+	    for (i = 0; i < actionList.length; i++) {
+		if (actionList[i][0] == name) {
+		    runFromBlock(actionList[i][1]);
+		    break;
+		}
+	    }
+	}
+
         function doRepeat(count, blk) {
 	    for (var i = 0; i < count; i++) {
 		runFromBlock(blk);
@@ -1246,9 +1306,10 @@ define(function (require) {
             color = colors[turtleColor];
             stroke = turtleStroke;
 	    // new turtle point
+	    var rad = turtleOrientation * Math.PI / 180.0;
 	    var newPt = new createjs.Point(
-		oldPt.x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
-		oldPt.y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
+		oldPt.x + Number(steps) * Math.sin(rad),
+		oldPt.y + Number(steps) * Math.cos(rad))
 	    moveTurtle(newPt.x, newPt.y, true);
 	    turtle_bitmap.x = turtleX2screenX(newPt.x);
 	    turtle_bitmap.y = invertY(newPt.y);
@@ -1258,8 +1319,6 @@ define(function (require) {
 	    // Turn right and display corresponding turtle graphic.
 	    turtleOrientation += Number(degrees);
 	    turtleOrientation %= 360;
-            var t = Math.round(turtleOrientation + 7.5) % 360 / (360 / 24) | 0;
-
 	    turtle_bitmap.rotation = turtleOrientation;
             update = true;
 	}

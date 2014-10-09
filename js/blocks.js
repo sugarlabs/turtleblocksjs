@@ -98,7 +98,7 @@ numberBlock.docks = [[0, 20, 'numberout']];
 
 var textBlock = new ProtoBlock('text');
 protoBlockList.push(textBlock);
-textBlock.palette = textPalette;
+textBlock.palette = blockPalette;
 textBlock.args = 0;
 textBlock.docks = [[0, 20, 'textout']];
 
@@ -147,7 +147,7 @@ actionBlock.yoff = 64;
 actionBlock.foff = 22;
 actionBlock.loff = 42;
 actionBlock.args = 1;
-actionBlock.docks = [[20, 0, 'unavailable'], [98, 20, 'textin'],
+actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
 		     [38, 55, 'in'], [20, 80, 'unavailable']];
 
 // Define block instance objects

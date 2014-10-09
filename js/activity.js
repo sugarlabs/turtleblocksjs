@@ -243,7 +243,7 @@ define(function (require) {
 
 		function handleMouseDown(event) {
 		    // Bump the target in front of its siblings.
-		    moved = false
+		    moved = false;
 		    container.addChild(target);
 		    var offset = {
 			x: target.x - event.stageX,
@@ -485,36 +485,48 @@ define(function (require) {
 
             // Wrapper function to provide scope for the event handlers:
             (function (target) {
-		// TODO: Use addEventListener
-                bitmap.onPress = function (evt) {
-                    // Bump the target in front of its siblings:
+		var moved = false
+		bitmap.addEventListener("click", handleClick);
+		bitmap.addEventListener("mousedown", handleMouseDown);
+		bitmap.addEventListener("mouseover", handleMouseOver);
+		bitmap.addEventListener("mouseout", handleMouseOut);
+
+		function handleClick(event) {
+		    if (!moved) {
+			// TODO: run block on click
+			console.log('turtle click');
+		    }
+		}
+
+		function handleMouseDown(event) {
+		    moved = false;
                     container.addChild(target);
                     var offset = {
-                        x: target.x - evt.stageX,
-                        y: target.y - evt.stageY
+                        x: target.x - event.stageX,
+                        y: target.y - event.stageY
                     };
 
-                    evt.onMouseMove = function (ev) {
-                        target.x = ev.stageX + offset.x;
-                        target.y = ev.stageY + offset.y;
-                        // Indicate that the stage should be updated
-                        // on the next tick:
+		    event.addEventListener("mousemove", handleMouseMove);
+
+		    // TODO: Use pressmove, pressup??
+		    function handleMouseMove(event) {
+			moved = true;
+                        target.x = event.stageX + offset.x;
+                        target.y = event.stageY + offset.y;
                         update = true;
-			moveTurtle(stage.mouseX, stage.mouseY, false);
                     }
                 }
-                bitmap.onMouseOver = function () {
+
+		function handleMouseOver(event) {
                     target.scaleX = target.scaleY = target.scale * 1.2;
                     update = true;
-                    color = colors[(index++) % colors.length];
-                    stroke = Math.random() * 30 + 10 | 0;
-                    oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
                 }
-                bitmap.onMouseOut = function () {
+
+		function handleMouseOut(event) {
                     target.scaleX = target.scaleY = target.scale;
 		    for (i = 0; i < turtle_bitmaps.length; i++) {
-			turtle_bitmaps[i].x = stage.mouseX;
-			turtle_bitmaps[i].y = stage.mouseY;
+			turtle_bitmaps[i].x = target.x;
+			turtle_bitmaps[i].y = target.y;
 		    }
                     update = true;
                 }
@@ -1033,9 +1045,6 @@ define(function (require) {
 
 	    updateBlockImages();
 	    updateBlockLabels();
-
-	    findExpandables();
-	    console.log(expandablesList);
         }
 
         function runLogoCommands() {

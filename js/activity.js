@@ -963,22 +963,29 @@ define(function (require) {
 	    blockList[7].value = 4;
 	    blockList[7].connections = [6];
 
-	    newBlock(forwardBlock);
+	    newBlock(rightBlock);
 	    blockList[8].connections = [6, 9, 10];
 	    newBlock(numberBlock);
-	    blockList[9].value = 100;
+	    blockList[9].value = 90;
 	    blockList[9].connections = [8];
 
-	    newBlock(rightBlock);
+	    newBlock(forwardBlock);
 	    blockList[10].connections = [8, 11, null];
-	    newBlock(numberBlock);
-	    blockList[11].value = 90;
-	    blockList[11].connections = [10];
 
 	    newBlock(plusBlock);
-	    blockList[12].x = 100;
-	    blockList[12].y = 100;
-	    blockList[12].connections = [null, null, null];
+	    blockList[11].connections = [10, 12, 13];
+	    newBlock(numberBlock);
+	    blockList[12].value = 100;
+	    blockList[12].connections = [11];
+
+	    newBlock(plusBlock);
+	    blockList[13].connections = [11, 14, 15];
+	    newBlock(numberBlock);
+	    blockList[14].value = 100;
+	    blockList[14].connections = [13];
+	    newBlock(numberBlock);
+	    blockList[15].value = 100;
+	    blockList[15].connections = [13];
 
 	    console.log(blockList);
 
@@ -1117,6 +1124,18 @@ define(function (require) {
 		return null
 	    } else if (isValueBlock(blk)) {
 		return blockList[blk].value;
+	    } else if (isArgBlock(blk)) {
+		switch (blockList[blk].name) {
+		case 'plus':
+		    cblk1 = blockList[blk].connections[1];
+		    cblk2 = blockList[blk].connections[2];
+		    a = parseArg(cblk1);
+		    b = parseArg(cblk2);
+		    console.log('plus: ' + a + ', ' + b);
+		    blockList[blk].value = doPlus(a, b);
+		    break;
+		}
+		return blockList[blk].value;
 	    } else {
 		return blk;
 	    }
@@ -1178,6 +1197,12 @@ define(function (require) {
 	    for (var i = 0; i < count; i++) {
 		runFromBlock(blk);
 	    }
+	}
+
+	// Math functions
+	function doPlus(a, b) {
+	    console.log(a + ' + ' + b);
+	    return Number(a) + Number(b);
 	}
 
 	// Turtle functions

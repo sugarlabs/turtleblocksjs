@@ -182,6 +182,7 @@ define(function (require) {
 		blockList[thisBlock].myContainer = container;
 
 		var yoff = blockList[thisBlock].protoblock.yoff;
+		var foff = blockList[thisBlock].protoblock.foff;
 
 		blockList[thisBlock].filler_bitmaps = [];
 		var filler_bitmaps = [];
@@ -189,8 +190,8 @@ define(function (require) {
 		    filler_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].filler_images[i]));
 		    blockList[thisBlock].filler_bitmaps.push(filler_bitmaps[i]);
 		    container.addChild(filler_bitmaps[i]);
-		    filler_bitmaps[i].x = blockList[thisBlock].x;
-		    filler_bitmaps[i].y = blockList[thisBlock].y + yoff + i * 18;
+		    filler_bitmaps[i].x = bitmap.x;
+		    filler_bitmaps[i].y = bitmap.y + yoff + i * foff;
 		    filler_bitmaps[i].scaleX = filler_bitmaps[i].scaleY = filler_bitmaps[i].scale = 1;
 		    filler_bitmaps[i].name = "bmp_" + thisBlock + "_filler_" + i;
 		}
@@ -199,8 +200,8 @@ define(function (require) {
 		var bottom_bitmap = new createjs.Bitmap(blockList[thisBlock].bottom_image);
 		blockList[thisBlock].bottom_bitmap = bottom_bitmap;
 		container.addChild(bottom_bitmap);
-		bottom_bitmap.x = blockList[thisBlock].x;
-		bottom_bitmap.y = blockList[thisBlock].y + yoff + i * 18;
+		bottom_bitmap.x = bitmap.x;
+		bottom_bitmap.y = bitmap.y + yoff + i * foff;
 		bottom_bitmap.scaleX = bottom_bitmap.scaleY = bottom_bitmap.scale = 1;
 		bottom_bitmap.name = "bmp_" + thisBlock + "_bottom";
 	    }
@@ -408,6 +409,9 @@ define(function (require) {
 
 	function moveExtraParts(blk, dx, dy) {
 	    // Expandable blocks have extra parts that need attention.
+	    if (blockList[blk].filler_bitmaps == undefined) {
+		return;  // still in init stage
+	    }
 	    for (var i = 0; i < blockList[blk].filler_bitmaps.length; i++) {
 		blockList[blk].filler_bitmaps[i].x += dx;
 		blockList[blk].filler_bitmaps[i].y += dy;
@@ -549,6 +553,12 @@ define(function (require) {
 	function adjustExpandableBlock(blk) {
 	    // Adjust the size of the clamp in an expandable block
 	    // (1) count up the number of blocks inside the clamp.
+
+	    // TODO: expand arg blocks
+	    if (isArgBlock(blk)) {
+		return;
+	    }
+
 	    var c = blockList[blk].connections.length - 2;
 	    var size = getStackSize(blockList[blk].connections[c]);
 	    if( size < 1 ) {
@@ -556,6 +566,9 @@ define(function (require) {
 	    }
 	    // (2) adjust the clamp size to match.
 	    var yoff = blockList[blk].protoblock.yoff;
+	    var foff = blockList[blk].protoblock.foff;
+	    var loff = blockList[blk].protoblock.loff;
+
 	    var j = blockList[blk].filler_bitmaps.length;
 	    if (size < blockList[blk].filler_bitmaps.length) {
 		var n = j - size;
@@ -565,10 +578,10 @@ define(function (require) {
 		    filler_image = blockList[blk].filler_images.pop();
 		    filler_bitmap = blockList[blk].filler_bitmaps.pop();
 		    blockList[blk].myContainer.removeChild(filler_bitmap);
-		    blockList[blk].docks.last()[1] -= 40;
+		    blockList[blk].docks.last()[1] -= loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + 18 + (j - 1) * 40;
+		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + 18 + (j - 1) * loff;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
 		}
@@ -585,13 +598,13 @@ define(function (require) {
 		    blockList[blk].filler_bitmaps.push(filler_bitmap);
 		    blockList[blk].myContainer.addChild(filler_bitmap);
 		    filler_bitmap.x = blockList[blk].bitmap.x;
-		    filler_bitmap.y = blockList[blk].bitmap.y + yoff + 18 + i * 40;
+		    filler_bitmap.y = blockList[blk].bitmap.y + yoff + foff + i * loff;
 		    filler_bitmap.scaleX = filler_bitmap.scaleY = filler_bitmap.scale = 1;
 		    filler_bitmap.name = "bmp_" + blk + "_filler_" + c;
-		    blockList[blk].docks.last()[1] += 40;
+		    blockList[blk].docks.last()[1] += loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + 18 + (j - 1) * 40;
+		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + foff + (j - 1) * loff;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
 		}
@@ -913,7 +926,9 @@ define(function (require) {
         }
 
 	function newBlock(proto) {
+	    // Create a new block
 	    blockList.push(new Block(proto));
+	    // We copy the dock because expandable blocks modify it
 	    blockList.last().copyDocks();
 	}
 
@@ -921,48 +936,50 @@ define(function (require) {
 	    // This is temporary code for testing.
 
 	    // Add the blocks
-	    newBlock(clearBlock);
-	    blockList[0].x = 300;
-	    blockList[0].y = 50;
-	    blockList[0].connections = [null, 1];
-	    newBlock(forwardBlock);
-	    blockList[1].connections = [0, 2, 3];
-	    newBlock(numberBlock);
-	    blockList[2].value = 100;
-	    blockList[2].connections = [1];
-	    newBlock(rightBlock);
-	    blockList[3].connections = [1, 4, 5];
-	    newBlock(numberBlock);
-	    blockList[4].value = 90;
-	    blockList[4].connections = [3];
-	    newBlock(rightBlock);
-	    blockList[5].connections = [3, 6, null];
-	    newBlock(numberBlock);
-	    blockList[6].value = 45;
-	    blockList[6].connections = [5];
-
-	    newBlock(repeatBlock);
-	    blockList[7].x = 100;
-	    blockList[7].y = 50;
-	    blockList[7].connections = [null, 8, null, null];
-
-	    newBlock(numberBlock);
-	    blockList[8].value = 4;
-	    blockList[8].connections = [7];
-
 	    newBlock(startBlock);
-	    blockList[9].x = 400;
-	    blockList[9].y = 50;
-	    blockList[9].connections = [null, null, null];
+	    blockList[0].x = 400;
+	    blockList[0].y = 50;
+	    blockList[0].connections = [null, 1, null];
+
+	    newBlock(clearBlock);
+	    blockList[1].connections = [0, 2];
 
 	    newBlock(repeatBlock);
-	    blockList[10].x = 100;
-	    blockList[10].y = 200;
-	    blockList[10].connections = [null, 11, null, null];
-
+	    blockList[2].connections = [1, 3, 4, null];
 	    newBlock(numberBlock);
-	    blockList[11].value = 8;
+	    blockList[3].value = 8;
+	    blockList[3].connections = [2];
+
+	    newBlock(rightBlock);
+	    blockList[4].connections = [2, 5, 6];
+	    newBlock(numberBlock);
+	    blockList[5].value = 45;
+	    blockList[5].connections = [4];
+
+	    newBlock(repeatBlock);
+	    blockList[6].connections = [4, 7, 8, null];
+	    newBlock(numberBlock);
+	    blockList[7].value = 4;
+	    blockList[7].connections = [6];
+
+	    newBlock(forwardBlock);
+	    blockList[8].connections = [6, 9, 10];
+	    newBlock(numberBlock);
+	    blockList[9].value = 100;
+	    blockList[9].connections = [8];
+
+	    newBlock(rightBlock);
+	    blockList[10].connections = [8, 11, null];
+	    newBlock(numberBlock);
+	    blockList[11].value = 90;
 	    blockList[11].connections = [10];
+
+	    newBlock(plusBlock);
+	    blockList[12].x = 100;
+	    blockList[12].y = 100;
+	    blockList[12].connections = [null, null, null];
+
+	    console.log(blockList);
 
 	    createBlockImages();
 	    updateBlockLabels();

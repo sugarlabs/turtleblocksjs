@@ -1,10 +1,23 @@
 1 New project: a Javascript version of Turtle Blocks
   * basic block manipluation
   * basic block execution
+  * expandable blocks starting to work
 
 TODO:
+  * cascading of expandable blocks
+  * setting expandable blocks on load
+  * arithmetic functions
+  * stacks
+  * boxes
+  * booleans
+  * pen palette
+  * sensors/media
+  * rotate turtle using easeljs rotation
   * decide on a palette strategy
   * implement more sophisticated blocks
   * add controls for rabbit vs turtle
   * add controls for clear
   * add controls for show/hide
+  * coordinate grids
+  * turtle skin
+  * multiple turtles

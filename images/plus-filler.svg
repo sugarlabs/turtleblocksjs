@@ -9,7 +9,7 @@
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
    width="84"
-   height="15"
+   height="17"
    id="svg2">
   <metadata
      id="metadata12">
@@ -25,26 +25,22 @@
   </metadata>
   <defs
      id="defs10" />
-  <g
-     transform="matrix(2,0,0,1.875,0,-48.75)"
-     id="g4">
-    <path
-       d="m 41.5,26.5 0,7 -33,0 0,-7 z"
-       id="path6"
-       style="fill:#fe55ff;fill-opacity:1;stroke:#c73ca3;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
-  </g>
+  <path
+     d="M 16,-1e-6 16,17 84,17 84,-1e-6 z"
+     id="path6"
+     style="fill:#fe55ff;fill-opacity:1;stroke:none" />
   <rect
-     width="64"
-     height="2"
-     x="18"
+     width="2"
+     height="17"
+     x="16"
      y="0"
-     id="rect2984"
-     style="fill:#fe55ff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     id="rect3115"
+     style="fill:#c73ca3;fill-opacity:1;fill-rule:nonzero;stroke:none" />
   <rect
-     width="64"
-     height="2"
-     x="18"
-     y="13"
-     id="rect2984-3"
-     style="fill:#fe55ff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     width="2"
+     height="17"
+     x="82"
+     y="0"
+     id="rect3115-8"
+     style="fill:#c73ca3;fill-opacity:1;fill-rule:nonzero;stroke:none" />
 </svg>

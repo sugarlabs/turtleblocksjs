@@ -64,31 +64,31 @@ var clearBlock = new ProtoBlock('clear');
 protoBlockList.push(clearBlock);
 clearBlock.palette = turtlePalette;
 clearBlock.args = 0;
-clearBlock.docks = [[20, 0, 'out'], [20, 40, 'in']];
+clearBlock.docks = [[20, 0, 'out'], [20, 42, 'in']];
 
 var forwardBlock = new ProtoBlock('forward');
 protoBlockList.push(forwardBlock);
 forwardBlock.palette = turtlePalette;
 forwardBlock.args = 1;
-forwardBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 40, 'in']];
+forwardBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var rightBlock = new ProtoBlock('right');
 protoBlockList.push(rightBlock);
 rightBlock.palette = turtlePalette;
 rightBlock.args = 1;
-rightBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 40, 'in']];
+rightBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var backBlock = new ProtoBlock('back');
 protoBlockList.push(backBlock);
 backBlock.palette = turtlePalette;
 backBlock.args = 1;
-backBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 40, 'in']];
+backBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var leftBlock = new ProtoBlock('left');
 protoBlockList.push(leftBlock);
 leftBlock.palette = turtlePalette;
 leftBlock.args = 1;
-leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 40, 'in']];
+leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var numberBlock = new ProtoBlock('number');
 protoBlockList.push(numberBlock);
@@ -100,32 +100,32 @@ var plusBlock = new ProtoBlock('plus');
 protoBlockList.push(plusBlock);
 plusBlock.palette = numberPalette;
 plusBlock.yoff = 32;
-plusBlock.foff = 15;
-plusBlock.loff = 40;
+plusBlock.foff = 17;
+plusBlock.loff = 42;
 plusBlock.size = 2;  // Expandable
 plusBlock.args = 2;
 plusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
-		   [68, 60, 'numberin']];
+		   [68, 62, 'numberin']];
 
 var repeatBlock = new ProtoBlock('repeat');
 protoBlockList.push(repeatBlock);
 repeatBlock.palette = flowPalette;
 repeatBlock.yoff = 52;
-repeatBlock.foff = 18;
-repeatBlock.loff = 40;
+repeatBlock.foff = 22;
+repeatBlock.loff = 42;
 repeatBlock.size = 3;  // Expandable
 repeatBlock.args = 2;
-repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 39, 'in'],
-		     [20, 96, 'in']];
+repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
+		     [20, 126, 'in']];
 
 var startBlock = new ProtoBlock('start');
 protoBlockList.push(startBlock);
 startBlock.palette = blockPalette;
 startBlock.yoff = 64;
-startBlock.foff = 18;
-startBlock.loff = 40;
+startBlock.foff = 22;
+startBlock.loff = 42;
 startBlock.args = 1;
-startBlock.docks = [[20, 0, 'unavailable'], [38, 54, 'in'],
+startBlock.docks = [[20, 0, 'unavailable'], [38, 55, 'in'],
 		    [20, 80, 'unavailable']];
 
 // Define block instance objects

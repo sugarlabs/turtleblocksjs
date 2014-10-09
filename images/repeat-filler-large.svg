@@ -9,7 +9,7 @@
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
    width="18"
-   height="40"
+   height="42"
    id="svg3058">
   <metadata
      id="metadata3068">
@@ -25,20 +25,22 @@
   </metadata>
   <defs
      id="defs3066" />
-  <g
-     transform="translate(0,22)"
-     id="g3792">
-    <path
-       d="m 1.4757475,-20.524253 15.0485055,0 c 0,12.3495037 0,24.6990023 0,37.048506 l -15.0485055,0 z"
-       id="path3062"
-       style="fill:#ffdf4e;fill-opacity:1;stroke:#ffdf4e;stroke-width:2.95149493;stroke-linecap:round;stroke-opacity:1" />
-    <path
-       d="M 1,-20.907885 1,16.969899"
-       id="path2984"
-       style="fill:#ffdf4e;fill-opacity:1;stroke:#bb9000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-    <path
-       d="m 17,-20.907885 0,37.877784"
-       id="path2984-9"
-       style="fill:#ffdf4e;fill-opacity:1;stroke:#bb9000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-  </g>
+  <path
+     d="m 0,0 18,0 c 0,14.000002 0,27.999998 0,42 L 0,42 z"
+     id="path3062"
+     style="fill:#ffdf4e;fill-opacity:1;stroke:none" />
+  <rect
+     width="2"
+     height="42"
+     x="0"
+     y="0"
+     id="rect3757"
+     style="fill:#bb9000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  <rect
+     width="2"
+     height="42"
+     x="16"
+     y="0"
+     id="rect3757-4"
+     style="fill:#bb9000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
 </svg>

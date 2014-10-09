@@ -582,7 +582,7 @@ define(function (require) {
 		    blockList[blk].docks.last()[1] -= loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + 18 + (j - 1) * loff;
+		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + foff + (j - 1) * loff;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
 		}

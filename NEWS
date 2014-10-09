@@ -2,11 +2,12 @@
   * basic block manipluation
   * basic block execution
   * expandable blocks starting to work
+  * arithmetic functions (arg parsing)
 
 TODO:
   * cascading of expandable blocks
+  * expanding arithmetic blocks
   * setting expandable blocks on load
-  * arithmetic functions
   * stacks
   * boxes
   * booleans

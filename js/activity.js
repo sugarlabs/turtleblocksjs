@@ -553,23 +553,24 @@ define(function (require) {
 
 	function adjustExpandableBlock(blk) {
 	    // Adjust the size of the clamp in an expandable block
-	    // (1) count up the number of blocks inside the clamp.
 
 	    // TODO: expand arg blocks
 	    if (isArgBlock(blk)) {
 		return;
 	    }
 
+	    // (1) count up the number of blocks inside the clamp;
+	    // always the second to last argument.
 	    var c = blockList[blk].connections.length - 2;
 	    var size = getStackSize(blockList[blk].connections[c]);
 	    if( size < 1 ) {
 		size = 1;  // Minimum clamp size
 	    }
+
 	    // (2) adjust the clamp size to match.
 	    var yoff = blockList[blk].protoblock.yoff;
 	    var foff = blockList[blk].protoblock.foff;
 	    var loff = blockList[blk].protoblock.loff;
-
 	    var j = blockList[blk].filler_bitmaps.length;
 	    if (size < blockList[blk].filler_bitmaps.length) {
 		var n = j - size;
@@ -582,7 +583,8 @@ define(function (require) {
 		    blockList[blk].docks.last()[1] -= loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + foff + (j - 1) * loff;
+		var o = yoff + foff + (j - 1) * loff;
+		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
 		}
@@ -605,7 +607,8 @@ define(function (require) {
 		    blockList[blk].docks.last()[1] += loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + yoff + foff + (j - 1) * loff;
+		var o = yoff + foff + (j - 1) * loff;
+		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
 		}
@@ -614,15 +617,26 @@ define(function (require) {
 	}
 
 	function getStackSize(blk) {
-	    // how many block units in this stack?
-	    // TODO: Fix nesting
+	    // How many block units (42 px) in this stack?
 	    var size = 0;
 	    if (blk == null) {
+		console.log('getStackSize: null block');
 		return size;
 	    }
 
+	    console.log('getStackSize: ' + blockList[blk].name);
+
 	    if (isExpandableBlock(blk)) {
-		size = getStackSize(blockList[blk].connections.last())
+		// what is inside the clamp?
+		console.log('getStackSize: expandable');
+		c = blockList[blk].connections.length - 2;
+		console.log('checking connection ' + blockList[blk].connections[c]);
+		size = getStackSize(blockList[blk].connections[c]);
+		if (size == 0) {
+		    size = 1;  // minimum of 1 slot in clamp
+		}
+		size += 2;  // add top and bottom of clamp
+		console.log('getStackSize: expandable size is: ' + size);
 	    }
 	    if (size == 0) {
 		size = blockList[blk].protoblock.size;
@@ -630,9 +644,10 @@ define(function (require) {
 
 	    var cblk = blockList[blk].connections.last();
 	    while (cblk != null) {
-		size += blockList[cblk].protoblock.size;
+		size += getStackSize(cblk);
 		cblk = blockList[cblk].connections.last();
 	    }
+	    console.log('getStackSize returning ' + size);
 	    return size;
 	}
 

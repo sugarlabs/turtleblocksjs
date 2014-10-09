@@ -186,22 +186,20 @@ define(function (require) {
 
 		blockList[thisBlock].filler_bitmaps = [];
 		var filler_bitmaps = [];
-		for (var i = 0; i < blockList[thisBlock].filler_images.length; i++) {
-		    filler_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].filler_images[i]));
-		    blockList[thisBlock].filler_bitmaps.push(filler_bitmaps[i]);
-		    container.addChild(filler_bitmaps[i]);
-		    filler_bitmaps[i].x = bitmap.x;
-		    filler_bitmaps[i].y = bitmap.y + yoff + i * foff;
-		    filler_bitmaps[i].scaleX = filler_bitmaps[i].scaleY = filler_bitmaps[i].scale = 1;
-		    filler_bitmaps[i].name = "bmp_" + thisBlock + "_filler_" + i;
-		}
+		filler_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].filler_images[0]));
+		blockList[thisBlock].filler_bitmaps.push(filler_bitmaps[0]);
+		container.addChild(filler_bitmaps[0]);
+		filler_bitmaps[0].x = bitmap.x;
+		filler_bitmaps[0].y = bitmap.y + yoff;
+		filler_bitmaps[0].scaleX = filler_bitmaps[0].scaleY = filler_bitmaps[0].scale = 1;
+		filler_bitmaps[0].name = "bmp_" + thisBlock + "_filler_0";
 
 		blockList[thisBlock].bottom_bitmap = null;
 		var bottom_bitmap = new createjs.Bitmap(blockList[thisBlock].bottom_image);
 		blockList[thisBlock].bottom_bitmap = bottom_bitmap;
 		container.addChild(bottom_bitmap);
 		bottom_bitmap.x = bitmap.x;
-		bottom_bitmap.y = bitmap.y + yoff + i * foff;
+		bottom_bitmap.y = bitmap.y + yoff + foff;
 		bottom_bitmap.scaleX = bottom_bitmap.scaleY = bottom_bitmap.scale = 1;
 		bottom_bitmap.name = "bmp_" + thisBlock + "_bottom";
 	    }
@@ -277,6 +275,9 @@ define(function (require) {
 			if (isExpandableBlock(thisBlock)) {
 			    moveExtraParts(thisBlock, dx, dy);
 			}
+
+			// Move the label.
+			adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
 
 			// Move any connected blocks.
 			findDragGroup(blk)

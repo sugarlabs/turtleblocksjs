@@ -8,7 +8,7 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
-   width="132"
+   width="115"
    height="52"
    id="svg2989">
   <metadata
@@ -29,7 +29,7 @@
      transform="scale(2,2)"
      id="g2991">
     <path
-       d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 30,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -30,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.617994,0 -5,2.382006 -5,5 l -8,0 z"
+       d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 21.5,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -21.5,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.617994,0 -5,2.382006 -5,5 l -8,0 z"
        id="path2993"
        style="fill:#ffdf4e;fill-opacity:1;stroke:#bb9000;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
   </g>
@@ -41,12 +41,12 @@
      id="rect3001"
      style="fill:#ffdf4e;fill-opacity:1;fill-rule:nonzero;stroke:none" />
   <text
-     x="93.659576"
+     x="75.659576"
      y="28.723404"
      id="text2985"
      xml:space="preserve"
      style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
-       x="93.659576"
+       x="75.659576"
        y="28.723404"
        id="tspan2987"
        style="font-size:18px">repeat</tspan></text>

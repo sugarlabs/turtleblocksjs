@@ -115,7 +115,7 @@ repeatBlock.foff = 18;
 repeatBlock.loff = 40;
 repeatBlock.size = 3;  // Expandable
 repeatBlock.args = 2;
-repeatBlock.docks = [[20, 0, 'out'], [115, 20, 'numberin'], [37, 39, 'in'],
+repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 39, 'in'],
 		     [20, 96, 'in']];
 
 var startBlock = new ProtoBlock('start');
@@ -125,12 +125,8 @@ startBlock.yoff = 64;
 startBlock.foff = 18;
 startBlock.loff = 40;
 startBlock.args = 1;
-startBlock.docks = [[20, 0, 'unavailable'], [37, 54, 'in'],
+startBlock.docks = [[20, 0, 'unavailable'], [38, 54, 'in'],
 		    [20, 80, 'unavailable']];
-
-for (blk = 0; blk < protoBlockList.length; blk++) {
-    // alert(protoBlockList[blk].getInfo());
-}
 
 // Define block instance objects
 function Block (protoblock) {
@@ -158,27 +154,21 @@ Block.prototype.getInfo = function() {
 
 // A place to keep the blocks we create...
 var blockList = [];
+
 // Blocks that are expandable.
 var expandableBlocks = ["repeat", "start", "plus"];
+
 // Blocks that are used as arguments to other blocks
 var argBlocks = ["number", "plus"];
+
 // Blocks that return values
 var valueBlocks = ["number"];
+
 // Blocks that cannot be run on their own
 var noRunBlocks = ["hat"];
+
 // Label elements for each of our blocks...
 var arrLabels = [];
+
 // and a place in the DOM to put them.
 var labelElem = document.getElementById("labelDiv");
-
-// var inputElem = document.getElementById("inputDiv");
-// inputElem.innerHTML = '<input type="text" id="myNumber" name="myNumber" class="myNumber">';
-// We keep a textarea around to modify numbers
-// inputElem.innerHTML = '<textarea id="myNumber" name="myNumber" class="myNumber" cols="6" rows="1" maxlength="6"></textarea>';
-// var foo = document.getElementById("myNumber");
-// foo.defaultValue = "666";
-// foo.onchange=textareaChanged
-// function textareaChanged() {
-//     var foo = document.getElementById("myNumber");
-//     console.log('textarea changed: ' + foo.value);
-// }

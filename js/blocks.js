@@ -33,6 +33,7 @@ function ProtoBlock (name) {
     this.name = name;
     this.palette = null;
     this.style = null;
+    this.size = 1;
     this.docks = [];
 }
 
@@ -96,6 +97,7 @@ protoBlockList.push(repeatBlock);
 repeatBlock.palette = flowPalette;
 repeatBlock.yoff = 52;
 repeatBlock.args = 2;
+repeatBlock.size = 3;  // Expandable
 repeatBlock.docks = [[20, 0, 'out'], [115, 20, 'numberin'], [37, 39, 'in'],
 		     [20, 96, 'in']];
 

@@ -178,6 +178,9 @@ define(function (require) {
 
 	    // Expandable blocks have some extra parts.
 	    if (isExpandableBlock(thisBlock)) {
+		// Save the container as we may need it later.
+		blockList[thisBlock].myContainer = container;
+
 		var yoff = blockList[thisBlock].protoblock.yoff;
 
 		blockList[thisBlock].filler_bitmaps = [];
@@ -387,8 +390,12 @@ define(function (require) {
 			    checkExpandableBlocks.push(blk);
 			    blk = insideExpandableBlock(blk);
 			}
+			// If we changed the contents of an expandable
+			// block, we need to adjust its clamp.
 			if (checkExpandableBlocks.length > 0) {
-			    console.log(checkExpandableBlocks);
+			    for (var i = 0; i < checkExpandableBlocks.length; i++) {
+				adjustExpandableBlock(checkExpandableBlocks[i]);
+			    }
 			}
 		    }
 		    target.scaleX = target.scaleY = target.scale;
@@ -472,6 +479,7 @@ define(function (require) {
 
             // Wrapper function to provide scope for the event handlers:
             (function (target) {
+		// TODO: Use addEventListener
                 bitmap.onPress = function (evt) {
                     // Bump the target in front of its siblings:
                     container.addChild(target);
@@ -539,6 +547,76 @@ define(function (require) {
 
 	    loopCounter = 0
 	    adjustDocks(dragGroup[0])
+	}
+
+	function adjustExpandableBlock(blk) {
+	    // Adjust the size of the clamp in an expandable block
+	    // (1) count up the number of blocks inside the clamp.
+	    var c = blockList[blk].connections.length - 2;
+	    var size = getStackSize(blockList[blk].connections[c]);
+	    if( size < 1 ) {
+		size = 1;  // Minimum clamp size
+	    }
+	    // (2) adjust the clamp size to match.
+	    var yoff = blockList[blk].protoblock.yoff;
+	    var j = blockList[blk].filler_bitmaps.length;
+	    if (size < blockList[blk].filler_bitmaps.length) {
+		var n = j - size;
+		console.log('remove ' + n + ' slots');
+		for (var i = 0; i < n; i++) {
+		    // How to destroy the images, bitmaps?
+		    filler_image = blockList[blk].filler_images.pop();
+		    filler_bitmap = blockList[blk].filler_bitmaps.pop();
+		    blockList[blk].myContainer.removeChild(filler_bitmap);
+		}
+                j = blockList[blk].filler_bitmaps.length;
+		blockList[blk].bottom_bitmap.y = blockList[blk].y + yoff + j * 18;
+		// adjust the docks when we are done
+                update = true;
+	    } else if (size > blockList[blk].filler_bitmaps.length) {
+		var n = size - j;
+		console.log('add ' + n + ' slots');
+		for (var i = 0; i < n; i++) {
+		    var c = i + j;
+
+		    blockList[blk].filler_images.push(new Image());
+		    blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerSvgPath();
+		    filler_bitmap = new createjs.Bitmap(blockList[blk].filler_images.last())
+		    blockList[blk].filler_bitmaps.push(filler_bitmap);
+		    blockList[blk].myContainer.addChild(filler_bitmap);
+		    filler_bitmap.x = blockList[blk].x;
+		    filler_bitmap.y = blockList[blk].y + yoff + c * 18;
+		    filler_bitmap.scaleX = filler_bitmap.scaleY = filler_bitmap.scale = 1;
+		    filler_bitmap.name = "bmp_" + blk + "_filler_" + c;
+
+		}
+                j = blockList[blk].filler_bitmaps.length;
+		blockList[blk].bottom_bitmap.y = blockList[blk].y + yoff + j * 18;
+		// adjust the docks when we are done
+                update = true;
+	    }	    
+	}
+
+	function getStackSize(blk) {
+	    // how many block units in this stack?
+	    var size = 0;
+	    if (blk == null) {
+		return size;
+	    }
+
+	    if (isExpandableBlock(blk)) {
+		size = getStackSize(blockList[blk].connections.last())
+	    }
+	    if (size == 0) {
+		size = blockList[blk].protoblock.size;
+	    }
+
+	    var cblk = blockList[blk].connections.last();
+	    while (cblk != null) {
+		size += blockList[cblk].protoblock.size;
+		cblk = blockList[cblk].connections.last();
+	    }
+	    return size;
 	}
 
 	function adjustDocks(blk) {

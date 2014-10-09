@@ -80,19 +80,8 @@ define(function (require) {
 	var activeBlock = null;
 
 	var turtle_delay = 1000;
-        var turtle_bitmaps = [];
-        var Turtles = ["images/turtle0.svg", "images/turtle15.svg",
-		       "images/turtle30.svg", "images/turtle45.svg",
-		       "images/turtle60.svg", "images/turtle75.svg",
-		       "images/turtle90.svg", "images/turtle105.svg",
-		       "images/turtle120.svg", "images/turtle135.svg",
-		       "images/turtle150.svg", "images/turtle165.svg",
-		       "images/turtle180.svg", "images/turtle195.svg",
-		       "images/turtle210.svg", "images/turtle225.svg",
-		       "images/turtle240.svg", "images/turtle255.svg",
-		       "images/turtle270.svg", "images/turtle285.svg",
-		       "images/turtle300.svg", "images/turtle315.svg",
-		       "images/turtle330.svg", "images/turtle345.svg"];
+        var turtle_bitmap = null
+        var Turtle = "images/turtle0.svg";
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
 	var turtleStroke = 5;
@@ -135,12 +124,9 @@ define(function (require) {
             // Enabled mouse over and mouse out events.
             stage.enableMouseOver(10);
 
-	    turtles = [];
-	    for (i = 0; i < Turtles.length; i++) {
-		turtles.push(new Image());
-		turtles[i].src = Turtles[i];
-		turtles[i].onload = handleTurtleLoad;
-	    }
+	    turtle = new Image();
+	    turtle.src = Turtle;
+	    turtle.onload = handleTurtleLoad;
 
             // Create a drawing canvas
             drawingCanvas = new createjs.Shape();
@@ -463,13 +449,8 @@ define(function (require) {
 
             // Create a turtle
             bitmap = new createjs.Bitmap(image);
-	    turtle_bitmaps.push(bitmap)
+	    turtle_bitmap = bitmap;
             container.addChild(bitmap);
-
-	    // Hide all turtles except for turtle 0 on load().
-	    if (turtle_bitmaps.length > 1) {
-		turtle_bitmaps.last().visible = false
-	    }
 
             bitmap.x = turtleX2screenX(turtleX);
             bitmap.y = invertY(turtleY);
@@ -524,10 +505,8 @@ define(function (require) {
 
 		function handleMouseOut(event) {
                     target.scaleX = target.scaleY = target.scale;
-		    for (i = 0; i < turtle_bitmaps.length; i++) {
-			turtle_bitmaps[i].x = target.x;
-			turtle_bitmaps[i].y = target.y;
-		    }
+		    turtle_bitmap.x = target.x;
+		    turtle_bitmap.y = target.y;
                     update = true;
                 }
             })(bitmap);
@@ -1262,8 +1241,8 @@ define(function (require) {
 	    // Move forward.
             update = true;
 	    // old turtle point
-            oldPt = new createjs.Point(screenX2turtleX(turtle_bitmaps[0].x),
-					   invertY(turtle_bitmaps[0].y));
+            oldPt = new createjs.Point(screenX2turtleX(turtle_bitmap.x),
+					   invertY(turtle_bitmap.y));
             color = colors[turtleColor];
             stroke = turtleStroke;
 	    // new turtle point
@@ -1271,25 +1250,18 @@ define(function (require) {
 		oldPt.x + Number(steps) * Math.sin(turtleOrientation * Math.PI / 180.0),
 		oldPt.y + Number(steps) * Math.cos(turtleOrientation  * Math.PI / 180.0));
 	    moveTurtle(newPt.x, newPt.y, true);
-	    for (var i = 0; i < turtle_bitmaps.length; i++) {
-		turtle_bitmaps[i].x = turtleX2screenX(newPt.x);
-		turtle_bitmaps[i].y = invertY(newPt.y);
-	    }
+	    turtle_bitmap.x = turtleX2screenX(newPt.x);
+	    turtle_bitmap.y = invertY(newPt.y);
 	}
 
 	function doRight(degrees) {
 	    // Turn right and display corresponding turtle graphic.
-            update = true;
 	    turtleOrientation += Number(degrees);
 	    turtleOrientation %= 360;
-            var t = Math.round(turtleOrientation + 7.5) % 360 / (360 / 24) | 0
-	    for (var i = 0; i < turtle_bitmaps.length; i++) {
-		if (i == t) {
-		    turtle_bitmaps[i].visible = true;
-		} else {
-		    turtle_bitmaps[i].visible = false;
-		}
-	    }
+            var t = Math.round(turtleOrientation + 7.5) % 360 / (360 / 24) | 0;
+
+	    turtle_bitmap.rotation = turtleOrientation;
+            update = true;
 	}
 
 	function doClear() {
@@ -1301,16 +1273,9 @@ define(function (require) {
 	    turtleOrientation = 0.0;
 	    turtleColor = 0;
 	    turtleStroke = 5;
-	    for (var i = 0; i < turtle_bitmaps.length; i++) {
-		// Hide all the turtles except 0.
-		if (i == 0) {
-		    turtle_bitmaps[i].visible = true;
-		} else {
-		    turtle_bitmaps[i].visible = false;
-		}
-		turtle_bitmaps[i].x = turtleX2screenX(turtleX);
-		turtle_bitmaps[i].y = invertY(turtleY);
-	    }
+	    turtle_bitmap.x = turtleX2screenX(turtleX);
+	    turtle_bitmap.y = invertY(turtleY);
+	    turtle_bitmap.rotation = 0;
 	}
 
 	function screenX2turtleX(x) {

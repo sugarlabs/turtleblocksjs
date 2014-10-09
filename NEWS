@@ -1,13 +1,13 @@
 1 New project: a Javascript version of Turtle Blocks
   * basic block manipluation
   * basic block execution
-  * expandable blocks starting to work
+  * expandable blocks working
+  * cascading of expandable blocks
   * arithmetic functions (arg parsing)
+  * setting expandable blocks on run (should be on load)
 
 TODO:
-  * cascading of expandable blocks
   * expanding arithmetic blocks
-  * setting expandable blocks on load
   * stacks
   * boxes
   * booleans

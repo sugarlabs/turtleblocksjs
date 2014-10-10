@@ -12,19 +12,19 @@ Palette.prototype.getInfo = function() {
 // Instantiate the palettes
 var paletteList = [];
 
-var turtlePalette = new Palette('Turtle');
+var turtlePalette = new Palette('turtle');
 paletteList.push(turtlePalette);
 turtlePalette.color = "green";
 
-var numberPalette = new Palette('Number');
+var numberPalette = new Palette('number');
 paletteList.push(numberPalette);
 numberPalette.color = "purple";
 
-var flowPalette = new Palette('Flow');
+var flowPalette = new Palette('flow');
 paletteList.push(flowPalette);
 flowPalette.color = "orange";
 
-var blockPalette = new Palette('Blocks');
+var blockPalette = new Palette('blocks');
 paletteList.push(blockPalette);
 blockPalette.color = "yellow";
 
@@ -46,15 +46,15 @@ ProtoBlock.prototype.getSvgPath = function() {
 }
 
 ProtoBlock.prototype.getFillerSvgPath = function() {
-    return 'images/' + this.name + '-filler.svg';
+    return 'images/' + this.palette.name + '-filler.svg';
 }
 
 ProtoBlock.prototype.getFillerLargeSvgPath = function() {
-    return 'images/' + this.name + '-filler-large.svg';
+    return 'images/' + this.palette.name + '-filler-large.svg';
 }
 
 ProtoBlock.prototype.getBottomSvgPath = function() {
-    return 'images/' + this.name + '-bottom.svg';
+    return 'images/' + this.palette.name + '-bottom.svg';
 }
 
 // Instantiate the proto blocks

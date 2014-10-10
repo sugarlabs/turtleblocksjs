@@ -178,24 +178,13 @@ define(function (require) {
 		blockList[thisBlock].myContainer = container;
 
 		var yoff = blockList[thisBlock].protoblock.yoff;
-		var foff = blockList[thisBlock].protoblock.foff;
-
 		blockList[thisBlock].filler_bitmaps = [];
-		var filler_bitmaps = [];
-		filler_bitmaps.push(new createjs.Bitmap(blockList[thisBlock].filler_images[0]));
-		blockList[thisBlock].filler_bitmaps.push(filler_bitmaps[0]);
-		container.addChild(filler_bitmaps[0]);
-		filler_bitmaps[0].x = bitmap.x;
-		filler_bitmaps[0].y = bitmap.y + yoff;
-		filler_bitmaps[0].scaleX = filler_bitmaps[0].scaleY = filler_bitmaps[0].scale = 1;
-		filler_bitmaps[0].name = "bmp_" + thisBlock + "_filler_0";
-
 		blockList[thisBlock].bottom_bitmap = null;
 		var bottom_bitmap = new createjs.Bitmap(blockList[thisBlock].bottom_image);
 		blockList[thisBlock].bottom_bitmap = bottom_bitmap;
 		container.addChild(bottom_bitmap);
 		bottom_bitmap.x = bitmap.x;
-		bottom_bitmap.y = bitmap.y + yoff + foff;
+		bottom_bitmap.y = bitmap.y + yoff;
 		bottom_bitmap.scaleX = bottom_bitmap.scaleY = bottom_bitmap.scale = 1;
 		bottom_bitmap.name = "bmp_" + thisBlock + "_bottom";
 	    }
@@ -581,12 +570,10 @@ define(function (require) {
 
 	    // (2) adjust the clamp size to match.
 	    var yoff = blockList[blk].protoblock.yoff;
-	    var foff = blockList[blk].protoblock.foff;
 	    var loff = blockList[blk].protoblock.loff;
 	    var j = blockList[blk].filler_bitmaps.length;
-	    if (size < blockList[blk].filler_bitmaps.length) {
-		var n = j - size;
-		console.log('remove ' + n + ' slots');
+	    if (size < blockList[blk].filler_bitmaps.length + 1) {
+		var n = j - size + 1;  // one slot built in
 		for (var i = 0; i < n; i++) {
 		    // How to destroy the images, bitmaps?
 		    filler_image = blockList[blk].filler_images.pop();
@@ -595,37 +582,36 @@ define(function (require) {
 		    blockList[blk].docks.last()[1] -= loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		var o = yoff + foff + (j - 1) * loff;
+		var o = yoff + j * loff;
 		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
 		}
                 update = true;
 	    } else if (size > blockList[blk].filler_bitmaps.length) {
-		var n = size - j;
-		console.log('add ' + n + ' slots');
+		var n = size - j - 1;  // one slot built in
 		for (var i = 0; i < n; i++) {
 		    var c = i + j;
 
 		    blockList[blk].filler_images.push(new Image());
 		    if (isArgBlock(blk)) {
-			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getArgFillerLargeSvgPath();
+			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getArgFillerSvgPath();
 		    } else if (isSpecialBlock(blk)) {
-			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getSpecialFillerLargeSvgPath();
+			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getSpecialFillerSvgPath();
 		    } else {
-			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerLargeSvgPath();
+			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerSvgPath();
 		    }
 		    filler_bitmap = new createjs.Bitmap(blockList[blk].filler_images.last())
 		    blockList[blk].filler_bitmaps.push(filler_bitmap);
 		    blockList[blk].myContainer.addChild(filler_bitmap);
 		    filler_bitmap.x = blockList[blk].bitmap.x;
-		    filler_bitmap.y = blockList[blk].bitmap.y + yoff + foff + i * loff;
+		    filler_bitmap.y = blockList[blk].bitmap.y + yoff + i * loff;
 		    filler_bitmap.scaleX = filler_bitmap.scaleY = filler_bitmap.scale = 1;
 		    filler_bitmap.name = "bmp_" + blk + "_filler_" + c;
 		    blockList[blk].docks.last()[1] += loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
-		var o = yoff + foff + (j - 1) * loff;
+		var o = yoff + j * loff;
 		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
@@ -854,21 +840,12 @@ define(function (require) {
 		    if (isExpandableBlock(blk)) {
 			blockList[blk].filler_images = [];
 			if (isArgBlock(blk)) {
-			    blockList[blk].filler_images.push(new Image());
-			    blockList[blk].filler_images[0].src = blockList[blk].protoblock.getArgFillerSvgPath();
-
 			    blockList[blk].bottom_image = new Image();
 			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getArgBottomSvgPath();
 			} else if (isSpecialBlock(blk)) {
-			    blockList[blk].filler_images.push(new Image());
-			    blockList[blk].filler_images[0].src = blockList[blk].protoblock.getSpecialFillerSvgPath();
-
 			    blockList[blk].bottom_image = new Image();
 			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getSpecialBottomSvgPath();
 			} else {
-			    blockList[blk].filler_images.push(new Image());
-			    blockList[blk].filler_images[0].src = blockList[blk].protoblock.getFillerSvgPath();
-
 			    blockList[blk].bottom_image = new Image();
 			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getBottomSvgPath();
 			}

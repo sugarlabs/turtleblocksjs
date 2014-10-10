@@ -51,20 +51,12 @@ ProtoBlock.prototype.getFillerSvgPath = function() {
     return 'images/' + this.palette.name + '-filler.svg';
 }
 
-ProtoBlock.prototype.getFillerLargeSvgPath = function() {
-    return 'images/' + this.palette.name + '-filler-large.svg';
-}
-
 ProtoBlock.prototype.getBottomSvgPath = function() {
     return 'images/' + this.palette.name + '-bottom.svg';
 }
 
 ProtoBlock.prototype.getArgFillerSvgPath = function() {
     return 'images/' + this.palette.name + '-arg-filler.svg';
-}
-
-ProtoBlock.prototype.getArgFillerLargeSvgPath = function() {
-    return 'images/' + this.palette.name + '-arg-filler-large.svg';
 }
 
 ProtoBlock.prototype.getArgBottomSvgPath = function() {
@@ -75,10 +67,6 @@ ProtoBlock.prototype.getSpecialFillerSvgPath = function() {
     return 'images/' + this.name + '-filler.svg';
 }
 
-ProtoBlock.prototype.getSpecialFillerLargeSvgPath = function() {
-    return 'images/' + this.name + '-filler-large.svg';
-}
-
 ProtoBlock.prototype.getSpecialBottomSvgPath = function() {
     return 'images/' + this.name + '-bottom.svg';
 }
@@ -86,6 +74,7 @@ ProtoBlock.prototype.getSpecialBottomSvgPath = function() {
 // Instantiate the proto blocks
 var protoBlockList = []
 
+// Turtle palette
 var clearBlock = new ProtoBlock('clear');
 protoBlockList.push(clearBlock);
 clearBlock.palette = turtlePalette;
@@ -115,12 +104,27 @@ leftBlock.palette = turtlePalette;
 leftBlock.args = 1;
 leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
+// Numbers palette
 var numberBlock = new ProtoBlock('number');
 protoBlockList.push(numberBlock);
 numberBlock.palette = numberPalette;
 numberBlock.style = "value";
 numberBlock.docks = [[0, 20, 'numberout']];
 
+var plusBlock = new ProtoBlock('plus');
+protoBlockList.push(plusBlock);
+plusBlock.palette = numberPalette;
+plusBlock.yoff = 49;
+plusBlock.foff = 0;
+plusBlock.loff = 42;
+plusBlock.expandable = true;
+plusBlock.style = "arg";
+plusBlock.size = 2;
+plusBlock.args = 2;
+plusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
+		   [68, 62, 'numberin']];
+
+// Blocks palette
 var textBlock = new ProtoBlock('text');
 protoBlockList.push(textBlock);
 textBlock.palette = blocksPalette;
@@ -134,24 +138,11 @@ boxBlock.args = 1;
 boxBlock.style = "arg";
 boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 
-var plusBlock = new ProtoBlock('plus');
-protoBlockList.push(plusBlock);
-plusBlock.palette = numberPalette;
-plusBlock.yoff = 32;
-plusBlock.foff = 17;
-plusBlock.loff = 42;
-plusBlock.expandable = true;
-plusBlock.style = "arg";
-plusBlock.size = 2;
-plusBlock.args = 2;
-plusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
-		   [68, 62, 'numberin']];
-
 var storeinBlock = new ProtoBlock('storein');
 protoBlockList.push(storeinBlock);
 storeinBlock.palette = blocksPalette;
-storeinBlock.yoff = 32;
-storeinBlock.foff = 17;
+storeinBlock.yoff = 49;
+storeinBlock.foff = 0;
 storeinBlock.loff = 42;
 storeinBlock.expandable = true;
 storeinBlock.style = "special";
@@ -159,31 +150,6 @@ storeinBlock.size = 2;
 storeinBlock.args = 2;
 storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
 		      [98, 62, 'numberin'], [20, 84, 'in']];
-
-var repeatBlock = new ProtoBlock('repeat');
-protoBlockList.push(repeatBlock);
-repeatBlock.palette = flowPalette;
-repeatBlock.yoff = 52;
-repeatBlock.foff = 22;
-repeatBlock.loff = 42;
-repeatBlock.expandable = true;
-repeatBlock.style = "clamp";
-repeatBlock.size = 3;  // One empty slot by default
-repeatBlock.args = 2;
-repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
-		     [20, 126, 'in']];
-
-var startBlock = new ProtoBlock('start');
-protoBlockList.push(startBlock);
-startBlock.palette = blocksPalette;
-startBlock.yoff = 64;
-startBlock.foff = 22;
-startBlock.loff = 42;
-startBlock.args = 1;
-startBlock.expandable = true;
-startBlock.style = "clamp";
-startBlock.docks = [[20, 0, 'unavailable'], [38, 55, 'in'],
-		    [20, 80, 'unavailable']];
 
 var runBlock = new ProtoBlock('run');
 protoBlockList.push(runBlock);
@@ -194,14 +160,40 @@ runBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
 var actionBlock = new ProtoBlock('action');
 protoBlockList.push(actionBlock);
 actionBlock.palette = blocksPalette;
-actionBlock.yoff = 64;
-actionBlock.foff = 22;
+actionBlock.yoff = 86;
+actionBlock.foff = 0;
 actionBlock.loff = 42;
 actionBlock.args = 1;
 actionBlock.expandable = true;
 actionBlock.style = "clamp";
 actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
 		     [38, 55, 'in'], [20, 80, 'unavailable']];
+
+var startBlock = new ProtoBlock('start');
+protoBlockList.push(startBlock);
+startBlock.palette = blocksPalette;
+startBlock.yoff = 86;
+startBlock.foff = 0;
+startBlock.loff = 42;
+startBlock.args = 1;
+startBlock.expandable = true;
+startBlock.style = "clamp";
+startBlock.docks = [[20, 0, 'unavailable'], [38, 55, 'in'],
+		    [20, 80, 'unavailable']];
+
+// Flow palette
+var repeatBlock = new ProtoBlock('repeat');
+protoBlockList.push(repeatBlock);
+repeatBlock.palette = flowPalette;
+repeatBlock.yoff = 74;
+repeatBlock.foff = 0;
+repeatBlock.loff = 42;
+repeatBlock.expandable = true;
+repeatBlock.style = "clamp";
+repeatBlock.size = 3;  // One empty slot by default
+repeatBlock.args = 2;
+repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
+		     [20, 126, 'in']];
 
 // Define block instance objects
 function Block (protoblock) {

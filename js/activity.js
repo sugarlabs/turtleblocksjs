@@ -600,7 +600,11 @@ define(function (require) {
 		    var c = i + j;
 
 		    blockList[blk].filler_images.push(new Image());
-		    blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerLargeSvgPath();
+		    if (isArgBlock(blk)) {
+			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getArgFillerLargeSvgPath();
+		    } else {
+			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerLargeSvgPath();
+		    }
 		    filler_bitmap = new createjs.Bitmap(blockList[blk].filler_images.last())
 		    blockList[blk].filler_bitmaps.push(filler_bitmap);
 		    blockList[blk].myContainer.addChild(filler_bitmap);
@@ -843,10 +847,19 @@ define(function (require) {
 		    blockList[blk].image.onload = handleImageLoad;
 		    if (isExpandableBlock(blk)) {
 			blockList[blk].filler_images = [];
-			blockList[blk].filler_images.push(new Image());
-			blockList[blk].filler_images[0].src = blockList[blk].protoblock.getFillerSvgPath();
-			blockList[blk].bottom_image = new Image();
-			blockList[blk].bottom_image.src = blockList[blk].protoblock.getBottomSvgPath();
+			if (isArgBlock(blk)) {
+			    blockList[blk].filler_images.push(new Image());
+			    blockList[blk].filler_images[0].src = blockList[blk].protoblock.getArgFillerSvgPath();
+
+			    blockList[blk].bottom_image = new Image();
+			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getArgBottomSvgPath();
+			} else {
+			    blockList[blk].filler_images.push(new Image());
+			    blockList[blk].filler_images[0].src = blockList[blk].protoblock.getFillerSvgPath();
+
+			    blockList[blk].bottom_image = new Image();
+			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getBottomSvgPath();
+			}
 		    }
 		}
 	    }

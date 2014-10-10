@@ -57,6 +57,18 @@ ProtoBlock.prototype.getBottomSvgPath = function() {
     return 'images/' + this.palette.name + '-bottom.svg';
 }
 
+ProtoBlock.prototype.getArgFillerSvgPath = function() {
+    return 'images/' + this.palette.name + '-arg-filler.svg';
+}
+
+ProtoBlock.prototype.getArgFillerLargeSvgPath = function() {
+    return 'images/' + this.palette.name + '-arg-filler-large.svg';
+}
+
+ProtoBlock.prototype.getArgBottomSvgPath = function() {
+    return 'images/' + this.palette.name + '-arg-bottom.svg';
+}
+
 // Instantiate the proto blocks
 var protoBlockList = []
 

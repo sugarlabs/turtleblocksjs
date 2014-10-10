@@ -642,9 +642,7 @@ define(function (require) {
 		return size;
 	    }
 
-	    // TODO: handle special blocks
-	    if (isExpandableBlock(blk) && !isSpecialBlock(blk)) {
-		// what is inside the clamp?
+	    if (isClampBlock(blk)) {
 		c = blockList[blk].connections.length - 2;
 		size = getStackSize(blockList[blk].connections[c]);
 		if (size == 0) {
@@ -655,12 +653,9 @@ define(function (require) {
 		size = blockList[blk].protoblock.size;
 	    }
 
-	    // check on any connected blocks
+	    // check on any connected block
 	    var cblk = blockList[blk].connections.last();
-	    while (cblk != null) {
-		size += getStackSize(cblk);
-		cblk = blockList[cblk].connections.last();
-	    }
+	    size += getStackSize(cblk);
 	    return size;
 	}
 
@@ -756,10 +751,7 @@ define(function (require) {
 	}
 
         function insideExpandableBlock(blk) {
-	    // Returns containing expandable block or null
-	    if (isSpecialBlock(blk)) {
-		return null;
-	    }
+	    // Returns a containing expandable block or null
 	    if (blockList[blk].connections[0] == null) {
 		return null;
 	    } else {
@@ -1034,74 +1026,76 @@ define(function (require) {
 	    newBlock(clearBlock);
 	    blockList[1].connections = [0, 2];
 
-	    newBlock(repeatBlock);
-	    blockList[2].connections = [1, 3, 4, null];
-	    newBlock(numberBlock);
-	    blockList[3].value = 8;
-	    blockList[3].connections = [2];
-
-	    newBlock(rightBlock);
-	    blockList[4].connections = [2, 5, 6];
-	    newBlock(numberBlock);
-	    blockList[5].value = 45;
-	    blockList[5].connections = [4];
-
-	    newBlock(repeatBlock);
-	    blockList[6].connections = [4, 7, 8, null];
-	    newBlock(numberBlock);
-	    blockList[7].value = 4;
-	    blockList[7].connections = [6];
-
-	    newBlock(rightBlock);
-	    blockList[8].connections = [6, 9, 10];
-	    newBlock(numberBlock);
-	    blockList[9].value = 90;
-	    blockList[9].connections = [8];
-
-	    newBlock(forwardBlock);
-	    blockList[10].connections = [8, 11, null];
-
-	    newBlock(plusBlock);
-	    blockList[11].connections = [10, 12, 13];
-	    newBlock(numberBlock);
-	    blockList[12].value = 100;
-	    blockList[12].connections = [11];
-
-	    newBlock(plusBlock);
-	    blockList[13].connections = [11, 14, 15];
-	    newBlock(numberBlock);
-	    blockList[14].value = 100;
-	    blockList[14].connections = [13];
-	    newBlock(numberBlock);
-	    blockList[15].value = 100;
-	    blockList[15].connections = [13];
-
-	    newBlock(actionBlock);
-	    blockList[16].connections = [null, 17, null, null];
-	    blockList[16].x = 100;
-	    blockList[16].y = 50;
+	    newBlock(storeinBlock);
+	    blockList[2].connections = [1, 3, 4, 5];
 	    newBlock(textBlock);
-	    blockList[17].connections = [16];
-	    blockList[17].value = "square";
+	    blockList[3].connections = [2];
+	    blockList[3].value = "size";
+	    newBlock(numberBlock);
+	    blockList[4].value = 100;
+	    blockList[4].connections = [2];
+
+	    newBlock(repeatBlock);
+	    blockList[5].connections = [2, 6, 7, null];
+	    newBlock(numberBlock);
+	    blockList[6].value = 8;
+	    blockList[6].connections = [5];
 
 	    newBlock(runBlock);
-	    blockList[18].x = 100;
-	    blockList[18].y = 300;
-	    blockList[18].connections = [null, 19, null];
+	    blockList[7].connections = [5, 8, 9];
 	    newBlock(textBlock);
-	    blockList[19].connections = [18];
-	    blockList[19].value = "square";
+	    blockList[8].connections = [7];
+	    blockList[8].value = "square";
 
+	    newBlock(rightBlock);
+	    blockList[9].connections = [7, 10, null];
+	    newBlock(numberBlock);
+	    blockList[10].value = 45;
+	    blockList[10].connections = [9];
+
+	    newBlock(actionBlock);
+	    blockList[11].connections = [null, 12, 13, null];
+	    blockList[11].x = 25;
+	    blockList[11].y = 50;
+	    newBlock(textBlock);
+	    blockList[12].connections = [11];
+	    blockList[12].value = "square";
+
+	    newBlock(repeatBlock);
+	    blockList[13].connections = [11, 14, 15, null];
+	    newBlock(numberBlock);
+	    blockList[14].value = 4;
+	    blockList[14].connections = [13];
+
+	    newBlock(forwardBlock);
+	    blockList[15].connections = [13, 16, 18];
 	    newBlock(boxBlock);
-	    blockList[20].x = 100;
-	    blockList[20].y = 500;
-	    blockList[20].connections = [null, null];
+	    blockList[16].connections = [15, 17];
+	    newBlock(textBlock);
+	    blockList[17].connections = [16];
+	    blockList[17].value = "size";
 
-	    newBlock(storeinBlock);
-	    blockList[21].x = 300;
-	    blockList[21].y = 500;
-	    blockList[21].connections = [null, null, null, null];
+	    newBlock(rightBlock);
+	    blockList[18].connections = [15, 19, null];
+	    newBlock(numberBlock);
+	    blockList[19].value = 90;
+	    blockList[19].connections = [18];
 
+	    //
+	    // newBlock(plusBlock);
+	    // blockList[11].connections = [10, 12, 13];
+	    // newBlock(numberBlock);
+	    // blockList[12].value = 100;
+	    // blockList[12].connections = [11];
+
+	    // newBlock(plusBlock);
+	    // blockList[13].connections = [11, 14, 15];
+	    // newBlock(numberBlock);
+	    // blockList[14].value = 100;
+	    // blockList[14].connections = [13];
+	    // newBlock(numberBlock);
+	    // blockList[15].value = 100;
+	    // blockList[15].connections = [13];
 
 	    updateBlockImages();
 	    updateBlockLabels();
@@ -1262,8 +1256,10 @@ define(function (require) {
 		    name = parseArg(cblk);
 		    i = findBox(name);
 		    if (i == null) {
+			console.log('box: ' + name + ' not found.');
 			blockList[blk].value = null;
 		    } else {
+			console.log('box: ' + name + ' ' + i + ' ' + boxList[i][1]);
 			blockList[blk].value = boxList[i][1];
 		    }
 		    break;
@@ -1396,6 +1392,14 @@ define(function (require) {
 
 	function isSpecialBlock(blk) {
 	    if (specialBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function isClampBlock(blk) {
+	    if (clampBlocks.indexOf(blockList[blk].name) != -1) {
 		return true;
 	    } else {
 		return false;

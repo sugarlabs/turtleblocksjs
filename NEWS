@@ -6,11 +6,11 @@
   * arithmetic functions (arg parsing)
   * setting expandable blocks on run (should be on load)
   * rotate turtle using easeljs rotation
+  * implement actions (stacks)
+  * implement boxes
 
 TODO:
   * expanding arithmetic blocks
-  * stacks
-  * boxes
   * booleans
   * pen palette
   * sensors/media

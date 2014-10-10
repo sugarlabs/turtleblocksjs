@@ -33,6 +33,8 @@ function ProtoBlock (name) {
     this.name = name;
     this.palette = null;
     this.style = null;
+    this.expandable = false;
+    this.args = 0;
     this.size = 1;
     this.docks = [];
 }
@@ -87,7 +89,6 @@ var protoBlockList = []
 var clearBlock = new ProtoBlock('clear');
 protoBlockList.push(clearBlock);
 clearBlock.palette = turtlePalette;
-clearBlock.args = 0;
 clearBlock.docks = [[20, 0, 'out'], [20, 42, 'in']];
 
 var forwardBlock = new ProtoBlock('forward');
@@ -117,19 +118,20 @@ leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 var numberBlock = new ProtoBlock('number');
 protoBlockList.push(numberBlock);
 numberBlock.palette = numberPalette;
-numberBlock.args = 0;
+numberBlock.style = "value";
 numberBlock.docks = [[0, 20, 'numberout']];
 
 var textBlock = new ProtoBlock('text');
 protoBlockList.push(textBlock);
 textBlock.palette = blocksPalette;
-textBlock.args = 0;
+textBlock.style = "value";
 textBlock.docks = [[0, 20, 'textout']];
 
 var boxBlock = new ProtoBlock('box');
 protoBlockList.push(boxBlock);
 boxBlock.palette = blocksPalette;
 boxBlock.args = 1;
+boxBlock.style = "arg";
 boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 
 var plusBlock = new ProtoBlock('plus');
@@ -138,7 +140,9 @@ plusBlock.palette = numberPalette;
 plusBlock.yoff = 32;
 plusBlock.foff = 17;
 plusBlock.loff = 42;
-plusBlock.size = 2;  // Expandable
+plusBlock.expandable = true;
+plusBlock.style = "arg";
+plusBlock.size = 2;
 plusBlock.args = 2;
 plusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
 		   [68, 62, 'numberin']];
@@ -149,7 +153,9 @@ storeinBlock.palette = blocksPalette;
 storeinBlock.yoff = 32;
 storeinBlock.foff = 17;
 storeinBlock.loff = 42;
-storeinBlock.size = 2;  // Expandable
+storeinBlock.expandable = true;
+storeinBlock.style = "special";
+storeinBlock.size = 2;
 storeinBlock.args = 2;
 storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
 		      [98, 62, 'numberin'], [20, 84, 'in']];
@@ -160,7 +166,9 @@ repeatBlock.palette = flowPalette;
 repeatBlock.yoff = 52;
 repeatBlock.foff = 22;
 repeatBlock.loff = 42;
-repeatBlock.size = 3;  // Expandable
+repeatBlock.expandable = true;
+repeatBlock.style = "clamp";
+repeatBlock.size = 3;  // One empty slot by default
 repeatBlock.args = 2;
 repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
 		     [20, 126, 'in']];
@@ -172,6 +180,8 @@ startBlock.yoff = 64;
 startBlock.foff = 22;
 startBlock.loff = 42;
 startBlock.args = 1;
+startBlock.expandable = true;
+startBlock.style = "clamp";
 startBlock.docks = [[20, 0, 'unavailable'], [38, 55, 'in'],
 		    [20, 80, 'unavailable']];
 
@@ -188,6 +198,8 @@ actionBlock.yoff = 64;
 actionBlock.foff = 22;
 actionBlock.loff = 42;
 actionBlock.args = 1;
+actionBlock.expandable = true;
+actionBlock.style = "clamp";
 actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
 		     [38, 55, 'in'], [20, 80, 'unavailable']];
 
@@ -201,7 +213,7 @@ function Block (protoblock) {
     this.bitmap = null;
     this.x = 0;
     this.y = 0;
-    this.docks = [];
+    this.docks = [];  // Proto dock is copied here.
     this.connections = [];
 }
 
@@ -221,17 +233,29 @@ var blockList = [];
 // We need to keep track of certain classes of blocks that exhibit
 // different types of behavior:
 
-// Blocks that are expandable.
-var expandableBlocks = ["repeat", "start", "plus", "action", "storein"];
-
-// Special blocks have unique parts.
-var specialBlocks = ["storein"];
-
-// Blocks that are used as arguments to other blocks
-var argBlocks = ["number", "text", "plus", "box"];
-
-// Blocks that return values
-var valueBlocks = ["number", "text"];
+var expandableBlocks = [];  // Blocks with parts that expand
+var clampBlocks = [];  // Blocks that contain other blocks
+var argBlocks = [];  // Blocks that are used as arguments to other blocks
+var valueBlocks = [];  // Blocks that return values
+var specialBlocks = [];  // Blocks with special parts
+for (i = 0; i < protoBlockList.length; i++) {
+    if (protoBlockList[i].expandable) {
+	expandableBlocks.push(protoBlockList[i].name);
+    }
+    if (protoBlockList[i].style == "clamp") {
+	clampBlocks.push(protoBlockList[i].name);
+    }
+    if (protoBlockList[i].style == "special") {
+	specialBlocks.push(protoBlockList[i].name);
+    }
+    if (protoBlockList[i].style == "arg") {
+	argBlocks.push(protoBlockList[i].name);
+    }
+    if (protoBlockList[i].style == "value") {
+	argBlocks.push(protoBlockList[i].name);
+	valueBlocks.push(protoBlockList[i].name);
+    }
+}
 
 // Blocks that cannot be run on their own
 var noRunBlocks = ["action"];

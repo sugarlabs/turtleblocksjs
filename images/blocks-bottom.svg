@@ -8,7 +8,7 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
-   width="72"
+   width="114"
    height="64"
    id="svg3008">
   <metadata
@@ -26,14 +26,14 @@
   <defs
      id="defs3016" />
   <path
-     d="m 17,1 c 0,5.235988 4.764012,10 10,10 l 8,0 0,4 20,0 0,-4 16,0 0,32 c 0,4.18879 -3.936277,9.015931 -8,8 l -8,0 -18,0 -2,0 -8,12 -8,-12 -2,0 -8,0 C 4.8112098,51 1,47.18879 1,43 L 1,1 z"
+     d="m 17,1 c 0,5.235988 4.764012,10 10,10 l 8,0 0,4 20,0 0,-4 58,0 0,32 c 0,4.18879 -3.93628,9.015931 -8,8 l -50,0 -18,0 -2,0 -8,12 -8,-12 -2,0 -8,0 C 4.8112098,51 1,47.18879 1,43 L 1,1 z"
      id="path3012"
      style="fill:#ffff00;fill-opacity:1;stroke:#a0a000;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <rect
      width="12.994842"
      height="0.99484116"
      x="2.5025792"
-     y="0.50257939"
+     y="0.50257945"
      id="rect3831"
      style="fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#ffff00;stroke-width:1.00515878;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
 </svg>

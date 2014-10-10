@@ -897,6 +897,7 @@ define(function (require) {
 			'-webkit-user-select: text;" ' +
 			// 'onselect="labelSelected", ' +
 			'onchanged="labelChanged", ' +
+			'class="number", ' +
 			'cols="6", rows="1", maxlength="6">' +
 			blockList[blk].value.toString() + '</textarea>'
 		} else if (blockList[blk].name == "text") {
@@ -906,6 +907,7 @@ define(function (require) {
 			'-webkit-user-select: text;" ' +
 			// 'onselect="labelSelected", ' +
 			'onchanged="labelChanged", ' +
+			'class="text", ' +
 			'cols="6", rows="1", maxlength="6">' +
 			blockList[blk].value.toString() + '</textarea>'
 		} else {

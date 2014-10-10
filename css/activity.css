@@ -6,8 +6,18 @@
   background-image: url(../icons/new-button.svg);
 }
 
-textarea {
-   background-color: #d0d0d0;
+textarea.text {
+   background-color: #ffff00;
+   text-align: center;
+   font-size: 150% !important;
+   font-weight: bold !important;
+   resize: none !important;
+   padding: 0 !important;
+   border: 0 !important;
+}
+
+textarea.number {
+   background-color: #ff48ff;
    text-align: center;
    font-size: 150% !important;
    font-weight: bold !important;

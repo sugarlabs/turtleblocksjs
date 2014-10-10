@@ -69,6 +69,9 @@ define(function (require) {
 	// The list of [action name, block]
         var actionList = [];
 
+	// The list of [box name, value]
+	var boxList = [];
+
 	// Expandable blocks
         var expandablesList = [];
 
@@ -563,6 +566,11 @@ define(function (require) {
 		return;
 	    }
 
+	    // TODO: expand special blocks
+	    if (isSpecialBlock(blk)) {
+		return;
+	    }
+
 	    // (1) count up the number of blocks inside the clamp;
 	    // always the second to last argument.
 	    var c = blockList[blk].connections.length - 2;
@@ -602,6 +610,8 @@ define(function (require) {
 		    blockList[blk].filler_images.push(new Image());
 		    if (isArgBlock(blk)) {
 			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getArgFillerLargeSvgPath();
+		    } else if (isSpecialBlock(blk)) {
+			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getSpecialFillerLargeSvgPath();
 		    } else {
 			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerLargeSvgPath();
 		    }
@@ -632,7 +642,8 @@ define(function (require) {
 		return size;
 	    }
 
-	    if (isExpandableBlock(blk)) {
+	    // TODO: handle special blocks
+	    if (isExpandableBlock(blk) && !isSpecialBlock(blk)) {
 		// what is inside the clamp?
 		c = blockList[blk].connections.length - 2;
 		size = getStackSize(blockList[blk].connections[c]);
@@ -746,6 +757,9 @@ define(function (require) {
 
         function insideExpandableBlock(blk) {
 	    // Returns containing expandable block or null
+	    if (isSpecialBlock(blk)) {
+		return null;
+	    }
 	    if (blockList[blk].connections[0] == null) {
 		return null;
 	    } else {
@@ -853,6 +867,12 @@ define(function (require) {
 
 			    blockList[blk].bottom_image = new Image();
 			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getArgBottomSvgPath();
+			} else if (isSpecialBlock(blk)) {
+			    blockList[blk].filler_images.push(new Image());
+			    blockList[blk].filler_images[0].src = blockList[blk].protoblock.getSpecialFillerSvgPath();
+
+			    blockList[blk].bottom_image = new Image();
+			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getSpecialBottomSvgPath();
 			} else {
 			    blockList[blk].filler_images.push(new Image());
 			    blockList[blk].filler_images[0].src = blockList[blk].protoblock.getFillerSvgPath();
@@ -1091,7 +1111,7 @@ define(function (require) {
 	    // We run the logo commands here.
 
 	    // Where to put this???
-	    expandExpandables();
+	    // expandExpandables();
 
 	    // First we need to reconcile the values in all the value blocks
 	    // with their associated textareas.
@@ -1181,6 +1201,11 @@ define(function (require) {
 		    doRepeat(args[0], args[1]);
 		}
 		break;
+	    case 'storein':
+ 		if (args.length == 2) {
+		    doStorein(args[0], args[1]);
+		}
+		break;
 	    case 'clear':
 		doClear();
 		break;
@@ -1232,12 +1257,21 @@ define(function (require) {
 		return blockList[blk].value;
 	    } else if (isArgBlock(blk)) {
 		switch (blockList[blk].name) {
+		case 'box':
+		    cblk = blockList[blk].connections[1];
+		    name = parseArg(cblk);
+		    i = findBox(name);
+		    if (i == null) {
+			blockList[blk].value = null;
+		    } else {
+			blockList[blk].value = boxList[i][1];
+		    }
+		    break;
 		case 'plus':
 		    cblk1 = blockList[blk].connections[1];
 		    cblk2 = blockList[blk].connections[2];
 		    a = parseArg(cblk1);
 		    b = parseArg(cblk2);
-		    console.log('plus: ' + a + ', ' + b);
 		    blockList[blk].value = doPlus(a, b);
 		    break;
 		}
@@ -1261,38 +1295,6 @@ define(function (require) {
 	    }
 	}
 
-	function isValueBlock(blk) {
-	    if (valueBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
-	function isArgBlock(blk) {
-	    if (argBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
-	function isNoRunBlock(blk) {
-	    if (noRunBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
-	function isExpandableBlock(blk) {
-	    if (expandableBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
 	// Logo functions
 	function doStart(blk) {
 	    console.log('doStart: calling runFromBlock(' + blk + ')');
@@ -1312,6 +1314,17 @@ define(function (require) {
         function doRepeat(count, blk) {
 	    for (var i = 0; i < count; i++) {
 		runFromBlock(blk);
+	    }
+	}
+
+        function doStorein(name, value) {
+	    if (name != null) {
+		i = findBox(name);
+		if (i == null) {
+		    boxList.push([name, value]);
+		} else {
+		    boxList[i][1] = value;
+		}
 	    }
 	}
 
@@ -1359,6 +1372,60 @@ define(function (require) {
 	    turtle_bitmap.x = turtleX2screenX(turtleX);
 	    turtle_bitmap.y = invertY(turtleY);
 	    turtle_bitmap.rotation = 0;
+	    // Also clear all the boxes
+	    boxList = [];
+	}
+
+	// Utility functions
+
+	function isValueBlock(blk) {
+	    if (valueBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function isArgBlock(blk) {
+	    if (argBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function isSpecialBlock(blk) {
+	    if (specialBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function isNoRunBlock(blk) {
+	    if (noRunBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function isExpandableBlock(blk) {
+	    if (expandableBlocks.indexOf(blockList[blk].name) != -1) {
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+	function findBox(name) {
+	    // Return the index of the box with name name.
+	    for (i = 0; i < boxList.length; i++) {
+		if (boxList[i][0] == name) {
+		    return i;
+		}
+	    }
+	    return null;
 	}
 
 	function screenX2turtleX(x) {

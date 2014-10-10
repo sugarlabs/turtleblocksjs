@@ -69,6 +69,18 @@ ProtoBlock.prototype.getArgBottomSvgPath = function() {
     return 'images/' + this.palette.name + '-arg-bottom.svg';
 }
 
+ProtoBlock.prototype.getSpecialFillerSvgPath = function() {
+    return 'images/' + this.name + '-filler.svg';
+}
+
+ProtoBlock.prototype.getSpecialFillerLargeSvgPath = function() {
+    return 'images/' + this.name + '-filler-large.svg';
+}
+
+ProtoBlock.prototype.getSpecialBottomSvgPath = function() {
+    return 'images/' + this.name + '-bottom.svg';
+}
+
 // Instantiate the proto blocks
 var protoBlockList = []
 
@@ -118,7 +130,7 @@ var boxBlock = new ProtoBlock('box');
 protoBlockList.push(boxBlock);
 boxBlock.palette = blocksPalette;
 boxBlock.args = 1;
-boxBlock.docks = [[0, 20, 'numberout'], [68, 62, 'textin']];
+boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 
 var plusBlock = new ProtoBlock('plus');
 protoBlockList.push(plusBlock);
@@ -139,8 +151,8 @@ storeinBlock.foff = 17;
 storeinBlock.loff = 42;
 storeinBlock.size = 2;  // Expandable
 storeinBlock.args = 2;
-storeinBlock.docks = [[0, 20, 'out'], [68, 20, 'textin'],
-		      [68, 62, 'numberin'], [0, 126, 'in']];
+storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
+		      [98, 62, 'numberin'], [20, 84, 'in']];
 
 var repeatBlock = new ProtoBlock('repeat');
 protoBlockList.push(repeatBlock);
@@ -206,8 +218,14 @@ Block.prototype.getInfo = function() {
 // A place to keep the blocks we create...
 var blockList = [];
 
+// We need to keep track of certain classes of blocks that exhibit
+// different types of behavior:
+
 // Blocks that are expandable.
 var expandableBlocks = ["repeat", "start", "plus", "action", "storein"];
+
+// Special blocks have unique parts.
+var specialBlocks = ["storein"];
 
 // Blocks that are used as arguments to other blocks
 var argBlocks = ["number", "text", "plus", "box"];

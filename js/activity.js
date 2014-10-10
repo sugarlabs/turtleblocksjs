@@ -75,6 +75,9 @@ define(function (require) {
 	// Expandable blocks
         var expandablesList = [];
 
+	// Cache bitmaps that have been removed for reuse
+	var bitmapCache = [];
+
         var color;
         var stroke;
         var colors;
@@ -575,10 +578,7 @@ define(function (require) {
 	    if (size < blockList[blk].filler_bitmaps.length + 1) {
 		var n = j - size + 1;  // one slot built in
 		for (var i = 0; i < n; i++) {
-		    // How to destroy the images, bitmaps?
-		    filler_image = blockList[blk].filler_images.pop();
-		    filler_bitmap = blockList[blk].filler_bitmaps.pop();
-		    blockList[blk].myContainer.removeChild(filler_bitmap);
+		    removeFiller(blk);
 		    blockList[blk].docks.last()[1] -= loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
@@ -593,21 +593,7 @@ define(function (require) {
 		for (var i = 0; i < n; i++) {
 		    var c = i + j;
 
-		    blockList[blk].filler_images.push(new Image());
-		    if (isArgBlock(blk)) {
-			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getArgFillerSvgPath();
-		    } else if (isSpecialBlock(blk)) {
-			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getSpecialFillerSvgPath();
-		    } else {
-			blockList[blk].filler_images.last().src = blockList[blk].protoblock.getFillerSvgPath();
-		    }
-		    filler_bitmap = new createjs.Bitmap(blockList[blk].filler_images.last())
-		    blockList[blk].filler_bitmaps.push(filler_bitmap);
-		    blockList[blk].myContainer.addChild(filler_bitmap);
-		    filler_bitmap.x = blockList[blk].bitmap.x;
-		    filler_bitmap.y = blockList[blk].bitmap.y + yoff + i * loff;
-		    filler_bitmap.scaleX = filler_bitmap.scaleY = filler_bitmap.scale = 1;
-		    filler_bitmap.name = "bmp_" + blk + "_filler_" + c;
+		    addFiller(blk, yoff + c * loff, c);
 		    blockList[blk].docks.last()[1] += loff;
 		}
                 j = blockList[blk].filler_bitmaps.length;
@@ -618,6 +604,49 @@ define(function (require) {
 		}
                 update = true;
 	    }	    
+	}
+
+	function findBitmap(name) {
+	    for (var i = 0; i < bitmapCache.length; i++) {
+		if (bitmapCache[i].name == name) {
+		    return i;
+		}
+	    }
+	    return null;
+	}
+
+	function removeFiller(blk) {
+	    var filler_bitmap = blockList[blk].filler_bitmaps.pop();
+	    blockList[blk].myContainer.removeChild(filler_bitmap);
+	    if (findBitmap(filler_bitmap.name) == null) {
+		bitmapCache.push(filler_bitmap);
+	    }
+	    update = true;
+	}
+
+	function addFiller(blk, offset, c) {
+	    var name = "bmp_" + blk + "_filler_" + c;
+	    var bi = findBitmap(name);
+	    if (bi == null) { 
+		var image = new Image();
+		if (isArgBlock(blk)) {
+		    image.src = blockList[blk].protoblock.getArgFillerSvgPath();
+		} else if (isSpecialBlock(blk)) {
+		    image.src = blockList[blk].protoblock.getSpecialFillerSvgPath();
+		} else {
+		    image.src = blockList[blk].protoblock.getFillerSvgPath();
+		}
+		var bitmap = new createjs.Bitmap(image)
+		bitmap.name = name;
+	    } else {
+		var bitmap = bitmapCache[bi];
+	    }
+	    blockList[blk].filler_bitmaps.push(bitmap);
+	    blockList[blk].myContainer.addChild(bitmap);
+	    bitmap.x = blockList[blk].bitmap.x;
+	    bitmap.y = blockList[blk].bitmap.y + offset;
+	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+	    update = true;
 	}
 
 	function getStackSize(blk) {
@@ -765,12 +794,12 @@ define(function (require) {
 	    }
 	}
 
-	function findExpandables() {
-	    // Find any expandable blocks.
+	function findClamps() {
+	    // Find any clamp blocks.
 	    expandablesList = [];
-	    
 	    findStacks();  // We start by finding the stacks
-	    for (i = 0; i < stackList.length; i++) {
+	    for (var i = 0; i < stackList.length; i++) {
+		console.log('searching for expandables in ' + stackList[i] + ' ' + blockList[stackList[i]].name);
 		searchForExpandables(stackList[i]);
 	    }
 	}
@@ -778,20 +807,21 @@ define(function (require) {
 	function searchForExpandables(blk) {
 	    // Find the expandable blocks below blk in a stack.
 	    while (blk != null) {
-		if (isExpandableBlock(blk)) {
+		if (isClampBlock(blk)) {
 		    expandablesList.push(blk);
-		    c = blockList[blk].connections.length - 2;
+		    var c = blockList[blk].connections.length - 2;
 		    searchForExpandables(blockList[blk].connections[c]);
 		}
 		blk = blockList[blk].connections.last();
 	    }
 	}
 
-	function expandExpandables() {
+	function expandClamps() {
 	    // Expand expandable blocks as needed.
-	    findExpandables();
-	    for (i = 0; i < expandablesList.length; i++) {
-		adjustExpandableBlock(expandablesList[i]);		
+	    findClamps();
+	    for (var i = 0; i < expandablesList.length; i++) {
+		console.log('expanding ' + expandablesList[i] + ' ' + blockList[expandablesList[i]].name);
+		adjustExpandableBlock(expandablesList[i]);
 	    }
 	    update = true;
 	}
@@ -838,7 +868,6 @@ define(function (require) {
 		    blockList[blk].image.src = blockList[blk].protoblock.getSvgPath();
 		    blockList[blk].image.onload = handleImageLoad;
 		    if (isExpandableBlock(blk)) {
-			blockList[blk].filler_images = [];
 			if (isArgBlock(blk)) {
 			    blockList[blk].bottom_image = new Image();
 			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getArgBottomSvgPath();
@@ -1082,7 +1111,8 @@ define(function (require) {
 	    // We run the logo commands here.
 
 	    // Where to put this???
-	    // expandExpandables();
+	    expandClamps();
+	    update = true;
 
 	    // First we need to reconcile the values in all the value blocks
 	    // with their associated textareas.

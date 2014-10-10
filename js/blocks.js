@@ -24,9 +24,9 @@ var flowPalette = new Palette('flow');
 paletteList.push(flowPalette);
 flowPalette.color = "orange";
 
-var blockPalette = new Palette('blocks');
-paletteList.push(blockPalette);
-blockPalette.color = "yellow";
+var blocksPalette = new Palette('blocks');
+paletteList.push(blocksPalette);
+blocksPalette.color = "yellow";
 
 // Define block proto objects
 function ProtoBlock (name) {
@@ -110,9 +110,15 @@ numberBlock.docks = [[0, 20, 'numberout']];
 
 var textBlock = new ProtoBlock('text');
 protoBlockList.push(textBlock);
-textBlock.palette = blockPalette;
+textBlock.palette = blocksPalette;
 textBlock.args = 0;
 textBlock.docks = [[0, 20, 'textout']];
+
+var boxBlock = new ProtoBlock('box');
+protoBlockList.push(boxBlock);
+boxBlock.palette = blocksPalette;
+boxBlock.args = 1;
+boxBlock.docks = [[0, 20, 'numberout'], [68, 62, 'textin']];
 
 var plusBlock = new ProtoBlock('plus');
 protoBlockList.push(plusBlock);
@@ -124,6 +130,17 @@ plusBlock.size = 2;  // Expandable
 plusBlock.args = 2;
 plusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
 		   [68, 62, 'numberin']];
+
+var storeinBlock = new ProtoBlock('storein');
+protoBlockList.push(storeinBlock);
+storeinBlock.palette = blocksPalette;
+storeinBlock.yoff = 32;
+storeinBlock.foff = 17;
+storeinBlock.loff = 42;
+storeinBlock.size = 2;  // Expandable
+storeinBlock.args = 2;
+storeinBlock.docks = [[0, 20, 'out'], [68, 20, 'textin'],
+		      [68, 62, 'numberin'], [0, 126, 'in']];
 
 var repeatBlock = new ProtoBlock('repeat');
 protoBlockList.push(repeatBlock);
@@ -138,7 +155,7 @@ repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
 
 var startBlock = new ProtoBlock('start');
 protoBlockList.push(startBlock);
-startBlock.palette = blockPalette;
+startBlock.palette = blocksPalette;
 startBlock.yoff = 64;
 startBlock.foff = 22;
 startBlock.loff = 42;
@@ -148,13 +165,13 @@ startBlock.docks = [[20, 0, 'unavailable'], [38, 55, 'in'],
 
 var runBlock = new ProtoBlock('run');
 protoBlockList.push(runBlock);
-runBlock.palette = blockPalette;
+runBlock.palette = blocksPalette;
 runBlock.args = 1;
 runBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
 
 var actionBlock = new ProtoBlock('action');
 protoBlockList.push(actionBlock);
-actionBlock.palette = blockPalette;
+actionBlock.palette = blocksPalette;
 actionBlock.yoff = 64;
 actionBlock.foff = 22;
 actionBlock.loff = 42;
@@ -190,10 +207,10 @@ Block.prototype.getInfo = function() {
 var blockList = [];
 
 // Blocks that are expandable.
-var expandableBlocks = ["repeat", "start", "plus", "action"];
+var expandableBlocks = ["repeat", "start", "plus", "action", "storein"];
 
 // Blocks that are used as arguments to other blocks
-var argBlocks = ["number", "text", "plus"];
+var argBlocks = ["number", "text", "plus", "box"];
 
 // Blocks that return values
 var valueBlocks = ["number", "text"];

@@ -1072,6 +1072,17 @@ define(function (require) {
 	    blockList[19].connections = [18];
 	    blockList[19].value = "square";
 
+	    newBlock(boxBlock);
+	    blockList[20].x = 100;
+	    blockList[20].y = 500;
+	    blockList[20].connections = [null, null];
+
+	    newBlock(storeinBlock);
+	    blockList[21].x = 300;
+	    blockList[21].y = 500;
+	    blockList[21].connections = [null, null, null, null];
+
+
 	    updateBlockImages();
 	    updateBlockLabels();
         }

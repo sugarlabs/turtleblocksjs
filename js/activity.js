@@ -98,7 +98,9 @@ define(function (require) {
 	var turtleX = 0;
 	var turtleY = 0;
 
+	// functions needed by block.js
 	updater = updateBlocks;
+	adjuster = adjustDocks;
 
 	// Get things started
 	init();

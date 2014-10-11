@@ -39,6 +39,7 @@ function ProtoBlock (name) {
     this.style = null;
     this.expandable = false;
     this.args = 0;
+    this.defaults = [];
     this.size = 1;
     this.docks = [];
 }
@@ -90,6 +91,7 @@ protoBlockList.push(forwardBlock);
 forwardBlock.palette = turtlePalette;
 turtlePalette.blockList.push(forwardBlock);
 forwardBlock.args = 1;
+forwardBlock.defaults.push(100);
 forwardBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var rightBlock = new ProtoBlock('right');
@@ -97,6 +99,7 @@ protoBlockList.push(rightBlock);
 rightBlock.palette = turtlePalette;
 turtlePalette.blockList.push(rightBlock);
 rightBlock.args = 1;
+rightBlock.defaults.push(90);
 rightBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var backBlock = new ProtoBlock('back');
@@ -104,6 +107,7 @@ protoBlockList.push(backBlock);
 backBlock.palette = turtlePalette;
 turtlePalette.blockList.push(backBlock);
 backBlock.args = 1;
+backBlock.defaults.push(100);
 backBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var leftBlock = new ProtoBlock('left');
@@ -111,6 +115,7 @@ protoBlockList.push(leftBlock);
 leftBlock.palette = turtlePalette;
 turtlePalette.blockList.push(leftBlock);
 leftBlock.args = 1;
+leftBlock.defaults.push(90);
 leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 // Pen palette
@@ -119,6 +124,7 @@ protoBlockList.push(setcolorBlock);
 setcolorBlock.palette = penPalette;
 penPalette.blockList.push(setcolorBlock);
 setcolorBlock.args = 1;
+setcolorBlock.defaults.push(0);
 setcolorBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var colorBlock = new ProtoBlock('color');
@@ -163,6 +169,7 @@ protoBlockList.push(boxBlock);
 boxBlock.palette = blocksPalette;
 blocksPalette.blockList.push(boxBlock);
 boxBlock.args = 1;
+boxBlock.defaults.push("mybox");
 boxBlock.style = "arg";
 boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 
@@ -177,6 +184,8 @@ storeinBlock.expandable = true;
 storeinBlock.style = "special";
 storeinBlock.size = 2;
 storeinBlock.args = 2;
+storeinBlock.defaults.push("mybox");
+storeinBlock.defaults.push(100);
 storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
 		      [98, 62, 'numberin'], [20, 84, 'in']];
 
@@ -185,6 +194,7 @@ protoBlockList.push(runBlock);
 runBlock.palette = blocksPalette;
 blocksPalette.blockList.push(runBlock);
 runBlock.args = 1;
+runBlock.defaults.push("myaction");
 runBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
 
 var actionBlock = new ProtoBlock('action');
@@ -195,6 +205,7 @@ actionBlock.yoff = 86;
 actionBlock.foff = 0;
 actionBlock.loff = 42;
 actionBlock.args = 1;
+actionBlock.defaults.push("myaction");
 actionBlock.expandable = true;
 actionBlock.style = "clamp";
 actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
@@ -225,6 +236,7 @@ repeatBlock.expandable = true;
 repeatBlock.style = "clamp";
 repeatBlock.size = 3;  // One empty slot by default
 repeatBlock.args = 2;
+repeatBlock.defaults.push(4);
 repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
 		     [20, 126, 'in']];
 
@@ -252,7 +264,9 @@ Block.prototype.getInfo = function() {
     return this.name + ' block';
 }
 
+// Some functions we need from activity.js
 var updater = null;
+var adjuster = null;
 
 // A place to keep the blocks we create...
 var blockList = [];
@@ -349,5 +363,24 @@ function makeBlock(name) {
     for (i = 0; i < blockList[blk].docks.length; i++) {
 	blockList[blk].connections.push(null);
     }
+
+    // Attach default args if any
+    cblk = blk + 1;
+    for (i = 0; i < blockList[blk].protoblock.defaults.length; i++) {
+	var value = blockList[blk].protoblock.defaults[i];
+	console.log(value);
+	if (blockList[blk].docks[i + 1][2] == 'textin') {
+	    blockList.push(new Block(textBlock));
+	} else {
+	    blockList.push(new Block(numberBlock));
+	}
+	blockList[cblk + i].copyDocks();
+	blockList[cblk + i].connections = [blk];
+	blockList[cblk + i].value = value;
+	blockList[blk].connections[i + 1] = cblk + i;
+    }
+
+    // Generate and position the block bitmaps and labels
     updater();
+    adjuster(blk);
 }

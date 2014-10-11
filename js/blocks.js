@@ -242,6 +242,12 @@ repeatBlock.defaults.push(4);
 repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
 		     [20, 126, 'in']];
 
+var vspaceBlock = new ProtoBlock('vspace');
+protoBlockList.push(vspaceBlock);
+vspaceBlock.palette = flowPalette;
+flowPalette.blockList.push(vspaceBlock);
+vspaceBlock.docks = [[20, 0, 'out'], [20, 42, 'in']];
+
 // Define block instance objects
 function Block (protoblock) {
     this.protoblock = protoblock;

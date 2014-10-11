@@ -228,6 +228,9 @@ define(function (require) {
 
 		function handleMouseDown(event) {
 		    // Bump the target in front of its siblings.
+		    lastChild = stage.children.last();
+		    stage.swapChildren(container, lastChild);
+
 		    moved = false;
 		    container.addChild(target);
 		    var offset = {

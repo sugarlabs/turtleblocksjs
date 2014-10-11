@@ -171,7 +171,7 @@ protoBlockList.push(boxBlock);
 boxBlock.palette = blocksPalette;
 blocksPalette.blockList.push(boxBlock);
 boxBlock.args = 1;
-boxBlock.defaults.push("mybox");
+boxBlock.defaults.push("box");
 boxBlock.style = "arg";
 boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 
@@ -186,7 +186,7 @@ storeinBlock.expandable = true;
 storeinBlock.style = "special";
 storeinBlock.size = 2;
 storeinBlock.args = 2;
-storeinBlock.defaults.push("mybox");
+storeinBlock.defaults.push("box");
 storeinBlock.defaults.push(100);
 storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
 		      [98, 62, 'numberin'], [20, 84, 'in']];
@@ -196,7 +196,7 @@ protoBlockList.push(runBlock);
 runBlock.palette = blocksPalette;
 blocksPalette.blockList.push(runBlock);
 runBlock.args = 1;
-runBlock.defaults.push("myaction");
+runBlock.defaults.push("action");
 runBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
 
 var actionBlock = new ProtoBlock('action');
@@ -207,7 +207,7 @@ actionBlock.yoff = 86;
 actionBlock.foff = 0;
 actionBlock.loff = 42;
 actionBlock.args = 1;
-actionBlock.defaults.push("myaction");
+actionBlock.defaults.push("action");
 actionBlock.expandable = true;
 actionBlock.style = "clamp";
 actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],

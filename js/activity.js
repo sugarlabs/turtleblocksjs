@@ -120,9 +120,6 @@ define(function (require) {
 	    }
 
             index = 0;
-            colors = ["#ff0000", "#828b20", "#b0ac31", "#cbc53d", "#fad779",
-		      "#f9e4ad", "#faf2db", "#563512", "#9b4a0b", "#d36600",
-		      "#fe8a00", "#f9a71f"];
 
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
@@ -1089,6 +1086,14 @@ define(function (require) {
 	    blockList[19].value = 90;
 	    blockList[19].connections = [18];
 
+	    newBlock(setcolorBlock);
+	    blockList[20].connections = [null, 21, null];
+	    blockList[20].x = 25;
+	    blockList[20].y = 300;
+	    newBlock(numberBlock);
+	    blockList[21].value = 70;
+	    blockList[21].connections = [20];
+
 	    //
 	    // newBlock(plusBlock);
 	    // blockList[11].connections = [10, 12, 13];
@@ -1171,7 +1176,9 @@ define(function (require) {
 		    return;
 		}
 		console.log('running ' + blk + ': ' + blockList[blk].name)
-		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1.2;
+		blockList[blk].bitmap.scaleX = 1.2;
+		blockList[blk].bitmap.scaleY = 1.2;
+		blockList[blk].bitmap.scale = 1.2;
 		runFromBlockNow(blk);
 		// setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
 	    }
@@ -1182,8 +1189,8 @@ define(function (require) {
 	    // (1) Evaluate any arguments (beginning with connection[1]);
 	    var args = [];
 	    if(blockList[blk].protoblock.args > 0) {
-		for (arg = 1; arg < blockList[blk].protoblock.args + 1; arg++) {
-		    args.push(parseArg(blockList[blk].connections[arg]));
+		for (var i = 1; i < blockList[blk].protoblock.args + 1; i++) {
+		    args.push(parseArg(blockList[blk].connections[i]));
 		}
 	    }
 
@@ -1232,11 +1239,18 @@ define(function (require) {
 		    doRight(-args[0]);
          	}
 		break;
+            case 'setcolor':
+		if (args.length == 1) {
+		    doSetColor(args[0]);
+         	}
+		break;
 	    }
 
 	    if (turtle_delay != null) {
 		// Unhighlight current block by rescaling
-		blockList[blk].bitmap.scaleX = blockList[blk].bitmap.scaleY = blockList[blk].bitmap.scale = 1;
+		blockList[blk].bitmap.scaleX = 1;
+		blockList[blk].bitmap.scaleY = 1;
+		blockList[blk].bitmap.scale = 1;
 	    }
 
 	    // (3) Run block below this block, if any;
@@ -1265,10 +1279,8 @@ define(function (require) {
 		    name = parseArg(cblk);
 		    i = findBox(name);
 		    if (i == null) {
-			console.log('box: ' + name + ' not found.');
 			blockList[blk].value = null;
 		    } else {
-			console.log('box: ' + name + ' ' + i + ' ' + boxList[i][1]);
 			blockList[blk].value = boxList[i][1];
 		    }
 		    break;
@@ -1345,7 +1357,7 @@ define(function (require) {
 	    // old turtle point
             oldPt = new createjs.Point(screenX2turtleX(turtle_bitmap.x),
 					   invertY(turtle_bitmap.y));
-            color = colors[turtleColor];
+            color = colorTable[turtleColor];
             stroke = turtleStroke;
 	    // new turtle point
 	    var rad = turtleOrientation * Math.PI / 180.0;
@@ -1363,6 +1375,10 @@ define(function (require) {
 	    turtleOrientation %= 360;
 	    turtle_bitmap.rotation = turtleOrientation;
             update = true;
+	}
+
+	function doSetColor(color) {
+	    turtleColor = Math.round(color);
 	}
 
 	function doClear() {

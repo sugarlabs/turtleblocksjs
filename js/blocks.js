@@ -16,6 +16,10 @@ var turtlePalette = new Palette('turtle');
 paletteList.push(turtlePalette);
 turtlePalette.color = "green";
 
+var penPalette = new Palette('pen');
+paletteList.push(penPalette);
+penPalette.color = "cyan";
+
 var numberPalette = new Palette('number');
 paletteList.push(numberPalette);
 numberPalette.color = "purple";
@@ -103,6 +107,13 @@ protoBlockList.push(leftBlock);
 leftBlock.palette = turtlePalette;
 leftBlock.args = 1;
 leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
+
+// Pen palette
+var setcolorBlock = new ProtoBlock('setcolor');
+protoBlockList.push(setcolorBlock);
+setcolorBlock.palette = penPalette;
+setcolorBlock.args = 1;
+setcolorBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 // Numbers palette
 var numberBlock = new ProtoBlock('number');
@@ -257,3 +268,24 @@ var arrLabels = [];
 
 // and a place in the DOM to put them.
 var labelElem = document.getElementById("labelDiv");
+
+colorTable = ["#FF0000", "#FF0D00", "#FF1A00", "#FF2600", "#FF3300",
+	      "#FF4000", "#FF4D00", "#FF5900", "#FF6600", "#FF7300",
+	      "#FF8000", "#FF8C00", "#FF9900", "#FFA600", "#FFB300",
+	      "#FFBF00", "#FFCC00", "#FFD900", "#FFE600", "#FFF200",
+	      "#FFFF00", "#E6FF00", "#CCFF00", "#B3FF00", "#99FF00",
+	      "#80FF00", "#66FF00", "#4DFF00", "#33FF00", "#1AFF00",
+	      "#00FF00", "#00FF0D", "#00FF1A", "#00FF26", "#00FF33",
+	      "#00FF40", "#00FF4D", "#00FF59", "#00FF66", "#00FF73",
+	      "#00FF80", "#00FF8C", "#00FF99", "#00FFA6", "#00FFB3",
+	      "#00FFBF", "#00FFCC", "#00FFD9", "#00FFE6", "#00FFF2",
+	      "#00FFFF", "#00F2FF", "#00E6FF", "#00D9FF", "#00CCFF",
+	      "#00BFFF", "#00B3FF", "#00A6FF", "#0099FF", "#008CFF",
+	      "#0080FF", "#0073FF", "#0066FF", "#0059FF", "#004DFF",
+	      "#0040FF", "#0033FF", "#0026FF", "#001AFF", "#000DFF",
+	      "#0000FF", "#0D00FF", "#1A00FF", "#2600FF", "#3300FF",
+	      "#4000FF", "#4D00FF", "#5900FF", "#6600FF", "#7300FF",
+	      "#8000FF", "#8C00FF", "#9900FF", "#A600FF", "#B300FF",
+	      "#BF00FF", "#CC00FF", "#D900FF", "#E600FF", "#F200FF",
+	      "#FF00FF", "#FF00E6", "#FF00CC", "#FF00B3", "#FF0099",
+	      "#FF0080", "#FF0066", "#FF004D", "#FF0033", "#FF001A"];

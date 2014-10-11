@@ -90,7 +90,7 @@ define(function (require) {
 
 	var turtle_delay = 1000;
         var turtle_bitmap = null
-        var Turtle = "images/turtle0.svg";
+        var Turtle = "images/turtle.svg";
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
 	var turtleStroke = 5;

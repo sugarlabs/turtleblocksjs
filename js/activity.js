@@ -98,6 +98,8 @@ define(function (require) {
 	var turtleX = 0;
 	var turtleY = 0;
 
+	updater = updateBlocks;
+
 	// Get things started
 	init();
 
@@ -857,6 +859,12 @@ define(function (require) {
 	    return blk;
 	}
 
+	function updateBlocks() {
+	    updateBlockImages();
+	    updateBlockLabels();
+	    update = true;
+	}
+
         function updateBlockImages() {
 	    // Create the block image if it doesn't yet exist.
             for (var blk = 0; blk < blockList.length; blk++) {
@@ -877,6 +885,43 @@ define(function (require) {
 			}
 		    }
 		}
+	    }
+	}
+
+	function updatePalettes() {
+	    // Modify the header id with palette info.
+	    var html = ''
+	    var text = ''
+	    for (var palette = 0; palette < paletteList.length; palette++) {
+		// console.log(paletteList[palette].getInfo());
+		// <button onclick="return toggle('toc');">Toggle Table of Contents</button>
+		// <div id="toc">
+		// </div>
+		text = '<button id="_' + paletteList[palette].name + '_palette"' +
+		    ' onclick="return toggle(\'_' +
+		    paletteList[palette].name + '_div\');">' +
+		    paletteList[palette].name + '</button>';
+		html = html + text;
+		}
+
+	    for (var palette = 0; palette < paletteList.length; palette++) {
+		text = '<div id="_' + paletteList[palette].name + '_div">';
+		html = html + text;
+		for (var blk = 0; blk < paletteList[palette].blockList.length; blk++) {
+		    text = '<button id="_' + 
+			paletteList[palette].blockList[blk].name + '_block"' +
+			' onclick="return makeBlock(\'' +
+			paletteList[palette].blockList[blk].name + '\');">' +
+			paletteList[palette].blockList[blk].name + '</button>';
+		    html = html + text;
+		}
+		text = '</div>';
+		html = html + text;
+	    }
+            paletteElem.innerHTML = html;
+	    // keep turtle palette open to start
+	    for (var palette = 1; palette < paletteList.length; palette++) {
+		toggle('_' + paletteList[palette].name + '_div');
 	    }
 	}
 
@@ -1089,29 +1134,31 @@ define(function (require) {
 	    newBlock(setcolorBlock);
 	    blockList[20].connections = [null, 21, null];
 	    blockList[20].x = 25;
-	    blockList[20].y = 300;
+	    blockList[20].y = 350;
 	    newBlock(numberBlock);
 	    blockList[21].value = 70;
 	    blockList[21].connections = [20];
 
-	    //
-	    // newBlock(plusBlock);
-	    // blockList[11].connections = [10, 12, 13];
-	    // newBlock(numberBlock);
-	    // blockList[12].value = 100;
-	    // blockList[12].connections = [11];
+	    newBlock(colorBlock);
+	    blockList[22].connections = [null];
+	    blockList[22].x = 200;
+	    blockList[22].y = 300;
 
-	    // newBlock(plusBlock);
-	    // blockList[13].connections = [11, 14, 15];
-	    // newBlock(numberBlock);
-	    // blockList[14].value = 100;
-	    // blockList[14].connections = [13];
-	    // newBlock(numberBlock);
-	    // blockList[15].value = 100;
-	    // blockList[15].connections = [13];
+	    newBlock(plusBlock);
+	    blockList[23].connections = [null, 24, 25];
+	    blockList[23].x = 300;
+	    blockList[23].y = 300;
+	    newBlock(numberBlock);
+	    blockList[24].value = 100;
+	    blockList[24].connections = [23];
+	    newBlock(numberBlock);
+	    blockList[25].value = 100;
+	    blockList[25].connections = [23];
 
 	    updateBlockImages();
 	    updateBlockLabels();
+	    // where to put this?
+	    updatePalettes();
         }
 
         function runLogoCommands() {
@@ -1291,6 +1338,9 @@ define(function (require) {
 		    b = parseArg(cblk2);
 		    blockList[blk].value = doPlus(a, b);
 		    break;
+		case 'color':
+		    blockList[blk].value = turtleColor;
+		    break;
 		}
 		return blockList[blk].value;
 	    } else {
@@ -1379,6 +1429,7 @@ define(function (require) {
 
 	function doSetColor(color) {
 	    turtleColor = Math.round(color);
+	    turtleColor %= 100;
 	}
 
 	function doClear() {

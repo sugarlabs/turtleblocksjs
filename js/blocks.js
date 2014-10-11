@@ -82,29 +82,34 @@ var protoBlockList = []
 var clearBlock = new ProtoBlock('clear');
 protoBlockList.push(clearBlock);
 clearBlock.palette = turtlePalette;
+turtlePalette.blockList.push(clearBlock);
 clearBlock.docks = [[20, 0, 'out'], [20, 42, 'in']];
 
 var forwardBlock = new ProtoBlock('forward');
 protoBlockList.push(forwardBlock);
 forwardBlock.palette = turtlePalette;
+turtlePalette.blockList.push(forwardBlock);
 forwardBlock.args = 1;
 forwardBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var rightBlock = new ProtoBlock('right');
 protoBlockList.push(rightBlock);
 rightBlock.palette = turtlePalette;
+turtlePalette.blockList.push(rightBlock);
 rightBlock.args = 1;
 rightBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var backBlock = new ProtoBlock('back');
 protoBlockList.push(backBlock);
 backBlock.palette = turtlePalette;
+turtlePalette.blockList.push(backBlock);
 backBlock.args = 1;
 backBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var leftBlock = new ProtoBlock('left');
 protoBlockList.push(leftBlock);
 leftBlock.palette = turtlePalette;
+turtlePalette.blockList.push(leftBlock);
 leftBlock.args = 1;
 leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
@@ -112,19 +117,29 @@ leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 var setcolorBlock = new ProtoBlock('setcolor');
 protoBlockList.push(setcolorBlock);
 setcolorBlock.palette = penPalette;
+penPalette.blockList.push(setcolorBlock);
 setcolorBlock.args = 1;
 setcolorBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
+
+var colorBlock = new ProtoBlock('color');
+protoBlockList.push(colorBlock);
+colorBlock.palette = penPalette;
+penPalette.blockList.push(colorBlock);
+colorBlock.style = "arg";
+colorBlock.docks = [[0, 20, 'numberout']];
 
 // Numbers palette
 var numberBlock = new ProtoBlock('number');
 protoBlockList.push(numberBlock);
 numberBlock.palette = numberPalette;
+numberPalette.blockList.push(numberBlock);
 numberBlock.style = "value";
 numberBlock.docks = [[0, 20, 'numberout']];
 
 var plusBlock = new ProtoBlock('plus');
 protoBlockList.push(plusBlock);
 plusBlock.palette = numberPalette;
+numberPalette.blockList.push(plusBlock);
 plusBlock.yoff = 49;
 plusBlock.foff = 0;
 plusBlock.loff = 42;
@@ -139,12 +154,14 @@ plusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
 var textBlock = new ProtoBlock('text');
 protoBlockList.push(textBlock);
 textBlock.palette = blocksPalette;
+blocksPalette.blockList.push(textBlock);
 textBlock.style = "value";
 textBlock.docks = [[0, 20, 'textout']];
 
 var boxBlock = new ProtoBlock('box');
 protoBlockList.push(boxBlock);
 boxBlock.palette = blocksPalette;
+blocksPalette.blockList.push(boxBlock);
 boxBlock.args = 1;
 boxBlock.style = "arg";
 boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
@@ -152,6 +169,7 @@ boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 var storeinBlock = new ProtoBlock('storein');
 protoBlockList.push(storeinBlock);
 storeinBlock.palette = blocksPalette;
+blocksPalette.blockList.push(storeinBlock);
 storeinBlock.yoff = 49;
 storeinBlock.foff = 0;
 storeinBlock.loff = 42;
@@ -165,12 +183,14 @@ storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
 var runBlock = new ProtoBlock('run');
 protoBlockList.push(runBlock);
 runBlock.palette = blocksPalette;
+blocksPalette.blockList.push(runBlock);
 runBlock.args = 1;
 runBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
 
 var actionBlock = new ProtoBlock('action');
 protoBlockList.push(actionBlock);
 actionBlock.palette = blocksPalette;
+blocksPalette.blockList.push(actionBlock);
 actionBlock.yoff = 86;
 actionBlock.foff = 0;
 actionBlock.loff = 42;
@@ -183,6 +203,7 @@ actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
 var startBlock = new ProtoBlock('start');
 protoBlockList.push(startBlock);
 startBlock.palette = blocksPalette;
+blocksPalette.blockList.push(startBlock);
 startBlock.yoff = 86;
 startBlock.foff = 0;
 startBlock.loff = 42;
@@ -196,6 +217,7 @@ startBlock.docks = [[20, 0, 'unavailable'], [38, 55, 'in'],
 var repeatBlock = new ProtoBlock('repeat');
 protoBlockList.push(repeatBlock);
 repeatBlock.palette = flowPalette;
+flowPalette.blockList.push(repeatBlock);
 repeatBlock.yoff = 74;
 repeatBlock.foff = 0;
 repeatBlock.loff = 42;
@@ -229,6 +251,8 @@ Block.prototype.copyDocks = function() {
 Block.prototype.getInfo = function() {
     return this.name + ' block';
 }
+
+var updater = null;
 
 // A place to keep the blocks we create...
 var blockList = [];
@@ -269,6 +293,9 @@ var arrLabels = [];
 // and a place in the DOM to put them.
 var labelElem = document.getElementById("labelDiv");
 
+// and a place in the DOM to put palettes.
+var paletteElem = document.getElementById("header");
+
 colorTable = ["#FF0000", "#FF0D00", "#FF1A00", "#FF2600", "#FF3300",
 	      "#FF4000", "#FF4D00", "#FF5900", "#FF6600", "#FF7300",
 	      "#FF8000", "#FF8C00", "#FF9900", "#FFA600", "#FFB300",
@@ -289,3 +316,38 @@ colorTable = ["#FF0000", "#FF0D00", "#FF1A00", "#FF2600", "#FF3300",
 	      "#BF00FF", "#CC00FF", "#D900FF", "#E600FF", "#F200FF",
 	      "#FF00FF", "#FF00E6", "#FF00CC", "#FF00B3", "#FF0099",
 	      "#FF0080", "#FF0066", "#FF004D", "#FF0033", "#FF001A"];
+
+function $() {
+    var elements = new Array();
+
+    for (var i = 0; i < arguments.length; i++) {
+	var element = arguments[i];
+	if (typeof element == 'string')
+	    element = document.getElementById(element);
+	if (arguments.length == 1)
+	    return element;
+	elements.push(element);
+    }
+    return elements;
+}
+
+function toggle(obj) {
+    for ( var i=0; i < arguments.length; i++ ) {
+	$(arguments[i]).style.display = ($(arguments[i]).style.display != 'none' ? 'none' : '');
+    }
+}
+
+function makeBlock(name) {
+    for (proto=0; proto < protoBlockList.length; proto++) {
+	if (protoBlockList[proto].name == name) {
+	    blockList.push(new Block(protoBlockList[proto]));
+	    break;
+	}
+    }
+    blk = blockList.length - 1;
+    blockList[blk].copyDocks();
+    for (i = 0; i < blockList[blk].docks.length; i++) {
+	blockList[blk].connections.push(null);
+    }
+    updater();
+}

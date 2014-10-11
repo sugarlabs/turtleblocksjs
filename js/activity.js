@@ -923,7 +923,7 @@ define(function (require) {
             paletteElem.innerHTML = html;
 	    // keep turtle palette open to start
 	    for (var palette = 1; palette < paletteList.length; palette++) {
-		toggle('_' + paletteList[palette].name + '_div');
+		toggler('_' + paletteList[palette].name + '_div');
 	    }
 	}
 

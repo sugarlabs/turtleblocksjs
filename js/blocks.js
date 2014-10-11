@@ -32,6 +32,8 @@ var blocksPalette = new Palette('blocks');
 paletteList.push(blocksPalette);
 blocksPalette.color = "yellow";
 
+currentPaletteId = '_turtle_div';
+
 // Define block proto objects
 function ProtoBlock (name) {
     this.name = name;
@@ -346,6 +348,12 @@ function $() {
 }
 
 function toggle(obj) {
+    toggler(currentPaletteId);
+    toggler(obj)
+    currentPaletteId = obj;
+}
+
+function toggler(obj) {
     for ( var i=0; i < arguments.length; i++ ) {
 	$(arguments[i]).style.display = ($(arguments[i]).style.display != 'none' ? 'none' : '');
     }

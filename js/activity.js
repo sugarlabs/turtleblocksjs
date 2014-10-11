@@ -114,7 +114,7 @@ define(function (require) {
             // canvas = document.getElementById("myCanvas");
 
 	    // Load a project.
-	    loadBlocks();
+	    loadStart();
 
 	    // Make sure blocks are aligned.
 	    findStacks();
@@ -1064,6 +1064,20 @@ define(function (require) {
 	    blockList.push(new Block(proto));
 	    // We copy the dock because expandable blocks modify it
 	    blockList.last().copyDocks();
+	}
+
+	function loadStart() {
+	    // Always start with a start block.
+	    newBlock(startBlock);
+	    blockList[0].x = 50;
+	    blockList[0].y = 50;
+	    blockList[0].connections = [null, null, null];
+
+	    updateBlockImages();
+	    updateBlockLabels();
+
+	    // where to put this?
+	    updatePalettes();
 	}
 
         function loadBlocks() {

@@ -10,6 +10,11 @@
   * implement boxes
 
 TODO:
+  * better compartmentalization of code
+  * only one start block
+  * only one stack
+  * add protoblock for new stacks
+  * add protoblocks for new boxes
   * expanding arithmetic blocks
   * booleans
   * pen palette

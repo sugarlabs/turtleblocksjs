@@ -933,8 +933,15 @@ define(function (require) {
 	    // labels for number and text blocks.
             var html = ''
 	    var text = ''
+	    var value = ''
+	    // TODO: FIXME: value may not be accurate... compare with the label
             for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].name == "number") {
+		    if (blockList[blk].label == null) {
+			value = blockList[blk].value.toString();
+		    } else {
+			value = blockList[blk].label.value;
+		    }
 		    arrLabels[blk] = "_" + blk.toString();
 		    text = '<textarea id="_' + arrLabels[blk] +
 			'" style="position: absolute; ' + 
@@ -943,7 +950,7 @@ define(function (require) {
 			'onchanged="labelChanged", ' +
 			'class="number", ' +
 			'cols="6", rows="1", maxlength="6">' +
-			blockList[blk].value.toString() + '</textarea>'
+			value + '</textarea>'
 		} else if (blockList[blk].name == "text") {
 		    arrLabels[blk] = "_" + blk.toString();
 		    text = '<textarea id="_' + arrLabels[blk] +
@@ -953,7 +960,7 @@ define(function (require) {
 			'onchanged="labelChanged", ' +
 			'class="text", ' +
 			'cols="6", rows="1", maxlength="6">' +
-			blockList[blk].value.toString() + '</textarea>'
+			value + '</textarea>'
 		} else {
 		    arrLabels[blk] = null
 		    text = ''
@@ -976,6 +983,8 @@ define(function (require) {
 		    // Not sure why this event is not triggered, but
 		    // it doesn't matter as long as we read from the
 		    // textareas before we run the blocks.
+		    // FIXME: Actually, it does matter, since we may
+		    // have updated several labels...
 		    blockList[blk].label.onchanged=labelChanged
 
 		    adjustLabelPosition(blk, x, y);

@@ -10,11 +10,11 @@
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
 define(function (require) {
-    var activity = require("sugar-web/activity/activity");
-    var icon = require("sugar-web/graphics/icon");
-    require("easel");
+    var activity = require('sugar-web/activity/activity');
+    var icon = require('sugar-web/graphics/icon');
+    require('easel');
     // Palettes and Blocks are defined here
-    require("activity/blocks")
+    require('activity/blocks')
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
@@ -29,23 +29,23 @@ define(function (require) {
         activity.setup();
 
         // Colorize the activity icon.
-        var activityButton = document.getElementById("activity-button");
+        var activityButton = document.getElementById('activity-button');
         activity.getXOColor(function (error, colors) {
             icon.colorize(activityButton, colors);
         });
 
-        var newButton = document.getElementById("new-button");
+        var newButton = document.getElementById('new-button');
         newButton.onclick = function () {
 	    runLogoCommands();
         }
 
         // Make the activity stop with the stop button.
-        var stopButton = document.getElementById("stop-button");
+        var stopButton = document.getElementById('stop-button');
         stopButton.addEventListener('click', function (e) {
             activity.close();
         });
 
-        var canvas = document.getElementById("myCanvas");
+        var canvas = document.getElementById('myCanvas');
 
 	// Stage is an Easel construct
 	var stage;
@@ -81,7 +81,7 @@ define(function (require) {
         var color;
         var stroke;
         var colors;
-        var index;
+	var time;
 
 	// To avoid infinite loops
 	var loopCounter;
@@ -90,7 +90,7 @@ define(function (require) {
 
 	var turtle_delay = 1000;
         var turtle_bitmap = null
-        var Turtle = "images/turtle.svg";
+        var Turtle = 'images/turtle.svg';
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
 	var turtleStroke = 5;
@@ -107,11 +107,11 @@ define(function (require) {
 
         function init() {
             if (window.top != window) {
-                document.getElementById("header").style.display = "none";
+                document.getElementById('header').style.display = 'none';
             }
-            document.getElementById("loader").className = "loader";
+            document.getElementById('loader').className = 'loader';
             // Create the stage and point it to the canvas.
-            // canvas = document.getElementById("myCanvas");
+            // canvas = document.getElementById('myCanvas');
 
 	    // Load a project.
 	    loadStart();
@@ -122,8 +122,6 @@ define(function (require) {
 		findDragGroup(stackList[i]);
 		adjustBlockPositions();
 	    }
-
-            index = 0;
 
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
@@ -146,7 +144,7 @@ define(function (require) {
 
         function stop() {
 	    //
-            createjs.Ticker.removeEventListener("tick", tick);
+            createjs.Ticker.removeEventListener('tick', tick);
         }
 
         function handleImageLoad(event) {
@@ -172,8 +170,8 @@ define(function (require) {
 	    bitmap.x = blockList[thisBlock].x;
 	    bitmap.y = blockList[thisBlock].y;
 	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-	    bitmap.name = "bmp_" + thisBlock;
-	    bitmap.cursor = "pointer";
+	    bitmap.name = 'bmp_' + thisBlock;
+	    bitmap.cursor = 'pointer';
 	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
 
 	    // Expandable blocks have some extra parts.
@@ -190,7 +188,7 @@ define(function (require) {
 		bottom_bitmap.x = bitmap.x;
 		bottom_bitmap.y = bitmap.y + yoff;
 		bottom_bitmap.scaleX = bottom_bitmap.scaleY = bottom_bitmap.scale = 1;
-		bottom_bitmap.name = "bmp_" + thisBlock + "_bottom";
+		bottom_bitmap.name = 'bmp_' + thisBlock + '_bottom';
 	    }
 
             // Create a shape that represents the center of the icon.
@@ -200,11 +198,11 @@ define(function (require) {
 	    // * number and text blocks have a handle on the right side;
 	    // * other blocks should be sensitive in the middle.
 	    if (isValueBlock(thisBlock)) {
-		hitArea.graphics.beginFill("#FFF").drawEllipse(
+		hitArea.graphics.beginFill('#FFF').drawEllipse(
 			-22, -28, 48, 36);
 		hitArea.x = image.width - 24;
 	    } else {
-		hitArea.graphics.beginFill("#FFF").drawEllipse(
+		hitArea.graphics.beginFill('#FFF').drawEllipse(
 			-44, -28, 96, 36);
 		hitArea.x = image.width / 2;
 	    }
@@ -214,10 +212,10 @@ define(function (require) {
             // Wrapper function to provide scope for the event handlers.
             (function (target) {
 		var moved = false
-		bitmap.addEventListener("click", handleClick);
-		bitmap.addEventListener("mousedown", handleMouseDown);
-		bitmap.addEventListener("mouseover", handleMouseOver);
-		bitmap.addEventListener("mouseout", handleMouseOut);
+		bitmap.addEventListener('click', handleClick);
+		bitmap.addEventListener('mousedown', handleMouseDown);
+		bitmap.addEventListener('mouseover', handleMouseOver);
+		bitmap.addEventListener('mouseout', handleMouseOut);
 
 		function handleClick(event) {
 		    if (!moved) {
@@ -238,7 +236,7 @@ define(function (require) {
 			y: target.y - event.stageY
 		    };
 
-		    event.addEventListener("mousemove", handleMouseMove);
+		    event.addEventListener('mousemove', handleMouseMove);
 
 		    // TODO: Use pressmove, pressup??
 		    function handleMouseMove(event) {
@@ -396,8 +394,8 @@ define(function (require) {
 
             })(bitmap);
 
-            document.getElementById("loader").className = "";
-            createjs.Ticker.addEventListener("tick", tick);
+            document.getElementById('loader').className = '';
+            createjs.Ticker.addEventListener('tick', tick);
         }
 
 	function moveExtraParts(blk, dx, dy) {
@@ -433,6 +431,12 @@ define(function (require) {
 	    if (type1 == 'textout' && type2 == 'textin') {
 		return true;
 	    }
+	    if (type1 == 'booleanout' && type2 == 'booleanin') {
+		return true;
+	    }
+	    if (type1 == 'booleanin' && type2 == 'booleanout') {
+		return true;
+	    }
 	    return false;
 	}
 
@@ -449,7 +453,7 @@ define(function (require) {
 
             // Create a shape that represents the center of the icon
             var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill("#FFF").drawEllipse(-22, -28, 48, 36);
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-22, -28, 48, 36);
             // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
             hitArea.x = imgW / 2;
@@ -465,9 +469,9 @@ define(function (require) {
             bitmap.regX = imgW / 2 | 0;
             bitmap.regY = imgH / 2 | 0;
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
-            bitmap.name = "bmp_turtle";
+            bitmap.name = 'bmp_turtle';
 
-            bitmap.cursor = "pointer";
+            bitmap.cursor = 'pointer';
 
             // Assign the hitArea to bitmap to use it for hit tests:
             bitmap.hitArea = hitArea;
@@ -475,10 +479,10 @@ define(function (require) {
             // Wrapper function to provide scope for the event handlers:
             (function (target) {
 		var moved = false
-		bitmap.addEventListener("click", handleClick);
-		bitmap.addEventListener("mousedown", handleMouseDown);
-		bitmap.addEventListener("mouseover", handleMouseOver);
-		bitmap.addEventListener("mouseout", handleMouseOut);
+		bitmap.addEventListener('click', handleClick);
+		bitmap.addEventListener('mousedown', handleMouseDown);
+		bitmap.addEventListener('mouseover', handleMouseOver);
+		bitmap.addEventListener('mouseout', handleMouseOut);
 
 		function handleClick(event) {
 		    if (!moved) {
@@ -495,7 +499,7 @@ define(function (require) {
                         y: target.y - event.stageY
                     };
 
-		    event.addEventListener("mousemove", handleMouseMove);
+		    event.addEventListener('mousemove', handleMouseMove);
 
 		    // TODO: Use pressmove, pressup??
 		    function handleMouseMove(event) {
@@ -519,8 +523,8 @@ define(function (require) {
                 }
             })(bitmap);
 
-            document.getElementById("loader").className = "";
-            createjs.Ticker.addEventListener("tick", tick);
+            document.getElementById('loader').className = '';
+            createjs.Ticker.addEventListener('tick', tick);
         }
 
 	function moveTurtle(x, y, invert) {
@@ -629,7 +633,7 @@ define(function (require) {
 	}
 
 	function addFiller(blk, offset, c) {
-	    var name = "bmp_" + blk + "_filler_" + c;
+	    var name = 'bmp_' + blk + '_filler_' + c;
 	    var bi = findBitmap(name);
 	    if (bi == null) { 
 		var image = new Image();
@@ -803,7 +807,6 @@ define(function (require) {
 	    expandablesList = [];
 	    findStacks();  // We start by finding the stacks
 	    for (var i = 0; i < stackList.length; i++) {
-		console.log('searching for expandables in ' + stackList[i] + ' ' + blockList[stackList[i]].name);
 		searchForExpandables(stackList[i]);
 	    }
 	}
@@ -824,7 +827,6 @@ define(function (require) {
 	    // Expand expandable blocks as needed.
 	    findClamps();
 	    for (var i = 0; i < expandablesList.length; i++) {
-		console.log('expanding ' + expandablesList[i] + ' ' + blockList[expandablesList[i]].name);
 		adjustExpandableBlock(expandablesList[i]);
 	    }
 	    update = true;
@@ -899,8 +901,8 @@ define(function (require) {
 	    var text = ''
 	    for (var palette = 0; palette < paletteList.length; palette++) {
 		// console.log(paletteList[palette].getInfo());
-		// <button onclick="return toggle('toc');">Toggle Table of Contents</button>
-		// <div id="toc">
+		// <button onclick='return toggle('toc');'>Toggle Table of Contents</button>
+		// <div id='toc'>
 		// </div>
 		text = '<button id="_' + paletteList[palette].name + '_palette"' +
 		    ' onclick="return toggle(\'_' +
@@ -937,15 +939,17 @@ define(function (require) {
             var html = ''
 	    var text = ''
 	    var value = ''
-	    // TODO: FIXME: value may not be accurate... compare with the label
             for (var blk = 0; blk < blockList.length; blk++) {
-		if (blockList[blk].name == "number") {
+		if (blockList[blk].name == 'number') {
 		    if (blockList[blk].label == null) {
+			if (blockList[blk].value == null) {
+			    blockList[blk].value = 100;
+			}
 			value = blockList[blk].value.toString();
 		    } else {
 			value = blockList[blk].label.value;
 		    }
-		    arrLabels[blk] = "_" + blk.toString();
+		    arrLabels[blk] = '_' + blk.toString();
 		    text = '<textarea id="_' + arrLabels[blk] +
 			'" style="position: absolute; ' + 
 			'-webkit-user-select: text;" ' +
@@ -954,7 +958,15 @@ define(function (require) {
 			'class="number", ' +
 			'cols="6", rows="1", maxlength="6">' +
 			value + '</textarea>'
-		} else if (blockList[blk].name == "text") {
+		} else if (blockList[blk].name == 'text') {
+		    if (blockList[blk].label == null) {
+			if (blockList[blk].value == null) {
+			    blockList[blk].value = 'text';
+			}
+			value = blockList[blk].value;
+		    } else {
+			value = blockList[blk].label.value;
+		    }
 		    arrLabels[blk] = "_" + blk.toString();
 		    text = '<textarea id="_' + arrLabels[blk] +
 			'" style="position: absolute; ' + 
@@ -982,12 +994,10 @@ define(function (require) {
 		    var y = blockList[blk].bitmap.y
 		}
 		if (isValueBlock(blk)) {
-		    blockList[blk].label = document.getElementById("_" + arrLabels[blk])
+		    blockList[blk].label = document.getElementById('_' + arrLabels[blk])
 		    // Not sure why this event is not triggered, but
 		    // it doesn't matter as long as we read from the
 		    // textareas before we run the blocks.
-		    // FIXME: Actually, it does matter, since we may
-		    // have updated several labels...
 		    blockList[blk].label.onchanged=labelChanged
 
 		    adjustLabelPosition(blk, x, y);
@@ -1010,18 +1020,18 @@ define(function (require) {
 	    if (blockList[blk].label == null) {
 		return;
 	    }
-	    if (blockList[blk].protoblock.name == "number") {
+	    if (blockList[blk].protoblock.name == 'number') {
 		blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft + 30) + "px";
-	    } else if (blockList[blk].protoblock.name == "text") {
+		    x + canvas.offsetLeft + 30) + 'px';
+	    } else if (blockList[blk].protoblock.name == 'text') {
 		blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft + 30) + "px";
+		    x + canvas.offsetLeft + 30) + 'px';
 	    } else {
 	    	blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft + 10) + "px";
+		    x + canvas.offsetLeft + 10) + 'px';
 	    }
             blockList[blk].label.style.top = Math.round(
-		y + canvas.offsetTop + 5) + "px";
+		y + canvas.offsetTop + 5) + 'px';
 	}
 
         function moveBlock(blk, x, y) {
@@ -1108,7 +1118,7 @@ define(function (require) {
 	    blockList[2].connections = [1, 3, 4, 5];
 	    newBlock(textBlock);
 	    blockList[3].connections = [2];
-	    blockList[3].value = "size";
+	    blockList[3].value = 'size';
 	    newBlock(numberBlock);
 	    blockList[4].value = 100;
 	    blockList[4].connections = [2];
@@ -1123,7 +1133,7 @@ define(function (require) {
 	    blockList[7].connections = [5, 8, 9];
 	    newBlock(textBlock);
 	    blockList[8].connections = [7];
-	    blockList[8].value = "square";
+	    blockList[8].value = 'square';
 
 	    newBlock(rightBlock);
 	    blockList[9].connections = [7, 10, null];
@@ -1137,7 +1147,7 @@ define(function (require) {
 	    blockList[11].y = 50;
 	    newBlock(textBlock);
 	    blockList[12].connections = [11];
-	    blockList[12].value = "square";
+	    blockList[12].value = 'square';
 
 	    newBlock(repeatBlock);
 	    blockList[13].connections = [11, 14, 15, null];
@@ -1151,7 +1161,7 @@ define(function (require) {
 	    blockList[16].connections = [15, 17];
 	    newBlock(textBlock);
 	    blockList[17].connections = [16];
-	    blockList[17].value = "size";
+	    blockList[17].value = 'size';
 
 	    newBlock(rightBlock);
 	    blockList[18].connections = [15, 19, null];
@@ -1191,10 +1201,12 @@ define(function (require) {
 
         function runLogoCommands() {
 	    // We run the logo commands here.
+	    var d = new Date();
+	    time = d.getTime();
 
 	    // Where to put this???
-	    expandClamps();
-	    update = true;
+	    // expandClamps();
+	    // update = true;
 
 	    // First we need to reconcile the values in all the value blocks
 	    // with their associated textareas.
@@ -1212,9 +1224,9 @@ define(function (require) {
 	    findStacks();
 	    actionList = [];
 	    for (var blk = 0; blk < stackList.length; blk++) {
-		if (blockList[stackList[blk]].name == "start") {
+		if (blockList[stackList[blk]].name == 'start') {
 		    startBlock = stackList[blk];
-		} else if (blockList[stackList[blk]].name == "action") {
+		} else if (blockList[stackList[blk]].name == 'action') {
 		    // does the action stack have a name?
 		    c = blockList[stackList[blk]].connections[1];
 		    b = blockList[stackList[blk]].connections[2];
@@ -1284,6 +1296,11 @@ define(function (require) {
 	    case 'repeat':
  		if (args.length == 2) {
 		    doRepeat(args[0], args[1]);
+		}
+		break;
+	    case 'if':
+ 		if (args.length == 2) {
+		    doIf(args[0], args[1]);
 		}
 		break;
 	    case 'storein':
@@ -1359,6 +1376,13 @@ define(function (require) {
 			blockList[blk].value = boxList[i][1];
 		    }
 		    break;
+		case 'greater':
+		    cblk1 = blockList[blk].connections[1];
+		    cblk2 = blockList[blk].connections[2];
+		    a = parseArg(cblk1);
+		    b = parseArg(cblk2);
+		    blockList[blk].value = (a > b);
+		    break;
 		case 'plus':
 		    cblk1 = blockList[blk].connections[1];
 		    cblk2 = blockList[blk].connections[2];
@@ -1368,6 +1392,16 @@ define(function (require) {
 		    break;
 		case 'color':
 		    blockList[blk].value = turtleColor;
+		    break;
+		case 'mouse x':
+		    blockList[blk].value = stageX;
+		    break;
+		case 'mouse y':
+		    blockList[blk].value = stageY;
+		    break;
+		case 'time':
+		    var d = new Date();
+		    blockList[blk].value = (time - d.getTime()) / 1000;
 		    break;
 		}
 		return blockList[blk].value;
@@ -1408,6 +1442,12 @@ define(function (require) {
 
         function doRepeat(count, blk) {
 	    for (var i = 0; i < count; i++) {
+		runFromBlock(blk);
+	    }
+	}
+
+        function doIf(bool, blk) {
+	    if (bool) {
 		runFromBlock(blk);
 	    }
 	}

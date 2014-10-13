@@ -901,23 +901,18 @@ define(function (require) {
 	    var html = ''
 	    var text = ''
 	    for (var palette = 0; palette < paletteList.length; palette++) {
-		// console.log(paletteList[palette].getInfo());
-		// <button onclick='return toggle('toc');'>Toggle Table of Contents</button>
-		// <div id='toc'>
-		// </div>
-		text = '<button id="_' + paletteList[palette].name + '_palette"' +
-		    ' onclick="return toggle(\'_' +
-		    paletteList[palette].name + '_div\');">' +
-		    paletteList[palette].name + '</button>';
+		text = '<button id="' + getPaletteButtonId(palette) + '" ' +
+		    'onclick="return toggle(\'' + getPaletteId(palette) +
+		    '\');">' + paletteList[palette].name + '</button>';
 		html = html + text;
 		}
 
 	    for (var palette = 0; palette < paletteList.length; palette++) {
-		text = '<div id="_' + paletteList[palette].name + '_div">';
+		text = '<div id="' + getPaletteId(palette) + '">';
 		html = html + text;
 		for (var blk = 0; blk < paletteList[palette].blockList.length; blk++) {
-		    text = '<button id="_' + 
-			paletteList[palette].blockList[blk].name + '_block"' +
+		    text = '<button id="' + 
+			getBlockButtonId(palette, blk) + '"' +
 			' onclick="return makeBlock(\'' +
 			paletteList[palette].blockList[blk].name + '\');">' +
 			paletteList[palette].blockList[blk].name + '</button>';
@@ -929,7 +924,7 @@ define(function (require) {
             paletteElem.innerHTML = html;
 	    // keep turtle palette open to start
 	    for (var palette = 1; palette < paletteList.length; palette++) {
-		toggler('_' + paletteList[palette].name + '_div');
+		toggler(getPaletteId(palette));
 	    }
 	}
 
@@ -950,12 +945,9 @@ define(function (require) {
 		    } else {
 			value = blockList[blk].label.value;
 		    }
-		    arrLabels[blk] = '_' + blk.toString();
-		    text = '<textarea id="_' + arrLabels[blk] +
+		    text = '<textarea id="' + getBlockId(blk) +
 			'" style="position: absolute; ' + 
 			'-webkit-user-select: text;" ' +
-			// 'onselect="labelSelected", ' +
-			'onchanged="labelChanged", ' +
 			'class="number", ' +
 			'cols="6", rows="1", maxlength="6">' +
 			value + '</textarea>'
@@ -968,17 +960,13 @@ define(function (require) {
 		    } else {
 			value = blockList[blk].label.value;
 		    }
-		    arrLabels[blk] = "_" + blk.toString();
-		    text = '<textarea id="_' + arrLabels[blk] +
+		    text = '<textarea id="' + getBlockId(blk) +
 			'" style="position: absolute; ' + 
 			'-webkit-user-select: text;" ' +
-			// 'onselect="labelSelected", ' +
-			'onchanged="labelChanged", ' +
 			'class="text", ' +
 			'cols="6", rows="1", maxlength="6">' +
 			value + '</textarea>'
 		} else {
-		    arrLabels[blk] = null
 		    text = ''
 		}
 		html = html + text
@@ -987,33 +975,33 @@ define(function (require) {
 
 	    // Then create a list of the label elements
             for (var blk = 0; blk < blockList.length; blk++) {
-		if (blockList[blk].bitmap == null) {
-		    var x = blockList[blk].x
-		    var y = blockList[blk].y
+		var myBlock = blockList[blk];
+		if (myBlock.bitmap == null) {
+		    var x = myBlock.x
+		    var y = myBlock.y
 		} else {
-		    var x = blockList[blk].bitmap.x
-		    var y = blockList[blk].bitmap.y
+		    var x = myBlock.bitmap.x
+		    var y = myBlock.bitmap.y
 		}
 		if (isValueBlock(blk)) {
-		    blockList[blk].label = document.getElementById('_' + arrLabels[blk])
-		    // Not sure why this event is not triggered, but
-		    // it doesn't matter as long as we read from the
-		    // textareas before we run the blocks.
-		    blockList[blk].label.onchanged=labelChanged
-
+		    // FIXME: Why is blk += 1 here?
+		    myBlock.label = document.getElementById(getBlockId(blk));
+		    myBlock.label.addEventListener('change', function() {
+			labelChanged(myBlock);
+		    });
 		    adjustLabelPosition(blk, x, y);
 		} else {
-		    blockList[blk].label = null
+		    myBlock.label = null;
 		}
             }
 	}
 
-        function labelSelected() {
-	    console.log('label selected, but which one?')
-	}
-
-        function labelChanged() {
-	    console.log('label changed, but which one?')
+	function labelChanged(block) {
+	    // Update the block values as they change in the DOM label
+	    if (block.label != null) {
+		console.log(block.label.value);
+		block.value = block.label.value;
+	    }
 	}
 
 	function adjustLabelPosition(blk, x, y) {

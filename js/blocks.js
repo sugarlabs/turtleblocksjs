@@ -36,7 +36,7 @@ var sensorsPalette = new Palette('sensors');
 paletteList.push(sensorsPalette);
 sensorsPalette.color = 'red';
 
-currentPaletteId = '_turtle_div';
+currentPaletteId = getPaletteId(0);  // Turtle
 
 // Define block proto objects
 function ProtoBlock (name) {
@@ -353,9 +353,6 @@ for (i = 0; i < protoBlockList.length; i++) {
 // Blocks that cannot be run on their own
 var noRunBlocks = ['action'];
 
-// Label elements for each of our blocks...
-var arrLabels = [];
-
 // and a place in the DOM to put them.
 var labelElem = document.getElementById('labelDiv');
 
@@ -397,7 +394,27 @@ function $() {
     return elements;
 }
 
+// Generate the IDs for the DOM elements we need
+function getPaletteButtonId(palette) {
+    return '_' + paletteList[palette].name + '_palette_button';
+}
+
+function getPaletteId(palette) {
+    return '_' + paletteList[palette].name + '_palette_div';
+}
+
+function getBlockButtonId(palette, blk) {
+    return '_' + paletteList[palette].blockList[blk].name + '_block_button';
+}
+
+function getBlockId(blk) {
+    return '_' + blk.toString();
+}
+
 function toggle(obj) {
+    // TODO: change color of buttons and button backgrounds
+    // document.getElementById(currentPaletteId).style.backgroundColor = "red";
+    // refactor to generate Ids on the fly from palette name
     toggler(currentPaletteId);
     toggler(obj)
     currentPaletteId = obj;

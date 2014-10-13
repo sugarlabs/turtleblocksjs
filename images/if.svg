@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="72"
+   height="116"
+   id="svg2">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <g
+     transform="scale(2,2)"
+     id="g4">
+    <path
+       d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,15 c -4.18879,0 -8,3.81121 -8,8 0,4.18879 3.81121,8 8,8 l 0,2 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.617994,0 -5,2.382006 -5,5 l -8,0 z"
+       id="path6"
+       style="fill:#ffdf4e;fill-opacity:1;stroke:#bb9000;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
+  </g>
+  <rect
+     width="12.994842"
+     height="0.99484116"
+     x="2.5025787"
+     y="92.502579"
+     id="rect3831"
+     style="fill:#ffdf4e;fill-opacity:1;fill-rule:nonzero;stroke:#ffdf4e;stroke-width:1.00515878;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+  <text
+     x="49.554688"
+     y="60.915253"
+     id="text2985"
+     xml:space="preserve"
+     style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+       x="49.554688"
+       y="60.915253"
+       id="tspan2987"
+       style="font-size:18px">if</tspan></text>
+  <text
+     x="59.007812"
+     y="78.237289"
+     id="text2989"
+     xml:space="preserve"
+     style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+       x="59.007812"
+       y="78.237289"
+       id="tspan2991"
+       style="font-size:12px">then</tspan></text>
+  <path
+     d="m 1.1048456,95.104846 15.7903104,0 c 0,6.596774 0,13.193534 0,19.790304 l -15.7903104,0 z"
+     id="path3062-1"
+     style="fill:#ffdf4e;fill-opacity:1;stroke:#ffdf4e;stroke-width:2.20969129;stroke-linecap:round;stroke-opacity:1" />
+  <rect
+     width="2"
+     height="22"
+     x="4.3043517e-08"
+     y="94"
+     id="rect4349-0"
+     style="fill:#bb9000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  <rect
+     width="2"
+     height="22"
+     x="16"
+     y="94"
+     id="rect4349-8-9"
+     style="fill:#bb9000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+</svg>

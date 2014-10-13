@@ -3,7 +3,8 @@
 // Define palette objects
 function Palette (name) {
     this.name = name;
-    this.color = 'green';
+    this.color = 'white';
+    this.backgroundColor = 'green';
     this.blockList = [];
 };
 
@@ -16,29 +17,35 @@ var paletteList = [];
 
 var turtlePalette = new Palette('turtle');
 paletteList.push(turtlePalette);
-turtlePalette.color = 'green';
+turtlePalette.color = 'white';
+turtlePalette.backgroundColor = 'green';
 
 var penPalette = new Palette('pen');
 paletteList.push(penPalette);
-penPalette.color = 'cyan';
+penPalette.color = 'black';
+penPalette.backgroundColor = 'cyan';
 
 var numberPalette = new Palette('number');
 paletteList.push(numberPalette);
-numberPalette.color = 'purple';
+numberPalette.color = 'white';
+numberPalette.backgroundColor = 'purple';
 
 var flowPalette = new Palette('flow');
 paletteList.push(flowPalette);
-flowPalette.color = 'orange';
+flowPalette.color = 'black';
+flowPalette.backgroundColor = 'orange';
 
 var blocksPalette = new Palette('blocks');
 paletteList.push(blocksPalette);
-blocksPalette.color = 'yellow';
+blocksPalette.color = 'black';
+blocksPalette.backgroundColor = 'yellow';
 
 var sensorsPalette = new Palette('sensors');
 paletteList.push(sensorsPalette);
-sensorsPalette.color = 'red';
+sensorsPalette.color = 'white';
+sensorsPalette.backgroundColor = 'red';
 
-currentPaletteId = getPaletteId(0);  // Turtle
+currentPalette = 0;  // Turtle
 
 // Define block proto objects
 function ProtoBlock (name) {
@@ -53,7 +60,7 @@ function ProtoBlock (name) {
 }
 
 ProtoBlock.prototype.getInfo = function() {
-    return this.color + ' ' + this.name + ' block';
+    return this.backgroundColor + ' ' + this.name + ' block';
 }
 
 ProtoBlock.prototype.getSvgPath = function() {
@@ -382,6 +389,7 @@ colorTable = ['#FF0000', '#FF0D00', '#FF1A00', '#FF2600', '#FF3300',
 	      '#FF00FF', '#FF00E6', '#FF00CC', '#FF00B3', '#FF0099',
 	      '#FF0080', '#FF0066', '#FF004D', '#FF0033', '#FF001A'];
 
+
 function $() {
     var elements = new Array();
 
@@ -413,18 +421,67 @@ function getBlockId(blk) {
     return '_' + blk.toString();
 }
 
-function toggle(obj) {
+// Toggle which palette is visible, updating button colors
+function toggle(name) {
     // TODO: change color of buttons and button backgrounds
-    // document.getElementById(currentPaletteId).style.backgroundColor = "red";
     // refactor to generate Ids on the fly from palette name
+
+    var palette = Number(name);
+    var paletteButtonId = getPaletteButtonId(palette);
+    var paletteId = getPaletteId(palette);
+    var currentPaletteId = getPaletteId(currentPalette);
+    var currentPaletteButtonId = getPaletteButtonId(currentPalette);
+    document.getElementById(currentPaletteButtonId).style.backgroundColor = '#808080';
+    document.getElementById(currentPaletteButtonId).style.color = '#ffffff';
+    document.getElementById(paletteButtonId).style.backgroundColor = paletteList[palette].backgroundColor;
+    document.getElementById(paletteButtonId).style.color = paletteList[palette].color;
+
     toggler(currentPaletteId);
-    toggler(obj)
-    currentPaletteId = obj;
+    toggler(paletteId);
+    currentPalette = palette;
 }
 
 function toggler(obj) {
     for ( var i=0; i < arguments.length; i++ ) {
 	$(arguments[i]).style.display = ($(arguments[i]).style.display != 'none' ? 'none' : '');
+    }
+}
+
+// Palettes live in the DOM for the time being:
+// a row of palette buttons and a row of block buttons for each palette
+function updatePalettes() {
+    // Modify the header id with palette info.
+    var html = ''
+    var text = ''
+    for (var palette = 0; palette < paletteList.length; palette++) {
+	text = '<button id="' + getPaletteButtonId(palette) + '" ' +
+	    'onclick="return toggle(\'' + palette + // getPaletteId(palette) +
+	    '\');">' + paletteList[palette].name + '</button>';
+	html = html + text;
+    }
+
+    for (var palette = 0; palette < paletteList.length; palette++) {
+	text = '<div id="' + getPaletteId(palette) + '">';
+	html = html + text;
+	for (var blk = 0; blk < paletteList[palette].blockList.length; blk++) {
+	    text = '<button id="' + 
+		getBlockButtonId(palette, blk) + '"' +
+		' class="' + paletteList[palette].backgroundColor + '"' + 
+		' onclick="return makeBlock(\'' +
+		paletteList[palette].blockList[blk].name + '\');">' +
+		paletteList[palette].blockList[blk].name + '</button>';
+	    html = html + text;
+	}
+	text = '</div>';
+	html = html + text;
+    }
+    paletteElem.innerHTML = html;
+
+    // Open the turtle palette to start
+    toggle('0');
+    // and hide all the others
+    for (var palette = 1; palette < paletteList.length; palette++) {
+	toggler(getPaletteId(palette));
     }
 }
 
@@ -459,41 +516,6 @@ function makeBlock(name) {
     // Generate and position the block bitmaps and labels
     updater();
     adjuster(blk);
-}
-
-// Palettes live in the DOM for the time being:
-// a row of palette buttons and a row of block buttons for each palette
-function updatePalettes() {
-    // Modify the header id with palette info.
-    var html = ''
-    var text = ''
-    for (var palette = 0; palette < paletteList.length; palette++) {
-	text = '<button id="' + getPaletteButtonId(palette) + '" ' +
-	    'onclick="return toggle(\'' + getPaletteId(palette) +
-	    '\');">' + paletteList[palette].name + '</button>';
-	html = html + text;
-    }
-
-    for (var palette = 0; palette < paletteList.length; palette++) {
-	text = '<div id="' + getPaletteId(palette) + '">';
-	html = html + text;
-	for (var blk = 0; blk < paletteList[palette].blockList.length; blk++) {
-	    text = '<button id="' + 
-		getBlockButtonId(palette, blk) + '"' +
-		' class="' + paletteList[palette].color + '"' + 
-		' onclick="return makeBlock(\'' +
-		paletteList[palette].blockList[blk].name + '\');">' +
-		paletteList[palette].blockList[blk].name + '</button>';
-	    html = html + text;
-	}
-	text = '</div>';
-	html = html + text;
-    }
-    paletteElem.innerHTML = html;
-    // keep turtle palette open to start
-    for (var palette = 1; palette < paletteList.length; palette++) {
-	toggler(getPaletteId(palette));
-    }
 }
 
 // The modifiable labels are stored in the DOM with a

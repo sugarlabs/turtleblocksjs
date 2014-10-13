@@ -6,6 +6,36 @@
   background-image: url(../icons/new-button.svg);
 }
 
+button.red {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+button.purple {
+    background-color: #ff00ff;
+    color: #000000;
+}
+
+button.yellow {
+    background-color: #ffff00;
+    color: #000000;
+}
+
+button.green {
+    background-color: #00ff00;
+    color: #000000;
+}
+
+button.orange {
+    background-color: #ffa000;
+    color: #000000;
+}
+
+button.cyan {
+    background-color: #00ffff;
+    color: #000000;
+}
+
 textarea.text {
    background-color: #ffff00;
    text-align: center;

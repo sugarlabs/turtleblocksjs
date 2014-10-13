@@ -1,3 +1,5 @@
+// All things related to blocks and palettes
+
 // Define palette objects
 function Palette (name) {
     this.name = name;
@@ -457,4 +459,188 @@ function makeBlock(name) {
     // Generate and position the block bitmaps and labels
     updater();
     adjuster(blk);
+}
+
+// Palettes live in the DOM for the time being:
+// a row of palette buttons and a row of block buttons for each palette
+function updatePalettes() {
+    // Modify the header id with palette info.
+    var html = ''
+    var text = ''
+    for (var palette = 0; palette < paletteList.length; palette++) {
+	text = '<button id="' + getPaletteButtonId(palette) + '" ' +
+	    'onclick="return toggle(\'' + getPaletteId(palette) +
+	    '\');">' + paletteList[palette].name + '</button>';
+	html = html + text;
+    }
+
+    for (var palette = 0; palette < paletteList.length; palette++) {
+	text = '<div id="' + getPaletteId(palette) + '">';
+	html = html + text;
+	for (var blk = 0; blk < paletteList[palette].blockList.length; blk++) {
+	    text = '<button id="' + 
+		getBlockButtonId(palette, blk) + '"' +
+		' class="' + paletteList[palette].color + '"' + 
+		' onclick="return makeBlock(\'' +
+		paletteList[palette].blockList[blk].name + '\');">' +
+		paletteList[palette].blockList[blk].name + '</button>';
+	    html = html + text;
+	}
+	text = '</div>';
+	html = html + text;
+    }
+    paletteElem.innerHTML = html;
+    // keep turtle palette open to start
+    for (var palette = 1; palette < paletteList.length; palette++) {
+	toggler(getPaletteId(palette));
+    }
+}
+
+// The modifiable labels are stored in the DOM with a
+// unique id for each block.  For the moment, we only have
+// labels for number and text blocks.
+function updateBlockLabels() {
+    var html = ''
+    var text = ''
+    var value = ''
+    for (var blk = 0; blk < blockList.length; blk++) {
+	if (blockList[blk].name == 'number') {
+	    if (blockList[blk].label == null) {
+		if (blockList[blk].value == null) {
+		    blockList[blk].value = 100;
+		}
+		value = blockList[blk].value.toString();
+	    } else {
+		value = blockList[blk].label.value;
+	    }
+	    text = '<textarea id="' + getBlockId(blk) +
+		'" style="position: absolute; ' + 
+		'-webkit-user-select: text;" ' +
+		'class="number", ' +
+		'cols="6", rows="1", maxlength="6">' +
+		value + '</textarea>'
+	} else if (blockList[blk].name == 'text') {
+	    if (blockList[blk].label == null) {
+		if (blockList[blk].value == null) {
+		    blockList[blk].value = 'text';
+		}
+		value = blockList[blk].value;
+	    } else {
+		value = blockList[blk].label.value;
+	    }
+	    text = '<textarea id="' + getBlockId(blk) +
+		'" style="position: absolute; ' + 
+		'-webkit-user-select: text;" ' +
+		'class="text", ' +
+		'cols="6", rows="1", maxlength="6">' +
+		value + '</textarea>'
+	} else {
+	    text = ''
+	}
+	html = html + text
+    }
+    labelElem.innerHTML = html;
+
+    // Then create a list of the label elements
+    for (var blk = 0; blk < blockList.length; blk++) {
+	var myBlock = blockList[blk];
+	if (myBlock.bitmap == null) {
+	    var x = myBlock.x
+	    var y = myBlock.y
+	} else {
+	    var x = myBlock.bitmap.x
+	    var y = myBlock.bitmap.y
+	}
+	if (isValueBlock(blk)) {
+	    myBlock.label = document.getElementById(getBlockId(blk));
+	    myBlock.label.addEventListener('change', function() {
+		labelChanged(myBlock);
+	    });
+	    adjustLabelPosition(blk, x, y);
+	} else {
+	    myBlock.label = null;
+	}
+    }
+}
+
+function labelChanged(block) {
+    // Update the block values as they change in the DOM label
+    if (block.label != null) {
+	console.log(block.label.value);
+	block.value = block.label.value;
+    }
+    // If the label was the name of an action, update the
+    // associated run blocks and the palette buttons
+
+    // If the label was the name of a storein, update the
+    //associated box blocks and the palette buttons
+
+}
+
+function adjustLabelPosition(canvas, blk, x, y) {
+    // Move the label when the block moves.
+    if (blockList[blk].label == null) {
+	return;
+    }
+    if (blockList[blk].protoblock.name == 'number') {
+	blockList[blk].label.style.left = Math.round(
+	    x + canvas.offsetLeft + 30) + 'px';
+    } else if (blockList[blk].protoblock.name == 'text') {
+	blockList[blk].label.style.left = Math.round(
+	    x + canvas.offsetLeft + 30) + 'px';
+    } else {
+	blockList[blk].label.style.left = Math.round(
+	    x + canvas.offsetLeft + 10) + 'px';
+    }
+    blockList[blk].label.style.top = Math.round(
+	y + canvas.offsetTop + 5) + 'px';
+}
+
+// Utility functions
+function isValueBlock(blk) {
+    if (valueBlocks.indexOf(blockList[blk].name) != -1) {
+	return true;
+    } else {
+	return false;
+    }
+}
+
+function isArgBlock(blk) {
+    if (argBlocks.indexOf(blockList[blk].name) != -1) {
+	return true;
+    } else {
+	return false;
+    }
+}
+
+function isSpecialBlock(blk) {
+    if (specialBlocks.indexOf(blockList[blk].name) != -1) {
+	return true;
+    } else {
+	return false;
+    }
+}
+
+function isClampBlock(blk) {
+    if (clampBlocks.indexOf(blockList[blk].name) != -1) {
+	return true;
+    } else {
+	return false;
+    }
+}
+
+function isNoRunBlock(blk) {
+    if (noRunBlocks.indexOf(blockList[blk].name) != -1) {
+	return true;
+    } else {
+	return false;
+    }
+}
+
+function isExpandableBlock(blk) {
+    if (expandableBlocks.indexOf(blockList[blk].name) != -1) {
+	return true;
+    } else {
+	return false;
+    }
 }

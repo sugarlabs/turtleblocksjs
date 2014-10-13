@@ -172,7 +172,7 @@ define(function (require) {
 	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
 	    bitmap.name = 'bmp_' + thisBlock;
 	    bitmap.cursor = 'pointer';
-	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
+	    adjustLabelPosition(canvas, thisBlock, bitmap.x, bitmap.y);
 
 	    // Expandable blocks have some extra parts.
 	    if (isExpandableBlock(thisBlock)) {
@@ -267,7 +267,7 @@ define(function (require) {
 			}
 
 			// Move the label.
-			adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
+			adjustLabelPosition(canvas, thisBlock, bitmap.x, bitmap.y);
 
 			// Move any connected blocks.
 			findDragGroup(blk)
@@ -876,151 +876,28 @@ define(function (require) {
         function updateBlockImages() {
 	    // Create the block image if it doesn't yet exist.
             for (var blk = 0; blk < blockList.length; blk++) {
-		if (blockList[blk].image == null) {
-		    blockList[blk].image = new Image();
-		    blockList[blk].image.src = blockList[blk].protoblock.getSvgPath();
-		    blockList[blk].image.onload = handleImageLoad;
+		myBlock = blockList[blk];
+		if (myBlock.image == null) {
+		    myBlock.image = new Image();
+		    myBlock.image.src = myBlock.protoblock.getSvgPath();
+		    myBlock.image.onload = handleImageLoad;
 		    if (isExpandableBlock(blk)) {
 			if (isArgBlock(blk)) {
-			    blockList[blk].bottom_image = new Image();
-			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getArgBottomSvgPath();
+			    myBlock.bottom_image = new Image();
+			    myBlock.bottom_image.src =
+				myBlock.protoblock.getArgBottomSvgPath();
 			} else if (isSpecialBlock(blk)) {
-			    blockList[blk].bottom_image = new Image();
-			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getSpecialBottomSvgPath();
+			    myBlock.bottom_image = new Image();
+			    myBlock.bottom_image.src =
+				myBlock.protoblock.getSpecialBottomSvgPath();
 			} else {
-			    blockList[blk].bottom_image = new Image();
-			    blockList[blk].bottom_image.src = blockList[blk].protoblock.getBottomSvgPath();
+			    myBlock.bottom_image = new Image();
+			    myBlock.bottom_image.src =
+				myBlock.protoblock.getBottomSvgPath();
 			}
 		    }
 		}
 	    }
-	}
-
-	function updatePalettes() {
-	    // Modify the header id with palette info.
-	    var html = ''
-	    var text = ''
-	    for (var palette = 0; palette < paletteList.length; palette++) {
-		text = '<button id="' + getPaletteButtonId(palette) + '" ' +
-		    'onclick="return toggle(\'' + getPaletteId(palette) +
-		    '\');">' + paletteList[palette].name + '</button>';
-		html = html + text;
-		}
-
-	    for (var palette = 0; palette < paletteList.length; palette++) {
-		text = '<div id="' + getPaletteId(palette) + '">';
-		html = html + text;
-		for (var blk = 0; blk < paletteList[palette].blockList.length; blk++) {
-		    text = '<button id="' + 
-			getBlockButtonId(palette, blk) + '"' +
-			' onclick="return makeBlock(\'' +
-			paletteList[palette].blockList[blk].name + '\');">' +
-			paletteList[palette].blockList[blk].name + '</button>';
-		    html = html + text;
-		}
-		text = '</div>';
-		html = html + text;
-	    }
-            paletteElem.innerHTML = html;
-	    // keep turtle palette open to start
-	    for (var palette = 1; palette < paletteList.length; palette++) {
-		toggler(getPaletteId(palette));
-	    }
-	}
-
-        function updateBlockLabels() {
-	    // The modifiable labels are stored in the DOM with a
-	    // unique id for each block.  For the moment, we only have
-	    // labels for number and text blocks.
-            var html = ''
-	    var text = ''
-	    var value = ''
-            for (var blk = 0; blk < blockList.length; blk++) {
-		if (blockList[blk].name == 'number') {
-		    if (blockList[blk].label == null) {
-			if (blockList[blk].value == null) {
-			    blockList[blk].value = 100;
-			}
-			value = blockList[blk].value.toString();
-		    } else {
-			value = blockList[blk].label.value;
-		    }
-		    text = '<textarea id="' + getBlockId(blk) +
-			'" style="position: absolute; ' + 
-			'-webkit-user-select: text;" ' +
-			'class="number", ' +
-			'cols="6", rows="1", maxlength="6">' +
-			value + '</textarea>'
-		} else if (blockList[blk].name == 'text') {
-		    if (blockList[blk].label == null) {
-			if (blockList[blk].value == null) {
-			    blockList[blk].value = 'text';
-			}
-			value = blockList[blk].value;
-		    } else {
-			value = blockList[blk].label.value;
-		    }
-		    text = '<textarea id="' + getBlockId(blk) +
-			'" style="position: absolute; ' + 
-			'-webkit-user-select: text;" ' +
-			'class="text", ' +
-			'cols="6", rows="1", maxlength="6">' +
-			value + '</textarea>'
-		} else {
-		    text = ''
-		}
-		html = html + text
-            }
-            labelElem.innerHTML = html;
-
-	    // Then create a list of the label elements
-            for (var blk = 0; blk < blockList.length; blk++) {
-		var myBlock = blockList[blk];
-		if (myBlock.bitmap == null) {
-		    var x = myBlock.x
-		    var y = myBlock.y
-		} else {
-		    var x = myBlock.bitmap.x
-		    var y = myBlock.bitmap.y
-		}
-		if (isValueBlock(blk)) {
-		    // FIXME: Why is blk += 1 here?
-		    myBlock.label = document.getElementById(getBlockId(blk));
-		    myBlock.label.addEventListener('change', function() {
-			labelChanged(myBlock);
-		    });
-		    adjustLabelPosition(blk, x, y);
-		} else {
-		    myBlock.label = null;
-		}
-            }
-	}
-
-	function labelChanged(block) {
-	    // Update the block values as they change in the DOM label
-	    if (block.label != null) {
-		console.log(block.label.value);
-		block.value = block.label.value;
-	    }
-	}
-
-	function adjustLabelPosition(blk, x, y) {
-	    // Move the label when the block moves.
-	    if (blockList[blk].label == null) {
-		return;
-	    }
-	    if (blockList[blk].protoblock.name == 'number') {
-		blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft + 30) + 'px';
-	    } else if (blockList[blk].protoblock.name == 'text') {
-		blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft + 30) + 'px';
-	    } else {
-	    	blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft + 10) + 'px';
-	    }
-            blockList[blk].label.style.top = Math.round(
-		y + canvas.offsetTop + 5) + 'px';
 	}
 
         function moveBlock(blk, x, y) {
@@ -1041,7 +918,7 @@ define(function (require) {
 	    if (isExpandableBlock(blk)) {
 		moveExtraParts(blk, dx, dy);
 	    }
-	    adjustLabelPosition(blk, x, y);
+	    adjustLabelPosition(canvas, blk, x, y);
 	}
 
         function moveBlockRelative(blk, dx, dy) {
@@ -1058,7 +935,7 @@ define(function (require) {
 	    if (isExpandableBlock(blk)) {
 		moveExtraParts(blk, dx, dy);
 	    }
-	    adjustLabelPosition(blk, blockList[blk].x, blockList[blk].y);
+	    adjustLabelPosition(canvas, blk, blockList[blk].x, blockList[blk].y);
 	}
 
         function tick(event) {
@@ -1503,56 +1380,6 @@ define(function (require) {
 	    turtle_bitmap.rotation = 0;
 	    // Also clear all the boxes
 	    boxList = [];
-	}
-
-	// Utility functions
-
-	function isValueBlock(blk) {
-	    if (valueBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
-	function isArgBlock(blk) {
-	    if (argBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
-	function isSpecialBlock(blk) {
-	    if (specialBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
-	function isClampBlock(blk) {
-	    if (clampBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
-	function isNoRunBlock(blk) {
-	    if (noRunBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-
-	function isExpandableBlock(blk) {
-	    if (expandableBlocks.indexOf(blockList[blk].name) != -1) {
-		return true;
-	    } else {
-		return false;
-	    }
 	}
 
 	function findBox(name) {

@@ -8,6 +8,7 @@
   * rotate turtle using easeljs rotation
   * implement actions (stacks)
   * implement boxes
+  * booleans
 
 TODO:
   * better compartmentalization of code
@@ -16,7 +17,6 @@ TODO:
   * add protoblock for new stacks
   * add protoblocks for new boxes
   * expanding arithmetic blocks
-  * booleans
   * pen palette
   * sensors/media
   * decide on a palette strategy

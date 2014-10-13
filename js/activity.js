@@ -671,7 +671,8 @@ define(function (require) {
 		if (size == 0) {
 		    size = 1;  // minimum of 1 slot in clamp
 		}
-		size += 2;  // add top and bottom of clamp
+		// add top and bottom of clamp
+		size += blockList[blk].protoblock.size;
 	    } else {
 		size = blockList[blk].protoblock.size;
 	    }

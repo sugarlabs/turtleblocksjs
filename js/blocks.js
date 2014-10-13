@@ -245,7 +245,7 @@ repeatBlock.yoff = 74;
 repeatBlock.loff = 42;
 repeatBlock.expandable = true;
 repeatBlock.style = 'clamp';
-repeatBlock.size = 3;  // One empty slot by default
+repeatBlock.size = 2;
 repeatBlock.args = 2;
 repeatBlock.defaults.push(4);
 repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
@@ -259,7 +259,7 @@ ifBlock.yoff = 116;
 ifBlock.loff = 42;
 ifBlock.expandable = true;
 ifBlock.style = 'clamp';
-ifBlock.size = 4;  // One empty slot by default
+ifBlock.size = 3;
 ifBlock.args = 2;
 ifBlock.docks = [[20, 0, 'out'], [56, 40, 'booleanin'], [38, 84, 'in'],
  		 [20, 168, 'in']];
@@ -411,7 +411,6 @@ function toggler(obj) {
 
 function makeBlock(name) {
     for (proto=0; proto < protoBlockList.length; proto++) {
-	console.log(protoBlockList[proto].name + ' ' + name);
 	if (protoBlockList[proto].name == name) {
 	    blockList.push(new Block(protoBlockList[proto]));
 	    break;
@@ -439,7 +438,6 @@ function makeBlock(name) {
     }
 
     // Generate and position the block bitmaps and labels
-    console.log('calling updater');
     updater();
     adjuster(blk);
 }

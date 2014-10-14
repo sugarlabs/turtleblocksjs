@@ -1008,9 +1008,8 @@ define(function (require) {
 		}
 		if (isValueBlock(blk)) {
 		    myBlock.label = document.getElementById(getBlockId(blk));
-		    myBlock.label.addEventListener('change', function() {
-			labelChanged(myBlock);
-		    });
+		    myBlock.label.addEventListener(
+			'change', function() {labelChanged();});
 		    adjustLabelPosition(blk, x, y);
 		} else {
 		    myBlock.label = null;

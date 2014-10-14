@@ -199,29 +199,37 @@ blocksPalette.blockList.push(textBlock);
 textBlock.style = 'value';
 textBlock.docks = [[0, 20, 'textout']];
 
-var storeinBlock = new ProtoBlock('storein');
-protoBlockList.push(storeinBlock);
-storeinBlock.palette = blocksPalette;
-blocksPalette.blockList.push(storeinBlock);
-storeinBlock.yoff = 49;
-storeinBlock.loff = 42;
-storeinBlock.expandable = true;
-storeinBlock.style = 'special';
-storeinBlock.size = 2;
-storeinBlock.args = 2;
-storeinBlock.defaults.push('box');
-storeinBlock.defaults.push(100);
-storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
-		      [98, 62, 'numberin'], [20, 84, 'in']];
+function newStoreinBlock(name) {
+    var storeinBlock = new ProtoBlock('storein');
+    protoBlockList.push(storeinBlock);
+    storeinBlock.palette = blocksPalette;
+    blocksPalette.blockList.push(storeinBlock);
+    storeinBlock.yoff = 49;
+    storeinBlock.loff = 42;
+    storeinBlock.expandable = true;
+    storeinBlock.style = 'special';
+    storeinBlock.size = 2;
+    storeinBlock.args = 2;
+    storeinBlock.defaults.push(name);
+    storeinBlock.defaults.push(100);
+    storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
+			  [98, 62, 'numberin'], [20, 84, 'in']];
+}
 
-var boxBlock = new ProtoBlock('box');
-protoBlockList.push(boxBlock);
-boxBlock.palette = blocksPalette;
-blocksPalette.blockList.push(boxBlock);
-boxBlock.args = 1;
-boxBlock.defaults.push('box');
-boxBlock.style = 'arg';
-boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
+newStoreinBlock('box');
+
+function newBoxBlock(name) {
+    var boxBlock = new ProtoBlock('box');
+    protoBlockList.push(boxBlock);
+    boxBlock.palette = blocksPalette;
+    blocksPalette.blockList.push(boxBlock);
+    boxBlock.args = 1;
+    boxBlock.defaults.push(name);
+    boxBlock.style = 'arg';
+    boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
+}
+
+newBoxBlock('box');
 
 function newActionBlock(name) {
     var actionBlock = new ProtoBlock('action');
@@ -493,10 +501,12 @@ function updatePalettes() {
 	    case 'storein':
 		// Use the name of the box in the label
 		name = 'store in ' + myPalette.blockList[blk].defaults[0];
+		var arg = myPalette.blockList[blk].defaults[0];
 		break;
 	    case 'box':
 		// Use the name of the box in the label
 		name = myPalette.blockList[blk].defaults[0];
+		var arg = myPalette.blockList[blk].defaults[0];
 		break;
 	    }
 	    text = '<button id="' + 
@@ -538,13 +548,13 @@ function makeBlock(name, arg) {
     var blk = blockList.length - 1;
     var myBlock = blockList[blk];
     myBlock.copyDocks();
-    for (i = 0; i < myBlock.docks.length; i++) {
+    for (var i = 0; i < myBlock.docks.length; i++) {
 	myBlock.connections.push(null);
     }
 
     // Attach default args if any
-    cblk = blk + 1;
-    for (i = 0; i < myBlock.protoblock.defaults.length; i++) {
+    var cblk = blk + 1;
+    for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
 	var value = myBlock.protoblock.defaults[i];
 	if (myBlock.docks[i + 1][2] == 'textin') {
 	    blockList.push(new Block(textBlock));
@@ -554,15 +564,32 @@ function makeBlock(name, arg) {
 	var myConnectionBlock = blockList[cblk + i];
 	myConnectionBlock.copyDocks();
 	myConnectionBlock.connections = [blk];
-	myConnectionBlock.value = value;
+	if (myBlock.name == 'action') {
+	    // Make sure we don't make two actions with the same name.
+	    // -1 since we don't need to check this block.
+	    for (var j = 0; j < blockList.length - 1; j++) {
+		if (blockList[j].name == 'text') {
+		    c = blockList[j].connections[0];
+		    if (c != null && blockList[c].name == 'action') {
+			if (blockList[j].value == value) {
+			    // FIXME: Change value to something unique
+			    value = value + '_';
+			    newDoBlock(value);
+			    updatePalettes();
+			}
+		    }
+		}
+	    }
+	    myConnectionBlock.value = value;
+	} else {
+	    myConnectionBlock.value = value;
+	}
 	myBlock.connections[i + 1] = cblk + i;
     }
 
     // Generate and position the block bitmaps and labels
     updater();
     adjuster(blk);
-
-    // TODO: Update blocks palette if we added a new action or storein block
 }
 
 // Utility functions
@@ -632,25 +659,51 @@ function isExpandableBlock(blk) {
     }
 }
 
-function labelChanged(block) {
+function labelClicked(block) {
+    console.log('clicked on ' + block.name);
+}
+
+function labelChanged() {
     // Update the block values as they change in the DOM label
-    if (block.label != null) {
-	console.log(block.label.value);
-	block.value = block.label.value;
-    }
-    // If the label was the name of an action, update the
-    // associated run blocks and the palette buttons
-    var c = block.connections[0];
-    if (c != null) {
-	var cblock = blockList[c];
-	if (cblock.name == 'action') {
-	    console.log('renamed action block to ' + block.value);
-	    newDoBlock(block.value);
-	    updatePalettes();
+
+    // For some reason, arg passing from the DOM is not working
+    // properly, so we need to find the label that changed.
+    var myBlock = null;
+    for (var blk = 0 ; blk < blockList.length ; blk++) {
+	if (blockList[blk].name == 'text') {
+	    if (blockList[blk].value != blockList[blk].label.value) {
+		myBlock = blockList[blk];
+		break;
+	    }
 	}
     }
 
-    // If the label was the name of a storein, update the
-    //associated box blocks and the palette buttons
+    // Update the label.
+    if (myBlock != null && myBlock.label != null) {
+	myBlock.value = myBlock.label.value;
+    }
+
+    // TODO: Garbage collection
+    // TODO: Rename old boxes and actions
+    // TODO: Don't allow duplicate action names
+    var c = myBlock.connections[0];
+    if (myBlock.name == 'text' && c != null) {
+	var cblock = blockList[c];
+	switch (cblock.name) {
+	case 'action':
+	    // If the label was the name of an action, update the
+	    // associated run blocks and the palette buttons
+	    newDoBlock(myBlock.value);
+	    updatePalettes();
+	    break;
+	case 'storein':
+	    // If the label was the name of a storein, update the
+	    //associated box blocks and the palette buttons
+	    newStoreinBlock(myBlock.value);
+	    newBoxBlock(myBlock.value);
+	    updatePalettes();
+	    break;
+	}
+    }
 }
 

@@ -697,7 +697,7 @@ function labelChanged() {
 	myBlock.value = myBlock.label.value;
     }
 
-    // TODO: Garbage collection in palette
+    // TODO: Garbage collection in palette (remove old proto block)
     // TODO: Don't allow duplicate action names
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {
@@ -706,15 +706,19 @@ function labelChanged() {
 	case 'action':
 	    // If the label was the name of an action, update the
 	    // associated run blocks and the palette buttons
-	    newDoBlock(myBlock.value);
+	    if (myBlock.value != 'action') {
+		newDoBlock(myBlock.value);
+	    }
 	    renameDos(oldValue, newValue);
 	    updatePalettes();
 	    break;
 	case 'storein':
 	    // If the label was the name of a storein, update the
 	    //associated box blocks and the palette buttons
-	    newStoreinBlock(myBlock.value);
-	    newBoxBlock(myBlock.value);
+	    if (myBlock.value != 'box') {
+		newStoreinBlock(myBlock.value);
+		newBoxBlock(myBlock.value);
+	    }
 	    renameBoxes(oldValue, newValue);
 	    updatePalettes();
 	    break;

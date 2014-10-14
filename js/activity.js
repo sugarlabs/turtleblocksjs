@@ -89,12 +89,14 @@ define(function (require) {
 	// Queue for loops
 	var runQueue = [];
 	var countQueue = [];
-	var nextQueue = [];
+
+	// Highlighted block
+	var highlightedBlock = null;
 
 	var activeBlock = null;
 
 	var turtle_delay = 1000;
-        var turtle_bitmap = null
+        var turtle_bitmap = null;
         var Turtle = 'images/turtle.svg';
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
@@ -1226,15 +1228,9 @@ define(function (require) {
         }
 
 	function runFromBlock(blk) { 
-	    // If the queue is empty, queue next and run blk
-	    // else shift (or decrement) queue and run
 	    if (blk == null) {
-		console.log('finished running');
 		return;
 	    }
-	    console.log('runQueue is ' + runQueue);
-	    console.log('countQueue is ' + countQueue);
-	    console.log('nextQueue is ' + nextQueue);
 	    console.log('running ' + blockList[blk].name);
 	    setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
 	}
@@ -1260,6 +1256,10 @@ define(function (require) {
 	    }
 	    // Some flow blocks have childflows, e.g., repeat
 	    var childflow = null;
+
+	    if (turtle_delay != null) {
+		highlight(blk);
+	    }
 
 	    switch (blockList[blk].name) {
 	    case 'start':
@@ -1328,14 +1328,7 @@ define(function (require) {
 		break;
 	    }
 
-	    if (turtle_delay != null) {
-		// Unhighlight current block by rescaling
-		blockList[blk].bitmap.scaleX = 1;
-		blockList[blk].bitmap.scaleY = 1;
-		blockList[blk].bitmap.scale = 1;
-	    }
-
-	    // (3) Run block below this block.
+	    // (3) Queue block below this block.
 
 	    // If there is a childflow, queue it.
 	    if (childflow != null) {
@@ -1347,7 +1340,6 @@ define(function (require) {
 	    // Run the last flow in the queue.
 	    if (runQueue.length > 0) {
 		nextBlock = runQueue.last();
-		console.log('nextBlock is ' + blockList[nextBlock].name);
 		if(countQueue.last() == 1) {
 		    // Finished child so pop it off the queue.
 		    runQueue.pop();
@@ -1361,6 +1353,8 @@ define(function (require) {
 	    }
 	    if (nextBlock != null) {
 		runFromBlock(nextBlock);
+	    } else {
+		setTimeout(function(){unhighlight();}, turtle_delay);
 	    }
 	}
 
@@ -1416,6 +1410,27 @@ define(function (require) {
 		return blockList[blk].value;
 	    } else {
 		return blk;
+	    }
+	}
+
+	function unhighlight() {
+	    if (highlightedBlock != null) {
+		blockList[highlightedBlock].bitmap.scaleX = 1;
+		blockList[highlightedBlock].bitmap.scaleY = 1;
+		blockList[highlightedBlock].bitmap.scale = 1;
+		update = true;
+	    }
+	    highlightedBlock = null;
+	}
+
+	function highlight(blk) {
+	    if (blk != null) {
+		unhighlight();
+		blockList[blk].bitmap.scaleX = 1.2;
+		blockList[blk].bitmap.scaleY = 1.2;
+		blockList[blk].bitmap.scale = 1.2;
+		highlightedBlock = blk;
+		update = true;
 	    }
 	}
 

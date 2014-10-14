@@ -194,12 +194,15 @@ define(function (require) {
 		container.addChild(bottom_bitmap);
 		bottom_bitmap.x = bitmap.x;
 		bottom_bitmap.y = bitmap.y + yoff;
-		bottom_bitmap.scaleX = bottom_bitmap.scaleY = bottom_bitmap.scale = 1;
+		bottom_bitmap.scaleX = 1;
+		bottom_bitmap.scaleY = 1;
+		bottom_bitmap.scale = 1;
 		bottom_bitmap.name = 'bmp_' + thisBlock + '_bottom';
 	    }
 
             // Create a shape that represents the center of the icon.
             var hitArea = new createjs.Shape();
+
             // Position hitArea relative to the internal coordinate system
             // of the target (bitmap instances):
 	    // * number and text blocks have a handle on the right side;
@@ -248,7 +251,7 @@ define(function (require) {
 		    // TODO: Use pressmove, pressup??
 		    function handleMouseMove(event) {
 			// reset scale when moving (easier to dock that way)
-			bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+			unhighlight();
 
 			moved = true;
 			var oldX = bitmap.x;
@@ -295,7 +298,7 @@ define(function (require) {
 
 		function handleMouseOver(event) {
 		    if (activeBlock == null) {
-			target.scaleX = target.scaleY = target.scale * 1.2;
+			highlight(thisBlock);
 			activeBlock = thisBlock;
 			update = true;
 		    }
@@ -394,7 +397,7 @@ define(function (require) {
 			    }
 			}
 		    }
-		    target.scaleX = target.scaleY = target.scale;
+		    unhighlight();
 		    activeBlock = null;
 		    update = true;
 		}
@@ -1415,9 +1418,22 @@ define(function (require) {
 
 	function unhighlight() {
 	    if (highlightedBlock != null) {
-		blockList[highlightedBlock].bitmap.scaleX = 1;
-		blockList[highlightedBlock].bitmap.scaleY = 1;
-		blockList[highlightedBlock].bitmap.scale = 1;
+		var myBlock = blockList[highlightedBlock];
+		myBlock.bitmap.scaleX = 1;
+		myBlock.bitmap.scaleY = 1;
+		myBlock.bitmap.scale = 1;
+		if (isExpandableBlock(highlightedBlock)) {
+		    for (var i = 0; i < myBlock.filler_bitmaps.length; i++) {
+			myBlock.filler_bitmaps[i].scaleX = 1;
+			myBlock.filler_bitmaps[i].scaleY = 1;
+			myBlock.filler_bitmaps[i].scale = 1;
+		    }
+		    if (myBlock.bottom_bitmap != null) {
+			myBlock.bottom_bitmap.scaleX = 1;
+			myBlock.bottom_bitmap.scaleY = 1;
+			myBlock.bottom_bitmap.scale = 1;
+		    }
+		}
 		update = true;
 	    }
 	    highlightedBlock = null;
@@ -1426,9 +1442,23 @@ define(function (require) {
 	function highlight(blk) {
 	    if (blk != null) {
 		unhighlight();
-		blockList[blk].bitmap.scaleX = 1.2;
-		blockList[blk].bitmap.scaleY = 1.2;
-		blockList[blk].bitmap.scale = 1.2;
+		var myBlock = blockList[blk];
+		myBlock.bitmap.scaleX = 1.2;
+		myBlock.bitmap.scaleY = 1.2;
+		myBlock.bitmap.scale = 1.2;
+		if (isExpandableBlock(blk)) {
+		    for (var i = 0; i < myBlock.filler_bitmaps.length; i++) {
+			myBlock.filler_bitmaps[i].scaleX = 1.2;
+			myBlock.filler_bitmaps[i].scaleY = 1.2;
+			myBlock.filler_bitmaps[i].scale = 1.2;
+		    }
+		    if (myBlock.bottom_bitmap != null) {
+			myBlock.bottom_bitmap.scaleX = 1.2;
+			myBlock.bottom_bitmap.scaleY = 1.2;
+			myBlock.bottom_bitmap.scale = 1.2;
+		    }
+		}
+
 		highlightedBlock = blk;
 		update = true;
 	    }

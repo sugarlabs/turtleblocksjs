@@ -86,6 +86,11 @@ define(function (require) {
 	// To avoid infinite loops
 	var loopCounter;
 
+	// Queue for loops
+	var runQueue = [];
+	var countQueue = [];
+	var nextQueue = [];
+
 	var activeBlock = null;
 
 	var turtle_delay = 1000;
@@ -172,7 +177,7 @@ define(function (require) {
 	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
 	    bitmap.name = 'bmp_' + thisBlock;
 	    bitmap.cursor = 'pointer';
-	    adjustLabelPosition(canvas, thisBlock, bitmap.x, bitmap.y);
+	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
 
 	    // Expandable blocks have some extra parts.
 	    if (isExpandableBlock(thisBlock)) {
@@ -267,7 +272,7 @@ define(function (require) {
 			}
 
 			// Move the label.
-			adjustLabelPosition(canvas, thisBlock, bitmap.x, bitmap.y);
+			adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
 
 			// Move any connected blocks.
 			findDragGroup(blk)
@@ -918,7 +923,7 @@ define(function (require) {
 	    if (isExpandableBlock(blk)) {
 		moveExtraParts(blk, dx, dy);
 	    }
-	    adjustLabelPosition(canvas, blk, x, y);
+	    adjustLabelPosition(blk, x, y);
 	}
 
         function moveBlockRelative(blk, dx, dy) {
@@ -935,7 +940,107 @@ define(function (require) {
 	    if (isExpandableBlock(blk)) {
 		moveExtraParts(blk, dx, dy);
 	    }
-	    adjustLabelPosition(canvas, blk, blockList[blk].x, blockList[blk].y);
+	    adjustLabelPosition(blk, blockList[blk].x, blockList[blk].y);
+	}
+
+	// The modifiable labels are stored in the DOM with a
+	// unique id for each block.  For the moment, we only have
+	// labels for number and text blocks.
+	function updateBlockLabels() {
+	    var html = ''
+	    var text = ''
+	    var value = ''
+	    for (var blk = 0; blk < blockList.length; blk++) {
+		var myBlock = blockList[blk];
+		if (myBlock.name == 'number') {
+		    if (myBlock.label == null) {
+			if (myBlock.value == null) {
+			    myBlock.value = 100;
+			}
+			value = myBlock.value.toString();
+		    } else {
+			value = myBlock.label.value;
+		    }
+		    text = '<textarea id="' + getBlockId(blk) +
+			'" style="position: absolute; ' + 
+			'-webkit-user-select: text;" ' +
+			'class="number", ' +
+			'cols="6", rows="1", maxlength="6">' +
+			value + '</textarea>'
+		} else if (myBlock.name == 'text') {
+		    if (myBlock.label == null) {
+			if (myBlock.value == null) {
+			    myBlock.value = 'text';
+			}
+			value = myBlock.value;
+		    } else {
+			value = myBlock.label.value;
+		    }
+		    text = '<textarea id="' + getBlockId(blk) +
+			'" style="position: absolute; ' + 
+			'-webkit-user-select: text;" ' +
+			'class="text", ' +
+			'cols="6", rows="1", maxlength="6">' +
+			value + '</textarea>'
+		} else {
+		    text = ''
+		}
+		html = html + text
+	    }
+	    labelElem.innerHTML = html;
+
+	    // Then create a list of the label elements
+	    for (var blk = 0; blk < blockList.length; blk++) {
+		var myBlock = blockList[blk];
+		if (myBlock.bitmap == null) {
+		    var x = myBlock.x
+		    var y = myBlock.y
+		} else {
+		    var x = myBlock.bitmap.x
+		    var y = myBlock.bitmap.y
+		}
+		if (isValueBlock(blk)) {
+		    myBlock.label = document.getElementById(getBlockId(blk));
+		    myBlock.label.addEventListener('change', function() {
+			labelChanged(myBlock);
+		    });
+		    adjustLabelPosition(blk, x, y);
+		} else {
+		    myBlock.label = null;
+		}
+	    }
+	}
+
+	function labelChanged(block) {
+	    // Update the block values as they change in the DOM label
+	    if (block.label != null) {
+		console.log(block.label.value);
+		block.value = block.label.value;
+	    }
+	    // If the label was the name of an action, update the
+	    // associated run blocks and the palette buttons
+
+	    // If the label was the name of a storein, update the
+	    //associated box blocks and the palette buttons
+	}
+
+	function adjustLabelPosition(blk, x, y) {
+	    // Move the label when the block moves.
+	    if (blockList[blk].label == null) {
+		return;
+	    }
+	    if (blockList[blk].protoblock.name == 'number') {
+		blockList[blk].label.style.left = Math.round(
+		    x + canvas.offsetLeft + 30) + 'px';
+	    } else if (blockList[blk].protoblock.name == 'text') {
+		blockList[blk].label.style.left = Math.round(
+		    x + canvas.offsetLeft + 30) + 'px';
+	    } else {
+		blockList[blk].label.style.left = Math.round(
+		    x + canvas.offsetLeft + 10) + 'px';
+	    }
+	    blockList[blk].label.style.top = Math.round(
+		y + canvas.offsetTop + 5) + 'px';
 	}
 
         function tick(event) {
@@ -1104,6 +1209,9 @@ define(function (require) {
 
 	    // (2) Execute the stack.
 	    if (startBlock != null) {
+		runQueue = [];
+		countQueue = [];
+		nextQueue = [];
 		runFromBlock(startBlock);
 	    } else {
 		for (var blk = 0; blk < stackList.length; blk++) {
@@ -1118,24 +1226,18 @@ define(function (require) {
         }
 
 	function runFromBlock(blk) { 
-	    // Highlight current block by scaling
-	    if (turtle_delay == null) {
-		runFromBlockNow(blk);
-	    } else {
-		if (blk == null) {
-		    activity.showAlert('WARNING',
-				       'trying to run null block', null,
-				       function() {});
-		    return;
-		}
-		console.log('running ' + blk + ': ' + blockList[blk].name)
-		blockList[blk].bitmap.scaleX = 1.2;
-		blockList[blk].bitmap.scaleY = 1.2;
-		blockList[blk].bitmap.scale = 1.2;
-		runFromBlockNow(blk);
-		// setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
+	    // If the queue is empty, queue next and run blk
+	    // else shift (or decrement) queue and run
+	    if (blk == null) {
+		console.log('finished running');
+		return;
 	    }
-	} 
+	    console.log('runQueue is ' + runQueue);
+	    console.log('countQueue is ' + countQueue);
+	    console.log('nextQueue is ' + nextQueue);
+	    console.log('running ' + blockList[blk].name);
+	    setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
+	}
 
         function runFromBlockNow(blk) {
 	    // Run a stack of blocks, beginning with blk.
@@ -1148,25 +1250,47 @@ define(function (require) {
 	    }
 
 	    // (2) Run function associated with the block;
+
+	    // All flow blocks have a nextflow, but it can be null
+	    // (end of flow)
+	    var nextflow = blockList[blk].connections.last();
+	    if (nextflow != null) {
+		runQueue.push(nextflow);
+		countQueue.push(1);
+	    }
+	    // Some flow blocks have childflows, e.g., repeat
+	    var childflow = null;
+
 	    switch (blockList[blk].name) {
 	    case 'start':
  		if (args.length == 1) {
-		    doStart(args[0]);
+		    childflow = args[0];
+		    childflowCount = 1;
 		}
 		break;
 	    case 'run':
  		if (args.length == 1) {
-		    doRun(args[0]);
+		    for (i = 0; i < actionList.length; i++) {
+			if (actionList[i][0] == args[0]) {
+			    childflow = actionList[i][1];
+			    childflowCount = 1;
+			    break;
+			}
+		    }
 		}
 		break;
 	    case 'repeat':
  		if (args.length == 2) {
-		    doRepeat(args[0], args[1]);
+		    childflow = args[1];
+		    childflowCount = args[0];
 		}
 		break;
 	    case 'if':
  		if (args.length == 2) {
-		    doIf(args[0], args[1]);
+		    if (args[0]) {
+			childflow = args[1];
+			childflowCount = 1;
+		    }
 		}
 		break;
 	    case 'storein':
@@ -1211,18 +1335,37 @@ define(function (require) {
 		blockList[blk].bitmap.scale = 1;
 	    }
 
-	    // (3) Run block below this block, if any;
-	    var nextBlock = blockList[blk].connections.last();
-	    if (nextBlock != null) {
-		if (!isArgBlock(nextBlock)) {
-		    runFromBlock(nextBlock);
+	    // (3) Run block below this block.
+
+	    // If there is a childflow, queue it.
+	    if (childflow != null) {
+		runQueue.push(childflow);
+		countQueue.push(childflowCount);
+	    }
+
+	    var nextBlock = null;
+	    // Run the last flow in the queue.
+	    if (runQueue.length > 0) {
+		nextBlock = runQueue.last();
+		console.log('nextBlock is ' + blockList[nextBlock].name);
+		if(countQueue.last() == 1) {
+		    // Finished child so pop it off the queue.
+		    runQueue.pop();
+		    countQueue.pop();
+		} else {
+		    // Decrement the counter.
+		    count = countQueue.pop();
+		    count -= 1;
+		    countQueue.push(count);
 		}
+	    }
+	    if (nextBlock != null) {
+		runFromBlock(nextBlock);
 	    }
 	}
 
 	function parseArg(blk) {
 	    // Retrieve the value of a block.
-	    // TODO: recurse while applying some operator
 	    if (blk == null) {
 		activity.showAlert('WARNING',
 				   'missing argument', null,
@@ -1291,33 +1434,6 @@ define(function (require) {
 	}
 
 	// Logo functions
-	function doStart(blk) {
-	    console.log('doStart: calling runFromBlock(' + blk + ')');
-	    runFromBlock(blk);
-	}
-
-	function doRun(name) {
-	    // run the stack with name == name
-	    for (i = 0; i < actionList.length; i++) {
-		if (actionList[i][0] == name) {
-		    runFromBlock(actionList[i][1]);
-		    break;
-		}
-	    }
-	}
-
-        function doRepeat(count, blk) {
-	    for (var i = 0; i < count; i++) {
-		runFromBlock(blk);
-	    }
-	}
-
-        function doIf(bool, blk) {
-	    if (bool) {
-		runFromBlock(blk);
-	    }
-	}
-
         function doStorein(name, value) {
 	    if (name != null) {
 		i = findBox(name);

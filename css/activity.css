@@ -6,32 +6,32 @@
   background-image: url(../icons/new-button.svg);
 }
 
-button.red {
+button.sensors {
     background-color: #ff0000;
     color: #ffffff;
 }
 
-button.purple {
+button.number {
     background-color: #ff00ff;
     color: #000000;
 }
 
-button.yellow {
+button.blocks {
     background-color: #ffff00;
     color: #000000;
 }
 
-button.green {
+button.turtle {
     background-color: #00ff00;
     color: #000000;
 }
 
-button.orange {
+button.flow {
     background-color: #ffa000;
     color: #000000;
 }
 
-button.cyan {
+button.pen {
     background-color: #00ffff;
     color: #000000;
 }

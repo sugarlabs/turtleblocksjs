@@ -28,8 +28,8 @@ var paletteList = [];
 
 var turtlePalette = new Palette('turtle');
 paletteList.push(turtlePalette);
-turtlePalette.color = 'white';
-turtlePalette.backgroundColor = 'green';
+turtlePalette.color = 'black';
+turtlePalette.backgroundColor =  '#00ff00';
 
 var penPalette = new Palette('pen');
 paletteList.push(penPalette);
@@ -38,8 +38,8 @@ penPalette.backgroundColor = 'cyan';
 
 var numberPalette = new Palette('number');
 paletteList.push(numberPalette);
-numberPalette.color = 'white';
-numberPalette.backgroundColor = 'purple';
+numberPalette.color = 'black';
+numberPalette.backgroundColor =  '#ff00ff';
 
 var flowPalette = new Palette('flow');
 paletteList.push(flowPalette);
@@ -199,15 +199,6 @@ blocksPalette.blockList.push(textBlock);
 textBlock.style = 'value';
 textBlock.docks = [[0, 20, 'textout']];
 
-var boxBlock = new ProtoBlock('box');
-protoBlockList.push(boxBlock);
-boxBlock.palette = blocksPalette;
-blocksPalette.blockList.push(boxBlock);
-boxBlock.args = 1;
-boxBlock.defaults.push('box');
-boxBlock.style = 'arg';
-boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
-
 var storeinBlock = new ProtoBlock('storein');
 protoBlockList.push(storeinBlock);
 storeinBlock.palette = blocksPalette;
@@ -223,13 +214,14 @@ storeinBlock.defaults.push(100);
 storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
 		      [98, 62, 'numberin'], [20, 84, 'in']];
 
-var runBlock = new ProtoBlock('run');
-protoBlockList.push(runBlock);
-runBlock.palette = blocksPalette;
-blocksPalette.blockList.push(runBlock);
-runBlock.args = 1;
-runBlock.defaults.push('action');
-runBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+var boxBlock = new ProtoBlock('box');
+protoBlockList.push(boxBlock);
+boxBlock.palette = blocksPalette;
+blocksPalette.blockList.push(boxBlock);
+boxBlock.args = 1;
+boxBlock.defaults.push('box');
+boxBlock.style = 'arg';
+boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 
 var actionBlock = new ProtoBlock('action');
 protoBlockList.push(actionBlock);
@@ -243,6 +235,14 @@ actionBlock.expandable = true;
 actionBlock.style = 'clamp';
 actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
 		     [38, 55, 'in'], [20, 80, 'unavailable']];
+
+var doBlock = new ProtoBlock('do');
+protoBlockList.push(doBlock);
+doBlock.palette = blocksPalette;
+blocksPalette.blockList.push(doBlock);
+doBlock.args = 1;
+doBlock.defaults.push('action');
+doBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
 
 var startBlock = new ProtoBlock('start');
 protoBlockList.push(startBlock);
@@ -472,12 +472,26 @@ function updatePalettes() {
 	var text = '<div id="' + getPaletteId(palette) + '">';
 	html = html + text;
 	for (var blk = 0; blk < myPalette.blockList.length; blk++) {
+	    // Special case for do block
+	    var name = myPalette.blockList[blk].name;
+	    switch (name) {
+	    case 'do':
+		name = 'do ' + myPalette.blockList[blk].defaults[0];
+		break;
+	    case 'storein':
+		name = 'store in ' + myPalette.blockList[blk].defaults[0];
+		break;
+	    case 'box':
+		name = myPalette.blockList[blk].defaults[0];
+		break;
+	    }
 	    text = '<button id="' + 
 		getBlockButtonId(palette, blk) + '"' +
-		' class="' + myPalette.backgroundColor + '"' + 
+		// ' class="' + myPalette.backgroundColor + '"' + 
+		' class="' + myPalette.name + '"' + 
 		' onclick="return makeBlock(\'' +
 		myPalette.blockList[blk].name + '\');">' +
-		myPalette.blockList[blk].name + '</button>';
+		name + '</button>';
 	    html = html + text;
 	}
 	text = '</div>';

@@ -189,7 +189,8 @@ define(function (require) {
 		var yoff = blockList[thisBlock].protoblock.yoff;
 		blockList[thisBlock].filler_bitmaps = [];
 		blockList[thisBlock].bottom_bitmap = null;
-		var bottom_bitmap = new createjs.Bitmap(blockList[thisBlock].bottom_image);
+		var bottom_bitmap =
+		    new createjs.Bitmap(blockList[thisBlock].bottom_image);
 		blockList[thisBlock].bottom_bitmap = bottom_bitmap;
 		container.addChild(bottom_bitmap);
 		bottom_bitmap.x = bitmap.x;
@@ -335,7 +336,8 @@ define(function (require) {
 			    blockList[thisBlock].docks[0][0];
 			var dy1 = blockList[thisBlock].bitmap.y + 
 			    blockList[thisBlock].docks[0][1];
-			// Find the nearest dock; if it is close enough, connect;
+			// Find the nearest dock; if it is close
+			// enough, connect;
 			var newBlock = null
 			var newConnection = null
 			var min = 400;
@@ -1271,7 +1273,7 @@ define(function (require) {
 		    childflowCount = 1;
 		}
 		break;
-	    case 'run':
+	    case 'do':
  		if (args.length == 1) {
 		    for (i = 0; i < actionList.length; i++) {
 			if (actionList[i][0] == args[0]) {

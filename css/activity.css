@@ -2,8 +2,12 @@
   background-image: url(../activity/activity-icon.svg);
 }
 
-#main-toolbar #new-button {
-  background-image: url(../icons/new-button.svg);
+#main-toolbar #fast-button {
+  background-image: url(../icons/fast-button.svg);
+}
+
+#main-toolbar #slow-button {
+  background-image: url(../icons/slow-button.svg);
 }
 
 button.sensors {

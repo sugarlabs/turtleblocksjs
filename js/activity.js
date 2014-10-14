@@ -34,8 +34,17 @@ define(function (require) {
             icon.colorize(activityButton, colors);
         });
 
-        var newButton = document.getElementById('new-button');
-        newButton.onclick = function () {
+	var turtle_delay = 1000;
+
+        var fastButton = document.getElementById('fast-button');
+        fastButton.onclick = function () {
+	    turtle_delay = 0;
+	    runLogoCommands();
+        }
+
+        var slowButton = document.getElementById('slow-button');
+        slowButton.onclick = function () {
+	    turtle_delay = 1000;
 	    runLogoCommands();
         }
 
@@ -95,7 +104,6 @@ define(function (require) {
 
 	var activeBlock = null;
 
-	var turtle_delay = 1000;
         var turtle_bitmap = null;
         var Turtle = 'images/turtle.svg';
 	var turtleOrientation = 0.0;

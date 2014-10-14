@@ -10,13 +10,15 @@
   * implement boxes
   * booleans
   * slowmo playback
+  * only one stack
+  * add protoblocks for new boxes
+  * add protoblock for new stacks
+  * time block
+  * mouse x, mouse y blocks
 
 TODO:
   * better compartmentalization of code
   * only one start block
-  * only one stack
-  * add protoblock for new stacks
-  * add protoblocks for new boxes
   * expanding arithmetic blocks
   * pen palette
   * sensors/media

@@ -532,6 +532,7 @@ function updatePalettes() {
 }
 
 function makeBlock(name, arg) {
+    // Make a new block from a proto block.
     for (var proto=0; proto < protoBlockList.length; proto++) {
 	if (protoBlockList[proto].name == name) {
 	    if (arg == '__NOARG__') {
@@ -566,30 +567,37 @@ function makeBlock(name, arg) {
 	myConnectionBlock.connections = [blk];
 	if (myBlock.name == 'action') {
 	    // Make sure we don't make two actions with the same name.
-	    // -1 since we don't need to check this block.
-	    for (var j = 0; j < blockList.length - 1; j++) {
-		if (blockList[j].name == 'text') {
-		    c = blockList[j].connections[0];
-		    if (c != null && blockList[c].name == 'action') {
-			if (blockList[j].value == value) {
-			    // FIXME: Change value to something unique
-			    value = value + '_';
-			    newDoBlock(value);
-			    updatePalettes();
-			}
-		    }
-		}
-	    }
-	    myConnectionBlock.value = value;
-	} else {
-	    myConnectionBlock.value = value;
+	    value = findUniqueActionName('action');
+	    newDoBlock(value);
+	    updatePalettes();
 	}
+	myConnectionBlock.value = value;
 	myBlock.connections[i + 1] = cblk + i;
     }
 
     // Generate and position the block bitmaps and labels
     updater();
     adjuster(blk);
+}
+
+function findUniqueActionName(name) {
+    // Make sure we don't make two actions with the same name.
+    var actionNames = [];
+    for (var blk = 0; blk < blockList.length; blk++) {
+	if (blockList[blk].name == 'text') {
+	    var c = blockList[blk].connections[0];
+	    if (c != null && blockList[c].name == 'action') {
+		actionNames.push(blockList[blk].value);
+	    }
+	}
+    }
+    var i = 1;
+    var value = name;
+    while (actionNames.indexOf(value) != -1) {
+	value = name + i.toString();
+	i += 1;
+    }
+    return value;
 }
 
 // Utility functions
@@ -669,10 +677,14 @@ function labelChanged() {
     // For some reason, arg passing from the DOM is not working
     // properly, so we need to find the label that changed.
     var myBlock = null;
+    var oldValue = '';
+    var newValue = '';
     for (var blk = 0 ; blk < blockList.length ; blk++) {
 	if (blockList[blk].name == 'text') {
 	    if (blockList[blk].value != blockList[blk].label.value) {
 		myBlock = blockList[blk];
+		oldValue = myBlock.value;
+		newValue = myBlock.label.value;
 		break;
 	    }
 	}
@@ -701,9 +713,23 @@ function labelChanged() {
 	    //associated box blocks and the palette buttons
 	    newStoreinBlock(myBlock.value);
 	    newBoxBlock(myBlock.value);
+	    renameBoxes(oldValue, newValue);
 	    updatePalettes();
 	    break;
 	}
     }
 }
 
+function renameBoxes(oldName, newName) {
+    for (blk = 0; blk < blockList.length; blk++) {
+	if (blockList[blk].name == 'text') {
+	    var c = blockList[blk].connections[0];
+	    if (c != null && blockList[c].name == 'box') {
+		if (blockList[blk].value == oldName) {
+		    blockList[blk].value = newName;
+		    blockList[blk].label.value = newName;
+		}
+	    }
+	}
+    }
+}

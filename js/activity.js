@@ -1018,19 +1018,6 @@ define(function (require) {
 	    }
 	}
 
-	function labelChanged(block) {
-	    // Update the block values as they change in the DOM label
-	    if (block.label != null) {
-		console.log(block.label.value);
-		block.value = block.label.value;
-	    }
-	    // If the label was the name of an action, update the
-	    // associated run blocks and the palette buttons
-
-	    // If the label was the name of a storein, update the
-	    //associated box blocks and the palette buttons
-	}
-
 	function adjustLabelPosition(blk, x, y) {
 	    // Move the label when the block moves.
 	    if (blockList[blk].label == null) {

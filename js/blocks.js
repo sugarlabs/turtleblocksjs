@@ -223,26 +223,34 @@ boxBlock.defaults.push('box');
 boxBlock.style = 'arg';
 boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 
-var actionBlock = new ProtoBlock('action');
-protoBlockList.push(actionBlock);
-actionBlock.palette = blocksPalette;
-blocksPalette.blockList.push(actionBlock);
-actionBlock.yoff = 86;
-actionBlock.loff = 42;
-actionBlock.args = 1;
-actionBlock.defaults.push('action');
-actionBlock.expandable = true;
-actionBlock.style = 'clamp';
-actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
-		     [38, 55, 'in'], [20, 80, 'unavailable']];
+function newActionBlock(name) {
+    var actionBlock = new ProtoBlock('action');
+    protoBlockList.push(actionBlock);
+    actionBlock.palette = blocksPalette;
+    blocksPalette.blockList.push(actionBlock);
+    actionBlock.yoff = 86;
+    actionBlock.loff = 42;
+    actionBlock.args = 1;
+    actionBlock.defaults.push(name);
+    actionBlock.expandable = true;
+    actionBlock.style = 'clamp';
+    actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
+			 [38, 55, 'in'], [20, 80, 'unavailable']];
+}
 
-var doBlock = new ProtoBlock('do');
-protoBlockList.push(doBlock);
-doBlock.palette = blocksPalette;
-blocksPalette.blockList.push(doBlock);
-doBlock.args = 1;
-doBlock.defaults.push('action');
-doBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+newActionBlock('action');
+
+function newDoBlock(name) {
+    var doBlock = new ProtoBlock('do');
+    protoBlockList.push(doBlock);
+    doBlock.palette = blocksPalette;
+    blocksPalette.blockList.push(doBlock);
+    doBlock.args = 1;
+    doBlock.defaults.push(name);
+    doBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+}
+
+newDoBlock('action');
 
 var startBlock = new ProtoBlock('start');
 protoBlockList.push(startBlock);
@@ -474,14 +482,20 @@ function updatePalettes() {
 	for (var blk = 0; blk < myPalette.blockList.length; blk++) {
 	    // Special case for do block
 	    var name = myPalette.blockList[blk].name;
+	    var arg = '__NOARG__';
 	    switch (name) {
 	    case 'do':
+		// Use the name of the action in the label
 		name = 'do ' + myPalette.blockList[blk].defaults[0];
+		// Call makeBlock with the name of the action
+		var arg = myPalette.blockList[blk].defaults[0];
 		break;
 	    case 'storein':
+		// Use the name of the box in the label
 		name = 'store in ' + myPalette.blockList[blk].defaults[0];
 		break;
 	    case 'box':
+		// Use the name of the box in the label
 		name = myPalette.blockList[blk].defaults[0];
 		break;
 	    }
@@ -490,7 +504,7 @@ function updatePalettes() {
 		// ' class="' + myPalette.backgroundColor + '"' + 
 		' class="' + myPalette.name + '"' + 
 		' onclick="return makeBlock(\'' +
-		myPalette.blockList[blk].name + '\');">' +
+		myPalette.blockList[blk].name + '\', \'' + arg + '\');">' +
 		name + '</button>';
 	    html = html + text;
 	}
@@ -507,11 +521,18 @@ function updatePalettes() {
     }
 }
 
-function makeBlock(name) {
+function makeBlock(name, arg) {
     for (var proto=0; proto < protoBlockList.length; proto++) {
 	if (protoBlockList[proto].name == name) {
-	    blockList.push(new Block(protoBlockList[proto]));
-	    break;
+	    if (arg == '__NOARG__') {
+		blockList.push(new Block(protoBlockList[proto]));
+		break;
+	    } else {
+		if (protoBlockList[proto].defaults[0] == arg) {
+		    blockList.push(new Block(protoBlockList[proto]));
+		    break;
+		}
+	    }
 	}
     }
     var blk = blockList.length - 1;
@@ -610,3 +631,26 @@ function isExpandableBlock(blk) {
 	return false;
     }
 }
+
+function labelChanged(block) {
+    // Update the block values as they change in the DOM label
+    if (block.label != null) {
+	console.log(block.label.value);
+	block.value = block.label.value;
+    }
+    // If the label was the name of an action, update the
+    // associated run blocks and the palette buttons
+    var c = block.connections[0];
+    if (c != null) {
+	var cblock = blockList[c];
+	if (cblock.name == 'action') {
+	    console.log('renamed action block to ' + block.value);
+	    newDoBlock(block.value);
+	    updatePalettes();
+	}
+    }
+
+    // If the label was the name of a storein, update the
+    //associated box blocks and the palette buttons
+}
+

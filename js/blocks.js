@@ -568,8 +568,10 @@ function makeBlock(name, arg) {
 	if (myBlock.name == 'action') {
 	    // Make sure we don't make two actions with the same name.
 	    value = findUniqueActionName('action');
-	    newDoBlock(value);
-	    updatePalettes();
+	    if (value != 'action') {
+		newDoBlock(value);
+		updatePalettes();
+	    }
 	}
 	myConnectionBlock.value = value;
 	myBlock.connections[i + 1] = cblk + i;
@@ -695,8 +697,7 @@ function labelChanged() {
 	myBlock.value = myBlock.label.value;
     }
 
-    // TODO: Garbage collection
-    // TODO: Rename old boxes and actions
+    // TODO: Garbage collection in palette
     // TODO: Don't allow duplicate action names
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {
@@ -706,6 +707,7 @@ function labelChanged() {
 	    // If the label was the name of an action, update the
 	    // associated run blocks and the palette buttons
 	    newDoBlock(myBlock.value);
+	    renameDos(oldValue, newValue);
 	    updatePalettes();
 	    break;
 	case 'storein':
@@ -725,6 +727,20 @@ function renameBoxes(oldName, newName) {
 	if (blockList[blk].name == 'text') {
 	    var c = blockList[blk].connections[0];
 	    if (c != null && blockList[c].name == 'box') {
+		if (blockList[blk].value == oldName) {
+		    blockList[blk].value = newName;
+		    blockList[blk].label.value = newName;
+		}
+	    }
+	}
+    }
+}
+
+function renameDos(oldName, newName) {
+    for (blk = 0; blk < blockList.length; blk++) {
+	if (blockList[blk].name == 'text') {
+	    var c = blockList[blk].connections[0];
+	    if (c != null && blockList[c].name == 'do') {
 		if (blockList[blk].value == oldName) {
 		    blockList[blk].value = newName;
 		    blockList[blk].label.value = newName;

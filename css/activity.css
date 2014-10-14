@@ -10,6 +10,10 @@
   background-image: url(../icons/slow-button.svg);
 }
 
+#main-toolbar #block-button {
+  background-image: url(../icons/block-button.svg);
+}
+
 button.sensors {
     background-color: #ff0000;
     color: #ffffff;

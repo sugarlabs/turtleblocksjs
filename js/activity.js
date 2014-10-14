@@ -48,6 +48,19 @@ define(function (require) {
 	    runLogoCommands();
         }
 
+	var blocksVisible = true;
+ 
+        var blockButton = document.getElementById('block-button');
+        blockButton.onclick = function () {
+	    if (blocksVisible) {
+		hideBlocks();
+		blocksVisible = false;
+	    } else {
+		showBlocks();
+		blocksVisible = true;
+	    }
+        }
+
         // Make the activity stop with the stop button.
         var stopButton = document.getElementById('stop-button');
         stopButton.addEventListener('click', function (e) {
@@ -1463,15 +1476,31 @@ define(function (require) {
 	function hideBlocks() {
 	    // Hide all the blocks.
 	    for (blk = 0; blk < blockList.length; blk++) {
-		blockList[blk].bitmap.visible = false;
+		myBlock = blockList[blk];
+		myBlock.bitmap.visible = false;
+		if (isExpandableBlock(blk)) {
+		    for (var i = 0; i < myBlock.filler_bitmaps.length; i++) {
+			myBlock.filler_bitmaps[i] = false;
+		    }
+		    myBlock.bottom_bitmap.visible = false;
+		}
 	    }
+	    update = true;
 	}
 
 	function showBlocks() {
 	    // Show all the blocks.
 	    for (blk = 0; blk < blockList.length; blk++) {
-		blockList[blk].bitmap.visible = true;
+		myBlock = blockList[blk];
+		myBlock.bitmap.visible = true;
+		if (isExpandableBlock(blk)) {
+		    for (var i = 0; i < myBlock.filler_bitmaps.length; i++) {
+			myBlock.filler_bitmaps[i] = true;
+		    }
+		    myBlock.bottom_bitmap.visible = true;
+		}
 	    }
+	    update = true;
 	}
 
 	// Logo functions

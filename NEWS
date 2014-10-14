@@ -9,6 +9,7 @@
   * implement actions (stacks)
   * implement boxes
   * booleans
+  * slowmo playback
 
 TODO:
   * better compartmentalization of code

@@ -20,9 +20,11 @@
   * add eraser button
 
 TODO:
+  * fix palette updates from block palette
   * better compartmentalization of code
   * expanding arithmetic blocks
-  * pen palette
+  * flesh out pen palette
+  * implement color model (Munsell?)
   * sensors/media
   * decide on a palette strategy
   * implement more sophisticated blocks

@@ -8,8 +8,8 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
-   width="45"
-   height="45"
+   width="55"
+   height="55"
    id="svg2">
   <metadata
      id="metadata16">
@@ -26,6 +26,7 @@
   <defs
      id="defs14" />
   <g
+     transform="translate(4.988346,5.0272508)"
      id="g3841">
     <path
        d="m 37.15747,28.544755 a 14.777543,12.20339 0 1 1 0.0085,-0.13313"

@@ -61,6 +61,11 @@ define(function (require) {
 	    }
         }
 
+        var clearButton = document.getElementById('clear-button');
+        clearButton.onclick = function () {
+	    doClear();
+	}
+
         // Make the activity stop with the stop button.
         var stopButton = document.getElementById('stop-button');
         stopButton.addEventListener('click', function (e) {

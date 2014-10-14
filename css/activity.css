@@ -14,6 +14,10 @@
   background-image: url(../icons/block-button.svg);
 }
 
+#main-toolbar #clear-button {
+  background-image: url(../icons/clear-button.svg);
+}
+
 button.sensors {
     background-color: #ff0000;
     color: #ffffff;

@@ -15,18 +15,19 @@
   * add protoblock for new stacks
   * time block
   * mouse x, mouse y blocks
+  * add controls for rabbit vs turtle
+  * add controls for show/hide
+  * add eraser button
 
 TODO:
   * better compartmentalization of code
-  * only one start block
   * expanding arithmetic blocks
   * pen palette
   * sensors/media
   * decide on a palette strategy
   * implement more sophisticated blocks
-  * add controls for rabbit vs turtle
-  * add controls for clear
-  * add controls for show/hide
   * coordinate grids
   * turtle skin
-  * multiple turtles
+  * multiple turtles (or only one start block)
+  * keyboard short cuts
+

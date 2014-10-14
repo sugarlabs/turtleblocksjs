@@ -1407,7 +1407,7 @@ define(function (require) {
 		    break;
 		case 'time':
 		    var d = new Date();
-		    blockList[blk].value = (time - d.getTime()) / 1000;
+		    blockList[blk].value = (d.getTime() - time) / 1000;
 		    break;
 		}
 		return blockList[blk].value;
@@ -1525,6 +1525,9 @@ define(function (require) {
 	function doSetColor(color) {
 	    turtleColor = Math.round(color);
 	    turtleColor %= 100;
+	    if (turtleColor < 0) {
+		turtleColor += 100;
+	    }
 	}
 
 	function doClear() {

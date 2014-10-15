@@ -1204,101 +1204,59 @@ define(function (require) {
 	    updatePalettes();
 	}
 
-        function loadBlocks() {
-	    // This is temporary code for testing.
+        function loadBlocks(blockObjs) {
+	    // Append to the current set of blocks.
+	    var ioff = blockList.length;
 
-	    // Add the blocks
-	    newBlock(startBlock);
-	    blockList[0].x = 400;
-	    blockList[0].y = 50;
-	    blockList[0].connections = [null, 1, null];
-
-	    newBlock(clearBlock);
-	    blockList[1].connections = [0, 2];
-
-	    newBlock(storeinBlock);
-	    blockList[2].connections = [1, 3, 4, 5];
-	    newBlock(textBlock);
-	    blockList[3].connections = [2];
-	    blockList[3].value = 'size';
-	    newBlock(numberBlock);
-	    blockList[4].value = 100;
-	    blockList[4].connections = [2];
-
-	    newBlock(repeatBlock);
-	    blockList[5].connections = [2, 6, 7, null];
-	    newBlock(numberBlock);
-	    blockList[6].value = 8;
-	    blockList[6].connections = [5];
-
-	    newBlock(runBlock);
-	    blockList[7].connections = [5, 8, 9];
-	    newBlock(textBlock);
-	    blockList[8].connections = [7];
-	    blockList[8].value = 'square';
-
-	    newBlock(rightBlock);
-	    blockList[9].connections = [7, 10, null];
-	    newBlock(numberBlock);
-	    blockList[10].value = 45;
-	    blockList[10].connections = [9];
-
-	    newBlock(actionBlock);
-	    blockList[11].connections = [null, 12, 13, null];
-	    blockList[11].x = 25;
-	    blockList[11].y = 50;
-	    newBlock(textBlock);
-	    blockList[12].connections = [11];
-	    blockList[12].value = 'square';
-
-	    newBlock(repeatBlock);
-	    blockList[13].connections = [11, 14, 15, null];
-	    newBlock(numberBlock);
-	    blockList[14].value = 4;
-	    blockList[14].connections = [13];
-
-	    newBlock(forwardBlock);
-	    blockList[15].connections = [13, 16, 18];
-	    newBlock(boxBlock);
-	    blockList[16].connections = [15, 17];
-	    newBlock(textBlock);
-	    blockList[17].connections = [16];
-	    blockList[17].value = 'size';
-
-	    newBlock(rightBlock);
-	    blockList[18].connections = [15, 19, null];
-	    newBlock(numberBlock);
-	    blockList[19].value = 90;
-	    blockList[19].connections = [18];
-
-	    newBlock(setcolorBlock);
-	    blockList[20].connections = [null, 21, null];
-	    blockList[20].x = 25;
-	    blockList[20].y = 350;
-	    newBlock(numberBlock);
-	    blockList[21].value = 70;
-	    blockList[21].connections = [20];
-
-	    newBlock(colorBlock);
-	    blockList[22].connections = [null];
-	    blockList[22].x = 200;
-	    blockList[22].y = 300;
-
-	    newBlock(plusBlock);
-	    blockList[23].connections = [null, 24, 25];
-	    blockList[23].x = 300;
-	    blockList[23].y = 300;
-	    newBlock(numberBlock);
-	    blockList[24].value = 100;
-	    blockList[24].connections = [23];
-	    newBlock(numberBlock);
-	    blockList[25].value = 100;
-	    blockList[25].connections = [23];
-
+	    for(var b = 0; b < blockObjs.length; b++) {
+		var blk = ioff + b;
+		var blkData = blockObjs[b];
+		if (typeof(blkData[1]) == 'string') {
+		    var name = blkData[1];
+		    var value = null;
+		} else {
+		    var name = blkData[1][0];
+		    var value = blkData[1][1];
+		}
+		console.log(blk + ' ' + name + ' ' + value);
+		switch(name) {
+		case 'start':
+		    newBlock(startBlock);
+		    blockList[blk].x = blkData[2];
+		    blockList[blk].y = blkData[3];
+		    blockList[blk].connections.push(null);
+		    c = blkData[4][1] + ioff;
+		    console.log(c);
+		    blockList[blk].connections.push(c);
+		    blockList[blk].connections.push(null);
+		    break;
+		case 'forward':
+		    newBlock(forwardBlock);
+		    c = blkData[4][0] + ioff;
+		    console.log(c);
+		    blockList[blk].connections.push(c);
+		    c = blkData[4][1] + ioff;
+		    console.log(c);
+		    blockList[blk].connections.push(c);
+		    if (blkData[4][2] == null) {
+		    } else {
+			c = blkData[4][2] + ioff;
+			console.log(c);
+			blockList[blk].connections.push(c);
+		    }
+		    break;
+		case 'number':
+		    newBlock(numberBlock);
+		    blockList[blk].value = value;
+		    c = blkData[4][0] + ioff;
+		    console.log(c);
+		    blockList[blk].connections.push(c);
+		    break;
+		}
+	    }
 	    updateBlockImages();
 	    updateBlockLabels();
-	    // where to put this?
-	    updatePalettes();
+	    adjustDocks(ioff);
         }
 
         function runLogoCommands() {
@@ -1766,7 +1724,7 @@ define(function (require) {
 	}
 
 	function doOpen() {
-	    var fileChooser = document.getElementById("myFile");
+	    var fileChooser = document.getElementById("myOpenFile");
 	    fileChooser.addEventListener("change", function(event) {
 
 		// Read file here.
@@ -1777,8 +1735,8 @@ define(function (require) {
 		    var rawData = reader.result;
 		    var cleanData = rawData.replace('\n', ' ');
 		    var obj = JSON.parse(cleanData);
-		    console.log(obj);
-		    // Load obj here...
+		    // console.log(obj);
+		    loadBlocks(obj);
 		});
 
 		reader.readAsText(fileChooser.files[0]);

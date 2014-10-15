@@ -160,6 +160,21 @@ penPalette.blockList.push(colorBlock);
 colorBlock.style = 'arg';
 colorBlock.docks = [[0, 20, 'numberout']];
 
+var setpensizeBlock = new ProtoBlock('setpensize');
+protoBlockList.push(setpensizeBlock);
+setpensizeBlock.palette = penPalette;
+penPalette.blockList.push(setpensizeBlock);
+setpensizeBlock.args = 1;
+setpensizeBlock.defaults.push(0);
+setpensizeBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
+
+var pensizeBlock = new ProtoBlock('pensize');
+protoBlockList.push(pensizeBlock);
+pensizeBlock.palette = penPalette;
+penPalette.blockList.push(pensizeBlock);
+pensizeBlock.style = 'arg';
+pensizeBlock.docks = [[0, 20, 'numberout']];
+
 var penupBlock = new ProtoBlock('penup');
 protoBlockList.push(penupBlock);
 penupBlock.palette = penPalette;
@@ -205,6 +220,19 @@ plusBlock.args = 2;
 plusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
 		   [68, 62, 'numberin']];
 
+var minusBlock = new ProtoBlock('minus');
+protoBlockList.push(minusBlock);
+minusBlock.palette = numberPalette;
+numberPalette.blockList.push(minusBlock);
+minusBlock.yoff = 49;
+minusBlock.loff = 42;
+minusBlock.expandable = true;
+minusBlock.style = 'arg';
+minusBlock.size = 2;
+minusBlock.args = 2;
+minusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
+		   [68, 62, 'numberin']];
+
 var greaterBlock = new ProtoBlock('greater');
 protoBlockList.push(greaterBlock);
 greaterBlock.palette = numberPalette;
@@ -223,63 +251,99 @@ blocksPalette.blockList.push(textBlock);
 textBlock.style = 'value';
 textBlock.docks = [[0, 20, 'textout']];
 
+var storeinBlock = new ProtoBlock('storein');
+protoBlockList.push(storeinBlock);
+storeinBlock.palette = blocksPalette;
+storeinBlock.yoff = 49;
+storeinBlock.loff = 42;
+storeinBlock.expandable = true;
+storeinBlock.style = 'special';
+storeinBlock.size = 2;
+storeinBlock.args = 2;
+storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
+			[98, 62, 'numberin'], [20, 84, 'in']];
+
 function newStoreinBlock(name) {
-    var storeinBlock = new ProtoBlock('storein');
-    protoBlockList.push(storeinBlock);
-    storeinBlock.palette = blocksPalette;
-    blocksPalette.blockList.push(storeinBlock);
-    storeinBlock.yoff = 49;
-    storeinBlock.loff = 42;
-    storeinBlock.expandable = true;
-    storeinBlock.style = 'special';
-    storeinBlock.size = 2;
-    storeinBlock.args = 2;
-    storeinBlock.defaults.push(name);
-    storeinBlock.defaults.push(100);
-    storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
+    var myStoreinBlock = new ProtoBlock('storein');
+    protoBlockList.push(myStoreinBlock);
+    myStoreinBlock.palette = blocksPalette;
+    blocksPalette.blockList.push(myStoreinBlock);
+    myStoreinBlock.yoff = 49;
+    myStoreinBlock.loff = 42;
+    myStoreinBlock.expandable = true;
+    myStoreinBlock.style = 'special';
+    myStoreinBlock.size = 2;
+    myStoreinBlock.args = 2;
+    myStoreinBlock.defaults.push(name);
+    myStoreinBlock.defaults.push(100);
+    myStoreinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
 			  [98, 62, 'numberin'], [20, 84, 'in']];
 }
 
 newStoreinBlock('box');
 
+var boxBlock = new ProtoBlock('box');
+protoBlockList.push(boxBlock);
+boxBlock.palette = blocksPalette;
+boxBlock.args = 1;
+boxBlock.style = 'arg';
+boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
+
 function newBoxBlock(name) {
-    var boxBlock = new ProtoBlock('box');
-    protoBlockList.push(boxBlock);
-    boxBlock.palette = blocksPalette;
-    blocksPalette.blockList.push(boxBlock);
-    boxBlock.args = 1;
-    boxBlock.defaults.push(name);
-    boxBlock.style = 'arg';
-    boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
+    var myBoxBlock = new ProtoBlock('box');
+    protoBlockList.push(myBoxBlock);
+    myBoxBlock.palette = blocksPalette;
+    blocksPalette.blockList.push(myBoxBlock);
+    myBoxBlock.args = 1;
+    myBoxBlock.defaults.push(name);
+    myBoxBlock.style = 'arg';
+    myBoxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
 }
 
 newBoxBlock('box');
 
+var actionBlock = new ProtoBlock('action');
+protoBlockList.push(actionBlock);
+actionBlock.palette = blocksPalette;
+actionBlock.yoff = 86;
+actionBlock.loff = 42;
+actionBlock.args = 1;
+actionBlock.expandable = true;
+actionBlock.style = 'clamp';
+actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
+		     [38, 55, 'in'], [20, 80, 'unavailable']];
+
 function newActionBlock(name) {
-    var actionBlock = new ProtoBlock('action');
-    protoBlockList.push(actionBlock);
-    actionBlock.palette = blocksPalette;
-    blocksPalette.blockList.push(actionBlock);
-    actionBlock.yoff = 86;
-    actionBlock.loff = 42;
-    actionBlock.args = 1;
-    actionBlock.defaults.push(name);
-    actionBlock.expandable = true;
-    actionBlock.style = 'clamp';
-    actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
+    var myActionBlock = new ProtoBlock('action');
+    protoBlockList.push(myActionBlock);
+    myActionBlock.palette = blocksPalette;
+    blocksPalette.blockList.push(myActionBlock);
+    myActionBlock.yoff = 86;
+    myActionBlock.loff = 42;
+    myActionBlock.args = 1;
+    myActionBlock.defaults.push(name);
+    myActionBlock.expandable = true;
+    myActionBlock.style = 'clamp';
+    myActionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
 			 [38, 55, 'in'], [20, 80, 'unavailable']];
 }
 
 newActionBlock('action');
 
+var doBlock = new ProtoBlock('do');
+protoBlockList.push(doBlock);
+doBlock.palette = blocksPalette;
+doBlock.args = 1;
+doBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+
 function newDoBlock(name) {
-    var doBlock = new ProtoBlock('do');
-    protoBlockList.push(doBlock);
-    doBlock.palette = blocksPalette;
-    blocksPalette.blockList.push(doBlock);
-    doBlock.args = 1;
-    doBlock.defaults.push(name);
-    doBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+    var myDoBlock = new ProtoBlock('do');
+    protoBlockList.push(myDoBlock);
+    myDoBlock.palette = blocksPalette;
+    blocksPalette.blockList.push(myDoBlock);
+    myDoBlock.args = 1;
+    myDoBlock.defaults.push(name);
+    myDoBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
 }
 
 newDoBlock('action');

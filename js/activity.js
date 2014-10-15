@@ -1209,10 +1209,10 @@ define(function (require) {
         function loadBlocks(blockObjs) {
 	    // Append to the current set of blocks.
 	    var adjustTheseDocks = [];
-	    var ioff = blockList.length;
+	    var blockOffset = blockList.length;
 
 	    for(var b = 0; b < blockObjs.length; b++) {
-		var blk = ioff + b;
+		var thisBlock = blockOffset + b;
 		var blkData = blockObjs[b];
 		if (typeof(blkData[1]) == 'string') {
 		    var name = blkData[1];
@@ -1221,62 +1221,207 @@ define(function (require) {
 		    var name = blkData[1][0];
 		    var value = blkData[1][1];
 		}
-		console.log(blk + ' ' + name + ' ' + value);
+		console.log(thisBlock + ' ' + name + ' ' + value);
 		switch(name) {
 		case 'start':
 		    newBlock(startBlock);
-		    blockList[blk].x = blkData[2];
-		    blockList[blk].y = blkData[3];
-		    blockList[blk].connections.push(null);
-		    c = blkData[4][1] + ioff;
-		    console.log(c);
-		    blockList[blk].connections.push(c);
-		    blockList[blk].connections.push(null);
+		    blockList[thisBlock].connections.push(null);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    blockList[thisBlock].connections.push(null);
+		    break;
+		case 'do':
+		case 'stack':
+		    newBlock(doBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'storein':
+		    newBlock(storeinBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    pushConnection(blkData[4][3], blockOffset, thisBlock);
+		    break;
+		case 'box':
+		    newBlock(boxBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    break;
+		case 'action':
+		case 'hat':
+		    newBlock(actionBlock);
+		    blockList[thisBlock].connections.push(null);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    blockList[thisBlock].connections.push(null);
+		    break;
+                case 'repeat':
+		    newBlock(repeatBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    pushConnection(blkData[4][3], blockOffset, thisBlock);
+		    break;
+		case 'clear':
+		case 'clean':
+		    newBlock(clearBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'forward':
 		    newBlock(forwardBlock);
-		    c = blkData[4][0] + ioff;
-		    console.log(c);
-		    blockList[blk].connections.push(c);
-		    c = blkData[4][1] + ioff;
-		    console.log(c);
-		    blockList[blk].connections.push(c);
-		    if (blkData[4][2] == null) {
-		    } else {
-			c = blkData[4][2] + ioff;
-			console.log(c);
-			blockList[blk].connections.push(c);
-		    }
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'back':
+		    newBlock(backBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'left':
+		    newBlock(leftBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'right':
+		    newBlock(rightBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'plus':
+		case 'plus2':
+		    newBlock(plusBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'minus':
+		case 'minus2':
+		    newBlock(minusBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'color':
+		    newBlock(colorBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'setcolor':
+		    newBlock(setcolorBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'pensize':
+		    newBlock(pensizeBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'setpensize':
+		    newBlock(setpensizeBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'penup':
+		    newBlock(oenupBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    break;
+		case 'pendown':
+		    newBlock(oendownBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    break;
+		case 'startfill':
+		case 'beginfill':
+		    newBlock(startfillBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    break;
+		case 'stopfill':
+		case 'endfill':
+		    newBlock(endfillBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'number':
 		    newBlock(numberBlock);
-		    blockList[blk].value = value;
-		    c = blkData[4][0] + ioff;
-		    console.log(c);
-		    blockList[blk].connections.push(c);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = value;
 		    break;
+		case 'text':
+		case 'string':
+		    newBlock(textBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = value;
+		    break;
+		case 'red':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = 0;
+		    break;
+		case 'orange':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = 10;
+		    break;
+		case 'yellow':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = 20;
+		    break;
+		case 'green':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = 40;
+		    break;
+		case 'blue':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = 70;
+		    break;
+		default:
+		    console.log('No factory for ' + name);
+                    break;
 		}
-		if (blockList[blk].connections[0] == null) {
-		    blockList[blk].x = blkData[2];
-		    blockList[blk].y = blkData[3];
-		    adjustTheseDocks.push(blk);
+		if (thisBlock == blockList.length - 1) {
+		    if (blockList[thisBlock].connections[0] == null) {
+			blockList[thisBlock].x = blkData[2];
+			blockList[thisBlock].y = blkData[3];
+			adjustTheseDocks.push(thisBlock);
+		    }
 		}
+	    }
+	    for (var blk = 0; blk < blockList.length; blk++) {
+		console.log(blk + ' ' + blockList[blk].name + ' ' + blockList[blk].connections + ' ' + blockList[blk].value);
 	    }
 	    updateBlockImages();
 	    updateBlockLabels();
-	    for (blk = 0; blk < adjustTheseDocks.length; blk++) {
-		adjustDocks(blk);
+	    for (var blk = 0; blk < adjustTheseDocks.length; blk++) {
+		adjustDocks(adjustTheseDocks[blk]);
 	    }
+	    // expandClamps();
+	    update = true;
         }
+
+        function pushConnection(connection, blockOffset, blk) {
+	    if (connection == null) {
+		    blockList[blk].connections.push(null);
+	    } else {
+		connection += blockOffset;
+		blockList[blk].connections.push(connection);
+	    }
+	}
 
         function runLogoCommands(startHere) {
 	    // We run the logo commands here.
 	    var d = new Date();
 	    time = d.getTime();
-
-	    // Where to put this???
-	    // expandClamps();
-	    // update = true;
 
 	    // First we need to reconcile the values in all the value blocks
 	    // with their associated textareas.
@@ -1426,6 +1571,11 @@ define(function (require) {
 		    doSetColor(args[0]);
          	}
 		break;
+            case 'setpensize':
+		if (args.length == 1) {
+		    doSetPensize(args[0]);
+         	}
+		break;
             case 'beginfill':
 		doStartFill();
 		break;
@@ -1505,8 +1655,18 @@ define(function (require) {
 		    b = parseArg(cblk2);
 		    blockList[blk].value = doPlus(a, b);
 		    break;
+		case 'minus':
+		    cblk1 = blockList[blk].connections[1];
+		    cblk2 = blockList[blk].connections[2];
+		    a = parseArg(cblk1);
+		    b = parseArg(cblk2);
+		    blockList[blk].value = doMinus(a, b);
+		    break;
 		case 'color':
 		    blockList[blk].value = turtleColor;
+		    break;
+		case 'pensize':
+		    blockList[blk].value = turtleStroke;
 		    break;
 		case 'mouse x':
 		    blockList[blk].value = stageX;
@@ -1640,6 +1800,10 @@ define(function (require) {
 	    return Number(a) + Number(b);
 	}
 
+	function doMinus(a, b) {
+	    return Number(a) - Number(b);
+	}
+
 	// Turtle functions
         function doForward(steps) {
 	    // Move forward.
@@ -1673,6 +1837,10 @@ define(function (require) {
 	    if (turtleColor < 0) {
 		turtleColor += 100;
 	    }
+	}
+
+	function doSetPensize(size) {
+	    turtleStroke = size;
 	}
 
         function doPenUp() {

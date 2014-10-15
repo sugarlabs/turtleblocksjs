@@ -311,6 +311,8 @@ define(function (require) {
 		    if (!moved) {
 			// TODO: run block on click
 			console.log('click');
+			var topBlock = findTopBlock(thisBlock);
+			runLogoCommands(topBlock);
 		    }
 		}
 
@@ -1206,6 +1208,7 @@ define(function (require) {
 
         function loadBlocks(blockObjs) {
 	    // Append to the current set of blocks.
+	    var adjustTheseDocks = [];
 	    var ioff = blockList.length;
 
 	    for(var b = 0; b < blockObjs.length; b++) {
@@ -1253,13 +1256,20 @@ define(function (require) {
 		    blockList[blk].connections.push(c);
 		    break;
 		}
+		if (blockList[blk].connections[0] == null) {
+		    blockList[blk].x = blkData[2];
+		    blockList[blk].y = blkData[3];
+		    adjustTheseDocks.push(blk);
+		}
 	    }
 	    updateBlockImages();
 	    updateBlockLabels();
-	    adjustDocks(ioff);
+	    for (blk = 0; blk < adjustTheseDocks.length; blk++) {
+		adjustDocks(blk);
+	    }
         }
 
-        function runLogoCommands() {
+        function runLogoCommands(startHere) {
 	    // We run the logo commands here.
 	    var d = new Date();
 	    time = d.getTime();
@@ -1297,10 +1307,13 @@ define(function (require) {
 	    }
 
 	    // (2) Execute the stack.
-	    if (startBlock != null) {
+	    if (startHere != null) {
 		runQueue = [];
 		countQueue = [];
-		nextQueue = [];
+		runFromBlock(startHere);
+	    } else if (startBlock != null) {
+		runQueue = [];
+		countQueue = [];
 		runFromBlock(startBlock);
 	    } else {
 		for (var blk = 0; blk < stackList.length; blk++) {

@@ -30,6 +30,10 @@
   background-image: url(../icons/open-button.svg);
 }
 
+#main-toolbar #save-button {
+  background-image: url(../icons/save-button.svg);
+}
+
 input.file {
     visibility: hidden;
 }

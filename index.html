@@ -21,6 +21,7 @@
         <button class="toolbutton" id="cartesian-button" title="Cartesian Grid"></button>
         <button class="toolbutton" id="polar-button" title="Polar Grid"></button>
 	<button class="toolbutton" id="open-button" title="Open"></button>
+	<button class="toolbutton" id="save-button" title="Save"></button>
         <button class="toolbutton pull-right" id="stop-button" title="Stop"></button>
     </div>
 
@@ -33,8 +34,9 @@
     <div class="canvasHolder">
         <canvas id="myCanvas" width="1200" height="900"></canvas>
 	<div id="labelDiv"></div>
-	<div id="openDiv">
-          <input class="file" type="file" id="myFile"/>
+	<div id="ioDiv">
+          <input class="file" type="file" id="myFile" accept=".ta, .tb"/>
+	  <input class="file" type="file" id="mySaveFile" accept=".ta, .tb" nwsaveas="turtle-project.tb" />
 	</div>
     </div>
 </body>

@@ -94,6 +94,10 @@ define(function (require) {
 	    doOpen();
 	}
 
+        var saveButton = document.getElementById('save-button');
+        saveButton.onclick = function () {
+	    doSave();
+	}
 
         // Make the activity stop with the stop button.
         var stopButton = document.getElementById('stop-button');
@@ -1763,9 +1767,35 @@ define(function (require) {
 
 	function doOpen() {
 	    var fileChooser = document.getElementById("myFile");
+	    fileChooser.addEventListener("change", function(event) {
+
+		// Read file here.
+		console.log('fileChooser ' + this.value);
+		var reader = new FileReader();
+
+		reader.onload = (function(theFile) {
+		    var rawData = reader.result;
+		    var cleanData = rawData.replace('\n', ' ');
+		    var obj = JSON.parse(cleanData);
+		    console.log(obj);
+		    // Load obj here...
+		});
+
+		reader.readAsText(fileChooser.files[0]);
+	    }, false);
+
             fileChooser.focus();
 	    fileChooser.click();
-	    console.log('doOpen: ' + fileChooser.value);
+	}
+
+	function doSave() {
+	    var fileChooser = document.getElementById("mySaveFile");
+	    fileChooser.addEventListener("change", function(event) {
+		// Do something here.
+		console.log('fileChooser ' + this.value);
+	    }, false);
+            fileChooser.focus();
+	    fileChooser.click();
 	}
 
     });

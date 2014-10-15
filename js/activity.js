@@ -632,9 +632,9 @@ define(function (require) {
 	    }
 	    if (!filling) {
             	drawingCanvas.graphics.beginStroke(color);
+		drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
+		drawingCanvas.graphics.moveTo(ox, oy);
 	    }
-	    drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
-	    drawingCanvas.graphics.moveTo(ox, oy);
 	    if (penState) {
 		drawingCanvas.graphics.lineTo(nx, ny);
 	    } else {
@@ -1328,12 +1328,12 @@ define(function (require) {
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'penup':
-		    newBlock(oenupBlock);
+		    newBlock(penupBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'pendown':
-		    newBlock(oendownBlock);
+		    newBlock(pendownBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;

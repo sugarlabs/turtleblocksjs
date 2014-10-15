@@ -22,9 +22,11 @@
   * fix palette updates from block palette
   * penup/down
   * fill
+  * load blocks
+  * click on block to run
 
 TODO:
-  * save/load
+  * save blocks
   * copy/paste
   * user defined
   * better compartmentalization of code

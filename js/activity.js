@@ -49,7 +49,6 @@ define(function (require) {
         }
 
 	var blocksVisible = true;
- 
         var blockButton = document.getElementById('block-button');
         blockButton.onclick = function () {
 	    if (blocksVisible) {
@@ -65,6 +64,30 @@ define(function (require) {
         clearButton.onclick = function () {
 	    doClear();
 	}
+
+	var cartesianVisible = false;
+        var cartesianButton = document.getElementById('cartesian-button');
+        cartesianButton.onclick = function () {
+	    if (cartesianVisible) {
+		hideCartesian();
+		cartesianVisible = false;
+	    } else {
+		showCartesian();
+		cartesianVisible = true;
+	    }
+        }
+
+	var polarVisible = false;
+        var polarButton = document.getElementById('polar-button');
+        polarButton.onclick = function () {
+	    if (polarVisible) {
+		hidePolar();
+		polarVisible = false;
+	    } else {
+		showPolar();
+		polarVisible = true;
+	    }
+        }
 
         // Make the activity stop with the stop button.
         var stopButton = document.getElementById('stop-button');
@@ -122,8 +145,18 @@ define(function (require) {
 
 	var activeBlock = null;
 
-        var turtle_bitmap = null;
+	// Coordinate grid
+        var cartesianBitmap = null;
+        var Cartesian = 'images/Cartesian.svg';
+
+	// Polar grid
+        var polarBitmap = null;
+        var Polar = 'images/polar.svg';
+
+	// Turtle sprite
+        var turtleBitmap = null;
         var Turtle = 'images/turtle.svg';
+
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
 	var turtleStroke = 5;
@@ -146,6 +179,23 @@ define(function (require) {
             // Create the stage and point it to the canvas.
             // canvas = document.getElementById('myCanvas');
 
+            // Check to see if we are running in a browser with touch support.
+            stage = new createjs.Stage(canvas);
+            // Enable touch interactions if supported on the current device.
+            createjs.Touch.enable(stage);
+            // Keep tracking the mouse even when it leaves the canvas.
+            stage.mouseMoveOutside = true;
+            // Enabled mouse over and mouse out events.
+            stage.enableMouseOver(10);
+
+	    cartesian = new Image();
+	    cartesian.src = Cartesian;
+	    cartesian.onload = handleCartesianGridLoad;
+
+	    polar = new Image();
+	    polar.src = Polar;
+	    polar.onload = handlePolarGridLoad;
+
 	    // Load a project.
 	    loadStart();
 
@@ -155,15 +205,6 @@ define(function (require) {
 		findDragGroup(stackList[i]);
 		adjustBlockPositions();
 	    }
-
-            // Check to see if we are running in a browser with touch support.
-            stage = new createjs.Stage(canvas);
-            // Enable touch interactions if supported on the current device.
-            createjs.Touch.enable(stage);
-            // Keep tracking the mouse even when it leaves the canvas.
-            stage.mouseMoveOutside = true;
-            // Enabled mouse over and mouse out events.
-            stage.enableMouseOver(10);
 
 	    turtle = new Image();
 	    turtle.src = Turtle;
@@ -479,8 +520,6 @@ define(function (require) {
 	}
 
         function handleTurtleLoad(event) {
-	    // TODO: use rotation attribute of bitmap
-
 	    // Load the turtle
             var image = event.target;
             var imgW = image.width;
@@ -499,14 +538,14 @@ define(function (require) {
 
             // Create a turtle
             bitmap = new createjs.Bitmap(image);
-	    turtle_bitmap = bitmap;
+	    turtleBitmap = bitmap;
             container.addChild(bitmap);
 
             bitmap.x = turtleX2screenX(turtleX);
             bitmap.y = invertY(turtleY);
             bitmap.regX = imgW / 2 | 0;
             bitmap.regY = imgH / 2 | 0;
-            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
             bitmap.name = 'bmp_turtle';
 
             bitmap.cursor = 'pointer';
@@ -555,8 +594,8 @@ define(function (require) {
 
 		function handleMouseOut(event) {
                     target.scaleX = target.scaleY = target.scale;
-		    turtle_bitmap.x = target.x;
-		    turtle_bitmap.y = target.y;
+		    turtleBitmap.x = target.x;
+		    turtleBitmap.y = target.y;
                     update = true;
                 }
             })(bitmap);
@@ -585,6 +624,52 @@ define(function (require) {
 	    oldPt.x = x;
             oldPt.y = y;
 	}
+
+        function handleCartesianGridLoad(event) {
+	    // Load the coordinate grid
+            var image = event.target;
+            var imgW = image.width;
+            var imgH = image.height;
+            var bitmap;
+            var container = new createjs.Container();
+            stage.addChild(container);
+
+            bitmap = new createjs.Bitmap(image);
+	    cartesianBitmap = bitmap;
+            container.addChild(bitmap);
+
+            bitmap.x = 0;
+            bitmap.y = 0;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+            bitmap.name = 'bmp_cartesian';
+
+            document.getElementById('loader').className = '';
+            createjs.Ticker.addEventListener('tick', tick);
+	    bitmap.visible = false;
+        }
+
+        function handlePolarGridLoad(event) {
+	    // Load the coordinate grid
+            var image = event.target;
+            var imgW = image.width;
+            var imgH = image.height;
+            var bitmap;
+            var container = new createjs.Container();
+            stage.addChild(container);
+
+            bitmap = new createjs.Bitmap(image);
+	    polarBitmap = bitmap;
+            container.addChild(bitmap);
+
+            bitmap.x = 0;
+            bitmap.y = 0;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+            bitmap.name = 'bmp_polar';
+
+            document.getElementById('loader').className = '';
+            createjs.Ticker.addEventListener('tick', tick);
+	    bitmap.visible = false;
+        }
 
         function adjustBlockPositions() {
 	    // Adjust the docking postions of all blocks in the drag group
@@ -1508,6 +1593,26 @@ define(function (require) {
 	    update = true;
 	}
 
+	function hideCartesian() {
+	    cartesianBitmap.visible = false;
+	    update = true;
+	}
+
+	function showCartesian() {
+	    cartesianBitmap.visible = true;
+	    update = true;
+	}
+
+	function hidePolar() {
+	    polarBitmap.visible = false;
+	    update = true;
+	}
+
+	function showPolar() {
+	    polarBitmap.visible = true;
+	    update = true;
+	}
+
 	// Logo functions
         function doStorein(name, value) {
 	    if (name != null) {
@@ -1530,8 +1635,8 @@ define(function (require) {
 	    // Move forward.
             update = true;
 	    // old turtle point
-            oldPt = new createjs.Point(screenX2turtleX(turtle_bitmap.x),
-					   invertY(turtle_bitmap.y));
+            oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
+					   invertY(turtleBitmap.y));
             color = colorTable[turtleColor];
             stroke = turtleStroke;
 	    // new turtle point
@@ -1540,15 +1645,15 @@ define(function (require) {
 		oldPt.x + Number(steps) * Math.sin(rad),
 		oldPt.y + Number(steps) * Math.cos(rad))
 	    moveTurtle(newPt.x, newPt.y, true);
-	    turtle_bitmap.x = turtleX2screenX(newPt.x);
-	    turtle_bitmap.y = invertY(newPt.y);
+	    turtleBitmap.x = turtleX2screenX(newPt.x);
+	    turtleBitmap.y = invertY(newPt.y);
 	}
 
 	function doRight(degrees) {
 	    // Turn right and display corresponding turtle graphic.
 	    turtleOrientation += Number(degrees);
 	    turtleOrientation %= 360;
-	    turtle_bitmap.rotation = turtleOrientation;
+	    turtleBitmap.rotation = turtleOrientation;
             update = true;
 	}
 
@@ -1569,9 +1674,9 @@ define(function (require) {
 	    turtleOrientation = 0.0;
 	    turtleColor = 0;
 	    turtleStroke = 5;
-	    turtle_bitmap.x = turtleX2screenX(turtleX);
-	    turtle_bitmap.y = invertY(turtleY);
-	    turtle_bitmap.rotation = 0;
+	    turtleBitmap.x = turtleX2screenX(turtleX);
+	    turtleBitmap.y = invertY(turtleY);
+	    turtleBitmap.rotation = 0;
 	    // Also clear all the boxes
 	    boxList = [];
 	}

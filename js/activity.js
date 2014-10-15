@@ -158,6 +158,7 @@ define(function (require) {
         var Turtle = 'images/turtle.svg';
 
 	var filling = false;
+	var penState = true;
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
 	var turtleStroke = 5;
@@ -618,11 +619,15 @@ define(function (require) {
 		ny = y;
 	    }
 	    if (!filling) {
-	    	drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
             	drawingCanvas.graphics.beginStroke(color);
-            	drawingCanvas.graphics.moveTo(ox, oy);
 	    }
-	    drawingCanvas.graphics.lineTo(nx, ny);
+	    drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
+	    drawingCanvas.graphics.moveTo(ox, oy);
+	    if (penState) {
+		drawingCanvas.graphics.lineTo(nx, ny);
+	    } else {
+		drawingCanvas.graphics.moveTo(nx, ny);
+	    }
 	    oldPt.x = x;
             oldPt.y = y;
 	}
@@ -1437,6 +1442,12 @@ define(function (require) {
             case 'endfill':
 		doEndFill();
 		break;
+            case 'penup':
+		doPenUp();
+		break;
+            case 'pendown':
+		doPenDown();
+		break;
 	    }
 
 	    // (3) Queue block below this block.
@@ -1672,6 +1683,14 @@ define(function (require) {
 	    if (turtleColor < 0) {
 		turtleColor += 100;
 	    }
+	}
+
+        function doPenUp() {
+	    penState = false;
+	}
+
+	function doPenDown() {
+	    penState = true;
 	}
 
         function doStartFill() {

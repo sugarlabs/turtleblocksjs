@@ -160,6 +160,18 @@ penPalette.blockList.push(colorBlock);
 colorBlock.style = 'arg';
 colorBlock.docks = [[0, 20, 'numberout']];
 
+var penupBlock = new ProtoBlock('penup');
+protoBlockList.push(penupBlock);
+penupBlock.palette = penPalette;
+penPalette.blockList.push(penupBlock);
+penupBlock.docks = [[20, 0, 'out'], [20, 42, 'in']];
+
+var pendownBlock = new ProtoBlock('pendown');
+protoBlockList.push(pendownBlock);
+pendownBlock.palette = penPalette;
+penPalette.blockList.push(pendownBlock);
+pendownBlock.docks = [[20, 0, 'out'], [20, 42, 'in']];
+
 var startfillBlock = new ProtoBlock('beginfill');
 protoBlockList.push(startfillBlock);
 startfillBlock.palette = penPalette;

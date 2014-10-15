@@ -524,10 +524,12 @@ function updatePalettes() {
     paletteElem.innerHTML = html;
 
     // Open the turtle palette to start
-    toggle('0');
+    toggle(currentPalette.toString());
     // and hide all the others
-    for (var palette = 1; palette < paletteList.length; palette++) {
-	toggler(getPaletteId(palette));
+    for (var palette = 0; palette < paletteList.length; palette++) {
+	if (palette != currentPalette) {
+	    toggler(getPaletteId(palette));
+	}
     }
 }
 

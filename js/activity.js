@@ -157,6 +157,7 @@ define(function (require) {
         var turtleBitmap = null;
         var Turtle = 'images/turtle.svg';
 
+	var filling = false;
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
 	var turtleStroke = 5;
@@ -616,11 +617,12 @@ define(function (require) {
 		oy = oldPt.y;
 		ny = y;
 	    }
-            drawingCanvas.graphics.setStrokeStyle(
-		stroke, 'round', 'round'
-	    ).beginStroke(color).moveTo(
-		ox, oy
-	    ).curveTo(ox, oy, nx, ny);
+	    if (!filling) {
+	    	drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
+            	drawingCanvas.graphics.beginStroke(color);
+            	drawingCanvas.graphics.moveTo(ox, oy);
+	    }
+	    drawingCanvas.graphics.lineTo(nx, ny);
 	    oldPt.x = x;
             oldPt.y = y;
 	}
@@ -1019,6 +1021,7 @@ define(function (require) {
 				myBlock.protoblock.getBottomSvgPath();
 			}
 		    }
+		    update = true;
 		}
 	    }
 	}
@@ -1428,6 +1431,12 @@ define(function (require) {
 		    doSetColor(args[0]);
          	}
 		break;
+            case 'beginfill':
+		doStartFill();
+		break;
+            case 'endfill':
+		doEndFill();
+		break;
 	    }
 
 	    // (3) Queue block below this block.
@@ -1637,13 +1646,13 @@ define(function (require) {
 	    // old turtle point
             oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
 					   invertY(turtleBitmap.y));
-            color = colorTable[turtleColor];
-            stroke = turtleStroke;
 	    // new turtle point
 	    var rad = turtleOrientation * Math.PI / 180.0;
 	    var newPt = new createjs.Point(
 		oldPt.x + Number(steps) * Math.sin(rad),
 		oldPt.y + Number(steps) * Math.cos(rad))
+            color = colorTable[turtleColor];
+            stroke = turtleStroke;
 	    moveTurtle(newPt.x, newPt.y, true);
 	    turtleBitmap.x = turtleX2screenX(newPt.x);
 	    turtleBitmap.y = invertY(newPt.y);
@@ -1665,10 +1674,21 @@ define(function (require) {
 	    }
 	}
 
+        function doStartFill() {
+	    /// start tracking points here
+	    drawingCanvas.graphics.beginFill(color);
+	    filling = true;
+	}
+
+	function doEndFill() {
+	    /// redraw the points with fill enabled
+	    drawingCanvas.graphics.endFill();
+	    filling = false;
+	}
+
 	function doClear() {
-	    // Clear all graphics and reset turtle.
+	    // Reset turtle.
             update = true;
-            drawingCanvas.graphics.clear();
 	    turtleX = 0;
 	    turtleY = 0;
 	    turtleOrientation = 0.0;
@@ -1677,8 +1697,12 @@ define(function (require) {
 	    turtleBitmap.x = turtleX2screenX(turtleX);
 	    turtleBitmap.y = invertY(turtleY);
 	    turtleBitmap.rotation = 0;
-	    // Also clear all the boxes
+	    // Clear all the boxes.
 	    boxList = [];
+	    // Clear all graphics.
+            color = colorTable[turtleColor];
+            stroke = turtleStroke;
+            drawingCanvas.graphics.clear();
 	}
 
 	function findBox(name) {

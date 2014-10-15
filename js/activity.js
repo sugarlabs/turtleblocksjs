@@ -188,11 +188,11 @@ define(function (require) {
             // Enabled mouse over and mouse out events.
             stage.enableMouseOver(10);
 
-	    cartesian = new Image();
+	    var cartesian = new Image();
 	    cartesian.src = Cartesian;
 	    cartesian.onload = handleCartesianGridLoad;
 
-	    polar = new Image();
+	    var polar = new Image();
 	    polar.src = Polar;
 	    polar.onload = handlePolarGridLoad;
 
@@ -206,7 +206,7 @@ define(function (require) {
 		adjustBlockPositions();
 	    }
 
-	    turtle = new Image();
+	    var turtle = new Image();
 	    turtle.src = Turtle;
 	    turtle.onload = handleTurtleLoad;
 
@@ -229,7 +229,7 @@ define(function (require) {
             var container = new createjs.Container();
             stage.addChild(container);
 
-	    var thisBlock = -1
+	    var thisBlock = -1;
             for (var blk = 0; blk < blockList.length; blk++) {
 		if (blockList[blk].image == image) {
 		    thisBlock = blk;
@@ -254,18 +254,18 @@ define(function (require) {
 		blockList[thisBlock].myContainer = container;
 
 		var yoff = blockList[thisBlock].protoblock.yoff;
-		blockList[thisBlock].filler_bitmaps = [];
-		blockList[thisBlock].bottom_bitmap = null;
-		var bottom_bitmap =
+		blockList[thisBlock].fillerBitmaps = [];
+		blockList[thisBlock].bottomBitmap = null;
+		var bottomBitmap =
 		    new createjs.Bitmap(blockList[thisBlock].bottom_image);
-		blockList[thisBlock].bottom_bitmap = bottom_bitmap;
-		container.addChild(bottom_bitmap);
-		bottom_bitmap.x = bitmap.x;
-		bottom_bitmap.y = bitmap.y + yoff;
-		bottom_bitmap.scaleX = 1;
-		bottom_bitmap.scaleY = 1;
-		bottom_bitmap.scale = 1;
-		bottom_bitmap.name = 'bmp_' + thisBlock + '_bottom';
+		blockList[thisBlock].bottomBitmap = bottomBitmap;
+		container.addChild(bottomBitmap);
+		bottomBitmap.x = bitmap.x;
+		bottomBitmap.y = bitmap.y + yoff;
+		bottomBitmap.scaleX = 1;
+		bottomBitmap.scaleY = 1;
+		bottomBitmap.scale = 1;
+		bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
 	    }
 
             // Create a shape that represents the center of the icon.
@@ -289,7 +289,7 @@ define(function (require) {
 
             // Wrapper function to provide scope for the event handlers.
             (function (target) {
-		var moved = false
+		var moved = false;
 		bitmap.addEventListener('click', handleClick);
 		bitmap.addEventListener('mousedown', handleMouseDown);
 		bitmap.addEventListener('mouseover', handleMouseOver);
@@ -351,7 +351,7 @@ define(function (require) {
 			findDragGroup(blk)
 			if (dragGroup.length > 0) {
 			    for (var b = 0; b < dragGroup.length; b++) {
-				blk = dragGroup[b]
+				blk = dragGroup[b];
 				if (b != 0) {
 				    moveBlockRelative(blk, dx, dy);
 				}
@@ -405,8 +405,8 @@ define(function (require) {
 			    blockList[thisBlock].docks[0][1];
 			// Find the nearest dock; if it is close
 			// enough, connect;
-			var newBlock = null
-			var newConnection = null
+			var newBlock = null;
+			var newConnection = null;
 			var min = 400;
 			var blkType = blockList[thisBlock].docks[0][2]
 			for (b = 0; b < blockList.length; b++) {
@@ -449,7 +449,7 @@ define(function (require) {
 				}
 			    }
 			    blockList[newBlock].connections[newConnection] = thisBlock;
-			    loopCounter = 0
+			    loopCounter = 0;
 			    adjustDocks(newBlock);
 			}
 			// (3) Recheck if it inside of a expandable block
@@ -479,15 +479,15 @@ define(function (require) {
 
 	function moveExtraParts(blk, dx, dy) {
 	    // Expandable blocks have extra parts that need attention.
-	    if (blockList[blk].filler_bitmaps == undefined) {
+	    if (blockList[blk].fillerBitmaps == undefined) {
 		return;  // still in init stage
 	    }
-	    for (var i = 0; i < blockList[blk].filler_bitmaps.length; i++) {
-		blockList[blk].filler_bitmaps[i].x += dx;
-		blockList[blk].filler_bitmaps[i].y += dy;
+	    for (var i = 0; i < blockList[blk].fillerBitmaps.length; i++) {
+		blockList[blk].fillerBitmaps[i].x += dx;
+		blockList[blk].fillerBitmaps[i].y += dy;
 	    }
-	    blockList[blk].bottom_bitmap.x += dx;
-	    blockList[blk].bottom_bitmap.y += dy;
+	    blockList[blk].bottomBitmap.x += dx;
+	    blockList[blk].bottomBitmap.y += dy;
 	}
 
 	function testConnectionType(type1, type2) {
@@ -555,7 +555,7 @@ define(function (require) {
 
             // Wrapper function to provide scope for the event handlers:
             (function (target) {
-		var moved = false
+		var moved = false;
 		bitmap.addEventListener('click', handleClick);
 		bitmap.addEventListener('mousedown', handleMouseDown);
 		bitmap.addEventListener('mouseover', handleMouseOver);
@@ -677,7 +677,7 @@ define(function (require) {
 		return;
 	    }
 
-	    loopCounter = 0
+	    loopCounter = 0;
 	    adjustDocks(dragGroup[0])
 	}
 
@@ -705,21 +705,21 @@ define(function (require) {
 	    // (2) adjust the clamp size to match.
 	    var yoff = blockList[blk].protoblock.yoff;
 	    var loff = blockList[blk].protoblock.loff;
-	    var j = blockList[blk].filler_bitmaps.length;
-	    if (size < blockList[blk].filler_bitmaps.length + 1) {
+	    var j = blockList[blk].fillerBitmaps.length;
+	    if (size < blockList[blk].fillerBitmaps.length + 1) {
 		var n = j - size + 1;  // one slot built in
 		for (var i = 0; i < n; i++) {
 		    removeFiller(blk);
 		    blockList[blk].docks.last()[1] -= loff;
 		}
-                j = blockList[blk].filler_bitmaps.length;
+                j = blockList[blk].fillerBitmaps.length;
 		var o = yoff + j * loff;
-		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + o;
+		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
 		}
                 update = true;
-	    } else if (size > blockList[blk].filler_bitmaps.length) {
+	    } else if (size > blockList[blk].fillerBitmaps.length) {
 		var n = size - j - 1;  // one slot built in
 		for (var i = 0; i < n; i++) {
 		    var c = i + j;
@@ -727,9 +727,9 @@ define(function (require) {
 		    addFiller(blk, yoff + c * loff, c);
 		    blockList[blk].docks.last()[1] += loff;
 		}
-                j = blockList[blk].filler_bitmaps.length;
+                j = blockList[blk].fillerBitmaps.length;
 		var o = yoff + j * loff;
-		blockList[blk].bottom_bitmap.y = blockList[blk].bitmap.y + o;
+		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
 		    adjustDocks(blk);
 		}
@@ -747,10 +747,10 @@ define(function (require) {
 	}
 
 	function removeFiller(blk) {
-	    var filler_bitmap = blockList[blk].filler_bitmaps.pop();
-	    blockList[blk].myContainer.removeChild(filler_bitmap);
-	    if (findBitmap(filler_bitmap.name) == null) {
-		bitmapCache.push(filler_bitmap);
+	    var fillerBitmap = blockList[blk].fillerBitmaps.pop();
+	    blockList[blk].myContainer.removeChild(fillerBitmap);
+	    if (findBitmap(fillerBitmap.name) == null) {
+		bitmapCache.push(fillerBitmap);
 	    }
 	    update = true;
 	}
@@ -772,7 +772,7 @@ define(function (require) {
 	    } else {
 		var bitmap = bitmapCache[bi];
 	    }
-	    blockList[blk].filler_bitmaps.push(bitmap);
+	    blockList[blk].fillerBitmaps.push(bitmap);
 	    blockList[blk].myContainer.addChild(bitmap);
 	    bitmap.x = blockList[blk].bitmap.x;
 	    bitmap.y = blockList[blk].bitmap.y + offset;
@@ -1522,15 +1522,15 @@ define(function (require) {
 		myBlock.bitmap.scaleY = 1;
 		myBlock.bitmap.scale = 1;
 		if (isExpandableBlock(highlightedBlock)) {
-		    for (var i = 0; i < myBlock.filler_bitmaps.length; i++) {
-			myBlock.filler_bitmaps[i].scaleX = 1;
-			myBlock.filler_bitmaps[i].scaleY = 1;
-			myBlock.filler_bitmaps[i].scale = 1;
+		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+			myBlock.fillerBitmaps[i].scaleX = 1;
+			myBlock.fillerBitmaps[i].scaleY = 1;
+			myBlock.fillerBitmaps[i].scale = 1;
 		    }
-		    if (myBlock.bottom_bitmap != null) {
-			myBlock.bottom_bitmap.scaleX = 1;
-			myBlock.bottom_bitmap.scaleY = 1;
-			myBlock.bottom_bitmap.scale = 1;
+		    if (myBlock.bottomBitmap != null) {
+			myBlock.bottomBitmap.scaleX = 1;
+			myBlock.bottomBitmap.scaleY = 1;
+			myBlock.bottomBitmap.scale = 1;
 		    }
 		}
 		update = true;
@@ -1546,15 +1546,15 @@ define(function (require) {
 		myBlock.bitmap.scaleY = 1.2;
 		myBlock.bitmap.scale = 1.2;
 		if (isExpandableBlock(blk)) {
-		    for (var i = 0; i < myBlock.filler_bitmaps.length; i++) {
-			myBlock.filler_bitmaps[i].scaleX = 1.2;
-			myBlock.filler_bitmaps[i].scaleY = 1.2;
-			myBlock.filler_bitmaps[i].scale = 1.2;
+		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+			myBlock.fillerBitmaps[i].scaleX = 1.2;
+			myBlock.fillerBitmaps[i].scaleY = 1.2;
+			myBlock.fillerBitmaps[i].scale = 1.2;
 		    }
-		    if (myBlock.bottom_bitmap != null) {
-			myBlock.bottom_bitmap.scaleX = 1.2;
-			myBlock.bottom_bitmap.scaleY = 1.2;
-			myBlock.bottom_bitmap.scale = 1.2;
+		    if (myBlock.bottomBitmap != null) {
+			myBlock.bottomBitmap.scaleX = 1.2;
+			myBlock.bottomBitmap.scaleY = 1.2;
+			myBlock.bottomBitmap.scale = 1.2;
 		    }
 		}
 
@@ -1569,10 +1569,10 @@ define(function (require) {
 		myBlock = blockList[blk];
 		myBlock.bitmap.visible = false;
 		if (isExpandableBlock(blk)) {
-		    for (var i = 0; i < myBlock.filler_bitmaps.length; i++) {
-			myBlock.filler_bitmaps[i] = false;
+		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+			myBlock.fillerBitmaps[i] = false;
 		    }
-		    myBlock.bottom_bitmap.visible = false;
+		    myBlock.bottomBitmap.visible = false;
 		}
 	    }
 	    update = true;
@@ -1584,10 +1584,10 @@ define(function (require) {
 		myBlock = blockList[blk];
 		myBlock.bitmap.visible = true;
 		if (isExpandableBlock(blk)) {
-		    for (var i = 0; i < myBlock.filler_bitmaps.length; i++) {
-			myBlock.filler_bitmaps[i] = true;
+		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+			myBlock.fillerBitmaps[i] = true;
 		    }
-		    myBlock.bottom_bitmap.visible = true;
+		    myBlock.bottomBitmap.visible = true;
 		}
 	    }
 	    update = true;

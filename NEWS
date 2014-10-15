@@ -18,6 +18,7 @@
   * add controls for rabbit vs turtle
   * add controls for show/hide
   * add eraser button
+  * coordinate grids
 
 TODO:
   * fix palette updates from block palette
@@ -28,7 +29,6 @@ TODO:
   * sensors/media
   * decide on a palette strategy
   * implement more sophisticated blocks
-  * coordinate grids
   * turtle skin
   * multiple turtles (or only one start block)
   * keyboard short cuts

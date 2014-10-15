@@ -26,6 +26,14 @@
   background-image: url(../icons/polar-button.svg);
 }
 
+#main-toolbar #open-button {
+  background-image: url(../icons/open-button.svg);
+}
+
+input.file {
+    visibility: hidden;
+}
+
 button.sensors {
     background-color: #ff0000;
     color: #ffffff;

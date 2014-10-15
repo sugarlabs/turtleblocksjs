@@ -89,6 +89,12 @@ define(function (require) {
 	    }
         }
 
+        var openButton = document.getElementById('open-button');
+        openButton.onclick = function () {
+	    doOpen();
+	}
+
+
         // Make the activity stop with the stop button.
         var stopButton = document.getElementById('stop-button');
         stopButton.addEventListener('click', function (e) {
@@ -644,6 +650,15 @@ define(function (require) {
             bitmap = new createjs.Bitmap(image);
 	    cartesianBitmap = bitmap;
             container.addChild(bitmap);
+
+	    // FIXME: text is broken
+	    var text = new createjs.Text("Cartesian", "20px Arial", "#ff7700"); text.x = 100; text.textBaseline = "alphabetic";
+	    container.addChild(text);
+	    // text.visible = true;
+	    text.visible = false;
+	    text.x = 100;
+	    text.y = 100;
+            text.scaleX = text.scaleY = text.scale = 1;
 
             bitmap.x = 0;
             bitmap.y = 0;
@@ -1744,6 +1759,13 @@ define(function (require) {
 
         function invertY(y) {
             return canvas.height / 2.0 - y;
+	}
+
+	function doOpen() {
+	    var fileChooser = document.getElementById("myFile");
+            fileChooser.focus();
+	    fileChooser.click();
+	    console.log('doOpen: ' + fileChooser.value);
 	}
 
     });

@@ -20,8 +20,13 @@
   * add eraser button
   * coordinate grids
   * fix palette updates from block palette
+  * penup/down
+  * fill
 
 TODO:
+  * save/load
+  * copy/paste
+  * user defined
   * better compartmentalization of code
   * expanding arithmetic blocks
   * flesh out pen palette

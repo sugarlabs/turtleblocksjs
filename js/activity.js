@@ -1906,6 +1906,9 @@ define(function (require) {
 	    for (blk = 0; blk < blockList.length; blk++) {
 		myBlock = blockList[blk];
 		myBlock.bitmap.visible = false;
+		if (isValueBlock(blk)) {
+		    myBlock.label.style.display = 'none';
+		}
 		if (isExpandableBlock(blk)) {
 		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
 			myBlock.fillerBitmaps[i] = false;
@@ -1921,6 +1924,9 @@ define(function (require) {
 	    for (blk = 0; blk < blockList.length; blk++) {
 		myBlock = blockList[blk];
 		myBlock.bitmap.visible = true;
+		if (isValueBlock(blk)) {
+		    myBlock.label.style.display = '';
+		}
 		if (isExpandableBlock(blk)) {
 		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
 			myBlock.fillerBitmaps[i] = true;

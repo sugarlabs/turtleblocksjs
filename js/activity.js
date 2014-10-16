@@ -619,6 +619,7 @@ define(function (require) {
         }
 
 	function moveTurtle(x, y, invert) {
+	    console.log('move ' + x + ' ' + y);
 	    if (invert) {
 		ox = turtleX2screenX(oldPt.x);
 		nx = turtleX2screenX(x);
@@ -642,6 +643,39 @@ define(function (require) {
 	    }
 	    oldPt.x = x;
             oldPt.y = y;
+	}
+
+	function arcTurtle(cx, cy, radius, start, end, anticlockwise, invert) {
+	    if (invert) {
+		ox = turtleX2screenX(oldPt.x);
+		nx = turtleX2screenX(cx);
+		oy = invertY(oldPt.y);
+		ny = invertY(cy);
+	    } else {
+		ox = oldPt.x;
+		nx = cx;
+		oy = oldPt.y;
+		ny = cy;
+	    }
+	    if (!filling) {
+            	drawingCanvas.graphics.beginStroke(color);
+		drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
+		drawingCanvas.graphics.moveTo(ox, oy);
+	    }
+
+	    sa = start - Math.PI;
+	    ea = end - Math.PI;
+
+	    if (penState) {
+		console.log(nx + ' ' + ny + ' ' + radius + ' ' + sa + ' ' + ea);
+		drawingCanvas.graphics.arc(nx, ny, radius, sa, ea, anticlockwise);
+	    } else {
+		drawingCanvas.graphics.moveTo(nx, ny);
+	    }
+
+	    // FIX ME
+	    // oldPt.x = cx;
+            // oldPt.y = cy;
 	}
 
         function handleCartesianGridLoad(event) {
@@ -846,6 +880,10 @@ define(function (require) {
 	    }
 
 	    // Do we need these? All blocks have connections.
+	    if (blockList[blk] == null) {
+		console.log('saw a null block: ' + blk);
+		return;
+	    }
 	    if (blockList[blk].connections == null) {
 		console.log('saw a block with null connections: ' + blk);
 		return;
@@ -1267,11 +1305,31 @@ define(function (require) {
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    pushConnection(blkData[4][3], blockOffset, thisBlock);
 		    break;
+		case 'vspace':
+		    newBlock(vspaceBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    break;
 		case 'clear':
 		case 'clean':
 		    newBlock(clearBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    break;
+                case 'setxy':
+		case 'setxy2':
+		    newBlock(setxyBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    pushConnection(blkData[4][3], blockOffset, thisBlock);
+		    break;
+                case 'arc':
+		    newBlock(arcBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    pushConnection(blkData[4][3], blockOffset, thisBlock);
 		    break;
 		case 'forward':
 		    newBlock(forwardBlock);
@@ -1297,21 +1355,43 @@ define(function (require) {
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
+		case 'setheading':
+		    newBlock(setheadingBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
 		case 'heading':
 		    newBlock(headingBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'x':
+		case 'xcor':
 		    newBlock(xBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'y':
+		case 'ycor':
 		    newBlock(yBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'plus':
 		case 'plus2':
 		    newBlock(plusBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'multiply':
+		case 'multiply2':
+		    newBlock(multiplyBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'divide':
+		case 'division2':
+		    newBlock(divideBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
@@ -1400,6 +1480,37 @@ define(function (require) {
 		    newBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = 70;
+		    break;
+		case 'leftpos':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = -(canvas.width / 2);
+		    break;
+		case 'rightpos':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = (canvas.width / 2);
+		    break;
+		case 'toppos':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = (canvas.height / 2);
+		    break;
+		case 'botpos':
+		case 'bottompos':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = -(canvas.height / 2);
+		    break;
+		case 'width':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = canvas.width;
+		    break;
+		case 'height':
+		    newBlock(numberBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    blockList[thisBlock].value = canvas.height;
 		    break;
 		default:
 		    console.log('No factory for ' + name);
@@ -1563,6 +1674,16 @@ define(function (require) {
 	    case 'clear':
 		doClear();
 		break;
+	    case 'setxy':
+ 		if (args.length == 2) {
+		    doSetXY(args[0], args[1]);
+		}
+		break;
+	    case 'arc':
+ 		if (args.length == 2) {
+		    doArc(args[0], args[1]);
+		}
+		break;
             case 'forward':
  		if (args.length == 1) {
 		    doForward(args[0]);
@@ -1581,6 +1702,11 @@ define(function (require) {
             case 'left':
 		if (args.length == 1) {
 		    doRight(-args[0]);
+         	}
+		break;
+            case 'setheading':
+		if (args.length == 1) {
+		    doSetHeading(args[0]);
          	}
 		break;
             case 'setcolor':
@@ -1672,6 +1798,20 @@ define(function (require) {
 		    b = parseArg(cblk2);
 		    blockList[blk].value = doPlus(a, b);
 		    break;
+		case 'multiply':
+		    cblk1 = blockList[blk].connections[1];
+		    cblk2 = blockList[blk].connections[2];
+		    a = parseArg(cblk1);
+		    b = parseArg(cblk2);
+		    blockList[blk].value = doMultiply(a, b);
+		    break;
+		case 'divide':
+		    cblk1 = blockList[blk].connections[1];
+		    cblk2 = blockList[blk].connections[2];
+		    a = parseArg(cblk1);
+		    b = parseArg(cblk2);
+		    blockList[blk].value = doDivide(a, b);
+		    break;
 		case 'minus':
 		    cblk1 = blockList[blk].connections[1];
 		    cblk2 = blockList[blk].connections[2];
@@ -1683,10 +1823,12 @@ define(function (require) {
 		    blockList[blk].value = turtleOrientation;
 		    break;
 		case 'x':
-		    blockList[blk].value = turtleX;
+		    blockList[blk].value = screenX2turtleX(turtleBitmap.x);
+		    console.log('x: ' + screenX2turtleX(turtleBitmap.x));
 		    break;
 		case 'y':
-		    blockList[blk].value = turtleY;
+		    blockList[blk].value = invertY(turtleBitmap.y);
+		    console.log('y: ' + invertY(turtleBitmap.y));
 		    break;
 		case 'color':
 		    blockList[blk].value = turtleColor;
@@ -1830,10 +1972,22 @@ define(function (require) {
 	    return Number(a) - Number(b);
 	}
 
+	function doMultiply(a, b) {
+	    return Number(a) * Number(b);
+	}
+
+	function doDivide(a, b) {
+	    // TODO: Alert
+	    if (Number(b) == 0) {
+		return NaN;
+	    } else {
+		return Number(a) / Number(b);
+	    }
+	}
+
 	// Turtle functions
         function doForward(steps) {
 	    // Move forward.
-            update = true;
 	    // old turtle point
             oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
 					   invertY(turtleBitmap.y));
@@ -1847,11 +2001,65 @@ define(function (require) {
 	    moveTurtle(newPt.x, newPt.y, true);
 	    turtleBitmap.x = turtleX2screenX(newPt.x);
 	    turtleBitmap.y = invertY(newPt.y);
+            update = true;
+	}
+
+        function doSetXY(x, y) {
+	    // old turtle point
+            oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
+				       invertY(turtleBitmap.y));
+	    // new turtle point
+	    var newPt = new createjs.Point(Number(x), Number(y));
+            color = colorTable[turtleColor];
+            stroke = turtleStroke;
+	    moveTurtle(newPt.x, newPt.y, true);
+	    turtleBitmap.x = turtleX2screenX(newPt.x);
+	    turtleBitmap.y = invertY(newPt.y);
+            update = true;
+	}
+
+        function doArc(angle, radius) {
+	    var adeg = Number(angle);
+	    var arad = (adeg / 180) * Math.PI;
+	    var orad = (turtleOrientation / 180) * Math.PI;
+	    var r = Number(radius);
+
+	    // old turtle point
+            oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
+				       invertY(turtleBitmap.y));
+
+	    // center point for arc
+	    var cx = oldPt.x + Math.cos(orad) * r;
+	    var cy = oldPt.y - Math.sin(orad) * r;
+	    var nx = cx + Math.cos(orad + arad) * r;
+	    var ny = Math.sin(orad + arad) * r - cy;
+
+	    if( adeg < 0 ) {
+		var anticlockwise = true;
+	    } else {
+		var anticlockwise = false;
+	    }
+	    color = colorTable[turtleColor];
+            stroke = turtleStroke;
+	    console.log(cx + ' ' + cy + ' ' + turtleOrientation + ' ' + adeg);
+	    arcTurtle(cx, cy, r, orad, orad + arad, anticlockwise, true);
+	    console.log(nx + ' ' + ny);
+	    turtleBitmap.x = turtleX2screenX(nx),
+	    turtleBitmap.y = invertY(ny);
+	    doRight(adeg);
+            update = true;
 	}
 
 	function doRight(degrees) {
 	    // Turn right and display corresponding turtle graphic.
 	    turtleOrientation += Number(degrees);
+	    turtleOrientation %= 360;
+	    turtleBitmap.rotation = turtleOrientation;
+            update = true;
+	}
+
+	function doSetHeading(degrees) {
+	    turtleOrientation = Number(degrees);
 	    turtleOrientation %= 360;
 	    turtleBitmap.rotation = turtleOrientation;
             update = true;

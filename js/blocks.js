@@ -144,6 +144,30 @@ leftBlock.args = 1;
 leftBlock.defaults.push(90);
 leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
+var arcBlock = new ProtoBlock('arc');
+protoBlockList.push(arcBlock);
+arcBlock.palette = turtlePalette;
+turtlePalette.blockList.push(arcBlock);
+arcBlock.yoff = 49;
+arcBlock.loff = 42;
+arcBlock.expandable = true;
+arcBlock.style = 'special';
+arcBlock.size = 2;
+arcBlock.args = 2;
+arcBlock.defaults.push(90);
+arcBlock.defaults.push(100);
+arcBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
+		  [98, 62, 'numberin'], [20, 84, 'in']];
+
+var setheadingBlock = new ProtoBlock('setheading');
+protoBlockList.push(setheadingBlock);
+setheadingBlock.palette = turtlePalette;
+turtlePalette.blockList.push(setheadingBlock);
+setheadingBlock.args = 1;
+setheadingBlock.defaults.push(0);
+setheadingBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
+			 [20, 42, 'in']];
+
 var headingBlock = new ProtoBlock('heading');
 protoBlockList.push(headingBlock);
 headingBlock.palette = turtlePalette;
@@ -151,15 +175,30 @@ turtlePalette.blockList.push(headingBlock);
 headingBlock.style = 'arg';
 headingBlock.docks = [[0, 20, 'numberout']];
 
+var setxyBlock = new ProtoBlock('setxy');
+protoBlockList.push(setxyBlock);
+setxyBlock.palette = turtlePalette;
+turtlePalette.blockList.push(setxyBlock);
+setxyBlock.yoff = 49;
+setxyBlock.loff = 42;
+setxyBlock.expandable = true;
+setxyBlock.style = 'special';
+setxyBlock.size = 2;
+setxyBlock.args = 2;
+setxyBlock.defaults.push(0);
+setxyBlock.defaults.push(0);
+setxyBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
+		    [98, 62, 'numberin'], [20, 84, 'in']];
+
 var xBlock = new ProtoBlock('x');
-protoBlockList.push(headingBlock);
+protoBlockList.push(xBlock);
 xBlock.palette = turtlePalette;
 turtlePalette.blockList.push(xBlock);
 xBlock.style = 'arg';
 xBlock.docks = [[0, 20, 'numberout']];
 
 var yBlock = new ProtoBlock('y');
-protoBlockList.push(headingBlock);
+protoBlockList.push(yBlock);
 yBlock.palette = turtlePalette;
 turtlePalette.blockList.push(yBlock);
 yBlock.style = 'arg';
@@ -254,6 +293,32 @@ minusBlock.args = 2;
 minusBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
 		   [68, 62, 'numberin']];
 
+var multiplyBlock = new ProtoBlock('multiply');
+protoBlockList.push(multiplyBlock);
+multiplyBlock.palette = numberPalette;
+numberPalette.blockList.push(multiplyBlock);
+multiplyBlock.yoff = 49;
+multiplyBlock.loff = 42;
+multiplyBlock.expandable = true;
+multiplyBlock.style = 'arg';
+multiplyBlock.size = 2;
+multiplyBlock.args = 2;
+multiplyBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
+		   [68, 62, 'numberin']];
+
+var divideBlock = new ProtoBlock('divide');
+protoBlockList.push(divideBlock);
+divideBlock.palette = numberPalette;
+numberPalette.blockList.push(divideBlock);
+divideBlock.yoff = 49;
+divideBlock.loff = 42;
+divideBlock.expandable = true;
+divideBlock.style = 'arg';
+divideBlock.size = 2;
+divideBlock.args = 2;
+divideBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
+		   [68, 62, 'numberin']];
+
 var greaterBlock = new ProtoBlock('greater');
 protoBlockList.push(greaterBlock);
 greaterBlock.palette = numberPalette;
@@ -330,6 +395,7 @@ actionBlock.yoff = 86;
 actionBlock.loff = 42;
 actionBlock.args = 1;
 actionBlock.expandable = true;
+actionBlock.defaults.push('action');
 actionBlock.style = 'clamp';
 actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
 		     [38, 55, 'in'], [20, 80, 'unavailable']];
@@ -803,8 +869,13 @@ function labelChanged() {
 	}
     }
 
+    if (myBlock == null) {
+	console.log('cannot find the label that changed');
+	return;
+    }
+
     // Update the label.
-    if (myBlock != null && myBlock.label != null) {
+    if (myBlock.label != null) {
 	myBlock.value = myBlock.label.value;
     }
 

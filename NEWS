@@ -29,14 +29,14 @@
   * set heading
   * x, y, heading
   * lots-o-sample projects
+  * expanding arithmetic blocks
+  * expanding 2-arg blocks
 
 TODO:
   * save blocks
   * copy/paste
   * user defined
   * better compartmentalization of code
-  * expanding arithmetic blocks
-  * expanding 2-arg blocks
   * implement color model (Munsell?)
   * sensors/media
   * decide on a palette strategy

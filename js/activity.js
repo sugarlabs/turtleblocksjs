@@ -144,7 +144,7 @@ define(function (require) {
 	var time;
 
 	// To avoid infinite loops
-	var loopCounter;
+	var loopCounter = 0;
 
 	// Queue for loops
 	var runQueue = [];
@@ -744,6 +744,7 @@ define(function (require) {
 		var o = yoff + j * loff;
 		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
+		    loopCounter = 0;
 		    adjustDocks(blk);
 		}
                 update = true;
@@ -759,6 +760,7 @@ define(function (require) {
 		var o = yoff + j * loff;
 		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
+		    loopCounter = 0;
 		    adjustDocks(blk);
 		}
                 update = true;
@@ -834,9 +836,14 @@ define(function (require) {
 	    return size;
 	}
 
-	function adjustDocks(blk) {
+	function adjustDocks(blk, reset) {
 	    // Give a block, adjust the dock positions
 	    // of all of the blocks connected to it
+
+	    // For when we come in from makeBlock
+	    if (reset != null) {
+		loopCounter = 0;
+	    }
 
 	    // Do we need these? All blocks have connections.
 	    if (blockList[blk].connections == null) {
@@ -852,13 +859,10 @@ define(function (require) {
 	    if (loopCounter > blockList.length * 2) {
 		// FIXME: there is an infinite loop in here somewhere.
 		console.log('infinite loop encountered while adjusting docks');
-		for (var i = 0; i < blockList.length; i++) {
-		    console.log(i + ': ' + blockList[i].connections);
-		}
-		return
+		return;
 	    }
 
-	    // Walk through each connection...
+	    // Walk through each connection except the parent block.
 	    for (var c = 1; c < blockList[blk].connections.length; c++) {
 		// Get the dock position for this connection.
 		var bdock = blockList[blk].docks[c];
@@ -1403,6 +1407,7 @@ define(function (require) {
 	    updateBlockImages();
 	    updateBlockLabels();
 	    for (var blk = 0; blk < adjustTheseDocks.length; blk++) {
+		loopCounter = 0;
 		adjustDocks(adjustTheseDocks[blk]);
 	    }
 	    // expandClamps();

@@ -669,7 +669,7 @@ function makeBlock(name, arg) {
 
     // Generate and position the block bitmaps and labels
     updater();
-    adjuster(blk);
+    adjuster(blk, true);
 }
 
 function findUniqueActionName(name) {

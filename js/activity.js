@@ -618,64 +618,63 @@ define(function (require) {
             createjs.Ticker.addEventListener('tick', tick);
         }
 
-	function moveTurtle(x, y, invert) {
-	    console.log('move ' + x + ' ' + y);
+	function moveTurtle(ox, oy, x, y, invert) {
 	    if (invert) {
-		ox = turtleX2screenX(oldPt.x);
+		ox = turtleX2screenX(ox);
 		nx = turtleX2screenX(x);
-		oy = invertY(oldPt.y);
+		oy = invertY(oy);
 		ny = invertY(y);
 	    } else {
-		ox = oldPt.x;
 		nx = x;
-		oy = oldPt.y;
 		ny = y;
 	    }
+
 	    if (!filling) {
             	drawingCanvas.graphics.beginStroke(color);
 		drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
 		drawingCanvas.graphics.moveTo(ox, oy);
 	    }
+
 	    if (penState) {
 		drawingCanvas.graphics.lineTo(nx, ny);
 	    } else {
 		drawingCanvas.graphics.moveTo(nx, ny);
 	    }
-	    oldPt.x = x;
-            oldPt.y = y;
 	}
 
-	function arcTurtle(cx, cy, radius, start, end, anticlockwise, invert) {
+	function arcTurtle(cx, cy, nx, ny, radius, start, end, anticlockwise, invert) {
 	    if (invert) {
 		ox = turtleX2screenX(oldPt.x);
-		nx = turtleX2screenX(cx);
+		cx = turtleX2screenX(cx);
+		nx = turtleX2screenX(nx);
 		oy = invertY(oldPt.y);
-		ny = invertY(cy);
+		cy = invertY(cy);
+		ny = invertY(ny);
 	    } else {
 		ox = oldPt.x;
-		nx = cx;
 		oy = oldPt.y;
-		ny = cy;
 	    }
+
 	    if (!filling) {
             	drawingCanvas.graphics.beginStroke(color);
 		drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
 		drawingCanvas.graphics.moveTo(ox, oy);
 	    }
 
-	    sa = start - Math.PI;
-	    ea = end - Math.PI;
+	    if (!anticlockwise) {
+		sa = start - Math.PI;
+		ea = end - Math.PI;
+	    } else {
+		sa = start;
+		ea = end;
+	    }
 
 	    if (penState) {
-		console.log(nx + ' ' + ny + ' ' + radius + ' ' + sa + ' ' + ea);
-		drawingCanvas.graphics.arc(nx, ny, radius, sa, ea, anticlockwise);
+		drawingCanvas.graphics.arc(cx, cy, radius, sa, ea,
+					   anticlockwise);
 	    } else {
 		drawingCanvas.graphics.moveTo(nx, ny);
 	    }
-
-	    // FIX ME
-	    // oldPt.x = cx;
-            // oldPt.y = cy;
 	}
 
         function handleCartesianGridLoad(event) {
@@ -1998,7 +1997,7 @@ define(function (require) {
 		oldPt.y + Number(steps) * Math.cos(rad))
             color = colorTable[turtleColor];
             stroke = turtleStroke;
-	    moveTurtle(newPt.x, newPt.y, true);
+	    moveTurtle(oldPt.x, oldPt.y, newPt.x, newPt.y, true);
 	    turtleBitmap.x = turtleX2screenX(newPt.x);
 	    turtleBitmap.y = invertY(newPt.y);
             update = true;
@@ -2012,7 +2011,7 @@ define(function (require) {
 	    var newPt = new createjs.Point(Number(x), Number(y));
             color = colorTable[turtleColor];
             stroke = turtleStroke;
-	    moveTurtle(newPt.x, newPt.y, true);
+	    moveTurtle(oldPt.x, oldPt.y, newPt.x, newPt.y, true);
 	    turtleBitmap.x = turtleX2screenX(newPt.x);
 	    turtleBitmap.y = invertY(newPt.y);
             update = true;
@@ -2028,25 +2027,36 @@ define(function (require) {
             oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
 				       invertY(turtleBitmap.y));
 
-	    // center point for arc
-	    var cx = oldPt.x + Math.cos(orad) * r;
-	    var cy = oldPt.y - Math.sin(orad) * r;
-	    var nx = cx + Math.cos(orad + arad) * r;
-	    var ny = Math.sin(orad + arad) * r - cy;
 
 	    if( adeg < 0 ) {
 		var anticlockwise = true;
+		adeg = -adeg;
+		// center point for arc
+		var cx = oldPt.x - Math.cos(orad) * r;
+		var cy = oldPt.y + Math.sin(orad) * r;
+		// new position of turtle
+		var nx = cx + Math.cos(orad + arad) * r;
+		var ny = cy - Math.sin(orad + arad) * r;
 	    } else {
 		var anticlockwise = false;
+		// center point for arc
+		var cx = oldPt.x + Math.cos(orad) * r;
+		var cy = oldPt.y - Math.sin(orad) * r;
+		// new position of turtle
+		var nx = cx - Math.cos(orad + arad) * r;
+		var ny = cy + Math.sin(orad + arad) * r;
 	    }
 	    color = colorTable[turtleColor];
             stroke = turtleStroke;
-	    console.log(cx + ' ' + cy + ' ' + turtleOrientation + ' ' + adeg);
-	    arcTurtle(cx, cy, r, orad, orad + arad, anticlockwise, true);
-	    console.log(nx + ' ' + ny);
+	    arcTurtle(cx, cy, nx, ny, r, orad, orad + arad, anticlockwise, true);
+
 	    turtleBitmap.x = turtleX2screenX(nx),
 	    turtleBitmap.y = invertY(ny);
-	    doRight(adeg);
+	    if (anticlockwise) {
+		doRight(-adeg);
+	    } else {
+		doRight(adeg);
+	    }
             update = true;
 	}
 

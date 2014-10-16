@@ -391,94 +391,7 @@ define(function (require) {
 			return;
 		    }
 		    if (moved) {
-			// When a block is moved:
-			// (0) Is it inside of a expandable block?
-			var checkExpandableBlocks = [];
-			var blk = insideExpandableBlock(thisBlock);
-			while (blk != null) {
-			    checkExpandableBlocks.push(blk);
-			    blk = insideExpandableBlock(blk);
-			}
-			// (1) Disconnect connection[0];
-			var c = blockList[thisBlock].connections[0];
-			if (c != null) {
-			    // disconnect both ends of the connection
-			    for (i = 1;
-				 i < blockList[c].connections.length; i++) {
-				if (blockList[c].connections[i] == thisBlock) {
-				    blockList[c].connections[i] = null;
-				    break;
-				}
-			    }
-  			    blockList[thisBlock].connections[0] = null;
-			}
-			// (2) Look for a new connection;
-			var dx1 = blockList[thisBlock].bitmap.x + 
-			    blockList[thisBlock].docks[0][0];
-			var dy1 = blockList[thisBlock].bitmap.y + 
-			    blockList[thisBlock].docks[0][1];
-			// Find the nearest dock; if it is close
-			// enough, connect;
-			var newBlock = null;
-			var newConnection = null;
-			var min = 400;
-			var blkType = blockList[thisBlock].docks[0][2]
-			for (b = 0; b < blockList.length; b++) {
-			    // Don't connect to yourself.
-			    if (b == thisBlock) {
-				continue;
-			    }
-			    for (c = 1; c < blockList[b].connections.length; c++) {
-				// Look for available connections
-				if (testConnectionType(
-				    blkType,
-				    blockList[b].docks[c][2])) {
-				    dx2 = blockList[b].bitmap.x + 
-					blockList[b].docks[c][0];
-				    dy2 = blockList[b].bitmap.y + 
-					blockList[b].docks[c][1];
-				    dist = (dx2 - dx1) * (dx2 - dx1) + 
-					(dy2 - dy1) * (dy2 - dy1);
-				    if (dist < min) {
-					newBlock = b;
-					newConnection = c;
-					min = dist;
-				    }
-				}
-			    }
-			}
-			if (newBlock != null) {
-			    // We found a match.
-			    blockList[thisBlock].connections[0] = newBlock;
-			    var connection = blockList[newBlock].connections[newConnection];
-			    if(connection != null) {
-				if (isArgBlock(thisBlock)) {
-				    blockList[connection].connections[0] = null;
-				    // Fixme: could be more than one block.
-				    moveBlockRelative(connection, 20, 20);
-				} else {
-				    var bottom = findBottomBlock(thisBlock);
-				    blockList[connection].connections[0] = bottom;
-				    blockList[bottom].connections[blockList[bottom].connections.length-1] = connection;
-				}
-			    }
-			    blockList[newBlock].connections[newConnection] = thisBlock;
-			    loopCounter = 0;
-			    adjustDocks(newBlock);
-			}
-			// (3) Recheck if it inside of a expandable block
-			var blk = insideExpandableBlock(thisBlock);
-			while (blk != null) {
-			    checkExpandableBlocks.push(blk);
-			    blk = insideExpandableBlock(blk);
-			}
-			// If we changed the contents of an expandable
-			// block, we need to adjust its clamp.
-			if (checkExpandableBlocks.length > 0) {
-			    for (var i = 0; i < checkExpandableBlocks.length; i++) {
-				adjustExpandableBlock(checkExpandableBlocks[i]);
-			    }
-			}
+			blockMoved(thisBlock);
 		    }
 		    unhighlight();
 		    activeBlock = null;
@@ -502,6 +415,157 @@ define(function (require) {
 	    }
 	    blockList[blk].bottomBitmap.x += dx;
 	    blockList[blk].bottomBitmap.y += dy;
+	}
+
+	function blockMoved(thisBlock) {
+	    // When a block is moved, we have lots of things to check:
+	    // (0) Is it inside of a expandable block?
+	    // (1) Is it an arg block connected to a 2-arg block?
+	    // (2) Disconnect its connection[0];
+	    // (3) Look for a new connection;
+	    // (4) Is it an arg block connected to a 2-arg block?
+	    // (5) Recheck if it inside of a expandable block.
+
+	    // Find any containing expandable blocks.
+	    var checkExpandableBlocks = [];
+	    var blk = insideExpandableBlock(thisBlock);
+	    while (blk != null) {
+		checkExpandableBlocks.push(blk);
+		blk = insideExpandableBlock(blk);
+	    }
+
+
+	    var check2ArgBlocks = [];
+	    var c = blockList[thisBlock].connections[0];
+	    // If it is an arg block, where is it coming from?
+	    if (isArgBlock(thisBlock) && c != null) {
+		// We care about special (2arg) blocks with
+		// connections to the first arg;
+		if (isSpecialBlock(c)) {
+		    if (blockList[c].connections[1] == thisBlock) {
+			check2ArgBlocks.push(c);
+		    }
+		} else if (isArgBlock(c) && isExpandableBlock(c)) {
+		    if (blockList[c].connections[1] == thisBlock) {
+			check2ArgBlocks.push(c);
+		    }
+		}
+	    }
+
+	    // Disconnect from connection[0] (both sides of the connection).
+	    if (c != null) {
+		// disconnect both ends of the connection
+		for (i = 1;
+		     i < blockList[c].connections.length; i++) {
+		    if (blockList[c].connections[i] == thisBlock) {
+			blockList[c].connections[i] = null;
+			break;
+		    }
+		}
+  		blockList[thisBlock].connections[0] = null;
+	    }
+
+	    // Look for a new connection.
+	    var dx1 = blockList[thisBlock].bitmap.x + 
+		blockList[thisBlock].docks[0][0];
+	    var dy1 = blockList[thisBlock].bitmap.y + 
+		blockList[thisBlock].docks[0][1];
+	    // Find the nearest dock; if it is close
+	    // enough, connect;
+	    var newBlock = null;
+	    var newConnection = null;
+	    var min = 400;
+	    var blkType = blockList[thisBlock].docks[0][2]
+	    for (b = 0; b < blockList.length; b++) {
+		// Don't connect to yourself.
+		if (b == thisBlock) {
+		    continue;
+		}
+		for (c = 1; c < blockList[b].connections.length; c++) {
+		    // Look for available connections.
+		    if (testConnectionType(
+			blkType,
+			blockList[b].docks[c][2])) {
+			dx2 = blockList[b].bitmap.x + 
+			    blockList[b].docks[c][0];
+			dy2 = blockList[b].bitmap.y + 
+			    blockList[b].docks[c][1];
+			dist = (dx2 - dx1) * (dx2 - dx1) + 
+			    (dy2 - dy1) * (dy2 - dy1);
+			if (dist < min) {
+			    newBlock = b;
+			    newConnection = c;
+			    min = dist;
+			}
+		    } else {
+			// TODO: bounce away from illegal connection?
+			// only if the distance was small
+			// console.log('cannot not connect these two block types');
+		    }
+		}
+	    }
+	    if (newBlock != null) {
+		// We found a match.
+		blockList[thisBlock].connections[0] = newBlock;
+		var connection = blockList[newBlock].connections[newConnection];
+		if(connection != null) {
+		    if (isArgBlock(thisBlock)) {
+			blockList[connection].connections[0] = null;
+			// Fixme: could be more than one block.
+			moveBlockRelative(connection, 40, 40);
+		    } else {
+			var bottom = findBottomBlock(thisBlock);
+			blockList[connection].connections[0] = bottom;
+			blockList[bottom].connections[blockList[bottom].connections.length-1] = connection;
+		    }
+		}
+		blockList[newBlock].connections[newConnection] = thisBlock;
+		loopCounter = 0;
+		adjustDocks(newBlock);
+		// TODO: mark new connection?
+	    }
+
+	    // If it is an arg block, where is it coming from?
+	    if (isArgBlock(thisBlock) && newBlock != null) {
+		// We care about special (2arg) blocks with
+		// connections to the first arg;
+		if (isSpecialBlock(newBlock)) {
+		    if (blockList[newBlock].connections[1] == thisBlock) {
+			if (check2ArgBlocks.indexOf(newBlock) == -1) {
+			    check2ArgBlocks.push(newBlock);
+			}
+		    }
+		} else if (isArgBlock(newBlock) && isExpandableBlock(newBlock)) {
+		    if (blockList[newBlock].connections[1] == thisBlock) {
+			if (check2ArgBlocks.indexOf(newBlock) == -1) {
+			    check2ArgBlocks.push(newBlock);
+			}
+		    }
+		}
+	    }
+	    // If we changed the contents of a 2-arg block
+	    // block, we need to adjust it.
+	    if (check2ArgBlocks.length > 0) {
+		for (var i = 0; i < check2ArgBlocks.length; i++) {
+		    adjust2ArgBlock(check2ArgBlocks[i]);
+		}
+	    }
+
+	    // Recheck if it inside of a expandable block
+	    var blk = insideExpandableBlock(thisBlock);
+	    while (blk != null) {
+		if (checkExpandableBlocks.indexOf(blk) == -1) {
+		    checkExpandableBlocks.push(blk);
+		}
+		blk = insideExpandableBlock(blk);
+	    }
+	    // If we changed the contents of an expandable
+	    // block, we need to adjust its clamp.
+	    if (checkExpandableBlocks.length > 0) {
+		for (var i = 0; i < checkExpandableBlocks.length; i++) {
+		    adjustExpandableBlock(checkExpandableBlocks[i]);
+		}
+	    }
 	}
 
 	function testConnectionType(type1, type2) {
@@ -801,6 +865,88 @@ define(function (require) {
 	    }	    
 	}
 
+	function getBlockSize(blk) {
+	    // TODO recurse on first arg
+	    return blockList[blk].size;
+	}
+
+	function adjust2ArgBlock(blk) {
+	    // Adjust the size of a 2-arg block
+	    // (1) What the size of the first argument?
+	    var c = blockList[blk].connections[1];
+	    if (c == null) {
+		var size = 0;
+	    } else {
+		var size = getBlockSize(c);
+	    }
+	    if( size < 1 ) {
+		size = 1;  // Minimum size
+	    }
+
+	    // (2) adjust the block size to match.
+	    var yoff = blockList[blk].protoblock.yoff;
+	    var loff = blockList[blk].protoblock.loff;
+	    var j = blockList[blk].fillerBitmaps.length;
+	    if (size < blockList[blk].fillerBitmaps.length + 1) {
+		var n = j - size + 1;  // one slot built in
+		for (var i = 0; i < n; i++) {
+		    removeFiller(blk);
+		    blockList[blk].docks[2][1] -= loff;
+		    if (!isArgBlock(blk)) {
+			blockList[blk].docks[3][1] -= loff;
+		    }
+		    blockList[blk].size -= 1;
+		}
+                j = blockList[blk].fillerBitmaps.length;
+		var o = yoff + j * loff;
+		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
+		if (isArgBlock(blk)) {
+		    if (blockList[blk].connections[2] != null) {
+			loopCounter = 0;
+			adjustDocks(blk);
+		    }
+		} else {
+		    if (blockList[blk].connections[2] != null) {
+			loopCounter = 0;
+			adjustDocks(blk);
+		    } else if (blockList[blk].connections[3] != null) {
+			loopCounter = 0;
+			adjustDocks(blk);
+		    }
+		}
+                update = true;
+	    } else if (size > blockList[blk].fillerBitmaps.length) {
+		var n = size - j - 1;  // one slot built in
+		for (var i = 0; i < n; i++) {
+		    var c = i + j;
+		    addFiller(blk, yoff + c * loff, c);
+		    blockList[blk].docks[2][1] += loff;
+		    if (!isArgBlock(blk)) {
+			blockList[blk].docks[3][1] += loff;
+		    }
+		    blockList[blk].size += 1;
+		}
+                j = blockList[blk].fillerBitmaps.length;
+		var o = yoff + j * loff;
+		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
+		if (isArgBlock(blk)) {
+		    if (blockList[blk].connections[2] != null) {
+			loopCounter = 0;
+			adjustDocks(blk);
+		    }
+		} else {
+		    if (blockList[blk].connections[2] != null) {
+			loopCounter = 0;
+			adjustDocks(blk);
+		    } else if (blockList[blk].connections[3] != null) {
+			loopCounter = 0;
+			adjustDocks(blk);
+		    }
+		}
+                update = true;
+	    }
+	}
+
 	function findBitmap(name) {
 	    for (var i = 0; i < bitmapCache.length; i++) {
 		if (bitmapCache[i].name == name) {
@@ -859,9 +1005,9 @@ define(function (require) {
 		    size = 1;  // minimum of 1 slot in clamp
 		}
 		// add top and bottom of clamp
-		size += blockList[blk].protoblock.size;
+		size += blockList[blk].size;
 	    } else {
-		size = blockList[blk].protoblock.size;
+		size = blockList[blk].size;
 	    }
 
 	    // check on any connected block
@@ -1232,6 +1378,7 @@ define(function (require) {
 	    blockList.push(new Block(proto));
 	    // We copy the dock because expandable blocks modify it
 	    blockList.last().copyDocks();
+	    blockList.last().copySize();
 	}
 
 	function loadStart() {

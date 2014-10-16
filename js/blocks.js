@@ -513,8 +513,13 @@ function Block (protoblock) {
     this.bitmap = null;
     this.x = 0;
     this.y = 0;
+    this.size = 1;
     this.docks = [];  // Proto dock is copied here.
     this.connections = [];
+}
+
+Block.prototype.copySize = function() {
+    this.size = this.protoblock.size;
 }
 
 Block.prototype.copyDocks = function() {
@@ -726,6 +731,7 @@ function makeBlock(name, arg) {
     var blk = blockList.length - 1;
     var myBlock = blockList[blk];
     myBlock.copyDocks();
+    myBlock.copySize();
     for (var i = 0; i < myBlock.docks.length; i++) {
 	myBlock.connections.push(null);
     }
@@ -741,6 +747,7 @@ function makeBlock(name, arg) {
 	}
 	var myConnectionBlock = blockList[cblk + i];
 	myConnectionBlock.copyDocks();
+	myConnectionBlock.copySize();
 	myConnectionBlock.connections = [blk];
 	if (myBlock.name == 'action') {
 	    // Make sure we don't make two actions with the same name.

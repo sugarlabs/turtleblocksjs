@@ -1297,6 +1297,18 @@ define(function (require) {
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
+		case 'heading':
+		    newBlock(headingBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'x':
+		    newBlock(xBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'y':
+		    newBlock(yBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
 		case 'plus':
 		case 'plus2':
 		    newBlock(plusBlock);
@@ -1666,6 +1678,15 @@ define(function (require) {
 		    a = parseArg(cblk1);
 		    b = parseArg(cblk2);
 		    blockList[blk].value = doMinus(a, b);
+		    break;
+		case 'heading':
+		    blockList[blk].value = turtleOrientation;
+		    break;
+		case 'x':
+		    blockList[blk].value = turtleX;
+		    break;
+		case 'y':
+		    blockList[blk].value = turtleY;
 		    break;
 		case 'color':
 		    blockList[blk].value = turtleColor;

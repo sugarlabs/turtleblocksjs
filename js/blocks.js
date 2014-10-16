@@ -144,6 +144,27 @@ leftBlock.args = 1;
 leftBlock.defaults.push(90);
 leftBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
+var headingBlock = new ProtoBlock('heading');
+protoBlockList.push(headingBlock);
+headingBlock.palette = turtlePalette;
+turtlePalette.blockList.push(headingBlock);
+headingBlock.style = 'arg';
+headingBlock.docks = [[0, 20, 'numberout']];
+
+var xBlock = new ProtoBlock('x');
+protoBlockList.push(headingBlock);
+xBlock.palette = turtlePalette;
+turtlePalette.blockList.push(xBlock);
+xBlock.style = 'arg';
+xBlock.docks = [[0, 20, 'numberout']];
+
+var yBlock = new ProtoBlock('y');
+protoBlockList.push(headingBlock);
+yBlock.palette = turtlePalette;
+turtlePalette.blockList.push(yBlock);
+yBlock.style = 'arg';
+yBlock.docks = [[0, 20, 'numberout']];
+
 // Pen palette
 var setcolorBlock = new ProtoBlock('setcolor');
 protoBlockList.push(setcolorBlock);

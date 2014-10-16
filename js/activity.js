@@ -642,7 +642,8 @@ define(function (require) {
 	    }
 	}
 
-	function arcTurtle(cx, cy, nx, ny, radius, start, end, anticlockwise, invert) {
+	function arcTurtle(cx, cy, nx, ny, radius, start, end, anticlockwise,
+			   invert) {
 	    if (invert) {
 		ox = turtleX2screenX(oldPt.x);
 		cx = turtleX2screenX(cx);

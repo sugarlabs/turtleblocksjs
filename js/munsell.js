@@ -20,6 +20,7 @@ function getMunsellColor(hue, value, chroma) {
 	c = 14;
     }
     var i = h * 165 + v * 15 + c;
+    // console.log(hue + ' ' + value + ' ' + chroma);
     // console.log(h + ' ' + v + ' ' + c + ' :' + i + ' (' + munsell[i] + ')');
     return munsell[i];
 }

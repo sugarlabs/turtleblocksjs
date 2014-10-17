@@ -31,21 +31,29 @@ define(function (require) {
 
         // Colorize the activity icon.
         var activityButton = document.getElementById('activity-button');
+        var colors;  // I should be getting the XO colors here?
         activity.getXOColor(function (error, colors) {
             icon.colorize(activityButton, colors);
         });
 
-	var turtle_delay = 1000;
+	// default values
+	var defaultColor = 0;
+	var defaultValue = 50;
+	var defaultChroma = 100;
+	var defaultStroke = 5;
+	var defaultDelay = 1000;  // MS
+
+	var turtleDelay = defaultDelay;
 
         var fastButton = document.getElementById('fast-button');
         fastButton.onclick = function () {
-	    turtle_delay = 0;
+	    turtleDelay = 0;
 	    runLogoCommands();
         }
 
         var slowButton = document.getElementById('slow-button');
         slowButton.onclick = function () {
-	    turtle_delay = 1000;
+	    turtleDelay = defaultDelay;
 	    runLogoCommands();
         }
 
@@ -139,10 +147,9 @@ define(function (require) {
 	// Cache bitmaps that have been removed for reuse
 	var bitmapCache = [];
 
-        var color;
-        var stroke;
-        var colors;
-	var time;
+        var canvasColor = getMunsellColor(defaultColor, defaultValue, defaultChroma);
+        var canvasStroke = defaultStroke;
+	var time = 0;
 
 	// To avoid infinite loops
 	var loopCounter = 0;
@@ -168,14 +175,13 @@ define(function (require) {
         var turtleBitmap = null;
         var Turtle = 'images/turtle.svg';
 
-	var filling = false;
-	var penState = true;
+	var turtleFillState = false;
+	var turtlePenState = true;
 	var turtleOrientation = 0.0;
-	var turtleColor = 0;
-        var turtleValue = 50;
-        var turtleChroma = 100;
-	var turtleStroke = 5;
-        var oldPt;
+	var turtleColor = defaultColor;
+        var turtleValue = defaultValue;
+        var turtleChroma = defaultChroma;
+	var turtleStroke = defaultStroke;
 	var turtleX = 0;
 	var turtleY = 0;
 
@@ -312,8 +318,7 @@ define(function (require) {
 
 		function handleClick(event) {
 		    if (!moved) {
-			// TODO: run block on click
-			console.log('click');
+			// console.log('click');
 			var topBlock = findTopBlock(thisBlock);
 			runLogoCommands(topBlock);
 		    }
@@ -436,7 +441,6 @@ define(function (require) {
 		checkExpandableBlocks.push(blk);
 		blk = insideExpandableBlock(blk);
 	    }
-
 
 	    var check2ArgBlocks = [];
 	    var c = blockList[thisBlock].connections[0];
@@ -644,8 +648,7 @@ define(function (require) {
 
 		function handleClick(event) {
 		    if (!moved) {
-			// TODO: run block on click
-			console.log('turtle click');
+			// console.log('turtle click');
 		    }
 		}
 
@@ -696,36 +699,33 @@ define(function (require) {
 		ny = y;
 	    }
 
-	    if (!filling) {
-            	drawingCanvas.graphics.beginStroke(getMunsellColor(turtleColor, turtleValue, turtleChroma));
-		drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
+	    if (!turtleFillState) {
+            	drawingCanvas.graphics.beginStroke(canvasColor);
+		drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
 		drawingCanvas.graphics.moveTo(ox, oy);
 	    }
 
-	    if (penState) {
+	    if (turtlePenState) {
 		drawingCanvas.graphics.lineTo(nx, ny);
 	    } else {
 		drawingCanvas.graphics.moveTo(nx, ny);
 	    }
 	}
 
-	function arcTurtle(cx, cy, nx, ny, radius, start, end, anticlockwise,
+	function arcTurtle(cx, cy, ox, oy, nx, ny, radius, start, end, anticlockwise,
 			   invert) {
 	    if (invert) {
-		ox = turtleX2screenX(oldPt.x);
 		cx = turtleX2screenX(cx);
+		ox = turtleX2screenX(ox);
 		nx = turtleX2screenX(nx);
-		oy = invertY(oldPt.y);
 		cy = invertY(cy);
+		oy = invertY(oy);
 		ny = invertY(ny);
-	    } else {
-		ox = oldPt.x;
-		oy = oldPt.y;
 	    }
 
-	    if (!filling) {
-            	drawingCanvas.graphics.beginStroke(getMunsellColor(turtleColor, turtleValue, turtleChroma));
-		drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
+	    if (!turtleFillState) {
+            	drawingCanvas.graphics.beginStroke(canvasColor);
+		drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
 		drawingCanvas.graphics.moveTo(ox, oy);
 	    }
 
@@ -737,7 +737,7 @@ define(function (require) {
 		ea = end;
 	    }
 
-	    if (penState) {
+	    if (turtlePenState) {
 		drawingCanvas.graphics.arc(cx, cy, radius, sa, ea,
 					   anticlockwise);
 	    } else {
@@ -1535,7 +1535,7 @@ define(function (require) {
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'multiply':
-		case 'multiply2':
+		case 'product2':
 		    newBlock(multiplyBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
@@ -1569,24 +1569,24 @@ define(function (require) {
 		    break;
 		case 'value':
 		case 'shade':
-		    newBlock(valueBlock);
+		    newBlock(shadeBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'setvalue':
 		case 'setshade':
-		    newBlock(setvalueBlock);
+		    newBlock(setshadeBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
-		case 'grey':
 		case 'gray':
+		case 'grey':
 		    newBlock(chromaBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
-		case 'setchroma':
-		case 'setgrey':
 		case 'setgray':
+		case 'setgrey':
+		case 'setchroma':
 		    newBlock(setchromaBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
@@ -1703,9 +1703,9 @@ define(function (require) {
 		    }
 		}
 	    }
-	    for (var blk = 0; blk < blockList.length; blk++) {
-		console.log(blk + ' ' + blockList[blk].name + ' ' + blockList[blk].connections + ' ' + blockList[blk].value);
-	    }
+	    // for (var blk = 0; blk < blockList.length; blk++) {
+		// console.log(blk + ' ' + blockList[blk].name + ' ' + blockList[blk].connections + ' ' + blockList[blk].value);
+	    // }
 	    updateBlockImages();
 	    updateBlockLabels();
 	    for (var blk = 0; blk < adjustTheseDocks.length; blk++) {
@@ -1783,8 +1783,8 @@ define(function (require) {
 	    if (blk == null) {
 		return;
 	    }
-	    console.log('running ' + blockList[blk].name);
-	    setTimeout(function(){runFromBlockNow(blk);}, turtle_delay); 
+	    // console.log('running ' + blockList[blk].name);
+	    setTimeout(function(){runFromBlockNow(blk);}, turtleDelay); 
 	}
 
         function runFromBlockNow(blk) {
@@ -1809,7 +1809,7 @@ define(function (require) {
 	    // Some flow blocks have childflows, e.g., repeat
 	    var childflow = null;
 
-	    if (turtle_delay != null) {
+	    if (turtleDelay != null) {
 		highlight(blk);
 	    }
 
@@ -1893,12 +1893,12 @@ define(function (require) {
 		    doSetColor(args[0]);
          	}
 		break;
-            case 'setvalue':
+            case 'setshade':
 		if (args.length == 1) {
 		    doSetValue(args[0]);
          	}
 		break;
-            case 'setchroma':
+            case 'setgrey':
 		if (args.length == 1) {
 		    doSetChroma(args[0]);
          	}
@@ -1948,7 +1948,7 @@ define(function (require) {
 	    if (nextBlock != null) {
 		runFromBlock(nextBlock);
 	    } else {
-		setTimeout(function(){unhighlight();}, turtle_delay);
+		setTimeout(function(){unhighlight();}, turtleDelay);
 	    }
 	}
 
@@ -2013,19 +2013,17 @@ define(function (require) {
 		    break;
 		case 'x':
 		    blockList[blk].value = screenX2turtleX(turtleBitmap.x);
-		    console.log('x: ' + screenX2turtleX(turtleBitmap.x));
 		    break;
 		case 'y':
 		    blockList[blk].value = invertY(turtleBitmap.y);
-		    console.log('y: ' + invertY(turtleBitmap.y));
 		    break;
 		case 'color':
 		    blockList[blk].value = turtleColor;
 		    break;
-		case 'value':
+		case 'shade':
 		    blockList[blk].value = turtleValue;
 		    break;
-		case 'chroma':
+		case 'grey':
 		    blockList[blk].value = turtleChroma;
 		    break;
 		case 'pensize':
@@ -2197,9 +2195,6 @@ define(function (require) {
 	    var newPt = new createjs.Point(
 		oldPt.x + Number(steps) * Math.sin(rad),
 		oldPt.y + Number(steps) * Math.cos(rad))
-            // color = colorTable[turtleColor];
-            color = getMunsellColor(turtleColor, turtleValue, turtleChroma);
-            stroke = turtleStroke;
 	    moveTurtle(oldPt.x, oldPt.y, newPt.x, newPt.y, true);
 	    turtleBitmap.x = turtleX2screenX(newPt.x);
 	    turtleBitmap.y = invertY(newPt.y);
@@ -2212,9 +2207,6 @@ define(function (require) {
 				       invertY(turtleBitmap.y));
 	    // new turtle point
 	    var newPt = new createjs.Point(Number(x), Number(y));
-            // color = colorTable[turtleColor];
-            color = getMunsellColor(turtleColor, turtleValue, turtleChroma);
-            stroke = turtleStroke;
 	    moveTurtle(oldPt.x, oldPt.y, newPt.x, newPt.y, true);
 	    turtleBitmap.x = turtleX2screenX(newPt.x);
 	    turtleBitmap.y = invertY(newPt.y);
@@ -2230,7 +2222,6 @@ define(function (require) {
 	    // old turtle point
             oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
 				       invertY(turtleBitmap.y));
-
 
 	    if( adeg < 0 ) {
 		var anticlockwise = true;
@@ -2250,10 +2241,7 @@ define(function (require) {
 		var nx = cx - Math.cos(orad + arad) * r;
 		var ny = cy + Math.sin(orad + arad) * r;
 	    }
-	    // color = colorTable[turtleColor];
-            color = getMunsellColor(turtleColor, turtleValue, turtleChroma);
-            stroke = turtleStroke;
-	    arcTurtle(cx, cy, nx, ny, r, orad, orad + arad, anticlockwise, true);
+	    arcTurtle(cx, cy, ox, oy, nx, ny, r, orad, orad + arad, anticlockwise, true);
 
 	    turtleBitmap.x = turtleX2screenX(nx),
 	    turtleBitmap.y = invertY(ny);
@@ -2280,30 +2268,19 @@ define(function (require) {
             update = true;
 	}
 
-	function doSetColor(color) {
-	    turtleColor = Math.round(color);
-	    turtleColor %= 100;
-	    if (turtleColor < 0) {
-		turtleColor += 100;
-	    }
+	function doSetColor(hue) {
+	    turtleColor = Number(hue);
+            canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
 	}
 
-	function doSetValue(color) {
-	    turtleValue = Math.round(color);
-	    if (turtleValue < 0) {
-		turtleValue = 0;
-	    } else if (turtleValue > 100) {
-		turtleValue = 100;
-	    }
+	function doSetValue(shade) {
+	    turtleValue = Number(shade);
+            canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
 	}
 
-	function doSetChroma(color) {
-	    turtleChroma = Math.round(color);
-	    if (turtleChroma < 0) {
-		turtleChroma = 0;
-	    } else if (turtleChroma > 100) {
-		turtleChroma = 100;
-	    }
+	function doSetChroma(chroma) {
+	    turtleChroma = Number(chroma);
+            canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
 	}
 
 	function doSetPensize(size) {
@@ -2311,42 +2288,50 @@ define(function (require) {
 	}
 
         function doPenUp() {
-	    penState = false;
+	    turtlePenState = false;
 	}
 
 	function doPenDown() {
-	    penState = true;
+	    turtlePenState = true;
 	}
 
         function doStartFill() {
 	    /// start tracking points here
-	    drawingCanvas.graphics.beginFill(color);
-	    filling = true;
+	    drawingCanvas.graphics.beginFill(canvasColor);
+	    turtleFillState = true;
 	}
 
 	function doEndFill() {
 	    /// redraw the points with fill enabled
 	    drawingCanvas.graphics.endFill();
-	    filling = false;
+	    turtleFillState = false;
 	}
 
 	function doClear() {
 	    // Reset turtle.
-            update = true;
 	    turtleX = 0;
 	    turtleY = 0;
 	    turtleOrientation = 0.0;
-	    turtleColor = 0;
-	    turtleStroke = 5;
+	    turtleColor = defaultColor;
+	    turtleValue = defaultValue;
+	    turtleChroma = defaultChroma;
+	    turtleStroke = defaultStroke;
+
 	    turtleBitmap.x = turtleX2screenX(turtleX);
 	    turtleBitmap.y = invertY(turtleY);
-	    turtleBitmap.rotation = 0;
+	    turtleBitmap.rotation = turtleOrientation;
+
 	    // Clear all the boxes.
 	    boxList = [];
+
 	    // Clear all graphics.
-            color = getMunsellColor(turtleColor, turtleValue, turtleChroma);
-            stroke = turtleStroke;
+	    turtlePenState = true;
+	    turtleFillState = false;
+	    time = 0;
+            canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
+            canvasStroke = turtleStroke;
             drawingCanvas.graphics.clear();
+            update = true;
 	}
 
 	function findBox(name) {
@@ -2376,7 +2361,7 @@ define(function (require) {
 	    fileChooser.addEventListener("change", function(event) {
 
 		// Read file here.
-		console.log('fileChooser ' + this.value);
+		// console.log('fileChooser ' + this.value);
 		var reader = new FileReader();
 
 		reader.onload = (function(theFile) {
@@ -2398,7 +2383,7 @@ define(function (require) {
 	    var fileChooser = document.getElementById("mySaveFile");
 	    fileChooser.addEventListener("change", function(event) {
 		// Do something here.
-		console.log('fileChooser ' + this.value);
+		// console.log('fileChooser ' + this.value);
 	    }, false);
             fileChooser.focus();
 	    fileChooser.click();

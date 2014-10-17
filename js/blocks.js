@@ -220,20 +220,20 @@ penPalette.blockList.push(colorBlock);
 colorBlock.style = 'arg';
 colorBlock.docks = [[0, 20, 'numberout']];
 
-var setvalueBlock = new ProtoBlock('setshade');
-protoBlockList.push(setvalueBlock);
-setvalueBlock.palette = penPalette;
-penPalette.blockList.push(setvalueBlock);
-setvalueBlock.args = 1;
-setvalueBlock.defaults.push(50);
-setvalueBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
+var setshadeBlock = new ProtoBlock('setshade');
+protoBlockList.push(setshadeBlock);
+setshadeBlock.palette = penPalette;
+penPalette.blockList.push(setshadeBlock);
+setshadeBlock.args = 1;
+setshadeBlock.defaults.push(50);
+setshadeBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
-var valueBlock = new ProtoBlock('shade');
-protoBlockList.push(valueBlock);
-valueBlock.palette = penPalette;
-penPalette.blockList.push(valueBlock);
-valueBlock.style = 'arg';
-valueBlock.docks = [[0, 20, 'numberout']];
+var shadeBlock = new ProtoBlock('shade');
+protoBlockList.push(shadeBlock);
+shadeBlock.palette = penPalette;
+penPalette.blockList.push(shadeBlock);
+shadeBlock.style = 'arg';
+shadeBlock.docks = [[0, 20, 'numberout']];
 
 var setchromaBlock = new ProtoBlock('setgrey');
 protoBlockList.push(setchromaBlock);

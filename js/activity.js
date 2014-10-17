@@ -417,6 +417,7 @@ define(function (require) {
 			if (overTrashCan(event.stageX, event.stageY)) {
 			    findDragGroup(thisBlock);
 			    for (var blk = 0; blk < dragGroup.length; blk++) {
+				console.log('putting ' + blockList[blk].name + ' in the trash');
 				blockList[blk].trash = true;
 				hideBlock(blk);
 			    }
@@ -1817,13 +1818,19 @@ define(function (require) {
 	    actionList = [];
 	    for (var blk = 0; blk < stackList.length; blk++) {
 		if (blockList[stackList[blk]].name == 'start') {
-		    startBlock = stackList[blk];
+		    // Don't start on a start block in the trash.
+		    if (!blockList[stackList[blk]].trash) {
+			startBlock = stackList[blk];
+		    }
 		} else if (blockList[stackList[blk]].name == 'action') {
 		    // does the action stack have a name?
 		    c = blockList[stackList[blk]].connections[1];
 		    b = blockList[stackList[blk]].connections[2];
 		    if (c != null && b != null) {
-			actionList.push([blockList[c].value, b]);
+			// Don't use an action block in the trash.
+			if (!blockList[stackList[blk]].trash) {
+			    actionList.push([blockList[c].value, b]);
+			}
 		    }
 		}
 	    }
@@ -1842,7 +1849,9 @@ define(function (require) {
 		    if (isNoRunBlock(blk)) {
 			continue;
 		    } else {
-			runFromBlock(stackList[blk]);
+			if (!blockList[stackList[blk]].trash) {
+			    runFromBlock(stackList[blk]);
+			}
 		    }
 		}
 	    }

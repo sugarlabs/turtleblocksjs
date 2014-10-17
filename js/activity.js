@@ -169,6 +169,10 @@ define(function (require) {
 
 	var activeBlock = null;
 
+	// Trash
+	var trashBitmap = null;
+	var Trash = 'images/trash.svg';
+
 	// Coordinate grid
         var cartesianBitmap = null;
         var Cartesian = 'images/Cartesian.svg';
@@ -222,6 +226,10 @@ define(function (require) {
 	    var polar = new Image();
 	    polar.src = Polar;
 	    polar.onload = handlePolarGridLoad;
+
+	    var trash = new Image();
+	    trash.src = Trash;
+	    trash.onload = handleTrashLoad;
 
 	    // Load a project.
 	    loadStart();
@@ -405,6 +413,15 @@ define(function (require) {
 			return;
 		    }
 		    if (moved) {
+			// Check if block is in the trash
+			if (overTrashCan(event.stageX, event.stageY)) {
+			    findDragGroup(thisBlock);
+			    for (var blk = 0; blk < dragGroup.length; blk++) {
+				blockList[blk].trash = true;
+				hideBlock(blk);
+			    }
+			}
+			// otherwise, process move
 			blockMoved(thisBlock);
 		    }
 		    unhighlight();
@@ -749,6 +766,47 @@ define(function (require) {
 	    } else {
 		drawingCanvas.graphics.moveTo(nx, ny);
 	    }
+	}
+
+        function handleTrashLoad(event) {
+	    // Load the trashcan
+            var image = event.target;
+            var imgW = image.width;
+            var imgH = image.height;
+            var bitmap;
+            var container = new createjs.Container();
+            stage.addChild(container);
+
+            bitmap = new createjs.Bitmap(image);
+	    trashBitmap = bitmap;
+            container.addChild(bitmap);
+
+	    // TODO: change state of trashcan if there is content in it.
+	    // TODO: empty trash?
+	    // TODO: restore from trash.
+
+            bitmap.x = canvas.width - image.width;
+            bitmap.y = 0;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+            bitmap.name = 'bmp_trash';
+
+            document.getElementById('loader').className = '';
+            createjs.Ticker.addEventListener('tick', tick);
+	    bitmap.visible = true;
+        }
+
+	function overTrashCan(x, y) {
+	    if (x < trashBitmap.x) {
+		return false;
+	    } else if (x > trashBitmap.x + trashBitmap.width) {
+		return false;
+	    }
+	    if (y < trashBitmap.y) {
+		return false;
+	    } else if (y > trashBitmap.y + trashBitmap.height) {
+		return false;
+	    }
+	    return true;
 	}
 
         function handleCartesianGridLoad(event) {
@@ -2109,21 +2167,27 @@ define(function (require) {
 	    }
 	}
 
+	function hideBlock(blk) {
+	    myBlock = blockList[blk];
+	    myBlock.bitmap.visible = false;
+	    if (isValueBlock(blk)) {
+		myBlock.label.style.display = 'none';
+	    }
+	    if (isExpandableBlock(blk)) {
+		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+		    myBlock.fillerBitmaps[i] = false;
+		}
+		myBlock.bottomBitmap.visible = false;
+	    }
+	}
+
 	function hideBlocks() {
 	    // Hide all the blocks.
 	    for (blk = 0; blk < blockList.length; blk++) {
-		myBlock = blockList[blk];
-		myBlock.bitmap.visible = false;
-		if (isValueBlock(blk)) {
-		    myBlock.label.style.display = 'none';
-		}
-		if (isExpandableBlock(blk)) {
-		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-			myBlock.fillerBitmaps[i] = false;
-		    }
-		    myBlock.bottomBitmap.visible = false;
-		}
+		hideBlock(blk);
 	    }
+	    // And hide some other things.
+	    trashBitmap.visible = false;
 	    update = true;
 	}
 
@@ -2131,6 +2195,9 @@ define(function (require) {
 	    // Show all the blocks.
 	    for (blk = 0; blk < blockList.length; blk++) {
 		myBlock = blockList[blk];
+		if (myBlock.trash) {
+		    continue;  // Don't show blocks in the trash.
+		}
 		myBlock.bitmap.visible = true;
 		if (isValueBlock(blk)) {
 		    myBlock.label.style.display = '';
@@ -2142,6 +2209,8 @@ define(function (require) {
 		    myBlock.bottomBitmap.visible = true;
 		}
 	    }
+	    // And show some other things.
+	    trashBitmap.visible = true;
 	    update = true;
 	}
 

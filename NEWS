@@ -34,6 +34,7 @@
   * implement color model (Munsell)
   * fix Munsell 2.5 tables
   * set background color
+  * trash
 
 TODO:
   * save blocks
@@ -46,9 +47,9 @@ TODO:
   * turtle skin
   * multiple turtles (or only one start block)
   * keyboard short cuts
-  * trash
   * move labels to container
   * seems that docks and filler associated with proto instead of instance?
    - fix repeat docking bug
    - fix filler hide bug
+  * restore from trash
 

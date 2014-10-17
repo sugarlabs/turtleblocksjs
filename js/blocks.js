@@ -60,7 +60,7 @@ currentPalette = 0;  // Turtle
 
 // Define block proto objects
 function ProtoBlock (name) {
-    this.name = name;
+    this.name = name;  // used for svg filename, run switch, and palette label
     this.palette = null;
     this.style = null;
     this.expandable = false;
@@ -549,7 +549,8 @@ function Block (protoblock) {
     this.bitmap = null;
     this.x = 0;
     this.y = 0;
-    this.size = 1;
+    this.trash = false;  // is this block in the trash?
+    this.size = 1;  // Proto size is copied here.
     this.docks = [];  // Proto dock is copied here.
     this.connections = [];
 }

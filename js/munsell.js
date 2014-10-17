@@ -1,5 +1,20 @@
-// Munsell color data
-// converted to sRGB
+// Copyright (c) 2014 Walter Bender
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with this library; if not, write to the Free Software
+// Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
+
+// Munsell data converted to sRGB
+//
+// Munsell data derived from CPAN Color::Model::Munsell
+// http://search.cpan.org/~tonodera/Color-Model-Munsell-0.02/
+// which is a vast improvement over the Munsell Perl module 
+// written by Walter Bender and Jon Orwant back in the day.
 
 function getMunsellColor(hue, value, chroma) {
     // hue (aka color) 0-100 -> 0-39
@@ -25,7 +40,7 @@ function getMunsellColor(hue, value, chroma) {
     return munsell[i];
 }
 
-// 0R 2.5R 5R 7.5R 0YR ... 7.5RP -> V0 - V10 -> C0 - C28 (by 2)
+// 10RP 2.5R 5R 7.5R 10R ... 7.5RP -> V0 - V10 -> C0 - C28 (by 2)
 munsell = [
 // 10RP (0R)
 "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",

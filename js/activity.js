@@ -37,6 +37,7 @@ define(function (require) {
         });
 
 	// default values
+	var defaultBackgroundColor = [70, 60, 20];
 	var defaultColor = 0;
 	var defaultValue = 50;
 	var defaultChroma = 100;
@@ -147,11 +148,16 @@ define(function (require) {
 	// Cache bitmaps that have been removed for reuse
 	var bitmapCache = [];
 
-        var canvasColor = getMunsellColor(defaultColor, defaultValue, defaultChroma);
+	// Set the default background color...
+	var canvasColor = getMunsellColor(
+	    defaultBackgroundColor[0], defaultBackgroundColor[1], defaultBackgroundColor[2]);
+	setBackgroundColor();
+	// then set default canvas color.
+	canvasColor = getMunsellColor(defaultColor, defaultValue, defaultChroma);
         var canvasStroke = defaultStroke;
 	var time = 0;
 
-	// To avoid infinite loops
+	// To avoid infinite loops in dock search (temporary work-around)
 	var loopCounter = 0;
 
 	// Queue for loops
@@ -1624,6 +1630,12 @@ define(function (require) {
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
+		case 'background':
+		case 'setbackgroundcolor':
+		    newBlock(backgroundBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    break;
 		case 'number':
 		    newBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
@@ -1913,6 +1925,9 @@ define(function (require) {
 		break;
             case 'endfill':
 		doEndFill();
+		break;
+            case 'background':
+		setBackgroundColor();
 		break;
             case 'penup':
 		doPenUp();
@@ -2307,6 +2322,12 @@ define(function (require) {
 	    turtleFillState = false;
 	}
 
+	function setBackgroundColor() {
+	    /// change body background in DOM to current color
+	    var body = document.getElementById('body');
+	    body.style.background = canvasColor;
+	}
+
 	function doClear() {
 	    // Reset turtle.
 	    turtleX = 0;
@@ -2328,6 +2349,10 @@ define(function (require) {
 	    turtlePenState = true;
 	    turtleFillState = false;
 	    time = 0;
+
+	    canvasColor = getMunsellColor(
+		defaultBackgroundColor[0], defaultBackgroundColor[1], defaultBackgroundColor[2]);
+	    setBackgroundColor();
             canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
             canvasStroke = turtleStroke;
             drawingCanvas.graphics.clear();

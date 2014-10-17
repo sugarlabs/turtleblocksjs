@@ -289,6 +289,12 @@ endfillBlock.palette = penPalette;
 penPalette.blockList.push(endfillBlock);
 endfillBlock.docks = [[20, 0, 'out'], [20, 42, 'in']];
 
+var backgroundBlock = new ProtoBlock('background');
+protoBlockList.push(backgroundBlock);
+backgroundBlock.palette = penPalette;
+penPalette.blockList.push(backgroundBlock);
+backgroundBlock.docks = [[20, 0, 'out'], [20, 42, 'in']];
+
 // Numbers palette
 var numberBlock = new ProtoBlock('number');
 protoBlockList.push(numberBlock);

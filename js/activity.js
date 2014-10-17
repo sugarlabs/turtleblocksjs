@@ -14,6 +14,7 @@ define(function (require) {
     var icon = require('sugar-web/graphics/icon');
     require('easel');
     // Palettes and Blocks are defined here
+    require('activity/munsell')
     require('activity/blocks')
 
     // Manipulate the DOM only when it is ready.
@@ -171,6 +172,8 @@ define(function (require) {
 	var penState = true;
 	var turtleOrientation = 0.0;
 	var turtleColor = 0;
+        var turtleValue = 50;
+        var turtleChroma = 100;
 	var turtleStroke = 5;
         var oldPt;
 	var turtleX = 0;
@@ -694,7 +697,7 @@ define(function (require) {
 	    }
 
 	    if (!filling) {
-            	drawingCanvas.graphics.beginStroke(color);
+            	drawingCanvas.graphics.beginStroke(getMunsellColor(turtleColor, turtleValue, turtleChroma));
 		drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
 		drawingCanvas.graphics.moveTo(ox, oy);
 	    }
@@ -721,7 +724,7 @@ define(function (require) {
 	    }
 
 	    if (!filling) {
-            	drawingCanvas.graphics.beginStroke(color);
+            	drawingCanvas.graphics.beginStroke(getMunsellColor(turtleColor, turtleValue, turtleChroma));
 		drawingCanvas.graphics.setStrokeStyle(stroke, 'round', 'round');
 		drawingCanvas.graphics.moveTo(ox, oy);
 	    }
@@ -848,9 +851,11 @@ define(function (require) {
                 update = true;
 	    } else if (size > blockList[blk].fillerBitmaps.length) {
 		var n = size - j - 1;  // one slot built in
+		if (blockList[blk].name == 'repeat') {
+		    console.log('adding filler/dock offset to repeat: ' + n);
+		}
 		for (var i = 0; i < n; i++) {
 		    var c = i + j;
-
 		    addFiller(blk, yoff + c * loff, c);
 		    blockList[blk].docks.last()[1] += loff;
 		}
@@ -1551,11 +1556,38 @@ define(function (require) {
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'color':
+		case 'hue':
 		    newBlock(colorBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'setcolor':
+		case 'sethue':
 		    newBlock(setcolorBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'value':
+		case 'shade':
+		    newBlock(valueBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'setvalue':
+		case 'setshade':
+		    newBlock(setvalueBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'grey':
+		case 'gray':
+		    newBlock(chromaBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'setchroma':
+		case 'setgrey':
+		case 'setgray':
+		    newBlock(setchromaBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
@@ -1861,6 +1893,16 @@ define(function (require) {
 		    doSetColor(args[0]);
          	}
 		break;
+            case 'setvalue':
+		if (args.length == 1) {
+		    doSetValue(args[0]);
+         	}
+		break;
+            case 'setchroma':
+		if (args.length == 1) {
+		    doSetChroma(args[0]);
+         	}
+		break;
             case 'setpensize':
 		if (args.length == 1) {
 		    doSetPensize(args[0]);
@@ -1979,6 +2021,12 @@ define(function (require) {
 		    break;
 		case 'color':
 		    blockList[blk].value = turtleColor;
+		    break;
+		case 'value':
+		    blockList[blk].value = turtleValue;
+		    break;
+		case 'chroma':
+		    blockList[blk].value = turtleChroma;
 		    break;
 		case 'pensize':
 		    blockList[blk].value = turtleStroke;
@@ -2149,7 +2197,8 @@ define(function (require) {
 	    var newPt = new createjs.Point(
 		oldPt.x + Number(steps) * Math.sin(rad),
 		oldPt.y + Number(steps) * Math.cos(rad))
-            color = colorTable[turtleColor];
+            // color = colorTable[turtleColor];
+            color = getMunsellColor(turtleColor, turtleValue, turtleChroma);
             stroke = turtleStroke;
 	    moveTurtle(oldPt.x, oldPt.y, newPt.x, newPt.y, true);
 	    turtleBitmap.x = turtleX2screenX(newPt.x);
@@ -2163,7 +2212,8 @@ define(function (require) {
 				       invertY(turtleBitmap.y));
 	    // new turtle point
 	    var newPt = new createjs.Point(Number(x), Number(y));
-            color = colorTable[turtleColor];
+            // color = colorTable[turtleColor];
+            color = getMunsellColor(turtleColor, turtleValue, turtleChroma);
             stroke = turtleStroke;
 	    moveTurtle(oldPt.x, oldPt.y, newPt.x, newPt.y, true);
 	    turtleBitmap.x = turtleX2screenX(newPt.x);
@@ -2200,7 +2250,8 @@ define(function (require) {
 		var nx = cx - Math.cos(orad + arad) * r;
 		var ny = cy + Math.sin(orad + arad) * r;
 	    }
-	    color = colorTable[turtleColor];
+	    // color = colorTable[turtleColor];
+            color = getMunsellColor(turtleColor, turtleValue, turtleChroma);
             stroke = turtleStroke;
 	    arcTurtle(cx, cy, nx, ny, r, orad, orad + arad, anticlockwise, true);
 
@@ -2234,6 +2285,24 @@ define(function (require) {
 	    turtleColor %= 100;
 	    if (turtleColor < 0) {
 		turtleColor += 100;
+	    }
+	}
+
+	function doSetValue(color) {
+	    turtleValue = Math.round(color);
+	    if (turtleValue < 0) {
+		turtleValue = 0;
+	    } else if (turtleValue > 100) {
+		turtleValue = 100;
+	    }
+	}
+
+	function doSetChroma(color) {
+	    turtleChroma = Math.round(color);
+	    if (turtleChroma < 0) {
+		turtleChroma = 0;
+	    } else if (turtleChroma > 100) {
+		turtleChroma = 100;
 	    }
 	}
 
@@ -2275,7 +2344,7 @@ define(function (require) {
 	    // Clear all the boxes.
 	    boxList = [];
 	    // Clear all graphics.
-            color = colorTable[turtleColor];
+            color = getMunsellColor(turtleColor, turtleValue, turtleChroma);
             stroke = turtleStroke;
             drawingCanvas.graphics.clear();
 	}

@@ -220,6 +220,36 @@ penPalette.blockList.push(colorBlock);
 colorBlock.style = 'arg';
 colorBlock.docks = [[0, 20, 'numberout']];
 
+var setvalueBlock = new ProtoBlock('setshade');
+protoBlockList.push(setvalueBlock);
+setvalueBlock.palette = penPalette;
+penPalette.blockList.push(setvalueBlock);
+setvalueBlock.args = 1;
+setvalueBlock.defaults.push(50);
+setvalueBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
+
+var valueBlock = new ProtoBlock('shade');
+protoBlockList.push(valueBlock);
+valueBlock.palette = penPalette;
+penPalette.blockList.push(valueBlock);
+valueBlock.style = 'arg';
+valueBlock.docks = [[0, 20, 'numberout']];
+
+var setchromaBlock = new ProtoBlock('setgrey');
+protoBlockList.push(setchromaBlock);
+setchromaBlock.palette = penPalette;
+penPalette.blockList.push(setchromaBlock);
+setchromaBlock.args = 1;
+setchromaBlock.defaults.push(100);
+setchromaBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
+
+var chromaBlock = new ProtoBlock('grey');
+protoBlockList.push(chromaBlock);
+chromaBlock.palette = penPalette;
+penPalette.blockList.push(chromaBlock);
+chromaBlock.style = 'arg';
+chromaBlock.docks = [[0, 20, 'numberout']];
+
 var setpensizeBlock = new ProtoBlock('setpensize');
 protoBlockList.push(setpensizeBlock);
 setpensizeBlock.palette = penPalette;

@@ -31,16 +31,22 @@
   * lots-o-sample projects
   * expanding arithmetic blocks
   * expanding 2-arg blocks
+  * implement color model (Munsell)
+  * fix Munsell 2.5 tables
 
 TODO:
   * save blocks
   * copy/paste
   * user defined
   * better compartmentalization of code
-  * implement color model (Munsell?)
   * sensors/media
   * decide on a palette strategy
   * implement more sophisticated blocks
   * turtle skin
   * multiple turtles (or only one start block)
   * keyboard short cuts
+  * fix problem with 
+  * trash
+  * move labels to container
+  * fix repeat docking bug
+  * fix filler hide bug

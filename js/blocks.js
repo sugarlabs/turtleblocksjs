@@ -557,12 +557,13 @@ function Block (protoblock) {
 }
 
 Block.prototype.copySize = function() {
-    this.size = this.protoblock.size;
+    this.size = 0 + this.protoblock.size;
 }
 
 Block.prototype.copyDocks = function() {
     for (var i = 0; i < this.protoblock.docks.length; i++) {
-	this.docks.push(this.protoblock.docks[i]);
+	var dock = [this.protoblock.docks[i][0], this.protoblock.docks[i][1], this.protoblock.docks[i][2]];
+	this.docks.push(dock);
     }
 }
 

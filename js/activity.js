@@ -1329,25 +1329,26 @@ define(function (require) {
 
         function moveBlock(blk, x, y) {
 	    // Move a block (and its label) to x, y.
-	    if (blockList[blk].bitmap == null) {
-		dx = x - blockList[blk].x;
-		dy = y - blockList[blk].y;
-		blockList[blk].x = x
-		blockList[blk].y = y
+	    var myBlock = blockList[blk];
+	    if (myBlock.bitmap == null) {
+		dx = x - myBlock.x;
+		dy = y - myBlock.y;
+		myBlock.x = x
+		myBlock.y = y
 	    } else {
-		dx = x - blockList[blk].bitmap.x;
-		dy = y - blockList[blk].bitmap.y;
-		blockList[blk].bitmap.x = x
-		blockList[blk].bitmap.y = y
-		blockList[blk].x = blockList[blk].bitmap.x
-		blockList[blk].y = blockList[blk].bitmap.y
+		dx = x - myBlock.bitmap.x;
+		dy = y - myBlock.bitmap.y;
+		myBlock.bitmap.x = x
+		myBlock.bitmap.y = y
+		myBlock.x = myBlock.bitmap.x
+		myBlock.y = myBlock.bitmap.y
 	    }
 	    if (isExpandableBlock(blk)) {
 		moveExtraParts(blk, dx, dy);
 	    } else if (isValueBlock(blk)) {
-		if (blockList[blk].text != null) {
-		    blockList[blk].text.x += dx;
-		    blockList[blk].text.y += dy;
+		if (myBlock.text != null) {
+		    myBlock.text.x += dx;
+		    myBlock.text.y += dy;
 		}
 	    }
 	    adjustLabelPosition(blk, x, y);
@@ -1355,26 +1356,27 @@ define(function (require) {
 
         function moveBlockRelative(blk, dx, dy) {
 	    // Move a block (and its label) by dx, dy.
-	    if (blockList[blk].bitmap == null) {
-		    blockList[blk].x += dx
-		    blockList[blk].y += dy
+	    var myBlock = blockList[blk];
+	    if (myBlock.bitmap == null) {
+		    myBlock.x += dx
+		    myBlock.y += dy
 		} else {
-		    blockList[blk].bitmap.x += dx
-		    blockList[blk].bitmap.y += dy
-		    blockList[blk].x = blockList[blk].bitmap.x
-		    blockList[blk].y = blockList[blk].bitmap.y
+		    myBlock.bitmap.x += dx
+		    myBlock.bitmap.y += dy
+		    myBlock.x = myBlock.bitmap.x
+		    myBlock.y = myBlock.bitmap.y
 		}
 	    if (isExpandableBlock(blk)) {
 		moveExtraParts(blk, dx, dy);
 	    } else if (isValueBlock(blk)) {
-		if (blockList[blk].text == null) {
+		if (myBlock.text == null) {
 		    console.log('null text?');
 		} else {
-		    blockList[blk].text.x += dx;
-		    blockList[blk].text.y += dy;
+		    myBlock.text.x += dx;
+		    myBlock.text.y += dy;
 		}
 	    }
-	    adjustLabelPosition(blk, blockList[blk].x, blockList[blk].y);
+	    adjustLabelPosition(blk, myBlock.x, myBlock.y);
 	}
 
 	// The modifiable labels are stored in the DOM with a
@@ -2219,6 +2221,8 @@ define(function (require) {
 		    myBlock.fillerBitmaps[i] = false;
 		}
 		myBlock.bottomBitmap.visible = false;
+	    } else if (isValueBlock(blk)) {
+		myBlock.text.visible = false;
 	    }
 	}
 
@@ -2249,6 +2253,8 @@ define(function (require) {
 			myBlock.fillerBitmaps[i] = true;
 		    }
 		    myBlock.bottomBitmap.visible = true;
+		} else if (isValueBlock(blk)) {
+		    myBlock.text.visible = true;
 		}
 	    }
 	    // And show some other things.

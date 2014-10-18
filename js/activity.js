@@ -1723,7 +1723,7 @@ define(function (require) {
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
-		case 'background':
+		case 'fillscreen':
 		case 'setbackgroundcolor':
 		    newBlock(backgroundBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
@@ -2030,7 +2030,7 @@ define(function (require) {
             case 'endfill':
 		doEndFill();
 		break;
-            case 'background':
+            case 'fillscreen':
 		setBackgroundColor();
 		break;
             case 'penup':

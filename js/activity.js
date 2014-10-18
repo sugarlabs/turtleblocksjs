@@ -261,62 +261,20 @@ define(function (require) {
             createjs.Ticker.removeEventListener('tick', tick);
         }
 
-        function handleImageLoad(event) {
-	    // TODO: use shadow
-	    // Load a block
+        function handleHighlightImageLoad(event) {
             var image = event.target;
-            var bitmap;
-	    var text = null;
-            var container = new createjs.Container();
-            stage.addChild(container);
-
 	    var thisBlock = -1;
             for (var blk = 0; blk < blockList.length; blk++) {
-		if (blockList[blk].image == image) {
+		if (blockList[blk].highlightImage == image) {
 		    thisBlock = blk;
 		    break;
 		}
             }
+	    var myBlock = blockList[thisBlock];
 
-            // Create the bitmap for the block.
-	    bitmap = new createjs.Bitmap(image);
-	    blockList[thisBlock].bitmap = bitmap;
-	    container.addChild(bitmap);
-	    bitmap.x = blockList[thisBlock].x;
-	    bitmap.y = blockList[thisBlock].y;
-	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-	    bitmap.name = 'bmp_' + thisBlock;
+	    var bitmap = myBlock.highlightBitmap;
 	    bitmap.cursor = 'pointer';
-	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
-
-	    if (isValueBlock(thisBlock)) {
-		text = new createjs.Text(blockList[thisBlock].value.toString(), "20px Courier", "#00000"); text.x = 100; text.textBaseline = "alphabetic";
-		blockList[thisBlock].text = text;
-		container.addChild(text);
-		text.x = 40 + bitmap.x;
-		text.y = 27 + bitmap.y;
-		text.scaleX = text.scaleY = text.scale = 1;
-	    }
-
-	    // Save the container as we may need it later.
-	    blockList[thisBlock].myContainer = container;
-
-	    // Expandable blocks have some extra parts.
-	    if (isExpandableBlock(thisBlock)) {
-		var yoff = blockList[thisBlock].protoblock.yoff;
-		blockList[thisBlock].fillerBitmaps = [];
-		blockList[thisBlock].bottomBitmap = null;
-		var bottomBitmap =
-		    new createjs.Bitmap(blockList[thisBlock].bottom_image);
-		blockList[thisBlock].bottomBitmap = bottomBitmap;
-		container.addChild(bottomBitmap);
-		bottomBitmap.x = bitmap.x;
-		bottomBitmap.y = bitmap.y + yoff;
-		bottomBitmap.scaleX = 1;
-		bottomBitmap.scaleY = 1;
-		bottomBitmap.scale = 1;
-		bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
-	    }
+	    var container = myBlock.myContainer;
 
             // Create a shape that represents the center of the icon.
             var hitArea = new createjs.Shape();
@@ -341,10 +299,8 @@ define(function (require) {
 
 		function handleClick(event) {
 		    if (!moved) {
-			// console.log('click');
 			if (isValueBlock(thisBlock)) {
-			    console.log('click on label');
-			    blockList[thisBlock].label.style.display = '';
+			    myBlock.label.style.display = '';
 			} else {
 			    var topBlock = findTopBlock(thisBlock);
 			    runLogoCommands(topBlock);
@@ -354,7 +310,7 @@ define(function (require) {
 
 		function handleMouseDown(event) {
 		    // Bump the target in front of its siblings.
-		    lastChild = stage.children.last();
+		    var lastChild = stage.children.last();
 		    stage.swapChildren(container, lastChild);
 
 		    moved = false;
@@ -368,26 +324,16 @@ define(function (require) {
 
 		    // TODO: Use pressmove, pressup??
 		    function handleMouseMove(event) {
-			// reset scale when moving (easier to dock that way)
-			unhighlight();
-
 			moved = true;
-			var oldX = bitmap.x;
-			var oldY = bitmap.y;
+			var oldX = myBlock.highlightBitmap.x;
+			var oldY = myBlock.highlightBitmap.y;
 			target.x = event.stageX + offset.x;
 			target.y = event.stageY + offset.y;
 
-			// Which block is this?
-			var blk = -1;
-			for (var i = 0; i < blockList.length; i++) {
-			    if (blockList[i].bitmap == bitmap) {
-				blk = i;
-				break;
-			    }
-			}
-
-			var dx = bitmap.x - oldX;
-			var dy = bitmap.y - oldY;
+			var dx = myBlock.highlightBitmap.x - oldX;
+			var dy = myBlock.highlightBitmap.y - oldY;
+			myBlock.bitmap.x += dx;
+			myBlock.bitmap.y += dy;
 
 			// Move any extra parts.
 			if (isExpandableBlock(thisBlock)) {
@@ -404,7 +350,7 @@ define(function (require) {
 			adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
 
 			// Move any connected blocks.
-			findDragGroup(blk)
+			findDragGroup(thisBlock)
 			if (dragGroup.length > 0) {
 			    for (var b = 0; b < dragGroup.length; b++) {
 				blk = dragGroup[b];
@@ -422,7 +368,7 @@ define(function (require) {
 
 		function handleMouseOver(event) {
 		    if (activeBlock == null) {
-			highlight(thisBlock);
+			// highlight(thisBlock);
 			activeBlock = thisBlock;
 			update = true;
 		    }
@@ -454,6 +400,120 @@ define(function (require) {
 
             document.getElementById('loader').className = '';
             createjs.Ticker.addEventListener('tick', tick);
+	}
+
+        function handleImageLoad(event) {
+	    // Load a block
+            var image = event.target;
+            var bitmap;
+	    var text = null;
+
+            var container = new createjs.Container();
+            stage.addChild(container);
+
+	    var thisBlock = -1;
+            for (var blk = 0; blk < blockList.length; blk++) {
+		if (blockList[blk].image == image) {
+		    thisBlock = blk;
+		    break;
+		}
+            }
+	    var myBlock = blockList[thisBlock]
+
+	    // Save the container as we may need it later.
+	    myBlock.myContainer = container;
+
+            // Create the bitmap for the block.
+	    bitmap = new createjs.Bitmap(image);
+	    myBlock.bitmap = bitmap;
+	    container.addChild(bitmap);
+	    bitmap.x = myBlock.x;
+	    bitmap.y = myBlock.y;
+	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+	    bitmap.name = 'bmp_' + thisBlock;
+	    bitmap.cursor = 'pointer';
+	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
+
+            // Create the highlight bitmap for the block.
+	    highlightBitmap = new createjs.Bitmap(myBlock.highlightImage);
+	    myBlock.highlightImage.onload = handleHighlightImageLoad;
+
+	    myBlock.highlightBitmap = highlightBitmap;
+	    container.addChild(highlightBitmap);
+	    highlightBitmap.x = bitmap.x;
+	    highlightBitmap.y = bitmap.y;
+	    highlightBitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+	    highlightBitmap.name = 'bmp_highlight_' + thisBlock;
+	    // Hide it to start
+	    highlightBitmap.visible = false;
+
+	    // Value blocks get a modifiable text label
+	    if (isValueBlock(thisBlock)) {
+		text = new createjs.Text(myBlock.value.toString(), "20px Courier", "#00000"); text.x = 100; text.textBaseline = "alphabetic";
+		myBlock.text = text;
+		container.addChild(text);
+		text.x = 40 + bitmap.x;
+		text.y = 27 + bitmap.y;
+		text.scaleX = text.scaleY = text.scale = 1;
+	    }
+
+	    // Expandable blocks have some extra parts.
+	    if (isExpandableBlock(thisBlock)) {
+		var yoff = myBlock.protoblock.yoff;
+		myBlock.fillerBitmaps = [];
+		myBlock.bottomBitmap = null;
+		var bottomBitmap =
+		    new createjs.Bitmap(myBlock.bottomImage);
+		myBlock.bottomBitmap = bottomBitmap;
+		container.addChild(bottomBitmap);
+		bottomBitmap.x = bitmap.x;
+		bottomBitmap.y = bitmap.y + yoff;
+		bottomBitmap.scaleX = 1;
+		bottomBitmap.scaleY = 1;
+		bottomBitmap.scale = 1;
+		bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
+		var highlightBottomBitmap =
+		    new createjs.Bitmap(myBlock.highlightBottomImage);
+		myBlock.highlightBottomBitmap = highlightBottomBitmap;
+		container.addChild(highlightBottomBitmap);
+		highlightBottomBitmap.x = bitmap.x;
+		highlightBottomBitmap.y = bitmap.y + yoff;
+		highlightBottomBitmap.scaleX = 1;
+		highlightBottomBitmap.scaleY = 1;
+		highlightBottomBitmap.scale = 1;
+		highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
+		highlightBottomBitmap.visible = false;
+	    }
+
+            // Create a shape that represents the center of the icon.
+            var hitArea = new createjs.Shape();
+
+            // Position hitArea relative to the internal coordinate system
+            // of the target (bitmap instances):
+	    // * number and text blocks have a handle on the right side;
+	    // * other blocks should be sensitive in the middle.
+	    hitArea.graphics.beginFill('#FFF').drawEllipse(
+		    -44, -28, 96, 36);
+	    hitArea.x = image.width / 2;
+	    hitArea.y = image.height / 2;
+            bitmap.hitArea = hitArea;
+
+            // Wrapper function to provide scope for the event handlers.
+            (function (target) {
+		var moved = false;
+		bitmap.addEventListener('mouseover', handleMouseOver);
+
+		function handleMouseOver(event) {
+		    if (activeBlock == null) {
+			highlight(thisBlock);
+			activeBlock = thisBlock;
+			update = true;
+		    }
+		}
+            })(bitmap);
+
+            document.getElementById('loader').className = '';
+            createjs.Ticker.addEventListener('tick', tick);
         }
 
 	function moveExtraParts(blk, dx, dy) {
@@ -465,10 +525,14 @@ define(function (require) {
 	    for (var i = 0; i < blockList[blk].fillerBitmaps.length; i++) {
 		myBlock.fillerBitmaps[i].x += dx;
 		myBlock.fillerBitmaps[i].y += dy;
+		myBlock.highlightFillerBitmaps[i].x += dx;
+		myBlock.highlightFillerBitmaps[i].y += dy;
 	    }
 	    if (myBlock.bottomBitmap != null) {
 		myBlock.bottomBitmap.x += dx;
 		myBlock.bottomBitmap.y += dy;
+		myBlock.highlightBottomBitmap.x += dx;
+		myBlock.highlightBottomBitmap.y += dy;
 	    }
 	}
 
@@ -927,6 +991,7 @@ define(function (require) {
                 j = blockList[blk].fillerBitmaps.length;
 		var o = yoff + j * loff;
 		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
+		blockList[blk].highlightBottomBitmap.y = blockList[blk].bitmap.y + o;
 		if (blockList[blk].connections.last() != null) {
 		    loopCounter = 0;
 		    adjustDocks(blk);
@@ -934,9 +999,6 @@ define(function (require) {
                 update = true;
 	    } else if (size > blockList[blk].fillerBitmaps.length) {
 		var n = size - j - 1;  // one slot built in
-		if (blockList[blk].name == 'repeat') {
-		    console.log('adding filler/dock offset to repeat: ' + n);
-		}
 		for (var i = 0; i < n; i++) {
 		    var c = i + j;
 		    addFiller(blk, yoff + c * loff, c);
@@ -945,7 +1007,7 @@ define(function (require) {
                 j = blockList[blk].fillerBitmaps.length;
 		var o = yoff + j * loff;
 		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
-		if (blockList[blk].connections.last() != null) {
+		blockList[blk].highlightBottomBitmap.y = blockList[blk].bitmap.y + o;		if (blockList[blk].connections.last() != null) {
 		    loopCounter = 0;
 		    adjustDocks(blk);
 		}
@@ -1075,6 +1137,32 @@ define(function (require) {
 	    bitmap.x = blockList[blk].bitmap.x;
 	    bitmap.y = blockList[blk].bitmap.y + offset;
 	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+
+	    // And the same for the highlight blocks
+	    var name = 'bmp_' + blk + '_highlight_filler_' + c;
+	    var bi = findBitmap(name);
+	    if (bi == null) { 
+		var image = new Image();
+		if (isArgBlock(blk)) {
+		    image.src = blockList[blk].protoblock.getHighlightArgFillerSvgPath();
+		} else if (isSpecialBlock(blk)) {
+		    image.src = blockList[blk].protoblock.getHighlightSpecialFillerSvgPath();
+		} else {
+		    image.src = blockList[blk].protoblock.getHighlightFillerSvgPath();
+		}
+		var bitmap = new createjs.Bitmap(image)
+		bitmap.name = name;
+	    } else {
+		var bitmap = bitmapCache[bi];
+	    }
+	    blockList[blk].highlightFillerBitmaps.push(bitmap);
+	    blockList[blk].myContainer.addChild(bitmap);
+	    bitmap.x = blockList[blk].bitmap.x;
+	    bitmap.y = blockList[blk].bitmap.y + offset;
+	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+	    // Hide highlight to start
+	    bitmap.visible = false;
+
 	    update = true;
 	}
 
@@ -1310,19 +1398,38 @@ define(function (require) {
 		    myBlock.image.onload = handleImageLoad;
 		    if (isExpandableBlock(blk)) {
 			if (isArgBlock(blk)) {
-			    myBlock.bottom_image = new Image();
-			    myBlock.bottom_image.src =
+			    myBlock.bottomImage = new Image();
+			    myBlock.bottomImage.src =
 				myBlock.protoblock.getArgBottomSvgPath();
 			} else if (isSpecialBlock(blk)) {
-			    myBlock.bottom_image = new Image();
-			    myBlock.bottom_image.src =
+			    myBlock.bottomImage = new Image();
+			    myBlock.bottomImage.src =
 				myBlock.protoblock.getSpecialBottomSvgPath();
 			} else {
-			    myBlock.bottom_image = new Image();
-			    myBlock.bottom_image.src =
+			    myBlock.bottomImage = new Image();
+			    myBlock.bottomImage.src =
 				myBlock.protoblock.getBottomSvgPath();
 			}
 		    }
+		    // Same for highlights
+		    myBlock.highlightImage = new Image();
+		    myBlock.highlightImage.src = myBlock.protoblock.getHighlightSvgPath();
+		    if (isExpandableBlock(blk)) {
+			if (isArgBlock(blk)) {
+			    myBlock.highlightBottomImage = new Image();
+			    myBlock.highlightBottomImage.src =
+				myBlock.protoblock.getHighlightArgBottomSvgPath();
+			} else if (isSpecialBlock(blk)) {
+			    myBlock.highlightBottomImage = new Image();
+			    myBlock.highlightBottomImage.src =
+				myBlock.protoblock.getHighlightSpecialBottomSvgPath();
+			} else {
+			    myBlock.highlightBottomImage = new Image();
+			    myBlock.highlightBottomImage.src =
+				myBlock.protoblock.getHighlightBottomSvgPath();
+			}
+		    }
+
 		    update = true;
 		}
 	    }
@@ -1341,6 +1448,8 @@ define(function (require) {
 		dy = y - myBlock.bitmap.y;
 		myBlock.bitmap.x = x
 		myBlock.bitmap.y = y
+		myBlock.highlightBitmap.x = x
+		myBlock.highlightBitmap.y = y
 		myBlock.x = myBlock.bitmap.x
 		myBlock.y = myBlock.bitmap.y
 	    }
@@ -1364,6 +1473,8 @@ define(function (require) {
 		} else {
 		    myBlock.bitmap.x += dx
 		    myBlock.bitmap.y += dy
+		    myBlock.highlightBitmap.x += dx
+		    myBlock.highlightBitmap.y += dy
 		    myBlock.x = myBlock.bitmap.x
 		    myBlock.y = myBlock.bitmap.y
 		}
@@ -2089,7 +2200,6 @@ define(function (require) {
 		    if (i == null) {
 			blockList[blk].value = null;
 		    } else {
-			console.log('box ' + name + ' = ' + boxList[i][1]);
 			blockList[blk].value = boxList[i][1];
 		    }
 		    break;
@@ -2169,19 +2279,16 @@ define(function (require) {
 	function unhighlight() {
 	    if (highlightedBlock != null) {
 		var myBlock = blockList[highlightedBlock];
-		myBlock.bitmap.scaleX = 1;
-		myBlock.bitmap.scaleY = 1;
-		myBlock.bitmap.scale = 1;
+		myBlock.bitmap.visible = true;
+		myBlock.highlightBitmap.visible = false;
 		if (isExpandableBlock(highlightedBlock)) {
 		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-			myBlock.fillerBitmaps[i].scaleX = 1;
-			myBlock.fillerBitmaps[i].scaleY = 1;
-			myBlock.fillerBitmaps[i].scale = 1;
+			myBlock.fillerBitmaps[i].visible = true;
+			myBlock.highlightFillerBitmaps[i].visible = false;
 		    }
 		    if (myBlock.bottomBitmap != null) {
-			myBlock.bottomBitmap.scaleX = 1;
-			myBlock.bottomBitmap.scaleY = 1;
-			myBlock.bottomBitmap.scale = 1;
+			myBlock.bottomBitmap.visible = true;
+			myBlock.highlightBottomBitmap.visible = false;
 		    }
 		}
 		update = true;
@@ -2193,19 +2300,16 @@ define(function (require) {
 	    if (blk != null) {
 		unhighlight();
 		var myBlock = blockList[blk];
-		myBlock.bitmap.scaleX = 1.2;
-		myBlock.bitmap.scaleY = 1.2;
-		myBlock.bitmap.scale = 1.2;
+		myBlock.bitmap.visible = false;
+		myBlock.highlightBitmap.visible = true;
 		if (isExpandableBlock(blk)) {
 		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-			myBlock.fillerBitmaps[i].scaleX = 1.2;
-			myBlock.fillerBitmaps[i].scaleY = 1.2;
-			myBlock.fillerBitmaps[i].scale = 1.2;
+			myBlock.fillerBitmaps[i].visible = false;
+			myBlock.highlightFillerBitmaps[i].visible = true;
 		    }
 		    if (myBlock.bottomBitmap != null) {
-			myBlock.bottomBitmap.scaleX = 1.2;
-			myBlock.bottomBitmap.scaleY = 1.2;
-			myBlock.bottomBitmap.scale = 1.2;
+			myBlock.bottomBitmap.visible = false;
+			myBlock.highlightBottomBitmap.visible = true;
 		    }
 		}
 
@@ -2339,7 +2443,6 @@ define(function (require) {
 	}
 
         function doSetXY(x, y) {
-	    console.log('set xy: ' + x + ' ' + y);
 	    // old turtle point
             oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
 				       invertY(turtleBitmap.y));

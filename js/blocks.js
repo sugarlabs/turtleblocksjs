@@ -102,6 +102,34 @@ ProtoBlock.prototype.getSpecialBottomSvgPath = function() {
     return 'images/' + this.name + '-bottom.svg';
 }
 
+ProtoBlock.prototype.getHighlightSvgPath = function() {
+    return 'images/highlights/' + this.name + '.svg';
+}
+
+ProtoBlock.prototype.getHighlightFillerSvgPath = function() {
+    return 'images/highlights/' + this.palette.name + '-filler.svg';
+}
+
+ProtoBlock.prototype.getHighlightBottomSvgPath = function() {
+    return 'images/highlights/' + this.palette.name + '-bottom.svg';
+}
+
+ProtoBlock.prototype.getHighlightArgFillerSvgPath = function() {
+    return 'images/highlights/' + this.palette.name + '-arg-filler.svg';
+}
+
+ProtoBlock.prototype.getHighlightArgBottomSvgPath = function() {
+    return 'images/highlights/' + this.palette.name + '-arg-bottom.svg';
+}
+
+ProtoBlock.prototype.getHighlightSpecialFillerSvgPath = function() {
+    return 'images/highlights/' + this.name + '-filler.svg';
+}
+
+ProtoBlock.prototype.getHighlightSpecialBottomSvgPath = function() {
+    return 'images/highlights/' + this.name + '-bottom.svg';
+}
+
 // Instantiate the proto blocks
 var protoBlockList = []
 
@@ -547,12 +575,16 @@ function Block (protoblock) {
     this.text = null;  // text label on block itself
     this.value = null;
     this.image = null;
+    this.highlightImage = null;
     this.bitmap = null;
+    this.highlightBitmap = null;
     this.x = 0;
     this.y = 0;
     this.trash = false;  // is this block in the trash?
     this.fillerBitmaps = [];  // Expandable block feature
     this.bottomBitmap = null;  // Expandable block feature
+    this.highlightFillerBitmaps = [];  // Expandable block feature
+    this.highlightBottomBitmap = null;  // Expandable block feature
     this.size = 1;  // Proto size is copied here.
     this.docks = [];  // Proto dock is copied here.
     this.connections = [];

@@ -1007,7 +1007,8 @@ define(function (require) {
                 j = blockList[blk].fillerBitmaps.length;
 		var o = yoff + j * loff;
 		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
-		blockList[blk].highlightBottomBitmap.y = blockList[blk].bitmap.y + o;		if (blockList[blk].connections.last() != null) {
+		blockList[blk].highlightBottomBitmap.y = blockList[blk].bitmap.y + o;
+		if (blockList[blk].connections.last() != null) {
 		    loopCounter = 0;
 		    adjustDocks(blk);
 		}
@@ -1050,6 +1051,7 @@ define(function (require) {
                 j = blockList[blk].fillerBitmaps.length;
 		var o = yoff + j * loff;
 		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
+		blockList[blk].highlightBottomBitmap.y = blockList[blk].bitmap.y + o;
 		if (isArgBlock(blk)) {
 		    if (blockList[blk].connections[2] != null) {
 			loopCounter = 0;
@@ -1079,6 +1081,7 @@ define(function (require) {
                 j = blockList[blk].fillerBitmaps.length;
 		var o = yoff + j * loff;
 		blockList[blk].bottomBitmap.y = blockList[blk].bitmap.y + o;
+		blockList[blk].highlightBottomBitmap.y = blockList[blk].bitmap.y + o;
 		if (isArgBlock(blk)) {
 		    if (blockList[blk].connections[2] != null) {
 			loopCounter = 0;

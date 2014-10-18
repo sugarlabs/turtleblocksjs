@@ -37,7 +37,7 @@ define(function (require) {
         });
 
 	// default values
-	var defaultBackgroundColor = [70, 60, 20];
+	var defaultBackgroundColor = [70, 80, 20];
 	var defaultColor = 0;
 	var defaultValue = 50;
 	var defaultChroma = 100;

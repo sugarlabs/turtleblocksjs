@@ -802,6 +802,7 @@ function makeBlock(name, arg) {
     // Generate and position the block bitmaps and labels
     updater();
     adjuster(blk, true);
+    refresher();
 }
 
 function findUniqueActionName(name) {

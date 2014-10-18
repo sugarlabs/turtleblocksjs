@@ -293,8 +293,8 @@ define(function (require) {
 		text = new createjs.Text(blockList[thisBlock].value.toString(), "20px Courier", "#00000"); text.x = 100; text.textBaseline = "alphabetic";
 		blockList[thisBlock].text = text;
 		container.addChild(text);
-		text.x = 40;
-		text.y = 27;
+		text.x = 40 + bitmap.x;
+		text.y = 27 + bitmap.y;
 		text.scaleX = text.scaleY = text.scale = 1;
 	    }
 
@@ -458,15 +458,17 @@ define(function (require) {
 
 	function moveExtraParts(blk, dx, dy) {
 	    // Expandable blocks have extra parts that need attention.
-	    if (blockList[blk].fillerBitmaps == undefined) {
+	    var myBlock = blockList[blk];
+	    if (myBlock.fillerBitmaps == undefined) {
+		console.log('still in init?');
 		return;  // still in init stage
 	    }
 	    for (var i = 0; i < blockList[blk].fillerBitmaps.length; i++) {
-		blockList[blk].fillerBitmaps[i].x += dx;
-		blockList[blk].fillerBitmaps[i].y += dy;
+		myBlock.fillerBitmaps[i].x += dx;
+		myBlock.fillerBitmaps[i].y += dy;
 	    }
-	    blockList[blk].bottomBitmap.x += dx;
-	    blockList[blk].bottomBitmap.y += dy;
+	    myBlock.bottomBitmap.x += dx;
+	    myBlock.bottomBitmap.y += dy;
 	}
 
 	function blockMoved(thisBlock) {
@@ -487,17 +489,21 @@ define(function (require) {
 	    }
 
 	    var check2ArgBlocks = [];
-	    var c = blockList[thisBlock].connections[0];
+	    var myBlock = blockList[thisBlock];
+	    var c = myBlock.connections[0];
+	    if (c != null) {
+		var cBlock = blockList[c];
+	    }
 	    // If it is an arg block, where is it coming from?
 	    if (isArgBlock(thisBlock) && c != null) {
 		// We care about special (2arg) blocks with
 		// connections to the first arg;
 		if (isSpecialBlock(c)) {
-		    if (blockList[c].connections[1] == thisBlock) {
+		    if (cBlock.connections[1] == thisBlock) {
 			check2ArgBlocks.push(c);
 		    }
 		} else if (isArgBlock(c) && isExpandableBlock(c)) {
-		    if (blockList[c].connections[1] == thisBlock) {
+		    if (cBlock.connections[1] == thisBlock) {
 			check2ArgBlocks.push(c);
 		    }
 		}
@@ -507,26 +513,24 @@ define(function (require) {
 	    if (c != null) {
 		// disconnect both ends of the connection
 		for (i = 1;
-		     i < blockList[c].connections.length; i++) {
-		    if (blockList[c].connections[i] == thisBlock) {
-			blockList[c].connections[i] = null;
+		     i < cBlock.connections.length; i++) {
+		    if (cBlock.connections[i] == thisBlock) {
+			cBlock.connections[i] = null;
 			break;
 		    }
 		}
-  		blockList[thisBlock].connections[0] = null;
+  		myBlock.connections[0] = null;
 	    }
 
 	    // Look for a new connection.
-	    var dx1 = blockList[thisBlock].bitmap.x + 
-		blockList[thisBlock].docks[0][0];
-	    var dy1 = blockList[thisBlock].bitmap.y + 
-		blockList[thisBlock].docks[0][1];
+	    var dx1 = myBlock.bitmap.x + myBlock.docks[0][0];
+	    var dy1 = myBlock.bitmap.y + myBlock.docks[0][1];
 	    // Find the nearest dock; if it is close
 	    // enough, connect;
 	    var newBlock = null;
 	    var newConnection = null;
 	    var min = 400;
-	    var blkType = blockList[thisBlock].docks[0][2]
+	    var blkType = myBlock.docks[0][2]
 	    for (b = 0; b < blockList.length; b++) {
 		// Don't connect to yourself.
 		if (b == thisBlock) {
@@ -557,7 +561,7 @@ define(function (require) {
 	    }
 	    if (newBlock != null) {
 		// We found a match.
-		blockList[thisBlock].connections[0] = newBlock;
+		myBlock.connections[0] = newBlock;
 		var connection = blockList[newBlock].connections[newConnection];
 		if(connection != null) {
 		    if (isArgBlock(thisBlock)) {
@@ -1340,6 +1344,11 @@ define(function (require) {
 	    }
 	    if (isExpandableBlock(blk)) {
 		moveExtraParts(blk, dx, dy);
+	    } else if (isValueBlock(blk)) {
+		if (blockList[blk].text != null) {
+		    blockList[blk].text.x += dx;
+		    blockList[blk].text.y += dy;
+		}
 	    }
 	    adjustLabelPosition(blk, x, y);
 	}
@@ -1357,6 +1366,13 @@ define(function (require) {
 		}
 	    if (isExpandableBlock(blk)) {
 		moveExtraParts(blk, dx, dy);
+	    } else if (isValueBlock(blk)) {
+		if (blockList[blk].text == null) {
+		    console.log('null text?');
+		} else {
+		    blockList[blk].text.x += dx;
+		    blockList[blk].text.y += dy;
+		}
 	    }
 	    adjustLabelPosition(blk, blockList[blk].x, blockList[blk].y);
 	}

@@ -28,19 +28,19 @@
   <path
      d="m 16,0 0,42 68,0 0,-42 z"
      id="path6"
-     style="fill:#fe55ff;fill-opacity:1;stroke:none" />
+     style="fill:#ff00ff;fill-opacity:1;stroke:none" />
   <rect
      width="2"
      height="41.999996"
      x="16"
      y="2.470588e-06"
      id="rect3115"
-     style="fill:#c73ca3;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#c700d3;fill-opacity:1;fill-rule:nonzero;stroke:none" />
   <rect
      width="2"
      height="41.999996"
      x="82"
      y="2.470588e-06"
      id="rect3115-8"
-     style="fill:#c73ca3;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#c700d3;fill-opacity:1;fill-rule:nonzero;stroke:none" />
 </svg>

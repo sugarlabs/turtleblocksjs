@@ -525,14 +525,14 @@ sensorsPalette.blockList.push(timeBlock);
 timeBlock.style = 'arg';
 timeBlock.docks = [[0, 20, 'numberout']];
 
-var mousexBlock = new ProtoBlock('mouse x');
+var mousexBlock = new ProtoBlock('mousex');
 protoBlockList.push(mousexBlock);
 mousexBlock.palette = sensorsPalette;
 sensorsPalette.blockList.push(mousexBlock);
 mousexBlock.style = 'arg';
 mousexBlock.docks = [[0, 20, 'numberout']];
 
-var mouseyBlock = new ProtoBlock('mouse y');
+var mouseyBlock = new ProtoBlock('mousey');
 protoBlockList.push(mouseyBlock);
 mouseyBlock.palette = sensorsPalette;
 sensorsPalette.blockList.push(mouseyBlock);

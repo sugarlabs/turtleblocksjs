@@ -11,28 +11,14 @@
    width="114"
    height="51"
    id="svg2">
-  <metadata
-     id="metadata12">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs10" />
   <g
      transform="matrix(2,0,0,2,29,0)"
      id="g4"
-     style="fill:#32ff32;fill-opacity:1;stroke:#03bf03;stroke-opacity:1">
+     style="fill:#00b700;fill-opacity:1;stroke:#03bf03;stroke-opacity:1">
     <path
        d="m -14,4.5 c 0,-2.0943951 1.905605,-4 4,-4 l 4,0 0,2 10,0 0,-2 22.5,0 7.5,0 4,0 c 2.094395,0 3.492035,1.9681383 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 -56,0 c 0,-4 0,-8 0,-12 z"
        id="path6"
-       style="fill:#32ff32;fill-opacity:1;stroke:#03bf03;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
+       style="fill:#00b700;fill-opacity:1;stroke:#007b00;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
   </g>
   <rect
      width="110"
@@ -40,7 +26,7 @@
      x="2"
      y="32"
      id="rect2984-3"
-     style="fill:#32ff32;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#00b700;fill-opacity:1;fill-rule:nonzero;stroke:none" />
   <text
      x="89.835869"
      y="24.595745"
@@ -54,21 +40,21 @@
   <path
      d="M 0,33.999999 0,51 l 114,0 0,-17.000001 z"
      id="path6-5"
-     style="fill:#32ff32;fill-opacity:1;stroke:none" />
+     style="fill:#00b700;fill-opacity:1;stroke:none" />
   <rect
      width="2"
      height="17"
      x="6.4648435e-07"
      y="34"
      id="rect3115"
-     style="fill:#03bf03;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#007b00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
   <rect
      width="2"
      height="17"
      x="112"
      y="34"
      id="rect3115-8"
-     style="fill:#03bf03;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+     style="fill:#007b00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
   <text
      x="41.90332"
      y="47.3074"

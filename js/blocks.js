@@ -543,7 +543,8 @@ mouseyBlock.docks = [[0, 20, 'numberout']];
 function Block (protoblock) {
     this.protoblock = protoblock;
     this.name = protoblock.name;
-    this.label = null;
+    this.label = null;  // editable textview in DOM
+    this.text = null;  // text label on block itself
     this.value = null;
     this.image = null;
     this.bitmap = null;
@@ -911,6 +912,14 @@ function labelChanged() {
 		break;
 	    }
 	}
+	if (blockList[blk].name == 'number') {
+	    if (blockList[blk].value != blockList[blk].label.value) {
+		myBlock = blockList[blk];
+		oldValue = myBlock.value;
+		newValue = myBlock.label.value;
+		break;
+	    }
+	}
     }
 
     if (myBlock == null) {
@@ -918,9 +927,16 @@ function labelChanged() {
 	return;
     }
 
-    // Update the label.
+    // Update the block value and label.
     if (myBlock.label != null) {
 	myBlock.value = myBlock.label.value;
+	myBlock.text.text = myBlock.value.toString();
+	// and hide the DOM textview...
+	myBlock.label.style.display = 'none';
+	// Make sure text is on top.
+	lastChild = myBlock.myContainer.children.last();
+	myBlock.myContainer.swapChildren(myBlock.text, lastChild);
+	refresher();
     }
 
     // TODO: Garbage collection in palette (remove old proto block)

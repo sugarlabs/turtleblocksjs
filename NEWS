@@ -52,4 +52,4 @@ TODO:
    - fix repeat docking bug
    - fix filler hide bug
   * restore from trash
-
+  * fix problem with cascading arithmetic operators

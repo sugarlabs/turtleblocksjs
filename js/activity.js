@@ -198,6 +198,7 @@ define(function (require) {
 	// functions needed by block.js
 	updater = updateBlocks;
 	adjuster = adjustDocks;
+	refresher = refreshCanvas;
 
 	// Get things started
 	init();
@@ -251,6 +252,10 @@ define(function (require) {
             stage.update();
         }
 
+	function refreshCanvas() {
+	    update = true;
+	}
+
         function stop() {
 	    //
             createjs.Ticker.removeEventListener('tick', tick);
@@ -261,6 +266,7 @@ define(function (require) {
 	    // Load a block
             var image = event.target;
             var bitmap;
+	    var text = null;
             var container = new createjs.Container();
             stage.addChild(container);
 
@@ -283,11 +289,20 @@ define(function (require) {
 	    bitmap.cursor = 'pointer';
 	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
 
+	    if (isValueBlock(thisBlock)) {
+		text = new createjs.Text(blockList[thisBlock].value.toString(), "20px Courier", "#00000"); text.x = 100; text.textBaseline = "alphabetic";
+		blockList[thisBlock].text = text;
+		container.addChild(text);
+		text.x = 40;
+		text.y = 27;
+		text.scaleX = text.scaleY = text.scale = 1;
+	    }
+
+	    // Save the container as we may need it later.
+	    blockList[thisBlock].myContainer = container;
+
 	    // Expandable blocks have some extra parts.
 	    if (isExpandableBlock(thisBlock)) {
-		// Save the container as we may need it later.
-		blockList[thisBlock].myContainer = container;
-
 		var yoff = blockList[thisBlock].protoblock.yoff;
 		blockList[thisBlock].fillerBitmaps = [];
 		blockList[thisBlock].bottomBitmap = null;
@@ -310,15 +325,9 @@ define(function (require) {
             // of the target (bitmap instances):
 	    // * number and text blocks have a handle on the right side;
 	    // * other blocks should be sensitive in the middle.
-	    if (isValueBlock(thisBlock)) {
-		hitArea.graphics.beginFill('#FFF').drawEllipse(
-			-22, -28, 48, 36);
-		hitArea.x = image.width - 24;
-	    } else {
-		hitArea.graphics.beginFill('#FFF').drawEllipse(
-			-44, -28, 96, 36);
-		hitArea.x = image.width / 2;
-	    }
+	    hitArea.graphics.beginFill('#FFF').drawEllipse(
+		    -44, -28, 96, 36);
+	    hitArea.x = image.width / 2;
 	    hitArea.y = image.height / 2;
             bitmap.hitArea = hitArea;
 
@@ -333,8 +342,13 @@ define(function (require) {
 		function handleClick(event) {
 		    if (!moved) {
 			// console.log('click');
-			var topBlock = findTopBlock(thisBlock);
-			runLogoCommands(topBlock);
+			if (isValueBlock(thisBlock)) {
+			    console.log('click on label');
+			    blockList[thisBlock].label.style.display = '';
+			} else {
+			    var topBlock = findTopBlock(thisBlock);
+			    runLogoCommands(topBlock);
+			}
 		    }
 		}
 
@@ -378,6 +392,12 @@ define(function (require) {
 			// Move any extra parts.
 			if (isExpandableBlock(thisBlock)) {
 			    moveExtraParts(thisBlock, dx, dy);
+			} else if (isValueBlock(thisBlock)) {
+			    text.x += dx;
+			    text.y += dy;
+			    // Ensure text is on top
+			    lastChild = container.children.last();
+			    container.swapChildren(text, lastChild);
 			}
 
 			// Move the label.
@@ -823,15 +843,6 @@ define(function (require) {
 	    cartesianBitmap = bitmap;
             container.addChild(bitmap);
 
-	    // FIXME: text is broken
-	    var text = new createjs.Text("Cartesian", "20px Arial", "#ff7700"); text.x = 100; text.textBaseline = "alphabetic";
-	    container.addChild(text);
-	    // text.visible = true;
-	    text.visible = false;
-	    text.x = 100;
-	    text.y = 100;
-            text.scaleX = text.scaleY = text.scale = 1;
-
             bitmap.x = 0;
             bitmap.y = 0;
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
@@ -840,6 +851,7 @@ define(function (require) {
             document.getElementById('loader').className = '';
             createjs.Ticker.addEventListener('tick', tick);
 	    bitmap.visible = false;
+	    update = true;
         }
 
         function handlePolarGridLoad(event) {
@@ -863,6 +875,7 @@ define(function (require) {
             document.getElementById('loader').className = '';
             createjs.Ticker.addEventListener('tick', tick);
 	    bitmap.visible = false;
+	    update = true;
         }
 
         function adjustBlockPositions() {
@@ -1370,7 +1383,7 @@ define(function (require) {
 			'" style="position: absolute; ' + 
 			'-webkit-user-select: text;" ' +
 			'class="number", ' +
-			'cols="6", rows="1", maxlength="6">' +
+			'cols="8", rows="1", maxlength="8">' +
 			value + '</textarea>'
 		} else if (myBlock.name == 'text') {
 		    if (myBlock.label == null) {
@@ -1385,7 +1398,7 @@ define(function (require) {
 			'" style="position: absolute; ' + 
 			'-webkit-user-select: text;" ' +
 			'class="text", ' +
-			'cols="6", rows="1", maxlength="6">' +
+			'cols="8", rows="1", maxlength="8">' +
 			value + '</textarea>'
 		} else {
 		    text = ''
@@ -1409,6 +1422,8 @@ define(function (require) {
 		    myBlock.label.addEventListener(
 			'change', function() {labelChanged();});
 		    adjustLabelPosition(blk, x, y);
+		    // Hide the label until we need to change it
+		    myBlock.label.style.display = 'none';
 		} else {
 		    myBlock.label = null;
 		}
@@ -1422,16 +1437,16 @@ define(function (require) {
 	    }
 	    if (blockList[blk].protoblock.name == 'number') {
 		blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft + 30) + 'px';
+		    x + canvas.offsetLeft + 28) + 'px';
 	    } else if (blockList[blk].protoblock.name == 'text') {
 		blockList[blk].label.style.left = Math.round(
-		    x + canvas.offsetLeft + 30) + 'px';
+		    x + canvas.offsetLeft + 28) + 'px';
 	    } else {
 		blockList[blk].label.style.left = Math.round(
 		    x + canvas.offsetLeft + 10) + 'px';
 	    }
 	    blockList[blk].label.style.top = Math.round(
-		y + canvas.offsetTop + 5) + 'px';
+		y + canvas.offsetTop + 6) + 'px';
 	}
 
         function tick(event) {
@@ -2052,6 +2067,7 @@ define(function (require) {
 		    if (i == null) {
 			blockList[blk].value = null;
 		    } else {
+			console.log('box ' + name + ' = ' + boxList[i][1]);
 			blockList[blk].value = boxList[i][1];
 		    }
 		    break;
@@ -2196,6 +2212,7 @@ define(function (require) {
 		hideBlock(blk);
 	    }
 	    // And hide some other things.
+	    turtleBitmap.visible = false;
 	    trashBitmap.visible = false;
 	    update = true;
 	}
@@ -2219,6 +2236,7 @@ define(function (require) {
 		}
 	    }
 	    // And show some other things.
+	    turtleBitmap.visible = true;
 	    trashBitmap.visible = true;
 	    update = true;
 	}
@@ -2295,6 +2313,7 @@ define(function (require) {
 	}
 
         function doSetXY(x, y) {
+	    console.log('set xy: ' + x + ' ' + y);
 	    // old turtle point
             oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
 				       invertY(turtleBitmap.y));

@@ -2218,7 +2218,7 @@ define(function (require) {
 	    }
 	    if (isExpandableBlock(blk)) {
 		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-		    myBlock.fillerBitmaps[i] = false;
+		    myBlock.fillerBitmaps[i].visible = false;
 		}
 		myBlock.bottomBitmap.visible = false;
 	    } else if (isValueBlock(blk)) {
@@ -2250,7 +2250,7 @@ define(function (require) {
 		}
 		if (isExpandableBlock(blk)) {
 		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-			myBlock.fillerBitmaps[i] = true;
+			myBlock.fillerBitmaps[i].visible = true;
 		    }
 		    myBlock.bottomBitmap.visible = true;
 		} else if (isValueBlock(blk)) {

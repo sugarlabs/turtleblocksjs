@@ -460,15 +460,16 @@ define(function (require) {
 	    // Expandable blocks have extra parts that need attention.
 	    var myBlock = blockList[blk];
 	    if (myBlock.fillerBitmaps == undefined) {
-		console.log('still in init?');
 		return;  // still in init stage
 	    }
 	    for (var i = 0; i < blockList[blk].fillerBitmaps.length; i++) {
 		myBlock.fillerBitmaps[i].x += dx;
 		myBlock.fillerBitmaps[i].y += dy;
 	    }
-	    myBlock.bottomBitmap.x += dx;
-	    myBlock.bottomBitmap.y += dy;
+	    if (myBlock.bottomBitmap != null) {
+		myBlock.bottomBitmap.x += dx;
+		myBlock.bottomBitmap.y += dy;
+	    }
 	}
 
 	function blockMoved(thisBlock) {
@@ -1816,8 +1817,11 @@ define(function (require) {
 		loopCounter = 0;
 		adjustDocks(adjustTheseDocks[blk]);
 	    }
-	    // expandClamps();
+
 	    update = true;
+
+	    // We need to wait for the blocks to load before expanding them.
+	    setTimeout(function(){expandClamps();}, turtleDelay); 
         }
 
         function pushConnection(connection, blockOffset, blk) {
@@ -1896,7 +1900,7 @@ define(function (require) {
 		return;
 	    }
 	    // console.log('running ' + blockList[blk].name);
-	    setTimeout(function(){runFromBlockNow(blk);}, turtleDelay); 
+	    setTimeout(function(){runFromBlockNow(blk);}, turtleDelay);
 	}
 
         function runFromBlockNow(blk) {

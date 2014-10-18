@@ -8,25 +8,25 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
-   width="114"
-   height="46"
+   width="102"
+   height="84"
    id="svg2">
   <g
      transform="scale(2,2)"
-     id="g4"
-     style="fill:#00ffff;stroke:#33ae86;stroke-opacity:1">
+     id="g4">
     <path
-       d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 0,2 10,0 0,-2 30,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,12 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -30,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.0943951,0 -4,-1.905605 -4,-4 l 0,-4 z"
-       style="fill:#00c0e7;fill-opacity:1;stroke:#0081a9;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
+       d="m 1,27.5 c 0,-3.665191 2.8634661,-7 6.5,-7 l 1,0 0,-12 c 0,-4.1887902 3.81121,-8 8,-8 l 34,0 0,8 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,17 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,8 -30,0 -12,0 0,-7 -1,0 C 3.8348086,34.5 1,31.165191 1,27.5 z"
+       id="path6"
+       style="fill:#ff9fff;fill-opacity:1;stroke:#c700d3;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
   </g>
   <text
-     x="75.00293"
-     y="28.964844"
-     id="text2989"
+     x="74.152542"
+     y="55.779659"
+     id="text3043"
      xml:space="preserve"
      style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
-       x="95.00293"
-       y="28.964844"
-       id="tspan2991"
-       style="font-size:18px">begin fill</tspan></text>
+       x="74.152542"
+       y="55.779659"
+       id="tspan3045"
+       style="font-size:24px">&gt;</tspan></text>
 </svg>

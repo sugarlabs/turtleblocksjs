@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="114"
+   height="74"
+   id="svg2989">
+  <g
+     transform="scale(2,2)"
+     id="g2991">
+    <path
+       d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 21,0 4,0 c 2.094395,0 3.740222,1.9217781 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -21,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.617994,0 -5,2.382006 -5,5 l -8,0 z"
+       id="path2993"
+       style="fill:#ffa548;fill-opacity:1;stroke:#ac3d00;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
+  </g>
+  <rect
+     width="14"
+     height="4"
+     x="2"
+     y="48"
+     id="rect3001"
+     style="fill:#ffa548;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  <text
+     x="72.076172"
+     y="28.723404"
+     id="text2985"
+     xml:space="preserve"
+     style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+       x="72.076172"
+       y="28.723404"
+       id="tspan2987"
+       style="font-size:18px">repeat</tspan></text>
+  <path
+     d="m 1.160315,53.104846 15.790308,0 c 0,6.596771 0,13.193538 0,19.790308 l -15.790308,0 z"
+     id="path3062"
+     style="fill:#ffa548;fill-opacity:1;stroke:#ffa548;stroke-width:2.20969129;stroke-linecap:round;stroke-opacity:1" />
+  <rect
+     width="2.012326"
+     height="21.894367"
+     x="0"
+     y="52.052814"
+     id="rect4349"
+     style="fill:#ac3d00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  <rect
+     width="2.012326"
+     height="21.894367"
+     x="16.098614"
+     y="52.052814"
+     id="rect4349-8"
+     style="fill:#ac3d00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+</svg>

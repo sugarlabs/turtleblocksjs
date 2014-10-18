@@ -43,7 +43,7 @@ input.file {
 }
 
 button.sensors {
-    background-color: #ff0000;
+    background-color: #ff0066;
     color: #ffffff;
 }
 
@@ -53,27 +53,27 @@ button.number {
 }
 
 button.blocks {
-    background-color: #ffff00;
+    background-color: #ffc000;
     color: #000000;
 }
 
 button.turtle {
-    background-color: #00ff00;
+    background-color: #00b700;
     color: #000000;
 }
 
 button.flow {
-    background-color: #ffa000;
+    background-color: #fd6600;
     color: #000000;
 }
 
 button.pen {
-    background-color: #00ffff;
+    background-color: #00c0e7;
     color: #000000;
 }
 
 textarea.text {
-   background-color: #ffff00;
+   background-color: #ffc000;
    text-align: center;
    font-size: 150% !important;
    font-weight: bold !important;
@@ -83,7 +83,7 @@ textarea.text {
 }
 
 textarea.number {
-   background-color: #ff48ff;
+   background-color: #ff00ff;
    text-align: center;
    font-size: 150% !important;
    font-weight: bold !important;

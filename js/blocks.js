@@ -29,12 +29,12 @@ var paletteList = [];
 var turtlePalette = new Palette('turtle');
 paletteList.push(turtlePalette);
 turtlePalette.color = 'black';
-turtlePalette.backgroundColor =  '#00ff00';
+turtlePalette.backgroundColor =  '#00b700';
 
 var penPalette = new Palette('pen');
 paletteList.push(penPalette);
 penPalette.color = 'black';
-penPalette.backgroundColor = 'cyan';
+penPalette.backgroundColor = '#00c0e7';
 
 var numberPalette = new Palette('number');
 paletteList.push(numberPalette);
@@ -44,17 +44,17 @@ numberPalette.backgroundColor =  '#ff00ff';
 var flowPalette = new Palette('flow');
 paletteList.push(flowPalette);
 flowPalette.color = 'black';
-flowPalette.backgroundColor = 'orange';
+flowPalette.backgroundColor = '#fd6600';
 
 var blocksPalette = new Palette('blocks');
 paletteList.push(blocksPalette);
 blocksPalette.color = 'black';
-blocksPalette.backgroundColor = 'yellow';
+blocksPalette.backgroundColor = '#ffc000';
 
 var sensorsPalette = new Palette('sensors');
 paletteList.push(sensorsPalette);
 sensorsPalette.color = 'white';
-sensorsPalette.backgroundColor = 'red';
+sensorsPalette.backgroundColor = '#ff0066';
 
 currentPalette = 0;  // Turtle
 

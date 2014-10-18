@@ -36,11 +36,13 @@
   * set background color
   * trash
   * move labels to container
+  * fix repeat docking bug
+  * fix filler hide bug
 
 TODO:
   * save blocks
   * copy/paste
-  * user defined
+  * user defined blocks
   * better compartmentalization of code
   * sensors/media
   * decide on a palette strategy
@@ -48,8 +50,5 @@ TODO:
   * turtle skin
   * multiple turtles (or only one start block)
   * keyboard short cuts
-  * seems that docks and filler associated with proto instead of instance?
-   - fix repeat docking bug
-   - fix filler hide bug
   * restore from trash
   * fix problem with cascading arithmetic operators

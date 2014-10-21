@@ -791,11 +791,13 @@ function makeBlock(name, arg) {
     for (var proto=0; proto < protoBlockList.length; proto++) {
 	if (protoBlockList[proto].name == name) {
 	    if (arg == '__NOARG__') {
-		blockList.push(new Block(protoBlockList[proto]));
+		blockmaker(protoBlockList[proto]);
+		// blockList.push(new Block(protoBlockList[proto]));
 		break;
 	    } else {
 		if (protoBlockList[proto].defaults[0] == arg) {
-		    blockList.push(new Block(protoBlockList[proto]));
+		    blockmaker(protoBlockList[proto]);
+		    // blockList.push(new Block(protoBlockList[proto]));
 		    break;
 		}
 	    }
@@ -803,8 +805,9 @@ function makeBlock(name, arg) {
     }
     var blk = blockList.length - 1;
     var myBlock = blockList[blk];
-    myBlock.copyDocks();
-    myBlock.copySize();
+    // myBlock.copyDocks();
+    // myBlock.copySize();
+    // newcontainer(myBlock);
     for (var i = 0; i < myBlock.docks.length; i++) {
 	myBlock.connections.push(null);
     }
@@ -814,13 +817,21 @@ function makeBlock(name, arg) {
     for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
 	var value = myBlock.protoblock.defaults[i];
 	if (myBlock.docks[i + 1][2] == 'textin') {
-	    blockList.push(new Block(textBlock));
+	    blockmaker(textBlock);
+	    // blockList.push(new Block(textBlock));
+	    blockList.last().value = value;
+	    updatetext(blockList.length - 1);
 	} else {
-	    blockList.push(new Block(numberBlock));
+	    blockmaker(numberBlock);
+	    // blockList.push(new Block(numberBlock));
+	    console.log('number block ' + value);
+	    blockList.last().value = value;
+	    blockList.last().text.text = value.toString();
 	}
 	var myConnectionBlock = blockList[cblk + i];
-	myConnectionBlock.copyDocks();
-	myConnectionBlock.copySize();
+	// myConnectionBlock.copyDocks();
+	// myConnectionBlock.copySize();
+	// newcontainer(myConnectionBlock);
 	myConnectionBlock.connections = [blk];
 	if (myBlock.name == 'action') {
 	    // Make sure we don't make two actions with the same name.

@@ -199,6 +199,9 @@ define(function (require) {
 	updater = updateBlocks;
 	adjuster = adjustDocks;
 	refresher = refreshCanvas;
+	newcontainer = makeNewContainer;
+	blockmaker = makeNewBlock;
+	updatetext = updateBlockText;
 
 	// Get things started
 	init();
@@ -213,12 +216,16 @@ define(function (require) {
 
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
+
+	    // Workaround to chrome security issues
+	    // createjs.LoadQueue(true, null, true);
+
             // Enable touch interactions if supported on the current device.
             createjs.Touch.enable(stage);
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
             // Enabled mouse over and mouse out events.
-            stage.enableMouseOver(10);
+            stage.enableMouseOver(10); // default is 20
 
 	    var cartesian = new Image();
 	    cartesian.src = Cartesian;
@@ -261,282 +268,8 @@ define(function (require) {
             createjs.Ticker.removeEventListener('tick', tick);
         }
 
-        function handleHighlightImageLoad(event) {
-            var image = event.target;
-	    var thisBlock = -1;
-            for (var blk = 0; blk < blockList.length; blk++) {
-		if (blockList[blk].highlightImage == image) {
-		    thisBlock = blk;
-		    break;
-		}
-            }
-	    var myBlock = blockList[thisBlock];
-
-	    var bitmap = myBlock.highlightBitmap;
-	    bitmap.cursor = 'pointer';
-	    var container = myBlock.myContainer;
-
-            // Create a shape that represents the center of the icon.
-            var hitArea = new createjs.Shape();
-
-            // Position hitArea relative to the internal coordinate system
-            // of the target (bitmap instances):
-	    // * number and text blocks have a handle on the right side;
-	    // * other blocks should be sensitive in the middle.
-	    hitArea.graphics.beginFill('#FFF').drawEllipse(
-		    -44, -28, 96, 36);
-	    hitArea.x = image.width / 2;
-	    hitArea.y = image.height / 2;
-            bitmap.hitArea = hitArea;
-
-            // Wrapper function to provide scope for the event handlers.
-            (function (target) {
-		var moved = false;
-		bitmap.addEventListener('click', handleClick);
-		bitmap.addEventListener('mousedown', handleMouseDown);
-		bitmap.addEventListener('mouseover', handleMouseOver);
-		bitmap.addEventListener('mouseout', handleMouseOut);
-
-		function handleClick(event) {
-		    if (!moved) {
-			if (isValueBlock(thisBlock)) {
-			    myBlock.label.style.display = '';
-			} else {
-			    var topBlock = findTopBlock(thisBlock);
-			    runLogoCommands(topBlock);
-			}
-		    }
-		}
-
-		function handleMouseDown(event) {
-		    // Bump the target in front of its siblings.
-		    var lastChild = stage.children.last();
-		    stage.swapChildren(container, lastChild);
-
-		    moved = false;
-		    container.addChild(target);
-		    var offset = {
-			x: target.x - event.stageX,
-			y: target.y - event.stageY
-		    };
-
-		    event.addEventListener('mousemove', handleMouseMove);
-
-		    // TODO: Use pressmove, pressup??
-		    function handleMouseMove(event) {
-			moved = true;
-			var oldX = myBlock.highlightBitmap.x;
-			var oldY = myBlock.highlightBitmap.y;
-			target.x = event.stageX + offset.x;
-			target.y = event.stageY + offset.y;
-
-			var dx = myBlock.highlightBitmap.x - oldX;
-			var dy = myBlock.highlightBitmap.y - oldY;
-			myBlock.bitmap.x += dx;
-			myBlock.bitmap.y += dy;
-
-			// Move any extra parts.
-			if (isExpandableBlock(thisBlock)) {
-			    moveExtraParts(thisBlock, dx, dy);
-			} else if (isValueBlock(thisBlock)) {
-			    text.x += dx;
-			    text.y += dy;
-			    // Ensure text is on top
-			    lastChild = container.children.last();
-			    container.swapChildren(text, lastChild);
-			}
-
-			// Move the label.
-			adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
-
-			// Move any connected blocks.
-			findDragGroup(thisBlock)
-			if (dragGroup.length > 0) {
-			    for (var b = 0; b < dragGroup.length; b++) {
-				blk = dragGroup[b];
-				if (b != 0) {
-				    moveBlockRelative(blk, dx, dy);
-				}
-			    }
-			}
-
-			// Indicate that the stage should be updated
-			// on the next tick.
-			update = true;
-		    }
-		}
-
-		function handleMouseOver(event) {
-		    if (activeBlock == null) {
-			// highlight(thisBlock);
-			activeBlock = thisBlock;
-			update = true;
-		    }
-		}
-
-		function handleMouseOut(event) {
-		    if (activeBlock != thisBlock) {
-			return;
-		    }
-		    if (moved) {
-			// Check if block is in the trash
-			if (overTrashCan(event.stageX, event.stageY)) {
-			    findDragGroup(thisBlock);
-			    for (var blk = 0; blk < dragGroup.length; blk++) {
-				console.log('putting ' + blockList[blk].name + ' in the trash');
-				blockList[blk].trash = true;
-				hideBlock(blk);
-			    }
-			}
-			// otherwise, process move
-			blockMoved(thisBlock);
-		    }
-		    unhighlight();
-		    activeBlock = null;
-		    update = true;
-		}
-
-            })(bitmap);
-
-            document.getElementById('loader').className = '';
-            createjs.Ticker.addEventListener('tick', tick);
-	}
-
-        function handleImageLoad(event) {
-	    // Load a block
-            var image = event.target;
-            var bitmap;
-	    var text = null;
-
-            var container = new createjs.Container();
-            stage.addChild(container);
-
-	    var thisBlock = -1;
-            for (var blk = 0; blk < blockList.length; blk++) {
-		if (blockList[blk].image == image) {
-		    thisBlock = blk;
-		    break;
-		}
-            }
-	    var myBlock = blockList[thisBlock]
-
-	    // Save the container as we may need it later.
-	    myBlock.myContainer = container;
-
-            // Create the bitmap for the block.
-	    bitmap = new createjs.Bitmap(image);
-	    myBlock.bitmap = bitmap;
-	    container.addChild(bitmap);
-	    bitmap.x = myBlock.x;
-	    bitmap.y = myBlock.y;
-	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-	    bitmap.name = 'bmp_' + thisBlock;
-	    bitmap.cursor = 'pointer';
-	    adjustLabelPosition(thisBlock, bitmap.x, bitmap.y);
-
-            // Create the highlight bitmap for the block.
-	    highlightBitmap = new createjs.Bitmap(myBlock.highlightImage);
-	    myBlock.highlightImage.onload = handleHighlightImageLoad;
-
-	    myBlock.highlightBitmap = highlightBitmap;
-	    container.addChild(highlightBitmap);
-	    highlightBitmap.x = bitmap.x;
-	    highlightBitmap.y = bitmap.y;
-	    highlightBitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-	    highlightBitmap.name = 'bmp_highlight_' + thisBlock;
-	    // Hide it to start
-	    highlightBitmap.visible = false;
-
-	    // Value blocks get a modifiable text label
-	    if (isValueBlock(thisBlock)) {
-		text = new createjs.Text(myBlock.value.toString(), "20px Courier", "#00000"); text.x = 100; text.textBaseline = "alphabetic";
-		myBlock.text = text;
-		container.addChild(text);
-		text.x = 40 + bitmap.x;
-		text.y = 27 + bitmap.y;
-		text.scaleX = text.scaleY = text.scale = 1;
-	    }
-
-	    // Expandable blocks have some extra parts.
-	    if (isExpandableBlock(thisBlock)) {
-		var yoff = myBlock.protoblock.yoff;
-		myBlock.fillerBitmaps = [];
-		myBlock.bottomBitmap = null;
-		var bottomBitmap =
-		    new createjs.Bitmap(myBlock.bottomImage);
-		myBlock.bottomBitmap = bottomBitmap;
-		container.addChild(bottomBitmap);
-		bottomBitmap.x = bitmap.x;
-		bottomBitmap.y = bitmap.y + yoff;
-		bottomBitmap.scaleX = 1;
-		bottomBitmap.scaleY = 1;
-		bottomBitmap.scale = 1;
-		bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
-		var highlightBottomBitmap =
-		    new createjs.Bitmap(myBlock.highlightBottomImage);
-		myBlock.highlightBottomBitmap = highlightBottomBitmap;
-		container.addChild(highlightBottomBitmap);
-		highlightBottomBitmap.x = bitmap.x;
-		highlightBottomBitmap.y = bitmap.y + yoff;
-		highlightBottomBitmap.scaleX = 1;
-		highlightBottomBitmap.scaleY = 1;
-		highlightBottomBitmap.scale = 1;
-		highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
-		highlightBottomBitmap.visible = false;
-	    }
-
-            // Create a shape that represents the center of the icon.
-            var hitArea = new createjs.Shape();
-
-            // Position hitArea relative to the internal coordinate system
-            // of the target (bitmap instances):
-	    // * number and text blocks have a handle on the right side;
-	    // * other blocks should be sensitive in the middle.
-	    hitArea.graphics.beginFill('#FFF').drawEllipse(
-		    -44, -28, 96, 36);
-	    hitArea.x = image.width / 2;
-	    hitArea.y = image.height / 2;
-            bitmap.hitArea = hitArea;
-
-            // Wrapper function to provide scope for the event handlers.
-            (function (target) {
-		var moved = false;
-		bitmap.addEventListener('mouseover', handleMouseOver);
-
-		function handleMouseOver(event) {
-		    if (activeBlock == null) {
-			highlight(thisBlock);
-			activeBlock = thisBlock;
-			update = true;
-		    }
-		}
-            })(bitmap);
-
-            document.getElementById('loader').className = '';
-            createjs.Ticker.addEventListener('tick', tick);
-        }
-
-	function moveExtraParts(blk, dx, dy) {
-	    // Expandable blocks have extra parts that need attention.
-	    var myBlock = blockList[blk];
-	    if (myBlock.fillerBitmaps == undefined) {
-		return;  // still in init stage
-	    }
-	    for (var i = 0; i < blockList[blk].fillerBitmaps.length; i++) {
-		myBlock.fillerBitmaps[i].x += dx;
-		myBlock.fillerBitmaps[i].y += dy;
-		myBlock.highlightFillerBitmaps[i].x += dx;
-		myBlock.highlightFillerBitmaps[i].y += dy;
-	    }
-	    if (myBlock.bottomBitmap != null) {
-		myBlock.bottomBitmap.x += dx;
-		myBlock.bottomBitmap.y += dy;
-		myBlock.highlightBottomBitmap.x += dx;
-		myBlock.highlightBottomBitmap.y += dy;
-	    }
-	}
-
 	function blockMoved(thisBlock) {
+	    console.log('block ' + blockList[thisBlock].name + ' moved');
 	    // When a block is moved, we have lots of things to check:
 	    // (0) Is it inside of a expandable block?
 	    // (1) Is it an arg block connected to a 2-arg block?
@@ -577,10 +310,10 @@ define(function (require) {
 	    // Disconnect from connection[0] (both sides of the connection).
 	    if (c != null) {
 		// disconnect both ends of the connection
-		for (i = 1;
-		     i < cBlock.connections.length; i++) {
+		for (var i = 1; i < cBlock.connections.length; i++) {
 		    if (cBlock.connections[i] == thisBlock) {
 			cBlock.connections[i] = null;
+			console.log('disconnecting ' + c + ' from ' + i);
 			break;
 		    }
 		}
@@ -588,33 +321,30 @@ define(function (require) {
 	    }
 
 	    // Look for a new connection.
-	    var dx1 = myBlock.bitmap.x + myBlock.docks[0][0];
-	    var dy1 = myBlock.bitmap.y + myBlock.docks[0][1];
+	    var x1 = myBlock.myContainer.x + myBlock.docks[0][0];
+	    var y1 = myBlock.myContainer.y + myBlock.docks[0][1];
 	    // Find the nearest dock; if it is close
 	    // enough, connect;
 	    var newBlock = null;
 	    var newConnection = null;
 	    var min = 400;
 	    var blkType = myBlock.docks[0][2]
-	    for (b = 0; b < blockList.length; b++) {
+	    for (var b = 0; b < blockList.length; b++) {
 		// Don't connect to yourself.
 		if (b == thisBlock) {
 		    continue;
 		}
-		for (c = 1; c < blockList[b].connections.length; c++) {
+		for (var i = 1; i < blockList[b].connections.length; i++) {
 		    // Look for available connections.
 		    if (testConnectionType(
 			blkType,
-			blockList[b].docks[c][2])) {
-			dx2 = blockList[b].bitmap.x + 
-			    blockList[b].docks[c][0];
-			dy2 = blockList[b].bitmap.y + 
-			    blockList[b].docks[c][1];
-			dist = (dx2 - dx1) * (dx2 - dx1) + 
-			    (dy2 - dy1) * (dy2 - dy1);
+			blockList[b].docks[i][2])) {
+			x2 = blockList[b].myContainer.x + blockList[b].docks[i][0];
+			y2 = blockList[b].myContainer.y + blockList[b].docks[i][1];
+			dist = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
 			if (dist < min) {
 			    newBlock = b;
-			    newConnection = c;
+			    newConnection = i;
 			    min = dist;
 			}
 		    } else {
@@ -775,7 +505,6 @@ define(function (require) {
 
 		    event.addEventListener('mousemove', handleMouseMove);
 
-		    // TODO: Use pressmove, pressup??
 		    function handleMouseMove(event) {
 			moved = true;
                         target.x = event.stageX + offset.x;
@@ -1119,26 +848,27 @@ define(function (require) {
 	}
 
 	function addFiller(blk, offset, c) {
+	    var myBlock = blockList[blk];
 	    var name = 'bmp_' + blk + '_filler_' + c;
 	    var bi = findBitmap(name);
 	    if (bi == null) { 
 		var image = new Image();
 		if (isArgBlock(blk)) {
-		    image.src = blockList[blk].protoblock.getArgFillerSvgPath();
+		    image.src = myBlock.protoblock.getArgFillerSvgPath();
 		} else if (isSpecialBlock(blk)) {
-		    image.src = blockList[blk].protoblock.getSpecialFillerSvgPath();
+		    image.src = myBlock.protoblock.getSpecialFillerSvgPath();
 		} else {
-		    image.src = blockList[blk].protoblock.getFillerSvgPath();
+		    image.src = myBlock.protoblock.getFillerSvgPath();
 		}
 		var bitmap = new createjs.Bitmap(image)
 		bitmap.name = name;
 	    } else {
 		var bitmap = bitmapCache[bi];
 	    }
-	    blockList[blk].fillerBitmaps.push(bitmap);
-	    blockList[blk].myContainer.addChild(bitmap);
-	    bitmap.x = blockList[blk].bitmap.x;
-	    bitmap.y = blockList[blk].bitmap.y + offset;
+	    myBlock.fillerBitmaps.push(bitmap);
+	    myBlock.myContainer.addChild(bitmap);
+	    bitmap.x = myBlock.bitmap.x;
+	    bitmap.y = myBlock.bitmap.y + offset;
 	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
 
 	    // And the same for the highlight blocks
@@ -1147,21 +877,21 @@ define(function (require) {
 	    if (bi == null) { 
 		var image = new Image();
 		if (isArgBlock(blk)) {
-		    image.src = blockList[blk].protoblock.getHighlightArgFillerSvgPath();
+		    image.src = myBlock.protoblock.getHighlightArgFillerSvgPath();
 		} else if (isSpecialBlock(blk)) {
-		    image.src = blockList[blk].protoblock.getHighlightSpecialFillerSvgPath();
+		    image.src = myBlock.protoblock.getHighlightSpecialFillerSvgPath();
 		} else {
-		    image.src = blockList[blk].protoblock.getHighlightFillerSvgPath();
+		    image.src = myBlock.protoblock.getHighlightFillerSvgPath();
 		}
 		var bitmap = new createjs.Bitmap(image)
 		bitmap.name = name;
 	    } else {
 		var bitmap = bitmapCache[bi];
 	    }
-	    blockList[blk].highlightFillerBitmaps.push(bitmap);
-	    blockList[blk].myContainer.addChild(bitmap);
-	    bitmap.x = blockList[blk].bitmap.x;
-	    bitmap.y = blockList[blk].bitmap.y + offset;
+	    myBlock.highlightFillerBitmaps.push(bitmap);
+	    myBlock.myContainer.addChild(bitmap);
+	    bitmap.x = myBlock.bitmap.x;
+	    bitmap.y = myBlock.bitmap.y + offset;
 	    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
 	    // Hide highlight to start
 	    bitmap.visible = false;
@@ -1252,8 +982,10 @@ define(function (require) {
                     var nx = blockList[blk].x + dx;
                     var ny = blockList[blk].y + dy;
 		} else {
-                    var nx = blockList[blk].bitmap.x + dx;
-                    var ny = blockList[blk].bitmap.y + dy;
+                    // var nx = blockList[blk].bitmap.x + dx;
+                    // var ny = blockList[blk].bitmap.y + dy;
+                    var nx = blockList[blk].myContainer.x + dx;
+                    var ny = blockList[blk].myContainer.y + dy;
 		}
 		moveBlock(cblk, nx, ny);
 
@@ -1394,104 +1126,272 @@ define(function (require) {
         function updateBlockImages() {
 	    // Create the block image if it doesn't yet exist.
             for (var blk = 0; blk < blockList.length; blk++) {
-		myBlock = blockList[blk];
-		if (myBlock.image == null) {
-		    myBlock.image = new Image();
-		    myBlock.image.src = myBlock.protoblock.getSvgPath();
-		    myBlock.image.onload = handleImageLoad;
-		    if (isExpandableBlock(blk)) {
-			if (isArgBlock(blk)) {
-			    myBlock.bottomImage = new Image();
-			    myBlock.bottomImage.src =
-				myBlock.protoblock.getArgBottomSvgPath();
-			} else if (isSpecialBlock(blk)) {
-			    myBlock.bottomImage = new Image();
-			    myBlock.bottomImage.src =
-				myBlock.protoblock.getSpecialBottomSvgPath();
-			} else {
-			    myBlock.bottomImage = new Image();
-			    myBlock.bottomImage.src =
-				myBlock.protoblock.getBottomSvgPath();
-			}
+		if (blockList[blk].image == null) {
+		    makeBlockImages(blockList[blk]);
+		} else {
+		    moveBlock(blk, blockList[blk].x, blockList[blk].y);
+		}
+	    }
+	}
+
+	function makeBlockImages(myBlock) {
+	    blk = blockList.indexOf(myBlock);
+	    if (myBlock.image == null) {
+		myBlock.image = new Image();
+		myBlock.image.src = myBlock.protoblock.getSvgPath();
+		if (isExpandableBlock(blk)) {
+		    if (isArgBlock(blk)) {
+			myBlock.bottomImage = new Image();
+			myBlock.bottomImage.src =
+			    myBlock.protoblock.getArgBottomSvgPath();
+		    } else if (isSpecialBlock(blk)) {
+			myBlock.bottomImage = new Image();
+			myBlock.bottomImage.src =
+			    myBlock.protoblock.getSpecialBottomSvgPath();
+		    } else {
+			myBlock.bottomImage = new Image();
+			myBlock.bottomImage.src =
+			    myBlock.protoblock.getBottomSvgPath();
 		    }
-		    // Same for highlights
-		    myBlock.highlightImage = new Image();
-		    myBlock.highlightImage.src = myBlock.protoblock.getHighlightSvgPath();
-		    if (isExpandableBlock(blk)) {
-			if (isArgBlock(blk)) {
-			    myBlock.highlightBottomImage = new Image();
-			    myBlock.highlightBottomImage.src =
-				myBlock.protoblock.getHighlightArgBottomSvgPath();
-			} else if (isSpecialBlock(blk)) {
-			    myBlock.highlightBottomImage = new Image();
-			    myBlock.highlightBottomImage.src =
-				myBlock.protoblock.getHighlightSpecialBottomSvgPath();
-			} else {
-			    myBlock.highlightBottomImage = new Image();
-			    myBlock.highlightBottomImage.src =
-				myBlock.protoblock.getHighlightBottomSvgPath();
+		}
+		// Same for highlights
+		myBlock.highlightImage = new Image();
+		myBlock.highlightImage.src = myBlock.protoblock.getHighlightSvgPath();
+		if (isExpandableBlock(blk)) {
+		    if (isArgBlock(blk)) {
+			myBlock.highlightBottomImage = new Image();
+			myBlock.highlightBottomImage.src =
+			    myBlock.protoblock.getHighlightArgBottomSvgPath();
+		    } else if (isSpecialBlock(blk)) {
+			myBlock.highlightBottomImage = new Image();
+			myBlock.highlightBottomImage.src =
+			    myBlock.protoblock.getHighlightSpecialBottomSvgPath();
+		    } else {
+			myBlock.highlightBottomImage = new Image();
+			myBlock.highlightBottomImage.src =
+			    myBlock.protoblock.getHighlightBottomSvgPath();
+		    }
+		}
+	    }
+	}
+
+        function imageLoad(myBlock) {
+	    // Load a block image and create any extra parts.
+	    var thisBlock = blockList.indexOf(myBlock);
+
+	    if (myBlock.image == null) {
+		makeBlockImages(myBlock);
+	    }
+            // Create the bitmap for the block.
+	    myBlock.bitmap = new createjs.Bitmap(myBlock.image);
+	    myBlock.myContainer.addChild(myBlock.bitmap);
+	    myBlock.myContainer.x = myBlock.x;
+	    myBlock.myContainer.y = myBlock.y;
+	    myBlock.bitmap.x = 0;
+	    myBlock.bitmap.y = 0;
+	    myBlock.bitmap.scaleX = 1;
+	    myBlock.bitmap.scaleY = 1;
+	    myBlock.bitmap.scale = 1;
+	    myBlock.bitmap.name = 'bmp_' + thisBlock;
+	    myBlock.bitmap.cursor = 'pointer';
+	    adjustLabelPosition(thisBlock, myBlock.myContainer.x, myBlock.myContainer.y);
+
+            // Create the highlight bitmap for the block.
+	    myBlock.highlightBitmap = new createjs.Bitmap(myBlock.highlightImage);
+	    myBlock.myContainer.addChild(myBlock.highlightBitmap);
+	    myBlock.highlightBitmap.x = 0;
+	    myBlock.highlightBitmap.y = 0;
+	    myBlock.highlightBitmap.scaleX = 1;
+	    myBlock.highlightBitmap.scaleY = 1;
+	    myBlock.highlightBitmap.scale = 1;
+	    myBlock.highlightBitmap.name = 'bmp_highlight_' + thisBlock;
+	    myBlock.highlightBitmap.cursor = 'pointer';
+	    // Hide it to start
+	    myBlock.highlightBitmap.visible = false;
+
+	    // Value blocks get a modifiable text label
+	    if (isValueBlock(thisBlock)) {
+		if (myBlock.value == null) {
+		    myBlock.value = '---';
+		}
+		myBlock.text = new createjs.Text(myBlock.value.toString(), '20px Courier', '#00000');
+		myBlock.text.textAlign = 'center';
+		myBlock.text.x = 100;
+                myBlock.text.textBaseline = 'alphabetic';
+		myBlock.myContainer.addChild(myBlock.text);
+		myBlock.text.x = 70 + myBlock.bitmap.x;
+		myBlock.text.y = 27 + myBlock.bitmap.y;
+		myBlock.text.scaleX = myBlock.text.scaleY = myBlock.text.scale = 1;
+	    }
+
+	    // Expandable blocks also have some extra parts.
+	    if (isExpandableBlock(thisBlock)) {
+		var yoff = myBlock.protoblock.yoff;
+		myBlock.fillerBitmaps = [];
+		myBlock.bottomBitmap = null;
+		myBlock.bottomBitmap = new createjs.Bitmap(myBlock.bottomImage);
+		myBlock.myContainer.addChild(myBlock.bottomBitmap);
+		myBlock.bottomBitmap.x = myBlock.bitmap.x;
+		myBlock.bottomBitmap.y = myBlock.bitmap.y + yoff;
+		myBlock.bottomBitmap.scaleX = 1;
+		myBlock.bottomBitmap.scaleY = 1;
+		myBlock.bottomBitmap.scale = 1;
+		myBlock.bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
+
+		myBlock.highlightBottomBitmap = new createjs.Bitmap(myBlock.highlightBottomImage);
+		myBlock.myContainer.addChild(myBlock.highlightBottomBitmap);
+		myBlock.highlightBottomBitmap.x = myBlock.bitmap.x;
+		myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + yoff;
+		myBlock.highlightBottomBitmap.scaleX = 1;
+		myBlock.highlightBottomBitmap.scaleY = 1;
+		myBlock.highlightBottomBitmap.scale = 1;
+		myBlock.highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
+		myBlock.highlightBottomBitmap.visible = false;
+	    }
+	}
+
+	function loadEventHandlers(myBlock) {
+	    var thisBlock = blockList.indexOf(myBlock);
+            // Create a shape that represents the center of the icon.
+
+            var hitArea = new createjs.Shape();
+            // Position hitArea relative to the internal coordinate system
+            // of the container.
+	    // FIXME: Why is image width/height == 0???
+	    var w2 = 100; // myBlock.image.width / 2;
+	    var h2 = 42; // myBlock.image.height / 2;
+	    hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
+	    hitArea.x = w2 / 2;
+	    hitArea.y = h2 / 2;
+            myBlock.myContainer.hitArea = hitArea;
+
+	    myBlock.myContainer.on('mouseover', function(event) {
+		highlight(thisBlock);
+		activeBlock = thisBlock;
+		update = true;
+            });
+
+	    var moved = false;
+	    myBlock.myContainer.on('click', function(event) {
+		if (!moved) {
+		    console.log('click on ' + myBlock.name);
+		    if (isValueBlock(thisBlock)) {
+			myBlock.label.style.display = '';
+		    } else {
+			var topBlock = findTopBlock(thisBlock);
+			runLogoCommands(topBlock);
+		    }
+		}
+	    });
+
+	    myBlock.myContainer.on('mousedown', function(event) {
+		// Bump the bitmap in front of its siblings.
+		var lastChild = stage.children.last();
+		stage.swapChildren(myBlock.myContainer, lastChild);
+
+		moved = false;
+		var offset = {
+		    x: myBlock.myContainer.x - event.stageX,
+		    y: myBlock.myContainer.y - event.stageY
+		    };
+
+		myBlock.myContainer.on('pressup',function(event) {
+		});
+
+		myBlock.myContainer.on('pressmove',function(event) {
+		    moved = true;
+		    var oldX = myBlock.myContainer.x;
+		    var oldY = myBlock.myContainer.y;
+		    myBlock.myContainer.x = event.stageX + offset.x;
+		    myBlock.myContainer.y = event.stageY + offset.y;
+		    myBlock.x = myBlock.myContainer.x;
+		    myBlock.y = myBlock.myContainer.y;
+		    myBlock.y = event.stageY + offset.y;
+		    var dx = myBlock.myContainer.x - oldX;
+		    var dy = myBlock.myContainer.y - oldY;
+
+		    if (isValueBlock(thisBlock)) {
+			// Ensure text is on top
+			lastChild = myBlock.myContainer.children.last();
+			myBlock.myContainer.swapChildren(myBlock.text, lastChild);
+		    }
+
+		    // Move the label.
+		    adjustLabelPosition(thisBlock, myBlock.myContainer.x, myBlock.myContainer.y);
+
+		    // Move any connected blocks.
+		    findDragGroup(thisBlock)
+		    if (dragGroup.length > 0) {
+			for (var b = 0; b < dragGroup.length; b++) {
+			    blk = dragGroup[b];
+			    if (b != 0) {
+				moveBlockRelative(blk, dx, dy);
+			    }
 			}
 		    }
 
 		    update = true;
+		});
+
+	    });
+
+	    myBlock.myContainer.on('mouseout',function(event) {
+		if (moved) {
+		    // Check if block is in the trash
+		    if (overTrashCan(event.stageX, event.stageY)) {
+			findDragGroup(thisBlock);
+			for (var blk = 0; blk < dragGroup.length; blk++) {
+			    console.log('putting ' + blockList[blk].name + ' in the trash');
+			    blockList[blk].trash = true;
+			    hideBlock(blk);
+			}
+		    } else {
+			// otherwise, process move
+			blockMoved(thisBlock);
+		    }
 		}
-	    }
+		if (activeBlock != thisBlock) {
+		    return;
+		}
+		unhighlight();
+		activeBlock = null;
+		update = true;
+	    });
+
+            document.getElementById('loader').className = '';
+            createjs.Ticker.addEventListener('tick', tick);
 	}
 
         function moveBlock(blk, x, y) {
 	    // Move a block (and its label) to x, y.
 	    var myBlock = blockList[blk];
-	    if (myBlock.bitmap == null) {
-		dx = x - myBlock.x;
-		dy = y - myBlock.y;
+	    if (myBlock.myContainer != null) {
+		myBlock.myContainer.x = x;
+		myBlock.myContainer.y = y;
 		myBlock.x = x
 		myBlock.y = y
+		adjustLabelPosition(blk, myBlock.myContainer.x, myBlock.myContainer.y);
 	    } else {
-		dx = x - myBlock.bitmap.x;
-		dy = y - myBlock.bitmap.y;
-		myBlock.bitmap.x = x
-		myBlock.bitmap.y = y
-		myBlock.highlightBitmap.x = x
-		myBlock.highlightBitmap.y = y
-		myBlock.x = myBlock.bitmap.x
-		myBlock.y = myBlock.bitmap.y
+		console.log('no container yet');
+		myBlock.x = x
+		myBlock.y = y
 	    }
-	    if (isExpandableBlock(blk)) {
-		moveExtraParts(blk, dx, dy);
-	    } else if (isValueBlock(blk)) {
-		if (myBlock.text != null) {
-		    myBlock.text.x += dx;
-		    myBlock.text.y += dy;
-		}
-	    }
-	    adjustLabelPosition(blk, x, y);
 	}
 
         function moveBlockRelative(blk, dx, dy) {
 	    // Move a block (and its label) by dx, dy.
 	    var myBlock = blockList[blk];
-	    if (myBlock.bitmap == null) {
-		    myBlock.x += dx
-		    myBlock.y += dy
-		} else {
-		    myBlock.bitmap.x += dx
-		    myBlock.bitmap.y += dy
-		    myBlock.highlightBitmap.x += dx
-		    myBlock.highlightBitmap.y += dy
-		    myBlock.x = myBlock.bitmap.x
-		    myBlock.y = myBlock.bitmap.y
-		}
-	    if (isExpandableBlock(blk)) {
-		moveExtraParts(blk, dx, dy);
-	    } else if (isValueBlock(blk)) {
-		if (myBlock.text == null) {
-		    console.log('null text?');
-		} else {
-		    myBlock.text.x += dx;
-		    myBlock.text.y += dy;
-		}
+	    if (myBlock.myContainer != null) {
+		myBlock.myContainer.x += dx;
+		myBlock.myContainer.y += dy;
+		myBlock.x = myBlock.myContainer.x;
+		myBlock.y = myBlock.myContainer.y;
+		adjustLabelPosition(blk, myBlock.myContainer.x, myBlock.myContainer.y);
+	    } else {
+		console.log('no container yet');
+		myBlock.x += dx
+		myBlock.y += dy
 	    }
-	    adjustLabelPosition(blk, myBlock.x, myBlock.y);
 	}
 
 	// The modifiable labels are stored in the DOM with a
@@ -1563,6 +1463,12 @@ define(function (require) {
 	    }
 	}
 
+	function updateBlockText(blk) {
+	    // When we create new blocks, we may not have assigned the
+	    // value yet.	    
+	    myBlock.text.text = myBlock.value.toString();
+	}
+
 	function adjustLabelPosition(blk, x, y) {
 	    // Move the label when the block moves.
 	    if (blockList[blk].label == null) {
@@ -1591,17 +1497,32 @@ define(function (require) {
             }
         }
 
-	function newBlock(proto) {
+	function makeNewBlock(proto) {
 	    // Create a new block
 	    blockList.push(new Block(proto));
-	    // We copy the dock because expandable blocks modify it
-	    blockList.last().copyDocks();
-	    blockList.last().copySize();
+	    // We copy the dock because expandable blocks modify it.
+	    myBlock = blockList.last();
+	    myBlock.copyDocks();
+	    myBlock.copySize();
+	    // We need a container for the block graphics.
+	    myBlock.myContainer = new createjs.Container();
+	    stage.addChild(myBlock.myContainer);
+	    // and we need to load the images into the container.
+	    imageLoad(myBlock);
+	    loadEventHandlers(myBlock);
+	}
+
+	function makeNewContainer(myBlock) {
+	    myBlock.myContainer = new createjs.Container();
+	    stage.addChild(myBlock.myContainer);
 	}
 
 	function loadStart() {
+	    // where to put this?
+	    updatePalettes();
+
 	    // Always start with a start block.
-	    newBlock(startBlock);
+	    makeNewBlock(startBlock);
 	    blockList[0].x = 50;
 	    blockList[0].y = 50;
 	    blockList[0].connections = [null, null, null];
@@ -1609,8 +1530,7 @@ define(function (require) {
 	    updateBlockImages();
 	    updateBlockLabels();
 
-	    // where to put this?
-	    updatePalettes();
+	    update = true;
 	}
 
         function loadBlocks(blockObjs) {
@@ -1631,284 +1551,297 @@ define(function (require) {
 		console.log(thisBlock + ' ' + name + ' ' + value);
 		switch(name) {
 		case 'start':
-		    newBlock(startBlock);
+		    makeNewBlock(startBlock);
 		    blockList[thisBlock].connections.push(null);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    blockList[thisBlock].connections.push(null);
 		    break;
 		case 'do':
 		case 'stack':
-		    newBlock(doBlock);
+		    makeNewBlock(doBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'storein':
-		    newBlock(storeinBlock);
+		    makeNewBlock(storeinBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    pushConnection(blkData[4][3], blockOffset, thisBlock);
 		    break;
 		case 'box':
-		    newBlock(boxBlock);
+		    makeNewBlock(boxBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'action':
 		case 'hat':
-		    newBlock(actionBlock);
+		    makeNewBlock(actionBlock);
 		    blockList[thisBlock].connections.push(null);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    blockList[thisBlock].connections.push(null);
 		    break;
                 case 'repeat':
-		    newBlock(repeatBlock);
+		    makeNewBlock(repeatBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    pushConnection(blkData[4][3], blockOffset, thisBlock);
 		    break;
 		case 'vspace':
-		    newBlock(vspaceBlock);
+		    makeNewBlock(vspaceBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'clear':
 		case 'clean':
-		    newBlock(clearBlock);
+		    makeNewBlock(clearBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
                 case 'setxy':
 		case 'setxy2':
-		    newBlock(setxyBlock);
+		    makeNewBlock(setxyBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    pushConnection(blkData[4][3], blockOffset, thisBlock);
 		    break;
                 case 'arc':
-		    newBlock(arcBlock);
+		    makeNewBlock(arcBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    pushConnection(blkData[4][3], blockOffset, thisBlock);
 		    break;
 		case 'forward':
-		    newBlock(forwardBlock);
+		    makeNewBlock(forwardBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'back':
-		    newBlock(backBlock);
+		    makeNewBlock(backBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'left':
-		    newBlock(leftBlock);
+		    makeNewBlock(leftBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'right':
-		    newBlock(rightBlock);
+		    makeNewBlock(rightBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'setheading':
-		    newBlock(setheadingBlock);
+		    makeNewBlock(setheadingBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'heading':
-		    newBlock(headingBlock);
+		    makeNewBlock(headingBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'x':
 		case 'xcor':
-		    newBlock(xBlock);
+		    makeNewBlock(xBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'y':
 		case 'ycor':
-		    newBlock(yBlock);
+		    makeNewBlock(yBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'plus':
 		case 'plus2':
-		    newBlock(plusBlock);
+		    makeNewBlock(plusBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'multiply':
 		case 'product2':
-		    newBlock(multiplyBlock);
+		    makeNewBlock(multiplyBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'divide':
 		case 'division2':
-		    newBlock(divideBlock);
+		    makeNewBlock(divideBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'minus':
 		case 'minus2':
-		    newBlock(minusBlock);
+		    makeNewBlock(minusBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'color':
 		case 'hue':
-		    newBlock(colorBlock);
+		    makeNewBlock(colorBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'setcolor':
 		case 'sethue':
-		    newBlock(setcolorBlock);
+		    makeNewBlock(setcolorBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'value':
 		case 'shade':
-		    newBlock(shadeBlock);
+		    makeNewBlock(shadeBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'setvalue':
 		case 'setshade':
-		    newBlock(setshadeBlock);
+		    makeNewBlock(setshadeBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'gray':
 		case 'grey':
-		    newBlock(chromaBlock);
+		    makeNewBlock(chromaBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'setgray':
 		case 'setgrey':
 		case 'setchroma':
-		    newBlock(setchromaBlock);
+		    makeNewBlock(setchromaBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'pensize':
-		    newBlock(pensizeBlock);
+		    makeNewBlock(pensizeBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'setpensize':
-		    newBlock(setpensizeBlock);
+		    makeNewBlock(setpensizeBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'penup':
-		    newBlock(penupBlock);
+		    makeNewBlock(penupBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'pendown':
-		    newBlock(pendownBlock);
+		    makeNewBlock(pendownBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'startfill':
 		case 'beginfill':
-		    newBlock(startfillBlock);
+		    makeNewBlock(startfillBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'stopfill':
 		case 'endfill':
-		    newBlock(endfillBlock);
+		    makeNewBlock(endfillBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'fillscreen':
 		case 'setbackgroundcolor':
-		    newBlock(backgroundBlock);
+		    makeNewBlock(backgroundBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    break;
 		case 'number':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = value;
+		    updateBlockText(thisBlock);
 		    break;
 		case 'text':
 		case 'string':
-		    newBlock(textBlock);
+		    makeNewBlock(textBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = value;
+		    updateBlockText(thisBlock);
 		    break;
 		case 'red':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = 0;
+		    updateBlockText(thisBlock);
 		    break;
 		case 'orange':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = 10;
+		    updateBlockText(thisBlock);
 		    break;
 		case 'yellow':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = 20;
+		    updateBlockText(thisBlock);
 		    break;
 		case 'green':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = 40;
+		    updateBlockText(thisBlock);
 		    break;
 		case 'blue':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = 70;
+		    updateBlockText(thisBlock);
 		    break;
 		case 'leftpos':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = -(canvas.width / 2);
+		    updateBlockText(thisBlock);
 		    break;
 		case 'rightpos':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = (canvas.width / 2);
+		    updateBlockText(thisBlock);
 		    break;
 		case 'toppos':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = (canvas.height / 2);
+		    updateBlockText(thisBlock);
 		    break;
 		case 'botpos':
 		case 'bottompos':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = -(canvas.height / 2);
+		    updateBlockText(thisBlock);
 		    break;
 		case 'width':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = canvas.width;
+		    updateBlockText(thisBlock);
 		    break;
 		case 'height':
-		    newBlock(numberBlock);
+		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = canvas.height;
+		    updateBlockText(thisBlock);
 		    break;
 		default:
 		    console.log('No factory for ' + name);
@@ -2464,23 +2397,23 @@ define(function (require) {
 	    var r = Number(radius);
 
 	    // old turtle point
-            oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
-				       invertY(turtleBitmap.y));
+	    ox = screenX2turtleX(turtleBitmap.x);
+            oy = invertY(turtleBitmap.y);
 
 	    if( adeg < 0 ) {
 		var anticlockwise = true;
 		adeg = -adeg;
 		// center point for arc
-		var cx = oldPt.x - Math.cos(orad) * r;
-		var cy = oldPt.y + Math.sin(orad) * r;
+		var cx = ox - Math.cos(orad) * r;
+		var cy = oy + Math.sin(orad) * r;
 		// new position of turtle
 		var nx = cx + Math.cos(orad + arad) * r;
 		var ny = cy - Math.sin(orad + arad) * r;
 	    } else {
 		var anticlockwise = false;
 		// center point for arc
-		var cx = oldPt.x + Math.cos(orad) * r;
-		var cy = oldPt.y - Math.sin(orad) * r;
+		var cx = ox + Math.cos(orad) * r;
+		var cy = oy - Math.sin(orad) * r;
 		// new position of turtle
 		var nx = cx - Math.cos(orad + arad) * r;
 		var ny = cy + Math.sin(orad + arad) * r;
@@ -2529,6 +2462,7 @@ define(function (require) {
 
 	function doSetPensize(size) {
 	    turtleStroke = size;
+	    canvasStroke = turtleStroke;
 	}
 
         function doPenUp() {

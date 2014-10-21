@@ -38,8 +38,10 @@
   * move labels to container
   * fix repeat docking bug
   * fix filler hide bug
+  * real block highlighting
 
 TODO:
+  * trigger events on containers, not bitmaps
   * save blocks
   * copy/paste
   * user defined blocks

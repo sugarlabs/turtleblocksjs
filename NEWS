@@ -39,9 +39,10 @@
   * fix repeat docking bug
   * fix filler hide bug
   * real block highlighting
+  * fix problem with cascading arithmetic operators
+  * trigger events on containers, not bitmaps
 
 TODO:
-  * trigger events on containers, not bitmaps
   * save blocks
   * copy/paste
   * user defined blocks
@@ -53,4 +54,3 @@ TODO:
   * multiple turtles (or only one start block)
   * keyboard short cuts
   * restore from trash
-  * fix problem with cascading arithmetic operators

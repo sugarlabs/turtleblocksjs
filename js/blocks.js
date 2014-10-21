@@ -398,6 +398,27 @@ divideBlock.args = 2;
 divideBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
 		   [68, 62, 'numberin']];
 
+var sqrtBlock = new ProtoBlock('sqrt');
+protoBlockList.push(sqrtBlock);
+sqrtBlock.palette = numberPalette;
+numberPalette.blockList.push(sqrtBlock);
+sqrtBlock.args = 1;
+sqrtBlock.style = 'arg';
+sqrtBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin']];
+
+var modBlock = new ProtoBlock('mod');
+protoBlockList.push(modBlock);
+modBlock.palette = numberPalette;
+numberPalette.blockList.push(modBlock);
+modBlock.yoff = 49;
+modBlock.loff = 42;
+modBlock.expandable = true;
+modBlock.style = 'arg';
+modBlock.size = 2;
+modBlock.args = 2;
+modBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
+		   [68, 62, 'numberin']];
+
 var greaterBlock = new ProtoBlock('greater');
 protoBlockList.push(greaterBlock);
 greaterBlock.palette = numberPalette;
@@ -407,6 +428,26 @@ greaterBlock.size = 2;
 greaterBlock.args = 2;
 greaterBlock.docks = [[0, 40, 'booleanout'], [86, 20, 'numberin'],
  		      [86, 62, 'numberin']];
+
+var lessBlock = new ProtoBlock('less');
+protoBlockList.push(lessBlock);
+lessBlock.palette = numberPalette;
+numberPalette.blockList.push(lessBlock);
+lessBlock.style = 'arg';
+lessBlock.size = 2;
+lessBlock.args = 2;
+lessBlock.docks = [[0, 40, 'booleanout'], [86, 20, 'numberin'],
+ 		   [86, 62, 'numberin']];
+
+var equalBlock = new ProtoBlock('equal');
+protoBlockList.push(equalBlock);
+equalBlock.palette = numberPalette;
+numberPalette.blockList.push(equalBlock);
+equalBlock.style = 'arg';
+equalBlock.size = 2;
+equalBlock.args = 2;
+equalBlock.docks = [[0, 40, 'booleanout'], [86, 20, 'numberin'],
+ 		    [86, 62, 'numberin']];
 
 // Blocks palette
 var textBlock = new ProtoBlock('text');

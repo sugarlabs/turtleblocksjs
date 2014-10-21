@@ -1661,6 +1661,38 @@ define(function (require) {
 		    makeNewBlock(yBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
+		case 'mod':
+		    makeNewBlock(modBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'greater':
+		case 'greater2':
+		    makeNewBlock(greaterBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'less':
+		case 'less2':
+		    makeNewBlock(lessBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'equal':
+		case 'equal2':
+		    makeNewBlock(equalBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'sqrt':
+		    makeNewBlock(sqrtBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    break;
 		case 'plus':
 		case 'plus2':
 		    makeNewBlock(plusBlock);
@@ -2148,12 +2180,38 @@ define(function (require) {
 			blockList[blk].value = boxList[i][1];
 		    }
 		    break;
+		case 'sqrt':
+		    var cblk = blockList[blk].connections[1];
+		    var a = parseArg(cblk);
+		    blockList[blk].value = (Math.sqrt(Number(a)));
+		    break;
+		case 'mod':
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
+		    blockList[blk].value = (Number(a) % Number(b));
+		    break;
 		case 'greater':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
 		    var a = parseArg(cblk1);
 		    var b = parseArg(cblk2);
-		    blockList[blk].value = (a > b);
+		    blockList[blk].value = (Number(a) > Number(b));
+		    break;
+		case 'equal':
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
+		    blockList[blk].value = (a = b);
+		    break;
+		case 'less':
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
+		    blockList[blk].value = (Number(a) < Number(b));
 		    break;
 		case 'random':
 		    var cblk1 = blockList[blk].connections[1];

@@ -331,6 +331,21 @@ numberPalette.blockList.push(numberBlock);
 numberBlock.style = 'value';
 numberBlock.docks = [[0, 20, 'numberout']];
 
+var randomBlock = new ProtoBlock('random');
+protoBlockList.push(randomBlock);
+randomBlock.palette = numberPalette;
+numberPalette.blockList.push(randomBlock);
+randomBlock.yoff = 49;
+randomBlock.loff = 42;
+randomBlock.expandable = true;
+randomBlock.style = 'arg';
+randomBlock.size = 2;
+randomBlock.args = 2;
+randomBlock.defaults.push(0);
+randomBlock.defaults.push(100);
+randomBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'],
+		     [68, 62, 'numberin']];
+
 var plusBlock = new ProtoBlock('plus');
 protoBlockList.push(plusBlock);
 plusBlock.palette = numberPalette;

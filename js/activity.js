@@ -1667,6 +1667,13 @@ define(function (require) {
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
+		case 'random':
+		case 'random2':
+		    makeNewBlock(randomBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
 		case 'multiply':
 		case 'product2':
 		    makeNewBlock(multiplyBlock);
@@ -2146,6 +2153,13 @@ define(function (require) {
 		    b = parseArg(cblk2);
 		    blockList[blk].value = (a > b);
 		    break;
+		case 'random':
+		    cblk1 = blockList[blk].connections[1];
+		    cblk2 = blockList[blk].connections[2];
+		    a = parseArg(cblk1);
+		    b = parseArg(cblk2);
+		    blockList[blk].value = doRandom(a, b);
+		    break;
 		case 'plus':
 		    cblk1 = blockList[blk].connections[1];
 		    cblk2 = blockList[blk].connections[2];
@@ -2340,6 +2354,10 @@ define(function (require) {
 	}
 
 	// Math functions
+	function doRandom(a, b) {
+	    return Math.floor(Math.random() * (Number(b) - Number(a) + 1) + Number(a));
+	}
+
 	function doPlus(a, b) {
 	    return Number(a) + Number(b);
 	}

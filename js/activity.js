@@ -509,6 +509,8 @@ define(function (require) {
 			moved = true;
                         target.x = event.stageX + offset.x;
                         target.y = event.stageY + offset.y;
+			turtleX = screenX2turtleX(target.x);
+			turtleY = invertY(target.y);
                         update = true;
                     }
                 }
@@ -540,13 +542,17 @@ define(function (require) {
 		nx = x;
 		ny = y;
 	    }
-
-	    if (!turtleFillState) {
-            	drawingCanvas.graphics.beginStroke(canvasColor);
-		drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
-		drawingCanvas.graphics.moveTo(ox, oy);
+	    // Update turtle position on screen.
+	    turtleBitmap.x = nx;
+	    turtleBitmap.y = ny;
+	    if (invert) {
+		turtleX = x;
+		turtleY = y;
+	    } else {
+		turtleX = screenX2turtleX(x);
+		turtleY = invertY(y);
 	    }
-
+	    // Draw a line if the pen is down.
 	    if (turtlePenState) {
 		drawingCanvas.graphics.lineTo(nx, ny);
 	    } else {
@@ -554,21 +560,18 @@ define(function (require) {
 	    }
 	}
 
-	function arcTurtle(cx, cy, ox, oy, nx, ny, radius, start, end, anticlockwise,
+	function arcTurtle(cx, cy, ox, oy, x, y, radius, start, end, anticlockwise,
 			   invert) {
 	    if (invert) {
 		cx = turtleX2screenX(cx);
 		ox = turtleX2screenX(ox);
-		nx = turtleX2screenX(nx);
+		nx = turtleX2screenX(x);
 		cy = invertY(cy);
 		oy = invertY(oy);
-		ny = invertY(ny);
-	    }
-
-	    if (!turtleFillState) {
-            	drawingCanvas.graphics.beginStroke(canvasColor);
-		drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
-		drawingCanvas.graphics.moveTo(ox, oy);
+		ny = invertY(y);
+	    } else {
+		nx = x;
+		ny = y;
 	    }
 
 	    if (!anticlockwise) {
@@ -579,6 +582,17 @@ define(function (require) {
 		ea = end;
 	    }
 
+	    // Update turtle position on screen.
+	    turtleBitmap.x = nx;
+	    turtleBitmap.y = ny;
+	    if (invert) {
+		turtleX = x;
+		turtleY = y;
+	    } else {
+		turtleX = screenX2turtleX(x);
+		turtleY = invertY(y);
+	    }
+	    // Draw an arc if the pen is down.
 	    if (turtlePenState) {
 		drawingCanvas.graphics.arc(cx, cy, radius, sa, ea,
 					   anticlockwise);
@@ -1933,6 +1947,13 @@ define(function (require) {
 		}
 	    }
 
+	    // Init the graphic state.
+	    turtleBitmap.x = turtleX2screenX(turtleX);
+	    turtleBitmap.y = invertY(turtleY);
+            drawingCanvas.graphics.beginStroke(canvasColor);
+  	    drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
+	    drawingCanvas.graphics.moveTo(turtleBitmap.x, turtleBitmap.y);
+
 	    // Execute turtle code here...  (1) Find the start block
 	    // (or the top of each stack) and build a list of all of
 	    // the named action stacks (wishing I had a Python
@@ -2160,7 +2181,6 @@ define(function (require) {
 
 	function parseArg(blk) {
 	    // Retrieve the value of a block.
-	    console.log('parse arg ' + blockList[blk].name + ' (' + blk + ')');
 	    if (blk == null) {
 		activity.showAlert('WARNING',
 				   'missing argument', null,
@@ -2441,30 +2461,29 @@ define(function (require) {
 
 	// Turtle functions
         function doForward(steps) {
-	    // Move forward.
 	    // old turtle point
-            oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
-					   invertY(turtleBitmap.y));
+            var ox = screenX2turtleX(turtleBitmap.x);
+	    var oy = invertY(turtleBitmap.y);
+
 	    // new turtle point
 	    var rad = turtleOrientation * Math.PI / 180.0;
-	    var newPt = new createjs.Point(
-		oldPt.x + Number(steps) * Math.sin(rad),
-		oldPt.y + Number(steps) * Math.cos(rad))
-	    moveTurtle(oldPt.x, oldPt.y, newPt.x, newPt.y, true);
-	    turtleBitmap.x = turtleX2screenX(newPt.x);
-	    turtleBitmap.y = invertY(newPt.y);
+	    var nx = ox + Number(steps) * Math.sin(rad);
+	    var ny = oy + Number(steps) * Math.cos(rad);
+
+	    moveTurtle(ox, oy, nx, ny, true);
             update = true;
 	}
 
         function doSetXY(x, y) {
 	    // old turtle point
-            oldPt = new createjs.Point(screenX2turtleX(turtleBitmap.x),
-				       invertY(turtleBitmap.y));
+            var ox = screenX2turtleX(turtleBitmap.x);
+	    var oy = invertY(turtleBitmap.y);
+
 	    // new turtle point
-	    var newPt = new createjs.Point(Number(x), Number(y));
-	    moveTurtle(oldPt.x, oldPt.y, newPt.x, newPt.y, true);
-	    turtleBitmap.x = turtleX2screenX(newPt.x);
-	    turtleBitmap.y = invertY(newPt.y);
+	    var nx = Number(x)
+	    var ny = Number(y);
+
+	    moveTurtle(ox, oy, nx, ny, true);
             update = true;
 	}
 
@@ -2498,8 +2517,8 @@ define(function (require) {
 	    }
 	    arcTurtle(cx, cy, ox, oy, nx, ny, r, orad, orad + arad, anticlockwise, true);
 
-	    turtleBitmap.x = turtleX2screenX(nx),
-	    turtleBitmap.y = invertY(ny);
+	    // turtleBitmap.x = turtleX2screenX(nx),
+	    // turtleBitmap.y = invertY(ny);
 	    if (anticlockwise) {
 		doRight(-adeg);
 	    } else {
@@ -2526,21 +2545,25 @@ define(function (require) {
 	function doSetColor(hue) {
 	    turtleColor = Number(hue);
             canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
+            drawingCanvas.graphics.beginStroke(canvasColor);
 	}
 
 	function doSetValue(shade) {
 	    turtleValue = Number(shade);
             canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
+            drawingCanvas.graphics.beginStroke(canvasColor);
 	}
 
 	function doSetChroma(chroma) {
 	    turtleChroma = Number(chroma);
             canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
+            drawingCanvas.graphics.beginStroke(canvasColor);
 	}
 
 	function doSetPensize(size) {
 	    turtleStroke = size;
 	    canvasStroke = turtleStroke;
+	    drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
 	}
 
         function doPenUp() {
@@ -2597,6 +2620,8 @@ define(function (require) {
             canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
             canvasStroke = turtleStroke;
             drawingCanvas.graphics.clear();
+            drawingCanvas.graphics.beginStroke(canvasColor);
+  	    drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
             update = true;
 	}
 

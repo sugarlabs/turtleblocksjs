@@ -1641,6 +1641,7 @@ define(function (require) {
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'setheading':
+		case 'seth':
 		    makeNewBlock(setheadingBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);

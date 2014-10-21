@@ -48,7 +48,7 @@ define(function (require) {
 
         var fastButton = document.getElementById('fast-button');
         fastButton.onclick = function () {
-	    turtleDelay = 0;
+	    turtleDelay = 1;
 	    runLogoCommands();
         }
 
@@ -211,8 +211,6 @@ define(function (require) {
                 document.getElementById('header').style.display = 'none';
             }
             document.getElementById('loader').className = 'loader';
-            // Create the stage and point it to the canvas.
-            // canvas = document.getElementById('myCanvas');
 
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
@@ -2033,7 +2031,7 @@ define(function (require) {
 	    // Some flow blocks have childflows, e.g., repeat
 	    var childflow = null;
 
-	    if (turtleDelay != null) {
+	    if (turtleDelay > 0) {
 		highlight(blk);
 	    }
 
@@ -2175,7 +2173,7 @@ define(function (require) {
 	    if (nextBlock != null) {
 		runFromBlock(nextBlock);
 	    } else {
-		setTimeout(function(){unhighlight();}, turtleDelay);
+		setTimeout(function(){unhighlight(blk);}, turtleDelay);
 	    }
 	}
 
@@ -2307,6 +2305,9 @@ define(function (require) {
 	}
 
 	function unhighlight() {
+	    if (!blocksVisible) {
+		return;
+	    }
 	    if (highlightedBlock != null) {
 		var myBlock = blockList[highlightedBlock];
 		myBlock.bitmap.visible = true;
@@ -2327,6 +2328,9 @@ define(function (require) {
 	}
 
 	function highlight(blk) {
+	    if (!blocksVisible) {
+		return;
+	    }
 	    if (blk != null) {
 		unhighlight();
 		var myBlock = blockList[blk];
@@ -2351,14 +2355,17 @@ define(function (require) {
 	function hideBlock(blk) {
 	    myBlock = blockList[blk];
 	    myBlock.bitmap.visible = false;
+	    myBlock.highlightBitmap.visible = false;
 	    if (isValueBlock(blk)) {
 		myBlock.label.style.display = 'none';
 	    }
 	    if (isExpandableBlock(blk)) {
 		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
 		    myBlock.fillerBitmaps[i].visible = false;
+		    myBlock.highlightFillerBitmaps[i].visible = false;
 		}
 		myBlock.bottomBitmap.visible = false;
+		myBlock.highlightBottomBitmap.visible = false;
 	    } else if (isValueBlock(blk)) {
 		myBlock.text.visible = false;
 	    }

@@ -1074,6 +1074,16 @@ define(function (require) {
 	    }
 	}
 
+	function find2Args() {
+	    // Find any expandable arg blocks.
+	    expandablesList = [];
+	    for (var i = 0; i < blockList.length; i++) {
+		if (isArgBlock(i) && isExpandableBlock(i)) {
+			expandablesList.push(i);
+		}
+	    }
+	}
+
 	function searchForExpandables(blk) {
 	    // Find the expandable blocks below blk in a stack.
 	    while (blk != null) {
@@ -1086,8 +1096,17 @@ define(function (require) {
 	    }
 	}
 
+	function expand2Args() {
+	    // Expand expandable 2-arg blocks as needed.
+	    find2Args();
+	    for (var i = 0; i < expandablesList.length; i++) {
+		adjust2ArgBlock(expandablesList[i]);
+	    }
+	    update = true;
+	}
+
 	function expandClamps() {
-	    // Expand expandable blocks as needed.
+	    // Expand expandable clamp blocks as needed.
 	    findClamps();
 	    for (var i = 0; i < expandablesList.length; i++) {
 		adjustExpandableBlock(expandablesList[i]);
@@ -1829,6 +1848,7 @@ define(function (require) {
 		    updateBlockText(thisBlock);
 		    break;
 		case 'red':
+		case 'white':
 		    makeNewBlock(numberBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blockList[thisBlock].value = 0;
@@ -1907,9 +1927,6 @@ define(function (require) {
 		    }
 		}
 	    }
-	    // for (var blk = 0; blk < blockList.length; blk++) {
-		// console.log(blk + ' ' + blockList[blk].name + ' ' + blockList[blk].connections + ' ' + blockList[blk].value);
-	    // }
 	    updateBlockImages();
 	    updateBlockLabels();
 	    for (var blk = 0; blk < adjustTheseDocks.length; blk++) {
@@ -1920,7 +1937,8 @@ define(function (require) {
 	    update = true;
 
 	    // We need to wait for the blocks to load before expanding them.
-	    setTimeout(function(){expandClamps();}, turtleDelay); 
+	    setTimeout(function(){expandClamps();}, 1000); 
+	    setTimeout(function(){expand2Args();}, 2000); 
         }
 
         function pushConnection(connection, blockOffset, blk) {

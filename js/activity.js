@@ -2128,6 +2128,7 @@ define(function (require) {
 
 	function parseArg(blk) {
 	    // Retrieve the value of a block.
+	    console.log('parse arg ' + blockList[blk].name + ' (' + blk + ')');
 	    if (blk == null) {
 		activity.showAlert('WARNING',
 				   'missing argument', null,
@@ -2138,9 +2139,9 @@ define(function (require) {
 	    } else if (isArgBlock(blk)) {
 		switch (blockList[blk].name) {
 		case 'box':
-		    cblk = blockList[blk].connections[1];
-		    name = parseArg(cblk);
-		    i = findBox(name);
+		    var cblk = blockList[blk].connections[1];
+		    var name = parseArg(cblk);
+		    var i = findBox(name);
 		    if (i == null) {
 			blockList[blk].value = null;
 		    } else {
@@ -2148,45 +2149,45 @@ define(function (require) {
 		    }
 		    break;
 		case 'greater':
-		    cblk1 = blockList[blk].connections[1];
-		    cblk2 = blockList[blk].connections[2];
-		    a = parseArg(cblk1);
-		    b = parseArg(cblk2);
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
 		    blockList[blk].value = (a > b);
 		    break;
 		case 'random':
-		    cblk1 = blockList[blk].connections[1];
-		    cblk2 = blockList[blk].connections[2];
-		    a = parseArg(cblk1);
-		    b = parseArg(cblk2);
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
 		    blockList[blk].value = doRandom(a, b);
 		    break;
 		case 'plus':
-		    cblk1 = blockList[blk].connections[1];
-		    cblk2 = blockList[blk].connections[2];
-		    a = parseArg(cblk1);
-		    b = parseArg(cblk2);
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
 		    blockList[blk].value = doPlus(a, b);
 		    break;
 		case 'multiply':
-		    cblk1 = blockList[blk].connections[1];
-		    cblk2 = blockList[blk].connections[2];
-		    a = parseArg(cblk1);
-		    b = parseArg(cblk2);
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
 		    blockList[blk].value = doMultiply(a, b);
 		    break;
 		case 'divide':
-		    cblk1 = blockList[blk].connections[1];
-		    cblk2 = blockList[blk].connections[2];
-		    a = parseArg(cblk1);
-		    b = parseArg(cblk2);
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
 		    blockList[blk].value = doDivide(a, b);
 		    break;
 		case 'minus':
-		    cblk1 = blockList[blk].connections[1];
-		    cblk2 = blockList[blk].connections[2];
-		    a = parseArg(cblk1);
-		    b = parseArg(cblk2);
+		    var cblk1 = blockList[blk].connections[1];
+		    var cblk2 = blockList[blk].connections[2];
+		    var a = parseArg(cblk1);
+		    var b = parseArg(cblk2);
 		    blockList[blk].value = doMinus(a, b);
 		    break;
 		case 'heading':

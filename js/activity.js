@@ -175,6 +175,8 @@ define(function (require) {
 	    this.bitmap = null;
 	    this.container = null;
 	    this.drawingCanvas = null;
+	    this.runQueue = [];
+	    this.media = [];  // a list of media we need to remove on clear
 	};
 
 	var turtleList = [];
@@ -182,9 +184,11 @@ define(function (require) {
 	// To avoid infinite loops in dock search (temporary work-around)
 	var loopCounter = 0;
 
-	// Queue for loops
-	var runQueue = [];
-	var countQueue = [];
+	// Queue entry for loops
+	function Queue (blk, count) {
+	    this.blk = blk;
+	    this.count = count;
+	}
 
 	// Highlighted block
 	var highlightedBlock = null;
@@ -2014,15 +2018,11 @@ define(function (require) {
 
 	    // (2) Execute the stack.
 	    if (startHere != null) {
-		runQueue = [[]];
-		countQueue = [[]];
+		turtleList[0].queue = [];
 		runFromBlock(0, startHere);
 	    } else if (startBlocks.length > 0) {
-		runQueue = [];
-		countQueue = [];
 		for (var turtle = 0; turtle < startBlocks.length; turtle++) {
-		    runQueue.push([]);
-		    countQueue.push([]);
+		    turtleList[turtle].queue = [];
 		    runFromBlock(turtle, startBlocks[turtle]);
 		}
 	    } else {
@@ -2058,15 +2058,16 @@ define(function (require) {
 
 	    // (2) Run function associated with the block;
 
-	    // All flow blocks have a nextflow, but it can be null
+	    // All flow blocks have a nextFlow, but it can be null
 	    // (end of flow)
-	    var nextflow = blockList[blk].connections.last();
-	    if (nextflow != null) {
-		runQueue[turtle].push(nextflow);
-		countQueue[turtle].push(1);
+	    var nextFlow = blockList[blk].connections.last();
+	    if (nextFlow != null) {
+		var queueBlock = new Queue(nextFlow, 1);
+		turtleList[turtle].queue.push(queueBlock);
 	    }
 	    // Some flow blocks have childflows, e.g., repeat
-	    var childflow = null;
+	    var childFlow = null;
+	    var childFlowCount = 0;
 
 	    if (turtleDelay > 0) {
 		highlight(blk);
@@ -2075,16 +2076,16 @@ define(function (require) {
 	    switch (blockList[blk].name) {
 	    case 'start':
  		if (args.length == 1) {
-		    childflow = args[0];
-		    childflowCount = 1;
+		    childFlow = args[0];
+		    childFlowCount = 1;
 		}
 		break;
 	    case 'do':
  		if (args.length == 1) {
 		    for (i = 0; i < actionList.length; i++) {
 			if (actionList[i][0] == args[0]) {
-			    childflow = actionList[i][1];
-			    childflowCount = 1;
+			    childFlow = actionList[i][1];
+			    childFlowCount = 1;
 			    break;
 			}
 		    }
@@ -2092,15 +2093,15 @@ define(function (require) {
 		break;
 	    case 'repeat':
  		if (args.length == 2) {
-		    childflow = args[1];
-		    childflowCount = args[0];
+		    childFlow = args[1];
+		    childFlowCount = args[0];
 		}
 		break;
 	    case 'if':
  		if (args.length == 2) {
 		    if (args[0]) {
-			childflow = args[1];
-			childflowCount = 1;
+			childFlow = args[1];
+			childFlowCount = 1;
 		    }
 		}
 		break;
@@ -2201,25 +2202,22 @@ define(function (require) {
 
 	    // (3) Queue block below this block.
 
-	    // If there is a childflow, queue it.
-	    if (childflow != null) {
-		runQueue[turtle].push(childflow);
-		countQueue[turtle].push(childflowCount);
+	    // If there is a childFlow, queue it.
+	    if (childFlow != null) {
+		var queueBlock = new Queue(childFlow, childFlowCount);
+		turtleList[turtle].queue.push(queueBlock);
 	    }
 
 	    var nextBlock = null;
 	    // Run the last flow in the queue.
-	    if (runQueue[turtle].length > 0) {
-		nextBlock = runQueue[turtle].last();
-		if(countQueue[turtle].last() == 1) {
+	    if (turtleList[turtle].queue.length > 0) {
+		nextBlock = turtleList[turtle].queue.last().blk;
+		if(turtleList[turtle].queue.last().count == 1) {
 		    // Finished child so pop it off the queue.
-		    runQueue[turtle].pop();
-		    countQueue[turtle].pop();
+		    turtleList[turtle].queue.pop();
 		} else {
 		    // Decrement the counter.
-		    count = countQueue[turtle].pop();
-		    count -= 1;
-		    countQueue[turtle].push(count);
+		    turtleList[turtle].queue.last().count -= 1;
 		}
 	    }
 	    if (nextBlock != null) {

@@ -45,9 +45,15 @@
   * show text
   * show image
   * different colors for each turtle
+  * turtle shell (aka sprites)
 
 TODO:
-  * erase media
+  * erase media (remove children)
+  * reset turtle skin on clear
+  * scale text, images, turtle shell
+  * center images on turtle
+  * fix layering bug
+  * fix action name bug
   * save blocks
   * copy/paste
   * user defined blocks
@@ -55,6 +61,5 @@ TODO:
   * sensors
   * decide on a palette strategy
   * implement more sophisticated blocks
-  * turtle skin
   * keyboard short cuts
   * restore from trash

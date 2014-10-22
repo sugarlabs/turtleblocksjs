@@ -1568,6 +1568,9 @@ define(function (require) {
                 update = true;
             });
 
+	    // Cache the turtle container.
+	    myTurtle.container.cache(0, 0, 55, 55);
+
             document.getElementById('loader').className = '';
             createjs.Ticker.addEventListener('tick', tick);
 	    update = true;
@@ -2632,6 +2635,7 @@ define(function (require) {
 
 	    myTurtle.bitmap.rotation = myTurtle.orientation;
 	    myTurtle.skinChanged = true;
+	    myTurtle.updateCache();
 	    update = true;
 	}
 

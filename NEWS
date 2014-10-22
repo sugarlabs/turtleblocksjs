@@ -48,10 +48,11 @@
   * turtle shell (aka sprites)
   * erase media (remove children)
   * reset turtle skin on clear
-
-TODO:
   * scale text, images, turtle shell
   * center images on turtle
+
+TODO:
+  * use container caching
   * fix layering bug
   * fix action name bug
   * save blocks

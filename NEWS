@@ -46,9 +46,9 @@
   * show image
   * different colors for each turtle
   * turtle shell (aka sprites)
+  * erase media (remove children)
 
 TODO:
-  * erase media (remove children)
   * reset turtle skin on clear
   * scale text, images, turtle shell
   * center images on turtle

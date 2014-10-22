@@ -2595,6 +2595,7 @@ define(function (require) {
 	    image.src = myImage;
 	    var bitmap = new createjs.Bitmap(image);
 	    stage.addChild(bitmap);
+	    turtleList[turtle].media.push(bitmap);
 	    bitmap.x = turtleList[turtle].container.x;
 	    bitmap.y = turtleList[turtle].container.y;
 	    bitmap.rotation = turtleList[turtle].orientation;
@@ -2619,6 +2620,7 @@ define(function (require) {
 	    text.textAlign = 'left';
 	    text.textBaseline = 'alphabetic';
 	    stage.addChild(text);
+	    turtleList[turtle].media.push(text);
 	    text.x = turtleList[turtle].container.x;
 	    text.y = turtleList[turtle].container.y;
 	    text.rotation = turtleList[turtle].orientation;
@@ -2706,6 +2708,13 @@ define(function (require) {
 	    myTurtle.container.x = turtleX2screenX(myTurtle.x);
 	    myTurtle.container.y = invertY(myTurtle.y);
 	    myTurtle.bitmap.rotation = myTurtle.orientation;
+
+	    // Clear all media.
+	    for (i = 0; i < myTurtle.media.length; i++) {
+		stage.removeChild(myTurtle.media[i]);
+	    }
+	    // FIX ME: potential memory leak
+	    myTurtle.media = [];
 
 	    // Clear all the boxes.
 	    boxList = [];

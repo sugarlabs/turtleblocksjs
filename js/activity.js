@@ -2160,8 +2160,8 @@ define(function (require) {
          	}
 		break;
 	    case 'turtleshell':
-		if (args.length == 1) {
-		    doTurtleShell(turtle, args[0]);
+		if (args.length == 2) {
+		    doTurtleShell(turtle, args[0], args[1]);
          	}
 		break;
             case 'setcolor':
@@ -2602,17 +2602,27 @@ define(function (require) {
 	    bitmap.rotation = turtleList[turtle].orientation;
 	}
 
-	function doTurtleShell(turtle, myImage) {
+	function doTurtleShell(turtle, size, myImage) {
 	    // Add image to turtle
+	    var myTurtle = turtleList[turtle];
 	    var image = new Image();
+	    if (myImage == null) {
+		return;
+	    }
 	    image.src = myImage;
-	    turtleList[turtle].container.removeChild(turtleList[turtle].bitmap);
-	    turtleList[turtle].bitmap = new createjs.Bitmap(image);
-	    turtleList[turtle].container.addChild(turtleList[turtle].bitmap);
-	    turtleList[turtle].bitmap.x = 0;
-	    turtleList[turtle].bitmap.y = 0;
-	    turtleList[turtle].bitmap.rotation = turtleList[turtle].orientation;
-	    turtleList[turtle].skinChanged = true;
+	    myTurtle.container.removeChild(myTurtle.bitmap);
+	    myTurtle.bitmap = new createjs.Bitmap(image);
+	    myTurtle.container.addChild(myTurtle.bitmap);
+	    myTurtle.bitmap.scaleX = Number(size) / image.width;
+	    myTurtle.bitmap.scaleY = myTurtle.bitmap.scaleX;
+	    myTurtle.bitmap.scale = myTurtle.bitmap.scaleX;
+	    myTurtle.bitmap.x = 0;
+	    myTurtle.bitmap.y = 0;
+	    myTurtle.bitmap.regX = image.width / 2;
+	    myTurtle.bitmap.regY = image.height / 2;
+
+	    myTurtle.bitmap.rotation = myTurtle.orientation;
+	    myTurtle.skinChanged = true;
 	    update = true;
 	}
 
@@ -2783,7 +2793,6 @@ define(function (require) {
 			console.log('reader.result ' + filename);
 			var image = new Image();
 			image.src = filename;
-			console.log(image.width + ' ' + image.height);
 			var bitmap = new createjs.Bitmap(image);
 			blockList[thisBlock].myContainer.addChild(bitmap);
 			if (image.width > image.height) {

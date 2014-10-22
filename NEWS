@@ -47,9 +47,9 @@
   * different colors for each turtle
   * turtle shell (aka sprites)
   * erase media (remove children)
+  * reset turtle skin on clear
 
 TODO:
-  * reset turtle skin on clear
   * scale text, images, turtle shell
   * center images on turtle
   * fix layering bug

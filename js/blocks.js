@@ -252,9 +252,16 @@ var shellBlock = new ProtoBlock('turtleshell');
 protoBlockList.push(shellBlock);
 shellBlock.palette = turtlePalette;
 turtlePalette.blockList.push(shellBlock);
-shellBlock.args = 1;
+shellBlock.yoff = 49;
+shellBlock.loff = 42;
+shellBlock.expandable = true;
+shellBlock.style = 'special';
+shellBlock.size = 2;
+shellBlock.args = 2;
+shellBlock.defaults.push(55);
 shellBlock.defaults.push(null);
-shellBlock.docks = [[20, 0, 'out'], [98, 20, 'mediain'], [20, 42, 'in']];
+shellBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
+		    [98, 62, 'mediain'], [20, 84, 'in']];
 
 // Pen palette
 var setcolorBlock = new ProtoBlock('setcolor');

@@ -206,6 +206,7 @@ define(function (require) {
 	// Turtle sprite
         // var turtleBitmap = null;
         var turtlePath = 'images/turtle.svg';
+        var turtleBasePath = 'images/';
 
 	// functions needed by block.js
 	updater = updateBlocks;
@@ -1505,7 +1506,8 @@ define(function (require) {
 	    var myTurtle = new Turtle(turtleName);
 	    turtleList.push(myTurtle);
 	    var turtleImage = new Image();
-	    turtleImage.src = turtlePath;
+	    i %= 10;
+	    turtleImage.src = turtleBasePath + 'turtle-' + i.toString() + '.svg';
 	    myTurtle.container = new createjs.Container();
 	    stage.addChild(myTurtle.container);
 	    myTurtle.bitmap = new createjs.Bitmap(turtleImage);
@@ -1528,6 +1530,9 @@ define(function (require) {
             myTurtle.drawingCanvas = new createjs.Shape();
             stage.addChild(myTurtle.drawingCanvas);
             stage.update();
+
+	    myTurtle.color = 5 + (i * 10);
+	    myTurtle.canvasColor = getMunsellColor(myTurtle.color, defaultValue, defaultChroma);
 
 	    myTurtle.container.on('mousedown', function(event) {
 		var offset = {
@@ -2673,24 +2678,25 @@ define(function (require) {
 
 	function doClear(turtle) {
 	    // Reset turtle.
-	    turtleList[turtle].x = 0;
-	    turtleList[turtle].y = 0;
-	    turtleList[turtle].orientation = 0.0;
-	    turtleList[turtle].color = defaultColor;
-	    turtleList[turtle].value = defaultValue;
-	    turtleList[turtle].chroma = defaultChroma;
-	    turtleList[turtle].stroke = defaultStroke;
-
-	    turtleList[turtle].container.x = turtleX2screenX(turtleList[turtle].x);
-	    turtleList[turtle].container.y = invertY(turtleList[turtle].y);
-	    turtleList[turtle].bitmap.rotation = turtleList[turtle].orientation;
+	    var myTurtle = turtleList[turtle];
+	    myTurtle.x = 0;
+	    myTurtle.y = 0;
+	    myTurtle.orientation = 0.0;
+	    i = turtle % 10;
+	    myTurtle.color = 5 + (i * 10);
+	    myTurtle.value = defaultValue;
+	    myTurtle.chroma = defaultChroma;
+	    myTurtle.stroke = defaultStroke;
+	    myTurtle.container.x = turtleX2screenX(myTurtle.x);
+	    myTurtle.container.y = invertY(myTurtle.y);
+	    myTurtle.bitmap.rotation = myTurtle.orientation;
 
 	    // Clear all the boxes.
 	    boxList = [];
 
 	    // Clear all graphics.
-	    turtleList[turtle].penState = true;
-	    turtleList[turtle].fillState = false;
+	    myTurtle.penState = true;
+	    myTurtle.fillState = false;
 	    time = 0;
 
 	    // Only set the background for Turtle 0
@@ -2700,10 +2706,10 @@ define(function (require) {
 		setBackgroundColor(-1);
 	    }
 
-            turtleList[turtle].canvasColor = getMunsellColor(turtleList[turtle].color, turtleList[turtle].value, turtleList[turtle].chroma);
-            turtleList[turtle].drawingCanvas.graphics.clear();
-            turtleList[turtle].drawingCanvas.graphics.beginStroke(turtleList[turtle].canvasColor);
-  	    turtleList[turtle].drawingCanvas.graphics.setStrokeStyle(turtleList[turtle].stroke, 'round', 'round');
+            myTurtle.canvasColor = getMunsellColor(myTurtle.color, myTurtle.value, myTurtle.chroma);
+            myTurtle.drawingCanvas.graphics.clear();
+            myTurtle.drawingCanvas.graphics.beginStroke(myTurtle.canvasColor);
+  	    myTurtle.drawingCanvas.graphics.setStrokeStyle(myTurtle.stroke, 'round', 'round');
             update = true;
 	}
 

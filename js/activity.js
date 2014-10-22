@@ -173,6 +173,7 @@ define(function (require) {
 	    this.fillState = false;
 	    this.penState = true;
 	    this.bitmap = null;
+	    this.skinChanged = false;
 	    this.container = null;
 	    this.drawingCanvas = null;
 	    this.runQueue = [];
@@ -2611,6 +2612,7 @@ define(function (require) {
 	    turtleList[turtle].bitmap.x = 0;
 	    turtleList[turtle].bitmap.y = 0;
 	    turtleList[turtle].bitmap.rotation = turtleList[turtle].orientation;
+	    turtleList[turtle].skinChanged = true;
 	    update = true;
 	}
 
@@ -2707,6 +2709,13 @@ define(function (require) {
 	    myTurtle.stroke = defaultStroke;
 	    myTurtle.container.x = turtleX2screenX(myTurtle.x);
 	    myTurtle.container.y = invertY(myTurtle.y);
+
+	    i = turtle % 10;
+	    if (myTurtle.skinChanged) {
+		doTurtleShell(turtle, turtleBasePath + 'turtle-' + i.toString() + '.svg');
+		myTurtle.skinChanged = false;
+	    }
+
 	    myTurtle.bitmap.rotation = myTurtle.orientation;
 
 	    // Clear all media.

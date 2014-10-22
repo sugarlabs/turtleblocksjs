@@ -14,8 +14,9 @@ define(function (require) {
     var icon = require('sugar-web/graphics/icon');
     require('easel');
     // Palettes and Blocks are defined here
-    require('activity/munsell')
-    require('activity/blocks')
+    require('activity/turtle');
+    require('activity/munsell');
+    require('activity/blocks');  
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
@@ -38,10 +39,6 @@ define(function (require) {
 
 	// default values
 	var defaultBackgroundColor = [70, 80, 20];
-	var defaultColor = 0;
-	var defaultValue = 50;
-	var defaultChroma = 100;
-	var defaultStroke = 5;
 	var defaultDelay = 1000;  // MS
 
 	var turtleDelay = defaultDelay;
@@ -159,37 +156,8 @@ define(function (require) {
         // var canvasStroke = defaultStroke;
 	var time = 0;
 
-	// Turtles
-	function Turtle (name) {
-	    this.name = name;
-	    this.color = defaultColor;
-	    this.value = defaultValue;
-	    this.chroma = defaultChroma;
-	    this.stroke = defaultStroke;
-	    this.canvasColor = canvasColor;
-	    this.x = 0;
-	    this.y = 0;
-	    this.orientation = 0;
-	    this.fillState = false;
-	    this.penState = true;
-	    this.bitmap = null;
-	    this.skinChanged = false;
-	    this.container = null;
-	    this.drawingCanvas = null;
-	    this.runQueue = [];
-	    this.media = [];  // a list of media we need to remove on clear
-	};
-
-	var turtleList = [];
-
 	// To avoid infinite loops in dock search (temporary work-around)
 	var loopCounter = 0;
-
-	// Queue entry for loops
-	function Queue (blk, count) {
-	    this.blk = blk;
-	    this.count = count;
-	}
 
 	// Highlighted block
 	var highlightedBlock = null;
@@ -1510,6 +1478,11 @@ define(function (require) {
 	    var turtleName = i.toString();
 	    var myTurtle = new Turtle(turtleName);
 	    turtleList.push(myTurtle);
+
+	    // Each turtle needs its own canvas.
+            myTurtle.drawingCanvas = new createjs.Shape();
+            stage.addChild(myTurtle.drawingCanvas);
+
 	    var turtleImage = new Image();
 	    i %= 10;
 	    turtleImage.src = turtleBasePath + 'turtle-' + i.toString() + '.svg';
@@ -1539,9 +1512,6 @@ define(function (require) {
 	    decorationBitmap.scaleY = 0.5;
 	    decorationBitmap.scale = 0.5;
 
-	    // Each turtle needs its own canvas.
-            myTurtle.drawingCanvas = new createjs.Shape();
-            stage.addChild(myTurtle.drawingCanvas);
             stage.update();
 
 	    myTurtle.color = 5 + (i * 10);

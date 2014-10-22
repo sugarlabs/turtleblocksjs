@@ -1531,6 +1531,14 @@ define(function (require) {
 	    hitArea.y = 0;
 	    myTurtle.container.hitArea = hitArea;
 
+	    decorationBitmap = new createjs.Bitmap(turtleImage);
+	    blockList.last().myContainer.addChild(decorationBitmap);
+	    decorationBitmap.x = 80;
+	    decorationBitmap.y = 20;
+	    decorationBitmap.scaleX = 0.5;
+	    decorationBitmap.scaleY = 0.5;
+	    decorationBitmap.scale = 0.5;
+
 	    // Each turtle needs its own canvas.
             myTurtle.drawingCanvas = new createjs.Shape();
             stage.addChild(myTurtle.drawingCanvas);
@@ -1568,8 +1576,9 @@ define(function (require) {
                 update = true;
             });
 
+	    // FIX ME: enabling cache makes everything break
 	    // Cache the turtle container.
-	    myTurtle.container.cache(0, 0, 55, 55);
+	    // myTurtle.container.cache(0, 0, 55, 55);
 
             document.getElementById('loader').className = '';
             createjs.Ticker.addEventListener('tick', tick);
@@ -1994,7 +2003,7 @@ define(function (require) {
 		turtleList[turtle].container.y = invertY(turtleList[turtle].y);
 	    }
 
-	    // Execute turtle code here...  (1) Find the start block
+	    // Execute turtle code here...  Find the start block
 	    // (or the top of each stack) and build a list of all of
 	    // the named action stacks (wishing I had a Python
 	    // dictionary about now.)
@@ -2022,8 +2031,13 @@ define(function (require) {
 
 	    // (2) Execute the stack.
 	    if (startHere != null) {
-		turtleList[0].queue = [];
-		runFromBlock(0, startHere);
+		// Which turtle should we use?
+		var i = 0;
+		if (blockList[startHere].name == 'start') {
+		    var i = startBlocks.indexOf(startHere);
+		}
+		turtleList[i].queue = [];
+		runFromBlock(i, startHere);
 	    } else if (startBlocks.length > 0) {
 		for (var turtle = 0; turtle < startBlocks.length; turtle++) {
 		    turtleList[turtle].queue = [];
@@ -2635,7 +2649,8 @@ define(function (require) {
 
 	    myTurtle.bitmap.rotation = myTurtle.orientation;
 	    myTurtle.skinChanged = true;
-	    myTurtle.updateCache();
+	    // FIXME 
+	    // myTurtle.updateCache();
 	    update = true;
 	}
 

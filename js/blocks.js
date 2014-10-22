@@ -821,10 +821,6 @@ function updatePalettes() {
 function makeBlock(name, arg) {
     // Make a new block from a proto block.
     console.log('makeBlock ' + name);
-    if (name == 'start') {
-	console.log('making a start block, so adding a turtle');
-	addturtle();
-    }
 
     for (var proto=0; proto < protoBlockList.length; proto++) {
 	if (protoBlockList[proto].name == name) {
@@ -841,11 +837,13 @@ function makeBlock(name, arg) {
 	    }
 	}
     }
+    // Each start block gets its own turtle.
+    if (name == 'start') {
+	addturtle();
+    }
+
     var blk = blockList.length - 1;
     var myBlock = blockList[blk];
-    // myBlock.copyDocks();
-    // myBlock.copySize();
-    // newcontainer(myBlock);
     for (var i = 0; i < myBlock.docks.length; i++) {
 	myBlock.connections.push(null);
     }

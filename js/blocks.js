@@ -232,6 +232,22 @@ turtlePalette.blockList.push(yBlock);
 yBlock.style = 'arg';
 yBlock.docks = [[0, 20, 'numberout']];
 
+var showBlock = new ProtoBlock('show');
+protoBlockList.push(showBlock);
+showBlock.palette = turtlePalette;
+turtlePalette.blockList.push(showBlock);
+showBlock.args = 1;
+showBlock.defaults.push('text');
+showBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+
+var imageBlock = new ProtoBlock('image');
+protoBlockList.push(imageBlock);
+imageBlock.palette = turtlePalette;
+turtlePalette.blockList.push(imageBlock);
+imageBlock.args = 1;
+imageBlock.defaults.push(null);
+imageBlock.docks = [[20, 0, 'out'], [98, 20, 'mediain'], [20, 42, 'in']];
+
 // Pen palette
 var setcolorBlock = new ProtoBlock('setcolor');
 protoBlockList.push(setcolorBlock);
@@ -450,6 +466,13 @@ equalBlock.docks = [[0, 40, 'booleanout'], [86, 20, 'numberin'],
  		    [86, 62, 'numberin']];
 
 // Blocks palette
+var mediaBlock = new ProtoBlock('media');
+protoBlockList.push(mediaBlock);
+mediaBlock.palette = blocksPalette;
+blocksPalette.blockList.push(mediaBlock);
+mediaBlock.style = 'value';
+mediaBlock.docks = [[0, 20, 'mediaout']];
+
 var textBlock = new ProtoBlock('text');
 protoBlockList.push(textBlock);
 textBlock.palette = blocksPalette;
@@ -881,8 +904,13 @@ function makeBlock(name, arg) {
 	if (myBlock.docks[i + 1][2] == 'textin') {
 	    blockmaker(textBlock);
 	    // blockList.push(new Block(textBlock));
+	    console.log('text block ' + value);
 	    blockList.last().value = value;
 	    updatetext(blockList.length - 1);
+	} else if (myBlock.docks[i + 1][2] == 'mediain') {
+	    blockmaker(mediaBlock);
+	    // blockList.push(new Block(textBlock));
+	    blockList.last().value = value;
 	} else {
 	    blockmaker(numberBlock);
 	    // blockList.push(new Block(numberBlock));

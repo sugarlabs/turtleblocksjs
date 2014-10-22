@@ -42,6 +42,7 @@
   * fix problem with cascading arithmetic operators
   * trigger events on containers, not bitmaps
   * multiple turtles (one for each start block)
+  * show text
 
 TODO:
   * save blocks

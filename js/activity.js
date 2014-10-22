@@ -450,6 +450,15 @@ define(function (require) {
 	    if (type1 == 'booleanin' && type2 == 'booleanout') {
 		return true;
 	    }
+	    if (type1 == 'mediain' && type2 == 'mediaout') {
+		return true;
+	    }
+	    if (type1 == 'mediaout' && type2 == 'mediain') {
+		return true;
+	    }
+	    if (type1 == 'mediain' && type2 == 'textout') {
+		return true;
+	    }
 	    return false;
 	}
 
@@ -1162,7 +1171,7 @@ define(function (require) {
 	    myBlock.highlightBitmap.visible = false;
 
 	    // Value blocks get a modifiable text label
-	    if (isValueBlock(thisBlock)) {
+	    if (isValueBlock(thisBlock) && myBlock.name != 'media') {
 		if (myBlock.value == null) {
 		    myBlock.value = '---';
 		}
@@ -1227,7 +1236,9 @@ define(function (require) {
 	    myBlock.myContainer.on('click', function(event) {
 		if (!moved) {
 		    console.log('click on ' + myBlock.name);
-		    if (isValueBlock(thisBlock)) {
+		    if (myBlock.name == 'media') {
+			doOpenMedia(thisBlock);
+		    } else if (isValueBlock(thisBlock) && myBlock.name != 'media') {
 			myBlock.label.style.display = '';
 		    } else {
 			var topBlock = findTopBlock(thisBlock);
@@ -1262,7 +1273,7 @@ define(function (require) {
 		    var dx = myBlock.myContainer.x - oldX;
 		    var dy = myBlock.myContainer.y - oldY;
 
-		    if (isValueBlock(thisBlock)) {
+		    if (isValueBlock(thisBlock) && myBlock.name != 'media') {
 			// Ensure text is on top
 			lastChild = myBlock.myContainer.children.last();
 			myBlock.myContainer.swapChildren(myBlock.text, lastChild);
@@ -1402,7 +1413,7 @@ define(function (require) {
 		    var x = myBlock.bitmap.x
 		    var y = myBlock.bitmap.y
 		}
-		if (isValueBlock(blk)) {
+		if (isValueBlock(blk) && myBlock.name != 'media') {
 		    myBlock.label = document.getElementById(getBlockId(blk));
 		    myBlock.label.addEventListener(
 			'change', function() {labelChanged();});
@@ -1680,6 +1691,18 @@ define(function (require) {
 		case 'ycor':
 		    makeNewBlock(yBlock);
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'show':
+		    makeNewBlock(showBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'image':
+		    makeNewBlock(imageBlock);
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'mod':
 		    makeNewBlock(modBlock);
@@ -2117,6 +2140,16 @@ define(function (require) {
             case 'setheading':
 		if (args.length == 1) {
 		    doSetHeading(turtle, args[0]);
+         	}
+		break;
+	    case 'show':
+		if (args.length == 1) {
+		    doShowText(turtle, args[0]);
+         	}
+		break;
+	    case 'image':
+		if (args.length == 1) {
+		    doShowImage(turtle, args[0]);
          	}
 		break;
             case 'setcolor':
@@ -2567,6 +2600,28 @@ define(function (require) {
             update = true;
 	}
 
+	function doShowImage(turtle, myImage) {
+	    // Add a text or image object to the canvas
+	    var image = new Image();
+	    image.src = myImage;
+	    var bitmap = new createjs.Bitmap(image);
+	    stage.addChild(bitmap);
+	    bitmap.x = turtleList[turtle].container.x;
+	    bitmap.y = turtleList[turtle].container.y;
+	    bitmap.rotation = turtleList[turtle].orientation;
+	}
+
+	function doShowText(turtle, myText) {
+	    // Add a text or image object to the canvas
+	    var text = new createjs.Text(myText.toString(), '20px Courier', turtleList[turtle].canvasColor);
+	    text.textAlign = 'left';
+	    text.textBaseline = 'alphabetic';
+	    stage.addChild(text);
+	    text.x = turtleList[turtle].container.x;
+	    text.y = turtleList[turtle].container.y;
+	    text.rotation = turtleList[turtle].orientation;
+	}
+
 	function doRight(turtle, degrees) {
 	    // Turn right and display corresponding turtle graphic.
 	    turtleList[turtle].orientation += Number(degrees);
@@ -2691,6 +2746,44 @@ define(function (require) {
 
         function invertY(y) {
             return canvas.height / 2.0 - y;
+	}
+
+	function doOpenMedia(thisBlock) {
+	    var fileChooser = document.getElementById("myMedia");
+	    fileChooser.addEventListener("change", function(event) {
+		var filename;
+		var reader = new FileReader();
+		reader.onloadend = (function () {
+		    if (reader.result) {
+			console.log(reader);
+			var dataURL = reader.result;
+			blockList[thisBlock].value = reader.result
+			filename = reader.result;
+			console.log('reader.result ' + filename);
+			var image = new Image();
+			image.src = filename;
+			console.log(image.width + ' ' + image.height);
+			var bitmap = new createjs.Bitmap(image);
+			blockList[thisBlock].myContainer.addChild(bitmap);
+			if (image.width > image.height) {
+			    bitmap.scaleX = 100 / image.width;
+			    bitmap.scaleY = 100 / image.width;
+			    bitmap.scale = 100 / image.width;
+			} else {
+			    bitmap.scaleX = 80 / image.height;
+			    bitmap.scaleY = 80 / image.height;
+			    bitmap.scale = 80 / image.height;
+			}
+			bitmap.x = 30;
+			bitmap.y = 10;
+			update = true;
+		    }
+		});
+		reader.readAsDataURL(fileChooser.files[0]);
+	    }, false);
+
+            fileChooser.focus();
+	    fileChooser.click();
 	}
 
 	function doOpen() {

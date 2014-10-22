@@ -2150,13 +2150,13 @@ define(function (require) {
          	}
 		break;
 	    case 'show':
-		if (args.length == 1) {
-		    doShowText(turtle, args[0]);
+		if (args.length == 2) {
+		    doShowText(turtle, args[0], args[1]);
          	}
 		break;
 	    case 'image':
-		if (args.length == 1) {
-		    doShowImage(turtle, args[0]);
+		if (args.length == 2) {
+		    doShowImage(turtle, args[0], args[1]);
          	}
 		break;
 	    case 'turtleshell':
@@ -2590,25 +2590,34 @@ define(function (require) {
             update = true;
 	}
 
-	function doShowImage(turtle, myImage) {
+	function doShowImage(turtle, size, myImage) {
 	    // Add a text or image object to the canvas
+	    if (myImage == null) {
+		return;
+	    }
+	    var myTurtle = turtleList[turtle];
 	    var image = new Image();
 	    image.src = myImage;
 	    var bitmap = new createjs.Bitmap(image);
 	    stage.addChild(bitmap);
-	    turtleList[turtle].media.push(bitmap);
+	    myTurtle.media.push(bitmap);
+	    bitmap.scaleX = Number(size) / image.width;
+	    bitmap.scaleY = bitmap.scaleX;
+	    bitmap.scale = bitmap.scaleX;
 	    bitmap.x = turtleList[turtle].container.x;
 	    bitmap.y = turtleList[turtle].container.y;
+	    bitmap.regX = image.width / 2;
+	    bitmap.regY = image.height / 2;
 	    bitmap.rotation = turtleList[turtle].orientation;
 	}
 
 	function doTurtleShell(turtle, size, myImage) {
 	    // Add image to turtle
-	    var myTurtle = turtleList[turtle];
-	    var image = new Image();
 	    if (myImage == null) {
 		return;
 	    }
+	    var myTurtle = turtleList[turtle];
+	    var image = new Image();
 	    image.src = myImage;
 	    myTurtle.container.removeChild(myTurtle.bitmap);
 	    myTurtle.bitmap = new createjs.Bitmap(image);
@@ -2626,9 +2635,10 @@ define(function (require) {
 	    update = true;
 	}
 
-	function doShowText(turtle, myText) {
+	function doShowText(turtle, size, myText) {
 	    // Add a text or image object to the canvas
-	    var text = new createjs.Text(myText.toString(), '20px Courier', turtleList[turtle].canvasColor);
+	    var textSize = size.toString() + 'px Courier';
+	    var text = new createjs.Text(myText.toString(), textSize, turtleList[turtle].canvasColor);
 	    text.textAlign = 'left';
 	    text.textBaseline = 'alphabetic';
 	    stage.addChild(text);
@@ -2636,6 +2646,7 @@ define(function (require) {
 	    text.x = turtleList[turtle].container.x;
 	    text.y = turtleList[turtle].container.y;
 	    text.rotation = turtleList[turtle].orientation;
+	    update = true;
 	}
 
 	function doRight(turtle, degrees) {

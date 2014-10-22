@@ -236,17 +236,31 @@ var showBlock = new ProtoBlock('show');
 protoBlockList.push(showBlock);
 showBlock.palette = turtlePalette;
 turtlePalette.blockList.push(showBlock);
-showBlock.args = 1;
+showBlock.yoff = 49;
+showBlock.loff = 42;
+showBlock.expandable = true;
+showBlock.style = 'special';
+showBlock.size = 2;
+showBlock.args = 2;
+showBlock.defaults.push(24);
 showBlock.defaults.push('text');
-showBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+showBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
+		    [98, 62, 'textin'], [20, 84, 'in']];
 
 var imageBlock = new ProtoBlock('image');
 protoBlockList.push(imageBlock);
 imageBlock.palette = turtlePalette;
 turtlePalette.blockList.push(imageBlock);
-imageBlock.args = 1;
+imageBlock.yoff = 49;
+imageBlock.loff = 42;
+imageBlock.expandable = true;
+imageBlock.style = 'special';
+imageBlock.size = 2;
+imageBlock.args = 2;
+imageBlock.defaults.push(100);
 imageBlock.defaults.push(null);
-imageBlock.docks = [[20, 0, 'out'], [98, 20, 'mediain'], [20, 42, 'in']];
+imageBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
+		    [98, 62, 'mediain'], [20, 84, 'in']];
 
 var shellBlock = new ProtoBlock('turtleshell');
 protoBlockList.push(shellBlock);

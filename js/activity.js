@@ -2401,21 +2401,8 @@ define(function (require) {
 
 	function hideBlock(blk) {
 	    myBlock = blockList[blk];
-	    myBlock.bitmap.visible = false;
-	    myBlock.highlightBitmap.visible = false;
-	    if (isValueBlock(blk)) {
-		myBlock.label.style.display = 'none';
-	    }
-	    if (isExpandableBlock(blk)) {
-		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-		    myBlock.fillerBitmaps[i].visible = false;
-		    myBlock.highlightFillerBitmaps[i].visible = false;
-		}
-		myBlock.bottomBitmap.visible = false;
-		myBlock.highlightBottomBitmap.visible = false;
-	    } else if (isValueBlock(blk)) {
-		myBlock.text.visible = false;
-	    }
+	    myBlock.myContainer.visible = false;
+	    return;
 	}
 
 	function hideBlocks() {
@@ -2431,25 +2418,19 @@ define(function (require) {
 	    update = true;
 	}
 
+	function showBlock(blk) {
+	    myBlock = blockList[blk];
+	    if (myBlock.trash) {
+		return;  // Don't show blocks in the trash.
+	    }
+	    myBlock.myContainer.visible = true;
+	    return;
+	}
+
 	function showBlocks() {
 	    // Show all the blocks.
 	    for (var blk = 0; blk < blockList.length; blk++) {
-		var myBlock = blockList[blk];
-		if (myBlock.trash) {
-		    continue;  // Don't show blocks in the trash.
-		}
-		myBlock.bitmap.visible = true;
-		if (isValueBlock(blk)) {
-		    myBlock.label.style.display = '';
-		}
-		if (isExpandableBlock(blk)) {
-		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-			myBlock.fillerBitmaps[i].visible = true;
-		    }
-		    myBlock.bottomBitmap.visible = true;
-		} else if (isValueBlock(blk)) {
-		    myBlock.text.visible = true;
-		}
+		showBlock(blk);
 	    }
 	    // And show some other things.
 	    for (var turtle = 0; turtle < turtleList.length; turtle++) {

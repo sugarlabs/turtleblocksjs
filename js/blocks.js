@@ -283,7 +283,7 @@ protoBlockList.push(setpensizeBlock);
 setpensizeBlock.palette = penPalette;
 penPalette.blockList.push(setpensizeBlock);
 setpensizeBlock.args = 1;
-setpensizeBlock.defaults.push(0);
+setpensizeBlock.defaults.push(5);
 setpensizeBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
 
 var pensizeBlock = new ProtoBlock('pensize');
@@ -844,6 +844,12 @@ function updatePalettes() {
 
 function makeBlock(name, arg) {
     // Make a new block from a proto block.
+    console.log('makeBlock ' + name);
+    if (name == 'start') {
+	console.log('making a start block, so adding a turtle');
+	addturtle();
+    }
+
     for (var proto=0; proto < protoBlockList.length; proto++) {
 	if (protoBlockList[proto].name == name) {
 	    if (arg == '__NOARG__') {

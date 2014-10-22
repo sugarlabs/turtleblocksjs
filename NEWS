@@ -41,6 +41,7 @@
   * real block highlighting
   * fix problem with cascading arithmetic operators
   * trigger events on containers, not bitmaps
+  * multiple turtles (one for each start block)
 
 TODO:
   * save blocks
@@ -51,6 +52,5 @@ TODO:
   * decide on a palette strategy
   * implement more sophisticated blocks
   * turtle skin
-  * multiple turtles (or only one start block)
   * keyboard short cuts
   * restore from trash

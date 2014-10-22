@@ -72,7 +72,9 @@ define(function (require) {
 
         var clearButton = document.getElementById('clear-button');
         clearButton.onclick = function () {
-	    doClear();
+	    for (var turtle = 0; turtle < turtleList.length; turtle++) {
+		doClear(turtle);
+	    }
 	}
 
 	var cartesianVisible = false;
@@ -122,7 +124,7 @@ define(function (require) {
 	// Do we need to update the stage?
         var update = true;
 	// We'll need an object to draw on
-        var drawingCanvas;
+        // var drawingCanvas;
 
 	// FIXME: Unused?
         // The display object currently under the mouse, or being dragged
@@ -151,11 +153,31 @@ define(function (require) {
 	// Set the default background color...
 	var canvasColor = getMunsellColor(
 	    defaultBackgroundColor[0], defaultBackgroundColor[1], defaultBackgroundColor[2]);
-	setBackgroundColor();
+	setBackgroundColor(-1);
 	// then set default canvas color.
 	canvasColor = getMunsellColor(defaultColor, defaultValue, defaultChroma);
-        var canvasStroke = defaultStroke;
+        // var canvasStroke = defaultStroke;
 	var time = 0;
+
+	// Turtles
+	function Turtle (name) {
+	    this.name = name;
+	    this.color = defaultColor;
+	    this.value = defaultValue;
+	    this.chroma = defaultChroma;
+	    this.stroke = defaultStroke;
+	    this.canvasColor = canvasColor;
+	    this.x = 0;
+	    this.y = 0;
+	    this.orientation = 0;
+	    this.fillState = false;
+	    this.penState = true;
+	    this.bitmap = null;
+	    this.container = null;
+	    this.drawingCanvas = null;
+	};
+
+	var turtleList = [];
 
 	// To avoid infinite loops in dock search (temporary work-around)
 	var loopCounter = 0;
@@ -182,18 +204,8 @@ define(function (require) {
         var Polar = 'images/polar.svg';
 
 	// Turtle sprite
-        var turtleBitmap = null;
-        var Turtle = 'images/turtle.svg';
-
-	var turtleFillState = false;
-	var turtlePenState = true;
-	var turtleOrientation = 0.0;
-	var turtleColor = defaultColor;
-        var turtleValue = defaultValue;
-        var turtleChroma = defaultChroma;
-	var turtleStroke = defaultStroke;
-	var turtleX = 0;
-	var turtleY = 0;
+        // var turtleBitmap = null;
+        var turtlePath = 'images/turtle.svg';
 
 	// functions needed by block.js
 	updater = updateBlocks;
@@ -202,6 +214,7 @@ define(function (require) {
 	newcontainer = makeNewContainer;
 	blockmaker = makeNewBlock;
 	updatetext = updateBlockText;
+	addturtle = addTurtle;
 
 	// Get things started
 	init();
@@ -247,14 +260,10 @@ define(function (require) {
 		adjustBlockPositions();
 	    }
 
-	    var turtle = new Image();
-	    turtle.src = Turtle;
-	    turtle.onload = handleTurtleLoad;
-
             // Create a drawing canvas
-            drawingCanvas = new createjs.Shape();
-            stage.addChild(drawingCanvas);
-            stage.update();
+            // drawingCanvas = new createjs.Shape();
+            // stage.addChild(drawingCanvas);
+            // stage.update();
         }
 
 	function refreshCanvas() {
@@ -267,7 +276,6 @@ define(function (require) {
         }
 
 	function blockMoved(thisBlock) {
-	    console.log('block ' + blockList[thisBlock].name + ' moved');
 	    // When a block is moved, we have lots of things to check:
 	    // (0) Is it inside of a expandable block?
 	    // (1) Is it an arg block connected to a 2-arg block?
@@ -445,92 +453,7 @@ define(function (require) {
 	    return false;
 	}
 
-        function handleTurtleLoad(event) {
-	    // Load the turtle
-            var image = event.target;
-            var imgW = image.width;
-            var imgH = image.height;
-            var bitmap;
-            var container = new createjs.Container();
-            stage.addChild(container);
-
-            // Create a shape that represents the center of the icon
-            var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-22, -28, 48, 36);
-            // Position hitArea relative to the internal coordinate system
-            // of the target (bitmap instances):
-            hitArea.x = imgW / 2;
-            hitArea.y = imgH / 2;
-
-            // Create a turtle
-            bitmap = new createjs.Bitmap(image);
-	    turtleBitmap = bitmap;
-            container.addChild(bitmap);
-
-            bitmap.x = turtleX2screenX(turtleX);
-            bitmap.y = invertY(turtleY);
-            bitmap.regX = imgW / 2 | 0;
-            bitmap.regY = imgH / 2 | 0;
-            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-            bitmap.name = 'bmp_turtle';
-
-            bitmap.cursor = 'pointer';
-
-            // Assign the hitArea to bitmap to use it for hit tests:
-            bitmap.hitArea = hitArea;
-
-            // Wrapper function to provide scope for the event handlers:
-            (function (target) {
-		var moved = false;
-		bitmap.addEventListener('click', handleClick);
-		bitmap.addEventListener('mousedown', handleMouseDown);
-		bitmap.addEventListener('mouseover', handleMouseOver);
-		bitmap.addEventListener('mouseout', handleMouseOut);
-
-		function handleClick(event) {
-		    if (!moved) {
-			// console.log('turtle click');
-		    }
-		}
-
-		function handleMouseDown(event) {
-		    moved = false;
-                    container.addChild(target);
-                    var offset = {
-                        x: target.x - event.stageX,
-                        y: target.y - event.stageY
-                    };
-
-		    event.addEventListener('mousemove', handleMouseMove);
-
-		    function handleMouseMove(event) {
-			moved = true;
-                        target.x = event.stageX + offset.x;
-                        target.y = event.stageY + offset.y;
-			turtleX = screenX2turtleX(target.x);
-			turtleY = invertY(target.y);
-                        update = true;
-                    }
-                }
-
-		function handleMouseOver(event) {
-                    target.scaleX = target.scaleY = target.scale * 1.2;
-                    update = true;
-                }
-
-		function handleMouseOut(event) {
-                    target.scaleX = target.scaleY = target.scale;
-		    turtleBitmap.x = target.x;
-		    turtleBitmap.y = target.y;
-                    update = true;
-                }
-            })(bitmap);
-
-            document.getElementById('loader').className = '';
-            createjs.Ticker.addEventListener('tick', tick);
-        }
-
-	function moveTurtle(ox, oy, x, y, invert) {
+	function moveTurtle(turtle, ox, oy, x, y, invert) {
 	    if (invert) {
 		ox = turtleX2screenX(ox);
 		nx = turtleX2screenX(x);
@@ -540,26 +463,25 @@ define(function (require) {
 		nx = x;
 		ny = y;
 	    }
-	    // Update turtle position on screen.
-	    turtleBitmap.x = nx;
-	    turtleBitmap.y = ny;
-	    if (invert) {
-		turtleX = x;
-		turtleY = y;
-	    } else {
-		turtleX = screenX2turtleX(x);
-		turtleY = invertY(y);
-	    }
 	    // Draw a line if the pen is down.
-	    if (turtlePenState) {
-		drawingCanvas.graphics.lineTo(nx, ny);
+	    if (turtleList[turtle].penState) {
+		turtleList[turtle].drawingCanvas.graphics.lineTo(nx, ny);
 	    } else {
-		drawingCanvas.graphics.moveTo(nx, ny);
+		turtleList[turtle].drawingCanvas.graphics.moveTo(nx, ny);
+	    }
+	    // Update turtle position on screen.
+	    turtleList[turtle].container.x = nx;
+	    turtleList[turtle].container.y = ny;
+	    if (invert) {
+		turtleList[turtle].x = x;
+		turtleList[turtle].y = y;
+	    } else {
+		turtleList[turtle].x = screenX2turtleX(x);
+		turtleList[turtle].y = invertY(y);
 	    }
 	}
 
-	function arcTurtle(cx, cy, ox, oy, x, y, radius, start, end, anticlockwise,
-			   invert) {
+	function arcTurtle(turtle, cx, cy, ox, oy, x, y, radius, start, end, anticlockwise, invert) {
 	    if (invert) {
 		cx = turtleX2screenX(cx);
 		ox = turtleX2screenX(ox);
@@ -580,22 +502,21 @@ define(function (require) {
 		ea = end;
 	    }
 
-	    // Update turtle position on screen.
-	    turtleBitmap.x = nx;
-	    turtleBitmap.y = ny;
-	    if (invert) {
-		turtleX = x;
-		turtleY = y;
-	    } else {
-		turtleX = screenX2turtleX(x);
-		turtleY = invertY(y);
-	    }
 	    // Draw an arc if the pen is down.
-	    if (turtlePenState) {
-		drawingCanvas.graphics.arc(cx, cy, radius, sa, ea,
-					   anticlockwise);
+	    if (turtleList[turtle].penState) {
+		turtleList[turtle].drawingCanvas.graphics.arc(cx, cy, radius, sa, ea, anticlockwise);
 	    } else {
-		drawingCanvas.graphics.moveTo(nx, ny);
+		turtleList[turtle].drawingCanvas.graphics.moveTo(nx, ny);
+	    }
+	    // Update turtle position on screen.
+	    turtleList[turtle].container.x = nx;
+	    turtleList[turtle].container.y = ny;
+	    if (invert) {
+		turtleList[turtle].x = x;
+		turtleList[turtle].y = y;
+	    } else {
+		turtleList[turtle].x = screenX2turtleX(x);
+		turtleList[turtle].y = invertY(y);
 	    }
 	}
 
@@ -1557,10 +1478,77 @@ define(function (require) {
 	    blockList[0].x = 50;
 	    blockList[0].y = 50;
 	    blockList[0].connections = [null, null, null];
+	    addTurtle();
 
 	    updateBlockImages();
 	    updateBlockLabels();
 
+	    update = true;
+	}
+
+	function addTurtle() {
+	    // Add a new turtle for each start block
+	    console.log('adding a new turtle');
+	    var i = turtleList.length;
+	    var turtleName = i.toString();
+	    var myTurtle = new Turtle(turtleName);
+	    turtleList.push(myTurtle);
+	    var turtleImage = new Image();
+	    turtleImage.src = turtlePath;
+	    myTurtle.container = new createjs.Container();
+	    stage.addChild(myTurtle.container);
+	    myTurtle.bitmap = new createjs.Bitmap(turtleImage);
+	    myTurtle.container.addChild(myTurtle.bitmap);
+	    myTurtle.container.x = turtleX2screenX(myTurtle.x);
+	    myTurtle.container.y = invertY(myTurtle.y);
+	    myTurtle.bitmap.x = 0;
+	    myTurtle.bitmap.y = 0;
+	    myTurtle.bitmap.regX = 27 | 0;
+	    myTurtle.bitmap.regY = 27 | 0;
+	    myTurtle.bitmap.name = 'bmp_turtle';
+	    myTurtle.bitmap.cursor = 'pointer';
+	    var hitArea = new createjs.Shape();
+	    hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
+	    hitArea.x = 0;
+	    hitArea.y = 0;
+	    myTurtle.container.hitArea = hitArea;
+
+	    // Each turtle needs its own canvas.
+            myTurtle.drawingCanvas = new createjs.Shape();
+            stage.addChild(myTurtle.drawingCanvas);
+            stage.update();
+
+	    myTurtle.container.on('mousedown', function(event) {
+		var offset = {
+                    x: myTurtle.container.x - event.stageX,
+                    y: myTurtle.container.y - event.stageY
+		}
+
+		myTurtle.container.on('pressmove', function(event) {
+                    myTurtle.container.x = event.stageX + offset.x;
+                    myTurtle.container.y = event.stageY + offset.y;
+		    myTurtle.x = screenX2turtleX(myTurtle.container.x);
+		    myTurtle.y = invertY(myTurtle.container.y);
+                    update = true;
+		});
+	    });
+
+	    myTurtle.container.on('mouseover', function(event) {
+                myTurtle.bitmap.scaleX = 1.2;
+                myTurtle.bitmap.scaleY = 1.2;
+                myTurtle.bitmap.scale = 1.2;
+                update = true;
+            });
+
+	    myTurtle.container.on('mouseout', function(event) {
+                myTurtle.bitmap.scaleX = 1;
+                myTurtle.bitmap.scaleY = 1;
+                myTurtle.bitmap.scale = 1;
+                update = true;
+            });
+
+            document.getElementById('loader').className = '';
+            createjs.Ticker.addEventListener('tick', tick);
 	    update = true;
 	}
 
@@ -1586,6 +1574,7 @@ define(function (require) {
 		    blockList[thisBlock].connections.push(null);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    blockList[thisBlock].connections.push(null);
+		    addTurtle();
 		    break;
 		case 'do':
 		case 'stack':
@@ -1964,24 +1953,23 @@ define(function (require) {
 	    }
 
 	    // Init the graphic state.
-	    turtleBitmap.x = turtleX2screenX(turtleX);
-	    turtleBitmap.y = invertY(turtleY);
-            drawingCanvas.graphics.beginStroke(canvasColor);
-  	    drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
-	    drawingCanvas.graphics.moveTo(turtleBitmap.x, turtleBitmap.y);
+	    for (var turtle = 0; turtle < turtleList.length; turtle++) {
+		turtleList[turtle].container.x = turtleX2screenX(turtleList[turtle].x);
+		turtleList[turtle].container.y = invertY(turtleList[turtle].y);
+	    }
 
 	    // Execute turtle code here...  (1) Find the start block
 	    // (or the top of each stack) and build a list of all of
 	    // the named action stacks (wishing I had a Python
 	    // dictionary about now.)
-	    var startBlock = null
+	    var startBlocks = [];
 	    findStacks();
 	    actionList = [];
 	    for (var blk = 0; blk < stackList.length; blk++) {
 		if (blockList[stackList[blk]].name == 'start') {
 		    // Don't start on a start block in the trash.
 		    if (!blockList[stackList[blk]].trash) {
-			startBlock = stackList[blk];
+			startBlocks.push(stackList[blk]);
 		    }
 		} else if (blockList[stackList[blk]].name == 'action') {
 		    // does the action stack have a name?
@@ -1998,20 +1986,24 @@ define(function (require) {
 
 	    // (2) Execute the stack.
 	    if (startHere != null) {
+		runQueue = [[]];
+		countQueue = [[]];
+		runFromBlock(0, startHere);
+	    } else if (startBlocks.length > 0) {
 		runQueue = [];
 		countQueue = [];
-		runFromBlock(startHere);
-	    } else if (startBlock != null) {
-		runQueue = [];
-		countQueue = [];
-		runFromBlock(startBlock);
+		for (var turtle = 0; turtle < startBlocks.length; turtle++) {
+		    runQueue.push([]);
+		    countQueue.push([]);
+		    runFromBlock(turtle, startBlocks[turtle]);
+		}
 	    } else {
 		for (var blk = 0; blk < stackList.length; blk++) {
 		    if (isNoRunBlock(blk)) {
 			continue;
 		    } else {
 			if (!blockList[stackList[blk]].trash) {
-			    runFromBlock(stackList[blk]);
+			    runFromBlock(0, stackList[blk]);
 			}
 		    }
 		}
@@ -2019,21 +2011,20 @@ define(function (require) {
             update = true;
         }
 
-	function runFromBlock(blk) { 
+	function runFromBlock(thisTurtle, blk) { 
 	    if (blk == null) {
 		return;
 	    }
-	    // console.log('running ' + blockList[blk].name);
-	    setTimeout(function(){runFromBlockNow(blk);}, turtleDelay);
+	    setTimeout(function(){runFromBlockNow(thisTurtle, blk);}, turtleDelay);
 	}
 
-        function runFromBlockNow(blk) {
+        function runFromBlockNow(turtle, blk) {
 	    // Run a stack of blocks, beginning with blk.
 	    // (1) Evaluate any arguments (beginning with connection[1]);
 	    var args = [];
 	    if(blockList[blk].protoblock.args > 0) {
 		for (var i = 1; i < blockList[blk].protoblock.args + 1; i++) {
-		    args.push(parseArg(blockList[blk].connections[i]));
+		    args.push(parseArg(turtle, blockList[blk].connections[i]));
 		}
 	    }
 
@@ -2043,8 +2034,8 @@ define(function (require) {
 	    // (end of flow)
 	    var nextflow = blockList[blk].connections.last();
 	    if (nextflow != null) {
-		runQueue.push(nextflow);
-		countQueue.push(1);
+		runQueue[turtle].push(nextflow);
+		countQueue[turtle].push(1);
 	    }
 	    // Some flow blocks have childflows, e.g., repeat
 	    var childflow = null;
@@ -2091,77 +2082,77 @@ define(function (require) {
 		}
 		break;
 	    case 'clear':
-		doClear();
+		doClear(turtle);
 		break;
 	    case 'setxy':
  		if (args.length == 2) {
-		    doSetXY(args[0], args[1]);
+		    doSetXY(turtle, args[0], args[1]);
 		}
 		break;
 	    case 'arc':
  		if (args.length == 2) {
-		    doArc(args[0], args[1]);
+		    doArc(turtle, args[0], args[1]);
 		}
 		break;
             case 'forward':
  		if (args.length == 1) {
-		    doForward(args[0]);
+		    doForward(turtle, args[0]);
 		}
 		break;
             case 'back':
 		if (args.length == 1) {
-		    doForward(-args[0]);
+		    doForward(turtle, -args[0]);
          	}
 		break;
             case 'right':
 		if (args.length == 1) {
-		    doRight(args[0]);
+		    doRight(turtle, args[0]);
          	}
 		break;
             case 'left':
 		if (args.length == 1) {
-		    doRight(-args[0]);
+		    doRight(turtle, -args[0]);
          	}
 		break;
             case 'setheading':
 		if (args.length == 1) {
-		    doSetHeading(args[0]);
+		    doSetHeading(turtle, args[0]);
          	}
 		break;
             case 'setcolor':
 		if (args.length == 1) {
-		    doSetColor(args[0]);
+		    doSetColor(turtle, args[0]);
          	}
 		break;
             case 'setshade':
 		if (args.length == 1) {
-		    doSetValue(args[0]);
+		    doSetValue(turtle, args[0]);
          	}
 		break;
             case 'setgrey':
 		if (args.length == 1) {
-		    doSetChroma(args[0]);
+		    doSetChroma(turtle, args[0]);
          	}
 		break;
             case 'setpensize':
 		if (args.length == 1) {
-		    doSetPensize(args[0]);
+		    doSetPensize(turtle, args[0]);
          	}
 		break;
             case 'beginfill':
-		doStartFill();
+		doStartFill(turtle);
 		break;
             case 'endfill':
-		doEndFill();
+		doEndFill(turtle);
 		break;
             case 'fillscreen':
-		setBackgroundColor();
+		setBackgroundColor(turtle);
 		break;
             case 'penup':
-		doPenUp();
+		doPenUp(turtle);
 		break;
             case 'pendown':
-		doPenDown();
+		doPenDown(turtle);
 		break;
 	    }
 
@@ -2169,33 +2160,38 @@ define(function (require) {
 
 	    // If there is a childflow, queue it.
 	    if (childflow != null) {
-		runQueue.push(childflow);
-		countQueue.push(childflowCount);
+		runQueue[turtle].push(childflow);
+		countQueue[turtle].push(childflowCount);
 	    }
 
 	    var nextBlock = null;
 	    // Run the last flow in the queue.
-	    if (runQueue.length > 0) {
-		nextBlock = runQueue.last();
-		if(countQueue.last() == 1) {
+	    if (runQueue[turtle].length > 0) {
+		nextBlock = runQueue[turtle].last();
+		if(countQueue[turtle].last() == 1) {
 		    // Finished child so pop it off the queue.
-		    runQueue.pop();
-		    countQueue.pop();
+		    runQueue[turtle].pop();
+		    countQueue[turtle].pop();
 		} else {
 		    // Decrement the counter.
-		    count = countQueue.pop();
+		    count = countQueue[turtle].pop();
 		    count -= 1;
-		    countQueue.push(count);
+		    countQueue[turtle].push(count);
 		}
 	    }
 	    if (nextBlock != null) {
-		runFromBlock(nextBlock);
+		runFromBlock(turtle, nextBlock);
 	    } else {
 		setTimeout(function(){unhighlight(blk);}, turtleDelay);
+		var lastChild = stage.children.last();
+		for (var turtle = 0; turtle < turtleList.length; turtle++) {
+		    stage.swapChildren(turtleList[turtle].Container, lastChild);
+		}
+		update = true;
 	    }
 	}
 
-	function parseArg(blk) {
+	function parseArg(turtle, blk) {
 	    // Retrieve the value of a block.
 	    if (blk == null) {
 		activity.showAlert('WARNING',
@@ -2208,7 +2204,7 @@ define(function (require) {
 		switch (blockList[blk].name) {
 		case 'box':
 		    var cblk = blockList[blk].connections[1];
-		    var name = parseArg(cblk);
+		    var name = parseArg(turtle, cblk);
 		    var i = findBox(name);
 		    if (i == null) {
 			blockList[blk].value = null;
@@ -2218,92 +2214,92 @@ define(function (require) {
 		    break;
 		case 'sqrt':
 		    var cblk = blockList[blk].connections[1];
-		    var a = parseArg(cblk);
+		    var a = parseArg(turtle, cblk);
 		    blockList[blk].value = (Math.sqrt(Number(a)));
 		    break;
 		case 'mod':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = (Number(a) % Number(b));
 		    break;
 		case 'greater':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = (Number(a) > Number(b));
 		    break;
 		case 'equal':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = (a = b);
 		    break;
 		case 'less':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = (Number(a) < Number(b));
 		    break;
 		case 'random':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = doRandom(a, b);
 		    break;
 		case 'plus':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = doPlus(a, b);
 		    break;
 		case 'multiply':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = doMultiply(a, b);
 		    break;
 		case 'divide':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = doDivide(a, b);
 		    break;
 		case 'minus':
 		    var cblk1 = blockList[blk].connections[1];
 		    var cblk2 = blockList[blk].connections[2];
-		    var a = parseArg(cblk1);
-		    var b = parseArg(cblk2);
+		    var a = parseArg(turtle, cblk1);
+		    var b = parseArg(turtle, cblk2);
 		    blockList[blk].value = doMinus(a, b);
 		    break;
 		case 'heading':
-		    blockList[blk].value = turtleOrientation;
+		    blockList[blk].value = turtleList[turtle].orientation;
 		    break;
 		case 'x':
-		    blockList[blk].value = screenX2turtleX(turtleBitmap.x);
+		    blockList[blk].value = screenX2turtleX(turtleList[turtle].container.x);
 		    break;
 		case 'y':
-		    blockList[blk].value = invertY(turtleBitmap.y);
+		    blockList[blk].value = invertY(turtleList[turtle].container.y);
 		    break;
 		case 'color':
-		    blockList[blk].value = turtleColor;
+		    blockList[blk].value = turtleList[turtle].color;
 		    break;
 		case 'shade':
-		    blockList[blk].value = turtleValue;
+		    blockList[blk].value = turtleList[turtle].value;
 		    break;
 		case 'grey':
-		    blockList[blk].value = turtleChroma;
+		    blockList[blk].value = turtleList[turtle].chroma;
 		    break;
 		case 'pensize':
-		    blockList[blk].value = turtleStroke;
+		    blockList[blk].value = turtleList[turtle].stroke;
 		    break;
 		case 'mouse x':
 		    blockList[blk].value = stageX;
@@ -2391,19 +2387,21 @@ define(function (require) {
 
 	function hideBlocks() {
 	    // Hide all the blocks.
-	    for (blk = 0; blk < blockList.length; blk++) {
+	    for (var blk = 0; blk < blockList.length; blk++) {
 		hideBlock(blk);
 	    }
 	    // And hide some other things.
-	    turtleBitmap.visible = false;
+	    for (var turtle = 0; turtle < turtleList.length; turtle++) {
+		turtleList[turtle].container.visible = false;
+	    }
 	    trashBitmap.visible = false;
 	    update = true;
 	}
 
 	function showBlocks() {
 	    // Show all the blocks.
-	    for (blk = 0; blk < blockList.length; blk++) {
-		myBlock = blockList[blk];
+	    for (var blk = 0; blk < blockList.length; blk++) {
+		var myBlock = blockList[blk];
 		if (myBlock.trash) {
 		    continue;  // Don't show blocks in the trash.
 		}
@@ -2421,7 +2419,9 @@ define(function (require) {
 		}
 	    }
 	    // And show some other things.
-	    turtleBitmap.visible = true;
+	    for (var turtle = 0; turtle < turtleList.length; turtle++) {
+		turtleList[turtle].container.visible = true;
+	    }
 	    trashBitmap.visible = true;
 	    update = true;
 	}
@@ -2485,42 +2485,59 @@ define(function (require) {
 	}
 
 	// Turtle functions
-        function doForward(steps) {
+        function doForward(turtle, steps) {
+	    if (!turtleList[turtle].fillState) {
+		turtleList[turtle].drawingCanvas.graphics.beginStroke(turtleList[turtle].canvasColor);
+  		turtleList[turtle].drawingCanvas.graphics.setStrokeStyle(turtleList[turtle].stroke, 'round', 'round');
+		turtleList[turtle].drawingCanvas.graphics.moveTo(turtleList[turtle].container.x, turtleList[turtle].container.y);
+	    }
+
 	    // old turtle point
-            var ox = screenX2turtleX(turtleBitmap.x);
-	    var oy = invertY(turtleBitmap.y);
+            var ox = screenX2turtleX(turtleList[turtle].container.x);
+	    var oy = invertY(turtleList[turtle].container.y);
 
 	    // new turtle point
-	    var rad = turtleOrientation * Math.PI / 180.0;
+	    var rad = turtleList[turtle].orientation * Math.PI / 180.0;
 	    var nx = ox + Number(steps) * Math.sin(rad);
 	    var ny = oy + Number(steps) * Math.cos(rad);
 
-	    moveTurtle(ox, oy, nx, ny, true);
+	    moveTurtle(turtle, ox, oy, nx, ny, true);
             update = true;
 	}
 
-        function doSetXY(x, y) {
+        function doSetXY(turtle, x, y) {
+	    if (!turtleList[turtle].fillState) {
+		turtleList[turtle].drawingCanvas.graphics.beginStroke(turtleList[turtle].canvasColor);
+  		turtleList[turtle].drawingCanvas.graphics.setStrokeStyle(turtleList[turtle].stroke, 'round', 'round');
+		turtleList[turtle].drawingCanvas.graphics.moveTo(turtleList[turtle].container.x, turtleList[turtle].container.y);
+	    }
+
 	    // old turtle point
-            var ox = screenX2turtleX(turtleBitmap.x);
-	    var oy = invertY(turtleBitmap.y);
+            var ox = screenX2turtleX(turtleList[turtle].container.x);
+	    var oy = invertY(turtleList[turtle].container.y);
 
 	    // new turtle point
 	    var nx = Number(x)
 	    var ny = Number(y);
 
-	    moveTurtle(ox, oy, nx, ny, true);
+	    moveTurtle(turtle, ox, oy, nx, ny, true);
             update = true;
 	}
 
-        function doArc(angle, radius) {
+        function doArc(turtle, angle, radius) {
+	    if (!turtleList[turtle].fillState) {
+		turtleList[turtle].drawingCanvas.graphics.beginStroke(turtleList[turtle].canvasColor);
+  		turtleList[turtle].drawingCanvas.graphics.setStrokeStyle(turtleList[turtle].stroke, 'round', 'round');
+		turtleList[turtle].drawingCanvas.graphics.moveTo(turtleList[turtle].container.x, turtleList[turtle].container.y);
+	    }
 	    var adeg = Number(angle);
 	    var arad = (adeg / 180) * Math.PI;
-	    var orad = (turtleOrientation / 180) * Math.PI;
+	    var orad = (turtleList[turtle].orientation / 180) * Math.PI;
 	    var r = Number(radius);
 
 	    // old turtle point
-	    ox = screenX2turtleX(turtleBitmap.x);
-            oy = invertY(turtleBitmap.y);
+	    ox = screenX2turtleX(turtleList[turtle].container.x);
+            oy = invertY(turtleList[turtle].container.y);
 
 	    if( adeg < 0 ) {
 		var anticlockwise = true;
@@ -2540,113 +2557,117 @@ define(function (require) {
 		var nx = cx - Math.cos(orad + arad) * r;
 		var ny = cy + Math.sin(orad + arad) * r;
 	    }
-	    arcTurtle(cx, cy, ox, oy, nx, ny, r, orad, orad + arad, anticlockwise, true);
+	    arcTurtle(turtle, cx, cy, ox, oy, nx, ny, r, orad, orad + arad, anticlockwise, true);
 
-	    // turtleBitmap.x = turtleX2screenX(nx),
-	    // turtleBitmap.y = invertY(ny);
 	    if (anticlockwise) {
-		doRight(-adeg);
+		doRight(turtle, -adeg);
 	    } else {
-		doRight(adeg);
+		doRight(turtle, adeg);
 	    }
             update = true;
 	}
 
-	function doRight(degrees) {
+	function doRight(turtle, degrees) {
 	    // Turn right and display corresponding turtle graphic.
-	    turtleOrientation += Number(degrees);
-	    turtleOrientation %= 360;
-	    turtleBitmap.rotation = turtleOrientation;
+	    turtleList[turtle].orientation += Number(degrees);
+	    turtleList[turtle].orientation %= 360;
+	    turtleList[turtle].bitmap.rotation = turtleList[turtle].orientation;
             update = true;
 	}
 
-	function doSetHeading(degrees) {
-	    turtleOrientation = Number(degrees);
-	    turtleOrientation %= 360;
-	    turtleBitmap.rotation = turtleOrientation;
+	function doSetHeading(turtle, degrees) {
+	    turtleList[turtle].orientation = Number(degrees);
+	    turtleList[turtle].orientation %= 360;
+	    turtleList[turtle].bitmap.rotation = turtleList[turtle].orientation;
             update = true;
 	}
 
-	function doSetColor(hue) {
-	    turtleColor = Number(hue);
-            canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
-            drawingCanvas.graphics.beginStroke(canvasColor);
+	function doSetColor(turtle, hue) {
+	    turtleList[turtle].color = Number(hue);
+            turtleList[turtle].canvasColor = getMunsellColor(turtleList[turtle].color, turtleList[turtle].value, turtleList[turtle].chroma);
+            turtleList[turtle].drawingCanvas.graphics.beginStroke(turtleList[turtle].canvasColor);
 	}
 
-	function doSetValue(shade) {
-	    turtleValue = Number(shade);
-            canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
-            drawingCanvas.graphics.beginStroke(canvasColor);
+	function doSetValue(turtle, shade) {
+	    turtleList[turtle].value = Number(shade);
+            turtleList[turtle].canvasColor = getMunsellColor(turtleList[turtle].color, turtleList[turtle].value, turtleList[turtle].chroma);
+            turtleList[turtle].drawingCanvas.graphics.beginStroke(turtleList[turtle].canvasColor);
 	}
 
-	function doSetChroma(chroma) {
-	    turtleChroma = Number(chroma);
-            canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
-            drawingCanvas.graphics.beginStroke(canvasColor);
+	function doSetChroma(turtle, chroma) {
+	    turtleList[turtle].chroma = Number(chroma);
+            turtleList[turtle].canvasColor = getMunsellColor(turtleList[turtle].color, turtleList[turtle].value, turtleList[turtle].chroma);
+            turtleList[turtle].drawingCanvas.graphics.beginStroke(turtleList[turtle].canvasColor);
 	}
 
-	function doSetPensize(size) {
-	    turtleStroke = size;
-	    canvasStroke = turtleStroke;
-	    drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
+	function doSetPensize(turtle, size) {
+	    turtleList[turtle].stroke = size;
+	    turtleList[turtle].drawingCanvas.graphics.setStrokeStyle(turtleList[turtle].stroke, 'round', 'round');
 	}
 
-        function doPenUp() {
-	    turtlePenState = false;
+        function doPenUp(turtle) {
+	    turtleList[turtle].penState = false;
 	}
 
-	function doPenDown() {
-	    turtlePenState = true;
+	function doPenDown(turtle) {
+	    turtleList[turtle].penState = true;
 	}
 
-        function doStartFill() {
+        function doStartFill(turtle) {
 	    /// start tracking points here
-	    drawingCanvas.graphics.beginFill(canvasColor);
-	    turtleFillState = true;
+	    turtleList[turtle].drawingCanvas.graphics.beginFill(turtleList[turtle].canvasColor);
+	    turtleList[turtle].fillState = true;
 	}
 
-	function doEndFill() {
+	function doEndFill(turtle) {
 	    /// redraw the points with fill enabled
-	    drawingCanvas.graphics.endFill();
-	    turtleFillState = false;
+	    turtleList[turtle].drawingCanvas.graphics.endFill();
+	    turtleList[turtle].fillState = false;
 	}
 
-	function setBackgroundColor() {
+	function setBackgroundColor(turtle) {
 	    /// change body background in DOM to current color
 	    var body = document.getElementById('body');
-	    body.style.background = canvasColor;
+	    if (turtle == -1) {
+		body.style.background = canvasColor;
+	    } else {
+		body.style.background = turtleList[turtle].canvasColor;
+	    }
 	}
 
-	function doClear() {
+	function doClear(turtle) {
 	    // Reset turtle.
-	    turtleX = 0;
-	    turtleY = 0;
-	    turtleOrientation = 0.0;
-	    turtleColor = defaultColor;
-	    turtleValue = defaultValue;
-	    turtleChroma = defaultChroma;
-	    turtleStroke = defaultStroke;
+	    turtleList[turtle].x = 0;
+	    turtleList[turtle].y = 0;
+	    turtleList[turtle].orientation = 0.0;
+	    turtleList[turtle].color = defaultColor;
+	    turtleList[turtle].value = defaultValue;
+	    turtleList[turtle].chroma = defaultChroma;
+	    turtleList[turtle].stroke = defaultStroke;
 
-	    turtleBitmap.x = turtleX2screenX(turtleX);
-	    turtleBitmap.y = invertY(turtleY);
-	    turtleBitmap.rotation = turtleOrientation;
+	    turtleList[turtle].container.x = turtleX2screenX(turtleList[turtle].x);
+	    turtleList[turtle].container.y = invertY(turtleList[turtle].y);
+	    turtleList[turtle].bitmap.rotation = turtleList[turtle].orientation;
 
 	    // Clear all the boxes.
 	    boxList = [];
 
 	    // Clear all graphics.
-	    turtlePenState = true;
-	    turtleFillState = false;
+	    turtleList[turtle].penState = true;
+	    turtleList[turtle].fillState = false;
 	    time = 0;
 
-	    canvasColor = getMunsellColor(
-		defaultBackgroundColor[0], defaultBackgroundColor[1], defaultBackgroundColor[2]);
-	    setBackgroundColor();
-            canvasColor = getMunsellColor(turtleColor, turtleValue, turtleChroma);
-            canvasStroke = turtleStroke;
-            drawingCanvas.graphics.clear();
-            drawingCanvas.graphics.beginStroke(canvasColor);
-  	    drawingCanvas.graphics.setStrokeStyle(canvasStroke, 'round', 'round');
+	    // Only set the background for Turtle 0
+	    if (turtle == 0) {
+		canvasColor = getMunsellColor(
+		    defaultBackgroundColor[0], defaultBackgroundColor[1], defaultBackgroundColor[2]);
+		setBackgroundColor(-1);
+	    }
+
+            turtleList[turtle].canvasColor = getMunsellColor(turtleList[turtle].color, turtleList[turtle].value, turtleList[turtle].chroma);
+            turtleList[turtle].drawingCanvas.graphics.clear();
+            turtleList[turtle].drawingCanvas.graphics.beginStroke(turtleList[turtle].canvasColor);
+  	    turtleList[turtle].drawingCanvas.graphics.setStrokeStyle(turtleList[turtle].stroke, 'round', 'round');
             update = true;
 	}
 

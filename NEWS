@@ -43,13 +43,16 @@
   * trigger events on containers, not bitmaps
   * multiple turtles (one for each start block)
   * show text
+  * show image
+  * different colors for each turtle
 
 TODO:
+  * erase media
   * save blocks
   * copy/paste
   * user defined blocks
   * better compartmentalization of code
-  * sensors/media
+  * sensors
   * decide on a palette strategy
   * implement more sophisticated blocks
   * turtle skin

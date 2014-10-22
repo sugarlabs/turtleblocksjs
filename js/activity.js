@@ -2157,6 +2157,11 @@ define(function (require) {
 		    doShowImage(turtle, args[0]);
          	}
 		break;
+	    case 'turtleshell':
+		if (args.length == 1) {
+		    doTurtleShell(turtle, args[0]);
+         	}
+		break;
             case 'setcolor':
 		if (args.length == 1) {
 		    doSetColor(turtle, args[0]);
@@ -2595,6 +2600,19 @@ define(function (require) {
 	    bitmap.x = turtleList[turtle].container.x;
 	    bitmap.y = turtleList[turtle].container.y;
 	    bitmap.rotation = turtleList[turtle].orientation;
+	}
+
+	function doTurtleShell(turtle, myImage) {
+	    // Add image to turtle
+	    var image = new Image();
+	    image.src = myImage;
+	    turtleList[turtle].container.removeChild(turtleList[turtle].bitmap);
+	    turtleList[turtle].bitmap = new createjs.Bitmap(image);
+	    turtleList[turtle].container.addChild(turtleList[turtle].bitmap);
+	    turtleList[turtle].bitmap.x = 0;
+	    turtleList[turtle].bitmap.y = 0;
+	    turtleList[turtle].bitmap.rotation = turtleList[turtle].orientation;
+	    update = true;
 	}
 
 	function doShowText(turtle, myText) {

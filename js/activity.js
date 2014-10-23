@@ -13,9 +13,9 @@ define(function (require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
     require('easel');
-    // Palettes and Blocks are defined here
-    require('activity/turtle');
     require('activity/munsell');
+    require('activity/turtle');
+    require('activity/palette');
     require('activity/blocks');  
 
     // Manipulate the DOM only when it is ready.
@@ -1456,7 +1456,7 @@ define(function (require) {
 
 	function loadStart() {
 	    // where to put this?
-	    updatePalettes();
+	    palettes.updatePalettes();
 
 	    // Always start with a start block.
 	    makeNewBlock(startBlock);

@@ -2802,6 +2802,9 @@ define(function (require) {
 			filename = reader.result;
 			console.log('reader.result ' + filename);
 			var image = new Image();
+			if (blockList[thisBlock].myContainer.children.length > 2) {
+			    blockList[thisBlock].myContainer.removeChild(blockList[thisBlock].myContainer.children.last());
+			}
 			image.src = filename;
 			var bitmap = new createjs.Bitmap(image);
 			blockList[thisBlock].myContainer.addChild(bitmap);

@@ -50,9 +50,10 @@
   * reset turtle skin on clear
   * scale text, images, turtle shell
   * center images on turtle
-  * fix layering bug
+  * fix turtle layering bug
 
 TODO:
+  * fix block layering bug
   * use container caching
   * fix action name bug
   * save blocks

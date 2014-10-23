@@ -1504,13 +1504,14 @@ define(function (require) {
 	    hitArea.y = 0;
 	    myTurtle.container.hitArea = hitArea;
 
-	    decorationBitmap = new createjs.Bitmap(turtleImage);
-	    blockList.last().myContainer.addChild(decorationBitmap);
-	    decorationBitmap.x = 80;
-	    decorationBitmap.y = 20;
-	    decorationBitmap.scaleX = 0.5;
-	    decorationBitmap.scaleY = 0.5;
-	    decorationBitmap.scale = 0.5;
+	    myTurtle.startBlock = blockList.length - 1;
+	    myTurtle.decorationBitmap = new createjs.Bitmap(turtleImage);
+	    blockList.last().myContainer.addChild(myTurtle.decorationBitmap);
+	    myTurtle.decorationBitmap.x = 80;
+	    myTurtle.decorationBitmap.y = 20;
+	    myTurtle.decorationBitmap.scaleX = 0.5;
+	    myTurtle.decorationBitmap.scaleY = 0.5;
+	    myTurtle.decorationBitmap.scale = 0.5;
 
             stage.update();
 
@@ -2619,6 +2620,16 @@ define(function (require) {
 
 	    myTurtle.bitmap.rotation = myTurtle.orientation;
 	    myTurtle.skinChanged = true;
+
+	    blockList[myTurtle.startBlock].myContainer.removeChild(myTurtle.decorationBitmap);
+	    myTurtle.decorationBitmap = new createjs.Bitmap(myImage);
+	    blockList[myTurtle.startBlock].myContainer.addChild(myTurtle.decorationBitmap);
+	    myTurtle.decorationBitmap.x = 80;
+	    myTurtle.decorationBitmap.y = 20;
+	    myTurtle.decorationBitmap.scaleX = 27.5 / image.width;
+	    myTurtle.decorationBitmap.scaleY = 27.5 / image.height;
+	    myTurtle.decorationBitmap.scale = 27.5 / image.width;
+
 	    // FIXME 
 	    // myTurtle.updateCache();
 	    update = true;
@@ -2712,7 +2723,7 @@ define(function (require) {
 	    myTurtle.x = 0;
 	    myTurtle.y = 0;
 	    myTurtle.orientation = 0.0;
-	    i = turtle % 10;
+	    var i = turtle % 10;
 	    myTurtle.color = 5 + (i * 10);
 	    myTurtle.value = defaultValue;
 	    myTurtle.chroma = defaultChroma;
@@ -2720,9 +2731,8 @@ define(function (require) {
 	    myTurtle.container.x = turtleX2screenX(myTurtle.x);
 	    myTurtle.container.y = invertY(myTurtle.y);
 
-	    i = turtle % 10;
 	    if (myTurtle.skinChanged) {
-		doTurtleShell(turtle, turtleBasePath + 'turtle-' + i.toString() + '.svg');
+		doTurtleShell(turtle, 55, turtleBasePath + 'turtle-' + i.toString() + '.svg');
 		myTurtle.skinChanged = false;
 	    }
 

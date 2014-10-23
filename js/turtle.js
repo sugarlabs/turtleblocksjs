@@ -17,22 +17,32 @@ var defaultStroke = 5;
 
 function Turtle (name) {
     this.name = name;
+
+    // Things used for drawing the turtle.
+    this.container = null;
+    this.x = 0;
+    this.y = 0;
+    this.bitmap = null;
+    this.skinChanged = false;  // Should we reskin the turtle on clear?
+
+    // Which start block is assocated with this turtle?
+    this.startBlock = null;
+    this.decorationBitmap = null;  // Start block decoration.
+
+    // Queue of blocks this turtle is executing.
+    this.runQueue = [];
+
+    // Things used for what the turtle draws.
+    this.drawingCanvas = null;
     this.color = defaultColor;
     this.value = defaultValue;
     this.chroma = defaultChroma;
     this.stroke = defaultStroke;
     this.canvasColor = '#ff0031';
-    this.x = 0;
-    this.y = 0;
     this.orientation = 0;
     this.fillState = false;
     this.penState = true;
-    this.bitmap = null;
-    this.skinChanged = false;
-    this.container = null;
-    this.drawingCanvas = null;
-    this.runQueue = [];
-    this.media = [];  // a list of media we need to remove on clear
+    this.media = [];  // Media (text, images) we need to remove on clear.
 };
 
 // The list of all of our turtles, one for each start block. Each

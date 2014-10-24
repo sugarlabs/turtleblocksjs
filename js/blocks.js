@@ -1742,14 +1742,7 @@ function initProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['vspace'] = vspaceBlock;
     vspaceBlock.zeroArgBlock();
     
-    // Sensors palette
-    var pubBlock = new ProtoBlock('publish');
-    pubBlock.palette = palettes.dict['sensors'];
-    blocks.protoBlockDict['publish'] = pubBlock;
-    pubBlock.oneArgBlock();
-    pubBlock.defaults.push('comment');
-    pubBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
-    
+    // Sensors palette    
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['time'] = timeBlock;
@@ -1765,6 +1758,20 @@ function initProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['mousey'] = mouseyBlock;
     mouseyBlock.parameterBlock();
     
+    // Extras palette
+    var pubBlock = new ProtoBlock('publish');
+    pubBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['publish'] = pubBlock;
+    pubBlock.oneArgBlock();
+    pubBlock.defaults.push('comment');
+    pubBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+
+    var waitBlock = new ProtoBlock('wait');
+    waitBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['wait'] = waitBlock;
+    waitBlock.oneArgBlock();
+    waitBlock.defaults.push(1);
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
 	    blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);

@@ -14,12 +14,10 @@ var palettePalettes = null;
 var paletteBlocks = null;
 
 function paletteButtonPush(name) {
-    console.log('bar ' + name);
     palettePalettes.toggle(name);
 }
 
 function paletteBlockButtonPush(name, arg) {
-    console.log('bar ' + name + ' ' + arg);
     paletteBlocks.makeBlock(name, arg);
 }
 
@@ -178,7 +176,8 @@ function initPalettes() {
 	add('number', 'black', '#ff00ff').
 	add('flow', 'black', '#fd6600').
 	add('blocks', 'black', '#ffc000').
-	add('sensors', 'white', '#ff0066');
+	add('sensors', 'white', '#ff0066').
+	add('extras', 'white', '#ff0066');
     palettePalettes = palettes;
     return palettes;
 }

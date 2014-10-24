@@ -198,9 +198,15 @@ define(function (require) {
 	    trash.src = 'images/trash.svg';
 	    trash.onload = handleTrashLoad;
 
-	    var urlParts = window.location.href.split('?');
-	    var projectURL = urlParts[1].split('=')[1];
-	    if(projectURL) {
+	    var URL = window.location.href;
+	    var projectURL = null;
+	    if (URL.indexOf('?') > 0) {
+		var urlParts = URL.split('?');
+		if (urlParts[1].indexOf('=') > 0) {
+		    var projectURL = urlParts[1].split('=')[1];
+		}
+	    }
+	    if (projectURL != null) {
 		console.log('load ' + projectURL);
 		loadProject(projectURL);
 	    } else {
@@ -302,12 +308,15 @@ define(function (require) {
 	function loadProject(projectURL) {
 	    palettes.updatePalettes();
 
-	    var rawData = httpGet('http://people.sugarlabs.org/walter/TurtleBlocksJS.activity/samples/' + projectURL);
-	    var cleanData = rawData.replace('\n', ' ');
-	    var obj = JSON.parse(cleanData);
-	    // console.log(obj);
-	    loadBlocks(obj);
-
+	    try {
+		var rawData = httpGet('http://people.sugarlabs.org/walter/TurtleBlocksJS.activity/samples/' + projectURL);
+		var cleanData = rawData.replace('\n', ' ');
+		var obj = JSON.parse(cleanData);
+		loadBlocks(obj);
+	    } catch (e) {
+		loadStart()
+		return;
+	    }
 	    update = true;
 	}
 

@@ -112,12 +112,11 @@ function ProtoBlock (name) {
 
 // A place to put the block instances.
 // The real workhorse.
-function Blocks (canvas, stage, refreshCanvas, addTick, trashcan) {
+function Blocks (canvas, stage, refreshCanvas, trashcan) {
     // Things we need from outside
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
-    this.addTick = addTick;
     this.trashcan = trashcan;
 
     // The proto blocks...
@@ -919,7 +918,7 @@ function Blocks (canvas, stage, refreshCanvas, addTick, trashcan) {
 		var y = myBlock.bitmap.y
 	    }
 	    if (this.isValueBlock(blk) && myBlock.name != 'media') {
-		myBlock.label = document.getElementById(getBlockId(blk));
+		myBlock.label = docById(getBlockId(blk));
 		myBlock.label.addEventListener(
 		    'change', function() {labelChanged();});
 		this.adjustLabelPosition(blk, x, y);
@@ -1282,6 +1281,14 @@ function Blocks (canvas, stage, refreshCanvas, addTick, trashcan) {
 	if (blk == null) {
 	    return;
 	}
+
+	// If this happens, something is really broken.
+	if (this.blockList[blk] == null) {
+	    console.log('null block encountered... try to recover.');
+	    localStorage.setItem('sessiondata', JSON.stringify([[0, 'start', 100, 100, [null, null, null]]]));
+	    return;
+	}
+
 	this.dragGroup.push(blk);
     
 	// As before, does these ever happen?
@@ -1836,7 +1843,7 @@ function $() {
     for (var i = 0; i < arguments.length; i++) {
 	var element = arguments[i];
 	if (typeof element == 'string')
-	    element = document.getElementById(element);
+	    element = docById(element);
 	if (arguments.length == 1)
 	    return element;
 	elements.push(element);
@@ -1849,7 +1856,7 @@ function getBlockId(blk) {
 }
 
 // A place in the DOM to put modifiable labels (textareas).
-var labelElem = document.getElementById('labelDiv');
+var labelElem = docById('labelDiv');
 
 // Update the block values as they change in the DOM label
 function labelChanged() {
@@ -1929,7 +1936,7 @@ function labelChanged() {
 
 // Open a file from the DOM.
 function doOpenMedia(blocks, thisBlock) {
-    var fileChooser = document.getElementById("myMedia");
+    var fileChooser = docById("myMedia");
     fileChooser.addEventListener("change", function(event) {
 	var filename;
 	var reader = new FileReader();
@@ -2089,7 +2096,4 @@ function loadEventHandlers(blocks, myBlock) {
 	blocks.activeBlock = null;
 	blocks.refreshCanvas();
     });
-    
-    document.getElementById('loader').className = '';
-    blocks.addTick();
 }

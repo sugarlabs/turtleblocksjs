@@ -10,11 +10,10 @@
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
 // All things related to trash
-function Trashcan (canvas, stage, refreshCanvas, addTick, restore) {
+function Trashcan (canvas, stage, refreshCanvas, restore) {
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
-    this.addTick = addTick;
     this.restore = restore;
 
     this.trashBitmap = null;
@@ -53,9 +52,6 @@ function Trashcan (canvas, stage, refreshCanvas, addTick, restore) {
 
     this.bitmap.visible = true;
     this.highlightBitmap.visible = false;
-
-    document.getElementById('loader').className = '';
-    this.addTick();
 
     this.refreshCanvas();
 

@@ -27,14 +27,14 @@ define(function (require) {
         activity.setup();
 
         // Colorize the activity icon.
-        var activityButton = document.getElementById('activity-button');
+        var activityButton = docById('activity-button');
         var colors;  // I should be getting the XO colors here?
         activity.getXOColor(function (error, colors) {
             icon.colorize(activityButton, colors);
         });
 
 	//
-        var canvas = document.getElementById('myCanvas');
+        var canvas = docById('myCanvas');
 	var stage;
 	var turtles;
 	var palettes;
@@ -46,31 +46,31 @@ define(function (require) {
 
 	var turtleDelay = defaultDelay;
 
-        var fastButton = document.getElementById('fast-button');
+        var fastButton = docById('fast-button');
         fastButton.onclick = function () {
 	    turtleDelay = 1;
 	    runLogoCommands();
         }
 
-        var slowButton = document.getElementById('slow-button');
+        var slowButton = docById('slow-button');
         slowButton.onclick = function () {
 	    turtleDelay = defaultDelay;
 	    runLogoCommands();
         }
 
 	var blocksVisible = true;
-        var blockButton = document.getElementById('block-button');
+        var blockButton = docById('block-button');
         blockButton.onclick = function () {
 	    changeBlockVisibility();
         }
 
-        var clearButton = document.getElementById('clear-button');
+        var clearButton = docById('clear-button');
         clearButton.onclick = function () {
 	    allClear();
 	}
 
 	var cartesianVisible = false;
-        var cartesianButton = document.getElementById('cartesian-button');
+        var cartesianButton = docById('cartesian-button');
         cartesianButton.onclick = function () {
 	    if (cartesianVisible) {
 		hideCartesian();
@@ -82,7 +82,7 @@ define(function (require) {
         }
 
 	var polarVisible = false;
-        var polarButton = document.getElementById('polar-button');
+        var polarButton = docById('polar-button');
         polarButton.onclick = function () {
 	    if (polarVisible) {
 		hidePolar();
@@ -93,18 +93,18 @@ define(function (require) {
 	    }
         }
 
-        var openButton = document.getElementById('open-button');
+        var openButton = docById('open-button');
         openButton.onclick = function () {
 	    doOpen();
 	}
 
-        var saveButton = document.getElementById('save-button');
+        var saveButton = docById('save-button');
         saveButton.onclick = function () {
 	    doSave();
 	}
 
         // Make the activity stop with the stop button.
-        var stopButton = document.getElementById('stop-button');
+        var stopButton = docById('stop-button');
         stopButton.addEventListener('click', function (e) {
             activity.close();
         });
@@ -139,14 +139,15 @@ define(function (require) {
 	init();
 
         function init() {
-            document.getElementById('loader').className = 'loader';
+            docById('loader').className = 'loader';
 
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
-	    trashcan = new Trashcan(canvas, stage, refreshCanvas, addTick, restoreTrash);
-	    turtles = new Turtles(canvas, stage, refreshCanvas, addTick);
+	    createjs.Ticker.addEventListener('tick', tick);
+	    trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash);
+	    turtles = new Turtles(canvas, stage, refreshCanvas);
 	    palettes = initPalettes();
-	    blocks = new Blocks(canvas, stage, refreshCanvas, addTick, trashcan);
+	    blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
 	    palettes.setBlocks(blocks);
 	    turtles.setBlocks(blocks);
 	    blocks.setTurtles(turtles);
@@ -175,9 +176,6 @@ define(function (require) {
             cartesianBitmap.y = 0;
             cartesianBitmap.scaleX = cartesianBitmap.scaleY = cartesianBitmap.scale = 1;
             cartesianBitmap.name = 'bmp_cartesian';
-
-            document.getElementById('loader').className = '';
-	    addTick();
 	    cartesianBitmap.visible = false;
 
 	    var polar = new Image();
@@ -192,24 +190,21 @@ define(function (require) {
             polarBitmap.y = 0;
             polarBitmap.scaleX = polarBitmap.scaleY = polarBitmap.scale = 1;
             polarBitmap.name = 'bmp_polar';
-
-            document.getElementById('loader').className = '';
-	    addTick();
 	    polarBitmap.visible = false;
 
 	    var URL = window.location.href;
-	    var projectURL = null;
+	    console.log(URL);
+	    var projectName = null;
 	    if (URL.indexOf('?') > 0) {
 		var urlParts = URL.split('?');
 		if (urlParts[1].indexOf('=') > 0) {
-		    var projectURL = urlParts[1].split('=')[1];
+		    var projectName = urlParts[1].split('=')[1];
 		}
 	    }
-	    if (projectURL != null) {
-		console.log('load ' + projectURL);
-		loadProject(projectURL);
+	    if (projectName != null) {
+		console.log('load ' + projectName);
+		loadProject(projectName);
 	    } else {
-		console.log('load start');
 		loadStart();
 	    }
 
@@ -253,10 +248,6 @@ define(function (require) {
 	    update = true;
 	}
 
-	function addTick() {
-	    createjs.Ticker.addEventListener('tick', tick);
-	}
-
         function tick(event) {
             // This set makes it so the stage only re-renders when an
             // event handler indicates a change has happened.
@@ -266,21 +257,24 @@ define(function (require) {
             }
         }
 
-	function httpGet(theUrl)
+	function httpGet(projectName)
 	{
 	    var xmlHttp = null;
 	    
 	    xmlHttp = new XMLHttpRequest();
-	    xmlHttp.open( "GET", theUrl, false );
+	    // xmlHttp.open("GET", 'http://172.22.17.225', false);
+	    // xmlHttp.setRequestHeader('x-api-key', 'walter');
+	    // xmlHttp.setRequestHeader('x-project-id', projectName);
+	    xmlHttp.open( "GET", 'http://people.sugarlabs.org/walter/TurtleBlocksJS.activity/samples/' + projectName, false );
 	    xmlHttp.send();
 	    return xmlHttp.responseText;
 	}
 
-	function loadProject(projectURL) {
+	function loadProject(projectName) {
 	    palettes.updatePalettes();
 
 	    try {
-		var rawData = httpGet('http://people.sugarlabs.org/walter/TurtleBlocksJS.activity/samples/' + projectURL);
+		var rawData = httpGet(projectName);
 		var cleanData = rawData.replace('\n', ' ');
 		var obj = JSON.parse(cleanData);
 		loadBlocks(obj);
@@ -303,11 +297,13 @@ define(function (require) {
 	    }
 	    if (sessionData != null) {
 		try {
+		    console.log('restoring session');
 		    var obj = JSON.parse(sessionData);
 		    loadBlocks(obj);
 		} catch (e) {
 		}
 	    } else {
+		console.log('loading start');
 		blocks.makeNewBlock('start');
 		blocks.blockList[0].x = 50;
 		blocks.blockList[0].y = 50;
@@ -1245,7 +1241,7 @@ define(function (require) {
 
 	function setBackgroundColor(turtle) {
 	    /// change body background in DOM to current color
-	    var body = document.getElementById('body');
+	    var body = docById('body');
 	    if (turtle == -1) {
 		body.style.background = canvasColor;
 	    } else {
@@ -1294,7 +1290,7 @@ define(function (require) {
 	}
 
 	function doOpen() {
-	    var fileChooser = document.getElementById("myOpenFile");
+	    var fileChooser = docById("myOpenFile");
 	    fileChooser.addEventListener("change", function(event) {
 
 		// Read file here.
@@ -1317,7 +1313,7 @@ define(function (require) {
 	}
 
 	function doSave() {
-	    var fileChooser = document.getElementById("mySaveFile");
+	    var fileChooser = docById("mySaveFile");
 	    fileChooser.addEventListener("change", function(event) {
 		// Do something here.
 		// console.log('fileChooser ' + this.value);

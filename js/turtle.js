@@ -461,7 +461,6 @@ function Turtles(canvas, stage, refreshCanvas, addTick) {
 	// myTurtle.container.cache(0, 0, 55, 55);
 
         document.getElementById('loader').className = '';
-        this.addTick();
         this.refreshCanvas();
     }
 

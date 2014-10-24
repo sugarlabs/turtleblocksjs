@@ -302,7 +302,7 @@ define(function (require) {
 	function loadProject(projectURL) {
 	    palettes.updatePalettes();
 
-	    var rawData = httpGet(projectURL);
+	    var rawData = httpGet('http://people.sugarlabs.org/walter/TurtleBlocksJS.activity/samples/' + projectURL);
 	    var cleanData = rawData.replace('\n', ' ');
 	    var obj = JSON.parse(cleanData);
 	    // console.log(obj);

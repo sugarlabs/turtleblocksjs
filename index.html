@@ -12,6 +12,27 @@
 </head>
 
 <body id="body">
+
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1496189893985945',
+          xfbml      : true,
+          version    : 'v2.1'
+        });
+
+        // ADD ADDITIONAL FACEBOOK CODE HERE
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+
     <div id="main-toolbar" class="toolbar">
         <button class="toolbutton" id="activity-button" title="My Activity"></button>
         <button class="toolbutton" id="fast-button" title="Fast"></button>

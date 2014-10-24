@@ -9,162 +9,179 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+// For DOM access to the palettes
+var palettePalettes = null;
+var paletteBlocks = null;
+
+function paletteButtonPush(name) {
+    console.log('bar ' + name);
+    palettePalettes.toggle(name);
+}
+
+function paletteBlockButtonPush(name, arg) {
+    console.log('bar ' + name + ' ' + arg);
+    paletteBlocks.makeBlock(name, arg);
+}
+
 // All things related to palettes
 function Palettes () {
     // The collection of palettes.
-    this.paletteList = [];
-    this.currentPalette = 0;  // Start with Turtle palette open.
+    this.dict = {};
+    // and a place in the DOM to put palettes.
+    this.paletteElem = docById('header');
+    this.current = 'turtle';
 
     this.getInfo = function() {
-	for (var palette = 0; palette < this.paletteList.length; palette++) {
-	    console.log(this.paletteList[palette].getInfo());
+	for (var key in this.dict) {
+	    console.log(this.dict[key].getInfo());
 	}
     }
 
     // Generate the IDs for the DOM elements we need
-    this.getPaletteButtonId = function(palette) {
-	return '_' + this.paletteList[palette].name + '_palette_button';
+    this.genPaletteButtonId = function(name) {
+	return '_' + name + '_palette_button';
     }
 
-    this.getPaletteId = function(palette) {
-	return '_' + this.paletteList[palette].name + '_palette_div';
+    this.genPaletteId = function(name) {
+	return '_' + name + '_palette_div';
     }
 
-    this.getBlockButtonId = function(palette, blk) {
-	return '_' + this.paletteList[palette].blockList[blk].name + '_block_button';
+    this.genBlockButtonId = function(name, blk) {
+	return '_' + this.dict[name].blockList[blk].name + '_block_button';
     }
 
     this.toggle = function(name) {
 	// Toggle which palette is visible, updating button colors
 	var palette = Number(name);
-	var paletteButtonId = this.getPaletteButtonId(palette);
-	var paletteId = this.getPaletteId(palette);
-	var currentPaletteId = this.getPaletteId(this.currentPalette);
-	var currentPaletteButtonId = this.getPaletteButtonId(this.currentPalette);
+	var paletteButtonId = this.genPaletteButtonId(name);
+	var paletteId = this.genPaletteId(name);
+	var currentPaletteId = this.genPaletteId(this.current);
+	var currentPaletteButtonId = this.genPaletteButtonId(this.current);
 
-	document.getElementById(currentPaletteButtonId).style.backgroundColor = '#808080';
-	document.getElementById(currentPaletteButtonId).style.color = '#ffffff';
-	document.getElementById(paletteButtonId).style.backgroundColor = this.paletteList[palette].backgroundColor;
-	document.getElementById(paletteButtonId).style.color = this.paletteList[palette].color;
+	docById(currentPaletteButtonId).style.backgroundColor = '#808080';
+	docById(currentPaletteButtonId).style.color = '#ffffff';
+	docById(paletteButtonId).style.backgroundColor = this.dict[name].backgroundColor;
+	docById(paletteButtonId).style.color = this.dict[name].color;
 
 	toggler(currentPaletteId);
 	toggler(paletteId);
-	this.currentPalette = palette;
+	this.current = name;
     }
 
     // Palettes live in the DOM for the time being:
     // a row of palette buttons and a row of block buttons for each palette
     this.updatePalettes = function() {
 	// Modify the header id with palette info.
-	var html = ''
-	for (var palette = 0; palette < this.paletteList.length; palette++) {
-	    var text = '<button id="' + this.getPaletteButtonId(palette) + '" ' +
-		'onclick="return palettes.toggle(\'' + palette +
-		'\');">' + this.paletteList[palette].name + '</button>';
-	    html = html + text;
+	var html = '';
+	for (var name in this.dict) {
+	    var text = '<button id="' + this.genPaletteButtonId(name) + '" ' +
+		'onclick="return paletteButtonPush(\'' + name +
+		'\');">' + name + '</button>';
+	    html += text;
 	}
 
-	for (var palette = 0; palette < this.paletteList.length; palette++) {
-	    var myPalette = this.paletteList[palette];
-	    var text = '<div id="' + this.getPaletteId(palette) + '">';
-	    html = html + text;
-	    for (var blk = 0; blk < myPalette.blockList.length; blk++) {
+	for (var name in this.dict) {
+	    var myPalette = this.dict[name];
+	    var text = '<div id="' + this.genPaletteId(name) + '">';
+	    html += text;
+	    for (var blk in myPalette.blockList) {
 		// Special case for do block
-		var name = myPalette.blockList[blk].name;
+		var blkname = myPalette.blockList[blk].name;
+		if (blkname == '') {
+		    console.log('FIXME: extra, empty blk in palette blocklist');
+		    continue;
+		}
 		var arg = '__NOARG__';
-		switch (name) {
+		switch (blkname) {
 		case 'do':
 		    // Use the name of the action in the label
-		    name = 'do ' + myPalette.blockList[blk].defaults[0];
+		    blkname = 'do ' + myPalette.blockList[blk].defaults[0];
 		    // Call makeBlock with the name of the action
 		    var arg = myPalette.blockList[blk].defaults[0];
 		    break;
 		case 'storein':
 		    // Use the name of the box in the label
-		    name = 'store in ' + myPalette.blockList[blk].defaults[0];
+		    blkname = 'store in ' + myPalette.blockList[blk].defaults[0];
 		    var arg = myPalette.blockList[blk].defaults[0];
 		    break;
 		case 'box':
 		    // Use the name of the box in the label
-		    name = myPalette.blockList[blk].defaults[0];
+		    blkname = myPalette.blockList[blk].defaults[0];
 		    var arg = myPalette.blockList[blk].defaults[0];
 		    break;
 		}
 		text = '<button id="' + 
-		    this.getBlockButtonId(palette, blk) + '"' +
-		    // ' class="' + myPalette.backgroundColor + '"' + 
-		    ' class="' + myPalette.name + '"' + 
-		    ' onclick="return makeBlock(\'' +
+		    this.genBlockButtonId(name, blk) + '"' +
+		    ' class="' + name + '"' + 
+		    // ' onclick="return blocks.makeBlock(\'' +
+		    ' onclick="return paletteBlockButtonPush(\'' +
 		    myPalette.blockList[blk].name + '\', \'' + arg + '\');">' +
-		    name + '</button>';
-		html = html + text;
+		    blkname + '</button>';
+		html += text;
 	    }
 	    text = '</div>';
 	    html = html + text;
 	}
-	paletteElem.innerHTML = html;
+	this.paletteElem.innerHTML = html;
 
 	// Open the turtle palette to start
-	this.toggle(this.currentPalette.toString());
+	this.toggle(this.current);
 	// and hide all the others
-	for (var palette = 0; palette < this.paletteList.length; palette++) {
-	    if (palette != this.currentPalette) {
-		toggler(this.getPaletteId(palette));
+	for (var name in this.dict) {
+	    if (name != this.current) {
+		toggler(this.genPaletteId(name));
 	    }
 	}
     }
+
+    this.setBlocks = function(blocks) {
+	paletteBlocks = blocks;
+    }
+
+    this.add = function(name, color, bgcolor) {
+	this.dict[name] = new Palette(name, color, bgcolor);
+	return this;
+    }
+
+    return this;
 }
 
 // Define objects for individual palettes.
-function Palette (name) {
+function Palette (name, color, bgcolor) {
     this.name = name;
-    this.color = 'white';
-    this.backgroundColor = 'green';
+    this.color = color;
+    this.backgroundColor = bgcolor;
     this.blockList = [];
 
     this.getInfo = function() {
 	var returnString = this.name + ' palette:';
-	for (var i = 0; i < this.blockList.length; i++) {
-	    returnString += ' ';
-	    returnString += this.blockList[i].name;
+	for (var thisBlock in this.blockList) {
+	    returnString += ' ' + this.blockList[thisBlock].name;
 	}
 	return returnString;
     };
+
+    this.add = function(protoblock) {
+	this.blockList.push(protoblock);
+	return this;
+    }
+
+    return this;
+
 };
 
-// Instantiate the palettes object.
-var palettes = new Palettes();
-
-// Add palettes here.
-var turtlePalette = new Palette('turtle');
-palettes.paletteList.push(turtlePalette);
-turtlePalette.color = 'black';
-turtlePalette.backgroundColor =  '#00b700';
-
-var penPalette = new Palette('pen');
-palettes.paletteList.push(penPalette);
-penPalette.color = 'black';
-penPalette.backgroundColor = '#00c0e7';
-
-var numberPalette = new Palette('number');
-palettes.paletteList.push(numberPalette);
-numberPalette.color = 'black';
-numberPalette.backgroundColor =  '#ff00ff';
-
-var flowPalette = new Palette('flow');
-palettes.paletteList.push(flowPalette);
-flowPalette.color = 'black';
-flowPalette.backgroundColor = '#fd6600';
-
-var blocksPalette = new Palette('blocks');
-palettes.paletteList.push(blocksPalette);
-blocksPalette.color = 'black';
-blocksPalette.backgroundColor = '#ffc000';
-
-var sensorsPalette = new Palette('sensors');
-palettes.paletteList.push(sensorsPalette);
-sensorsPalette.color = 'white';
-sensorsPalette.backgroundColor = '#ff0066';
+function initPalettes() {
+    // Instantiate the palettes object.
+    var palettes = new Palettes().
+	add('turtle', 'black', '#00b700').
+	add('pen', 'black', '#00c0e7').
+	add('number', 'black', '#ff00ff').
+	add('flow', 'black', '#fd6600').
+	add('blocks', 'black', '#ffc000').
+	add('sensors', 'white', '#ff0066');
+    palettePalettes = palettes;
+    return palettes;
+}
 
 // Utility function for toggling visibilities of DOM elements.
 function toggler(obj) {

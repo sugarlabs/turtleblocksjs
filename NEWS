@@ -51,11 +51,11 @@
   * scale text, images, turtle shell
   * center images on turtle
   * fix turtle layering bug
+  * fix action name bug
 
 TODO:
   * fix block layering bug
   * use container caching
-  * fix action name bug
   * save blocks
   * copy/paste
   * user defined blocks

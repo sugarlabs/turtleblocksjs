@@ -112,11 +112,14 @@ function ProtoBlock (name) {
 
 // A place to put the block instances.
 // The real workhorse.
-function Blocks (canvas, stage, refreshCanvas, addTick) {
+function Blocks (canvas, stage, refreshCanvas, addTick, trashcan) {
+    // Things we need from outside
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
     this.addTick = addTick;
+    this.trashcan = trashcan;
+
     // The proto blocks...
     this.protoBlockDict = {}
     // And a place to keep the blocks we create.
@@ -880,6 +883,7 @@ function Blocks (canvas, stage, refreshCanvas, addTick) {
 		    '" style="position: absolute; ' + 
 		    '-webkit-user-select: text;" ' +
 		    'class="number", ' +
+		    'onkeypress="if(event.keyCode==13){return false;}"' + 
 		    'cols="8", rows="1", maxlength="8">' +
 		    value + '</textarea>'
 	    } else if (myBlock.name == 'text') {
@@ -1160,13 +1164,12 @@ function Blocks (canvas, stage, refreshCanvas, addTick) {
     }
 
     this.hideBlock = function(blk) {
-	myBlock = this.blockList[blk];
-	myBlock.container.visible = false;
+	this.blockList[blk].container.visible = false;
 	return;
     }
 
     this.showBlock = function(blk) {
-	myBlock = this.blockList[blk];
+	var myBlock = this.blockList[blk];
 	if (myBlock.trash) {
 	    return;  // Don't show blocks in the trash.
 	}
@@ -1996,8 +1999,7 @@ function loadEventHandlers(blocks, myBlock) {
     
     myBlock.container.on('mousedown', function(event) {
 	// Bump the bitmap in front of its siblings.
-	var lastChild = last(blocks.stage.children);
-	blocks.stage.swapChildren(myBlock.container, lastChild);
+	blocks.stage.swapChildren(myBlock.container, last(blocks.stage.children));
 	
 	moved = false;
 	var offset = {
@@ -2030,13 +2032,11 @@ function loadEventHandlers(blocks, myBlock) {
 	    blocks.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
 	    
 	    // Move any connected blocks.
-	    // TODO
 	    blocks.findDragGroup(thisBlock)
 	    if (blocks.dragGroup.length > 0) {
 		for (var b = 0; b < blocks.dragGroup.length; b++) {
 		    blk = blocks.dragGroup[b];
 		    if (b != 0) {
-			// TODO
 			blocks.moveBlockRelative(blk, dx, dy);
 		    }
 		}
@@ -2048,21 +2048,34 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.on('mouseout',function(event) {
 	if (moved) {
 	    // Check if block is in the trash
-	    // FIXME
-	    // if (overTrashCan(event.stageX, event.stageY)) {
-	    if (false) {
+	    if (trashcan.overTrashcan(event.stageX, event.stageY)) {
+		// disconnect block
+		var b = myBlock.connections[0];
+		if (b != null) {
+		    for (var c in blocks.blockList[b].connections) {
+			if (blocks.blockList[b].connections[c] == thisBlock) {
+			    blocks.blockList[b].connections[c] = null;
+			    break;
+			}
+		    }
+		    myBlock.connections[0] = null;
+		}
+		myBlock.connections[0] = null;
+		// put drag group in trash
 		blocks.findDragGroup(thisBlock);
-		for (var blk = 0; blk < blocks.dragGroup.length; blk++) {
+		for (var b = 0; b < blocks.dragGroup.length; b++) {
+		    blk = blocks.dragGroup[b];
 		    console.log('putting ' + blocks.blockList[blk].name + ' in the trash');
 		    blocks.blockList[blk].trash = true;
 		    blocks.hideBlock(blk);
+		    blocks.refreshCanvas();
 		}
 	    } else {
 		// otherwise, process move
 		blocks.blockMoved(thisBlock);
 	    }
 	}
-	if (blocks.activeBlock != thisBlock) {
+	if (blocks.activeBlock != myBlock) {
 	    return;
 	}
 	blocks.unhighlight();

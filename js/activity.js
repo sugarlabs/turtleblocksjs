@@ -15,6 +15,7 @@ define(function (require) {
     require('easel');
     require('activity/utils');
     require('activity/munsell');
+    require('activity/trash');
     require('activity/turtle');
     require('activity/palette');
     require('activity/blocks');  
@@ -124,14 +125,13 @@ define(function (require) {
 	// then set default canvas color.
 	canvasColor = getMunsellColor(defaultColor, defaultValue, defaultChroma);
 
-	// 
+	// Time when we hit run
 	var time = 0;
+
 	// Coordinate grid
         var cartesianBitmap = null;
 	// Polar grid
         var polarBitmap = null;
-	// Trash
-	var trashBitmap = null;
 
 	// Get things started
 	init();
@@ -141,9 +141,10 @@ define(function (require) {
 
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
+	    trashcan = new Trashcan(canvas, stage, refreshCanvas, addTick, restoreTrash);
 	    turtles = new Turtles(canvas, stage, refreshCanvas, addTick);
 	    palettes = initPalettes();
-	    blocks = new Blocks(canvas, stage, refreshCanvas, addTick);
+	    blocks = new Blocks(canvas, stage, refreshCanvas, addTick, trashcan);
 	    palettes.setBlocks(blocks);
 	    turtles.setBlocks(blocks);
 	    blocks.setTurtles(turtles);
@@ -194,10 +195,6 @@ define(function (require) {
 	    addTick();
 	    polarBitmap.visible = false;
 
-	    var trash = new Image();
-	    trash.src = 'images/trash.svg';
-	    trash.onload = handleTrashLoad;
-
 	    var URL = window.location.href;
 	    var projectURL = null;
 	    if (URL.indexOf('?') > 0) {
@@ -222,6 +219,19 @@ define(function (require) {
 	    }
         }
 
+	function restoreTrash() {
+	    var dx = -110;
+	    var dy = 55;
+	    for (var blk in blocks.blockList) {
+		if (blocks.blockList[blk].trash) {
+		    blocks.blockList[blk].trash = false;
+		    blocks.moveBlockRelative(blk, dx, dy);
+		    blocks.showBlock(blk);
+		}
+	    }
+	    update = true;
+	}
+
 	function changeBlockVisibility() {
 	    if (blocks.blocksVisible) {
 		hideBlocks();
@@ -243,47 +253,6 @@ define(function (require) {
 
 	function addTick() {
 	    createjs.Ticker.addEventListener('tick', tick);
-	}
-
-        function handleTrashLoad(event) {
-	    // Load the trashcan
-            var image = event.target;
-            var imgW = image.width;
-            var imgH = image.height;
-            var bitmap;
-            var container = new createjs.Container();
-            stage.addChild(container);
-
-            bitmap = new createjs.Bitmap(image);
-	    trashBitmap = bitmap;
-            container.addChild(bitmap);
-
-	    // TODO: change state of trashcan if there is content in it.
-	    // TODO: empty trash?
-	    // TODO: restore from trash.
-
-            bitmap.x = canvas.width - image.width;
-            bitmap.y = 0;
-            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
-            bitmap.name = 'bmp_trash';
-
-            document.getElementById('loader').className = '';
-	    addTick();
-	    bitmap.visible = true;
-        }
-
-	function overTrashCan(x, y) {
-	    if (x < trashBitmap.x) {
-		return false;
-	    } else if (x > trashBitmap.x + trashBitmap.width) {
-		return false;
-	    }
-	    if (y < trashBitmap.y) {
-		return false;
-	    } else if (y > trashBitmap.y + trashBitmap.height) {
-		return false;
-	    }
-	    return true;
 	}
 
         function tick(event) {
@@ -314,7 +283,7 @@ define(function (require) {
 		var obj = JSON.parse(cleanData);
 		loadBlocks(obj);
 	    } catch (e) {
-		loadStart()
+		loadStart();
 		return;
 	    }
 	    update = true;
@@ -324,13 +293,25 @@ define(function (require) {
 	    // where to put this?
 	    palettes.updatePalettes();
 
-	    // Always start with a start block.
-	    blocks.makeNewBlock('start');
-	    blocks.blockList[0].x = 50;
-	    blocks.blockList[0].y = 50;
-	    blocks.blockList[0].connections = [null, null, null];
-	    turtles.add();
-
+	    sessionData = null;
+	    // Try restarting where we were when we hit save.
+	    if(typeof(Storage) !== "undefined") {
+		// localStorage is how we'll save the session (and metadata)
+		sessionData = localStorage.getItem('sessiondata');
+	    }
+	    if (sessionData != null) {
+		try {
+		    var obj = JSON.parse(sessionData);
+		    loadBlocks(obj);
+		} catch (e) {
+		}
+	    } else {
+		blocks.makeNewBlock('start');
+		blocks.blockList[0].x = 50;
+		blocks.blockList[0].y = 50;
+		blocks.blockList[0].connections = [null, null, null];
+		turtles.add();
+	    }
 	    blocks.updateBlockImages();
 	    blocks.updateBlockLabels();
 
@@ -1154,7 +1135,7 @@ define(function (require) {
 	    for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
 		turtles.turtleList[turtle].container.visible = false;
 	    }
-	    trashBitmap.visible = false;
+	    trashcan.hide();
 	    update = true;
 	}
 
@@ -1167,7 +1148,7 @@ define(function (require) {
 	    for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
 		turtles.turtleList[turtle].container.visible = true;
 	    }
-	    trashBitmap.visible = true;
+	    trashcan.show();
 	    update = true;
 	}
 
@@ -1271,6 +1252,10 @@ define(function (require) {
 	    var data = [];
 	    for (var blk = 0; blk < blocks.blockList.length; blk++) {
 		var myBlock = blocks.blockList[blk];
+		if (myBlock.trash) {
+		    // Don't save blocks in the trash.
+		    continue;
+		}
 		if (blocks.isValueBlock(blk)) {
 		    var name = [myBlock.name, myBlock.value];
 		} else {
@@ -1305,6 +1290,16 @@ define(function (require) {
 	}
 
 	function doSave() {
+	    if(typeof(Storage) !== "undefined") {
+		// localStorage is how we'll save the session (and metadata)
+		localStorage.setItem('sessiondata', prepareExport());
+		console.log(localStorage.getItem('sessiondata'));
+	    } else {
+		// Sorry! No Web Storage support..
+		console.log('no local storage available');
+	    }
+	    
+	    return;
 	    var fileChooser = document.getElementById("mySaveFile");
 	    fileChooser.addEventListener("change", function(event) {
 		// Do something here.

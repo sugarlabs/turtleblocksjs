@@ -55,6 +55,7 @@
   * open file from window location
   * major refactoring of code
   * don't accept CR in numeric text area
+  * restore from trash
 
 TODO:
   * fix block layering bug
@@ -67,5 +68,5 @@ TODO:
   * decide on a palette strategy
   * implement more sophisticated blocks
   * keyboard short cuts
-  * restore from trash
+
 

@@ -198,8 +198,15 @@ define(function (require) {
 	    trash.src = 'images/trash.svg';
 	    trash.onload = handleTrashLoad;
 
-	    // Load a project.
-	    loadStart();
+	    var urlParts = window.location.href.split('?');
+	    var projectURL = urlParts[1].split('=')[1];
+	    if(projectURL) {
+		console.log('load ' + projectURL);
+		loadProject(projectURL);
+	    } else {
+		console.log('load start');
+		loadStart();
+	    }
 
 	    // Make sure blocks are aligned.
 	    blocks.findStacks();
@@ -281,6 +288,28 @@ define(function (require) {
                 stage.update(event);
             }
         }
+
+	function httpGet(theUrl)
+	{
+	    var xmlHttp = null;
+	    
+	    xmlHttp = new XMLHttpRequest();
+	    xmlHttp.open( "GET", theUrl, false );
+	    xmlHttp.send();
+	    return xmlHttp.responseText;
+	}
+
+	function loadProject(projectURL) {
+	    palettes.updatePalettes();
+
+	    var rawData = httpGet(projectURL);
+	    var cleanData = rawData.replace('\n', ' ');
+	    var obj = JSON.parse(cleanData);
+	    // console.log(obj);
+	    loadBlocks(obj);
+
+	    update = true;
+	}
 
 	function loadStart() {
 	    // where to put this?
@@ -1156,6 +1185,7 @@ define(function (require) {
 	// Publish to FB
 	function doPublish(desc) {
 	    console.log('push ' + desc + ' to FB');
+	    console.log(prepareExport());
 	}
 
 	// Logo functions
@@ -1226,6 +1256,20 @@ define(function (require) {
 		}
 	    }
 	    return null;
+	}
+
+	function prepareExport() {
+	    var data = [];
+	    for (var blk = 0; blk < blocks.blockList.length; blk++) {
+		var myBlock = blocks.blockList[blk];
+		if (blocks.isValueBlock(blk)) {
+		    var name = [myBlock.name, myBlock.value];
+		} else {
+		    var name = myBlock.name;
+		}
+		data.push([blk, name, myBlock.container.x, myBlock.container.y, myBlock.connections]);
+	    }
+	    return JSON.stringify(data);
 	}
 
 	function doOpen() {

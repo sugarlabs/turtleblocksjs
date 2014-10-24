@@ -387,6 +387,12 @@ define(function (require) {
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    pushConnection(blkData[4][3], blockOffset, thisBlock);
 		    break;
+		case 'publish':
+		    blocks.makeNewBlock('publish');
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
 		case 'forward':
 		    blocks.makeNewBlock('forward');
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
@@ -816,6 +822,11 @@ define(function (require) {
 		    childFlowCount = 1;
 		}
 		break;
+	    case 'publish':
+ 		if (args.length == 1) {
+		    doPublish(args[0]);
+		}
+		break;
 	    case 'do':
  		if (args.length == 1) {
 		    for (i = 0; i < actionList.length; i++) {
@@ -1140,6 +1151,11 @@ define(function (require) {
 	function showPolar() {
 	    polarBitmap.visible = true;
 	    update = true;
+	}
+
+	// Publish to FB
+	function doPublish(desc) {
+	    console.log('push ' + desc + ' to FB');
 	}
 
 	// Logo functions

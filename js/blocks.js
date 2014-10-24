@@ -1740,6 +1740,13 @@ function initProtoBlocks(palettes, blocks) {
     vspaceBlock.zeroArgBlock();
     
     // Sensors palette
+    var pubBlock = new ProtoBlock('publish');
+    pubBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['publish'] = pubBlock;
+    pubBlock.oneArgBlock();
+    pubBlock.defaults.push('comment');
+    pubBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+    
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['time'] = timeBlock;
@@ -1757,7 +1764,7 @@ function initProtoBlocks(palettes, blocks) {
     
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
-	blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+	    blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
     }
     
     // Populate the lists of block types.

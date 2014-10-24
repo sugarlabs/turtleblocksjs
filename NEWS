@@ -56,11 +56,12 @@
   * major refactoring of code
   * don't accept CR in numeric text area
   * restore from trash
+  * add wait block
+  * save/restore session
 
 TODO:
   * fix block layering bug
   * use container caching
-  * save blocks
   * copy/paste
   * user defined blocks
   * better compartmentalization of code

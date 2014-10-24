@@ -47,6 +47,11 @@ button.sensors {
     color: #ffffff;
 }
 
+button.extras {
+    background-color: #ff0066;
+    color: #ffffff;
+}
+
 button.number {
     background-color: #ff00ff;
     color: #000000;

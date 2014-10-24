@@ -52,6 +52,9 @@
   * center images on turtle
   * fix turtle layering bug
   * fix action name bug
+  * open file from window location
+  * major refactoring of code
+  * don't accept CR in numeric text area
 
 TODO:
   * fix block layering bug

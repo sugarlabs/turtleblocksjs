@@ -127,6 +127,8 @@ define(function (require) {
 
 	// Time when we hit run
 	var time = 0;
+	// Used by pause block
+	var waitTime = 0;
 
 	// Coordinate grid
         var cartesianBitmap = null;
@@ -405,12 +407,6 @@ define(function (require) {
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    pushConnection(blkData[4][3], blockOffset, thisBlock);
-		    break;
-		case 'publish':
-		    blocks.makeNewBlock('publish');
-		    pushConnection(blkData[4][0], blockOffset, thisBlock);
-		    pushConnection(blkData[4][1], blockOffset, thisBlock);
-		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
 		case 'forward':
 		    blocks.makeNewBlock('forward');
@@ -692,6 +688,18 @@ define(function (require) {
 		    blocks.blockList[thisBlock].value = canvas.height;
 		    blocks.updateBlockText(thisBlock);
 		    break;
+		case 'wait':
+		    blocks.makeNewBlock('wait');
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
+		case 'publish':
+		    blocks.makeNewBlock('publish');
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
 		default:
 		    console.log('No factory for ' + name);
                     break;
@@ -728,6 +736,14 @@ define(function (require) {
 	}
 
         function runLogoCommands(startHere) {
+	    // Save the state before running
+	    if(typeof(Storage) !== "undefined") {
+		localStorage.setItem('sessiondata', prepareExport());
+		// console.log(localStorage.getItem('sessiondata'));
+	    } else {
+		// Sorry! No Web Storage support..
+	    }
+
 	    // We run the logo commands here.
 	    var d = new Date();
 	    time = d.getTime();
@@ -804,7 +820,9 @@ define(function (require) {
 	    if (blk == null) {
 		return;
 	    }
-	    setTimeout(function(){runFromBlockNow(thisTurtle, blk);}, turtleDelay);
+	    var delay = turtleDelay + waitTime;
+	    waitTime = 0;
+	    setTimeout(function(){runFromBlockNow(thisTurtle, blk);}, delay);
 	}
 
         function runFromBlockNow(turtle, blk) {
@@ -844,6 +862,11 @@ define(function (require) {
 	    case 'publish':
  		if (args.length == 1) {
 		    doPublish(args[0]);
+		}
+		break;
+	    case 'wait':
+ 		if (args.length == 1) {
+		    doWait(args[0]);
 		}
 		break;
 	    case 'do':
@@ -1178,6 +1201,10 @@ define(function (require) {
 	    console.log(prepareExport());
 	}
 
+	function doWait(secs) {
+	    waitTime = secs * 1000;
+	}
+
 	// Logo functions
         function doStorein(name, value) {
 	    if (name != null) {
@@ -1290,16 +1317,6 @@ define(function (require) {
 	}
 
 	function doSave() {
-	    if(typeof(Storage) !== "undefined") {
-		// localStorage is how we'll save the session (and metadata)
-		localStorage.setItem('sessiondata', prepareExport());
-		console.log(localStorage.getItem('sessiondata'));
-	    } else {
-		// Sorry! No Web Storage support..
-		console.log('no local storage available');
-	    }
-	    
-	    return;
 	    var fileChooser = document.getElementById("mySaveFile");
 	    fileChooser.addEventListener("change", function(event) {
 		// Do something here.

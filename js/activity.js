@@ -137,9 +137,6 @@ define(function (require) {
 	init();
 
         function init() {
-            if (window.top != window) {
-                document.getElementById('header').style.display = 'none';
-            }
             document.getElementById('loader').className = 'loader';
 
             // Check to see if we are running in a browser with touch support.

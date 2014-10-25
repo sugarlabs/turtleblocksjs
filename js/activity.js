@@ -58,8 +58,19 @@ define(function (require) {
 	    runLogoCommands();
         }
 
-	var blocksVisible = true;
-        var blockButton = docById('block-button');
+	var stopTurtle = false;
+        var stopTurtleButton = docById('stop-turtle-button');
+        stopTurtleButton.onclick = function () {
+	    doStopTurtle();
+        }
+
+        var paletteButton = docById('palette-button');
+        paletteButton.onclick = function () {
+	    changePaletteVisibility();
+        }
+
+	// var blocksVisible = true;
+        var blockButton = docById('hide-blocks-button');
         blockButton.onclick = function () {
 	    changeBlockVisibility();
         }
@@ -146,7 +157,7 @@ define(function (require) {
 	    createjs.Ticker.addEventListener('tick', tick);
 	    trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash);
 	    turtles = new Turtles(canvas, stage, refreshCanvas);
-	    palettes = initPalettes();
+	    palettes = initPalettes(stage, refreshCanvas);
 	    blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
 	    palettes.setBlocks(blocks);
 	    turtles.setBlocks(blocks);
@@ -229,19 +240,30 @@ define(function (require) {
 	    update = true;
 	}
 
+	function changePaletteVisibility() {
+	    if (palettes.visible) {
+		palettes.hide();
+	    } else {
+		palettes.show();
+	    }
+	}
+
 	function changeBlockVisibility() {
-	    if (blocks.blocksVisible) {
+	    if (blocks.visible) {
 		hideBlocks();
-		blocks.blocksVisible = false;
 	    } else {
 		showBlocks();
-		blocks.blocksVisible = true;
 	    }
 	}
 
         function stop() {
 	    //
             createjs.Ticker.removeEventListener('tick', tick);
+        }
+
+        function doStopTurtle() {
+	    //
+	    stopTurtle = true;
         }
 
 	function refreshCanvas() {
@@ -740,6 +762,8 @@ define(function (require) {
 		// Sorry! No Web Storage support..
 	    }
 
+	    stopTurtle = false;
+
 	    // We run the logo commands here.
 	    var d = new Date();
 	    time = d.getTime();
@@ -800,7 +824,7 @@ define(function (require) {
 		}
 	    } else {
 		for (var blk = 0; blk < blocks.stackList.length; blk++) {
-		    if (blocks.isNoRunBlock(blk)) {
+		    if (blocks.blockList[blk].isNoRunBlock()) {
 			continue;
 		    } else {
 			if (!blocks.blockList[blocks.stackList[blk]].trash) {
@@ -818,7 +842,9 @@ define(function (require) {
 	    }
 	    var delay = turtleDelay + waitTime;
 	    waitTime = 0;
-	    setTimeout(function(){runFromBlockNow(thisTurtle, blk);}, delay);
+	    if (!stopTurtle) {
+		setTimeout(function(){runFromBlockNow(thisTurtle, blk);}, delay);
+	    }
 	}
 
         function runFromBlockNow(turtle, blk) {
@@ -1025,9 +1051,9 @@ define(function (require) {
 				   'missing argument', null,
 				   function() {});
 		return null
-	    } else if (blocks.isValueBlock(blk)) {
+	    } else if (blocks.blockList[blk].isValueBlock()) {
 		return blocks.blockList[blk].value;
-	    } else if (blocks.isArgBlock(blk)) {
+	    } else if (blocks.blockList[blk].isArgBlock()) {
 		switch (blocks.blockList[blk].name) {
 		case 'box':
 		    var cblk = blocks.blockList[blk].connections[1];
@@ -1147,9 +1173,7 @@ define(function (require) {
 
 	function hideBlocks() {
 	    // Hide all the blocks.
-	    for (var blk = 0; blk < blocks.blockList.length; blk++) {
-		blocks.hideBlock(blk);
-	    }
+	    blocks.hide();
 	    // And hide some other things.
 	    for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
 		turtles.turtleList[turtle].container.visible = false;
@@ -1160,9 +1184,7 @@ define(function (require) {
 
 	function showBlocks() {
 	    // Show all the blocks.
-	    for (var blk = 0; blk < blocks.blockList.length; blk++) {
-		blocks.showBlock(blk);
-	    }
+	    blocks.show();
 	    // And show some other things.
 	    for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
 		turtles.turtleList[turtle].container.visible = true;
@@ -1279,7 +1301,7 @@ define(function (require) {
 		    // Don't save blocks in the trash.
 		    continue;
 		}
-		if (blocks.isValueBlock(blk)) {
+		if (blocks.blockList[blk].isValueBlock()) {
 		    var name = [myBlock.name, myBlock.value];
 		} else {
 		    var name = myBlock.name;

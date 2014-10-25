@@ -93,6 +93,7 @@ function ProtoBlock (name) {
     this.twoArgMathBlock = function() {
 	this.twoArgBlock();
 	this.style = 'arg';
+	this.size = 2;
 	this.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'], [68, 62, 'numberin']];
     }
 
@@ -108,7 +109,6 @@ function ProtoBlock (name) {
 	this.docks = [[0, 20, 'numberout']];
     }
 }
-
 
 // A place to put the block instances.
 // The real workhorse.
@@ -135,7 +135,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     // Which block, if any, is active?
     this.activeBlock = null;
     // Are the blocks visible?
-    this.blocksVisible = true;
+    this.visible = true;
     // Group of blocks being dragged
     this.dragGroup = [];
     // The blocks at the tops of stacks
@@ -183,96 +183,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
     }
 
-    // Utility functions
-    this.isValueBlock = function(blk) {
-	if (blk == null) {
-	    return false;
-	}
-	if (this.valueBlocks.indexOf(this.blockList[blk].name) != -1) {
-	    return true;
-	} else {
-	    return false;
-	}
-    }
-
-    this.isArgBlock = function(blk) {
-	if (blk == null) {
-	    return false;
-	}
-	if (this.argBlocks.indexOf(this.blockList[blk].name) != -1) {
-	    return true;
-	} else {
-	    return false;
-	}
-    }
-
-    this.isSpecialBlock = function(blk) {
-	if (blk == null) {
-	    return false;
-	}
-	if (this.specialBlocks.indexOf(this.blockList[blk].name) != -1) {
-	    return true;
-	} else {
-	    return false;
-	}
-    }
-
-    this.isClampBlock = function(blk) {
-	if (blk == null) {
-	    return false;
-	}
-	if (this.clampBlocks.indexOf(this.blockList[blk].name) != -1) {
-	    return true;
-	} else {
-	    return false;
-	}
-    }
-
-    this.isNoRunBlock = function(blk) {
-	if (blk == null) {
-	    return false;
-	}
-	if (this.noRunBlocks.indexOf(this.blockList[blk].name) != -1) {
-	    return true;
-	} else {
-	    return false;
-	}
-    }
-
-    this.isExpandableBlock = function(blk) {
-	if (blk == null) {
-	    return false;
-	}
-	if (this.blockList[blk] == null) {
-	    console.log('null block??? ' + blk);
-	    return false;
-	}
-	if (this.expandableBlocks.indexOf(this.blockList[blk].name) != -1) {
-	    return true;
-	} else {
-	    return false;
-	}
-    }
-
-    this.insideExpandableBlock = function(blk) {
-	// Returns a containing expandable block or null
-	if (this.blockList[blk].connections[0] == null) {
-	    return null;
-	} else {
-	    var cblk = this.blockList[blk].connections[0];
-	    if (this.isExpandableBlock(cblk)) {
-		// If it is the last connection, keep searching.
-		if (blk == last(this.blockList[cblk].connections)) {
-		    return this.insideExpandableBlock(cblk);
-		} else {
-		    return cblk;
-		}
-	    } else {
-		return this.insideExpandableBlock(cblk);
-	    }
-	}
-    }
-
     this.adjustBlockPositions = function() {
 	// Adjust the docking postions of all blocks in the drag group
 	if (this.dragGroup.length < 2) {
@@ -286,13 +196,11 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     this.adjustExpandableBlock = function(blk) {
 	// Adjust the size of the clamp in an expandable block
     
-	// TODO: expand arg blocks
-	if (this.isArgBlock(blk)) {
+	if (this.blockList[blk].isArgBlock()) {
 	    return;
 	}
     
-	// TODO: expand special blocks
-	if (this.isSpecialBlock(blk)) {
+	if (this.blockList[blk].isSpecialBlock()) {
 	    return;
 	}
     
@@ -369,7 +277,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    for (var i = 0; i < n; i++) {
 		this.removeFiller(blk);
 		this.blockList[blk].docks[2][1] -= loff;
-		if (!isArgBlock(blk)) {
+		if (!this.blockList[blk].isArgBlock()) {
 		    this.blockList[blk].docks[3][1] -= loff;
 		}
 		this.blockList[blk].size -= 1;
@@ -378,7 +286,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    var o = yoff + j * loff;
 	    this.blockList[blk].bottomBitmap.y = this.blockList[blk].bitmap.y + o;
 	    this.blockList[blk].highlightBottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    if (this.isArgBlock(blk)) {
+	    if (this.blockList[blk].isArgBlock()) {
 		if (this.blockList[blk].connections[2] != null) {
 		    this.loopCounter = 0;
 		    this.adjustDocks(blk);
@@ -399,7 +307,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		var c = i + j;
 		this.addFiller(blk, yoff + c * loff, c);
 		this.blockList[blk].docks[2][1] += loff;
-		if (!isArgBlock(blk)) {
+		if (!blockList[blk].isArgBlock()) {
 		    this.blockList[blk].docks[3][1] += loff;
 		}
 		this.blockList[blk].size += 1;
@@ -408,7 +316,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    var o = yoff + j * loff;
 	    this.blockList[blk].bottomBitmap.y = this.blockList[blk].bitmap.y + o;
 	    this.blockList[blk].highlightBottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    if (this.isArgBlock(blk)) {
+	    if (this.blockList[blk].isArgBlock()) {
 		if (this.blockList[blk].connections[2] != null) {
 		    this.loopCounter = 0;
 		    this.adjustDocks(blk);
@@ -441,9 +349,9 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	var bi = this.findBitmap(name);
 	if (bi == null) { 
 	    var image = new Image();
-	    if (this.isArgBlock(blk)) {
+	    if (myBlock.isArgBlock()) {
 		image.src = myBlock.protoblock.getArgFillerSvgPath();
-	    } else if (this.isSpecialBlock(blk)) {
+	    } else if (myBlock.isSpecialBlock()) {
 		image.src = myBlock.protoblock.getSpecialFillerSvgPath();
 	    } else {
 		image.src = myBlock.protoblock.getFillerSvgPath();
@@ -464,9 +372,9 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	var bi = this.findBitmap(name);
 	if (bi == null) { 
 	    var image = new Image();
-	    if (this.isArgBlock(blk)) {
+	    if (this.blockList[blk].isArgBlock()) {
 		image.src = myBlock.protoblock.getHighlightArgFillerSvgPath();
-	    } else if (this.isSpecialBlock(blk)) {
+	    } else if (myBlock.isSpecialBlock()) {
 		image.src = myBlock.protoblock.getHighlightSpecialFillerSvgPath();
 	    } else {
 		image.src = myBlock.protoblock.getHighlightFillerSvgPath();
@@ -504,7 +412,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    return size;
 	}
 	
-	if (this.isClampBlock(blk)) {
+	if (this.blockList[blk].isClampBlock()) {
 	    c = this.blockList[blk].connections.length - 2;
 	    size = this.getStackSize(this.blockList[blk].connections[c]);
 	    if (size == 0) {
@@ -613,14 +521,14 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    var cBlock = this.blockList[c];
 	}
 	// If it is an arg block, where is it coming from?
-	if (this.isArgBlock(thisBlock) && c != null) {
+	if (myBlock.isArgBlock() && c != null) {
 	    // We care about special (2arg) blocks with
 	    // connections to the first arg;
-	    if (this.isSpecialBlock(c)) {
+	    if (this.blockList[c].isSpecialBlock()) {
 		if (cBlock.connections[1] == thisBlock) {
 		    check2ArgBlocks.push(c);
 		}
-	    } else if (this.isArgBlock(c) && this.isExpandableBlock(c)) {
+	    } else if (this.blockList[c].isArgBlock() && this.blockList[c].isExpandableBlock()) {
 		if (cBlock.connections[1] == thisBlock) {
 		    check2ArgBlocks.push(c);
 		}
@@ -678,7 +586,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.connections[0] = newBlock;
 	    var connection = this.blockList[newBlock].connections[newConnection];
 	    if(connection != null) {
-		if (this.isArgBlock(thisBlock)) {
+		if (myBlock.isArgBlock()) {
 		    this.blockList[connection].connections[0] = null;
 		    // Fixme: could be more than one block.
 		    this.moveBlockRelative(connection, 40, 40);
@@ -695,16 +603,16 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
 
 	// If it is an arg block, where is it coming from?
-	if (this.isArgBlock(thisBlock) && newBlock != null) {
+	if (myBlock.isArgBlock() && newBlock != null) {
 	    // We care about special (2arg) blocks with
 	    // connections to the first arg;
-	    if (this.isSpecialBlock(newBlock)) {
+	    if (this.blockList[newBlock].isSpecialBlock()) {
 		if (this.blockList[newBlock].connections[1] == thisBlock) {
 		    if (check2ArgBlocks.indexOf(newBlock) == -1) {
 			check2ArgBlocks.push(newBlock);
 		    }
 		}
-	    } else if (this.isArgBlock(newBlock) && this.isExpandableBlock(newBlock)) {
+	    } else if (this.blockList[newBlock].isArgBlock() && this.blockList[newBlock].isExpandableBlock()) {
 		if (this.blockList[newBlock].connections[1] == thisBlock) {
 		    if (check2ArgBlocks.indexOf(newBlock) == -1) {
 			check2ArgBlocks.push(newBlock);
@@ -780,12 +688,12 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	if (myBlock.image == null) {
 	    myBlock.image = new Image();
 	    myBlock.image.src = myBlock.protoblock.getSvgPath();
-	    if (this.isExpandableBlock(blk)) {
-		if (this.isArgBlock(blk)) {
+	    if (myBlock.isExpandableBlock()) {
+		if (myBlock.isArgBlock()) {
 		    myBlock.bottomImage = new Image();
 		    myBlock.bottomImage.src =
 			myBlock.protoblock.getArgBottomSvgPath();
-		} else if (this.isSpecialBlock(blk)) {
+		} else if (myBlock.isSpecialBlock()) {
 		    myBlock.bottomImage = new Image();
 		    myBlock.bottomImage.src = myBlock.protoblock.getSpecialBottomSvgPath();
 		} else {
@@ -796,11 +704,11 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    // Same for highlights
 	    myBlock.highlightImage = new Image();
 	    myBlock.highlightImage.src = myBlock.protoblock.getHighlightSvgPath();
-	    if (this.isExpandableBlock(blk)) {
-		if (this.isArgBlock(blk)) {
+	    if (myBlock.isExpandableBlock()) {
+		if (myBlock.isArgBlock()) {
 		    myBlock.highlightBottomImage = new Image();
 		    myBlock.highlightBottomImage.src = myBlock.protoblock.getHighlightArgBottomSvgPath();
-		} else if (this.isSpecialBlock(blk)) {
+		} else if (myBlock.isSpecialBlock()) {
 		    myBlock.highlightBottomImage = new Image();
 		    myBlock.highlightBottomImage.src = myBlock.protoblock.getHighlightSpecialBottomSvgPath();
 		} else {
@@ -917,7 +825,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		var x = myBlock.bitmap.x
 		var y = myBlock.bitmap.y
 	    }
-	    if (this.isValueBlock(blk) && myBlock.name != 'media') {
+	    if (myBlock.isValueBlock() && myBlock.name != 'media') {
 		myBlock.label = docById(getBlockId(blk));
 		myBlock.label.addEventListener(
 		    'change', function() {labelChanged();});
@@ -1003,7 +911,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	// Find any expandable arg blocks.
 	this.expandablesList = [];
 	for (var i = 0; i < this.blockList.length; i++) {
-	    if (this.isArgBlock(i) && this.isExpandableBlock(i)) {
+	    if (this.blockList[i].isArgBlock() && this.blockList[i].isExpandableBlock()) {
 		this.expandablesList.push(i);
 	    }
 	}
@@ -1012,7 +920,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     this.searchForExpandables = function(blk) {
 	// Find the expandable blocks below blk in a stack.
 	while (blk != null) {
-	    if (this.isClampBlock(blk)) {
+	    if (this.blockList[blk].isClampBlock()) {
 		this.expandablesList.push(blk);
 		var c = this.blockList[blk].connections.length - 2;
 		this.searchForExpandables(this.blockList[blk].connections[c]);
@@ -1074,7 +982,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	myBlock.highlightBitmap.visible = false;
 
 	// Value blocks get a modifiable text label
-	if (this.isValueBlock(thisBlock) && myBlock.name != 'media') {
+	if (myBlock.isValueBlock() && myBlock.name != 'media') {
 	    if (myBlock.value == null) {
 		myBlock.value = '---';
 	    }
@@ -1089,7 +997,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
 
 	// Expandable blocks also have some extra parts.
-	if (this.isExpandableBlock(thisBlock)) {
+	if (myBlock.isExpandableBlock()) {
 	    var yoff = myBlock.protoblock.yoff;
 	    myBlock.fillerBitmaps = [];
 	    myBlock.bottomBitmap = null;
@@ -1115,14 +1023,14 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.unhighlight = function() {
-	if (!this.blocksVisible) {
+	if (!this.visible) {
 	    return;
 	}
 	if (this.highlightedBlock != null) {
 	    var myBlock = this.blockList[this.highlightedBlock];
 	    myBlock.bitmap.visible = true;
 	    myBlock.highlightBitmap.visible = false;
-	    if (this.isExpandableBlock(this.highlightedBlock)) {
+	    if (this.blockList[this.highlightedBlock].isExpandableBlock()) {
 		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
 		    myBlock.fillerBitmaps[i].visible = true;
 		    myBlock.highlightFillerBitmaps[i].visible = false;
@@ -1138,7 +1046,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.highlight = function(blk) {
-	if (!this.blocksVisible) {
+	if (!this.visible) {
 	    return;
 	}
 	if (blk != null) {
@@ -1146,7 +1054,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    var myBlock = this.blockList[blk];
 	    myBlock.bitmap.visible = false;
 	    myBlock.highlightBitmap.visible = true;
-	    if (this.isExpandableBlock(blk)) {
+	    if (myBlock.isExpandableBlock()) {
 		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
 		    myBlock.fillerBitmaps[i].visible = false;
 		    myBlock.highlightFillerBitmaps[i].visible = true;
@@ -1162,18 +1070,18 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
     }
 
-    this.hideBlock = function(blk) {
-	this.blockList[blk].container.visible = false;
-	return;
+    this.hide = function() {
+	for (var blk in this.blockList) {
+	    this.blockList[blk].hide();
+	}
+	this.visible = false;
     }
 
-    this.showBlock = function(blk) {
-	var myBlock = this.blockList[blk];
-	if (myBlock.trash) {
-	    return;  // Don't show blocks in the trash.
+    this.show = function() {
+	for (var blk in this.blockList) {
+	    this.blockList[blk].show();
 	}
-	myBlock.container.visible = true;
-	return;
+	this.visible = true;
     }
 
     this.makeNewBlock = function(name) {
@@ -1423,8 +1331,373 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	myActionBlock.palette.add(myActionBlock);
     }
 
+    this.insideExpandableBlock = function(blk) {
+	// Returns a containing expandable block or null
+	if (this.blockList[blk].connections[0] == null) {
+	    return null;
+	} else {
+	    var cblk = this.blockList[blk].connections[0];
+	    if (this.blockList[cblk].isExpandableBlock()) {
+		// If it is the last connection, keep searching.
+		if (blk == last(this.blockList[cblk].connections)) {
+		    return this.insideExpandableBlock(cblk);
+		} else {
+		    return cblk;
+		}
+	    } else {
+		return this.insideExpandableBlock(cblk);
+	    }
+	}
+    }
+
     blockBlocks = this;
     return this;
+}
+
+
+// Define block instance objects
+function Block (protoblock) {
+    if (protoblock == null) {
+	console.log('null protoblock sent to Block');
+	return;
+    }
+    this.protoblock = protoblock;
+    this.name = protoblock.name;
+    this.x = 0;
+    this.y = 0;
+    this.trash = false;  // Is this block in the trash?
+    this.label = null;  // Editable textview in DOM.
+    this.text = null;  // A text label on block itself.
+    this.value = null; // Value for number, text, and media blocks.
+
+    this.image = null;
+    this.highlightImage = null;
+
+    // All blocks have at a container and least one bitmap.
+    this.container = null;
+    this.bitmap = null;
+    this.highlightBitmap = null;
+
+    // Expandable block features.
+    this.fillerBitmaps = [];
+    this.bottomBitmap = null;
+    this.highlightFillerBitmaps = [];
+    this.highlightBottomBitmap = null;
+
+    this.size = 1;  // Proto size is copied here.
+    this.docks = [];  // Proto dock is copied here.
+    this.connections = [];  // Blocks that cannot be run on their own.
+
+    this.copySize = function() {
+	this.size = this.protoblock.size;
+    }
+
+    this.copyDocks = function() {
+	for (var i in this.protoblock.docks) {
+	    var dock = [this.protoblock.docks[i][0], this.protoblock.docks[i][1], this.protoblock.docks[i][2]];
+	    this.docks.push(dock);
+	}
+    }
+
+    this.getInfo = function() {
+	return this.name + ' block';
+    }
+
+    this.hide = function() {
+	this.container.visible = false;
+    }
+
+    this.show = function() {
+	if (!this.trash) {
+	    this.container.visible = true;
+	}
+    }
+
+    // Utility functions
+    this.isValueBlock = function() {
+	return this.protoblock.style == 'value';
+    }
+
+    this.isArgBlock = function() {
+	return this.protoblock.style in ['value', 'arg'];
+    }
+
+    this.isSpecialBlock = function() {
+	return this.protoblock.style == 'special';
+    }
+
+    this.isClampBlock = function() {
+	return this.protoblock.style == 'clamp';
+    }
+
+    this.isNoRunBlock = function() {
+	return this.name in ['action'];
+    }
+
+    this.isExpandableBlock = function() {
+	return this.protoblock.expandable;
+    }
+}
+
+function $() {
+    var elements = new Array();
+
+    for (var i = 0; i < arguments.length; i++) {
+	var element = arguments[i];
+	if (typeof element == 'string')
+	    element = docById(element);
+	if (arguments.length == 1)
+	    return element;
+	elements.push(element);
+    }
+    return elements;
+}
+
+function getBlockId(blk) {
+    return '_' + blk.toString();
+}
+
+// A place in the DOM to put modifiable labels (textareas).
+var labelElem = docById('labelDiv');
+
+// Update the block values as they change in the DOM label
+function labelChanged() {
+    // For some reason, arg passing from the DOM is not working
+    // properly, so we need to find the label that changed.
+
+    var blocks = blockBlocks;
+    var myBlock = null;
+    var oldValue = '';
+    var newValue = '';
+    for (var blk = 0 ; blk < blocks.blockList.length ; blk++) {
+	if (blocks.blockList[blk].name == 'text') {
+	    if (blocks.blockList[blk].value != blocks.blockList[blk].label.value) {
+		myBlock = blocks.blockList[blk];
+		oldValue = myBlock.value;
+		newValue = myBlock.label.value;
+		break;
+	    }
+	}
+	if (blocks.blockList[blk].name == 'number') {
+	    if (blocks.blockList[blk].value != blocks.blockList[blk].label.value) {
+		myBlock = blocks.blockList[blk];
+		oldValue = myBlock.value;
+		newValue = myBlock.label.value;
+		break;
+	    }
+	}
+    }
+
+    if (myBlock == null) {
+	console.log('cannot find the label that changed');
+	return;
+    } else {
+	// console.log('label changed on ' + myBlock.name);
+    }
+
+    // Update the block value and label.
+    if (myBlock.label != null) {
+	myBlock.value = myBlock.label.value;
+	myBlock.text.text = myBlock.value.toString();
+	// and hide the DOM textview...
+	myBlock.label.style.display = 'none';
+	// Make sure text is on top.
+	lastChild = last(myBlock.container.children);
+	myBlock.container.swapChildren(myBlock.text, lastChild);
+	blocks.refreshCanvas();
+    }
+
+    // TODO: Garbage collection in palette (remove old proto block)
+    // TODO: Don't allow duplicate action names
+    var c = myBlock.connections[0];
+    if (myBlock.name == 'text' && c != null) {
+	var cblock = blocks.blockList[c];
+	switch (cblock.name) {
+	case 'action':
+	    // If the label was the name of an action, update the
+	    // associated run blocks and the palette buttons
+	    if (myBlock.value != 'action') {
+		blocks.newDoBlock(myBlock.value);
+	    }
+	    blocks.renameDos(oldValue, newValue);
+	    blocks.palettes.updatePalettes();
+	    break;
+	case 'storein':
+	    // If the label was the name of a storein, update the
+	    //associated box blocks and the palette buttons
+	    if (myBlock.value != 'box') {
+		blocks.newStoreinBlock(myBlock.value);
+		blocks.newBoxBlock(myBlock.value);
+	    }
+	    blocks.renameBoxes(oldValue, newValue);
+	    blocks.palettes.updatePalettes();
+	    break;
+	}
+    }
+}
+
+// Open a file from the DOM.
+function doOpenMedia(blocks, thisBlock) {
+    var fileChooser = docById("myMedia");
+    fileChooser.addEventListener("change", function(event) {
+	var filename;
+	var reader = new FileReader();
+	reader.onloadend = (function () {
+	    if (reader.result) {
+		// console.log(reader);
+		var dataURL = reader.result;
+		blocks.blockList[thisBlock].value = reader.result
+		filename = reader.result;
+		// console.log('reader.result ' + filename);
+		var image = new Image();
+		if (blocks.blockList[thisBlock].container.children.length > 2) {
+		    blocks.blockList[thisBlock].container.removeChild(last(blocks.blockList[thisBlock].container.children));
+		}
+		image.src = filename;
+		var bitmap = new createjs.Bitmap(image);
+		blocks.blockList[thisBlock].container.addChild(bitmap);
+		if (image.width > image.height) {
+		    bitmap.scaleX = 100 / image.width;
+		    bitmap.scaleY = 100 / image.width;
+		    bitmap.scale = 100 / image.width;
+		} else {
+		    bitmap.scaleX = 80 / image.height;
+		    bitmap.scaleY = 80 / image.height;
+		    bitmap.scale = 80 / image.height;
+		}
+		bitmap.x = 30;
+		bitmap.y = 10;
+		update = true;
+	    }
+	});
+	reader.readAsDataURL(fileChooser.files[0]);
+    }, false);
+
+    fileChooser.focus();
+    fileChooser.click();
+}
+
+// These are the event handlers for block containers.
+function loadEventHandlers(blocks, myBlock) {
+    var thisBlock = blocks.blockList.indexOf(myBlock);
+    // Create a shape that represents the center of the icon.
+    
+    var hitArea = new createjs.Shape();
+    // Position hitArea relative to the internal coordinate system
+    // of the container.
+    // FIXME: Why is image width/height == 0???
+    var w2 = 100; // myBlock.image.width / 2;
+    var h2 = 42; // myBlock.image.height / 2;
+    hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
+    hitArea.x = w2 / 2;
+    hitArea.y = h2 / 2;
+    myBlock.container.hitArea = hitArea;
+    
+    myBlock.container.on('mouseover', function(event) {
+	blocks.highlight(thisBlock);
+	blocks.activeBlock = thisBlock;
+	blocks.refreshCanvas();
+    });
+    
+    var moved = false;
+    myBlock.container.on('click', function(event) {
+	if (!moved) {
+	    if (myBlock.name == 'media') {
+		doOpenMedia(blocks, thisBlock);
+	    } else if (myBlock.isValueBlock() && myBlock.name != 'media') {
+		myBlock.label.style.display = '';
+	    } else {
+		var topBlock = blocks.findTopBlock(thisBlock);
+		blocks.runLogo(topBlock);
+	    }
+	}
+    });
+    
+    myBlock.container.on('mousedown', function(event) {
+	// Bump the bitmap in front of its siblings.
+	blocks.stage.swapChildren(myBlock.container, last(blocks.stage.children));
+	
+	moved = false;
+	var offset = {
+	    x: myBlock.container.x - event.stageX,
+	    y: myBlock.container.y - event.stageY
+	};
+	
+	myBlock.container.on('pressup', function(event) {
+	});
+	
+	myBlock.container.on('pressmove', function(event) {
+	    moved = true;
+	    var oldX = myBlock.container.x;
+	    var oldY = myBlock.container.y;
+	    myBlock.container.x = event.stageX + offset.x;
+	    myBlock.container.y = event.stageY + offset.y;
+	    myBlock.x = myBlock.container.x;
+	    myBlock.y = myBlock.container.y;
+	    myBlock.y = event.stageY + offset.y;
+	    var dx = myBlock.container.x - oldX;
+	    var dy = myBlock.container.y - oldY;
+	    
+	    if (myBlock.isValueBlock() && myBlock.name != 'media') {
+		// Ensure text is on top
+		var lastChild = last(myBlock.container.children);
+		myBlock.container.swapChildren(myBlock.text, lastChild);
+	    }
+	    
+	    // Move the label.
+	    blocks.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
+	    
+	    // Move any connected blocks.
+	    blocks.findDragGroup(thisBlock)
+	    if (blocks.dragGroup.length > 0) {
+		for (var b = 0; b < blocks.dragGroup.length; b++) {
+		    blk = blocks.dragGroup[b];
+		    if (b != 0) {
+			blocks.moveBlockRelative(blk, dx, dy);
+		    }
+		}
+	    }
+	    blocks.refreshCanvas();
+	});
+    });
+    
+    myBlock.container.on('mouseout',function(event) {
+	if (moved) {
+	    // Check if block is in the trash
+	    if (trashcan.overTrashcan(event.stageX, event.stageY)) {
+		// disconnect block
+		var b = myBlock.connections[0];
+		if (b != null) {
+		    for (var c in blocks.blockList[b].connections) {
+			if (blocks.blockList[b].connections[c] == thisBlock) {
+			    blocks.blockList[b].connections[c] = null;
+			    break;
+			}
+		    }
+		    myBlock.connections[0] = null;
+		}
+		myBlock.connections[0] = null;
+		// put drag group in trash
+		blocks.findDragGroup(thisBlock);
+		for (var b = 0; b < blocks.dragGroup.length; b++) {
+		    blk = blocks.dragGroup[b];
+		    console.log('putting ' + blocks.blockList[blk].name + ' in the trash');
+		    blocks.blockList[blk].trash = true;
+		    blocks.hideBlock(blk);
+		    blocks.refreshCanvas();
+		}
+	    } else {
+		// otherwise, process move
+		blocks.blockMoved(thisBlock);
+	    }
+	}
+	if (blocks.activeBlock != myBlock) {
+	    return;
+	}
+	blocks.unhighlight();
+	blocks.activeBlock = null;
+	blocks.refreshCanvas();
+    });
 }
 
 function initProtoBlocks(palettes, blocks) {
@@ -1781,319 +2054,9 @@ function initProtoBlocks(palettes, blocks) {
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
-	    blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+	blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
     }
     
     // Populate the lists of block types.
     blocks.findBlockTypes();
-}
-
-// Define block instance objects
-function Block (protoblock) {
-    if (protoblock == null) {
-	console.log('null protoblock sent to Block');
-	return;
-    }
-    this.protoblock = protoblock;
-    this.name = protoblock.name;
-    this.x = 0;
-    this.y = 0;
-    this.trash = false;  // Is this block in the trash?
-    this.label = null;  // Editable textview in DOM.
-    this.text = null;  // A text label on block itself.
-    this.value = null; // Value for number, text, and media blocks.
-
-    this.image = null;
-    this.highlightImage = null;
-
-    // All blocks have at a container and least one bitmap.
-    this.container = null;
-    this.bitmap = null;
-    this.highlightBitmap = null;
-
-    // Expandable block features.
-    this.fillerBitmaps = [];
-    this.bottomBitmap = null;
-    this.highlightFillerBitmaps = [];
-    this.highlightBottomBitmap = null;
-
-    this.size = 1;  // Proto size is copied here.
-    this.docks = [];  // Proto dock is copied here.
-    this.connections = [];  // Blocks that cannot be run on their own.
-
-    this.copySize = function() {
-	this.size = this.protoblock.size;
-    }
-
-    this.copyDocks = function() {
-	for (var i = 0; i < this.protoblock.docks.length; i++) {
-	    var dock = [this.protoblock.docks[i][0], this.protoblock.docks[i][1], this.protoblock.docks[i][2]];
-	    this.docks.push(dock);
-	}
-    }
-
-    this.getInfo = function() {
-	return this.name + ' block';
-    }
-}
-
-function $() {
-    var elements = new Array();
-
-    for (var i = 0; i < arguments.length; i++) {
-	var element = arguments[i];
-	if (typeof element == 'string')
-	    element = docById(element);
-	if (arguments.length == 1)
-	    return element;
-	elements.push(element);
-    }
-    return elements;
-}
-
-function getBlockId(blk) {
-    return '_' + blk.toString();
-}
-
-// A place in the DOM to put modifiable labels (textareas).
-var labelElem = docById('labelDiv');
-
-// Update the block values as they change in the DOM label
-function labelChanged() {
-    // For some reason, arg passing from the DOM is not working
-    // properly, so we need to find the label that changed.
-
-    var blocks = blockBlocks;
-    var myBlock = null;
-    var oldValue = '';
-    var newValue = '';
-    for (var blk = 0 ; blk < blocks.blockList.length ; blk++) {
-	if (blocks.blockList[blk].name == 'text') {
-	    if (blocks.blockList[blk].value != blocks.blockList[blk].label.value) {
-		myBlock = blocks.blockList[blk];
-		oldValue = myBlock.value;
-		newValue = myBlock.label.value;
-		break;
-	    }
-	}
-	if (blocks.blockList[blk].name == 'number') {
-	    if (blocks.blockList[blk].value != blocks.blockList[blk].label.value) {
-		myBlock = blocks.blockList[blk];
-		oldValue = myBlock.value;
-		newValue = myBlock.label.value;
-		break;
-	    }
-	}
-    }
-
-    if (myBlock == null) {
-	console.log('cannot find the label that changed');
-	return;
-    } else {
-	// console.log('label changed on ' + myBlock.name);
-    }
-
-    // Update the block value and label.
-    if (myBlock.label != null) {
-	myBlock.value = myBlock.label.value;
-	myBlock.text.text = myBlock.value.toString();
-	// and hide the DOM textview...
-	myBlock.label.style.display = 'none';
-	// Make sure text is on top.
-	lastChild = last(myBlock.container.children);
-	myBlock.container.swapChildren(myBlock.text, lastChild);
-	blocks.refreshCanvas();
-    }
-
-    // TODO: Garbage collection in palette (remove old proto block)
-    // TODO: Don't allow duplicate action names
-    var c = myBlock.connections[0];
-    if (myBlock.name == 'text' && c != null) {
-	var cblock = blocks.blockList[c];
-	switch (cblock.name) {
-	case 'action':
-	    // If the label was the name of an action, update the
-	    // associated run blocks and the palette buttons
-	    if (myBlock.value != 'action') {
-		blocks.newDoBlock(myBlock.value);
-	    }
-	    blocks.renameDos(oldValue, newValue);
-	    blocks.palettes.updatePalettes();
-	    break;
-	case 'storein':
-	    // If the label was the name of a storein, update the
-	    //associated box blocks and the palette buttons
-	    if (myBlock.value != 'box') {
-		blocks.newStoreinBlock(myBlock.value);
-		blocks.newBoxBlock(myBlock.value);
-	    }
-	    blocks.renameBoxes(oldValue, newValue);
-	    blocks.palettes.updatePalettes();
-	    break;
-	}
-    }
-}
-
-// Open a file from the DOM.
-function doOpenMedia(blocks, thisBlock) {
-    var fileChooser = docById("myMedia");
-    fileChooser.addEventListener("change", function(event) {
-	var filename;
-	var reader = new FileReader();
-	reader.onloadend = (function () {
-	    if (reader.result) {
-		// console.log(reader);
-		var dataURL = reader.result;
-		blocks.blockList[thisBlock].value = reader.result
-		filename = reader.result;
-		// console.log('reader.result ' + filename);
-		var image = new Image();
-		if (blocks.blockList[thisBlock].container.children.length > 2) {
-		    blocks.blockList[thisBlock].container.removeChild(last(blocks.blockList[thisBlock].container.children));
-		}
-		image.src = filename;
-		var bitmap = new createjs.Bitmap(image);
-		blocks.blockList[thisBlock].container.addChild(bitmap);
-		if (image.width > image.height) {
-		    bitmap.scaleX = 100 / image.width;
-		    bitmap.scaleY = 100 / image.width;
-		    bitmap.scale = 100 / image.width;
-		} else {
-		    bitmap.scaleX = 80 / image.height;
-		    bitmap.scaleY = 80 / image.height;
-		    bitmap.scale = 80 / image.height;
-		}
-		bitmap.x = 30;
-		bitmap.y = 10;
-		update = true;
-	    }
-	});
-	reader.readAsDataURL(fileChooser.files[0]);
-    }, false);
-
-    fileChooser.focus();
-    fileChooser.click();
-}
-
-// These are the event handlers for block containers.
-function loadEventHandlers(blocks, myBlock) {
-    var thisBlock = blocks.blockList.indexOf(myBlock);
-    // Create a shape that represents the center of the icon.
-    
-    var hitArea = new createjs.Shape();
-    // Position hitArea relative to the internal coordinate system
-    // of the container.
-    // FIXME: Why is image width/height == 0???
-    var w2 = 100; // myBlock.image.width / 2;
-    var h2 = 42; // myBlock.image.height / 2;
-    hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
-    hitArea.x = w2 / 2;
-    hitArea.y = h2 / 2;
-    myBlock.container.hitArea = hitArea;
-    
-    myBlock.container.on('mouseover', function(event) {
-	blocks.highlight(thisBlock);
-	blocks.activeBlock = thisBlock;
-	blocks.refreshCanvas();
-    });
-    
-    var moved = false;
-    myBlock.container.on('click', function(event) {
-	if (!moved) {
-	    if (myBlock.name == 'media') {
-		doOpenMedia(blocks, thisBlock);
-	    } else if (blocks.isValueBlock(thisBlock) && myBlock.name != 'media') {
-		myBlock.label.style.display = '';
-	    } else {
-		var topBlock = blocks.findTopBlock(thisBlock);
-		blocks.runLogo(topBlock);
-	    }
-	}
-    });
-    
-    myBlock.container.on('mousedown', function(event) {
-	// Bump the bitmap in front of its siblings.
-	blocks.stage.swapChildren(myBlock.container, last(blocks.stage.children));
-	
-	moved = false;
-	var offset = {
-	    x: myBlock.container.x - event.stageX,
-	    y: myBlock.container.y - event.stageY
-	};
-	
-	myBlock.container.on('pressup', function(event) {
-	});
-	
-	myBlock.container.on('pressmove', function(event) {
-	    moved = true;
-	    var oldX = myBlock.container.x;
-	    var oldY = myBlock.container.y;
-	    myBlock.container.x = event.stageX + offset.x;
-	    myBlock.container.y = event.stageY + offset.y;
-	    myBlock.x = myBlock.container.x;
-	    myBlock.y = myBlock.container.y;
-	    myBlock.y = event.stageY + offset.y;
-	    var dx = myBlock.container.x - oldX;
-	    var dy = myBlock.container.y - oldY;
-	    
-	    if (blocks.isValueBlock(thisBlock) && myBlock.name != 'media') {
-		// Ensure text is on top
-		var lastChild = last(myBlock.container.children);
-		myBlock.container.swapChildren(myBlock.text, lastChild);
-	    }
-	    
-	    // Move the label.
-	    blocks.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
-	    
-	    // Move any connected blocks.
-	    blocks.findDragGroup(thisBlock)
-	    if (blocks.dragGroup.length > 0) {
-		for (var b = 0; b < blocks.dragGroup.length; b++) {
-		    blk = blocks.dragGroup[b];
-		    if (b != 0) {
-			blocks.moveBlockRelative(blk, dx, dy);
-		    }
-		}
-	    }
-	    blocks.refreshCanvas();
-	});
-    });
-    
-    myBlock.container.on('mouseout',function(event) {
-	if (moved) {
-	    // Check if block is in the trash
-	    if (trashcan.overTrashcan(event.stageX, event.stageY)) {
-		// disconnect block
-		var b = myBlock.connections[0];
-		if (b != null) {
-		    for (var c in blocks.blockList[b].connections) {
-			if (blocks.blockList[b].connections[c] == thisBlock) {
-			    blocks.blockList[b].connections[c] = null;
-			    break;
-			}
-		    }
-		    myBlock.connections[0] = null;
-		}
-		myBlock.connections[0] = null;
-		// put drag group in trash
-		blocks.findDragGroup(thisBlock);
-		for (var b = 0; b < blocks.dragGroup.length; b++) {
-		    blk = blocks.dragGroup[b];
-		    console.log('putting ' + blocks.blockList[blk].name + ' in the trash');
-		    blocks.blockList[blk].trash = true;
-		    blocks.hideBlock(blk);
-		    blocks.refreshCanvas();
-		}
-	    } else {
-		// otherwise, process move
-		blocks.blockMoved(thisBlock);
-	    }
-	}
-	if (blocks.activeBlock != myBlock) {
-	    return;
-	}
-	blocks.unhighlight();
-	blocks.activeBlock = null;
-	blocks.refreshCanvas();
-    });
 }

@@ -365,11 +365,10 @@ function Turtle (name, turtles) {
     }
 };
 
-function Turtles(canvas, stage, refreshCanvas, addTick) {
+function Turtles(canvas, stage, refreshCanvas) {
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
-    this.addTick = addTick;
     
     this.setBlocks = function(blocks) {
 	this.blocks = blocks;

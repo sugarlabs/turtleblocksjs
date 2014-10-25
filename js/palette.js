@@ -21,7 +21,6 @@ function paletteButtonPush(name) {
 
 function paletteBlockButtonPush(name, arg) {
     blk = paletteBlocks.makeBlock(name, arg);
-    console.log('created block ' + blk);
     return blk;
 }
 
@@ -376,7 +375,6 @@ function Palette (palettes, name, color, bgcolor) {
 	var below = false;
 	for (var p in this.palettes.dict) {
 	    if (!init && below) {
-		console.log('moving ' + p + ' up ' + this.size);
 		this.palettes.dict[p].moveMenuRelative(0, -this.size);
 	    }
 	    if (p == this.name) {
@@ -393,9 +391,7 @@ function Palette (palettes, name, color, bgcolor) {
 	// Move the menus below down
 	var below = false;
 	for (var p in this.palettes.dict) {
-	    console.log(init + ' ' + below);
 	    if (!init && below) {
-		console.log('moving ' + p + ' down ' + this.size);
 		this.palettes.dict[p].moveMenuRelative(0, this.size);
 	    }
 	    if (p == this.name) {
@@ -462,7 +458,6 @@ function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
     // On a click make a new block; then close the menu.
     // FIXME: add drag and add move (move them all)
     self.protoContainers[blkname].on('click', function(event) {
-	console.log('CLICK');
 	// makeBlock(blk, blkname, palette);
 	// palette.hideMenuItems();
 	// palette.palettes.refreshCanvas();
@@ -514,7 +509,6 @@ function loadPaletteMenuHandler(palette) {
     });
     
     palette.menuBitmap.on('click', function(event) {
-	console.log('click on palette ' + palette.visible);
 	for (p in palette.palettes.dict) {
 	    if (palette.name != p) {
 		if (palette.palettes.dict[p].visible) {

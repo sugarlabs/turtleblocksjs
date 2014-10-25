@@ -20,7 +20,9 @@ function paletteButtonPush(name) {
 }
 
 function paletteBlockButtonPush(name, arg) {
-    paletteBlocks.makeBlock(name, arg);
+    blk = paletteBlocks.makeBlock(name, arg);
+    console.log('created block ' + blk);
+    return blk;
 }
 
 // All things related to palettes
@@ -44,7 +46,7 @@ function Palettes (canvas, stage, refreshCanvas) {
     this.stage.addChild(this.container);
 
     this.makeMenus = function() {
-	var x = canvas.width / 2 - 100;  // centered
+	var x = 330; // hardwired to palette button position
 	var y = 0;  // top aligned
 	for (var name in this.dict) {
 	    this.dict[name].makeMenu();
@@ -55,14 +57,14 @@ function Palettes (canvas, stage, refreshCanvas) {
 
     this.showMenus = function() {
 	for (var name in this.dict) {
-	    this.dict[name].showMenu();
+	    this.dict[name].showMenu(true);
 	}
 	this.refreshCanvas();
     }
 
     this.hideMenus = function() {
 	for (var name in this.dict) {
-	    this.dict[name].hideMenu();
+	    this.dict[name].hideMenu(true);
 	}
 	this.refreshCanvas();
     }
@@ -160,14 +162,15 @@ function Palettes (canvas, stage, refreshCanvas) {
 	    text = '</div>';
 	    html = html + text;
 	}
-	this.paletteElem.innerHTML = html;
+	// COMMENT OUT DOM MENUS
+	// this.paletteElem.innerHTML = html;
 
 	// Open the turtle palette to start
-	this.toggle(this.current);
+	// this.toggle(this.current);
 	// and hide all the others
 	for (var name in this.dict) {
 	    if (name != this.current) {
-		toggler(this.genPaletteId(name));
+		// toggler(this.genPaletteId(name));
 	    }
 	}
 	this.makeMenus();  // the easel menus
@@ -207,6 +210,7 @@ function Palette (palettes, name, color, bgcolor) {
     this.protoList = [];
     this.protoContainers = {};
     this.y = 0;
+    this.size = 0;
 
     this.makeMenu = function() {
 	// Create the menu button
@@ -244,28 +248,28 @@ function Palette (palettes, name, color, bgcolor) {
 		var arg = this.protoList[blk].defaults[0];
 		break;
 	    }
-	    // FIXME: do something with mode name
 	    if (!this.protoContainers[modname]) {
 		// create graphics for the palette entry for this block
 		this.protoContainers[modname] = new createjs.Container();
-		this.protoContainers[modname].x = this.palettes.canvas.width / 2 + 100;  // FIXME
-		this.protoContainers[modname].y = this.y;
+		this.protoContainers[modname].x = 0;
+		this.protoContainers[modname].y = this.y + 42;
 		this.palettes.stage.addChild(this.protoContainers[modname]);
 
 		// We use a filler for the menu background
 		var height = 42 * Math.ceil(last(this.protoList[blk].docks)[1] / 42);
-		// FIXME: autodetect somehow?
 		if (['action', 'start'].indexOf(blkname) != -1) {
 		    height += 84;
 		} else if (['media'].indexOf(blkname) != -1) {
 		    height += 42;
 		}
+		this.size += height * paletteScale;
+
 		for (var h = 0; h < height; h += 42) {
 		    var image = new Image();
 		    image.src = 'images/palettes/palette-filler.svg';
 		    var bitmap = new createjs.Bitmap(image);
 		    this.protoContainers[modname].addChild(bitmap);
-		    bitmap.y = h;
+		    bitmap.y = h * paletteScale;
 		}
 
 		var image = new Image();
@@ -339,19 +343,23 @@ function Palette (palettes, name, color, bgcolor) {
     }
 
     this.moveMenu = function(x, y) {
+	dx = x - this.menuBitmap.x;
+	dy = y - this.menuBitmap.y;
 	this.menuBitmap.x = x;
 	this.menuBitmap.y = y;
+	this.moveMenuItemsRelative(dx, dy);
     }
 
     this.moveMenuRelative = function(dx, dy) {
 	this.menuBitmap.x += dx;
 	this.menuBitmap.y += dy;
+	this.moveMenuItemsRelative(dx, dy);
     }
 
     this.hideMenu = function() {
 	if (this.menuBitmap != null) {
 	    this.menuBitmap.visible = false;
-	    this.hideMenuItems();
+	    this.hideMenuItems(true);
 	}
     }
 
@@ -359,18 +367,41 @@ function Palette (palettes, name, color, bgcolor) {
 	this.menuBitmap.visible = true;
     }
 
-    this.hideMenuItems = function() {
+    this.hideMenuItems = function(init) {
 	for (var i in this.protoContainers) {
 	    this.protoContainers[i].visible = false;
 	}
 	this.visible = false;
+	// Move the menus below up
+	var below = false;
+	for (var p in this.palettes.dict) {
+	    if (!init && below) {
+		console.log('moving ' + p + ' up ' + this.size);
+		this.palettes.dict[p].moveMenuRelative(0, -this.size);
+	    }
+	    if (p == this.name) {
+		below = true;
+	    }
+	}
     }
 
-    this.showMenuItems = function() {
+    this.showMenuItems = function(init) {
 	for (var i in this.protoContainers) {
 	    this.protoContainers[i].visible = true;
 	}
 	this.visible = true;
+	// Move the menus below down
+	var below = false;
+	for (var p in this.palettes.dict) {
+	    console.log(init + ' ' + below);
+	    if (!init && below) {
+		console.log('moving ' + p + ' down ' + this.size);
+		this.palettes.dict[p].moveMenuRelative(0, this.size);
+	    }
+	    if (p == this.name) {
+		below = true;
+	    }
+	}
     }
 
     this.moveMenuItems = function(x, y) {
@@ -432,6 +463,12 @@ function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
     // FIXME: add drag and add move (move them all)
     self.protoContainers[blkname].on('click', function(event) {
 	console.log('CLICK');
+	// makeBlock(blk, blkname, palette);
+	// palette.hideMenuItems();
+	// palette.palettes.refreshCanvas();
+    });
+
+    function makeBlock(blk, blkname, palette) {
 	var arg = '__NOARG__';
 	switch (blkname) {
 	case 'do':
@@ -449,8 +486,17 @@ function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
 	    var arg = palette.protoList[blk].defaults[0];
 	    break;
 	}
-	paletteBlockButtonPush(palette.protoList[blk].name, arg);
-	palette.hideMenuItems();
+	return paletteBlockButtonPush(palette.protoList[blk].name, arg);
+    }
+
+    self.protoContainers[blkname].on('mousedown', function(event) {
+	// Create the block.
+	newBlock = makeBlock(blk, blkname, palette);
+	// Move the drag group under the cursor.
+	paletteBlocks.findDragGroup(newBlock);
+	for (i in paletteBlocks.dragGroup) {
+	    paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], event.stageX, event.stageY);
+	}
 	palette.palettes.refreshCanvas();
     });
 }
@@ -468,13 +514,18 @@ function loadPaletteMenuHandler(palette) {
     });
     
     palette.menuBitmap.on('click', function(event) {
-	console.log('click on palette');
+	console.log('click on palette ' + palette.visible);
 	for (p in palette.palettes.dict) {
-	    palette.palettes.dict[p].hideMenuItems();
+	    if (palette.name != p) {
+		if (palette.palettes.dict[p].visible) {
+		    palette.palettes.dict[p].hideMenuItems(false);
+		}
+	    }
 	}
 	if (palette.visible) {
+	    palette.hideMenuItems(false);
 	} else {
-	    palette.showMenuItems();
+	    palette.showMenuItems(false);
 	}
 	palette.palettes.refreshCanvas();
     });

@@ -1176,6 +1176,9 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	this.updateBlockLabels();
 	this.adjustDocks(blk, true);
 	this.refreshCanvas();
+
+	console.log('returning ' + blk + ' from makeBlock');
+	return blk;
     }
 
     this.findDragGroup = function(blk) {

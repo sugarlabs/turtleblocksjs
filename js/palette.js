@@ -532,7 +532,6 @@ function loadPaletteMenuHandler(palette) {
 
     palette.menuBitmap.on('mousedown', function(event) {
 	// FIXME: move them all
-	return;
 	var offset = {
 	    x: palette.menuBitmap.x - event.stageX,
 	    y: palette.menuBitmap.y - event.stageY
@@ -545,6 +544,12 @@ function loadPaletteMenuHandler(palette) {
 	    palette.menuBitmap.x = event.stageX + offset.x;
 	    palette.menuBitmap.y = event.stageY + offset.y;
 	    palette.palettes.refreshCanvas();
+	    var dx = palette.menuBitmap.x - oldX;
+	    var dy = palette.menuBitmap.y - oldY;
+	    palette.moveMenuItemsRelative(dx, dy);
 	});
+    });
+
+    palette.menuBitmap.on('mouseout',function(event) {
     });
 }

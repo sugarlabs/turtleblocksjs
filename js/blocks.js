@@ -1683,7 +1683,7 @@ function loadEventHandlers(blocks, myBlock) {
 		    blk = blocks.dragGroup[b];
 		    console.log('putting ' + blocks.blockList[blk].name + ' in the trash');
 		    blocks.blockList[blk].trash = true;
-		    blocks.hideBlock(blk);
+		    blocks.blockList[blk].hide();
 		    blocks.refreshCanvas();
 		}
 	    } else {

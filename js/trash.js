@@ -16,8 +16,6 @@ function Trashcan (canvas, stage, refreshCanvas, restore) {
     this.refreshCanvas = refreshCanvas;
     this.restore = restore;
 
-    this.trashBitmap = null;
-
     this.container = new createjs.Container();
     this.stage.addChild(this.container);
 

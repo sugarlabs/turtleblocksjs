@@ -24,50 +24,47 @@ function paletteBlockButtonPush(name, arg) {
 }
 
 // All things related to palettes
-function Palettes (stage, refreshCanvas) {
+function Palettes (canvas, stage, refreshCanvas) {
+    this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
 
     // The collection of palettes.
     this.dict = {};
-    this.protoDict = {};
 
     this.visible = true;
-    this.y = 42;
 
+    // TODO: replace with easel palettes
     // and a place in the DOM to put palettes.
     this.paletteElem = docById('header');
+
     this.current = 'turtle';
 
-    // this.container = new createjs.Container();
-    // this.stage.addChild(this.container);
+    this.container = new createjs.Container();
+    this.stage.addChild(this.container);
 
-    // var image = new Image();
-    // image.src = 'images/palette-top.svg';
-    // this.bitmapTop = new createjs.Bitmap(image);
-    // this.container.addChild(this.bitmapTop);
-    // var image = new Image();
-    // image.src = 'images/palette-bottom.svg';
-    // this.bitmapBottom = new createjs.Bitmap(image);
-    // this.container.addChild(this.bitmapBottom);
-    // this.bitmapBottom.y = 42;
-    // this.bitmapFillers = [];
+    this.makeMenus = function() {
+	var x = canvas.width / 2 - 100;  // centered
+	var y = 0;  // top aligned
+	for (var name in this.dict) {
+	    this.dict[name].makeMenu();
+	    this.dict[name].moveMenu(x, y);
+	    y += 42;
+	}
+    }
 
-    // var hitArea = new createjs.Shape();
-    // hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -42, 200, 84);
-    // hitArea.x = 100;
-    // hitArea.y = 42;
-    // this.container.hitArea = hitArea;
+    this.showMenus = function() {
+	for (var name in this.dict) {
+	    this.dict[name].showMenu();
+	}
+	this.refreshCanvas();
+    }
 
-    // loadPalettesHandlers(this);
-
-    this.addFiller = function() {
-	var image = new Image();
-	image.src = 'images/palette-filler.svg';
-	this.bitmapFillers.push(new createjs.Bitmap(image));
-	this.container.addChild(last(this.bitmapFillers));
-	last(this.bitmapFillers).y = this.bitmapBottom.y;
-	this.bitmapBottom.y += 42;
+    this.hideMenus = function() {
+	for (var name in this.dict) {
+	    this.dict[name].hideMenu();
+	}
+	this.refreshCanvas();
     }
 
     this.getInfo = function() {
@@ -86,7 +83,7 @@ function Palettes (stage, refreshCanvas) {
     }
 
     this.genBlockButtonId = function(name, blk) {
-	return '_' + this.dict[name].blockList[blk].name + '_block_button';
+	return '_' + this.dict[name].protoList[blk].name + '_block_button';
     }
 
     this.toggle = function(name) {
@@ -124,10 +121,10 @@ function Palettes (stage, refreshCanvas) {
 	    var myPalette = this.dict[name];
 	    var text = '<div id="' + this.genPaletteId(name) + '">';
 	    html += text;
-	    for (var blk in myPalette.blockList) {
-		protoBlockCount += myPalette.blockList[blk].size;
+	    for (var blk in myPalette.protoList) {
+		protoBlockCount += myPalette.protoList[blk].size;
 		// Special case for do block
-		var blkname = myPalette.blockList[blk].name;
+		var blkname = myPalette.protoList[blk].name;
 		if (blkname == '') {
 		    console.log('FIXME: extra, empty blk in palette blocklist');
 		    continue;
@@ -136,19 +133,19 @@ function Palettes (stage, refreshCanvas) {
 		switch (blkname) {
 		case 'do':
 		    // Use the name of the action in the label
-		    blkname = 'do ' + myPalette.blockList[blk].defaults[0];
+		    blkname = 'do ' + myPalette.protoList[blk].defaults[0];
 		    // Call makeBlock with the name of the action
-		    var arg = myPalette.blockList[blk].defaults[0];
+		    var arg = myPalette.protoList[blk].defaults[0];
 		    break;
 		case 'storein':
 		    // Use the name of the box in the label
-		    blkname = 'store in ' + myPalette.blockList[blk].defaults[0];
-		    var arg = myPalette.blockList[blk].defaults[0];
+		    blkname = 'store in ' + myPalette.protoList[blk].defaults[0];
+		    var arg = myPalette.protoList[blk].defaults[0];
 		    break;
 		case 'box':
 		    // Use the name of the box in the label
-		    blkname = myPalette.blockList[blk].defaults[0];
-		    var arg = myPalette.blockList[blk].defaults[0];
+		    blkname = myPalette.protoList[blk].defaults[0];
+		    var arg = myPalette.protoList[blk].defaults[0];
 		    break;
 		}
 		text = '<button id="' + 
@@ -156,7 +153,7 @@ function Palettes (stage, refreshCanvas) {
 		    ' class="' + name + '"' + 
 		    // ' onclick="return blocks.makeBlock(\'' +
 		    ' onclick="return paletteBlockButtonPush(\'' +
-		    myPalette.blockList[blk].name + '\', \'' + arg + '\');">' +
+		    myPalette.protoList[blk].name + '\', \'' + arg + '\');">' +
 		    blkname + '</button>';
 		html += text;
 	    }
@@ -173,77 +170,17 @@ function Palettes (stage, refreshCanvas) {
 		toggler(this.genPaletteId(name));
 	    }
 	}
-
-	return;
-	// and the Easel version of the palette
-	console.log(protoBlockCount);
-	for (i = 0; i < protoBlockCount - this.bitmapFillers.length; i++) {
-	    this.addFiller();
-	}
-	var height = 84 + 42 * this.bitmapFillers.length;
-	var hitArea = new createjs.Shape();
-	hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -height / 2, 200, height);
-	hitArea.x = 100;
-	hitArea.y = height / 2;
-	this.container.hitArea = hitArea;
-
-	for (var name in this.dict) {
-	    var myPalette = this.dict[name];
-	    for (var blk in myPalette.blockList) {
-		var blkname = myPalette.blockList[blk].name;
-		if (!this.protoDict[blkname]) {
-		    // create a graphic for the palette entry for this block
-		    var image = new Image();
-		    image.src = 'images/' + blkname + '.svg';
-		    this.protoDict[blkname] = [];
-		    this.protoDict[blkname].push(new createjs.Bitmap(image));
-		    this.container.addChild(this.protoDict[blkname][0]);
-		    this.protoDict[blkname][0].scaleX = paletteScale;
-		    this.protoDict[blkname][0].scaleY = paletteScale;
-		    this.protoDict[blkname][0].scale = paletteScale;
-		    this.protoDict[blkname][0].x = 20;
-		    this.protoDict[blkname][0].y = this.y;
-		    var hitArea = new createjs.Shape();
-		    hitArea.graphics.beginFill('#FFF').drawEllipse(-50, -21, 100, 42);
-		    hitArea.x = 50;
-		    hitArea.y = 21;
-		    this.protoDict[blkname][0].hitArea = hitArea;
-		    if (myPalette.blockList[blk].expandable) {
-			this.y += Math.floor(myPalette.blockList[blk].yoff * paletteScale);
-			var image = new Image();
-			if (myPalette.blockList[blk].style == 'arg') {
-			    image.src = 'images/number-arg-bottom.svg';
-			} else if (myPalette.blockList[blk].style == 'special'){
-			    image.src = 'images/' + blkname + '-bottom.svg';
-			} else {
-			    image.src = 'images/' + name + '-bottom.svg';
-			}
-			this.protoDict[blkname].push(new createjs.Bitmap(image));
-			this.container.addChild(this.protoDict[blkname][1]);
-			this.protoDict[blkname][1].scaleX = paletteScale;
-			this.protoDict[blkname][1].scaleY = paletteScale;
-			this.protoDict[blkname][1].scale = paletteScale;
-			this.protoDict[blkname][1].x = 20;
-			this.protoDict[blkname][1].y = this.y;
-			var hitArea = new createjs.Shape();
-			hitArea.graphics.beginFill('#FFF').drawEllipse(-50, -21, 100, 42);
-			hitArea.x = 50;
-			hitArea.y = 21;
-			this.protoDict[blkname][1].hitArea = hitArea;
-		    }
-		    this.y += Math.floor(42 * paletteScale);
-		    loadBlockHandler(this, blk, blkname, myPalette);
-		}
-	    }
-	}
+	this.makeMenus();  // the easel menus
 	this.refreshCanvas();
     }
 
     this.hide = function() {
+	this.hideMenus();
 	this.visible = false;
     }
 
     this.show = function() {
+	this.showMenus();
 	this.visible = true;
     }
 
@@ -252,7 +189,7 @@ function Palettes (stage, refreshCanvas) {
     }
 
     this.add = function(name, color, bgcolor) {
-	this.dict[name] = new Palette(name, color, bgcolor);
+	this.dict[name] = new Palette(this, name, color, bgcolor);
 	return this;
     }
 
@@ -260,22 +197,147 @@ function Palettes (stage, refreshCanvas) {
 }
 
 // Define objects for individual palettes.
-function Palette (name, color, bgcolor) {
+function Palette (palettes, name, color, bgcolor) {
+    this.palettes = palettes;
     this.name = name;
     this.color = color;
     this.backgroundColor = bgcolor;
-    this.blockList = [];
+    this.visible = false;
+    this.menuBitmap = null;
+    this.protoList = [];
+    this.protoContainers = {};
+    this.y = 0;
+
+    this.makeMenu = function() {
+	// Create the menu button
+	if (this.menuBitmap == null) {
+	    var image = new Image();
+	    image.src = 'images/palettes/' + this.name + '.svg';
+	    this.menuBitmap = new createjs.Bitmap(image);
+	    this.palettes.container.addChild(this.menuBitmap);
+	    var hitArea = new createjs.Shape();
+	    hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
+	    hitArea.x = 100;
+	    hitArea.y = 21;
+	    this.menuBitmap.hitArea = hitArea;
+	    this.menuBitmap.visible = false;
+	    loadPaletteMenuHandler(this);
+	}
+	// FIXME: how to close palette?
+	for (var blk in this.protoList) {
+	    var blkname = this.protoList[blk].name;
+	    if (!this.protoContainers[blkname]) {
+		// create graphics for the palette entry for this block
+		this.protoContainers[blkname] = new createjs.Container();
+		this.protoContainers[blkname].x = this.palettes.canvas.width / 2 + 100;  // FIXME
+		this.protoContainers[blkname].y = this.y;
+		this.palettes.stage.addChild(this.protoContainers[blkname]);
+		var image = new Image();
+		image.src = 'images/palettes/palette-filler.svg';
+		bitmap = new createjs.Bitmap(image);
+		this.protoContainers[blkname].addChild(bitmap);
+
+		var image = new Image();
+		image.src = 'images/' + blkname + '.svg';
+		var bitmap = new createjs.Bitmap(image);
+		this.protoContainers[blkname].addChild(bitmap);
+		bitmap.x = 20;
+		bitmap.y = 0;
+		bitmap.scaleX = paletteScale;
+		bitmap.scaleY = paletteScale;
+		bitmap.scale = paletteScale;
+		var hitArea = new createjs.Shape();
+		hitArea.graphics.beginFill('#FFF').drawEllipse(-50, -21, 100, 42);
+		hitArea.x = 50;
+		hitArea.y = 21;
+		this.protoContainers[blkname].hitArea = hitArea;
+
+		if (this.protoList[blk].expandable) {
+		    var yoff = Math.floor(this.protoList[blk].yoff * paletteScale); 
+		    this.y += yoff;
+		    var image = new Image();
+		    if (this.protoList[blk].style == 'arg') {
+			image.src = 'images/number-arg-bottom.svg';
+		    } else if (this.protoList[blk].style == 'special'){
+			image.src = 'images/' + blkname + '-bottom.svg';
+		    } else {
+			image.src = 'images/' + name + '-bottom.svg';
+		    }
+		    bitmap = new createjs.Bitmap(image);
+		    this.protoContainers[blkname].addChild(bitmap);
+		    bitmap.scaleX = paletteScale;
+		    bitmap.scaleY = paletteScale;
+		    bitmap.scale = paletteScale;
+		    bitmap.x = 20;
+		    bitmap.y = yoff;
+		}
+		this.protoContainers[blkname].visible = false;
+		this.y += Math.floor(42 * paletteScale);
+		loadPaletteMenuItemHandler(this, blk, blkname, this);
+	    }
+	}
+    }
+
+    this.moveMenu = function(x, y) {
+	this.menuBitmap.x = x;
+	this.menuBitmap.y = y;
+    }
+
+    this.moveMenuRelative = function(dx, dy) {
+	this.menuBitmap.x += dx;
+	this.menuBitmap.y += dy;
+    }
+
+    this.hideMenu = function() {
+	if (this.menuBitmap != null) {
+	    this.menuBitmap.visible = false;
+	    this.hideMenuItems();
+	}
+    }
+
+    this.showMenu = function() {
+	this.menuBitmap.visible = true;
+    }
+
+    this.hideMenuItems = function() {
+	for (var i in this.protoContainers) {
+	    this.protoContainers[i].visible = false;
+	}
+	this.visible = false;
+    }
+
+    this.showMenuItems = function() {
+	for (var i in this.protoContainers) {
+	    console.log(i + ': ' + this.protoContainers[i].x + ' ' + this.protoContainers[i].y);
+	    this.protoContainers[i].visible = true;
+	}
+	this.visible = true;
+    }
+
+    this.moveMenuItems = function(x, y) {
+	for (var i in this.protoContainers) {
+	    this.protoContainers[i].x = x;
+	    this.protoContainers[i].y = y;
+	}
+    }
+
+    this.moveMenuItemsRelative = function(dx, dy) {
+	for (var i in this.protoContainers) {
+	    this.protoContainers[i].x += dx;
+	    this.protoContainers[i].y += dy;
+	}
+    }
 
     this.getInfo = function() {
 	var returnString = this.name + ' palette:';
-	for (var thisBlock in this.blockList) {
-	    returnString += ' ' + this.blockList[thisBlock].name;
+	for (var thisBlock in this.protoList) {
+	    returnString += ' ' + this.protoList[thisBlock].name;
 	}
 	return returnString;
     };
 
     this.add = function(protoblock) {
-	this.blockList.push(protoblock);
+	this.protoList.push(protoblock);
 	return this;
     }
 
@@ -283,9 +345,9 @@ function Palette (name, color, bgcolor) {
 
 };
 
-function initPalettes(stage, refreshCanvas) {
+function initPalettes(canvas, stage, refreshCanvas) {
     // Instantiate the palettes object.
-    var palettes = new Palettes(stage, refreshCanvas).
+    var palettes = new Palettes(canvas, stage, refreshCanvas).
 	add('turtle', 'black', '#00b700').
 	add('pen', 'black', '#00c0e7').
 	add('number', 'black', '#ff00ff').
@@ -294,6 +356,7 @@ function initPalettes(stage, refreshCanvas) {
 	add('sensors', 'white', '#ff0066').
 	add('extras', 'white', '#ff0066');
     palettePalettes = palettes;
+    palettes.hide();
     return palettes;
 }
 
@@ -304,63 +367,74 @@ function toggler(obj) {
     }
 }
 
-// Block event handlers
-function loadBlockHandler(self, blk, blkname, myPalette) {
-    for (var i = 0; i < self.protoDict[blkname]; i++) {
-	self.protoDict[blkname][i].on('click', function(event) {
-	    console.log('CLICK');
-	    var arg = '__NOARG__';
-	    switch (blkname) {
-	    case 'do':
-		blkname = 'do ' + myPalette.blockList[blk].defaults[0];
-		var arg = myPalette.blockList[blk].defaults[0];
-		break;
-	    case 'storein':
-		// Use the name of the box in the label
-		blkname = 'store in ' + myPalette.blockList[blk].defaults[0];
-		var arg = myPalette.blockList[blk].defaults[0];
-		break;
-	    case 'box':
-		// Use the name of the box in the label
-		blkname = myPalette.blockList[blk].defaults[0];
-		var arg = myPalette.blockList[blk].defaults[0];
-		break;
-	    }
-	    paletteBlockButtonPush(myPalette.blockList[blk].name, arg);
-	});
-    }
+// Menu Item event handlers
+function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
+    // On a click make a new block; then close the menu.
+    // FIXME: add drag and add move (move them all)
+    self.protoContainers[blkname].on('click', function(event) {
+	console.log('CLICK');
+	var arg = '__NOARG__';
+	switch (blkname) {
+	case 'do':
+	    blkname = 'do ' + palette.protoList[blk].defaults[0];
+	    var arg = palette.protoList[blk].defaults[0];
+	    break;
+	case 'storein':
+	    // Use the name of the box in the label
+	    blkname = 'store in ' + palette.protoList[blk].defaults[0];
+	    var arg = palette.protoList[blk].defaults[0];
+	    break;
+	case 'box':
+	    // Use the name of the box in the label
+	    blkname = palette.protoList[blk].defaults[0];
+	    var arg = palette.protoList[blk].defaults[0];
+	    break;
+	}
+	paletteBlockButtonPush(palette.protoList[blk].name, arg);
+	palette.hideMenuItems();
+	palette.palettes.refreshCanvas();
+    });
 }
 
-// Palette event handlers
-function loadPalettesHandlers(palettes) {
-    palettes.container.on('mouseover', function(event) {
-	// palettes.highlight();
-	palettes.refreshCanvas();
+// Palette Menu event handlers
+function loadPaletteMenuHandler(palette) {
+    palette.menuBitmap.on('mouseover', function(event) {
+	// palette.highlight();
+	// palette.palettes.refreshCanvas();
     });
 
-    palettes.container.on('mouseout', function(event) {
-	// palettes.unhighlight();
-	palettes.refreshCanvas();
+    palette.menuBitmap.on('mouseout', function(event) {
+	// palette.unhighlight();
+	// palette.palettes.refreshCanvas();
     });
     
-    //palettes.container.on('click', function(event) {
-    // console.log('click on palette');
-    // palettes.refreshCanvas();
-    // });
+    palette.menuBitmap.on('click', function(event) {
+	console.log('click on palette');
+	for (p in palette.palettes.dict) {
+	    palette.palettes.dict[p].hideMenuItems();
+	}
+	if (palette.visible) {
+	} else {
+	    palette.showMenuItems();
+	}
+	palette.palettes.refreshCanvas();
+    });
 
-    palettes.container.on('mousedown', function(event) {
+    palette.menuBitmap.on('mousedown', function(event) {
+	// FIXME: move them all
+	return;
 	var offset = {
-	    x: palettes.container.x - event.stageX,
-	    y: palettes.container.y - event.stageY
+	    x: palette.menuBitmap.x - event.stageX,
+	    y: palette.menuBitmap.y - event.stageY
 	};
 
-	palettes.container.on('pressmove', function(event) {
+	palette.menuBitmap.on('pressmove', function(event) {
 	    moved = true;
-	    var oldX = palettes.container.x;
-	    var oldY = palettes.container.y;
-	    palettes.container.x = event.stageX + offset.x;
-	    palettes.container.y = event.stageY + offset.y;
-	    palettes.refreshCanvas();
+	    var oldX = palette.menuBitmap.x;
+	    var oldY = palette.menuBitmap.y;
+	    palette.menuBitmap.x = event.stageX + offset.x;
+	    palette.menuBitmap.y = event.stageY + offset.y;
+	    palette.palettes.refreshCanvas();
 	});
     });
 }

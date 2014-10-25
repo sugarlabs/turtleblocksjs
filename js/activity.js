@@ -291,6 +291,18 @@ define(function (require) {
 	    return xmlHttp.responseText;
 	}
 
+	function httpPost(projectName, data)
+	{
+	    var xmlHttp = null;
+	    
+	    xmlHttp = new XMLHttpRequest();
+	    xmlHttp.open("POST", 'http://turtle.sugarlabs.org/server/', false);
+	    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+	    xmlHttp.setRequestHeader('x-project-id', projectName);
+	    xmlHttp.send(data);
+	    return xmlHttp.responseText;
+	}
+
 	function loadProject(projectName) {
 	    palettes.updatePalettes();
 
@@ -304,6 +316,16 @@ define(function (require) {
 		return;
 	    }
 	    update = true;
+	}
+
+	function saveProject(projectName) {
+	    palettes.updatePalettes();
+
+	    try {
+		httpPost(projectName, prepareExport());
+	    } catch (e) {
+		console.log(e);
+	    }
 	}
 
 	function loadStart() {
@@ -704,6 +726,18 @@ define(function (require) {
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    blocks.blockList[thisBlock].value = canvas.height;
 		    blocks.updateBlockText(thisBlock);
+		    break;
+		case 'mousebutton':
+		    blocks.makeNewBlock('mousebutton');
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'mousex':
+		    blocks.makeNewBlock('mousex');
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    break;
+		case 'mousey':
+		    blocks.makeNewBlock('mousey');
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    break;
 		case 'wait':
 		    blocks.makeNewBlock('wait');
@@ -1153,11 +1187,14 @@ define(function (require) {
 		case 'pensize':
 		    blocks.blockList[blk].value = turtles.turtleList[turtle].stroke;
 		    break;
-		case 'mouse x':
+		case 'mousex':
 		    blocks.blockList[blk].value = stageX;
 		    break;
-		case 'mouse y':
+		case 'mousey':
 		    blocks.blockList[blk].value = stageY;
+		    break;
+		case 'mousebutton':
+		    blocks.blockList[blk].value = turtles.turtleList[turtle].buttonState;
 		    break;
 		case 'time':
 		    var d = new Date();
@@ -1334,6 +1371,9 @@ define(function (require) {
 	}
 
 	function doSave() {
+	    saveProject('tincho');
+	    return;
+
 	    var fileChooser = docById("mySaveFile");
 	    fileChooser.addEventListener("change", function(event) {
 		// Do something here.

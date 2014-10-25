@@ -223,7 +223,6 @@ function Palette (palettes, name, color, bgcolor) {
 	    this.menuBitmap.visible = false;
 	    loadPaletteMenuHandler(this);
 	}
-	// FIXME: how to close palette?
 	for (var blk in this.protoList) {
 	    var blkname = this.protoList[blk].name;
 	    if (!this.protoContainers[blkname]) {
@@ -232,10 +231,20 @@ function Palette (palettes, name, color, bgcolor) {
 		this.protoContainers[blkname].x = this.palettes.canvas.width / 2 + 100;  // FIXME
 		this.protoContainers[blkname].y = this.y;
 		this.palettes.stage.addChild(this.protoContainers[blkname]);
-		var image = new Image();
-		image.src = 'images/palettes/palette-filler.svg';
-		bitmap = new createjs.Bitmap(image);
-		this.protoContainers[blkname].addChild(bitmap);
+
+		// We use a filler for the menu background
+		var height = 42 * Math.ceil(last(this.protoList[blk].docks)[1] / 42);
+		// FIXME
+		if (['action', 'start'].indexOf(blkname) != -1) {
+		    height += 42;
+		}
+		for (var h = 0; h < height; h += 42) {
+		    var image = new Image();
+		    image.src = 'images/palettes/palette-filler.svg';
+		    var bitmap = new createjs.Bitmap(image);
+		    this.protoContainers[blkname].addChild(bitmap);
+		    bitmap.y = h;
+		}
 
 		var image = new Image();
 		image.src = 'images/' + blkname + '.svg';
@@ -254,7 +263,7 @@ function Palette (palettes, name, color, bgcolor) {
 
 		if (this.protoList[blk].expandable) {
 		    var yoff = Math.floor(this.protoList[blk].yoff * paletteScale); 
-		    this.y += yoff;
+
 		    var image = new Image();
 		    if (this.protoList[blk].style == 'arg') {
 			image.src = 'images/number-arg-bottom.svg';
@@ -263,7 +272,8 @@ function Palette (palettes, name, color, bgcolor) {
 		    } else {
 			image.src = 'images/' + name + '-bottom.svg';
 		    }
-		    bitmap = new createjs.Bitmap(image);
+
+		    var bitmap = new createjs.Bitmap(image);
 		    this.protoContainers[blkname].addChild(bitmap);
 		    bitmap.scaleX = paletteScale;
 		    bitmap.scaleY = paletteScale;
@@ -272,7 +282,7 @@ function Palette (palettes, name, color, bgcolor) {
 		    bitmap.y = yoff;
 		}
 		this.protoContainers[blkname].visible = false;
-		this.y += Math.floor(42 * paletteScale);
+		this.y += Math.floor(height * paletteScale);
 		loadPaletteMenuItemHandler(this, blk, blkname, this);
 	    }
 	}
@@ -308,7 +318,6 @@ function Palette (palettes, name, color, bgcolor) {
 
     this.showMenuItems = function() {
 	for (var i in this.protoContainers) {
-	    console.log(i + ': ' + this.protoContainers[i].x + ' ' + this.protoContainers[i].y);
 	    this.protoContainers[i].visible = true;
 	}
 	this.visible = true;

@@ -157,7 +157,7 @@ define(function (require) {
 	    createjs.Ticker.addEventListener('tick', tick);
 	    trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash);
 	    turtles = new Turtles(canvas, stage, refreshCanvas);
-	    palettes = initPalettes(stage, refreshCanvas);
+	    palettes = initPalettes(canvas, stage, refreshCanvas);
 	    blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
 	    palettes.setBlocks(blocks);
 	    turtles.setBlocks(blocks);

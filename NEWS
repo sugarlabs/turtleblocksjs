@@ -61,7 +61,7 @@
   * stop turtle
 
 TODO:
-  * fix block layering bug
+  * fix block/turtle/canvas layering
   * use container caching
   * copy/paste
   * user defined blocks

@@ -225,31 +225,57 @@ function Palette (palettes, name, color, bgcolor) {
 	}
 	for (var blk in this.protoList) {
 	    var blkname = this.protoList[blk].name;
-	    if (!this.protoContainers[blkname]) {
+	    var modname = blkname;
+	    switch (blkname) {
+	    case 'do':
+		// Use the name of the action in the label
+		modname = 'do ' + this.protoList[blk].defaults[0];
+		// Call makeBlock with the name of the action
+		var arg = this.protoList[blk].defaults[0];
+		break;
+	    case 'storein':
+		// Use the name of the box in the label
+		modname = 'store in ' + this.protoList[blk].defaults[0];
+		var arg = this.protoList[blk].defaults[0];
+		break;
+	    case 'box':
+		// Use the name of the box in the label
+		modname = this.protoList[blk].defaults[0];
+		var arg = this.protoList[blk].defaults[0];
+		break;
+	    }
+	    // FIXME: do something with mode name
+	    if (!this.protoContainers[modname]) {
 		// create graphics for the palette entry for this block
-		this.protoContainers[blkname] = new createjs.Container();
-		this.protoContainers[blkname].x = this.palettes.canvas.width / 2 + 100;  // FIXME
-		this.protoContainers[blkname].y = this.y;
-		this.palettes.stage.addChild(this.protoContainers[blkname]);
+		this.protoContainers[modname] = new createjs.Container();
+		this.protoContainers[modname].x = this.palettes.canvas.width / 2 + 100;  // FIXME
+		this.protoContainers[modname].y = this.y;
+		this.palettes.stage.addChild(this.protoContainers[modname]);
 
 		// We use a filler for the menu background
 		var height = 42 * Math.ceil(last(this.protoList[blk].docks)[1] / 42);
-		// FIXME
+		// FIXME: autodetect somehow?
 		if (['action', 'start'].indexOf(blkname) != -1) {
+		    height += 84;
+		} else if (['media'].indexOf(blkname) != -1) {
 		    height += 42;
 		}
 		for (var h = 0; h < height; h += 42) {
 		    var image = new Image();
 		    image.src = 'images/palettes/palette-filler.svg';
 		    var bitmap = new createjs.Bitmap(image);
-		    this.protoContainers[blkname].addChild(bitmap);
+		    this.protoContainers[modname].addChild(bitmap);
 		    bitmap.y = h;
 		}
 
 		var image = new Image();
-		image.src = 'images/' + blkname + '.svg';
+		if (blkname != modname || blkname == 'text' || blkname == 'number') {
+		    image.src = 'images/' + blkname + '-palette.svg';
+		} else {
+		    image.src = 'images/' + blkname + '.svg';
+		}
 		var bitmap = new createjs.Bitmap(image);
-		this.protoContainers[blkname].addChild(bitmap);
+		this.protoContainers[modname].addChild(bitmap);
 		bitmap.x = 20;
 		bitmap.y = 0;
 		bitmap.scaleX = paletteScale;
@@ -259,31 +285,55 @@ function Palette (palettes, name, color, bgcolor) {
 		hitArea.graphics.beginFill('#FFF').drawEllipse(-50, -21, 100, 42);
 		hitArea.x = 50;
 		hitArea.y = 21;
-		this.protoContainers[blkname].hitArea = hitArea;
+		this.protoContainers[modname].hitArea = hitArea;
+
+		if (blkname != modname) {
+		    var text = new createjs.Text(this.protoList[blk].defaults[0], '12px Courier', '#00000');
+		    this.protoContainers[modname].addChild(text);
+		    text.textAlign = 'center';
+		    text.textBaseline = 'alphabetic';
+		    text.x = 60;
+		    text.y = 20;
+		}
 
 		if (this.protoList[blk].expandable) {
 		    var yoff = Math.floor(this.protoList[blk].yoff * paletteScale); 
 
 		    var image = new Image();
-		    if (this.protoList[blk].style == 'arg') {
-			image.src = 'images/number-arg-bottom.svg';
-		    } else if (this.protoList[blk].style == 'special'){
-			image.src = 'images/' + blkname + '-bottom.svg';
+		    if (blkname == modname) {
+			if (this.protoList[blk].style == 'arg') {
+			    image.src = 'images/number-arg-bottom.svg';
+			} else if (this.protoList[blk].style == 'special'){
+			    image.src = 'images/' + blkname + '-bottom.svg';
+			} else {
+			    image.src = 'images/' + name + '-bottom.svg';
+			}
 		    } else {
-			image.src = 'images/' + name + '-bottom.svg';
+			if (this.protoList[blk].style == 'special'){
+			    image.src = 'images/' + blkname + '-bottom-palette.svg';
+			} else {
+			    image.src = 'images/' + name + '-bottom-palette.svg';
+			}
 		    }
 
 		    var bitmap = new createjs.Bitmap(image);
-		    this.protoContainers[blkname].addChild(bitmap);
+		    this.protoContainers[modname].addChild(bitmap);
 		    bitmap.scaleX = paletteScale;
 		    bitmap.scaleY = paletteScale;
 		    bitmap.scale = paletteScale;
 		    bitmap.x = 20;
 		    bitmap.y = yoff;
+
+		    if (blkname != modname) {
+			this.protoContainers[modname].addChild(text);
+			if (blkname == 'storein') {
+			    text.y = yoff + 15;
+			}
+		    }
 		}
-		this.protoContainers[blkname].visible = false;
+		this.protoContainers[modname].visible = false;
 		this.y += Math.floor(height * paletteScale);
-		loadPaletteMenuItemHandler(this, blk, blkname, this);
+		loadPaletteMenuItemHandler(this, blk, modname, this);
 	    }
 	}
     }

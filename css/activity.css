@@ -14,8 +14,16 @@ body {
   background-image: url(../icons/slow-button.svg);
 }
 
-#main-toolbar #block-button {
-  background-image: url(../icons/block-button.svg);
+#main-toolbar #stop-turtle-button {
+  background-image: url(../icons/stop-turtle-button.svg);
+}
+
+#main-toolbar #palette-button {
+  background-image: url(../icons/palette-button.svg);
+}
+
+#main-toolbar #hide-blocks-button {
+  background-image: url(../icons/hide-blocks-button.svg);
 }
 
 #main-toolbar #clear-button {

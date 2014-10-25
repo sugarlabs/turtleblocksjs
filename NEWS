@@ -58,16 +58,15 @@
   * restore from trash
   * add wait block
   * save/restore session
+  * stop turtle
 
 TODO:
   * fix block layering bug
   * use container caching
   * copy/paste
   * user defined blocks
-  * better compartmentalization of code
+  * better compartmentalization of block code
   * sensors
   * decide on a palette strategy
   * implement more sophisticated blocks
   * keyboard short cuts
-
-

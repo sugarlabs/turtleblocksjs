@@ -59,6 +59,7 @@
   * add wait block
   * save/restore session
   * stop turtle
+  * first pass on a palette strategy
 
 TODO:
   * fix block/turtle/canvas layering
@@ -67,6 +68,5 @@ TODO:
   * user defined blocks
   * better compartmentalization of block code
   * sensors
-  * decide on a palette strategy
   * implement more sophisticated blocks
   * keyboard short cuts

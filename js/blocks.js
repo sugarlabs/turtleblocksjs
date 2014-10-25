@@ -2040,6 +2040,14 @@ function initProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['mousey'] = mouseyBlock;
     mouseyBlock.parameterBlock();
     
+    var mousebuttonBlock = new ProtoBlock('mousebutton');
+    mousebuttonBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
+    mousebuttonBlock.style = 'arg';
+    mousebuttonBlock.size = 1;
+    mousebuttonBlock.args = 0;
+    mousebuttonBlock.docks = [[0, 6, 'booleanout']];
+
     // Extras palette
     var pubBlock = new ProtoBlock('publish');
     pubBlock.palette = palettes.dict['extras'];

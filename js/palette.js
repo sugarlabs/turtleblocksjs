@@ -490,7 +490,7 @@ function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
 	// Move the drag group under the cursor.
 	paletteBlocks.findDragGroup(newBlock);
 	for (i in paletteBlocks.dragGroup) {
-	    paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], event.stageX, event.stageY);
+	    paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], event.stageX - 30, event.stageY - 20);
 	}
 	palette.palettes.refreshCanvas();
     });

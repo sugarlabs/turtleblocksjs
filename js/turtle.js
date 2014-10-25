@@ -22,6 +22,7 @@ var turtleBasePath = 'images/';
 function Turtle (name, turtles) {
     this.name = name;
     this.turtles = turtles;
+    this.buttonState = false;
 
     // Things used for drawing the turtle.
     this.container = null;
@@ -369,7 +370,7 @@ function Turtles(canvas, stage, refreshCanvas) {
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
-    
+
     this.setBlocks = function(blocks) {
 	this.blocks = blocks;
     }
@@ -388,6 +389,14 @@ function Turtles(canvas, stage, refreshCanvas) {
 	// Each turtle needs its own canvas.
         myTurtle.drawingCanvas = new createjs.Shape();
         this.stage.addChild(myTurtle.drawingCanvas);
+	myTurtle.drawingCanvas.on('mousedown', function(event) {
+	    console.log('mouse down');
+	    myTurtle.buttonState = true;
+	});
+	myTurtle.drawingCanvas.on('mouseup', function(event) {
+	    console.log('mouse up');
+	    myTurtle.buttonState = false;
+	});
 
 	var turtleImage = new Image();
 	i %= 10;

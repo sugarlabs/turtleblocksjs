@@ -284,10 +284,9 @@ define(function (require) {
 	    var xmlHttp = null;
 	    
 	    xmlHttp = new XMLHttpRequest();
-	    // xmlHttp.open("GET", 'http://172.22.17.225', false);
-	    // xmlHttp.setRequestHeader('x-api-key', 'walter');
-	    // xmlHttp.setRequestHeader('x-project-id', projectName);
-	    xmlHttp.open( "GET", 'http://people.sugarlabs.org/walter/TurtleBlocksJS.activity/samples/' + projectName, false );
+	    xmlHttp.open("GET", 'http://turtle.sugarlabs.org/server/', false);
+	    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+	    xmlHttp.setRequestHeader('x-project-id', projectName);
 	    xmlHttp.send();
 	    return xmlHttp.responseText;
 	}

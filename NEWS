@@ -60,6 +60,7 @@
   * save/restore session
   * stop turtle
   * first pass on a palette strategy
+  * save file to turtle.sugarlabs.org (when running from server) w/tch
 
 TODO:
   * fix block/turtle/canvas layering

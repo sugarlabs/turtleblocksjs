@@ -294,7 +294,7 @@ define(function (require) {
 	function httpPost(projectName, data)
 	{
 	    var xmlHttp = null;
-	    
+	    console.log('sending ' + data);
 	    xmlHttp = new XMLHttpRequest();
 	    xmlHttp.open("POST", 'http://turtle.sugarlabs.org/server/', false);
 	    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
@@ -308,6 +308,7 @@ define(function (require) {
 
 	    try {
 		var rawData = httpGet(projectName);
+		console.log('receiving ' + rawData);
 		var cleanData = rawData.replace('\n', ' ');
 		var obj = JSON.parse(cleanData);
 		loadBlocks(obj);
@@ -416,6 +417,13 @@ define(function (require) {
 		    break;
                 case 'repeat':
 		    blocks.makeNewBlock('repeat');
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    pushConnection(blkData[4][3], blockOffset, thisBlock);
+		    break;
+                case 'if':
+		    blocks.makeNewBlock('if');
 		    pushConnection(blkData[4][0], blockOffset, thisBlock);
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
@@ -1371,16 +1379,24 @@ define(function (require) {
 	}
 
 	function doSave() {
-	    saveProject('tincho');
-	    return;
+	    // Save file to turtle.sugarlabs.org
+            var titleElem = docById("title");
+	    if (titleElem.value.length == 0) {
+		// FIXME: ask for a title
+		console.log('saving to unknown');
+		saveProject('unknown');
+	    } else {
+		console.log('saving to ' + titleElem.value);
+		saveProject(titleElem.value);
+	    }
 
-	    var fileChooser = docById("mySaveFile");
-	    fileChooser.addEventListener("change", function(event) {
+	    // var fileChooser = docById("mySaveFile");
+	    // fileChooser.addEventListener("change", function(event) {
 		// Do something here.
 		// console.log('fileChooser ' + this.value);
-	    }, false);
-            fileChooser.focus();
-	    fileChooser.click();
+	    // }, false);
+            // fileChooser.focus();
+	    // fileChooser.click();
 	}
 
     });

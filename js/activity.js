@@ -185,8 +185,8 @@ define(function (require) {
             cartesianBitmap = new createjs.Bitmap(cartesian);
             container.addChild(cartesianBitmap);
 
-            cartesianBitmap.x = 0;
-            cartesianBitmap.y = 0;
+            cartesianBitmap.x = (canvas.width - 1200) / 2;
+            cartesianBitmap.y = (canvas.height - 900) / 2;
             cartesianBitmap.scaleX = cartesianBitmap.scaleY = cartesianBitmap.scale = 1;
             cartesianBitmap.name = 'bmp_cartesian';
 	    cartesianBitmap.visible = false;
@@ -199,8 +199,8 @@ define(function (require) {
             polarBitmap = new createjs.Bitmap(polar);
             container.addChild(polarBitmap);
 
-            polarBitmap.x = 0;
-            polarBitmap.y = 0;
+            polarBitmap.x = (canvas.width - 1200) / 2;
+            polarBitmap.y = (canvas.height - 900) / 2;
             polarBitmap.scaleX = polarBitmap.scaleY = polarBitmap.scale = 1;
             polarBitmap.name = 'bmp_polar';
 	    polarBitmap.visible = false;

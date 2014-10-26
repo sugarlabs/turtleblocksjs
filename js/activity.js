@@ -1333,8 +1333,8 @@ define(function (require) {
 	    var svg = doSVG();
 	    var tail = '</body></html>';
 	    console.log(head + svg + tail);
-	    // var svgWindow = window.open("", "svgWindow", "width=760, height=570");
-	    // svgWindow.document.write(head + svg + tail);
+	    var svgWindow = window.open("", "_blank", "width=760, height=570");
+	    svgWindow.document.write(head + svg + tail);
 	}
 
 	function doSVG() {

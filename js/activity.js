@@ -300,7 +300,8 @@ define(function (require) {
 	    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
 	    xmlHttp.setRequestHeader('x-project-id', projectName);
 	    xmlHttp.send(data);
-	    return xmlHttp.responseText;
+	    // return xmlHttp.responseText;
+	    return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
 	}
 
 	function loadProject(projectName) {

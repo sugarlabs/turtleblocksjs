@@ -763,6 +763,12 @@ define(function (require) {
 		    pushConnection(blkData[4][1], blockOffset, thisBlock);
 		    pushConnection(blkData[4][2], blockOffset, thisBlock);
 		    break;
+		case 'savesvg':
+		    blocks.makeNewBlock('savesvg');
+		    pushConnection(blkData[4][0], blockOffset, thisBlock);
+		    pushConnection(blkData[4][1], blockOffset, thisBlock);
+		    pushConnection(blkData[4][2], blockOffset, thisBlock);
+		    break;
 		default:
 		    console.log('No factory for ' + name);
                     break;
@@ -931,6 +937,11 @@ define(function (require) {
 		    doPublish(args[0]);
 		}
 		break;
+	    case 'savesvg':
+ 		if (args.length == 1) {
+		    doSaveSVG(args[0]);
+		}
+		break;
 	    case 'wait':
  		if (args.length == 1) {
 		    doWait(args[0]);
@@ -1086,10 +1097,6 @@ define(function (require) {
 		    stage.swapChildren(turtles.turtleList[turtle].Container, lastChild);
 		}
 		update = true;
-		doSVG();  // FIXME: 
-		// var canvas  = document.getElementById("ex1");
-		// var dataUrl = canvas.toDataURL();
-		// window.open(dataUrl, "toDataURL() image", "width=600, height=200");
 	    }
 	}
 
@@ -1321,14 +1328,23 @@ define(function (require) {
 	    }
 	}
 
+	function doSaveSVG(desc) {
+	    var head = '<!DOCTYPE html><html><head><title>' + desc + '</title></head><body>';
+	    var svg = doSVG();
+	    var tail = '</body></html>';
+	    console.log(head + svg + tail);
+	    // var svgWindow = window.open("", "svgWindow", "width=760, height=570");
+	    // svgWindow.document.write(head + svg + tail);
+	}
+
 	function doSVG() {
-	    var svg = '<svg xmlns="http://www.w3.org/2000/svg">';
+	    var svg = '<svg width="760" height="570">';
 	    svg += this.svgOutput;
 	    for (var t in turtles.turtleList) {
 		svg += turtles.turtleList[t].svgOutput;
 	    }
 	    svg += '</svg>';
-	    console.log(svg);
+	    return svg;
 	}
 
 	function setBackgroundColor(turtle) {

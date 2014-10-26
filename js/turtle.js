@@ -64,7 +64,7 @@ function Turtle (name, turtles) {
 	// Draw a line if the pen is down.
 	if (this.penState) {
 	    this.drawingCanvas.graphics.lineTo(nx, ny);
-	    var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + '" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
+	    var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + ' "stroke-linecap="round" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
 	    this.svgOutput += svg;
 	} else {
 	    this.drawingCanvas.graphics.moveTo(nx, ny);

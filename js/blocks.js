@@ -1194,20 +1194,20 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
 	// If this happens, something is really broken.
 	if (this.blockList[blk] == null) {
-	    console.log('null block encountered... try to recover.');
-	    localStorage.setItem('sessiondata', JSON.stringify([[0, 'start', 100, 100, [null, null, null]]]));
+	    console.log('null block encountered... this is bad.');
 	    return;
 	}
 
-	this.dragGroup.push(blk);
-    
 	// As before, does these ever happen?
 	if (this.blockList[blk].connections == null) {
 	    return;
 	}
+
 	if (this.blockList[blk].connections.length == 0) {
 	    return;
 	}
+
+	this.dragGroup.push(blk);
 
 	for (var c = 1; c < this.blockList[blk].connections.length; c++) {
 	    var cblk = this.blockList[blk].connections[c];
@@ -2055,6 +2055,13 @@ function initProtoBlocks(palettes, blocks) {
     pubBlock.oneArgBlock();
     pubBlock.defaults.push('comment');
     pubBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+
+    var svgBlock = new ProtoBlock('savesvg');
+    svgBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['savesvg'] = svgBlock;
+    svgBlock.oneArgBlock();
+    svgBlock.defaults.push('title');
+    svgBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
 
     var waitBlock = new ProtoBlock('wait');
     waitBlock.palette = palettes.dict['extras'];

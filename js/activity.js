@@ -323,9 +323,10 @@ define(function (require) {
 	    palettes.updatePalettes();
 
 	    try {
-		httpPost(projectName, prepareExport());
+		return httpPost(projectName, prepareExport());
 	    } catch (e) {
 		console.log(e);
+		return;
 	    }
 	}
 
@@ -1259,8 +1260,16 @@ define(function (require) {
 
 	// Publish to FB
 	function doPublish(desc) {
-	    console.log('push ' + desc + ' to FB');
-	    console.log(prepareExport());
+	    var url = doSave();
+	    console.log('push ' + url + ' to FB');
+            var descElem = docById("description");
+	    var msg = desc + ' ' + descElem.value + ' ' + url;
+	    console.log('comment: ' + msg);
+	    var post_cb = function() {
+		FB.api('/me/feed', 'post', {message: msg});
+            };
+
+	    FB.login(post_cb, {scope: 'publish_actions'});
 	}
 
 	function doWait(secs) {
@@ -1384,10 +1393,10 @@ define(function (require) {
 	    if (titleElem.value.length == 0) {
 		// FIXME: ask for a title
 		console.log('saving to unknown');
-		saveProject('unknown');
+		return saveProject('unknown');
 	    } else {
 		console.log('saving to ' + titleElem.value);
-		saveProject(titleElem.value);
+		return saveProject(titleElem.value);
 	    }
 
 	    // var fileChooser = docById("mySaveFile");

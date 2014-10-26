@@ -64,7 +64,7 @@ function Turtle (name, turtles) {
 	// Draw a line if the pen is down.
 	if (this.penState) {
 	    this.drawingCanvas.graphics.lineTo(nx, ny);
-	    var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + ' "stroke-linecap="round" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
+	    var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + '" stroke-linecap="round" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
 	    this.svgOutput += svg;
 	} else {
 	    this.drawingCanvas.graphics.moveTo(nx, ny);
@@ -105,6 +105,12 @@ function Turtle (name, turtles) {
 	// Draw an arc if the pen is down.
 	if (this.penState) {
 	    this.drawingCanvas.graphics.arc(cx, cy, radius, sa, ea, anticlockwise);
+	    if (this.fillState) {
+		svg = '<path d="M' + ox + ' ' + oy + ' A ' + radius + ' ' + radius + ', 0, 0, 1, ' + nx + ' ' + ny + '" stroke-linecap="round" fill="' + this.canvasColor + '" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
+	    } else {
+		svg = '<path d="M' + ox + ' ' + oy + ' A ' + radius + ' ' + radius + ', 0, 0, 1, ' + nx + ' ' + ny + '" stroke-linecap="round" fill="none" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
+	    }
+	    this.svgOutput += svg;
 	} else {
 	    this.drawingCanvas.graphics.moveTo(nx, ny);
 	}

@@ -165,6 +165,8 @@ define(function (require) {
 	    blocks.setLogo(runLogoCommands);
 	    initProtoBlocks(palettes, blocks);
 
+	    this.svgOutput = '';
+
 	    // Workaround to chrome security issues
 	    // createjs.LoadQueue(true, null, true);
 
@@ -234,7 +236,7 @@ define(function (require) {
 		if (blocks.blockList[blk].trash) {
 		    blocks.blockList[blk].trash = false;
 		    blocks.moveBlockRelative(blk, dx, dy);
-		    blocks.showBlock(blk);
+		    blocks.blockList[blk].show();
 		}
 	    }
 	    update = true;
@@ -1084,6 +1086,10 @@ define(function (require) {
 		    stage.swapChildren(turtles.turtleList[turtle].Container, lastChild);
 		}
 		update = true;
+		doSVG();  // FIXME: 
+		// var canvas  = document.getElementById("ex1");
+		// var dataUrl = canvas.toDataURL();
+		// window.open(dataUrl, "toDataURL() image", "width=600, height=200");
 	    }
 	}
 
@@ -1315,6 +1321,16 @@ define(function (require) {
 	    }
 	}
 
+	function doSVG() {
+	    var svg = '<svg xmlns="http://www.w3.org/2000/svg">';
+	    svg += this.svgOutput;
+	    for (var t in turtles.turtleList) {
+		svg += turtles.turtleList[t].svgOutput;
+	    }
+	    svg += '</svg>';
+	    console.log(svg);
+	}
+
 	function setBackgroundColor(turtle) {
 	    /// change body background in DOM to current color
 	    var body = docById('body');
@@ -1323,6 +1339,7 @@ define(function (require) {
 	    } else {
 		body.style.background = turtles.turtleList[turtle].canvasColor;
 	    }
+	    this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '"fill="' + body.style.background + '"/>\n';
 	}
 
 	function allClear() {

@@ -40,6 +40,7 @@ function Turtle (name, turtles) {
 
     // Things used for what the turtle draws.
     this.drawingCanvas = null;
+    this.svgOutput = '';
     this.color = defaultColor;
     this.value = defaultValue;
     this.chroma = defaultChroma;
@@ -63,6 +64,8 @@ function Turtle (name, turtles) {
 	// Draw a line if the pen is down.
 	if (this.penState) {
 	    this.drawingCanvas.graphics.lineTo(nx, ny);
+	    var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + '" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
+	    this.svgOutput += svg;
 	} else {
 	    this.drawingCanvas.graphics.moveTo(nx, ny);
 	}
@@ -153,6 +156,7 @@ function Turtle (name, turtles) {
         this.drawingCanvas.graphics.clear();
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
   	this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+	this.svgOutput = '';
         this.turtles.refreshCanvas();
     }
 

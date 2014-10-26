@@ -284,7 +284,7 @@ define(function (require) {
 	    var xmlHttp = null;
 	    
 	    xmlHttp = new XMLHttpRequest();
-	    xmlHttp.open("GET", 'http://turtle.sugarlabs.org/server/', false);
+	    xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/', false);
 	    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
 	    xmlHttp.setRequestHeader('x-project-id', projectName);
 	    xmlHttp.send();
@@ -296,7 +296,7 @@ define(function (require) {
 	    var xmlHttp = null;
 	    console.log('sending ' + data);
 	    xmlHttp = new XMLHttpRequest();
-	    xmlHttp.open("POST", 'http://turtle.sugarlabs.org/server/', false);
+	    xmlHttp.open("POST", 'https://turtle.sugarlabs.org/server/', false);
 	    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
 	    xmlHttp.setRequestHeader('x-project-id', projectName);
 	    xmlHttp.send(data);

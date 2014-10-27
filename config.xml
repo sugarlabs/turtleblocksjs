@@ -15,7 +15,7 @@
         One Education
     </author>
 	
-	<icon src="res/img/icon.png" />
+	<icon src="activity/activity-icon.svg" />
 	
     <preference name="permissions" value="none"/>
 	<preference name="fullscreen" value="true"/>

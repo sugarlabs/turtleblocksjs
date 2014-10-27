@@ -927,6 +927,8 @@ define(function (require) {
 
 	    switch (blocks.blockList[blk].name) {
 	    case 'start':
+		eval("if (args.length == 1) {childFlow = args[0]; childFlowCount = 1;}");
+		break;
  		if (args.length == 1) {
 		    childFlow = args[0];
 		    childFlowCount = 1;
@@ -1329,20 +1331,23 @@ define(function (require) {
 	}
 
 	function doSaveSVG(desc) {
-	    var head = '<!DOCTYPE html><html><head><title>' + desc + '</title></head><body>';
-	    var svg = doSVG();
-	    var tail = '</body></html>';
+	    var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + desc + '</title>\n</head>\n<body>\n';
+	    var svg = doSVG(0.4); // scale for saving thumbnail
+	    var tail = '</body>\n</html>';
 	    console.log(head + svg + tail);
-	    var svgWindow = window.open("", "_blank", "width=760, height=570");
+	    // TODO: figure out if popups are blocked
+	    var svgWindow = window.open(desc, "_blank", "width=304, height=228");
 	    svgWindow.document.write(head + svg + tail);
 	}
 
-	function doSVG() {
-	    var svg = '<svg width="760" height="570">';
+	function doSVG(scale) {
+	    var svg = '<svg width="320" height="240">\n';
+	    svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
 	    svg += this.svgOutput;
 	    for (var t in turtles.turtleList) {
 		svg += turtles.turtleList[t].svgOutput;
 	    }
+	    svg += '</g>';
 	    svg += '</svg>';
 	    return svg;
 	}
@@ -1355,7 +1360,7 @@ define(function (require) {
 	    } else {
 		body.style.background = turtles.turtleList[turtle].canvasColor;
 	    }
-	    this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '"fill="' + body.style.background + '"/>\n';
+	    this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + ' "fill="' + body.style.background + '"/>\n';
 	}
 
 	function allClear() {

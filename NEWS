@@ -61,13 +61,21 @@
   * stop turtle
   * first pass on a palette strategy
   * save file to turtle.sugarlabs.org (when running from server) w/tch
+  * svg output to window
 
 TODO:
+  * fix canvas sizing, resizing
+  * seed svg with bg color on load
+  * selectable menu of samples
+  * send svg thumbnail to server
+  * fix mouse down logic
+  * fix menu tearing issues
   * fix block/turtle/canvas layering
   * use container caching
+  * use snap to pixels
   * copy/paste
   * user defined blocks
-  * better compartmentalization of block code
-  * sensors
-  * implement more sophisticated blocks
+  * better compartmentalization of block code (dictionary)
+  * more sensors
+  * implement if then else, forever, while, until, 'stop action' aka break
   * keyboard short cuts

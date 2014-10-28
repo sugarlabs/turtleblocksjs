@@ -399,14 +399,7 @@ function Turtles(canvas, stage, refreshCanvas) {
 	// Each turtle needs its own canvas.
         myTurtle.drawingCanvas = new createjs.Shape();
         this.stage.addChild(myTurtle.drawingCanvas);
-	myTurtle.drawingCanvas.on('mousedown', function(event) {
-	    console.log('mouse down');
-	    myTurtle.buttonState = true;
-	});
-	myTurtle.drawingCanvas.on('mouseup', function(event) {
-	    console.log('mouse up');
-	    myTurtle.buttonState = false;
-	});
+	myTurtle.drawingCanvas.onload = handleTurtleCanvasLoad;
 
 	var turtleImage = new Image();
 	i %= 10;
@@ -499,4 +492,18 @@ function Turtles(canvas, stage, refreshCanvas) {
 function Queue (blk, count) {
     this.blk = blk;
     this.count = count;
+}
+
+function handleTurtleCanvasLoad(event) {
+    console.log('turtlecanvas load');
+    // myTurtle.drawingCanvas.on('mousedown', function(event) {
+    event.on('mousedown', function(event) {
+	console.log('mouse down');
+	// myTurtle.buttonState = true;
+    });
+    // myTurtle.drawingCanvas.on('mouseup', function(event) {
+    event.on('mousedown', function(event) {
+	console.log('mouse up');
+	// myTurtle.buttonState = false;
+    });
 }

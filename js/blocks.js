@@ -92,8 +92,12 @@ function ProtoBlock (name) {
 
     this.twoArgMathBlock = function() {
 	this.twoArgBlock();
+	this.yoff = 49;
+	this.loff = 42;
+	this.expandable = true;
 	this.style = 'arg';
 	this.size = 2;
+	this.args = 2;
 	this.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'], [68, 62, 'numberin']];
     }
 
@@ -126,6 +130,8 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
     // To avoid infinite loops in dock search
     this.loopCounter = 0;
+    this.sizeCounter = 0;
+    this.searchCounter = 0;
 
     // We'll need a reference to the palettes.
     this.palettes = null;
@@ -207,11 +213,13 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	// (1) count up the number of blocks inside the clamp;
 	// always the second to last argument.
 	var c = this.blockList[blk].connections.length - 2;
+	this.sizeCounter = 0;
 	var size = this.getStackSize(this.blockList[blk].connections[c]);
 	if( size < 1 ) {
 	    size = 1;  // Minimum clamp size
 	}
-    
+	console.log('blk[' + blk + '].size == ' + size);
+
 	// (2) adjust the clamp size to match.
 	var yoff = this.blockList[blk].protoblock.yoff;
 	var loff = this.blockList[blk].protoblock.loff;
@@ -307,7 +315,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		var c = i + j;
 		this.addFiller(blk, yoff + c * loff, c);
 		this.blockList[blk].docks[2][1] += loff;
-		if (!blockList[blk].isArgBlock()) {
+		if (!this.blockList[blk].isArgBlock()) {
 		    this.blockList[blk].docks[3][1] += loff;
 		}
 		this.blockList[blk].size += 1;
@@ -407,6 +415,13 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     this.getStackSize = function(blk) {
 	// How many block units (42 px) in this stack?
 	var size = 0;
+	this.sizeCounter += 1;
+	if (this.sizeCounter > this.blockList.length * 2) {
+	    console.log('infinite loop detecting size of expandable block?');
+	    console.log(blk);
+	    console.log(this.blockList);
+	    return size;
+	}
     
 	if (blk == null) {
 	    return size;
@@ -425,8 +440,10 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
 	
 	// check on any connected block
-	var cblk = last(this.blockList[blk].connections);
-	size += this.getStackSize(cblk);
+	if (!this.blockList[blk].isValueBlock()) {
+	    var cblk = last(this.blockList[blk].connections);
+	    size += this.getStackSize(cblk);
+	}
 	return size;
     }
 
@@ -457,6 +474,8 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	if (this.loopCounter > this.blockList.length * 2) {
 	    // FIXME: is there still an infinite loop in here somewhere?
 	    console.log('infinite loop encountered while adjusting docks');
+	    console.log(blk);
+	    console.log(this.blockList);
 	    return;
 	}
     
@@ -509,7 +528,14 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	// Find any containing expandable blocks.
 	var checkExpandableBlocks = [];
 	var blk = this.insideExpandableBlock(thisBlock);
+	var expandableLoopCounter = 0;
 	while (blk != null) {
+	    expandableLoopCounter += 1;
+	    if (expandableLoopCounter > 2 * this.blockList.length) {
+		console.log('inifinite loop checking for expandables?');
+		break;
+	    }
+	    console.log('checking if ' + blk + ' is expandable');
 	    checkExpandableBlocks.push(blk);
 	    blk = this.insideExpandableBlock(blk);
 	}
@@ -630,7 +656,15 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
 	// Recheck if it inside of a expandable block
 	var blk = this.insideExpandableBlock(thisBlock);
+	var expandableLoopCounter = 0;
 	while (blk != null) {
+	    expandableLoopCounter += 1;
+	    console.log('checking if ' + blk + ' is expandable (' + this.blockList[blk].name + ')');
+	    if (expandableLoopCounter > 2 * this.blockList.length) {
+		console.log('inifinite loop checking for expandables?');
+		console.log(this.blockList);
+		break;
+	    }
 	    if (checkExpandableBlocks.indexOf(blk) == -1) {
 		checkExpandableBlocks.push(blk);
 	    }
@@ -865,7 +899,13 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	if (this.blockList[blk].connections.length == 0) {
 	    return blk;
 	}
+	var topBlockLoop = 0;
 	while (this.blockList[blk].connections[0] != null) {
+	    topBlockLoop += 1;
+	    if (topBlockLoop > 2 * this.blockList.length) {
+		console.log('infinite loop finding topBlock?');
+		break;
+	    }
 	    blk = this.blockList[blk].connections[0];
 	}
 	return blk;
@@ -882,7 +922,13 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	if (this.blockList[blk].connections.length == 0) {
 	    return blk;
 	}
+	var bottomBlockLoop = 0;
 	while (last(this.blockList[blk].connections) != null) {
+	    bottomBlockLoop += 1;
+	    if (bottomBlockLoop > 2 * this.blockList.length) {
+		console.log('infinite loop finding bottomBlock?');
+		break;
+	    }
 	    blk = last(this.blockList[blk].connections);
 	}
 	return blk;
@@ -903,6 +949,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	this.expandablesList = [];
 	this.findStacks();  // We start by finding the stacks
 	for (var i = 0; i < this.stackList.length; i++) {
+	    this.searchCounter = 0;
 	    this.searchForExpandables(this.stackList[i]);
 	}
     }
@@ -920,6 +967,11 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     this.searchForExpandables = function(blk) {
 	// Find the expandable blocks below blk in a stack.
 	while (blk != null) {
+	    this.searchCounter += 1;
+	    if (this.searchCounter > 2 * this.blockList.length) {
+		console.log('infinite loop searching for Expandables?');
+		break;
+	    }
 	    if (this.blockList[blk].isClampBlock()) {
 		this.expandablesList.push(blk);
 		var c = this.blockList[blk].connections.length - 2;
@@ -984,7 +1036,11 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	// Value blocks get a modifiable text label
 	if (myBlock.isValueBlock() && myBlock.name != 'media') {
 	    if (myBlock.value == null) {
-		myBlock.value = '---';
+		if (myBlock.name == 'text') {
+		    myBlock.value = '---';
+		} else {
+		    myBlock.value = 100;
+		}
 	    }
 	    myBlock.text = new createjs.Text(myBlock.value.toString(), '20px Courier', '#00000');
 	    myBlock.text.textAlign = 'center';
@@ -1110,8 +1166,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     this.makeBlock = function(name, arg) {
 	// Make a new block from a proto block.
 	// Called from palettes (and eventually from the load block).
-	console.log('makeBlock ' + name + ' ' + arg);
-
 	for (var proto in this.protoBlockDict) {
 	    if (this.protoBlockDict[proto].name == name) {
 		if (arg == '__NOARG__') {
@@ -1237,6 +1291,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	var i = 1;
 	var value = name;
 	while (actionNames.indexOf(value) != -1) {
+	    console.log('does ' + value + ' = ' + name + i.toString() + '?');
 	    value = name + i.toString();
 	    i += 1;
 	}
@@ -1421,7 +1476,7 @@ function Block (protoblock) {
     }
 
     this.isArgBlock = function() {
-	return this.protoblock.style in ['value', 'arg'];
+	return this.protoblock.style == 'value' || this.protoblock.style == 'arg';
     }
 
     this.isSpecialBlock = function() {

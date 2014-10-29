@@ -62,15 +62,16 @@
   * first pass on a palette strategy
   * save file to turtle.sugarlabs.org (when running from server) w/tch
   * svg output to window
+  * added menu to trash for restore and clear all
+  * fix block/turtle/canvas layering
+  * fix mouse down logic
 
 TODO:
   * fix canvas sizing, resizing
   * seed svg with bg color on load
   * selectable menu of samples
   * send svg thumbnail to server
-  * fix mouse down logic
   * fix menu tearing issues
-  * fix block/turtle/canvas layering
   * use container caching
   * use snap to pixels
   * copy/paste

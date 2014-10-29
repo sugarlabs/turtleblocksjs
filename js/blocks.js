@@ -1912,6 +1912,9 @@ function loadEventHandlers(blocks, myBlock) {
 	});
     });
     
+    myBlock.container.on('mouseup',function(event) {
+    });
+
     myBlock.container.on('mouseout',function(event) {
 	if (moved) {
 	    // Check if block is in the trash

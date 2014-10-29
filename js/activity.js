@@ -46,6 +46,8 @@ define(function (require) {
 
 	var turtleDelay = defaultDelay;
 
+	var stageMouseDown = false;
+
         var fastButton = docById('fast-button');
         fastButton.onclick = function () {
 	    turtleDelay = 1;
@@ -227,6 +229,15 @@ define(function (require) {
 		blocks.findDragGroup(blocks.stackList[i]);
 		blocks.adjustBlockPositions();
 	    }
+
+	    // Set up event handler for stage mouse events
+	    stage.on('stagemousedown', function(event) {
+		stageMouseDown = true;
+	    });
+
+	    stage.on('stagemouseup', function(event) {
+		stageMouseDown = false;
+	    });
         }
 
 	function restoreTrash() {
@@ -820,7 +831,7 @@ define(function (require) {
 		    blocks.blockList[blk].value = stageY;
 		    break;
 		case 'mousebutton':
-		    blocks.blockList[blk].value = turtles.turtleList[turtle].buttonState;
+		    blocks.blockList[blk].value = stageMouseDown;
 		    break;
 		case 'time':
 		    var d = new Date();

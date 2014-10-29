@@ -304,7 +304,7 @@ function Palette (palettes, name, color, bgcolor) {
 		this.protoContainers[modname].hitArea = hitArea;
 
 		if (blkname != modname) {
-		    var text = new createjs.Text(this.protoList[blk].defaults[0], '12px Courier', '#00000');
+		    var text = new createjs.Text(this.protoList[blk].defaults[0], '12px Arial', '#00000');
 		    this.protoContainers[modname].addChild(text);
 		    text.textAlign = 'center';
 		    text.textBaseline = 'alphabetic';

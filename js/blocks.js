@@ -1083,7 +1083,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		    myBlock.value = 100;
 		}
 	    }
-	    myBlock.text = new createjs.Text(myBlock.value.toString(), '20px Courier', '#00000');
+	    myBlock.text = new createjs.Text(myBlock.value.toString(), '20px Arial', '#00000');
 	    myBlock.text.textAlign = 'center';
 	    myBlock.text.x = 100;
             myBlock.text.textBaseline = 'alphabetic';

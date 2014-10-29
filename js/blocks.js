@@ -11,10 +11,20 @@
 
 // All things related to blocks and palettes
 
+// Some names changed between the Python verison and the
+// JS version so look up name in the conversion dictionary.
+var NAMEDICT = {'xpos': 'x', 'ypos': 'y', 'seth': 'setheading', 'plus2': 'plus', 'product2': 'multiply', 'division2': 'divide', 'minus2': 'minus', 'stack': 'do', 'hat': 'action', 'clean': 'clear', 'setxy2': 'setxy', 'greater2': 'greater', 'less2': 'less', 'equal2': 'equal', 'random2': 'random', 'sethue': 'setcolor', 'setvalue': 'setshade', 'setchroma': 'setgrey', 'setgray': 'setgrey', 'gray': 'grey', 'chroma': 'grey', 'value': 'shade', 'hue': 'color', 'startfill': 'beginfill', 'stopfill': 'endfill', 'string': 'text'};
+
 // For DOM access
 var blockBlocks = null;
 
-// Define block proto objects
+// There are three "classes" defined in this file: ProtoBlocks,
+// Blocks, and Block. Protoblocks are the prototypes from which Blocks
+// are created; Blocks is the list of all blocks; and Block is a block
+// instance.
+
+// Protoblock contain generic information about blocks and some
+// methods common to all blocks.
 function ProtoBlock (name) {
     this.name = name;  // used for svg filename, run switch, and palette label
     this.palette = null;
@@ -114,8 +124,8 @@ function ProtoBlock (name) {
     }
 }
 
-// A place to put the block instances.
-// The real workhorse.
+// Blocks holds the list of blocks and most of the block-associated
+// methods, since most block manipulations are inter-block.
 function Blocks (canvas, stage, refreshCanvas, trashcan) {
     // Things we need from outside
     this.canvas = canvas;
@@ -218,7 +228,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	if( size < 1 ) {
 	    size = 1;  // Minimum clamp size
 	}
-	console.log('blk[' + blk + '].size == ' + size);
+	// console.log('blk[' + blk + '].size == ' + size);
 
 	// (2) adjust the clamp size to match.
 	var yoff = this.blockList[blk].protoblock.yoff;
@@ -469,6 +479,14 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    console.log('saw a block with [] connections: ' + blk);
 	    return;
 	}
+	if (this.blockList[blk].docks.length == 1) {
+	    console.log(this.blockList[blk].name + ' must be a value block... nothing to do.');
+	    return;
+	}
+
+	console.log('adjusting connections for ' + this.blockList[blk].name);
+	console.log('connections ' + this.blockList[blk].connections);
+	console.log('docks ' + this.blockList[blk].docks);
     
 	this.loopCounter += 1;
 	if (this.loopCounter > this.blockList.length * 2) {
@@ -492,10 +510,17 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    }
 	
 	    // Find the dock position in the connected block.
+	    var foundMatch = false;
 	    for (var b = 0; b < this.blockList[cblk].connections.length; b++) {
 		if (this.blockList[cblk].connections[b] == blk) {
+		    foundMatch = true;
 		    break
 		}
+	    }
+
+	    if (!foundMatch) {
+		console.log('did not find match for ' + this.blockList[blk].name + ' and ' + this.blockList[cblk].name);
+		break;
 	    }
 	    var cdock = this.blockList[cblk].docks[b];
 	
@@ -588,6 +613,12 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		continue;
 	    }
 	    for (var i = 1; i < this.blockList[b].connections.length; i++) {
+		// When converting from Python to JS, sometimes extra
+		// null connections are added. We need to ignore them.
+		if (i == this.blockList[b].docks.length) {
+		    console.log(this.blockList[b].name + ': connection ' + i + ' > ' + this.blockList[b].docks.length);
+		    break;
+		}
 		// Look for available connections.
 		if (this.testConnectionType(
 		    blkType,
@@ -764,6 +795,16 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
     }
 
+    this.bringToTop = function() {
+	// Move all the blocks to the top layer of the stage
+	for (var blk in this.blockList) {
+	    myBlock = this.blockList[blk];
+	    this.stage.removeChild(myBlock.container);
+	    this.stage.addChild(myBlock.container);
+	}
+	this.refreshCanvas();
+    }
+
     this.moveBlock = function(blk, x, y) {
 	// Move a block (and its label) to x, y.
 	var myBlock = this.blockList[blk];
@@ -820,7 +861,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		} else {
 		    value = myBlock.label.value;
 		}
-		text = '<textarea id="' + getBlockId(blk) +
+		text = '<textarea id="' + myBlock.getBlockId() +
 		    '" style="position: absolute; ' + 
 		    '-webkit-user-select: text;" ' +
 		    'class="number", ' +
@@ -836,7 +877,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		} else {
 		    value = myBlock.label.value;
 		}
-		text = '<textarea id="' + getBlockId(blk) +
+		text = '<textarea id="' + myBlock.getBlockId() +
 		    '" style="position: absolute; ' + 
 		    '-webkit-user-select: text;" ' +
 		    'class="text", ' +
@@ -860,7 +901,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		var y = myBlock.bitmap.y
 	    }
 	    if (myBlock.isValueBlock() && myBlock.name != 'media') {
-		myBlock.label = docById(getBlockId(blk));
+		myBlock.label = docById(myBlock.getBlockId());
 		myBlock.label.addEventListener(
 		    'change', function() {labelChanged();});
 		this.adjustLabelPosition(blk, x, y);
@@ -1147,6 +1188,10 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    return;
 	}
 	for (var c in connections) {
+	    if (c == myBlock.docks.length) {
+		console.log('block ' + myBlock.name + ' had an extra connection: ' + connections[c]);
+		break;
+	    }
 	    if (connections[c] == null) {
 		myBlock.connections.push(null);
 	    } else {
@@ -1439,15 +1484,14 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		var value = blkData[1][1];
 	    }
 
-	    console.log(thisBlock + ' ' + name + ' ' + value);
-	    // Some names changed between the Python verison and the
-	    // JS version so look up name in the conversion dictionary.
-	    var NAMEDICT = {'xpos': 'x', 'ypos': 'y', 'seth': 'setheading', 'plus2': 'plus', 'product2': 'multiply', 'division2': 'divide', 'minus2': 'minus', 'stack': 'do', 'hat': 'action', 'clean': 'clear', 'setxy2': 'setxy', 'greater2': 'greater', 'less2': 'less', 'equal2': 'equal', 'random2': 'random', 'sethue': 'setcolor', 'setvalue': 'setshade', 'setchroma': 'setgrey', 'setgray': 'setgrey', 'gray': 'grey', 'chroma': 'grey', 'value': 'shade', 'hue': 'color', 'startfill': 'beginfill', 'stopfill': 'endfill', 'string': 'text'};
-	    if (!name in NAMEDICT) {
+	    console.log(thisBlock + ' ' + name + ' ' + value + ' ' + blkData[4]);
+
+	    if (name in NAMEDICT) {
 		name = NAMEDICT[name];
 	    }
-			    
+	    // console.log(name);
 	    switch(name) {
+		// A few special cases.
 	    case 'start':
 		blkData[4][0] = null;
 		blkData[4][2] = null;
@@ -1460,14 +1504,15 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		blkData[4][3] = null;
 		this.makeNewBlockWithConnections('action', blockOffset, blkData[4]);
 		break;
+
 		// Value blocks need a default value set.
 	    case 'number':
 	    case 'text':
-	    case 'string':
 		this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
 		this.blockList[thisBlock].value = value;
 		this.updateBlockText(thisBlock);
 		break;
+
 		// Define some constants for backward compatibility
 	    case 'red':
 	    case 'white':
@@ -1526,6 +1571,8 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		this.blockList[thisBlock].value = canvas.height;
 		this.updateBlockText(thisBlock);
 		break;
+
+		//
 	    default:
 		this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
                 break;
@@ -1557,7 +1604,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 }
 
 
-// Define block instance objects
+// Define block instance objects and any methods that are intra-block.
 function Block (protoblock) {
     if (protoblock == null) {
 	console.log('null protoblock sent to Block');
@@ -1639,6 +1686,12 @@ function Block (protoblock) {
     this.isExpandableBlock = function() {
 	return this.protoblock.expandable;
     }
+
+    // Based on the block index into the blockList.
+    this.getBlockId = function() {
+	var number = blockBlocks.blockList.indexOf(this);
+	return '_' + number.toString();
+    }
 }
 
 function $() {
@@ -1653,10 +1706,6 @@ function $() {
 	elements.push(element);
     }
     return elements;
-}
-
-function getBlockId(blk) {
-    return '_' + blk.toString();
 }
 
 // A place in the DOM to put modifiable labels (textareas).

@@ -256,7 +256,6 @@ define(function (require) {
 	    last(blocks.blockList).y = 50;
 	    last(blocks.blockList).connections = [null, null, null];
 	    turtles.add();
-	    update = true;
 	    // Overwrite session data too.
 	    console.log('overwriting session data');
 	    if(typeof(Storage) !== "undefined") {
@@ -265,6 +264,11 @@ define(function (require) {
 	    } else {
 		// Sorry! No Web Storage support..
 	    }
+
+	    blocks.updateBlockImages();
+	    blocks.updateBlockLabels();
+
+	    update = true;
 	}
 
 	function changePaletteVisibility() {
@@ -988,6 +992,18 @@ define(function (require) {
 	}
 
 	function prepareExport() {
+	    // We don't save blocks in the trash, so we need to
+	    // consolidate the block list and remap the connections.
+	    var blockMap = [];
+	    for (var blk = 0; blk < blocks.blockList.length; blk++) {
+		var myBlock = blocks.blockList[blk];
+		if (myBlock.trash) {
+		    // Don't save blocks in the trash.
+		    continue;
+		}
+		blockMap.push(blk);
+	    }
+
 	    var data = [];
 	    for (var blk = 0; blk < blocks.blockList.length; blk++) {
 		var myBlock = blocks.blockList[blk];
@@ -1000,7 +1016,12 @@ define(function (require) {
 		} else {
 		    var name = myBlock.name;
 		}
-		data.push([blk, name, myBlock.container.x, myBlock.container.y, myBlock.connections]);
+
+		connections = [];
+		for (var c = 0; c < myBlock.connections.length; c++) {
+		    connections.push(blockMap[myBlock.connections[c]]);
+		}
+		data.push([blockMap.indexOf(blk), name, myBlock.container.x, myBlock.container.y, connections]);
 	    }
 	    return JSON.stringify(data);
 	}

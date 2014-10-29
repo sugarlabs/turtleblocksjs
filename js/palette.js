@@ -195,6 +195,19 @@ function Palettes (canvas, stage, refreshCanvas) {
 	return this;
     }
 
+    this.bringToTop = function() {
+	// Move all the palettes to the top layer of the stage
+	for (var name in this.dict) {
+	    this.stage.removeChild(this.dict[name].menuBitmap);
+	    this.stage.addChild(this.dict[name].menuBitmap);
+	    for (var item in this.dict[name].protoContainers) {
+		this.stage.removeChild(this.dict[name].protoContainers[item]);
+		this.stage.addChild(this.dict[name].protoContainers[item]);
+	    }
+	}
+	this.refreshCanvas();
+    }
+
     return this;
 }
 

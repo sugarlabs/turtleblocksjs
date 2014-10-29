@@ -1140,12 +1140,27 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	this.visible = true;
     }
 
+    this.makeNewBlockWithConnections = function(name, blockOffset, connections) {
+	myBlock = this.makeNewBlock(name);
+	if (myBlock == null) {
+	    console.log('could not make block ' + name);
+	    return;
+	}
+	for (var c in connections) {
+	    if (connections[c] == null) {
+		myBlock.connections.push(null);
+	    } else {
+		myBlock.connections.push(connections[c] + blockOffset);
+	    }
+	}
+    }
+
     this.makeNewBlock = function(name) {
 	// Create a new block
 	// console.log('makeNewBlock: (' + name + ')');
 	if (!name in this.protoBlockDict) {
 	    console.log('makeNewBlock: no prototype for ' + name);
-	    return;
+	    return null;
 	}
 	this.blockList.push(new Block(this.protoBlockDict[name]));
 
@@ -1161,6 +1176,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	// and we need to load the images into the container.
 	this.imageLoad(myBlock);
 	loadEventHandlers(this, myBlock);
+	return myBlock;
     }
 
     this.makeBlock = function(name, arg) {
@@ -1405,6 +1421,135 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		return this.insideExpandableBlock(cblk);
 	    }
 	}
+    }
+
+    this.load = function(blockObjs) {
+	// Append to the current set of blocks.
+	var adjustTheseDocks = [];
+	var blockOffset = this.blockList.length;
+
+	for(var b = 0; b < blockObjs.length; b++) {
+	    var thisBlock = blockOffset + b;
+	    var blkData = blockObjs[b];
+	    if (typeof(blkData[1]) == 'string') {
+		var name = blkData[1];
+		var value = null;
+	    } else {
+		var name = blkData[1][0];
+		var value = blkData[1][1];
+	    }
+
+	    console.log(thisBlock + ' ' + name + ' ' + value);
+	    // Some names changed between the Python verison and the
+	    // JS version so look up name in the conversion dictionary.
+	    var NAMEDICT = {'xpos': 'x', 'ypos': 'y', 'seth': 'setheading', 'plus2': 'plus', 'product2': 'multiply', 'division2': 'divide', 'minus2': 'minus', 'stack': 'do', 'hat': 'action', 'clean': 'clear', 'setxy2': 'setxy', 'greater2': 'greater', 'less2': 'less', 'equal2': 'equal', 'random2': 'random', 'sethue': 'setcolor', 'setvalue': 'setshade', 'setchroma': 'setgrey', 'setgray': 'setgrey', 'gray': 'grey', 'chroma': 'grey', 'value': 'shade', 'hue': 'color', 'startfill': 'beginfill', 'stopfill': 'endfill', 'string': 'text'};
+	    if (!name in NAMEDICT) {
+		name = NAMEDICT[name];
+	    }
+			    
+	    switch(name) {
+	    case 'start':
+		blkData[4][0] = null;
+		blkData[4][2] = null;
+		this.makeNewBlockWithConnections('start', blockOffset, blkData[4]);
+		this.turtles.add();
+		break;
+	    case 'action':
+	    case 'hat':
+		blkData[4][0] = null;
+		blkData[4][3] = null;
+		this.makeNewBlockWithConnections('action', blockOffset, blkData[4]);
+		break;
+		// Value blocks need a default value set.
+	    case 'number':
+	    case 'text':
+	    case 'string':
+		this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = value;
+		this.updateBlockText(thisBlock);
+		break;
+		// Define some constants for backward compatibility
+	    case 'red':
+	    case 'white':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = 0;
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'orange':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = 10;
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'yellow':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = 20;
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'green':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = 40;
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'blue':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = 70;
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'leftpos':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = -(canvas.width / 2);
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'rightpos':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = (canvas.width / 2);
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'toppos':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = (canvas.height / 2);
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'botpos':
+	    case 'bottompos':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = -(canvas.height / 2);
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'width':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = canvas.width;
+		this.updateBlockText(thisBlock);
+		break;
+	    case 'height':
+		this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = canvas.height;
+		this.updateBlockText(thisBlock);
+		break;
+	    default:
+		this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
+                break;
+	    }
+	    if (thisBlock == this.blockList.length - 1) {
+		if (this.blockList[thisBlock].connections[0] == null) {
+		    this.blockList[thisBlock].x = blkData[2];
+		    this.blockList[thisBlock].y = blkData[3];
+		    adjustTheseDocks.push(thisBlock);
+		}
+	    }
+	}
+	this.updateBlockImages();
+	this.updateBlockLabels();
+	for (var blk = 0; blk < adjustTheseDocks.length; blk++) {
+	    this.loopCounter = 0;
+	    this.adjustDocks(adjustTheseDocks[blk]);
+	}
+	
+	update = true;
+	
+	// We need to wait for the blocks to load before expanding them.
+	setTimeout(function(){blockBlocks.expandClamps();}, 1000); 
+	setTimeout(function(){blockBlocks.expand2Args();}, 2000); 
     }
 
     blockBlocks = this;

@@ -42,7 +42,7 @@ define(function (require) {
 
 	// default values
 	var defaultBackgroundColor = [70, 80, 20];
-	var defaultDelay = 1000;  // MS
+	var defaultDelay = 500;  // MS
 
 	var turtleDelay = defaultDelay;
 
@@ -155,10 +155,10 @@ define(function (require) {
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
 	    createjs.Ticker.addEventListener('tick', tick);
-	    trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash);
+	    trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash, sendAllToTrash);
 	    turtles = new Turtles(canvas, stage, refreshCanvas);
 	    palettes = initPalettes(canvas, stage, refreshCanvas);
-	    blocks = new Blocks(canvas, stage, refreshCanvas, trashcan, turtles);
+	    blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
 	    palettes.setBlocks(blocks);
 	    turtles.setBlocks(blocks);
 	    blocks.setTurtles(turtles);
@@ -242,11 +242,37 @@ define(function (require) {
 	    update = true;
 	}
 
+	function sendAllToTrash() {
+	    var dx = 2000;
+	    var dy = 55;
+	    for (var blk in blocks.blockList) {
+		blocks.blockList[blk].trash = true;
+		blocks.moveBlockRelative(blk, dx, dy);
+		blocks.blockList[blk].hide();
+	    }
+	    console.log('loading new start block');
+	    blocks.makeNewBlock('start');
+	    last(blocks.blockList).x = 50;
+	    last(blocks.blockList).y = 50;
+	    last(blocks.blockList).connections = [null, null, null];
+	    turtles.add();
+	    update = true;
+	    // Overwrite session data too.
+	    console.log('overwriting session data');
+	    if(typeof(Storage) !== "undefined") {
+		localStorage.setItem('sessiondata', prepareExport());
+		// console.log(localStorage.getItem('sessiondata'));
+	    } else {
+		// Sorry! No Web Storage support..
+	    }
+	}
+
 	function changePaletteVisibility() {
 	    if (palettes.visible) {
 		palettes.hide();
 	    } else {
 		palettes.show();
+		palettes.bringToTop();
 	    }
 	}
 
@@ -266,6 +292,7 @@ define(function (require) {
         function doStopTurtle() {
 	    //
 	    stopTurtle = true;
+	    blocks.bringToTop();
         }
 
 	function refreshCanvas() {
@@ -378,12 +405,13 @@ define(function (require) {
 	    }
 
 	    stopTurtle = false;
+	    blocks.bringToTop();  // Draw under blocks.
 
 	    // We run the logo commands here.
 	    var d = new Date();
 	    time = d.getTime();
 
-	    console.log(blocks.blockList);
+	    // console.log(blocks.blockList);
 
 	    // First we need to reconcile the values in all the value blocks
 	    // with their associated textareas.
@@ -470,9 +498,7 @@ define(function (require) {
 	    var args = [];
 	    if(blocks.blockList[blk].protoblock.args > 0) {
 		for (var i = 1; i < blocks.blockList[blk].protoblock.args + 1; i++) {
-		    console.log('calling parseArg on block ' + blk + ' connections: ' + blocks.blockList[blk].connections[i]);
 		    args.push(parseArg(turtle, blocks.blockList[blk].connections[i]));
-		    console.log('pushed to args: ' + last(args));
 		}
 	    }
 
@@ -486,7 +512,6 @@ define(function (require) {
 		var nextFlow = last(blocks.blockList[blk].connections);
 	    }
 	    if (nextFlow != null) {
-		console.log('queuing next flow ' + nextFlow)
 		var queueBlock = new Queue(nextFlow, 1);
 		turtles.turtleList[turtle].queue.push(queueBlock);
 	    }
@@ -567,7 +592,6 @@ define(function (require) {
 		break;
             case 'forward':
  		if (args.length == 1) {
-		    console.log('do forward ' + args[0]);
 		    turtles.turtleList[turtle].doForward(args[0]);
 		}
 		break;
@@ -683,11 +707,8 @@ define(function (require) {
 		console.log('WARNING: missing argument');
 		return null
 	    } else if (blocks.blockList[blk].isValueBlock()) {
-		console.log(blocks.blockList[blk].name + ' is a value block');
-		console.log('returning value ' + blocks.blockList[blk].value);
 		return blocks.blockList[blk].value;
 	    } else if (blocks.blockList[blk].isArgBlock()) {
-		console.log(blocks.blockList[blk].name + ' is an arg block');
 		switch (blocks.blockList[blk].name) {
 		case 'box':
 		    var cblk = blocks.blockList[blk].connections[1];
@@ -749,10 +770,8 @@ define(function (require) {
 		case 'multiply':
 		    var cblk1 = blocks.blockList[blk].connections[1];
 		    var cblk2 = blocks.blockList[blk].connections[2];
-		    console.log('multiply ' + cblk1 + 'x' + cblk2);
 		    var a = parseArg(turtle, cblk1);
 		    var b = parseArg(turtle, cblk2);
-		    console.log('multiply ' + a + 'x' + b);
 		    blocks.blockList[blk].value = doMultiply(a, b);
 		    break;
 		case 'divide':
@@ -804,11 +823,8 @@ define(function (require) {
 		    blocks.blockList[blk].value = (d.getTime() - time) / 1000;
 		    break;
 		}
-		console.log('returning computed value ' + blocks.blockList[blk].value);
 		return blocks.blockList[blk].value;
 	    } else {
-		console.log(blocks.blockList[blk].name + ' is not a value block or an arg block');
-		console.log('returning block? ' + blk);
 		return blk;
 	    }
 	}
@@ -827,6 +843,7 @@ define(function (require) {
 	function showBlocks() {
 	    // Show all the blocks.
 	    blocks.show();
+	    blocks.bringToTop();
 	    // And show some other things.
 	    for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
 		turtles.turtleList[turtle].container.visible = true;
@@ -888,25 +905,21 @@ define(function (require) {
 	// Math functions
 	function doRandom(a, b) {
 	    var r = Math.floor(Math.random() * (Number(b) - Number(a) + 1) + Number(a));
-	    console.log('doRandom (' + a + ', ' + b + ') ' + r);
 	    return Math.floor(Math.random() * (Number(b) - Number(a) + 1) + Number(a));
 	}
 
 	function doPlus(a, b) {
 	    r = Number(a) + Number(b);
-	    console.log('doPlus (' + a + ', ' + b + ') ' + r);
 	    return Number(a) + Number(b);
 	}
 
 	function doMinus(a, b) {
 	    r = Number(a) - Number(b);
-	    console.log('doMinus (' + a + ', ' + b + ') ' + r);
 	    return Number(a) - Number(b);
 	}
 
 	function doMultiply(a, b) {
 	    r = Number(a) * Number(b);
-	    console.log('doMultiply (' + a + ', ' + b + ') ' + r);
 	    return Number(a) * Number(b);
 	}
 

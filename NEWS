@@ -65,6 +65,8 @@
   * added menu to trash for restore and clear all
   * fix block/turtle/canvas layering
   * fix mouse down logic
+  * figured out how to do inline svg with easeljs...
+    beginning to convert to svg factory methods.
 
 TODO:
   * fix canvas sizing, resizing

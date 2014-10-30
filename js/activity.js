@@ -17,6 +17,7 @@ define(function (require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
     require('easel');
+    require('activity/artwork');
     require('activity/utils');
     require('activity/munsell');
     require('activity/trash');

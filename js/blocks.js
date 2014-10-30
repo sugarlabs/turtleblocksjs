@@ -364,7 +364,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		this.adjustDocks(blk);
 	    }
 	}	    
-	console.log('change ' + myBlock.bounds.height);
 	myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
 	this.refreshCanvas();
     }
@@ -454,7 +453,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		}
 	    }
 	}
-	console.log('change ' + myBlock.bounds.height);
 	myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
 	this.refreshCanvas();
     }
@@ -586,13 +584,13 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    return;
 	}
 	if (this.blockList[blk].docks.length == 1) {
-	    console.log(this.blockList[blk].name + ' must be a value block... nothing to do.');
+	    // console.log(this.blockList[blk].name + ' must be a value block... nothing to do.');
 	    return;
 	}
 
-	console.log('adjusting connections for ' + this.blockList[blk].name);
-	console.log('connections ' + this.blockList[blk].connections);
-	console.log('docks ' + this.blockList[blk].docks);
+	// console.log('adjusting connections for ' + this.blockList[blk].name);
+	// console.log('connections ' + this.blockList[blk].connections);
+	// console.log('docks ' + this.blockList[blk].docks);
     
 	this.loopCounter += 1;
 	if (this.loopCounter > this.blockList.length * 2) {
@@ -666,7 +664,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		console.log('inifinite loop checking for expandables?');
 		break;
 	    }
-	    console.log('checking if ' + blk + ' is expandable');
+	    // console.log('checking if ' + blk + ' is expandable');
 	    checkExpandableBlocks.push(blk);
 	    blk = this.insideExpandableBlock(blk);
 	}
@@ -722,7 +720,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		// When converting from Python to JS, sometimes extra
 		// null connections are added. We need to ignore them.
 		if (i == this.blockList[b].docks.length) {
-		    console.log(this.blockList[b].name + ': connection ' + i + ' > ' + this.blockList[b].docks.length);
+		    // console.log(this.blockList[b].name + ': connection ' + i + ' > ' + this.blockList[b].docks.length);
 		    break;
 		}
 		// Look for available connections.
@@ -796,7 +794,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	var expandableLoopCounter = 0;
 	while (blk != null) {
 	    expandableLoopCounter += 1;
-	    console.log('checking if ' + blk + ' is expandable (' + this.blockList[blk].name + ')');
+	    // console.log('checking if ' + blk + ' is expandable (' + this.blockList[blk].name + ')');
 	    if (expandableLoopCounter > 2 * this.blockList.length) {
 		console.log('inifinite loop checking for expandables?');
 		console.log(this.blockList);
@@ -1074,10 +1072,11 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
     this.searchForExpandables = function(blk) {
 	// Find the expandable blocks below blk in a stack.
-	while (blk != null) {
+	while (blk != null && !this.blockList[blk].isValueBlock()) {
 	    this.searchCounter += 1;
 	    if (this.searchCounter > 2 * this.blockList.length) {
-		console.log('infinite loop searching for Expandables?');
+		console.log('infinite loop searching for Expandables? ' + this.searchCounter);
+		console.log(blk + ' ' + this.blockList[blk].name);
 		break;
 	    }
 	    if (this.blockList[blk].isClampBlock()) {
@@ -1280,7 +1279,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
 	for (var c in connections) {
 	    if (c == myBlock.docks.length) {
-		console.log('block ' + myBlock.name + ' had an extra connection: ' + connections[c]);
+		// console.log('block ' + myBlock.name + ' had an extra connection: ' + connections[c]);
 		break;
 	    }
 	    if (connections[c] == null) {
@@ -1310,7 +1309,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	this.stage.addChild(myBlock.container);
 
 	// and we need to load the images into the container.
-	console.log('calling image load for ' + myBlock.name);
+	// console.log('calling image load for ' + myBlock.name);
 	this.imageLoad(myBlock);
 	loadEventHandlers(this, myBlock);
 	return myBlock;
@@ -1319,7 +1318,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     this.makeBlock = function(name, arg) {
 	// Make a new block from a proto block.
 	// Called from palettes (and eventually from the load block).
-	console.log('makeBlock: ' + name + ' ' + arg);
+	// console.log('makeBlock: ' + name + ' ' + arg);
 	for (var proto in this.protoBlockDict) {
 	    if (this.protoBlockDict[proto].name == name) {
 		if (arg == '__NOARG__') {
@@ -1345,7 +1344,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
 
 	// Attach default args if any
-	console.log('makeBlock docks: ' + myBlock.docks);
+	// console.log('makeBlock docks: ' + myBlock.docks);
 	var cblk = blk + 1;
 	for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
 	    var value = myBlock.protoblock.defaults[i];
@@ -1446,7 +1445,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	var i = 1;
 	var value = name;
 	while (actionNames.indexOf(value) != -1) {
-	    console.log('does ' + value + ' = ' + name + i.toString() + '?');
+	    // console.log('does ' + value + ' = ' + name + i.toString() + '?');
 	    value = name + i.toString();
 	    i += 1;
 	}
@@ -1578,7 +1577,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		var value = blkData[1][1];
 	    }
 
-	    console.log(thisBlock + ' ' + name + ' ' + value + ' ' + blkData[4]);
+	    // console.log(thisBlock + ' ' + name + ' ' + value + ' ' + blkData[4]);
 
 	    if (name in NAMEDICT) {
 		name = NAMEDICT[name];
@@ -1737,10 +1736,6 @@ function Block (protoblock) {
 	for (var i in this.protoblock.docks) {
 	    var dock = [this.protoblock.docks[i][0], this.protoblock.docks[i][1], this.protoblock.docks[i][2]];
 	    this.docks.push(dock);
-	}
-	if (this.protoblock.name == 'forward') {
-	    console.log('copyDocks from ' + this.protoblock.docks);
-	    console.log('copyDocks to ' + this.docks);
 	}
     }
 
@@ -2317,14 +2312,14 @@ function initProtoBlocks(palettes, blocks) {
     greaterBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['greater'] = greaterBlock;
     greaterBlock.boolean2ArgBlock();
-    greaterBlock.staticLabels.push('>');
+    greaterBlock.staticLabels.push('&gt;');
     greaterBlock.fontsize = '24px';
 
     var lessBlock = new ProtoBlock('less');
     lessBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['less'] = lessBlock;
     lessBlock.boolean2ArgBlock();
-    lessBlock.staticLabels.push('<');
+    lessBlock.staticLabels.push('&lt;');
     lessBlock.fontsize = '24px';
 
     var equalBlock = new ProtoBlock('equal');

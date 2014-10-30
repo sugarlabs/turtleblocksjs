@@ -71,6 +71,7 @@
   * fix labels on random block
 
 TODO:
+  * rename action blocks when loading projects
   * fix canvas sizing, resizing
   * seed svg with bg color on load
   * selectable menu of samples

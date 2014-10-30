@@ -284,7 +284,6 @@ function Palette (palettes, name, color, bgcolor) {
 		}
 
 		var myBlock = paletteBlocks.protoBlockDict[blkname];
-		// console.log(blkname);
 		if (blkname == 'text') {
 		    var block_label = 'text';
 		} else if (blkname == 'number') {

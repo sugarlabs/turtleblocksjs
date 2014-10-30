@@ -404,9 +404,7 @@ function Turtles(canvas, stage, refreshCanvas) {
 	i %= 10;
 	myTurtle.container = new createjs.Container();
 	this.stage.addChild(myTurtle.container);
-	var turtlesvg = TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]);
-	turtlesvg = turtlesvg.replace(/stroke_color/g, STROKECOLORS[i]);
-	myTurtle.bitmap = new createjs.Bitmap(turtlesvg);
+	myTurtle.bitmap = new createjs.Bitmap(TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]));
 	myTurtle.container.x = this.turtleX2screenX(myTurtle.x);
 	myTurtle.container.y = this.invertY(myTurtle.y);
 	myTurtle.bitmap.x = 0;
@@ -427,10 +425,10 @@ function Turtles(canvas, stage, refreshCanvas) {
 	myTurtle.container.hitArea = hitArea;
 
 	myTurtle.startBlock = this.blocks.blockList.length - 1;
-	myTurtle.decorationBitmap = new createjs.Bitmap(turtlesvg);
+	myTurtle.decorationBitmap = myTurtle.bitmap.clone();
 	last(this.blocks.blockList).container.addChild(myTurtle.decorationBitmap);
-	myTurtle.decorationBitmap.x = 80;
-	myTurtle.decorationBitmap.y = 20;
+	myTurtle.decorationBitmap.x = 90;
+	myTurtle.decorationBitmap.y = 35;
 	myTurtle.decorationBitmap.scaleX = 0.5;
 	myTurtle.decorationBitmap.scaleY = 0.5;
 	myTurtle.decorationBitmap.scale = 0.5;

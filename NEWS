@@ -68,6 +68,7 @@
   * figured out how to do inline svg with easeljs...
     beginning to convert to svg factory methods.
   * use container caching on blocks
+  * fix labels on random block
 
 TODO:
   * fix canvas sizing, resizing

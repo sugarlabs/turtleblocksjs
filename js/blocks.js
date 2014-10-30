@@ -35,6 +35,8 @@ function ProtoBlock (name) {
     this.args = 0;
     this.defaults = [];
     this.size = 1;
+    this.staticLabels = [];  // Generated as part of static inline SVG
+    this.artwork = null;
     this.docks = [];
 
     // helper methods for finding block graphics components
@@ -81,14 +83,24 @@ function ProtoBlock (name) {
 	return 'images/highlights/' + this.name + '-bottom.svg';
     }
 
+    // We need to copy, since docks get modified.
+    this.copyDock = function(dockStyle) {
+	for(var i = 0; i < dockStyle.length; i++) {
+	    this.docks.push(dockStyle[i]);
+	}
+    }
+
     // Inits for different block styles.
     this.zeroArgBlock = function() {
-	this.docks = [[20, 0, 'out'], [20, 42, 'in']];
+	this.args = 0;
+	this.artwork = BASICBLOCK;
+	this.copyDock(BASICBLOCKDOCKS);
     }
 
     this.oneArgBlock = function() {
 	this.args = 1;
-	this.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
+	this.artwork = BASICBLOCK1ARG;
+	this.copyDock(BASICBLOCK1ARGDOCKS);
     }
 
     this.twoArgBlock = function() {
@@ -98,29 +110,111 @@ function ProtoBlock (name) {
 	this.style = 'special';
 	this.size = 2;
 	this.args = 2;
+	this.artwork = BASICBLOCK2ARG;
+	this.copyDock(BASICBLOCK2ARGDOCKS);
+    }
+
+    this.oneArgMathBlock = function() {
+	this.style = 'arg';
+	this.size = 1;
+	this.args = 1;
+	this.artwork = ARG1BLOCK;
+	this.copyDock(ARG1BLOCKDOCKS);
     }
 
     this.twoArgMathBlock = function() {
-	this.twoArgBlock();
 	this.yoff = 49;
 	this.loff = 42;
 	this.expandable = true;
 	this.style = 'arg';
 	this.size = 2;
 	this.args = 2;
-	this.docks = [[0, 20, 'numberout'], [68, 20, 'numberin'], [68, 62, 'numberin']];
+	this.artwork = ARG2BLOCK;
+	this.copyDock(ARG2BLOCKDOCKS);
     }
 
-    this.booleanBlock = function() {
+    this.valueBlock = function() {
+	this.style = 'value';
+	this.size = 1;
+	this.args = 0;
+	this.artwork = VALUEBLOCK;
+	this.copyDock(VALUEBLOCKDOCKS);
+    }
+
+    this.mediaBlock = function() {
+	this.style = 'value';
+	this.size = 1;
+	this.args = 0;
+	this.artwork = MEDIABLOCK;
+	this.copyDock(MEDIABLOCKDOCKS);
+    }
+
+    this.flowClamp1ArgBlock = function() {
+	this.style = 'clamp';
+	this.yoff = 74;
+	this.loff = 42;
+	this.expandable = true;
+	this.size = 2;
+	this.args = 2;
+	this.artwork = FLOWCLAMP1ARG;
+	this.copyDock(FLOWCLAMP1ARGDOCKS);
+    }
+
+    this.flowClampBooleanArgBlock = function() {
+	this.style = 'clamp';
+	this.yoff = 116;
+	this.loff = 42;
+	this.expandable = true;
+	this.size = 3;
+	this.args = 2;
+	this.artwork = FLOWCLAMPBOOLEANARG;
+	this.copyDock(FLOWCLAMPBOOLEANDOCKS);
+    }
+
+    this.blockClamp0ArgBlock = function() {
+	this.style = 'clamp';
+	this.yoff = 86;
+	this.loff = 42;
+	this.expandable = true;
+	this.size = 2;
+	this.args = 1;
+	this.artwork = ACTIONCLAMP0ARG;
+	this.copyDock(ACTIONCLAMP0ARGDOCKS);
+    }
+
+    this.blockClamp1ArgBlock = function() {
+	this.style = 'clamp';
+	this.yoff = 86;
+	this.loff = 42;
+	this.expandable = true;
+	this.size = 2;
+	this.args = 1;
+	this.artwork = ACTIONCLAMP1ARG;
+	this.copyDock(ACTIONCLAMP1ARGDOCKS);
+    }
+
+    this.boolean0ArgBlock = function() {
+	this.style = 'arg';
+	this.size = 1;
+	this.args = 0;
+	this.artwork = BOOLEAN0ARG;
+	this.copyDock(BOOLEAN0ARGDOCKS);
+    }
+
+    this.boolean2ArgBlock = function() {
 	this.style = 'arg';
 	this.size = 2;
 	this.args = 2;
-	this.docks = [[0, 40, 'booleanout'], [86, 20, 'numberin'], [86, 62, 'numberin']];
+	this.artwork = BOOLEAN2ARG;
+	this.copyDock(BOOLEAN2ARGDOCKS);
     }
 
     this.parameterBlock = function() {
 	this.style = 'arg';
-	this.docks = [[0, 20, 'numberout']];
+	this.size = 1;
+	this.args = 0;
+	this.artwork = VALUEBLOCK;
+	this.copyDock(VALUEBLOCKDOCKS);
     }
 }
 
@@ -366,15 +460,14 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	var name = 'bmp_' + blk + '_filler_' + c;
 	var bi = this.findBitmap(name);
 	if (bi == null) { 
-	    var image = new Image();
 	    if (myBlock.isArgBlock()) {
-		image.src = myBlock.protoblock.getArgFillerSvgPath();
+		var artwork = ARG2BLOCKFILLER;
 	    } else if (myBlock.isSpecialBlock()) {
-		image.src = myBlock.protoblock.getSpecialFillerSvgPath();
+		var artwork = BASICBLOCK2ARGFILLER;
 	    } else {
-		image.src = myBlock.protoblock.getFillerSvgPath();
+		var artwork = CLAMPFILLER;
 	    }
-	    var bitmap = new createjs.Bitmap(image)
+	    var bitmap = new createjs.Bitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]));
 	    bitmap.name = name;
 	} else {
 	    var bitmap = this.bitmapCache[bi];
@@ -389,15 +482,14 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	var name = 'bmp_' + blk + '_highlight_filler_' + c;
 	var bi = this.findBitmap(name);
 	if (bi == null) { 
-	    var image = new Image();
-	    if (this.blockList[blk].isArgBlock()) {
-		image.src = myBlock.protoblock.getHighlightArgFillerSvgPath();
+	    if (myBlock.isArgBlock()) {
+		var artwork = ARG2BLOCKFILLER;
 	    } else if (myBlock.isSpecialBlock()) {
-		image.src = myBlock.protoblock.getHighlightSpecialFillerSvgPath();
+		var artwork = BASICBLOCK2ARGFILLER;
 	    } else {
-		image.src = myBlock.protoblock.getHighlightFillerSvgPath();
+		var artwork = CLAMPFILLER;
 	    }
-	    var bitmap = new createjs.Bitmap(image)
+	    var bitmap = new createjs.Bitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]));
 	    bitmap.name = name;
 	} else {
 	    var bitmap = this.bitmapCache[bi];
@@ -748,50 +840,10 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	return false;
     }
 
-    this.makeBlockImages = function(myBlock) {
-	blk = this.blockList.indexOf(myBlock);
-	if (myBlock.image == null) {
-	    myBlock.image = new Image();
-	    myBlock.image.src = myBlock.protoblock.getSvgPath();
-	    if (myBlock.isExpandableBlock()) {
-		if (myBlock.isArgBlock()) {
-		    myBlock.bottomImage = new Image();
-		    myBlock.bottomImage.src =
-			myBlock.protoblock.getArgBottomSvgPath();
-		} else if (myBlock.isSpecialBlock()) {
-		    myBlock.bottomImage = new Image();
-		    myBlock.bottomImage.src = myBlock.protoblock.getSpecialBottomSvgPath();
-		} else {
-		    myBlock.bottomImage = new Image();
-		    myBlock.bottomImage.src = myBlock.protoblock.getBottomSvgPath();
-		}
-	    }
-	    // Same for highlights
-	    myBlock.highlightImage = new Image();
-	    myBlock.highlightImage.src = myBlock.protoblock.getHighlightSvgPath();
-	    if (myBlock.isExpandableBlock()) {
-		if (myBlock.isArgBlock()) {
-		    myBlock.highlightBottomImage = new Image();
-		    myBlock.highlightBottomImage.src = myBlock.protoblock.getHighlightArgBottomSvgPath();
-		} else if (myBlock.isSpecialBlock()) {
-		    myBlock.highlightBottomImage = new Image();
-		    myBlock.highlightBottomImage.src = myBlock.protoblock.getHighlightSpecialBottomSvgPath();
-		} else {
-		    myBlock.highlightBottomImage = new Image();
-		    myBlock.highlightBottomImage.src = myBlock.protoblock.getHighlightBottomSvgPath();
-		}
-	    }
-	}
-    }
-
     this.updateBlockImages = function() {
 	// Create the block image if it doesn't yet exist.
 	for (var blk = 0; blk < this.blockList.length; blk++) {
-	    if (this.blockList[blk].image == null) {
-		this.makeBlockImages(this.blockList[blk]);
-	    } else {
-		this.moveBlock(blk, this.blockList[blk].x, this.blockList[blk].y);
-	    }
+	    this.moveBlock(blk, this.blockList[blk].x, this.blockList[blk].y);
 	}
     }
 
@@ -1044,11 +1096,22 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	// Load a block image and create any extra parts.
 	var thisBlock = this.blockList.indexOf(myBlock);
 
-	if (myBlock.image == null) {
-	    this.makeBlockImages(myBlock);
-	}
         // Create the bitmap for the block.
-	myBlock.bitmap = new createjs.Bitmap(myBlock.image);
+	// if (myBlock.name == 'clear') {
+	var block_label = '';
+	var top_label = '';
+	var bottom_label = '';
+	if (myBlock.protoblock.staticLabels.length > 0) {
+	    block_label = myBlock.protoblock.staticLabels[0];
+	}
+	if (myBlock.protoblock.staticLabels.length > 1) {
+	    top_label = myBlock.protoblock.staticLabels[1];
+	}
+	if (myBlock.protoblock.staticLabels.length > 2) {
+	    bottom_label = myBlock.protoblock.staticLabels[2];
+	}
+	myBlock.bitmap = new createjs.Bitmap(myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label));
+
 	myBlock.container.addChild(myBlock.bitmap);
 	myBlock.container.x = myBlock.x;
 	myBlock.container.y = myBlock.y;
@@ -1062,7 +1125,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	this.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
 
         // Create the highlight bitmap for the block.
-	myBlock.highlightBitmap = new createjs.Bitmap(myBlock.highlightImage);
+	myBlock.highlightBitmap = new createjs.Bitmap(myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label));
 	myBlock.container.addChild(myBlock.highlightBitmap);
 	myBlock.highlightBitmap.x = 0;
 	myBlock.highlightBitmap.y = 0;
@@ -1095,10 +1158,19 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
 	// Expandable blocks also have some extra parts.
 	if (myBlock.isExpandableBlock()) {
+	    if (myBlock.isArgBlock()) {
+		var bottomArtwork = ARG2BLOCKBOTTOM;
+	    } else if (myBlock.isSpecialBlock()) {
+		var bottomArtwork = BASICBLOCK2ARGBOTTOM;
+	    } else if (myBlock.protoblock.palette.name == 'flow') {
+		var bottomArtwork = FLOWCLAMPBOTTOM;
+	    } else {
+		var bottomArtwork = ACTIONCLAMPBOTTOM;
+	    }
 	    var yoff = myBlock.protoblock.yoff;
 	    myBlock.fillerBitmaps = [];
 	    myBlock.bottomBitmap = null;
-	    myBlock.bottomBitmap = new createjs.Bitmap(myBlock.bottomImage);
+	    myBlock.bottomBitmap = new createjs.Bitmap(bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label));
 	    myBlock.container.addChild(myBlock.bottomBitmap);
 	    myBlock.bottomBitmap.x = myBlock.bitmap.x;
 	    myBlock.bottomBitmap.y = myBlock.bitmap.y + yoff;
@@ -1107,7 +1179,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.bottomBitmap.scale = 1;
 	    myBlock.bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
 
-	    myBlock.highlightBottomBitmap = new createjs.Bitmap(myBlock.highlightBottomImage);
+	    myBlock.highlightBottomBitmap = new createjs.Bitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label));
 	    myBlock.container.addChild(myBlock.highlightBottomBitmap);
 	    myBlock.highlightBottomBitmap.x = myBlock.bitmap.x;
 	    myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + yoff;
@@ -1219,6 +1291,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	this.stage.addChild(myBlock.container);
 
 	// and we need to load the images into the container.
+	console.log('calling image load for ' + myBlock.name);
 	this.imageLoad(myBlock);
 	loadEventHandlers(this, myBlock);
 	return myBlock;
@@ -1616,7 +1689,7 @@ function Block (protoblock) {
     this.y = 0;
     this.trash = false;  // Is this block in the trash?
     this.label = null;  // Editable textview in DOM.
-    this.text = null;  // A text label on block itself.
+    this.text = null;  // A dynamically generated text label on block itself.
     this.value = null; // Value for number, text, and media blocks.
 
     this.image = null;
@@ -1962,29 +2035,34 @@ function initProtoBlocks(palettes, blocks) {
     clearBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['clear'] = clearBlock;
     clearBlock.zeroArgBlock();
+    clearBlock.staticLabels.push('clear');
     
     var forwardBlock = new ProtoBlock('forward');
     forwardBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['forward'] = forwardBlock;
     forwardBlock.oneArgBlock();
+    forwardBlock.staticLabels.push('forward');
     forwardBlock.defaults.push(100);
     
     var rightBlock = new ProtoBlock('right');
     rightBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['right'] = rightBlock;
     rightBlock.oneArgBlock();
+    rightBlock.staticLabels.push('right');
     rightBlock.defaults.push(90);
     
     var backBlock = new ProtoBlock('back');
     backBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['back'] = backBlock;
     backBlock.oneArgBlock();
+    backBlock.staticLabels.push('back');
     backBlock.defaults.push(100);
     
     var leftBlock = new ProtoBlock('left');
     leftBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['left'] = leftBlock;
     leftBlock.oneArgBlock();
+    leftBlock.staticLabels.push('left');
     leftBlock.defaults.push(90);
     
     var arcBlock = new ProtoBlock('arc');
@@ -1993,20 +2071,23 @@ function initProtoBlocks(palettes, blocks) {
     arcBlock.twoArgBlock();
     arcBlock.defaults.push(90);
     arcBlock.defaults.push(100);
-    arcBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
-		      [98, 62, 'numberin'], [20, 84, 'in']];
+    arcBlock.staticLabels.push('arc');
+    arcBlock.staticLabels.push('angle');
+    arcBlock.staticLabels.push('radius');
+    arcBlock.docks[1][2] = 'numberin';  // override default
     
     var setheadingBlock = new ProtoBlock('setheading');
     setheadingBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['setheading'] = setheadingBlock;
     setheadingBlock.oneArgBlock();
+    setheadingBlock.staticLabels.push('set heading');
     setheadingBlock.defaults.push(0);
     
     var headingBlock = new ProtoBlock('heading');
     headingBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['heading'] = headingBlock;
-    headingBlock.style = 'arg';
-    headingBlock.docks = [[0, 20, 'numberout']];
+    headingBlock.parameterBlock();
+    headingBlock.staticLabels.push('heading');
     
     var setxyBlock = new ProtoBlock('setxy');
     setxyBlock.palette = palettes.dict['turtle'];
@@ -2014,27 +2095,34 @@ function initProtoBlocks(palettes, blocks) {
     setxyBlock.twoArgBlock();
     setxyBlock.defaults.push(0);
     setxyBlock.defaults.push(0);
-    setxyBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
-			[98, 62, 'numberin'], [20, 84, 'in']];
+    setxyBlock.staticLabels.push('set xy');
+    setxyBlock.staticLabels.push('x');
+    setxyBlock.staticLabels.push('y');
+    setxyBlock.docks[1][2] = 'numberin';  // override default
     
     var xBlock = new ProtoBlock('x');
     xBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['x'] = xBlock;
     xBlock.parameterBlock();
+    xBlock.staticLabels.push('x');
     
     var yBlock = new ProtoBlock('y');
     yBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['y'] = yBlock;
     yBlock.parameterBlock();
-    
+    yBlock.staticLabels.push('y');
+
     var showBlock = new ProtoBlock('show');
     showBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['show'] = showBlock;
     showBlock.twoArgBlock();
     showBlock.defaults.push(24);
     showBlock.defaults.push('text');
-    showBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
-		       [98, 62, 'textin'], [20, 84, 'in']];
+    showBlock.staticLabels.push('show');
+    showBlock.staticLabels.push('size');
+    showBlock.staticLabels.push('text');
+    showBlock.docks[1][2] = 'numberin';  // override default
+    showBlock.docks[2][2] = 'textin';  // override default
     
     var imageBlock = new ProtoBlock('image');
     imageBlock.palette = palettes.dict['turtle'];
@@ -2042,8 +2130,11 @@ function initProtoBlocks(palettes, blocks) {
     imageBlock.twoArgBlock();
     imageBlock.defaults.push(100);
     imageBlock.defaults.push(null);
-    imageBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
-			[98, 62, 'textin'], [20, 84, 'in']];
+    imageBlock.staticLabels.push('show');
+    imageBlock.staticLabels.push('size');
+    imageBlock.staticLabels.push('image');
+    imageBlock.docks[1][2] = 'numberin';  // override default
+    imageBlock.docks[2][2] = 'mediain';  // override default
     
     var shellBlock = new ProtoBlock('turtleshell');
     shellBlock.palette = palettes.dict['turtle'];
@@ -2051,8 +2142,11 @@ function initProtoBlocks(palettes, blocks) {
     shellBlock.twoArgBlock();
     shellBlock.defaults.push(55);
     shellBlock.defaults.push(null);
-    shellBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'],
-			[98, 62, 'mediain'], [20, 84, 'in']];
+    shellBlock.staticLabels.push('shell');
+    shellBlock.staticLabels.push('size');
+    shellBlock.staticLabels.push('image');
+    shellBlock.docks[1][2] = 'numberin';  // override default
+    shellBlock.docks[2][2] = 'mediain';  // override default
     
     // Pen palette
     var setcolorBlock = new ProtoBlock('setcolor');
@@ -2060,76 +2154,88 @@ function initProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['setcolor'] = setcolorBlock;
     setcolorBlock.oneArgBlock();
     setcolorBlock.defaults.push(0);
-    
+    setcolorBlock.staticLabels.push('set color');
+
     var colorBlock = new ProtoBlock('color');
     colorBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['color'] = colorBlock;
     colorBlock.parameterBlock();
+    colorBlock.staticLabels.push('color');
     
     var setshadeBlock = new ProtoBlock('setshade');
     setshadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setshade'] = setshadeBlock;
     setshadeBlock.oneArgBlock();
     setshadeBlock.defaults.push(50);
+    setshadeBlock.staticLabels.push('set shade');
     
     var shadeBlock = new ProtoBlock('shade');
     shadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['shade'] = shadeBlock;
     shadeBlock.parameterBlock();
+    shadeBlock.staticLabels.push('shade');
     
     var setchromaBlock = new ProtoBlock('setgrey');
     setchromaBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setchroma'] = setchromaBlock;
     setchromaBlock.oneArgBlock();
     setchromaBlock.defaults.push(100);
-    
+    setchromaBlock.staticLabels.push('set grey');
+
     var chromaBlock = new ProtoBlock('grey');
     chromaBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['chroma'] = chromaBlock;
     chromaBlock.parameterBlock();
+    chromaBlock.staticLabels.push('grey');
     
     var setpensizeBlock = new ProtoBlock('setpensize');
     setpensizeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setpensize'] = setpensizeBlock;
     setpensizeBlock.oneArgBlock();
     setpensizeBlock.defaults.push(5);
+    setpensizeBlock.staticLabels.push('set pen');
     
     var pensizeBlock = new ProtoBlock('pensize');
     pensizeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['pensize'] = pensizeBlock;
     pensizeBlock.parameterBlock();
+    pensizeBlock.staticLabels.push('pen size');
     
     var penupBlock = new ProtoBlock('penup');
     penupBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['penup'] = penupBlock;
     penupBlock.zeroArgBlock();
-    
+    penupBlock.staticLabels.push('pen up');
+
     var pendownBlock = new ProtoBlock('pendown');
     pendownBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['pendown'] = pendownBlock;
     pendownBlock.zeroArgBlock();
+    pendownBlock.staticLabels.push('pen down');
     
     var startfillBlock = new ProtoBlock('beginfill');
     startfillBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['startfill'] = startfillBlock;
     startfillBlock.zeroArgBlock();
+    startfillBlock.staticLabels.push('start fill');
     
     var endfillBlock = new ProtoBlock('endfill');
     endfillBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['endfill'] = endfillBlock;
     endfillBlock.zeroArgBlock();
+    endfillBlock.staticLabels.push('end fill');
     
     var backgroundBlock = new ProtoBlock('fillscreen');
     backgroundBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['background'] = backgroundBlock;
     backgroundBlock.zeroArgBlock();
+    backgroundBlock.staticLabels.push('background');
     
     // Numbers palette
     var numberBlock = new ProtoBlock('number');
     numberBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['number'] = numberBlock;
-    numberBlock.style = 'value';
-    numberBlock.docks = [[0, 20, 'numberout']];
+    numberBlock.valueBlock();
     
     var randomBlock = new ProtoBlock('random');
     randomBlock.palette = palettes.dict['number'];
@@ -2137,168 +2243,164 @@ function initProtoBlocks(palettes, blocks) {
     randomBlock.twoArgMathBlock();
     randomBlock.defaults.push(0);
     randomBlock.defaults.push(100);
-    
+    // FIX ME: label doesn't fix
+    randomBlock.staticLabels.push('random');
+    randomBlock.staticLabels.push('min');
+    randomBlock.staticLabels.push('max');
+
     var plusBlock = new ProtoBlock('plus');
     plusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['plus'] = plusBlock;
     plusBlock.twoArgMathBlock();
-    
+    plusBlock.staticLabels.push('+');
+
     var minusBlock = new ProtoBlock('minus');
     minusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['minus'] = minusBlock;
     minusBlock.twoArgMathBlock();
-    
+    minusBlock.staticLabels.push('–');
+
     var multiplyBlock = new ProtoBlock('multiply');
     multiplyBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['multiply'] = multiplyBlock;
     multiplyBlock.twoArgMathBlock();
-    
+    multiplyBlock.staticLabels.push('×');
+
     var divideBlock = new ProtoBlock('divide');
     divideBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['divide'] = divideBlock;
     divideBlock.twoArgMathBlock();
-    
+    divideBlock.staticLabels.push('/');
+
     var sqrtBlock = new ProtoBlock('sqrt');
     sqrtBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['sqrt'] = sqrtBlock;
-    sqrtBlock.args = 1;
-    sqrtBlock.style = 'arg';
-    sqrtBlock.docks = [[0, 20, 'numberout'], [68, 20, 'numberin']];
+    sqrtBlock.oneArgMathBlock();
+    sqrtBlock.staticLabels.push('sqrt');
     
     var modBlock = new ProtoBlock('mod');
     modBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['mod'] = modBlock;
     modBlock.twoArgMathBlock();
+    modBlock.staticLabels.push('mod');
     
     var greaterBlock = new ProtoBlock('greater');
     greaterBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['greater'] = greaterBlock;
-    greaterBlock.booleanBlock();
+    greaterBlock.boolean2ArgBlock();
+    greaterBlock.staticLabels.push('>');
     
     var lessBlock = new ProtoBlock('less');
     lessBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['less'] = lessBlock;
-    lessBlock.booleanBlock();
+    lessBlock.boolean2ArgBlock();
+    lessBlock.staticLabels.push('<');
     
     var equalBlock = new ProtoBlock('equal');
     equalBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['equal'] = equalBlock;
-    equalBlock.booleanBlock();
-    
+    equalBlock.boolean2ArgBlock();
+    equalBlock.staticLabels.push('=');
+
     // Blocks palette
     var mediaBlock = new ProtoBlock('media');
     mediaBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['media'] = mediaBlock;
-    mediaBlock.style = 'value';
-    mediaBlock.docks = [[0, 20, 'mediaout']];
+    mediaBlock.valueBlock();
+    mediaBlock.docks[0][2] = 'mediaout';
     
     var textBlock = new ProtoBlock('text');
     textBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['text'] = textBlock;
-    textBlock.style = 'value';
-    textBlock.docks = [[0, 20, 'textout']];
+    textBlock.valueBlock();
+    textBlock.docks[0][2] = 'textout';
     
     var storeinBlock = new ProtoBlock('storein');
     storeinBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['storein'] = storeinBlock;
+    storeinBlock.twoArgBlock();
     storeinBlock.defaults.push('box');
     storeinBlock.defaults.push(100);
-    storeinBlock.twoArgBlock();
-    storeinBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'],
-			  [98, 62, 'numberin'], [20, 84, 'in']];
-    
+    storeinBlock.docks[1][2] = 'textin';
+    storeinBlock.docks[2][2] = 'numberin';
+    storeinBlock.staticLabels.push('store in');
+    storeinBlock.staticLabels.push('name');
+    storeinBlock.staticLabels.push('value');
+
     var boxBlock = new ProtoBlock('box');
     boxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['box'] = boxBlock;
-    boxBlock.args = 1;
+    boxBlock.oneArgBlock();
     boxBlock.defaults.push('box');
-    boxBlock.style = 'arg';
-    boxBlock.docks = [[0, 20, 'numberout'], [68, 20, 'textin']];
+    boxBlock.staticLabels.push('box');
+    boxBlock.docks[1][2] = 'textin';
     
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;
-    actionBlock.yoff = 86;
-    actionBlock.loff = 42;
-    actionBlock.args = 1;
-    actionBlock.expandable = true;
+    actionBlock.blockClamp1ArgBlock();
     actionBlock.defaults.push('action');
-    actionBlock.style = 'clamp';
-    actionBlock.docks = [[20, 0, 'unavailable'], [98, 34, 'textin'],
-			 [38, 55, 'in'], [20, 80, 'unavailable']];
+    actionBlock.staticLabels.push('action');
         
     var doBlock = new ProtoBlock('do');
     doBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['do'] = doBlock;
+    doBlock.oneArgBlock();
     doBlock.defaults.push('action');
-    doBlock.args = 1;
-    doBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+    doBlock.staticLabels.push('do');
+    doBlock.docks[1][2] = 'textin';
         
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['start'] = startBlock;
-    startBlock.yoff = 86;
-    startBlock.loff = 42;
-    startBlock.args = 1;
-    startBlock.expandable = true;
-    startBlock.style = 'clamp';
-    startBlock.docks = [[20, 0, 'unavailable'], [38, 55, 'in'],
-			[20, 80, 'unavailable']];
+    startBlock.blockClamp0ArgBlock();
+    startBlock.staticLabels.push('start');
     
     // Flow palette
     var repeatBlock = new ProtoBlock('repeat');
     repeatBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['repeat'] = repeatBlock;
-    repeatBlock.yoff = 74;
-    repeatBlock.loff = 42;
-    repeatBlock.expandable = true;
-    repeatBlock.style = 'clamp';
-    repeatBlock.size = 2;
-    repeatBlock.args = 2;
+    repeatBlock.flowClamp1ArgBlock();
+    repeatBlock.staticLabels.push('repeat');
     repeatBlock.defaults.push(4);
-    repeatBlock.docks = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'],
-			 [20, 126, 'in']];
     
     var ifBlock = new ProtoBlock('if');
     ifBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['if'] = ifBlock;
-    ifBlock.yoff = 116;
-    ifBlock.loff = 42;
-    ifBlock.expandable = true;
-    ifBlock.style = 'clamp';
-    ifBlock.size = 3;
-    ifBlock.args = 2;
-    ifBlock.docks = [[20, 0, 'out'], [56, 40, 'booleanin'], [38, 84, 'in'],
- 		     [20, 168, 'in']];
+    ifBlock.flowClampBooleanArgBlock();
+    ifBlock.staticLabels.push('if');
+    ifBlock.staticLabels.push('then');
     
     var vspaceBlock = new ProtoBlock('vspace');
     vspaceBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['vspace'] = vspaceBlock;
     vspaceBlock.zeroArgBlock();
+    // vspaceBlock.staticLabels.push('');
     
     // Sensors palette    
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['time'] = timeBlock;
     timeBlock.parameterBlock();
-    
+    timeBlock.staticLabels.push('time');
+
     var mousexBlock = new ProtoBlock('mousex');
     mousexBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousex'] = mousexBlock;
     mousexBlock.parameterBlock();
-    
+    mousexBlock.staticLabels.push('mouse x');
+
     var mouseyBlock = new ProtoBlock('mousey');
     mouseyBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousey'] = mouseyBlock;
     mouseyBlock.parameterBlock();
-    
+    mouseyBlock.staticLabels.push('mouse y');
+
     var mousebuttonBlock = new ProtoBlock('mousebutton');
     mousebuttonBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
-    mousebuttonBlock.style = 'arg';
-    mousebuttonBlock.size = 1;
-    mousebuttonBlock.args = 0;
-    mousebuttonBlock.docks = [[0, 6, 'booleanout']];
+    mousebuttonBlock.boolean0ArgBlock()
+    mousebuttonBlock.staticLabels.push('mouse button');
 
     // Extras palette
     var pubBlock = new ProtoBlock('publish');
@@ -2306,20 +2408,24 @@ function initProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['publish'] = pubBlock;
     pubBlock.oneArgBlock();
     pubBlock.defaults.push('comment');
-    pubBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+    pubBlock.staticLabels.push('publish');
+    pubBlock.docks[1][2] = 'textin';
 
     var svgBlock = new ProtoBlock('savesvg');
     svgBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['savesvg'] = svgBlock;
     svgBlock.oneArgBlock();
     svgBlock.defaults.push('title');
-    svgBlock.docks = [[20, 0, 'out'], [98, 20, 'textin'], [20, 42, 'in']];
+    svgBlock.staticLabels.push('save svg');
+    svgBlock.docks[1][2] = 'textin';
 
     var waitBlock = new ProtoBlock('wait');
     waitBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['wait'] = waitBlock;
     waitBlock.oneArgBlock();
+    waitBlock.staticLabels.push('wait');
     waitBlock.defaults.push(1);
+
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

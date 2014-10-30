@@ -2333,7 +2333,7 @@ function initProtoBlocks(palettes, blocks) {
     var mediaBlock = new ProtoBlock('media');
     mediaBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['media'] = mediaBlock;
-    mediaBlock.valueBlock();
+    mediaBlock.mediaBlock();
     mediaBlock.docks[0][2] = 'mediaout';
     
     var textBlock = new ProtoBlock('text');

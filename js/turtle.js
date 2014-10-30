@@ -145,6 +145,7 @@ function Turtle (name, turtles) {
 	}
 
 	this.bitmap.rotation = this.orientation;
+    this.container.updateCache();
 
 	// Clear all media.
 	for (i = 0; i < this.media.length; i++) {
@@ -284,6 +285,7 @@ function Turtle (name, turtles) {
 	this.bitmap.y = 0;
 	this.bitmap.regX = image.width / 2;
 	this.bitmap.regY = image.height / 2;
+    this.container.cache(0, 0, image.width, image.height);
 	// FIXME 
 	// (1) uncache
 	// (2) cache to new bitmap bounds
@@ -322,6 +324,8 @@ function Turtle (name, turtles) {
 	this.orientation += Number(degrees);
 	this.orientation %= 360;
 	this.bitmap.rotation = this.orientation;
+    this.container.updateCache();
+
         this.turtles.refreshCanvas();
     }
 
@@ -413,7 +417,8 @@ function Turtles(canvas, stage, refreshCanvas) {
 	myTurtle.bitmap.regY = 27 | 0;
 	myTurtle.bitmap.name = 'bmp_turtle';
 	myTurtle.container.addChild(myTurtle.bitmap);
-	myTurtle.bitmap.cache(-55, -55, 110, 110);
+    myTurtle.container.cache(-55, -55, 110, 110);
+	//myTurtle.bitmap.cache(-55, -55, 110, 110);
 	console.log(myTurtle.bitmap.getCacheDataURL());
 	myTurtle.bitmap.uncache();
 

@@ -68,7 +68,9 @@
   * figured out how to do inline svg with easeljs...
     beginning to convert to svg factory methods.
   * use container caching on blocks
-  * fix labels on random block
+  * fixed labels on random block
+  * fixed label on less block (use &lt;)
+  * fixed infinite loop problem when searching for expandables
 
 TODO:
   * rename action blocks when loading projects

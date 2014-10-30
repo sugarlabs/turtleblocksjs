@@ -192,12 +192,14 @@ define(function (require) {
 
             cartesianBitmap = new createjs.Bitmap(cartesian);
             container.addChild(cartesianBitmap);
+	    cartesianBitmap.cache(0, 0, 1200, 900);
 
             cartesianBitmap.x = (canvas.width - 1200) / 2;
             cartesianBitmap.y = (canvas.height - 900) / 2;
             cartesianBitmap.scaleX = cartesianBitmap.scaleY = cartesianBitmap.scale = 1;
             cartesianBitmap.name = 'bmp_cartesian';
 	    cartesianBitmap.visible = false;
+	    cartesianBitmap.updateCache();
 
 	    var polar = new Image();
 	    polar.src = 'images/polar.svg';
@@ -206,12 +208,14 @@ define(function (require) {
 
             polarBitmap = new createjs.Bitmap(polar);
             container.addChild(polarBitmap);
+	    polarBitmap.cache(0, 0, 1200, 900);
 
             polarBitmap.x = (canvas.width - 1200) / 2;
             polarBitmap.y = (canvas.height - 900) / 2;
             polarBitmap.scaleX = polarBitmap.scaleY = polarBitmap.scale = 1;
             polarBitmap.name = 'bmp_polar';
 	    polarBitmap.visible = false;
+	    polarBitmap.updateCache();
 
 	    var URL = window.location.href;
 	    console.log(URL);
@@ -875,21 +879,25 @@ define(function (require) {
 
 	function hideCartesian() {
 	    cartesianBitmap.visible = false;
+	    cartesianBitmap.updateCache();
 	    update = true;
 	}
 
 	function showCartesian() {
 	    cartesianBitmap.visible = true;
+	    cartesianBitmap.updateCache();
 	    update = true;
 	}
 
 	function hidePolar() {
 	    polarBitmap.visible = false;
+	    polarBitmap.updateCache();
 	    update = true;
 	}
 
 	function showPolar() {
 	    polarBitmap.visible = true;
+	    polarBitmap.updateCache();
 	    update = true;
 	}
 

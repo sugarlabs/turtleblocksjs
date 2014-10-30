@@ -906,6 +906,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	// When we create new blocks, we may not have assigned the
 	// value yet.	    
 	this.blockList[blk].text.text = this.blockList[blk].value.toString();
+	this.blockList[blk].container.updateCache();
     }
 
     this.updateBlockLabels = function() {
@@ -1850,7 +1851,7 @@ function labelChanged() {
 	// Make sure text is on top.
 	lastChild = last(myBlock.container.children);
 	myBlock.container.swapChildren(myBlock.text, lastChild);
-        myBlock.container.updateCache();
+        // myBlock.container.updateCache();
 	blocks.refreshCanvas();
     }
 

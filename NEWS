@@ -67,6 +67,7 @@
   * fix mouse down logic
   * figured out how to do inline svg with easeljs...
     beginning to convert to svg factory methods.
+  * use container caching on blocks
 
 TODO:
   * fix canvas sizing, resizing
@@ -74,7 +75,7 @@ TODO:
   * selectable menu of samples
   * send svg thumbnail to server
   * fix menu tearing issues
-  * use container caching
+  * use container caching on palette
   * use snap to pixels
   * copy/paste
   * user defined blocks

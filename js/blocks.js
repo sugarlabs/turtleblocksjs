@@ -13,7 +13,7 @@
 
 // Some names changed between the Python verison and the
 // JS version so look up name in the conversion dictionary.
-var NAMEDICT = {'xpos': 'x', 'ypos': 'y', 'seth': 'setheading', 'plus2': 'plus', 'product2': 'multiply', 'division2': 'divide', 'minus2': 'minus', 'stack': 'do', 'hat': 'action', 'clean': 'clear', 'setxy2': 'setxy', 'greater2': 'greater', 'less2': 'less', 'equal2': 'equal', 'random2': 'random', 'sethue': 'setcolor', 'setvalue': 'setshade', 'setchroma': 'setgrey', 'setgray': 'setgrey', 'gray': 'grey', 'chroma': 'grey', 'value': 'shade', 'hue': 'color', 'startfill': 'beginfill', 'stopfill': 'endfill', 'string': 'text'};
+var NAMEDICT = {'xpos': 'x', 'ypos': 'y', 'seth': 'setheading', 'plus2': 'plus', 'product2': 'multiply', 'division2': 'divide', 'minus2': 'minus', 'stack': 'do', 'hat': 'action', 'clean': 'clear', 'setxy2': 'setxy', 'greater2': 'greater', 'less2': 'less', 'equal2': 'equal', 'random2': 'random', 'sethue': 'setcolor', 'setvalue': 'setshade', 'setchroma': 'setgrey', 'setgray': 'setgrey', 'gray': 'grey', 'chroma': 'grey', 'value': 'shade', 'hue': 'color', 'startfill': 'beginfill', 'stopfill': 'endfill', 'string': 'text', 'shell': 'turtleshell'};
 
 // For DOM access
 var blockBlocks = null;
@@ -36,6 +36,7 @@ function ProtoBlock (name) {
     this.defaults = [];
     this.size = 1;
     this.staticLabels = [];  // Generated as part of static inline SVG
+    this.fontsize = '18px';
     this.artwork = null;
     this.docks = [];
 
@@ -1111,7 +1112,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	var thisBlock = this.blockList.indexOf(myBlock);
 
         // Create the bitmap for the block.
-	// if (myBlock.name == 'clear') {
 	var block_label = '';
 	var top_label = '';
 	var bottom_label = '';
@@ -1124,7 +1124,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	if (myBlock.protoblock.staticLabels.length > 2) {
 	    bottom_label = myBlock.protoblock.staticLabels[2];
 	}
-	myBlock.bitmap = new createjs.Bitmap(myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label));
+	myBlock.bitmap = new createjs.Bitmap(myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.protoblock.fontsize));
 
 	myBlock.container.addChild(myBlock.bitmap);
 	myBlock.container.x = myBlock.x;
@@ -1139,7 +1139,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	this.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
 
         // Create the highlight bitmap for the block.
-	myBlock.highlightBitmap = new createjs.Bitmap(myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label));
+	myBlock.highlightBitmap = new createjs.Bitmap(myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.protoblock.fontsize));
 	myBlock.container.addChild(myBlock.highlightBitmap);
 	myBlock.highlightBitmap.x = 0;
 	myBlock.highlightBitmap.y = 0;
@@ -2105,7 +2105,7 @@ function initProtoBlocks(palettes, blocks) {
     setheadingBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['setheading'] = setheadingBlock;
     setheadingBlock.oneArgBlock();
-    setheadingBlock.staticLabels.push('set heading');
+    setheadingBlock.staticLabels.push('seth');
     setheadingBlock.defaults.push(0);
     
     var headingBlock = new ProtoBlock('heading');
@@ -2163,7 +2163,7 @@ function initProtoBlocks(palettes, blocks) {
     
     var shellBlock = new ProtoBlock('turtleshell');
     shellBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['shell'] = shellBlock;
+    blocks.protoBlockDict['turtleshell'] = shellBlock;
     shellBlock.twoArgBlock();
     shellBlock.defaults.push(55);
     shellBlock.defaults.push(null);
@@ -2202,14 +2202,14 @@ function initProtoBlocks(palettes, blocks) {
     
     var setchromaBlock = new ProtoBlock('setgrey');
     setchromaBlock.palette = palettes.dict['pen'];
-    blocks.protoBlockDict['setchroma'] = setchromaBlock;
+    blocks.protoBlockDict['setgrey'] = setchromaBlock;
     setchromaBlock.oneArgBlock();
     setchromaBlock.defaults.push(100);
     setchromaBlock.staticLabels.push('set grey');
 
     var chromaBlock = new ProtoBlock('grey');
     chromaBlock.palette = palettes.dict['pen'];
-    blocks.protoBlockDict['chroma'] = chromaBlock;
+    blocks.protoBlockDict['grey'] = chromaBlock;
     chromaBlock.parameterBlock();
     chromaBlock.staticLabels.push('grey');
     
@@ -2240,9 +2240,9 @@ function initProtoBlocks(palettes, blocks) {
     
     var startfillBlock = new ProtoBlock('beginfill');
     startfillBlock.palette = palettes.dict['pen'];
-    blocks.protoBlockDict['startfill'] = startfillBlock;
+    blocks.protoBlockDict['beginfill'] = startfillBlock;
     startfillBlock.zeroArgBlock();
-    startfillBlock.staticLabels.push('start fill');
+    startfillBlock.staticLabels.push('begin fill');
     
     var endfillBlock = new ProtoBlock('endfill');
     endfillBlock.palette = palettes.dict['pen'];
@@ -2252,7 +2252,7 @@ function initProtoBlocks(palettes, blocks) {
     
     var backgroundBlock = new ProtoBlock('fillscreen');
     backgroundBlock.palette = palettes.dict['pen'];
-    blocks.protoBlockDict['background'] = backgroundBlock;
+    blocks.protoBlockDict['fillscreen'] = backgroundBlock;
     backgroundBlock.zeroArgBlock();
     backgroundBlock.staticLabels.push('background');
     
@@ -2268,7 +2268,7 @@ function initProtoBlocks(palettes, blocks) {
     randomBlock.twoArgMathBlock();
     randomBlock.defaults.push(0);
     randomBlock.defaults.push(100);
-    // FIX ME: label doesn't fix
+    randomBlock.fontsize = '14px';    // FIX ME: label doesn't fix
     randomBlock.staticLabels.push('random');
     randomBlock.staticLabels.push('min');
     randomBlock.staticLabels.push('max');
@@ -2278,24 +2278,28 @@ function initProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['plus'] = plusBlock;
     plusBlock.twoArgMathBlock();
     plusBlock.staticLabels.push('+');
+    plusBlock.fontsize = '24px';
 
     var minusBlock = new ProtoBlock('minus');
     minusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['minus'] = minusBlock;
     minusBlock.twoArgMathBlock();
     minusBlock.staticLabels.push('–');
+    minusBlock.fontsize = '24px';
 
     var multiplyBlock = new ProtoBlock('multiply');
     multiplyBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['multiply'] = multiplyBlock;
     multiplyBlock.twoArgMathBlock();
     multiplyBlock.staticLabels.push('×');
+    multiplyBlock.fontsize = '24px';
 
     var divideBlock = new ProtoBlock('divide');
     divideBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['divide'] = divideBlock;
     divideBlock.twoArgMathBlock();
     divideBlock.staticLabels.push('/');
+    divideBlock.fontsize = '24px';
 
     var sqrtBlock = new ProtoBlock('sqrt');
     sqrtBlock.palette = palettes.dict['number'];
@@ -2314,18 +2318,21 @@ function initProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['greater'] = greaterBlock;
     greaterBlock.boolean2ArgBlock();
     greaterBlock.staticLabels.push('>');
-    
+    greaterBlock.fontsize = '24px';
+
     var lessBlock = new ProtoBlock('less');
     lessBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['less'] = lessBlock;
     lessBlock.boolean2ArgBlock();
     lessBlock.staticLabels.push('<');
-    
+    lessBlock.fontsize = '24px';
+
     var equalBlock = new ProtoBlock('equal');
     equalBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['equal'] = equalBlock;
     equalBlock.boolean2ArgBlock();
     equalBlock.staticLabels.push('=');
+    equalBlock.fontsize = '24px';
 
     // Blocks palette
     var mediaBlock = new ProtoBlock('media');
@@ -2355,7 +2362,7 @@ function initProtoBlocks(palettes, blocks) {
     var boxBlock = new ProtoBlock('box');
     boxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['box'] = boxBlock;
-    boxBlock.oneArgBlock();
+    boxBlock.oneArgMathBlock();
     boxBlock.defaults.push('box');
     boxBlock.staticLabels.push('box');
     boxBlock.docks[1][2] = 'textin';

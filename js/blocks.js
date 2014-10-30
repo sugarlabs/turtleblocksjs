@@ -1850,7 +1850,7 @@ function labelChanged() {
 	// Make sure text is on top.
 	lastChild = last(myBlock.container.children);
 	myBlock.container.swapChildren(myBlock.text, lastChild);
-        // myBlock.container.updateCache();
+        myBlock.container.updateCache();
 	blocks.refreshCanvas();
     }
 
@@ -1914,7 +1914,7 @@ function doOpenMedia(blocks, thisBlock) {
 		}
 		bitmap.x = 30;
 		bitmap.y = 10;
-		// blocks.blockList[thisBlock].container.updateCache();
+		blocks.blockList[thisBlock].container.updateCache();
 		update = true;
 	    }
 	});

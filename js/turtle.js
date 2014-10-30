@@ -289,7 +289,8 @@ function Turtle (name, turtles) {
         this.bitmap.rotation = this.orientation;
         this.skinChanged = true;
         this.container.uncache();
-        this.container.cache(0, 0, image.width, image.height);
+	var bounds = this.container.getBounds();
+        this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 
         this.turtles.blocks.blockList[this.startBlock].container.removeChild(this.decorationBitmap);
         this.decorationBitmap = new createjs.Bitmap(myImage);

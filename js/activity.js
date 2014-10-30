@@ -9,6 +9,10 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+// Note: This code is inspired by the Python Turtle Blocks project
+// (https://github.com/walterbender/turtleart), but implemented from
+// scratch. -- Walter Bender, October 2014.
+
 define(function (require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
@@ -46,6 +50,7 @@ define(function (require) {
 
 	var turtleDelay = defaultDelay;
 
+	// Used to track mouse state for mouse button block
 	var stageMouseDown = false;
 
         var fastButton = docById('fast-button');

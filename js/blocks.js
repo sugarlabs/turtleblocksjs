@@ -86,7 +86,8 @@ function ProtoBlock (name) {
     // We need to copy, since docks get modified.
     this.copyDock = function(dockStyle) {
 	for(var i = 0; i < dockStyle.length; i++) {
-	    this.docks.push(dockStyle[i]);
+	    var dock = [dockStyle[i][0], dockStyle[i][1], dockStyle[i][2]];
+	    this.docks.push(dock);
 	}
     }
 
@@ -305,61 +306,66 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
     this.adjustExpandableBlock = function(blk) {
 	// Adjust the size of the clamp in an expandable block
+	var myBlock = this.blockList[blk];
+	myBlock.container.uncache();
     
-	if (this.blockList[blk].isArgBlock()) {
+	if (myBlock.isArgBlock()) {
 	    return;
 	}
     
-	if (this.blockList[blk].isSpecialBlock()) {
+	if (myBlock.isSpecialBlock()) {
 	    return;
 	}
     
 	// (1) count up the number of blocks inside the clamp;
 	// always the second to last argument.
-	var c = this.blockList[blk].connections.length - 2;
+	var c = myBlock.connections.length - 2;
 	this.sizeCounter = 0;
-	var size = this.getStackSize(this.blockList[blk].connections[c]);
+	var size = this.getStackSize(myBlock.connections[c]);
 	if( size < 1 ) {
 	    size = 1;  // Minimum clamp size
 	}
 	// console.log('blk[' + blk + '].size == ' + size);
 
 	// (2) adjust the clamp size to match.
-	var yoff = this.blockList[blk].protoblock.yoff;
-	var loff = this.blockList[blk].protoblock.loff;
-	var j = this.blockList[blk].fillerBitmaps.length;
-	if (size < this.blockList[blk].fillerBitmaps.length + 1) {
+	var yoff = myBlock.protoblock.yoff;
+	var loff = myBlock.protoblock.loff;
+	var j = myBlock.fillerBitmaps.length;
+	if (size < myBlock.fillerBitmaps.length + 1) {
 	    var n = j - size + 1;  // one slot built in
 	    for (var i = 0; i < n; i++) {
 		this.removeFiller(blk);
-		last(this.blockList[blk].docks)[1] -= loff;
+		last(myBlock.docks)[1] -= loff;
+		myBlock.bounds.height -= loff;
 	    }
-            j = this.blockList[blk].fillerBitmaps.length;
+            j = myBlock.fillerBitmaps.length;
 	    var o = yoff + j * loff;
-	    this.blockList[blk].bottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    this.blockList[blk].highlightBottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    if (last(this.blockList[blk].connections) != null) {
+	    myBlock.bottomBitmap.y = myBlock.bitmap.y + o;
+	    myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + o;
+	    if (last(myBlock.connections) != null) {
 		this.loopCounter = 0;
 		this.adjustDocks(blk);
 	    }
-	    this.refreshCanvas();
-	} else if (size > this.blockList[blk].fillerBitmaps.length) {
+	} else if (size > myBlock.fillerBitmaps.length) {
 	    var n = size - j - 1;  // one slot built in
 	    for (var i = 0; i < n; i++) {
 		var c = i + j;
 		this.addFiller(blk, yoff + c * loff, c);
-		last(this.blockList[blk].docks)[1] += loff;
+		last(myBlock.docks)[1] += loff;
+		myBlock.bounds.height += loff;
 	    }
-            j = this.blockList[blk].fillerBitmaps.length;
+            j = myBlock.fillerBitmaps.length;
 	    var o = yoff + j * loff;
-	    this.blockList[blk].bottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    this.blockList[blk].highlightBottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    if (last(this.blockList[blk].connections) != null) {
+	    myBlock.bottomBitmap.y = myBlock.bitmap.y + o;
+	    myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + o;
+	    if (last(myBlock.connections) != null) {
 		this.loopCounter = 0;
 		this.adjustDocks(blk);
 	    }
-	    this.refreshCanvas();
 	}	    
+	console.log('change ' + myBlock.bounds.height);
+	myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+	this.refreshCanvas();
     }
 
     this.getBlockSize = function(blk) {
@@ -369,8 +375,11 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
     this.adjust2ArgBlock = function(blk) {
 	// Adjust the size of a 2-arg block
+	var myBlock = this.blockList[blk];
+	myBlock.container.uncache();
+
 	// (1) What the size of the first argument?
-	var c = this.blockList[blk].connections[1];
+	var c = myBlock.connections[1];
 	if (c == null) {
 	    var size = 0;
 	} else {
@@ -381,83 +390,89 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
     
 	// (2) adjust the block size to match.
-	var yoff = this.blockList[blk].protoblock.yoff;
-	var loff = this.blockList[blk].protoblock.loff;
-	var j = this.blockList[blk].fillerBitmaps.length;
-	if (size < this.blockList[blk].fillerBitmaps.length + 1) {
+	var yoff = myBlock.protoblock.yoff;
+	var loff = myBlock.protoblock.loff;
+	var j = myBlock.fillerBitmaps.length;
+	if (size < myBlock.fillerBitmaps.length + 1) {
 	    var n = j - size + 1;  // one slot built in
 	    for (var i = 0; i < n; i++) {
 		this.removeFiller(blk);
-		this.blockList[blk].docks[2][1] -= loff;
-		if (!this.blockList[blk].isArgBlock()) {
-		    this.blockList[blk].docks[3][1] -= loff;
+		myBlock.docks[2][1] -= loff;
+		if (!myBlock.isArgBlock()) {
+		    myBlock.docks[3][1] -= loff;
 		}
-		this.blockList[blk].size -= 1;
+		myBlock.size -= 1;
+		myBlock.bounds.height -= loff;
 	    }
-            j = this.blockList[blk].fillerBitmaps.length;
+            j = myBlock.fillerBitmaps.length;
 	    var o = yoff + j * loff;
-	    this.blockList[blk].bottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    this.blockList[blk].highlightBottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    if (this.blockList[blk].isArgBlock()) {
-		if (this.blockList[blk].connections[2] != null) {
+	    myBlock.bottomBitmap.y = myBlock.bitmap.y + o;
+	    myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + o;
+	    if (myBlock.isArgBlock()) {
+		if (myBlock.connections[2] != null) {
 		    this.loopCounter = 0;
 		    this.adjustDocks(blk);
 		}
 	    } else {
-		if (this.blockList[blk].connections[2] != null) {
+		if (myBlock.connections[2] != null) {
 		    this.loopCounter = 0;
 		    this.adjustDocks(blk);
-		} else if (this.blockList[blk].connections[3] != null) {
+		} else if (myBlock.connections[3] != null) {
 		    this.loopCounter = 0;
 		    this.adjustDocks(blk);
 		}
 	    }
-	    this.refreshCanvas();
-	} else if (size > this.blockList[blk].fillerBitmaps.length) {
+	} else if (size > myBlock.fillerBitmaps.length) {
 	    var n = size - j - 1;  // one slot built in
 	    for (var i = 0; i < n; i++) {
 		var c = i + j;
 		this.addFiller(blk, yoff + c * loff, c);
-		this.blockList[blk].docks[2][1] += loff;
-		if (!this.blockList[blk].isArgBlock()) {
-		    this.blockList[blk].docks[3][1] += loff;
+		myBlock.docks[2][1] += loff;
+		if (!myBlock.isArgBlock()) {
+		    myBlock.docks[3][1] += loff;
 		}
-		this.blockList[blk].size += 1;
+		myBlock.size += 1;
+		myBlock.bounds.height += loff;
 	    }
-            j = this.blockList[blk].fillerBitmaps.length;
+            j = myBlock.fillerBitmaps.length;
 	    var o = yoff + j * loff;
-	    this.blockList[blk].bottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    this.blockList[blk].highlightBottomBitmap.y = this.blockList[blk].bitmap.y + o;
-	    if (this.blockList[blk].isArgBlock()) {
-		if (this.blockList[blk].connections[2] != null) {
+	    myBlock.bottomBitmap.y = myBlock.bitmap.y + o;
+	    myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + o;
+	    if (myBlock.isArgBlock()) {
+		if (myBlock.connections[2] != null) {
 		    this.loopCounter = 0;
 		    this.adjustDocks(blk);
 		}
 	    } else {
-		if (this.blockList[blk].connections[2] != null) {
+		if (myBlock.connections[2] != null) {
 		    this.loopCounter = 0;
 		    this.adjustDocks(blk);
-		} else if (this.blockList[blk].connections[3] != null) {
+		} else if (myBlock.connections[3] != null) {
 		    this.loopCounter = 0;
 		    this.adjustDocks(blk);
 		}
 	    }
-	    this.refreshCanvas();
 	}
+	console.log('change ' + myBlock.bounds.height);
+	myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+	this.refreshCanvas();
     }
 
     this.removeFiller = function(blk) {
-	var fillerBitmap = this.blockList[blk].fillerBitmaps.pop();
-	this.blockList[blk].container.removeChild(fillerBitmap);
+	var myBlock = this.blockList[blk];
+	var fillerBitmap = myBlock.fillerBitmaps.pop();
+	myBlock.container.uncache();
+
+	myBlock.container.removeChild(fillerBitmap);
 	if (this.findBitmap(fillerBitmap.name) == null) {
 	    this.bitmapCache.push(fillerBitmap);
 	}
-	this.refreshCanvas();
     }
 
     this.addFiller = function(blk, offset, c) {
 	var myBlock = this.blockList[blk];
 	var name = 'bmp_' + blk + '_filler_' + c;
+
 	var bi = this.findBitmap(name);
 	if (bi == null) { 
 	    if (myBlock.isArgBlock()) {
@@ -501,8 +516,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
 	// Hide highlight to start
 	bitmap.visible = false;
-	
-	this.refreshCanvas();
     }
 
     this.findBitmap = function(name) {
@@ -1154,6 +1167,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.text.x = 70 + myBlock.bitmap.x;
 	    myBlock.text.y = 27 + myBlock.bitmap.y;
 	    myBlock.text.scaleX = myBlock.text.scaleY = myBlock.text.scale = 1;
+            // myBlock.container.updateCache();
 	}
 
 	// Expandable blocks also have some extra parts.
@@ -1189,6 +1203,9 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
 	    myBlock.highlightBottomBitmap.visible = false;
 	}
+	myBlock.bounds = myBlock.container.getBounds();
+	myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+        // console.log(myTurtle.bitmap.getCacheDataURL());
     }
 
     this.unhighlight = function() {
@@ -1209,6 +1226,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		    myBlock.highlightBottomBitmap.visible = false;
 		}
 	    }
+	    myBlock.container.updateCache();
 	    this.refreshCanvas();
 	}
 	this.highlightedBlock = null;
@@ -1233,7 +1251,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		    myBlock.highlightBottomBitmap.visible = true;
 		}
 	    }
-
+	    myBlock.container.updateCache();
 	    this.highlightedBlock = blk;
 	    this.refreshCanvas();
 	}
@@ -1274,7 +1292,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
     this.makeNewBlock = function(name) {
 	// Create a new block
-	// console.log('makeNewBlock: (' + name + ')');
+	console.log('makeNewBlock: (' + name + ')');
 	if (!name in this.protoBlockDict) {
 	    console.log('makeNewBlock: no prototype for ' + name);
 	    return null;
@@ -1300,6 +1318,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     this.makeBlock = function(name, arg) {
 	// Make a new block from a proto block.
 	// Called from palettes (and eventually from the load block).
+	console.log('makeBlock: ' + name + ' ' + arg);
 	for (var proto in this.protoBlockDict) {
 	    if (this.protoBlockDict[proto].name == name) {
 		if (arg == '__NOARG__') {
@@ -1325,6 +1344,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
 
 	// Attach default args if any
+	console.log('makeBlock docks: ' + myBlock.docks);
 	var cblk = blk + 1;
 	for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
 	    var value = myBlock.protoblock.defaults[i];
@@ -1692,11 +1712,9 @@ function Block (protoblock) {
     this.text = null;  // A dynamically generated text label on block itself.
     this.value = null; // Value for number, text, and media blocks.
 
-    this.image = null;
-    this.highlightImage = null;
-
     // All blocks have at a container and least one bitmap.
     this.container = null;
+    this.bounds = null;
     this.bitmap = null;
     this.highlightBitmap = null;
 
@@ -1718,6 +1736,10 @@ function Block (protoblock) {
 	for (var i in this.protoblock.docks) {
 	    var dock = [this.protoblock.docks[i][0], this.protoblock.docks[i][1], this.protoblock.docks[i][2]];
 	    this.docks.push(dock);
+	}
+	if (this.protoblock.name == 'forward') {
+	    console.log('copyDocks from ' + this.protoblock.docks);
+	    console.log('copyDocks to ' + this.docks);
 	}
     }
 
@@ -1828,6 +1850,7 @@ function labelChanged() {
 	// Make sure text is on top.
 	lastChild = last(myBlock.container.children);
 	myBlock.container.swapChildren(myBlock.text, lastChild);
+        // myBlock.container.updateCache();
 	blocks.refreshCanvas();
     }
 
@@ -1891,6 +1914,7 @@ function doOpenMedia(blocks, thisBlock) {
 		}
 		bitmap.x = 30;
 		bitmap.y = 10;
+		// blocks.blockList[thisBlock].container.updateCache();
 		update = true;
 	    }
 	});
@@ -2043,7 +2067,7 @@ function initProtoBlocks(palettes, blocks) {
     forwardBlock.oneArgBlock();
     forwardBlock.staticLabels.push('forward');
     forwardBlock.defaults.push(100);
-    
+
     var rightBlock = new ProtoBlock('right');
     rightBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['right'] = rightBlock;
@@ -2425,7 +2449,6 @@ function initProtoBlocks(palettes, blocks) {
     waitBlock.oneArgBlock();
     waitBlock.staticLabels.push('wait');
     waitBlock.defaults.push(1);
-
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

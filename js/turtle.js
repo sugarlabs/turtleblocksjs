@@ -415,9 +415,8 @@ function Turtles(canvas, stage, refreshCanvas) {
         myTurtle.bitmap.regY = 27 | 0;
         myTurtle.bitmap.name = 'bmp_turtle';
         myTurtle.container.addChild(myTurtle.bitmap);
-        myTurtle.container.cache(-55, -55, 110, 110);
-        // console.log(myTurtle.bitmap.getCacheDataURL());
-
+	var bounds = myTurtle.container.getBounds();
+        myTurtle.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
         myTurtle.bitmap.cursor = 'pointer';
         var hitArea = new createjs.Shape();
         hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);

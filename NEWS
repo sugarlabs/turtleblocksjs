@@ -73,8 +73,10 @@
   * fixed infinite loop problem when searching for expandables
   * fixed more issues with caching
   * reload media thumbnails
+  * collapsible stacks
 
 TODO:
+  * don't save bitmap to session
   * rename action blocks when loading projects
   * fix canvas sizing, resizing
   * seed svg with bg color on load

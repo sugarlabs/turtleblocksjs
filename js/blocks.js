@@ -878,6 +878,10 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.x = x
 	    myBlock.y = y
 	    this.adjustLabelPosition(blk, myBlock.container.x, myBlock.container.y);
+	    if (myBlock.collapseButton != null) {
+		myBlock.collapseButton.x = x - 45;
+		myBlock.collapseButton.y = y + 8;
+	    }
 	} else {
 	    console.log('no container yet');
 	    myBlock.x = x
@@ -894,6 +898,10 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.x = myBlock.container.x;
 	    myBlock.y = myBlock.container.y;
 	    this.adjustLabelPosition(blk, myBlock.container.x, myBlock.container.y);
+	    if (myBlock.collapseButton != null) {
+		myBlock.collapseButton.x += dx;
+		myBlock.collapseButton.y += dy;
+	    }
 	} else {
 	    console.log('no container yet');
 	    myBlock.x += dx
@@ -1176,8 +1184,10 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    } else if (myBlock.isSpecialBlock()) {
 		var bottomArtwork = BASICBLOCK2ARGBOTTOM;
 	    } else if (myBlock.protoblock.palette.name == 'flow') {
+		console.log('flow block');
 		var bottomArtwork = FLOWCLAMPBOTTOM;
 	    } else {
+		console.log('blocks block');
 		var bottomArtwork = ACTIONCLAMPBOTTOM;
 	    }
 	    var yoff = myBlock.protoblock.yoff;
@@ -1201,7 +1211,36 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.highlightBottomBitmap.scale = 1;
 	    myBlock.highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
 	    myBlock.highlightBottomBitmap.visible = false;
+
+	    // Start blocks and Action blocks can collapse, so add an
+	    // event handler
+	    if (['start', 'action'].indexOf(myBlock.name) != -1) {
+		myBlock.collapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
+		myBlock.container.addChild(myBlock.collapseBlockBitmap);
+		myBlock.collapseBlockBitmap.visible = false;
+		myBlock.highlightCollapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
+		myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
+		myBlock.highlightCollapseBlockBitmap.visible = false;
+
+		myBlock.collapseButton = new createjs.Container();
+		this.stage.addChild(myBlock.collapseButton);
+		var image = new Image();
+		image.src = 'images/collapse.svg';
+		myBlock.collapseBitmap = new createjs.Bitmap(image);
+		myBlock.collapseButton.addChild(myBlock.collapseBitmap);
+		var image = new Image();
+		image.src = 'images/expand.svg';
+		myBlock.expandBitmap = new createjs.Bitmap(image);
+		myBlock.collapseButton.addChild(myBlock.expandBitmap);
+		myBlock.expandBitmap.visible = false;
+		myBlock.collapseButton.x = myBlock.container.x - 45;
+		myBlock.collapseButton.y = myBlock.container.y + 8
+		var bounds = myBlock.collapseButton.getBounds();
+		// myBlock.collapseButton.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+		loadCollapsibleEventHandlers(this, myBlock);
+	    }
 	}
+
 	myBlock.bounds = myBlock.container.getBounds();
 	myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
         // console.log(myTurtle.bitmap.getCacheDataURL());
@@ -1213,16 +1252,23 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
 	if (this.highlightedBlock != null) {
 	    var myBlock = this.blockList[this.highlightedBlock];
-	    myBlock.bitmap.visible = true;
-	    myBlock.highlightBitmap.visible = false;
-	    if (this.blockList[this.highlightedBlock].isExpandableBlock()) {
-		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-		    myBlock.fillerBitmaps[i].visible = true;
-		    myBlock.highlightFillerBitmaps[i].visible = false;
+	    if (myBlock.collapsed) {
+		if( ['start', 'action'].indexOf(myBlock.name) != -1) {
+		    myBlock.highlightCollapseBlockBitmap.visible = false;
+		    myBlock.collapseBlockBitmap.visible = true;
 		}
-		if (myBlock.bottomBitmap != null) {
-		    myBlock.bottomBitmap.visible = true;
-		    myBlock.highlightBottomBitmap.visible = false;
+	    } else {
+		myBlock.bitmap.visible = true;
+		myBlock.highlightBitmap.visible = false;
+		if (this.blockList[this.highlightedBlock].isExpandableBlock()) {
+		    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+			myBlock.fillerBitmaps[i].visible = true;
+			myBlock.highlightFillerBitmaps[i].visible = false;
+		    }
+		    if (myBlock.bottomBitmap != null) {
+			myBlock.bottomBitmap.visible = true;
+			myBlock.highlightBottomBitmap.visible = false;
+		    }
 		}
 	    }
 	    myBlock.container.updateCache();
@@ -1238,16 +1284,23 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	if (blk != null) {
 	    this.unhighlight();
 	    var myBlock = this.blockList[blk];
-	    myBlock.bitmap.visible = false;
-	    myBlock.highlightBitmap.visible = true;
-	    if (myBlock.isExpandableBlock()) {
-		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-		    myBlock.fillerBitmaps[i].visible = false;
-		    myBlock.highlightFillerBitmaps[i].visible = true;
+	    if (myBlock.collapsed) {
+		if( ['start', 'action'].indexOf(myBlock.name) != -1) {
+		    myBlock.highlightCollapseBlockBitmap.visible = true;
+		    myBlock.collapseBlockBitmap.visible = false;
 		}
-		if (myBlock.bottomBitmap != null) {
-		    myBlock.bottomBitmap.visible = false;
-		    myBlock.highlightBottomBitmap.visible = true;
+	    } else {
+                myBlock.bitmap.visible = false;
+	        myBlock.highlightBitmap.visible = true;
+                if (myBlock.isExpandableBlock()) {
+	            for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+		        myBlock.fillerBitmaps[i].visible = false;
+		        myBlock.highlightFillerBitmaps[i].visible = true;
+		    }
+   		    if (myBlock.bottomBitmap != null) {
+			myBlock.bottomBitmap.visible = false;
+			myBlock.highlightBottomBitmap.visible = true;
+		    }
 		}
 	    }
 	    myBlock.container.updateCache();
@@ -1316,7 +1369,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
     this.makeBlock = function(name, arg) {
 	// Make a new block from a proto block.
-	// Called from palettes (and eventually from the load block).
+	// Called from palettes (and from the load block).
 	// console.log('makeBlock: ' + name + ' ' + arg);
 	for (var proto in this.protoBlockDict) {
 	    if (this.protoBlockDict[proto].name == name) {
@@ -1718,6 +1771,7 @@ function Block (protoblock) {
     this.name = protoblock.name;
     this.x = 0;
     this.y = 0;
+    this.collapsed = false; // Is this block in a collapsed stack?
     this.trash = false;  // Is this block in the trash?
     this.label = null;  // Editable textview in DOM.
     this.text = null;  // A dynamically generated text label on block itself.
@@ -1734,6 +1788,14 @@ function Block (protoblock) {
     this.bottomBitmap = null;
     this.highlightFillerBitmaps = [];
     this.highlightBottomBitmap = null;
+
+    // Start and Action blocks has a collapse button (in a separate
+    // container).
+    this.collapseButton = null;
+    this.collapseBitmap = null;
+    this.expandBitmap = null;
+    this.collapseBlockBitmap = null;
+    this.highlightCollapseBlockBitmap = null;
 
     this.size = 1;  // Proto size is copied here.
     this.docks = [];  // Proto dock is copied here.
@@ -1759,7 +1821,7 @@ function Block (protoblock) {
     }
 
     this.show = function() {
-	if (!this.trash) {
+	if (!this.trash && !this.collapsed) {
 	    this.container.visible = true;
 	}
     }
@@ -1938,6 +2000,75 @@ function doOpenMedia(blocks, thisBlock) {
     fileChooser.click();
 }
 
+// These are the event handlers for collapsible blocks.
+function loadCollapsibleEventHandlers(blocks, myBlock) {
+    var thisBlock = blocks.blockList.indexOf(myBlock);
+    var hitArea = new createjs.Shape();
+    var w2 = 42;
+    var h2 = 42;
+    hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
+    hitArea.x = w2 / 2;
+    hitArea.y = h2 / 2;
+    myBlock.collapseButton.hitArea = hitArea;
+
+    myBlock.collapseButton.on('click', function(event) {
+	// Find the blocks to collapse/expand
+	blocks.findDragGroup(thisBlock)
+
+	if (myBlock.collapsed) {
+            myBlock.collapsed = false;
+	    myBlock.collapseBitmap.visible = true;
+	    myBlock.expandBitmap.visible = false;
+	    myBlock.collapseBlockBitmap.visible = false;
+	    myBlock.highlightCollapseBlockBitmap.visible = false;
+	    myBlock.bitmap.visible = true;
+	    myBlock.highlightBitmap.visible = true;
+	    myBlock.bottomBitmap.visible = true;
+	    myBlock.highlightBottomBitmap.visible = true;
+	    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+		myBlock.fillerBitmaps[i].visible = true;
+		myBlock.highlightFillerBitmaps[i].visible = true;
+	    }
+	    if (blocks.dragGroup.length > 0) {
+		for (var b = 0; b < blocks.dragGroup.length; b++) {
+		    blk = blocks.dragGroup[b];
+		    if (b != 0) {
+			blocks.blockList[blk].collapsed = false;
+			blocks.blockList[blk].container.visible = true;
+		    }
+		}
+	    }
+	} else {
+            myBlock.collapsed = true;
+	    myBlock.collapseBitmap.visible = false;
+	    myBlock.expandBitmap.visible = true;
+	    myBlock.collapseBlockBitmap.visible = true;
+	    myBlock.highlightCollapseBlockBitmap.visible = false;
+	    myBlock.bitmap.visible = false;
+	    myBlock.highlightBitmap.visible = false;
+	    myBlock.bottomBitmap.visible = false;
+	    myBlock.highlightBottomBitmap.visible = false;
+	    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+		myBlock.fillerBitmaps[i].visible = false;
+		myBlock.highlightFillerBitmaps[i].visible = false;
+	    }
+	    if (blocks.dragGroup.length > 0) {
+		for (var b = 0; b < blocks.dragGroup.length; b++) {
+		    blk = blocks.dragGroup[b];
+		    if (b != 0) {
+			blocks.blockList[blk].collapsed = true;
+			blocks.blockList[blk].container.visible = false;
+		    }
+		}
+	    }
+	}
+	// myBlock.collapseButton.updateCache();
+	myBlock.container.updateCache();
+	blocks.refreshCanvas();
+    });
+}
+
+
 // These are the event handlers for block containers.
 function loadEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
@@ -2003,8 +2134,11 @@ function loadEventHandlers(blocks, myBlock) {
 		// Ensure text is on top
 		var lastChild = last(myBlock.container.children);
 		myBlock.container.swapChildren(myBlock.text, lastChild);
+	    } else if (myBlock.collapseButton != null) {
+		myBlock.collapseButton.x = myBlock.container.x - 45;
+		myBlock.collapseButton.y = myBlock.container.y + 8;
 	    }
-	    
+
 	    // Move the label.
 	    blocks.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
 	    

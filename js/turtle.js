@@ -303,7 +303,7 @@ function Turtle (name, turtles) {
         this.decorationBitmap.scaleX = 27.5 / image.width;
         this.decorationBitmap.scaleY = 27.5 / image.height;
         this.decorationBitmap.scale = 27.5 / image.width;
-
+	this.turtles.blocks.blockList[this.startBlock].container.updateCache();
         this.turtles.refreshCanvas();
     }
 
@@ -436,7 +436,7 @@ function Turtles(canvas, stage, refreshCanvas) {
         myTurtle.decorationBitmap.scaleX = 0.5;
         myTurtle.decorationBitmap.scaleY = 0.5;
         myTurtle.decorationBitmap.scale = 0.5;
-
+	last(this.blocks.blockList).container.updateCache();
         this.stage.update();
 
         myTurtle.color = 5 + (i * 10);

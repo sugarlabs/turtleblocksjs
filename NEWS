@@ -74,6 +74,7 @@
   * fixed more issues with caching
   * reload media thumbnails
   * collapsible stacks
+  * copy/paste
 
 TODO:
   * don't save bitmap to session
@@ -85,7 +86,6 @@ TODO:
   * fix menu tearing issues
   * use container caching on palette
   * use snap to pixels
-  * copy/paste
   * user defined blocks
   * better compartmentalization of block code (dictionary)
   * more sensors

@@ -247,11 +247,12 @@ function Turtle (name, turtles) {
         } else {
             this.doRight(adeg);
         }
-            this.turtles.refreshCanvas();
-        }
+        this.turtles.refreshCanvas();
+    }
 
-        this.doShowImage = function(size, myImage) {
-        // Add a text or image object to the canvas
+    this.doShowImage = function(size, myImage) {
+        // Add an image object to the canvas
+	// Is there a JS test for a valid image path?
         if (myImage == null) {
             return;
         }
@@ -268,6 +269,7 @@ function Turtle (name, turtles) {
         bitmap.regX = image.width / 2;
         bitmap.regY = image.height / 2;
         bitmap.rotation = this.orientation;
+        this.turtles.refreshCanvas();
     }
 
     this.doTurtleShell = function(size, myImage) {

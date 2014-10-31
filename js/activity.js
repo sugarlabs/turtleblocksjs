@@ -648,6 +648,7 @@ define(function (require) {
 		break;
 	    case 'image':
 		if (args.length == 2) {
+		    console.log('image ' + args[0] + ' ' + args[1]);
 		    turtles.turtleList[turtle].doShowImage(args[0], args[1]);
          	}
 		break;

@@ -71,6 +71,8 @@
   * fixed labels on random block
   * fixed label on less block (use &lt;)
   * fixed infinite loop problem when searching for expandables
+  * fixed more issues with caching
+  * reload media thumbnails
 
 TODO:
   * rename action blocks when loading projects

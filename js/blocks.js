@@ -1579,7 +1579,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		var value = blkData[1][1];
 	    }
 
-	    // console.log(thisBlock + ' ' + name + ' ' + value + ' ' + blkData[4]);
+	    console.log(thisBlock + ' ' + name + ' ' + value + ' ' + blkData[4]);
 
 	    if (name in NAMEDICT) {
 		name = NAMEDICT[name];
@@ -1606,6 +1606,15 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
 		this.blockList[thisBlock].value = value;
 		this.updateBlockText(thisBlock);
+		break;
+
+		// Load the thumbnail into a media block.
+	    case 'media':
+		this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
+		this.blockList[thisBlock].value = value;
+		if (value != null) {
+		    loadThumbnail(this, thisBlock);
+		}
 		break;
 
 		// Define some constants for backward compatibility
@@ -1881,39 +1890,45 @@ function labelChanged() {
     }
 }
 
+// load an image thumbnail onto into block
+function loadThumbnail(blocks, thisBlock) {
+    if (blocks.blockList[thisBlock].value == null) {
+	console.log('loadThumbnail: no image to load?');
+	return;
+    }
+    var image = new Image();
+    image.src = blocks.blockList[thisBlock].value;
+    var bitmap = new createjs.Bitmap(image);
+    blocks.blockList[thisBlock].container.addChild(bitmap);
+    if (image.width > image.height) {
+	bitmap.scaleX = 108 / image.width;
+	bitmap.scaleY = 108 / image.width;
+	bitmap.scale = 108 / image.width;
+    } else {
+	bitmap.scaleX = 80 / image.height;
+	bitmap.scaleY = 80 / image.height;
+	bitmap.scale = 80 / image.height;
+    }
+    bitmap.x = 18;
+    bitmap.y = 2;
+    blocks.blockList[thisBlock].container.updateCache();
+    blocks.refreshCanvas();
+}
+
 // Open a file from the DOM.
 function doOpenMedia(blocks, thisBlock) {
     var fileChooser = docById("myMedia");
     fileChooser.addEventListener("change", function(event) {
-	var filename;
 	var reader = new FileReader();
 	reader.onloadend = (function () {
 	    if (reader.result) {
 		// console.log(reader);
 		var dataURL = reader.result;
 		blocks.blockList[thisBlock].value = reader.result
-		filename = reader.result;
-		// console.log('reader.result ' + filename);
-		var image = new Image();
 		if (blocks.blockList[thisBlock].container.children.length > 2) {
 		    blocks.blockList[thisBlock].container.removeChild(last(blocks.blockList[thisBlock].container.children));
 		}
-		image.src = filename;
-		var bitmap = new createjs.Bitmap(image);
-		blocks.blockList[thisBlock].container.addChild(bitmap);
-		if (image.width > image.height) {
-		    bitmap.scaleX = 100 / image.width;
-		    bitmap.scaleY = 100 / image.width;
-		    bitmap.scale = 100 / image.width;
-		} else {
-		    bitmap.scaleX = 80 / image.height;
-		    bitmap.scaleY = 80 / image.height;
-		    bitmap.scale = 80 / image.height;
-		}
-		bitmap.x = 30;
-		bitmap.y = 10;
-		blocks.blockList[thisBlock].container.updateCache();
-		update = true;
+		loadThumbnail(blocks, thisBlock);
 	    }
 	});
 	reader.readAsDataURL(fileChooser.files[0]);

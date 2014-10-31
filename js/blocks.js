@@ -836,7 +836,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    this.adjustLabelPosition(blk, myBlock.container.x, myBlock.container.y);
 	    if (myBlock.collapseButton != null) {
 		myBlock.collapseButton.x = x - 45;
-		myBlock.collapseButton.y = y + 8;
+		myBlock.collapseButton.y = y + 14;
 	    }
 	} else {
 	    console.log('no container yet');
@@ -1171,6 +1171,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    // Start blocks and Action blocks can collapse, so add an
 	    // event handler
 	    if (['start', 'action'].indexOf(myBlock.name) != -1) {
+		// TODO: use action name for block label
 		myBlock.collapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
 		myBlock.container.addChild(myBlock.collapseBlockBitmap);
 		myBlock.collapseBlockBitmap.visible = false;
@@ -1190,7 +1191,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		myBlock.collapseButton.addChild(myBlock.expandBitmap);
 		myBlock.expandBitmap.visible = false;
 		myBlock.collapseButton.x = myBlock.container.x - 45;
-		myBlock.collapseButton.y = myBlock.container.y + 8
+		myBlock.collapseButton.y = myBlock.container.y + 14
 		var bounds = myBlock.collapseButton.getBounds();
 		// myBlock.collapseButton.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 		loadCollapsibleEventHandlers(this, myBlock);

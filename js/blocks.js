@@ -1167,7 +1167,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.text.x = 70 + myBlock.bitmap.x;
 	    myBlock.text.y = 27 + myBlock.bitmap.y;
 	    myBlock.text.scaleX = myBlock.text.scaleY = myBlock.text.scale = 1;
-            // myBlock.container.updateCache();
 	}
 
 	// Expandable blocks also have some extra parts.
@@ -1364,6 +1363,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		last(this.blockList).value = value;
 		last(this.blockList).text.text = value.toString();
 	    }
+	    last(this.blockList).container.updateCache();
 	    var myConnectionBlock = this.blockList[cblk + i];
 	    myConnectionBlock.connections = [blk];
 	    if (myBlock.name == 'action') {
@@ -1461,6 +1461,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 			this.blockList[blk].value = newName;
 			this.blockList[blk].text.text = newName;
 			this.blockList[blk].label.value = newName;
+			this.blockList[blk].container.updateCache();
 		    }
 		}
 	    }
@@ -1476,6 +1477,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 			this.blockList[blk].value = newName;
 			this.blockList[blk].text.text = newName;
 			this.blockList[blk].label.value = newName;
+			this.blockList[blk].container.updateCache();
 		    }
 		}
 	    }
@@ -1846,7 +1848,7 @@ function labelChanged() {
 	// Make sure text is on top.
 	lastChild = last(myBlock.container.children);
 	myBlock.container.swapChildren(myBlock.text, lastChild);
-        // myBlock.container.updateCache();
+        myBlock.container.updateCache();
 	blocks.refreshCanvas();
     }
 

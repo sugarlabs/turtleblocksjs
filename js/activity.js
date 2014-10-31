@@ -77,7 +77,16 @@ define(function (require) {
 	    changePaletteVisibility();
         }
 
-	// var blocksVisible = true;
+	var copyButton = docById('copy-button');
+	copyButton.onclick = function () {
+	    selectStackToCopy();
+	}
+
+	var pasteButton = docById('paste-button');
+	pasteButton.onclick = function () {
+	    pasteStack();
+	}
+
         var blockButton = docById('hide-blocks-button');
         blockButton.onclick = function () {
 	    changeBlockVisibility();
@@ -1016,6 +1025,15 @@ define(function (require) {
 		}
 	    }
 	    return null;
+	}
+
+	function selectStackToCopy() {
+	    // TODO: something with the cursor
+	    blocks.selectingStack = true;
+	}
+
+	function pasteStack() {
+	    blocks.pasteStack();
 	}
 
 	function prepareExport() {

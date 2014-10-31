@@ -1,0 +1,18 @@
+<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd' [
+	<!ENTITY stroke_color "#010101">
+	<!ENTITY fill_color "#FFFFFF">
+]><svg enable-background="new 0 0 55 55" height="55px" version="1.1" viewBox="0 0 55 55" width="55px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block" id="edit-copy">
+	<g id="Copy_2_">
+		<g>
+			<g>
+				<polygon fill="#FFFFFF" points="23.614,20.318 15.101,28.826 23.614,28.824     "/>
+				<polygon fill="#FFFFFF" points="26.601,19.444 26.601,31.812 14.227,31.812 14.227,49.417 37.936,49.417 37.936,19.444     "/>
+			</g>
+			<polygon fill="&fill_color;" points="22.727,18.311 22.727,35.914 43.449,35.914 43.449,8.928      32.113,8.928    " stroke="&stroke_color;" stroke-width="3"/>
+			<polyline fill="none" points="22.727,18.311 32.113,18.311 32.113,8.928    " stroke="&stroke_color;" stroke-width="2.9867"/>
+			
+				<line fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.9867" x1="16.713" x2="16.713" y1="6" y2="18.164"/>
+			<polyline fill="none" points="     11.583,12.083 16.713,6 21.843,12.083    " stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.9867"/>
+		</g>
+	</g>
+</g></svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd' [
+	<!ENTITY stroke_color "#010101">
+	<!ENTITY fill_color "#FFFFFF">
+]><svg enable-background="new 0 0 55 55" height="55px" version="1.1" viewBox="0 0 55 55" width="55px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block" id="edit-paste">
+	<g id="Paste">
+		<g>
+			<polygon fill="&fill_color;" points="11.386,18.559 11.386,36.159 32.109,36.159 32.109,9.173 20.773,9.173    "/>
+			<polygon fill="none" points="11.386,18.559 11.386,36.159      32.109,36.159 32.109,9.173 20.773,9.173    " stroke="&stroke_color;" stroke-linecap="round" stroke-width="2.9867"/>
+			<polyline fill="none" points="11.386,18.559 20.773,18.559 20.773,9.173    " stroke="&stroke_color;" stroke-width="2.9867"/>
+			
+				<line fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.9867" x1="40.745" x2="40.745" y1="47.248" y2="35.084"/>
+			<polyline fill="none" points="     45.875,41.164 40.745,47.248 35.615,41.164    " stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.9867"/>
+		</g>
+	</g>
+</g></svg>

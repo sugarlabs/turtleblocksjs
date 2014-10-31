@@ -190,6 +190,10 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     // And a place to keep the blocks we create.
     this.blockList = [];
 
+    // Selected stack for pasting.
+    this.selectingStack = false;
+    this.selectedStack = null;
+
     // To avoid infinite loops in dock search
     this.loopCounter = 0;
     this.sizeCounter = 0;
@@ -1573,6 +1577,47 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	}
     }
 
+    this.pasteStack = function() {
+	// Copy a stack of blocks by creating a blockObjs and passing
+	// it to this.load.
+	if (this.selectedStack == null) {
+	    return;
+	}
+	var blockObjs = [];
+	var blockMap = {};
+	this.findDragGroup(this.selectedStack);
+	for (var b = 0; b < this.dragGroup.length; b++) {
+	    myBlock = this.blockList[this.dragGroup[b]];
+	    if (b == 0) {
+		x = 25;
+		y = 25;
+	    } else {
+		x = 0;
+		y = 0;
+	    }
+	    if (myBlock.isValueBlock()) {
+		blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
+	    } else {
+		blockItem = [b, myBlock.name, x, y, []];
+	    }
+	    blockMap[this.dragGroup[b]] = b;
+	    blockObjs.push(blockItem);
+	}
+	console.log(blockMap);
+	for (var b = 0; b < this.dragGroup.length; b++) {
+	    myBlock = this.blockList[this.dragGroup[b]];
+	    for (var c = 0; c < myBlock.connections.length; c++) {
+		if (myBlock.connections[c] == null) {
+		    blockObjs[b][4].push(null);
+		} else {
+		    blockObjs[b][4].push(blockMap[myBlock.connections[c]]);
+		}
+	    }
+	}
+	console.log(blockObjs);
+	this.load(blockObjs);
+    }
+
     this.load = function(blockObjs) {
 	// Append to the current set of blocks.
 	var adjustTheseDocks = [];
@@ -2025,7 +2070,6 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     });
 }
 
-
 // These are the event handlers for block containers.
 function loadEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
@@ -2051,7 +2095,11 @@ function loadEventHandlers(blocks, myBlock) {
     var moved = false;
     myBlock.container.on('click', function(event) {
 	if (!moved) {
-	    if (myBlock.name == 'media') {
+	    if (blocks.selectingStack) {
+		var topBlock = blocks.findTopBlock(thisBlock);
+		blocks.selectedStack = topBlock;
+		blocks.selectingStack = false;
+	    } else if (myBlock.name == 'media') {
 		doOpenMedia(blocks, thisBlock);
 	    } else if (myBlock.isValueBlock() && myBlock.name != 'media') {
 		myBlock.label.style.display = '';

@@ -40,50 +40,6 @@ function ProtoBlock (name) {
     this.artwork = null;
     this.docks = [];
 
-    // helper methods for finding block graphics components
-    this.getSvgPath = function() {
-	return 'images/' + this.name + '.svg';
-    }
-    this.getFillerSvgPath = function() {
-	return 'images/' + this.palette.name + '-filler.svg';
-    }
-    this.getBottomSvgPath = function() {
-	return 'images/' + this.palette.name + '-bottom.svg';
-    }
-    this.getArgFillerSvgPath = function() {
-	return 'images/' + this.palette.name + '-arg-filler.svg';
-    }
-    this.getArgBottomSvgPath = function() {
-	return 'images/' + this.palette.name + '-arg-bottom.svg';
-    }
-    this.getSpecialFillerSvgPath = function() {
-	return 'images/' + this.name + '-filler.svg';
-    }
-    this.getSpecialBottomSvgPath = function() {
-	return 'images/' + this.name + '-bottom.svg';
-    }
-    this.getHighlightSvgPath = function() {
-	return 'images/highlights/' + this.name + '.svg';
-    }
-    this.getHighlightFillerSvgPath = function() {
-	return 'images/highlights/' + this.palette.name + '-filler.svg';
-    }
-    this.getHighlightBottomSvgPath = function() {
-	return 'images/highlights/' + this.palette.name + '-bottom.svg';
-    }
-    this.getHighlightArgFillerSvgPath = function() {
-	return 'images/highlights/' + this.palette.name + '-arg-filler.svg';
-    }
-    this.getHighlightArgBottomSvgPath = function() {
-	return 'images/highlights/' + this.palette.name + '-arg-bottom.svg';
-    }
-    this.getHighlightSpecialFillerSvgPath = function() {
-	return 'images/highlights/' + this.name + '-filler.svg';
-    }
-    this.getHighlightSpecialBottomSvgPath = function() {
-	return 'images/highlights/' + this.name + '-bottom.svg';
-    }
-
     // We need to copy, since docks get modified.
     this.copyDock = function(dockStyle) {
 	for(var i = 0; i < dockStyle.length; i++) {

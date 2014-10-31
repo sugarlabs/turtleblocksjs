@@ -202,11 +202,12 @@ function Turtle (name, turtles) {
         var nx = Number(x)
         var ny = Number(y);
 
+	console.log('moving to ' + nx + ' ' + ny);
         this.move(ox, oy, nx, ny, true);
-            this.turtles.refreshCanvas();
-        }
+        this.turtles.refreshCanvas();
+    }
 
-        this.doArc = function(angle, radius) {
+    this.doArc = function(angle, radius) {
         if (!this.fillState) {
             this.drawingCanvas.graphics.beginStroke(this.canvasColor);
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
@@ -257,7 +258,7 @@ function Turtle (name, turtles) {
         var image = new Image();
         image.src = myImage;
         var bitmap = new createjs.Bitmap(image);
-        stage.addChild(bitmap);
+        this.turtles.stage.addChild(bitmap);
         this.media.push(bitmap);
         bitmap.scaleX = Number(size) / image.width;
         bitmap.scaleY = bitmap.scaleX;
@@ -310,7 +311,7 @@ function Turtle (name, turtles) {
         var text = new createjs.Text(myText.toString(), textSize, this.canvasColor);
         text.textAlign = 'left';
         text.textBaseline = 'alphabetic';
-        stage.addChild(text);
+        this.turtles.stage.addChild(text);
         this.media.push(text);
         text.x = this.container.x;
         text.y = this.container.y;

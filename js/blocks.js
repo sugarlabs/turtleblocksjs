@@ -825,6 +825,10 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock = this.blockList[blk];
 	    this.stage.removeChild(myBlock.container);
 	    this.stage.addChild(myBlock.container);
+	    if (myBlock.collapseButton != null) {
+		this.stage.removeChild(myBlock.collapseButton);
+		this.stage.addChild(myBlock.collapseButton);
+	    }
 	}
 	this.refreshCanvas();
     }
@@ -1895,11 +1899,17 @@ function Block (protoblock) {
 
     this.hide = function() {
 	this.container.visible = false;
+	if (this.collapseButton != null) {
+	    this.collapseButton.visible = false;
+	}
     }
 
     this.show = function() {
 	if (!this.trash && !this.collapsed) {
 	    this.container.visible = true;
+	    if (this.collapseButton != null) {
+		this.collapseButton.visible = true;
+	    }
 	}
     }
 

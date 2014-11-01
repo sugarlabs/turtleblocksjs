@@ -201,7 +201,13 @@ function Palette (palettes, name, color, bgcolor) {
 		} else {
 		    var bottom_label = '';
 		}
-		var bitmap = new createjs.Bitmap(myBlock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize));
+		if (myBlock.name == 'box') {
+		    var artwork = VALUEBLOCK;
+		} else {
+		    var artwork = myBlock.artwork;
+		}
+
+		var bitmap = new createjs.Bitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize));
 
 		this.protoContainers[modname].addChild(bitmap);
 		bitmap.x = 20;

@@ -110,6 +110,17 @@ function ProtoBlock (name) {
 	this.copyDock(MEDIABLOCKDOCKS);
     }
 
+    this.flowClamp0ArgBlock = function() {
+	this.style = 'clamp';
+	this.yoff = 74;
+	this.loff = 42;
+	this.expandable = true;
+	this.size = 2;
+	this.args = 1;
+	this.artwork = FLOWCLAMP0ARG;
+	this.copyDock(FLOWCLAMP0ARGDOCKS);
+    }
+
     this.flowClamp1ArgBlock = function() {
 	this.style = 'clamp';
 	this.yoff = 74;
@@ -2686,6 +2697,12 @@ function initProtoBlocks(palettes, blocks) {
     repeatBlock.flowClamp1ArgBlock();
     repeatBlock.staticLabels.push('repeat');
     repeatBlock.defaults.push(4);
+
+    var foreverBlock = new ProtoBlock('forever');
+    foreverBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['forever'] = foreverBlock;
+    foreverBlock.flowClamp0ArgBlock();
+    foreverBlock.staticLabels.push('forever');
     
     var ifBlock = new ProtoBlock('if');
     ifBlock.palette = palettes.dict['flow'];

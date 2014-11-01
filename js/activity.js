@@ -580,8 +580,10 @@ define(function (require) {
 
 	    switch (blocks.blockList[blk].name) {
 	    case 'start':
+		// TODO: make all blocks eval...
 		eval("if (args.length == 1) {childFlow = args[0]; childFlowCount = 1;}");
 		break;
+		// Instead of inline code.
  		if (args.length == 1) {
 		    childFlow = args[0];
 		    childFlowCount = 1;
@@ -611,6 +613,12 @@ define(function (require) {
 			    break;
 			}
 		    }
+		}
+		break;
+	    case 'forever':
+ 		if (args.length == 1) {
+		    childFlow = args[0];
+		    childFlowCount = -1;
 		}
 		break;
 	    case 'repeat':
@@ -736,7 +744,8 @@ define(function (require) {
 	    // Run the last flow in the queue.
 	    if (turtles.turtleList[turtle].queue.length > 0) {
 		nextBlock = last(turtles.turtleList[turtle].queue).blk;
-		if(last(turtles.turtleList[turtle].queue).count == 1) {
+		// Since the forever block starts at -1, it will never == 1.
+		if (last(turtles.turtleList[turtle].queue).count == 1) {
 		    // Finished child so pop it off the queue.
 		    turtles.turtleList[turtle].queue.pop();
 		} else {

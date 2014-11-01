@@ -202,7 +202,7 @@ function Palette (palettes, name, color, bgcolor) {
 		    var bottom_label = '';
 		}
 		if (myBlock.name == 'box') {
-		    var artwork = VALUEBLOCK;
+		    var artwork = VALUEBLOCK;  // so the label will fit
 		} else {
 		    var artwork = myBlock.artwork;
 		}

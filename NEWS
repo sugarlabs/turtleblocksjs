@@ -76,19 +76,22 @@
   * collapsible stacks
   * copy/paste
   * rename action blocks when loading projects
+  * add palette entries when encountering new storein blocks
+  * allow dragging from collapse button
 
 TODO:
-  * add palette entries when encountering new storein blocks
   * don't save bitmap to session
   * fix canvas sizing, resizing
   * seed svg with bg color on load
   * selectable menu of samples
   * send svg thumbnail to server
   * fix menu tearing issues
+  * fix placement of new items in Blocks menu
   * use container caching on palette
   * use snap to pixels
   * user defined blocks
-  * better compartmentalization of block code (dictionary)
+  * better compartmentalization of block code
+   (use a dictionary for the code associated with each block)
   * more sensors
   * implement if then else, forever, while, until, 'stop action' aka break
   * keyboard short cuts

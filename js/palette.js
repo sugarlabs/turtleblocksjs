@@ -105,73 +105,7 @@ function Palettes (canvas, stage, refreshCanvas) {
 	this.current = name;
     }
 
-    // Palettes live in the DOM for the time being:
-    // a row of palette buttons and a row of block buttons for each palette
     this.updatePalettes = function() {
-	var protoBlockCount = 0;
-	// Modify the header id with palette info.
-	var html = '';
-	for (var name in this.dict) {
-	    var text = '<button id="' + this.genPaletteButtonId(name) + '" ' +
-		'onclick="return paletteButtonPush(\'' + name +
-		'\');">' + name + '</button>';
-	    html += text;
-	}
-
-	for (var name in this.dict) {
-	    var myPalette = this.dict[name];
-	    var text = '<div id="' + this.genPaletteId(name) + '">';
-	    html += text;
-	    for (var blk in myPalette.protoList) {
-		protoBlockCount += myPalette.protoList[blk].size;
-		// Special case for do block
-		var blkname = myPalette.protoList[blk].name;
-		if (blkname == '') {
-		    console.log('FIXME: extra, empty blk in palette blocklist');
-		    continue;
-		}
-		var arg = '__NOARG__';
-		switch (blkname) {
-		case 'do':
-		    // Use the name of the action in the label
-		    blkname = 'do ' + myPalette.protoList[blk].defaults[0];
-		    // Call makeBlock with the name of the action
-		    var arg = myPalette.protoList[blk].defaults[0];
-		    break;
-		case 'storein':
-		    // Use the name of the box in the label
-		    blkname = 'store in ' + myPalette.protoList[blk].defaults[0];
-		    var arg = myPalette.protoList[blk].defaults[0];
-		    break;
-		case 'box':
-		    // Use the name of the box in the label
-		    blkname = myPalette.protoList[blk].defaults[0];
-		    var arg = myPalette.protoList[blk].defaults[0];
-		    break;
-		}
-		text = '<button id="' + 
-		    this.genBlockButtonId(name, blk) + '"' +
-		    ' class="' + name + '"' + 
-		    // ' onclick="return blocks.makeBlock(\'' +
-		    ' onclick="return paletteBlockButtonPush(\'' +
-		    myPalette.protoList[blk].name + '\', \'' + arg + '\');">' +
-		    blkname + '</button>';
-		html += text;
-	    }
-	    text = '</div>';
-	    html = html + text;
-	}
-	// COMMENT OUT DOM MENUS
-	// this.paletteElem.innerHTML = html;
-
-	// Open the turtle palette to start
-	// this.toggle(this.current);
-	// and hide all the others
-	for (var name in this.dict) {
-	    if (name != this.current) {
-		// toggler(this.genPaletteId(name));
-	    }
-	}
 	this.makeMenus();  // the easel menus
 	this.refreshCanvas();
     }

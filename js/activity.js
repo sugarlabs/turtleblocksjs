@@ -182,6 +182,27 @@ define(function (require) {
 	    blocks.setLogo(runLogoCommands);
 	    initProtoBlocks(palettes, blocks);
 
+	    // Set up a file chooser for the doOpen function.
+	    this.fileChooser = docById("myOpenFile");
+
+	    // FIXME: won't allow selecting same file twice in a row
+	    // since there is no "change" event.
+	    this.fileChooser.addEventListener("change", function(event) {
+
+		// Read file here.
+		var reader = new FileReader();
+
+		reader.onload = (function(theFile) {
+		    var rawData = reader.result;
+		    var cleanData = rawData.replace('\n', ' ');
+		    var obj = JSON.parse(cleanData);
+		    blocks.loadNewBlocks(obj);
+		});
+
+		reader.readAsText(fileChooser.files[0]);
+	    }, false);
+
+
 	    this.svgOutput = '';
 
 	    // Workaround to chrome security issues
@@ -375,7 +396,7 @@ define(function (require) {
 		console.log('receiving ' + rawData);
 		var cleanData = rawData.replace('\n', ' ');
 		var obj = JSON.parse(cleanData);
-		blocks.load(obj);
+		blocks.loadNewBlocks(obj);
 	    } catch (e) {
 		loadStart();
 		return;
@@ -408,7 +429,7 @@ define(function (require) {
 		try {
 		    console.log('restoring session');
 		    var obj = JSON.parse(sessionData);
-		    blocks.load(obj);
+		    blocks.loadNewBlocks(obj);
 		} catch (e) {
 		}
 	    } else {
@@ -1072,33 +1093,16 @@ define(function (require) {
 	}
 
 	function doOpen() {
-	    var fileChooser = docById("myOpenFile");
-	    fileChooser.addEventListener("change", function(event) {
-
-		// Read file here.
-		// console.log('fileChooser ' + this.value);
-		var reader = new FileReader();
-
-		reader.onload = (function(theFile) {
-		    var rawData = reader.result;
-		    var cleanData = rawData.replace('\n', ' ');
-		    var obj = JSON.parse(cleanData);
-		    // console.log(obj);
-		    blocks.load(obj);
-		});
-
-		reader.readAsText(fileChooser.files[0]);
-	    }, false);
-
-            fileChooser.focus();
-	    fileChooser.click();
+	    // Click on the file open chooser in the DOM.
+            this.fileChooser.focus();
+	    this.fileChooser.click();
 	}
 
 	function doSave() {
 	    // Save file to turtle.sugarlabs.org
             var titleElem = docById("title");
 	    if (titleElem.value.length == 0) {
-		// FIXME: ask for a title
+		// FIXME: ask for a title and add a UID.
 		console.log('saving to unknown');
 		return saveProject('unknown');
 	    } else {
@@ -1108,8 +1112,6 @@ define(function (require) {
 
 	    // var fileChooser = docById("mySaveFile");
 	    // fileChooser.addEventListener("change", function(event) {
-		// Do something here.
-		// console.log('fileChooser ' + this.value);
 	    // }, false);
             // fileChooser.focus();
 	    // fileChooser.click();

@@ -18,6 +18,9 @@ var NAMEDICT = {'xpos': 'x', 'ypos': 'y', 'seth': 'setheading', 'plus2': 'plus',
 // For DOM access
 var blockBlocks = null;
 
+var COLLAPSEBUTTONXOFF = -45
+var COLLAPSEBUTTONYOFF = 14
+
 // There are three "classes" defined in this file: ProtoBlocks,
 // Blocks, and Block. Protoblocks are the prototypes from which Blocks
 // are created; Blocks is the list of all blocks; and Block is a block
@@ -841,8 +844,8 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.y = y
 	    this.adjustLabelPosition(blk, myBlock.container.x, myBlock.container.y);
 	    if (myBlock.collapseButton != null) {
-		myBlock.collapseButton.x = x - 45;
-		myBlock.collapseButton.y = y + 14;
+		myBlock.collapseButton.x = x + COLLAPSEBUTTONXOFF;
+		myBlock.collapseButton.y = y + COLLAPSEBUTTONYOFF;
 	    }
 	} else {
 	    console.log('no container yet');
@@ -1181,8 +1184,8 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		myBlock.expandBitmap = new createjs.Bitmap(image);
 		myBlock.collapseButton.addChild(myBlock.expandBitmap);
 		myBlock.expandBitmap.visible = false;
-		myBlock.collapseButton.x = myBlock.container.x - 45;
-		myBlock.collapseButton.y = myBlock.container.y + 14
+		myBlock.collapseButton.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
+		myBlock.collapseButton.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
 		var bounds = myBlock.collapseButton.getBounds();
 		// myBlock.collapseButton.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 		loadCollapsibleEventHandlers(this, myBlock);
@@ -2116,59 +2119,90 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     hitArea.y = h2 / 2;
     myBlock.collapseButton.hitArea = hitArea;
 
+    var moved = false;
     myBlock.collapseButton.on('click', function(event) {
-	// Find the blocks to collapse/expand
-	blocks.findDragGroup(thisBlock)
+	if (!moved) {
+	    // Find the blocks to collapse/expand
+	    blocks.findDragGroup(thisBlock)
+	    if (myBlock.collapsed) {
+		myBlock.collapsed = false;
+		myBlock.collapseBitmap.visible = true;
+		myBlock.expandBitmap.visible = false;
+		myBlock.collapseBlockBitmap.visible = false;
+		myBlock.highlightCollapseBlockBitmap.visible = false;
+		myBlock.bitmap.visible = true;
+		myBlock.highlightBitmap.visible = true;
+		myBlock.bottomBitmap.visible = true;
+		myBlock.highlightBottomBitmap.visible = true;
+		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+		    myBlock.fillerBitmaps[i].visible = true;
+		    myBlock.highlightFillerBitmaps[i].visible = true;
+		}
+		if (blocks.dragGroup.length > 0) {
+		    for (var b = 0; b < blocks.dragGroup.length; b++) {
+			blk = blocks.dragGroup[b];
+			if (b != 0) {
+			    blocks.blockList[blk].collapsed = false;
+			    blocks.blockList[blk].container.visible = true;
+			}
+		    }
+		}
+	    } else {
+		myBlock.collapsed = true;
+		myBlock.collapseBitmap.visible = false;
+		myBlock.expandBitmap.visible = true;
+		myBlock.collapseBlockBitmap.visible = true;
+		myBlock.highlightCollapseBlockBitmap.visible = false;
+		myBlock.bitmap.visible = false;
+		myBlock.highlightBitmap.visible = false;
+		myBlock.bottomBitmap.visible = false;
+		myBlock.highlightBottomBitmap.visible = false;
+		for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+		    myBlock.fillerBitmaps[i].visible = false;
+		    myBlock.highlightFillerBitmaps[i].visible = false;
+		}
+		if (blocks.dragGroup.length > 0) {
+		    for (var b = 0; b < blocks.dragGroup.length; b++) {
+			blk = blocks.dragGroup[b];
+			if (b != 0) {
+			    blocks.blockList[blk].collapsed = true;
+			    blocks.blockList[blk].container.visible = false;
+			}
+		    }
+		}
+	    }
 
-	if (myBlock.collapsed) {
-            myBlock.collapsed = false;
-	    myBlock.collapseBitmap.visible = true;
-	    myBlock.expandBitmap.visible = false;
-	    myBlock.collapseBlockBitmap.visible = false;
-	    myBlock.highlightCollapseBlockBitmap.visible = false;
-	    myBlock.bitmap.visible = true;
-	    myBlock.highlightBitmap.visible = true;
-	    myBlock.bottomBitmap.visible = true;
-	    myBlock.highlightBottomBitmap.visible = true;
-	    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-		myBlock.fillerBitmaps[i].visible = true;
-		myBlock.highlightFillerBitmaps[i].visible = true;
-	    }
-	    if (blocks.dragGroup.length > 0) {
-		for (var b = 0; b < blocks.dragGroup.length; b++) {
-		    blk = blocks.dragGroup[b];
-		    if (b != 0) {
-			blocks.blockList[blk].collapsed = false;
-			blocks.blockList[blk].container.visible = true;
-		    }
-		}
-	    }
-	} else {
-            myBlock.collapsed = true;
-	    myBlock.collapseBitmap.visible = false;
-	    myBlock.expandBitmap.visible = true;
-	    myBlock.collapseBlockBitmap.visible = true;
-	    myBlock.highlightCollapseBlockBitmap.visible = false;
-	    myBlock.bitmap.visible = false;
-	    myBlock.highlightBitmap.visible = false;
-	    myBlock.bottomBitmap.visible = false;
-	    myBlock.highlightBottomBitmap.visible = false;
-	    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-		myBlock.fillerBitmaps[i].visible = false;
-		myBlock.highlightFillerBitmaps[i].visible = false;
-	    }
-	    if (blocks.dragGroup.length > 0) {
-		for (var b = 0; b < blocks.dragGroup.length; b++) {
-		    blk = blocks.dragGroup[b];
-		    if (b != 0) {
-			blocks.blockList[blk].collapsed = true;
-			blocks.blockList[blk].container.visible = false;
-		    }
-		}
-	    }
+	    // myBlock.collapseButton.updateCache();
+	    myBlock.container.updateCache();
+	    blocks.refreshCanvas();
 	}
-	// myBlock.collapseButton.updateCache();
-	myBlock.container.updateCache();
+    });
+
+    myBlock.collapseButton.on('mousedown', function(event) {
+	moved = false;
+	var offset = {
+	    x: myBlock.collapseButton.x - event.stageX,
+	    y: myBlock.collapseButton.y - event.stageY
+	};
+	myBlock.collapseButton.on('pressmove', function(event) {
+	    moved = true;
+	    var oldX = myBlock.collapseButton.x;
+	    var oldY = myBlock.collapseButton.y;
+	    myBlock.collapseButton.x = event.stageX + offset.x;
+	    myBlock.collapseButton.y = event.stageY + offset.y;
+	    var dx = myBlock.collapseButton.x - oldX;
+	    var dy = myBlock.collapseButton.y - oldY;
+	    myBlock.container.x += dx;
+	    myBlock.container.y += dy;
+	    myBlock.x = myBlock.container.x;
+	    myBlock.y = myBlock.container.y;
+	    myBlock.y = event.stageY + offset.y;
+	    blocks.refreshCanvas();
+	});
+    });
+
+
+    myBlock.container.on('mouseout',function(event) {
 	blocks.refreshCanvas();
     });
 }
@@ -2216,6 +2250,9 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.on('mousedown', function(event) {
 	// Bump the bitmap in front of its siblings.
 	blocks.stage.swapChildren(myBlock.container, last(blocks.stage.children));
+	if (myBlock.collapseButton != null) {
+	    blocks.stage.swapChildren(myBlock.collapseButton, last(blocks.stage.children));
+	}
 	
 	moved = false;
 	var offset = {
@@ -2243,8 +2280,8 @@ function loadEventHandlers(blocks, myBlock) {
 		var lastChild = last(myBlock.container.children);
 		myBlock.container.swapChildren(myBlock.text, lastChild);
 	    } else if (myBlock.collapseButton != null) {
-		myBlock.collapseButton.x = myBlock.container.x - 45;
-		myBlock.collapseButton.y = myBlock.container.y + 8;
+		myBlock.collapseButton.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
+		myBlock.collapseButton.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
 	    }
 
 	    // Move the label.

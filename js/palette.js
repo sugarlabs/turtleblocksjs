@@ -15,10 +15,6 @@ var paletteBlocks = null;
 
 var paletteScale = 0.75;
 
-function paletteButtonPush(name) {
-    palettePalettes.toggle(name);
-}
-
 function paletteBlockButtonPush(name, arg) {
     blk = paletteBlocks.makeBlock(name, arg);
     return blk;
@@ -34,10 +30,6 @@ function Palettes (canvas, stage, refreshCanvas) {
     this.dict = {};
 
     this.visible = true;
-
-    // TODO: replace with easel palettes
-    // and a place in the DOM to put palettes.
-    this.paletteElem = docById('header');
 
     this.current = 'turtle';
 
@@ -72,37 +64,6 @@ function Palettes (canvas, stage, refreshCanvas) {
 	for (var key in this.dict) {
 	    console.log(this.dict[key].getInfo());
 	}
-    }
-
-    // Generate the IDs for the DOM elements we need
-    this.genPaletteButtonId = function(name) {
-	return '_' + name + '_palette_button';
-    }
-
-    this.genPaletteId = function(name) {
-	return '_' + name + '_palette_div';
-    }
-
-    this.genBlockButtonId = function(name, blk) {
-	return '_' + this.dict[name].protoList[blk].name + '_block_button';
-    }
-
-    this.toggle = function(name) {
-	// Toggle which palette is visible, updating button colors
-	var palette = Number(name);
-	var paletteButtonId = this.genPaletteButtonId(name);
-	var paletteId = this.genPaletteId(name);
-	var currentPaletteId = this.genPaletteId(this.current);
-	var currentPaletteButtonId = this.genPaletteButtonId(this.current);
-
-	docById(currentPaletteButtonId).style.backgroundColor = '#808080';
-	docById(currentPaletteButtonId).style.color = '#ffffff';
-	docById(paletteButtonId).style.backgroundColor = this.dict[name].backgroundColor;
-	docById(paletteButtonId).style.color = this.dict[name].color;
-
-	toggler(currentPaletteId);
-	toggler(paletteId);
-	this.current = name;
     }
 
     this.updatePalettes = function() {
@@ -391,13 +352,6 @@ function initPalettes(canvas, stage, refreshCanvas) {
     palettePalettes = palettes;
     palettes.hide();
     return palettes;
-}
-
-// Utility function for toggling visibilities of DOM elements.
-function toggler(obj) {
-    for ( var i=0; i < arguments.length; i++ ) {
-	$(arguments[i]).style.display = ($(arguments[i]).style.display != 'none' ? 'none' : '');
-    }
 }
 
 // Menu Item event handlers

@@ -1905,10 +1905,13 @@ function Block (protoblock) {
     }
 
     this.show = function() {
-	if (!this.trash && !this.collapsed) {
-	    this.container.visible = true;
-	    if (this.collapseButton != null) {
-		this.collapseButton.visible = true;
+	if (!this.trash) {
+	    // If it is an action block or it is not collapsed then show it.
+	    if (!(['action', 'start'].indexOf(this.name) == -1  && this.collapsed)) {
+		this.container.visible = true;
+		if (this.collapseButton != null) {
+		    this.collapseButton.visible = true;
+		}
 	    }
 	}
     }

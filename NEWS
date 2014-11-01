@@ -3,81 +3,82 @@
   * basic block execution
   * expandable blocks working
   * cascading of expandable blocks
-  * arithmetic functions (arg parsing)
-  * setting expandable blocks on run (should be on load)
+  * added arithmetic functions (arg parsing)
   * rotate turtle using easeljs rotation
   * implement actions (stacks)
   * implement boxes
-  * booleans
-  * slowmo playback
+  * added booleans
+  * added slowmo playback
   * only one stack
-  * add protoblocks for new boxes
-  * add protoblock for new stacks
-  * time block
-  * mouse x, mouse y blocks
-  * add controls for rabbit vs turtle
-  * add controls for show/hide
-  * add eraser button
-  * coordinate grids
-  * fix palette updates from block palette
-  * penup/down
-  * fill
+  * added protoblocks for new boxes
+  * added protoblock for new stacks
+  * added time block
+  * added mouse x, mouse y blocks
+  * added controls for rabbit vs turtle
+  * added controls for show/hide
+  * added eraser button
+  * added coordinate grids
+  * fixed palette updates from block palette
+  * added penup/down
+  * added fill
   * load blocks
-  * click on block to run
-  * arc
-  * setxy
-  * set heading
-  * x, y, heading
-  * lots-o-sample projects
+  * added click on block to run
+  * added arc
+  * added setxy
+  * added set heading
+  * added x, y, heading
+  * added lots-o-sample projects
   * expanding arithmetic blocks
   * expanding 2-arg blocks
-  * implement color model (Munsell)
-  * fix Munsell 2.5 tables
-  * set background color
-  * trash
-  * move labels to container
-  * fix repeat docking bug
-  * fix filler hide bug
-  * real block highlighting
-  * fix problem with cascading arithmetic operators
+  * implemented color model (Munsell)
+  * fixed Munsell 2.5 tables
+  * added set background color
+  * added trash
+  * moved labels to container
+  * set expandable blocks on load
+  * fixed repeat docking bug
+  * fixed filler hide bug
+  * added real block highlighting
+  * fixed problem with cascading arithmetic operators
   * trigger events on containers, not bitmaps
-  * multiple turtles (one for each start block)
-  * show text
-  * show image
+  * added multiple turtles (one for each start block)
+  * added show text
+  * added show image
   * different colors for each turtle
-  * turtle shell (aka sprites)
+  * added turtle shell (aka sprites)
   * erase media (remove children)
   * reset turtle skin on clear
-  * scale text, images, turtle shell
+  * added scale text, images, turtle shell
   * center images on turtle
-  * fix turtle layering bug
-  * fix action name bug
+  * fixed turtle layering bug
+  * fixed action name bug
   * open file from window location
   * major refactoring of code
-  * don't accept CR in numeric text area
-  * restore from trash
-  * add wait block
-  * save/restore session
-  * stop turtle
+  * prevent CR in numeric text area
+  * added restore from trash
+  * added wait block
+  * added save/restore session
+  * added stop turtle
   * first pass on a palette strategy
-  * save file to turtle.sugarlabs.org (when running from server) w/tch
-  * svg output to window
+  * added save file to turtle.sugarlabs.org (when running from server) w/tch
+  * added svg output to window
   * added menu to trash for restore and clear all
-  * fix block/turtle/canvas layering
-  * fix mouse down logic
+  * fixed block/turtle/canvas layering
+  * fixed mouse down logic
   * figured out how to do inline svg with easeljs...
     beginning to convert to svg factory methods.
-  * use container caching on blocks
+  * using container caching on blocks
   * fixed labels on random block
   * fixed label on less block (use &lt;)
   * fixed infinite loop problem when searching for expandables
   * fixed more issues with caching
-  * reload media thumbnails
-  * collapsible stacks
-  * copy/paste
+  * reload media thumbnails on load
+  * added collapsible stacks
+  * added copy/paste of stacks
   * rename action blocks when loading projects
-  * add palette entries when encountering new storein blocks
+  * added palette entries when encountering new storein blocks
   * allow dragging from collapse button
+  * added forever block
 
 TODO:
   * don't save bitmap to session
@@ -93,6 +94,7 @@ TODO:
   * better compartmentalization of block code
    (use a dictionary for the code associated with each block)
   * more sensors
-  * implement if then else, forever, while, until, 'stop action' aka break
+  * implement if-then-else, while, until, 'stop action' (AKA break)
+  * implement and or not
   * keyboard short cuts
   * cannot open same file twice in a row (no change event?)

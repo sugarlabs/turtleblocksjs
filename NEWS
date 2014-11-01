@@ -75,10 +75,11 @@
   * reload media thumbnails
   * collapsible stacks
   * copy/paste
+  * rename action blocks when loading projects
 
 TODO:
+  * add palette entries when encountering new storein blocks
   * don't save bitmap to session
-  * rename action blocks when loading projects
   * fix canvas sizing, resizing
   * seed svg with bg color on load
   * selectable menu of samples
@@ -91,3 +92,4 @@ TODO:
   * more sensors
   * implement if then else, forever, while, until, 'stop action' aka break
   * keyboard short cuts
+  * cannot open same file twice in a row (no change event?)

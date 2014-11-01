@@ -1144,10 +1144,8 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    } else if (myBlock.isSpecialBlock()) {
 		var bottomArtwork = BASICBLOCK2ARGBOTTOM;
 	    } else if (myBlock.protoblock.palette.name == 'flow') {
-		console.log('flow block');
 		var bottomArtwork = FLOWCLAMPBOTTOM;
 	    } else {
-		console.log('blocks block');
 		var bottomArtwork = ACTIONCLAMPBOTTOM;
 	    }
 	    var yoff = myBlock.protoblock.yoff;
@@ -1305,7 +1303,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 
     this.makeNewBlock = function(name) {
 	// Create a new block
-	console.log('makeNewBlock: (' + name + ')');
+	// console.log('makeNewBlock: (' + name + ')');
 	if (!name in this.protoBlockDict) {
 	    console.log('makeNewBlock: no prototype for ' + name);
 	    return null;
@@ -1614,14 +1612,91 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		}
 	    }
 	}
-	console.log(blockObjs);
-	this.load(blockObjs);
+	this.loadNewBlocks(blockObjs);
     }
 
-    this.load = function(blockObjs) {
+    this.loadNewBlocks = function(blockObjs) {
 	// Append to the current set of blocks.
 	var adjustTheseDocks = [];
 	var blockOffset = this.blockList.length;
+
+	// Don't make duplicate action names, which is tedious
+	// process.
+	// TODO: check for new storein blocks
+	var stringNames = [];
+	var stringValues = {};  // label: [blocks with that label]
+	var actionNames = {}; // action block: label block
+	var doNames = {}; // do block: label block
+	// (1) Scan for any action blocks to identify duplicates.
+	for(var b = 0; b < blockObjs.length; b++) {
+	    var blkData = blockObjs[b];
+	    if (typeof(blkData[1]) != 'string') {
+		if (blkData[1][0] == 'text') {
+		    var key = blkData[1][1];
+		    if (stringValues[key] == undefined) {
+			stringValues[key] = [];
+		    }
+		    stringValues[key].push(b);
+		} else if (blkData[1][0] == 'hat') {
+		    if (blkData[4][1] != null) {
+			actionNames[b] = blkData[4][1];
+		    }
+		}
+	    } else if (blkData[1] == 'action') {
+		if (blkData[4][1] != null) {
+		    actionNames[b] = blkData[4][1];
+		}
+	    } else if (blkData[1] == 'do' || blkData[1] == 'stack') {
+		if (blkData[4][1] != null) {
+		    doNames[b] = blkData[4][1];
+		}
+	    }
+	}
+
+	// (2) Make a list of existing action names.
+	var currentActionNames = [];
+	for (var b = 0; b < this.blockList.length; b++) {
+	    if (this.blockList[b].name == 'action') {
+		if (this.blockList[b].connections[1] != null) {
+		    currentActionNames.push(this.blockList[this.blockList[b].connections[1]].value);
+		}
+	    }
+	}
+
+	// (3) Make sure action names are unique.
+	for (var a in actionNames) {
+	    // Is there a proto do block with this name? If so, find a
+	    // new name.
+	    // Name = the value of the connected label.
+	    console.log(a);
+	    var blkData = blockObjs[actionNames[a]];
+	    var name = blkData[1][1];
+	    var oldName = name;
+	    var i = 0;
+	    while (currentActionNames.indexOf(name) != -1) {
+		console.log(name);
+		name = blkData[1][1] + i.toString();
+		i += 1;
+		// Should never happen... but just in case.
+		if (i > this.blockList.length) {
+		    console.log('could not generate unique action name');
+		    break;
+		}
+	    }
+	    console.log('new action is ' + name);
+	    // Change the name of the action...
+	    blkData[1][1] = name;
+	    // add a new do block to the palette...
+	    this.newDoBlock(name);
+	    this.palettes.updatePalettes();
+	    // and any do blocks
+	    for (var d in doNames) {
+		var doBlkData = blockObjs[doNames[d]];
+		if (doBlkData[1][1] == oldName) {
+		    doBlkData[1][1] = name;
+		}
+	    }
+	}
 
 	for(var b = 0; b < blockObjs.length; b++) {
 	    var thisBlock = blockOffset + b;
@@ -1634,7 +1709,7 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		var value = blkData[1][1];
 	    }
 
-	    console.log(thisBlock + ' ' + name + ' ' + value + ' ' + blkData[4]);
+	    // console.log(thisBlock + ' ' + name + ' ' + value + ' ' + blkData[4]);
 
 	    if (name in NAMEDICT) {
 		name = NAMEDICT[name];
@@ -1908,8 +1983,6 @@ function labelChanged() {
     if (myBlock == null) {
 	console.log('cannot find the label that changed');
 	return;
-    } else {
-	// console.log('label changed on ' + myBlock.name);
     }
 
     // Update the block value and label.

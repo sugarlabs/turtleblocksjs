@@ -450,7 +450,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	myBlock.container.addChild(bitmap);
 	bitmap.x = myBlock.bitmap.x;
 	bitmap.y = myBlock.bitmap.y + offset;
-	bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
 	
 	// And the same for the highlight blocks
 	var name = 'bmp_' + blk + '_highlight_filler_' + c;
@@ -472,7 +471,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	myBlock.container.addChild(bitmap);
 	bitmap.x = myBlock.bitmap.x;
 	bitmap.y = myBlock.bitmap.y + offset;
-	bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
 	// Hide highlight to start
 	bitmap.visible = false;
     }
@@ -1102,9 +1100,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	myBlock.container.y = myBlock.y;
 	myBlock.bitmap.x = 0;
 	myBlock.bitmap.y = 0;
-	myBlock.bitmap.scaleX = 1;
-	myBlock.bitmap.scaleY = 1;
-	myBlock.bitmap.scale = 1;
 	myBlock.bitmap.name = 'bmp_' + thisBlock;
 	myBlock.bitmap.cursor = 'pointer';
 	this.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
@@ -1114,9 +1109,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	myBlock.container.addChild(myBlock.highlightBitmap);
 	myBlock.highlightBitmap.x = 0;
 	myBlock.highlightBitmap.y = 0;
-	myBlock.highlightBitmap.scaleX = 1;
-	myBlock.highlightBitmap.scaleY = 1;
-	myBlock.highlightBitmap.scale = 1;
 	myBlock.highlightBitmap.name = 'bmp_highlight_' + thisBlock;
 	myBlock.highlightBitmap.cursor = 'pointer';
 	// Hide it to start
@@ -1138,7 +1130,6 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.container.addChild(myBlock.text);
 	    myBlock.text.x = 70 + myBlock.bitmap.x;
 	    myBlock.text.y = 27 + myBlock.bitmap.y;
-	    myBlock.text.scaleX = myBlock.text.scaleY = myBlock.text.scale = 1;
 	}
 
 	// Expandable blocks also have some extra parts.
@@ -1159,18 +1150,12 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    myBlock.container.addChild(myBlock.bottomBitmap);
 	    myBlock.bottomBitmap.x = myBlock.bitmap.x;
 	    myBlock.bottomBitmap.y = myBlock.bitmap.y + yoff;
-	    myBlock.bottomBitmap.scaleX = 1;
-	    myBlock.bottomBitmap.scaleY = 1;
-	    myBlock.bottomBitmap.scale = 1;
 	    myBlock.bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
 
 	    myBlock.highlightBottomBitmap = new createjs.Bitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label));
 	    myBlock.container.addChild(myBlock.highlightBottomBitmap);
 	    myBlock.highlightBottomBitmap.x = myBlock.bitmap.x;
 	    myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + yoff;
-	    myBlock.highlightBottomBitmap.scaleX = 1;
-	    myBlock.highlightBottomBitmap.scaleY = 1;
-	    myBlock.highlightBottomBitmap.scale = 1;
 	    myBlock.highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
 	    myBlock.highlightBottomBitmap.visible = false;
 
@@ -1620,18 +1605,30 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.loadNewBlocks = function(blockObjs) {
-	// Append to the current set of blocks.
-	var adjustTheseDocks = [];
-	var blockOffset = this.blockList.length;
+	// We'll need a list of existing storein and action names.
+	var currentActionNames = [];
+	var currentStoreinNames = [];
+	for (var b = 0; b < this.blockList.length; b++) {
+	    if (this.blockList[b].name == 'action') {
+		if (this.blockList[b].connections[1] != null) {
+		    currentActionNames.push(this.blockList[this.blockList[b].connections[1]].value);
+		}
+	    } else if (this.blockList[b].name == 'storein') {
+		if (this.blockList[b].connections[1] != null) {
+		    currentStoreinNames.push(this.blockList[this.blockList[b].connections[1]].value);
+		}
+	    }
+	}
 
-	// Don't make duplicate action names, which is tedious
-	// process.
+	// Don't make duplicate action names.
+	// Add a palette entry for any new storein blocks.
 	// TODO: check for new storein blocks
 	var stringNames = [];
 	var stringValues = {};  // label: [blocks with that label]
 	var actionNames = {}; // action block: label block
+	var storeinNames = {}; // storein block: label block
 	var doNames = {}; // do block: label block
-	// (1) Scan for any action blocks to identify duplicates.
+	// Scan for any action blocks to identify duplicates.
 	for(var b = 0; b < blockObjs.length; b++) {
 	    var blkData = blockObjs[b];
 	    if (typeof(blkData[1]) != 'string') {
@@ -1645,10 +1642,20 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		    if (blkData[4][1] != null) {
 			actionNames[b] = blkData[4][1];
 		    }
+		} else if (blkData[1][0] == 'storein') {
+		    console.log('saw a storein block');
+		    if (blkData[4][1] != null) {
+			storeinNames[b] = blkData[4][1];
+		    }
 		}
 	    } else if (blkData[1] == 'action') {
 		if (blkData[4][1] != null) {
 		    actionNames[b] = blkData[4][1];
+		}
+	    } else if (blkData[1] == 'storein') {
+		console.log('saw a storein block');
+		if (blkData[4][1] != null) {
+		    storeinNames[b] = blkData[4][1];
 		}
 	    } else if (blkData[1] == 'do' || blkData[1] == 'stack') {
 		if (blkData[4][1] != null) {
@@ -1657,23 +1664,26 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    }
 	}
 
-	// (2) Make a list of existing action names.
-	var currentActionNames = [];
-	for (var b = 0; b < this.blockList.length; b++) {
-	    if (this.blockList[b].name == 'action') {
-		if (this.blockList[b].connections[1] != null) {
-		    currentActionNames.push(this.blockList[this.blockList[b].connections[1]].value);
-		}
+	var updatePalettes = false;
+	// Make sure new storein names have palette entries.
+	console.log(storeinNames);
+	for (var b in storeinNames) {
+	    var blkData = blockObjs[storeinNames[b]];
+	    console.log('processing ' + blkData[1][1]);
+	    if (currentStoreinNames.indexOf(blkData[1][1]) == -1) {
+		console.log('adding new palette entries for ' + blkData[1][1]);
+		this.newStoreinBlock(blkData[1][1]);
+		this.newBoxBlock(blkData[1][1]);
+		updatePalettes = true;
 	    }
 	}
 
-	// (3) Make sure action names are unique.
-	for (var a in actionNames) {
+	// Make sure action names are unique.
+	for (var b in actionNames) {
 	    // Is there a proto do block with this name? If so, find a
 	    // new name.
 	    // Name = the value of the connected label.
-	    console.log(a);
-	    var blkData = blockObjs[actionNames[a]];
+	    var blkData = blockObjs[actionNames[b]];
 	    var name = blkData[1][1];
 	    var oldName = name;
 	    var i = 0;
@@ -1687,12 +1697,12 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 		    break;
 		}
 	    }
-	    console.log('new action is ' + name);
 	    // Change the name of the action...
+	    console.log('action ' + oldName + ' is being renamed ' + name);
 	    blkData[1][1] = name;
 	    // add a new do block to the palette...
 	    this.newDoBlock(name);
-	    this.palettes.updatePalettes();
+	    updatePalettes = true;
 	    // and any do blocks
 	    for (var d in doNames) {
 		var doBlkData = blockObjs[doNames[d]];
@@ -1702,6 +1712,13 @@ function Blocks (canvas, stage, refreshCanvas, trashcan) {
 	    }
 	}
 
+	if (updatePalettes) {
+	    this.palettes.updatePalettes();
+	}
+
+	// Append to the current set of blocks.
+	var adjustTheseDocks = [];
+	var blockOffset = this.blockList.length;
 	for(var b = 0; b < blockObjs.length; b++) {
 	    var thisBlock = blockOffset + b;
 	    var blkData = blockObjs[b];

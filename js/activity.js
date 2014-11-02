@@ -650,7 +650,6 @@ define(function (require) {
                 break;
             case 'setxy':
                  if (args.length == 2) {
-                    console.log('doSetXY ' + args[0] + ' ' + args[1]);
                     turtles.turtleList[turtle].doSetXY(args[0], args[1]);
                 }
                 break;

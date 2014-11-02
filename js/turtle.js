@@ -202,7 +202,6 @@ function Turtle (name, turtles) {
         var nx = Number(x)
         var ny = Number(y);
 
-	console.log('moving to ' + nx + ' ' + ny);
         this.move(ox, oy, nx, ny, true);
         this.turtles.refreshCanvas();
     }

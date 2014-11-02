@@ -976,6 +976,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Then create a list of the label elements
         for (var blk = 0; blk < this.blockList.length; blk++) {
             var myBlock = this.blockList[blk];
+	    if (myBlock == null) {
+		console.log('null block in block list');
+		continue;
+	    }
             if (myBlock.bitmap == null) {
                 var x = myBlock.x
                 var y = myBlock.y

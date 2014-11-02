@@ -8,11 +8,11 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.0"
-   width="200"
-   height="42"
+   width="55"
+   height="55"
    id="svg2">
   <metadata
-     id="metadata3044">
+     id="metadata10">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -24,57 +24,47 @@
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs5" />
+     id="defs8" />
   <rect
-     width="200"
-     height="42"
-     x="0"
-     y="0"
-     id="rect2990"
-     style="fill:#282828;fill-opacity:1;stroke:none" />
-  <text
-     x="55.070312"
-     y="30.152542"
-     id="text3015"
-     xml:space="preserve"
-     style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
-       x="55.070312"
-       y="30.152542"
-       id="tspan3017"
-       style="font-size:24px;text-align:start;text-anchor:start;fill:#ffffff">Extras</tspan></text>
+     width="42.345783"
+     height="42.345783"
+     x="6.3271084"
+     y="6.3271084"
+     id="rect3016"
+     style="fill:#282828;fill-opacity:1;stroke:#282828;stroke-width:2.6542182;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
   <g
-     transform="matrix(0.64,0,0,0.63959066,8.9044807,3.9400377)"
+     transform="matrix(0.64,0,0,0.63959066,9.90448,9.9400384)"
      id="g3">
     <polygon
-       points="14.659,4.975 20.555,2.531 26.891,12.363 17.238,16.369 "
+       points="26.891,12.363 17.238,16.369 14.659,4.975 20.555,2.531 "
        id="polygon5"
        style="fill:#ffffff" />
     <polygon
-       points="50.04,14.654 52.477,20.55 42.646,26.88 38.649,17.228 "
+       points="42.646,26.88 38.649,17.228 50.04,14.654 52.477,20.55 "
        id="polygon7"
        style="fill:#ffffff" />
     <polygon
-       points="40.349,50.029 34.453,52.471 28.117,42.645 37.775,38.645 "
+       points="28.117,42.645 37.775,38.645 40.349,50.029 34.453,52.471 "
        id="polygon9"
        style="fill:#ffffff" />
     <polygon
-       points="34.394,2.439 40.295,4.882 37.824,16.315 28.171,12.309 "
+       points="37.824,16.315 28.171,12.309 34.394,2.439 40.295,4.882 "
        id="polygon11"
        style="fill:#ffffff" />
     <polygon
-       points="52.493,34.365 50.055,40.258 38.628,37.791 42.623,28.139 "
+       points="38.628,37.791 42.623,28.139 52.493,34.365 50.055,40.258 "
        id="polygon13"
        style="fill:#ffffff" />
     <polygon
-       points="2.515,34.34 4.953,40.234 16.385,37.76 12.391,28.105 "
+       points="16.385,37.76 12.391,28.105 2.515,34.34 4.953,40.234 "
        id="polygon15"
        style="fill:#ffffff" />
     <polygon
-       points="4.936,14.643 2.493,20.539 12.319,26.875 16.32,17.216 "
+       points="12.319,26.875 16.32,17.216 4.936,14.643 2.493,20.539 "
        id="polygon17"
        style="fill:#ffffff" />
     <polygon
-       points="14.719,50.018 20.609,52.461 26.939,42.623 17.287,38.629 "
+       points="26.939,42.623 17.287,38.629 14.719,50.018 20.609,52.461 "
        id="polygon19"
        style="fill:#ffffff" />
     <path

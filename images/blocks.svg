@@ -8,11 +8,11 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.0"
-   width="200"
-   height="42"
+   width="55"
+   height="55"
    id="svg2">
   <metadata
-     id="metadata3044">
+     id="metadata10">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -24,26 +24,15 @@
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs5" />
+     id="defs8" />
   <rect
-     width="200"
-     height="42"
-     x="0"
-     y="0"
+     width="45"
+     height="45"
+     x="5"
+     y="5"
      id="rect2990"
      style="fill:#282828;fill-opacity:1;stroke:none" />
-  <text
-     x="55.070312"
-     y="30.152542"
-     id="text3015"
-     xml:space="preserve"
-     style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
-       x="55.070312"
-       y="30.152542"
-       id="tspan3017"
-       style="font-size:24px;text-align:start;text-anchor:start;fill:#ffffff">Blocks</tspan></text>
   <g
-     transform="translate(0,-5)"
      id="g3789">
     <path
        d="m 15.719636,31.331478 0.114372,5.261133 11.437247,6.290486 L 27.5,29.387146"

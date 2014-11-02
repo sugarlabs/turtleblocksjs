@@ -122,16 +122,22 @@ function Palette (palettes, name, color, bgcolor) {
     this.makeMenu = function() {
         // Create the menu button
         if (this.menuBitmap == null) {
+	    this.menuContainer = new createjs.Container();
+	    var background = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name));
+	    this.menuContainer.addChild(background);
             var image = new Image();
-            image.src = 'images/palettes/' + this.name + '.svg';
-            this.menuBitmap = new createjs.Bitmap(image);
-            this.palettes.container.addChild(this.menuBitmap);
+            image.src = 'images/' + this.name + '.svg';
+            var icon = new createjs.Bitmap(image);
+	    icon.scaleX = 0.8;
+	    icon.scaleY = 0.8;
+	    this.menuContainer.addChild(icon);
+            this.palettes.container.addChild(this.menuContainer);
             var hitArea = new createjs.Shape();
             hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
             hitArea.x = 100;
             hitArea.y = 21;
-            this.menuBitmap.hitArea = hitArea;
-            this.menuBitmap.visible = false;
+            this.menuContainer.hitArea = hitArea;
+            this.menuContainer.visible = false;
             loadPaletteMenuHandler(this);
         }
         for (var blk in this.protoList) {
@@ -254,28 +260,28 @@ function Palette (palettes, name, color, bgcolor) {
     }
 
     this.moveMenu = function(x, y) {
-        dx = x - this.menuBitmap.x;
-        dy = y - this.menuBitmap.y;
-        this.menuBitmap.x = x;
-        this.menuBitmap.y = y;
+        dx = x - this.menuContainer.x;
+        dy = y - this.menuContainer.y;
+        this.menuContainer.x = x;
+        this.menuContainer.y = y;
         this.moveMenuItemsRelative(dx, dy);
     }
 
     this.moveMenuRelative = function(dx, dy) {
-        this.menuBitmap.x += dx;
-        this.menuBitmap.y += dy;
+        this.menuContainer.x += dx;
+        this.menuContainer.y += dy;
         this.moveMenuItemsRelative(dx, dy);
     }
 
     this.hideMenu = function() {
-        if (this.menuBitmap != null) {
-            this.menuBitmap.visible = false;
+        if (this.menuContainer != null) {
+            this.menuContainer.visible = false;
             this.hideMenuItems(true);
         }
     }
 
     this.showMenu = function() {
-        this.menuBitmap.visible = true;
+        this.menuContainer.visible = true;
     }
 
     this.hideMenuItems = function(init) {
@@ -405,17 +411,17 @@ function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
 
 // Palette Menu event handlers
 function loadPaletteMenuHandler(palette) {
-    palette.menuBitmap.on('mouseover', function(event) {
+    palette.menuContainer.on('mouseover', function(event) {
         // palette.highlight();
         // palette.palettes.refreshCanvas();
     });
 
-    palette.menuBitmap.on('mouseout', function(event) {
+    palette.menuContainer.on('mouseout', function(event) {
         // palette.unhighlight();
         // palette.palettes.refreshCanvas();
     });
     
-    palette.menuBitmap.on('click', function(event) {
+    palette.menuContainer.on('click', function(event) {
         for (p in palette.palettes.dict) {
             if (palette.name != p) {
                 if (palette.palettes.dict[p].visible) {
@@ -431,26 +437,26 @@ function loadPaletteMenuHandler(palette) {
         palette.palettes.refreshCanvas();
     });
 
-    palette.menuBitmap.on('mousedown', function(event) {
+    palette.menuContainer.on('mousedown', function(event) {
         // FIXME: move them all
         var offset = {
-            x: palette.menuBitmap.x - event.stageX,
-            y: palette.menuBitmap.y - event.stageY
+            x: palette.menuContainer.x - event.stageX,
+            y: palette.menuContainer.y - event.stageY
         };
 
-        palette.menuBitmap.on('pressmove', function(event) {
+        palette.menuContainer.on('pressmove', function(event) {
             moved = true;
-            var oldX = palette.menuBitmap.x;
-            var oldY = palette.menuBitmap.y;
-            palette.menuBitmap.x = event.stageX + offset.x;
-            palette.menuBitmap.y = event.stageY + offset.y;
+            var oldX = palette.menuContainer.x;
+            var oldY = palette.menuContainer.y;
+            palette.menuContainer.x = event.stageX + offset.x;
+            palette.menuContainer.y = event.stageY + offset.y;
             palette.palettes.refreshCanvas();
-            var dx = palette.menuBitmap.x - oldX;
-            var dy = palette.menuBitmap.y - oldY;
+            var dx = palette.menuContainer.x - oldX;
+            var dy = palette.menuContainer.y - oldY;
             palette.moveMenuItemsRelative(dx, dy);
         });
     });
 
-    palette.menuBitmap.on('mouseout',function(event) {
+    palette.menuContainer.on('mouseout',function(event) {
     });
 }

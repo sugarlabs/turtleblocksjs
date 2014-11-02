@@ -33,6 +33,10 @@ BASICBLOCK = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" wi
 
 BASICBLOCKDOCKS = [[20, 0, 'out'], [20, 42, 'in']];
 
+BASICBLOCKNOFLOW = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="114" height="56"> <g transform="matrix(2,0,0,2,0,-2)"> <path d="m 0.5,14.5 0,-9 c 0,-2.1 1.96,-3.5 4,-4 l 4,0 0,2 10,0 0,-2 30,0 4,0 c 2.1,0 4,1.9 4,4 l 0,9 0,4 c 0,2.1 -1.9,4 -4,4 l -4,0 -30,0 -5,6 -5,-6 -4,0 c -2.1,0 -4,-1.9 -4,-4 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" /> </g> <text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan x="90" y="26" style="font-size:font_size">block_label</tspan></text></svg>'
+
+BASICBLOCKNOFLOWDOCKS = [[20, 0, 'out'], [20, 42, 'unavailable']];
+
 // basic block, 1 arg (fill_color, stroke_color, block_label)
 BASICBLOCK1ARG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="114" height="46"> <g transform="scale(2,2)"> <path d="m 0.5,8.5 0,-4 a 4,4 90 0 1 4,-4 l 4,0 0,2 10,0 0,-2 30,0 4,0 a 4,4 90 0 1 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 a 4,4 90 0 1 -4,4 l -4,0 -30,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 a 4,4 90 0 1 -4,-4 l 0,-4 0,-4 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" /> </g> <text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan x="90" y="26" style="font-size:font_size">block_label</tspan></text></svg>'
 

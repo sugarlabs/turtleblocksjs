@@ -79,6 +79,7 @@
   * added palette entries when encountering new storein blocks
   * allow dragging from collapse button
   * added forever block
+  * added 'stop action' (AKA break)
 
 TODO:
   * don't save bitmap to session
@@ -94,7 +95,7 @@ TODO:
   * better compartmentalization of block code
    (use a dictionary for the code associated with each block)
   * more sensors
-  * implement if-then-else, while, until, 'stop action' (AKA break)
+  * implement if-then-else, while, until
   * implement and or not
   * keyboard short cuts
   * cannot open same file twice in a row (no change event?)

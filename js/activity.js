@@ -621,6 +621,11 @@ define(function (require) {
 		    childFlowCount = -1;
 		}
 		break;
+	    case 'break':
+		if (last(turtles.turtleList[turtle].queue) != null) {
+		    last(turtles.turtleList[turtle].queue).count = 1;
+		}
+		break;
 	    case 'repeat':
  		if (args.length == 2) {
 		    childFlow = args[1];

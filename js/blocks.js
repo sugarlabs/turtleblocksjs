@@ -58,6 +58,12 @@ function ProtoBlock (name) {
 	this.copyDock(BASICBLOCKDOCKS);
     }
 
+    this.basicBlockNoFlow = function() {
+	this.args = 0;
+	this.artwork = BASICBLOCKNOFLOW;
+	this.copyDock(BASICBLOCKNOFLOWDOCKS);
+    }
+
     this.oneArgBlock = function() {
 	this.args = 1;
 	this.artwork = BASICBLOCK1ARG;
@@ -2703,6 +2709,12 @@ function initProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['forever'] = foreverBlock;
     foreverBlock.flowClamp0ArgBlock();
     foreverBlock.staticLabels.push('forever');
+
+    var breakBlock = new ProtoBlock('break');
+    breakBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['break'] = breakBlock;
+    breakBlock.basicBlockNoFlow();
+    breakBlock.staticLabels.push('stop');
     
     var ifBlock = new ProtoBlock('if');
     ifBlock.palette = palettes.dict['flow'];

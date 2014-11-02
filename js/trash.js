@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -132,124 +132,124 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
     loadTrashHandlers(this);
 
     this.hide = function() {
-	this.bitmap.visible = false;
-	this.highlightBitmap.visible = false;
-	this.refreshCanvas();
+        this.bitmap.visible = false;
+        this.highlightBitmap.visible = false;
+        this.refreshCanvas();
     }
 
     this.show = function() {
-	this.bitmap.visible = true;
-	this.highlightBitmap.visible = false;
-	this.refreshCanvas();
+        this.bitmap.visible = true;
+        this.highlightBitmap.visible = false;
+        this.refreshCanvas();
     }
 
     this.highlight = function() {
-	this.bitmap.visible = false;
-	this.highlightBitmap.visible = true;
-	this.refreshCanvas();
+        this.bitmap.visible = false;
+        this.highlightBitmap.visible = true;
+        this.refreshCanvas();
     }
 
     this.unhighlight = function() {
-	this.bitmap.visible = true;
-	this.highlightBitmap.visible = false;
-	this.refreshCanvas();
+        this.bitmap.visible = true;
+        this.highlightBitmap.visible = false;
+        this.refreshCanvas();
     }
 
     this.hideMenu = function() {
-	this.restoreBitmap.visible = false;
-	this.clearAllBitmap.visible = false;
-	this.confirmBitmap.visible = false;
-	this.restoreHighlightBitmap.visible = false;
-	this.clearAllHighlightBitmap.visible = false;
-	this.confirmHighlightBitmap.visible = false;
+        this.restoreBitmap.visible = false;
+        this.clearAllBitmap.visible = false;
+        this.confirmBitmap.visible = false;
+        this.restoreHighlightBitmap.visible = false;
+        this.clearAllHighlightBitmap.visible = false;
+        this.confirmHighlightBitmap.visible = false;
     }
 
     this.overTrashcan = function(x, y) {
-	// FIX ME: what is the size of the trash can?
-	if (x < this.container.x) {
-	    return false;
-	} else if (x > this.container.x + 55) {
-	    return false;
-	}
-	if (y < this.container.y) {
-	    return false;
-	} else if (y > this.container.y + 55) {
-	    return false;
-	}
-	return true;
+        // FIX ME: what is the size of the trash can?
+        if (x < this.container.x) {
+            return false;
+        } else if (x > this.container.x + 55) {
+            return false;
+        }
+        if (y < this.container.y) {
+            return false;
+        } else if (y > this.container.y + 55) {
+            return false;
+        }
+        return true;
     }
 }
 
 function loadTrashHandlers(trash) {
     trash.container.on('mouseover', function(event) {
-	trash.highlight();
-	trash.refreshCanvas();
+        trash.highlight();
+        trash.refreshCanvas();
     });
 
     trash.restoreBitmap.on('mouseover', function(event) {
-	trash.restoreBitmap.visible = false;
-	trash.restoreHighlightBitmap.visible = true;
-	trash.refreshCanvas();
+        trash.restoreBitmap.visible = false;
+        trash.restoreHighlightBitmap.visible = true;
+        trash.refreshCanvas();
     });
 
     trash.clearAllBitmap.on('mouseover', function(event) {
-	trash.clearAllBitmap.visible = false;
-	trash.clearAllHighlightBitmap.visible = true;
-	trash.refreshCanvas();
+        trash.clearAllBitmap.visible = false;
+        trash.clearAllHighlightBitmap.visible = true;
+        trash.refreshCanvas();
     });
 
     trash.confirmBitmap.on('mouseover', function(event) {
-	trash.confirmBitmap.visible = false;
-	trash.confirmHighlightBitmap.visible = true;
-	trash.refreshCanvas();
+        trash.confirmBitmap.visible = false;
+        trash.confirmHighlightBitmap.visible = true;
+        trash.refreshCanvas();
     });
 
     trash.container.on('mouseout', function(event) {
-	trash.unhighlight();
-	trash.refreshCanvas();
+        trash.unhighlight();
+        trash.refreshCanvas();
     });
     
     trash.restoreHighlightBitmap.on('mouseout', function(event) {
-	trash.restoreBitmap.visible = true;
-	trash.restoreHighlightBitmap.visible = false;
-	trash.refreshCanvas();
+        trash.restoreBitmap.visible = true;
+        trash.restoreHighlightBitmap.visible = false;
+        trash.refreshCanvas();
     });
 
     trash.clearAllHighlightBitmap.on('mouseout', function(event) {
-	trash.clearAllBitmap.visible = true;
-	trash.clearAllHighlightBitmap.visible = false;
-	trash.refreshCanvas();
+        trash.clearAllBitmap.visible = true;
+        trash.clearAllHighlightBitmap.visible = false;
+        trash.refreshCanvas();
     });
 
     trash.container.on('click', function(event) {
-	console.log('click: trash');
-	if (trash.restoreBitmap.visible) {
-	    trash.hideMenu();
-	} else if (trash.restoreHighlightBitmap.visible) {
-	    trash.hideMenu();
-	} else {
-	    trash.restoreBitmap.visible = true;
-	    trash.clearAllBitmap.visible = true;
-	}
-	trash.refreshCanvas();
+        console.log('click: trash');
+        if (trash.restoreBitmap.visible) {
+            trash.hideMenu();
+        } else if (trash.restoreHighlightBitmap.visible) {
+            trash.hideMenu();
+        } else {
+            trash.restoreBitmap.visible = true;
+            trash.clearAllBitmap.visible = true;
+        }
+        trash.refreshCanvas();
     });
 
     trash.restoreHighlightBitmap.on('click', function(event) {
-	console.log('click: trash restore');
-	trash.restore();
-	trash.hideMenu();
+        console.log('click: trash restore');
+        trash.restore();
+        trash.hideMenu();
     });
 
     trash.clearAllHighlightBitmap.on('click', function(event) {
-	console.log('click: trash clear all');
-	trash.confirmBitmap.visible = true;
-	trash.refreshCanvas();
+        console.log('click: trash clear all');
+        trash.confirmBitmap.visible = true;
+        trash.refreshCanvas();
     });
 
     trash.confirmHighlightBitmap.on('click', function(event) {
-	console.log('click: confirm');
-	trash.clearAll();
-	trash.hideMenu();
-	trash.refreshCanvas();
+        console.log('click: confirm');
+        trash.clearAll();
+        trash.hideMenu();
+        trash.refreshCanvas();
     });
 }

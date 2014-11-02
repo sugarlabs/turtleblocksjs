@@ -30,23 +30,19 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
     this.highlightBitmap = new createjs.Bitmap(highlightImage);
     this.container.addChild(this.highlightBitmap);
     
-    // FIXME
-    this.container.x = canvas.width - 55;
+    var bounds = this.container.getBounds();
+    this.container.x = canvas.width - 55; // bounds.width;
     this.container.y = 0;
 
+    var w = 55; // bounds.width;
+    var h = 55; // bounds.height;
     var hitArea = new createjs.Shape();
-    hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
-    hitArea.x = 27;
-    hitArea.y = 27;
+    hitArea.graphics.beginFill('#FFF').drawEllipse(-w/2, -h/2, w, h);
+    hitArea.x = w/2;
+    hitArea.y = h/2;
     this.container.hitArea = hitArea;
 
-    this.bitmap.x = 0;
-    this.bitmap.y = 0;
-    this.bitmap.scaleX = this.bitmap.scaleY = this.bitmap.scale = 1;
     this.bitmap.name = 'bmp_trash';
-    this.highlightBitmap.x = 0;
-    this.highlightBitmap.y = 0;
-    this.highlightBitmap.scaleX = this.highlightBitmap.scaleY = this.highlightBitmap.scale = 1;
     this.highlightBitmap.name = 'bmp_trash_highlight';
 
     this.bitmap.visible = true;
@@ -54,80 +50,58 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
 
     this.refreshCanvas();
 
-    var image = new Image();
-    image.src = 'images/trash/restore.svg';
-    this.restoreBitmap = new createjs.Bitmap(image);
-    this.stage.addChild(this.restoreBitmap);
-    this.restoreBitmap.x = canvas.width - 200;
-    this.restoreBitmap.y = 55;
-    this.restoreBitmap.visible = false;
+    this.restoreContainer = new createjs.Container();
+    this.restoreBitmap = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', 'restore all'));
+    this.restoreContainer.addChild(this.restoreBitmap);
+    this.restoreHighlightBitmap = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#4d4d4d').replace('palette_label', 'restore all'));
+    this.restoreContainer.addChild(this.restoreHighlightBitmap);
+    var restoreIcon = this.bitmap.clone();
+    restoreIcon.scaleX = 0.8;
+    restoreIcon.scaleY = 0.8;
+    this.restoreContainer.addChild(restoreIcon);
+    this.stage.addChild(this.restoreContainer);
+    this.restoreContainer.x = canvas.width - 200;
+    this.restoreContainer.y = 55; // h;
+    this.restoreContainer.visible = false;
     var hitArea = new createjs.Shape();
     hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
     hitArea.x = 100;
     hitArea.y = 21;
-    this.restoreBitmap.hitArea = hitArea;
-    var image = new Image();
-    image.src = 'images/trash/restore-highlight.svg';
-    this.restoreHighlightBitmap = new createjs.Bitmap(image);
-    this.stage.addChild(this.restoreHighlightBitmap);
-    this.restoreHighlightBitmap.x = this.restoreBitmap.x;
-    this.restoreHighlightBitmap.y = this.restoreBitmap.y;
-    this.restoreHighlightBitmap.visible = false;
-    var hitArea = new createjs.Shape();
-    hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
-    hitArea.x = 100;
-    hitArea.y = 21;
-    this.restoreHighlightBitmap.hitArea = hitArea;
+    this.restoreContainer.hitArea = hitArea;
 
-    var image = new Image();
-    image.src = 'images/trash/clearall.svg';
-    this.clearAllBitmap = new createjs.Bitmap(image);
-    this.stage.addChild(this.clearAllBitmap);
-    this.clearAllBitmap.x = this.restoreBitmap.x;
-    this.clearAllBitmap.y = this.restoreBitmap.y + 42;
-    this.clearAllBitmap.visible = false;
+    this.clearallContainer = new createjs.Container();
+    this.clearallBitmap = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', 'clear all'));
+    this.clearallContainer.addChild(this.clearallBitmap);
+    this.clearallHighlightBitmap = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#4d4d4d').replace('palette_label', 'clear all'));
+    this.clearallContainer.addChild(this.clearallHighlightBitmap);
+    var clearallIcon = this.bitmap.clone();
+    clearallIcon.scaleX = 0.8;
+    clearallIcon.scaleY = 0.8;
+    this.clearallContainer.addChild(clearallIcon);
+    this.stage.addChild(this.clearallContainer);
+    this.clearallContainer.x = this.restoreContainer.x;
+    this.clearallContainer.y = this.restoreContainer.y + 42;
+    this.clearallContainer.visible = false;
     var hitArea = new createjs.Shape();
     hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
     hitArea.x = 100;
     hitArea.y = 21;
-    this.clearAllBitmap.hitArea = hitArea;
-    var image = new Image();
-    image.src = 'images/trash/clearall-highlight.svg';
-    this.clearAllHighlightBitmap = new createjs.Bitmap(image);
-    this.stage.addChild(this.clearAllHighlightBitmap);
-    this.clearAllHighlightBitmap.x = this.clearAllBitmap.x;
-    this.clearAllHighlightBitmap.y = this.clearAllBitmap.y;
-    this.clearAllHighlightBitmap.visible = false;
-    var hitArea = new createjs.Shape();
-    hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
-    hitArea.x = 100;
-    hitArea.y = 21;
-    this.clearAllHighlightBitmap.hitArea = hitArea;
+    this.clearallContainer.hitArea = hitArea;
 
-    var image = new Image();
-    image.src = 'images/trash/confirm.svg';
-    this.confirmBitmap = new createjs.Bitmap(image);
-    this.stage.addChild(this.confirmBitmap);
-    this.confirmBitmap.x = this.clearAllBitmap.x;
-    this.confirmBitmap.y = this.clearAllBitmap.y + 42;
-    this.confirmBitmap.visible = false;
+    this.confirmContainer = new createjs.Container();
+    this.confirmBitmap = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', 'confirm'));
+    this.confirmContainer.addChild(this.confirmBitmap);
+    this.confirmHighlightBitmap = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#4d4d4d').replace('palette_label', 'confirm'));
+    this.confirmContainer.addChild(this.confirmHighlightBitmap);
+    this.stage.addChild(this.confirmContainer);
+    this.confirmContainer.x = this.clearallContainer.x;
+    this.confirmContainer.y = this.clearallContainer.y + 42;
+    this.confirmContainer.visible = false;
     var hitArea = new createjs.Shape();
     hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
     hitArea.x = 100;
     hitArea.y = 21;
-    this.confirmBitmap.hitArea = hitArea;
-    var image = new Image();
-    image.src = 'images/trash/confirm-highlight.svg';
-    this.confirmHighlightBitmap = new createjs.Bitmap(image);
-    this.stage.addChild(this.confirmHighlightBitmap);
-    this.confirmHighlightBitmap.x = this.confirmBitmap.x;
-    this.confirmHighlightBitmap.y = this.confirmBitmap.y;
-    this.confirmHighlightBitmap.visible = false;
-    var hitArea = new createjs.Shape();
-    hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
-    hitArea.x = 100;
-    hitArea.y = 21;
-    this.confirmHighlightBitmap.hitArea = hitArea;
+    this.confirmContainer.hitArea = hitArea;
 
     loadTrashHandlers(this);
 
@@ -156,12 +130,9 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
     }
 
     this.hideMenu = function() {
-        this.restoreBitmap.visible = false;
-        this.clearAllBitmap.visible = false;
-        this.confirmBitmap.visible = false;
-        this.restoreHighlightBitmap.visible = false;
-        this.clearAllHighlightBitmap.visible = false;
-        this.confirmHighlightBitmap.visible = false;
+        this.restoreContainer.visible = false;
+        this.clearallContainer.visible = false;
+        this.confirmContainer.visible = false;
     }
 
     this.overTrashcan = function(x, y) {
@@ -186,15 +157,15 @@ function loadTrashHandlers(trash) {
         trash.refreshCanvas();
     });
 
-    trash.restoreBitmap.on('mouseover', function(event) {
+    trash.restoreContainer.on('mouseover', function(event) {
         trash.restoreBitmap.visible = false;
         trash.restoreHighlightBitmap.visible = true;
         trash.refreshCanvas();
     });
 
-    trash.clearAllBitmap.on('mouseover', function(event) {
-        trash.clearAllBitmap.visible = false;
-        trash.clearAllHighlightBitmap.visible = true;
+    trash.clearallContainer.on('mouseover', function(event) {
+        trash.clearallBitmap.visible = false;
+        trash.clearallHighlightBitmap.visible = true;
         trash.refreshCanvas();
     });
 
@@ -209,44 +180,42 @@ function loadTrashHandlers(trash) {
         trash.refreshCanvas();
     });
     
-    trash.restoreHighlightBitmap.on('mouseout', function(event) {
+    trash.restoreContainer.on('mouseout', function(event) {
         trash.restoreBitmap.visible = true;
         trash.restoreHighlightBitmap.visible = false;
         trash.refreshCanvas();
     });
 
-    trash.clearAllHighlightBitmap.on('mouseout', function(event) {
-        trash.clearAllBitmap.visible = true;
-        trash.clearAllHighlightBitmap.visible = false;
+    trash.clearallHighlightBitmap.on('mouseout', function(event) {
+        trash.clearallBitmap.visible = true;
+        trash.clearallHighlightBitmap.visible = false;
         trash.refreshCanvas();
     });
 
     trash.container.on('click', function(event) {
         console.log('click: trash');
-        if (trash.restoreBitmap.visible) {
-            trash.hideMenu();
-        } else if (trash.restoreHighlightBitmap.visible) {
+        if (trash.restoreContainer.visible) {
             trash.hideMenu();
         } else {
-            trash.restoreBitmap.visible = true;
-            trash.clearAllBitmap.visible = true;
+            trash.restoreContainer.visible = true;
+            trash.clearallContainer.visible = true;
         }
         trash.refreshCanvas();
     });
 
-    trash.restoreHighlightBitmap.on('click', function(event) {
+    trash.restoreContainer.on('click', function(event) {
         console.log('click: trash restore');
         trash.restore();
         trash.hideMenu();
     });
 
-    trash.clearAllHighlightBitmap.on('click', function(event) {
+    trash.clearallContainer.on('click', function(event) {
         console.log('click: trash clear all');
-        trash.confirmBitmap.visible = true;
+        trash.confirmContainer.visible = true;
         trash.refreshCanvas();
     });
 
-    trash.confirmHighlightBitmap.on('click', function(event) {
+    trash.confirmContainer.on('click', function(event) {
         console.log('click: confirm');
         trash.clearAll();
         trash.hideMenu();

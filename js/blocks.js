@@ -14,8 +14,8 @@
 // Some names changed between the Python verison and the
 // JS version so look up name in the conversion dictionary.
 var NAMEDICT = {
-    'xpos': 'x',
-    'ypos': 'y',
+    'xcor': 'x',
+    'ycor': 'y',
     'seth': 'setheading',
     'plus2': 'plus',
     'product2': 'multiply',
@@ -1351,8 +1351,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
+	if (this.protoBlockDict[name] == null) {
+            console.log('makeNewBlock: no prototype for ' + name);
+	    return null;
+	}
         this.blockList.push(new Block(this.protoBlockDict[name]));
-
+	if (last(this.blockList) == null) {
+	    console.log('failed to make protoblock for ' + name);
+	    return null;
+	}
         // We copy the dock because expandable blocks modify it.
         var myBlock = last(this.blockList);
         myBlock.copyDocks();

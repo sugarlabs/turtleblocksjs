@@ -22,7 +22,10 @@ function getMunsellColor(hue, value, chroma) {
     // chroma (aka grey) 0-100 -> 0-14
     // We linear-interpret value.
     var h = Math.round(hue / 2.5);
-    h %= 40;
+    h %= 40;  // doesn't guarentee it will be positive.
+    while (h < 0) {
+	h += 40;
+    }
     var v1 = Math.floor(value / 10);
     var v2 = v1 + 1;
     if (v1 < 0) {

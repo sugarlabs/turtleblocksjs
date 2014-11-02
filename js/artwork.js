@@ -130,3 +130,5 @@ BOOLEAN2ARGDOCKS = [[0, 40, 'booleanout'], [86, 20, 'numberin'], [86, 62, 'numbe
 // Palette-related artwork
 
 PALETTEFILLER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="42"> <rect width="200" height="42" x="0" y="0" style="fill:#b3b3b3;fill-opacity:1;stroke:none" /> </svg>'
+
+PALETTEHEADER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="42"> <rect width="200" height="42" x="0" y="0" style="fill:fill_color;fill-opacity:1;stroke:none" /> <text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill-opacity:1;stroke:none;font-family:Sans"><tspan  x="55" y="30" style="font-size:24px;text-align:start;text-anchor:start;fill:#ffffff">confirm</tspan></text> </svg>'

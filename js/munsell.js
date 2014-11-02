@@ -26,45 +26,45 @@ function getMunsellColor(hue, value, chroma) {
     var v1 = Math.floor(value / 10);
     var v2 = v1 + 1;
     if (v1 < 0) {
-	v1 = 0;
-	v2 = 0;
+        v1 = 0;
+        v2 = 0;
     } else if (v1 > 10) {
-	v1 = 10;
-	v2 = 10;
+        v1 = 10;
+        v2 = 10;
     }
     var p = (v2 * 10 - value) / 10.;
     if (p > 1) {
-	p = 1;
+        p = 1;
     } else if (p < 0) {
-	p = 0;
+        p = 0;
     }
     var c = Math.round((chroma * 14)/ 100);
     if (c < 0) {
-	c = 0;
+        c = 0;
     } else if (c > 14) {
-	c = 14;
+        c = 14;
     }
     return interpColor(munsell[h * 165 + v1 * 15 + c], munsell[h * 165 + v2 * 15 + c], p);
 }
 
 interpColor = function(hex1, hex2, p) {
     if (p == 0) {
-	return hex2;
+        return hex2;
     } else if (p == 1) {
-	return hex1;
+        return hex1;
     } else {
-	var r1 = parseInt(hex1.substr(1, 2), 16);
-	var g1 = parseInt(hex1.substr(3, 2), 16);
-	var b1 = parseInt(hex1.substr(5, 2), 16);
-	var r2 = parseInt(hex2.substr(1, 2), 16);
-	var g2 = parseInt(hex2.substr(3, 2), 16);
-	var b2 = parseInt(hex2.substr(5, 2), 16);
+        var r1 = parseInt(hex1.substr(1, 2), 16);
+        var g1 = parseInt(hex1.substr(3, 2), 16);
+        var b1 = parseInt(hex1.substr(5, 2), 16);
+        var r2 = parseInt(hex2.substr(1, 2), 16);
+        var g2 = parseInt(hex2.substr(3, 2), 16);
+        var b2 = parseInt(hex2.substr(5, 2), 16);
 
-	var nr = Math.round(r1 * p + r2 * (1 - p));
-	var ng = Math.round(g1 * p + g2 * (1 - p));
-	var nb = Math.round(b1 * p + b2 * (1 - p));
+        var nr = Math.round(r1 * p + r2 * (1 - p));
+        var ng = Math.round(g1 * p + g2 * (1 - p));
+        var nb = Math.round(b1 * p + b2 * (1 - p));
 
-	return createjs.Graphics.getRGB(nr, ng, nb, 1.0);
+        return createjs.Graphics.getRGB(nr, ng, nb, 1.0);
     }
 };
 

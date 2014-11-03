@@ -408,7 +408,11 @@ define(function (require) {
             palettes.updatePalettes();
 
             try {
-                return httpPost(projectName, prepareExport());
+		// Post the project
+                var returnTBValue = httpPost(projectName, prepareExport());
+		// and the SVG
+                var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), doSVG(0.4));
+		return returnTBValue + ' ' + returnSVGValue;
             } catch (e) {
                 console.log(e);
                 return;
@@ -1098,7 +1102,13 @@ define(function (require) {
 
                 connections = [];
                 for (var c = 0; c < myBlock.connections.length; c++) {
-                    connections.push(blockMap[myBlock.connections[c]]);
+		    var mapConnection = blockMap.indexOf(myBlock.connections[c]);
+		    console.log('mapping ' + myBlock.connections[c] + ' to ' + mapConnection);
+		    if (myBlock.connections[c] == null || mapConnection == -1) {
+			connections.push(null);
+		    } else {
+			connections.push(mapConnection);
+		    }
                 }
                 data.push([blockMap.indexOf(blk), name, myBlock.container.x, myBlock.container.y, connections]);
             }
@@ -1116,18 +1126,12 @@ define(function (require) {
             var titleElem = docById("title");
             if (titleElem.value.length == 0) {
                 // FIXME: ask for a title and add a UID.
-                console.log('saving to unknown');
-                return saveProject('unknown');
+                console.log('saving to unknown.tb');
+                return saveProject('unknown.tb');
             } else {
-                console.log('saving to ' + titleElem.value);
-                return saveProject(titleElem.value);
+                console.log('saving to ' + titleElem.value + '.tb');
+                return saveProject(titleElem.value + '.tb');
             }
-
-            // var fileChooser = docById("mySaveFile");
-            // fileChooser.addEventListener("change", function(event) {
-            // }, false);
-            // fileChooser.focus();
-            // fileChooser.click();
         }
 
     });

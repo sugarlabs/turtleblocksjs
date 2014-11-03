@@ -330,10 +330,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // always the second to last argument.
         var c = myBlock.connections.length - 2;
         this.sizeCounter = 0;
-        var size = this.getStackSize(myBlock.connections[c]);
-        if (size < 1) {
-            size = 1; // Minimum clamp size
-        }
+	if (c > 0 && myBlock.connections[c] != null) {
+            var size = this.getStackSize(myBlock.connections[c]);
+            if (size < 1) {
+		size = 1; // Minimum clamp size
+            }
+	} else {
+	    size = 1;
+	}
         // console.log('blk[' + blk + '].size == ' + size);
 
         // (2) adjust the clamp size to match.
@@ -537,9 +541,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var size = 0;
         this.sizeCounter += 1;
         if (this.sizeCounter > this.blockList.length * 2) {
-            console.log('infinite loop detecting size of expandable block?');
-            console.log(blk);
-            console.log(this.blockList);
+            console.log('infinite loop detecting size of expandable block? ' + blk);
             return size;
         }
 
@@ -548,13 +550,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         if (this.blockList[blk].isClampBlock()) {
-            c = this.blockList[blk].connections.length - 2;
-            size = this.getStackSize(this.blockList[blk].connections[c]);
-            if (size == 0) {
-                size = 1; // minimum of 1 slot in clamp
+            var c = this.blockList[blk].connections.length - 2;
+            if (c > 0) {
+                 var cblk = this.blockList[blk].connections[c];
+                if (cblk != null) {
+                    size = this.getStackSize(cblk);
+                    if (size == 0) {
+                        size = 1; // minimum of 1 slot in clamp
+                    }
+                }
+                // add top and bottom of clamp
+                size += this.blockList[blk].size;
             }
-            // add top and bottom of clamp
-            size += this.blockList[blk].size;
         } else {
             size = this.blockList[blk].size;
         }
@@ -562,7 +569,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // check on any connected block
         if (!this.blockList[blk].isValueBlock()) {
             var cblk = last(this.blockList[blk].connections);
-            size += this.getStackSize(cblk);
+            if (cblk != null) {
+                size += this.getStackSize(cblk);
+            }
         }
         return size;
     }
@@ -618,6 +627,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (cblk == null) {
                 continue;
             }
+
+	    if (this.blockList[cblk] == null) {
+		console.log('this is not good: encountered a null blk ' + blk);
+		continue;
+	    }
 
             // Find the dock position in the connected block.
             var foundMatch = false;
@@ -976,10 +990,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Then create a list of the label elements
         for (var blk = 0; blk < this.blockList.length; blk++) {
             var myBlock = this.blockList[blk];
-	    if (myBlock == null) {
-		console.log('null block in block list');
-		continue;
-	    }
+            if (myBlock == null) {
+                console.log('null block in block list');
+                continue;
+            }
             if (myBlock.bitmap == null) {
                 var x = myBlock.x
                 var y = myBlock.y
@@ -1096,7 +1110,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.searchForExpandables = function(blk) {
         // Find the expandable blocks below blk in a stack.
-        while (blk != null && !this.blockList[blk].isValueBlock()) {
+        while (blk != null && this.blockList[blk] != null && !this.blockList[blk].isValueBlock()) {
             this.searchCounter += 1;
             if (this.searchCounter > 2 * this.blockList.length) {
                 console.log('infinite loop searching for Expandables? ' + this.searchCounter);
@@ -1351,15 +1365,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
-	if (this.protoBlockDict[name] == null) {
+        if (this.protoBlockDict[name] == null) {
             console.log('makeNewBlock: no prototype for ' + name);
-	    return null;
-	}
+            return null;
+        }
         this.blockList.push(new Block(this.protoBlockDict[name]));
-	if (last(this.blockList) == null) {
-	    console.log('failed to make protoblock for ' + name);
-	    return null;
-	}
+        if (last(this.blockList) == null) {
+            console.log('failed to make protoblock for ' + name);
+            return null;
+        }
         // We copy the dock because expandable blocks modify it.
         var myBlock = last(this.blockList);
         myBlock.copyDocks();
@@ -1666,7 +1680,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blockMap[this.dragGroup[b]] = b;
             blockObjs.push(blockItem);
         }
-        console.log(blockMap);
         for (var b = 0; b < this.dragGroup.length; b++) {
             myBlock = this.blockList[this.dragGroup[b]];
             for (var c = 0; c < myBlock.connections.length; c++) {
@@ -1682,6 +1695,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.loadNewBlocks = function(blockObjs) {
         // We'll need a list of existing storein and action names.
+        // console.log(blockObjs);
+	// Check for blocks connected to themselves,
+        // and for action blocks not connected to text blocks.
+        for (var b = 0; b < blockObjs.length; b++) {
+            var blkData = blockObjs[b];
+            for (var c in blkData[4]) {
+                if (blkData[4][c] == blkData[0]) {
+                    console.log('Circular connection in block data: ' + blkData);
+                    console.log('Punting loading of new blocks!');
+                    return;
+                }
+            }
+        }
+
         var currentActionNames = [];
         var currentStoreinNames = [];
         for (var b = 0; b < this.blockList.length; b++) {

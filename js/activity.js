@@ -40,6 +40,7 @@ define(function (require) {
 
         //
         var canvas = docById('myCanvas');
+
         var stage;
         var turtles;
         var palettes;
@@ -55,50 +56,63 @@ define(function (require) {
         var stageMouseDown = false;
 
         var fastButton = docById('fast-button');
+        var slowButton = docById('slow-button');
+        var clearButton = docById('clear-button');
+        var paletteButton = docById('palette-button');
+        var blockButton = docById('hide-blocks-button');
+        var copyButton = docById('copy-button');
+        var pasteButton = docById('paste-button');
+        var cartesianButton = docById('cartesian-button');
+        var polarButton = docById('polar-button');
+        var openButton = docById('open-button');
+        var saveButton = docById('save-button');
+        var stopTurtleButton = docById('stop-turtle-button');
+
+	if (screen.width < 1024) {
+	    copyButton.style.visibility = 'hidden';
+	    pasteButton.style.visibility = 'hidden';
+	    cartesianButton.style.visibility = 'hidden';
+	    polarButton.style.visibility = 'hidden';
+	    openButton.style.visibility = 'hidden';
+	    saveButton.style.visibility = 'hidden';
+	}
+
         fastButton.onclick = function () {
             turtleDelay = 1;
             runLogoCommands();
         }
 
-        var slowButton = docById('slow-button');
         slowButton.onclick = function () {
             turtleDelay = defaultDelay;
             runLogoCommands();
         }
 
         var stopTurtle = false;
-        var stopTurtleButton = docById('stop-turtle-button');
         stopTurtleButton.onclick = function () {
             doStopTurtle();
         }
 
-        var paletteButton = docById('palette-button');
         paletteButton.onclick = function () {
             changePaletteVisibility();
         }
 
-        var copyButton = docById('copy-button');
         copyButton.onclick = function () {
-            selectStackToCopy();
+	    selectStackToCopy();
         }
 
-        var pasteButton = docById('paste-button');
         pasteButton.onclick = function () {
-            pasteStack();
+	    pasteStack();
         }
 
-        var blockButton = docById('hide-blocks-button');
         blockButton.onclick = function () {
-            changeBlockVisibility();
+	    changeBlockVisibility();
         }
 
-        var clearButton = docById('clear-button');
         clearButton.onclick = function () {
-            allClear();
+	    allClear();
         }
 
         var cartesianVisible = false;
-        var cartesianButton = docById('cartesian-button');
         cartesianButton.onclick = function () {
             if (cartesianVisible) {
                 hideCartesian();
@@ -110,7 +124,6 @@ define(function (require) {
         }
 
         var polarVisible = false;
-        var polarButton = docById('polar-button');
         polarButton.onclick = function () {
             if (polarVisible) {
                 hidePolar();
@@ -121,12 +134,10 @@ define(function (require) {
             }
         }
 
-        var openButton = docById('open-button');
         openButton.onclick = function () {
             doOpen();
         }
 
-        var saveButton = docById('save-button');
         saveButton.onclick = function () {
             doSave();
         }
@@ -411,7 +422,7 @@ define(function (require) {
 		// Post the project
                 var returnTBValue = httpPost(projectName, prepareExport());
 		// and the SVG
-                var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), doSVG(0.4));
+                var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), doSVG(320, 240, 0.4));
 		return returnTBValue + ' ' + returnSVGValue;
             } catch (e) {
                 console.log(e);
@@ -1014,18 +1025,17 @@ define(function (require) {
 
         function doSaveSVG(desc) {
             var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + desc + '</title>\n</head>\n<body>\n';
-            var svg = doSVG(0.4); // scale for saving thumbnail
+            var svg = doSVG(canvas.width, canvas.height, 1.0); // scale
             var tail = '</body>\n</html>';
-            console.log(head + svg + tail);
             // TODO: figure out if popups are blocked
-	    var svgWindow = window.open("data:image/svg+xml;utf8," + svg, "width=304, height=228");
+	    var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
 	    // Doing it this way creates a window that cannot be saved
             // var svgWindow = window.open(desc, "_blank", "width=304, height=228");
             // svgWindow.document.write(head + svg + tail);
         }
 
-        function doSVG(scale) {
-            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240">\n';
+        function doSVG(width, height, scale) {
+            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
 	    // FIXME: Not quite centered properly
 	    var dx = Math.floor((1024 - canvas.width) * scale);
 	    var dy = Math.floor((canvas.height - 768) * scale);

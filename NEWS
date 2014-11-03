@@ -80,13 +80,14 @@
   * allow dragging from collapse button
   * added forever block
   * added 'stop action' (AKA break)
+  * fixed several format issues with saved SVG
+  * saving SVG thumbnail to server along with project file
+  * seeding SVG with bg color on run
 
 TODO:
-  * don't save bitmap to session
+  * don't save full-sized bitmap to session
   * fix canvas sizing, resizing
-  * seed svg with bg color on load
   * selectable menu of samples
-  * send svg thumbnail to server
   * fix menu tearing issues
   * fix placement of new items in Blocks menu
   * use container caching on palette

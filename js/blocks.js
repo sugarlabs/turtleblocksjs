@@ -1251,12 +1251,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.expandBitmap.visible = false;
                 myBlock.collapseButton.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
                 myBlock.collapseButton.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
-                var bounds = myBlock.collapseButton.getBounds();
+                // var bounds = myBlock.collapseButton.getBounds();
                 // myBlock.collapseButton.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                 loadCollapsibleEventHandlers(this, myBlock);
             }
         }
 
+        this.refreshCanvas();
         myBlock.bounds = myBlock.container.getBounds();
         myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
         // console.log(myTurtle.bitmap.getCacheDataURL());

@@ -28,6 +28,9 @@ function Palettes (canvas, stage, refreshCanvas) {
 
     // The collection of palettes.
     this.dict = {};
+    this.buttons = {};
+    this.bitmaps = {};
+    this.highlightBitmaps = {};
 
     this.visible = true;
 
@@ -36,46 +39,49 @@ function Palettes (canvas, stage, refreshCanvas) {
     this.container = new createjs.Container();
     this.stage.addChild(this.container);
 
-    this.makeMenus = function() {
+    this.makeMenu = function() {
         // First, an icon/button for each palette
-        this.paletteButtons = {};
-        this.paletteBitmaps = {};
-        this.paletteHighlightBitmaps = {};
         var x = 55;
         var y = 0;
         for (var name in this.dict) {
-            this.paletteButtons[name] = new createjs.Container();
-            this.stage.addChild(this.paletteButtons[name]);
-            this.paletteButtons[name].x = x;
-            x += 55;
-            this.paletteButtons[name].y = y;
-            this.paletteBitmaps[name] = new createjs.Bitmap(PALETTEBUTTON.replace('fill_color', '#282828'));
-            this.paletteButtons[name].addChild(this.paletteBitmaps[name]);
-            this.paletteHighlightBitmaps[name] = new createjs.Bitmap(PALETTEBUTTON.replace('fill_color', '#4d4d4d'));
-            this.paletteButtons[name].addChild(this.paletteHighlightBitmaps[name]);
-            this.paletteHighlightBitmaps[name].visible = false;
-            var image = new Image();
-            image.src = 'images/' + name + '.svg';
-            var icon = new createjs.Bitmap(image);
-            this.paletteButtons[name].addChild(icon);
+            if (name in this.buttons) {
+                console.log('button ' + name + ' has already been created');
+                this.dict[name].updateMenu();
+            } else {
+                this.buttons[name] = new createjs.Container();
+                this.stage.addChild(this.buttons[name]);
+                this.buttons[name].x = x;
+                x += 55;
+                this.buttons[name].y = y;
+                this.bitmaps[name] = new createjs.Bitmap(PALETTEBUTTON.replace('fill_color', '#282828'));
+                this.buttons[name].addChild(this.bitmaps[name]);
+                this.highlightBitmaps[name] = new createjs.Bitmap(PALETTEBUTTON.replace('fill_color', '#4d4d4d'));
+                this.buttons[name].addChild(this.highlightBitmaps[name]);
+                this.highlightBitmaps[name].visible = false;
+                var image = new Image();
+                image.src = 'images/' + name + '.svg';
+                var icon = new createjs.Bitmap(image);
+                this.buttons[name].addChild(icon);
 
-            var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
-            hitArea.x = 27;
-            hitArea.y = 27;
-            this.paletteButtons[name].hitArea = hitArea;
-            this.paletteButtons[name].visible = false;
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
+                hitArea.x = 27;
+                hitArea.y = 27;
+                this.buttons[name].hitArea = hitArea;
+                this.buttons[name].visible = false;
 
-            this.dict[name].makeMenu();
-            this.dict[name].moveMenu(55, 55);
+                this.dict[name].makeMenu();
+                this.dict[name].moveMenu(55, 55);
+                this.dict[name].updateMenu();
 
-            loadPaletteButtonHandler(this, name);
+                loadPaletteButtonHandler(this, name);
+            }
         }
     }
 
     this.showMenus = function() {
-        for (var name in this.paletteButtons) {
-            this.paletteButtons[name].visible = true;
+        for (var name in this.buttons) {
+            this.buttons[name].visible = true;
         }
         for (var name in this.dict) {
             // this.dict[name].showMenu(true);
@@ -84,8 +90,8 @@ function Palettes (canvas, stage, refreshCanvas) {
     }
 
     this.hideMenus = function() {
-        for (var name in this.paletteButtons) {
-            this.paletteButtons[name].visible = false;
+        for (var name in this.buttons) {
+            this.buttons[name].visible = false;
         }
         for (var name in this.dict) {
             this.dict[name].hideMenu(true);
@@ -100,7 +106,7 @@ function Palettes (canvas, stage, refreshCanvas) {
     }
 
     this.updatePalettes = function() {
-        this.makeMenus();  // the easel menus
+        this.makeMenu();  // the easel menus
         this.refreshCanvas();
     }
 
@@ -126,8 +132,8 @@ function Palettes (canvas, stage, refreshCanvas) {
     this.bringToTop = function() {
         // Move all the palettes to the top layer of the stage
         for (var name in this.dict) {
-            this.stage.removeChild(this.dict[name].menuBitmap);
-            this.stage.addChild(this.dict[name].menuBitmap);
+            this.stage.removeChild(this.dict[name].menuContainer);
+            this.stage.addChild(this.dict[name].menuContainer);
             for (var item in this.dict[name].protoContainers) {
                 this.stage.removeChild(this.dict[name].protoContainers[item]);
                 this.stage.addChild(this.dict[name].protoContainers[item]);
@@ -141,19 +147,19 @@ function Palettes (canvas, stage, refreshCanvas) {
 
 // Palette Button event handlers
 function loadPaletteButtonHandler(palettes, name) {
-    palettes.paletteButtons[name].on('mouseover', function(event) {
-        palettes.paletteBitmaps[name].visible = false;
-        palettes.paletteHighlightBitmaps[name].visible = true;
+    palettes.buttons[name].on('mouseover', function(event) {
+        palettes.bitmaps[name].visible = false;
+        palettes.highlightBitmaps[name].visible = true;
         palettes.refreshCanvas();
     });
 
-    palettes.paletteButtons[name].on('mouseout', function(event) {
-        palettes.paletteBitmaps[name].visible = true;
-        palettes.paletteHighlightBitmaps[name].visible = false;
+    palettes.buttons[name].on('mouseout', function(event) {
+        palettes.bitmaps[name].visible = true;
+        palettes.highlightBitmaps[name].visible = false;
         palettes.refreshCanvas();
     });
 
-    palettes.paletteButtons[name].on('click', function(event) {
+    palettes.buttons[name].on('click', function(event) {
         for (var i in palettes.dict) {
             if (palettes.dict[i] == palettes.dict[name]) {
                 console.log('showing ' + name);
@@ -177,7 +183,7 @@ function Palette (palettes, name, color, bgcolor) {
     this.color = color;
     this.backgroundColor = bgcolor;
     this.visible = false;
-    this.menuBitmap = null;
+    this.menuContainer = null;
     this.protoList = [];
     this.protoContainers = {};
     this.y = 0;
@@ -185,7 +191,7 @@ function Palette (palettes, name, color, bgcolor) {
 
     this.makeMenu = function() {
         // Create the menu button
-        if (this.menuBitmap == null) {
+        if (this.menuContainer == null) {
             this.menuContainer = new createjs.Container();
             var background = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name));
             this.menuContainer.addChild(background);
@@ -203,6 +209,15 @@ function Palette (palettes, name, color, bgcolor) {
             this.menuContainer.hitArea = hitArea;
             this.menuContainer.visible = false;
             loadPaletteMenuHandler(this);
+        }
+    }
+
+    this.updateMenu = function() {
+        if (this.menuContainer == null) {
+            this.makeMenu();
+        } else {
+            // hide the menu while we update
+            this.hide();
         }
         for (var blk in this.protoList) {
             // Create a proto block for each palette entry.
@@ -229,8 +244,8 @@ function Palette (palettes, name, color, bgcolor) {
             if (!this.protoContainers[modname]) {
                 // create graphics for the palette entry for this block
                 this.protoContainers[modname] = new createjs.Container();
-                this.protoContainers[modname].x = 0;
-                this.protoContainers[modname].y = this.y + 42;
+                this.protoContainers[modname].x = this.menuContainer.x;
+                this.protoContainers[modname].y = this.menuContainer.y + this.y + 42;
                 this.palettes.stage.addChild(this.protoContainers[modname]);
 
                 // We use a filler for the menu background
@@ -315,8 +330,8 @@ function Palette (palettes, name, color, bgcolor) {
                 this.protoContainers[modname].visible = false;
                 this.y += Math.floor(height * paletteScale);
                 loadPaletteMenuItemHandler(this, blk, modname, this);
-                bounds = this.protoContainers[modname].getBounds();
                 // TODO: Fix caching
+                // bounds = this.protoContainers[modname].getBounds();
                 // console.log(bounds);
                 // this.protoContainers[modname].cache(bounds.x, bounds.y, bounds.width, Math.ceil(bounds.height));
             }

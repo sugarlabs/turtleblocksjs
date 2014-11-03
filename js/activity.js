@@ -512,6 +512,8 @@ define(function (require) {
                 }
             }
 
+            this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+
             // (2) Execute the stack.
             if (startHere != null) {
                 // Which turtle should we use?
@@ -1016,13 +1018,20 @@ define(function (require) {
             var tail = '</body>\n</html>';
             console.log(head + svg + tail);
             // TODO: figure out if popups are blocked
-            var svgWindow = window.open(desc, "_blank", "width=304, height=228");
-            svgWindow.document.write(head + svg + tail);
+	    var svgWindow = window.open("data:image/svg+xml;utf8," + svg, "width=304, height=228");
+	    // Doing it this way creates a window that cannot be saved
+            // var svgWindow = window.open(desc, "_blank", "width=304, height=228");
+            // svgWindow.document.write(head + svg + tail);
         }
 
         function doSVG(scale) {
             var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240">\n';
-            svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
+	    // FIXME: Not quite centered properly
+	    var dx = Math.floor((1024 - canvas.width) * scale);
+	    var dy = Math.floor((canvas.height - 768) * scale);
+	    svg += '<g transform="matrix(' + scale + ',0,0,' + scale + ',' + dx + ',' + dy + ')">\n'
+
+            // svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
             svg += this.svgOutput;
             for (var t in turtles.turtleList) {
                 svg += turtles.turtleList[t].svgOutput;
@@ -1040,7 +1049,7 @@ define(function (require) {
             } else {
                 body.style.background = turtles.turtleList[turtle].canvasColor;
             }
-            this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + ' "fill="' + body.style.background + '"/>\n';
+            this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
         }
 
         function allClear() {

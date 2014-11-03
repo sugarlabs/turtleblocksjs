@@ -57,6 +57,7 @@ define(function (require) {
 
         var fastButton = docById('fast-button');
         var slowButton = docById('slow-button');
+        var stopTurtleButton = docById('stop-turtle-button');
         var clearButton = docById('clear-button');
         var paletteButton = docById('palette-button');
         var blockButton = docById('hide-blocks-button');
@@ -66,7 +67,7 @@ define(function (require) {
         var polarButton = docById('polar-button');
         var openButton = docById('open-button');
         var saveButton = docById('save-button');
-        var stopTurtleButton = docById('stop-turtle-button');
+        var stopButton = docById('stop-button');
 
 	if (screen.width < 1024) {
 	    copyButton.style.visibility = 'hidden';
@@ -75,6 +76,7 @@ define(function (require) {
 	    polarButton.style.visibility = 'hidden';
 	    openButton.style.visibility = 'hidden';
 	    saveButton.style.visibility = 'hidden';
+	    stopButton.style.visibility = 'hidden';
 	}
 
         fastButton.onclick = function () {

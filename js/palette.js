@@ -37,23 +37,56 @@ function Palettes (canvas, stage, refreshCanvas) {
     this.stage.addChild(this.container);
 
     this.makeMenus = function() {
-        var x = 330; // hardwired to palette button position
-        var y = 0;  // top aligned
+        // First, an icon/button for each palette
+        this.paletteButtons = {};
+        this.paletteBitmaps = {};
+        this.paletteHighlightBitmaps = {};
+        var x = 55;
+        var y = 0;
         for (var name in this.dict) {
+            this.paletteButtons[name] = new createjs.Container();
+            this.stage.addChild(this.paletteButtons[name]);
+            this.paletteButtons[name].x = x;
+            x += 55;
+            this.paletteButtons[name].y = y;
+            this.paletteBitmaps[name] = new createjs.Bitmap(PALETTEBUTTON.replace('fill_color', '#282828'));
+            this.paletteButtons[name].addChild(this.paletteBitmaps[name]);
+            this.paletteHighlightBitmaps[name] = new createjs.Bitmap(PALETTEBUTTON.replace('fill_color', '#4d4d4d'));
+            this.paletteButtons[name].addChild(this.paletteHighlightBitmaps[name]);
+            this.paletteHighlightBitmaps[name].visible = false;
+            var image = new Image();
+            image.src = 'images/' + name + '.svg';
+            var icon = new createjs.Bitmap(image);
+            this.paletteButtons[name].addChild(icon);
+
+            var hitArea = new createjs.Shape();
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
+            hitArea.x = 27;
+            hitArea.y = 27;
+            this.paletteButtons[name].hitArea = hitArea;
+            this.paletteButtons[name].visible = false;
+
             this.dict[name].makeMenu();
-            this.dict[name].moveMenu(x, y);
-            y += 42;
+            this.dict[name].moveMenu(55, 55);
+
+            loadPaletteButtonHandler(this, name);
         }
     }
 
     this.showMenus = function() {
+        for (var name in this.paletteButtons) {
+            this.paletteButtons[name].visible = true;
+        }
         for (var name in this.dict) {
-            this.dict[name].showMenu(true);
+            // this.dict[name].showMenu(true);
         }
         this.refreshCanvas();
     }
 
     this.hideMenus = function() {
+        for (var name in this.paletteButtons) {
+            this.paletteButtons[name].visible = false;
+        }
         for (var name in this.dict) {
             this.dict[name].hideMenu(true);
         }
@@ -106,6 +139,37 @@ function Palettes (canvas, stage, refreshCanvas) {
     return this;
 }
 
+// Palette Button event handlers
+function loadPaletteButtonHandler(palettes, name) {
+    palettes.paletteButtons[name].on('mouseover', function(event) {
+        palettes.paletteBitmaps[name].visible = false;
+        palettes.paletteHighlightBitmaps[name].visible = true;
+        palettes.refreshCanvas();
+    });
+
+    palettes.paletteButtons[name].on('mouseout', function(event) {
+        palettes.paletteBitmaps[name].visible = true;
+        palettes.paletteHighlightBitmaps[name].visible = false;
+        palettes.refreshCanvas();
+    });
+
+    palettes.paletteButtons[name].on('click', function(event) {
+        for (var i in palettes.dict) {
+            if (palettes.dict[i] == palettes.dict[name]) {
+                console.log('showing ' + name);
+                palettes.dict[name].showMenu(true);
+                palettes.dict[name].showMenuItems(true);
+            } else {
+                if (palettes.dict[i].visible) {
+                    palettes.dict[i].hideMenu(true);
+                    palettes.dict[i].hideMenuItems(false);
+                }
+            }
+        }
+        palettes.refreshCanvas();
+    });
+}
+
 // Define objects for individual palettes.
 function Palette (palettes, name, color, bgcolor) {
     this.palettes = palettes;
@@ -122,15 +186,15 @@ function Palette (palettes, name, color, bgcolor) {
     this.makeMenu = function() {
         // Create the menu button
         if (this.menuBitmap == null) {
-	    this.menuContainer = new createjs.Container();
-	    var background = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name));
-	    this.menuContainer.addChild(background);
+            this.menuContainer = new createjs.Container();
+            var background = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name));
+            this.menuContainer.addChild(background);
             var image = new Image();
             image.src = 'images/' + this.name + '.svg';
             var icon = new createjs.Bitmap(image);
-	    icon.scaleX = 0.8;
-	    icon.scaleY = 0.8;
-	    this.menuContainer.addChild(icon);
+            icon.scaleX = 0.8;
+            icon.scaleY = 0.8;
+            this.menuContainer.addChild(icon);
             this.palettes.container.addChild(this.menuContainer);
             var hitArea = new createjs.Shape();
             hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
@@ -273,6 +337,14 @@ function Palette (palettes, name, color, bgcolor) {
         this.moveMenuItemsRelative(dx, dy);
     }
 
+    this.hide = function() {
+        this.hideMenu();
+    }
+
+    this.show = function() {
+        this.showMenu();
+    }
+
     this.hideMenu = function() {
         if (this.menuContainer != null) {
             this.menuContainer.visible = false;
@@ -294,7 +366,7 @@ function Palette (palettes, name, color, bgcolor) {
         var below = false;
         for (var p in this.palettes.dict) {
             if (!init && below) {
-                this.palettes.dict[p].moveMenuRelative(0, -this.size);
+                // this.palettes.dict[p].moveMenuRelative(0, -this.size);
             }
             if (p == this.name) {
                 below = true;
@@ -312,7 +384,7 @@ function Palette (palettes, name, color, bgcolor) {
         var below = false;
         for (var p in this.palettes.dict) {
             if (!init && below) {
-                this.palettes.dict[p].moveMenuRelative(0, this.size);
+                // this.palettes.dict[p].moveMenuRelative(0, this.size);
             }
             if (p == this.name) {
                 below = true;

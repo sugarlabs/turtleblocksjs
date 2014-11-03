@@ -12,18 +12,8 @@
    height="55"
    viewBox="0 0 55 55"
    id="svg2"
-   xml:space="preserve"><metadata
-   id="metadata15"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs13" />
-<rect
-   width="42.763924"
-   height="42.763924"
-   x="6.1180382"
-   y="6.1180382"
-   id="rect2986"
-   style="fill:#282828;fill-opacity:1;stroke:#282828;stroke-width:2.23607516;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /><g
+   xml:space="preserve">
+<g
    transform="matrix(0.87078705,0,0,0.87078705,3.2821055,2.9298726)"
    id="network-wired_1_"
    style="display:block">

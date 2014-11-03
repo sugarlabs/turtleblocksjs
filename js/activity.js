@@ -1021,7 +1021,7 @@ define(function (require) {
         }
 
         function doSVG(scale) {
-            var svg = '<svg width="320" height="240">\n';
+            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240">\n';
             svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
             svg += this.svgOutput;
             for (var t in turtles.turtleList) {
@@ -1103,7 +1103,6 @@ define(function (require) {
                 connections = [];
                 for (var c = 0; c < myBlock.connections.length; c++) {
 		    var mapConnection = blockMap.indexOf(myBlock.connections[c]);
-		    console.log('mapping ' + myBlock.connections[c] + ' to ' + mapConnection);
 		    if (myBlock.connections[c] == null || mapConnection == -1) {
 			connections.push(null);
 		    } else {

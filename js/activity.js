@@ -72,8 +72,6 @@ define(function (require) {
 	if (screen.width < 1024) {
 	    copyButton.style.visibility = 'hidden';
 	    pasteButton.style.visibility = 'hidden';
-	    cartesianButton.style.visibility = 'hidden';
-	    polarButton.style.visibility = 'hidden';
 	    openButton.style.visibility = 'hidden';
 	    saveButton.style.visibility = 'hidden';
 	    stopButton.style.visibility = 'hidden';
@@ -291,6 +289,12 @@ define(function (require) {
             stage.on('stagemouseup', function(event) {
                 stageMouseDown = false;
             });
+
+	    // window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
+	    
+	    var zoomLevel = screen.width/canvas.width;
+	    console.log(zoomLevel);
+	    docById('body').style.zoom = zoomLevel;
         }
 
         function restoreTrash() {

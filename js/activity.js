@@ -291,10 +291,10 @@ define(function (require) {
             });
 
 	    // window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
-	    
-	    var zoomLevel = screen.width/canvas.width;
-	    console.log(zoomLevel);
-	    docById('body').style.zoom = zoomLevel;
+	    // var zoomLevel = screen.width/canvas.width;
+	    // console.log(zoomLevel);
+	    // screws up mapping of cursor in the stage
+	    // docById('body').style.zoom = zoomLevel;
         }
 
         function restoreTrash() {
@@ -651,8 +651,8 @@ define(function (require) {
                 break;
             case 'repeat':
                  if (args.length == 2) {
-                    childFlow = args[1];
-                    childFlowCount = args[0];
+                     childFlow = args[1];
+                     childFlowCount = Math.floor(args[0]);
                 }
                 break;
             case 'if':

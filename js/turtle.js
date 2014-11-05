@@ -490,7 +490,8 @@ function Turtles(canvas, stage, refreshCanvas) {
 }
 
 // Queue entry for managing running blocks.
-function Queue (blk, count) {
+function Queue (blk, count, parentBlk) {
     this.blk = blk;
     this.count = count;
+    this.parentBlk = parentBlk;
 }

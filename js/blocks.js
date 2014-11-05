@@ -330,14 +330,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // always the second to last argument.
         var c = myBlock.connections.length - 2;
         this.sizeCounter = 0;
-	if (c > 0 && myBlock.connections[c] != null) {
+        if (c > 0 && myBlock.connections[c] != null) {
             var size = this.getStackSize(myBlock.connections[c]);
             if (size < 1) {
-		size = 1; // Minimum clamp size
+                size = 1; // Minimum clamp size
             }
-	} else {
-	    size = 1;
-	}
+        } else {
+            size = 1;
+        }
         // console.log('blk[' + blk + '].size == ' + size);
 
         // (2) adjust the clamp size to match.
@@ -628,10 +628,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 continue;
             }
 
-	    if (this.blockList[cblk] == null) {
-		console.log('this is not good: encountered a null blk ' + blk);
-		continue;
-	    }
+            if (this.blockList[cblk] == null) {
+                console.log('this is not good: encountered a null blk ' + blk);
+                continue;
+            }
 
             // Find the dock position in the connected block.
             var foundMatch = false;
@@ -1230,7 +1230,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // Start blocks and Action blocks can collapse, so add an
             // event handler
             if (['start', 'action'].indexOf(myBlock.name) != -1) {
-		block_label = ''; // We use a Text element for the label
+                block_label = ''; // We use a Text element for the label
 
                 myBlock.collapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
                 myBlock.container.addChild(myBlock.collapseBlockBitmap);
@@ -1238,20 +1238,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.highlightCollapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
                 myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
                 myBlock.highlightCollapseBlockBitmap.visible = false;
-		if (myBlock.name == 'action') {
-		    myBlock.collapseText = new createjs.Text('action', '20px Arial', '#00000');
-		    myBlock.collapseText.x = myBlock.collapseBlockBitmap.x + 100;
-		    myBlock.collapseText.y = myBlock.collapseBlockBitmap.y + 40;
-		    myBlock.collapseText.textAlign = 'right';
-		} else {
-		    myBlock.collapseText = new createjs.Text('start', '20px Arial', '#00000');
-		    myBlock.collapseText.x = myBlock.collapseBlockBitmap.x + 20;
-		    myBlock.collapseText.y = myBlock.collapseBlockBitmap.y + 40;
-		    myBlock.collapseText.textAlign = 'left';
-		}
-		myBlock.collapseText.textBaseline = 'alphabetic';
-		myBlock.container.addChild(myBlock.collapseText);
-		myBlock.collapseText.visible = false;
+                if (myBlock.name == 'action') {
+                    myBlock.collapseText = new createjs.Text('action', '20px Arial', '#00000');
+                    myBlock.collapseText.x = myBlock.collapseBlockBitmap.x + 100;
+                    myBlock.collapseText.y = myBlock.collapseBlockBitmap.y + 40;
+                    myBlock.collapseText.textAlign = 'right';
+                } else {
+                    myBlock.collapseText = new createjs.Text('start', '20px Arial', '#00000');
+                    myBlock.collapseText.x = myBlock.collapseBlockBitmap.x + 20;
+                    myBlock.collapseText.y = myBlock.collapseBlockBitmap.y + 40;
+                    myBlock.collapseText.textAlign = 'left';
+                }
+                myBlock.collapseText.textBaseline = 'alphabetic';
+                myBlock.container.addChild(myBlock.collapseText);
+                myBlock.collapseText.visible = false;
 
                 myBlock.collapseButton = new createjs.Container();
                 this.stage.addChild(myBlock.collapseButton);
@@ -1283,12 +1283,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
 
-	if (blk != null) {
-	    this.highlightedBlock = blk;
-	}
+        if (blk != null) {
+            var thisBlock = blk;
+        } else {
+            var thisBlock = this.highlightedBlock;
+        }
 
-        if (this.highlightedBlock != null) {
-            var myBlock = this.blockList[this.highlightedBlock];
+        if (thisBlock != null) {
+            var myBlock = this.blockList[thisBlock];
             if (myBlock.collapsed) {
                 if (['start', 'action'].indexOf(myBlock.name) != -1) {
                     myBlock.highlightCollapseBlockBitmap.visible = false;
@@ -1297,7 +1299,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 myBlock.bitmap.visible = true;
                 myBlock.highlightBitmap.visible = false;
-                if (this.blockList[this.highlightedBlock].isExpandableBlock()) {
+                if (this.blockList[thisBlock].isExpandableBlock()) {
                     for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
                         myBlock.fillerBitmaps[i].visible = true;
                         myBlock.highlightFillerBitmaps[i].visible = false;
@@ -1311,7 +1313,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.updateCache();
             this.refreshCanvas();
         }
-        this.highlightedBlock = null;
+        if (this.highlightedBlock = thisBlock) {
+            this.highlightedBlock = null;
+        }
     }
 
     this.highlight = function(blk, unhighlight) {
@@ -1319,9 +1323,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
         if (blk != null) {
-	    if (unhighlight) {
-		this.unhighlight(null);
-	    }
+            if (unhighlight) {
+                this.unhighlight(null);
+            }
             var myBlock = this.blockList[blk];
             if (myBlock.collapsed) {
                 if (['start', 'action'].indexOf(myBlock.name) != -1) {
@@ -1719,7 +1723,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.loadNewBlocks = function(blockObjs) {
         // We'll need a list of existing storein and action names.
         // console.log(blockObjs);
-	// Check for blocks connected to themselves,
+        // Check for blocks connected to themselves,
         // and for action blocks not connected to text blocks.
         for (var b = 0; b < blockObjs.length; b++) {
             var blkData = blockObjs[b];
@@ -2049,7 +2053,7 @@ function Block(protoblock) {
         this.container.visible = false;
         if (this.collapseButton != null) {
             this.collapseButton.visible = false;
-	    this.collapseText.visible = false;
+            this.collapseText.visible = false;
         }
     }
 
@@ -2060,7 +2064,7 @@ function Block(protoblock) {
                 this.container.visible = true;
                 if (this.collapseButton != null) {
                     this.collapseButton.visible = true;
-		    this.collapseText.visible = true;
+                    this.collapseText.visible = true;
                 }
             }
         }
@@ -2260,7 +2264,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.expandBitmap.visible = false;
                 myBlock.collapseBlockBitmap.visible = false;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
-		myBlock.collapseText.visible = false;
+                myBlock.collapseText.visible = false;
                 myBlock.bitmap.visible = true;
                 myBlock.highlightBitmap.visible = true;
                 myBlock.bottomBitmap.visible = true;
@@ -2284,7 +2288,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.expandBitmap.visible = true;
                 myBlock.collapseBlockBitmap.visible = true;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
-		myBlock.collapseText.visible = true;
+                myBlock.collapseText.visible = true;
                 myBlock.bitmap.visible = false;
                 myBlock.highlightBitmap.visible = false;
                 myBlock.bottomBitmap.visible = false;
@@ -2293,16 +2297,16 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                     myBlock.fillerBitmaps[i].visible = false;
                     myBlock.highlightFillerBitmaps[i].visible = false;
                 }
-		if (myBlock.name == 'action') {
-		    // Label the collapsed block with the action label
-		    if (myBlock.connections[1] != null) {
-			myBlock.collapseText.text = blocks.blockList[myBlock.connections[1]].value;
-		    } else {
-			myBlock.collapseText.text = '';
-		    }
-		    lastChild = last(myBlock.container.children);
-		    myBlock.container.swapChildren(myBlock.collapseText, lastChild);
-		}
+                if (myBlock.name == 'action') {
+                    // Label the collapsed block with the action label
+                    if (myBlock.connections[1] != null) {
+                        myBlock.collapseText.text = blocks.blockList[myBlock.connections[1]].value;
+                    } else {
+                        myBlock.collapseText.text = '';
+                    }
+                    lastChild = last(myBlock.container.children);
+                    myBlock.container.swapChildren(myBlock.collapseText, lastChild);
+                }
                 if (blocks.dragGroup.length > 0) {
                     for (var b = 0; b < blocks.dragGroup.length; b++) {
                         blk = blocks.dragGroup[b];

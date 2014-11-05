@@ -85,13 +85,15 @@
   * seeding SVG with bg color on run
   * failed experimenting with zoom and scroll settings
   * fixed rounding bug in repeat code
+  * fixed menu tearing issues
+  * fixed placement of new items in Blocks menu
+  * improved highlight logic
+  * fixed labels on collapsed stacks
 
 TODO:
   * don't save full-sized bitmap to session
   * fix canvas sizing, resizing
   * selectable menu of samples
-  * fix menu tearing issues
-  * fix placement of new items in Blocks menu
   * use container caching on palette
   * use snap to pixels
   * user defined blocks

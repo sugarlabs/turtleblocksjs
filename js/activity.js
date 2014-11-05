@@ -69,13 +69,13 @@ define(function (require) {
         var saveButton = docById('save-button');
         var stopButton = docById('stop-button');
 
-	if (screen.width < 1024) {
-	    copyButton.style.visibility = 'hidden';
-	    pasteButton.style.visibility = 'hidden';
-	    openButton.style.visibility = 'hidden';
-	    saveButton.style.visibility = 'hidden';
-	    stopButton.style.visibility = 'hidden';
-	}
+        if (screen.width < 1024) {
+            copyButton.style.visibility = 'hidden';
+            pasteButton.style.visibility = 'hidden';
+            openButton.style.visibility = 'hidden';
+            saveButton.style.visibility = 'hidden';
+            stopButton.style.visibility = 'hidden';
+        }
 
         fastButton.onclick = function () {
             turtleDelay = 1;
@@ -97,19 +97,19 @@ define(function (require) {
         }
 
         copyButton.onclick = function () {
-	    selectStackToCopy();
+            selectStackToCopy();
         }
 
         pasteButton.onclick = function () {
-	    pasteStack();
+            pasteStack();
         }
 
         blockButton.onclick = function () {
-	    changeBlockVisibility();
+            changeBlockVisibility();
         }
 
         clearButton.onclick = function () {
-	    allClear();
+            allClear();
         }
 
         var cartesianVisible = false;
@@ -290,11 +290,11 @@ define(function (require) {
                 stageMouseDown = false;
             });
 
-	    // window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
-	    // var zoomLevel = screen.width/canvas.width;
-	    // console.log(zoomLevel);
-	    // screws up mapping of cursor in the stage
-	    // docById('body').style.zoom = zoomLevel;
+            // window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
+            // var zoomLevel = screen.width/canvas.width;
+            // console.log(zoomLevel);
+            // screws up mapping of cursor in the stage
+            // docById('body').style.zoom = zoomLevel;
         }
 
         function restoreTrash() {
@@ -425,11 +425,11 @@ define(function (require) {
             palettes.updatePalettes();
 
             try {
-		// Post the project
+                // Post the project
                 var returnTBValue = httpPost(projectName, prepareExport());
-		// and the SVG
+                // and the SVG
                 var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), doSVG(320, 240, 0.4));
-		return returnTBValue + ' ' + returnSVGValue;
+                return returnTBValue + ' ' + returnSVGValue;
             } catch (e) {
                 console.log(e);
                 return;
@@ -505,8 +505,7 @@ define(function (require) {
 
             // Execute turtle code here...  Find the start block
             // (or the top of each stack) and build a list of all of
-            // the named action stacks (wishing I had a Python
-            // dictionary about now.)
+            // the named action stacks.
             var startBlocks = [];
             blocks.findStacks();
             actionList = [];
@@ -531,21 +530,29 @@ define(function (require) {
 
             this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
 
+            this.unhighlightQueue = {};
+
             // (2) Execute the stack.
+            // A bit complicated because we have lots of corner cases:
             if (startHere != null) {
-                // Which turtle should we use?
-                var i = 0;
+                // If a block to start from was passed, find its
+                // associated turtle, i.e., which turtle should we use?
+                var turtle = 0;
                 if (blocks.blockList[startHere].name == 'start') {
-                    var i = startBlocks.indexOf(startHere);
+                    var turtle = startBlocks.indexOf(startHere);
                 }
-                turtles.turtleList[i].queue = [];
-                runFromBlock(i, startHere);
+                turtles.turtleList[turtle].queue = [];
+                this.unhighlightQueue[turtle] = [];
+                runFromBlock(turtle, startHere);
             } else if (startBlocks.length > 0) {
+                // If there are start blocks, run them all.
                 for (var turtle = 0; turtle < startBlocks.length; turtle++) {
                     turtles.turtleList[turtle].queue = [];
+                    this.unhighlightQueue[turtle] = [];
                     runFromBlock(turtle, startBlocks[turtle]);
                 }
             } else {
+                // Or run from the top of each stack.
                 for (var blk = 0; blk < blocks.stackList.length; blk++) {
                     if (blocks.blockList[blk].isNoRunBlock()) {
                         continue;
@@ -590,7 +597,7 @@ define(function (require) {
                 var nextFlow = last(blocks.blockList[blk].connections);
             }
             if (nextFlow != null) {
-                var queueBlock = new Queue(nextFlow, 1);
+                var queueBlock = new Queue(nextFlow, 1, blk);
                 turtles.turtleList[turtle].queue.push(queueBlock);
             }
             // Some flow blocks have childflows, e.g., repeat
@@ -598,7 +605,7 @@ define(function (require) {
             var childFlowCount = 0;
 
             if (turtleDelay > 0) {
-                blocks.highlight(blk);
+                blocks.highlight(blk, false);
             }
 
             switch (blocks.blockList[blk].name) {
@@ -713,7 +720,6 @@ define(function (require) {
                 break;
             case 'image':
                 if (args.length == 2) {
-                    console.log('image ' + args[0] + ' ' + args[1]);
                     turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                  }
                 break;
@@ -763,7 +769,8 @@ define(function (require) {
 
             // If there is a childFlow, queue it.
             if (childFlow != null) {
-                var queueBlock = new Queue(childFlow, childFlowCount);
+                var queueBlock = new Queue(childFlow, childFlowCount, blk);
+                this.unhighlightQueue[turtle].push(blk);
                 turtles.turtleList[turtle].queue.push(queueBlock);
             }
 
@@ -781,9 +788,31 @@ define(function (require) {
                 }
             }
             if (nextBlock != null) {
+                parentBlk = null;
+                if (turtles.turtleList[turtle].queue.length > 0) {
+                    parentBlk = last(turtles.turtleList[turtle].queue).parentBlk;
+                }
+                if (parentBlk != blk) {
+                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
+                }
+                if (last(blocks.blockList[blk].connections) == null) {
+                    if (this.unhighlightQueue[turtle].length > 0) {
+                        if (turtles.turtleList[turtle].queue.length > 0) {
+                            if (last(turtles.turtleList[turtle].queue).parentBlk != last(this.unhighlightQueue[turtle])) {
+                                var parentBlk = this.unhighlightQueue[turtle].pop();
+                                setTimeout(function(){blocks.unhighlight(parentBlk);}, turtleDelay);
+                            }
+                        }
+                    }
+                }
                 runFromBlock(turtle, nextBlock);
             } else {
-                setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
+                if (turtles.turtleList[turtle].queue.length == 0 || blk != last(turtles.turtleList[turtle].queue).parentBlk) {
+                   setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
+                }
+                for (var b in this.unhighlightQueue[turtle]) {
+                    blocks.unhighlight(this.unhighlightQueue[turtle][b]);
+                }
                 // FIXME
                 var lastChild = last(stage.children);
                 for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
@@ -1034,18 +1063,18 @@ define(function (require) {
             var svg = doSVG(canvas.width, canvas.height, 1.0); // scale
             var tail = '</body>\n</html>';
             // TODO: figure out if popups are blocked
-	    var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
-	    // Doing it this way creates a window that cannot be saved
+            var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
+            // Doing it this way creates a window that cannot be saved
             // var svgWindow = window.open(desc, "_blank", "width=304, height=228");
             // svgWindow.document.write(head + svg + tail);
         }
 
         function doSVG(width, height, scale) {
             var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
-	    // FIXME: Not quite centered properly
-	    var dx = Math.floor((1024 - canvas.width) * scale);
-	    var dy = Math.floor((canvas.height - 768) * scale);
-	    svg += '<g transform="matrix(' + scale + ',0,0,' + scale + ',' + dx + ',' + dy + ')">\n'
+            // FIXME: Not quite centered properly
+            var dx = Math.floor((1024 - canvas.width) * scale);
+            var dy = Math.floor((canvas.height - 768) * scale);
+            svg += '<g transform="matrix(' + scale + ',0,0,' + scale + ',' + dx + ',' + dy + ')">\n'
 
             // svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
             svg += this.svgOutput;
@@ -1127,12 +1156,12 @@ define(function (require) {
 
                 connections = [];
                 for (var c = 0; c < myBlock.connections.length; c++) {
-		    var mapConnection = blockMap.indexOf(myBlock.connections[c]);
-		    if (myBlock.connections[c] == null || mapConnection == -1) {
-			connections.push(null);
-		    } else {
-			connections.push(mapConnection);
-		    }
+                    var mapConnection = blockMap.indexOf(myBlock.connections[c]);
+                    if (myBlock.connections[c] == null || mapConnection == -1) {
+                        connections.push(null);
+                    } else {
+                        connections.push(mapConnection);
+                    }
                 }
                 data.push([blockMap.indexOf(blk), name, myBlock.container.x, myBlock.container.y, connections]);
             }

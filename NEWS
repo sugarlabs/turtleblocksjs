@@ -89,6 +89,8 @@
   * fixed placement of new items in Blocks menu
   * improved highlight logic
   * fixed labels on collapsed stacks
+  * better compartmentalization of block code
+   (using a dictionary for the code associated with each "advanced" block)
 
 TODO:
   * don't save full-sized bitmap to session
@@ -97,8 +99,6 @@ TODO:
   * use container caching on palette
   * use snap to pixels
   * user defined blocks
-  * better compartmentalization of block code
-   (use a dictionary for the code associated with each block)
   * more sensors
   * implement if-then-else, while, until
   * implement and or not

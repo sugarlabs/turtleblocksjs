@@ -613,28 +613,9 @@ define(function (require) {
 
             switch (blocks.blockList[blk].name) {
             case 'start':
-                // TODO: make all blocks eval...
-                eval("if (args.length == 1) {childFlow = args[0]; childFlowCount = 1;}");
-                break;
-                // Instead of inline code.
-                 if (args.length == 1) {
+                if (args.length == 1) {
                     childFlow = args[0];
                     childFlowCount = 1;
-                }
-                break;
-            case 'publish':
-                 if (args.length == 1) {
-                    doPublish(args[0]);
-                }
-                break;
-            case 'savesvg':
-                 if (args.length == 1) {
-                    doSaveSVG(args[0]);
-                }
-                break;
-            case 'wait':
-                 if (args.length == 1) {
-                    doWait(args[0]);
                 }
                 break;
             case 'do':
@@ -765,6 +746,13 @@ define(function (require) {
                 break;
             case 'pendown':
                 turtles.turtleList[turtle].doPenDown();
+                break;
+            default:
+                if (blocks.blockList[blk].name in evalFlowDict) {
+                    eval(evalFlowDict[blocks.blockList[blk].name]);
+                } else {
+                    console.log('ERROR: I do not know how to ' + blocks.blockList[blk].name);
+                }
                 break;
             }
 
@@ -934,18 +922,12 @@ define(function (require) {
                 case 'pensize':
                     blocks.blockList[blk].value = turtles.turtleList[turtle].stroke;
                     break;
-                case 'mousex':
-                    blocks.blockList[blk].value = stageX;
-                    break;
-                case 'mousey':
-                    blocks.blockList[blk].value = stageY;
-                    break;
-                case 'mousebutton':
-                    blocks.blockList[blk].value = stageMouseDown;
-                    break;
-                case 'time':
-                    var d = new Date();
-                    blocks.blockList[blk].value = (d.getTime() - time) / 1000;
+                default:
+                    if (blocks.blockList[blk].name in evalArgDict) {
+                        eval(evalArgDict[blocks.blockList[blk].name]);
+                    } else {
+                        console.log('ERROR: I do not know how to ' + blocks.blockList[blk].name);
+                    }
                     break;
                 }
                 return blocks.blockList[blk].value;

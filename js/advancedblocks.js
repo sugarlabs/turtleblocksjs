@@ -11,7 +11,21 @@
 
 // Definition of special blocks less commonly included.
 
-// Define blocks here
+// Define block actions here (flow blocks and arg blocks)
+var evalFlowDict = {
+    'publish': "if (args.length == 1) {var url = doSave(); var descElem = docById('description'); var msg = args[0] + ' ' + descElem.value + ' ' + url; var post_cb = function() {FB.api('/me/feed', 'post', {message: msg});}; FB.login(post_cb, {scope: 'publish_actions'});}",
+    'savesvg': "var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + args[0] + '</title>\n</head>\n<body>\n'; var svg = doSVG(canvas.width, canvas.height, 1.0); var tail = '</body>\n</html>'; + var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '" + '"width=' + "' + canvas.width + ', height=' + canvas.height + '" + '"' + "');",
+    'wait': 'if (args.length == 1) {waitTime = Number(args[0]) * 1000;}',
+};
+
+var evalArgDict = {
+    'time': 'var d = new Date(); blocks.blockList[blk].value = (d.getTime() - time) / 1000;',
+    'mousex': 'blocks.blockList[blk].value = stageX;',
+    'mousey': 'blocks.blockList[blk].value = stageY;',
+    'mousebutton': 'blocks.blockList[blk].value = stageMouseDown;',
+};
+
+// Define block prototypes here
 function initAdvancedProtoBlocks(palettes, blocks) {
     blocks.palettes = palettes;
 

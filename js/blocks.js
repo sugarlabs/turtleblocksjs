@@ -1230,13 +1230,21 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // Start blocks and Action blocks can collapse, so add an
             // event handler
             if (['start', 'action'].indexOf(myBlock.name) != -1) {
-                // TODO: use action name for block label
+		block_label = ''; // We use a Text element for the label
+
                 myBlock.collapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
                 myBlock.container.addChild(myBlock.collapseBlockBitmap);
                 myBlock.collapseBlockBitmap.visible = false;
                 myBlock.highlightCollapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
                 myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
                 myBlock.highlightCollapseBlockBitmap.visible = false;
+		myBlock.collapseText = new createjs.Text('action', '20px Arial', '#00000');
+		myBlock.collapseText.x = myBlock.collapseBlockBitmap.x + 100;
+		myBlock.collapseText.y = myBlock.collapseBlockBitmap.y + 40;
+		myBlock.collapseText.textAlign = 'right';
+		myBlock.collapseText.textBaseline = 'alphabetic';
+		myBlock.container.addChild(myBlock.collapseText);
+		myBlock.collapseText.visible = false;
 
                 myBlock.collapseButton = new createjs.Container();
                 this.stage.addChild(myBlock.collapseButton);
@@ -1263,10 +1271,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // console.log(myTurtle.bitmap.getCacheDataURL());
     }
 
-    this.unhighlight = function() {
+    this.unhighlight = function(blk) {
         if (!this.visible) {
             return;
         }
+
+	if (blk != null) {
+	    this.highlightedBlock = blk;
+	}
+
         if (this.highlightedBlock != null) {
             var myBlock = this.blockList[this.highlightedBlock];
             if (myBlock.collapsed) {
@@ -1294,12 +1307,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.highlightedBlock = null;
     }
 
-    this.highlight = function(blk) {
+    this.highlight = function(blk, unhighlight) {
         if (!this.visible) {
             return;
         }
         if (blk != null) {
-            this.unhighlight();
+	    if (unhighlight) {
+		this.unhighlight(null);
+	    }
             var myBlock = this.blockList[blk];
             if (myBlock.collapsed) {
                 if (['start', 'action'].indexOf(myBlock.name) != -1) {
@@ -2002,6 +2017,7 @@ function Block(protoblock) {
     this.expandBitmap = null;
     this.collapseBlockBitmap = null;
     this.highlightCollapseBlockBitmap = null;
+    this.collapseText = null;
 
     this.size = 1; // Proto size is copied here.
     this.docks = []; // Proto dock is copied here.
@@ -2026,6 +2042,7 @@ function Block(protoblock) {
         this.container.visible = false;
         if (this.collapseButton != null) {
             this.collapseButton.visible = false;
+	    this.collapseText.visible = false;
         }
     }
 
@@ -2036,6 +2053,7 @@ function Block(protoblock) {
                 this.container.visible = true;
                 if (this.collapseButton != null) {
                     this.collapseButton.visible = true;
+		    this.collapseText.visible = true;
                 }
             }
         }
@@ -2235,6 +2253,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.expandBitmap.visible = false;
                 myBlock.collapseBlockBitmap.visible = false;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
+		myBlock.collapseText.visible = false;
                 myBlock.bitmap.visible = true;
                 myBlock.highlightBitmap.visible = true;
                 myBlock.bottomBitmap.visible = true;
@@ -2258,6 +2277,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.expandBitmap.visible = true;
                 myBlock.collapseBlockBitmap.visible = true;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
+		myBlock.collapseText.visible = true;
                 myBlock.bitmap.visible = false;
                 myBlock.highlightBitmap.visible = false;
                 myBlock.bottomBitmap.visible = false;
@@ -2266,6 +2286,16 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                     myBlock.fillerBitmaps[i].visible = false;
                     myBlock.highlightFillerBitmaps[i].visible = false;
                 }
+		if (myBlock.name == 'action') {
+		    // Label the collapsed block with the action label
+		    if (myBlock.connections[1] != null) {
+			myBlock.collapseText.text = blocks.blockList[myBlock.connections[1]].value;
+		    } else {
+			myBlock.collapseText.text = '';
+		    }
+		    lastChild = last(myBlock.container.children);
+		    myBlock.container.swapChildren(myBlock.collapseText, lastChild);
+		}
                 if (blocks.dragGroup.length > 0) {
                     for (var b = 0; b < blocks.dragGroup.length; b++) {
                         blk = blocks.dragGroup[b];
@@ -2329,7 +2359,7 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {
-        blocks.highlight(thisBlock);
+        blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
     });
@@ -2440,7 +2470,7 @@ function loadEventHandlers(blocks, myBlock) {
         if (blocks.activeBlock != myBlock) {
             return;
         }
-        blocks.unhighlight();
+        blocks.unhighlight(null);
         blocks.activeBlock = null;
         blocks.refreshCanvas();
     });

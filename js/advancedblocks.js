@@ -13,9 +13,8 @@
 
 // Define block actions here (flow blocks and arg blocks)
 var evalFlowDict = {
-    'publish': "if (args.length == 1) {var url = doSave(); var descElem = docById('description'); var msg = args[0] + ' ' + descElem.value + ' ' + url; var post_cb = function() {FB.api('/me/feed', 'post', {message: msg});}; FB.login(post_cb, {scope: 'publish_actions'});}",
-    'savesvg': "var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + args[0] + '</title>\n</head>\n<body>\n'; var svg = doSVG(canvas.width, canvas.height, 1.0); var tail = '</body>\n</html>'; + var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '" + '"width=' + "' + canvas.width + ', height=' + canvas.height + '" + '"' + "');",
-    'wait': 'if (args.length == 1) {waitTime = Number(args[0]) * 1000;}',
+    'publish': "if (args.length == 1) {doPublish(args[0]);};",
+    'savesvg': "if (args.length == 1) {doSaveSVG(canvas, turtles, args[0])};",
 };
 
 var evalArgDict = {
@@ -71,13 +70,6 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     svgBlock.staticLabels.push('save svg');
     svgBlock.docks[1][2] = 'textin';
 
-    var waitBlock = new ProtoBlock('wait');
-    waitBlock.palette = palettes.dict['extras'];
-    blocks.protoBlockDict['wait'] = waitBlock;
-    waitBlock.oneArgBlock();
-    waitBlock.staticLabels.push('wait');
-    waitBlock.defaults.push(1);
-
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
@@ -85,4 +77,28 @@ function initAdvancedProtoBlocks(palettes, blocks) {
 
     // Populate the lists of block types.
     blocks.findBlockTypes();
+}
+
+// Block-specific code goes here
+
+// Publish to FB
+function doPublish(desc) {
+    var url = doSave();
+    console.log('push ' + url + ' to FB');
+    var descElem = docById("description");
+    var msg = desc + ' ' + descElem.value + ' ' + url;
+    console.log('comment: ' + msg);
+    var post_cb = function() {
+        FB.api('/me/feed', 'post', {message: msg});
+    };
+
+    FB.login(post_cb, {scope: 'publish_actions'});
+}
+
+function doSaveSVG(canvas, turtles, desc) {
+    var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + desc + '</title>\n</head>\n<body>\n';
+    var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0);
+    var tail = '</body>\n</html>';
+    // TODO: figure out if popups are blocked
+    var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
 }

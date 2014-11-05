@@ -431,7 +431,7 @@ define(function (require) {
                 // Post the project
                 var returnTBValue = httpPost(projectName, prepareExport());
                 // and the SVG
-                var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), doSVG(320, 240, 0.4));
+                var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), doSVG(canvas, turtles, 320, 240, 0.4));
                 return returnTBValue + ' ' + returnSVGValue;
             } catch (e) {
                 console.log(e);
@@ -640,6 +640,10 @@ define(function (require) {
                     last(turtles.turtleList[turtle].queue).count = 1;
                 }
                 break;
+	    case 'wait':
+                 if (args.length == 1) {
+		     doWait(args[0]);
+		 }
             case 'repeat':
                  if (args.length == 2) {
                      childFlow = args[1];
@@ -983,22 +987,8 @@ define(function (require) {
             update = true;
         }
 
-        // Publish to FB
-        function doPublish(desc) {
-            var url = doSave();
-            console.log('push ' + url + ' to FB');
-            var descElem = docById("description");
-            var msg = desc + ' ' + descElem.value + ' ' + url;
-            console.log('comment: ' + msg);
-            var post_cb = function() {
-                FB.api('/me/feed', 'post', {message: msg});
-            };
-
-            FB.login(post_cb, {scope: 'publish_actions'});
-        }
-
         function doWait(secs) {
-            waitTime = secs * 1000;
+            waitTime = Number(secs) * 1000;
         }
 
         // Logo functions
@@ -1043,32 +1033,15 @@ define(function (require) {
             }
         }
 
-        function doSaveSVG(desc) {
+        function doSaveSVGfoo(desc) {
             var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + desc + '</title>\n</head>\n<body>\n';
-            var svg = doSVG(canvas.width, canvas.height, 1.0); // scale
+            var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0); // scale
             var tail = '</body>\n</html>';
             // TODO: figure out if popups are blocked
             var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
             // Doing it this way creates a window that cannot be saved
             // var svgWindow = window.open(desc, "_blank", "width=304, height=228");
             // svgWindow.document.write(head + svg + tail);
-        }
-
-        function doSVG(width, height, scale) {
-            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
-            // FIXME: Not quite centered properly
-            var dx = Math.floor((1024 - canvas.width) * scale);
-            var dy = Math.floor((canvas.height - 768) * scale);
-            svg += '<g transform="matrix(' + scale + ',0,0,' + scale + ',' + dx + ',' + dy + ')">\n'
-
-            // svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
-            svg += this.svgOutput;
-            for (var t in turtles.turtleList) {
-                svg += turtles.turtleList[t].svgOutput;
-            }
-            svg += '</g>';
-            svg += '</svg>';
-            return svg;
         }
 
         function setBackgroundColor(turtle) {

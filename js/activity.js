@@ -24,6 +24,8 @@ define(function (require) {
     require('activity/turtle');
     require('activity/palette');
     require('activity/blocks');  
+    require('activity/basicblocks');
+    require('activity/advancedblocks');
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
@@ -191,7 +193,8 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-            initProtoBlocks(palettes, blocks);
+            initBasicProtoBlocks(palettes, blocks);
+            initAdvancedProtoBlocks(palettes, blocks);
 
             // Set up a file chooser for the doOpen function.
             this.fileChooser = docById("myOpenFile");

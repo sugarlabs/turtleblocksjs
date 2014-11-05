@@ -59,7 +59,6 @@ define(function (require) {
 
         // Used by pause block
         var waitTime = {};
-        var delay = {};
 
         // Used to track mouse state for mouse button block
         var stageMouseDown = false;
@@ -486,17 +485,17 @@ define(function (require) {
             }
 
             stopTurtle = false;
-	    blocks.unhighlightAll();
+            blocks.unhighlightAll();
             blocks.bringToTop();  // Draw under blocks.
 
             // We run the logo commands here.
             var d = new Date();
             time = d.getTime();
 
-	    for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-		waitTime[turtle] = 0;
-		delay[turtle] = 0;
-	    }
+            // Each turtle needs to keep its own wait time.
+            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                waitTime[turtle] = 0;
+            }
             // console.log(blocks.blockList);
 
             // First we need to reconcile the values in all the value blocks
@@ -583,10 +582,10 @@ define(function (require) {
             if (blk == null) {
                 return;
             }
-            delay[turtle] = turtleDelay + waitTime[turtle];
+            var delay = turtleDelay + waitTime[turtle];
             waitTime[turtle] = 0;
             if (!stopTurtle) {
-                setTimeout(function(){runFromBlockNow(turtle, blk);}, delay[turtle]);
+                setTimeout(function(){runFromBlockNow(turtle, blk);}, delay);
             }
         }
 
@@ -775,9 +774,9 @@ define(function (require) {
             // If there is a child flow, queue it.
             if (childFlow != null) {
                 var queueBlock = new Queue(childFlow, childFlowCount, blk);
-		// We need to keep track of the parent block to the
-		// child flow so we can unlightlight the parent block
-		// after the child flow completes.
+                // We need to keep track of the parent block to the
+                // child flow so we can unlightlight the parent block
+                // after the child flow completes.
                 this.parentFlowQueue[turtle].push(blk);
                 turtles.turtleList[turtle].queue.push(queueBlock);
             }
@@ -791,7 +790,7 @@ define(function (require) {
                     // Finished child so pop it off the queue.
                     turtles.turtleList[turtle].queue.pop();
                 } else {
-                    // Decrement the counter.
+                    // Decrement the counter for repeating this flow.
                     last(turtles.turtleList[turtle].queue).count -= 1;
                 }
             }
@@ -801,26 +800,32 @@ define(function (require) {
                     parentBlk = last(turtles.turtleList[turtle].queue).parentBlk;
                 }
                 if (parentBlk != blk) {
-                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay + waitTime[turtle]); // The wait block waits waitTime longer than other blocks before it is unhighlighted.
+                    // The wait block waits waitTime longer than other
+                    // blocks before it is unhighlighted.
+                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay + waitTime[turtle]);
                 }
                 if (last(blocks.blockList[blk].connections) == null) {
-		    // If we are at the end of the child flow,
-		    // unhighlight the parent block to the flow.
+                    // If we are at the end of the child flow, queue
+                    // the unhighlighting of the parent block to the
+                    // flow.
                     if (this.parentFlowQueue[turtle].length > 0 && turtles.turtleList[turtle].queue.length > 0 && last(turtles.turtleList[turtle].queue).parentBlk != last(this.parentFlowQueue[turtle])) {
                         this.unhightlightQueue[turtle].push(this.parentFlowQueue[turtle].pop());
                     } else if (this.unhightlightQueue[turtle].length > 0) {
+			// The child flow is finally complete, so unhighlight.
                         setTimeout(function(){blocks.unhighlight(this.unhightlightQueue[turtle].pop());}, turtleDelay);
                     }
                 }
                 runFromBlock(turtle, nextBlock);
             } else {
+		// Nothing else to do... so cleaning up.
                 if (turtles.turtleList[turtle].queue.length == 0 || blk != last(turtles.turtleList[turtle].queue).parentBlk) {
                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
                 }
+		// Unhighlight any parent blocks still highlighted.
                 for (var b in this.parentFlowQueue[turtle]) {
                     blocks.unhighlight(this.parentFlowQueue[turtle][b]);
                 }
-                // FIXME
+                // Make sure the turtles are on top.
                 var lastChild = last(stage.children);
                 for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                     stage.swapChildren(turtles.turtleList[turtle].Container, lastChild);

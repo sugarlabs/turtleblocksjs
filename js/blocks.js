@@ -1246,6 +1246,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // console.log(myTurtle.bitmap.getCacheDataURL());
     }
 
+    this.unhighlightAll = function() {
+	for (blk in this.blockList) {
+	    this.unhighlight(blk);
+	}
+    }
+
     this.unhighlight = function(blk) {
         if (!this.visible) {
             return;

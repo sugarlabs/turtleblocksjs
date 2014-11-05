@@ -54,6 +54,13 @@ define(function (require) {
 
         var turtleDelay = defaultDelay;
 
+        // Time when we hit run
+        var time = 0;
+
+        // Used by pause block
+        var waitTime = {};
+        var delay = {};
+
         // Used to track mouse state for mouse button block
         var stageMouseDown = false;
 
@@ -165,11 +172,6 @@ define(function (require) {
         setBackgroundColor(-1);
         // then set default canvas color.
         canvasColor = getMunsellColor(defaultColor, defaultValue, defaultChroma);
-
-        // Time when we hit run
-        var time = 0;
-        // Used by pause block
-        var waitTime = 0;
 
         // Coordinate grid
         var cartesianBitmap = null;
@@ -484,12 +486,17 @@ define(function (require) {
             }
 
             stopTurtle = false;
+	    blocks.unhighlightAll();
             blocks.bringToTop();  // Draw under blocks.
 
             // We run the logo commands here.
             var d = new Date();
             time = d.getTime();
 
+	    for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+		waitTime[turtle] = 0;
+		delay[turtle] = 0;
+	    }
             // console.log(blocks.blockList);
 
             // First we need to reconcile the values in all the value blocks
@@ -533,7 +540,8 @@ define(function (require) {
 
             this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
 
-            this.unhighlightQueue = {};
+            this.parentFlowQueue = {};
+            this.unhightlightQueue = {};
 
             // (2) Execute the stack.
             // A bit complicated because we have lots of corner cases:
@@ -545,13 +553,15 @@ define(function (require) {
                     var turtle = startBlocks.indexOf(startHere);
                 }
                 turtles.turtleList[turtle].queue = [];
-                this.unhighlightQueue[turtle] = [];
+                this.parentFlowQueue[turtle] = [];
+                this.unhightlightQueue[turtle] = [];
                 runFromBlock(turtle, startHere);
             } else if (startBlocks.length > 0) {
                 // If there are start blocks, run them all.
                 for (var turtle = 0; turtle < startBlocks.length; turtle++) {
                     turtles.turtleList[turtle].queue = [];
-                    this.unhighlightQueue[turtle] = [];
+                    this.parentFlowQueue[turtle] = [];
+                    this.unhightlightQueue[turtle] = [];
                     runFromBlock(turtle, startBlocks[turtle]);
                 }
             } else {
@@ -569,14 +579,14 @@ define(function (require) {
             update = true;
         }
 
-        function runFromBlock(thisTurtle, blk) { 
+        function runFromBlock(turtle, blk) { 
             if (blk == null) {
                 return;
             }
-            var delay = turtleDelay + waitTime;
-            waitTime = 0;
+            delay[turtle] = turtleDelay + waitTime[turtle];
+            waitTime[turtle] = 0;
             if (!stopTurtle) {
-                setTimeout(function(){runFromBlockNow(thisTurtle, blk);}, delay);
+                setTimeout(function(){runFromBlockNow(turtle, blk);}, delay[turtle]);
             }
         }
 
@@ -640,10 +650,10 @@ define(function (require) {
                     last(turtles.turtleList[turtle].queue).count = 1;
                 }
                 break;
-	    case 'wait':
+            case 'wait':
                  if (args.length == 1) {
-		     doWait(args[0]);
-		 }
+                     doWait(turtle, args[0]);
+                 }
             case 'repeat':
                  if (args.length == 2) {
                      childFlow = args[1];
@@ -762,10 +772,13 @@ define(function (require) {
 
             // (3) Queue block below this block.
 
-            // If there is a childFlow, queue it.
+            // If there is a child flow, queue it.
             if (childFlow != null) {
                 var queueBlock = new Queue(childFlow, childFlowCount, blk);
-                this.unhighlightQueue[turtle].push(blk);
+		// We need to keep track of the parent block to the
+		// child flow so we can unlightlight the parent block
+		// after the child flow completes.
+                this.parentFlowQueue[turtle].push(blk);
                 turtles.turtleList[turtle].queue.push(queueBlock);
             }
 
@@ -788,16 +801,15 @@ define(function (require) {
                     parentBlk = last(turtles.turtleList[turtle].queue).parentBlk;
                 }
                 if (parentBlk != blk) {
-                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
+                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay + waitTime[turtle]); // The wait block waits waitTime longer than other blocks before it is unhighlighted.
                 }
                 if (last(blocks.blockList[blk].connections) == null) {
-                    if (this.unhighlightQueue[turtle].length > 0) {
-                        if (turtles.turtleList[turtle].queue.length > 0) {
-                            if (last(turtles.turtleList[turtle].queue).parentBlk != last(this.unhighlightQueue[turtle])) {
-                                var parentBlk = this.unhighlightQueue[turtle].pop();
-                                setTimeout(function(){blocks.unhighlight(parentBlk);}, turtleDelay);
-                            }
-                        }
+		    // If we are at the end of the child flow,
+		    // unhighlight the parent block to the flow.
+                    if (this.parentFlowQueue[turtle].length > 0 && turtles.turtleList[turtle].queue.length > 0 && last(turtles.turtleList[turtle].queue).parentBlk != last(this.parentFlowQueue[turtle])) {
+                        this.unhightlightQueue[turtle].push(this.parentFlowQueue[turtle].pop());
+                    } else if (this.unhightlightQueue[turtle].length > 0) {
+                        setTimeout(function(){blocks.unhighlight(this.unhightlightQueue[turtle].pop());}, turtleDelay);
                     }
                 }
                 runFromBlock(turtle, nextBlock);
@@ -805,8 +817,8 @@ define(function (require) {
                 if (turtles.turtleList[turtle].queue.length == 0 || blk != last(turtles.turtleList[turtle].queue).parentBlk) {
                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
                 }
-                for (var b in this.unhighlightQueue[turtle]) {
-                    blocks.unhighlight(this.unhighlightQueue[turtle][b]);
+                for (var b in this.parentFlowQueue[turtle]) {
+                    blocks.unhighlight(this.parentFlowQueue[turtle][b]);
                 }
                 // FIXME
                 var lastChild = last(stage.children);
@@ -987,8 +999,8 @@ define(function (require) {
             update = true;
         }
 
-        function doWait(secs) {
-            waitTime = Number(secs) * 1000;
+        function doWait(turtle, secs) {
+            waitTime[turtle] = Number(secs) * 1000;
         }
 
         // Logo functions

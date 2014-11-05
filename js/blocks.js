@@ -1238,10 +1238,17 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.highlightCollapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
                 myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
                 myBlock.highlightCollapseBlockBitmap.visible = false;
-		myBlock.collapseText = new createjs.Text('action', '20px Arial', '#00000');
-		myBlock.collapseText.x = myBlock.collapseBlockBitmap.x + 100;
-		myBlock.collapseText.y = myBlock.collapseBlockBitmap.y + 40;
-		myBlock.collapseText.textAlign = 'right';
+		if (myBlock.name == 'action') {
+		    myBlock.collapseText = new createjs.Text('action', '20px Arial', '#00000');
+		    myBlock.collapseText.x = myBlock.collapseBlockBitmap.x + 100;
+		    myBlock.collapseText.y = myBlock.collapseBlockBitmap.y + 40;
+		    myBlock.collapseText.textAlign = 'right';
+		} else {
+		    myBlock.collapseText = new createjs.Text('start', '20px Arial', '#00000');
+		    myBlock.collapseText.x = myBlock.collapseBlockBitmap.x + 20;
+		    myBlock.collapseText.y = myBlock.collapseBlockBitmap.y + 40;
+		    myBlock.collapseText.textAlign = 'left';
+		}
 		myBlock.collapseText.textBaseline = 'alphabetic';
 		myBlock.container.addChild(myBlock.collapseText);
 		myBlock.collapseText.visible = false;

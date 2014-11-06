@@ -494,7 +494,7 @@ define(function (require) {
                     }
                     thumbnails[projectFiles[p]].x = x;
                     thumbnails[projectFiles[p]].y = y;
-                    loadThumbnailHandler(p);
+                    loadThumbnailHandler(projectFiles[p]);
                     // TODO: add Easel caching
                     x += 320;
                     if (x > canvas.width) {

@@ -487,9 +487,7 @@ define(function (require) {
                         thumbnails[projectFiles[p]].visible = true;
                     } else {
                         // grab the SVG
-                        var rawData = httpGet(projectFiles[p] + '.svg');
-                        console.log('receiving ' + rawData);
-                        var svg = JSON.parse(rawData);
+                        var svg = httpGet(projectFiles[p] + '.svg');
                         bitmap = new createjs.Bitmap('data:image/svg+xml;utf8,' + svg);
                         stage.addChild(bitmap);
                         thumbnails[projectFiles[p]] = bitmap;

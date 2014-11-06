@@ -489,11 +489,11 @@ define(function (require) {
                     } else {
                         var header = 'data:image/svg+xml;utf8,';
                         var svg = header + httpGet(projectFiles[p] + '.svg');
-                        console.log(svg);
                         bitmap = new createjs.Bitmap(svg);
                         stage.addChild(bitmap);
                         thumbnails[projectFiles[p]] = bitmap;
                     }
+		    console.log(x + ' ' + y);
                     thumbnails[projectFiles[p]].x = x;
                     thumbnails[projectFiles[p]].y = y;
                     loadThumbnailHandler(projectFiles[p]);

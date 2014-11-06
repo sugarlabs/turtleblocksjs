@@ -73,6 +73,7 @@ define(function (require) {
         var pasteButton = docById('paste-button');
         var cartesianButton = docById('cartesian-button');
         var polarButton = docById('polar-button');
+        var samplesButton = docById('samples-button');
         var openButton = docById('open-button');
         var saveButton = docById('save-button');
         var stopButton = docById('stop-button');
@@ -80,6 +81,7 @@ define(function (require) {
         if (screen.width < 1024) {
             copyButton.style.visibility = 'hidden';
             pasteButton.style.visibility = 'hidden';
+            samplesButton.style.visibility = 'hidden';
             openButton.style.visibility = 'hidden';
             saveButton.style.visibility = 'hidden';
             stopButton.style.visibility = 'hidden';
@@ -140,6 +142,10 @@ define(function (require) {
                 showPolar();
                 polarVisible = true;
             }
+        }
+
+        samplesButton.onclick = function () {
+            doOpenSamples();
         }
 
         openButton.onclick = function () {
@@ -389,11 +395,17 @@ define(function (require) {
             var xmlHttp = null;
             
             xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/', false);
-            xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-            xmlHttp.setRequestHeader('x-project-id', projectName);
-            xmlHttp.send();
-            return xmlHttp.responseText;
+
+	    if (projectName == null) {
+		xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
+		xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+	    } else {
+		xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+		xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+		// xmlHttp.setRequestHeader('x-project-id', projectName);
+	    }
+	    xmlHttp.send();
+	    return xmlHttp.responseText;
         }
 
         function httpPost(projectName, data)
@@ -401,13 +413,22 @@ define(function (require) {
             var xmlHttp = null;
             console.log('sending ' + data);
             xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("POST", 'https://turtle.sugarlabs.org/server/', false);
+            xmlHttp.open("POST", 'https://turtle.sugarlabs.org/server/' + projectName, false);
             xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-            xmlHttp.setRequestHeader('x-project-id', projectName);
+            // xmlHttp.setRequestHeader('x-project-id', projectName);
             xmlHttp.send(data);
             // return xmlHttp.responseText;
             return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
         }
+
+	function doOpenSamples() {
+            try {
+                var rawData = httpGet();
+                console.log('receiving ' + rawData);
+	    } catch (e) {
+		console.log(e);
+	    }
+	}
 
         function loadProject(projectName) {
             palettes.updatePalettes();

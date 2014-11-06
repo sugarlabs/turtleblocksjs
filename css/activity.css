@@ -10,6 +10,10 @@ body {
   background-image: url(../icons/copy-button.svg);
 }
 
+#main-toolbar #samples-button {
+  background-image: url(../icons/samples-button.svg);
+}
+
 #main-toolbar #paste-button {
   background-image: url(../icons/paste-button.svg);
 }

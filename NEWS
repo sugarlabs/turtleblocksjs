@@ -91,6 +91,7 @@
   * fixed labels on collapsed stacks
   * better compartmentalization of block code
    (using a dictionary for the code associated with each "advanced" block)
+  * Fixed scaling issues with SVG output
 
 TODO:
   * don't save full-sized bitmap to session

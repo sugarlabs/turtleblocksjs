@@ -17,8 +17,8 @@ define(function (require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
     require('easel');
-    require('activity/artwork');
     require('activity/utils');
+    require('activity/artwork');
     require('activity/munsell');
     require('activity/trash');
     require('activity/turtle');
@@ -188,6 +188,8 @@ define(function (require) {
 
         function init() {
             docById('loader').className = 'loader';
+
+	    console.log(fileExt('foo.tb'));
 
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
@@ -429,6 +431,7 @@ define(function (require) {
 		// Look for .svg files
 		var projectFiles = [];
 		for (file in obj) {
+		    console.log(fileExt('foo.tb'));
 		    if (fileExt(obj[file]) == 'svg') {
 			projectFiles.push(fileBasename(obj[file]));
 		    }

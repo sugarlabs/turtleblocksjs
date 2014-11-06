@@ -341,7 +341,7 @@ define(function (require) {
             update = true;
         }
 
-        function sendAllToTrash(addTurtle) {
+        function sendAllToTrash(addStartBlock) {
             var dx = 2000;
             var dy = 55;
             for (var blk in blocks.blockList) {
@@ -349,12 +349,12 @@ define(function (require) {
                 blocks.moveBlockRelative(blk, dx, dy);
                 blocks.blockList[blk].hide();
             }
-            console.log('loading new start block');
-            blocks.makeNewBlock('start');
-            last(blocks.blockList).x = 50;
-            last(blocks.blockList).y = 50;
-            last(blocks.blockList).connections = [null, null, null];
-	    if (addTurtle) {
+	    if (addStartBlock) {
+		console.log('loading new start block');
+		blocks.makeNewBlock('start');
+		last(blocks.blockList).x = 50;
+		last(blocks.blockList).y = 50;
+		last(blocks.blockList).connections = [null, null, null];
 		turtles.add();
 	    }
             // Overwrite session data too.
@@ -1274,4 +1274,3 @@ define(function (require) {
     });
 
 });
-

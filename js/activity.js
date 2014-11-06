@@ -484,8 +484,6 @@ define(function (require) {
                 var nrows = Math.floor(canvas.height / 240);
                 var x = Math.floor((canvas.width - 320 * ncols) / 2);
                 var y = 0;
-		var foo = '<svg    xmlns="http://www.w3.org/2000/svg"    version="1.1"    width="320"    height="240">   <rect      width="315"      height="235"      x="2.5"      y="2.5"      id="rect3127"      style="fill:#0000ff;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" /> </svg>';
-
                 for (p in projectFiles) {
                     if (projectFiles[p] in thumbnails) {
                         thumbnails[projectFiles[p]].visible = true;
@@ -494,7 +492,6 @@ define(function (require) {
 			var header = 'data:image/svg+xml;utf8,';
                         var svg = header + httpGet(projectFiles[p] + '.svg');
 			console.log(svg);
-			var svg = header + foo;
                         bitmap = new createjs.Bitmap(svg);
                         stage.addChild(bitmap);
                         thumbnails[projectFiles[p]] = bitmap;

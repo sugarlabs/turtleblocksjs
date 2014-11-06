@@ -432,7 +432,7 @@ define(function (require) {
                 // Post the project
                 var returnTBValue = httpPost(projectName, prepareExport());
                 // and the SVG
-                var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), doSVG(canvas, turtles, 320, 240, 0.4));
+                var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), doSVG(canvas, turtles, 320, 240, 320 / canvas.width));
                 return returnTBValue + ' ' + returnSVGValue;
             } catch (e) {
                 console.log(e);
@@ -1048,17 +1048,6 @@ define(function (require) {
             } else {
                 return Number(a) / Number(b);
             }
-        }
-
-        function doSaveSVGfoo(desc) {
-            var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + desc + '</title>\n</head>\n<body>\n';
-            var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0); // scale
-            var tail = '</body>\n</html>';
-            // TODO: figure out if popups are blocked
-            var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
-            // Doing it this way creates a window that cannot be saved
-            // var svgWindow = window.open(desc, "_blank", "width=304, height=228");
-            // svgWindow.document.write(head + svg + tail);
         }
 
         function setBackgroundColor(turtle) {

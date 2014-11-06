@@ -425,6 +425,22 @@ define(function (require) {
             try {
                 var rawData = httpGet();
                 console.log('receiving ' + rawData);
+		var obj = JSON.parse(rawData);
+		// Look for .svg files
+		var projectFiles = [];
+		for (file in obj) {
+		    if (fileExt(obj[file]) == 'svg') {
+			projectFiles.push(fileBasename(obj[file]));
+		    }
+		}
+		// and corresponding .tb files
+		for (file in projectFiles) {
+		    var tbfile = projectFiles[file] + '.tb';
+		    if (!tbfile in obj) {
+			projectFiles.remove(projectFiles[file]);
+		    }
+		}
+		console.log('found these projects: ' + projectFiles);
 	    } catch (e) {
 		console.log(e);
 	    }
@@ -432,7 +448,9 @@ define(function (require) {
 
         function loadProject(projectName) {
             palettes.updatePalettes();
-
+	    if (fileExt(projectName) != 'tb') {
+		projectName += '.tb';
+	    }
             try {
                 var rawData = httpGet(projectName);
                 console.log('receiving ' + rawData);
@@ -448,7 +466,9 @@ define(function (require) {
 
         function saveProject(projectName) {
             palettes.updatePalettes();
-
+	    if (fileExt(projectName) != 'tb') {
+		projectName += '.tb';
+	    }
             try {
                 // Post the project
                 var returnTBValue = httpPost(projectName, prepareExport());

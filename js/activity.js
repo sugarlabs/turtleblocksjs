@@ -1254,19 +1254,18 @@ define(function (require) {
 
         function loadThumbnailHandler(project) {
             var hitArea = new createjs.Shape();
-            var w2 = 160;
-            var h2 = 120;
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
-            hitArea.x = w2 / 2;
-            hitArea.y = h2 / 2;
+            var w = 320;
+            var h = 240;
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-w / 2, -h / 2, w, h);
+            hitArea.x = w / 2;
+            hitArea.y = h / 2;
             thumbnails[project].hitArea = hitArea;
 
             thumbnails[project].on('click', function(event) {
                 console.log('thumbnail ' + project + ' was clicked');
-            // (3b) Select sample project;
-            // (4b) Move blocks to trash;
-            // (5b) Hide samples display;
-            // (6b) Load sample project;
+		sendAllToTrash();
+		doOpenSamples(); // Hide samples display
+		loadProject(project + '.tb');
             });
         }
 

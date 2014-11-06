@@ -446,10 +446,10 @@ define(function (require) {
             if (thumbnailsVisible) {
                 for (img in thumbnails) {
                     thumbnails[img].visible = false;
+                    update = true;
                 }
-                update = true;
                 showBlocks();
-		thumbnailsVisible = false;
+                thumbnailsVisible = false;
             } else {
                 try {
                     var rawData = httpGet();
@@ -475,11 +475,8 @@ define(function (require) {
                     return;
                 }
                 // Question: would this be better as a pop-up?
-		thumbnailsVisible = true;
-                // (1) Hide blocks;
+                thumbnailsVisible = true;
                 hideBlocks();
-                // (2) Display samples;
-                var thumbnails = {};
                 var ncols = Math.floor(canvas.width / 320);
                 var nrows = Math.floor(canvas.height / 240);
                 var x = Math.floor((canvas.width - 320 * ncols) / 2);
@@ -488,18 +485,17 @@ define(function (require) {
                     if (projectFiles[p] in thumbnails) {
                         thumbnails[projectFiles[p]].visible = true;
                     } else {
-                        // grab the SVG
-			var header = 'data:image/svg+xml;utf8,';
+                        var header = 'data:image/svg+xml;utf8,';
                         var svg = header + httpGet(projectFiles[p] + '.svg');
-			console.log(svg);
+                        console.log(svg);
                         bitmap = new createjs.Bitmap(svg);
                         stage.addChild(bitmap);
                         thumbnails[projectFiles[p]] = bitmap;
                     }
                     thumbnails[projectFiles[p]].x = x;
                     thumbnails[projectFiles[p]].y = y;
-                    // TODO: caching
-                    // TODO: loadhandlers
+                    loadThumbnailHandler(p);
+                    // TODO: add Easel caching
                     x += 320;
                     if (x > canvas.width) {
                         x = Math.floor((canvas.width - 320 * ncols) / 2);
@@ -507,10 +503,6 @@ define(function (require) {
                     }
                 }
                 update = true;
-            // (3b) Select sample project;
-            // (4b) Move blocks to trash;
-            // (5b) Hide samples display;
-            // (6b) Load sample project;
             }
         }
 
@@ -1260,6 +1252,25 @@ define(function (require) {
             }
         }
 
+        function loadThumbnailHandler(project) {
+            var hitArea = new createjs.Shape();
+            var w2 = 160;
+            var h2 = 120;
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
+            hitArea.x = w2 / 2;
+            hitArea.y = h2 / 2;
+            thumbnails[project].hitArea = hitArea;
+
+            thumbnails[project].on('click', function(event) {
+                console.log('thumbnail ' + project + ' was clicked');
+            // (3b) Select sample project;
+            // (4b) Move blocks to trash;
+            // (5b) Hide samples display;
+            // (6b) Load sample project;
+            });
+        }
+
     });
 
 });
+

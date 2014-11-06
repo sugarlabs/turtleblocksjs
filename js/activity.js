@@ -47,6 +47,8 @@ define(function (require) {
         var turtles;
         var palettes;
         var blocks;
+        var thumbnails = {};
+        var thumbnailsVisible = false;
 
         // default values
         var defaultBackgroundColor = [70, 80, 20];
@@ -186,10 +188,27 @@ define(function (require) {
         // Get things started
         init();
 
+        function fileBasename(file) {
+            var parts = file.split('.');
+            if (parts.length == 1 ) {
+                return parts[0];
+            } else if (parts[0] == '' && parts.length == 2) {
+                return file;
+            }
+            parts.pop(); // throw away suffix
+            return parts.join('.');
+        }
+
+        function fileExt(file) {
+            var parts = file.split('.');
+            if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
+                return '';
+            }
+            return parts.pop();  
+        }
+
         function init() {
             docById('loader').className = 'loader';
-
-	    console.log(fileExt('foo.tb'));
 
             // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
@@ -398,16 +417,16 @@ define(function (require) {
             
             xmlHttp = new XMLHttpRequest();
 
-	    if (projectName == null) {
-		xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
-		xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-	    } else {
-		xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
-		xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-		// xmlHttp.setRequestHeader('x-project-id', projectName);
-	    }
-	    xmlHttp.send();
-	    return xmlHttp.responseText;
+            if (projectName == null) {
+                xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
+                xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+            } else {
+                xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+                xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+                // xmlHttp.setRequestHeader('x-project-id', projectName);
+            }
+            xmlHttp.send();
+            return xmlHttp.responseText;
         }
 
         function httpPost(projectName, data)
@@ -423,37 +442,81 @@ define(function (require) {
             return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
         }
 
-	function doOpenSamples() {
-            try {
-                var rawData = httpGet();
-                console.log('receiving ' + rawData);
-		var obj = JSON.parse(rawData);
-		// Look for .svg files
-		var projectFiles = [];
-		for (file in obj) {
-		    console.log(fileExt('foo.tb'));
-		    if (fileExt(obj[file]) == 'svg') {
-			projectFiles.push(fileBasename(obj[file]));
-		    }
-		}
-		// and corresponding .tb files
-		for (file in projectFiles) {
-		    var tbfile = projectFiles[file] + '.tb';
-		    if (!tbfile in obj) {
-			projectFiles.remove(projectFiles[file]);
-		    }
-		}
-		console.log('found these projects: ' + projectFiles);
-	    } catch (e) {
-		console.log(e);
-	    }
-	}
+        function doOpenSamples() {
+            if (thumbnailsVisible) {
+                for (img in thumbnails) {
+                    thumbnails[img].visible = false;
+                }
+                update = true;
+                showBlocks();
+            } else {
+                try {
+                    var rawData = httpGet();
+                    console.log('receiving ' + rawData);
+                    var obj = JSON.parse(rawData);
+                    // Look for .svg files
+                    var projectFiles = [];
+                    for (file in obj) {
+                        if (fileExt(obj[file]) == 'svg') {
+                            projectFiles.push(fileBasename(obj[file]));
+                        }
+                    }
+                    // and corresponding .tb files
+                    for (file in projectFiles) {
+                        var tbfile = projectFiles[file] + '.tb';
+                        if (!tbfile in obj) {
+                            projectFiles.remove(projectFiles[file]);
+                        }
+                    }
+                    console.log('found these projects: ' + projectFiles);
+                } catch (e) {
+                    console.log(e);
+                    return;
+                }
+                // Question: would this be better as a pop-up?
+                // (1) Hide blocks;
+                hideBlocks();
+                // (2) Display samples;
+                var thumbnails = {};
+                var ncols = Math.floor(canvas.width / 320);
+                var nrows = Math.floor(canvas.height / 240);
+                var x = Math.floor((canvas.width - 320 * ncols) / 2);
+                var y = 0;
+                for (p in projectFiles) {
+                    if (projectFiles[p] in thumbnails) {
+                        thumbnails[projectFiles[p]].visible = true;
+                    } else {
+                        // grab the SVG
+                        var rawData = httpGet(projectFiles[p] + '.svg');
+                        console.log('receiving ' + rawData);
+                        var svg = JSON.parse(rawData);
+                        bitmap = new createjs.Bitmap('data:image/svg+xml;utf8,' + svg);
+                        stage.addChild(bitmap);
+                        thumbnails[projectFiles[p]] = bitmap;
+                    }
+                    thumbnails[projectFiles[p]].x = x;
+                    thumbnails[projectFiles[p]].y = y;
+                    // TODO: caching
+                    // TODO: loadhandlers
+                    x += 320;
+                    if (x > canvas.width) {
+                        x = Math.floor((canvas.width - 320 * ncols) / 2);
+                        y += 240;
+                    }
+                }
+                update = true;
+            // (3b) Select sample project;
+            // (4b) Move blocks to trash;
+            // (5b) Hide samples display;
+            // (6b) Load sample project;
+            }
+        }
 
         function loadProject(projectName) {
             palettes.updatePalettes();
-	    if (fileExt(projectName) != 'tb') {
-		projectName += '.tb';
-	    }
+            if (fileExt(projectName) != 'tb') {
+                projectName += '.tb';
+            }
             try {
                 var rawData = httpGet(projectName);
                 console.log('receiving ' + rawData);
@@ -469,9 +532,9 @@ define(function (require) {
 
         function saveProject(projectName) {
             palettes.updatePalettes();
-	    if (fileExt(projectName) != 'tb') {
-		projectName += '.tb';
-	    }
+            if (fileExt(projectName) != 'tb') {
+                projectName += '.tb';
+            }
             try {
                 // Post the project
                 var returnTBValue = httpPost(projectName, prepareExport());
@@ -855,17 +918,17 @@ define(function (require) {
                     if (this.parentFlowQueue[turtle].length > 0 && turtles.turtleList[turtle].queue.length > 0 && last(turtles.turtleList[turtle].queue).parentBlk != last(this.parentFlowQueue[turtle])) {
                         this.unhightlightQueue[turtle].push(this.parentFlowQueue[turtle].pop());
                     } else if (this.unhightlightQueue[turtle].length > 0) {
-			// The child flow is finally complete, so unhighlight.
+                        // The child flow is finally complete, so unhighlight.
                         setTimeout(function(){blocks.unhighlight(this.unhightlightQueue[turtle].pop());}, turtleDelay);
                     }
                 }
                 runFromBlock(turtle, nextBlock);
             } else {
-		// Nothing else to do... so cleaning up.
+                // Nothing else to do... so cleaning up.
                 if (turtles.turtleList[turtle].queue.length == 0 || blk != last(turtles.turtleList[turtle].queue).parentBlk) {
                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
                 }
-		// Unhighlight any parent blocks still highlighted.
+                // Unhighlight any parent blocks still highlighted.
                 for (var b in this.parentFlowQueue[turtle]) {
                     blocks.unhighlight(this.parentFlowQueue[turtle][b]);
                 }

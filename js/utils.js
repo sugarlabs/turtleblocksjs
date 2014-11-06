@@ -9,25 +9,6 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
-function fileBasename(file) {
-    var parts = file.split('.');
-    if (parts.length == 1 ) {
-	return parts[0];
-    } else if (parts[0] == '' && parts.length == 2) {
-	return file;
-    }
-    parts.pop(); // throw away suffix
-    return parts.join('.');
-}
-
-function fileExt(file) {
-    var parts = file.split('.');
-    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
-	return '';
-    }
-    return parts.pop();  
-}
-
 function docById(id) {
     return document.getElementById(id);
 }

@@ -52,7 +52,7 @@ define(function (require) {
 
         // default values
         var defaultBackgroundColor = [70, 80, 20];
-        var defaultDelay = 500;  // MS
+        var defaultDelay = 500;  // milleseconds
 
         var turtleDelay = defaultDelay;
 
@@ -341,7 +341,7 @@ define(function (require) {
             update = true;
         }
 
-        function sendAllToTrash() {
+        function sendAllToTrash(addTurtle) {
             var dx = 2000;
             var dy = 55;
             for (var blk in blocks.blockList) {
@@ -354,7 +354,9 @@ define(function (require) {
             last(blocks.blockList).x = 50;
             last(blocks.blockList).y = 50;
             last(blocks.blockList).connections = [null, null, null];
-            turtles.add();
+	    if (addTurtle) {
+		turtles.add();
+	    }
             // Overwrite session data too.
             console.log('overwriting session data');
             if(typeof(Storage) !== "undefined") {
@@ -1263,7 +1265,7 @@ define(function (require) {
 
             thumbnails[project].on('click', function(event) {
                 console.log('thumbnail ' + project + ' was clicked');
-		sendAllToTrash();
+		sendAllToTrash(false);
 		doOpenSamples(); // Hide samples display
 		loadProject(project + '.tb');
             });

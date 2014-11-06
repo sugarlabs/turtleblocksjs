@@ -217,7 +217,7 @@ function loadTrashHandlers(trash) {
 
     trash.confirmContainer.on('click', function(event) {
         console.log('click: confirm');
-        trash.clearAll();
+        trash.clearAll(true);
         trash.hideMenu();
         trash.refreshCanvas();
     });

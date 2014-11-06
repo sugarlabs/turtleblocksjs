@@ -499,7 +499,7 @@ define(function (require) {
                     loadThumbnailHandler(projectFiles[p]);
                     // TODO: add Easel caching
                     x += 320;
-                    if (x > canvas.width) {
+                    if (x > canvas.width - 320) {
                         x = Math.floor((canvas.width - 320 * ncols) / 2);
                         y += 240;
                     }

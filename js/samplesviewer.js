@@ -19,11 +19,13 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.dict = {};
     this.projectFiles = [];
     this.container = null;
+    this.prev = null;
+    this.next = null;
+    this.page = 0;
     this.server = true;
 
     this.setServer = function(server) {
 	this.server = server;
-	console.log('SERVER is ' + this.server);
     }
 
     this.hide = function() {
@@ -32,6 +34,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     }
 
     this.show = function() {
+	this.page = 0;
 	if (this.server) {
             try {
 		var rawData = httpGet();
@@ -69,6 +72,14 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 	    this.container.x = Math.floor((this.canvas.width - 650) / 2);
 	    this.container.y = 27;
             this.loadThumbnailContainerHandler(this);
+	    this.prev = new createjs.Bitmap(PREVBUTTON);
+	    this.container.addChild(this.prev);
+	    this.prev.x = 270;
+	    this.prev.y = 535;
+	    this.next = new createjs.Bitmap(NEXTBUTTON);
+	    this.next.x = 325;
+	    this.next.y = 535;
+	    this.container.addChild(this.next);
 	}
 
 	this.container.visible = true;
@@ -76,6 +87,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         var y = 55;
 	// TODO: paging
         // TODO: add Easel caching???
+	var i = 0;
         for (p in this.projectFiles.sort()) {
             if (this.projectFiles[p] in this.dict) {
                 this.dict[this.projectFiles[p]].visible = true;
@@ -86,11 +98,8 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 		    console.log('getting ' + name + ' from server');
                     var svg = header + httpGet(name);
 		} else {
-		    console.log(SAMPLESSVG);
-		    console.log(SAMPLESSVG['card-01.svg']);
 		    console.log('getting ' + name + ' from samples');
 		    svg = header + SAMPLESSVG[name];
-		    console.log(svg);
 		}
                 bitmap = new createjs.Bitmap(svg);
 		bitmap.scaleX = 0.5;
@@ -105,7 +114,20 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                 x = 5
                 y += 120;
             }
+	    if (i < 16) {
+		this.dict[this.projectFiles[p]].visible = true;
+	    } else {
+		this.dict[this.projectFiles[p]].visible = false;
+	    }
+	    i += 1;
+	    if (i % 16 == 0) {
+		y = 55;
+	    }
         }
+	if (i > 15) {
+	    this.next.visible = true;
+	}
+	this.prev.visible = false;
 	this.refreshCanvas;
     }
 
@@ -122,13 +144,39 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 	    var y = event.stageY - viewer.container.y;
 	    if (x > 600 && y < 55) {
 		viewer.closeViewer();
+	    } else if (y > 535) {
+		if (viewer.prev.visible && x < 325) {
+		    viewer.page -= 1;
+		    if (viewer.page == 0) {
+			viewer.prev.visible = false;
+		    }
+		    if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
+			viewer.next.visible = true;
+		    }
+		} else if (viewer.next.visible && x > 325) {
+		    viewer.page += 1;
+		    viewer.prev.visible = true;
+		    if ((viewer.page + 1) * 16 + 1 > viewer.projectFiles.length) {
+			viewer.next.visible = false;
+		    }
+		}
+		var min = viewer.page * 16;
+		var max = min + 16;
+		var i = 0;
+		for (p in viewer.projectFiles) {
+		    if (i >= min && i <= max) {
+			viewer.dict[viewer.projectFiles[p]].visible = true;
+		    } else {
+			viewer.dict[viewer.projectFiles[p]].visible = false;
+		    }
+		    i += 1;
+		}
+		viewer.refreshCanvas();
 	    } else {
 		var col = Math.floor((x - 5) / 160);
 		var row = Math.floor((y - 55) / 120);
-		var p = row * 4 + col;
-		// TODO: account for paging
+		var p = row * 4 + col + 16 * viewer.page;
 		if (p < viewer.projectFiles.length) {
-		    console.log('thumbnail ' + p + ' was clicked');
 		    viewer.closeViewer();
 		    viewer.sendAllToTrash(false);
 		    viewer.loadProject(viewer.projectFiles[p] + '.tb');

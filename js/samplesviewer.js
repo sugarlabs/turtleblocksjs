@@ -9,19 +9,22 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
-function SamplesViewer(canvas, stage, refreshCanvas, server, close, load, trash) {
+function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
-    this.server = server;
     this.closeViewer = close;
     this.sendAllToTrash = trash;
     this.loadProject = load;
     this.dict = {};
     this.projectFiles = [];
     this.container = null;
+    this.server = true;
 
-    console.log('SERVER is ' + this.server);
+    this.setServer = function(server) {
+	this.server = server;
+	console.log('SERVER is ' + this.server);
+    }
 
     this.hide = function() {
 	this.container.visible = false;

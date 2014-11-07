@@ -52,7 +52,7 @@ define(function (require) {
 	    var files = false;
 	}
 
-	var server = false;  // Are we running off of a server?
+	var server = true;  // Are we running off of a server?
         var stage;
         var turtles;
         var palettes;
@@ -212,7 +212,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-	    thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, server, doOpenSamples, loadProject, sendAllToTrash);
+	    thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
             initBasicProtoBlocks(palettes, blocks);
             initAdvancedProtoBlocks(palettes, blocks);
 
@@ -290,6 +290,7 @@ define(function (require) {
 	    } else {
 		server = true;
 	    }
+	    thumbnails.setServer(server);
 	    if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
                 if (urlParts[1].indexOf('=') > 0) {

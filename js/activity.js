@@ -17,6 +17,8 @@ define(function (require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
     require('easel');
+    // FIXME: from the server, this doesn't load properly. Is there
+    // some way to impose an order to the loading of required files?
     // require('activity/utils');
     require('activity/artwork');
     require('activity/munsell');

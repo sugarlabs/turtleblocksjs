@@ -284,13 +284,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // Adjust the size of the clamp in an expandable block
     this.adjustExpandableBlock = function(blk) {
         var myBlock = this.blockList[blk];
-        myBlock.container.uncache();
-
         if (myBlock.isArgBlock()) {
             return;
         }
 
         if (myBlock.isSpecialBlock()) {
+            return;
+        }
+
+        try {
+            myBlock.container.uncache();
+        } catch (e) {
+            console.log(e);
             return;
         }
 
@@ -356,7 +361,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.adjust2ArgBlock = function(blk) {
         // Adjust the size of a 2-arg block
         var myBlock = this.blockList[blk];
-        myBlock.container.uncache();
+        try {
+            myBlock.container.uncache();
+        } catch (e) {
+            console.log(e);
+            return;
+        }
 
         // (1) What the size of the first argument?
         var c = myBlock.connections[1];
@@ -440,7 +450,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.removeFiller = function(blk) {
         var myBlock = this.blockList[blk];
         var fillerBitmap = myBlock.fillerBitmaps.pop();
-        myBlock.container.uncache();
 
         myBlock.container.removeChild(fillerBitmap);
         if (this.findBitmap(fillerBitmap.name) == null) {
@@ -905,7 +914,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // When we create new blocks, we may not have assigned the
         // value yet.        
         this.blockList[blk].text.text = this.blockList[blk].value.toString();
-        this.blockList[blk].container.updateCache();
+        try {
+            this.blockList[blk].container.updateCache();
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     this.updateBlockLabels = function() {
@@ -1247,9 +1260,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.unhighlightAll = function() {
-	for (blk in this.blockList) {
-	    this.unhighlight(blk);
-	}
+        for (blk in this.blockList) {
+            this.unhighlight(blk);
+        }
     }
 
     this.unhighlight = function(blk) {
@@ -1284,7 +1297,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     }
                 }
             }
-            myBlock.container.updateCache();
+            try {
+                myBlock.container.updateCache();
+            } catch (e) {
+                console.log(e);
+            }
             this.refreshCanvas();
         }
         if (this.highlightedBlock = thisBlock) {
@@ -1320,7 +1337,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     }
                 }
             }
-            myBlock.container.updateCache();
+            try {
+                myBlock.container.updateCache();
+            } catch (e) {
+                console.log(e);
+            }
             this.highlightedBlock = blk;
             this.refreshCanvas();
         }
@@ -1440,7 +1461,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 last(this.blockList).value = value;
                 last(this.blockList).text.text = value.toString();
             }
-            last(this.blockList).container.updateCache();
+            try {
+                last(this.blockList).container.updateCache();
+            } catch (e) {
+                console.log(e);
+            }
+
             var myConnectionBlock = this.blockList[cblk + i];
             myConnectionBlock.connections = [blk];
             if (myBlock.name == 'action') {
@@ -1538,7 +1564,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         this.blockList[blk].value = newName;
                         this.blockList[blk].text.text = newName;
                         this.blockList[blk].label.value = newName;
-                        this.blockList[blk].container.updateCache();
+                        try {
+                            this.blockList[blk].container.updateCache();
+                        } catch (e) {
+                            console.log(e);
+                        }
                     }
                 }
             }
@@ -1554,7 +1584,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         this.blockList[blk].value = newName;
                         this.blockList[blk].text.text = newName;
                         this.blockList[blk].label.value = newName;
-                        this.blockList[blk].container.updateCache();
+                        try {
+                            this.blockList[blk].container.updateCache();
+                        } catch (e) {
+                            console.log(e);
+                        }
                     }
                 }
             }
@@ -2135,7 +2169,11 @@ function labelChanged() {
         // Make sure text is on top.
         lastChild = last(myBlock.container.children);
         myBlock.container.swapChildren(myBlock.text, lastChild);
-        myBlock.container.updateCache();
+        try {
+            myBlock.container.updateCache();
+        } catch (e) {
+            console.log(e);
+        }
         blocks.refreshCanvas();
     }
 
@@ -2189,7 +2227,11 @@ function loadThumbnail(blocks, thisBlock) {
     }
     bitmap.x = 18;
     bitmap.y = 2;
-    blocks.blockList[thisBlock].container.updateCache();
+    try {
+        blocks.blockList[thisBlock].container.updateCache();
+    } catch (e) {
+        console.log(e);
+    }
     blocks.refreshCanvas();
 }
 
@@ -2293,7 +2335,11 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
             }
 
             // myBlock.collapseButton.updateCache();
-            myBlock.container.updateCache();
+            try {
+                myBlock.container.updateCache();
+            } catch (e) {
+                console.log(e);
+            }
             blocks.refreshCanvas();
         }
     });
@@ -2500,8 +2546,8 @@ function docById(id) {
 function last(myList) {
     var i = myList.length;
     if (i == 0) {
-	return null;
+        return null;
     } else {
-	return myList[i - 1];
+        return myList[i - 1];
     }
 }

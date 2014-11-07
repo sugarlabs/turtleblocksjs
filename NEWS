@@ -93,6 +93,8 @@
    (using a dictionary for the code associated with each "advanced" block)
   * Fixed scaling issues with SVG output
   * Implemented selectable menu of samples (for server version).
+  * Fixed crash due to uncaching something that hasn't been cached
+    (2arg adjustable blocks)
 
 TODO:
   * check to see if running from a server or a local copy
@@ -110,5 +112,4 @@ BUGS:
   * cannot open same file twice in a row (no change event?)
   * occasional misplaced DOM textarea
   * occasional misplaced highlight filler
-  * occasional crash due to uncaching something that hasn't been cached?
   * occasional bad init

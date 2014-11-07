@@ -27,6 +27,7 @@ define(function (require) {
     require('activity/palette');
     require('activity/blocks');  
     require('activity/samplesviewer');
+    require('activity/samples');
     require('activity/basicblocks');
     require('activity/advancedblocks');
 
@@ -432,19 +433,23 @@ define(function (require) {
             if (fileExt(projectName) != 'tb') {
                 projectName += '.tb';
             }
-	    if (server) {
-		try {
+	    try {
+		if (server) {
                     var rawData = httpGet(projectName);
                     console.log('receiving ' + rawData);
                     var cleanData = rawData.replace('\n', ' ');
-                    var obj = JSON.parse(cleanData);
-                    blocks.loadNewBlocks(obj);
-		} catch (e) {
-                    loadStart();
-                    return;
+		} else {
+		    // FIXME: Workaround until we have a local server
+		    if (projectName in SAMPLESTB) {
+			var cleanData = SAMPLESTB[projectName];
+		    } else {
+			var cleanData = SAMPLESTB['card-01.tb'];
+		    }
 		}
-	    } else {
-		console.log('TODO: LOAD PROJECT FROM FILE');
+                var obj = JSON.parse(cleanData);
+                blocks.loadNewBlocks(obj);
+	    } catch (e) {
+                loadStart();
 	    }
             update = true;
         }

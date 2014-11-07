@@ -105,6 +105,7 @@ TODO:
   * implement if-then-else, while, until
   * implement and or not
   * keyboard short cuts
+  * page samples viewer
 
 BUGS:
   * don't save full-sized bitmap to session
@@ -113,3 +114,4 @@ BUGS:
   * occasional misplaced DOM textarea
   * occasional misplaced highlight filler
   * occasional bad init
+  * fill broken in save to SVG

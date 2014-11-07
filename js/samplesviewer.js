@@ -55,12 +55,12 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 		return;
             }
 	} else {
-	    // How do you glob in JS?
-	    this.projectFiles = ['card-01', 'card-31'];
+	    // FIXME: grab files from a local server?
+	    this.projectFiles = SAMPLES;
 	}
         console.log('found these projects: ' + this.projectFiles.sort());
 
-        // Question: would this be better as a pop-up?
+        // FIXME: would this be better as a pop-up?
 	if (this.container == null) {
 	    this.container = new createjs.Container();
 	    bitmap = new createjs.Bitmap(BACKGROUND);
@@ -81,13 +81,16 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                 this.dict[this.projectFiles[p]].visible = true;
             } else {
                 var header = 'data:image/svg+xml;utf8,';
+		var name = this.projectFiles[p] + '.svg';
 		if (this.server) {
-		    console.log('getting ' + this.projectFiles[p] + '.svg from server');
-                    var svg = header + httpGet(this.projectFiles[p] + '.svg');
+		    console.log('getting ' + name + ' from server');
+                    var svg = header + httpGet(name);
 		} else {
-		    console.log('getting ' + this.projectFiles[p] + '.svg from local file system');
-		    // FIXME
-		    svg = header + '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="650" height="590"> <rect width="320" height="240" x="0" y="0" style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none" /> </svg>';
+		    console.log(SAMPLESSVG);
+		    console.log(SAMPLESSVG['card-01.svg']);
+		    console.log('getting ' + name + ' from samples');
+		    svg = header + SAMPLESSVG[name];
+		    console.log(svg);
 		}
                 bitmap = new createjs.Bitmap(svg);
 		bitmap.scaleX = 0.5;

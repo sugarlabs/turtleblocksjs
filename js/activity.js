@@ -1269,8 +1269,8 @@ define(function (require) {
             var w = 55;
             var h = 55;
             hitArea.graphics.beginFill('#FFF').drawEllipse(-w / 2, -h / 2, w, h);
-            hitArea.x = 595;
-            hitArea.y = 0;
+            hitArea.x = 622;
+            hitArea.y = 27;
             thumbnailContainer.hitArea = hitArea;
             thumbnailContainer.on('click', function(event) {
 		thumbnailContainer.visible = false;

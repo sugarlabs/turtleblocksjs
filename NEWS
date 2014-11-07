@@ -91,13 +91,16 @@
   * fixed labels on collapsed stacks
   * better compartmentalization of block code
    (using a dictionary for the code associated with each "advanced" block)
-  * Fixed scaling issues with SVG output
-  * Implemented selectable menu of samples (for server version).
-  * Fixed crash due to uncaching something that hasn't been cached
+  * fixed scaling issues with SVG output
+  * implemented selectable menu of samples (for server version)
+  * check to see if running from a server or a local copy
+  * implemented selectable menu of samples (for local filesystem version)
+  * added paging to samples viewer
+  * fixed crash due to uncaching something that hasn't been cached
     (2arg adjustable blocks)
+  * hide stop button when running from server
 
 TODO:
-  * check to see if running from a server or a local copy
   * use container caching on palette
   * use snap to pixels
   * user defined blocks
@@ -105,7 +108,6 @@ TODO:
   * implement if-then-else, while, until
   * implement and or not
   * keyboard short cuts
-  * page samples viewer
 
 BUGS:
   * don't save full-sized bitmap to session

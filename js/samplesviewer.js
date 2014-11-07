@@ -58,7 +58,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 	    // How do you glob in JS?
 	    this.projectFiles = ['card-01', 'card-31'];
 	}
-        console.log('found these projects: ' + this.projectFiles);
+        console.log('found these projects: ' + this.projectFiles.sort());
 
         // Question: would this be better as a pop-up?
 	if (this.container == null) {
@@ -76,7 +76,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         var y = 55;
 	// TODO: paging
         // TODO: add Easel caching???
-        for (p in this.projectFiles) {
+        for (p in this.projectFiles.sort()) {
             if (this.projectFiles[p] in this.dict) {
                 this.dict[this.projectFiles[p]].visible = true;
             } else {

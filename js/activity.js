@@ -49,6 +49,7 @@ define(function (require) {
         var blocks;
         var thumbnails = {};
         var thumbnailsVisible = false;
+	var thumbnailContainer = null;
 
         // default values
         var defaultBackgroundColor = [70, 80, 20];
@@ -446,10 +447,8 @@ define(function (require) {
 
         function doOpenSamples() {
             if (thumbnailsVisible) {
-                for (img in thumbnails) {
-                    thumbnails[img].visible = false;
-                    update = true;
-                }
+		thumbnailContainer.visible = false;
+                update = true;
                 showBlocks();
                 thumbnailsVisible = false;
             } else {
@@ -477,12 +476,23 @@ define(function (require) {
                     return;
                 }
                 // Question: would this be better as a pop-up?
+		if (thumbnailContainer == null) {
+		    thumbnailContainer = new createjs.Container();
+		    bitmap = new createjs.Bitmap(BACKGROUND);
+		    thumbnailContainer.addChild(bitmap);
+		    stage.addChild(thumbnailContainer);
+		    thumbnailContainer.x = Math.floor((canvas.width - 650) / 2);
+		    thumbnailContainer.y = 27;
+                    loadThumbnailContainerHandler();
+		}
+
+		thumbnailContainer.visible = true;
                 thumbnailsVisible = true;
                 hideBlocks();
-                var ncols = Math.floor(canvas.width / 320);
-                var nrows = Math.floor(canvas.height / 240);
-                var x = Math.floor((canvas.width - 320 * ncols) / 2);
-                var y = 0;
+                var x = 5;
+                var y = 55;
+		// TODO: paging
+                // TODO: add Easel caching???
                 for (p in projectFiles) {
                     if (projectFiles[p] in thumbnails) {
                         thumbnails[projectFiles[p]].visible = true;
@@ -490,18 +500,18 @@ define(function (require) {
                         var header = 'data:image/svg+xml;utf8,';
                         var svg = header + httpGet(projectFiles[p] + '.svg');
                         bitmap = new createjs.Bitmap(svg);
-                        stage.addChild(bitmap);
+			bitmap.scaleX = 0.5;
+			bitmap.scaleY = 0.5;
+                        thumbnailContainer.addChild(bitmap);
                         thumbnails[projectFiles[p]] = bitmap;
                     }
-		    console.log(x + ' ' + y);
                     thumbnails[projectFiles[p]].x = x;
                     thumbnails[projectFiles[p]].y = y;
                     loadThumbnailHandler(projectFiles[p]);
-                    // TODO: add Easel caching
-                    x += 320;
-                    if (x > canvas.width - 320) {
-                        x = Math.floor((canvas.width - 320 * ncols) / 2);
-                        y += 240;
+                    x += 160;
+                    if (x > 500) {
+                        x = 5
+                        y += 120;
                     }
                 }
                 update = true;
@@ -1253,6 +1263,22 @@ define(function (require) {
                 return saveProject(titleElem.value + '.tb');
             }
         }
+
+        function loadThumbnailContainerHandler(project) {
+            var hitArea = new createjs.Shape();
+            var w = 55;
+            var h = 55;
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-w / 2, -h / 2, w, h);
+            hitArea.x = 595;
+            hitArea.y = 0;
+            thumbnailContainer.hitArea = hitArea;
+            thumbnailContainer.on('click', function(event) {
+		thumbnailContainer.visible = false;
+                update = true;
+                showBlocks();
+                thumbnailsVisible = false;
+	    });
+	}
 
         function loadThumbnailHandler(project) {
             var hitArea = new createjs.Shape();

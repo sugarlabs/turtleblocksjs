@@ -2460,3 +2460,48 @@ function loadEventHandlers(blocks, myBlock) {
         blocks.refreshCanvas();
     });
 }
+
+
+function httpGet(projectName)
+{
+    var xmlHttp = null;
+    
+    xmlHttp = new XMLHttpRequest();
+    
+    if (projectName == null) {
+        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
+        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+    } else {
+        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+        // xmlHttp.setRequestHeader('x-project-id', projectName);
+    }
+    xmlHttp.send();
+    return xmlHttp.responseText;
+}
+
+function httpPost(projectName, data)
+{
+    var xmlHttp = null;
+    console.log('sending ' + data);
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+    // xmlHttp.setRequestHeader('x-project-id', projectName);
+    xmlHttp.send(data);
+    // return xmlHttp.responseText;
+    return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
+}
+
+function docById(id) {
+    return document.getElementById(id);
+}
+
+function last(myList) {
+    var i = myList.length;
+    if (i == 0) {
+	return null;
+    } else {
+	return myList[i - 1];
+    }
+}

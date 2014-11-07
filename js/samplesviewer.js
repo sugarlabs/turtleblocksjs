@@ -132,3 +132,42 @@ function SamplesViewer(canvas, stage, refreshCanvas, server, close, load, trash)
     }
 
 }
+
+
+function fileExt(file) {
+    var parts = file.split('.');
+    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
+        return '';
+    }
+    return parts.pop();  
+}
+
+function fileBasename(file) {
+    var parts = file.split('.');
+    if (parts.length == 1 ) {
+        return parts[0];
+    } else if (parts[0] == '' && parts.length == 2) {
+        return file;
+    } else {
+	parts.pop(); // throw away suffix
+	return parts.join('.');
+    }
+}
+
+function httpGet(projectName)
+{
+    var xmlHttp = null;
+    
+    xmlHttp = new XMLHttpRequest();
+    
+    if (projectName == null) {
+        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
+        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+    } else {
+        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+        // xmlHttp.setRequestHeader('x-project-id', projectName);
+    }
+    xmlHttp.send();
+    return xmlHttp.responseText;
+}

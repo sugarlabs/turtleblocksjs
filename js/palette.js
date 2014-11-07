@@ -547,3 +547,12 @@ function loadPaletteMenuHandler(palette) {
     palette.menuContainer.on('mouseout',function(event) {
     });
 }
+
+function last(myList) {
+    var i = myList.length;
+    if (i == 0) {
+	return null;
+    } else {
+	return myList[i - 1];
+    }
+}

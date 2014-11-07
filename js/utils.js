@@ -9,6 +9,56 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+function httpGet(projectName)
+{
+    var xmlHttp = null;
+    
+    xmlHttp = new XMLHttpRequest();
+    
+    if (projectName == null) {
+        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
+        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+    } else {
+        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+        // xmlHttp.setRequestHeader('x-project-id', projectName);
+    }
+    xmlHttp.send();
+    return xmlHttp.responseText;
+}
+
+function httpPost(projectName, data)
+{
+    var xmlHttp = null;
+    console.log('sending ' + data);
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
+    // xmlHttp.setRequestHeader('x-project-id', projectName);
+    xmlHttp.send(data);
+    // return xmlHttp.responseText;
+    return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
+}
+
+function fileBasename(file) {
+    var parts = file.split('.');
+    if (parts.length == 1 ) {
+        return parts[0];
+    } else if (parts[0] == '' && parts.length == 2) {
+        return file;
+    }
+    parts.pop(); // throw away suffix
+    return parts.join('.');
+}
+
+function fileExt(file) {
+    var parts = file.split('.');
+    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
+        return '';
+    }
+    return parts.pop();  
+}
+
 function docById(id) {
     return document.getElementById(id);
 }

@@ -24,6 +24,7 @@ define(function (require) {
     require('activity/turtle');
     require('activity/palette');
     require('activity/blocks');  
+    require('activity/samplesviewer');
     require('activity/basicblocks');
     require('activity/advancedblocks');
 
@@ -43,13 +44,21 @@ define(function (require) {
         //
         var canvas = docById('myCanvas');
 
+	// Check for the various File API support.
+	if (window.File && window.FileReader && window.FileList && window.Blob) {
+	    var files = true;
+	} else {
+	    alert('The File APIs are not fully supported in this browser.');
+	    var files = false;
+	}
+
+	var server = false;  // Are we running off of a server?
         var stage;
         var turtles;
         var palettes;
         var blocks;
-        var thumbnails = {};
+	var thumbnails;
         var thumbnailsVisible = false;
-	var thumbnailContainer = null;
 
         // default values
         var defaultBackgroundColor = [70, 80, 20];
@@ -189,25 +198,6 @@ define(function (require) {
         // Get things started
         init();
 
-        function fileBasename(file) {
-            var parts = file.split('.');
-            if (parts.length == 1 ) {
-                return parts[0];
-            } else if (parts[0] == '' && parts.length == 2) {
-                return file;
-            }
-            parts.pop(); // throw away suffix
-            return parts.join('.');
-        }
-
-        function fileExt(file) {
-            var parts = file.split('.');
-            if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
-                return '';
-            }
-            return parts.pop();  
-        }
-
         function init() {
             docById('loader').className = 'loader';
 
@@ -222,6 +212,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
+	    thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, server, doOpenSamples, loadProject, sendAllToTrash);
             initBasicProtoBlocks(palettes, blocks);
             initAdvancedProtoBlocks(palettes, blocks);
 
@@ -242,9 +233,9 @@ define(function (require) {
                     blocks.loadNewBlocks(obj);
                 });
 
+		console.log(fileChooser.files[0]);
                 reader.readAsText(fileChooser.files[0]);
             }, false);
-
 
             this.svgOutput = '';
 
@@ -292,14 +283,20 @@ define(function (require) {
 
             var URL = window.location.href;
             console.log(URL);
-            var projectName = null;
-            if (URL.indexOf('?') > 0) {
+	    var projectName = null;
+	    if (URL.substr(0, 4) == 'file') {
+		server = false;
+		saveButton.style.visibility = 'hidden';
+	    } else {
+		server = true;
+	    }
+	    if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
                 if (urlParts[1].indexOf('=') > 0) {
-                    var projectName = urlParts[1].split('=')[1];
+		    var projectName = urlParts[1].split('=')[1];
                 }
-            }
-            if (projectName != null) {
+	    }
+	    if (projectName != null) {
                 console.log('load ' + projectName);
                 loadProject(projectName);
             } else {
@@ -414,108 +411,17 @@ define(function (require) {
             }
         }
 
-        function httpGet(projectName)
-        {
-            var xmlHttp = null;
-            
-            xmlHttp = new XMLHttpRequest();
-
-            if (projectName == null) {
-                xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
-                xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-            } else {
-                xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
-                xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-                // xmlHttp.setRequestHeader('x-project-id', projectName);
-            }
-            xmlHttp.send();
-            return xmlHttp.responseText;
-        }
-
-        function httpPost(projectName, data)
-        {
-            var xmlHttp = null;
-            console.log('sending ' + data);
-            xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("POST", 'https://turtle.sugarlabs.org/server/' + projectName, false);
-            xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-            // xmlHttp.setRequestHeader('x-project-id', projectName);
-            xmlHttp.send(data);
-            // return xmlHttp.responseText;
-            return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
-        }
-
         function doOpenSamples() {
             if (thumbnailsVisible) {
-		thumbnailContainer.visible = false;
-                update = true;
-                showBlocks();
+		thumbnails.hide();
                 thumbnailsVisible = false;
+		showBlocks();
             } else {
-                try {
-                    var rawData = httpGet();
-                    console.log('receiving ' + rawData);
-                    var obj = JSON.parse(rawData);
-                    // Look for .svg files
-                    var projectFiles = [];
-                    for (file in obj) {
-                        if (fileExt(obj[file]) == 'svg') {
-                            projectFiles.push(fileBasename(obj[file]));
-                        }
-                    }
-                    // and corresponding .tb files
-                    for (file in projectFiles) {
-                        var tbfile = projectFiles[file] + '.tb';
-                        if (!tbfile in obj) {
-                            projectFiles.remove(projectFiles[file]);
-                        }
-                    }
-                    console.log('found these projects: ' + projectFiles);
-                } catch (e) {
-                    console.log(e);
-                    return;
-                }
-                // Question: would this be better as a pop-up?
-		if (thumbnailContainer == null) {
-		    thumbnailContainer = new createjs.Container();
-		    bitmap = new createjs.Bitmap(BACKGROUND);
-		    thumbnailContainer.addChild(bitmap);
-		    stage.addChild(thumbnailContainer);
-		    thumbnailContainer.x = Math.floor((canvas.width - 650) / 2);
-		    thumbnailContainer.y = 27;
-                    loadThumbnailContainerHandler();
-		}
-
-		thumbnailContainer.visible = true;
-                thumbnailsVisible = true;
-                hideBlocks();
-                var x = 5;
-                var y = 55;
-		// TODO: paging
-                // TODO: add Easel caching???
-                for (p in projectFiles) {
-                    if (projectFiles[p] in thumbnails) {
-                        thumbnails[projectFiles[p]].visible = true;
-                    } else {
-                        var header = 'data:image/svg+xml;utf8,';
-                        var svg = header + httpGet(projectFiles[p] + '.svg');
-                        bitmap = new createjs.Bitmap(svg);
-			bitmap.scaleX = 0.5;
-			bitmap.scaleY = 0.5;
-                        thumbnailContainer.addChild(bitmap);
-                        thumbnails[projectFiles[p]] = bitmap;
-                    }
-                    thumbnails[projectFiles[p]].x = x;
-                    thumbnails[projectFiles[p]].y = y;
-                    loadThumbnailHandler(projectFiles[p]);
-                    x += 160;
-                    if (x > 500) {
-                        x = 5
-                        y += 120;
-                    }
-                }
-                update = true;
-            }
+		thumbnailsVisible = true;
+		hideBlocks();
+                stage.swapChildren(thumbnails.container, last(stage.children));
+		thumbnails.show();
+	    }
         }
 
         function loadProject(projectName) {
@@ -523,16 +429,20 @@ define(function (require) {
             if (fileExt(projectName) != 'tb') {
                 projectName += '.tb';
             }
-            try {
-                var rawData = httpGet(projectName);
-                console.log('receiving ' + rawData);
-                var cleanData = rawData.replace('\n', ' ');
-                var obj = JSON.parse(cleanData);
-                blocks.loadNewBlocks(obj);
-            } catch (e) {
-                loadStart();
-                return;
-            }
+	    if (server) {
+		try {
+                    var rawData = httpGet(projectName);
+                    console.log('receiving ' + rawData);
+                    var cleanData = rawData.replace('\n', ' ');
+                    var obj = JSON.parse(cleanData);
+                    blocks.loadNewBlocks(obj);
+		} catch (e) {
+                    loadStart();
+                    return;
+		}
+	    } else {
+		console.log('TODO: LOAD PROJECT FROM FILE');
+	    }
             update = true;
         }
 
@@ -1262,39 +1172,6 @@ define(function (require) {
                 console.log('saving to ' + titleElem.value + '.tb');
                 return saveProject(titleElem.value + '.tb');
             }
-        }
-
-        function loadThumbnailContainerHandler(project) {
-            var hitArea = new createjs.Shape();
-            var w = 55;
-            var h = 55;
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-w / 2, -h / 2, w, h);
-            hitArea.x = 622;
-            hitArea.y = 27;
-            thumbnailContainer.hitArea = hitArea;
-            thumbnailContainer.on('click', function(event) {
-		thumbnailContainer.visible = false;
-                update = true;
-                showBlocks();
-                thumbnailsVisible = false;
-	    });
-	}
-
-        function loadThumbnailHandler(project) {
-            var hitArea = new createjs.Shape();
-            var w = 320;
-            var h = 240;
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-w / 2, -h / 2, w, h);
-            hitArea.x = w / 2;
-            hitArea.y = h / 2;
-            thumbnails[project].hitArea = hitArea;
-
-            thumbnails[project].on('click', function(event) {
-                console.log('thumbnail ' + project + ' was clicked');
-		sendAllToTrash(false);
-		doOpenSamples(); // Hide samples display
-		loadProject(project + '.tb');
-            });
         }
 
     });

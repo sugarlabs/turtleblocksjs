@@ -290,9 +290,9 @@ define(function (require) {
 	    if (URL.substr(0, 4) == 'file') {
 		server = false;
 		saveButton.style.visibility = 'hidden';
-		stopButton.style.visibility = 'hidden';
 	    } else {
 		server = true;
+		stopButton.style.visibility = 'hidden';
 	    }
 	    thumbnails.setServer(server);
 	    if (URL.indexOf('?') > 0) {

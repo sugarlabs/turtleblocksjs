@@ -21,6 +21,8 @@ function SamplesViewer(canvas, stage, refreshCanvas, server, close, load, trash)
     this.projectFiles = [];
     this.container = null;
 
+    console.log('SERVER is ' + this.server);
+
     this.hide = function() {
 	this.container.visible = false;
 	this.refreshCanvas;

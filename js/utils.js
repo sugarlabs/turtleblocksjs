@@ -40,25 +40,6 @@ function httpPost(projectName, data)
     return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
 }
 
-function fileBasename(file) {
-    var parts = file.split('.');
-    if (parts.length == 1 ) {
-        return parts[0];
-    } else if (parts[0] == '' && parts.length == 2) {
-        return file;
-    }
-    parts.pop(); // throw away suffix
-    return parts.join('.');
-}
-
-function fileExt(file) {
-    var parts = file.split('.');
-    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
-        return '';
-    }
-    return parts.pop();  
-}
-
 function docById(id) {
     return document.getElementById(id);
 }
@@ -82,4 +63,24 @@ function doSVG(canvas, turtles, width, height, scale) {
     svg += '</g>';
     svg += '</svg>';
     return svg;
+}
+
+function fileExt(file) {
+    var parts = file.split('.');
+    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
+        return '';
+    }
+    return parts.pop();  
+}
+
+function fileBasename(file) {
+    var parts = file.split('.');
+    if (parts.length == 1 ) {
+        return parts[0];
+    } else if (parts[0] == '' && parts.length == 2) {
+        return file;
+    } else {
+	parts.pop(); // throw away suffix
+	return parts.join('.');
+    }
 }

@@ -43,7 +43,10 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 		// Look for .svg files
 		for (file in obj) {
                     if (fileExt(obj[file]) == 'svg') {
-			this.projectFiles.push(fileBasename(obj[file]));
+			var name = fileBasename(obj[file]);
+			if (!name in this.projectFiles) {
+			    this.projectFiles.push(name);
+			}
                     }
 		}
 		// and corresponding .tb files

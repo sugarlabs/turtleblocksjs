@@ -44,7 +44,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 		for (file in obj) {
                     if (fileExt(obj[file]) == 'svg') {
 			var name = fileBasename(obj[file]);
-			if (this.projectFiles[name] == undefined) {
+			if (this.projectFiles.indexOf(name) == -1) {
 			    this.projectFiles.push(name);
 			}
                     }

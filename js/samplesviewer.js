@@ -38,16 +38,12 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 	if (this.server) {
             try {
 		var rawData = httpGet();
-		console.log('receiving: ' + rawData);
 		var obj = JSON.parse(rawData);
                 console.log('json parse: ' + obj);
 		// Look for .svg files
 		for (var file in obj) {
-		    console.log(file);
                     if (fileExt(obj[file]) == 'svg') {
 			var name = fileBasename(obj[file]);
-			console.log(name);
-			console.log(this.projectFiles.indexOf(name));
 			if (this.projectFiles.indexOf(name) == -1) {
 			    this.projectFiles.push(name);
 			}
@@ -171,7 +167,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 		var max = min + 16;
 		var i = 0;
 		for (p in viewer.projectFiles) {
-		    if (i >= min && i <= max) {
+		    if (i >= min && i < max) {
 			viewer.dict[viewer.projectFiles[p]].visible = true;
 		    } else {
 			viewer.dict[viewer.projectFiles[p]].visible = false;

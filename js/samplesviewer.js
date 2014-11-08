@@ -38,10 +38,12 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 	if (this.server) {
             try {
 		var rawData = httpGet();
-		console.log('receiving ' + rawData);
+		console.log('receiving: ' + rawData);
 		var obj = JSON.parse(rawData);
+                console.log('json parse: ' + obj);
 		// Look for .svg files
-		for (file in obj) {
+		for (var file in obj) {
+		    console.log(file);
                     if (fileExt(obj[file]) == 'svg') {
 			var name = fileBasename(obj[file]);
 			console.log(name);
@@ -52,7 +54,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                     }
 		}
 		// and corresponding .tb files
-		for (file in this.projectFiles) {
+		for (var file in this.projectFiles) {
                     var tbfile = this.projectFiles[file] + '.tb';
                     if (!tbfile in obj) {
 			this.projectFiles.remove(this.projectFiles[file]);

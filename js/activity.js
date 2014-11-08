@@ -339,6 +339,11 @@ define(function (require) {
                     blocks.blockList[blk].trash = false;
                     blocks.moveBlockRelative(blk, dx, dy);
                     blocks.blockList[blk].show();
+		    if (blocks.blockList[blk].name == 'start') {
+			turtle = blocks.blockList[blk].value;
+			turtles.turtleList[turtle].trash = false;
+			turtles.turtleList[turtle].container.visible = true;
+		    }
                 }
             }
             update = true;
@@ -351,6 +356,11 @@ define(function (require) {
                 blocks.blockList[blk].trash = true;
                 blocks.moveBlockRelative(blk, dx, dy);
                 blocks.blockList[blk].hide();
+		if (blocks.blockList[blk].name == 'start') {
+		    turtle = blocks.blockList[blk].value;
+		    turtles.turtleList[turtle].trash = true;
+		    turtles.turtleList[turtle].container.visible = false;
+		}
             }
 	    if (addStartBlock) {
 		console.log('loading new start block');
@@ -495,6 +505,7 @@ define(function (require) {
                 blocks.blockList[0].x = 50;
                 blocks.blockList[0].y = 50;
                 blocks.blockList[0].connections = [null, null, null];
+		blocks.blockList[0].value = turtles.turtleList.length;
                 turtles.add();
             }
             blocks.updateBlockImages();
@@ -571,38 +582,64 @@ define(function (require) {
 
             this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
 
+	    console.log('reseting queues');
             this.parentFlowQueue = {};
             this.unhightlightQueue = {};
 
             // (2) Execute the stack.
             // A bit complicated because we have lots of corner cases:
             if (startHere != null) {
+                console.log('startHere is ' + blocks.blockList[startHere].name);
                 // If a block to start from was passed, find its
                 // associated turtle, i.e., which turtle should we use?
                 var turtle = 0;
                 if (blocks.blockList[startHere].name == 'start') {
-                    var turtle = startBlocks.indexOf(startHere);
+                    // var turtle = startBlocks.indexOf(startHere);
+		    var turtle = blocks.blockList[startHere].value;
                 }
+		console.log('starting on start with turtle ' + turtle);
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
-                runFromBlock(turtle, startHere);
+                runFromBlock(this, turtle, startHere);
             } else if (startBlocks.length > 0) {
+                console.log('found ' + startBlocks.length + ' start blocks');
                 // If there are start blocks, run them all.
-                for (var turtle = 0; turtle < startBlocks.length; turtle++) {
+                for (var b = 0; b < startBlocks.length; b++) {
+		    turtle = blocks.blockList[startBlocks[b]].value;
                     turtles.turtleList[turtle].queue = [];
                     this.parentFlowQueue[turtle] = [];
                     this.unhightlightQueue[turtle] = [];
-                    runFromBlock(turtle, startBlocks[turtle]);
+		    if (!turtles.turtleList[turtle].trash) {
+			console.log('running from turtle ' + turtle);
+			runFromBlock(this, turtle, startBlocks[b]);
+		    }
                 }
             } else {
                 // Or run from the top of each stack.
+		// Find a turtle
+		turtle = null;
+		for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+		    if (!turtles.turtleList[turtle].trash) {
+			console.log('found turtle ' + turtle);
+			break;
+		    }
+		}
+		if (turtle == null) {
+		    console.log('could not find a turtle');
+		    turtle = turtles.turtleList.length;
+		    turtles.add();
+		}
+		console.log('running with turtle ' + turtle);
+                turtles.turtleList[turtle].queue = [];
+                this.parentFlowQueue[turtle] = [];
+                this.unhightlightQueue[turtle] = [];
                 for (var blk = 0; blk < blocks.stackList.length; blk++) {
                     if (blocks.blockList[blk].isNoRunBlock()) {
                         continue;
                     } else {
                         if (!blocks.blockList[blocks.stackList[blk]].trash) {
-                            runFromBlock(0, blocks.stackList[blk]);
+                            runFromBlock(this, 0, blocks.stackList[blk]);
                         }
                     }
                 }
@@ -610,18 +647,18 @@ define(function (require) {
             update = true;
         }
 
-        function runFromBlock(turtle, blk) { 
+        function runFromBlock(activity, turtle, blk) { 
             if (blk == null) {
                 return;
             }
             var delay = turtleDelay + waitTime[turtle];
             waitTime[turtle] = 0;
             if (!stopTurtle) {
-                setTimeout(function(){runFromBlockNow(turtle, blk);}, delay);
+                setTimeout(function(){runFromBlockNow(activity, turtle, blk);}, delay);
             }
         }
 
-        function runFromBlockNow(turtle, blk) {
+        function runFromBlockNow(activity, turtle, blk) {
             // Run a stack of blocks, beginning with blk.
             // (1) Evaluate any arguments (beginning with connection[1]);
             var args = [];
@@ -809,7 +846,7 @@ define(function (require) {
                 // We need to keep track of the parent block to the
                 // child flow so we can unlightlight the parent block
                 // after the child flow completes.
-                this.parentFlowQueue[turtle].push(blk);
+                activity.parentFlowQueue[turtle].push(blk);
                 turtles.turtleList[turtle].queue.push(queueBlock);
             }
 
@@ -840,22 +877,22 @@ define(function (require) {
                     // If we are at the end of the child flow, queue
                     // the unhighlighting of the parent block to the
                     // flow.
-                    if (this.parentFlowQueue[turtle].length > 0 && turtles.turtleList[turtle].queue.length > 0 && last(turtles.turtleList[turtle].queue).parentBlk != last(this.parentFlowQueue[turtle])) {
-                        this.unhightlightQueue[turtle].push(this.parentFlowQueue[turtle].pop());
-                    } else if (this.unhightlightQueue[turtle].length > 0) {
+                    if (activity.parentFlowQueue[turtle].length > 0 && turtles.turtleList[turtle].queue.length > 0 && last(turtles.turtleList[turtle].queue).parentBlk != last(activity.parentFlowQueue[turtle])) {
+                        activity.unhightlightQueue[turtle].push(activity.parentFlowQueue[turtle].pop());
+                    } else if (activity.unhightlightQueue[turtle].length > 0) {
                         // The child flow is finally complete, so unhighlight.
-                        setTimeout(function(){blocks.unhighlight(this.unhightlightQueue[turtle].pop());}, turtleDelay);
+                        setTimeout(function(){blocks.unhighlight(activity.unhightlightQueue[turtle].pop());}, turtleDelay);
                     }
                 }
-                runFromBlock(turtle, nextBlock);
+                runFromBlock(activity, turtle, nextBlock);
             } else {
                 // Nothing else to do... so cleaning up.
                 if (turtles.turtleList[turtle].queue.length == 0 || blk != last(turtles.turtleList[turtle].queue).parentBlk) {
                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
                 }
                 // Unhighlight any parent blocks still highlighted.
-                for (var b in this.parentFlowQueue[turtle]) {
-                    blocks.unhighlight(this.parentFlowQueue[turtle][b]);
+                for (var b in activity.parentFlowQueue[turtle]) {
+                    blocks.unhighlight(activity.parentFlowQueue[turtle][b]);
                 }
                 // Make sure the turtles are on top.
                 var lastChild = last(stage.children);

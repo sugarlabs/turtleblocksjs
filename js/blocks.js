@@ -1408,7 +1408,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // and we need to load the images into the container.
         // console.log('calling image load for ' + myBlock.name);
         this.imageLoad(myBlock);
-        loadEventHandlers(this, myBlock);
+        loadEventHandlers(this, this.turtles, myBlock);
         return myBlock;
     }
 
@@ -1429,13 +1429,17 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
         }
-        // Each start block gets its own turtle.
-        if (name == 'start') {
-            this.turtles.add();
-        }
 
         var blk = this.blockList.length - 1;
         var myBlock = this.blockList[blk];
+
+        // Each start block gets its own turtle.
+        if (name == 'start') {
+	    console.log('assigning start block to turtle ' + this.turtles.turtleList.length);
+	    myBlock.value = this.turtles.turtleList.length;
+            this.turtles.add();
+        }
+
         for (var i = 0; i < myBlock.docks.length; i++) {
             myBlock.connections.push(null);
         }
@@ -1880,6 +1884,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     blkData[4][0] = null;
                     blkData[4][2] = null;
                     this.makeNewBlockWithConnections('start', blockOffset, blkData[4]);
+                    console.log('assigning start block to turtle ' + this.turtles.turtleList.length);
+	            last(this.blockList).value = this.turtles.turtleList.length;
+
                     this.turtles.add();
                     break;
                 case 'action':
@@ -2374,7 +2381,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 }
 
 // These are the event handlers for block containers.
-function loadEventHandlers(blocks, myBlock) {
+function loadEventHandlers(blocks, turtles, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
     // Create a shape that represents the center of the icon.
 
@@ -2408,6 +2415,7 @@ function loadEventHandlers(blocks, myBlock) {
                 myBlock.label.style.display = '';
             } else {
                 var topBlock = blocks.findTopBlock(thisBlock);
+		console.log('running from ' + blocks.blockList[topBlock].name);
                 blocks.runLogo(topBlock);
             }
         }
@@ -2484,6 +2492,12 @@ function loadEventHandlers(blocks, myBlock) {
                     myBlock.connections[0] = null;
                 }
                 myBlock.connections[0] = null;
+		if (myBlock.name == 'start') {
+		    turtle = myBlock.value;
+		    turtles.turtleList[turtle].trash = true;
+		    turtles.turtleList[turtle].container.visible = false;
+		}
+
                 // put drag group in trash
                 blocks.findDragGroup(thisBlock);
                 for (var b = 0; b < blocks.dragGroup.length; b++) {

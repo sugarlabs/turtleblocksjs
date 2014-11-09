@@ -16,7 +16,8 @@
 define(function (require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
-    require('easel');
+    require('easeljs');
+    require('preloadjs');
     // FIXME: from the server, this doesn't load properly. Is there
     // some way to impose an order to the loading of required files?
     // require('activity/utils');
@@ -46,6 +47,8 @@ define(function (require) {
 
         //
         var canvas = docById('myCanvas');
+
+	var queue = new createjs.LoadQueue(false);
 
 	// Check for the various File API support.
 	if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -93,6 +96,10 @@ define(function (require) {
         var saveButton = docById('save-button');
         var stopButton = docById('stop-button');
 
+	var onAndroid = /Android/i.test(navigator.userAgent);
+	console.log('on Android? ' + onAndroid);
+	// FIXME: remove the toolbar and replace it with buttons on
+	// the canvas if we are running on Android.
         if (screen.width < 1024) {
             copyButton.style.visibility = 'hidden';
             pasteButton.style.visibility = 'hidden';
@@ -284,6 +291,10 @@ define(function (require) {
             polarBitmap.visible = false;
             polarBitmap.updateCache();
 
+	    if (onAndroid) {
+		setupAndroidToolbar();
+	    }
+
             var URL = window.location.href;
             console.log(URL);
 	    var projectName = null;
@@ -297,16 +308,8 @@ define(function (require) {
 
 	    thumbnails.setServer(server);
 
-            window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
-            var scale = screen.width/canvas.width;
-            console.log(scale);
-	    stage.scaleX = scale;
-	    stage.scaleY = scale;
-	    stage.canvas.width = canvas.width * scale;
-	    stage.canvas.height = canvas.height * scale
-	    turtles.setScale(scale);
-            // screws up mapping of cursor in the stage
-            // docById('body').style.zoom = zoomLevel;
+	    // Scale the canvas relative to the screen size.
+	    onResize();
 
 	    if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
@@ -338,6 +341,22 @@ define(function (require) {
             });
 
         }
+
+	function onResize() {
+            window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
+            var scale = screen.width/canvas.width;
+            console.log(scale);
+	    stage.scaleX = scale;
+	    stage.scaleY = scale;
+	    stage.canvas.width = canvas.width * scale;
+	    stage.canvas.height = canvas.height * scale
+	    turtles.setScale(scale);
+	}
+
+	window.onresize = function()
+	{
+	    onResize();
+	}
 
         function restoreTrash() {
             var dx = -110;
@@ -1226,6 +1245,36 @@ define(function (require) {
                 return saveProject(titleElem.value + '.tb');
             }
         }
+
+        function setupAndroidToolbar() {
+	    var toolbar = docById("main-toolbar");
+            toolbar.style.display = "none";
+
+	    // FIXME: Add the rest of the buttons
+            var image = new Image();
+            image.src = 'icons/fast-button.svg';
+            var container = new createjs.Container();
+            stage.addChild(container);
+            bitmap = new createjs.Bitmap(image);
+            container.addChild(bitmap);
+	    var hitArea = new createjs.Shape();
+	    var w2 = 55;
+	    var h2 = 55;
+	    hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
+	    hitArea.x = w2 / 2;
+	    hitArea.y = h2 / 2;
+	    container.hitArea = hitArea;
+            bitmap.cache(0, 0, 55, 55);
+	    bitmap.updateCache();
+	    loadFastButtonHandler(container);
+	}
+
+	function loadFastButtonHandler(container) {
+	    container.on('click', function(event) {
+		turtleDelay = 1;
+		runLogoCommands();
+	    });
+	}
 
     });
 

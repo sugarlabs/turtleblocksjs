@@ -56,9 +56,9 @@ function Turtle (name, turtles) {
     this.move = function(ox, oy, x, y, invert) {
         if (invert) {
             ox = this.turtles.turtleX2screenX(ox);
-            oy = this.turtles.invertY(oy);
+            oy = this.turtles.turtleY2screenY(oy);
             nx = this.turtles.turtleX2screenX(x);
-            ny = this.turtles.invertY(y);
+            ny = this.turtles.turtleY2screenY(y);
         } else {
             nx = x;
             ny = y;
@@ -80,18 +80,18 @@ function Turtle (name, turtles) {
             this.y = y;
         } else {
             this.x = this.turtles.screenX2turtleX(x);
-            this.y = this.turtles.invertY(y);
+            this.y = this.turtles.screenY2turtleY(y);
         }
     }
 
     this.arc = function(cx, cy, ox, oy, x, y, radius, start, end, anticlockwise, invert) {
         if (invert) {
             cx = this.turtles.turtleX2screenX(cx);
-            cy = this.turtles.invertY(cy);
+            cy = this.turtles.turtleY2screenY(cy);
             ox = this.turtles.turtleX2screenX(ox);
-            oy = this.turtles.invertY(oy);
+            oy = this.turtles.turtleY2screenY(oy);
             nx = this.turtles.turtleX2screenX(x);
-            ny = this.turtles.invertY(y);
+            ny = this.turtles.turtleY2screenY(y);
         } else {
             nx = x;
             ny = y;
@@ -125,7 +125,7 @@ function Turtle (name, turtles) {
             this.y = y;
         } else {
             this.x = this.screenX2turtles.turtleX(x);
-            this.y = this.turtles.invertY(y);
+            this.y = this.screenY2turtles.turtleY(y);
         }
     }
 
@@ -141,7 +141,7 @@ function Turtle (name, turtles) {
         this.chroma = defaultChroma;
         this.stroke = defaultStroke;
         this.container.x = this.turtles.turtleX2screenX(this.x);
-        this.container.y = this.turtles.invertY(this.y);
+        this.container.y = this.turtles.turtleY2screenY(this.y);
     
         if (this.skinChanged) {
             this.doTurtleShell(55, turtleBasePath + 'turtle-' + i.toString() + '.svg');
@@ -178,8 +178,9 @@ function Turtle (name, turtles) {
         }
 
         // old turtle point
+	console.log('forward ' + this.container.x + ' ' + this.container.y);
         var ox = this.turtles.screenX2turtleX(this.container.x);
-        var oy = this.turtles.invertY(this.container.y);
+        var oy = this.turtles.screenY2turtleY(this.container.y);
 
         // new turtle point
         var rad = this.orientation * Math.PI / 180.0;
@@ -199,7 +200,7 @@ function Turtle (name, turtles) {
 
         // old turtle point
         var ox = this.turtles.screenX2turtleX(this.container.x);
-        var oy = this.turtles.invertY(this.container.y);
+        var oy = this.turtles.screenY2turtleY(this.container.y);
 
         // new turtle point
         var nx = Number(x)
@@ -222,7 +223,7 @@ function Turtle (name, turtles) {
 
         // old turtle point
         ox = this.turtles.screenX2turtleX(this.container.x);
-        oy = this.turtles.invertY(this.container.y);
+        oy = this.turtles.screenY2turtleY(this.container.y);
 
         if( adeg < 0 ) {
             var anticlockwise = true;
@@ -388,6 +389,12 @@ function Turtles(canvas, stage, refreshCanvas) {
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
+    this.scale = 1.0;
+
+    this.setScale = function(scale) {
+	console.log('setting scale to ' + scale);
+	this.scale = scale;
+    }
 
     this.setBlocks = function(blocks) {
         this.blocks = blocks;
@@ -414,7 +421,7 @@ function Turtles(canvas, stage, refreshCanvas) {
         this.stage.addChild(myTurtle.container);
         myTurtle.bitmap = new createjs.Bitmap(TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]));
         myTurtle.container.x = this.turtleX2screenX(myTurtle.x);
-        myTurtle.container.y = this.invertY(myTurtle.y);
+        myTurtle.container.y = this.turtleY2screenY(myTurtle.y);
         myTurtle.bitmap.x = 0;
         myTurtle.bitmap.y = 0;
         myTurtle.bitmap.regX = 27 | 0;
@@ -456,7 +463,7 @@ function Turtles(canvas, stage, refreshCanvas) {
                 myTurtle.container.x = event.stageX + offset.x;
                 myTurtle.container.y = event.stageY + offset.y;
                 myTurtle.x = turtles.screenX2turtleX(myTurtle.container.x);
-                myTurtle.y = turtles.invertY(myTurtle.container.y);
+                myTurtle.y = turtles.screenY2turtleY(myTurtle.container.y);
                 turtles.refreshCanvas();
             });
         });
@@ -480,15 +487,23 @@ function Turtles(canvas, stage, refreshCanvas) {
     }
 
     this.screenX2turtleX = function(x) {
-        return x - this.canvas.width / 2.0
+        return x - (this.canvas.width / (2.0 * this.scale));
+    }
+
+    this.screenY2turtleY = function(y) {
+	return this.invertY(y);
     }
 
     this.turtleX2screenX = function(x) {
-        return this.canvas.width / 2.0 + x
+        return (this.canvas.width / (2.0 * this.scale)) + x;
+    }
+
+    this.turtleY2screenY = function(y) {
+	return this.invertY(y);
     }
 
     this.invertY = function(y) {
-        return this.canvas.height / 2.0 - y;
+        return this.canvas.height / (2.0 * this.scale) - y;
     }
 }
 

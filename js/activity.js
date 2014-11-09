@@ -294,7 +294,20 @@ define(function (require) {
 		server = true;
 		stopButton.style.visibility = 'hidden';
 	    }
+
 	    thumbnails.setServer(server);
+
+            window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
+            var scale = screen.width/canvas.width;
+            console.log(scale);
+	    stage.scaleX = scale;
+	    stage.scaleY = scale;
+	    stage.canvas.width = canvas.width * scale;
+	    stage.canvas.height = canvas.height * scale
+	    turtles.setScale(scale);
+            // screws up mapping of cursor in the stage
+            // docById('body').style.zoom = zoomLevel;
+
 	    if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
                 if (urlParts[1].indexOf('=') > 0) {
@@ -324,11 +337,6 @@ define(function (require) {
                 stageMouseDown = false;
             });
 
-            // window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
-            // var zoomLevel = screen.width/canvas.width;
-            // console.log(zoomLevel);
-            // screws up mapping of cursor in the stage
-            // docById('body').style.zoom = zoomLevel;
         }
 
         function restoreTrash() {
@@ -552,7 +560,7 @@ define(function (require) {
             // Init the graphic state.
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].container.x = turtles.turtleX2screenX(turtles.turtleList[turtle].x);
-                turtles.turtleList[turtle].container.y = turtles.invertY(turtles.turtleList[turtle].y);
+                turtles.turtleList[turtle].container.y = turtles.turtleY2screenY(turtles.turtleList[turtle].y);
             }
 
             // Execute turtle code here...  Find the start block
@@ -582,7 +590,6 @@ define(function (require) {
 
             this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
 
-	    console.log('reseting queues');
             this.parentFlowQueue = {};
             this.unhightlightQueue = {};
 
@@ -998,7 +1005,7 @@ define(function (require) {
                     blocks.blockList[blk].value = turtles.screenX2turtleX(turtles.turtleList[turtle].container.x);
                     break;
                 case 'y':
-                    blocks.blockList[blk].value = turtles.invertY(turtles.turtleList[turtle].container.y);
+                    blocks.blockList[blk].value = turtles.screenY2turtleY(turtles.turtleList[turtle].container.y);
                     break;
                 case 'color':
                     blocks.blockList[blk].value = turtles.turtleList[turtle].color;

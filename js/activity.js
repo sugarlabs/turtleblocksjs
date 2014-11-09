@@ -59,6 +59,7 @@ define(function (require) {
 	}
 
 	var server = true;  // Are we running off of a server?
+        var scale = screen.width/canvas.width;
         var stage;
         var turtles;
         var palettes;
@@ -98,42 +99,36 @@ define(function (require) {
 
 	var onAndroid = /Android/i.test(navigator.userAgent);
 	console.log('on Android? ' + onAndroid);
-	// FIXME: remove the toolbar and replace it with buttons on
-	// the canvas if we are running on Android.
-        if (screen.width < 1024) {
-            copyButton.style.visibility = 'hidden';
-            pasteButton.style.visibility = 'hidden';
-            samplesButton.style.visibility = 'hidden';
-            openButton.style.visibility = 'hidden';
-            saveButton.style.visibility = 'hidden';
-            stopButton.style.visibility = 'hidden';
-        }
 
         fastButton.onclick = function () {
-            turtleDelay = 1;
-            runLogoCommands();
+	    doFastButton();
         }
 
+	function doFastButton() {
+	    turtleDelay = 1;
+	    runLogoCommands();
+	}
+
         slowButton.onclick = function () {
+	    doSlowButton();
+        }
+
+	function doSlowButton() {
             turtleDelay = defaultDelay;
             runLogoCommands();
-        }
+	}
 
         var stopTurtle = false;
         stopTurtleButton.onclick = function () {
             doStopTurtle();
         }
 
+	function doStopButton() {
+            doStopTurtle();
+	}
+
         paletteButton.onclick = function () {
             changePaletteVisibility();
-        }
-
-        copyButton.onclick = function () {
-            selectStackToCopy();
-        }
-
-        pasteButton.onclick = function () {
-            pasteStack();
         }
 
         blockButton.onclick = function () {
@@ -146,6 +141,10 @@ define(function (require) {
 
         var cartesianVisible = false;
         cartesianButton.onclick = function () {
+	    doCartesian();
+        }
+
+	function doCartesian() {
             if (cartesianVisible) {
                 hideCartesian();
                 cartesianVisible = false;
@@ -153,10 +152,14 @@ define(function (require) {
                 showCartesian();
                 cartesianVisible = true;
             }
-        }
+	}
 
         var polarVisible = false;
         polarButton.onclick = function () {
+	    doPolar();
+        }
+
+	function doPolar() {
             if (polarVisible) {
                 hidePolar();
                 polarVisible = false;
@@ -164,6 +167,14 @@ define(function (require) {
                 showPolar();
                 polarVisible = true;
             }
+	}
+
+        copyButton.onclick = function () {
+            selectStackToCopy();
+        }
+
+        pasteButton.onclick = function () {
+            pasteStack();
         }
 
         samplesButton.onclick = function () {
@@ -291,10 +302,6 @@ define(function (require) {
             polarBitmap.visible = false;
             polarBitmap.updateCache();
 
-	    if (onAndroid) {
-		setupAndroidToolbar();
-	    }
-
             var URL = window.location.href;
             console.log(URL);
 	    var projectName = null;
@@ -306,10 +313,14 @@ define(function (require) {
 		stopButton.style.visibility = 'hidden';
 	    }
 
-	    thumbnails.setServer(server);
+	    if (onAndroid || screen.width < 1024) {
+		setupAndroidToolbar();
+	    }
 
 	    // Scale the canvas relative to the screen size.
 	    onResize();
+
+	    thumbnails.setServer(server);
 
 	    if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
@@ -344,7 +355,7 @@ define(function (require) {
 
 	function onResize() {
             window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
-            var scale = screen.width/canvas.width;
+            scale = screen.width/canvas.width;
             console.log(scale);
 	    stage.scaleX = scale;
 	    stage.scaleY = scale;
@@ -462,7 +473,7 @@ define(function (require) {
 		thumbnailsVisible = true;
 		hideBlocks();
                 stage.swapChildren(thumbnails.container, last(stage.children));
-		thumbnails.show();
+		thumbnails.show(scale);
 	    }
         }
 
@@ -1249,10 +1260,42 @@ define(function (require) {
         function setupAndroidToolbar() {
 	    var toolbar = docById("main-toolbar");
             toolbar.style.display = "none";
+	    // Upper left
+	    var container = makeButton('fast-button', 0, 0);
+	    loadFastButtonHandler(container, doFastButton);
+	    var container = makeButton('slow-button', 55, 0);
+	    loadFastButtonHandler(container, doSlowButton);
+	    var container = makeButton('stop-turtle-button', 110, 0);
+	    loadFastButtonHandler(container, doStopButton);
+            var container = makeButton('clear-button', 165, 0);
+	    loadFastButtonHandler(container, allClear);
+            var container = makeButton('palette-button', 220, 0);
+	    loadFastButtonHandler(container, changePaletteVisibility);
+            var container = makeButton('hide-blocks-button', 275, 0);
+	    loadFastButtonHandler(container, changeBlockVisibility);
+	    // Lower right
+            var container = makeButton('copy-button', 1135, 515);
+	    loadFastButtonHandler(container, selectStackToCopy);
+            var container = makeButton('paste-button', 1135, 570);
+	    loadFastButtonHandler(container, pasteStack);
+            var container = makeButton('Cartesian-button', 1135, 625);
+	    loadFastButtonHandler(container, doCartesian);
+            var container = makeButton('polar-button', 1135, 680);
+	    loadFastButtonHandler(container, doPolar);
+            var container = makeButton('samples-button', 1135, 735);
+	    loadFastButtonHandler(container, doOpenSamples);
+            var container = makeButton('open-button', 1135, 790);
+	    loadFastButtonHandler(container, doOpen);
+	    if (server) {
+		// FIXME: Need an input form for project name;
+		var container = makeButton('save-button', 1135, 845);
+		loadFastButtonHandler(container, doSave);
+	    }
+	}
 
-	    // FIXME: Add the rest of the buttons
+	function makeButton(name, x, y) {
             var image = new Image();
-            image.src = 'icons/fast-button.svg';
+            image.src = 'icons/' + name + '.svg';
             var container = new createjs.Container();
             stage.addChild(container);
             bitmap = new createjs.Bitmap(image);
@@ -1266,13 +1309,15 @@ define(function (require) {
 	    container.hitArea = hitArea;
             bitmap.cache(0, 0, 55, 55);
 	    bitmap.updateCache();
-	    loadFastButtonHandler(container);
-	}
+	    container.x = x;
+	    container.y = y;
+	    update = true;
+	    return container;
+	}	
 
-	function loadFastButtonHandler(container) {
+	function loadFastButtonHandler(container, action) {
 	    container.on('click', function(event) {
-		turtleDelay = 1;
-		runLogoCommands();
+		action();
 	    });
 	}
 

@@ -33,7 +33,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 	this.refreshCanvas;
     }
 
-    this.show = function() {
+    this.show = function(scale) {
 	this.page = 0;
 	if (this.server) {
             try {
@@ -66,15 +66,14 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 	}
         console.log('found these projects: ' + this.projectFiles.sort());
 
-        // FIXME: would this be better as a pop-up?
 	if (this.container == null) {
 	    this.container = new createjs.Container();
 	    bitmap = new createjs.Bitmap(BACKGROUND);
 	    this.container.addChild(bitmap);
 	    this.stage.addChild(this.container);
-	    this.container.x = Math.floor((this.canvas.width - 650) / 2);
+	    this.container.x = Math.floor(((this.canvas.width / scale) - 650) / 2);
 	    this.container.y = 27;
-            this.loadThumbnailContainerHandler(this);
+            this.loadThumbnailContainerHandler(this, scale);
 	    this.prev = new createjs.Bitmap(PREVBUTTON);
 	    this.container.addChild(this.prev);
 	    this.prev.x = 270;
@@ -134,7 +133,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 	this.refreshCanvas;
     }
 
-    this.loadThumbnailContainerHandler = function(viewer) {
+    this.loadThumbnailContainerHandler = function(viewer, scale) {
         var hitArea = new createjs.Shape();
         var w = 650;
         var h = 590;
@@ -143,8 +142,8 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         hitArea.y = 0;
         viewer.container.hitArea = hitArea;
         viewer.container.on('click', function(event) {
-	    var x = event.stageX - viewer.container.x;
-	    var y = event.stageY - viewer.container.y;
+	    var x = (event.stageX / scale) - viewer.container.x;
+	    var y = (event.stageY / scale) - viewer.container.y;
 	    if (x > 600 && y < 55) {
 		viewer.closeViewer();
 	    } else if (y > 535) {

@@ -352,7 +352,7 @@ define(function (require) {
             // window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
             window.scrollTo(Math.floor((canvas.width - w) / 2), Math.floor((canvas.height - h) / 2));
             Math.min(w / canvas.width, h / canvas.height); // scale = screen.width/canvas.width;
-            console.log(scale);
+            console.log(scale + ' ' + w + ' ' + h + ' ' + screen.width + ' ' + canvas.width);
             stage.scaleX = scale;
             stage.scaleY = scale;
             stage.canvas.width = canvas.width * scale;

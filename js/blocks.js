@@ -234,6 +234,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.expandablesList = [];
     // Cache bitmaps that have been removed from expandable blocks
     this.bitmapCache = [];
+    // Number of blocks to load
+    this.loadCounter = 0;
+    // Stacks of blocks that need adjusting
+    this.adjustTheseDocks = [];
 
     // We need to keep track of certain classes of blocks that exhibit
     // different types of behavior:
@@ -299,14 +303,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
 
-        try {
-            // console.log('adjust expandable block ' + myBlock.name);
-            // myBlock.container.uncache();
-        } catch (e) {
-            console.log(e);
-            return;
-        }
-
         // (1) count up the number of blocks inside the clamp;
         // always the second to last argument.
         var c = myBlock.connections.length - 2;
@@ -319,46 +315,35 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         } else {
             size = 1;
         }
-        // console.log('blk[' + blk + '].size == ' + size);
 
         // (2) adjust the clamp size to match.
         var yoff = myBlock.protoblock.yoff;
         var loff = myBlock.protoblock.loff;
-        var j = myBlock.fillerBitmaps.length;
-        if (size < myBlock.fillerBitmaps.length + 1) {
-            var n = j - size + 1; // one slot built in
+        var j = myBlock.fillerCount;
+        if (size < j + 1) {
+            var n = j - size + 1;
             for (var i = 0; i < n; i++) {
                 this.removeFiller(blk);
+                myBlock.fillerCount -= 1;
                 last(myBlock.docks)[1] -= loff;
-                // myBlock.bounds.height -= loff;
             }
-            j -= n; // myBlock.fillerBitmaps.length;
-            var o = yoff + j * loff;
-            myBlock.bottomBitmap.y = o; // myBlock.bitmap.y + o;
-            myBlock.highlightBottomBitmap.y = myBlock.bottomBitmap.y;
             if (last(myBlock.connections) != null) {
                 this.loopCounter = 0;
                 this.adjustDocks(blk);
             }
-        } else if (size > myBlock.fillerBitmaps.length) {
-            var n = size - j - 1; // one slot built in
+        } else if (size > j) {
+            var n = size - j - 1;
             for (var i = 0; i < n; i++) {
                 var c = i + j;
                 this.addFiller(blk, yoff + c * loff, c);
+                myBlock.fillerCount += 1;
                 last(myBlock.docks)[1] += loff;
-                // myBlock.bounds.height += loff;
             }
-            j += n; // myBlock.fillerBitmaps.length;
-            var o = yoff + j * loff;
-            myBlock.bottomBitmap.y = o; // myBlock.bitmap.y + o;
-            myBlock.highlightBottomBitmap.y = myBlock.bottomBitmap.y;
             if (last(myBlock.connections) != null) {
                 this.loopCounter = 0;
                 this.adjustDocks(blk);
             }
         }
-        // myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-        this.refreshCanvas();
     }
 
     this.getBlockSize = function(blk) {
@@ -369,13 +354,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.adjust2ArgBlock = function(blk) {
         // Adjust the size of a 2-arg block
         var myBlock = this.blockList[blk];
-        try {
-            // console.log('adjust 2arg block ' + myBlock.name);
-            // myBlock.container.uncache();
-        } catch (e) {
-            console.log(e);
-            return;
-        }
 
         // (1) What the size of the first argument?
         var c = myBlock.connections[1];
@@ -391,22 +369,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // (2) adjust the block size to match.
         var yoff = myBlock.protoblock.yoff;
         var loff = myBlock.protoblock.loff;
-        var j = myBlock.fillerBitmaps.length;
-        if (size < myBlock.fillerBitmaps.length + 1) {
+        var j = myBlock.fillerCount;
+        if (size < j + 1) {
             var n = j - size + 1; // one slot built in
             for (var i = 0; i < n; i++) {
                 this.removeFiller(blk);
+                myBlock.fillerCount -= 1;
                 myBlock.docks[2][1] -= loff;
                 if (!myBlock.isArgBlock()) {
                     myBlock.docks[3][1] -= loff;
                 }
                 myBlock.size -= 1;
-                // myBlock.bounds.height -= loff;
             }
-            j -= n; // myBlock.fillerBitmaps.length;
-            var o = yoff + j * loff;
-            myBlock.bottomBitmap.y = o; // myBlock.bitmap.y + o;
-            myBlock.highlightBottomBitmap.y = myBlock.bottomBitmap.y;
             if (myBlock.isArgBlock()) {
                 if (myBlock.connections[2] != null) {
                     this.loopCounter = 0;
@@ -421,22 +395,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     this.adjustDocks(blk);
                 }
             }
-        } else if (size > myBlock.fillerBitmaps.length) {
+        } else if (size > j) {
             var n = size - j - 1; // one slot built in
             for (var i = 0; i < n; i++) {
                 var c = i + j;
                 this.addFiller(blk, yoff + c * loff, c);
+                myBlock.fillerCount += 1;
                 myBlock.docks[2][1] += loff;
                 if (!myBlock.isArgBlock()) {
                     myBlock.docks[3][1] += loff;
                 }
                 myBlock.size += 1;
-                // myBlock.bounds.height += loff;
             }
-            j += n; // myBlock.fillerBitmaps.length;
-            var o = yoff + j * loff;
-            myBlock.bottomBitmap.y = o; // myBlock.bitmap.y + o;
-            myBlock.highlightBottomBitmap.y = myBlock.bottomBitmap.y;
             if (myBlock.isArgBlock()) {
                 if (myBlock.connections[2] != null) {
                     this.loopCounter = 0;
@@ -452,8 +422,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
         }
-        // myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-        this.refreshCanvas();
     }
 
     this.removeFiller = function(blk) {
@@ -463,6 +431,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.removeChild(fillerBitmap);
         if (this.findBitmap(fillerBitmap.name) == null) {
             this.bitmapCache.push(fillerBitmap);
+        }
+
+        myBlock.bottomBitmap.y -= myBlock.protoblock.loff;
+        myBlock.highlightBottomBitmap.y = myBlock.bottomBitmap.y;
+
+        try {
+            // There is a potential race conditon such that the
+            // container cache is not yet ready.
+            myBlock.container.uncache();
+            myBlock.bounds = myBlock.container.getBounds();
+            myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+        } catch (e) {
+            console.log(e);
         }
     }
 
@@ -476,6 +457,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             bitmap.x = myBlock.bitmap.x;
             bitmap.y = myBlock.bitmap.y + offset;
             bitmap.name = name;
+
             me.refreshCanvas();
         }
 
@@ -490,7 +472,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
             makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap);
         } else {
-            // var bitmap = this.bitmapCache[bi];
             processBitmap(this, name, this.bitmapCache[bi]);
         }
 
@@ -502,6 +483,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             bitmap.name = name;
             // Hide highlight to start
             bitmap.visible = false;
+
+            myBlock.bottomBitmap.y += myBlock.protoblock.loff;
+            myBlock.highlightBottomBitmap.y = myBlock.bottomBitmap.y;
+
+            try {
+                // There is a potential race conditon such that the
+                // container cache is not yet ready.
+                myBlock.container.uncache();
+                myBlock.bounds = myBlock.container.getBounds();
+                myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+            } catch (e) {
+                console.log(e);
+            }
+
             me.refreshCanvas();
         }
 
@@ -518,7 +513,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
             makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap);
         } else {
-            // var bitmap = this.bitmapCache[bi];
             processHighlightBitmap(this, name, this.bitmapCache[bi]);
         }
     }
@@ -546,7 +540,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         var myBlock = this.blockList[blk];
-        // console.log('get stack size ' + myBlock.name);
+        if (myBlock == null) {
+            console.log('SOMETHING VERY BROKEN');
+        }
+        console.log('get stack size ' + myBlock.name);
         if (myBlock.isClampBlock()) {
             var c = myBlock.connections.length - 2;
             if (c > 0) {
@@ -597,13 +594,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
         if (this.blockList[blk].docks.length == 1) {
-            // console.log(this.blockList[blk].name + ' must be a value block... nothing to do.');
+            console.log(this.blockList[blk].name + ' must be a value block... nothing to do.');
             return;
         }
 
-        // console.log('adjusting connections for ' + this.blockList[blk].name);
-        // console.log('connections ' + this.blockList[blk].connections);
-        // console.log('docks ' + this.blockList[blk].docks);
+        console.log('adjusting connections for ' + this.blockList[blk].name);
+        console.log('connections ' + this.blockList[blk].connections);
+        console.log('docks ' + this.blockList[blk].docks);
 
         this.loopCounter += 1;
         if (this.loopCounter > this.blockList.length * 2) {
@@ -627,7 +624,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
 
             if (this.blockList[cblk] == null) {
-                console.log('this is not good: encountered a null blk ' + blk);
+                console.log('this is not good: encountered a null block ' + cblk);
                 continue;
             }
 
@@ -939,7 +936,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // When we create new blocks, we may not have assigned the
         // value yet.
         var myBlock = this.blockList[blk];
-        // console.log('update block text ' + myBlock.name);
+        console.log('update block text ' + myBlock.name);
+        // FIXME: queue these updates for after the blocks have loaded
+        if (myBlock.text == null) {
+            console.log('block not ready');
+            return;
+        }
         myBlock.text.text = myBlock.value.toString();
 
         // Make sure text is on top.
@@ -947,7 +949,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.swapChildren(myBlock.text, lastChild);
 
         try {
-            // this.blockList[blk].container.updateCache();
+            this.blockList[blk].container.updateCache();
         } catch (e) {
             console.log(e);
         }
@@ -1171,28 +1173,26 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.imageLoad = function(myBlock) {
-        // Load a block image and create any extra parts.
-        // console.log('image load ' + myBlock.name);
+        // Load a block image and create any extra parts.  Image
+        // components are loaded asynchronously so most the work
+        // happens in callbacks.
 
-	// block image components are loaded asynchronously.
         var thisBlock = this.blockList.indexOf(myBlock);
 
         // Get the block labels from the protoblock
         var block_label = '';
-        var top_label = '';
-        var bottom_label = '';
         if (myBlock.protoblock.staticLabels.length > 0) {
             block_label = myBlock.protoblock.staticLabels[0];
         }
+
+        var top_label = '';
         if (myBlock.protoblock.staticLabels.length > 1) {
             top_label = myBlock.protoblock.staticLabels[1];
-        }
-        if (myBlock.protoblock.staticLabels.length > 2) {
-            bottom_label = myBlock.protoblock.staticLabels[2];
         }
 
         // Create the bitmap for the block.
         function processBitmap(me, name, bitmap) {
+            console.log('processBitmap');
             myBlock.bitmap = bitmap;
             myBlock.container.addChild(myBlock.bitmap);
             myBlock.bitmap.x = 0;
@@ -1202,10 +1202,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.refreshCanvas();
         }
 
-        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap);
+        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap);
 
         // Create the highlight bitmap for the block.
         function processHighlightBitmap(me, name, bitmap) {
+            console.log('processHighlight');
             myBlock.highlightBitmap = bitmap;
             myBlock.container.addChild(myBlock.highlightBitmap);
             myBlock.highlightBitmap.x = 0;
@@ -1221,11 +1222,28 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.container.swapChildren(myBlock.text, lastChild);
             }
 
+            // At this point, it should be safe to calculate the
+            // bounds of the container and cache its contents.
+            myBlock.bounds = myBlock.container.getBounds();
+            myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
             loadEventHandlers(me, me.turtles, myBlock);
             me.refreshCanvas();
+
+            console.log('calling finishImageLoad for ' + myBlock.name);
+            me.finishImageLoad(myBlock);
         }
 
-        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap);
+        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap);
+    }
+
+    this.finishImageLoad = function(myBlock) {
+
+        var thisBlock = this.blockList.indexOf(myBlock);
+
+        var bottom_label = '';
+        if (myBlock.protoblock.staticLabels.length > 2) {
+            bottom_label = myBlock.protoblock.staticLabels[2];
+        }
 
         // Value blocks get a modifiable text label
         if (myBlock.isValueBlock() && myBlock.name != 'media') {
@@ -1247,6 +1265,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // Make sure text is on top.
             lastChild = last(myBlock.container.children);
             myBlock.container.swapChildren(myBlock.text, lastChild);
+            myBlock.container.updateCache();
         }
 
         // Expandable blocks also have some extra parts.
@@ -1282,10 +1301,22 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + yoff;
                 myBlock.highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
                 myBlock.highlightBottomBitmap.visible = false;
+
+                // We added a bottom block, so we need to recache.
+                myBlock.container.uncache();
+                myBlock.bounds = myBlock.container.getBounds();
+                myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+                console.log('recaching ' + myBlock.name);
+                myBlock.loadComplete = true;
                 me.refreshCanvas();
+                me.cleanupAfterLoad();
             }
 
             makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap);
+        } else {
+            myBlock.loadComplete = true;
+            this.refreshCanvas();
+            this.cleanupAfterLoad();
         }
 
         // Start blocks and Action blocks can collapse, so add an
@@ -1307,47 +1338,47 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
                 myBlock.highlightCollapseBlockBitmap.visible = false;
                 me.refreshCanvas();
+
+                if (myBlock.name == 'action') {
+                    myBlock.collapseText = new createjs.Text('action', '20px Arial', '#000000');
+                    myBlock.collapseText.x = 100;
+                    myBlock.collapseText.y = 40;
+                    myBlock.collapseText.textAlign = 'right';
+                } else {
+                    myBlock.collapseText = new createjs.Text('start', '20px Arial', '#000000');
+                    myBlock.collapseText.x = 20;
+                    myBlock.collapseText.y = 40;
+                    myBlock.collapseText.textAlign = 'left';
+                }
+                myBlock.collapseText.textBaseline = 'alphabetic';
+                myBlock.container.addChild(myBlock.collapseText);
+                myBlock.collapseText.visible = false;
+
+                myBlock.collapseButton = new createjs.Container();
+
+                var image = new Image();
+                image.src = 'images/collapse.svg';
+                myBlock.collapseBitmap = new createjs.Bitmap(image);
+                myBlock.collapseButton.addChild(myBlock.collapseBitmap);
+
+                var image = new Image();
+                image.src = 'images/expand.svg';
+                myBlock.expandBitmap = new createjs.Bitmap(image);
+                myBlock.collapseButton.addChild(myBlock.expandBitmap);
+                myBlock.expandBitmap.visible = false;
+                me.stage.addChild(myBlock.collapseButton);
+
+                myBlock.collapseButton.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
+                myBlock.collapseButton.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
+                // FIXME
+                // var bounds = myBlock.collapseButton.getBounds();
+                // console.log('collapse button bounds ' + bounds);
+                // myBlock.collapseButton.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                loadCollapsibleEventHandlers(me, myBlock);
             }
-            if (myBlock.name == 'action') {
-                myBlock.collapseText = new createjs.Text('action', '20px Arial', '#000000');
-                myBlock.collapseText.x = 100;
-                myBlock.collapseText.y = 40;
-                myBlock.collapseText.textAlign = 'right';
-            } else {
-                myBlock.collapseText = new createjs.Text('start', '20px Arial', '#000000');
-                myBlock.collapseText.x = 20;
-                myBlock.collapseText.y = 40;
-                myBlock.collapseText.textAlign = 'left';
-            }
-            myBlock.collapseText.textBaseline = 'alphabetic';
-            myBlock.container.addChild(myBlock.collapseText);
-            myBlock.collapseText.visible = false;
 
             makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightCollapseBitmap);
-
-            myBlock.collapseButton = new createjs.Container();
-            this.stage.addChild(myBlock.collapseButton);
-            var image = new Image();
-            image.src = 'images/collapse.svg';
-            myBlock.collapseBitmap = new createjs.Bitmap(image);
-            myBlock.collapseButton.addChild(myBlock.collapseBitmap);
-            var image = new Image();
-            image.src = 'images/expand.svg';
-            myBlock.expandBitmap = new createjs.Bitmap(image);
-            myBlock.collapseButton.addChild(myBlock.expandBitmap);
-            myBlock.expandBitmap.visible = false;
-            myBlock.collapseButton.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
-            myBlock.collapseButton.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
-            // var bounds = myBlock.collapseButton.getBounds();
-            // myBlock.collapseButton.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-            loadCollapsibleEventHandlers(this, myBlock);
         }
-
-        this.refreshCanvas();
-        // myBlock.bounds = myBlock.container.getBounds();
-        // myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-        // myBlock.container.cache(0, 0, 100, 42);
-        // console.log(myTurtle.bitmap.getCacheDataURL());
     }
 
     this.unhighlightAll = function() {
@@ -1391,7 +1422,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
             try {
-                // myBlock.container.updateCache();
+                myBlock.container.updateCache();
             } catch (e) {
                 console.log(e);
             }
@@ -1432,7 +1463,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
             try {
-                // myBlock.container.updateCache();
+                myBlock.container.updateCache();
             } catch (e) {
                 console.log(e);
             }
@@ -1505,7 +1536,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.y = myBlock.y;
 
         // and we need to load the images into the container.
-        // console.log('calling image load for ' + myBlock.name);
+        console.log('calling image load for ' + myBlock.name);
         this.imageLoad(myBlock);
         return myBlock;
     }
@@ -1513,7 +1544,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.makeBlock = function(name, arg) {
         // Make a new block from a proto block.
         // Called from palettes (and from the load block).
-        // console.log('makeBlock: ' + name + ' ' + arg);
+        console.log('makeBlock: ' + name + ' ' + arg);
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
@@ -1571,11 +1602,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     last(this.blockList).text.text = value.toString();
                 }
             }
-            try {
-                // last(this.blockList).container.updateCache();
-            } catch (e) {
-                console.log(e);
-            }
 
             var myConnectionBlock = this.blockList[cblk + i];
             myConnectionBlock.connections = [blk];
@@ -1616,7 +1642,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var myBlock = this.blockList[blk];
         // If this happens, something is really broken.
         if (myBlock == null) {
-            console.log('null block encountered... this is bad.');
+            console.log('null block encountered... this is bad. ' + blk);
             return;
         }
 
@@ -1678,7 +1704,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         this.blockList[blk].text.text = newName;
                         this.blockList[blk].label.value = newName;
                         try {
-                            // this.blockList[blk].container.updateCache();
+                            this.blockList[blk].container.updateCache();
                         } catch (e) {
                             console.log(e);
                         }
@@ -1698,7 +1724,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         this.blockList[blk].text.text = newName;
                         this.blockList[blk].label.value = newName;
                         try {
-                            // this.blockList[blk].container.updateCache();
+                            this.blockList[blk].container.updateCache();
                         } catch (e) {
                             console.log(e);
                         }
@@ -1810,6 +1836,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
         var blockObjs = [];
         var blockMap = {};
+
         this.findDragGroup(this.selectedStack);
         for (var b = 0; b < this.dragGroup.length; b++) {
             myBlock = this.blockList[this.dragGroup[b]];
@@ -1843,7 +1870,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.loadNewBlocks = function(blockObjs) {
         // We'll need a list of existing storein and action names.
-        // console.log(blockObjs);
+        console.log(blockObjs);
         // Check for blocks connected to themselves,
         // and for action blocks not connected to text blocks.
         for (var b = 0; b < blockObjs.length; b++) {
@@ -1968,7 +1995,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         // Append to the current set of blocks.
-        var adjustTheseDocks = [];
+        this.adjustTheseDocks = [];
+        this.loadCounter = blockObjs.length;
+        console.log(this.loadCounter + ' blocks to load');
         var blockOffset = this.blockList.length;
         for (var b = 0; b < blockObjs.length; b++) {
             var thisBlock = blockOffset + b;
@@ -2089,18 +2118,35 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 if (this.blockList[thisBlock].connections[0] == null) {
                     this.blockList[thisBlock].x = blkData[2];
                     this.blockList[thisBlock].y = blkData[3];
-                    adjustTheseDocks.push(thisBlock);
+                    this.adjustTheseDocks.push(thisBlock);
                 }
             }
         }
+    }
+
+    this.cleanupAfterLoad = function() {
+        // If all the blocks are loaded, we can make the final adjustments.
+        this.loadCounter -= 1;
+        if (this.loadCounter > 0) {
+            console.log('Still waiting to load ' + this.loadCounter + ' more blocks');
+            return;
+        }
+        // Necessary check???
+        // for (blk in this.blockList) {
+        //     if (!this.blockList[blk].loadComplete) {
+        //        console.log('block ' + this.blockList[blk].name + ' is not loaded yet');
+        //        return;
+        //    }
+        // }
+        console.log('load completed!');
         this.updateBlockPositions();
         this.updateBlockLabels();
-        for (var blk = 0; blk < adjustTheseDocks.length; blk++) {
+        for (var blk = 0; blk < this.adjustTheseDocks.length; blk++) {
             this.loopCounter = 0;
-            this.adjustDocks(adjustTheseDocks[blk]);
+            this.adjustDocks(this.adjustTheseDocks[blk]);
         }
 
-        update = true;
+        this.refreshCanvas();
 
         // We need to wait for the blocks to load before expanding them.
         setTimeout(function() {
@@ -2128,6 +2174,7 @@ function Block(protoblock) {
     this.y = 0;
     this.collapsed = false; // Is this block in a collapsed stack?
     this.trash = false; // Is this block in the trash?
+    this.loadComplete = false;  // Has the block finished loading?
     this.label = null; // Editable textview in DOM.
     this.text = null; // A dynamically generated text label on block itself.
     this.value = null; // Value for number, text, and media blocks.
@@ -2139,6 +2186,7 @@ function Block(protoblock) {
     this.highlightBitmap = null;
 
     // Expandable block features.
+    this.fillerCount = 0;
     this.fillerBitmaps = [];
     this.bottomBitmap = null;
     this.highlightFillerBitmaps = [];
@@ -2283,7 +2331,7 @@ function labelChanged() {
         lastChild = last(myBlock.container.children);
         myBlock.container.swapChildren(myBlock.text, lastChild);
         try {
-            // myBlock.container.updateCache();
+            myBlock.container.updateCache();
         } catch (e) {
             console.log(e);
         }
@@ -2342,7 +2390,7 @@ function loadThumbnail(blocks, thisBlock) {
     bitmap.x = 18;
     bitmap.y = 2;
     try {
-        // blocks.blockList[thisBlock].container.updateCache();
+        blocks.blockList[thisBlock].container.updateCache();
     } catch (e) {
         console.log(e);
     }
@@ -2396,12 +2444,12 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.collapseBlockBitmap.visible = false;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
                 myBlock.collapseText.visible = false;
-                myBlock.bitmap.visible = true;
+                myBlock.bitmap.visible = false;
                 myBlock.highlightBitmap.visible = true;
-                myBlock.bottomBitmap.visible = true;
+                myBlock.bottomBitmap.visible = false;
                 myBlock.highlightBottomBitmap.visible = true;
                 for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-                    myBlock.fillerBitmaps[i].visible = true;
+                    myBlock.fillerBitmaps[i].visible = false;
                     myBlock.highlightFillerBitmaps[i].visible = true;
                 }
                 if (blocks.dragGroup.length > 0) {
@@ -2451,7 +2499,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
             // myBlock.collapseButton.updateCache();
             try {
-                // myBlock.container.updateCache();
+                myBlock.container.updateCache();
             } catch (e) {
                 console.log(e);
             }
@@ -2478,6 +2526,17 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
             myBlock.x = myBlock.container.x;
             myBlock.y = myBlock.container.y;
             myBlock.y = event.stageY + offset.y;
+
+            blocks.findDragGroup(thisBlock)
+            if (blocks.dragGroup.length > 0) {
+                for (var b = 0; b < blocks.dragGroup.length; b++) {
+                    blk = blocks.dragGroup[b];
+                    if (b != 0) {
+                        blocks.moveBlockRelative(blk, dx, dy);
+                    }
+                }
+            }
+
             blocks.refreshCanvas();
         });
     });

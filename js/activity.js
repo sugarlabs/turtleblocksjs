@@ -335,13 +335,6 @@ define(function (require) {
                 loadStart();
             }
 
-            // Make sure blocks are aligned.
-            blocks.findStacks();
-            for (i = 0; i < blocks.stackList.length; i++) {
-                blocks.findDragGroup(blocks.stackList[i]);
-                blocks.adjustBlockPositions();
-            }
-
             // Set up event handler for stage mouse events
             stage.on('stagemousedown', function(event) {
                 stageMouseDown = true;
@@ -870,6 +863,8 @@ define(function (require) {
                 break;
             case 'pendown':
                 turtles.turtleList[turtle].doPenDown();
+                break;
+            case 'vspace':
                 break;
             default:
                 if (blocks.blockList[blk].name in evalFlowDict) {

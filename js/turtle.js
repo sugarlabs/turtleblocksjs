@@ -295,7 +295,7 @@ function Turtle (name, turtles) {
         this.bitmap.rotation = this.orientation;
         this.skinChanged = true;
         // this.container.uncache();
-        var bounds = this.container.getBounds();
+        // var bounds = this.container.getBounds();
         // this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 
         if (this.startBlock != null) {
@@ -307,7 +307,7 @@ function Turtle (name, turtles) {
             this.decorationBitmap.scaleX = 27.5 / image.width;
             this.decorationBitmap.scaleY = 27.5 / image.height;
             this.decorationBitmap.scale = 27.5 / image.width;
-            // this.startBlock.container.updateCache();
+            this.startBlock.container.updateCache();
         }
         this.turtles.refreshCanvas();
     }

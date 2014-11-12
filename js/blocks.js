@@ -1406,6 +1406,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 if (['start', 'action'].indexOf(myBlock.name) != -1) {
                     myBlock.highlightCollapseBlockBitmap.visible = false;
                     myBlock.collapseBlockBitmap.visible = true;
+		    myBlock.collapseText.visible = true;
                 }
             } else {
                 myBlock.bitmap.visible = true;
@@ -1419,6 +1420,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         myBlock.bottomBitmap.visible = true;
                         myBlock.highlightBottomBitmap.visible = false;
                     }
+                    if (['start', 'action'].indexOf(myBlock.name) != -1) {
+			myBlock.collapseText.visible = false;
+		    }
                 }
             }
             try {
@@ -1447,6 +1451,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 if (['start', 'action'].indexOf(myBlock.name) != -1) {
                     myBlock.highlightCollapseBlockBitmap.visible = true;
                     myBlock.collapseBlockBitmap.visible = false;
+		    myBlock.collapseText.visible = true;
                 }
             } else {
                 myBlock.bitmap.visible = false;
@@ -1460,6 +1465,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         myBlock.bottomBitmap.visible = false;
                         myBlock.highlightBottomBitmap.visible = true;
                     }
+                    if (['start', 'action'].indexOf(myBlock.name) != -1) {
+			myBlock.collapseText.visible = false;
+		    }
                 }
             }
             try {

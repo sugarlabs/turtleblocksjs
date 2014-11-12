@@ -111,7 +111,7 @@ function Turtle (name, turtles) {
             if (this.fillState) {
                 svg = '<path d="M' + ox + ' ' + oy + ' A ' + radius + ' ' + radius + ', 0, 0, 1, ' + nx + ' ' + ny + '" stroke-linecap="round" fill="' + this.canvasColor + '" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
             } else {
-		svg = '<path d="M' + ox + ' ' + oy + ' A ' + radius + ' ' + radius + ', 0, 0, 1, ' + nx + ' ' + ny + '" stroke-linecap="round" fill="none" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
+                svg = '<path d="M' + ox + ' ' + oy + ' A ' + radius + ' ' + radius + ', 0, 0, 1, ' + nx + ' ' + ny + '" stroke-linecap="round" fill="none" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
             }
             this.svgOutput += svg;
         } else {
@@ -142,14 +142,14 @@ function Turtle (name, turtles) {
         this.stroke = defaultStroke;
         this.container.x = this.turtles.turtleX2screenX(this.x);
         this.container.y = this.turtles.turtleY2screenY(this.y);
-    
+
         if (this.skinChanged) {
             this.doTurtleShell(55, turtleBasePath + 'turtle-' + i.toString() + '.svg');
             this.skinChanged = false;
         }
 
         this.bitmap.rotation = this.orientation;
-        this.container.updateCache();
+        // this.container.updateCache();
 
         // Clear all media.
         for (i = 0; i < this.media.length; i++) {
@@ -178,7 +178,7 @@ function Turtle (name, turtles) {
         }
 
         // old turtle point
-	console.log('forward ' + this.container.x + ' ' + this.container.y);
+        console.log('forward ' + this.container.x + ' ' + this.container.y);
         var ox = this.turtles.screenX2turtleX(this.container.x);
         var oy = this.turtles.screenY2turtleY(this.container.y);
 
@@ -255,7 +255,7 @@ function Turtle (name, turtles) {
 
     this.doShowImage = function(size, myImage) {
         // Add an image object to the canvas
-	// Is there a JS test for a valid image path?
+        // Is there a JS test for a valid image path?
         if (myImage == null) {
             return;
         }
@@ -294,19 +294,21 @@ function Turtle (name, turtles) {
         this.bitmap.regY = image.height / 2;
         this.bitmap.rotation = this.orientation;
         this.skinChanged = true;
-        this.container.uncache();
-	var bounds = this.container.getBounds();
-        this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+        // this.container.uncache();
+        var bounds = this.container.getBounds();
+        // this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 
-        this.turtles.blocks.blockList[this.startBlock].container.removeChild(this.decorationBitmap);
-        this.decorationBitmap = new createjs.Bitmap(myImage);
-        this.turtles.blocks.blockList[this.startBlock].container.addChild(this.decorationBitmap);
-        this.decorationBitmap.x = 80;
-        this.decorationBitmap.y = 20;
-        this.decorationBitmap.scaleX = 27.5 / image.width;
-        this.decorationBitmap.scaleY = 27.5 / image.height;
-        this.decorationBitmap.scale = 27.5 / image.width;
-	this.turtles.blocks.blockList[this.startBlock].container.updateCache();
+        if (this.startBlock != null) {
+            this.startBlock.container.removeChild(this.decorationBitmap);
+            this.decorationBitmap = new createjs.Bitmap(myImage);
+            this.startBlock.container.addChild(this.decorationBitmap);
+            this.decorationBitmap.x = 80;
+            this.decorationBitmap.y = 20;
+            this.decorationBitmap.scaleX = 27.5 / image.width;
+            this.decorationBitmap.scaleY = 27.5 / image.height;
+            this.decorationBitmap.scale = 27.5 / image.width;
+            // this.startBlock.container.updateCache();
+        }
         this.turtles.refreshCanvas();
     }
 
@@ -329,7 +331,7 @@ function Turtle (name, turtles) {
         this.orientation += Number(degrees);
         this.orientation %= 360;
         this.bitmap.rotation = this.orientation;
-        this.container.updateCache();
+        // this.container.updateCache();
 
         this.turtles.refreshCanvas();
     }
@@ -392,8 +394,8 @@ function Turtles(canvas, stage, refreshCanvas) {
     this.scale = 1.0;
 
     this.setScale = function(scale) {
-	console.log('setting scale to ' + scale);
-	this.scale = scale;
+        console.log('setting scale to ' + scale);
+        this.scale = scale;
     }
 
     this.setBlocks = function(blocks) {
@@ -403,9 +405,9 @@ function Turtles(canvas, stage, refreshCanvas) {
     // The list of all of our turtles, one for each start block.
     this.turtleList = [];
 
-    this.add = function(name) {
+    this.add = function(startBlock) {
         // Add a new turtle for each start block
-        console.log('adding a new turtle');
+        console.log('adding a new turtle ' + startBlock.name);
         var i = this.turtleList.length;
         var turtleName = i.toString();
         var myTurtle = new Turtle(turtleName, this);
@@ -419,34 +421,43 @@ function Turtles(canvas, stage, refreshCanvas) {
         i %= 10;
         myTurtle.container = new createjs.Container();
         this.stage.addChild(myTurtle.container);
-        myTurtle.bitmap = new createjs.Bitmap(TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]));
         myTurtle.container.x = this.turtleX2screenX(myTurtle.x);
         myTurtle.container.y = this.turtleY2screenY(myTurtle.y);
-        myTurtle.bitmap.x = 0;
-        myTurtle.bitmap.y = 0;
-        myTurtle.bitmap.regX = 27 | 0;
-        myTurtle.bitmap.regY = 27 | 0;
-        myTurtle.bitmap.name = 'bmp_turtle';
-        myTurtle.container.addChild(myTurtle.bitmap);
-	var bounds = myTurtle.container.getBounds();
-        myTurtle.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-        myTurtle.bitmap.cursor = 'pointer';
+
         var hitArea = new createjs.Shape();
         hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
         hitArea.x = 0;
         hitArea.y = 0;
         myTurtle.container.hitArea = hitArea;
 
-        myTurtle.startBlock = this.blocks.blockList.length - 1;
-        myTurtle.decorationBitmap = myTurtle.bitmap.clone();
-        last(this.blocks.blockList).container.addChild(myTurtle.decorationBitmap);
-        myTurtle.decorationBitmap.x = 90;
-        myTurtle.decorationBitmap.y = 35;
-        myTurtle.decorationBitmap.scaleX = 0.5;
-        myTurtle.decorationBitmap.scaleY = 0.5;
-        myTurtle.decorationBitmap.scale = 0.5;
-	last(this.blocks.blockList).container.updateCache();
-        this.stage.update();
+        function processTurtleBitmap(me, name, bitmap, startBlock) {
+            myTurtle.bitmap = bitmap;
+            myTurtle.bitmap.regX = 27 | 0;
+            myTurtle.bitmap.regY = 27 | 0;
+            myTurtle.bitmap.cursor = 'pointer';
+            myTurtle.container.addChild(myTurtle.bitmap);
+
+            // var bounds = myTurtle.container.getBounds();
+            // myTurtle.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+
+            myTurtle.startBlock = startBlock; // me.blocks.blockList.length - 1;
+            if (startBlock != null) {
+                console.log('adding decoration to ' + startBlock.name);
+                myTurtle.decorationBitmap = myTurtle.bitmap.clone();
+                startBlock.container.addChild(myTurtle.decorationBitmap);
+                myTurtle.decorationBitmap.x = 90;
+                myTurtle.decorationBitmap.y = 35;
+                myTurtle.decorationBitmap.scaleX = 0.5;
+                myTurtle.decorationBitmap.scaleY = 0.5;
+                myTurtle.decorationBitmap.scale = 0.5;
+            }
+
+            // last(me.blocks.blockList).container.updateCache();
+
+            me.refreshCanvas();
+        }
+
+        makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
 
         myTurtle.color = 5 + (i * 10);
         myTurtle.canvasColor = getMunsellColor(myTurtle.color, defaultValue, defaultChroma);
@@ -491,7 +502,7 @@ function Turtles(canvas, stage, refreshCanvas) {
     }
 
     this.screenY2turtleY = function(y) {
-	return this.invertY(y);
+        return this.invertY(y);
     }
 
     this.turtleX2screenX = function(x) {
@@ -499,7 +510,7 @@ function Turtles(canvas, stage, refreshCanvas) {
     }
 
     this.turtleY2screenY = function(y) {
-	return this.invertY(y);
+        return this.invertY(y);
     }
 
     this.invertY = function(y) {
@@ -512,4 +523,20 @@ function Queue (blk, count, parentBlk) {
     this.blk = blk;
     this.count = count;
     this.parentBlk = parentBlk;
+}
+
+
+function makeTurtleBitmap(me, data, name, callback, extras) {
+    // Async creation of bitmap from SVG data
+    // Works with Chrome, Safari, Firefox (untested on IE)
+    var DOMURL = window.URL || window.webkitURL || window;
+    var img = new Image();
+    var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+    var url = DOMURL.createObjectURL(svg);
+    img.onload = function () {
+        bitmap = new createjs.Bitmap(img);
+        DOMURL.revokeObjectURL(url);
+        callback(me, name, bitmap, extras);
+    }
+    img.src = url;
 }

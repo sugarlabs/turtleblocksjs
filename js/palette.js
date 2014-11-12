@@ -9,18 +9,21 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
-// For DOM access to the palettes
-var palettePalettes = null;
-var paletteBlocks = null;
+// All things related to palettes
 
+// For DOM access to the palettes
+// var palettePalettes = null;
+
+var paletteBlocks = null;
 var paletteScale = 0.75;
+
 
 function paletteBlockButtonPush(name, arg) {
     blk = paletteBlocks.makeBlock(name, arg);
     return blk;
 }
 
-// All things related to palettes
+
 function Palettes (canvas, stage, refreshCanvas) {
     this.canvas = canvas;
     this.stage = stage;
@@ -45,7 +48,7 @@ function Palettes (canvas, stage, refreshCanvas) {
         var y = 0;
         for (var name in this.dict) {
             if (name in this.buttons) {
-                console.log('button ' + name + ' has already been created');
+                // console.log('button ' + name + ' has already been created');
                 this.dict[name].updateMenu();
             } else {
                 this.buttons[name] = new createjs.Container();
@@ -53,28 +56,39 @@ function Palettes (canvas, stage, refreshCanvas) {
                 this.buttons[name].x = x;
                 x += 55;
                 this.buttons[name].y = y;
-                this.bitmaps[name] = new createjs.Bitmap(PALETTEBUTTON.replace('fill_color', '#282828'));
-                this.buttons[name].addChild(this.bitmaps[name]);
-                this.highlightBitmaps[name] = new createjs.Bitmap(PALETTEBUTTON.replace('fill_color', '#4d4d4d'));
-                this.buttons[name].addChild(this.highlightBitmaps[name]);
-                this.highlightBitmaps[name].visible = false;
-                var image = new Image();
-                image.src = 'images/' + name + '.svg';
-                var icon = new createjs.Bitmap(image);
-                this.buttons[name].addChild(icon);
 
-                var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
-                hitArea.x = 27;
-                hitArea.y = 27;
-                this.buttons[name].hitArea = hitArea;
-                this.buttons[name].visible = false;
+                function processButton(me, name, bitmap, extras) {
+                    me.bitmaps[name] = bitmap;
+                    me.buttons[name].addChild(me.bitmaps[name]);
+                }
 
-                this.dict[name].makeMenu();
-                this.dict[name].moveMenu(55, 55);
-                this.dict[name].updateMenu();
+                makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#282828'), name, processButton, null);
 
-                loadPaletteButtonHandler(this, name);
+                function processHighlightButton(me, name, bitmap, extras) {
+                    me.highlightBitmaps[name] = bitmap;
+                    me.buttons[name].addChild(me.highlightBitmaps[name]);
+                    me.highlightBitmaps[name].visible = false;
+
+                    var image = new Image();
+                    image.src = 'images/' + name + '.svg';
+                    var icon = new createjs.Bitmap(image);
+                    me.buttons[name].addChild(icon);
+
+                    var hitArea = new createjs.Shape();
+                    hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
+                    hitArea.x = 27;
+                    hitArea.y = 27;
+                    me.buttons[name].hitArea = hitArea;
+                    me.buttons[name].visible = false;
+
+                    me.dict[name].makeMenu();
+                    me.dict[name].moveMenu(55, 55);
+                    me.dict[name].updateMenu();
+
+                    loadPaletteButtonHandler(me, name);
+                }
+
+                makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#4d4d4d'), name, processHighlightButton, null);
             }
         }
     }
@@ -162,7 +176,7 @@ function loadPaletteButtonHandler(palettes, name) {
     palettes.buttons[name].on('click', function(event) {
         for (var i in palettes.dict) {
             if (palettes.dict[i] == palettes.dict[name]) {
-                console.log('showing ' + name);
+                // console.log('showing ' + name);
                 palettes.dict[name].showMenu(true);
                 palettes.dict[name].showMenuItems(true);
             } else {
@@ -175,6 +189,7 @@ function loadPaletteButtonHandler(palettes, name) {
         palettes.refreshCanvas();
     });
 }
+
 
 // Define objects for individual palettes.
 function Palette (palettes, name, color, bgcolor) {
@@ -193,22 +208,29 @@ function Palette (palettes, name, color, bgcolor) {
         // Create the menu button
         if (this.menuContainer == null) {
             this.menuContainer = new createjs.Container();
-            var background = new createjs.Bitmap(PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name));
-            this.menuContainer.addChild(background);
-            var image = new Image();
-            image.src = 'images/' + this.name + '.svg';
-            var icon = new createjs.Bitmap(image);
-            icon.scaleX = 0.8;
-            icon.scaleY = 0.8;
-            this.menuContainer.addChild(icon);
-            this.palettes.container.addChild(this.menuContainer);
-            var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
-            hitArea.x = 100;
-            hitArea.y = 21;
-            this.menuContainer.hitArea = hitArea;
-            this.menuContainer.visible = false;
-            loadPaletteMenuHandler(this);
+
+            function processHeader(me, name, bitmap, extras) {
+                me.menuContainer.addChild(bitmap);
+
+                var image = new Image();
+                image.src = 'images/' + me.name + '.svg';
+                var icon = new createjs.Bitmap(image);
+                icon.scaleX = 0.8;
+                icon.scaleY = 0.8;
+                me.menuContainer.addChild(icon);
+                me.palettes.container.addChild(me.menuContainer);
+
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
+                hitArea.x = 100;
+                hitArea.y = 21;
+                me.menuContainer.hitArea = hitArea;
+                me.menuContainer.visible = false;
+
+                loadPaletteMenuHandler(me);
+            }
+
+            makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name), this.name, processHeader, null);
         }
     }
 
@@ -257,10 +279,14 @@ function Palette (palettes, name, color, bgcolor) {
                 }
                 this.size += height * paletteScale;
 
+                function processFiller(me, modname, bitmap, y) {
+                    me.protoContainers[modname].addChild(bitmap);
+                    bitmap.y = y; // h * paletteScale;
+                }
+
                 for (var h = 0; h < height; h += 42) {
-                    var bitmap = new createjs.Bitmap(PALETTEFILLER);
-                    this.protoContainers[modname].addChild(bitmap);
-                    bitmap.y = h * paletteScale;
+                    makePaletteBitmap(this, PALETTEFILLER, modname, processFiller, h * paletteScale);
+                    // var bitmap = new createjs.Bitmap(PALETTEFILLER);
                 }
 
                 var myBlock = paletteBlocks.protoBlockDict[blkname];
@@ -292,14 +318,18 @@ function Palette (palettes, name, color, bgcolor) {
                     var artwork = myBlock.artwork;
                 }
 
-                var bitmap = new createjs.Bitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize));
+                function processBitmap(me, modname, bitmap, extras) {
+                    me.protoContainers[modname].addChild(bitmap);
+                    bitmap.x = 20;
+                    bitmap.y = 0;
+                    bitmap.scaleX = paletteScale;
+                    bitmap.scaleY = paletteScale;
+                    bitmap.scale = paletteScale;
+                    me.palettes.refreshCanvas();
+                }
 
-                this.protoContainers[modname].addChild(bitmap);
-                bitmap.x = 20;
-                bitmap.y = 0;
-                bitmap.scaleX = paletteScale;
-                bitmap.scaleY = paletteScale;
-                bitmap.scale = paletteScale;
+                makePaletteBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBitmap, null);
+
                 var hitArea = new createjs.Shape();
                 hitArea.graphics.beginFill('#FFF').drawEllipse(-50, -21, 100, 42);
                 hitArea.x = 50;
@@ -307,7 +337,7 @@ function Palette (palettes, name, color, bgcolor) {
                 this.protoContainers[modname].hitArea = hitArea;
 
                 if (this.protoList[blk].expandable) {
-                    var yoff = Math.floor(this.protoList[blk].yoff * paletteScale); 
+                    var yoff = Math.floor(this.protoList[blk].yoff * paletteScale);
                     if (myBlock.style == 'arg') {
                         var bottomArtwork = ARG2BLOCKBOTTOM;
                     } else if (myBlock.style == 'special') {
@@ -319,13 +349,18 @@ function Palette (palettes, name, color, bgcolor) {
                     } else {
                         var bottomArtwork = ACTIONCLAMPBOTTOM;
                     }
-                    var bitmap = new createjs.Bitmap(bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize));
-                    this.protoContainers[modname].addChild(bitmap);
-                    bitmap.scaleX = paletteScale;
-                    bitmap.scaleY = paletteScale;
-                    bitmap.scale = paletteScale;
-                    bitmap.x = 20;
-                    bitmap.y = yoff;
+
+                    function processBottomBitmap(me, modname, bitmap, yoff) {
+                        me.protoContainers[modname].addChild(bitmap);
+                        bitmap.scaleX = paletteScale;
+                        bitmap.scaleY = paletteScale;
+                        bitmap.scale = paletteScale;
+                        bitmap.x = 20;
+                        bitmap.y = yoff;
+                        me.palettes.refreshCanvas();
+                    }
+
+                    makePaletteBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, yoff);
                 }
                 this.protoContainers[modname].visible = false;
                 this.y += Math.floor(height * paletteScale);
@@ -448,7 +483,7 @@ function initPalettes(canvas, stage, refreshCanvas) {
         add('blocks', 'black', '#ffc000').
         add('sensors', 'white', '#ff0066').
         add('extras', 'white', '#ff0066');
-    palettePalettes = palettes;
+    // palettePalettes = palettes;
     palettes.hide();
     return palettes;
 }
@@ -507,7 +542,7 @@ function loadPaletteMenuHandler(palette) {
         // palette.unhighlight();
         // palette.palettes.refreshCanvas();
     });
-    
+
     palette.menuContainer.on('click', function(event) {
         for (p in palette.palettes.dict) {
             if (palette.name != p) {
@@ -548,11 +583,28 @@ function loadPaletteMenuHandler(palette) {
     });
 }
 
+
+function makePaletteBitmap(me, data, name, callback, extras) {
+    // Async creation of bitmap from SVG data
+    // Works with Chrome, Safari, Firefox (untested on IE)
+    var DOMURL = window.URL || window.webkitURL || window;
+    var img = new Image();
+    var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+    var url = DOMURL.createObjectURL(svg);
+    img.onload = function () {
+        bitmap = new createjs.Bitmap(img);
+        DOMURL.revokeObjectURL(url);
+        callback(me, name, bitmap, extras);
+    }
+    img.src = url;
+}
+
+
 function last(myList) {
     var i = myList.length;
     if (i == 0) {
-	return null;
+        return null;
     } else {
-	return myList[i - 1];
+        return myList[i - 1];
     }
 }

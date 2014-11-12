@@ -9,6 +9,7 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+// A viewer for sample projects
 function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.canvas = canvas;
     this.stage = stage;
@@ -25,87 +26,108 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.server = true;
 
     this.setServer = function(server) {
-	this.server = server;
+        this.server = server;
     }
 
     this.hide = function() {
-	this.container.visible = false;
-	this.refreshCanvas;
+        this.container.visible = false;
+        this.refreshCanvas;
     }
 
     this.show = function(scale) {
-	this.page = 0;
-	if (this.server) {
+        this.page = 0;
+        if (this.server) {
             try {
-		var rawData = httpGet();
-		var obj = JSON.parse(rawData);
-                console.log('json parse: ' + obj);
-		// Look for .svg files
-		for (var file in obj) {
+                var rawData = httpGet();
+                var obj = JSON.parse(rawData);
+                // console.log('json parse: ' + obj);
+                // Look for .svg files
+                for (var file in obj) {
                     if (fileExt(obj[file]) == 'svg') {
-			var name = fileBasename(obj[file]);
-			if (this.projectFiles.indexOf(name) == -1) {
-			    this.projectFiles.push(name);
-			}
+                        var name = fileBasename(obj[file]);
+                        if (this.projectFiles.indexOf(name) == -1) {
+                            this.projectFiles.push(name);
+                        }
                     }
-		}
-		// and corresponding .tb files
-		for (var file in this.projectFiles) {
+                }
+                // and corresponding .tb files
+                for (var file in this.projectFiles) {
                     var tbfile = this.projectFiles[file] + '.tb';
                     if (!tbfile in obj) {
-			this.projectFiles.remove(this.projectFiles[file]);
+                        this.projectFiles.remove(this.projectFiles[file]);
                     }
-		}
+                }
             } catch (e) {
-		console.log(e);
-		return;
+                console.log(e);
+                return;
             }
-	} else {
-	    // FIXME: grab files from a local server?
-	    this.projectFiles = SAMPLES;
-	}
+        } else {
+            // FIXME: grab files from a local server?
+            this.projectFiles = SAMPLES;
+        }
         console.log('found these projects: ' + this.projectFiles.sort());
 
-	if (this.container == null) {
-	    this.container = new createjs.Container();
-	    bitmap = new createjs.Bitmap(BACKGROUND);
-	    this.container.addChild(bitmap);
-	    this.stage.addChild(this.container);
-	    this.container.x = Math.floor(((this.canvas.width / scale) - 650) / 2);
-	    this.container.y = 27;
-            this.loadThumbnailContainerHandler(this, scale);
-	    this.prev = new createjs.Bitmap(PREVBUTTON);
-	    this.container.addChild(this.prev);
-	    this.prev.x = 270;
-	    this.prev.y = 535;
-	    this.next = new createjs.Bitmap(NEXTBUTTON);
-	    this.next.x = 325;
-	    this.next.y = 535;
-	    this.container.addChild(this.next);
-	}
+        if (this.container == null) {
+            this.container = new createjs.Container();
+            this.stage.addChild(this.container);
+            this.container.x = Math.floor(((this.canvas.width / scale) - 650) / 2);
+            this.container.y = 27;
 
-	this.container.visible = true;
+            function processBackground(me, name, bitmap, extras) {
+                me.container.addChild(bitmap);
+            }
+
+            makeViewerBitmap(this, BACKGROUND, 'viewer', processBackground, null);
+
+            function processPrev(me, name, bitmap, extras) {
+                me.prev = bitmap;
+                me.container.addChild(me.prev);
+                me.prev.x = 270;
+                me.prev.y = 535;
+            }
+
+            makeViewerBitmap(this, PREVBUTTON, 'viewer', processPrev, null);
+
+            function processNext(me, name, bitmap, scale) {
+                me.next = bitmap;
+                me.container.addChild(me.next);
+                me.next.x = 325;
+                me.next.y = 535;
+
+		me.loadThumbnailContainerHandler(me, scale);
+                me.completeInit(scale);
+            }
+
+            makeViewerBitmap(this, NEXTBUTTON, 'viewer', processNext, scale);
+        } else {
+            this.completeInit(scale);
+        }
+    }
+
+    this.completeInit = function(scale) {
+        this.container.visible = true;
+        this.refreshCanvas;
         var x = 5;
         var y = 55;
-	// TODO: paging
+        // TODO: paging
         // TODO: add Easel caching???
-	var i = 0;
+        var i = 0;
         for (p in this.projectFiles.sort()) {
             if (this.projectFiles[p] in this.dict) {
                 this.dict[this.projectFiles[p]].visible = true;
             } else {
                 var header = 'data:image/svg+xml;utf8,';
-		var name = this.projectFiles[p] + '.svg';
-		if (this.server) {
-		    console.log('getting ' + name + ' from server');
+                var name = this.projectFiles[p] + '.svg';
+                if (this.server) {
+                    // console.log('getting ' + name + ' from server');
                     var svg = header + httpGet(name);
-		} else {
-		    console.log('getting ' + name + ' from samples');
-		    svg = header + SAMPLESSVG[name];
-		}
+                } else {
+                    // console.log('getting ' + name + ' from samples');
+                    svg = header + SAMPLESSVG[name];
+                }
                 bitmap = new createjs.Bitmap(svg);
-		bitmap.scaleX = 0.5;
-		bitmap.scaleY = 0.5;
+                bitmap.scaleX = 0.5;
+                bitmap.scaleY = 0.5;
                 this.container.addChild(bitmap);
                 this.dict[this.projectFiles[p]] = bitmap;
             }
@@ -116,21 +138,21 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                 x = 5
                 y += 120;
             }
-	    if (i < 16) {
-		this.dict[this.projectFiles[p]].visible = true;
-	    } else {
-		this.dict[this.projectFiles[p]].visible = false;
-	    }
-	    i += 1;
-	    if (i % 16 == 0) {
-		y = 55;
-	    }
+            if (i < 16) {
+                this.dict[this.projectFiles[p]].visible = true;
+            } else {
+                this.dict[this.projectFiles[p]].visible = false;
+            }
+            i += 1;
+            if (i % 16 == 0) {
+                y = 55;
+            }
         }
-	if (i > 15) {
-	    this.next.visible = true;
-	}
-	this.prev.visible = false;
-	this.refreshCanvas;
+        if (i > 15) {
+            this.next.visible = true;
+        }
+        this.prev.visible = false;
+        this.refreshCanvas;
     }
 
     this.loadThumbnailContainerHandler = function(viewer, scale) {
@@ -142,49 +164,53 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         hitArea.y = 0;
         viewer.container.hitArea = hitArea;
         viewer.container.on('click', function(event) {
-	    var x = (event.stageX / scale) - viewer.container.x;
-	    var y = (event.stageY / scale) - viewer.container.y;
-	    if (x > 600 && y < 55) {
-		viewer.closeViewer();
-	    } else if (y > 535) {
-		if (viewer.prev.visible && x < 325) {
-		    viewer.page -= 1;
-		    if (viewer.page == 0) {
-			viewer.prev.visible = false;
-		    }
-		    if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
-			viewer.next.visible = true;
-		    }
-		} else if (viewer.next.visible && x > 325) {
-		    viewer.page += 1;
-		    viewer.prev.visible = true;
-		    if ((viewer.page + 1) * 16 + 1 > viewer.projectFiles.length) {
-			viewer.next.visible = false;
-		    }
-		}
-		var min = viewer.page * 16;
-		var max = min + 16;
-		var i = 0;
-		for (p in viewer.projectFiles) {
-		    if (i >= min && i < max) {
-			viewer.dict[viewer.projectFiles[p]].visible = true;
-		    } else {
-			viewer.dict[viewer.projectFiles[p]].visible = false;
-		    }
-		    i += 1;
-		}
-		viewer.refreshCanvas();
-	    } else {
-		var col = Math.floor((x - 5) / 160);
-		var row = Math.floor((y - 55) / 120);
-		var p = row * 4 + col + 16 * viewer.page;
-		if (p < viewer.projectFiles.length) {
-		    viewer.closeViewer();
-		    viewer.sendAllToTrash(false);
-		    viewer.loadProject(viewer.projectFiles[p] + '.tb');
-		}
-	    }
-	});
+            var x = (event.stageX / scale) - viewer.container.x;
+            var y = (event.stageY / scale) - viewer.container.y;
+            if (x > 600 && y < 55) {
+		// Cancel
+                viewer.closeViewer();
+            } else if (y > 535) {
+                if (viewer.prev.visible && x < 325) {
+		    // Previous page
+                    viewer.page -= 1;
+                    if (viewer.page == 0) {
+                        viewer.prev.visible = false;
+                    }
+                    if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
+                        viewer.next.visible = true;
+                    }
+                } else if (viewer.next.visible && x > 325) {
+		    // Next page
+                    viewer.page += 1;
+                    viewer.prev.visible = true;
+                    if ((viewer.page + 1) * 16 + 1 > viewer.projectFiles.length) {
+                        viewer.next.visible = false;
+                    }
+                }
+                var min = viewer.page * 16;
+                var max = min + 16;
+                var i = 0;
+                for (p in viewer.projectFiles) {
+                    if (i >= min && i < max) {
+                        viewer.dict[viewer.projectFiles[p]].visible = true;
+                    } else {
+                        viewer.dict[viewer.projectFiles[p]].visible = false;
+                    }
+                    i += 1;
+                }
+                viewer.refreshCanvas();
+            } else {
+		// Select an entry
+                var col = Math.floor((x - 5) / 160);
+                var row = Math.floor((y - 55) / 120);
+                var p = row * 4 + col + 16 * viewer.page;
+                if (p < viewer.projectFiles.length) {
+                    viewer.closeViewer();
+                    viewer.sendAllToTrash(false);
+                    viewer.loadProject(viewer.projectFiles[p] + '.tb');
+                }
+            }
+        });
     }
 
 }
@@ -195,8 +221,9 @@ function fileExt(file) {
     if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
         return '';
     }
-    return parts.pop();  
+    return parts.pop();
 }
+
 
 function fileBasename(file) {
     var parts = file.split('.');
@@ -205,17 +232,18 @@ function fileBasename(file) {
     } else if (parts[0] == '' && parts.length == 2) {
         return file;
     } else {
-	parts.pop(); // throw away suffix
-	return parts.join('.');
+        parts.pop(); // throw away suffix
+        return parts.join('.');
     }
 }
+
 
 function httpGet(projectName)
 {
     var xmlHttp = null;
-    
+
     xmlHttp = new XMLHttpRequest();
-    
+
     if (projectName == null) {
         xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
@@ -226,4 +254,20 @@ function httpGet(projectName)
     }
     xmlHttp.send();
     return xmlHttp.responseText;
+}
+
+
+function makeViewerBitmap(me, data, name, callback, extras) {
+    // Async creation of bitmap from SVG data
+    // Works with Chrome, Safari, Firefox (untested on IE)
+    var DOMURL = window.URL || window.webkitURL || window;
+    var img = new Image();
+    var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+    var url = DOMURL.createObjectURL(svg);
+    img.onload = function () {
+        bitmap = new createjs.Bitmap(img);
+        DOMURL.revokeObjectURL(url);
+        callback(me, name, bitmap, extras);
+    }
+    img.src = url;
 }

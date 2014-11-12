@@ -99,6 +99,8 @@
   * fixed crash due to uncaching something that hasn't been cached
     (2arg adjustable blocks)
   * hide stop button when running from server
+  * major overhaul of SVG generation: async
+    (Works with Firefox, Safari, Chrome)
 
 TODO:
   * use container caching on palette

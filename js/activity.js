@@ -26,7 +26,7 @@ define(function (require) {
     require('activity/trash');
     require('activity/turtle');
     require('activity/palette');
-    require('activity/blocks');  
+    require('activity/blocks');
     require('activity/samplesviewer');
     require('activity/samples');
     require('activity/basicblocks');
@@ -48,23 +48,23 @@ define(function (require) {
         //
         var canvas = docById('myCanvas');
 
-	var queue = new createjs.LoadQueue(false);
+        var queue = new createjs.LoadQueue(false);
 
-	// Check for the various File API support.
-	if (window.File && window.FileReader && window.FileList && window.Blob) {
-	    var files = true;
-	} else {
-	    alert('The File APIs are not fully supported in this browser.');
-	    var files = false;
-	}
+        // Check for the various File API support.
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            var files = true;
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+            var files = false;
+        }
 
-	var server = true;  // Are we running off of a server?
+        var server = true;  // Are we running off of a server?
         var scale = screen.width/canvas.width;
         var stage;
         var turtles;
         var palettes;
         var blocks;
-	var thumbnails;
+        var thumbnails;
         var thumbnailsVisible = false;
 
         // default values
@@ -97,35 +97,35 @@ define(function (require) {
         var saveButton = docById('save-button');
         var stopButton = docById('stop-button');
 
-	var onAndroid = /Android/i.test(navigator.userAgent);
-	console.log('on Android? ' + onAndroid);
+        var onAndroid = /Android/i.test(navigator.userAgent);
+        console.log('on Android? ' + onAndroid);
 
         fastButton.onclick = function () {
-	    doFastButton();
+            doFastButton();
         }
 
-	function doFastButton() {
-	    turtleDelay = 1;
-	    runLogoCommands();
-	}
+        function doFastButton() {
+            turtleDelay = 1;
+            runLogoCommands();
+        }
 
         slowButton.onclick = function () {
-	    doSlowButton();
+            doSlowButton();
         }
 
-	function doSlowButton() {
+        function doSlowButton() {
             turtleDelay = defaultDelay;
             runLogoCommands();
-	}
+        }
 
         var stopTurtle = false;
         stopTurtleButton.onclick = function () {
             doStopTurtle();
         }
 
-	function doStopButton() {
+        function doStopButton() {
             doStopTurtle();
-	}
+        }
 
         paletteButton.onclick = function () {
             changePaletteVisibility();
@@ -141,10 +141,10 @@ define(function (require) {
 
         var cartesianVisible = false;
         cartesianButton.onclick = function () {
-	    doCartesian();
+            doCartesian();
         }
 
-	function doCartesian() {
+        function doCartesian() {
             if (cartesianVisible) {
                 hideCartesian();
                 cartesianVisible = false;
@@ -152,14 +152,14 @@ define(function (require) {
                 showCartesian();
                 cartesianVisible = true;
             }
-	}
+        }
 
         var polarVisible = false;
         polarButton.onclick = function () {
-	    doPolar();
+            doPolar();
         }
 
-	function doPolar() {
+        function doPolar() {
             if (polarVisible) {
                 hidePolar();
                 polarVisible = false;
@@ -167,7 +167,7 @@ define(function (require) {
                 showPolar();
                 polarVisible = true;
             }
-	}
+        }
 
         copyButton.onclick = function () {
             selectStackToCopy();
@@ -203,7 +203,7 @@ define(function (require) {
 
         // The list of [box name, value]
         var boxList = [];
-        
+
         // Set the default background color...
         var canvasColor = getMunsellColor(
             defaultBackgroundColor[0], defaultBackgroundColor[1], defaultBackgroundColor[2]);
@@ -233,7 +233,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-	    thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
+            thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
             initBasicProtoBlocks(palettes, blocks);
             initAdvancedProtoBlocks(palettes, blocks);
 
@@ -254,7 +254,7 @@ define(function (require) {
                     blocks.loadNewBlocks(obj);
                 });
 
-		console.log(fileChooser.files[0]);
+                console.log(fileChooser.files[0]);
                 reader.readAsText(fileChooser.files[0]);
             }, false);
 
@@ -304,31 +304,31 @@ define(function (require) {
 
             var URL = window.location.href;
             console.log(URL);
-	    var projectName = null;
-	    if (URL.substr(0, 4) == 'file') {
-		server = false;
-		saveButton.style.visibility = 'hidden';
-	    } else {
-		server = true;
-		stopButton.style.visibility = 'hidden';
-	    }
+            var projectName = null;
+            if (URL.substr(0, 4) == 'file') {
+                server = false;
+                saveButton.style.visibility = 'hidden';
+            } else {
+                server = true;
+                stopButton.style.visibility = 'hidden';
+            }
 
-	    if (onAndroid || screen.width < 1024) {
-		setupAndroidToolbar();
-	    }
+            if (onAndroid || screen.width < 1024) {
+                setupAndroidToolbar();
+            }
 
-	    // Scale the canvas relative to the screen size.
-	    onResize();
+            // Scale the canvas relative to the screen size.
+            onResize();
 
-	    thumbnails.setServer(server);
+            thumbnails.setServer(server);
 
-	    if (URL.indexOf('?') > 0) {
+            if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
                 if (urlParts[1].indexOf('=') > 0) {
-		    var projectName = urlParts[1].split('=')[1];
+                    var projectName = urlParts[1].split('=')[1];
                 }
-	    }
-	    if (projectName != null) {
+            }
+            if (projectName != null) {
                 console.log('load ' + projectName);
                 loadProject(projectName);
             } else {
@@ -353,21 +353,26 @@ define(function (require) {
 
         }
 
-	function onResize() {
-            window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
-            scale = screen.width/canvas.width;
+        function onResize() {
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+            // window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
+            window.scrollTo(Math.floor((canvas.width - w) / 2), Math.floor((canvas.height - h) / 2));
+            Math.min(w / canvas.width, h / canvas.height); // scale = screen.width/canvas.width;
             console.log(scale);
-	    stage.scaleX = scale;
-	    stage.scaleY = scale;
-	    stage.canvas.width = canvas.width * scale;
-	    stage.canvas.height = canvas.height * scale
-	    turtles.setScale(scale);
-	}
+            stage.scaleX = scale;
+            stage.scaleY = scale;
+            stage.canvas.width = canvas.width * scale;
+            stage.canvas.height = canvas.height * scale
+            turtles.setScale(scale);
+            blocks.setScale(scale);
+        }
 
-	window.onresize = function()
-	{
-	    onResize();
-	}
+        window.onresize = function()
+        {
+            // FIXME:
+            // onResize();
+        }
 
         function restoreTrash() {
             var dx = -110;
@@ -377,11 +382,11 @@ define(function (require) {
                     blocks.blockList[blk].trash = false;
                     blocks.moveBlockRelative(blk, dx, dy);
                     blocks.blockList[blk].show();
-		    if (blocks.blockList[blk].name == 'start') {
-			turtle = blocks.blockList[blk].value;
-			turtles.turtleList[turtle].trash = false;
-			turtles.turtleList[turtle].container.visible = true;
-		    }
+                    if (blocks.blockList[blk].name == 'start') {
+                        turtle = blocks.blockList[blk].value;
+                        turtles.turtleList[turtle].trash = false;
+                        turtles.turtleList[turtle].container.visible = true;
+                    }
                 }
             }
             update = true;
@@ -394,20 +399,20 @@ define(function (require) {
                 blocks.blockList[blk].trash = true;
                 blocks.moveBlockRelative(blk, dx, dy);
                 blocks.blockList[blk].hide();
-		if (blocks.blockList[blk].name == 'start') {
-		    turtle = blocks.blockList[blk].value;
-		    turtles.turtleList[turtle].trash = true;
-		    turtles.turtleList[turtle].container.visible = false;
-		}
+                if (blocks.blockList[blk].name == 'start') {
+                    turtle = blocks.blockList[blk].value;
+                    turtles.turtleList[turtle].trash = true;
+                    turtles.turtleList[turtle].container.visible = false;
+                }
             }
-	    if (addStartBlock) {
-		console.log('loading new start block');
-		blocks.makeNewBlock('start');
-		last(blocks.blockList).x = 50;
-		last(blocks.blockList).y = 50;
-		last(blocks.blockList).connections = [null, null, null];
-		turtles.add();
-	    }
+            if (addStartBlock) {
+                console.log('loading new start block');
+                blocks.makeNewBlock('start');
+                last(blocks.blockList).x = 50;
+                last(blocks.blockList).y = 50;
+                last(blocks.blockList).connections = [null, null, null];
+                turtles.add(last(blocks.blockList));
+            }
             // Overwrite session data too.
             console.log('overwriting session data');
             if(typeof(Storage) !== "undefined") {
@@ -417,7 +422,7 @@ define(function (require) {
                 // Sorry! No Web Storage support..
             }
 
-            blocks.updateBlockImages();
+            blocks.updateBlockPositions();
             blocks.updateBlockLabels();
 
             update = true;
@@ -466,15 +471,15 @@ define(function (require) {
 
         function doOpenSamples() {
             if (thumbnailsVisible) {
-		thumbnails.hide();
+                thumbnails.hide();
                 thumbnailsVisible = false;
-		showBlocks();
+                showBlocks();
             } else {
-		thumbnailsVisible = true;
-		hideBlocks();
+                thumbnailsVisible = true;
+                hideBlocks();
                 stage.swapChildren(thumbnails.container, last(stage.children));
-		thumbnails.show(scale);
-	    }
+                thumbnails.show(scale);
+            }
         }
 
         function loadProject(projectName) {
@@ -482,24 +487,24 @@ define(function (require) {
             if (fileExt(projectName) != 'tb') {
                 projectName += '.tb';
             }
-	    try {
-		if (server) {
+            try {
+                if (server) {
                     var rawData = httpGet(projectName);
                     console.log('receiving ' + rawData);
                     var cleanData = rawData.replace('\n', ' ');
-		} else {
-		    // FIXME: Workaround until we have a local server
-		    if (projectName in SAMPLESTB) {
-			var cleanData = SAMPLESTB[projectName];
-		    } else {
-			var cleanData = SAMPLESTB['card-01.tb'];
-		    }
-		}
+                } else {
+                    // FIXME: Workaround until we have a local server
+                    if (projectName in SAMPLESTB) {
+                        var cleanData = SAMPLESTB[projectName];
+                    } else {
+                        var cleanData = SAMPLESTB['card-01.tb'];
+                    }
+                }
                 var obj = JSON.parse(cleanData);
                 blocks.loadNewBlocks(obj);
-	    } catch (e) {
+            } catch (e) {
                 loadStart();
-	    }
+            }
             update = true;
         }
 
@@ -543,18 +548,18 @@ define(function (require) {
                 blocks.blockList[0].x = 50;
                 blocks.blockList[0].y = 50;
                 blocks.blockList[0].connections = [null, null, null];
-		blocks.blockList[0].value = turtles.turtleList.length;
-                turtles.add();
+                blocks.blockList[0].value = turtles.turtleList.length;
+                turtles.add(blocks.blockList[0]);
             }
-            blocks.updateBlockImages();
+            blocks.updateBlockPositions();
             blocks.updateBlockLabels();
 
             update = true;
         }
 
-        function addTurtle() {
-            turtles.add();
-        }
+        // function addTurtle(myBlock) {
+        //    turtles.add(myBlock);
+        // }
 
         function runLogoCommands(startHere) {
             // Save the state before running
@@ -632,9 +637,9 @@ define(function (require) {
                 var turtle = 0;
                 if (blocks.blockList[startHere].name == 'start') {
                     // var turtle = startBlocks.indexOf(startHere);
-		    var turtle = blocks.blockList[startHere].value;
+                    var turtle = blocks.blockList[startHere].value;
                 }
-		console.log('starting on start with turtle ' + turtle);
+                console.log('starting on start with turtle ' + turtle);
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
@@ -643,31 +648,31 @@ define(function (require) {
                 console.log('found ' + startBlocks.length + ' start blocks');
                 // If there are start blocks, run them all.
                 for (var b = 0; b < startBlocks.length; b++) {
-		    turtle = blocks.blockList[startBlocks[b]].value;
+                    turtle = blocks.blockList[startBlocks[b]].value;
                     turtles.turtleList[turtle].queue = [];
                     this.parentFlowQueue[turtle] = [];
                     this.unhightlightQueue[turtle] = [];
-		    if (!turtles.turtleList[turtle].trash) {
-			console.log('running from turtle ' + turtle);
-			runFromBlock(this, turtle, startBlocks[b]);
-		    }
+                    if (!turtles.turtleList[turtle].trash) {
+                        console.log('running from turtle ' + turtle);
+                        runFromBlock(this, turtle, startBlocks[b]);
+                    }
                 }
             } else {
                 // Or run from the top of each stack.
-		// Find a turtle
-		turtle = null;
-		for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-		    if (!turtles.turtleList[turtle].trash) {
-			console.log('found turtle ' + turtle);
-			break;
-		    }
-		}
-		if (turtle == null) {
-		    console.log('could not find a turtle');
-		    turtle = turtles.turtleList.length;
-		    turtles.add();
-		}
-		console.log('running with turtle ' + turtle);
+                // Find a turtle
+                turtle = null;
+                for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                    if (!turtles.turtleList[turtle].trash) {
+                        console.log('found turtle ' + turtle);
+                        break;
+                    }
+                }
+                if (turtle == null) {
+                    console.log('could not find a turtle');
+                    turtle = turtles.turtleList.length;
+                    turtles.add(null);
+                }
+                console.log('running with turtle ' + turtle);
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
@@ -684,7 +689,7 @@ define(function (require) {
             update = true;
         }
 
-        function runFromBlock(activity, turtle, blk) { 
+        function runFromBlock(activity, turtle, blk) {
             if (blk == null) {
                 return;
             }
@@ -1258,79 +1263,80 @@ define(function (require) {
         }
 
         function setupAndroidToolbar() {
-	    var toolbar = docById("main-toolbar");
+            var toolbar = docById("main-toolbar");
             toolbar.style.display = "none";
-	    // Upper left
-	    var container = makeButton('fast-button', 0, 0);
-	    loadFastButtonHandler(container, doFastButton);
-	    var container = makeButton('slow-button', 55, 0);
-	    loadFastButtonHandler(container, doSlowButton);
-	    var container = makeButton('stop-turtle-button', 110, 0);
-	    loadFastButtonHandler(container, doStopButton);
+            // Upper left
+            var container = makeButton('fast-button', 0, 0);
+            loadFastButtonHandler(container, doFastButton);
+            var container = makeButton('slow-button', 55, 0);
+            loadFastButtonHandler(container, doSlowButton);
+            var container = makeButton('stop-turtle-button', 110, 0);
+            loadFastButtonHandler(container, doStopButton);
             var container = makeButton('clear-button', 165, 0);
-	    loadFastButtonHandler(container, allClear);
+            loadFastButtonHandler(container, allClear);
             var container = makeButton('palette-button', 220, 0);
-	    loadFastButtonHandler(container, changePaletteVisibility);
+            loadFastButtonHandler(container, changePaletteVisibility);
             var container = makeButton('hide-blocks-button', 275, 0);
-	    loadFastButtonHandler(container, changeBlockVisibility);
-	    // Lower right
+            loadFastButtonHandler(container, changeBlockVisibility);
+            // Lower right
             var container = makeButton('copy-button', 1135, 515);
-	    loadFastButtonHandler(container, selectStackToCopy);
+            loadFastButtonHandler(container, selectStackToCopy);
             var container = makeButton('paste-button', 1135, 570);
-	    loadFastButtonHandler(container, pasteStack);
+            loadFastButtonHandler(container, pasteStack);
             var container = makeButton('Cartesian-button', 1135, 625);
-	    loadFastButtonHandler(container, doCartesian);
+            loadFastButtonHandler(container, doCartesian);
             var container = makeButton('polar-button', 1135, 680);
-	    loadFastButtonHandler(container, doPolar);
+            loadFastButtonHandler(container, doPolar);
             var container = makeButton('samples-button', 1135, 735);
-	    loadFastButtonHandler(container, doOpenSamples);
+            loadFastButtonHandler(container, doOpenSamples);
             var container = makeButton('open-button', 1135, 790);
-	    loadFastButtonHandler(container, doOpen);
-	    if (server) {
-		// FIXME: Need an input form for project name;
-		var container = makeButton('save-button', 1135, 845);
-		loadFastButtonHandler(container, doSave);
-	    }
-	}
+            loadFastButtonHandler(container, doOpen);
+            if (server) {
+                // FIXME: Need an input form for project name;
+                var container = makeButton('save-button', 1135, 845);
+                loadFastButtonHandler(container, doSave);
+            }
+        }
 
-	function makeButton(name, x, y) {
+        function makeButton(name, x, y) {
             var image = new Image();
             image.src = 'icons/' + name + '.svg';
             var container = new createjs.Container();
             stage.addChild(container);
             bitmap = new createjs.Bitmap(image);
             container.addChild(bitmap);
-	    var hitArea = new createjs.Shape();
-	    var w2 = 55;
-	    var h2 = 55;
-	    hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
-	    hitArea.x = w2 / 2;
-	    hitArea.y = h2 / 2;
-	    container.hitArea = hitArea;
+            var hitArea = new createjs.Shape();
+            var w2 = 55;
+            var h2 = 55;
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
+            hitArea.x = w2 / 2;
+            hitArea.y = h2 / 2;
+            container.hitArea = hitArea;
             bitmap.cache(0, 0, 55, 55);
-	    bitmap.updateCache();
-	    container.x = x;
-	    container.y = y;
-	    update = true;
-	    return container;
-	}	
+            bitmap.updateCache();
+            container.x = x;
+            container.y = y;
+            update = true;
+            return container;
+        }
 
-	function loadFastButtonHandler(container, action) {
-	    container.on('click', function(event) {
-		action();
-	    });
-	}
+        function loadFastButtonHandler(container, action) {
+            container.on('click', function(event) {
+                action();
+            });
+        }
 
     });
 
 });
 
+
 function httpGet(projectName)
 {
     var xmlHttp = null;
-    
+
     xmlHttp = new XMLHttpRequest();
-    
+
     if (projectName == null) {
         xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
@@ -1342,6 +1348,7 @@ function httpGet(projectName)
     xmlHttp.send();
     return xmlHttp.responseText;
 }
+
 
 function httpPost(projectName, data)
 {
@@ -1356,18 +1363,21 @@ function httpPost(projectName, data)
     return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
 }
 
+
 function docById(id) {
     return document.getElementById(id);
 }
 
+
 function last(myList) {
     var i = myList.length;
     if (i == 0) {
-	return null;
+        return null;
     } else {
-	return myList[i - 1];
+        return myList[i - 1];
     }
 }
+
 
 function doSVG(canvas, turtles, width, height, scale) {
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
@@ -1381,13 +1391,15 @@ function doSVG(canvas, turtles, width, height, scale) {
     return svg;
 }
 
+
 function fileExt(file) {
     var parts = file.split('.');
     if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
         return '';
     }
-    return parts.pop();  
+    return parts.pop();
 }
+
 
 function fileBasename(file) {
     var parts = file.split('.');
@@ -1396,7 +1408,7 @@ function fileBasename(file) {
     } else if (parts[0] == '' && parts.length == 2) {
         return file;
     } else {
-	parts.pop(); // throw away suffix
-	return parts.join('.');
+        parts.pop(); // throw away suffix
+        return parts.join('.');
     }
 }

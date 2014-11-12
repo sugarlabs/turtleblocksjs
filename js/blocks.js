@@ -488,11 +488,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-            // var bitmap = new createjs.Bitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]));
             makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap);
         } else {
             // var bitmap = this.bitmapCache[bi];
-            processBitmap(name, this.bitmapCache[bi]);
+            processBitmap(this, name, this.bitmapCache[bi]);
         }
 
         function processHighlightBitmap(me, name, bitmap) {
@@ -517,11 +516,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-            // var bitmap = new createjs.Bitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]));
             makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap);
         } else {
             // var bitmap = this.bitmapCache[bi];
-            processHighlightBitmap(name, this.bitmapCache[bi]);
+            processHighlightBitmap(this, name, this.bitmapCache[bi]);
         }
     }
 
@@ -1175,6 +1173,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.imageLoad = function(myBlock) {
         // Load a block image and create any extra parts.
         // console.log('image load ' + myBlock.name);
+
+	// block image components are loaded asynchronously.
         var thisBlock = this.blockList.indexOf(myBlock);
 
         // Get the block labels from the protoblock
@@ -1202,7 +1202,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.refreshCanvas();
         }
 
-        // myBlock.bitmap = new createjs.Bitmap(myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.protoblock.fontsize));
         makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap);
 
         // Create the highlight bitmap for the block.
@@ -1226,7 +1225,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.refreshCanvas();
         }
 
-        // myBlock.highlightBitmap = new createjs.Bitmap(myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.protoblock.fontsize));
         makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap);
 
         // Value blocks get a modifiable text label
@@ -1238,13 +1236,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     myBlock.value = 100;
                 }
             }
-            myBlock.text = new createjs.Text(myBlock.value.toString(), '20px Arial', '#00000');
+            myBlock.text = new createjs.Text(myBlock.value.toString(), '20px Arial', '#000000');
             // console.log('creating Text for ' + myBlock.name + ' [' + myBlock.value + ']');
             myBlock.text.textAlign = 'center';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
-            myBlock.text.x = 70; //  + myBlock.bitmap.x;
-            myBlock.text.y = 27; //  + myBlock.bitmap.y;
+            myBlock.text.x = 70;
+            myBlock.text.y = 27;
             this.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
             // Make sure text is on top.
             lastChild = last(myBlock.container.children);
@@ -1275,7 +1273,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 me.refreshCanvas();
             }
 
-            // myBlock.bottomBitmap = new createjs.Bitmap(bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label));
             makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processBottomBitmap);
 
             function processHighlightBottomBitmap(me, name, bitmap) {
@@ -1288,9 +1285,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 me.refreshCanvas();
             }
 
-            // myBlock.highlightBottomBitmap = new createjs.Bitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label));
             makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap);
-
         }
 
         // Start blocks and Action blocks can collapse, so add an
@@ -1305,7 +1300,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 me.refreshCanvas();
             }
 
-            // myBlock.collapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
             makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processCollapseBitmap);
 
             function processHighlightCollapseBitmap(me, name, bitmap) {
@@ -1315,21 +1309,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 me.refreshCanvas();
             }
             if (myBlock.name == 'action') {
-                myBlock.collapseText = new createjs.Text('action', '20px Arial', '#00000');
-                myBlock.collapseText.x = 100; // myBlock.collapseBlockBitmap.x + 100;
-                myBlock.collapseText.y = 40; // myBlock.collapseBlockBitmap.y + 40;
+                myBlock.collapseText = new createjs.Text('action', '20px Arial', '#000000');
+                myBlock.collapseText.x = 100;
+                myBlock.collapseText.y = 40;
                 myBlock.collapseText.textAlign = 'right';
             } else {
-                myBlock.collapseText = new createjs.Text('start', '20px Arial', '#00000');
-                myBlock.collapseText.x = 20; // myBlock.collapseBlockBitmap.x + 20;
-                myBlock.collapseText.y = 40; // myBlock.collapseBlockBitmap.y + 40;
+                myBlock.collapseText = new createjs.Text('start', '20px Arial', '#000000');
+                myBlock.collapseText.x = 20;
+                myBlock.collapseText.y = 40;
                 myBlock.collapseText.textAlign = 'left';
             }
             myBlock.collapseText.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.collapseText);
             myBlock.collapseText.visible = false;
 
-            // myBlock.highlightCollapseBlockBitmap = new createjs.Bitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize));
             makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightCollapseBitmap);
 
             myBlock.collapseButton = new createjs.Container();

@@ -22,7 +22,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.container = null;
     this.prev = null;
     this.next = null;
-    this.page = 0;
+    this.page = 0;  // 4x4 image matrix per page
     this.server = true;
 
     this.setServer = function(server) {
@@ -104,40 +104,39 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         }
     }
 
+    this.downloadImage = function(p) {
+        var header = 'data:image/svg+xml;utf8,';
+        var name = this.projectFiles[p] + '.svg';
+        if (this.server) {
+            // console.log('getting ' + name + ' from server');
+            var svg = header + httpGet(name);
+        } else {
+            // console.log('getting ' + name + ' from samples');
+            svg = header + SAMPLESSVG[name];
+        }
+        bitmap = new createjs.Bitmap(svg);
+        bitmap.scaleX = 0.5;
+        bitmap.scaleY = 0.5;
+        this.container.addChild(bitmap);
+        this.dict[this.projectFiles[p]] = bitmap;
+    }
+
     this.completeInit = function(scale) {
         this.container.visible = true;
         this.refreshCanvas;
         var x = 5;
         var y = 55;
-        // TODO: paging
-        // TODO: add Easel caching???
         var i = 0;
         for (p in this.projectFiles.sort()) {
             if (this.projectFiles[p] in this.dict) {
                 this.dict[this.projectFiles[p]].visible = true;
             } else {
-                var header = 'data:image/svg+xml;utf8,';
-                var name = this.projectFiles[p] + '.svg';
-                if (this.server) {
-                    // console.log('getting ' + name + ' from server');
-                    var svg = header + httpGet(name);
-                } else {
-                    // console.log('getting ' + name + ' from samples');
-                    svg = header + SAMPLESSVG[name];
-                }
-                bitmap = new createjs.Bitmap(svg);
-                bitmap.scaleX = 0.5;
-                bitmap.scaleY = 0.5;
-                this.container.addChild(bitmap);
-                this.dict[this.projectFiles[p]] = bitmap;
+		downloadImage(p);
             }
+	    x = 5 + (i % 4) * 160;
+	    y = 55 + Math.floor(i / 4) * 120;
             this.dict[this.projectFiles[p]].x = x;
             this.dict[this.projectFiles[p]].y = y;
-            x += 160;
-            if (x > 500) {
-                x = 5
-                y += 120;
-            }
             if (i < 16) {
                 this.dict[this.projectFiles[p]].visible = true;
             } else {
@@ -145,11 +144,9 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             }
             i += 1;
             if (i % 16 == 0) {
-                y = 55;
+		this.next.visible = true;
+		break;	// Only download the first page's images.
             }
-        }
-        if (i > 15) {
-            this.next.visible = true;
         }
         this.prev.visible = false;
         this.refreshCanvas;
@@ -192,9 +189,21 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                 var i = 0;
                 for (p in viewer.projectFiles) {
                     if (i >= min && i < max) {
-                        viewer.dict[viewer.projectFiles[p]].visible = true;
+			// Show it if it has already been downloaded.
+			if (viewer.projectFiles[p] in this.dict) {
+                            viewer.dict[viewer.projectFiles[p]].visible = true;
+			} else {
+			    viewer.downloadImage(p);
+			    x = 5 + (i % 4) * 160;
+			    y = 55 + Math.floor(i / 4) * 120;
+			    viewer.dict[viewer.projectFiles[p]].x = x;
+			    viewer.dict[viewer.projectFiles[p]].y = y;
+			}
                     } else {
-                        viewer.dict[viewer.projectFiles[p]].visible = false;
+			// Hide it if it has already been downloaded.
+			if (viewer.projectFiles[p] in this.dict) {
+                            viewer.dict[viewer.projectFiles[p]].visible = false;
+			}
                     }
                     i += 1;
                 }

@@ -190,7 +190,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                 for (p in viewer.projectFiles) {
                     if (i >= min && i < max) {
 			// Show it if it has already been downloaded.
-			if (viewer.projectFiles[p] in this.dict) {
+			if (viewer.projectFiles[p] in viewer.dict) {
                             viewer.dict[viewer.projectFiles[p]].visible = true;
 			} else {
 			    viewer.downloadImage(p);

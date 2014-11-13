@@ -59,7 +59,7 @@ define(function (require) {
         }
 
         var server = true;  // Are we running off of a server?
-        var scale = screen.width/canvas.width;
+        var scale = 1;
         var stage;
         var turtles;
         var palettes;
@@ -349,9 +349,10 @@ define(function (require) {
         function onResize() {
             var w = window.innerWidth;
             var h = window.innerHeight;
-            // window.scrollTo(Math.floor((canvas.width - screen.width) / 2), Math.floor((canvas.height - screen.height) / 2));
             window.scrollTo(Math.floor((canvas.width - w) / 2), Math.floor((canvas.height - h) / 2));
-            Math.min(w / canvas.width, h / canvas.height); // scale = screen.width/canvas.width;
+            // scale = Math.min(w / canvas.width, h / canvas.height);
+	    // FIXME: What to do in portrait mode???
+	    scale = w / canvas.width;
             console.log(scale + ' ' + w + ' ' + h + ' ' + screen.width + ' ' + canvas.width);
             stage.scaleX = scale;
             stage.scaleY = scale;

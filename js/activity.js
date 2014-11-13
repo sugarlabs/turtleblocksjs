@@ -519,7 +519,7 @@ define(function (require) {
             }
             try {
                 // Post the project                                             
-                var returnTBValue = httpPost(projectName, prepareExport());
+                var returnValue = httpPost(projectName, prepareExport());
 
                 var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
                 // var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), svgData);
@@ -536,7 +536,7 @@ define(function (require) {
                     DOMURL.revokeObjectURL(url);
 		}
 		image.src = url;
-                return returnTBValue + ' ' + returnSVGValue;
+                return returnValue;
             } catch (e) {
                 console.log(e);
                 return;

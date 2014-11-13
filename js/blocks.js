@@ -942,7 +942,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // console.log('block not ready');
             return;
         }
-        myBlock.text.text = myBlock.value.toString();
+	var label = myBlock.value.toString();
+	if (label.length > 8) {
+	    label = label.substr(0, 7) + '...';
+	}
+        myBlock.text.text = label;
 
         // Make sure text is on top.
         lastChild = last(myBlock.container.children);
@@ -1252,7 +1256,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     myBlock.value = 100;
                 }
             }
-            myBlock.text = new createjs.Text(myBlock.value.toString(), '20px Arial', '#000000');
+	    var label = myBlock.value.toString();
+	    if (label.length > 8) {
+		label = label.substr(0, 7) + '...';
+	    }
+	    myBlock.text = new createjs.Text(label, '20px Arial', '#000000');
             // console.log('creating Text for ' + myBlock.name + ' [' + myBlock.value + ']');
             myBlock.text.textAlign = 'center';
             myBlock.text.textBaseline = 'alphabetic';
@@ -1593,7 +1601,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     if (value == null) {
                         last(this.blockList).text.text = '---';
                     } else {
-                        last(this.blockList).text.text = value.toString();
+			var label = value.toString();
+			if (label.length > 8) {
+			    label = label.substr(0, 7) + '...';
+			}
+                        last(this.blockList).text.text = label;
                     }
                 }
             } else if (myBlock.docks[i + 1][2] == 'mediain') {
@@ -2323,7 +2335,11 @@ function labelChanged() {
     // Update the block value and label.
     if (myBlock.label != null) {
         myBlock.value = myBlock.label.value;
-        myBlock.text.text = myBlock.value.toString();
+	var label = myBlock.value.toString();
+	if (label.length > 8) {
+	    label = label.substr(0, 7) + '...';
+	}
+        myBlock.text.text = label;
         // and hide the DOM textview...
         myBlock.label.style.display = 'none';
         // Make sure text is on top.

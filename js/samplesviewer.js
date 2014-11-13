@@ -195,7 +195,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 			} else {
 			    viewer.downloadImage(p);
 			    x = 5 + (i % 4) * 160;
-			    y = 55 + Math.floor(i / 4) * 120;
+			    y = 55 + Math.floor((i % 16) / 4) * 120;
 			    viewer.dict[viewer.projectFiles[p]].x = x;
 			    viewer.dict[viewer.projectFiles[p]].y = y;
 			}

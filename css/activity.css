@@ -97,6 +97,10 @@ button.pen {
     color: #000000;
 }
 
+input.savename {
+   font-size: 150% !important;
+}
+
 textarea.text {
    background-color: #ffc000;
    text-align: center;

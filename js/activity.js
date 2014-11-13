@@ -313,13 +313,16 @@ define(function (require) {
                 stopButton.style.visibility = 'hidden';
             }
 
+            // Scale the canvas relative to the screen size.
+            onResize();
+
 	    var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
             if (onAndroid || !onXO) {
                 setupAndroidToolbar();
-            }
-
-            // Scale the canvas relative to the screen size.
-            onResize();
+            } else {
+		var saveName = docById('mySaveName');
+                saveName.style.visibility = 'hidden';
+	    }
 
             thumbnails.setServer(server);
 
@@ -1275,12 +1278,19 @@ define(function (require) {
         }
 
         function doSave() {
+	    // FIXME: show input form and then save after name has been entered
+
             // Save file to turtle.sugarlabs.org
             var titleElem = docById("title");
             if (titleElem.value.length == 0) {
-                // FIXME: ask for a title and add a UID.
-                console.log('saving to unknown.tb');
-                return saveProject('unknown.tb');
+		var saveName = docById('mySaveName');
+		if (saveName.value.length == 0) {
+                    console.log('saving to unknown.tb');
+                    return saveProject('unknown.tb');
+		} else {
+                    console.log('saving to ' + saveName.value);
+                    return saveProject(saveName.value);
+		}
             } else {
                 console.log('saving to ' + titleElem.value + '.tb');
                 return saveProject(titleElem.value + '.tb');
@@ -1290,6 +1300,7 @@ define(function (require) {
         function setupAndroidToolbar() {
             var toolbar = docById("main-toolbar");
             toolbar.style.display = "none";
+
             // Upper left
             var container = makeButton('fast-button', 0, 0);
             loadFastButtonHandler(container, doFastButton);
@@ -1317,10 +1328,20 @@ define(function (require) {
             var container = makeButton('open-button', 1135, 790);
             loadFastButtonHandler(container, doOpen);
             if (server) {
-                // FIXME: Need an input form for project name;
                 var container = makeButton('save-button', 1135, 845);
                 loadFastButtonHandler(container, doSave);
-            }
+
+		var saveName = docById('mySaveName');
+		saveName.style.position = 'absolute';
+		var left = 970 * scale;
+		saveName.style.left = canvas.offsetLeft + left + '1000px';
+		var top = 815 * scale;
+		saveName.style.top = canvas.offsetTop + top + 'px';
+            } else {
+		var saveName = docById('mySaveName');
+                saveName.style.visibility = 'hidden';
+	    }
+
         }
 
         function makeButton(name, x, y) {

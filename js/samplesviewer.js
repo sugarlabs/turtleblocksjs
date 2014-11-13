@@ -201,7 +201,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 			}
                     } else {
 			// Hide it if it has already been downloaded.
-			if (viewer.projectFiles[p] in this.dict) {
+			if (viewer.projectFiles[p] in viewer.dict) {
                             viewer.dict[viewer.projectFiles[p]].visible = false;
 			}
                     }

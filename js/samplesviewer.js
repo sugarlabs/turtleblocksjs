@@ -131,7 +131,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             if (this.projectFiles[p] in this.dict) {
                 this.dict[this.projectFiles[p]].visible = true;
             } else {
-		downloadImage(p);
+		this.downloadImage(p);
             }
 	    x = 5 + (i % 4) * 160;
 	    y = 55 + Math.floor(i / 4) * 120;

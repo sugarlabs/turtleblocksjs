@@ -543,7 +543,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (myBlock == null) {
             console.log('SOMETHING VERY BROKEN');
         }
-        console.log('get stack size ' + myBlock.name);
+
         if (myBlock.isClampBlock()) {
             var c = myBlock.connections.length - 2;
             if (c > 0) {
@@ -594,13 +594,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
         if (this.blockList[blk].docks.length == 1) {
-            console.log(this.blockList[blk].name + ' must be a value block... nothing to do.');
+            // console.log(this.blockList[blk].name + ' must be a value block... nothing to do.');
             return;
         }
 
-        console.log('adjusting connections for ' + this.blockList[blk].name);
-        console.log('connections ' + this.blockList[blk].connections);
-        console.log('docks ' + this.blockList[blk].docks);
+        // console.log('adjusting connections for ' + this.blockList[blk].name);
+        // console.log('connections ' + this.blockList[blk].connections);
+        // console.log('docks ' + this.blockList[blk].docks);
 
         this.loopCounter += 1;
         if (this.loopCounter > this.blockList.length * 2) {
@@ -936,10 +936,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // When we create new blocks, we may not have assigned the
         // value yet.
         var myBlock = this.blockList[blk];
-        console.log('update block text ' + myBlock.name);
+        // console.log('update block text ' + myBlock.name);
         // FIXME: queue these updates for after the blocks have loaded
         if (myBlock.text == null) {
-            console.log('block not ready');
+            // console.log('block not ready');
             return;
         }
         myBlock.text.text = myBlock.value.toString();
@@ -1192,7 +1192,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // Create the bitmap for the block.
         function processBitmap(me, name, bitmap) {
-            console.log('processBitmap');
             myBlock.bitmap = bitmap;
             myBlock.container.addChild(myBlock.bitmap);
             myBlock.bitmap.x = 0;
@@ -1206,7 +1205,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // Create the highlight bitmap for the block.
         function processHighlightBitmap(me, name, bitmap) {
-            console.log('processHighlight');
             myBlock.highlightBitmap = bitmap;
             myBlock.container.addChild(myBlock.highlightBitmap);
             myBlock.highlightBitmap.x = 0;
@@ -1229,7 +1227,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             loadEventHandlers(me, me.turtles, myBlock);
             me.refreshCanvas();
 
-            console.log('calling finishImageLoad for ' + myBlock.name);
+            // console.log('calling finishImageLoad for ' + myBlock.name);
             me.finishImageLoad(myBlock);
         }
 
@@ -1306,7 +1304,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.container.uncache();
                 myBlock.bounds = myBlock.container.getBounds();
                 myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-                console.log('recaching ' + myBlock.name);
+                // console.log('recaching ' + myBlock.name);
                 myBlock.loadComplete = true;
                 me.refreshCanvas();
                 me.cleanupAfterLoad();
@@ -1518,7 +1516,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.makeNewBlock = function(name) {
         // Create a new block
-        console.log('makeNewBlock: (' + name + ')');
+        // console.log('makeNewBlock: (' + name + ')');
         if (!name in this.protoBlockDict) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
@@ -1544,7 +1542,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.y = myBlock.y;
 
         // and we need to load the images into the container.
-        console.log('calling image load for ' + myBlock.name);
+        // console.log('calling image load for ' + myBlock.name);
         this.imageLoad(myBlock);
         return myBlock;
     }
@@ -1552,7 +1550,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.makeBlock = function(name, arg) {
         // Make a new block from a proto block.
         // Called from palettes (and from the load block).
-        console.log('makeBlock: ' + name + ' ' + arg);
+        // console.log('makeBlock: ' + name + ' ' + arg);
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
@@ -2136,16 +2134,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // If all the blocks are loaded, we can make the final adjustments.
         this.loadCounter -= 1;
         if (this.loadCounter > 0) {
-            console.log('Still waiting to load ' + this.loadCounter + ' more blocks');
+            // console.log('Still waiting to load ' + this.loadCounter + ' more blocks');
             return;
         }
-        // Necessary check???
-        // for (blk in this.blockList) {
-        //     if (!this.blockList[blk].loadComplete) {
-        //        console.log('block ' + this.blockList[blk].name + ' is not loaded yet');
-        //        return;
-        //    }
-        // }
         console.log('load completed!');
         this.updateBlockPositions();
         this.updateBlockLabels();

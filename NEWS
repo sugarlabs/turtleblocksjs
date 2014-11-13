@@ -112,6 +112,10 @@ TODO:
   * implement if-then-else, while, until
   * implement and or not
   * keyboard short cuts
+  * i18n
+  * RTL support
+  * project name imput when not using Sugar toolbars
+  * scroll instead of zoom?
 
 BUGS:
   * don't save full-sized bitmap to session
@@ -121,3 +125,4 @@ BUGS:
   * occasional misplaced highlight filler
   * occasional bad init
   * fill broken in save to SVG
+  * reposition trash, buttons in portrait mode

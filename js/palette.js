@@ -44,8 +44,13 @@ function Palettes (canvas, stage, refreshCanvas) {
 
     this.makeMenu = function() {
         // First, an icon/button for each palette
-        var x = 55;
-        var y = 0;
+	if (screen.width != 1200) {
+            this.x = 0;
+            this.y = 55;
+	} else {
+            this.x = 55;
+	    this.y = 0;
+	}
         for (var name in this.dict) {
             if (name in this.buttons) {
                 // console.log('button ' + name + ' has already been created');
@@ -53,9 +58,9 @@ function Palettes (canvas, stage, refreshCanvas) {
             } else {
                 this.buttons[name] = new createjs.Container();
                 this.stage.addChild(this.buttons[name]);
-                this.buttons[name].x = x;
-                x += 55;
-                this.buttons[name].y = y;
+                this.buttons[name].x = this.x;
+                this.x += 55;
+                this.buttons[name].y = this.y;
 
                 function processButton(me, name, bitmap, extras) {
                     me.bitmaps[name] = bitmap;
@@ -82,7 +87,8 @@ function Palettes (canvas, stage, refreshCanvas) {
                     me.buttons[name].visible = false;
 
                     me.dict[name].makeMenu();
-                    me.dict[name].moveMenu(55, 55);
+		    console.log('moving menu ' + name + ' to ' + me.y + ' ' + 55);
+                    me.dict[name].moveMenu(me.x, me.y + 55);
                     me.dict[name].updateMenu();
 
                     loadPaletteButtonHandler(me, name);
@@ -176,7 +182,7 @@ function loadPaletteButtonHandler(palettes, name) {
     palettes.buttons[name].on('click', function(event) {
         for (var i in palettes.dict) {
             if (palettes.dict[i] == palettes.dict[name]) {
-                // console.log('showing ' + name);
+                console.log('showing ' + name);
                 palettes.dict[name].showMenu(true);
                 palettes.dict[name].showMenuItems(true);
             } else {
@@ -210,6 +216,7 @@ function Palette (palettes, name, color, bgcolor) {
             this.menuContainer = new createjs.Container();
 
             function processHeader(me, name, bitmap, extras) {
+		console.log('menu header for ' + name + ' ' + me.name);
                 me.menuContainer.addChild(bitmap);
 
                 var image = new Image();
@@ -414,7 +421,12 @@ function Palette (palettes, name, color, bgcolor) {
     this.hideMenuItems = function(init) {
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = false;
-            this.protoContainers[i].updateCache();
+	    try {
+		this.protoContainers[i].updateCache();
+	    } catch (e) {
+		console.log('container not ready?');
+		console.log(e);
+	    }
         }
         this.visible = false;
         // Move the menus below up

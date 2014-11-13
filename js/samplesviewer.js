@@ -9,6 +9,8 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+// FIXME: Use busy cursor
+
 // A viewer for sample projects
 function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.canvas = canvas;
@@ -119,13 +121,13 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         bitmap.scaleY = 0.5;
         this.container.addChild(bitmap);
         this.dict[this.projectFiles[p]] = bitmap;
+        this.refreshCanvas;
     }
 
     this.completeInit = function(scale) {
         this.container.visible = true;
         this.refreshCanvas;
-        var x = 5;
-        var y = 55;
+
         var i = 0;
         for (p in this.projectFiles.sort()) {
             if (this.projectFiles[p] in this.dict) {
@@ -149,7 +151,6 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             }
         }
         this.prev.visible = false;
-        this.refreshCanvas;
     }
 
     this.loadThumbnailContainerHandler = function(viewer, scale) {

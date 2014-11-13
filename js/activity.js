@@ -313,7 +313,8 @@ define(function (require) {
                 stopButton.style.visibility = 'hidden';
             }
 
-            if (onAndroid || screen.width < 1024) {
+	    var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
+            if (onAndroid || !onXO) {
                 setupAndroidToolbar();
             }
 
@@ -349,23 +350,32 @@ define(function (require) {
         function onResize() {
             var w = window.innerWidth;
             var h = window.innerHeight;
-            window.scrollTo(Math.floor((canvas.width - w) / 2), Math.floor((canvas.height - h) / 2));
             // scale = Math.min(w / canvas.width, h / canvas.height);
-	    // FIXME: What to do in portrait mode???
-	    scale = w / canvas.width;
-            console.log(scale + ' ' + w + ' ' + h + ' ' + screen.width + ' ' + canvas.width);
+	    // scale = w / canvas.width;
+	    if (w > h) {
+		scale = Math.max(w / 1200, 1.0);
+		stage.canvas.width = 1200 * scale;
+		stage.canvas.height = 900 * scale
+	    } else {
+		scale = w / 900;
+		stage.canvas.width = Math.max(900 * scale, 1.0);
+		stage.canvas.height = 1200 * scale
+	    }
             stage.scaleX = scale;
             stage.scaleY = scale;
-            stage.canvas.width = canvas.width * scale;
-            stage.canvas.height = canvas.height * scale
+            // stage.canvas.width = canvas.width * scale;
+            // stage.canvas.height = canvas.height * scale
+            window.scrollTo(Math.floor((stage.canvas.width - w) / 2), Math.floor((stage.canvas.height - h) / 2));
+
+            console.log('Resize: scale ' + scale + ', windowW ' + w + ', windowH ' + h + ', canvasW ' + canvas.width + ', canvasH ' + canvas.height + ', screenW ' + screen.width + ', screenH ' + screen.height);
+
             turtles.setScale(scale);
             blocks.setScale(scale);
         }
 
         window.onresize = function()
         {
-            // FIXME:
-            // onResize();
+            onResize();
         }
 
         function restoreTrash() {

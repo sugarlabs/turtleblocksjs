@@ -103,6 +103,9 @@
     (Works with Firefox, Safari, Chrome)
   * added paging to samples downloads
   * added Easeljs caching throughout
+  * added URL block
+  * repositioned palettes when toolbar is unavailable so as not to overlap
+    with on-canvas buttons
 
 TODO:
   * use busy cursor where approporate

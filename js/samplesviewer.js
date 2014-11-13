@@ -111,20 +111,22 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     }
 
     this.downloadImage = function(p, i) {
-        var header = 'data:image/svg+xml;utf8,';
-        var name = this.projectFiles[p] + '.svg';
         if (this.server) {
+            var header = 'data:image/png;base64,';
+            var name = this.projectFiles[p] + '.b64';
             // console.log('getting ' + name + ' from server');
-            var svg = header + httpGet(name);
+            var data = header + httpGet(name);
         } else {
+            var header = 'data:image/svg+xml;utf8,';
+            var name = this.projectFiles[p] + '.svg';
             // console.log('getting ' + name + ' from samples');
-            svg = header + SAMPLESSVG[name];
+            var data = header + SAMPLESSVG[name];
         }
 	var image = new Image();
-	image.src = svg;
+	image.src = data;
 	var me = this;
 	image.onload = function() {
-            bitmap = new createjs.Bitmap(svg);
+            bitmap = new createjs.Bitmap(data);
             bitmap.scaleX = 0.5;
             bitmap.scaleY = 0.5;
             me.container.addChild(bitmap);

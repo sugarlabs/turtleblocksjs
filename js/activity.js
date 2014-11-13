@@ -520,10 +520,9 @@ define(function (require) {
             try {
                 // Post the project                                             
                 var returnTBValue = httpPost(projectName, prepareExport());
-                // and the SVG                                                  
-                var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
-                var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), svgData);
 
+                var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
+                // var returnSVGValue = httpPost(projectName.replace('.tb', '.svg'), svgData);
                 var DOMURL = window.URL || window.webkitURL || window;
                 var image = new Image();
                 var svg = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
@@ -532,8 +531,8 @@ define(function (require) {
                     var bitmap = new createjs.Bitmap(image);
                     var bounds = bitmap.getBounds();
 		    bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                    // and the png base64 encoded
-                    httpPost(projectName.replace('.tb', '.png'), bitmap.getCacheDataURL());
+                    // and base64-encoded png
+                    httpPost(projectName.replace('.tb', '.b64'), bitmap.getCacheDataURL());
                     DOMURL.revokeObjectURL(url);
 		}
 		image.src = url;

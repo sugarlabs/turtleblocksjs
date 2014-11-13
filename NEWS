@@ -101,9 +101,11 @@
   * hide stop button when running from server
   * major overhaul of SVG generation: async
     (Works with Firefox, Safari, Chrome)
+  * added paging to samples downloads
+  * added Easeljs caching throughout
 
 TODO:
-  * use container caching on palette
+  * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks
   * more sensors

@@ -261,18 +261,45 @@ function Turtle (name, turtles) {
         }
         var image = new Image();
         image.src = myImage;
-        var bitmap = new createjs.Bitmap(image);
-        this.turtles.stage.addChild(bitmap);
-        this.media.push(bitmap);
-        bitmap.scaleX = Number(size) / image.width;
-        bitmap.scaleY = bitmap.scaleX;
-        bitmap.scale = bitmap.scaleX;
-        bitmap.x = this.container.x;
-        bitmap.y = this.container.y;
-        bitmap.regX = image.width / 2;
-        bitmap.regY = image.height / 2;
-        bitmap.rotation = this.orientation;
-        this.turtles.refreshCanvas();
+	var me = this;
+	image.onload = function() {
+            var bitmap = new createjs.Bitmap(image);
+            me.turtles.stage.addChild(bitmap);
+            me.media.push(bitmap);
+            bitmap.scaleX = Number(size) / image.width;
+            bitmap.scaleY = bitmap.scaleX;
+            bitmap.scale = bitmap.scaleX;
+            bitmap.x = me.container.x;
+            bitmap.y = me.container.y;
+            bitmap.regX = image.width / 2;
+            bitmap.regY = image.height / 2;
+            bitmap.rotation = me.orientation;
+            me.turtles.refreshCanvas();
+	}
+    }
+
+    this.doShowURL = function(size, myURL) {
+        // Add an image object from a URL to the canvas
+        if (myURL == null) {
+            return;
+        }
+        var image = new Image();
+        image.src = myURL;
+	var me = this;
+	image.onload = function() {
+            var bitmap = new createjs.Bitmap(image);
+            me.turtles.stage.addChild(bitmap);
+            me.media.push(bitmap);
+            bitmap.scaleX = Number(size) / image.width;
+            bitmap.scaleY = bitmap.scaleX;
+            bitmap.scale = bitmap.scaleX;
+            bitmap.x = me.container.x;
+            bitmap.y = me.container.y;
+            bitmap.regX = image.width / 2;
+            bitmap.regY = image.height / 2;
+            bitmap.rotation = me.orientation;
+            me.turtles.refreshCanvas();
+	}
     }
 
     this.doTurtleShell = function(size, myImage) {

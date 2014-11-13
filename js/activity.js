@@ -835,6 +835,11 @@ define(function (require) {
                     turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                  }
                 break;
+            case 'url':
+                if (args.length == 2) {
+                    turtles.turtleList[turtle].doShowURL(args[0], args[1]);
+                 }
+                break;
             case 'turtleshell':
                 if (args.length == 2) {
                     turtles.turtleList[turtle].doTurtleShell(args[0], args[1]);

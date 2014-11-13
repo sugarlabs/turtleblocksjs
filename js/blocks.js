@@ -994,7 +994,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     '" style="position: absolute; ' +
                     '-webkit-user-select: text;" ' +
                     'class="text", ' +
-                    'cols="8", rows="1", maxlength="8">' +
+                    'cols="8", rows="1", maxlength="80">' +
                     value + '</textarea>'
             } else {
                 text = ''

@@ -451,6 +451,7 @@ define(function (require) {
 
             turtles.setScale(scale);
             blocks.setScale(scale);
+            palettes.setScale(scale);
         }
 
         window.onresize = function()

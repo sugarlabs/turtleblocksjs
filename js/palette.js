@@ -36,11 +36,16 @@ function Palettes (canvas, stage, refreshCanvas) {
     this.highlightBitmaps = {};
 
     this.visible = true;
+    this.scale = 1.0;
 
     this.current = 'turtle';
 
     this.container = new createjs.Container();
     this.stage.addChild(this.container);
+
+    this.setScale = function(scale) {
+	this.scale = scale;
+    }
 
     this.makeMenu = function() {
         // First, an icon/button for each palette
@@ -541,7 +546,7 @@ function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
         // Move the drag group under the cursor.
         paletteBlocks.findDragGroup(newBlock);
         for (i in paletteBlocks.dragGroup) {
-            paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], event.stageX - 30, event.stageY - 20);
+            paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], (event.stageX / self.palettes.scale) - 50, (event.stageY / self.palettes.scale) - 21);
         }
         palette.palettes.refreshCanvas();
     });

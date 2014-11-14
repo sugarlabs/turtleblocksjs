@@ -1595,7 +1595,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         // Attach default args if any
-        // console.log('makeBlock docks: ' + myBlock.docks);
         var cblk = blk + 1;
         for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
             var value = myBlock.protoblock.defaults[i];

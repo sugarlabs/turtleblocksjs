@@ -43,9 +43,9 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                 var rawData = httpGet();
                 var obj = JSON.parse(rawData);
                 // console.log('json parse: ' + obj);
-                // Look for .svg files
+                // Look for base64-encoded png
                 for (var file in obj) {
-                    if (fileExt(obj[file]) == 'svg') {
+                    if (fileExt(obj[file]) == 'b64') {
                         var name = fileBasename(obj[file]);
                         if (this.projectFiles.indexOf(name) == -1) {
                             this.projectFiles.push(name);

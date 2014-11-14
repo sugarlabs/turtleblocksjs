@@ -106,6 +106,8 @@
   * added URL block
   * repositioned palettes when toolbar is unavailable so as not to overlap
     with on-canvas buttons
+  * using png for thumbnails
+  * added project name input when not using Sugar toolbars
 
 TODO:
   * use busy cursor where approporate
@@ -117,7 +119,6 @@ TODO:
   * keyboard short cuts
   * i18n
   * RTL support
-  * project name imput when not using Sugar toolbars
   * scroll instead of zoom?
 
 BUGS:

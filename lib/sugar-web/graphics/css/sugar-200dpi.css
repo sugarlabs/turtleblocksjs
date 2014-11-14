@@ -115,6 +115,7 @@ a {
   bottom: 0;
   width: 100%;
   overflow-y: auto;
+  z-index: 0;
   color: black;
   background-color: #c0c0c0;
 }

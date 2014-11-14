@@ -2729,6 +2729,21 @@ function loadEventHandlers(blocks, turtles, myBlock) {
                 // otherwise, process move
                 blocks.blockMoved(thisBlock);
             }
+	} else {
+	    console.log('mapping this event to a click');
+            if (blocks.selectingStack) {
+                var topBlock = blocks.findTopBlock(thisBlock);
+                blocks.selectedStack = topBlock;
+                blocks.selectingStack = false;
+            } else if (myBlock.name == 'media') {
+                doOpenMedia(blocks, thisBlock);
+            } else if (myBlock.isValueBlock() && myBlock.name != 'media') {
+                myBlock.label.style.display = '';
+            } else {
+                var topBlock = blocks.findTopBlock(thisBlock);
+                console.log('running from ' + blocks.blockList[topBlock].name);
+                blocks.runLogo(topBlock);
+            }
 	}
         if (blocks.activeBlock != myBlock) {
             return;

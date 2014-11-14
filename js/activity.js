@@ -231,8 +231,8 @@ define(function (require) {
         function init() {
             docById('loader').className = 'loader';
 
-            // Check to see if we are running in a browser with touch support.
             stage = new createjs.Stage(canvas);
+	    createjs.Touch.enable(stage);
             createjs.Ticker.addEventListener('tick', tick);
             trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash, sendAllToTrash);
             turtles = new Turtles(canvas, stage, refreshCanvas);

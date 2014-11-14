@@ -111,6 +111,7 @@
   * added print block
   * consolidated various show blocks into one block
   * added 'any' docking parameter
+  * fixed bug with new start block after clear all
 
 TODO:
   * use busy cursor where approporate
@@ -126,7 +127,6 @@ TODO:
   * use graphical error messages
 
 BUGS:
-  * something wrong with new start block after clear all
   * don't save full-sized bitmap to session
   * fix canvas sizing, resizing
   * cannot open same file twice in a row (no change event?)

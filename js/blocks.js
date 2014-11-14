@@ -2704,7 +2704,7 @@ function loadEventHandlers(blocks, turtles, myBlock) {
                     }
                     myBlock.connections[0] = null;
                 }
-                myBlock.connections[0] = null;
+
                 if (myBlock.name == 'start') {
                     turtle = myBlock.value;
 		    if (turtle != null) {

@@ -258,7 +258,6 @@ function Turtle (name, turtles) {
         if (myImage == null) {
             return;
         }
-	console.log(myImage);
         var image = new Image();
         image.src = myImage;
 	var me = this;
@@ -283,7 +282,6 @@ function Turtle (name, turtles) {
         if (myURL == null) {
             return;
         }
-	console.log(typeof(myURL));
         var image = new Image();
         image.src = myURL;
 	var me = this;
@@ -346,7 +344,6 @@ function Turtle (name, turtles) {
 
     this.doShowText = function(size, myText) {
         // Add a text or image object to the canvas
-	console.log(typeof(myText));
         var textSize = size.toString() + 'px Courier';
         var text = new createjs.Text(myText.toString(), textSize, this.canvasColor);
         text.textAlign = 'left';
@@ -418,6 +415,7 @@ function Turtle (name, turtles) {
         this.fillState = false;
     }
 };
+
 
 function Turtles(canvas, stage, refreshCanvas) {
     this.canvas = canvas;

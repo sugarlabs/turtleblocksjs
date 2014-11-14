@@ -491,12 +491,12 @@ define(function (require) {
                 }
             }
             if (addStartBlock) {
-                console.log('loading new start block');
                 blocks.makeNewBlock('start');
                 last(blocks.blockList).x = 50;
                 last(blocks.blockList).y = 50;
                 last(blocks.blockList).connections = [null, null, null];
                 turtles.add(last(blocks.blockList));
+		last(blocks.blockList).value = turtles.turtleList.length - 1;
             }
             // Overwrite session data too.
             console.log('overwriting session data');
@@ -752,9 +752,10 @@ define(function (require) {
                 this.unhightlightQueue[turtle] = [];
                 runFromBlock(this, turtle, startHere);
             } else if (startBlocks.length > 0) {
-                console.log('found ' + startBlocks.length + ' start blocks');
+                console.log('found start blocks: ' + startBlocks);
                 // If there are start blocks, run them all.
                 for (var b = 0; b < startBlocks.length; b++) {
+		    console.log(startBlocks[b] + ': ' + blocks.blockList[startBlocks[b]].value);
                     turtle = blocks.blockList[startBlocks[b]].value;
                     turtles.turtleList[turtle].queue = [];
                     this.parentFlowQueue[turtle] = [];

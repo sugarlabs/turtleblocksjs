@@ -112,7 +112,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 
     this.downloadImage = function(p, i) {
         if (this.server) {
-            var header = 'data:image/png;base64,';
+            var header = ''; // 'data:image/png;base64,';
             var name = this.projectFiles[p] + '.b64';
             // console.log('getting ' + name + ' from server');
             var data = header + httpGet(name);

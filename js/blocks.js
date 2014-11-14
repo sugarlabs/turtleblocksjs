@@ -1133,7 +1133,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         for (var i = 0; i < this.blockList.length; i++) {
             if (this.blockList[i].isArgBlock() && this.blockList[i].isExpandableBlock()) {
                 this.expandablesList.push(i);
-            }
+            } else if (this.blockList[i].isSpecialBlock()) {
+                this.expandablesList.push(i);
+	    }
         }
     }
 
@@ -1158,7 +1160,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.expand2Args = function() {
         // Expand expandable 2-arg blocks as needed.
-        // console.log('expand2Args');
         this.find2Args();
         for (var i = 0; i < this.expandablesList.length; i++) {
             this.adjust2ArgBlock(this.expandablesList[i]);

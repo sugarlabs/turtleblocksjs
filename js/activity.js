@@ -220,6 +220,11 @@ define(function (require) {
 	var msgBlock = null;
 	var msgText = null;
 
+	// ErrorMsg block
+	var errorMsgContainer = null;
+	var errorMsgBlock = null;
+	var errorMsgText = null;
+
         // Get things started
         init();
 
@@ -312,7 +317,7 @@ define(function (require) {
 
 	    var DOMURL = window.URL || window.webkitURL || window;
 	    var img = new Image();
-	    var svg = new Blob([MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#808080')], {type: 'image/svg+xml;charset=utf-8'});
+	    var svg = new Blob([MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#7a7a7a')], {type: 'image/svg+xml;charset=utf-8'});
 	    var url = DOMURL.createObjectURL(svg);
 	    img.onload = function () {
 		msgBlock = new createjs.Bitmap(img);
@@ -334,6 +339,41 @@ define(function (require) {
 
 		msgContainer.on('click', function(event) {
 		    msgContainer.visible = false;
+		    update = true;
+		});
+	    }
+	    img.src = url;
+
+	    errorMsgContainer = new createjs.Container();
+	    stage.addChild(errorMsgContainer);
+	    errorMsgContainer.x = (canvas.width - 1000) / 2;
+	    errorMsgContainer.y = 110;
+	    errorMsgContainer.visible = false;
+
+	    var DOMURL = window.URL || window.webkitURL || window;
+	    var img = new Image();
+	    var svg = new Blob([MSGBLOCK.replace('fill_color', '#ffcbc4').replace('stroke_color', '#ff0031')], {type: 'image/svg+xml;charset=utf-8'});
+	    var url = DOMURL.createObjectURL(svg);
+	    img.onload = function () {
+		errorMsgBlock = new createjs.Bitmap(img);
+		DOMURL.revokeObjectURL(url);
+		errorMsgContainer.addChild(errorMsgBlock);
+		errorMsgText = new createjs.Text('your message here', '20px Arial', '#000000');
+		errorMsgContainer.addChild(errorMsgText);
+		errorMsgText.textAlign = 'center';
+		errorMsgText.textBaseline = 'alphabetic';
+                errorMsgText.x = 500;
+                errorMsgText.y = 30;
+		var bounds = errorMsgContainer.getBounds();
+		errorMsgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+		var hitArea = new createjs.Shape();
+		hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
+		hitArea.x = 0;
+		hitArea.y = 0;
+		errorMsgContainer.hitArea = hitArea;
+
+		errorMsgContainer.on('click', function(event) {
+		    errorMsgContainer.visible = false;
 		    update = true;
 		});
 	    }
@@ -619,6 +659,13 @@ define(function (require) {
         //    turtles.add(myBlock);
         // }
 
+	function errorMsg(msg) {
+	    errorMsgContainer.visible = true;
+	    errorMsgText.text = msg;
+	    errorMsgContainer.updateCache();
+            stage.swapChildren(errorMsgContainer, last(stage.children));
+	}
+
         function runLogoCommands(startHere) {
             // Save the state before running
             if(typeof(Storage) !== "undefined") {
@@ -631,6 +678,7 @@ define(function (require) {
             stopTurtle = false;
             blocks.unhighlightAll();
             blocks.bringToTop();  // Draw under blocks.
+	    errorMsgContainer.visible = false;  // hide the error message window
 	    msgContainer.visible = false;  // hide the message window
 
             // We run the logo commands here.
@@ -670,7 +718,7 @@ define(function (require) {
                         startBlocks.push(blocks.stackList[blk]);
                     }
                 } else if (blocks.blockList[blocks.stackList[blk]].name == 'action') {
-                    // does the action stack have a name?
+                    // Does the action stack have a name?
                     c = blocks.blockList[blocks.stackList[blk]].connections[1];
                     b = blocks.blockList[blocks.stackList[blk]].connections[2];
                     if (c != null && b != null) {
@@ -695,7 +743,6 @@ define(function (require) {
                 // associated turtle, i.e., which turtle should we use?
                 var turtle = 0;
                 if (blocks.blockList[startHere].name == 'start') {
-                    // var turtle = startBlocks.indexOf(startHere);
                     var turtle = blocks.blockList[startHere].value;
                 }
                 console.log('starting on start with turtle ' + turtle);
@@ -811,14 +858,20 @@ define(function (require) {
 		}
 		break;
             case 'do':
-                 if (args.length == 1) {
+                if (args.length == 1) {
+		    var foundAction = false;
                     for (i = 0; i < actionList.length; i++) {
                         if (actionList[i][0] == args[0]) {
                             childFlow = actionList[i][1];
                             childFlowCount = 1;
+			    foundAction = true;
                             break;
                         }
                     }
+		    if (!foundAction) {
+			errorMsg('Cannot find action ' + args[0] + '.');
+			stopTurtle = true;
+		    }
                 }
                 break;
             case 'forever':
@@ -959,7 +1012,8 @@ define(function (require) {
                 if (blocks.blockList[blk].name in evalFlowDict) {
                     eval(evalFlowDict[blocks.blockList[blk].name]);
                 } else {
-                    console.log('ERROR: I do not know how to ' + blocks.blockList[blk].name);
+                    errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.');
+		    stopTurtle = true;
                 }
                 break;
             }
@@ -1032,8 +1086,8 @@ define(function (require) {
         function parseArg(turtle, blk) {
             // Retrieve the value of a block.
             if (blk == null) {
-                // activity.showAlert('WARNING', 'missing argument', null, function() {});
-                console.log('WARNING: missing argument');
+                errorMsg('Missing argument');
+		stopTurtle = true;
                 return null
             } else if (blocks.blockList[blk].isValueBlock()) {
                 return blocks.blockList[blk].value;
@@ -1044,6 +1098,8 @@ define(function (require) {
                     var name = parseArg(turtle, cblk);
                     var i = findBox(name);
                     if (i == null) {
+			errorMsg('Cannot find box ' + name + '.');
+			stopTurtle = true;
                         blocks.blockList[blk].value = null;
                     } else {
                         blocks.blockList[blk].value = boxList[i][1];
@@ -1052,7 +1108,12 @@ define(function (require) {
                 case 'sqrt':
                     var cblk = blocks.blockList[blk].connections[1];
                     var a = parseArg(turtle, cblk);
-                    blocks.blockList[blk].value = (Math.sqrt(Number(a)));
+		    if (a < 0) {
+			errorMsg('Cannot take square root of negative number.');
+			stopTurtle = true;
+			a = -a;
+		    }
+		    blocks.blockList[blk].value = (Math.sqrt(Number(a)));
                     break;
                 case 'mod':
                     var cblk1 = blocks.blockList[blk].connections[1];
@@ -1237,9 +1298,10 @@ define(function (require) {
         }
 
         function doDivide(a, b) {
-            // TODO: Alert
             if (Number(b) == 0) {
-                return NaN;
+		errorMsg('Cannot divide by zero.');
+		stopTurtle = true;
+                return 0;
             } else {
                 return Number(a) / Number(b);
             }

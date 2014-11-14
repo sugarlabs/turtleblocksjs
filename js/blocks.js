@@ -120,7 +120,7 @@ function ProtoBlock(name) {
         this.loff = 42;
         this.expandable = true;
         this.size = 2;
-        this.args = 1;
+        this.args = 0;
         this.artwork = FLOWCLAMP0ARG;
         this.copyDock(FLOWCLAMP0ARGDOCKS);
     }

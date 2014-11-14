@@ -2663,7 +2663,7 @@ function loadEventHandlers(blocks, turtles, myBlock) {
     myBlock.container.on('mouseout', function(event) {
         if (moved) {
             // Check if block is in the trash
-            if (trashcan.overTrashcan(event.stageX, event.stageY)) {
+            if (trashcan.overTrashcan(event.stageX, event.stageY, blocks.scale)) {
                 // disconnect block
                 var b = myBlock.connections[0];
                 if (b != null) {
@@ -2678,8 +2678,13 @@ function loadEventHandlers(blocks, turtles, myBlock) {
                 myBlock.connections[0] = null;
                 if (myBlock.name == 'start') {
                     turtle = myBlock.value;
-                    turtles.turtleList[turtle].trash = true;
-                    turtles.turtleList[turtle].container.visible = false;
+		    if (turtle != null) {
+			console.log('putting turtle ' + turtle + ' in the trash');
+			turtles.turtleList[turtle].trash = true;
+			turtles.turtleList[turtle].container.visible = false;
+		    } else {
+			console.log('null turtle');
+		    }
                 }
 
                 // put drag group in trash
@@ -2695,7 +2700,7 @@ function loadEventHandlers(blocks, turtles, myBlock) {
                 // otherwise, process move
                 blocks.blockMoved(thisBlock);
             }
-        }
+	}
         if (blocks.activeBlock != myBlock) {
             return;
         }

@@ -31,7 +31,7 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
     this.highlightBitmap = new createjs.Bitmap(highlightImage);
     this.container.addChild(this.highlightBitmap);
 
-    this.container.x = canvas.width - 55;
+    this.container.x = this.canvas.width - 55;
     this.container.y = 0;
 
     var w = 55;
@@ -52,7 +52,7 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
 
     this.restoreContainer = new createjs.Container();
     this.stage.addChild(this.restoreContainer);
-    this.restoreContainer.x = 1000; // this.canvas.width - 200;
+    this.restoreContainer.x = this.container.x - 145;
     this.restoreContainer.y = 55;
     this.restoreContainer.visible = false;
     var hitArea = new createjs.Shape();
@@ -167,16 +167,17 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
         this.confirmContainer.visible = false;
     }
 
-    this.overTrashcan = function(x, y) {
-        // FIX ME: what is the size of the trash can?
-        if (x < this.container.x) {
+    this.overTrashcan = function(x, y, scale) {
+	var tx = this.container.x * scale;
+	var ty = this.container.y * scale;
+        if (x < tx) {
             return false;
-        } else if (x > this.container.x + 55) {
+        } else if (x > tx + 55) {
             return false;
         }
-        if (y < this.container.y) {
+        if (y < ty) {
             return false;
-        } else if (y > this.container.y + 55) {
+        } else if (y > ty + 55) {
             return false;
         }
         return true;

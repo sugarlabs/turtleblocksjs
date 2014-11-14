@@ -178,7 +178,6 @@ function Turtle (name, turtles) {
         }
 
         // old turtle point
-        console.log('forward ' + this.container.x + ' ' + this.container.y);
         var ox = this.turtles.screenX2turtleX(this.container.x);
         var oy = this.turtles.screenY2turtleY(this.container.y);
 

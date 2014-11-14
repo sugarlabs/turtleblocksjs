@@ -70,6 +70,13 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     svgBlock.staticLabels.push('save svg');
     svgBlock.docks[1][2] = 'textin';
 
+    var printBlock = new ProtoBlock('print');
+    printBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['print'] = printBlock;
+    printBlock.oneArgBlock();
+    printBlock.staticLabels.push('print');
+    printBlock.docks[1][2] = 'anyin';
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);

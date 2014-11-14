@@ -137,33 +137,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     showBlock.defaults.push('text');
     showBlock.staticLabels.push('show');
     showBlock.staticLabels.push('size');
-    showBlock.staticLabels.push('text');
+    showBlock.staticLabels.push('obj');
     showBlock.docks[1][2] = 'numberin'; // override default
-    showBlock.docks[2][2] = 'textin'; // override default
-
-    var imageBlock = new ProtoBlock('image');
-    imageBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['image'] = imageBlock;
-    imageBlock.twoArgBlock();
-    imageBlock.defaults.push(100);
-    imageBlock.defaults.push(null);
-    imageBlock.staticLabels.push('show');
-    imageBlock.staticLabels.push('size');
-    imageBlock.staticLabels.push('image');
-    imageBlock.docks[1][2] = 'numberin'; // override default
-    imageBlock.docks[2][2] = 'mediain'; // override default
-
-    var urlBlock = new ProtoBlock('url');
-    urlBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['url'] = urlBlock;
-    urlBlock.twoArgBlock();
-    urlBlock.defaults.push(100);
-    urlBlock.defaults.push(null);
-    urlBlock.staticLabels.push('show');
-    urlBlock.staticLabels.push('size');
-    urlBlock.staticLabels.push('url');
-    urlBlock.docks[1][2] = 'numberin'; // override default
-    urlBlock.docks[2][2] = 'textin'; // override default
+    showBlock.docks[2][2] = 'anyin'; // override default
 
     var shellBlock = new ProtoBlock('turtleshell');
     shellBlock.palette = palettes.dict['turtle'];

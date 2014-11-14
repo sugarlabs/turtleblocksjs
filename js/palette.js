@@ -87,8 +87,7 @@ function Palettes (canvas, stage, refreshCanvas) {
                     me.buttons[name].visible = false;
 
                     me.dict[name].makeMenu();
-		    console.log('moving menu ' + name + ' to ' + me.y + ' ' + 55);
-                    me.dict[name].moveMenu(me.x, me.y + 55);
+                    me.dict[name].moveMenu(0, me.y + 55);
                     me.dict[name].updateMenu();
 
                     loadPaletteButtonHandler(me, name);

@@ -108,6 +108,9 @@
     with on-canvas buttons
   * using png for thumbnails
   * added project name input when not using Sugar toolbars
+  * added print block
+  * consolidated various show blocks into one block
+  * added 'any' docking parameter
 
 TODO:
   * use busy cursor where approporate

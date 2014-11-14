@@ -18,8 +18,6 @@ define(function (require) {
     var icon = require('sugar-web/graphics/icon');
     require('easeljs');
     require('preloadjs');
-    // FIXME: from the server, this doesn't load properly. Is there
-    // some way to impose an order to the loading of required files?
     // require('activity/utils');
     require('activity/artwork');
     require('activity/munsell');
@@ -213,8 +211,14 @@ define(function (require) {
 
         // Coordinate grid
         var cartesianBitmap = null;
+
         // Polar grid
         var polarBitmap = null;
+
+	// Msg block
+	var msgContainer = null;
+	var msgBlock = null;
+	var msgText = null;
 
         // Get things started
         init();
@@ -282,7 +286,6 @@ define(function (require) {
             cartesianBitmap.x = (canvas.width - 1200) / 2;
             cartesianBitmap.y = (canvas.height - 900) / 2;
             cartesianBitmap.scaleX = cartesianBitmap.scaleY = cartesianBitmap.scale = 1;
-            cartesianBitmap.name = 'bmp_cartesian';
             cartesianBitmap.visible = false;
             cartesianBitmap.updateCache();
 
@@ -298,9 +301,43 @@ define(function (require) {
             polarBitmap.x = (canvas.width - 1200) / 2;
             polarBitmap.y = (canvas.height - 900) / 2;
             polarBitmap.scaleX = polarBitmap.scaleY = polarBitmap.scale = 1;
-            polarBitmap.name = 'bmp_polar';
             polarBitmap.visible = false;
             polarBitmap.updateCache();
+
+	    msgContainer = new createjs.Container();
+	    stage.addChild(msgContainer);
+	    msgContainer.x = (canvas.width - 1000) / 2;
+	    msgContainer.y = 110;
+	    msgContainer.visible = false;
+
+	    var DOMURL = window.URL || window.webkitURL || window;
+	    var img = new Image();
+	    var svg = new Blob([MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#808080')], {type: 'image/svg+xml;charset=utf-8'});
+	    var url = DOMURL.createObjectURL(svg);
+	    img.onload = function () {
+		msgBlock = new createjs.Bitmap(img);
+		DOMURL.revokeObjectURL(url);
+		msgContainer.addChild(msgBlock);
+		msgText = new createjs.Text('your message here', '20px Arial', '#000000');
+		msgContainer.addChild(msgText);
+		msgText.textAlign = 'center';
+		msgText.textBaseline = 'alphabetic';
+                msgText.x = 500;
+                msgText.y = 30;
+		var bounds = msgContainer.getBounds();
+		msgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+		var hitArea = new createjs.Shape();
+		hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
+		hitArea.x = 0;
+		hitArea.y = 0;
+		msgContainer.hitArea = hitArea;
+
+		msgContainer.on('click', function(event) {
+		    msgContainer.visible = false;
+		    update = true;
+		});
+	    }
+	    img.src = url;
 
             var URL = window.location.href;
             console.log(URL);
@@ -594,6 +631,7 @@ define(function (require) {
             stopTurtle = false;
             blocks.unhighlightAll();
             blocks.bringToTop();  // Draw under blocks.
+	    msgContainer.visible = false;  // hide the message window
 
             // We run the logo commands here.
             var d = new Date();
@@ -688,15 +726,18 @@ define(function (require) {
                         break;
                     }
                 }
+
                 if (turtle == null) {
                     console.log('could not find a turtle');
                     turtle = turtles.turtleList.length;
                     turtles.add(null);
                 }
+
                 console.log('running with turtle ' + turtle);
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
+
                 for (var blk = 0; blk < blocks.stackList.length; blk++) {
                     if (blocks.blockList[blk].isNoRunBlock()) {
                         continue;
@@ -714,6 +755,7 @@ define(function (require) {
             if (blk == null) {
                 return;
             }
+
             var delay = turtleDelay + waitTime[turtle];
             waitTime[turtle] = 0;
             if (!stopTurtle) {
@@ -732,7 +774,6 @@ define(function (require) {
             }
 
             // (2) Run function associated with the block;
-
             if (blocks.blockList[blk].isValueBlock()) {
                 var nextFlow = null;
             } else {
@@ -740,10 +781,12 @@ define(function (require) {
                 // (end of flow)
                 var nextFlow = last(blocks.blockList[blk].connections);
             }
+
             if (nextFlow != null) {
                 var queueBlock = new Queue(nextFlow, 1, blk);
                 turtles.turtleList[turtle].queue.push(queueBlock);
             }
+
             // Some flow blocks have childflows, e.g., repeat
             var childFlow = null;
             var childFlowCount = 0;
@@ -759,6 +802,14 @@ define(function (require) {
                     childFlowCount = 1;
                 }
                 break;
+	    case 'print':
+		if (args.length == 1) {
+		    msgContainer.visible = true;
+		    msgText.text = args[0].toString();
+		    msgContainer.updateCache();
+                    stage.swapChildren(msgContainer, last(stage.children));
+		}
+		break;
             case 'do':
                  if (args.length == 1) {
                     for (i = 0; i < actionList.length; i++) {
@@ -844,17 +895,22 @@ define(function (require) {
                 break;
             case 'show':
                 if (args.length == 2) {
-                    turtles.turtleList[turtle].doShowText(args[0], args[1]);
-                 }
-                break;
-            case 'image':
-                if (args.length == 2) {
-                    turtles.turtleList[turtle].doShowImage(args[0], args[1]);
-                 }
-                break;
-            case 'url':
-                if (args.length == 2) {
-                    turtles.turtleList[turtle].doShowURL(args[0], args[1]);
+		    if (typeof(args[1]) == 'string') {
+			var len = args[1].length;
+			if (len > 10 && args[1].substr(0, 10) == 'data:image') {
+			    turtles.turtleList[turtle].doShowImage(args[0], args[1]);
+			} else if (len > 8 && args[1].substr(0, 8) == 'https://') {
+			    turtles.turtleList[turtle].doShowURL(args[0], args[1]);
+			} else if (len > 7 && args[1].substr(0, 7) == 'http://') {
+			    turtles.turtleList[turtle].doShowURL(args[0], args[1]);
+			} else if (len > 7 && args[1].substr(0, 7) == 'file://') {
+			    turtles.turtleList[turtle].doShowURL(args[0], args[1]);
+			} else {
+			    turtles.turtleList[turtle].doShowText(args[0], args[1]);
+			}
+		    } else {
+			turtles.turtleList[turtle].doShowText(args[0], args[1]);
+		    }
                  }
                 break;
             case 'turtleshell':

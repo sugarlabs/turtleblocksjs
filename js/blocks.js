@@ -865,6 +865,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (type1 == 'mediain' && type2 == 'textout') {
             return true;
         }
+	if (type1 == 'anyin' && ['textout', 'mediaout', 'numberout'].indexOf(type2) != -1) {
+	    return true;
+	}
+	if (type2 == 'anyin' && ['textout', 'mediaout', 'numberout'].indexOf(type1) != -1) {
+	    return true;
+	}
         return false;
     }
 
@@ -1593,11 +1599,35 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var cblk = blk + 1;
         for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
             var value = myBlock.protoblock.defaults[i];
-            if (myBlock.docks[i + 1][2] == 'textin') {
+            if (myBlock.docks[i + 1][2] == 'anyin') {
+                if (value == null) {
+                    console.log('cannot set default value');
+		} else if (typeof(value) == 'string') {
+                    this.makeNewBlock('text');
+                    last(this.blockList).value = value;
+		    var label = value.toString();
+		    if (label.length > 8) {
+			label = label.substr(0, 7) + '...';
+		    }
+                    if (last(this.blockList).text == null) {
+			console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
+		    } else {
+			last(this.blockList).text.text = label;
+		    }
+		} else {
+                    this.makeNewBlock('number');
+                    last(this.blockList).value = value;
+                    if (last(this.blockList).text == null) {
+			console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
+		    } else {
+			last(this.blockList).text.text = value.toString();
+		    }
+		}
+            } else if (myBlock.docks[i + 1][2] == 'textin') {
                 this.makeNewBlock('text');
                 last(this.blockList).value = value;
                 if (last(this.blockList).text == null) {
-                    console.log('cannot set value for text ' + last(this.blockList).name);
+                    console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
                 } else {
                     if (value == null) {
                         last(this.blockList).text.text = '---';

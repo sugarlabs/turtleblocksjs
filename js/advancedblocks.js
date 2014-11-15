@@ -15,6 +15,8 @@
 var evalFlowDict = {
     'publish': "if (args.length == 1) {doPublish(args[0]);};",
     'savesvg': "if (args.length == 1) {doSaveSVG(canvas, turtles, args[0])};",
+    'showblocks': "showBlocks();",
+    'hideblocks': "hideBlocks();",
 };
 
 var evalArgDict = {
@@ -76,6 +78,18 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     printBlock.oneArgBlock();
     printBlock.staticLabels.push('print');
     printBlock.docks[1][2] = 'anyin';
+
+    var showBlocks = new ProtoBlock('showblocks');
+    showBlocks.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['showblocks'] = showBlocks;
+    showBlocks.zeroArgBlock();
+    showBlocks.staticLabels.push('show');
+
+    var hideBlocks = new ProtoBlock('hideblocks');
+    hideBlocks.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['hideblocks'] = hideBlocks;
+    hideBlocks.zeroArgBlock();
+    hideBlocks.staticLabels.push('hide');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

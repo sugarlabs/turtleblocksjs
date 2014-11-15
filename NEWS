@@ -126,12 +126,13 @@ TODO:
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
+  * label box values during debug mode
 
 BUGS:
   * don't save full-sized bitmap to session
   * fix canvas sizing, resizing
   * cannot open same file twice in a row (no change event?)
-  * occasional misplaced DOM textarea
-  * occasional bad init
+  * occasional misplaced DOM textarea ???
+  * occasional bad init ???
   * fill broken in save to SVG
   * reposition trash, buttons in portrait mode

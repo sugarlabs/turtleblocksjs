@@ -15,6 +15,7 @@
 var evalFlowDict = {
     'publish': "if (args.length == 1) {doPublish(args[0]);};",
     'savesvg': "if (args.length == 1) {doSaveSVG(canvas, turtles, args[0])};",
+    'print': "if (args.length == 1) {msgContainer.visible = true; msgText.text = args[0].toString(); msgContainer.updateCache(); stage.swapChildren(msgContainer, last(stage.children));};",
     'showblocks': "showBlocks(); turtleDelay = DEFAULTDELAY;",
     'hideblocks': "hideBlocks(); turtleDelay = 0;",
 };

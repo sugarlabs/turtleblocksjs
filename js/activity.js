@@ -900,14 +900,6 @@ define(function (require) {
                     childFlowCount = 1;
                 }
                 break;
-            case 'print':
-                if (args.length == 1) {
-                    msgContainer.visible = true;
-                    msgText.text = args[0].toString();
-                    msgContainer.updateCache();
-                    stage.swapChildren(msgContainer, last(stage.children));
-                }
-                break;
             case 'do':
                 if (args.length == 1) {
                     var foundAction = false;

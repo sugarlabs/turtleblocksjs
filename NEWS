@@ -114,6 +114,8 @@
   * fixed bug with new start block after clear all
   * show parameter values on blocks when running in debig mode
   * show and hide blocks
+  * added keyboard short cuts
+  * added keyboard sensor
 
 TODO:
   * use busy cursor where approporate
@@ -122,7 +124,6 @@ TODO:
   * more sensors
   * implement if-then-else, while, until
   * implement and or not
-  * keyboard short cuts
   * i18n
   * RTL support
   * scroll instead of zoom?
@@ -131,10 +132,10 @@ TODO:
   * fix race condition in palettes load
 
 BUGS:
+  * something funny going on with if block
   * don't save full-sized bitmap to session
   * fix canvas sizing, resizing
   * cannot open same file twice in a row (no change event?)
-  * occasional misplaced DOM textarea ???
   * occasional bad init ???
   * fill broken in save to SVG
   * reposition trash, buttons in portrait mode

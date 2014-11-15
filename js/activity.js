@@ -64,6 +64,10 @@ define(function (require) {
         var blocks;
         var thumbnails;
         var thumbnailsVisible = false;
+	var buttonsVisible = true;
+	var currentKey = '';
+	var currentKeyCode = 0;
+	var lastKeyCode = 0;
 
         // default values
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
@@ -97,6 +101,11 @@ define(function (require) {
 
         var onAndroid = /Android/i.test(navigator.userAgent);
         console.log('on Android? ' + onAndroid);
+
+        var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
+        console.log('on XO? ' + onXO);
+
+	var onscreenButtons = [];
 
         fastButton.onclick = function () {
             doFastButton();
@@ -389,7 +398,6 @@ define(function (require) {
             // Scale the canvas relative to the screen size.
             onResize();
 
-            var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
             if (onAndroid || !onXO) {
                 setupAndroidToolbar();
             } else {
@@ -421,7 +429,61 @@ define(function (require) {
                 stageMouseDown = false;
             });
 
+	    this.document.onkeydown = keyPressed;
         }
+
+	function keyPressed(event) {
+	    var ESC = 27;
+	    var ALT = 18
+;	    var CTRL = 17;
+	    var SHIFT = 16;
+	    var RETURN = 13;
+	    var SPACE = 32;
+
+	    // Captured by browser
+	    var PAGE_UP = 33;
+	    var PAGE_DOWN = 34;
+	    var KEYCODE_LEFT = 37;
+	    var KEYCODE_RIGHT = 39;
+	    var KEYCODE_UP = 38;
+	    var KEYCODE_DOWN = 40;
+
+	    if (event.altKey) {
+		console.log('ALT KEY');
+		switch (event.keyCode) {
+		case 82:  // 'R'
+                    console.log('ALT R');
+		    doFastButton();
+		    break;
+		case 83:  // 'S'
+                    console.log('ALT S');
+		    doStopTurtle();
+		    break;
+		}
+	    }
+
+	    if (event.ctrlKey) {
+		console.log('CTRL KEY');
+	    }
+
+	    switch(event.keyCode) {
+	    case ESC:
+		// toggle full screen
+                console.log('ESC');
+		toggleToolbar();
+		break
+	    case RETURN:
+		// toggle run
+                console.log('RETURN');
+		runLogoCommands();
+		break
+	    default:
+		currentKey = String.fromCharCode(event.keyCode);
+		currentKeyCode = event.keyCode;
+		console.log('[' + currentKeyCode + '] ' + currentKey);
+		break;
+	    }
+	}
 
         function onResize() {
             var w = window.innerWidth;
@@ -699,6 +761,19 @@ define(function (require) {
                 case 'pensize':
                     value = turtles.turtleList[turtle].stroke;
                     break;
+                case 'time':
+		    var d = new Date();
+                    value = (d.getTime() - time) / 1000;
+                    break;
+                case 'mousex':
+                    value = stageX;
+                    break;
+                case 'mousey':
+                    value = stageY;
+                    break;
+                case 'keyboard':
+                    value = lastKeyCode;
+                    break;
                 default:
                     console.log('??? ' + blocks.blockList[blk].name);
                     break;
@@ -799,6 +874,7 @@ define(function (require) {
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
                 this.parameterQueue[turtle] = [];
+		console.log(this.parameterQueue);
                 runFromBlock(this, turtle, startHere);
             } else if (startBlocks.length > 0) {
                 // If there are start blocks, run them all.
@@ -1111,8 +1187,9 @@ define(function (require) {
                     }
                 }
                 if (turtleDelay > 0) {
-                    for (pblk in this.parameterQueue[turtle]) {
-                        updateParameterBlock(turtle, this.parameterQueue[turtle][pblk]);
+		    console.log(turtle + ' ' + activity.parameterQueue);
+                    for (pblk in activity.parameterQueue[turtle]) {
+                        updateParameterBlock(turtle, activity.parameterQueue[turtle][pblk]);
                     }
                 }
 
@@ -1480,32 +1557,45 @@ define(function (require) {
             // Upper left
             var container = makeButton('fast-button', 0, 0);
             loadFastButtonHandler(container, doFastButton);
+	    onscreenButtons.push(container);
             var container = makeButton('slow-button', 55, 0);
             loadFastButtonHandler(container, doSlowButton);
+	    onscreenButtons.push(container);
             var container = makeButton('stop-turtle-button', 110, 0);
             loadFastButtonHandler(container, doStopButton);
+	    onscreenButtons.push(container);
             var container = makeButton('clear-button', 165, 0);
             loadFastButtonHandler(container, allClear);
+	    onscreenButtons.push(container);
             var container = makeButton('palette-button', 220, 0);
             loadFastButtonHandler(container, changePaletteVisibility);
+	    onscreenButtons.push(container);
             var container = makeButton('hide-blocks-button', 275, 0);
             loadFastButtonHandler(container, changeBlockVisibility);
+	    onscreenButtons.push(container);
             // Lower right
             var container = makeButton('copy-button', 1135, 515);
             loadFastButtonHandler(container, selectStackToCopy);
+	    onscreenButtons.push(container);
             var container = makeButton('paste-button', 1135, 570);
             loadFastButtonHandler(container, pasteStack);
+	    onscreenButtons.push(container);
             var container = makeButton('Cartesian-button', 1135, 625);
             loadFastButtonHandler(container, doCartesian);
+	    onscreenButtons.push(container);
             var container = makeButton('polar-button', 1135, 680);
             loadFastButtonHandler(container, doPolar);
+	    onscreenButtons.push(container);
             var container = makeButton('samples-button', 1135, 735);
             loadFastButtonHandler(container, doOpenSamples);
+	    onscreenButtons.push(container);
             var container = makeButton('open-button', 1135, 790);
             loadFastButtonHandler(container, doOpen);
+	    onscreenButtons.push(container);
             if (server) {
                 var container = makeButton('save-button', 1135, 845);
                 loadFastButtonHandler(container, doSave);
+		onscreenButtons.push(container);
 
                 var saveName = docById('mySaveName');
                 saveName.style.position = 'absolute';
@@ -1518,6 +1608,32 @@ define(function (require) {
                 saveName.style.visibility = 'hidden';
             }
 
+        }
+
+        function toggleToolbar() {
+	    console.log('toogleToolbar ' + buttonsVisible);
+	    if (buttonsVisible) {
+		buttonsVisible = false;
+		if (onAndroid || !onXO) {
+		    for (button in onscreenButtons) {
+			onscreenButtons[button].visible = false;
+		    }
+		} else {
+		    var toolbar = docById("main-toolbar");
+		    toolbar.style.display = "none";
+		}
+	    } else {
+		buttonsVisible = true;
+		if (onAndroid || !onXO) {
+		    for (button in onscreenButtons) {
+			onscreenButtons[button].visible = true;
+		    }
+		} else {
+		    var toolbar = docById("main-toolbar");
+		    toolbar.style.display = "inline";
+		}
+	    }
+	    update = true;
         }
 
         function makeButton(name, x, y) {

@@ -25,6 +25,7 @@ var evalArgDict = {
     'mousex': 'blocks.blockList[blk].value = stageX;',
     'mousey': 'blocks.blockList[blk].value = stageY;',
     'mousebutton': 'blocks.blockList[blk].value = stageMouseDown;',
+    'keyboard': 'blocks.blockList[blk].value = currentKeyCode; lastKeyCode = currentKeyCode; currentKey = ""; currentKeyCode = 0;',
 };
 
 // Define block prototypes here
@@ -55,6 +56,12 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
     mousebuttonBlock.boolean0ArgBlock()
     mousebuttonBlock.staticLabels.push('mouse button');
+
+    var keyboardBlock = new ProtoBlock('keyboard');
+    keyboardBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['keyboard'] = keyboardBlock;
+    keyboardBlock.parameterBlock();
+    keyboardBlock.staticLabels.push('keyboard');
 
     // Extras palette
     var pubBlock = new ProtoBlock('publish');

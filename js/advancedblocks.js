@@ -15,7 +15,7 @@
 var evalFlowDict = {
     'publish': "if (args.length == 1) {doPublish(args[0]);};",
     'savesvg': "if (args.length == 1) {doSaveSVG(canvas, turtles, args[0])};",
-    'showblocks': "showBlocks(); turtleDelay = defaultDelay;",
+    'showblocks': "showBlocks(); turtleDelay = DEFAULTDELAY;",
     'hideblocks': "hideBlocks(); turtleDelay = 0;",
 };
 
@@ -30,7 +30,7 @@ var evalArgDict = {
 function initAdvancedProtoBlocks(palettes, blocks) {
     blocks.palettes = palettes;
 
-    // Sensors palette    
+    // Sensors palette
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['time'] = timeBlock;

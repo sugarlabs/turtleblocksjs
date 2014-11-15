@@ -10,10 +10,10 @@
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
 // Turtles
-var defaultColor = 5;
-var defaultValue = 50;
-var defaultChroma = 100;
-var defaultStroke = 5;
+var DEFAULTCOLOR = 5;
+var DEFAULTVALUE = 50;
+var DEFAULTCHROMA = 100;
+var DEFAULTSTROKE = 5;
 
 // Turtle sprite
 var turtlePath = 'images/turtle.svg';
@@ -43,10 +43,10 @@ function Turtle (name, turtles) {
     // Things used for what the turtle draws.
     this.drawingCanvas = null;
     this.svgOutput = '';
-    this.color = defaultColor;
-    this.value = defaultValue;
-    this.chroma = defaultChroma;
-    this.stroke = defaultStroke;
+    this.color = DEFAULTCOLOR;
+    this.value = DEFAULTVALUE;
+    this.chroma = DEFAULTCHROMA;
+    this.stroke = DEFAULTSTROKE;
     this.canvasColor = '#ff0031';
     this.orientation = 0;
     this.fillState = false;
@@ -137,9 +137,9 @@ function Turtle (name, turtles) {
         this.orientation = 0.0;
         var i = this.turtles.turtleList.indexOf(this) % 10;
         this.color = 5 + (i * 10);
-        this.value = defaultValue;
-        this.chroma = defaultChroma;
-        this.stroke = defaultStroke;
+        this.value = DEFAULTVALUE;
+        this.chroma = DEFAULTCHROMA;
+        this.stroke = DEFAULTSTROKE;
         this.container.x = this.turtles.turtleX2screenX(this.x);
         this.container.y = this.turtles.turtleY2screenY(this.y);
 
@@ -260,8 +260,8 @@ function Turtle (name, turtles) {
         }
         var image = new Image();
         image.src = myImage;
-	var me = this;
-	image.onload = function() {
+        var me = this;
+        image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
             me.turtles.stage.addChild(bitmap);
             me.media.push(bitmap);
@@ -274,7 +274,7 @@ function Turtle (name, turtles) {
             bitmap.regY = image.height / 2;
             bitmap.rotation = me.orientation;
             me.turtles.refreshCanvas();
-	}
+        }
     }
 
     this.doShowURL = function(size, myURL) {
@@ -284,8 +284,8 @@ function Turtle (name, turtles) {
         }
         var image = new Image();
         image.src = myURL;
-	var me = this;
-	image.onload = function() {
+        var me = this;
+        image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
             me.turtles.stage.addChild(bitmap);
             me.media.push(bitmap);
@@ -298,7 +298,7 @@ function Turtle (name, turtles) {
             bitmap.regY = image.height / 2;
             bitmap.rotation = me.orientation;
             me.turtles.refreshCanvas();
-	}
+        }
     }
 
     this.doTurtleShell = function(size, myImage) {
@@ -308,7 +308,7 @@ function Turtle (name, turtles) {
         }
         var image = new Image();
         image.src = myImage;
-	var me = this;
+        var me = this;
         image.onload = function() {
             me.container.removeChild(me.bitmap);
             me.bitmap = new createjs.Bitmap(image);
@@ -489,7 +489,7 @@ function Turtles(canvas, stage, refreshCanvas) {
         makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
 
         myTurtle.color = 5 + (i * 10);
-        myTurtle.canvasColor = getMunsellColor(myTurtle.color, defaultValue, defaultChroma);
+        myTurtle.canvasColor = getMunsellColor(myTurtle.color, DEFAULTVALUE, DEFAULTCHROMA);
 
         var turtles = this;
 

@@ -113,6 +113,7 @@
   * added 'any' docking parameter
   * fixed bug with new start block after clear all
   * show parameter values on blocks when running in debig mode
+  * show and hide blocks
 
 TODO:
   * use busy cursor where approporate
@@ -127,6 +128,7 @@ TODO:
   * scroll instead of zoom?
   * use graphical error messages
   * label box values during debug mode
+  * fix race condition in palettes load
 
 BUGS:
   * don't save full-sized bitmap to session

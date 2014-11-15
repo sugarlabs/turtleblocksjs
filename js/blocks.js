@@ -188,7 +188,7 @@ function ProtoBlock(name) {
 
     this.parameterBlock = function() {
         this.style = 'arg';
-	this.parameter = true;
+        this.parameter = true;
         this.size = 1;
         this.args = 0;
         this.artwork = VALUEBLOCK;
@@ -867,12 +867,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (type1 == 'mediain' && type2 == 'textout') {
             return true;
         }
-	if (type1 == 'anyin' && ['textout', 'mediaout', 'numberout'].indexOf(type2) != -1) {
-	    return true;
-	}
-	if (type2 == 'anyin' && ['textout', 'mediaout', 'numberout'].indexOf(type1) != -1) {
-	    return true;
-	}
+        if (type1 == 'anyin' && ['textout', 'mediaout', 'numberout'].indexOf(type2) != -1) {
+            return true;
+        }
+        if (type2 == 'anyin' && ['textout', 'mediaout', 'numberout'].indexOf(type1) != -1) {
+            return true;
+        }
         return false;
     }
 
@@ -950,10 +950,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // console.log('block not ready');
             return;
         }
-	var label = myBlock.value.toString();
-	if (label.length > 8) {
-	    label = label.substr(0, 7) + '...';
-	}
+        var label = myBlock.value.toString();
+        if (label.length > 8) {
+            label = label.substr(0, 7) + '...';
+        }
         myBlock.text.text = label;
 
         // Make sure text is on top.
@@ -1143,7 +1143,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 this.expandablesList.push(i);
             } else if (this.blockList[i].isSpecialBlock()) {
                 this.expandablesList.push(i);
-	    }
+            }
         }
     }
 
@@ -1240,7 +1240,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             loadEventHandlers(me, me.turtles, myBlock);
             me.refreshCanvas();
 
-            console.log('calling finishImageLoad for ' + myBlock.name);
             me.finishImageLoad(myBlock);
         }
 
@@ -1266,11 +1265,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
 
-	    var label = myBlock.value.toString();
-	    if (label.length > 8) {
-		label = label.substr(0, 7) + '...';
-	    }
-	    myBlock.text = new createjs.Text(label, '20px Arial', '#000000');
+            var label = myBlock.value.toString();
+            if (label.length > 8) {
+                label = label.substr(0, 7) + '...';
+            }
+            myBlock.text = new createjs.Text(label, '20px Arial', '#000000');
             myBlock.text.textAlign = 'center';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
@@ -1285,9 +1284,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.updateCache();
         }
 
-	if (myBlock.protoblock.parameter) {
-	    // Parameter blocks get a text label to show their current value
-	    myBlock.text = new createjs.Text('', '20px Arial', '#000000');
+        if (myBlock.protoblock.parameter) {
+            // Parameter blocks get a text label to show their current value
+            myBlock.text = new createjs.Text('', '20px Arial', '#000000');
             myBlock.text.textAlign = 'right';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
@@ -1297,9 +1296,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             lastChild = last(myBlock.container.children);
             myBlock.container.swapChildren(myBlock.text, lastChild);
             myBlock.container.updateCache();
-	}
+        }
 
-	if (myBlock.isExpandableBlock()) {
+        if (myBlock.isExpandableBlock()) {
             // Expandable blocks also have some extra parts.
             if (myBlock.isArgBlock()) {
                 var bottomArtwork = ARG2BLOCKBOTTOM;
@@ -1619,27 +1618,27 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (myBlock.docks[i + 1][2] == 'anyin') {
                 if (value == null) {
                     console.log('cannot set default value');
-		} else if (typeof(value) == 'string') {
+                } else if (typeof(value) == 'string') {
                     this.makeNewBlock('text');
                     last(this.blockList).value = value;
-		    var label = value.toString();
-		    if (label.length > 8) {
-			label = label.substr(0, 7) + '...';
-		    }
+                    var label = value.toString();
+                    if (label.length > 8) {
+                        label = label.substr(0, 7) + '...';
+                    }
                     if (last(this.blockList).text == null) {
-			console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
-		    } else {
-			last(this.blockList).text.text = label;
-		    }
-		} else {
+                        console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
+                    } else {
+                        last(this.blockList).text.text = label;
+                    }
+                } else {
                     this.makeNewBlock('number');
                     last(this.blockList).value = value;
                     if (last(this.blockList).text == null) {
-			console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
-		    } else {
-			last(this.blockList).text.text = value.toString();
-		    }
-		}
+                        console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
+                    } else {
+                        last(this.blockList).text.text = value.toString();
+                    }
+                }
             } else if (myBlock.docks[i + 1][2] == 'textin') {
                 this.makeNewBlock('text');
                 last(this.blockList).value = value;
@@ -1649,10 +1648,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     if (value == null) {
                         last(this.blockList).text.text = '---';
                     } else {
-			var label = value.toString();
-			if (label.length > 8) {
-			    label = label.substr(0, 7) + '...';
-			}
+                        var label = value.toString();
+                        if (label.length > 8) {
+                            label = label.substr(0, 7) + '...';
+                        }
                         last(this.blockList).text.text = label;
                     }
                 }
@@ -2209,10 +2208,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // We need to wait for the blocks to load before expanding them.
         setTimeout(function() {
-            blockBlocks.expandClamps();
+            blockBlocks.expand2Args();
         }, 1000);
         setTimeout(function() {
-            blockBlocks.expand2Args();
+            blockBlocks.expandClamps();
         }, 2000);
     }
 
@@ -2383,10 +2382,10 @@ function labelChanged() {
     // Update the block value and label.
     if (myBlock.label != null) {
         myBlock.value = myBlock.label.value;
-	var label = myBlock.value.toString();
-	if (label.length > 8) {
-	    label = label.substr(0, 7) + '...';
-	}
+        var label = myBlock.value.toString();
+        if (label.length > 8) {
+            label = label.substr(0, 7) + '...';
+        }
         myBlock.text.text = label;
         // and hide the DOM textview...
         myBlock.label.style.display = 'none';
@@ -2725,13 +2724,13 @@ function loadEventHandlers(blocks, turtles, myBlock) {
 
                 if (myBlock.name == 'start') {
                     turtle = myBlock.value;
-		    if (turtle != null) {
-			console.log('putting turtle ' + turtle + ' in the trash');
-			turtles.turtleList[turtle].trash = true;
-			turtles.turtleList[turtle].container.visible = false;
-		    } else {
-			console.log('null turtle');
-		    }
+                    if (turtle != null) {
+                        console.log('putting turtle ' + turtle + ' in the trash');
+                        turtles.turtleList[turtle].trash = true;
+                        turtles.turtleList[turtle].container.visible = false;
+                    } else {
+                        console.log('null turtle');
+                    }
                 }
 
                 // put drag group in trash
@@ -2747,7 +2746,7 @@ function loadEventHandlers(blocks, turtles, myBlock) {
                 // otherwise, process move
                 blocks.blockMoved(thisBlock);
             }
-	}
+        }
         if (blocks.activeBlock != myBlock) {
             return;
         }

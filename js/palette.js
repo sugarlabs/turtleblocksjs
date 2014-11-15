@@ -44,18 +44,18 @@ function Palettes (canvas, stage, refreshCanvas) {
     this.stage.addChild(this.container);
 
     this.setScale = function(scale) {
-	this.scale = scale;
+        this.scale = scale;
     }
 
     this.makeMenu = function() {
         // First, an icon/button for each palette
-	if (screen.width != 1200) {
+        if (screen.width != 1200) {
             this.x = 0;
             this.y = 55;
-	} else {
+        } else {
             this.x = 55;
-	    this.y = 0;
-	}
+            this.y = 0;
+        }
         for (var name in this.dict) {
             if (name in this.buttons) {
                 // console.log('button ' + name + ' has already been created');
@@ -220,7 +220,7 @@ function Palette (palettes, name, color, bgcolor) {
             this.menuContainer = new createjs.Container();
 
             function processHeader(me, name, bitmap, extras) {
-		console.log('menu header for ' + name + ' ' + me.name);
+                console.log('menu header for ' + name + ' ' + me.name);
                 me.menuContainer.addChild(bitmap);
 
                 var image = new Image();
@@ -278,7 +278,7 @@ function Palette (palettes, name, color, bgcolor) {
                 // create graphics for the palette entry for this block
                 this.protoContainers[modname] = new createjs.Container();
                 this.protoContainers[modname].x = this.menuContainer.x;
-		var y = this.menuContainer.y + this.y + 42;
+                var y = this.menuContainer.y + this.y + 42;
                 this.protoContainers[modname].y = this.menuContainer.y + this.y + 42;
                 this.palettes.stage.addChild(this.protoContainers[modname]);
                 this.protoContainers[modname].visible = false;
@@ -291,12 +291,12 @@ function Palette (palettes, name, color, bgcolor) {
                     height += 42;
                 }
                 this.size += Math.ceil(height * paletteScale);
-		this.y += Math.ceil(height * paletteScale);
+                this.y += Math.ceil(height * paletteScale);
 
                 function processFiller(me, modname, bitmap, extras) {
                     me.protoContainers[modname].addChild(bitmap);
                     bitmap.y = 0;
-		    me.finishPaletteEntry(extras[0], modname, extras[1]);
+                    me.finishPaletteEntry(extras[0], modname, extras[1]);
                 }
 
                 makePaletteBitmap(this, PALETTEFILLER.replace(/filler_height/g, height.toString()), modname, processFiller, [blkname, blk]);
@@ -343,11 +343,11 @@ function Palette (palettes, name, color, bgcolor) {
             bitmap.scale = paletteScale;
 
             if (!me.protoList[blk].expandable) {
-		bounds = me.protoContainers[modname].getBounds();
-		me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-		loadPaletteMenuItemHandler(me, blk, modname, me);
-		me.palettes.refreshCanvas();
-	    }
+                bounds = me.protoContainers[modname].getBounds();
+                me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                loadPaletteMenuItemHandler(me, blk, modname, me);
+                me.palettes.refreshCanvas();
+            }
         }
 
         makePaletteBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBitmap, blk);
@@ -378,9 +378,9 @@ function Palette (palettes, name, color, bgcolor) {
                 bitmap.scale = paletteScale;
                 bitmap.x = 20;
                 bitmap.y = yoff;
-		bounds = me.protoContainers[modname].getBounds();
-		me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-		loadPaletteMenuItemHandler(me, blk, modname, me);
+                bounds = me.protoContainers[modname].getBounds();
+                me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                loadPaletteMenuItemHandler(me, blk, modname, me);
                 me.palettes.refreshCanvas();
             }
 
@@ -425,12 +425,12 @@ function Palette (palettes, name, color, bgcolor) {
     this.hideMenuItems = function(init) {
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = false;
-	    try {
-		this.protoContainers[i].updateCache();
-	    } catch (e) {
-		console.log('container not ready?');
-		console.log(e);
-	    }
+            try {
+                this.protoContainers[i].updateCache();
+            } catch (e) {
+                console.log('container not ready?');
+                console.log(e);
+             }
         }
         this.visible = false;
         // Move the menus below up

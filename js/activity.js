@@ -66,10 +66,10 @@ define(function (require) {
         var thumbnailsVisible = false;
 
         // default values
-        var defaultBackgroundColor = [70, 80, 20];
-        var defaultDelay = 500;  // milleseconds
+        var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
+        var DEFAULTDELAY = 500;  // milleseconds
 
-        var turtleDelay = defaultDelay;
+        var turtleDelay = DEFAULTDELAY;
 
         // Time when we hit run
         var time = 0;
@@ -112,7 +112,7 @@ define(function (require) {
         }
 
         function doSlowButton() {
-            turtleDelay = defaultDelay;
+            turtleDelay = DEFAULTDELAY;
             runLogoCommands();
         }
 
@@ -203,11 +203,7 @@ define(function (require) {
         var boxList = [];
 
         // Set the default background color...
-        var canvasColor = getMunsellColor(
-            defaultBackgroundColor[0], defaultBackgroundColor[1], defaultBackgroundColor[2]);
         setBackgroundColor(-1);
-        // then set default canvas color.
-        canvasColor = getMunsellColor(defaultColor, defaultValue, defaultChroma);
 
         // Coordinate grid
         var cartesianBitmap = null;
@@ -215,15 +211,15 @@ define(function (require) {
         // Polar grid
         var polarBitmap = null;
 
-	// Msg block
-	var msgContainer = null;
-	var msgBlock = null;
-	var msgText = null;
+        // Msg block
+        var msgContainer = null;
+        var msgBlock = null;
+        var msgText = null;
 
-	// ErrorMsg block
-	var errorMsgContainer = null;
-	var errorMsgBlock = null;
-	var errorMsgText = null;
+        // ErrorMsg block
+        var errorMsgContainer = null;
+        var errorMsgBlock = null;
+        var errorMsgText = null;
 
         // Get things started
         init();
@@ -232,7 +228,7 @@ define(function (require) {
             docById('loader').className = 'loader';
 
             stage = new createjs.Stage(canvas);
-	    createjs.Touch.enable(stage);
+            createjs.Touch.enable(stage);
             createjs.Ticker.addEventListener('tick', tick);
             trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash, sendAllToTrash);
             turtles = new Turtles(canvas, stage, refreshCanvas);
@@ -309,75 +305,75 @@ define(function (require) {
             polarBitmap.visible = false;
             polarBitmap.updateCache();
 
-	    msgContainer = new createjs.Container();
-	    stage.addChild(msgContainer);
-	    msgContainer.x = (canvas.width - 1000) / 2;
-	    msgContainer.y = 110;
-	    msgContainer.visible = false;
+            msgContainer = new createjs.Container();
+            stage.addChild(msgContainer);
+            msgContainer.x = (canvas.width - 1000) / 2;
+            msgContainer.y = 110;
+            msgContainer.visible = false;
 
-	    var DOMURL = window.URL || window.webkitURL || window;
-	    var img = new Image();
-	    var svg = new Blob([MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#7a7a7a')], {type: 'image/svg+xml;charset=utf-8'});
-	    var url = DOMURL.createObjectURL(svg);
-	    img.onload = function () {
-		msgBlock = new createjs.Bitmap(img);
-		DOMURL.revokeObjectURL(url);
-		msgContainer.addChild(msgBlock);
-		msgText = new createjs.Text('your message here', '20px Arial', '#000000');
-		msgContainer.addChild(msgText);
-		msgText.textAlign = 'center';
-		msgText.textBaseline = 'alphabetic';
+            var DOMURL = window.URL || window.webkitURL || window;
+            var img = new Image();
+            var svg = new Blob([MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#7a7a7a')], {type: 'image/svg+xml;charset=utf-8'});
+            var url = DOMURL.createObjectURL(svg);
+            img.onload = function () {
+                msgBlock = new createjs.Bitmap(img);
+                DOMURL.revokeObjectURL(url);
+                msgContainer.addChild(msgBlock);
+                msgText = new createjs.Text('your message here', '20px Arial', '#000000');
+                msgContainer.addChild(msgText);
+                msgText.textAlign = 'center';
+                msgText.textBaseline = 'alphabetic';
                 msgText.x = 500;
                 msgText.y = 30;
-		var bounds = msgContainer.getBounds();
-		msgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-		var hitArea = new createjs.Shape();
-		hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
-		hitArea.x = 0;
-		hitArea.y = 0;
-		msgContainer.hitArea = hitArea;
+                var bounds = msgContainer.getBounds();
+                msgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
+                hitArea.x = 0;
+                hitArea.y = 0;
+                msgContainer.hitArea = hitArea;
 
-		msgContainer.on('click', function(event) {
-		    msgContainer.visible = false;
-		    update = true;
-		});
-	    }
-	    img.src = url;
+                msgContainer.on('click', function(event) {
+                    msgContainer.visible = false;
+                    update = true;
+                });
+            }
+            img.src = url;
 
-	    errorMsgContainer = new createjs.Container();
-	    stage.addChild(errorMsgContainer);
-	    errorMsgContainer.x = (canvas.width - 1000) / 2;
-	    errorMsgContainer.y = 110;
-	    errorMsgContainer.visible = false;
+            errorMsgContainer = new createjs.Container();
+            stage.addChild(errorMsgContainer);
+            errorMsgContainer.x = (canvas.width - 1000) / 2;
+            errorMsgContainer.y = 110;
+            errorMsgContainer.visible = false;
 
-	    var DOMURL = window.URL || window.webkitURL || window;
-	    var img = new Image();
-	    var svg = new Blob([MSGBLOCK.replace('fill_color', '#ffcbc4').replace('stroke_color', '#ff0031')], {type: 'image/svg+xml;charset=utf-8'});
-	    var url = DOMURL.createObjectURL(svg);
-	    img.onload = function () {
-		errorMsgBlock = new createjs.Bitmap(img);
-		DOMURL.revokeObjectURL(url);
-		errorMsgContainer.addChild(errorMsgBlock);
-		errorMsgText = new createjs.Text('your message here', '20px Arial', '#000000');
-		errorMsgContainer.addChild(errorMsgText);
-		errorMsgText.textAlign = 'center';
-		errorMsgText.textBaseline = 'alphabetic';
+            var DOMURL = window.URL || window.webkitURL || window;
+            var img = new Image();
+            var svg = new Blob([MSGBLOCK.replace('fill_color', '#ffcbc4').replace('stroke_color', '#ff0031')], {type: 'image/svg+xml;charset=utf-8'});
+            var url = DOMURL.createObjectURL(svg);
+            img.onload = function () {
+                errorMsgBlock = new createjs.Bitmap(img);
+                DOMURL.revokeObjectURL(url);
+                errorMsgContainer.addChild(errorMsgBlock);
+                errorMsgText = new createjs.Text('your message here', '20px Arial', '#000000');
+                errorMsgContainer.addChild(errorMsgText);
+                errorMsgText.textAlign = 'center';
+                errorMsgText.textBaseline = 'alphabetic';
                 errorMsgText.x = 500;
                 errorMsgText.y = 30;
-		var bounds = errorMsgContainer.getBounds();
-		errorMsgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-		var hitArea = new createjs.Shape();
-		hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
-		hitArea.x = 0;
-		hitArea.y = 0;
-		errorMsgContainer.hitArea = hitArea;
+                var bounds = errorMsgContainer.getBounds();
+                errorMsgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
+                hitArea.x = 0;
+                hitArea.y = 0;
+                errorMsgContainer.hitArea = hitArea;
 
-		errorMsgContainer.on('click', function(event) {
-		    errorMsgContainer.visible = false;
-		    update = true;
-		});
-	    }
-	    img.src = url;
+                errorMsgContainer.on('click', function(event) {
+                    errorMsgContainer.visible = false;
+                    update = true;
+                });
+            }
+            img.src = url;
 
             var URL = window.location.href;
             console.log(URL);
@@ -393,13 +389,13 @@ define(function (require) {
             // Scale the canvas relative to the screen size.
             onResize();
 
-	    var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
+            var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
             if (onAndroid || !onXO) {
                 setupAndroidToolbar();
             } else {
-		var saveName = docById('mySaveName');
+                var saveName = docById('mySaveName');
                 saveName.style.visibility = 'hidden';
-	    }
+            }
 
             thumbnails.setServer(server);
 
@@ -431,16 +427,16 @@ define(function (require) {
             var w = window.innerWidth;
             var h = window.innerHeight;
             // scale = Math.min(w / canvas.width, h / canvas.height);
-	    // scale = w / canvas.width;
-	    if (w > h) {
-		scale = Math.max(w / 1200, 1.0);
-		stage.canvas.width = 1200 * scale;
-		stage.canvas.height = 900 * scale
-	    } else {
-		scale = w / 900;
-		stage.canvas.width = Math.max(900 * scale, 1.0);
-		stage.canvas.height = 1200 * scale
-	    }
+            // scale = w / canvas.width;
+            if (w > h) {
+                scale = Math.max(w / 1200, 1.0);
+                stage.canvas.width = 1200 * scale;
+                stage.canvas.height = 900 * scale
+            } else {
+                scale = w / 900;
+                stage.canvas.width = Math.max(900 * scale, 1.0);
+                stage.canvas.height = 1200 * scale
+            }
             stage.scaleX = scale;
             stage.scaleY = scale;
             // stage.canvas.width = canvas.width * scale;
@@ -496,7 +492,7 @@ define(function (require) {
                 last(blocks.blockList).y = 50;
                 last(blocks.blockList).connections = [null, null, null];
                 turtles.add(last(blocks.blockList));
-		last(blocks.blockList).value = turtles.turtleList.length - 1;
+                last(blocks.blockList).value = turtles.turtleList.length - 1;
             }
             // Overwrite session data too.
             console.log('overwriting session data');
@@ -599,7 +595,7 @@ define(function (require) {
                 projectName += '.tb';
             }
             try {
-                // Post the project                                             
+                // Post the project
                 var returnValue = httpPost(projectName, prepareExport());
 
                 var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
@@ -611,12 +607,12 @@ define(function (require) {
                 image.onload = function() {
                     var bitmap = new createjs.Bitmap(image);
                     var bounds = bitmap.getBounds();
-		    bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                    bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                     // and base64-encoded png
                     httpPost(projectName.replace('.tb', '.b64'), bitmap.getCacheDataURL());
                     DOMURL.revokeObjectURL(url);
-		}
-		image.src = url;
+                }
+                image.src = url;
                 return returnValue;
             } catch (e) {
                 console.log(e);
@@ -660,58 +656,58 @@ define(function (require) {
         //    turtles.add(myBlock);
         // }
 
-	function errorMsg(msg) {
-	    errorMsgContainer.visible = true;
-	    errorMsgText.text = msg;
-	    errorMsgContainer.updateCache();
+        function errorMsg(msg) {
+            errorMsgContainer.visible = true;
+            errorMsgText.text = msg;
+            errorMsgContainer.updateCache();
             stage.swapChildren(errorMsgContainer, last(stage.children));
-	}
+        }
 
-	function clearParameterBlocks() {
-	    for (blk in blocks.blockList) {
-		if (blocks.blockList[blk].parameter) {
-		    blocks.blockList[blk].text.text = '';
-		    blocks.blockList[blk].container.updateCache();
-		}
-	    }
-	    update = true;
-	}
+        function clearParameterBlocks() {
+            for (blk in blocks.blockList) {
+                if (blocks.blockList[blk].parameter) {
+                    blocks.blockList[blk].text.text = '';
+                    blocks.blockList[blk].container.updateCache();
+                }
+            }
+            update = true;
+        }
 
-	function updateParameterBlock(turtle, blk) {
-	    // FIXME: how to autogenerate this list?
-	    if (blocks.blockList[blk].protoblock.parameter) {
-		var value = 0;
-		switch (blocks.blockList[blk].name) {
-		case 'x':
-		    value = turtles.turtleList[turtle].x;
-		    break;
-		case 'y':
-		    value = turtles.turtleList[turtle].y;
-		    break;
-		case 'heading':
-		    value = turtles.turtleList[turtle].orientation;
-		    break;
-		case 'color':
-		    value = turtles.turtleList[turtle].color;
-		    break;
-		case 'shade':
-		    value = turtles.turtleList[turtle].value;
-		    break;
-		case 'grey':
-		    value = turtles.turtleList[turtle].chroma;
-		    break;
-		case 'pensize':
-		    value = turtles.turtleList[turtle].stroke;
-		    break;
-		default:
-		    console.log('??? ' + blocks.blockList[blk].name);
-		    break;
-		}
-		blocks.blockList[blk].text.text = Math.round(value).toString();
-		blocks.blockList[blk].container.updateCache();
-		update = true;
-	    }
-	}
+        function updateParameterBlock(turtle, blk) {
+            // FIXME: how to autogenerate this list?
+            if (blocks.blockList[blk].protoblock.parameter) {
+                var value = 0;
+                switch (blocks.blockList[blk].name) {
+                case 'x':
+                    value = turtles.turtleList[turtle].x;
+                    break;
+                case 'y':
+                    value = turtles.turtleList[turtle].y;
+                    break;
+                case 'heading':
+                    value = turtles.turtleList[turtle].orientation;
+                    break;
+                case 'color':
+                    value = turtles.turtleList[turtle].color;
+                    break;
+                case 'shade':
+                    value = turtles.turtleList[turtle].value;
+                    break;
+                case 'grey':
+                    value = turtles.turtleList[turtle].chroma;
+                    break;
+                case 'pensize':
+                    value = turtles.turtleList[turtle].stroke;
+                    break;
+                default:
+                    console.log('??? ' + blocks.blockList[blk].name);
+                    break;
+                }
+                blocks.blockList[blk].text.text = Math.round(value).toString();
+                blocks.blockList[blk].container.updateCache();
+                update = true;
+            }
+        }
 
         function runLogoCommands(startHere) {
             // Save the state before running
@@ -725,8 +721,8 @@ define(function (require) {
             stopTurtle = false;
             blocks.unhighlightAll();
             blocks.bringToTop();  // Draw under blocks.
-	    errorMsgContainer.visible = false;  // hide the error message window
-	    msgContainer.visible = false;  // hide the message window
+            errorMsgContainer.visible = false;  // hide the error message window
+            msgContainer.visible = false;  // hide the message window
 
             // We run the logo commands here.
             var d = new Date();
@@ -781,12 +777,12 @@ define(function (require) {
 
             this.parentFlowQueue = {};
             this.unhightlightQueue = {};
-	    this.parameterQueue = {};
+            this.parameterQueue = {};
 
-	    if (turtleDelay == 0) {
-		// Don't update parameters when running full speed.
-		clearParameterBlocks();
-	    }
+            if (turtleDelay == 0) {
+                // Don't update parameters when running full speed.
+                clearParameterBlocks();
+            }
 
             // (2) Execute the stack.
             // A bit complicated because we have lots of corner cases:
@@ -904,29 +900,29 @@ define(function (require) {
                     childFlowCount = 1;
                 }
                 break;
-	    case 'print':
-		if (args.length == 1) {
-		    msgContainer.visible = true;
-		    msgText.text = args[0].toString();
-		    msgContainer.updateCache();
+            case 'print':
+                if (args.length == 1) {
+                    msgContainer.visible = true;
+                    msgText.text = args[0].toString();
+                    msgContainer.updateCache();
                     stage.swapChildren(msgContainer, last(stage.children));
-		}
-		break;
+                }
+                break;
             case 'do':
                 if (args.length == 1) {
-		    var foundAction = false;
+                    var foundAction = false;
                     for (i = 0; i < actionList.length; i++) {
                         if (actionList[i][0] == args[0]) {
                             childFlow = actionList[i][1];
                             childFlowCount = 1;
-			    foundAction = true;
+                            foundAction = true;
                             break;
                         }
                     }
-		    if (!foundAction) {
-			errorMsg('Cannot find action ' + args[0] + '.');
-			stopTurtle = true;
-		    }
+                    if (!foundAction) {
+                        errorMsg('Cannot find action ' + args[0] + '.');
+                        stopTurtle = true;
+                    }
                 }
                 break;
             case 'forever':
@@ -1003,22 +999,22 @@ define(function (require) {
                 break;
             case 'show':
                 if (args.length == 2) {
-		    if (typeof(args[1]) == 'string') {
-			var len = args[1].length;
-			if (len > 10 && args[1].substr(0, 10) == 'data:image') {
-			    turtles.turtleList[turtle].doShowImage(args[0], args[1]);
-			} else if (len > 8 && args[1].substr(0, 8) == 'https://') {
-			    turtles.turtleList[turtle].doShowURL(args[0], args[1]);
-			} else if (len > 7 && args[1].substr(0, 7) == 'http://') {
-			    turtles.turtleList[turtle].doShowURL(args[0], args[1]);
-			} else if (len > 7 && args[1].substr(0, 7) == 'file://') {
-			    turtles.turtleList[turtle].doShowURL(args[0], args[1]);
-			} else {
-			    turtles.turtleList[turtle].doShowText(args[0], args[1]);
-			}
-		    } else {
-			turtles.turtleList[turtle].doShowText(args[0], args[1]);
-		    }
+                    if (typeof(args[1]) == 'string') {
+                        var len = args[1].length;
+                        if (len > 10 && args[1].substr(0, 10) == 'data:image') {
+                            turtles.turtleList[turtle].doShowImage(args[0], args[1]);
+                        } else if (len > 8 && args[1].substr(0, 8) == 'https://') {
+                            turtles.turtleList[turtle].doShowURL(args[0], args[1]);
+                        } else if (len > 7 && args[1].substr(0, 7) == 'http://') {
+                            turtles.turtleList[turtle].doShowURL(args[0], args[1]);
+                        } else if (len > 7 && args[1].substr(0, 7) == 'file://') {
+                            turtles.turtleList[turtle].doShowURL(args[0], args[1]);
+                        } else {
+                            turtles.turtleList[turtle].doShowText(args[0], args[1]);
+                        }
+                    } else {
+                        turtles.turtleList[turtle].doShowText(args[0], args[1]);
+                    }
                  }
                 break;
             case 'turtleshell':
@@ -1068,7 +1064,7 @@ define(function (require) {
                     eval(evalFlowDict[blocks.blockList[blk].name]);
                 } else {
                     errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.');
-		    stopTurtle = true;
+                    stopTurtle = true;
                 }
                 break;
             }
@@ -1122,11 +1118,11 @@ define(function (require) {
                         setTimeout(function(){blocks.unhighlight(activity.unhightlightQueue[turtle].pop());}, turtleDelay);
                     }
                 }
-		if (turtleDelay > 0) {
-		    for (pblk in this.parameterQueue[turtle]) {
-			updateParameterBlock(turtle, this.parameterQueue[turtle][pblk]);
-		    }
-		}
+                if (turtleDelay > 0) {
+                    for (pblk in this.parameterQueue[turtle]) {
+                        updateParameterBlock(turtle, this.parameterQueue[turtle][pblk]);
+                    }
+                }
 
                 runFromBlock(activity, turtle, nextBlock);
             } else {
@@ -1151,17 +1147,17 @@ define(function (require) {
             // Retrieve the value of a block.
             if (blk == null) {
                 errorMsg('Missing argument');
-		stopTurtle = true;
+                stopTurtle = true;
                 return null
             }
 
-	    if (blocks.blockList[blk].protoblock.parameter) {
-		if (this.parameterQueue[turtle].indexOf(blk) == -1) {
-		    this.parameterQueue[turtle].push(blk);
-		}
-	    }
+            if (blocks.blockList[blk].protoblock.parameter) {
+                if (this.parameterQueue[turtle].indexOf(blk) == -1) {
+                    this.parameterQueue[turtle].push(blk);
+                }
+            }
 
-	    if (blocks.blockList[blk].isValueBlock()) {
+            if (blocks.blockList[blk].isValueBlock()) {
                 return blocks.blockList[blk].value;
             } else if (blocks.blockList[blk].isArgBlock()) {
                 switch (blocks.blockList[blk].name) {
@@ -1170,8 +1166,8 @@ define(function (require) {
                     var name = parseArg(turtle, cblk);
                     var i = findBox(name);
                     if (i == null) {
-			errorMsg('Cannot find box ' + name + '.');
-			stopTurtle = true;
+                        errorMsg('Cannot find box ' + name + '.');
+                        stopTurtle = true;
                         blocks.blockList[blk].value = null;
                     } else {
                         blocks.blockList[blk].value = boxList[i][1];
@@ -1180,12 +1176,12 @@ define(function (require) {
                 case 'sqrt':
                     var cblk = blocks.blockList[blk].connections[1];
                     var a = parseArg(turtle, cblk);
-		    if (a < 0) {
-			errorMsg('Cannot take square root of negative number.');
-			stopTurtle = true;
-			a = -a;
-		    }
-		    blocks.blockList[blk].value = (Math.sqrt(Number(a)));
+                    if (a < 0) {
+                        errorMsg('Cannot take square root of negative number.');
+                        stopTurtle = true;
+                        a = -a;
+                    }
+                    blocks.blockList[blk].value = (Math.sqrt(Number(a)));
                     break;
                 case 'mod':
                     var cblk1 = blocks.blockList[blk].connections[1];
@@ -1371,8 +1367,8 @@ define(function (require) {
 
         function doDivide(a, b) {
             if (Number(b) == 0) {
-		errorMsg('Cannot divide by zero.');
-		stopTurtle = true;
+                errorMsg('Cannot divide by zero.');
+                stopTurtle = true;
                 return 0;
             } else {
                 return Number(a) / Number(b);
@@ -1383,7 +1379,7 @@ define(function (require) {
             /// change body background in DOM to current color
             var body = docById('body');
             if (turtle == -1) {
-                body.style.background = canvasColor;
+                body.style.background = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
             } else {
                 body.style.background = turtles.turtleList[turtle].canvasColor;
             }
@@ -1394,8 +1390,6 @@ define(function (require) {
             // Clear all the boxes.
             boxList = [];
             time = 0;
-            canvasColor = getMunsellColor(
-                defaultBackgroundColor[0], defaultBackgroundColor[1], defaultBackgroundColor[2]);
             setBackgroundColor(-1);
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].doClear();
@@ -1468,19 +1462,19 @@ define(function (require) {
         }
 
         function doSave() {
-	    // FIXME: show input form and then save after name has been entered
+            // FIXME: show input form and then save after name has been entered
 
             // Save file to turtle.sugarlabs.org
             var titleElem = docById("title");
             if (titleElem.value.length == 0) {
-		var saveName = docById('mySaveName');
-		if (saveName.value.length == 0) {
+                var saveName = docById('mySaveName');
+                if (saveName.value.length == 0) {
                     console.log('saving to unknown.tb');
                     return saveProject('unknown.tb');
-		} else {
+                } else {
                     console.log('saving to ' + saveName.value);
                     return saveProject(saveName.value);
-		}
+                }
             } else {
                 console.log('saving to ' + titleElem.value + '.tb');
                 return saveProject(titleElem.value + '.tb');
@@ -1521,16 +1515,16 @@ define(function (require) {
                 var container = makeButton('save-button', 1135, 845);
                 loadFastButtonHandler(container, doSave);
 
-		var saveName = docById('mySaveName');
-		saveName.style.position = 'absolute';
-		var left = 970 * scale;
-		saveName.style.left = canvas.offsetLeft + left + '1000px';
-		var top = 815 * scale;
-		saveName.style.top = canvas.offsetTop + top + 'px';
+                var saveName = docById('mySaveName');
+                saveName.style.position = 'absolute';
+                var left = 970 * scale;
+                saveName.style.left = canvas.offsetLeft + left + '1000px';
+                var top = 815 * scale;
+                saveName.style.top = canvas.offsetTop + top + 'px';
             } else {
-		var saveName = docById('mySaveName');
+                var saveName = docById('mySaveName');
                 saveName.style.visibility = 'hidden';
-	    }
+            }
 
         }
 

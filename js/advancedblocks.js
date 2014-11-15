@@ -15,8 +15,8 @@
 var evalFlowDict = {
     'publish': "if (args.length == 1) {doPublish(args[0]);};",
     'savesvg': "if (args.length == 1) {doSaveSVG(canvas, turtles, args[0])};",
-    'showblocks': "showBlocks();",
-    'hideblocks': "hideBlocks();",
+    'showblocks': "showBlocks(); turtleDelay = defaultDelay;",
+    'hideblocks': "hideBlocks(); turtleDelay = 0;",
 };
 
 var evalArgDict = {

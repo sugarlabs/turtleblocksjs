@@ -31,6 +31,7 @@ function ProtoBlock(name) {
     this.palette = null;
     this.style = null;
     this.expandable = false;
+    this.parameter = false;
     this.yoff = 0;
     this.loff = 0;
     this.args = 0;
@@ -187,6 +188,7 @@ function ProtoBlock(name) {
 
     this.parameterBlock = function() {
         this.style = 'arg';
+	this.parameter = true;
         this.size = 1;
         this.args = 0;
         this.artwork = VALUEBLOCK;
@@ -1238,7 +1240,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             loadEventHandlers(me, me.turtles, myBlock);
             me.refreshCanvas();
 
-            // console.log('calling finishImageLoad for ' + myBlock.name);
+            console.log('calling finishImageLoad for ' + myBlock.name);
             me.finishImageLoad(myBlock);
         }
 
@@ -1263,26 +1265,42 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     myBlock.value = 100;
                 }
             }
+
 	    var label = myBlock.value.toString();
 	    if (label.length > 8) {
 		label = label.substr(0, 7) + '...';
 	    }
 	    myBlock.text = new createjs.Text(label, '20px Arial', '#000000');
-            // console.log('creating Text for ' + myBlock.name + ' [' + myBlock.value + ']');
             myBlock.text.textAlign = 'center';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
             myBlock.text.x = 70;
             myBlock.text.y = 27;
+
             this.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
+
             // Make sure text is on top.
             lastChild = last(myBlock.container.children);
             myBlock.container.swapChildren(myBlock.text, lastChild);
             myBlock.container.updateCache();
         }
 
-        // Expandable blocks also have some extra parts.
-        if (myBlock.isExpandableBlock()) {
+	if (myBlock.protoblock.parameter) {
+	    // Parameter blocks get a text label to show their current value
+	    myBlock.text = new createjs.Text('', '20px Arial', '#000000');
+            myBlock.text.textAlign = 'right';
+            myBlock.text.textBaseline = 'alphabetic';
+            myBlock.container.addChild(myBlock.text);
+            myBlock.text.x = 140;
+            myBlock.text.y = 27;
+
+            lastChild = last(myBlock.container.children);
+            myBlock.container.swapChildren(myBlock.text, lastChild);
+            myBlock.container.updateCache();
+	}
+
+	if (myBlock.isExpandableBlock()) {
+            // Expandable blocks also have some extra parts.
             if (myBlock.isArgBlock()) {
                 var bottomArtwork = ARG2BLOCKBOTTOM;
             } else if (myBlock.isSpecialBlock()) {
@@ -2728,21 +2746,6 @@ function loadEventHandlers(blocks, turtles, myBlock) {
             } else {
                 // otherwise, process move
                 blocks.blockMoved(thisBlock);
-            }
-	} else {
-	    console.log('mapping this event to a click');
-            if (blocks.selectingStack) {
-                var topBlock = blocks.findTopBlock(thisBlock);
-                blocks.selectedStack = topBlock;
-                blocks.selectingStack = false;
-            } else if (myBlock.name == 'media') {
-                doOpenMedia(blocks, thisBlock);
-            } else if (myBlock.isValueBlock() && myBlock.name != 'media') {
-                myBlock.label.style.display = '';
-            } else {
-                var topBlock = blocks.findTopBlock(thisBlock);
-                console.log('running from ' + blocks.blockList[topBlock].name);
-                blocks.runLogo(topBlock);
             }
 	}
         if (blocks.activeBlock != myBlock) {

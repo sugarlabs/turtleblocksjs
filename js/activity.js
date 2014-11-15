@@ -103,7 +103,7 @@ define(function (require) {
         }
 
         function doFastButton() {
-            turtleDelay = 1;
+            turtleDelay = 0;
             runLogoCommands();
         }
 
@@ -667,6 +667,52 @@ define(function (require) {
             stage.swapChildren(errorMsgContainer, last(stage.children));
 	}
 
+	function clearParameterBlocks() {
+	    for (blk in blocks.blockList) {
+		if (blocks.blockList[blk].parameter) {
+		    blocks.blockList[blk].text.text = '';
+		    blocks.blockList[blk].container.updateCache();
+		}
+	    }
+	    update = true;
+	}
+
+	function updateParameterBlock(turtle, blk) {
+	    // FIXME: how to autogenerate this list?
+	    if (blocks.blockList[blk].protoblock.parameter) {
+		var value = 0;
+		switch (blocks.blockList[blk].name) {
+		case 'x':
+		    value = turtles.turtleList[turtle].x;
+		    break;
+		case 'y':
+		    value = turtles.turtleList[turtle].y;
+		    break;
+		case 'heading':
+		    value = turtles.turtleList[turtle].orientation;
+		    break;
+		case 'color':
+		    value = turtles.turtleList[turtle].color;
+		    break;
+		case 'shade':
+		    value = turtles.turtleList[turtle].value;
+		    break;
+		case 'grey':
+		    value = turtles.turtleList[turtle].chroma;
+		    break;
+		case 'pensize':
+		    value = turtles.turtleList[turtle].stroke;
+		    break;
+		default:
+		    console.log('??? ' + blocks.blockList[blk].name);
+		    break;
+		}
+		blocks.blockList[blk].text.text = Math.round(value).toString();
+		blocks.blockList[blk].container.updateCache();
+		update = true;
+	    }
+	}
+
         function runLogoCommands(startHere) {
             // Save the state before running
             if(typeof(Storage) !== "undefined") {
@@ -735,6 +781,12 @@ define(function (require) {
 
             this.parentFlowQueue = {};
             this.unhightlightQueue = {};
+	    this.parameterQueue = {};
+
+	    if (turtleDelay == 0) {
+		// Don't update parameters when running full speed.
+		clearParameterBlocks();
+	    }
 
             // (2) Execute the stack.
             // A bit complicated because we have lots of corner cases:
@@ -750,16 +802,16 @@ define(function (require) {
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
+                this.parameterQueue[turtle] = [];
                 runFromBlock(this, turtle, startHere);
             } else if (startBlocks.length > 0) {
-                console.log('found start blocks: ' + startBlocks);
                 // If there are start blocks, run them all.
                 for (var b = 0; b < startBlocks.length; b++) {
-		    console.log(startBlocks[b] + ': ' + blocks.blockList[startBlocks[b]].value);
                     turtle = blocks.blockList[startBlocks[b]].value;
                     turtles.turtleList[turtle].queue = [];
                     this.parentFlowQueue[turtle] = [];
                     this.unhightlightQueue[turtle] = [];
+                    this.parameterQueue[turtle] = [];
                     if (!turtles.turtleList[turtle].trash) {
                         console.log('running from turtle ' + turtle);
                         runFromBlock(this, turtle, startBlocks[b]);
@@ -786,6 +838,7 @@ define(function (require) {
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
+                this.parameterQueue[turtle] = [];
 
                 for (var blk = 0; blk < blocks.stackList.length; blk++) {
                     if (blocks.blockList[blk].isNoRunBlock()) {
@@ -1045,16 +1098,19 @@ define(function (require) {
                     last(turtles.turtleList[turtle].queue).count -= 1;
                 }
             }
+
             if (nextBlock != null) {
                 parentBlk = null;
                 if (turtles.turtleList[turtle].queue.length > 0) {
                     parentBlk = last(turtles.turtleList[turtle].queue).parentBlk;
                 }
+
                 if (parentBlk != blk) {
                     // The wait block waits waitTime longer than other
                     // blocks before it is unhighlighted.
                     setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay + waitTime[turtle]);
                 }
+
                 if (last(blocks.blockList[blk].connections) == null) {
                     // If we are at the end of the child flow, queue
                     // the unhighlighting of the parent block to the
@@ -1066,6 +1122,12 @@ define(function (require) {
                         setTimeout(function(){blocks.unhighlight(activity.unhightlightQueue[turtle].pop());}, turtleDelay);
                     }
                 }
+		if (turtleDelay > 0) {
+		    for (pblk in this.parameterQueue[turtle]) {
+			updateParameterBlock(turtle, this.parameterQueue[turtle][pblk]);
+		    }
+		}
+
                 runFromBlock(activity, turtle, nextBlock);
             } else {
                 // Nothing else to do... so cleaning up.
@@ -1091,7 +1153,15 @@ define(function (require) {
                 errorMsg('Missing argument');
 		stopTurtle = true;
                 return null
-            } else if (blocks.blockList[blk].isValueBlock()) {
+            }
+
+	    if (blocks.blockList[blk].protoblock.parameter) {
+		if (this.parameterQueue[turtle].indexOf(blk) == -1) {
+		    this.parameterQueue[turtle].push(blk);
+		}
+	    }
+
+	    if (blocks.blockList[blk].isValueBlock()) {
                 return blocks.blockList[blk].value;
             } else if (blocks.blockList[blk].isArgBlock()) {
                 switch (blocks.blockList[blk].name) {

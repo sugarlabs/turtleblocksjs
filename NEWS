@@ -112,6 +112,7 @@
   * consolidated various show blocks into one block
   * added 'any' docking parameter
   * fixed bug with new start block after clear all
+  * show parameter values on blocks when running in debig mode
 
 TODO:
   * use busy cursor where approporate

@@ -64,10 +64,10 @@ define(function (require) {
         var blocks;
         var thumbnails;
         var thumbnailsVisible = false;
-	var buttonsVisible = true;
-	var currentKey = '';
-	var currentKeyCode = 0;
-	var lastKeyCode = 0;
+        var buttonsVisible = true;
+        var currentKey = '';
+        var currentKeyCode = 0;
+        var lastKeyCode = 0;
 
         // default values
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
@@ -105,7 +105,7 @@ define(function (require) {
         var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
         console.log('on XO? ' + onXO);
 
-	var onscreenButtons = [];
+        var onscreenButtons = [];
 
         fastButton.onclick = function () {
             doFastButton();
@@ -429,61 +429,61 @@ define(function (require) {
                 stageMouseDown = false;
             });
 
-	    this.document.onkeydown = keyPressed;
+            this.document.onkeydown = keyPressed;
         }
 
-	function keyPressed(event) {
-	    var ESC = 27;
-	    var ALT = 18
-;	    var CTRL = 17;
-	    var SHIFT = 16;
-	    var RETURN = 13;
-	    var SPACE = 32;
+        function keyPressed(event) {
+            var ESC = 27;
+            var ALT = 18;
+            var CTRL = 17;
+            var SHIFT = 16;
+            var RETURN = 13;
+            var SPACE = 32;
 
-	    // Captured by browser
-	    var PAGE_UP = 33;
-	    var PAGE_DOWN = 34;
-	    var KEYCODE_LEFT = 37;
-	    var KEYCODE_RIGHT = 39;
-	    var KEYCODE_UP = 38;
-	    var KEYCODE_DOWN = 40;
+            // Captured by browser
+            var PAGE_UP = 33;
+            var PAGE_DOWN = 34;
+            var KEYCODE_LEFT = 37;
+            var KEYCODE_RIGHT = 39;
+            var KEYCODE_UP = 38;
+            var KEYCODE_DOWN = 40;
 
-	    if (event.altKey) {
-		console.log('ALT KEY');
-		switch (event.keyCode) {
-		case 82:  // 'R'
+            if (event.altKey) {
+                console.log('ALT KEY');
+                switch (event.keyCode) {
+                case 82:  // 'R'
                     console.log('ALT R');
-		    doFastButton();
-		    break;
-		case 83:  // 'S'
+                    doFastButton();
+                    break;
+                case 83:  // 'S'
                     console.log('ALT S');
-		    doStopTurtle();
-		    break;
-		}
-	    }
+                    doStopTurtle();
+                    break;
+                }
+            }
 
-	    if (event.ctrlKey) {
-		console.log('CTRL KEY');
-	    }
+            if (event.ctrlKey) {
+                console.log('CTRL KEY');
+            }
 
-	    switch(event.keyCode) {
-	    case ESC:
-		// toggle full screen
+            switch(event.keyCode) {
+            case ESC:
+                // toggle full screen
                 console.log('ESC');
-		toggleToolbar();
-		break
-	    case RETURN:
-		// toggle run
+                toggleToolbar();
+                break
+            case RETURN:
+                // toggle run
                 console.log('RETURN');
-		runLogoCommands();
-		break
-	    default:
-		currentKey = String.fromCharCode(event.keyCode);
-		currentKeyCode = event.keyCode;
-		console.log('[' + currentKeyCode + '] ' + currentKey);
-		break;
-	    }
-	}
+                runLogoCommands();
+                break
+            default:
+                currentKey = String.fromCharCode(event.keyCode);
+                currentKeyCode = event.keyCode;
+                console.log('[' + currentKeyCode + '] ' + currentKey);
+                break;
+            }
+        }
 
         function onResize() {
             var w = window.innerWidth;
@@ -762,7 +762,7 @@ define(function (require) {
                     value = turtles.turtleList[turtle].stroke;
                     break;
                 case 'time':
-		    var d = new Date();
+                    var d = new Date();
                     value = (d.getTime() - time) / 1000;
                     break;
                 case 'mousex':
@@ -874,7 +874,6 @@ define(function (require) {
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
                 this.parameterQueue[turtle] = [];
-		console.log(this.parameterQueue);
                 runFromBlock(this, turtle, startHere);
             } else if (startBlocks.length > 0) {
                 // If there are start blocks, run them all.
@@ -994,28 +993,33 @@ define(function (require) {
                 }
                 break;
             case 'forever':
-                 if (args.length == 1) {
+                if (args.length == 1) {
                     childFlow = args[0];
                     childFlowCount = -1;
                 }
                 break;
             case 'break':
-                if (last(turtles.turtleList[turtle].queue) != null) {
-                    last(turtles.turtleList[turtle].queue).count = 1;
+                for (i = 0; i < turtles.turtleList[turtle].queue.length; i++) {
+                    var j = turtles.turtleList[turtle].queue.length - i - 1;
+                    // FIXME: have a method for identifying these parents
+                    if (['forever', 'repeat', 'while', 'until'].indexOf(blocks.blockList[turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
+                        turtles.turtleList[turtle].queue[j].count = 1;
+                        break;
+                    }
                 }
                 break;
             case 'wait':
-                 if (args.length == 1) {
-                     doWait(turtle, args[0]);
-                 }
+                if (args.length == 1) {
+                    doWait(turtle, args[0]);
+                }
             case 'repeat':
-                 if (args.length == 2) {
-                     childFlow = args[1];
-                     childFlowCount = Math.floor(args[0]);
+                if (args.length == 2) {
+                    childFlow = args[1];
+                    childFlowCount = Math.floor(args[0]);
                 }
                 break;
             case 'if':
-                 if (args.length == 2) {
+                if (args.length == 2) {
                     if (args[0]) {
                         childFlow = args[1];
                         childFlowCount = 1;
@@ -1187,7 +1191,6 @@ define(function (require) {
                     }
                 }
                 if (turtleDelay > 0) {
-		    console.log(turtle + ' ' + activity.parameterQueue);
                     for (pblk in activity.parameterQueue[turtle]) {
                         updateParameterBlock(turtle, activity.parameterQueue[turtle][pblk]);
                     }
@@ -1271,7 +1274,8 @@ define(function (require) {
                     var cblk2 = blocks.blockList[blk].connections[2];
                     var a = parseArg(turtle, cblk1);
                     var b = parseArg(turtle, cblk2);
-                    blocks.blockList[blk].value = (a = b);
+                    var result = (a == b);
+                    blocks.blockList[blk].value = (a == b);
                     break;
                 case 'less':
                     var cblk1 = blocks.blockList[blk].connections[1];
@@ -1459,6 +1463,8 @@ define(function (require) {
             // Clear all the boxes.
             boxList = [];
             time = 0;
+            errorMsgContainer.visible = false;
+            msgContainer.visible = false;
             setBackgroundColor(-1);
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].doClear();
@@ -1557,45 +1563,45 @@ define(function (require) {
             // Upper left
             var container = makeButton('fast-button', 0, 0);
             loadFastButtonHandler(container, doFastButton);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('slow-button', 55, 0);
             loadFastButtonHandler(container, doSlowButton);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('stop-turtle-button', 110, 0);
             loadFastButtonHandler(container, doStopButton);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('clear-button', 165, 0);
             loadFastButtonHandler(container, allClear);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('palette-button', 220, 0);
             loadFastButtonHandler(container, changePaletteVisibility);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('hide-blocks-button', 275, 0);
             loadFastButtonHandler(container, changeBlockVisibility);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             // Lower right
             var container = makeButton('copy-button', 1135, 515);
             loadFastButtonHandler(container, selectStackToCopy);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('paste-button', 1135, 570);
             loadFastButtonHandler(container, pasteStack);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('Cartesian-button', 1135, 625);
             loadFastButtonHandler(container, doCartesian);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('polar-button', 1135, 680);
             loadFastButtonHandler(container, doPolar);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('samples-button', 1135, 735);
             loadFastButtonHandler(container, doOpenSamples);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             var container = makeButton('open-button', 1135, 790);
             loadFastButtonHandler(container, doOpen);
-	    onscreenButtons.push(container);
+            onscreenButtons.push(container);
             if (server) {
                 var container = makeButton('save-button', 1135, 845);
                 loadFastButtonHandler(container, doSave);
-		onscreenButtons.push(container);
+                onscreenButtons.push(container);
 
                 var saveName = docById('mySaveName');
                 saveName.style.position = 'absolute';
@@ -1611,29 +1617,29 @@ define(function (require) {
         }
 
         function toggleToolbar() {
-	    console.log('toogleToolbar ' + buttonsVisible);
-	    if (buttonsVisible) {
-		buttonsVisible = false;
-		if (onAndroid || !onXO) {
-		    for (button in onscreenButtons) {
-			onscreenButtons[button].visible = false;
-		    }
-		} else {
-		    var toolbar = docById("main-toolbar");
-		    toolbar.style.display = "none";
-		}
-	    } else {
-		buttonsVisible = true;
-		if (onAndroid || !onXO) {
-		    for (button in onscreenButtons) {
-			onscreenButtons[button].visible = true;
-		    }
-		} else {
-		    var toolbar = docById("main-toolbar");
-		    toolbar.style.display = "inline";
-		}
-	    }
-	    update = true;
+            console.log('toogleToolbar ' + buttonsVisible);
+            if (buttonsVisible) {
+                buttonsVisible = false;
+                if (onAndroid || !onXO) {
+                    for (button in onscreenButtons) {
+                        onscreenButtons[button].visible = false;
+                    }
+                } else {
+                    var toolbar = docById("main-toolbar");
+                    toolbar.style.display = "none";
+                }
+            } else {
+                buttonsVisible = true;
+                if (onAndroid || !onXO) {
+                    for (button in onscreenButtons) {
+                        onscreenButtons[button].visible = true;
+                    }
+                } else {
+                    var toolbar = docById("main-toolbar");
+                    toolbar.style.display = "inline";
+                }
+            }
+            update = true;
         }
 
         function makeButton(name, x, y) {

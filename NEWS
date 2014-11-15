@@ -116,8 +116,12 @@
   * show and hide blocks
   * added keyboard short cuts
   * added keyboard sensor
+  * fixed issue with break block scope
 
 TODO:
+  * enable docking to any for boxes, equal
+  * enable number names for actions and boxes
+  * query turtle blocks
   * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks

@@ -1192,6 +1192,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         var thisBlock = this.blockList.indexOf(myBlock);
 
+	// We need a label for most blocks.
+        myBlock.text = new createjs.Text('', '20px Arial', '#000000');
+
         // Get the block labels from the protoblock
         var block_label = '';
         if (myBlock.protoblock.staticLabels.length > 0) {
@@ -1269,7 +1272,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (label.length > 8) {
                 label = label.substr(0, 7) + '...';
             }
-            myBlock.text = new createjs.Text(label, '20px Arial', '#000000');
+            myBlock.text.text = label;
             myBlock.text.textAlign = 'center';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
@@ -1286,7 +1289,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         if (myBlock.protoblock.parameter) {
             // Parameter blocks get a text label to show their current value
-            myBlock.text = new createjs.Text('', '20px Arial', '#000000');
             myBlock.text.textAlign = 'right';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);

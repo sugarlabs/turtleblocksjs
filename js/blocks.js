@@ -1292,7 +1292,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.text.textAlign = 'right';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
-            myBlock.text.x = 140;
+	    if (myBlock.name == 'box') {
+		myBlock.text.x = 120;
+	    } else {
+		myBlock.text.x = 140;
+	    }
             myBlock.text.y = 27;
 
             lastChild = last(myBlock.container.children);

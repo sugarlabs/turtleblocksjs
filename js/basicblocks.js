@@ -346,6 +346,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.defaults.push('box');
     boxBlock.staticLabels.push('box');
     boxBlock.docks[1][2] = 'textin';
+    // Show the value in the box as if it were a parameter.
+    boxBlock.parameter = true;
 
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];

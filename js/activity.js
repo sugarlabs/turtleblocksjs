@@ -734,6 +734,16 @@ define(function (require) {
             if (blocks.blockList[blk].protoblock.parameter) {
                 var value = 0;
                 switch (blocks.blockList[blk].name) {
+		case 'box':
+                    var cblk = blocks.blockList[blk].connections[1];
+                    var name = parseArg(turtle, cblk);
+                    var i = findBox(name);
+                    if (i == null) {
+                        errorMsg('Cannot find box ' + name + '.');
+                    } else {
+                        value = boxList[i][1];
+                    }
+		    break;
                 case 'x':
                     value = turtles.turtleList[turtle].x;
                     break;

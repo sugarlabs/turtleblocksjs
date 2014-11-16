@@ -1139,8 +1139,18 @@ define(function (require) {
                 if (blocks.blockList[blk].name in evalFlowDict) {
                     eval(evalFlowDict[blocks.blockList[blk].name]);
                 } else {
-                    errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.');
-                    stopTurtle = true;
+		    // Could be an arg block, so we need to print its value
+		    if (blocks.blockList[blk].isArgBlock()) {
+			args.push(parseArg(turtle, blk));
+			msgContainer.visible = true;
+			msgText.text = blocks.blockList[blk].value.toString();
+			msgContainer.updateCache();
+			stage.swapChildren(msgContainer, last(stage.children));
+			stopTurtle = true;
+		    } else {
+			errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.');
+			stopTurtle = true;
+		    }
                 }
                 break;
             }

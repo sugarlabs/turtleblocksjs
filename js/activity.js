@@ -449,39 +449,33 @@ define(function (require) {
             var KEYCODE_DOWN = 40;
 
             if (event.altKey) {
-                console.log('ALT KEY');
                 switch (event.keyCode) {
+                case 69:  // 'E'
+                    allClear();
+                    break;
                 case 82:  // 'R'
-                    console.log('ALT R');
                     doFastButton();
                     break;
                 case 83:  // 'S'
-                    console.log('ALT S');
                     doStopTurtle();
                     break;
                 }
-            }
-
-            if (event.ctrlKey) {
-                console.log('CTRL KEY');
-            }
-
-            switch(event.keyCode) {
-            case ESC:
-                // toggle full screen
-                console.log('ESC');
-                toggleToolbar();
+            } else if (event.ctrlKey) {
+            } else {
+                switch(event.keyCode) {
+                case ESC:
+                    // toggle full screen
+                    toggleToolbar();
                 break
-            case RETURN:
-                // toggle run
-                console.log('RETURN');
-                runLogoCommands();
-                break
-            default:
-                currentKey = String.fromCharCode(event.keyCode);
-                currentKeyCode = event.keyCode;
-                console.log('[' + currentKeyCode + '] ' + currentKey);
-                break;
+                case RETURN:
+                    // toggle run
+                    runLogoCommands();
+                    break
+                default:
+                    currentKey = String.fromCharCode(event.keyCode);
+                    currentKeyCode = event.keyCode;
+                    break;
+                }
             }
         }
 
@@ -1617,7 +1611,6 @@ define(function (require) {
         }
 
         function toggleToolbar() {
-            console.log('toogleToolbar ' + buttonsVisible);
             if (buttonsVisible) {
                 buttonsVisible = false;
                 if (onAndroid || !onXO) {

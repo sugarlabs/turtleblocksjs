@@ -117,6 +117,7 @@
   * added keyboard short cuts
   * added keyboard sensor
   * fixed issue with break block scope
+  * label box values during debug mode
 
 TODO:
   * enable docking to any for boxes, equal
@@ -132,11 +133,10 @@ TODO:
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
-  * label box values during debug mode
   * fix race condition in palettes load
 
 BUGS:
-  * something funny going on with if block
+  * do action menu has wrong value?
   * don't save full-sized bitmap to session
   * fix canvas sizing, resizing
   * cannot open same file twice in a row (no change event?)

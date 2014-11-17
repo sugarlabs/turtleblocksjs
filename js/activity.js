@@ -636,6 +636,7 @@ define(function (require) {
                     } else {
                         var cleanData = SAMPLESTB['card-01.tb'];
                     }
+		    console.log(cleanData);
                 }
                 var obj = JSON.parse(cleanData);
                 blocks.loadNewBlocks(obj);

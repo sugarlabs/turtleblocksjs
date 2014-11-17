@@ -59,7 +59,7 @@ function Palettes (canvas, stage, refreshCanvas) {
         for (var name in this.dict) {
             if (name in this.buttons) {
                 // console.log('button ' + name + ' has already been created');
-                this.dict[name].updateMenu();
+                this.dict[name].updateMenu(true);
             } else {
                 this.buttons[name] = new createjs.Container();
                 this.stage.addChild(this.buttons[name]);
@@ -93,7 +93,7 @@ function Palettes (canvas, stage, refreshCanvas) {
 
                     me.dict[name].makeMenu();
                     me.dict[name].moveMenu(0, me.y + 55);
-                    me.dict[name].updateMenu();
+                    me.dict[name].updateMenu(false);
 
                     loadPaletteButtonHandler(me, name);
                 }
@@ -245,12 +245,14 @@ function Palette (palettes, name, color, bgcolor) {
         }
     }
 
-    this.updateMenu = function() {
+    this.updateMenu = function(hide) {
         if (this.menuContainer == null) {
             this.makeMenu();
         } else {
             // hide the menu while we update
-            this.hide();
+	    if(hide) {
+		this.hide();
+	    }
         }
         for (var blk in this.protoList) {
             // Create a proto block for each palette entry.

@@ -961,7 +961,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.swapChildren(myBlock.text, lastChild);
 
         try {
-            this.blockList[blk].container.updateCache();
+	    if (myBlock.loadComplete) {
+		myBlock.container.updateCache();
+	    }
         } catch (e) {
             console.log(e);
         }
@@ -2179,8 +2181,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     this.blockList[thisBlock].value = canvas.height;
                     this.updateBlockText(thisBlock);
                     break;
-
-                    //
                 default:
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
                     break;

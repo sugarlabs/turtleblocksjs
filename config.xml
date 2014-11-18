@@ -19,7 +19,5 @@
 	
     <preference name="permissions" value="none"/>
 	<preference name="fullscreen" value="true"/>
-	<preference name="uiwebviewbounce" value="false"/>
-	<preference name="webviewbounce" value="false"/>
 	<preference name="android-minSdkVersion" value="14"/>
 </widget>

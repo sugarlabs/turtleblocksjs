@@ -65,6 +65,8 @@ define(function (require) {
         var thumbnails;
         var thumbnailsVisible = false;
         var buttonsVisible = true;
+        var toolbarButtonsVisible = false;
+        var menuButtonsVisible = false;
         var currentKey = '';
         var currentKeyCode = 0;
         var lastKeyCode = 0;
@@ -1571,46 +1573,69 @@ define(function (require) {
             toolbar.style.display = "none";
 
             // Upper left
-            var container = makeButton('fast-button', 0, 0);
-            loadFastButtonHandler(container, doFastButton);
+	    var x = 0;
+	    var y = 0;
+
+            var container = makeButton('close-toolbar-button', x, y);
+            loadToolbarButtonHandler(container, doCloseToolbarButton);
             onscreenButtons.push(container);
-            var container = makeButton('slow-button', 55, 0);
-            loadFastButtonHandler(container, doSlowButton);
+
+            var container = makeButton('open-toolbar-button', x, y);
+            loadToolbarButtonHandler(container, doOpenToolbarButton);
             onscreenButtons.push(container);
-            var container = makeButton('stop-turtle-button', 110, 0);
-            loadFastButtonHandler(container, doStopButton);
+
+	    x += 55;
+            var container = makeButton('fast-button', x, y);
+            loadToolbarButtonHandler(container, doFastButton);
             onscreenButtons.push(container);
-            var container = makeButton('clear-button', 165, 0);
-            loadFastButtonHandler(container, allClear);
+
+	    x += 55;
+            var container = makeButton('slow-button', x, y);
+            loadToolbarButtonHandler(container, doSlowButton);
             onscreenButtons.push(container);
-            var container = makeButton('palette-button', 220, 0);
-            loadFastButtonHandler(container, changePaletteVisibility);
+
+	    x += 55;
+            var container = makeButton('stop-turtle-button', x, y);
+            loadToolbarButtonHandler(container, doStopButton);
             onscreenButtons.push(container);
-            var container = makeButton('hide-blocks-button', 275, 0);
-            loadFastButtonHandler(container, changeBlockVisibility);
+
+	    x += 55;
+            var container = makeButton('clear-button', x, y);
+            loadToolbarButtonHandler(container, allClear);
             onscreenButtons.push(container);
+
+	    x += 55;
+            var container = makeButton('palette-button', x, y);
+            loadToolbarButtonHandler(container, changePaletteVisibility);
+            onscreenButtons.push(container);
+
+	    x += 55;
+            var container = makeButton('hide-blocks-button', x, y);
+            loadToolbarButtonHandler(container, changeBlockVisibility);
+            onscreenButtons.push(container);
+
             // Lower right
             var container = makeButton('copy-button', 1135, 515);
-            loadFastButtonHandler(container, selectStackToCopy);
+            loadToolbarButtonHandler(container, selectStackToCopy);
             onscreenButtons.push(container);
             var container = makeButton('paste-button', 1135, 570);
-            loadFastButtonHandler(container, pasteStack);
+            loadToolbarButtonHandler(container, pasteStack);
             onscreenButtons.push(container);
             var container = makeButton('Cartesian-button', 1135, 625);
-            loadFastButtonHandler(container, doCartesian);
+            loadToolbarButtonHandler(container, doCartesian);
             onscreenButtons.push(container);
             var container = makeButton('polar-button', 1135, 680);
-            loadFastButtonHandler(container, doPolar);
+            loadToolbarButtonHandler(container, doPolar);
             onscreenButtons.push(container);
             var container = makeButton('samples-button', 1135, 735);
-            loadFastButtonHandler(container, doOpenSamples);
+            loadToolbarButtonHandler(container, doOpenSamples);
             onscreenButtons.push(container);
             var container = makeButton('open-button', 1135, 790);
-            loadFastButtonHandler(container, doOpen);
+            loadToolbarButtonHandler(container, doOpen);
             onscreenButtons.push(container);
             if (server) {
                 var container = makeButton('save-button', 1135, 845);
-                loadFastButtonHandler(container, doSave);
+                loadToolbarButtonHandler(container, doSave);
                 onscreenButtons.push(container);
 
                 var saveName = docById('mySaveName');
@@ -1625,6 +1650,12 @@ define(function (require) {
             }
 
         }
+
+	function doOpenToolbarButton() {
+	}
+
+	function doCloseToolbarButton() {
+	}
 
         function toggleToolbar() {
             if (buttonsVisible) {
@@ -1673,7 +1704,7 @@ define(function (require) {
             return container;
         }
 
-        function loadFastButtonHandler(container, action) {
+        function loadToolbarButtonHandler(container, action) {
             container.on('click', function(event) {
                 action();
             });

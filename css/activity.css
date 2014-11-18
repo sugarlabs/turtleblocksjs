@@ -18,6 +18,14 @@ body {
   background-image: url(../icons/paste-button.svg);
 }
 
+#main-toolbar #open-toolbar-button {
+  background-image: url(../icons/open-toolbar-button.svg);
+}
+
+#main-toolbar #close-toolbar-button {
+  background-image: url(../icons/close-toolbar-button.svg);
+}
+
 #main-toolbar #fast-button {
   background-image: url(../icons/fast-button.svg);
 }

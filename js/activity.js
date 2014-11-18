@@ -480,28 +480,27 @@ define(function (require) {
         function onResize() {
             var w = window.innerWidth;
             var h = window.innerHeight;
-            // scale = Math.min(w / canvas.width, h / canvas.height);
-            // scale = w / canvas.width;
             if (w > h) {
-                scale = Math.max(w / 1200, 1.0);
+                scale = w / 1200;
                 stage.canvas.width = 1200 * scale;
                 stage.canvas.height = 900 * scale
             } else {
                 scale = w / 900;
-                stage.canvas.width = Math.max(900 * scale, 1.0);
+                stage.canvas.width = 900 * scale;
                 stage.canvas.height = 1200 * scale
             }
             stage.scaleX = scale;
             stage.scaleY = scale;
-            // stage.canvas.width = canvas.width * scale;
-            // stage.canvas.height = canvas.height * scale
-            window.scrollTo(Math.floor((stage.canvas.width - w) / 2), Math.floor((stage.canvas.height - h) / 2));
 
-            console.log('Resize: scale ' + scale + ', windowW ' + w + ', windowH ' + h + ', canvasW ' + canvas.width + ', canvasH ' + canvas.height + ', screenW ' + screen.width + ', screenH ' + screen.height);
+            console.log('Resize: scale ' + scale +
+                        ', windowW ' + w + ', windowH ' + h +
+                        ', canvasW ' + canvas.width + ', canvasH ' + canvas.height +
+                        ', screenW ' + screen.width + ', screenH ' + screen.height);
 
             turtles.setScale(scale);
             blocks.setScale(scale);
             palettes.setScale(scale);
+            update = true;
         }
 
         window.onresize = function()

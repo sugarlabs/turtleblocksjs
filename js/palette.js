@@ -49,13 +49,8 @@ function Palettes (canvas, stage, refreshCanvas) {
 
     this.makeMenu = function() {
         // First, an icon/button for each palette
-        if (screen.width != 1200) {
-            this.x = 0;
-            this.y = 55;
-        } else {
-            this.x = 55;
-            this.y = 0;
-        }
+        this.x = 0;
+        this.y = 55;
         for (var name in this.dict) {
             if (name in this.buttons) {
                 // console.log('button ' + name + ' has already been created');

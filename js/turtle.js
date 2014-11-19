@@ -437,7 +437,11 @@ function Turtles(canvas, stage, refreshCanvas) {
 
     this.add = function(startBlock) {
         // Add a new turtle for each start block
-        console.log('adding a new turtle ' + startBlock.name);
+        if (startBlock != null) {
+            console.log('adding a new turtle ' + startBlock.name);
+        } else {
+            console.log('adding a new turtle startBlock is null');
+        };
         var i = this.turtleList.length;
         var turtleName = i.toString();
         var myTurtle = new Turtle(turtleName, this);

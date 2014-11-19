@@ -1,0 +1,25 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/activity.css">
+    <script type="text/javascript" charset="utf-8" src="./js/turtle.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./lib/easeljs.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/artwork.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/munsell.js"></script>
+    <script type="text/javascript">
+
+        function showTurtle() {
+            var canvas = document.getElementById("myCanvas");
+            var stage = new createjs.Stage(canvas);
+            createjs.Ticker.addEventListener("tick", stage);
+            var turtles = new Turtles(canvas, stage, function(){});
+            turtles.add(null);
+        };
+
+    </script>
+
+</head>
+<body id="body" onload="showTurtle()">
+    <canvas id="myCanvas" width="600" height="450"></canvas>
+    <div id="loader"></div>
+</body>
+</html>

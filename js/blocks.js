@@ -2766,15 +2766,12 @@ function loadEventHandlers(blocks, turtles, myBlock) {
 function makeBitmap(me, data, name, callback) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
-    var DOMURL = window.URL || window.webkitURL || window;
     var img = new Image();
-    var url = DOMURL.createObjectURL(makeSVG(data));
     img.onload = function () {
         bitmap = new createjs.Bitmap(img);
-        DOMURL.revokeObjectURL(url);
         callback(me, name, bitmap);
     }
-    img.src = url;
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(data);
 }
 
 

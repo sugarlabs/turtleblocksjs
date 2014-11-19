@@ -1703,7 +1703,7 @@ define(function (require) {
 		bitmap.rotation += 10;
 		bitmap.updateCache();
 		update = true;
-                setTimeout(function(){doMenuAnimation(count + 1);}, 100);
+                setTimeout(function(){doMenuAnimation(count + 1);}, 50);
 	    } else {
 		if(menuButtonsVisible) {
 		    menuButtonsVisible = false;
@@ -1730,7 +1730,7 @@ define(function (require) {
 		bitmap.rotation = (count * 10) % 360;
 		bitmap.updateCache();
 		update = true;
-                setTimeout(function(){doOpenAnimation(count + 1);}, 100);
+                setTimeout(function(){doOpenAnimation(count + 1);}, 50);
 	    } else {
 		openContainer.visible = false;
 		closeContainer.visible = true;

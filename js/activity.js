@@ -838,7 +838,10 @@ define(function (require) {
                 if (blocks.blockList[blocks.stackList[blk]].name == 'start') {
                     // Don't start on a start block in the trash.
                     if (!blocks.blockList[blocks.stackList[blk]].trash) {
-                        startBlocks.push(blocks.stackList[blk]);
+			// Don't start on a start block with no connections.
+			if (blocks.blockList[blocks.stackList[blk]].connections[1] != null) {
+                            startBlocks.push(blocks.stackList[blk]);
+			}
                     }
                 } else if (blocks.blockList[blocks.stackList[blk]].name == 'action') {
                     // Does the action stack have a name?
@@ -921,6 +924,9 @@ define(function (require) {
                         continue;
                     } else {
                         if (!blocks.blockList[blocks.stackList[blk]].trash) {
+			    if (blocks.blockList[blocks.stackList[blk]].name == 'start' && blocks.blockList[blocks.stackList[blk]].connections[1] == null) {
+				continue;
+			    }
                             runFromBlock(this, 0, blocks.stackList[blk]);
                         }
                     }

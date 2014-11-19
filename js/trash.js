@@ -266,5 +266,6 @@ function makeTrashBitmap(me, data, name, callback, extras) {
         bitmap = new createjs.Bitmap(img);
         callback(me, name, bitmap, extras);
     }
-    img.src = 'data:image/svg+xml;base64,' + window.btoa(data);
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(
+        unescape(encodeURIComponent(data)));
 }

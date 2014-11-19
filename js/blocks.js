@@ -2771,7 +2771,9 @@ function makeBitmap(me, data, name, callback) {
         bitmap = new createjs.Bitmap(img);
         callback(me, name, bitmap);
     }
-    img.src = 'data:image/svg+xml;base64,' + window.btoa(data);
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(
+        unescape(encodeURIComponent(data)));
+
 }
 
 

@@ -211,6 +211,7 @@ function Palette (palettes, name, color, bgcolor) {
     this.menuContainer = null;
     this.protoList = [];
     this.protoContainers = {};
+    this.x = 0;
     this.y = 0;
     this.size = 0;
 
@@ -279,8 +280,13 @@ function Palette (palettes, name, color, bgcolor) {
             if (!this.protoContainers[modname]) {
                 // create graphics for the palette entry for this block
                 this.protoContainers[modname] = new createjs.Container();
-                this.protoContainers[modname].x = this.menuContainer.x;
                 var y = this.menuContainer.y + this.y + 42;
+		if (y > 400) {
+		    this.x += 160;
+		    this.y = 0;
+		    y = this.menuContainer.y + this.y + 42;
+		}
+                this.protoContainers[modname].x = this.menuContainer.x + this.x;
                 this.protoContainers[modname].y = this.menuContainer.y + this.y + 42;
                 this.palettes.stage.addChild(this.protoContainers[modname]);
                 this.protoContainers[modname].visible = false;

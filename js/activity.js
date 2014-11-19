@@ -66,7 +66,10 @@ define(function (require) {
         var thumbnailsVisible = false;
         var buttonsVisible = true;
         var toolbarButtonsVisible = false;
+	var openContainer = null;
+	var closeContainer = null;
         var menuButtonsVisible = false;
+	var menuContainer = null;
         var currentKey = '';
         var currentKeyCode = 0;
         var lastKeyCode = 0;
@@ -108,6 +111,7 @@ define(function (require) {
         console.log('on XO? ' + onXO);
 
         var onscreenButtons = [];
+        var onscreenMenu = [];
 
         fastButton.onclick = function () {
             doFastButton();
@@ -1572,76 +1576,105 @@ define(function (require) {
             toolbar.style.display = "none";
 
             // Upper left
-	    var x = 0;
-	    var y = 0;
+	    var x = 27;
+	    var y = 27;
 
-            var container = makeButton('close-toolbar-button', x, y);
-            loadToolbarButtonHandler(container, doCloseToolbarButton);
-            onscreenButtons.push(container);
+            closeContainer = makeButton('close-toolbar-button', x, y);
+            loadToolbarButtonHandler(closeContainer, doCloseToolbarButton);
 
-            var container = makeButton('open-toolbar-button', x, y);
-            loadToolbarButtonHandler(container, doOpenToolbarButton);
-            onscreenButtons.push(container);
+            openContainer = makeButton('open-toolbar-button', x, y);
+            loadToolbarButtonHandler(openContainer, doOpenToolbarButton);
 
 	    x += 55;
             var container = makeButton('fast-button', x, y);
             loadToolbarButtonHandler(container, doFastButton);
             onscreenButtons.push(container);
+	    container.visible = false;
 
 	    x += 55;
             var container = makeButton('slow-button', x, y);
             loadToolbarButtonHandler(container, doSlowButton);
             onscreenButtons.push(container);
+	    container.visible = false;
 
 	    x += 55;
             var container = makeButton('stop-turtle-button', x, y);
             loadToolbarButtonHandler(container, doStopButton);
             onscreenButtons.push(container);
+	    container.visible = false;
 
 	    x += 55;
             var container = makeButton('clear-button', x, y);
             loadToolbarButtonHandler(container, allClear);
             onscreenButtons.push(container);
+	    container.visible = false;
 
 	    x += 55;
             var container = makeButton('palette-button', x, y);
             loadToolbarButtonHandler(container, changePaletteVisibility);
             onscreenButtons.push(container);
+	    container.visible = false;
 
 	    x += 55;
             var container = makeButton('hide-blocks-button', x, y);
             loadToolbarButtonHandler(container, changeBlockVisibility);
             onscreenButtons.push(container);
+	    container.visible = false;
 
             // Lower right
-            var container = makeButton('copy-button', 1135, 515);
+	    var x = 1145;
+	    var y = 873;
+            menuContainer = makeButton('menu-button', x, y);
+            loadToolbarButtonHandler(menuContainer, doMenuButton);
+
+	    y -= 55;
+            var container = makeButton('copy-button', x, y);
             loadToolbarButtonHandler(container, selectStackToCopy);
-            onscreenButtons.push(container);
-            var container = makeButton('paste-button', 1135, 570);
+            onscreenMenu.push(container);
+	    container.visible = false;
+
+	    y -= 55;
+            var container = makeButton('paste-button', x, y);
             loadToolbarButtonHandler(container, pasteStack);
-            onscreenButtons.push(container);
-            var container = makeButton('Cartesian-button', 1135, 625);
+            onscreenMenu.push(container);
+	    container.visible = false;
+
+	    y -= 55;
+            var container = makeButton('Cartesian-button', x, y);
             loadToolbarButtonHandler(container, doCartesian);
-            onscreenButtons.push(container);
-            var container = makeButton('polar-button', 1135, 680);
+            onscreenMenu.push(container);
+	    container.visible = false;
+
+	    y -= 55;
+            var container = makeButton('polar-button', x, y);
             loadToolbarButtonHandler(container, doPolar);
-            onscreenButtons.push(container);
-            var container = makeButton('samples-button', 1135, 735);
+            onscreenMenu.push(container);
+	    container.visible = false;
+
+	    y -= 55;
+            var container = makeButton('samples-button', x, y);
             loadToolbarButtonHandler(container, doOpenSamples);
-            onscreenButtons.push(container);
-            var container = makeButton('open-button', 1135, 790);
+            onscreenMenu.push(container);
+	    container.visible = false;
+
+	    y -= 55;
+            var container = makeButton('open-button', x, y);
             loadToolbarButtonHandler(container, doOpen);
-            onscreenButtons.push(container);
+            onscreenMenu.push(container);
+	    container.visible = false;
+
             if (server) {
-                var container = makeButton('save-button', 1135, 845);
+		y -= 55;
+                var container = makeButton('save-button', x, y);
                 loadToolbarButtonHandler(container, doSave);
-                onscreenButtons.push(container);
+                onscreenMenu.push(container);
+		container.visible = false;
 
                 var saveName = docById('mySaveName');
                 saveName.style.position = 'absolute';
                 var left = 970 * scale;
                 saveName.style.left = canvas.offsetLeft + left + '1000px';
-                var top = 815 * scale;
+                var top = y * scale;
                 saveName.style.top = canvas.offsetTop + top + 'px';
             } else {
                 var saveName = docById('mySaveName');
@@ -1650,30 +1683,103 @@ define(function (require) {
 
         }
 
+	function doMenuButton() {
+	    if (menuButtonsVisible) {
+		doMenuAnimation(1);
+	    } else {
+		doMenuAnimation(1);
+	    }
+	}
+
+	function doMenuAnimation(count) {
+	    if (count < 10) {
+		var bitmap = last(menuContainer.children);
+		bitmap.rotation += 10;
+		bitmap.updateCache();
+		update = true;
+                setTimeout(function(){doMenuAnimation(count + 1);}, 100);
+	    } else {
+		if(menuButtonsVisible) {
+		    menuButtonsVisible = false;
+                    for (button in onscreenMenu) {
+			onscreenMenu[button].visible = false;
+                    }
+		} else {
+		    menuButtonsVisible = true;
+                    for (button in onscreenMenu) {
+			onscreenMenu[button].visible = true;
+                    }
+		}
+		update = true;
+	    }
+	}
+
 	function doOpenToolbarButton() {
+	    doOpenAnimation(0);
+	}
+
+	function doOpenAnimation(count) {
+	    if (count < 10) {
+		var bitmap = last(openContainer.children);
+		bitmap.rotation = (count * 10) % 360;
+		bitmap.updateCache();
+		update = true;
+                setTimeout(function(){doOpenAnimation(count + 1);}, 100);
+	    } else {
+		openContainer.visible = false;
+		closeContainer.visible = true;
+		toolbarButtonsVisible = true;
+                for (button in onscreenButtons) {
+                    onscreenButtons[button].visible = true;
+                }
+		update = true;
+	    }
 	}
 
 	function doCloseToolbarButton() {
+	    openContainer.visible = true;
+	    closeContainer.visible = false;
+	    toolbarButtonsVisible = false;
+            for (button in onscreenButtons) {
+                onscreenButtons[button].visible = false;
+            }
+	    update = true;
 	}
 
         function toggleToolbar() {
             if (buttonsVisible) {
                 buttonsVisible = false;
                 if (onAndroid || !onXO) {
+		    closeContainer.visible = false;
+		    openContainer.visible = false;
+		    menuContainer.visible = false;
                     for (button in onscreenButtons) {
                         onscreenButtons[button].visible = false;
+                    }
+                    for (button in onscreenMenu) {
+                        onscreenMenu[button].visible = false;
                     }
                 } else {
                     var toolbar = docById("main-toolbar");
                     toolbar.style.display = "none";
                 }
             } else {
-                buttonsVisible = true;
+		buttonsVisible = true;
                 if (onAndroid || !onXO) {
-                    for (button in onscreenButtons) {
-                        onscreenButtons[button].visible = true;
-                    }
-                } else {
+		    if (toolbarButtonsVisible) {
+			closeContainer.visible = true;
+			for (button in onscreenButtons) {
+                            onscreenButtons[button].visible = true;
+			}
+		    }
+		    if (menuButtonsVisible) {
+			for (button in onscreenMenu) {
+                            onscreenMenu[button].visible = true;
+			}
+		    }
+		    openContainer.visible = true;
+		    menuContainer.visible = true;
+		} else {
                     var toolbar = docById("main-toolbar");
                     toolbar.style.display = "inline";
                 }
@@ -1687,13 +1793,13 @@ define(function (require) {
             var container = new createjs.Container();
             stage.addChild(container);
             bitmap = new createjs.Bitmap(image);
+            bitmap.regX = 27 | 0;
+            bitmap.regY = 27 | 0;
             container.addChild(bitmap);
             var hitArea = new createjs.Shape();
-            var w2 = 55;
-            var h2 = 55;
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
-            hitArea.x = w2 / 2;
-            hitArea.y = h2 / 2;
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
+            hitArea.x = 0;
+            hitArea.y = 0;
             container.hitArea = hitArea;
             bitmap.cache(0, 0, 55, 55);
             bitmap.updateCache();

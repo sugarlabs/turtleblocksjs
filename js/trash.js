@@ -31,7 +31,7 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
     this.highlightBitmap = new createjs.Bitmap(highlightImage);
     this.container.addChild(this.highlightBitmap);
 
-    this.container.x = this.canvas.width - 55;
+    this.container.x = this.canvas.width - 82;
     this.container.y = 0;
 
     var w = 55;

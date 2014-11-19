@@ -350,7 +350,8 @@ define(function (require) {
                     update = true;
                 });
             }
-            img.src = 'data:image/svg+xml;base64,' + window.btoa(svgData);
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(svgData)));
 
             errorMsgContainer = new createjs.Container();
             stage.addChild(errorMsgContainer);
@@ -382,7 +383,8 @@ define(function (require) {
                     update = true;
                 });
             }
-            img.src = 'data:image/svg+xml;base64,' + window.btoa(svgData);
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(svgData)));
 
             var URL = window.location.href;
             console.log(URL);
@@ -663,7 +665,8 @@ define(function (require) {
                     // and base64-encoded png
                     httpPost(projectName.replace('.tb', '.b64'), bitmap.getCacheDataURL());
                 }
-                img.src = 'data:image/svg+xml;base64,' + window.btoa(svgData);
+                img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                    unescape(encodeURIComponent(svgData)));
 
                 return returnValue;
             } catch (e) {

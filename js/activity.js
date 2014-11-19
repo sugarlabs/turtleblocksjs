@@ -326,12 +326,10 @@ define(function (require) {
             msgContainer.y = 110;
             msgContainer.visible = false;
 
-            var DOMURL = window.URL || window.webkitURL || window;
             var img = new Image();
-            var url = DOMURL.createObjectURL(makeSVG(MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#7a7a7a')));
+            var svgData = makeSVG(MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#7a7a7a'));
             img.onload = function () {
                 msgBlock = new createjs.Bitmap(img);
-                DOMURL.revokeObjectURL(url);
                 msgContainer.addChild(msgBlock);
                 msgText = new createjs.Text('your message here', '20px Arial', '#000000');
                 msgContainer.addChild(msgText);
@@ -352,7 +350,7 @@ define(function (require) {
                     update = true;
                 });
             }
-            img.src = url;
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(svgData);
 
             errorMsgContainer = new createjs.Container();
             stage.addChild(errorMsgContainer);
@@ -360,12 +358,10 @@ define(function (require) {
             errorMsgContainer.y = 110;
             errorMsgContainer.visible = false;
 
-            var DOMURL = window.URL || window.webkitURL || window;
             var img = new Image();
-            var url = DOMURL.createObjectURL(makeSVG(MSGBLOCK.replace('fill_color', '#ffcbc4').replace('stroke_color', '#ff0031')));
+            var svgData = makeSVG(MSGBLOCK.replace('fill_color', '#ffcbc4').replace('stroke_color', '#ff0031'));
             img.onload = function () {
                 errorMsgBlock = new createjs.Bitmap(img);
-                DOMURL.revokeObjectURL(url);
                 errorMsgContainer.addChild(errorMsgBlock);
                 errorMsgText = new createjs.Text('your message here', '20px Arial', '#000000');
                 errorMsgContainer.addChild(errorMsgText);
@@ -386,7 +382,7 @@ define(function (require) {
                     update = true;
                 });
             }
-            img.src = url;
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(svgData);
 
             var URL = window.location.href;
             console.log(URL);
@@ -658,18 +654,17 @@ define(function (require) {
                 // Post the project
                 var returnValue = httpPost(projectName, prepareExport());
 
-                var DOMURL = window.URL || window.webkitURL || window;
                 var image = new Image();
-                var url = DOMURL.createObjectURL(makeSVG(doSVG(canvas, turtles, 320, 240, 320 / canvas.width)));
+                var svgData = makeSVG(doSVG(canvas, turtles, 320, 240, 320 / canvas.width));
                 image.onload = function() {
                     var bitmap = new createjs.Bitmap(image);
                     var bounds = bitmap.getBounds();
                     bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                     // and base64-encoded png
                     httpPost(projectName.replace('.tb', '.b64'), bitmap.getCacheDataURL());
-                    DOMURL.revokeObjectURL(url);
                 }
-                image.src = url;
+                img.src = 'data:image/svg+xml;base64,' + window.btoa(svgData);
+
                 return returnValue;
             } catch (e) {
                 console.log(e);

@@ -275,37 +275,10 @@ function httpGet(projectName)
 function makeViewerBitmap(me, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
-    var DOMURL = window.URL || window.webkitURL || window;
     var img = new Image();
-    var url = DOMURL.createObjectURL(makeSVG(data));
     img.onload = function () {
         bitmap = new createjs.Bitmap(img);
-        DOMURL.revokeObjectURL(url);
         callback(me, name, bitmap, extras);
     }
-    img.src = url;
-}
-
-
-function makeSVG(data) {
-    var mime = 'image/svg+xml;charset=utf-8';
-    try {
-        return new Blob([data], {type: mime});
-    } catch(e) {
-        // from http://stackoverflow.com/questions/15293694/blob-constructor-browser-compatibility
-        // TypeError old chrome and FF
-        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
-        if (e.name == 'TypeError' && window.BlobBuilder) {
-            var bb = new BlobBuilder();
-            bb.append([data.buffer]);
-            return bb.getBlob(mime);
-        } else if (e.name == "InvalidStateError") {
-            // InvalidStateError (tested on FF13 WinXP)
-            return new Blob([data.buffer], {type : mime});
-        } else {
-            // We're screwed, blob constructor unsupported entirely
-            console.log("ERROR: Can't load SVG: nothing worked!!!");
-        };
-    };
-
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(data);
 }

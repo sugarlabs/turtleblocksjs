@@ -66,10 +66,10 @@ define(function (require) {
         var thumbnailsVisible = false;
         var buttonsVisible = true;
         var toolbarButtonsVisible = false;
-	var openContainer = null;
-	var closeContainer = null;
+        var openContainer = null;
+        var closeContainer = null;
         var menuButtonsVisible = false;
-	var menuContainer = null;
+        var menuContainer = null;
         var currentKey = '';
         var currentKeyCode = 0;
         var lastKeyCode = 0;
@@ -258,11 +258,11 @@ define(function (require) {
             initAdvancedProtoBlocks(palettes, blocks);
 
             // Set up a file chooser for the doOpen function.
-            this.fileChooser = docById("myOpenFile");
+            this.fileChooser = docById('myOpenFile');
 
             // FIXME: won't allow selecting same file twice in a row
-            // since there is no "change" event.
-            this.fileChooser.addEventListener("change", function(event) {
+            // since there is no 'change' event.
+            this.fileChooser.addEventListener('change', function(event) {
 
                 // Read file here.
                 var reader = new FileReader();
@@ -553,7 +553,7 @@ define(function (require) {
             }
             // Overwrite session data too.
             console.log('overwriting session data');
-            if(typeof(Storage) !== "undefined") {
+            if(typeof(Storage) !== 'undefined') {
                 localStorage.setItem('sessiondata', prepareExport());
                 // console.log(localStorage.getItem('sessiondata'));
             } else {
@@ -637,7 +637,7 @@ define(function (require) {
                     } else {
                         var cleanData = SAMPLESTB['card-01.tb'];
                     }
-		    console.log(cleanData);
+                    console.log(cleanData);
                 }
                 var obj = JSON.parse(cleanData);
                 blocks.loadNewBlocks(obj);
@@ -681,7 +681,7 @@ define(function (require) {
 
             sessionData = null;
             // Try restarting where we were when we hit save.
-            if(typeof(Storage) !== "undefined") {
+            if(typeof(Storage) !== 'undefined') {
                 // localStorage is how we'll save the session (and metadata)
                 sessionData = localStorage.getItem('sessiondata');
             }
@@ -733,7 +733,7 @@ define(function (require) {
             if (blocks.blockList[blk].protoblock.parameter) {
                 var value = 0;
                 switch (blocks.blockList[blk].name) {
-		case 'box':
+                case 'box':
                     var cblk = blocks.blockList[blk].connections[1];
                     var name = parseArg(turtle, cblk);
                     var i = findBox(name);
@@ -742,7 +742,7 @@ define(function (require) {
                     } else {
                         value = boxList[i][1];
                     }
-		    break;
+                    break;
                 case 'x':
                     value = turtles.turtleList[turtle].x;
                     break;
@@ -789,7 +789,7 @@ define(function (require) {
 
         function runLogoCommands(startHere) {
             // Save the state before running
-            if(typeof(Storage) !== "undefined") {
+            if(typeof(Storage) !== 'undefined') {
                 localStorage.setItem('sessiondata', prepareExport());
                 // console.log(localStorage.getItem('sessiondata'));
             } else {
@@ -836,10 +836,10 @@ define(function (require) {
                 if (blocks.blockList[blocks.stackList[blk]].name == 'start') {
                     // Don't start on a start block in the trash.
                     if (!blocks.blockList[blocks.stackList[blk]].trash) {
-			// Don't start on a start block with no connections.
-			if (blocks.blockList[blocks.stackList[blk]].connections[1] != null) {
+                        // Don't start on a start block with no connections.
+                        if (blocks.blockList[blocks.stackList[blk]].connections[1] != null) {
                             startBlocks.push(blocks.stackList[blk]);
-			}
+                        }
                     }
                 } else if (blocks.blockList[blocks.stackList[blk]].name == 'action') {
                     // Does the action stack have a name?
@@ -922,9 +922,9 @@ define(function (require) {
                         continue;
                     } else {
                         if (!blocks.blockList[blocks.stackList[blk]].trash) {
-			    if (blocks.blockList[blocks.stackList[blk]].name == 'start' && blocks.blockList[blocks.stackList[blk]].connections[1] == null) {
-				continue;
-			    }
+                            if (blocks.blockList[blocks.stackList[blk]].name == 'start' && blocks.blockList[blocks.stackList[blk]].connections[1] == null) {
+                                continue;
+                            }
                             runFromBlock(this, 0, blocks.stackList[blk]);
                         }
                     }
@@ -1144,18 +1144,18 @@ define(function (require) {
                 if (blocks.blockList[blk].name in evalFlowDict) {
                     eval(evalFlowDict[blocks.blockList[blk].name]);
                 } else {
-		    // Could be an arg block, so we need to print its value
-		    if (blocks.blockList[blk].isArgBlock()) {
-			args.push(parseArg(turtle, blk));
-			msgContainer.visible = true;
-			msgText.text = blocks.blockList[blk].value.toString();
-			msgContainer.updateCache();
-			stage.swapChildren(msgContainer, last(stage.children));
-			stopTurtle = true;
-		    } else {
-			errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.');
-			stopTurtle = true;
-		    }
+                    // Could be an arg block, so we need to print its value
+                    if (blocks.blockList[blk].isArgBlock()) {
+                        args.push(parseArg(turtle, blk));
+                        msgContainer.visible = true;
+                        msgText.text = blocks.blockList[blk].value.toString();
+                        msgContainer.updateCache();
+                        stage.swapChildren(msgContainer, last(stage.children));
+                        stopTurtle = true;
+                    } else {
+                        errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.');
+                        stopTurtle = true;
+                    }
                 }
                 break;
             }
@@ -1559,7 +1559,7 @@ define(function (require) {
             // FIXME: show input form and then save after name has been entered
 
             // Save file to turtle.sugarlabs.org
-            var titleElem = docById("title");
+            var titleElem = docById('title');
             if (titleElem.value.length == 0) {
                 var saveName = docById('mySaveName');
                 if (saveName.value.length == 0) {
@@ -1576,12 +1576,16 @@ define(function (require) {
         }
 
         function setupAndroidToolbar() {
-            var toolbar = docById("main-toolbar");
-            toolbar.style.display = "none";
+            var toolbar = docById('main-toolbar');
+            toolbar.style.display = 'none';
 
-            // Upper left
-	    var x = 27;
-	    var y = 27;
+            // Buttons used when running turtle programs
+            var buttonNames = [['fast', doFastButton], ['slow', doSlowButton], ['stop-turtle', doStopButton], ['clear', allClear], ['palette', changePaletteVisibility], ['hide-blocks', changeBlockVisibility]];
+
+            var x = 27;
+            var y = 27;
+            var dx = 55;
+            var dy = 0;
 
             closeContainer = makeButton('close-toolbar-button', x, y);
             loadToolbarButtonHandler(closeContainer, doCloseToolbarButton);
@@ -1589,174 +1593,128 @@ define(function (require) {
             openContainer = makeButton('open-toolbar-button', x, y);
             loadToolbarButtonHandler(openContainer, doOpenToolbarButton);
 
-	    x += 55;
-            var container = makeButton('fast-button', x, y);
-            loadToolbarButtonHandler(container, doFastButton);
-            onscreenButtons.push(container);
-	    container.visible = false;
+            for (button in buttonNames) {
+                x += dx;
+                y += dy;
+                var container = makeButton(buttonNames[button][0] + '-button', x, y);
+                loadToolbarButtonHandler(container, buttonNames[button][1]);
+                onscreenButtons.push(container);
+                container.visible = false;
+            }
 
-	    x += 55;
-            var container = makeButton('slow-button', x, y);
-            loadToolbarButtonHandler(container, doSlowButton);
-            onscreenButtons.push(container);
-	    container.visible = false;
+            // Misc. other buttons
+            var menuNames = [['copy', selectStackToCopy], ['paste', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen]];
+            if (server) {
+                menuNames.push(['save', doSave]);
+            }
 
-	    x += 55;
-            var container = makeButton('stop-turtle-button', x, y);
-            loadToolbarButtonHandler(container, doStopButton);
-            onscreenButtons.push(container);
-	    container.visible = false;
-
-	    x += 55;
-            var container = makeButton('clear-button', x, y);
-            loadToolbarButtonHandler(container, allClear);
-            onscreenButtons.push(container);
-	    container.visible = false;
-
-	    x += 55;
-            var container = makeButton('palette-button', x, y);
-            loadToolbarButtonHandler(container, changePaletteVisibility);
-            onscreenButtons.push(container);
-	    container.visible = false;
-
-	    x += 55;
-            var container = makeButton('hide-blocks-button', x, y);
-            loadToolbarButtonHandler(container, changeBlockVisibility);
-            onscreenButtons.push(container);
-	    container.visible = false;
-
-            // Lower right
-	    var x = 1145;
-	    var y = 873;
+            var x = 1145;
+            var y = 873;
+            var dx = 0;
+            var dy = -55;
             menuContainer = makeButton('menu-button', x, y);
             loadToolbarButtonHandler(menuContainer, doMenuButton);
 
-	    y -= 55;
-            var container = makeButton('copy-button', x, y);
-            loadToolbarButtonHandler(container, selectStackToCopy);
-            onscreenMenu.push(container);
-	    container.visible = false;
-
-	    y -= 55;
-            var container = makeButton('paste-button', x, y);
-            loadToolbarButtonHandler(container, pasteStack);
-            onscreenMenu.push(container);
-	    container.visible = false;
-
-	    y -= 55;
-            var container = makeButton('Cartesian-button', x, y);
-            loadToolbarButtonHandler(container, doCartesian);
-            onscreenMenu.push(container);
-	    container.visible = false;
-
-	    y -= 55;
-            var container = makeButton('polar-button', x, y);
-            loadToolbarButtonHandler(container, doPolar);
-            onscreenMenu.push(container);
-	    container.visible = false;
-
-	    y -= 55;
-            var container = makeButton('samples-button', x, y);
-            loadToolbarButtonHandler(container, doOpenSamples);
-            onscreenMenu.push(container);
-	    container.visible = false;
-
-	    y -= 55;
-            var container = makeButton('open-button', x, y);
-            loadToolbarButtonHandler(container, doOpen);
-            onscreenMenu.push(container);
-	    container.visible = false;
-
-            if (server) {
-		y -= 55;
-                var container = makeButton('save-button', x, y);
-                loadToolbarButtonHandler(container, doSave);
+            for (button in menuNames) {
+                x += dx;
+                y += dy;
+                var container = makeButton(menuNames[button][0] + '-button', x, y);
+                loadToolbarButtonHandler(container, menuNames[button][1]);
                 onscreenMenu.push(container);
-		container.visible = false;
-
-                var saveName = docById('mySaveName');
-                saveName.style.position = 'absolute';
-                var left = 970 * scale;
-                saveName.style.left = canvas.offsetLeft + left + '1000px';
-                var top = y * scale;
-                saveName.style.top = canvas.offsetTop + top + 'px';
-            } else {
-                var saveName = docById('mySaveName');
-                saveName.style.visibility = 'hidden';
+                container.visible = false;
             }
 
+            var saveName = docById('mySaveName');
+            if (server) {
+                var x = last(onscreenMenu).x;
+                var y = last(onscreenMenu).y;
+                console.log(x + ' ' + y);
+                saveName.style.position = 'absolute';
+                var left = x - 82;
+                saveName.style.left = canvas.offsetLeft + left + 'px';
+                var top = y + 55;
+                saveName.style.top = canvas.offsetTop + top + 'px';
+            }
+            saveName.style.visibility = 'hidden';
         }
 
-	function doMenuButton() {
-	    if (menuButtonsVisible) {
-		doMenuAnimation(1);
-	    } else {
-		doMenuAnimation(1);
-	    }
-	}
+        function doMenuButton() {
+            if (menuButtonsVisible) {
+                doMenuAnimation(1);
+            } else {
+                doMenuAnimation(1);
+            }
+        }
 
-	function doMenuAnimation(count) {
-	    if (count < 10) {
-		var bitmap = last(menuContainer.children);
-		bitmap.rotation += 10;
-		bitmap.updateCache();
-		update = true;
+        function doMenuAnimation(count) {
+            if (count < 10) {
+                var bitmap = last(menuContainer.children);
+                bitmap.rotation += 10;
+                bitmap.updateCache();
+                update = true;
                 setTimeout(function(){doMenuAnimation(count + 1);}, 50);
-	    } else {
-		if(menuButtonsVisible) {
-		    menuButtonsVisible = false;
+            } else {
+                var saveName = docById('mySaveName');
+                if(menuButtonsVisible) {
+                    menuButtonsVisible = false;
                     for (button in onscreenMenu) {
-			onscreenMenu[button].visible = false;
+                        onscreenMenu[button].visible = false;
                     }
-		} else {
-		    menuButtonsVisible = true;
+                    if (server) {
+                        saveName.style.visibility = 'hidden';
+                    }
+                } else {
+                    menuButtonsVisible = true;
                     for (button in onscreenMenu) {
-			onscreenMenu[button].visible = true;
+                        onscreenMenu[button].visible = true;
                     }
-		}
-		update = true;
-	    }
-	}
+                    if (server) {
+                        saveName.style.visibility = 'visible';
+                    }
+                }
+                update = true;
+            }
+        }
 
-	function doOpenToolbarButton() {
-	    doOpenAnimation(0);
-	}
+        function doOpenToolbarButton() {
+            doOpenAnimation(0);
+        }
 
-	function doOpenAnimation(count) {
-	    if (count < 10) {
-		var bitmap = last(openContainer.children);
-		bitmap.rotation = (count * 10) % 360;
-		bitmap.updateCache();
-		update = true;
+        function doOpenAnimation(count) {
+            if (count < 10) {
+                var bitmap = last(openContainer.children);
+                bitmap.rotation = (count * 10) % 360;
+                bitmap.updateCache();
+                update = true;
                 setTimeout(function(){doOpenAnimation(count + 1);}, 50);
-	    } else {
-		openContainer.visible = false;
-		closeContainer.visible = true;
-		toolbarButtonsVisible = true;
+            } else {
+                openContainer.visible = false;
+                closeContainer.visible = true;
+                toolbarButtonsVisible = true;
                 for (button in onscreenButtons) {
                     onscreenButtons[button].visible = true;
                 }
-		update = true;
-	    }
-	}
+                update = true;
+            }
+        }
 
-	function doCloseToolbarButton() {
-	    openContainer.visible = true;
-	    closeContainer.visible = false;
-	    toolbarButtonsVisible = false;
+        function doCloseToolbarButton() {
+            openContainer.visible = true;
+            closeContainer.visible = false;
+            toolbarButtonsVisible = false;
             for (button in onscreenButtons) {
                 onscreenButtons[button].visible = false;
             }
-	    update = true;
-	}
+            update = true;
+        }
 
         function toggleToolbar() {
             if (buttonsVisible) {
                 buttonsVisible = false;
                 if (onAndroid || !onXO) {
-		    closeContainer.visible = false;
-		    openContainer.visible = false;
-		    menuContainer.visible = false;
+                    closeContainer.visible = false;
+                    openContainer.visible = false;
+                    menuContainer.visible = false;
                     for (button in onscreenButtons) {
                         onscreenButtons[button].visible = false;
                     }
@@ -1764,28 +1722,28 @@ define(function (require) {
                         onscreenMenu[button].visible = false;
                     }
                 } else {
-                    var toolbar = docById("main-toolbar");
-                    toolbar.style.display = "none";
+                    var toolbar = docById('main-toolbar');
+                    toolbar.style.display = 'none';
                 }
             } else {
-		buttonsVisible = true;
+                buttonsVisible = true;
                 if (onAndroid || !onXO) {
-		    if (toolbarButtonsVisible) {
-			closeContainer.visible = true;
-			for (button in onscreenButtons) {
+                    if (toolbarButtonsVisible) {
+                        closeContainer.visible = true;
+                        for (button in onscreenButtons) {
                             onscreenButtons[button].visible = true;
-			}
-		    }
-		    if (menuButtonsVisible) {
-			for (button in onscreenMenu) {
+                        }
+                    }
+                    if (menuButtonsVisible) {
+                        for (button in onscreenMenu) {
                             onscreenMenu[button].visible = true;
-			}
-		    }
-		    openContainer.visible = true;
-		    menuContainer.visible = true;
-		} else {
-                    var toolbar = docById("main-toolbar");
-                    toolbar.style.display = "inline";
+                        }
+                    }
+                    openContainer.visible = true;
+                    menuContainer.visible = true;
+                } else {
+                    var toolbar = docById('main-toolbar');
+                    toolbar.style.display = 'inline';
                 }
             }
             update = true;
@@ -1831,10 +1789,10 @@ function httpGet(projectName)
     xmlHttp = new XMLHttpRequest();
 
     if (projectName == null) {
-        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
+        xmlHttp.open('GET', 'https://turtle.sugarlabs.org/server', false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     } else {
-        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+        xmlHttp.open('GET', 'https://turtle.sugarlabs.org/server/' + projectName, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
         // xmlHttp.setRequestHeader('x-project-id', projectName);
     }
@@ -1848,7 +1806,7 @@ function httpPost(projectName, data)
     var xmlHttp = null;
     console.log('sending ' + data);
     xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+    xmlHttp.open('POST', 'https://turtle.sugarlabs.org/server/' + projectName, false);
     xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     // xmlHttp.setRequestHeader('x-project-id', projectName);
     xmlHttp.send(data);
@@ -1919,7 +1877,7 @@ function makeSVG(data) {
             var bb = new BlobBuilder();
             bb.append([data.buffer]);
             return bb.getBlob(mime);
-        } else if (e.name == "InvalidStateError") {
+        } else if (e.name == 'InvalidStateError') {
             // InvalidStateError (tested on FF13 WinXP)
             return new Blob([data.buffer], {type : mime});
         } else {

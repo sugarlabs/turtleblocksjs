@@ -1587,6 +1587,11 @@ define(function (require) {
 
             var x = 1145;
             var y = 873;
+            if (onAndroid) {
+                // FIXME: check the right value
+                // space for the bottom android toolbar
+                y -= 80;
+            };
             var dx = 0;
             var dy = -55;
             menuContainer = makeButton('menu-button', x, y);

@@ -286,35 +286,9 @@ define(function (require) {
             // Enabled mouse over and mouse out events.
             stage.enableMouseOver(10); // default is 20
 
-            var cartesian = new Image();
-            cartesian.src = 'images/Cartesian.svg';
-            var container = new createjs.Container();
-            stage.addChild(container);
+            cartesianBitmap = createGrid('images/Cartesian.svg');
 
-            cartesianBitmap = new createjs.Bitmap(cartesian);
-            container.addChild(cartesianBitmap);
-            cartesianBitmap.cache(0, 0, 1200, 900);
-
-            cartesianBitmap.x = (canvas.width - 1200) / 2;
-            cartesianBitmap.y = (canvas.height - 900) / 2;
-            cartesianBitmap.scaleX = cartesianBitmap.scaleY = cartesianBitmap.scale = 1;
-            cartesianBitmap.visible = false;
-            cartesianBitmap.updateCache();
-
-            var polar = new Image();
-            polar.src = 'images/polar.svg';
-            var container = new createjs.Container();
-            stage.addChild(container);
-
-            polarBitmap = new createjs.Bitmap(polar);
-            container.addChild(polarBitmap);
-            polarBitmap.cache(0, 0, 1200, 900);
-
-            polarBitmap.x = (canvas.width - 1200) / 2;
-            polarBitmap.y = (canvas.height - 900) / 2;
-            polarBitmap.scaleX = polarBitmap.scaleY = polarBitmap.scale = 1;
-            polarBitmap.visible = false;
-            polarBitmap.updateCache();
+            polarBitmap = createGrid('images/polar.svg');
 
             createMsgContainer('#ffffff', '#7a7a7a', function(text) {
                 msgText = text;
@@ -371,6 +345,24 @@ define(function (require) {
 
             this.document.onkeydown = keyPressed;
         }
+
+        function createGrid(imagePath) {
+            var img = new Image();
+            img.src = imagePath;
+            var container = new createjs.Container();
+            stage.addChild(container);
+
+            bitmap = new createjs.Bitmap(img);
+            container.addChild(bitmap);
+            bitmap.cache(0, 0, 1200, 900);
+
+            bitmap.x = (canvas.width - 1200) / 2;
+            bitmap.y = (canvas.height - 900) / 2;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+            bitmap.visible = false;
+            bitmap.updateCache();
+            return bitmap;
+        };
 
         function createMsgContainer(fillColor, strokeColor, callback) {
             var container = new createjs.Container();

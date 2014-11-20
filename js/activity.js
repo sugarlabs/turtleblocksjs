@@ -327,7 +327,8 @@ define(function (require) {
             msgContainer.visible = false;
 
             var img = new Image();
-            var svgData = makeSVG(MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#7a7a7a'));
+            var svgData = MSGBLOCK.replace('fill_color', '#ffffff').replace(
+                'stroke_color', '#7a7a7a');
             img.onload = function () {
                 msgBlock = new createjs.Bitmap(img);
                 msgContainer.addChild(msgBlock);
@@ -360,7 +361,8 @@ define(function (require) {
             errorMsgContainer.visible = false;
 
             var img = new Image();
-            var svgData = makeSVG(MSGBLOCK.replace('fill_color', '#ffcbc4').replace('stroke_color', '#ff0031'));
+            var svgData = MSGBLOCK.replace('fill_color', '#ffcbc4').replace(
+                'stroke_color', '#ff0031');
             img.onload = function () {
                 errorMsgBlock = new createjs.Bitmap(img);
                 errorMsgContainer.addChild(errorMsgBlock);
@@ -657,7 +659,7 @@ define(function (require) {
                 var returnValue = httpPost(projectName, prepareExport());
 
                 var image = new Image();
-                var svgData = makeSVG(doSVG(canvas, turtles, 320, 240, 320 / canvas.width));
+                var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
                 image.onload = function() {
                     var bitmap = new createjs.Bitmap(image);
                     var bounds = bitmap.getBounds();
@@ -1862,28 +1864,4 @@ function fileBasename(file) {
         parts.pop(); // throw away suffix
         return parts.join('.');
     }
-}
-
-
-function makeSVG(data) {
-    var mime = 'image/svg+xml;charset=utf-8';
-    try {
-        return new Blob([data], {type: mime});
-    } catch(e) {
-        // from http://stackoverflow.com/questions/15293694/blob-constructor-browser-compatibility
-        // TypeError old chrome and FF
-        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
-        if (e.name == 'TypeError' && window.BlobBuilder) {
-            var bb = new BlobBuilder();
-            bb.append([data.buffer]);
-            return bb.getBlob(mime);
-        } else if (e.name == 'InvalidStateError') {
-            // InvalidStateError (tested on FF13 WinXP)
-            return new Blob([data.buffer], {type : mime});
-        } else {
-            // We're screwed, blob constructor unsupported entirely
-            console.log("ERROR: Can't load SVG: nothing worked!!!");
-        };
-    };
-
 }

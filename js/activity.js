@@ -109,6 +109,10 @@ define(function (require) {
 
         var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
         console.log('on XO? ' + onXO);
+        var cellSize = 55;
+        if (onXO) {
+            cellSize = 75;
+        };
 
         var onscreenButtons = [];
         var onscreenMenu = [];
@@ -241,9 +245,10 @@ define(function (require) {
             stage = new createjs.Stage(canvas);
             createjs.Touch.enable(stage);
             createjs.Ticker.addEventListener('tick', tick);
-            trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash, sendAllToTrash);
+            trashcan = new Trashcan(canvas, stage, cellSize,
+                refreshCanvas, restoreTrash, sendAllToTrash);
             turtles = new Turtles(canvas, stage, refreshCanvas);
-            palettes = initPalettes(canvas, stage, refreshCanvas);
+            palettes = initPalettes(canvas, stage, cellSize, refreshCanvas);
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
             palettes.setBlocks(blocks);
             turtles.setBlocks(blocks);
@@ -480,8 +485,8 @@ define(function (require) {
         }
 
         function restoreTrash() {
-            var dx = -110;
-            var dy = 55;
+            var dx = -cellSize * 2;
+            var dy = cellSize;
             for (var blk in blocks.blockList) {
                 if (blocks.blockList[blk].trash) {
                     blocks.blockList[blk].trash = false;
@@ -499,7 +504,7 @@ define(function (require) {
 
         function sendAllToTrash(addStartBlock) {
             var dx = 2000;
-            var dy = 55;
+            var dy = cellSize;
             for (var blk in blocks.blockList) {
                 blocks.blockList[blk].trash = true;
                 blocks.moveBlockRelative(blk, dx, dy);
@@ -1551,21 +1556,23 @@ define(function (require) {
             // Buttons used when running turtle programs
             var buttonNames = [['fast', doFastButton], ['slow', doSlowButton], ['stop-turtle', doStopButton], ['clear', allClear], ['palette', changePaletteVisibility], ['hide-blocks', changeBlockVisibility]];
 
-            var x = 27;
-            var y = 27;
-            var dx = 55;
+            var btnSize = cellSize;
+            var x = Math.floor(btnSize / 2);
+            var y = x;
+            var dx = btnSize;
             var dy = 0;
 
-            closeContainer = makeButton('close-toolbar-button', x, y);
+            closeContainer = makeButton('close-toolbar-button', x, y, btnSize);
             loadToolbarButtonHandler(closeContainer, doCloseToolbarButton);
 
-            openContainer = makeButton('open-toolbar-button', x, y);
+            openContainer = makeButton('open-toolbar-button', x, y, btnSize);
             loadToolbarButtonHandler(openContainer, doOpenToolbarButton);
 
             for (button in buttonNames) {
                 x += dx;
                 y += dy;
-                var container = makeButton(buttonNames[button][0] + '-button', x, y);
+                var container = makeButton(buttonNames[button][0] + '-button',
+                                           x, y, btnSize);
                 loadToolbarButtonHandler(container, buttonNames[button][1]);
                 onscreenButtons.push(container);
                 container.visible = false;
@@ -1585,14 +1592,15 @@ define(function (require) {
                 y -= 80;
             };
             var dx = 0;
-            var dy = -55;
-            menuContainer = makeButton('menu-button', x, y);
+            var dy = -btnSize;
+            menuContainer = makeButton('menu-button', x, y, btnSize);
             loadToolbarButtonHandler(menuContainer, doMenuButton);
 
             for (button in menuNames) {
                 x += dx;
                 y += dy;
-                var container = makeButton(menuNames[button][0] + '-button', x, y);
+                var container = makeButton(menuNames[button][0] + '-button',
+                                           x, y, btnSize);
                 loadToolbarButtonHandler(container, menuNames[button][1]);
                 onscreenMenu.push(container);
                 container.visible = false;
@@ -1606,7 +1614,7 @@ define(function (require) {
                 saveName.style.position = 'absolute';
                 var left = x - 82;
                 saveName.style.left = canvas.offsetLeft + left + 'px';
-                var top = y + 55;
+                var top = y + btnSize;
                 saveName.style.top = canvas.offsetTop + top + 'px';
             }
             saveName.style.visibility = 'hidden';
@@ -1723,21 +1731,29 @@ define(function (require) {
             update = true;
         }
 
-        function makeButton(name, x, y) {
+        function makeButton(name, x, y, size) {
+            var originalSize = 55; // this is the original svg size
+            var halfSize = Math.floor(size / 2);
             var image = new Image();
             image.src = 'icons/' + name + '.svg';
             var container = new createjs.Container();
             stage.addChild(container);
             bitmap = new createjs.Bitmap(image);
-            bitmap.regX = 27 | 0;
-            bitmap.regY = 27 | 0;
+            if (size != originalSize) {
+                bitmap.scaleX = size / originalSize;
+                bitmap.scaleY = size / originalSize;
+            }
+            bitmap.regX = halfSize / bitmap.scaleX;
+            bitmap.regY = halfSize / bitmap.scaleY;
+
             container.addChild(bitmap);
             var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-halfSize, -halfSize,
+                                                           size, size);
             hitArea.x = 0;
             hitArea.y = 0;
             container.hitArea = hitArea;
-            bitmap.cache(0, 0, 55, 55);
+            bitmap.cache(0, 0, size, size);
             bitmap.updateCache();
             container.x = x;
             container.y = y;

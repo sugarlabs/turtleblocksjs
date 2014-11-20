@@ -11,7 +11,7 @@
 
 // All things related to trash
 
-function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
+function Trashcan (canvas, stage, size, refreshCanvas, restore, clearall) {
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
@@ -31,11 +31,19 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
     this.highlightBitmap = new createjs.Bitmap(highlightImage);
     this.container.addChild(this.highlightBitmap);
 
+    var originalSize = 55; // this is the original svg size
+    if (size != originalSize) {
+        this.bitmap.scaleX = size / originalSize;
+        this.bitmap.scaleY = size / originalSize;
+        this.highlightBitmap.scaleX = size / originalSize;
+        this.highlightBitmap.scaleY = size / originalSize;
+    };
+
     this.container.x = this.canvas.width - 82;
     this.container.y = 0;
 
-    var w = 55;
-    var h = 55;
+    var w = size;
+    var h = size;
     var hitArea = new createjs.Shape();
     hitArea.graphics.beginFill('#FFF').drawEllipse(-w/2, -h/2, w, h);
     hitArea.x = w/2;
@@ -53,7 +61,7 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
     this.restoreContainer = new createjs.Container();
     this.stage.addChild(this.restoreContainer);
     this.restoreContainer.x = this.container.x - 145;
-    this.restoreContainer.y = 55;
+    this.restoreContainer.y = size;
     this.restoreContainer.visible = false;
     var hitArea = new createjs.Shape();
     hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
@@ -172,12 +180,12 @@ function Trashcan (canvas, stage, refreshCanvas, restore, clearall) {
 	var ty = this.container.y * scale;
         if (x < tx) {
             return false;
-        } else if (x > tx + 55) {
+        } else if (x > tx + size) {
             return false;
         }
         if (y < ty) {
             return false;
-        } else if (y > ty + 55) {
+        } else if (y > ty + size) {
             return false;
         }
         return true;

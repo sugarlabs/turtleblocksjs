@@ -109,6 +109,10 @@ define(function (require) {
 
         var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
         console.log('on XO? ' + onXO);
+        var cellSize = 55;
+        if (onXO) {
+            cellSize = 75;
+        };
 
         var onscreenButtons = [];
         var onscreenMenu = [];
@@ -227,13 +231,9 @@ define(function (require) {
         var polarBitmap = null;
 
         // Msg block
-        var msgContainer = null;
-        var msgBlock = null;
         var msgText = null;
 
         // ErrorMsg block
-        var errorMsgContainer = null;
-        var errorMsgBlock = null;
         var errorMsgText = null;
 
         // Get things started
@@ -245,9 +245,10 @@ define(function (require) {
             stage = new createjs.Stage(canvas);
             createjs.Touch.enable(stage);
             createjs.Ticker.addEventListener('tick', tick);
-            trashcan = new Trashcan(canvas, stage, refreshCanvas, restoreTrash, sendAllToTrash);
+            trashcan = new Trashcan(canvas, stage, cellSize,
+                refreshCanvas, restoreTrash, sendAllToTrash);
             turtles = new Turtles(canvas, stage, refreshCanvas);
-            palettes = initPalettes(canvas, stage, refreshCanvas);
+            palettes = initPalettes(canvas, stage, cellSize, refreshCanvas);
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
             palettes.setBlocks(blocks);
             turtles.setBlocks(blocks);
@@ -290,101 +291,17 @@ define(function (require) {
             // Enabled mouse over and mouse out events.
             stage.enableMouseOver(10); // default is 20
 
-            var cartesian = new Image();
-            cartesian.src = 'images/Cartesian.svg';
-            var container = new createjs.Container();
-            stage.addChild(container);
+            cartesianBitmap = createGrid('images/Cartesian.svg');
 
-            cartesianBitmap = new createjs.Bitmap(cartesian);
-            container.addChild(cartesianBitmap);
-            cartesianBitmap.cache(0, 0, 1200, 900);
+            polarBitmap = createGrid('images/polar.svg');
 
-            cartesianBitmap.x = (canvas.width - 1200) / 2;
-            cartesianBitmap.y = (canvas.height - 900) / 2;
-            cartesianBitmap.scaleX = cartesianBitmap.scaleY = cartesianBitmap.scale = 1;
-            cartesianBitmap.visible = false;
-            cartesianBitmap.updateCache();
+            createMsgContainer('#ffffff', '#7a7a7a', function(text) {
+                msgText = text;
+            });
 
-            var polar = new Image();
-            polar.src = 'images/polar.svg';
-            var container = new createjs.Container();
-            stage.addChild(container);
-
-            polarBitmap = new createjs.Bitmap(polar);
-            container.addChild(polarBitmap);
-            polarBitmap.cache(0, 0, 1200, 900);
-
-            polarBitmap.x = (canvas.width - 1200) / 2;
-            polarBitmap.y = (canvas.height - 900) / 2;
-            polarBitmap.scaleX = polarBitmap.scaleY = polarBitmap.scale = 1;
-            polarBitmap.visible = false;
-            polarBitmap.updateCache();
-
-            msgContainer = new createjs.Container();
-            stage.addChild(msgContainer);
-            msgContainer.x = (canvas.width - 1000) / 2;
-            msgContainer.y = 110;
-            msgContainer.visible = false;
-
-            var img = new Image();
-            var svgData = makeSVG(MSGBLOCK.replace('fill_color', '#ffffff').replace('stroke_color', '#7a7a7a'));
-            img.onload = function () {
-                msgBlock = new createjs.Bitmap(img);
-                msgContainer.addChild(msgBlock);
-                msgText = new createjs.Text('your message here', '20px Arial', '#000000');
-                msgContainer.addChild(msgText);
-                msgText.textAlign = 'center';
-                msgText.textBaseline = 'alphabetic';
-                msgText.x = 500;
-                msgText.y = 30;
-                var bounds = msgContainer.getBounds();
-                msgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
-                hitArea.x = 0;
-                hitArea.y = 0;
-                msgContainer.hitArea = hitArea;
-
-                msgContainer.on('click', function(event) {
-                    msgContainer.visible = false;
-                    update = true;
-                });
-            }
-            img.src = 'data:image/svg+xml;base64,' + window.btoa(
-                unescape(encodeURIComponent(svgData)));
-
-            errorMsgContainer = new createjs.Container();
-            stage.addChild(errorMsgContainer);
-            errorMsgContainer.x = (canvas.width - 1000) / 2;
-            errorMsgContainer.y = 110;
-            errorMsgContainer.visible = false;
-
-            var img = new Image();
-            var svgData = makeSVG(MSGBLOCK.replace('fill_color', '#ffcbc4').replace('stroke_color', '#ff0031'));
-            img.onload = function () {
-                errorMsgBlock = new createjs.Bitmap(img);
-                errorMsgContainer.addChild(errorMsgBlock);
-                errorMsgText = new createjs.Text('your message here', '20px Arial', '#000000');
-                errorMsgContainer.addChild(errorMsgText);
-                errorMsgText.textAlign = 'center';
-                errorMsgText.textBaseline = 'alphabetic';
-                errorMsgText.x = 500;
-                errorMsgText.y = 30;
-                var bounds = errorMsgContainer.getBounds();
-                errorMsgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
-                hitArea.x = 0;
-                hitArea.y = 0;
-                errorMsgContainer.hitArea = hitArea;
-
-                errorMsgContainer.on('click', function(event) {
-                    errorMsgContainer.visible = false;
-                    update = true;
-                });
-            }
-            img.src = 'data:image/svg+xml;base64,' + window.btoa(
-                unescape(encodeURIComponent(svgData)));
+            createMsgContainer('#ffcbc4', '#ff0031', function(text) {
+                errorMsgText = text;
+            });
 
             var URL = window.location.href;
             console.log(URL);
@@ -433,6 +350,61 @@ define(function (require) {
 
             this.document.onkeydown = keyPressed;
         }
+
+        function createGrid(imagePath) {
+            var img = new Image();
+            img.src = imagePath;
+            var container = new createjs.Container();
+            stage.addChild(container);
+
+            bitmap = new createjs.Bitmap(img);
+            container.addChild(bitmap);
+            bitmap.cache(0, 0, 1200, 900);
+
+            bitmap.x = (canvas.width - 1200) / 2;
+            bitmap.y = (canvas.height - 900) / 2;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
+            bitmap.visible = false;
+            bitmap.updateCache();
+            return bitmap;
+        };
+
+        function createMsgContainer(fillColor, strokeColor, callback) {
+            var container = new createjs.Container();
+            stage.addChild(container);
+            container.x = (canvas.width - 1000) / 2;
+            container.y = 110;
+            container.visible = false;
+            var img = new Image();
+            var svgData = MSGBLOCK.replace('fill_color', fillColor).replace(
+                'stroke_color', strokeColor);
+            img.onload = function () {
+                var msgBlock = new createjs.Bitmap(img);
+                container.addChild(msgBlock);
+                text = new createjs.Text('your message here',
+                    '20px Arial', '#000000');
+                container.addChild(text);
+                text.textAlign = 'center';
+                text.textBaseline = 'alphabetic';
+                text.x = 500;
+                text.y = 30;
+                var bounds = container.getBounds();
+                container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
+                hitArea.x = 0;
+                hitArea.y = 0;
+                container.hitArea = hitArea;
+
+                container.on('click', function(event) {
+                    container.visible = false;
+                    update = true;
+                });
+                callback(text);
+            }
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(svgData)));
+        };
 
         function keyPressed(event) {
             var ESC = 27;
@@ -513,8 +485,8 @@ define(function (require) {
         }
 
         function restoreTrash() {
-            var dx = -110;
-            var dy = 55;
+            var dx = -cellSize * 2;
+            var dy = cellSize;
             for (var blk in blocks.blockList) {
                 if (blocks.blockList[blk].trash) {
                     blocks.blockList[blk].trash = false;
@@ -532,7 +504,7 @@ define(function (require) {
 
         function sendAllToTrash(addStartBlock) {
             var dx = 2000;
-            var dy = 55;
+            var dy = cellSize;
             for (var blk in blocks.blockList) {
                 blocks.blockList[blk].trash = true;
                 blocks.moveBlockRelative(blk, dx, dy);
@@ -657,7 +629,7 @@ define(function (require) {
                 var returnValue = httpPost(projectName, prepareExport());
 
                 var image = new Image();
-                var svgData = makeSVG(doSVG(canvas, turtles, 320, 240, 320 / canvas.width));
+                var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
                 image.onload = function() {
                     var bitmap = new createjs.Bitmap(image);
                     var bounds = bitmap.getBounds();
@@ -712,6 +684,7 @@ define(function (require) {
         // }
 
         function errorMsg(msg) {
+            var errorMsgContainer = errorMsgText.parent;
             errorMsgContainer.visible = true;
             errorMsgText.text = msg;
             errorMsgContainer.updateCache();
@@ -799,8 +772,8 @@ define(function (require) {
             stopTurtle = false;
             blocks.unhighlightAll();
             blocks.bringToTop();  // Draw under blocks.
-            errorMsgContainer.visible = false;  // hide the error message window
-            msgContainer.visible = false;  // hide the message window
+            errorMsgText.parent.visible = false;  // hide the error message window
+            msgText.parent.visible = false;  // hide the message window
 
             // We run the logo commands here.
             var d = new Date();
@@ -1147,6 +1120,7 @@ define(function (require) {
                     // Could be an arg block, so we need to print its value
                     if (blocks.blockList[blk].isArgBlock()) {
                         args.push(parseArg(turtle, blk));
+                        var msgContainer = msgText.parent;
                         msgContainer.visible = true;
                         msgText.text = blocks.blockList[blk].value.toString();
                         msgContainer.updateCache();
@@ -1482,8 +1456,8 @@ define(function (require) {
             // Clear all the boxes.
             boxList = [];
             time = 0;
-            errorMsgContainer.visible = false;
-            msgContainer.visible = false;
+            errorMsgText.parent.visible = false;
+            msgText.parent.visible = false;
             setBackgroundColor(-1);
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].doClear();
@@ -1582,21 +1556,23 @@ define(function (require) {
             // Buttons used when running turtle programs
             var buttonNames = [['fast', doFastButton], ['slow', doSlowButton], ['stop-turtle', doStopButton], ['clear', allClear], ['palette', changePaletteVisibility], ['hide-blocks', changeBlockVisibility]];
 
-            var x = 27;
-            var y = 27;
-            var dx = 55;
+            var btnSize = cellSize;
+            var x = Math.floor(btnSize / 2);
+            var y = x;
+            var dx = btnSize;
             var dy = 0;
 
-            closeContainer = makeButton('close-toolbar-button', x, y);
+            closeContainer = makeButton('close-toolbar-button', x, y, btnSize);
             loadToolbarButtonHandler(closeContainer, doCloseToolbarButton);
 
-            openContainer = makeButton('open-toolbar-button', x, y);
+            openContainer = makeButton('open-toolbar-button', x, y, btnSize);
             loadToolbarButtonHandler(openContainer, doOpenToolbarButton);
 
             for (button in buttonNames) {
                 x += dx;
                 y += dy;
-                var container = makeButton(buttonNames[button][0] + '-button', x, y);
+                var container = makeButton(buttonNames[button][0] + '-button',
+                                           x, y, btnSize);
                 loadToolbarButtonHandler(container, buttonNames[button][1]);
                 onscreenButtons.push(container);
                 container.visible = false;
@@ -1610,15 +1586,21 @@ define(function (require) {
 
             var x = 1145;
             var y = 873;
+            if (onAndroid) {
+                // FIXME: check the right value
+                // space for the bottom android toolbar
+                y -= 80;
+            };
             var dx = 0;
-            var dy = -55;
-            menuContainer = makeButton('menu-button', x, y);
+            var dy = -btnSize;
+            menuContainer = makeButton('menu-button', x, y, btnSize);
             loadToolbarButtonHandler(menuContainer, doMenuButton);
 
             for (button in menuNames) {
                 x += dx;
                 y += dy;
-                var container = makeButton(menuNames[button][0] + '-button', x, y);
+                var container = makeButton(menuNames[button][0] + '-button',
+                                           x, y, btnSize);
                 loadToolbarButtonHandler(container, menuNames[button][1]);
                 onscreenMenu.push(container);
                 container.visible = false;
@@ -1632,7 +1614,7 @@ define(function (require) {
                 saveName.style.position = 'absolute';
                 var left = x - 82;
                 saveName.style.left = canvas.offsetLeft + left + 'px';
-                var top = y + 55;
+                var top = y + btnSize;
                 saveName.style.top = canvas.offsetTop + top + 'px';
             }
             saveName.style.visibility = 'hidden';
@@ -1749,21 +1731,29 @@ define(function (require) {
             update = true;
         }
 
-        function makeButton(name, x, y) {
+        function makeButton(name, x, y, size) {
+            var originalSize = 55; // this is the original svg size
+            var halfSize = Math.floor(size / 2);
             var image = new Image();
             image.src = 'icons/' + name + '.svg';
             var container = new createjs.Container();
             stage.addChild(container);
             bitmap = new createjs.Bitmap(image);
-            bitmap.regX = 27 | 0;
-            bitmap.regY = 27 | 0;
+            if (size != originalSize) {
+                bitmap.scaleX = size / originalSize;
+                bitmap.scaleY = size / originalSize;
+            }
+            bitmap.regX = halfSize / bitmap.scaleX;
+            bitmap.regY = halfSize / bitmap.scaleY;
+
             container.addChild(bitmap);
             var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-halfSize, -halfSize,
+                                                           size, size);
             hitArea.x = 0;
             hitArea.y = 0;
             container.hitArea = hitArea;
-            bitmap.cache(0, 0, 55, 55);
+            bitmap.cache(0, 0, size, size);
             bitmap.updateCache();
             container.x = x;
             container.y = y;
@@ -1862,28 +1852,4 @@ function fileBasename(file) {
         parts.pop(); // throw away suffix
         return parts.join('.');
     }
-}
-
-
-function makeSVG(data) {
-    var mime = 'image/svg+xml;charset=utf-8';
-    try {
-        return new Blob([data], {type: mime});
-    } catch(e) {
-        // from http://stackoverflow.com/questions/15293694/blob-constructor-browser-compatibility
-        // TypeError old chrome and FF
-        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
-        if (e.name == 'TypeError' && window.BlobBuilder) {
-            var bb = new BlobBuilder();
-            bb.append([data.buffer]);
-            return bb.getBlob(mime);
-        } else if (e.name == 'InvalidStateError') {
-            // InvalidStateError (tested on FF13 WinXP)
-            return new Blob([data.buffer], {type : mime});
-        } else {
-            // We're screwed, blob constructor unsupported entirely
-            console.log("ERROR: Can't load SVG: nothing worked!!!");
-        };
-    };
-
 }

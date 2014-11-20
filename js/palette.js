@@ -24,10 +24,13 @@ function paletteBlockButtonPush(name, arg) {
 }
 
 
-function Palettes (canvas, stage, refreshCanvas) {
+function Palettes (canvas, stage, cellSize, refreshCanvas) {
     this.canvas = canvas;
     this.stage = stage;
+    this.cellSize = cellSize;
+    this.halfCellSize = Math.floor(cellSize / 2);
     this.refreshCanvas = refreshCanvas;
+    this.originalSize = 55; // this is the original svg size
 
     // The collection of palettes.
     this.dict = {};
@@ -50,7 +53,7 @@ function Palettes (canvas, stage, refreshCanvas) {
     this.makeMenu = function() {
         // First, an icon/button for each palette
         this.x = 0;
-        this.y = 55;
+        this.y = this.cellSize;
         for (var name in this.dict) {
             if (name in this.buttons) {
                 // console.log('button ' + name + ' has already been created');
@@ -59,12 +62,16 @@ function Palettes (canvas, stage, refreshCanvas) {
                 this.buttons[name] = new createjs.Container();
                 this.stage.addChild(this.buttons[name]);
                 this.buttons[name].x = this.x;
-                this.x += 55;
+                this.x += this.cellSize;
                 this.buttons[name].y = this.y;
 
                 function processButton(me, name, bitmap, extras) {
                     me.bitmaps[name] = bitmap;
                     me.buttons[name].addChild(me.bitmaps[name]);
+                    if (me.cellSize != me.originalSize) {
+                        bitmap.scaleX = me.cellSize / me.originalSize;
+                        bitmap.scaleY = me.cellSize / me.originalSize;
+                    }
                 }
 
                 makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#282828'), name, processButton, null);
@@ -78,16 +85,21 @@ function Palettes (canvas, stage, refreshCanvas) {
                     image.src = 'images/' + name + '.svg';
                     var icon = new createjs.Bitmap(image);
                     me.buttons[name].addChild(icon);
+                    if (me.cellSize != me.originalSize) {
+                        icon.scaleX = me.cellSize / me.originalSize;
+                        icon.scaleY = me.cellSize / me.originalSize;
+                    }
 
                     var hitArea = new createjs.Shape();
-                    hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
-                    hitArea.x = 27;
-                    hitArea.y = 27;
+                    hitArea.graphics.beginFill('#FFF').drawEllipse(
+                        -me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
+                    hitArea.x = me.halfCellSize;
+                    hitArea.y = me.halfCellSize;
                     me.buttons[name].hitArea = hitArea;
                     me.buttons[name].visible = false;
 
                     me.dict[name].makeMenu();
-                    me.dict[name].moveMenu(0, me.y + 55);
+                    me.dict[name].moveMenu(0, me.y + me.cellSize);
                     me.dict[name].updateMenu(false);
 
                     loadPaletteButtonHandler(me, name);
@@ -497,9 +509,9 @@ function Palette (palettes, name, color, bgcolor) {
 
 };
 
-function initPalettes(canvas, stage, refreshCanvas) {
+function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     // Instantiate the palettes object.
-    var palettes = new Palettes(canvas, stage, refreshCanvas).
+    var palettes = new Palettes(canvas, stage, cellSize, refreshCanvas).
         add('turtle', 'black', '#00b700').
         add('pen', 'black', '#00c0e7').
         add('number', 'black', '#ff00ff').

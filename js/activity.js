@@ -227,13 +227,9 @@ define(function (require) {
         var polarBitmap = null;
 
         // Msg block
-        var msgContainer = null;
-        var msgBlock = null;
         var msgText = null;
 
         // ErrorMsg block
-        var errorMsgContainer = null;
-        var errorMsgBlock = null;
         var errorMsgText = null;
 
         // Get things started
@@ -320,73 +316,13 @@ define(function (require) {
             polarBitmap.visible = false;
             polarBitmap.updateCache();
 
-            msgContainer = new createjs.Container();
-            stage.addChild(msgContainer);
-            msgContainer.x = (canvas.width - 1000) / 2;
-            msgContainer.y = 110;
-            msgContainer.visible = false;
+            createMsgContainer('#ffffff', '#7a7a7a', function(text) {
+                msgText = text;
+            });
 
-            var img = new Image();
-            var svgData = MSGBLOCK.replace('fill_color', '#ffffff').replace(
-                'stroke_color', '#7a7a7a');
-            img.onload = function () {
-                msgBlock = new createjs.Bitmap(img);
-                msgContainer.addChild(msgBlock);
-                msgText = new createjs.Text('your message here', '20px Arial', '#000000');
-                msgContainer.addChild(msgText);
-                msgText.textAlign = 'center';
-                msgText.textBaseline = 'alphabetic';
-                msgText.x = 500;
-                msgText.y = 30;
-                var bounds = msgContainer.getBounds();
-                msgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
-                hitArea.x = 0;
-                hitArea.y = 0;
-                msgContainer.hitArea = hitArea;
-
-                msgContainer.on('click', function(event) {
-                    msgContainer.visible = false;
-                    update = true;
-                });
-            }
-            img.src = 'data:image/svg+xml;base64,' + window.btoa(
-                unescape(encodeURIComponent(svgData)));
-
-            errorMsgContainer = new createjs.Container();
-            stage.addChild(errorMsgContainer);
-            errorMsgContainer.x = (canvas.width - 1000) / 2;
-            errorMsgContainer.y = 110;
-            errorMsgContainer.visible = false;
-
-            var img = new Image();
-            var svgData = MSGBLOCK.replace('fill_color', '#ffcbc4').replace(
-                'stroke_color', '#ff0031');
-            img.onload = function () {
-                errorMsgBlock = new createjs.Bitmap(img);
-                errorMsgContainer.addChild(errorMsgBlock);
-                errorMsgText = new createjs.Text('your message here', '20px Arial', '#000000');
-                errorMsgContainer.addChild(errorMsgText);
-                errorMsgText.textAlign = 'center';
-                errorMsgText.textBaseline = 'alphabetic';
-                errorMsgText.x = 500;
-                errorMsgText.y = 30;
-                var bounds = errorMsgContainer.getBounds();
-                errorMsgContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
-                hitArea.x = 0;
-                hitArea.y = 0;
-                errorMsgContainer.hitArea = hitArea;
-
-                errorMsgContainer.on('click', function(event) {
-                    errorMsgContainer.visible = false;
-                    update = true;
-                });
-            }
-            img.src = 'data:image/svg+xml;base64,' + window.btoa(
-                unescape(encodeURIComponent(svgData)));
+            createMsgContainer('#ffcbc4', '#ff0031', function(text) {
+                errorMsgText = text;
+            });
 
             var URL = window.location.href;
             console.log(URL);
@@ -435,6 +371,43 @@ define(function (require) {
 
             this.document.onkeydown = keyPressed;
         }
+
+        function createMsgContainer(fillColor, strokeColor, callback) {
+            var container = new createjs.Container();
+            stage.addChild(container);
+            container.x = (canvas.width - 1000) / 2;
+            container.y = 110;
+            container.visible = false;
+            var img = new Image();
+            var svgData = MSGBLOCK.replace('fill_color', fillColor).replace(
+                'stroke_color', strokeColor);
+            img.onload = function () {
+                var msgBlock = new createjs.Bitmap(img);
+                container.addChild(msgBlock);
+                text = new createjs.Text('your message here',
+                    '20px Arial', '#000000');
+                container.addChild(text);
+                text.textAlign = 'center';
+                text.textBaseline = 'alphabetic';
+                text.x = 500;
+                text.y = 30;
+                var bounds = container.getBounds();
+                container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
+                hitArea.x = 0;
+                hitArea.y = 0;
+                container.hitArea = hitArea;
+
+                container.on('click', function(event) {
+                    container.visible = false;
+                    update = true;
+                });
+                callback(text);
+            }
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(svgData)));
+        };
 
         function keyPressed(event) {
             var ESC = 27;
@@ -714,6 +687,7 @@ define(function (require) {
         // }
 
         function errorMsg(msg) {
+            var errorMsgContainer = errorMsgText.parent;
             errorMsgContainer.visible = true;
             errorMsgText.text = msg;
             errorMsgContainer.updateCache();
@@ -801,8 +775,8 @@ define(function (require) {
             stopTurtle = false;
             blocks.unhighlightAll();
             blocks.bringToTop();  // Draw under blocks.
-            errorMsgContainer.visible = false;  // hide the error message window
-            msgContainer.visible = false;  // hide the message window
+            errorMsgText.parent.visible = false;  // hide the error message window
+            msgText.parent.visible = false;  // hide the message window
 
             // We run the logo commands here.
             var d = new Date();
@@ -1149,6 +1123,7 @@ define(function (require) {
                     // Could be an arg block, so we need to print its value
                     if (blocks.blockList[blk].isArgBlock()) {
                         args.push(parseArg(turtle, blk));
+                        var msgContainer = msgText.parent;
                         msgContainer.visible = true;
                         msgText.text = blocks.blockList[blk].value.toString();
                         msgContainer.updateCache();
@@ -1484,8 +1459,8 @@ define(function (require) {
             // Clear all the boxes.
             boxList = [];
             time = 0;
-            errorMsgContainer.visible = false;
-            msgContainer.visible = false;
+            errorMsgText.parent.visible = false;
+            msgText.parent.visible = false;
             setBackgroundColor(-1);
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].doClear();

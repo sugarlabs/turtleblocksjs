@@ -961,9 +961,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.swapChildren(myBlock.text, lastChild);
 
         try {
-	    if (myBlock.loadComplete) {
-		myBlock.container.updateCache();
-	    }
+            if (myBlock.loadComplete) {
+                myBlock.container.updateCache();
+            }
         } catch (e) {
             console.log(e);
         }
@@ -1194,7 +1194,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         var thisBlock = this.blockList.indexOf(myBlock);
 
-	// We need a label for most blocks.
+        // We need a label for most blocks.
         myBlock.text = new createjs.Text('', '20px Arial', '#000000');
 
         // Get the block labels from the protoblock
@@ -1242,7 +1242,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // bounds of the container and cache its contents.
             myBlock.bounds = myBlock.container.getBounds();
             myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-            loadEventHandlers(me, me.turtles, myBlock);
+            loadEventHandlers(me, myBlock);
             me.refreshCanvas();
 
             me.finishImageLoad(myBlock);
@@ -1294,11 +1294,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.text.textAlign = 'right';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
-	    if (myBlock.name == 'box') {
-		myBlock.text.x = 120;
-	    } else {
-		myBlock.text.x = 140;
-	    }
+            if (myBlock.name == 'box') {
+                myBlock.text.x = 120;
+            } else {
+                myBlock.text.x = 140;
+            }
             myBlock.text.y = 27;
 
             lastChild = last(myBlock.container.children);
@@ -2489,6 +2489,7 @@ function doOpenMedia(blocks, thisBlock) {
 }
 
 
+// FIXME: Consolidate into loadEventHandlers
 // These are the event handlers for collapsible blocks.
 function loadCollapsibleEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
@@ -2499,6 +2500,12 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     hitArea.x = w2 / 2;
     hitArea.y = h2 / 2;
     myBlock.collapseButton.hitArea = hitArea;
+
+    myBlock.container.on('mouseover', function(event) {
+        blocks.highlight(thisBlock, true);
+        blocks.activeBlock = thisBlock;
+        blocks.refreshCanvas();
+    });
 
     var moved = false;
     myBlock.collapseButton.on('click', function(event) {
@@ -2576,17 +2583,20 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     });
 
     myBlock.collapseButton.on('mousedown', function(event) {
+        // Always show the trash when there is a block selected.
+        trashcan.show();
         moved = false;
         var offset = {
-            x: myBlock.collapseButton.x - event.stageX,
-            y: myBlock.collapseButton.y - event.stageY
+            x: myBlock.collapseButton.x - event.stageX / blocks.scale,
+            y: myBlock.collapseButton.y - event.stageY / blocks.scale
         };
+
         myBlock.collapseButton.on('pressmove', function(event) {
             moved = true;
             var oldX = myBlock.collapseButton.x;
             var oldY = myBlock.collapseButton.y;
-            myBlock.collapseButton.x = event.stageX + offset.x;
-            myBlock.collapseButton.y = event.stageY + offset.y;
+            myBlock.collapseButton.x = event.stageX / blocks.scale + offset.x;
+            myBlock.collapseButton.y = event.stageY / blocks.scale + offset.y;
             var dx = myBlock.collapseButton.x - oldX;
             var dy = myBlock.collapseButton.y - oldY;
             myBlock.container.x += dx;
@@ -2594,6 +2604,13 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
             myBlock.x = myBlock.container.x;
             myBlock.y = myBlock.container.y;
             myBlock.y = event.stageY + offset.y;
+
+            // If we are over the trash, warn the user.
+            if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
+                trashcan.highlight();
+            } else {
+                trashcan.unhighlight();
+            }
 
             blocks.findDragGroup(thisBlock)
             if (blocks.dragGroup.length > 0) {
@@ -2609,24 +2626,39 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         });
     });
 
+    myBlock.collapseButton.on('mouseout', function(event) {
+        // Always hide the trash when there is no block selected.
+        trashcan.hide();
+        if (moved) {
+            // Check if block is in the trash.
+            if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
+		console.log('delete collapse')
+		sendStackToTrash(blocks, myBlock);
+            } else {
+                // Otherwise, process move.
+                blocks.blockMoved(thisBlock);
+            }
+        }
 
-    myBlock.container.on('mouseout', function(event) {
+        if (blocks.activeBlock != myBlock) {
+            return;
+        }
+        blocks.unhighlight(null);
+        blocks.activeBlock = null;
         blocks.refreshCanvas();
     });
 }
 
 
 // These are the event handlers for block containers.
-function loadEventHandlers(blocks, turtles, myBlock) {
+function loadEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
-    // Create a shape that represents the center of the icon.
-
     var hitArea = new createjs.Shape();
     // Position hitArea relative to the internal coordinate system
     // of the container.
-    // FIXME: Why is image width/height == 0???
-    var w2 = 100; // myBlock.image.width / 2;
-    var h2 = 42; // myBlock.image.height / 2;
+    // FIXME: use container shape
+    var w2 = 100;
+    var h2 = 42;
     hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
     hitArea.x = w2 / 2;
     hitArea.y = h2 / 2;
@@ -2658,6 +2690,9 @@ function loadEventHandlers(blocks, turtles, myBlock) {
     });
 
     myBlock.container.on('mousedown', function(event) {
+        // Always show the trash when there is a block selected.
+        trashcan.show();
+
         // Bump the bitmap in front of its siblings.
         blocks.stage.swapChildren(myBlock.container, last(blocks.stage.children));
         if (myBlock.collapseButton != null) {
@@ -2666,23 +2701,28 @@ function loadEventHandlers(blocks, turtles, myBlock) {
 
         moved = false;
         var offset = {
-            x: myBlock.container.x - event.stageX,
-            y: myBlock.container.y - event.stageY
+            x: myBlock.container.x - event.stageX / blocks.scale,
+            y: myBlock.container.y - event.stageY / blocks.scale
         };
-
-        myBlock.container.on('pressup', function(event) {});
 
         myBlock.container.on('pressmove', function(event) {
             moved = true;
             var oldX = myBlock.container.x;
             var oldY = myBlock.container.y;
-            myBlock.container.x = event.stageX + offset.x;
-            myBlock.container.y = event.stageY + offset.y;
+            myBlock.container.x = event.stageX / blocks.scale + offset.x;
+            myBlock.container.y = event.stageY / blocks.scale + offset.y;
             myBlock.x = myBlock.container.x;
             myBlock.y = myBlock.container.y;
             myBlock.y = event.stageY + offset.y;
             var dx = myBlock.container.x - oldX;
             var dy = myBlock.container.y - oldY;
+
+            // If we are over the trash, warn the user.
+            if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
+                trashcan.highlight();
+            } else {
+                trashcan.unhighlight();
+            }
 
             if (myBlock.isValueBlock() && myBlock.name != 'media') {
                 // Ensure text is on top
@@ -2700,7 +2740,7 @@ function loadEventHandlers(blocks, turtles, myBlock) {
             blocks.findDragGroup(thisBlock)
             if (blocks.dragGroup.length > 0) {
                 for (var b = 0; b < blocks.dragGroup.length; b++) {
-                    blk = blocks.dragGroup[b];
+                    var blk = blocks.dragGroup[b];
                     if (b != 0) {
                         blocks.moveBlockRelative(blk, dx, dy);
                     }
@@ -2710,49 +2750,19 @@ function loadEventHandlers(blocks, turtles, myBlock) {
         });
     });
 
-    myBlock.container.on('mouseup', function(event) {});
-
     myBlock.container.on('mouseout', function(event) {
+        // Always hide the trash when there is no block selected.
+        trashcan.hide();
         if (moved) {
-            // Check if block is in the trash
-            if (trashcan.overTrashcan(event.stageX, event.stageY, blocks.scale)) {
-                // disconnect block
-                var b = myBlock.connections[0];
-                if (b != null) {
-                    for (var c in blocks.blockList[b].connections) {
-                        if (blocks.blockList[b].connections[c] == thisBlock) {
-                            blocks.blockList[b].connections[c] = null;
-                            break;
-                        }
-                    }
-                    myBlock.connections[0] = null;
-                }
-
-                if (myBlock.name == 'start') {
-                    turtle = myBlock.value;
-                    if (turtle != null) {
-                        console.log('putting turtle ' + turtle + ' in the trash');
-                        turtles.turtleList[turtle].trash = true;
-                        turtles.turtleList[turtle].container.visible = false;
-                    } else {
-                        console.log('null turtle');
-                    }
-                }
-
-                // put drag group in trash
-                blocks.findDragGroup(thisBlock);
-                for (var b = 0; b < blocks.dragGroup.length; b++) {
-                    blk = blocks.dragGroup[b];
-                    console.log('putting ' + blocks.blockList[blk].name + ' in the trash');
-                    blocks.blockList[blk].trash = true;
-                    blocks.blockList[blk].hide();
-                    blocks.refreshCanvas();
-                }
+            // Check if block is in the trash.
+            if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
+		sendStackToTrash(blocks, myBlock);
             } else {
-                // otherwise, process move
+                // Otherwise, process move.
                 blocks.blockMoved(thisBlock);
             }
         }
+
         if (blocks.activeBlock != myBlock) {
             return;
         }
@@ -2762,6 +2772,42 @@ function loadEventHandlers(blocks, turtles, myBlock) {
     });
 }
 
+
+function sendStackToTrash(blocks, myBlock) {
+    var thisBlock = blocks.blockList.indexOf(myBlock);
+    // disconnect block
+    var b = myBlock.connections[0];
+    if (b != null) {
+        for (var c in blocks.blockList[b].connections) {
+            if (blocks.blockList[b].connections[c] == thisBlock) {
+                blocks.blockList[b].connections[c] = null;
+                break;
+            }
+        }
+        myBlock.connections[0] = null;
+    }
+    
+    if (myBlock.name == 'start') {
+        turtle = myBlock.value;
+        if (turtle != null) {
+            console.log('putting turtle ' + turtle + ' in the trash');
+            blocks.turtles.turtleList[turtle].trash = true;
+            blocks.turtles.turtleList[turtle].container.visible = false;
+        } else {
+            console.log('null turtle');
+        }
+    }
+
+    // put drag group in trash
+    blocks.findDragGroup(thisBlock);
+    for (var b = 0; b < blocks.dragGroup.length; b++) {
+        var blk = blocks.dragGroup[b];
+        console.log('putting ' + blocks.blockList[blk].name + ' in the trash');
+        blocks.blockList[blk].trash = true;
+        blocks.blockList[blk].hide();
+        blocks.refreshCanvas();
+    }
+}
 
 function makeBitmap(me, data, name, callback) {
     // Async creation of bitmap from SVG data

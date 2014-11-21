@@ -245,8 +245,7 @@ define(function (require) {
             stage = new createjs.Stage(canvas);
             createjs.Touch.enable(stage);
             createjs.Ticker.addEventListener('tick', tick);
-            trashcan = new Trashcan(canvas, stage, cellSize,
-                refreshCanvas, restoreTrash, sendAllToTrash);
+            trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
             turtles = new Turtles(canvas, stage, refreshCanvas);
             palettes = initPalettes(canvas, stage, cellSize, refreshCanvas);
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
@@ -485,8 +484,8 @@ define(function (require) {
         }
 
         function restoreTrash() {
-            var dx = -cellSize * 2;
-            var dy = cellSize;
+            var dx = 0;
+            var dy = -cellSize * 3;  // Reposition blocks about trash area.
             for (var blk in blocks.blockList) {
                 if (blocks.blockList[blk].trash) {
                     blocks.blockList[blk].trash = false;
@@ -502,6 +501,11 @@ define(function (require) {
             update = true;
         }
 
+	function deleteBlocks() {
+	    sendAllToTrash(true);
+	}
+
+	// FIXME: confirm???
         function sendAllToTrash(addStartBlock) {
             var dx = 2000;
             var dy = cellSize;
@@ -1579,7 +1583,8 @@ define(function (require) {
             }
 
             // Misc. other buttons
-            var menuNames = [['copy', selectStackToCopy], ['paste', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen]];
+	    // FIXME: empty-trash is the wrong name
+            var menuNames = [['copy', selectStackToCopy], ['paste', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen], ['empty-trash',  deleteBlocks], ['restore-trash', restoreTrash]];
             if (server) {
                 menuNames.push(['save', doSave]);
             }

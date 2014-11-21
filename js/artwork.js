@@ -146,3 +146,6 @@ var PREVBUTTON = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="5
 
 // for print and error messages
 var MSGBLOCK = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1000" height="42">' + '<g transform="matrix(2,0,0,2,0,8)">' + '<path d="m 0.5,8.5 0,-8 c 0,-2.09 1.91,-4 4,-4 l 4,0 10,0 473,0 4,0 c 2.09,0 4.26,1.92 4,4 l 0,8 0,4 c 0,2.09 -1.91,4 -4,4 l -4,0 -473,0 -10,0 -4,0 c -2.09,0 -4,-1.91 -4,-4 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '</svg>';
+
+// border for trashcan
+var BORDER = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120"> <rect width="315" height="115" x="2.5" y="2.5" style="fill:none;stroke:stroke_color;stroke-width:5.0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:15, 15;stroke-dashoffset:0" /></svg>';

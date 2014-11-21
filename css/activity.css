@@ -10,6 +10,14 @@ body {
   background-image: url(../icons/copy-button.svg);
 }
 
+#main-toolbar #empty-trash-button {
+  background-image: url(../icons/empty-trash-button.svg);
+}
+
+#main-toolbar #restore-trash-button {
+  background-image: url(../icons/restore-trash-button.svg);
+}
+
 #main-toolbar #samples-button {
   background-image: url(../icons/samples-button.svg);
 }

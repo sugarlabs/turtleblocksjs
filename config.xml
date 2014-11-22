@@ -14,10 +14,10 @@
     <author href="http://one-education.org" email="info@one-education.org">
         One Education
     </author>
-	
-	<icon src="activity/activity-icon.png" />
-	
+    
+    <icon src="activity/activity-icon.png" />
+    
     <preference name="permissions" value="none"/>
-	<preference name="fullscreen" value="true"/>
-	<preference name="android-minSdkVersion" value="14"/>
+    <preference name="fullscreen" value="true"/>
+    <preference name="android-minSdkVersion" value="14"/>
 </widget>

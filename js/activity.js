@@ -644,7 +644,7 @@ define(function (require) {
                 var img = new Image();
                 var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
                 img.onload = function() {
-                    var bitmap = new createjs.Bitmap(image);
+                    var bitmap = new createjs.Bitmap(img);
                     var bounds = bitmap.getBounds();
                     bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                     // and base64-encoded png

@@ -24,10 +24,13 @@ function paletteBlockButtonPush(name, arg) {
 }
 
 
-function Palettes (canvas, stage, refreshCanvas) {
+function Palettes (canvas, stage, cellSize, refreshCanvas) {
     this.canvas = canvas;
     this.stage = stage;
+    this.cellSize = cellSize;
+    this.halfCellSize = Math.floor(cellSize / 2);
     this.refreshCanvas = refreshCanvas;
+    this.originalSize = 55; // this is the original svg size
 
     // The collection of palettes.
     this.dict = {};
@@ -49,27 +52,26 @@ function Palettes (canvas, stage, refreshCanvas) {
 
     this.makeMenu = function() {
         // First, an icon/button for each palette
-        if (screen.width != 1200) {
-            this.x = 0;
-            this.y = 55;
-        } else {
-            this.x = 55;
-            this.y = 0;
-        }
+        this.x = 0;
+        this.y = this.cellSize;
         for (var name in this.dict) {
             if (name in this.buttons) {
                 // console.log('button ' + name + ' has already been created');
-                this.dict[name].updateMenu();
+                this.dict[name].updateMenu(true);
             } else {
                 this.buttons[name] = new createjs.Container();
                 this.stage.addChild(this.buttons[name]);
                 this.buttons[name].x = this.x;
-                this.x += 55;
+                this.x += this.cellSize;
                 this.buttons[name].y = this.y;
 
                 function processButton(me, name, bitmap, extras) {
                     me.bitmaps[name] = bitmap;
                     me.buttons[name].addChild(me.bitmaps[name]);
+                    if (me.cellSize != me.originalSize) {
+                        bitmap.scaleX = me.cellSize / me.originalSize;
+                        bitmap.scaleY = me.cellSize / me.originalSize;
+                    }
                 }
 
                 makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#282828'), name, processButton, null);
@@ -83,17 +85,21 @@ function Palettes (canvas, stage, refreshCanvas) {
                     image.src = 'images/' + name + '.svg';
                     var icon = new createjs.Bitmap(image);
                     me.buttons[name].addChild(icon);
+                    if (me.cellSize != me.originalSize) {
+                        icon.scaleX = me.cellSize / me.originalSize;
+                        icon.scaleY = me.cellSize / me.originalSize;
+                    }
 
                     var hitArea = new createjs.Shape();
-                    hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
-                    hitArea.x = 27;
-                    hitArea.y = 27;
+                    hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
+                    hitArea.x = me.halfCellSize;
+                    hitArea.y = me.halfCellSize;
                     me.buttons[name].hitArea = hitArea;
                     me.buttons[name].visible = false;
 
                     me.dict[name].makeMenu();
-                    me.dict[name].moveMenu(0, me.y + 55);
-                    me.dict[name].updateMenu();
+                    me.dict[name].moveMenu(0, me.y + me.cellSize);
+                    me.dict[name].updateMenu(false);
 
                     loadPaletteButtonHandler(me, name);
                 }
@@ -186,7 +192,6 @@ function loadPaletteButtonHandler(palettes, name) {
     palettes.buttons[name].on('click', function(event) {
         for (var i in palettes.dict) {
             if (palettes.dict[i] == palettes.dict[name]) {
-                console.log('showing ' + name);
                 palettes.dict[name].showMenu(true);
                 palettes.dict[name].showMenuItems(true);
             } else {
@@ -211,6 +216,7 @@ function Palette (palettes, name, color, bgcolor) {
     this.menuContainer = null;
     this.protoList = [];
     this.protoContainers = {};
+    this.x = 0;
     this.y = 0;
     this.size = 0;
 
@@ -220,7 +226,6 @@ function Palette (palettes, name, color, bgcolor) {
             this.menuContainer = new createjs.Container();
 
             function processHeader(me, name, bitmap, extras) {
-                console.log('menu header for ' + name + ' ' + me.name);
                 me.menuContainer.addChild(bitmap);
 
                 var image = new Image();
@@ -232,9 +237,9 @@ function Palette (palettes, name, color, bgcolor) {
                 me.palettes.container.addChild(me.menuContainer);
 
                 var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill('#FFF').drawEllipse(-100, -21, 200, 42);
-                hitArea.x = 100;
-                hitArea.y = 21;
+                hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
+                hitArea.x = MENUWIDTH / 2;
+                hitArea.y = STANDARDBLOCKHEIGHT / 2;
                 me.menuContainer.hitArea = hitArea;
                 me.menuContainer.visible = false;
 
@@ -245,12 +250,14 @@ function Palette (palettes, name, color, bgcolor) {
         }
     }
 
-    this.updateMenu = function() {
+    this.updateMenu = function(hide) {
         if (this.menuContainer == null) {
             this.makeMenu();
         } else {
             // hide the menu while we update
-            this.hide();
+	    if(hide) {
+		this.hide();
+	    }
         }
         for (var blk in this.protoList) {
             // Create a proto block for each palette entry.
@@ -277,18 +284,24 @@ function Palette (palettes, name, color, bgcolor) {
             if (!this.protoContainers[modname]) {
                 // create graphics for the palette entry for this block
                 this.protoContainers[modname] = new createjs.Container();
-                this.protoContainers[modname].x = this.menuContainer.x;
-                var y = this.menuContainer.y + this.y + 42;
-                this.protoContainers[modname].y = this.menuContainer.y + this.y + 42;
+                var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
+		// Multicolumn
+		if (y > 600) {
+		    this.x += 160;
+		    this.y = 0;
+		    y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
+		}
+                this.protoContainers[modname].x = this.menuContainer.x + this.x;
+                this.protoContainers[modname].y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
                 this.palettes.stage.addChild(this.protoContainers[modname]);
                 this.protoContainers[modname].visible = false;
 
                 // We use a filler for the menu background
-                var height = 42 * Math.ceil(last(this.protoList[blk].docks)[1] / 42);
+                var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
                 if (['action', 'start'].indexOf(blkname) != -1) {
-                    height += 84;
+                    height += 2 * STANDARDBLOCKHEIGHT;
                 } else if (['media'].indexOf(blkname) != -1) {
-                    height += 42;
+                    height += STANDARDBLOCKHEIGHT;
                 }
                 this.size += Math.ceil(height * paletteScale);
                 this.y += Math.ceil(height * paletteScale);
@@ -334,7 +347,9 @@ function Palette (palettes, name, color, bgcolor) {
             var artwork = myBlock.artwork;
         }
 
-        function processBitmap(me, modname, bitmap, blk) {
+        function processBitmap(me, modname, bitmap, args) {
+	    var myBlock = args[0];
+	    var blk = args[1];
             me.protoContainers[modname].addChild(bitmap);
             bitmap.x = 20;
             bitmap.y = 0;
@@ -345,47 +360,53 @@ function Palette (palettes, name, color, bgcolor) {
             if (!me.protoList[blk].expandable) {
                 bounds = me.protoContainers[modname].getBounds();
                 me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+		var hitArea = new createjs.Shape();
+		hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
+		me.protoContainers[modname].hitArea = hitArea;
+
                 loadPaletteMenuItemHandler(me, blk, modname, me);
                 me.palettes.refreshCanvas();
-            }
+            } else {
+		finishExpandable(me, modname, myBlock, blk);
+	    }
         }
 
-        makePaletteBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBitmap, blk);
+        makePaletteBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBitmap, [myBlock, blk]);
 
-        var hitArea = new createjs.Shape();
-        hitArea.graphics.beginFill('#FFF').drawEllipse(-50, -21, 100, 42);
-        hitArea.x = 50;
-        hitArea.y = 21;
-        this.protoContainers[modname].hitArea = hitArea;
+	function finishExpandable (me, modname, myBlock, blk) {
+            if (me.protoList[blk].expandable) {
+		if (myBlock.style == 'arg') {
+                    var bottomArtwork = ARG2BLOCKBOTTOM;
+		} else if (myBlock.style == 'twoarg') {
+                    var bottomArtwork = BASICBLOCK2ARGBOTTOM;
+		} else if (myBlock.style == 'value') {
+                    var bottomArtwork = BASICBLOCK2ARGBOTTOM;
+		} else if (myBlock.palette == 'flow') {
+                    var bottomArtwork = FLOWCLAMPBOTTOM;
+		} else {
+                    var bottomArtwork = ACTIONCLAMPBOTTOM;
+		}
 
-        if (this.protoList[blk].expandable) {
-            if (myBlock.style == 'arg') {
-                var bottomArtwork = ARG2BLOCKBOTTOM;
-            } else if (myBlock.style == 'special') {
-                var bottomArtwork = BASICBLOCK2ARGBOTTOM;
-            } else if (myBlock.style == 'value') {
-                var bottomArtwork = BASICBLOCK2ARGBOTTOM;
-            } else if (myBlock.palette == 'flow') {
-                var bottomArtwork = FLOWCLAMPBOTTOM;
-            } else {
-                var bottomArtwork = ACTIONCLAMPBOTTOM;
-            }
+		function processBottomBitmap(me, modname, bitmap, bottomOffset) {
+                    me.protoContainers[modname].addChild(bitmap);
+                    bitmap.x = 20;
+                    bitmap.y = bottomOffset;
+                    bitmap.scaleX = paletteScale;
+                    bitmap.scaleY = paletteScale;
+                    bitmap.scale = paletteScale;
 
-            function processBottomBitmap(me, modname, bitmap, yoff) {
-                me.protoContainers[modname].addChild(bitmap);
-                bitmap.scaleX = paletteScale;
-                bitmap.scaleY = paletteScale;
-                bitmap.scale = paletteScale;
-                bitmap.x = 20;
-                bitmap.y = yoff;
-                bounds = me.protoContainers[modname].getBounds();
-                me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-                loadPaletteMenuItemHandler(me, blk, modname, me);
-                me.palettes.refreshCanvas();
-            }
+                    bounds = me.protoContainers[modname].getBounds();
+                    me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+		    var hitArea = new createjs.Shape();
+		    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
+		    me.protoContainers[modname].hitArea = hitArea;
+                    loadPaletteMenuItemHandler(me, blk, modname, me);
+                    me.palettes.refreshCanvas();
+		}
 
-            var yoff = Math.floor(this.protoList[blk].yoff * paletteScale);
-            makePaletteBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, yoff);
+		var bottomOffset = Math.floor(me.protoList[blk].bottomOffset * paletteScale);
+		makePaletteBitmap(me, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, bottomOffset);
+	    }
         }
     }
 
@@ -425,14 +446,15 @@ function Palette (palettes, name, color, bgcolor) {
     this.hideMenuItems = function(init) {
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = false;
+	    // FIXME: Is this race condition still happening?
             try {
                 this.protoContainers[i].updateCache();
             } catch (e) {
-                console.log('container not ready?');
-                console.log(e);
+                console.log('container not ready? ' + e);
              }
         }
         this.visible = false;
+
         // Move the menus below up
         var below = false;
         for (var p in this.palettes.dict) {
@@ -451,6 +473,7 @@ function Palette (palettes, name, color, bgcolor) {
             this.protoContainers[i].updateCache();
         }
         this.visible = true;
+
         // Move the menus below down
         var below = false;
         for (var p in this.palettes.dict) {
@@ -494,9 +517,9 @@ function Palette (palettes, name, color, bgcolor) {
 
 };
 
-function initPalettes(canvas, stage, refreshCanvas) {
+function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     // Instantiate the palettes object.
-    var palettes = new Palettes(canvas, stage, refreshCanvas).
+    var palettes = new Palettes(canvas, stage, cellSize, refreshCanvas).
         add('turtle', 'black', '#00b700').
         add('pen', 'black', '#00c0e7').
         add('number', 'black', '#ff00ff').
@@ -510,10 +533,10 @@ function initPalettes(canvas, stage, refreshCanvas) {
 }
 
 // Menu Item event handlers
-function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
+function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
     // On a click make a new block; then close the menu.
     // FIXME: add drag and add move (move them all)
-    self.protoContainers[blkname].on('click', function(event) {
+    me.protoContainers[blkname].on('click', function(event) {
         // makeBlock(blk, blkname, palette);
         // palette.hideMenuItems();
         // palette.palettes.refreshCanvas();
@@ -540,13 +563,13 @@ function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
         return paletteBlockButtonPush(palette.protoList[blk].name, arg);
     }
 
-    self.protoContainers[blkname].on('mousedown', function(event) {
+    me.protoContainers[blkname].on('mousedown', function(event) {
         // Create the block.
-        newBlock = makeBlock(blk, blkname, palette);
+        var newBlock = makeBlock(blk, blkname, palette);
         // Move the drag group under the cursor.
         paletteBlocks.findDragGroup(newBlock);
         for (i in paletteBlocks.dragGroup) {
-            paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], (event.stageX / self.palettes.scale) - 50, (event.stageY / self.palettes.scale) - 21);
+            paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / me.palettes.scale) - 50, Math.round(event.stageY / me.palettes.scale) - 21);
         }
         palette.palettes.refreshCanvas();
     });
@@ -608,16 +631,13 @@ function loadPaletteMenuHandler(palette) {
 function makePaletteBitmap(me, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
-    var DOMURL = window.URL || window.webkitURL || window;
     var img = new Image();
-    var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
-    var url = DOMURL.createObjectURL(svg);
     img.onload = function () {
         bitmap = new createjs.Bitmap(img);
-        DOMURL.revokeObjectURL(url);
         callback(me, name, bitmap, extras);
     }
-    img.src = url;
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(
+        unescape(encodeURIComponent(data)));
 }
 
 

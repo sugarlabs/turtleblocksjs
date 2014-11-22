@@ -26,18 +26,11 @@
   <defs
      id="defs6" />
   <path
-     d="m 1.5,25.5 0,-8 a 8,8 0 0 1 8,-8 l 8,0 0,4 20,0 0,-4 8,0 a 8,8 0 0 1 8,8 l 0,8 0,8 a 8,8 0 0 1 -8,8 l -8,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 z"
+     d="m 6.03211,25.848624 0,-6.605504 a 6.6055046,6.6055046 0 0 1 6.605505,-6.605505 l 6.605504,0 0,3.302753 16.513762,0 0,-3.302753 6.605504,0 a 6.6055046,6.6055046 0 0 1 6.605505,6.605505 l 0,6.605504 0,6.605505 a 6.6055046,6.6055046 0 0 1 -6.605505,6.605505 l -6.605504,0 -1.651376,0 0,3.302752 -13.21101,0 0,-3.302752 -1.651376,0 -6.605504,0 A 6.6055046,6.6055046 0 0 1 6.03211,32.454129 l 0,-6.605505 z"
      id="path2882"
-     style="fill:#404040;fill-opacity:1;stroke:#ffffff;stroke-width:2.5;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-  <rect
-     width="10"
-     height="2"
-     x="22.5"
-     y="26.5"
-     id="rect2844"
-     style="fill:#404040;fill-opacity:1;fill-rule:nonzero;stroke:#404040;stroke-width:1.5;stroke-linecap:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+     style="fill:#404040;fill-opacity:1;stroke:#ffffff;stroke-width:2.06422019;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
   <path
-     d="M 4.4354839,50.564516 50.564516,4.435484"
+     d="M 4.4354839,42.564516 50.564516,12.435484"
      id="path2988"
-     style="fill:#ffffff;stroke:#ffffff;stroke-width:5.87096786;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+     style="fill:#ff0000;stroke:#ffffff;stroke-width:5.87096786;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
 </svg>

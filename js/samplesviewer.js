@@ -275,15 +275,11 @@ function httpGet(projectName)
 function makeViewerBitmap(me, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
-    var DOMURL = window.URL || window.webkitURL || window;
     var img = new Image();
-    var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
-    var url = DOMURL.createObjectURL(svg);
     img.onload = function () {
         bitmap = new createjs.Bitmap(img);
-        DOMURL.revokeObjectURL(url);
         callback(me, name, bitmap, extras);
     }
-    img.src = url;
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(
+        unescape(encodeURIComponent(data)));
 }
-

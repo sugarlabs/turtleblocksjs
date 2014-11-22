@@ -23,6 +23,9 @@ function Turtle (name, turtles) {
     this.name = name;
     this.turtles = turtles;
 
+    // Is the turtle running?
+    this.running = false;
+
     // In the trash?
     this.trash = false;
 
@@ -43,6 +46,8 @@ function Turtle (name, turtles) {
     // Things used for what the turtle draws.
     this.drawingCanvas = null;
     this.svgOutput = '';
+    // Are we currently drawing a path?
+    this.svgPath = false;
     this.color = DEFAULTCOLOR;
     this.value = DEFAULTVALUE;
     this.chroma = DEFAULTCHROMA;
@@ -67,8 +72,13 @@ function Turtle (name, turtles) {
         // Draw a line if the pen is down.
         if (this.penState) {
             this.drawingCanvas.graphics.lineTo(nx, ny);
-            var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + '" stroke-linecap="round" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
-            this.svgOutput += svg;
+            // var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + '" stroke-linecap="round" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
+            // this.svgOutput += svg;
+	    if (!this.svgPath) {
+		this.svgPath = true;
+		this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
+	    }
+	    this.svgOutput += nx + ',' + ny + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }
@@ -166,7 +176,10 @@ function Turtle (name, turtles) {
         this.drawingCanvas.graphics.clear();
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
         this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+
         this.svgOutput = '';
+	this.svgPath = false;
+
         this.turtles.refreshCanvas();
     }
 
@@ -376,43 +389,63 @@ function Turtle (name, turtles) {
         this.color = Number(hue);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+	this.closeSVG();
     }
 
     this.doSetValue = function(shade) {
         this.value = Number(shade);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+	this.closeSVG();
     }
 
     this.doSetChroma = function(chroma) {
         this.chroma = Number(chroma);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+	this.closeSVG();
     }
 
     this.doSetPensize = function(size) {
         this.stroke = size;
         this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+	this.closeSVG();
     }
 
-    this.doPenUp = function(turtle) {
+    this.doPenUp = function() {
         this.penState = false;
+	this.closeSVG();
     }
 
-    this.doPenDown = function(turtle) {
+    this.doPenDown = function() {
         this.penState = true;
     }
 
-    this.doStartFill = function(turtle) {
+    this.doStartFill = function() {
         /// start tracking points here
         this.drawingCanvas.graphics.beginFill(this.canvasColor);
         this.fillState = true;
     }
 
-    this.doEndFill = function(turtle) {
+    this.doEndFill = function() {
         /// redraw the points with fill enabled
         this.drawingCanvas.graphics.endFill();
+	this.closeSVG();
         this.fillState = false;
+    }
+
+    this.closeSVG = function() {
+	if (this.svgPath) {
+	    this.svgOutput += '" style="stroke-linecap:round;fill:';
+            if (this.fillState) {
+		this.svgOutput += this.canvasColor + ';';
+	    } else {
+		this.svgOutput += 'none;';
+	    }
+	    this.svgOutput += 'stroke:' + this.canvasColor + ';';
+	    this.svgOutput += 'stroke-width:' + this.stroke + 'pt;" />';
+	    this.svgPath = false;
+	}
     }
 };
 
@@ -437,7 +470,11 @@ function Turtles(canvas, stage, refreshCanvas) {
 
     this.add = function(startBlock) {
         // Add a new turtle for each start block
-        console.log('adding a new turtle ' + startBlock.name);
+        if (startBlock != null) {
+            console.log('adding a new turtle ' + startBlock.name);
+        } else {
+            console.log('adding a new turtle startBlock is null');
+        };
         var i = this.turtleList.length;
         var turtleName = i.toString();
         var myTurtle = new Turtle(turtleName, this);
@@ -545,6 +582,15 @@ function Turtles(canvas, stage, refreshCanvas) {
     this.invertY = function(y) {
         return this.canvas.height / (2.0 * this.scale) - y;
     }
+
+    this.running = function() {
+	for (turtle in this.turtleList) {
+	    if (this.turtleList[turtle].running) {
+		return true;
+	    }
+	}
+	return false;
+    }
 }
 
 // Queue entry for managing running blocks.
@@ -558,14 +604,12 @@ function Queue (blk, count, parentBlk) {
 function makeTurtleBitmap(me, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
-    var DOMURL = window.URL || window.webkitURL || window;
     var img = new Image();
-    var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
-    var url = DOMURL.createObjectURL(svg);
     img.onload = function () {
+        complete = true;
         bitmap = new createjs.Bitmap(img);
-        DOMURL.revokeObjectURL(url);
         callback(me, name, bitmap, extras);
-    }
-    img.src = url;
-}
+    };
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(
+        unescape(encodeURIComponent(data)));
+};

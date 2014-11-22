@@ -19,6 +19,14 @@
 // Chrome can load the image type "data:image/svg+xml;utf8," inline,
 // but Firefox cannot, so we set it in the async methods instead.
 
+// The relative position of the button added to collapsible blocks,
+// e.g., start and action. (TODO: Calculate these values.)
+var COLLAPSEBUTTONXOFF = -45;
+var COLLAPSEBUTTONYOFF = 14;
+
+// Without any scaling, blocks are multiples of a standard height.
+var STANDARDBLOCKHEIGHT = 42;
+
 // The default turtles are generated from the TURTLESVG template.
 var FILLCOLORS = ['#ed001d', '#a34600', '#fb5f00', '#466e00', '#00843c', '#008283', '#007ac9', '#005dff', '#b500e3', '#ec008a'];
 var STROKECOLORS = ['#ffada6', '#ffa300', '#ffc000', '#aade00', '#00fa8c', '#00f3db', '#00e3ff', '#8dceff', '#f3aeff', '#ff97d5'];
@@ -61,6 +69,12 @@ var VALUEBLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="42
 
 var VALUEBLOCKDOCKS = [[0, 20, 'numberout']];
 
+// Offsets for placing text ontop of value blocks.
+var BOXTEXTX = 120;
+var PARAMETERTEXTX = 140;
+var VALUETEXTX = 70;
+var VALUETEXTY = 26;
+
 // media block (fill_color, stroke_color, block_label)
 var MEDIABLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="84">' + '<path d="m 17,1 134,0 0,82 -134,0 0,-58 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="75" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
@@ -86,6 +100,11 @@ var ARG2BLOCKBOTTOM = '<svg xmlns="http://www.w3.org/2000/svg" width="84" height
 var FLOWCLAMP0ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="74">' + '<g transform="scale(2,2)">' + '<path d="m 0.5,8.5 0,-4 c 0,-2.09 1.91,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 21,0 4,0 c 2.09,0 3.74,1.92 4,4 l 0,12 c 0,2.09 -1.91,4 -4,4 l -4,0 -21,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.62,0 -5,2.38 -5,5 l 0,11 -8,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<rect width="14" height="4" x="2" y="70" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="105" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
 var FLOWCLAMP0ARGDOCKS = [[20, 0, 'out'], [38, 42, 'in'], [20, 126, 'in']];
+
+// Text label positions
+var STARTTEXTX = 20;
+var ACTIONTEXTX = 100;
+var ACTIONTEXTY = 40;
 
 // repeat (fill_color, stroke_color, block_label)
 var FLOWCLAMP1ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="74">' + '<g transform="scale(2,2)">' + '<path d="m 0.5,8.5 0,-4 c 0,-2.09 1.91,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 21,0 4,0 c 2.09,0 3.74,1.92 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 c 0,2.09 -1.91,4 -4,4 l -4,0 -21,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.62,0 -5,2.38 -5,5 l 0,11 -8,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<rect width="14" height="4" x="2" y="70" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
@@ -130,6 +149,8 @@ var BOOLEAN2ARGDOCKS = [[0, 40, 'booleanout'], [86, 20, 'numberin'], [86, 62, 'n
 
 // Palette-related artwork
 
+var MENUWIDTH = 200;
+
 var PALETTEFILLER = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="filler_height">' + '<rect width="200" height="filler_height" x="0" y="0" style="fill:#b3b3b3;fill-opacity:1;stroke:none" />' + '</svg>';
 
 var PALETTEHEADER = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="42">' + '<rect width="200" height="42" x="0" y="0" style="fill:fill_color;fill-opacity:1;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan  x="55" y="30" style="font-size:24px;text-align:start;text-anchor:start;fill:#ffffff">palette_label</tspan>' + '</text>' + '</svg>';
@@ -146,3 +167,6 @@ var PREVBUTTON = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="5
 
 // for print and error messages
 var MSGBLOCK = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1000" height="42">' + '<g transform="matrix(2,0,0,2,0,8)">' + '<path d="m 0.5,8.5 0,-8 c 0,-2.09 1.91,-4 4,-4 l 4,0 10,0 473,0 4,0 c 2.09,0 4.26,1.92 4,4 l 0,8 0,4 c 0,2.09 -1.91,4 -4,4 l -4,0 -473,0 -10,0 -4,0 c -2.09,0 -4,-1.91 -4,-4 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '</svg>';
+
+// border for trashcan
+var BORDER = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120"> <rect width="315" height="115" x="2.5" y="2.5" style="fill:none;stroke:stroke_color;stroke-width:5.0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:15, 15;stroke-dashoffset:0" /></svg>';

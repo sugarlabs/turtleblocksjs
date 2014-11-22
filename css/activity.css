@@ -10,12 +10,32 @@ body {
   background-image: url(../icons/copy-button.svg);
 }
 
+#main-toolbar #empty-trash-button {
+  background-image: url(../icons/empty-trash-button.svg);
+}
+
+#main-toolbar #restore-trash-button {
+  background-image: url(../icons/restore-trash-button.svg);
+}
+
 #main-toolbar #samples-button {
   background-image: url(../icons/samples-button.svg);
 }
 
 #main-toolbar #paste-button {
   background-image: url(../icons/paste-button.svg);
+}
+
+#main-toolbar #menu-button {
+  background-image: url(../icons/menu-button.svg);
+}
+
+#main-toolbar #open-toolbar-button {
+  background-image: url(../icons/open-toolbar-button.svg);
+}
+
+#main-toolbar #close-toolbar-button {
+  background-image: url(../icons/close-toolbar-button.svg);
 }
 
 #main-toolbar #fast-button {
@@ -119,4 +139,13 @@ textarea.number {
    resize: none !important;
    padding: 0 !important;
    border: 0 !important;
+}
+
+#canvas {
+  /*
+  overwrite the definition in sugar-web/graphics/css/sugar.css
+  to workaroud a bug affecting webkit on android 4.1/4.2
+  https://code.google.com/p/android/issues/detail?id=41312
+  */
+  overflow-y: visible;
 }

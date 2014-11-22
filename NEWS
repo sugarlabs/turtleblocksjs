@@ -119,6 +119,8 @@
   * fixed issue with break block scope
   * label box values during debug mode
   * fixed some race conditions
+  * fill broken in save to SVG
+  * fix race condition in palettes load
 
 TODO:
   * enable docking to any for boxes, equal
@@ -134,7 +136,6 @@ TODO:
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
-  * fix race condition in palettes load
 
 BUGS:
   * do action menu has wrong value?
@@ -142,4 +143,4 @@ BUGS:
   * fix canvas sizing, resizing
   * cannot open same file twice in a row (no change event?)
   * occasional bad init ???
-  * fill broken in save to SVG
+

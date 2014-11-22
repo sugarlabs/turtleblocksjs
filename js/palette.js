@@ -192,7 +192,6 @@ function loadPaletteButtonHandler(palettes, name) {
     palettes.buttons[name].on('click', function(event) {
         for (var i in palettes.dict) {
             if (palettes.dict[i] == palettes.dict[name]) {
-                console.log('showing ' + name);
                 palettes.dict[name].showMenu(true);
                 palettes.dict[name].showMenuItems(true);
             } else {
@@ -227,7 +226,6 @@ function Palette (palettes, name, color, bgcolor) {
             this.menuContainer = new createjs.Container();
 
             function processHeader(me, name, bitmap, extras) {
-                console.log('menu header for ' + name + ' ' + me.name);
                 me.menuContainer.addChild(bitmap);
 
                 var image = new Image();
@@ -393,7 +391,6 @@ function Palette (palettes, name, color, bgcolor) {
                     me.protoContainers[modname].addChild(bitmap);
                     bitmap.x = 20;
                     bitmap.y = bottomOffset;
-		    console.log(modname + ' ' + bottomOffset + ' ' + paletteScale);
                     bitmap.scaleX = paletteScale;
                     bitmap.scaleY = paletteScale;
                     bitmap.scale = paletteScale;
@@ -449,14 +446,15 @@ function Palette (palettes, name, color, bgcolor) {
     this.hideMenuItems = function(init) {
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = false;
+	    // FIXME: Is this race condition still happening?
             try {
                 this.protoContainers[i].updateCache();
             } catch (e) {
-                console.log('container not ready?');
-                console.log(e);
+                console.log('container not ready? ' + e);
              }
         }
         this.visible = false;
+
         // Move the menus below up
         var below = false;
         for (var p in this.palettes.dict) {
@@ -475,6 +473,7 @@ function Palette (palettes, name, color, bgcolor) {
             this.protoContainers[i].updateCache();
         }
         this.visible = true;
+
         // Move the menus below down
         var below = false;
         for (var p in this.palettes.dict) {
@@ -534,10 +533,10 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas) {
 }
 
 // Menu Item event handlers
-function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
+function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
     // On a click make a new block; then close the menu.
     // FIXME: add drag and add move (move them all)
-    self.protoContainers[blkname].on('click', function(event) {
+    me.protoContainers[blkname].on('click', function(event) {
         // makeBlock(blk, blkname, palette);
         // palette.hideMenuItems();
         // palette.palettes.refreshCanvas();
@@ -564,13 +563,13 @@ function loadPaletteMenuItemHandler(self, blk, blkname, palette) {
         return paletteBlockButtonPush(palette.protoList[blk].name, arg);
     }
 
-    self.protoContainers[blkname].on('mousedown', function(event) {
+    me.protoContainers[blkname].on('mousedown', function(event) {
         // Create the block.
-        newBlock = makeBlock(blk, blkname, palette);
+        var newBlock = makeBlock(blk, blkname, palette);
         // Move the drag group under the cursor.
         paletteBlocks.findDragGroup(newBlock);
         for (i in paletteBlocks.dragGroup) {
-            paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], (event.stageX / self.palettes.scale) - 50, (event.stageY / self.palettes.scale) - 21);
+            paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / me.palettes.scale) - 50, Math.round(event.stageY / me.palettes.scale) - 21);
         }
         palette.palettes.refreshCanvas();
     });

@@ -552,7 +552,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Add filler to an expandable block.
         var myBlock = this.blockList[blk];
 
-        function processBitmap(me, name, bitmap) {
+        function processBitmap(me, name, bitmap, myBlock) {
             myBlock.fillerBitmaps.push(bitmap);
             myBlock.container.addChild(bitmap);
             bitmap.x = myBlock.bitmap.x;
@@ -573,12 +573,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap);
+            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap, myBlock);
         } else {
-            processBitmap(this, name, this.bitmapCache[name]);
+            processBitmap(this, name, this.bitmapCache[name], myBlock);
         }
 
-        function processHighlightBitmap(me, name, bitmap) {
+        function processHighlightBitmap(me, name, bitmap, myBlock) {
             myBlock.highlightFillerBitmaps.push(bitmap);
             myBlock.container.addChild(bitmap);
             bitmap.x = myBlock.bitmap.x;
@@ -613,9 +613,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap);
+            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap, myBlock);
         } else {
-            processHighlightBitmap(this, name, this.bitmapCache[name]);
+            processHighlightBitmap(this, name, this.bitmapCache[name], myBlock);
         }
     }
 
@@ -1291,7 +1291,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         // Create the bitmap for the block.
-        function processBitmap(me, name, bitmap) {
+        function processBitmap(me, name, bitmap, myBlock) {
             myBlock.bitmap = bitmap;
             myBlock.container.addChild(myBlock.bitmap);
             myBlock.bitmap.x = 0;
@@ -1301,10 +1301,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.refreshCanvas();
         }
 
-        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap);
+        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
 
         // Create the highlight bitmap for the block.
-        function processHighlightBitmap(me, name, bitmap) {
+        function processHighlightBitmap(me, name, bitmap, myBlock) {
             myBlock.highlightBitmap = bitmap;
             myBlock.container.addChild(myBlock.highlightBitmap);
             myBlock.highlightBitmap.x = 0;
@@ -1330,7 +1330,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.finishImageLoad(myBlock);
         }
 
-        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap);
+        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
     }
 
     this.finishImageLoad = function(myBlock) {
@@ -1403,7 +1403,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.fillerBitmaps = [];
             myBlock.bottomBitmap = null;
 
-            function processBottomBitmap(me, name, bitmap) {
+            function processBottomBitmap(me, name, bitmap, myBlock) {
                 myBlock.bottomBitmap = bitmap;
                 myBlock.container.addChild(myBlock.bottomBitmap);
                 myBlock.bottomBitmap.x = myBlock.bitmap.x;
@@ -1412,9 +1412,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 me.refreshCanvas();
             }
 
-            makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processBottomBitmap);
+            makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processBottomBitmap, myBlock);
 
-            function processHighlightBottomBitmap(me, name, bitmap) {
+            function processHighlightBottomBitmap(me, name, bitmap, myBlock) {
                 myBlock.highlightBottomBitmap = bitmap;
                 myBlock.container.addChild(myBlock.highlightBottomBitmap);
                 myBlock.highlightBottomBitmap.x = myBlock.bitmap.x;
@@ -1432,7 +1432,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 me.cleanupAfterLoad();
             }
 
-            makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap);
+            makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, myBlock);
         } else {
             myBlock.loadComplete = true;
             this.refreshCanvas();
@@ -1444,16 +1444,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (['start', 'action'].indexOf(myBlock.name) != -1) {
             block_label = ''; // We use a Text element for the label
 
-            function processCollapseBitmap(me, name, bitmap) {
+            function processCollapseBitmap(me, name, bitmap, myBlock) {
                 myBlock.collapseBlockBitmap = bitmap;
                 myBlock.container.addChild(myBlock.collapseBlockBitmap);
                 myBlock.collapseBlockBitmap.visible = false;
                 me.refreshCanvas();
             }
 
-            makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processCollapseBitmap);
+            makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processCollapseBitmap, myBlock);
 
-            function processHighlightCollapseBitmap(me, name, bitmap) {
+            function processHighlightCollapseBitmap(me, name, bitmap, myBlock) {
                 myBlock.highlightCollapseBlockBitmap = bitmap;
                 myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
                 myBlock.highlightCollapseBlockBitmap.visible = false;
@@ -1502,7 +1502,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
             }
 
-            makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightCollapseBitmap);
+            makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightCollapseBitmap, myBlock);
         }
     }
 
@@ -2267,7 +2267,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (this.loadCounter > 0) {
             return;
         }
-        console.log('load completed!');
+
         this.updateBlockPositions();
         this.updateBlockLabels();
         for (var blk = 0; blk < this.adjustTheseDocks.length; blk++) {
@@ -2647,23 +2647,22 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         trashcan.show();
         moved = false;
         var offset = {
-            x: myBlock.collapseContainer.x - event.stageX / blocks.scale,
-            y: myBlock.collapseContainer.y - event.stageY / blocks.scale
+            x: myBlock.collapseContainer.x - Math.round(event.stageX / blocks.scale),
+            y: myBlock.collapseContainer.y - Math.round(event.stageY / blocks.scale)
         };
 
         myBlock.collapseContainer.on('pressmove', function(event) {
             moved = true;
             var oldX = myBlock.collapseContainer.x;
             var oldY = myBlock.collapseContainer.y;
-            myBlock.collapseContainer.x = event.stageX / blocks.scale + offset.x;
-            myBlock.collapseContainer.y = event.stageY / blocks.scale + offset.y;
+            myBlock.collapseContainer.x = Math.round(event.stageX / blocks.scale + offset.x);
+            myBlock.collapseContainer.y = Math.round(event.stageY / blocks.scale + offset.y);
             var dx = myBlock.collapseContainer.x - oldX;
             var dy = myBlock.collapseContainer.y - oldY;
             myBlock.container.x += dx;
             myBlock.container.y += dy;
             myBlock.x = myBlock.container.x;
             myBlock.y = myBlock.container.y;
-            myBlock.y = event.stageY + offset.y;
 
             // If we are over the trash, warn the user.
             if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
@@ -2755,21 +2754,20 @@ function loadEventHandlers(blocks, myBlock) {
 
         moved = false;
         var offset = {
-            x: myBlock.container.x - event.stageX / blocks.scale,
-            y: myBlock.container.y - event.stageY / blocks.scale
+            x: myBlock.container.x - Math.round(event.stageX / blocks.scale),
+            y: myBlock.container.y - Math.round(event.stageY / blocks.scale)
         };
 
         myBlock.container.on('pressmove', function(event) {
             moved = true;
             var oldX = myBlock.container.x;
             var oldY = myBlock.container.y;
-            myBlock.container.x = event.stageX / blocks.scale + offset.x;
-            myBlock.container.y = event.stageY / blocks.scale + offset.y;
+            myBlock.container.x = Math.round(event.stageX / blocks.scale) + offset.x;
+            myBlock.container.y = Math.round(event.stageY / blocks.scale) + offset.y;
             myBlock.x = myBlock.container.x;
             myBlock.y = myBlock.container.y;
-            myBlock.y = event.stageY + offset.y;
-            var dx = myBlock.container.x - oldX;
-            var dy = myBlock.container.y - oldY;
+            var dx = Math.round(myBlock.container.x - oldX);
+            var dy = Math.round(myBlock.container.y - oldY);
 
             // If we are over the trash, warn the user.
             if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
@@ -2863,13 +2861,14 @@ function sendStackToTrash(blocks, myBlock) {
     }
 }
 
-function makeBitmap(me, data, name, callback) {
+
+function makeBitmap(me, data, name, callback, args) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
     var img = new Image();
     img.onload = function () {
         bitmap = new createjs.Bitmap(img);
-        callback(me, name, bitmap);
+        callback(me, name, bitmap, args);
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));

@@ -641,9 +641,9 @@ define(function (require) {
                 // Post the project
                 var returnValue = httpPost(projectName, prepareExport());
 
-                var image = new Image();
+                var img = new Image();
                 var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
-                image.onload = function() {
+                img.onload = function() {
                     var bitmap = new createjs.Bitmap(image);
                     var bounds = bitmap.getBounds();
                     bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -1796,6 +1796,7 @@ define(function (require) {
             image.src = 'icons/' + name + '.svg';
             var container = new createjs.Container();
             stage.addChild(container);
+	    // FIXME: Should be async load
             bitmap = new createjs.Bitmap(image);
             if (size != originalSize) {
                 bitmap.scaleX = size / originalSize;

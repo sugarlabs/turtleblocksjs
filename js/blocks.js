@@ -979,9 +979,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var myBlock = this.blockList[blk];
             this.stage.removeChild(myBlock.container);
             this.stage.addChild(myBlock.container);
-            if (myBlock.collapseButton != null) {
-                this.stage.removeChild(myBlock.collapseButton);
-                this.stage.addChild(myBlock.collapseButton);
+            if (myBlock.collapseContainer != null) {
+                this.stage.removeChild(myBlock.collapseContainer);
+                this.stage.addChild(myBlock.collapseContainer);
             }
         }
         this.refreshCanvas();
@@ -996,9 +996,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.x = x
             myBlock.y = y
             this.adjustLabelPosition(blk, myBlock.container.x, myBlock.container.y);
-            if (myBlock.collapseButton != null) {
-                myBlock.collapseButton.x = x + COLLAPSEBUTTONXOFF;
-                myBlock.collapseButton.y = y + COLLAPSEBUTTONYOFF;
+            if (myBlock.collapseContainer != null) {
+                myBlock.collapseContainer.x = x + COLLAPSEBUTTONXOFF;
+                myBlock.collapseContainer.y = y + COLLAPSEBUTTONYOFF;
             }
         } else {
             console.log('no container yet');
@@ -1016,9 +1016,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.x = myBlock.container.x;
             myBlock.y = myBlock.container.y;
             this.adjustLabelPosition(blk, myBlock.container.x, myBlock.container.y);
-            if (myBlock.collapseButton != null) {
-                myBlock.collapseButton.x += dx;
-                myBlock.collapseButton.y += dy;
+            if (myBlock.collapseContainer != null) {
+                myBlock.collapseContainer.x += dx;
+                myBlock.collapseContainer.y += dy;
             }
         } else {
             console.log('no container yet');
@@ -1474,27 +1474,32 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.container.addChild(myBlock.collapseText);
                 myBlock.collapseText.visible = false;
 
-                myBlock.collapseButton = new createjs.Container();
+                myBlock.collapseContainer = new createjs.Container();
 
                 var image = new Image();
+		image.onload = function() {
+                    myBlock.collapseBitmap = new createjs.Bitmap(image);
+                    myBlock.collapseContainer.addChild(myBlock.collapseBitmap);
+		    finishCollapseButton(myBlock);
+		}
                 image.src = 'images/collapse.svg';
-                myBlock.collapseBitmap = new createjs.Bitmap(image);
-                myBlock.collapseButton.addChild(myBlock.collapseBitmap);
 
-                var image = new Image();
-                image.src = 'images/expand.svg';
-                myBlock.expandBitmap = new createjs.Bitmap(image);
-                myBlock.collapseButton.addChild(myBlock.expandBitmap);
-                myBlock.expandBitmap.visible = false;
-                me.stage.addChild(myBlock.collapseButton);
+		finishCollapseButton = function(myBlock) {
+                    var image = new Image();
+		    image.onload = function() {
+			myBlock.expandBitmap = new createjs.Bitmap(image);
+			myBlock.collapseContainer.addChild(myBlock.expandBitmap);
+			myBlock.expandBitmap.visible = false;
+			var bounds = myBlock.collapseContainer.getBounds();
+			myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+			loadCollapsibleEventHandlers(me, myBlock);
+		    }
+                    image.src = 'images/expand.svg';
+		}
 
-                myBlock.collapseButton.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
-                myBlock.collapseButton.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
-                // FIXME
-                var bounds = myBlock.collapseButton.getBounds();
-                console.log('collapse button bounds ' + bounds);
-                // myBlock.collapseButton.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                loadCollapsibleEventHandlers(me, myBlock);
+		me.stage.addChild(myBlock.collapseContainer);
+                myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
+                myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
             }
 
             makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightCollapseBitmap);
@@ -1502,7 +1507,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.unhighlightAll = function() {
-        // console.log('unhighlight all');
         for (blk in this.blockList) {
             this.unhighlight(blk);
         }
@@ -1519,7 +1523,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var thisBlock = this.highlightedBlock;
         }
 
-        // console.log('unhighlight');
         if (thisBlock != null) {
             var myBlock = this.blockList[thisBlock];
             if (myBlock.collapsed) {
@@ -1561,7 +1564,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (!this.visible) {
             return;
         }
-        // console.log('highlight');
         if (blk != null) {
             if (unhighlight) {
                 this.unhighlight(null);
@@ -1601,7 +1603,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.hide = function() {
-        // console.log('hide');
         for (var blk in this.blockList) {
             this.blockList[blk].hide();
         }
@@ -1609,7 +1610,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.show = function() {
-        // console.log('show');
         for (var blk in this.blockList) {
             this.blockList[blk].show();
         }
@@ -1617,7 +1617,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.makeNewBlockWithConnections = function(name, blockOffset, connections) {
-        // console.log('make new block with connections ' + name);
         myBlock = this.makeNewBlock(name);
         if (myBlock == null) {
             console.log('could not make block ' + name);
@@ -1625,7 +1624,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
         for (var c in connections) {
             if (c == myBlock.docks.length) {
-                // console.log('block ' + myBlock.name + ' had an extra connection: ' + connections[c]);
                 break;
             }
             if (connections[c] == null) {
@@ -1638,7 +1636,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.makeNewBlock = function(name) {
         // Create a new block
-        // console.log('makeNewBlock: (' + name + ')');
         if (!name in this.protoBlockDict) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
@@ -1664,7 +1661,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.y = myBlock.y;
 
         // and we need to load the images into the container.
-        // console.log('calling image load for ' + myBlock.name);
         this.imageLoad(myBlock);
         return myBlock;
     }
@@ -1672,7 +1668,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.makeBlock = function(name, arg) {
         // Make a new block from a proto block.
         // Called from palettes (and from the load block).
-        // console.log('makeBlock: ' + name + ' ' + arg);
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
@@ -1692,7 +1687,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // Each start block gets its own turtle.
         if (name == 'start') {
-            // console.log('assigning start block to turtle ' + this.turtles.turtleList.length);
             myBlock.value = this.turtles.turtleList.length;
             this.turtles.add(myBlock);
         }
@@ -1801,8 +1795,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
 
-        // console.log('calc drag group ' + myBlock.name);
-
         // As before, does these ever happen?
         if (myBlock.connections == null) {
             return;
@@ -1842,7 +1834,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var i = 1;
         var value = name;
         while (actionNames.indexOf(value) != -1) {
-            // console.log('does ' + value + ' = ' + name + i.toString() + '?');
             value = name + i.toString();
             i += 1;
         }
@@ -2076,7 +2067,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         actionNames[b] = blkData[4][1];
                     }
                 } else if (blkData[1][0] == 'storein') {
-                    // console.log('saw a storein block');
                     if (blkData[4][1] != null) {
                         storeinNames[b] = blkData[4][1];
                     }
@@ -2086,7 +2076,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     actionNames[b] = blkData[4][1];
                 }
             } else if (blkData[1] == 'storein') {
-                // console.log('saw a storein block');
                 if (blkData[4][1] != null) {
                     storeinNames[b] = blkData[4][1];
                 }
@@ -2099,10 +2088,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         var updatePalettes = false;
         // Make sure new storein names have palette entries.
-        // console.log('storin names ' + storeinNames);
         for (var b in storeinNames) {
             var blkData = blockObjs[storeinNames[b]];
-            // console.log('processing ' + blkData[1][1]);
             if (currentStoreinNames.indexOf(blkData[1][1]) == -1) {
                 console.log('adding new palette entries for ' + blkData[1][1]);
                 this.newStoreinBlock(blkData[1][1]);
@@ -2121,7 +2108,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var oldName = name;
             var i = 0;
             while (currentActionNames.indexOf(name) != -1) {
-                // console.log(name);
                 name = blkData[1][1] + i.toString();
                 i += 1;
                 // Should never happen... but just in case.
@@ -2333,7 +2319,7 @@ function Block(protoblock) {
 
     // Start and Action blocks has a collapse button (in a separate
     // container).
-    this.collapseButton = null;
+    this.collapseContainer = null;
     this.collapseBitmap = null;
     this.expandBitmap = null;
     this.collapseBlockBitmap = null;
@@ -2361,8 +2347,8 @@ function Block(protoblock) {
 
     this.hide = function() {
         this.container.visible = false;
-        if (this.collapseButton != null) {
-            this.collapseButton.visible = false;
+        if (this.collapseContainer != null) {
+            this.collapseContainer.visible = false;
             this.collapseText.visible = false;
         }
     }
@@ -2372,8 +2358,8 @@ function Block(protoblock) {
             // If it is an action block or it is not collapsed then show it.
             if (!(['action', 'start'].indexOf(this.name) == -1 && this.collapsed)) {
                 this.container.visible = true;
-                if (this.collapseButton != null) {
-                    this.collapseButton.visible = true;
+                if (this.collapseContainer != null) {
+                    this.collapseContainer.visible = true;
                     this.collapseText.visible = true;
                 }
             }
@@ -2565,29 +2551,28 @@ function doOpenMedia(blocks, thisBlock) {
 }
 
 
-// FIXME: Consolidate into loadEventHandlers
+// TODO: Consolidate into loadEventHandlers
 // These are the event handlers for collapsible blocks.
 function loadCollapsibleEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
 
-    // FIXME: Can we use the container bounds?
-    console.log('collapse bounds: ' + myBlock.collapseButton.getBounds())
+    var bounds = myBlock.collapseContainer.getBounds();
     var hitArea = new createjs.Shape();
-    var w2 = 42;
-    var h2 = 42;
+    var w2 = bounds.width;
+    var h2 = bounds.height;
     hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
     hitArea.x = w2 / 2;
     hitArea.y = h2 / 2;
-    myBlock.collapseButton.hitArea = hitArea;
+    myBlock.collapseContainer.hitArea = hitArea;
 
-    myBlock.container.on('mouseover', function(event) {
+    myBlock.collapseContainer.on('mouseover', function(event) {
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
     });
 
     var moved = false;
-    myBlock.collapseButton.on('click', function(event) {
+    myBlock.collapseContainer.on('click', function(event) {
         if (!moved) {
             // Find the blocks to collapse/expand
             blocks.findDragGroup(thisBlock)
@@ -2651,33 +2636,29 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 }
             }
 
-            // myBlock.collapseButton.updateCache();
-            try {
-                myBlock.container.updateCache();
-            } catch (e) {
-                console.log(e);
-            }
+            myBlock.collapseContainer.updateCache();
+            myBlock.container.updateCache();
             blocks.refreshCanvas();
         }
     });
 
-    myBlock.collapseButton.on('mousedown', function(event) {
+    myBlock.collapseContainer.on('mousedown', function(event) {
         // Always show the trash when there is a block selected.
         trashcan.show();
         moved = false;
         var offset = {
-            x: myBlock.collapseButton.x - event.stageX / blocks.scale,
-            y: myBlock.collapseButton.y - event.stageY / blocks.scale
+            x: myBlock.collapseContainer.x - event.stageX / blocks.scale,
+            y: myBlock.collapseContainer.y - event.stageY / blocks.scale
         };
 
-        myBlock.collapseButton.on('pressmove', function(event) {
+        myBlock.collapseContainer.on('pressmove', function(event) {
             moved = true;
-            var oldX = myBlock.collapseButton.x;
-            var oldY = myBlock.collapseButton.y;
-            myBlock.collapseButton.x = event.stageX / blocks.scale + offset.x;
-            myBlock.collapseButton.y = event.stageY / blocks.scale + offset.y;
-            var dx = myBlock.collapseButton.x - oldX;
-            var dy = myBlock.collapseButton.y - oldY;
+            var oldX = myBlock.collapseContainer.x;
+            var oldY = myBlock.collapseContainer.y;
+            myBlock.collapseContainer.x = event.stageX / blocks.scale + offset.x;
+            myBlock.collapseContainer.y = event.stageY / blocks.scale + offset.y;
+            var dx = myBlock.collapseContainer.x - oldX;
+            var dy = myBlock.collapseContainer.y - oldY;
             myBlock.container.x += dx;
             myBlock.container.y += dy;
             myBlock.x = myBlock.container.x;
@@ -2705,9 +2686,10 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         });
     });
 
-    myBlock.collapseButton.on('mouseout', function(event) {
+    myBlock.collapseContainer.on('mouseout', function(event) {
         // Always hide the trash when there is no block selected.
         trashcan.hide();
+        blocks.unhighlight(thisBlock);
         if (moved) {
             // Check if block is in the trash.
             if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
@@ -2767,8 +2749,8 @@ function loadEventHandlers(blocks, myBlock) {
 
         // Bump the bitmap in front of its siblings.
         blocks.stage.swapChildren(myBlock.container, last(blocks.stage.children));
-        if (myBlock.collapseButton != null) {
-            blocks.stage.swapChildren(myBlock.collapseButton, last(blocks.stage.children));
+        if (myBlock.collapseContainer != null) {
+            blocks.stage.swapChildren(myBlock.collapseContainer, last(blocks.stage.children));
         }
 
         moved = false;
@@ -2800,9 +2782,9 @@ function loadEventHandlers(blocks, myBlock) {
                 // Ensure text is on top
                 var lastChild = last(myBlock.container.children);
                 myBlock.container.swapChildren(myBlock.text, lastChild);
-            } else if (myBlock.collapseButton != null) {
-                myBlock.collapseButton.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
-                myBlock.collapseButton.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
+            } else if (myBlock.collapseContainer != null) {
+                myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
+                myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
             }
 
             // Move the label.

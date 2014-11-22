@@ -16,8 +16,9 @@ var labelElem = docById('labelDiv');
 
 var blockBlocks = null;
 
-var COLLAPSEBUTTONXOFF = -45
-var COLLAPSEBUTTONYOFF = 14
+// Minimum distance (squared) between to docks required before
+// connecting them.
+var MINIMUMDOCKDISTANCE = 400;
 
 // There are three "classes" defined in this file: ProtoBlocks,
 // Blocks, and Block. Protoblocks are the prototypes from which Blocks
@@ -26,23 +27,48 @@ var COLLAPSEBUTTONYOFF = 14
 
 // Protoblock contain generic information about blocks and some
 // methods common to all blocks.
+
 function ProtoBlock(name) {
-    this.name = name; // used for svg filename, run switch, and palette label
+    // Name is used run-dictionary index, and palette label.
+    this.name = name;
+    // The palette to which this block is assigned.
     this.palette = null;
+    // The graphic style used by the block.
     this.style = null;
+    // Does the block expand (or collapse) when other blocks are
+    // attached? e.g., start, repeat...
     this.expandable = false;
+    // When a block is expandable, its bottom is drawn with a separate
+    // SVG. Bottom offset is the y position of that SVG relative to
+    // the top of the block.
+    this.bottomOffset = 0;
+    // When a block is expanded, filler blocks are inserted. Filler
+    // offset is the height of the filler blocks.
+    this.fillerOffset = STANDARDBLOCKHEIGHT;
+    // Is this block a parameter? Parameters have their labels
+    // overwritten with their current value.
     this.parameter = false;
-    this.yoff = 0;
-    this.loff = 0;
+    // How many "non-flow" arguments does a block have? (flow is
+    // vertical down a stack; args are horizontal. The pendown block
+    // has 0 args; the forward block has 1 arg; the setxy block has 2
+    // args.
     this.args = 0;
+    // Default values for block parameters, e.g., forward 100 or right 90.
     this.defaults = [];
+    // What is the size of the block prior to any expansion?
     this.size = 1;
-    this.staticLabels = []; // Generated as part of static inline SVG
+    // Static labels are generated as part of the inline SVG.
+    this.staticLabels = [];
+    // Default fontsize used for static labels.
     this.fontsize = '18px';
+    // The SVG template used to generate the block graphic.
     this.artwork = null;
+    // Docks define where blocks connect and which connections are
+    // valid.
     this.docks = [];
 
-    // We need to copy, since docks get modified.
+    // We need a copy of the dock, since it is modified by individual
+    // blocks as they are expanded or contracted.
     this.copyDock = function(dockStyle) {
         for (var i = 0; i < dockStyle.length; i++) {
             var dock = [dockStyle[i][0], dockStyle[i][1], dockStyle[i][2]];
@@ -50,36 +76,42 @@ function ProtoBlock(name) {
         }
     }
 
-    // Inits for different block styles.
+    // What follows are the initializations for different block
+    // styles.
+
+    // E.g., penup, pendown
     this.zeroArgBlock = function() {
         this.args = 0;
         this.artwork = BASICBLOCK;
         this.copyDock(BASICBLOCKDOCKS);
     }
 
+    // E.g., break
     this.basicBlockNoFlow = function() {
         this.args = 0;
         this.artwork = BASICBLOCKNOFLOW;
         this.copyDock(BASICBLOCKNOFLOWDOCKS);
     }
 
+    // E.g., forward, right
     this.oneArgBlock = function() {
         this.args = 1;
         this.artwork = BASICBLOCK1ARG;
         this.copyDock(BASICBLOCK1ARGDOCKS);
     }
 
+    // E.g., setxy. These are expandable.
     this.twoArgBlock = function() {
-        this.yoff = 49;
-        this.loff = 42;
+        this.bottomOffset = 49;
         this.expandable = true;
-        this.style = 'special';
+        this.style = 'twoarg';
         this.size = 2;
         this.args = 2;
         this.artwork = BASICBLOCK2ARG;
         this.copyDock(BASICBLOCK2ARGDOCKS);
     }
 
+    // E.g., sqrt
     this.oneArgMathBlock = function() {
         this.style = 'arg';
         this.size = 1;
@@ -88,9 +120,9 @@ function ProtoBlock(name) {
         this.copyDock(ARG1BLOCKDOCKS);
     }
 
+    // E.g., plus, minus, multiply, divide. These are also expandable.
     this.twoArgMathBlock = function() {
-        this.yoff = 49;
-        this.loff = 42;
+        this.bottomOffset = 49;
         this.expandable = true;
         this.style = 'arg';
         this.size = 2;
@@ -99,6 +131,8 @@ function ProtoBlock(name) {
         this.copyDock(ARG2BLOCKDOCKS);
     }
 
+    // E.g., number, string. Value blocks get DOM textareas associated
+    // with them so their values can be edited by the user.
     this.valueBlock = function() {
         this.style = 'value';
         this.size = 1;
@@ -107,6 +141,9 @@ function ProtoBlock(name) {
         this.copyDock(VALUEBLOCKDOCKS);
     }
 
+    // E.g., media. Media blocks invoke a chooser and a thumbnail
+    // image is overlayed to represent the data associated with the
+    // block.
     this.mediaBlock = function() {
         this.style = 'value';
         this.size = 1;
@@ -115,10 +152,11 @@ function ProtoBlock(name) {
         this.copyDock(MEDIABLOCKDOCKS);
     }
 
+    // E.g., start. A "child" flow is docked in an expandable clamp.
+    // There are no additional arguments and no flow above or below.
     this.flowClamp0ArgBlock = function() {
         this.style = 'clamp';
-        this.yoff = 74;
-        this.loff = 42;
+        this.bottomOffset = 74;
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -126,10 +164,11 @@ function ProtoBlock(name) {
         this.copyDock(FLOWCLAMP0ARGDOCKS);
     }
 
+    // E.g., action. A "child" flow is docked in an expandable clamp.
+    // The additional argument is a name. Again, no flow above or below.
     this.flowClamp1ArgBlock = function() {
         this.style = 'clamp';
-        this.yoff = 74;
-        this.loff = 42;
+        this.bottomOffset = 74;
         this.expandable = true;
         this.size = 2;
         this.args = 2;
@@ -137,10 +176,11 @@ function ProtoBlock(name) {
         this.copyDock(FLOWCLAMP1ARGDOCKS);
     }
 
+    // E.g., if.  A "child" flow is docked in an expandable clamp. The
+    // additional argument is a boolean. There is flow above and below.
     this.flowClampBooleanArgBlock = function() {
         this.style = 'clamp';
-        this.yoff = 116;
-        this.loff = 42;
+        this.bottomOffset = 116;
         this.expandable = true;
         this.size = 3;
         this.args = 2;
@@ -148,10 +188,10 @@ function ProtoBlock(name) {
         this.copyDock(FLOWCLAMPBOOLEANDOCKS);
     }
 
+    // E.g., forever. Unlike start, there is flow above and below.
     this.blockClamp0ArgBlock = function() {
         this.style = 'clamp';
-        this.yoff = 86;
-        this.loff = 42;
+        this.bottomOffset = 86;
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -159,10 +199,10 @@ function ProtoBlock(name) {
         this.copyDock(ACTIONCLAMP0ARGDOCKS);
     }
 
+    // E.g., repeat. Unlike action, there is a flow above and below.
     this.blockClamp1ArgBlock = function() {
         this.style = 'clamp';
-        this.yoff = 86;
-        this.loff = 42;
+        this.bottomOffset = 86;
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -170,6 +210,7 @@ function ProtoBlock(name) {
         this.copyDock(ACTIONCLAMP1ARGDOCKS);
     }
 
+    // E.g., mouse button.
     this.boolean0ArgBlock = function() {
         this.style = 'arg';
         this.size = 1;
@@ -178,6 +219,8 @@ function ProtoBlock(name) {
         this.copyDock(BOOLEAN0ARGDOCKS);
     }
 
+    // E.g., greater, less, equal. (FIXME: These should be
+    // expandable.)
     this.boolean2ArgBlock = function() {
         this.style = 'arg';
         this.size = 2;
@@ -186,6 +229,7 @@ function ProtoBlock(name) {
         this.copyDock(BOOLEAN2ARGDOCKS);
     }
 
+    // E.g., color, shade, pensize, ...
     this.parameterBlock = function() {
         this.style = 'arg';
         this.parameter = true;
@@ -196,72 +240,93 @@ function ProtoBlock(name) {
     }
 }
 
+
 // Blocks holds the list of blocks and most of the block-associated
 // methods, since most block manipulations are inter-block.
+
 function Blocks(canvas, stage, refreshCanvas, trashcan) {
-    // Things we need from outside
+    // Things we need from outside include access to the canvas, the
+    // stage, and the trashcan.
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
     this.trashcan = trashcan;
 
-    // The proto blocks...
+    // We keep a dictionary for the proto blocks,
     this.protoBlockDict = {}
-    // And a place to keep the blocks we create.
+    // and a list of the blocks we create.
     this.blockList = [];
 
-    // Selected stack for pasting.
+    // "Copy stack" selects a stack for pasting. Are we selecting?
     this.selectingStack = false;
+    // and what did we select?
     this.selectedStack = null;
 
-    // To avoid infinite loops in dock search
+    // If we somehow have a malformed block database (for example,
+    // from importing a corrupted datafile, we need to avoid infinite
+    // loops while crawling the block list.
     this.loopCounter = 0;
     this.sizeCounter = 0;
     this.searchCounter = 0;
 
-    // We'll need a reference to the palettes.
+    // We need a reference to the palettes.
     this.palettes = null;
-
     // Which block, if any, is highlighted?
     this.highlightedBlock = null;
     // Which block, if any, is active?
     this.activeBlock = null;
     // Are the blocks visible?
     this.visible = true;
-    // Group of blocks being dragged
+    // The group of blocks being dragged or moved together
     this.dragGroup = [];
     // The blocks at the tops of stacks
     this.stackList = [];
-    // Expandable blocks
+    // The blocks that need expanding
     this.expandablesList = [];
-    // Cache bitmaps that have been removed from expandable blocks
-    this.bitmapCache = [];
+    // Cached filler bitmaps that have been removed from expandable
+    // blocks. We can reuse them.
+    this.bitmapCache = {};
     // Number of blocks to load
     this.loadCounter = 0;
-    // Stacks of blocks that need adjusting
+    // Stacks of blocks that need adjusting as blocks are repositioned
+    // due to expanding and contracting or insertion into the flow.
     this.adjustTheseDocks = [];
 
     // We need to keep track of certain classes of blocks that exhibit
-    // different types of behavior:
-    this.expandableBlocks = []; // Blocks with parts that expand
-    this.clampBlocks = []; // Blocks that contain other blocks
-    this.argBlocks = []; // Blocks that are used as arguments to other blocks
-    this.valueBlocks = []; // Blocks that return values
-    this.specialBlocks = []; // Two-arg blocks with special parts
+    // different types of behavior.
+
+    // Blocks with parts that expand, e.g., 
+    this.expandableBlocks = [];
+    // Blocks that contain child flows of blocks
+    this.clampBlocks = [];
+    // Blocks that are used as arguments to other blocks
+    this.argBlocks = [];
+    // Blocks that return values
+    this.valueBlocks = [];
+    // Two-arg blocks with two arguments (expandable).
+    this.twoArgBlocks = [];
+    // Blocks that don't run when clicked.
     this.noRunBlocks = ['action'];
 
+    // We need access to the turtles list because we associate a
+    // turtle with each start block.
     this.setTurtles = function(turtles) {
         this.turtles = turtles;
     }
 
+    // We need to access the "pseudo-Logo interpreter" when we click
+    // on blocks.
     this.setLogo = function(runLogo) {
         this.runLogo = runLogo;
     }
 
+    // The scale of the graphics is determined by screen size.
     this.setScale = function(scale) {
         this.scale = scale;
     }
 
+    // Walk through all of the proto blocks in order to make lists of
+    // any blocks that need special treatment.
     this.findBlockTypes = function() {
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].expandable) {
@@ -270,8 +335,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (this.protoBlockDict[proto].style == 'clamp') {
                 this.clampBlocks.push(this.protoBlockDict[proto].name);
             }
-            if (this.protoBlockDict[proto].style == 'special') {
-                this.specialBlocks.push(this.protoBlockDict[proto].name);
+            if (this.protoBlockDict[proto].style == 'twoarg') {
+                this.twoArgBlocks.push(this.protoBlockDict[proto].name);
             }
             if (this.protoBlockDict[proto].style == 'arg') {
                 this.argBlocks.push(this.protoBlockDict[proto].name);
@@ -283,64 +348,83 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
-    // Adjust the docking postions of all blocks in the drag group
+    // Adjust the docking postions of all blocks in the current drag
+    // group.
     this.adjustBlockPositions = function() {
-        // console.log('adjust block positions');
         if (this.dragGroup.length < 2) {
             return;
         }
 
+        // Just in case the block list is corrupted, count iterations.
         this.loopCounter = 0;
         this.adjustDocks(this.dragGroup[0])
     }
 
-    // Adjust the size of the clamp in an expandable block
-    this.adjustExpandableBlock = function(blk) {
+    // Adjust the size of the clamp in an expandable block when blocks
+    // are inserted into (or removed from) the child flow. This is a
+    // common operation for start and action blocks, but also for
+    // repeat, forever, if, etc.
+    this.adjustExpandableClampBlock = function(blk) {
         var myBlock = this.blockList[blk];
-        if (myBlock.isArgBlock()) {
+
+        // Make sure it is the proper type of expandable block.
+        if (myBlock.isArgBlock() || myBlock.isTwoArgBlock()) {
             return;
         }
 
-        if (myBlock.isSpecialBlock()) {
-            return;
-        }
-
-        // (1) count up the number of blocks inside the clamp;
-        // always the second to last argument.
+        // First we need to count up the number of (and size of) the
+        // blocks inside the clamp; The child flow is the
+        // second-to-last argument.
         var c = myBlock.connections.length - 2;
         this.sizeCounter = 0;
         if (c > 0 && myBlock.connections[c] != null) {
-            var size = this.getStackSize(myBlock.connections[c]);
-            if (size < 1) {
-                size = 1; // Minimum clamp size
+            var childFlowSize = this.getStackSize(myBlock.connections[c]);
+            if (childFlowSize < 1) {
+                // The clamp size is never less than 1.
+                childFlowSize = 1;
             }
         } else {
-            size = 1;
+            var childFlowSize = 1;
         }
 
-        // (2) adjust the clamp size to match.
-        var yoff = myBlock.protoblock.yoff;
-        var loff = myBlock.protoblock.loff;
-        var j = myBlock.fillerCount;
-        if (size < j + 1) {
-            var n = j - size + 1;
+        // Next, we adjust the clamp size to match the size of the
+        // child flow.
+        var docksChanged = false;
+        var bottomOffset = myBlock.protoblock.bottomOffset;
+        var fillerOffset = myBlock.protoblock.fillerOffset;
+        var currentFillerCount = myBlock.fillerCount;
+        if (childFlowSize < currentFillerCount + 1) {
+            // We may have to remove filler.
+            var n = currentFillerCount - childFlowSize + 1;
             for (var i = 0; i < n; i++) {
+                // We need to remove filler.
                 this.removeFiller(blk);
+                // And decrement the count and the offset to the
+                // bottom dock position.
                 myBlock.fillerCount -= 1;
-                last(myBlock.docks)[1] -= loff;
+                last(myBlock.docks)[1] -= fillerOffset;
+                docksChanged = true;
             }
-            if (last(myBlock.connections) != null) {
-                this.loopCounter = 0;
-                this.adjustDocks(blk);
-            }
-        } else if (size > j) {
-            var n = size - j - 1;
+        } else if (childFlowSize > currentFillerCount) {
+            // We may have to add filler.
+            var n = childFlowSize - currentFillerCount - 1;
             for (var i = 0; i < n; i++) {
-                var c = i + j;
-                this.addFiller(blk, yoff + c * loff, c);
+                var c = i + currentFillerCount;
+                // We need to add filler.
+                this.addFiller(blk, bottomOffset + c * fillerOffset, c);
+                // And increment the count and the offset to the
+                // bottom dock position.
                 myBlock.fillerCount += 1;
-                last(myBlock.docks)[1] += loff;
+                last(myBlock.docks)[1] += fillerOffset;
+                docksChanged = true;
             }
+        }
+
+        // Finally, since the block size has changed and consequently
+        // the dock positions have changed, we need to make sure that
+        // any flow that continues from this block is positioned
+        // properly.
+        if (docksChanged) {
             if (last(myBlock.connections) != null) {
                 this.loopCounter = 0;
                 this.adjustDocks(blk);
@@ -348,77 +432,92 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
+    // Returns the block size. (TODO recurse on first argument in
+    // twoarg blocks.)
     this.getBlockSize = function(blk) {
-        // TODO recurse on first arg
         return this.blockList[blk].size;
     }
 
-    this.adjust2ArgBlock = function(blk) {
-        // Adjust the size of a 2-arg block
+    // We also adjust the size of twoarg blocks. It is similar to how
+    // we adjust clamps, but enough different that it is in its own
+    // function.
+    this.adjustExpandableTwoArgBlock = function(blk) {
         var myBlock = this.blockList[blk];
 
-        // (1) What the size of the first argument?
+        // First we determine the size of the first argument.
         var c = myBlock.connections[1];
         if (c == null) {
-            var size = 0;
+            var firstArgumentSize = 0;
         } else {
-            var size = this.getBlockSize(c);
-        }
-        if (size < 1) {
-            size = 1; // Minimum size
+            var firstArgumentSize = this.getBlockSize(c);
         }
 
-        // (2) adjust the block size to match.
-        var yoff = myBlock.protoblock.yoff;
-        var loff = myBlock.protoblock.loff;
-        var j = myBlock.fillerCount;
-        if (size < j + 1) {
-            var n = j - size + 1; // one slot built in
+        if (firstArgumentSize < 1) {
+            firstArgumentSize = 1; // Minimum size
+        }
+
+        // Next, adjust the block size to match.
+        var docksChanged = false;
+        var bottomOffset = myBlock.protoblock.bottomOffset;
+        var fillerOffset = myBlock.protoblock.fillerOffset;
+        var currentFillerCount = myBlock.fillerCount;
+        if (firstArgumentSize < currentFillerCount + 1) {
+            // We need to remove filler.
+            var n = currentFillerCount - firstArgumentSize + 1;
             for (var i = 0; i < n; i++) {
+                // Remove the filler from the container.
                 this.removeFiller(blk);
+                // And decrement the count and the offset to the
+                // bottom dock position.
                 myBlock.fillerCount -= 1;
-                myBlock.docks[2][1] -= loff;
+                myBlock.docks[2][1] -= fillerOffset;
+                docksChanged = true;
                 if (!myBlock.isArgBlock()) {
-                    myBlock.docks[3][1] -= loff;
+                    // Blocks with "out flow", e.g., setxy, have
+                    // another dock position to adjust.
+                    myBlock.docks[3][1] -= fillerOffset;
                 }
                 myBlock.size -= 1;
             }
-            if (myBlock.isArgBlock()) {
-                if (myBlock.connections[2] != null) {
-                    this.loopCounter = 0;
-                    this.adjustDocks(blk);
-                }
-            } else {
-                if (myBlock.connections[2] != null) {
-                    this.loopCounter = 0;
-                    this.adjustDocks(blk);
-                } else if (myBlock.connections[3] != null) {
-                    this.loopCounter = 0;
-                    this.adjustDocks(blk);
-                }
-            }
-        } else if (size > j) {
-            var n = size - j - 1; // one slot built in
+        } else if (firstArgumentSize > currentFillerCount) {
+            // We need to add filler.
+            var n = firstArgumentSize - currentFillerCount - 1;
             for (var i = 0; i < n; i++) {
-                var c = i + j;
-                this.addFiller(blk, yoff + c * loff, c);
+                var c = i + currentFillerCount;
+                // Add the filler to the container.
+                this.addFiller(blk, bottomOffset + c * fillerOffset, c);
+                // And increment the count and the offset to the
+                // bottom dock position.
                 myBlock.fillerCount += 1;
-                myBlock.docks[2][1] += loff;
+                myBlock.docks[2][1] += fillerOffset;
+                docksChanged = true;
                 if (!myBlock.isArgBlock()) {
-                    myBlock.docks[3][1] += loff;
+                    // Blocks with "out flow", e.g., setxy, have
+                    // another dock position to adjust.
+                    myBlock.docks[3][1] += fillerOffset;
                 }
                 myBlock.size += 1;
             }
+        }
+
+        // Finally, since the block size has changed and consequently
+        // the dock positions have changed, we need to make sure that
+        // any argument flows from this block are positioned properly.
+        if (docksChanged) {
             if (myBlock.isArgBlock()) {
+                // Arg blocks such as plus, minus, etc.
                 if (myBlock.connections[2] != null) {
                     this.loopCounter = 0;
                     this.adjustDocks(blk);
                 }
             } else {
+                // In the case of flow blocks, e.g., setxy
                 if (myBlock.connections[2] != null) {
+                    // The position of the second argument has changed.
                     this.loopCounter = 0;
                     this.adjustDocks(blk);
                 } else if (myBlock.connections[3] != null) {
+                    // The "out flow" needs to be moved
                     this.loopCounter = 0;
                     this.adjustDocks(blk);
                 }
@@ -427,19 +526,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.removeFiller = function(blk) {
+        // When we remove filler, we cache it in case it is added back
+        // in later.
         var myBlock = this.blockList[blk];
         var fillerBitmap = myBlock.fillerBitmaps.pop();
 
         myBlock.container.removeChild(fillerBitmap);
-        if (this.findBitmap(fillerBitmap.name) == null) {
-            this.bitmapCache.push(fillerBitmap);
-        }
+        this.bitmapCache[fillerBitmap.name] = fillerBitmap;
 
-        myBlock.bottomBitmap.y -= myBlock.protoblock.loff;
+        myBlock.bottomBitmap.y -= myBlock.protoblock.fillerOffset;
         myBlock.highlightBottomBitmap.y = myBlock.bottomBitmap.y;
 
         try {
-            // There is a potential race conditon such that the
+            // FIXME: There is a potential race conditon such that the
             // container cache is not yet ready.
             myBlock.container.uncache();
             myBlock.bounds = myBlock.container.getBounds();
@@ -450,8 +549,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.addFiller = function(blk, offset, c) {
+        // Add filler to an expandable block.
         var myBlock = this.blockList[blk];
-        var name = 'bmp_' + blk + '_filler_' + c;
 
         function processBitmap(me, name, bitmap) {
             myBlock.fillerBitmaps.push(bitmap);
@@ -463,18 +562,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.refreshCanvas();
         }
 
-        var bi = this.findBitmap(name);
-        if (bi == null) {
+        // We generate a unique name to use as the key in the cache.
+        var name = 'bmp_' + blk + '_filler_' + c;
+        // FIXME: Why doesn't !name in this.bitmapCache work?
+        if (this.bitmapCache[name] == undefined) {
             if (myBlock.isArgBlock()) {
                 var artwork = ARG2BLOCKFILLER;
-            } else if (myBlock.isSpecialBlock()) {
+            } else if (myBlock.isTwoArgBlock()) {
                 var artwork = BASICBLOCK2ARGFILLER;
             } else {
                 var artwork = CLAMPFILLER;
             }
             makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap);
         } else {
-            processBitmap(this, name, this.bitmapCache[bi]);
+            processBitmap(this, name, this.bitmapCache[name]);
         }
 
         function processHighlightBitmap(me, name, bitmap) {
@@ -486,7 +587,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // Hide highlight to start
             bitmap.visible = false;
 
-            myBlock.bottomBitmap.y += myBlock.protoblock.loff;
+            myBlock.bottomBitmap.y += myBlock.protoblock.fillerOffset;
             myBlock.highlightBottomBitmap.y = myBlock.bottomBitmap.y;
 
             try {
@@ -504,32 +605,22 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // And the same for the highlight blocks
         var name = 'bmp_' + blk + '_highlight_filler_' + c;
-        var bi = this.findBitmap(name);
-        if (bi == null) {
+        if (this.bitmapCache[name] == undefined) {
             if (myBlock.isArgBlock()) {
                 var artwork = ARG2BLOCKFILLER;
-            } else if (myBlock.isSpecialBlock()) {
+            } else if (myBlock.isTwoArgBlock()) {
                 var artwork = BASICBLOCK2ARGFILLER;
             } else {
                 var artwork = CLAMPFILLER;
             }
             makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap);
         } else {
-            processHighlightBitmap(this, name, this.bitmapCache[bi]);
+            processHighlightBitmap(this, name, this.bitmapCache[name]);
         }
-    }
-
-    this.findBitmap = function(name) {
-        for (var i = 0; i < this.bitmapCache.length; i++) {
-            if (this.bitmapCache[i].name == name) {
-                return i;
-            }
-        }
-        return null;
     }
 
     this.getStackSize = function(blk) {
-        // How many block units (42 px) in this stack?
+        // How many block units (fillerOffest) in this stack?
         var size = 0;
         this.sizeCounter += 1;
         if (this.sizeCounter > this.blockList.length * 2) {
@@ -573,43 +664,38 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         return size;
     }
 
-    this.adjustDocks = function(blk, reset) {
+    this.adjustDocks = function(blk, resetLoopCounter) {
         // Give a block, adjust the dock positions
         // of all of the blocks connected to it
 
         // For when we come in from makeBlock
-        if (reset != null) {
+        if (resetLoopCounter != null) {
             this.loopCounter = 0;
         }
 
-        // Do we need these? All blocks have connections.
+        // These checks are to test for malformed data. All blocks
+        // should have connections.
         if (this.blockList[blk] == null) {
-            console.log('saw a null block: ' + blk);
+            console.log('Saw a null block: ' + blk);
             return;
         }
         if (this.blockList[blk].connections == null) {
-            console.log('saw a block with null connections: ' + blk);
+            console.log('Saw a block with null connections: ' + blk);
             return;
         }
         if (this.blockList[blk].connections.length == 0) {
-            console.log('saw a block with [] connections: ' + blk);
-            return;
-        }
-        if (this.blockList[blk].docks.length == 1) {
-            // console.log(this.blockList[blk].name + ' must be a value block... nothing to do.');
+            console.log('Saw a block with [] connections: ' + blk);
             return;
         }
 
-        // console.log('adjusting connections for ' + this.blockList[blk].name);
-        // console.log('connections ' + this.blockList[blk].connections);
-        // console.log('docks ' + this.blockList[blk].docks);
+        // Value blocks only have one dock.
+        if (this.blockList[blk].docks.length == 1) {
+            return;
+        }
 
         this.loopCounter += 1;
         if (this.loopCounter > this.blockList.length * 2) {
-            // FIXME: is there still an infinite loop in here somewhere?
-            console.log('infinite loop encountered while adjusting docks');
-            console.log(blk);
-            console.log(this.blockList);
+            console.log('Infinite loop encountered while adjusting docks: ' + blk + ' ' + this.blockList);
             return;
         }
 
@@ -625,8 +711,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 continue;
             }
 
+            // Another database integrety check.
             if (this.blockList[cblk] == null) {
-                console.log('this is not good: encountered a null block ' + cblk);
+                console.log('This is not good: we encountered a null block: ' + cblk);
                 continue;
             }
 
@@ -639,8 +726,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
 
+            // Yet another database integrety check.
             if (!foundMatch) {
-                console.log('did not find match for ' + this.blockList[blk].name + ' and ' + this.blockList[cblk].name);
+                console.log('Did not find match for ' + this.blockList[blk].name + ' and ' + this.blockList[cblk].name);
                 break;
             }
             var cdock = this.blockList[cblk].docks[b];
@@ -665,7 +753,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.blockMoved = function(thisBlock) {
         // When a block is moved, we have lots of things to check:
         // (0) Is it inside of a expandable block?
-        // (1) Is it an arg block connected to a 2-arg block?
+        // (1) Is it an arg block connected to a two-arg block?
         // (2) Disconnect its connection[0];
         // (3) Look for a new connection;
         // (4) Is it an arg block connected to a 2-arg block?
@@ -686,7 +774,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blk = this.insideExpandableBlock(blk);
         }
 
-        var check2ArgBlocks = [];
+        var checkTwoArgBlocks = [];
         var myBlock = this.blockList[thisBlock];
         // console.log('block moved ' + myBlock.name);
         var c = myBlock.connections[0];
@@ -695,15 +783,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
         // If it is an arg block, where is it coming from?
         if (myBlock.isArgBlock() && c != null) {
-            // We care about special (2arg) blocks with
+            // We care about twoarg (2arg) blocks with
             // connections to the first arg;
-            if (this.blockList[c].isSpecialBlock()) {
+            if (this.blockList[c].isTwoArgBlock()) {
                 if (cBlock.connections[1] == thisBlock) {
-                    check2ArgBlocks.push(c);
+                    checkTwoArgBlocks.push(c);
                 }
             } else if (this.blockList[c].isArgBlock() && this.blockList[c].isExpandableBlock()) {
                 if (cBlock.connections[1] == thisBlock) {
-                    check2ArgBlocks.push(c);
+                    checkTwoArgBlocks.push(c);
                 }
             }
         }
@@ -727,7 +815,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // enough, connect;
         var newBlock = null;
         var newConnection = null;
-        var min = 400;
+        // TODO: Make minimum distance relative to scale.
+        var min = MINIMUMDOCKDISTANCE;
         var blkType = myBlock.docks[0][2]
         for (var b = 0; b < this.blockList.length; b++) {
             // Don't connect to yourself.
@@ -738,9 +827,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 // When converting from Python to JS, sometimes extra
                 // null connections are added. We need to ignore them.
                 if (i == this.blockList[b].docks.length) {
-                    // console.log(this.blockList[b].name + ': connection ' + i + ' > ' + this.blockList[b].docks.length);
                     break;
                 }
+
                 // Look for available connections.
                 if (this.testConnectionType(
                     blkType,
@@ -760,6 +849,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
         }
+
         if (newBlock != null) {
             // We found a match.
             myBlock.connections[0] = newBlock;
@@ -778,41 +868,41 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             this.blockList[newBlock].connections[newConnection] = thisBlock;
             this.loopCounter = 0;
             this.adjustDocks(newBlock);
-            // TODO: mark new connection?
+            // TODO: some graphical feedback re new connection?
         }
 
         // If it is an arg block, where is it coming from?
         if (myBlock.isArgBlock() && newBlock != null) {
-            // We care about special (2arg) blocks with
-            // connections to the first arg;
-            if (this.blockList[newBlock].isSpecialBlock()) {
+            // We care about twoarg blocks with connections to the
+            // first arg;
+            if (this.blockList[newBlock].isTwoArgBlock()) {
                 if (this.blockList[newBlock].connections[1] == thisBlock) {
-                    if (check2ArgBlocks.indexOf(newBlock) == -1) {
-                        check2ArgBlocks.push(newBlock);
+                    if (checkTwoArgBlocks.indexOf(newBlock) == -1) {
+                        checkTwoArgBlocks.push(newBlock);
                     }
                 }
             } else if (this.blockList[newBlock].isArgBlock() && this.blockList[newBlock].isExpandableBlock()) {
                 if (this.blockList[newBlock].connections[1] == thisBlock) {
-                    if (check2ArgBlocks.indexOf(newBlock) == -1) {
-                        check2ArgBlocks.push(newBlock);
+                    if (checkTwoArgBlocks.indexOf(newBlock) == -1) {
+                        checkTwoArgBlocks.push(newBlock);
                     }
                 }
             }
         }
-        // If we changed the contents of a 2-arg block
-        // block, we need to adjust it.
-        if (check2ArgBlocks.length > 0) {
-            for (var i = 0; i < check2ArgBlocks.length; i++) {
-                this.adjust2ArgBlock(check2ArgBlocks[i]);
+        // If we changed the contents of a two-arg block, we need to
+        // adjust it.
+        if (checkTwoArgBlocks.length > 0) {
+            for (var i = 0; i < checkTwoArgBlocks.length; i++) {
+                this.adjustExpandableTwoArgBlock(checkTwoArgBlocks[i]);
             }
         }
 
-        // Recheck if it inside of a expandable block
+        // Recheck if the connection is inside of a expandable block.
         var blk = this.insideExpandableBlock(thisBlock);
         var expandableLoopCounter = 0;
         while (blk != null) {
+            // Extra check for malformed data.
             expandableLoopCounter += 1;
-            // console.log('checking if ' + blk + ' is expandable (' + this.blockList[blk].name + ')');
             if (expandableLoopCounter > 2 * this.blockList.length) {
                 console.log('inifinite loop checking for expandables?');
                 console.log(this.blockList);
@@ -823,11 +913,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
             blk = this.insideExpandableBlock(blk);
         }
-        // If we changed the contents of an expandable
-        // block, we need to adjust its clamp.
+        // If we changed the contents of an expandable block, we need
+        // to adjust its clamp.
         if (checkExpandableBlocks.length > 0) {
             for (var i = 0; i < checkExpandableBlocks.length; i++) {
-                this.adjustExpandableBlock(checkExpandableBlocks[i]);
+                this.adjustExpandableClampBlock(checkExpandableBlocks[i]);
             }
         }
     }
@@ -885,7 +975,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.bringToTop = function() {
         // Move all the blocks to the top layer of the stage
-        // console.log('bring blocks to top');
         for (var blk in this.blockList) {
             var myBlock = this.blockList[blk];
             this.stage.removeChild(myBlock.container);
@@ -901,7 +990,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.moveBlock = function(blk, x, y) {
         // Move a block (and its label) to x, y.
         var myBlock = this.blockList[blk];
-        // console.log('move block ' + myBlock.name);
         if (myBlock.container != null) {
             myBlock.container.x = x;
             myBlock.container.y = y;
@@ -922,7 +1010,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.moveBlockRelative = function(blk, dx, dy) {
         // Move a block (and its label) by dx, dy.
         var myBlock = this.blockList[blk];
-        // console.log('move block relative' + myBlock.name);
         if (myBlock.container != null) {
             myBlock.container.x += dx;
             myBlock.container.y += dy;
@@ -944,10 +1031,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // When we create new blocks, we may not have assigned the
         // value yet.
         var myBlock = this.blockList[blk];
-        // console.log('update block text ' + myBlock.name);
-        // FIXME: queue these updates for after the blocks have loaded
         if (myBlock.text == null) {
-            // console.log('block not ready');
             return;
         }
         var label = myBlock.value.toString();
@@ -961,6 +1045,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.swapChildren(myBlock.text, lastChild);
 
         try {
+            // FIXME: Is there a race condition?
             if (myBlock.loadComplete) {
                 myBlock.container.updateCache();
             }
@@ -970,13 +1055,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.updateBlockLabels = function() {
-        // The modifiable labels are stored in the DOM with a
-        // unique id for each block.  For the moment, we only have
-        // labels for number and text blocks.
+        // The modifiable labels are stored in the DOM with a unique
+        // id for each block.  For the moment, we only have labels for
+        // number and text blocks.
         var html = ''
         var text = ''
         var value = ''
-        // console.log('update block labels');
         for (var blk = 0; blk < this.blockList.length; blk++) {
             var myBlock = this.blockList[blk];
             if (myBlock.name == 'number') {
@@ -1049,7 +1133,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.adjustLabelPosition = function(blk, x, y) {
         // Move the label when the block moves.
         var myBlock = this.blockList[blk];
-        // console.log('adjust label positions ' + myBlock.name);
         var canvasLeft = canvas.offsetLeft + 28;
         var canvasTop = canvas.offsetTop + 6;
 
@@ -1069,14 +1152,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (blk == null) {
             return null;
         }
+
         var myBlock = this.blockList[blk];
-        // console.log('find top block ' + myBlock.name);
         if (myBlock.connections == null) {
             return blk;
         }
         if (myBlock.connections.length == 0) {
             return blk;
         }
+
         var topBlockLoop = 0;
         while (myBlock.connections[0] != null) {
             topBlockLoop += 1;
@@ -1094,14 +1178,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (blk == null) {
             return null;
         }
+
         var myBlock = this.blockList[blk];
-        // console.log('find bottom block ' + myBlock.name);
         if (myBlock.connections == null) {
             return blk;
         }
         if (myBlock.connections.length == 0) {
             return blk;
         }
+
         var bottomBlockLoop = 0;
         while (last(myBlock.connections) != null) {
             bottomBlockLoop += 1;
@@ -1116,7 +1201,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.findStacks = function() {
         // Find any blocks with null in the first connection.
-        // console.log('find stacks');
         this.stackList = [];
         for (i = 0; i < this.blockList.length; i++) {
             if (this.blockList[i].connections[0] == null) {
@@ -1127,7 +1211,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.findClamps = function() {
         // Find any clamp blocks.
-        // console.log('find clamps');
         this.expandablesList = [];
         this.findStacks(); // We start by finding the stacks
         for (var i = 0; i < this.stackList.length; i++) {
@@ -1136,14 +1219,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
-    this.find2Args = function() {
+    this.findTwoArgs = function() {
         // Find any expandable arg blocks.
-        // console.log('find 2args');
         this.expandablesList = [];
         for (var i = 0; i < this.blockList.length; i++) {
             if (this.blockList[i].isArgBlock() && this.blockList[i].isExpandableBlock()) {
                 this.expandablesList.push(i);
-            } else if (this.blockList[i].isSpecialBlock()) {
+            } else if (this.blockList[i].isTwoArgBlock()) {
                 this.expandablesList.push(i);
             }
         }
@@ -1151,8 +1233,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.searchForExpandables = function(blk) {
         // Find the expandable blocks below blk in a stack.
-        // console.log('search for expandables');
         while (blk != null && this.blockList[blk] != null && !this.blockList[blk].isValueBlock()) {
+            // More checks for malformed or corrupted block data.
             this.searchCounter += 1;
             if (this.searchCounter > 2 * this.blockList.length) {
                 console.log('infinite loop searching for Expandables? ' + this.searchCounter);
@@ -1168,33 +1250,33 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
-    this.expand2Args = function() {
+    this.expandTwoArgs = function() {
         // Expand expandable 2-arg blocks as needed.
-        this.find2Args();
+        this.findTwoArgs();
         for (var i = 0; i < this.expandablesList.length; i++) {
-            this.adjust2ArgBlock(this.expandablesList[i]);
+            this.adjustExpandableTwoArgBlock(this.expandablesList[i]);
         }
         this.refreshCanvas();
     }
 
     this.expandClamps = function() {
         // Expand expandable clamp blocks as needed.
-        // console.log('expandClamps');
         this.findClamps();
         for (var i = 0; i < this.expandablesList.length; i++) {
-            this.adjustExpandableBlock(this.expandablesList[i]);
+            this.adjustExpandableClampBlock(this.expandablesList[i]);
         }
         this.refreshCanvas();
     }
 
     this.imageLoad = function(myBlock) {
-        // Load a block image and create any extra parts.  Image
+        // Load a block image and create any extra parts. Image
         // components are loaded asynchronously so most the work
         // happens in callbacks.
 
         var thisBlock = this.blockList.indexOf(myBlock);
 
         // We need a label for most blocks.
+        // TODO: use Text exclusively for all block labels.
         myBlock.text = new createjs.Text('', '20px Arial', '#000000');
 
         // Get the block labels from the protoblock
@@ -1278,8 +1360,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.text.textAlign = 'center';
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
-            myBlock.text.x = 70;
-            myBlock.text.y = 27;
+            myBlock.text.x = VALUETEXTX;
+            myBlock.text.y = VALUETEXTY;
 
             this.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
 
@@ -1295,11 +1377,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.text.textBaseline = 'alphabetic';
             myBlock.container.addChild(myBlock.text);
             if (myBlock.name == 'box') {
-                myBlock.text.x = 120;
+                myBlock.text.x = BOXTEXTX;
             } else {
-                myBlock.text.x = 140;
+                myBlock.text.x = PARAMETERTEXTX;
             }
-            myBlock.text.y = 27;
+            myBlock.text.y = VALUETEXTY;
 
             lastChild = last(myBlock.container.children);
             myBlock.container.swapChildren(myBlock.text, lastChild);
@@ -1310,14 +1392,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // Expandable blocks also have some extra parts.
             if (myBlock.isArgBlock()) {
                 var bottomArtwork = ARG2BLOCKBOTTOM;
-            } else if (myBlock.isSpecialBlock()) {
+            } else if (myBlock.isTwoArgBlock()) {
                 var bottomArtwork = BASICBLOCK2ARGBOTTOM;
             } else if (myBlock.protoblock.palette.name == 'flow') {
                 var bottomArtwork = FLOWCLAMPBOTTOM;
             } else {
                 var bottomArtwork = ACTIONCLAMPBOTTOM;
             }
-            var yoff = myBlock.protoblock.yoff;
+            var bottomOffset = myBlock.protoblock.bottomOffset;
             myBlock.fillerBitmaps = [];
             myBlock.bottomBitmap = null;
 
@@ -1325,7 +1407,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.bottomBitmap = bitmap;
                 myBlock.container.addChild(myBlock.bottomBitmap);
                 myBlock.bottomBitmap.x = myBlock.bitmap.x;
-                myBlock.bottomBitmap.y = myBlock.bitmap.y + yoff;
+                myBlock.bottomBitmap.y = myBlock.bitmap.y + bottomOffset;
                 myBlock.bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
                 me.refreshCanvas();
             }
@@ -1336,7 +1418,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.highlightBottomBitmap = bitmap;
                 myBlock.container.addChild(myBlock.highlightBottomBitmap);
                 myBlock.highlightBottomBitmap.x = myBlock.bitmap.x;
-                myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + yoff;
+                myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + bottomOffset;
                 myBlock.highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
                 myBlock.highlightBottomBitmap.visible = false;
 
@@ -1379,13 +1461,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
                 if (myBlock.name == 'action') {
                     myBlock.collapseText = new createjs.Text('action', '20px Arial', '#000000');
-                    myBlock.collapseText.x = 100;
-                    myBlock.collapseText.y = 40;
+                    myBlock.collapseText.x = ACTIONTEXTX;
+                    myBlock.collapseText.y = ACTIONTEXTY;
                     myBlock.collapseText.textAlign = 'right';
                 } else {
                     myBlock.collapseText = new createjs.Text('start', '20px Arial', '#000000');
-                    myBlock.collapseText.x = 20;
-                    myBlock.collapseText.y = 40;
+                    myBlock.collapseText.x = STARTTEXTX;
+                    myBlock.collapseText.y = ACTIONTEXTY;
                     myBlock.collapseText.textAlign = 'left';
                 }
                 myBlock.collapseText.textBaseline = 'alphabetic';
@@ -1409,8 +1491,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.collapseButton.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
                 myBlock.collapseButton.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
                 // FIXME
-                // var bounds = myBlock.collapseButton.getBounds();
-                // console.log('collapse button bounds ' + bounds);
+                var bounds = myBlock.collapseButton.getBounds();
+                console.log('collapse button bounds ' + bounds);
                 // myBlock.collapseButton.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                 loadCollapsibleEventHandlers(me, myBlock);
             }
@@ -1864,8 +1946,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction'] = myActionBlock;
         myActionBlock.palette = this.palettes.dict['blocks'];
-        myActionBlock.yoff = 86;
-        myActionBlock.loff = 42;
+        myActionBlock.bottomOffset = 86;
+        myActionBlock.fillerOffset = 42;
         myActionBlock.args = 1;
         myActionBlock.defaults.push(name);
         myActionBlock.expandable = true;
@@ -2083,8 +2165,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var value = blkData[1][1];
             }
 
-            // console.log(thisBlock + ' ' + name + ' ' + value + ' ' + blkData[4]);
-
             if (name in NAMEDICT) {
                 name = NAMEDICT[name];
             }
@@ -2094,7 +2174,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     blkData[4][0] = null;
                     blkData[4][2] = null;
                     this.makeNewBlockWithConnections('start', blockOffset, blkData[4]);
-                    // console.log('assigning start block to turtle ' + this.turtles.turtleList.length);
                     last(this.blockList).value = this.turtles.turtleList.length;
 
                     this.turtles.add(last(this.blockList));
@@ -2123,7 +2202,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     }
                     break;
 
-                    // Define some constants for backward compatibility
+                    // Define some constants for legacy blocks for
+                    // backward compatibility with Python projects.
                 case 'red':
                 case 'white':
                     this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
@@ -2199,7 +2279,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // If all the blocks are loaded, we can make the final adjustments.
         this.loadCounter -= 1;
         if (this.loadCounter > 0) {
-            // console.log('Still waiting to load ' + this.loadCounter + ' more blocks');
             return;
         }
         console.log('load completed!');
@@ -2213,12 +2292,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.refreshCanvas();
 
         // We need to wait for the blocks to load before expanding them.
-        setTimeout(function() {
-            blockBlocks.expand2Args();
-        }, 1000);
-        setTimeout(function() {
-            blockBlocks.expandClamps();
-        }, 2000);
+        setTimeout(function() {blockBlocks.expandTwoArgs();}, 1000);
+        setTimeout(function() {blockBlocks.expandClamps();}, 2000);
     }
 
     blockBlocks = this;
@@ -2314,8 +2389,8 @@ function Block(protoblock) {
         return this.protoblock.style == 'value' || this.protoblock.style == 'arg';
     }
 
-    this.isSpecialBlock = function() {
-        return this.protoblock.style == 'special';
+    this.isTwoArgBlock = function() {
+        return this.protoblock.style == 'twoarg';
     }
 
     this.isClampBlock = function() {
@@ -2436,7 +2511,7 @@ function labelChanged() {
 }
 
 
-// load an image thumbnail onto into block
+// Load an image thumbnail onto into block.
 function loadThumbnail(blocks, thisBlock) {
     if (blocks.blockList[thisBlock].value == null) {
         console.log('loadThumbnail: no image to load?');
@@ -2446,6 +2521,8 @@ function loadThumbnail(blocks, thisBlock) {
     image.src = blocks.blockList[thisBlock].value;
     var bitmap = new createjs.Bitmap(image);
     blocks.blockList[thisBlock].container.addChild(bitmap);
+    // FIXME: Determine these values computationally based on the size
+    // of the media block.
     if (image.width > image.height) {
         bitmap.scaleX = 108 / image.width;
         bitmap.scaleY = 108 / image.width;
@@ -2472,7 +2549,6 @@ function doOpenMedia(blocks, thisBlock) {
         var reader = new FileReader();
         reader.onloadend = (function() {
             if (reader.result) {
-                // console.log(reader);
                 var dataURL = reader.result;
                 blocks.blockList[thisBlock].value = reader.result
                 if (blocks.blockList[thisBlock].container.children.length > 2) {
@@ -2493,6 +2569,9 @@ function doOpenMedia(blocks, thisBlock) {
 // These are the event handlers for collapsible blocks.
 function loadCollapsibleEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
+
+    // FIXME: Can we use the container bounds?
+    console.log('collapse bounds: ' + myBlock.collapseButton.getBounds())
     var hitArea = new createjs.Shape();
     var w2 = 42;
     var h2 = 42;
@@ -2632,8 +2711,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         if (moved) {
             // Check if block is in the trash.
             if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
-		console.log('delete collapse')
-		sendStackToTrash(blocks, myBlock);
+                sendStackToTrash(blocks, myBlock);
             } else {
                 // Otherwise, process move.
                 blocks.blockMoved(thisBlock);
@@ -2654,14 +2732,8 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 function loadEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
     var hitArea = new createjs.Shape();
-    // Position hitArea relative to the internal coordinate system
-    // of the container.
-    // FIXME: use container shape
-    var w2 = 100;
-    var h2 = 42;
-    hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
-    hitArea.x = w2 / 2;
-    hitArea.y = h2 / 2;
+    var bounds = myBlock.container.getBounds()
+    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {
@@ -2756,7 +2828,7 @@ function loadEventHandlers(blocks, myBlock) {
         if (moved) {
             // Check if block is in the trash.
             if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
-		sendStackToTrash(blocks, myBlock);
+                sendStackToTrash(blocks, myBlock);
             } else {
                 // Otherwise, process move.
                 blocks.blockMoved(thisBlock);

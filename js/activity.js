@@ -1212,7 +1212,9 @@ define(function (require) {
                 }
                 runFromBlock(activity, turtle, nextBlock);
             } else {
-		// Mark the turtle as not running
+		// Make sure SVG path is closed.
+		turtles.turtleList[turtle].closeSVG();
+		// Mark the turtle as not running.
 		turtles.turtleList[turtle].running = false;
 		if (!turtles.running()) {
 		    if (buttonsVisible && !toolbarButtonsVisible) {
@@ -1880,8 +1882,9 @@ function doSVG(canvas, turtles, width, height, scale) {
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
     svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
     svg += this.svgOutput;
-    for (var t in turtles.turtleList) {
-        svg += turtles.turtleList[t].svgOutput;
+    for (var turtle in turtles.turtleList) {
+	turtles.turtleList[turtle].closeSVG();
+        svg += turtles.turtleList[turtle].svgOutput;
     }
     svg += '</g>';
     svg += '</svg>';

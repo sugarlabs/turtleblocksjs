@@ -23,6 +23,9 @@ function Turtle (name, turtles) {
     this.name = name;
     this.turtles = turtles;
 
+    // Is the turtle running?
+    this.running = false;
+
     // In the trash?
     this.trash = false;
 
@@ -548,6 +551,15 @@ function Turtles(canvas, stage, refreshCanvas) {
 
     this.invertY = function(y) {
         return this.canvas.height / (2.0 * this.scale) - y;
+    }
+
+    this.running = function() {
+	for (turtle in this.turtleList) {
+	    if (this.turtleList[turtle].running) {
+		return true;
+	    }
+	}
+	return false;
     }
 }
 

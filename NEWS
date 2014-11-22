@@ -118,6 +118,7 @@
   * added keyboard sensor
   * fixed issue with break block scope
   * label box values during debug mode
+  * fixed some race conditions
 
 TODO:
   * enable docking to any for boxes, equal
@@ -142,4 +143,3 @@ BUGS:
   * cannot open same file twice in a row (no change event?)
   * occasional bad init ???
   * fill broken in save to SVG
-  * reposition trash, buttons in portrait mode

@@ -56,7 +56,8 @@ define(function (require) {
             var files = false;
         }
 
-        var server = true;  // Are we running off of a server?
+	// Are we running off of a server?
+        var server = true;
         var scale = 1;
         var stage;
         var turtles;
@@ -73,6 +74,10 @@ define(function (require) {
         var currentKey = '';
         var currentKeyCode = 0;
         var lastKeyCode = 0;
+
+	var stopTurtleContainer = null;
+	var stopTurtleContainerX = 0;
+	var stopTurtleContainerY = 0;
 
         // default values
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
@@ -565,8 +570,12 @@ define(function (require) {
         }
 
         function doStopTurtle() {
-            //
+            // The stop button was pressed. Stop the turtle and clean
+            // up a few odds and ends.
             stopTurtle = true;
+	    if (buttonsVisible && !toolbarButtonsVisible) {
+		hideStopButton();
+	    }
             blocks.bringToTop();
         }
 
@@ -842,6 +851,11 @@ define(function (require) {
                 clearParameterBlocks();
             }
 
+	    // If the stop button is hidden, show it.
+	    if (buttonsVisible && !toolbarButtonsVisible) {
+		showStopButton();
+	    }
+
             // (2) Execute the stack.
             // A bit complicated because we have lots of corner cases:
             if (startHere != null) {
@@ -857,6 +871,7 @@ define(function (require) {
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
                 this.parameterQueue[turtle] = [];
+		turtles.turtleList[turtle].running = true;
                 runFromBlock(this, turtle, startHere);
             } else if (startBlocks.length > 0) {
                 // If there are start blocks, run them all.
@@ -868,6 +883,7 @@ define(function (require) {
                     this.parameterQueue[turtle] = [];
                     if (!turtles.turtleList[turtle].trash) {
                         console.log('running from turtle ' + turtle);
+			turtles.turtleList[turtle].running = true;
                         runFromBlock(this, turtle, startBlocks[b]);
                     }
                 }
@@ -902,6 +918,8 @@ define(function (require) {
                             if (blocks.blockList[blocks.stackList[blk]].name == 'start' && blocks.blockList[blocks.stackList[blk]].connections[1] == null) {
                                 continue;
                             }
+			    // This is a degenerative case.
+			    turtles.turtleList[0].running = true;
                             runFromBlock(this, 0, blocks.stackList[blk]);
                         }
                     }
@@ -1192,22 +1210,31 @@ define(function (require) {
                         updateParameterBlock(turtle, activity.parameterQueue[turtle][pblk]);
                     }
                 }
-
                 runFromBlock(activity, turtle, nextBlock);
             } else {
+		// Mark the turtle as not running
+		turtles.turtleList[turtle].running = false;
+		if (!turtles.running()) {
+		    if (buttonsVisible && !toolbarButtonsVisible) {
+			hideStopButton();
+		    }
+		}
+
                 // Nothing else to do... so cleaning up.
                 if (turtles.turtleList[turtle].queue.length == 0 || blk != last(turtles.turtleList[turtle].queue).parentBlk) {
                    setTimeout(function(){blocks.unhighlight(blk);}, turtleDelay);
                 }
+
                 // Unhighlight any parent blocks still highlighted.
                 for (var b in activity.parentFlowQueue[turtle]) {
                     blocks.unhighlight(activity.parentFlowQueue[turtle][b]);
                 }
+
                 // Make sure the turtles are on top.
                 var lastChild = last(stage.children);
-                for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                // for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                     stage.swapChildren(turtles.turtleList[turtle].Container, lastChild);
-                }
+                // }
                 update = true;
             }
         }
@@ -1553,6 +1580,18 @@ define(function (require) {
             }
         }
 
+	function hideStopButton() {
+	    stopTurtleContainer.x = stopTurtleContainerX;
+	    stopTurtleContainer.y = stopTurtleContainerY;
+	    stopTurtleContainer.visible = false;
+	}
+
+	function showStopButton() {
+	    stopTurtleContainer.x = openContainer.x;
+	    stopTurtleContainer.y = openContainer.y;
+	    stopTurtleContainer.visible = true;
+	}
+
         function setupAndroidToolbar() {
             var toolbar = docById('main-toolbar');
             toolbar.style.display = 'none';
@@ -1572,14 +1611,21 @@ define(function (require) {
             openContainer = makeButton('open-toolbar-button', x, y, btnSize);
             loadToolbarButtonHandler(openContainer, doOpenToolbarButton);
 
-            for (button in buttonNames) {
+            for (name in buttonNames) {
                 x += dx;
                 y += dy;
-                var container = makeButton(buttonNames[button][0] + '-button',
+                var container = makeButton(buttonNames[name][0] + '-button',
                                            x, y, btnSize);
-                loadToolbarButtonHandler(container, buttonNames[button][1]);
+                loadToolbarButtonHandler(container, buttonNames[name][1]);
                 onscreenButtons.push(container);
                 container.visible = false;
+
+		if (buttonNames[name][0] == 'stop-turtle') {
+		    console.log('FOUND STOP-TURTLE BUTTON');
+		    stopTurtleContainer = container;
+		    stopTurtleContainerX = x;
+		    stopTurtleContainerY = y;
+		}
             }
 
             // Misc. other buttons
@@ -1601,12 +1647,12 @@ define(function (require) {
             menuContainer = makeButton('menu-button', x, y, btnSize);
             loadToolbarButtonHandler(menuContainer, doMenuButton);
 
-            for (button in menuNames) {
+            for (name in menuNames) {
                 x += dx;
                 y += dy;
-                var container = makeButton(menuNames[button][0] + '-button',
+                var container = makeButton(menuNames[name][0] + '-button',
                                            x, y, btnSize);
-                loadToolbarButtonHandler(container, menuNames[button][1]);
+                loadToolbarButtonHandler(container, menuNames[name][1]);
                 onscreenMenu.push(container);
                 container.visible = false;
             }
@@ -1678,6 +1724,9 @@ define(function (require) {
                 openContainer.visible = false;
                 closeContainer.visible = true;
                 toolbarButtonsVisible = true;
+		// Make sure stop-turtle button is in the right place.
+		stopTurtleContainer.x = stopTurtleContainerX;
+		stopTurtleContainer.y = stopTurtleContainerY;
                 for (button in onscreenButtons) {
                     onscreenButtons[button].visible = true;
                 }
@@ -1689,6 +1738,8 @@ define(function (require) {
             openContainer.visible = true;
             closeContainer.visible = false;
             toolbarButtonsVisible = false;
+	    stopTurtleContainer.x = closeContainer.x;
+	    stopTurtleContainer.y = closeContainer.y;
             for (button in onscreenButtons) {
                 onscreenButtons[button].visible = false;
             }

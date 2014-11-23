@@ -118,12 +118,16 @@ function Turtle (name, turtles) {
         // Draw an arc if the pen is down.
         if (this.penState) {
             this.drawingCanvas.graphics.arc(cx, cy, radius, sa, ea, anticlockwise);
-            if (this.fillState) {
-                svg = '<path d="M' + ox + ' ' + oy + ' A ' + radius + ' ' + radius + ', 0, 0, 1, ' + nx + ' ' + ny + '" stroke-linecap="round" fill="' + this.canvasColor + '" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
-            } else {
-                svg = '<path d="M' + ox + ' ' + oy + ' A ' + radius + ' ' + radius + ', 0, 0, 1, ' + nx + ' ' + ny + '" stroke-linecap="round" fill="none" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
-            }
-            this.svgOutput += svg;
+	    if (!this.svgPath) {
+		this.svgPath = true;
+		this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
+	    }
+	    if (anticlockwise) {
+		var sweep = 0;
+	    } else {
+		var sweep = 1;
+	    }
+            this.svgOutput += 'A ' + radius + ',' + radius + ' 0 1 ' + sweep + ' ' + nx + ',' + ny + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }

@@ -1790,33 +1790,38 @@ define(function (require) {
         }
 
         function makeButton(name, x, y, size) {
-            var originalSize = 55; // this is the original svg size
-            var halfSize = Math.floor(size / 2);
-            var image = new Image();
-            image.src = 'icons/' + name + '.svg';
             var container = new createjs.Container();
             stage.addChild(container);
-	    // FIXME: Should be async load
-            bitmap = new createjs.Bitmap(image);
-            if (size != originalSize) {
-                bitmap.scaleX = size / originalSize;
-                bitmap.scaleY = size / originalSize;
-            }
-            bitmap.regX = halfSize / bitmap.scaleX;
-            bitmap.regY = halfSize / bitmap.scaleY;
-
-            container.addChild(bitmap);
-            var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-halfSize, -halfSize,
-                                                           size, size);
-            hitArea.x = 0;
-            hitArea.y = 0;
-            container.hitArea = hitArea;
-            bitmap.cache(0, 0, size, size);
-            bitmap.updateCache();
             container.x = x;
             container.y = y;
-            update = true;
+
+            var img = new Image();
+
+            img.onload = function() {
+                var originalSize = 55; // this is the original svg size
+                var halfSize = Math.floor(size / 2);
+
+                bitmap = new createjs.Bitmap(img);
+                if (size != originalSize) {
+                    bitmap.scaleX = size / originalSize;
+                    bitmap.scaleY = size / originalSize;
+                }
+                bitmap.regX = halfSize / bitmap.scaleX;
+                bitmap.regY = halfSize / bitmap.scaleY;
+
+                container.addChild(bitmap);
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawEllipse(-halfSize, -halfSize, size, size);
+                hitArea.x = 0;
+                hitArea.y = 0;
+                container.hitArea = hitArea;
+                bitmap.cache(0, 0, size, size);
+                bitmap.updateCache();
+                update = true;
+            }
+
+            img.src = 'icons/' + name + '.svg';
+
             return container;
         }
 
@@ -1884,7 +1889,7 @@ function doSVG(canvas, turtles, width, height, scale) {
     svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
     svg += this.svgOutput;
     for (var turtle in turtles.turtleList) {
-	turtles.turtleList[turtle].closeSVG();
+        turtles.turtleList[turtle].closeSVG();
         svg += turtles.turtleList[turtle].svgOutput;
     }
     svg += '</g>';

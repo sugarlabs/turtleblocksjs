@@ -20,6 +20,9 @@ var blockBlocks = null;
 // connecting them.
 var MINIMUMDOCKDISTANCE = 400;
 
+// Length of a long touch
+var LONGPRESSTIME = 2000;
+
 // There are three "classes" defined in this file: ProtoBlocks,
 // Blocks, and Block. Protoblocks are the prototypes from which Blocks
 // are created; Blocks is the list of all blocks; and Block is a block
@@ -256,6 +259,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.protoBlockDict = {}
     // and a list of the blocks we create.
     this.blockList = [];
+
+    // Track the time with mouse down.
+    this.time = 0;
+    this.timeOut = null;
 
     // "Copy stack" selects a stack for pasting. Are we selecting?
     this.selectingStack = false;
@@ -1974,6 +1981,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
+    this.triggerLongPress = function(myBlock) {
+	this.timeOut == null;
+	console.log('BRING UP COPY BUTTON FOR BLOCK ' + myBlock.name);
+    }
+
     this.pasteStack = function() {
         // Copy a stack of blocks by creating a blockObjs and passing
         // it to this.load.
@@ -2721,7 +2733,7 @@ function loadEventHandlers(blocks, myBlock) {
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
-    });
+    }, true);
 
     var moved = false;
     myBlock.container.on('click', function(event) {
@@ -2740,9 +2752,14 @@ function loadEventHandlers(blocks, myBlock) {
                 blocks.runLogo(topBlock);
             }
         }
-    });
+    }, true);
 
     myBlock.container.on('mousedown', function(event) {
+	// Track time for detecting long pause.
+        var d = new Date();
+        blocks.time = d.getTime();
+	blocks.timeOut = setTimeout(function(){blocks.triggerLongPress(myBlock);}, LONGPRESSTIME);
+
         // Always show the trash when there is a block selected.
         trashcan.show();
 
@@ -2759,6 +2776,11 @@ function loadEventHandlers(blocks, myBlock) {
         };
 
         myBlock.container.on('pressmove', function(event) {
+	    // FIXME: need to remove timer
+	    if (blocks.timeOut != null) {
+		clearTimeout(blocks.timeOut);
+		blocks.timeOut = null;
+	    }
             moved = true;
             var oldX = myBlock.container.x;
             var oldY = myBlock.container.y;
@@ -2799,11 +2821,16 @@ function loadEventHandlers(blocks, myBlock) {
                 }
             }
             blocks.refreshCanvas();
-        });
-    });
+        }, true);
+    }, true);
 
     myBlock.container.on('mouseout', function(event) {
         // Always hide the trash when there is no block selected.
+	// FIXME: need to remove timer
+	if (blocks.timeOut != null) {
+            clearTimeout(blocks.timeOut);
+	    blocks.timeOut = null;
+	}
         trashcan.hide();
         if (moved) {
             // Check if block is in the trash.
@@ -2821,7 +2848,7 @@ function loadEventHandlers(blocks, myBlock) {
         blocks.unhighlight(null);
         blocks.activeBlock = null;
         blocks.refreshCanvas();
-    });
+    }, true);
 }
 
 

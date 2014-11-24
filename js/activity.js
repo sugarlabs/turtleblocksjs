@@ -248,17 +248,21 @@ define(function (require) {
             docById('loader').className = 'loader';
 
             stage = new createjs.Stage(canvas);
-            createjs.Touch.enable(stage);
+
             createjs.Ticker.addEventListener('tick', tick);
+
             trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
             turtles = new Turtles(canvas, stage, refreshCanvas);
             palettes = initPalettes(canvas, stage, cellSize, refreshCanvas);
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
+
             palettes.setBlocks(blocks);
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
+
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
+
             initBasicProtoBlocks(palettes, blocks);
             initAdvancedProtoBlocks(palettes, blocks);
 

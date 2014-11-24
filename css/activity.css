@@ -28,14 +28,17 @@ body {
 
 #main-toolbar #menu-button {
   background-image: url(../icons/menu-button.svg);
+  display: none;
 }
 
 #main-toolbar #open-toolbar-button {
   background-image: url(../icons/open-toolbar-button.svg);
+  display: none;
 }
 
 #main-toolbar #close-toolbar-button {
   background-image: url(../icons/close-toolbar-button.svg);
+  display: none;
 }
 
 #main-toolbar #fast-button {

@@ -56,7 +56,7 @@ define(function (require) {
             var files = false;
         }
 
-	// Are we running off of a server?
+        // Are we running off of a server?
         var server = true;
         var scale = 1;
         var stage;
@@ -75,9 +75,9 @@ define(function (require) {
         var currentKeyCode = 0;
         var lastKeyCode = 0;
 
-	var stopTurtleContainer = null;
-	var stopTurtleContainerX = 0;
-	var stopTurtleContainerY = 0;
+        var stopTurtleContainer = null;
+        var stopTurtleContainerX = 0;
+        var stopTurtleContainerY = 0;
 
         // default values
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
@@ -506,11 +506,11 @@ define(function (require) {
             update = true;
         }
 
-	function deleteBlocks() {
-	    sendAllToTrash(true);
-	}
+        function deleteBlocks() {
+            sendAllToTrash(true);
+        }
 
-	// FIXME: confirm???
+        // FIXME: confirm???
         function sendAllToTrash(addStartBlock) {
             var dx = 2000;
             var dy = cellSize;
@@ -573,9 +573,9 @@ define(function (require) {
             // The stop button was pressed. Stop the turtle and clean
             // up a few odds and ends.
             stopTurtle = true;
-	    if (buttonsVisible && !toolbarButtonsVisible) {
-		hideStopButton();
-	    }
+            if (buttonsVisible && !toolbarButtonsVisible) {
+                hideStopButton();
+            }
             blocks.bringToTop();
         }
 
@@ -851,10 +851,10 @@ define(function (require) {
                 clearParameterBlocks();
             }
 
-	    // If the stop button is hidden, show it.
-	    if (buttonsVisible && !toolbarButtonsVisible) {
-		showStopButton();
-	    }
+            // If the stop button is hidden, show it.
+            if (buttonsVisible && !toolbarButtonsVisible) {
+                showStopButton();
+            }
 
             // (2) Execute the stack.
             // A bit complicated because we have lots of corner cases:
@@ -871,7 +871,7 @@ define(function (require) {
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
                 this.parameterQueue[turtle] = [];
-		turtles.turtleList[turtle].running = true;
+                turtles.turtleList[turtle].running = true;
                 runFromBlock(this, turtle, startHere);
             } else if (startBlocks.length > 0) {
                 // If there are start blocks, run them all.
@@ -883,7 +883,7 @@ define(function (require) {
                     this.parameterQueue[turtle] = [];
                     if (!turtles.turtleList[turtle].trash) {
                         console.log('running from turtle ' + turtle);
-			turtles.turtleList[turtle].running = true;
+                        turtles.turtleList[turtle].running = true;
                         runFromBlock(this, turtle, startBlocks[b]);
                     }
                 }
@@ -918,8 +918,8 @@ define(function (require) {
                             if (blocks.blockList[blocks.stackList[blk]].name == 'start' && blocks.blockList[blocks.stackList[blk]].connections[1] == null) {
                                 continue;
                             }
-			    // This is a degenerative case.
-			    turtles.turtleList[0].running = true;
+                            // This is a degenerative case.
+                            turtles.turtleList[0].running = true;
                             runFromBlock(this, 0, blocks.stackList[blk]);
                         }
                     }
@@ -1212,15 +1212,15 @@ define(function (require) {
                 }
                 runFromBlock(activity, turtle, nextBlock);
             } else {
-		// Make sure SVG path is closed.
-		turtles.turtleList[turtle].closeSVG();
-		// Mark the turtle as not running.
-		turtles.turtleList[turtle].running = false;
-		if (!turtles.running()) {
-		    if (buttonsVisible && !toolbarButtonsVisible) {
-			hideStopButton();
-		    }
-		}
+                // Make sure SVG path is closed.
+                turtles.turtleList[turtle].closeSVG();
+                // Mark the turtle as not running.
+                turtles.turtleList[turtle].running = false;
+                if (!turtles.running()) {
+                    if (buttonsVisible && !toolbarButtonsVisible) {
+                        hideStopButton();
+                    }
+                }
 
                 // Nothing else to do... so cleaning up.
                 if (turtles.turtleList[turtle].queue.length == 0 || blk != last(turtles.turtleList[turtle].queue).parentBlk) {
@@ -1582,17 +1582,17 @@ define(function (require) {
             }
         }
 
-	function hideStopButton() {
-	    stopTurtleContainer.x = stopTurtleContainerX;
-	    stopTurtleContainer.y = stopTurtleContainerY;
-	    stopTurtleContainer.visible = false;
-	}
+        function hideStopButton() {
+            stopTurtleContainer.x = stopTurtleContainerX;
+            stopTurtleContainer.y = stopTurtleContainerY;
+            stopTurtleContainer.visible = false;
+        }
 
-	function showStopButton() {
-	    stopTurtleContainer.x = openContainer.x;
-	    stopTurtleContainer.y = openContainer.y;
-	    stopTurtleContainer.visible = true;
-	}
+        function showStopButton() {
+            stopTurtleContainer.x = openContainer.x;
+            stopTurtleContainer.y = openContainer.y;
+            stopTurtleContainer.visible = true;
+        }
 
         function setupAndroidToolbar() {
             var toolbar = docById('main-toolbar');
@@ -1622,30 +1622,32 @@ define(function (require) {
                 onscreenButtons.push(container);
                 container.visible = false;
 
-		if (buttonNames[name][0] == 'stop-turtle') {
-		    console.log('FOUND STOP-TURTLE BUTTON');
-		    stopTurtleContainer = container;
-		    stopTurtleContainerX = x;
-		    stopTurtleContainerY = y;
-		}
+                if (buttonNames[name][0] == 'stop-turtle') {
+                    console.log('FOUND STOP-TURTLE BUTTON');
+                    stopTurtleContainer = container;
+                    stopTurtleContainerX = x;
+                    stopTurtleContainerY = y;
+                }
             }
 
             // Misc. other buttons
-	    // FIXME: empty-trash is the wrong name
+            // FIXME: empty-trash is the wrong name
             var menuNames = [['copy', selectStackToCopy], ['paste', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen], ['empty-trash',  deleteBlocks], ['restore-trash', restoreTrash]];
             if (server) {
                 menuNames.push(['save', doSave]);
             }
 
-            var x = 1145;
-            var y = 873;
-            if (onAndroid) {
-                // FIXME: check the right value
+            // Upper righthand corner
+            var x = Math.floor(canvas.width / scale) - btnSize;
+            var y = Math.floor(btnSize / 2);
+            // if (onAndroid) {
+                // FIXME: check for the correct value
                 // space for the bottom android toolbar
-                y -= 80;
-            };
+                // if we are in the lower right
+                // y -= 80;
+            // };
             var dx = 0;
-            var dy = -btnSize;
+            var dy = btnSize;
             menuContainer = makeButton('menu-button', x, y, btnSize);
             loadToolbarButtonHandler(menuContainer, doMenuButton);
 
@@ -1726,9 +1728,9 @@ define(function (require) {
                 openContainer.visible = false;
                 closeContainer.visible = true;
                 toolbarButtonsVisible = true;
-		// Make sure stop-turtle button is in the right place.
-		stopTurtleContainer.x = stopTurtleContainerX;
-		stopTurtleContainer.y = stopTurtleContainerY;
+                // Make sure stop-turtle button is in the right place.
+                stopTurtleContainer.x = stopTurtleContainerX;
+                stopTurtleContainer.y = stopTurtleContainerY;
                 for (button in onscreenButtons) {
                     onscreenButtons[button].visible = true;
                 }
@@ -1740,8 +1742,8 @@ define(function (require) {
             openContainer.visible = true;
             closeContainer.visible = false;
             toolbarButtonsVisible = false;
-	    stopTurtleContainer.x = closeContainer.x;
-	    stopTurtleContainer.y = closeContainer.y;
+            stopTurtleContainer.x = closeContainer.x;
+            stopTurtleContainer.y = closeContainer.y;
             for (button in onscreenButtons) {
                 onscreenButtons[button].visible = false;
             }

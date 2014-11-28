@@ -2778,6 +2778,14 @@ function loadEventHandlers(blocks, myBlock) {
         blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
     });
 
+    myBlock.container.on('pressup', function(event) {
+        var msgContainer = blocks.msgText.parent;
+        msgContainer.visible = true;
+        blocks.msgText.text = 'pressup';
+        msgContainer.updateCache();
+        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+    });
+
     myBlock.container.on('mousedown', function(event) {
         var msgContainer = blocks.msgText.parent;
         msgContainer.visible = true;
@@ -2805,7 +2813,18 @@ function loadEventHandlers(blocks, myBlock) {
             y: myBlock.container.y - Math.round(event.stageY / blocks.scale)
         };
 
+	myBlock.container.on('pressup', function(event) {
+            var msgContainer = blocks.msgText.parent;
+            msgContainer.visible = true;
+            blocks.msgText.text = 'mousedown -> pressup';
+            msgContainer.updateCache();
+            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	});
+
         myBlock.container.on('pressmove', function(event) {
+	    // FIXME: More voodoo
+	    event.nativeEvent.preventDefault();
+
             var msgContainer = blocks.msgText.parent;
             msgContainer.visible = true;
             blocks.msgText.text = 'mousedown->pressmove';

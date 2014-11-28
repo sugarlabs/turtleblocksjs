@@ -293,7 +293,7 @@ define(function (require) {
             // createjs.LoadQueue(true, null, true);
 
             // Enable touch interactions if supported on the current device.
-            createjs.Touch.enable(stage);
+            // createjs.Touch.enable(stage);
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
             // Enabled mouse over and mouse out events.
@@ -409,6 +409,7 @@ define(function (require) {
                     update = true;
                 });
                 callback(text);
+		blocks.setMsgText(text);
             }
             img.src = 'data:image/svg+xml;base64,' + window.btoa(
                 unescape(encodeURIComponent(svgData)));

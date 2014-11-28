@@ -315,6 +315,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // Blocks that don't run when clicked.
     this.noRunBlocks = ['action'];
 
+    // We need access to the msg block.
+    this.setMsgText = function(msgText) {
+	this.msgText = msgText;
+    }
+
     // We need access to the turtles list because we associate a
     // turtle with each start block.
     this.setTurtles = function(turtles) {
@@ -2729,7 +2734,13 @@ function loadEventHandlers(blocks, myBlock) {
     hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
     myBlock.container.hitArea = hitArea;
 
-    myBlock.container.on('mouseover', function(event) {
+    myBlock.container.on('mouseover', function(event) {	
+        var msgContainer = blocks.msgText.parent;
+        msgContainer.visible = true;
+        blocks.msgText.text = 'mouseover';
+        msgContainer.updateCache();
+        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
@@ -2737,6 +2748,11 @@ function loadEventHandlers(blocks, myBlock) {
 
     var moved = false;
     myBlock.container.on('click', function(event) {
+        var msgContainer = blocks.msgText.parent;
+        msgContainer.visible = true;
+        blocks.msgText.text = 'click';
+        msgContainer.updateCache();
+        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
         if (!moved) {
             if (blocks.selectingStack) {
                 var topBlock = blocks.findTopBlock(thisBlock);
@@ -2754,7 +2770,21 @@ function loadEventHandlers(blocks, myBlock) {
         }
     }, true);
 
+    myBlock.container.on('pressmove', function(event) {
+        var msgContainer = blocks.msgText.parent;
+        msgContainer.visible = true;
+        blocks.msgText.text = 'pressmove';
+        msgContainer.updateCache();
+        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+    });
+
     myBlock.container.on('mousedown', function(event) {
+        var msgContainer = blocks.msgText.parent;
+        msgContainer.visible = true;
+        blocks.msgText.text = 'mousedown';
+        msgContainer.updateCache();
+        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+
 	// Track time for detecting long pause.
         var d = new Date();
         blocks.time = d.getTime();
@@ -2776,6 +2806,12 @@ function loadEventHandlers(blocks, myBlock) {
         };
 
         myBlock.container.on('pressmove', function(event) {
+            var msgContainer = blocks.msgText.parent;
+            msgContainer.visible = true;
+            blocks.msgText.text = 'mousedown->pressmove';
+            msgContainer.updateCache();
+            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+
 	    // FIXME: need to remove timer
 	    if (blocks.timeOut != null) {
 		clearTimeout(blocks.timeOut);
@@ -2825,6 +2861,11 @@ function loadEventHandlers(blocks, myBlock) {
     }, true);
 
     myBlock.container.on('mouseout', function(event) {
+        var msgContainer = blocks.msgText.parent;
+        msgContainer.visible = true;
+        blocks.msgText.text = 'mouseout';
+        msgContainer.updateCache();
+        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
         // Always hide the trash when there is no block selected.
 	// FIXME: need to remove timer
 	if (blocks.timeOut != null) {

@@ -2813,6 +2813,15 @@ function loadEventHandlers(blocks, myBlock) {
             y: myBlock.container.y - Math.round(event.stageY / blocks.scale)
         };
 
+	myBlock.container.on('mouseout', function(event) {
+            var msgContainer = blocks.msgText.parent;
+            msgContainer.visible = true;
+            blocks.msgText.text = 'mousedown -> mouseout';
+            msgContainer.updateCache();
+            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	    mouseoutCallback(blocks, myBlock, event, moved);
+	});
+
 	myBlock.container.on('pressup', function(event) {
             var msgContainer = blocks.msgText.parent;
             msgContainer.visible = true;
@@ -2885,30 +2894,36 @@ function loadEventHandlers(blocks, myBlock) {
         blocks.msgText.text = 'mouseout';
         msgContainer.updateCache();
         blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
-        // Always hide the trash when there is no block selected.
-	// FIXME: need to remove timer
-	if (blocks.timeOut != null) {
-            clearTimeout(blocks.timeOut);
-	    blocks.timeOut = null;
-	}
-        trashcan.hide();
-        if (moved) {
-            // Check if block is in the trash.
-            if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
-                sendStackToTrash(blocks, myBlock);
-            } else {
-                // Otherwise, process move.
-                blocks.blockMoved(thisBlock);
-            }
-        }
-
-        if (blocks.activeBlock != myBlock) {
-            return;
-        }
-        blocks.unhighlight(null);
-        blocks.activeBlock = null;
-        blocks.refreshCanvas();
+	mouseoutCallback(blocks, myBlock, event, moved);
     }, true);
+}
+
+
+function mouseoutCallback(blocks, myBlock, event, moved) {
+    var thisBlock = blocks.blockList.indexOf(myBlock);
+    // Always hide the trash when there is no block selected.
+    // FIXME: need to remove timer
+    if (blocks.timeOut != null) {
+        clearTimeout(blocks.timeOut);
+	blocks.timeOut = null;
+    }
+    trashcan.hide();
+    if (moved) {
+        // Check if block is in the trash.
+        if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
+            sendStackToTrash(blocks, myBlock);
+        } else {
+            // Otherwise, process move.
+            blocks.blockMoved(thisBlock);
+        }
+    }
+
+    if (blocks.activeBlock != myBlock) {
+        return;
+    }
+    blocks.unhighlight(null);
+    blocks.activeBlock = null;
+    blocks.refreshCanvas();
 }
 
 

@@ -404,6 +404,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifBlock.staticLabels.push('if');
     ifBlock.staticLabels.push('then');
 
+    var notBlock = new ProtoBlock('not');
+    notBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['not'] = notBlock;
+    notBlock.flowClampBooleanArgBlock();
+    notBlock.staticLabels.push('not');
+
     var vspaceBlock = new ProtoBlock('vspace');
     vspaceBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['vspace'] = vspaceBlock;

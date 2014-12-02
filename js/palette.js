@@ -62,8 +62,8 @@ function Palettes (canvas, stage, cellSize, refreshCanvas) {
                 this.buttons[name] = new createjs.Container();
                 this.stage.addChild(this.buttons[name]);
                 this.buttons[name].x = this.x;
-                this.x += this.cellSize;
                 this.buttons[name].y = this.y;
+                this.y += this.cellSize;
 
                 function processButton(me, name, bitmap, extras) {
                     me.bitmaps[name] = bitmap;
@@ -98,7 +98,7 @@ function Palettes (canvas, stage, cellSize, refreshCanvas) {
                     me.buttons[name].visible = false;
 
                     me.dict[name].makeMenu();
-                    me.dict[name].moveMenu(0, me.y + me.cellSize);
+                    me.dict[name].moveMenu(me.cellSize, me.y);
                     me.dict[name].updateMenu(false);
 
                     loadPaletteButtonHandler(me, name);

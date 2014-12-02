@@ -157,7 +157,7 @@ function ProtoBlock(name) {
 
     // E.g., start. A "child" flow is docked in an expandable clamp.
     // There are no additional arguments and no flow above or below.
-    this.flowClamp0ArgBlock = function() {
+    this.flowClampZeroArgBlock = function() {
         this.style = 'clamp';
         this.bottomOffset = 74;
         this.expandable = true;
@@ -169,7 +169,7 @@ function ProtoBlock(name) {
 
     // E.g., action. A "child" flow is docked in an expandable clamp.
     // The additional argument is a name. Again, no flow above or below.
-    this.flowClamp1ArgBlock = function() {
+    this.flowClampOneArgBlock = function() {
         this.style = 'clamp';
         this.bottomOffset = 74;
         this.expandable = true;
@@ -192,7 +192,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., forever. Unlike start, there is flow above and below.
-    this.blockClamp0ArgBlock = function() {
+    this.blockClampZeroArgBlock = function() {
         this.style = 'clamp';
         this.bottomOffset = 86;
         this.expandable = true;
@@ -203,7 +203,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., repeat. Unlike action, there is a flow above and below.
-    this.blockClamp1ArgBlock = function() {
+    this.blockClampOneArgBlock = function() {
         this.style = 'clamp';
         this.bottomOffset = 86;
         this.expandable = true;
@@ -214,7 +214,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., mouse button.
-    this.boolean0ArgBlock = function() {
+    this.booleanZeroArgBlock = function() {
         this.style = 'arg';
         this.size = 1;
         this.args = 0;
@@ -223,7 +223,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., not
-    this.boolean1ArgBlock = function() {
+    this.booleanOneBooleanArgBlock = function() {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
@@ -232,7 +232,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., and
-    this.boolean2BooleanArgBlock = function() {
+    this.booleanTwoBooleanArgBlock = function() {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
@@ -242,7 +242,7 @@ function ProtoBlock(name) {
 
     // E.g., greater, less, equal. (FIXME: These should be
     // expandable.)
-    this.boolean2ArgBlock = function() {
+    this.booleanTwoArgBlock = function() {
         this.style = 'arg';
         this.size = 2;
         this.args = 2;

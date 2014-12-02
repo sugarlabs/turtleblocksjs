@@ -54,7 +54,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     var mousebuttonBlock = new ProtoBlock('mousebutton');
     mousebuttonBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
-    mousebuttonBlock.boolean0ArgBlock()
+    mousebuttonBlock.booleanZeroArgBlock()
     mousebuttonBlock.staticLabels.push('mouse button');
 
     var keyboardBlock = new ProtoBlock('keyboard');

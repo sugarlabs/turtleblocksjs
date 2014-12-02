@@ -1040,11 +1040,11 @@ define(function (require) {
 
             case 'while':
                 if (args.length == 2) {
-				    while (args[0]) {
-				        childFlow = args[1];
+                    while (args[0]) {
+                    	childFlow = args[1];
                         childFlowCount = 1;
-				    }
-				}
+                    }
+                }
                 break;
 
             case 'storein':

@@ -1319,13 +1319,11 @@ define(function (require) {
                     var cblk2 = blocks.blockList[blk].connections[2];
                     var a = parseArg(turtle, cblk1);
                     var b = parseArg(turtle, cblk2);
-                    var result = (a == b);
                     blocks.blockList[blk].value = (a == b);
                     break;
                 case 'not':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var a = parseArg(turtle, cblk1);
-                    var result = (!a);
                     blocks.blockList[blk].value = (!a);
                     break;                     
                 case 'less':

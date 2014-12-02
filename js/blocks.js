@@ -225,7 +225,7 @@ function ProtoBlock(name) {
     // E.g., not
     this.booleanOneBooleanArgBlock = function() {
         this.style = 'arg';
-        this.size = 1;
+        this.size = 2;
         this.args = 1;
         this.artwork = BOOLEAN1BOOLEANARG;
         this.copyDock(BOOLEAN1BOOLEANARGDOCKS);
@@ -234,8 +234,8 @@ function ProtoBlock(name) {
     // E.g., and
     this.booleanTwoBooleanArgBlock = function() {
         this.style = 'arg';
-        this.size = 1;
-        this.args = 1;
+        this.size = 3;
+        this.args = 2;
         this.artwork = BOOLEAN2BOOLEANARGS;
         this.copyDock(BOOLEAN2BOOLEANARGSDOCKS);
     }

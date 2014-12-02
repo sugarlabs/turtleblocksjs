@@ -314,18 +314,17 @@ function initBasicProtoBlocks(palettes, blocks) {
     equalBlock.staticLabels.push('=');
     equalBlock.fontsize = '24px';
     
-    var notBlock = new ProtoBlock('not');
-    notBlock.palette = palettes.dict['number'];
-    blocks.protoBlockDict['not'] = notBlock;
-    notBlock.booleanOneBooleanArgBlock();
-    notBlock.staticLabels.push('not');
-
     var andBlock = new ProtoBlock('and');
     andBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['and'] = andBlock;
     andBlock.booleanTwoBooleanArgBlock();
     andBlock.staticLabels.push('and');
-    andBlock.fontsize = '24px';
+
+    var notBlock = new ProtoBlock('not');
+    notBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['not'] = notBlock;
+    notBlock.booleanOneBooleanArgBlock();
+    notBlock.staticLabels.push('not');
 
     // Blocks palette
     var mediaBlock = new ProtoBlock('media');

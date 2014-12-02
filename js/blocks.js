@@ -222,6 +222,15 @@ function ProtoBlock(name) {
         this.copyDock(BOOLEAN0ARGDOCKS);
     }
 
+    // E.g., not
+    this.boolean1ArgBlock = function() {
+        this.style = 'arg';
+        this.size = 1;
+        this.args = 1;
+        this.artwork = BOOLEAN1ARG;
+        this.copyDock(BOOLEAN1ARGDOCKS);
+    }
+
     // E.g., greater, less, equal. (FIXME: These should be
     // expandable.)
     this.boolean2ArgBlock = function() {
@@ -335,6 +344,25 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // The scale of the graphics is determined by screen size.
     this.setScale = function(scale) {
         this.scale = scale;
+    }
+
+    // Reuse makeButton method from activity.js
+    this.setMakeButton = function(makeButton) {
+	var blocks = this;
+	this.copyButton = makeButton('copy-button', 0, 0, 55);
+	this.copyButton.visible = false;
+        this.copyButton.on('click', function(event) {
+            var topBlock = blocks.findTopBlock(blocks.activeBlock);
+            blocks.selectedStack = topBlock;
+	    blocks.copyButton.visible = false;
+	    blocks.dismissButton.visible = false;
+	});
+	this.dismissButton = makeButton('cancel-button', 0, 0, 55);
+	this.dismissButton.visible = false;
+        this.dismissButton.on('click', function(event) {
+	    blocks.copyButton.visible = false;
+	    blocks.dismissButton.visible = false;
+        });
     }
 
     // Walk through all of the proto blocks in order to make lists of

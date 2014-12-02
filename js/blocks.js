@@ -355,9 +355,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.scale = scale;
     }
 
-    // Reuse makeButton method from activity.js
-    this.setMakeButton = function(makeButton) {
+
+    // set up copy/paste buttons
+    this.makeCopyPasteButtons = function(makeButton, updatePasteButton) {
 	var blocks = this;
+	this.updatePasteButton = updatePasteButton;
 	this.copyButton = makeButton('copy-button', 0, 0, 55);
 	this.copyButton.visible = false;
         this.copyButton.on('click', function(event) {
@@ -365,6 +367,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blocks.selectedStack = topBlock;
 	    blocks.copyButton.visible = false;
 	    blocks.dismissButton.visible = false;
+	    blocks.updatePasteButton();
             blocks.refreshCanvas();
 	});
 	this.dismissButton = makeButton('cancel-button', 0, 0, 55);

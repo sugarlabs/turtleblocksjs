@@ -74,6 +74,7 @@ define(function (require) {
         var currentKey = '';
         var currentKeyCode = 0;
         var lastKeyCode = 0;
+	var pasteContainer = null;
 
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
@@ -255,7 +256,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-            blocks.setMakeButton(makeButton);
+	    blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
 
@@ -1618,6 +1619,26 @@ define(function (require) {
             stopTurtleContainer.visible = true;
         }
 
+	function updatePasteButton() {
+	    pasteContainer.removeChild(pasteContainer.children[0]);
+            var img = new Image();
+            img.onload = function() {
+                var originalSize = 55; // this is the original svg size
+                var halfSize = Math.floor(cellSize / 2);
+
+                bitmap = new createjs.Bitmap(img);
+                if (cellSize != originalSize) {
+                    bitmap.scaleX = cellSize / originalSize;
+                    bitmap.scaleY = cellSize / originalSize;
+                }		
+                bitmap.regX = halfSize / bitmap.scaleX;
+                bitmap.regY = halfSize / bitmap.scaleY;
+		pasteContainer.addChild(bitmap)
+		update = true;
+	    }
+	    img.src = 'icons/paste-button.svg';
+	}
+
         function setupAndroidToolbar() {
             var toolbar = docById('main-toolbar');
             toolbar.style.display = 'none';
@@ -1656,7 +1677,7 @@ define(function (require) {
 
             // Misc. other buttons
             // FIXME: empty-trash is the wrong name
-            var menuNames = [['paste', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen], ['empty-trash',  deleteBlocks], ['restore-trash', restoreTrash]];
+            var menuNames = [['paste-disabled', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen], ['empty-trash',  deleteBlocks], ['restore-trash', restoreTrash]];
             if (server) {
                 menuNames.push(['save', doSave]);
             }
@@ -1817,6 +1838,10 @@ define(function (require) {
 
         function makeButton(name, x, y, size) {
             var container = new createjs.Container();
+	    if (name == 'paste-disabled-button') {
+		pasteContainer = container;
+	    }
+
             stage.addChild(container);
             container.x = x;
             container.y = y;
@@ -1831,7 +1856,7 @@ define(function (require) {
                 if (size != originalSize) {
                     bitmap.scaleX = size / originalSize;
                     bitmap.scaleY = size / originalSize;
-                }
+                }		
                 bitmap.regX = halfSize / bitmap.scaleX;
                 bitmap.regY = halfSize / bitmap.scaleY;
 

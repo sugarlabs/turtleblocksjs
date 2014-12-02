@@ -365,12 +365,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blocks.selectedStack = topBlock;
 	    blocks.copyButton.visible = false;
 	    blocks.dismissButton.visible = false;
+            blocks.refreshCanvas();
 	});
 	this.dismissButton = makeButton('cancel-button', 0, 0, 55);
 	this.dismissButton.visible = false;
         this.dismissButton.on('click', function(event) {
 	    blocks.copyButton.visible = false;
 	    blocks.dismissButton.visible = false;
+            blocks.refreshCanvas();
         });
     }
 
@@ -2025,7 +2027,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.triggerLongPress = function(myBlock) {
 	this.timeOut == null;
+	// FIXME: top block in stack
 	console.log('BRING UP COPY BUTTON FOR BLOCK ' + myBlock.name);
+	this.copyButton.visible = true;
+	this.copyButton.x = myBlock.container.x - 27;
+	this.copyButton.y = myBlock.container.y - 27;
+	this.dismissButton.visible = true;
+	this.dismissButton.x = myBlock.container.x + 27;
+	this.dismissButton.y = myBlock.container.y - 27;
+        this.refreshCanvas();
     }
 
     this.pasteStack = function() {

@@ -100,7 +100,6 @@ define(function (require) {
         var clearButton = docById('clear-button');
         var paletteButton = docById('palette-button');
         var blockButton = docById('hide-blocks-button');
-        var copyButton = docById('copy-button');
         var pasteButton = docById('paste-button');
         var cartesianButton = docById('cartesian-button');
         var polarButton = docById('polar-button');
@@ -189,10 +188,6 @@ define(function (require) {
                 showPolar();
                 polarVisible = true;
             }
-        }
-
-        copyButton.onclick = function () {
-            selectStackToCopy();
         }
 
         pasteButton.onclick = function () {
@@ -1038,7 +1033,6 @@ define(function (require) {
                     }
                 }
                 break;
-
             case 'while':
                 if (args.length == 2) {
                     while (args[0]) {
@@ -1306,6 +1300,13 @@ define(function (require) {
                     var b = parseArg(turtle, cblk2);
                     blocks.blockList[blk].value = (Number(a) % Number(b));
                     break;
+
+            case 'not':
+                    var cblk = blocks.blockList[blk].connections[1];
+                    var a = parseArg(turtle, cblk1);
+                blocks.blockList[blk].value = !a;
+                break;
+
                 case 'greater':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
@@ -1525,11 +1526,6 @@ define(function (require) {
             return null;
         }
 
-        function selectStackToCopy() {
-            // TODO: something with the cursor
-            blocks.selectingStack = true;
-        }
-
         function pasteStack() {
             blocks.pasteStack();
         }
@@ -1650,7 +1646,7 @@ define(function (require) {
 
             // Misc. other buttons
             // FIXME: empty-trash is the wrong name
-            var menuNames = [['copy', selectStackToCopy], ['paste', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen], ['empty-trash',  deleteBlocks], ['restore-trash', restoreTrash]];
+            var menuNames = [['paste', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen], ['empty-trash',  deleteBlocks], ['restore-trash', restoreTrash]];
             if (server) {
                 menuNames.push(['save', doSave]);
             }

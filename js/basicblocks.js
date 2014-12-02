@@ -405,7 +405,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifBlock.staticLabels.push('then');
 
     var notBlock = new ProtoBlock('not');
-    notBlock.palette = palettes.dict['flow'];
+    notBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['not'] = notBlock;
     notBlock.boolean1ArgBlock();
     notBlock.staticLabels.push('not');

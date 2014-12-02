@@ -293,7 +293,7 @@ define(function (require) {
             // createjs.LoadQueue(true, null, true);
 
             // Enable touch interactions if supported on the current device.
-        // FIXME: voodoo
+           // FIXME: voodoo
             createjs.Touch.enable(stage, false, true);
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
@@ -410,7 +410,7 @@ define(function (require) {
                     update = true;
                 });
                 callback(text);
-        blocks.setMsgText(text);
+               blocks.setMsgText(text);
             }
             img.src = 'data:image/svg+xml;base64,' + window.btoa(
                 unescape(encodeURIComponent(svgData)));
@@ -1038,10 +1038,8 @@ define(function (require) {
                 break;
             case 'not':
                 if (args.length == 1) {
-                    if (args[0]) {
-                        childFlow = !args[0];
-                        childFlowCount = 1;
-                    }
+                    childFlow = !args[0];
+                    childFlowCount = 1;
                 }
                 break;    
             case 'storein':

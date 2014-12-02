@@ -1030,6 +1030,15 @@ define(function (require) {
                     childFlowCount = Math.floor(args[0]);
                 }
                 break;
+            case 'until':
+                if (args.length == 2) {
+                    while (!args[0]){
+                        childFlow = args[1];
+                        childFlowCount=1;    
+                    }
+                }
+                break;
+                   
             case 'if':
                 if (args.length == 2) {
                     if (args[0]) {

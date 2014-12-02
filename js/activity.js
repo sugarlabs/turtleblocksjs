@@ -293,6 +293,8 @@ define(function (require) {
             // createjs.LoadQueue(true, null, true);
 
             // Enable touch interactions if supported on the current device.
+     	    // FIXME: voodoo
+     	    createjs.Touch.enable(stage, false, true);
             // createjs.Touch.enable(stage);
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;

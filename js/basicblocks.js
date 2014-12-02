@@ -313,6 +313,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     equalBlock.boolean2ArgBlock();
     equalBlock.staticLabels.push('=');
     equalBlock.fontsize = '24px';
+    
+    var notBlock = new ProtoBlock('not');
+    notBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['not'] = notBlock;
+    notBlock.boolean1ArgBlock();
+    notBlock.staticLabels.push('not');
 
     // Blocks palette
     var mediaBlock = new ProtoBlock('media');

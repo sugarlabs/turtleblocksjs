@@ -314,6 +314,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     equalBlock.staticLabels.push('=');
     equalBlock.fontsize = '24px';
 
+    var andBlock = new ProtoBlock('and');
+    andBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['and'] = andBlock;
+    andBlock.boolean2BooleanArgBlock();
+    andBlock.staticLabels.push('and');
+    andBlock.fontsize = '24px';
+
     // Blocks palette
     var mediaBlock = new ProtoBlock('media');
     mediaBlock.palette = palettes.dict['blocks'];

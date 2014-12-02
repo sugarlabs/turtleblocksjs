@@ -313,6 +313,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     equalBlock.boolean2ArgBlock();
     equalBlock.staticLabels.push('=');
     equalBlock.fontsize = '24px';
+    
+    var notBlock = new ProtoBlock('not');
+    notBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['not'] = notBlock;
+    notBlock.boolean1ArgBlock();
+    notBlock.staticLabels.push('not');
 
     var andBlock = new ProtoBlock('and');
     andBlock.palette = palettes.dict['number'];
@@ -410,6 +416,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifBlock.flowClampBooleanArgBlock();
     ifBlock.staticLabels.push('if');
     ifBlock.staticLabels.push('then');
+<<<<<<< HEAD
+    
+=======
 
     var whileBlock = new ProtoBlock('while');
     whileBlock.palette = palettes.dict['flow'];
@@ -418,6 +427,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     whileBlock.staticLabels.push('while');
     whileBlock.staticLabels.push('do');
 
+>>>>>>> 14ecf04bf455984b7cda16fdaf1ff4d56e2b58eb
     var vspaceBlock = new ProtoBlock('vspace');
     vspaceBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['vspace'] = vspaceBlock;

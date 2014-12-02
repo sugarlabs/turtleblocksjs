@@ -1328,6 +1328,12 @@ define(function (require) {
                     var b = parseArg(turtle, cblk2);
                     blocks.blockList[blk].value = (Number(a) < Number(b));
                     break;
+                case 'not':
+                if (args.length == 1) {
+                    childFlow = !args[0];
+                    childFlowCount = 1;
+                }
+                break;
                 case 'random':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];

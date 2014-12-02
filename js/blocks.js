@@ -227,8 +227,17 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
-        this.artwork = BOOLEAN1ARG;
-        this.copyDock(BOOLEAN1ARGDOCKS);
+        this.artwork = BOOLEAN1BOOLEANARG;
+        this.copyDock(BOOLEAN1BOOLEANARGDOCKS);
+    }
+
+    // E.g., and
+    this.boolean2BooleanArgBlock = function() {
+        this.style = 'arg';
+        this.size = 1;
+        this.args = 1;
+        this.artwork = BOOLEAN2BOOLEANARGS;
+        this.copyDock(BOOLEAN2BOOLEANARGSDOCKS);
     }
 
     // E.g., greater, less, equal. (FIXME: These should be

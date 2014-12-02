@@ -1322,6 +1322,12 @@ define(function (require) {
                     var result = (a == b);
                     blocks.blockList[blk].value = (a == b);
                     break;
+                case 'not':
+                    var cblk1 = blocks.blockList[blk].connections[1];
+                    var a = parseArg(turtle, cblk1);
+                    var result = (!a);
+                    blocks.blockList[blk].value = (!a);
+                    break;                     
                 case 'less':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];

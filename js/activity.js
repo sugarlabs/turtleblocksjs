@@ -255,7 +255,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-	    blocks.setMakeButton(makeButton);
+            blocks.setMakeButton(makeButton);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
 
@@ -289,8 +289,8 @@ define(function (require) {
             // createjs.LoadQueue(true, null, true);
 
             // Enable touch interactions if supported on the current device.
-     	    // FIXME: voodoo
-     	    createjs.Touch.enable(stage, false, true);
+            // FIXME: voodoo
+            createjs.Touch.enable(stage, false, true);
             // createjs.Touch.enable(stage);
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
@@ -407,7 +407,7 @@ define(function (require) {
                     update = true;
                 });
                 callback(text);
-		blocks.setMsgText(text);
+                blocks.setMsgText(text);
             }
             img.src = 'data:image/svg+xml;base64,' + window.btoa(
                 unescape(encodeURIComponent(svgData)));
@@ -1036,12 +1036,11 @@ define(function (require) {
             case 'while':
                 if (args.length == 2) {
                     while (args[0]) {
-                    	childFlow = args[1];
+                        childFlow = args[1];
                         childFlowCount = 1;
                     }
                 }
                 break;
-
             case 'storein':
                  if (args.length == 2) {
                     doStorein(args[0], args[1]);

@@ -1384,6 +1384,13 @@ define(function (require) {
                 case 'pensize':
                     blocks.blockList[blk].value = turtles.turtleList[turtle].stroke;
                     break;
+                case 'and':
+                    var cblk1 = blocks.blockList[blk].connections[1];
+                    var cblk2 = blocks.blockList[blk].connections[2];
+                    var a = parseArg(turtle, cblk1);
+                    var b = parseArg(turtle, cblk2);
+                    blocks.blockList[blk].value =  a && b;
+                    break;
                 default:
                     if (blocks.blockList[blk].name in evalArgDict) {
                         eval(evalArgDict[blocks.blockList[blk].name]);

@@ -143,10 +143,9 @@ var BOOLEAN0ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="175" height="4
 var BOOLEAN0ARGDOCKS = [[0, 6, 'booleanout']];
 
 // (fill_color, stroke_color)
-// FIXME: add label, fix shape of in-connector
-var BOOLEAN1ARG = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="74" height="50">' + '<g transform="scale(2,2)">' + '<path d="m 0.5,16.5 c 0,-3.665191 3.3348086,-7 7,-7 l 1,0 0,-1 c 0,-4.1887902 3.81121,-8 8,-8 l 20,0 0,4 c -4.18879,0 -8,3.8112098 -8,8 0,4.18879 3.81121,8 8,8 l 0,4 -16,0 -12,0 0,-1 -1,0 c -3.6651914,0 -7,-3.334809 -7,-7 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '</svg>';
+var BOOLEAN1ARG = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="101" height="62"> <g transform="matrix(2,0,0,2,-1,-22)"> <path d="m 1,27.5 c 0,-3.685 2.86,-7 6.5,-7 l 1,0 0,-1 c 0,-4.2 3.8,-8 8,-8 l 34,0 0,8 c 0,0 -8.505162,-0.14648 -8.5,8 0.0052,8.14648 8.5,8 8.5,8 l 0,6 -30,0 -12,0 0,-7 -1,0 C 3.8,34.5 1,31.185 1,27.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" /></g> <text style="font-size:font_size;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan x="73" y="34">not</tspan></text> </svg>';
 
-var BOOLEAN1ARGDOCKS = [[0, 6, 'booleanout'], [58, 6, 'booleanin']];
+var BOOLEAN1ARGDOCKS = [[0, 18, 'booleanout'], [84, 18, 'booleanin']];
 
 // = (fill_color, stroke_color, block_label)
 var BOOLEAN2ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="102" height="84">' + '<g transform="scale(2,2)">' + '<path d="m 1,27.5 c 0,-3.67 2.86,-7 6.5,-7 l 1,0 0,-12 c 0,-4.2 3.8,-8 8,-8 l 34,0 0,8 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,17 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,8 -30,0 -12,0 0,-7 -1,0 C 3.8,34.5 1,31.2 1,27.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="74" y="56" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';

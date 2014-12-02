@@ -260,6 +260,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
+	    blocks.setMakeButton(makeButton);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
 
@@ -293,8 +294,9 @@ define(function (require) {
             // createjs.LoadQueue(true, null, true);
 
             // Enable touch interactions if supported on the current device.
-	    // FIXME: voodoo
-            createjs.Touch.enable(stage, false, true);
+     	    // FIXME: voodoo
+     	    createjs.Touch.enable(stage, false, true);
+            // createjs.Touch.enable(stage);
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
             // Enabled mouse over and mouse out events.
@@ -1036,6 +1038,16 @@ define(function (require) {
                     }
                 }
                 break;
+
+            case 'while':
+                if (args.length == 2) {
+                    while (args[0]) {
+                    	childFlow = args[1];
+                        childFlowCount = 1;
+                    }
+                }
+                break;
+
             case 'storein':
                  if (args.length == 2) {
                     doStorein(args[0], args[1]);

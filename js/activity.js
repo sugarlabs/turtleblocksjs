@@ -1036,6 +1036,12 @@ define(function (require) {
                     }
                 }
                 break;
+            case 'not':
+                if (args.length == 1) {
+                    childFlow = !args[0];
+                    childFlowCount = 1;
+                }
+                break;
             case 'storein':
                  if (args.length == 2) {
                     doStorein(args[0], args[1]);

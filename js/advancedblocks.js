@@ -105,6 +105,8 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     evalBlock.twoArgMathBlock();
     evalBlock.docks[1][2] = 'textin';
     evalBlock.staticLabels.push('eval');
+    evalBlock.staticLabels.push('f(x)');
+    evalBlock.staticLabels.push('x');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

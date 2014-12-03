@@ -12,7 +12,8 @@
 // Note: This code is inspired by the Python Turtle Blocks project
 // (https://github.com/walterbender/turtleart), but implemented from
 // scratch. -- Walter Bender, October 2014.
-
+meSpeak.loadConfig("mespeak_config.json");
+meSpeak.loadVoice("voices/en/en.json");
 define(function (require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');

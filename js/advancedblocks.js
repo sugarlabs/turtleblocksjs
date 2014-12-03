@@ -18,7 +18,7 @@ var evalFlowDict = {
     'print': "if (args.length == 1) {var msgContainer = msgText.parent; msgContainer.visible = true; msgText.text = args[0].toString(); msgContainer.updateCache(); stage.swapChildren(msgContainer, last(stage.children));};",
     'showblocks': "showBlocks(); turtleDelay = DEFAULTDELAY;",
     'hideblocks': "hideBlocks(); turtleDelay = 0;",
-    'speak': "speak(args[0]);"
+    'speak': "meSpeak.speak(args[0]);"
 };
 
 var evalArgDict = {

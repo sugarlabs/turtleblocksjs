@@ -422,6 +422,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifBlock.staticLabels.push('if');
     ifBlock.staticLabels.push('then');
 
+    var untilBlock = new ProtoBlock('until');
+    untilBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['until'] = untilBlock;
+    untilBlock.flowClampBooleanArgBlock();
+    untilBlock.staticLabels.push('until');
+    untilBlock.staticLabels.push('repeat');    
+
     var whileBlock = new ProtoBlock('while');
     whileBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['while'] = whileBlock;

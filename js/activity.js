@@ -1033,10 +1033,10 @@ define(function (require) {
                 // until is just the same as while with a not in the condition
                 // plus it also needs to run once before the test
                 if (args.length == 2) {
+                    //que child Flow
+                    childFlow = args[1];
+                    childFlowCount = 1;
                     if (!args[0]) {
-                        //que child Flow
-                        childFlow = args[1];
-                        childFlowCount = 1;
                         // Requeue
                         var parentBlk = blocks.blockList[blk].connections[0];
                         var queueBlock = new Queue(blk, 1, parentBlk);

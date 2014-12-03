@@ -15,7 +15,7 @@
 var evalFlowDict = {
     'publish': "if (args.length == 1) {doPublish(args[0]);};",
     'savesvg': "if (args.length == 1) {doSaveSVG(canvas, turtles, args[0])};",
-    'print': "if (args.length == 1) {msgContainer.visible = true; msgText.text = args[0].toString(); msgContainer.updateCache(); stage.swapChildren(msgContainer, last(stage.children));};",
+    'print': "if (args.length == 1) {var msgContainer = msgText.parent; msgContainer.visible = true; msgText.text = args[0].toString(); msgContainer.updateCache(); stage.swapChildren(msgContainer, last(stage.children));};",
     'showblocks': "showBlocks(); turtleDelay = DEFAULTDELAY;",
     'hideblocks': "hideBlocks(); turtleDelay = 0;",
 };
@@ -54,7 +54,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     var mousebuttonBlock = new ProtoBlock('mousebutton');
     mousebuttonBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
-    mousebuttonBlock.boolean0ArgBlock()
+    mousebuttonBlock.booleanZeroArgBlock()
     mousebuttonBlock.staticLabels.push('mouse button');
 
     var keyboardBlock = new ProtoBlock('keyboard');
@@ -98,6 +98,13 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['hideblocks'] = hideBlocks;
     hideBlocks.zeroArgBlock();
     hideBlocks.staticLabels.push('hide');
+
+    var evalBlock = new ProtoBlock('eval');
+    evalBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['eval'] = evalBlock;
+    evalBlock.twoArgMathBlock();
+    evalBlock.docks[1][2] = 'textin';
+    evalBlock.staticLabels.push('eval');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

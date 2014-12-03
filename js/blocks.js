@@ -157,7 +157,7 @@ function ProtoBlock(name) {
 
     // E.g., start. A "child" flow is docked in an expandable clamp.
     // There are no additional arguments and no flow above or below.
-    this.flowClamp0ArgBlock = function() {
+    this.flowClampZeroArgBlock = function() {
         this.style = 'clamp';
         this.bottomOffset = 74;
         this.expandable = true;
@@ -169,7 +169,7 @@ function ProtoBlock(name) {
 
     // E.g., action. A "child" flow is docked in an expandable clamp.
     // The additional argument is a name. Again, no flow above or below.
-    this.flowClamp1ArgBlock = function() {
+    this.flowClampOneArgBlock = function() {
         this.style = 'clamp';
         this.bottomOffset = 74;
         this.expandable = true;
@@ -192,7 +192,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., forever. Unlike start, there is flow above and below.
-    this.blockClamp0ArgBlock = function() {
+    this.blockClampZeroArgBlock = function() {
         this.style = 'clamp';
         this.bottomOffset = 86;
         this.expandable = true;
@@ -203,7 +203,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., repeat. Unlike action, there is a flow above and below.
-    this.blockClamp1ArgBlock = function() {
+    this.blockClampOneArgBlock = function() {
         this.style = 'clamp';
         this.bottomOffset = 86;
         this.expandable = true;
@@ -214,7 +214,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., mouse button.
-    this.boolean0ArgBlock = function() {
+    this.booleanZeroArgBlock = function() {
         this.style = 'arg';
         this.size = 1;
         this.args = 0;
@@ -223,26 +223,26 @@ function ProtoBlock(name) {
     }
 
     // E.g., not
-    this.boolean1ArgBlock = function() {
+    this.booleanOneBooleanArgBlock = function() {
         this.style = 'arg';
-        this.size = 1;
+        this.size = 2;
         this.args = 1;
         this.artwork = BOOLEAN1BOOLEANARG;
         this.copyDock(BOOLEAN1BOOLEANARGDOCKS);
     }
 
     // E.g., and
-    this.boolean2BooleanArgBlock = function() {
+    this.booleanTwoBooleanArgBlock = function() {
         this.style = 'arg';
-        this.size = 1;
-        this.args = 1;
+        this.size = 3;
+        this.args = 2;
         this.artwork = BOOLEAN2BOOLEANARGS;
         this.copyDock(BOOLEAN2BOOLEANARGSDOCKS);
     }
 
     // E.g., greater, less, equal. (FIXME: These should be
     // expandable.)
-    this.boolean2ArgBlock = function() {
+    this.booleanTwoArgBlock = function() {
         this.style = 'arg';
         this.size = 2;
         this.args = 2;
@@ -355,9 +355,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.scale = scale;
     }
 
-    // Reuse makeButton method from activity.js
-    this.setMakeButton = function(makeButton) {
+
+    // set up copy/paste buttons
+    this.makeCopyPasteButtons = function(makeButton, updatePasteButton) {
 	var blocks = this;
+	this.updatePasteButton = updatePasteButton;
 	this.copyButton = makeButton('copy-button', 0, 0, 55);
 	this.copyButton.visible = false;
         this.copyButton.on('click', function(event) {
@@ -365,12 +367,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blocks.selectedStack = topBlock;
 	    blocks.copyButton.visible = false;
 	    blocks.dismissButton.visible = false;
+	    blocks.updatePasteButton();
+            blocks.refreshCanvas();
 	});
 	this.dismissButton = makeButton('cancel-button', 0, 0, 55);
 	this.dismissButton.visible = false;
         this.dismissButton.on('click', function(event) {
 	    blocks.copyButton.visible = false;
 	    blocks.dismissButton.visible = false;
+            blocks.refreshCanvas();
         });
     }
 
@@ -1215,6 +1220,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             topBlockLoop += 1;
             if (topBlockLoop > 2 * this.blockList.length) {
                 console.log('infinite loop finding topBlock?');
+                console.log(myBlock.name);
                 break;
             }
             blk = myBlock.connections[0];
@@ -2025,7 +2031,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.triggerLongPress = function(myBlock) {
 	this.timeOut == null;
+	// FIXME: top block in stack
 	console.log('BRING UP COPY BUTTON FOR BLOCK ' + myBlock.name);
+	this.copyButton.visible = true;
+	this.copyButton.x = myBlock.container.x - 27;
+	this.copyButton.y = myBlock.container.y - 27;
+	this.dismissButton.visible = true;
+	this.dismissButton.x = myBlock.container.x + 27;
+	this.dismissButton.y = myBlock.container.y - 27;
+        this.refreshCanvas();
     }
 
     this.pasteStack = function() {
@@ -2772,12 +2786,7 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {	
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'mouseover';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
-
+	displayMsg(blocks, 'mouseover');
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
@@ -2785,11 +2794,7 @@ function loadEventHandlers(blocks, myBlock) {
 
     var moved = false;
     myBlock.container.on('click', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'click';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	displayMsg(blocks, 'click');
         if (!moved) {
             if (blocks.selectingStack) {
                 var topBlock = blocks.findTopBlock(thisBlock);
@@ -2808,27 +2813,15 @@ function loadEventHandlers(blocks, myBlock) {
     }, true);
 
     myBlock.container.on('pressmove', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'pressmove';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	displayMsg(blocks, 'pressmove');
     });
 
     myBlock.container.on('pressup', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'pressup';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	displayMsg(blocks, 'pressup');
     });
 
     myBlock.container.on('mousedown', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'mousedown';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	displayMsg(blocks, 'mousedown');
 
 	// Track time for detecting long pause.
         var d = new Date();
@@ -2851,31 +2844,19 @@ function loadEventHandlers(blocks, myBlock) {
         };
 
 	myBlock.container.on('mouseout', function(event) {
-            var msgContainer = blocks.msgText.parent;
-            msgContainer.visible = true;
-            blocks.msgText.text = 'mousedown -> mouseout';
-            msgContainer.updateCache();
-            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	    displayMsg(blocks, 'mousedown->mouseout');
 	    mouseoutCallback(blocks, myBlock, event, moved);
 	});
 
 	myBlock.container.on('pressup', function(event) {
-            var msgContainer = blocks.msgText.parent;
-            msgContainer.visible = true;
-            blocks.msgText.text = 'mousedown -> pressup';
-            msgContainer.updateCache();
-            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	    displayMsg(blocks, 'mousedown->pressup');
 	});
 
         myBlock.container.on('pressmove', function(event) {
 	    // FIXME: More voodoo
 	    event.nativeEvent.preventDefault();
 
-            var msgContainer = blocks.msgText.parent;
-            msgContainer.visible = true;
-            blocks.msgText.text = 'mousedown->pressmove';
-            msgContainer.updateCache();
-            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	    displayMsg(blocks, 'mousedown->pressmove');
 
 	    // FIXME: need to remove timer
 	    if (blocks.timeOut != null) {
@@ -2926,13 +2907,19 @@ function loadEventHandlers(blocks, myBlock) {
     }, true);
 
     myBlock.container.on('mouseout', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'mouseout';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	// displayMsg(blocks, 'mouseout');
 	mouseoutCallback(blocks, myBlock, event, moved);
     }, true);
+}
+
+
+function displayMsg(blocks, text) {
+    return;
+    var msgContainer = blocks.msgText.parent;
+    msgContainer.visible = true;
+    blocks.msgText.text = text;
+    msgContainer.updateCache();
+    blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
 }
 
 

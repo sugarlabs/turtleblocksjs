@@ -74,6 +74,7 @@ define(function (require) {
         var currentKey = '';
         var currentKeyCode = 0;
         var lastKeyCode = 0;
+        var pasteContainer = null;
 
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
@@ -100,7 +101,6 @@ define(function (require) {
         var clearButton = docById('clear-button');
         var paletteButton = docById('palette-button');
         var blockButton = docById('hide-blocks-button');
-        var copyButton = docById('copy-button');
         var pasteButton = docById('paste-button');
         var cartesianButton = docById('cartesian-button');
         var polarButton = docById('polar-button');
@@ -191,10 +191,6 @@ define(function (require) {
             }
         }
 
-        copyButton.onclick = function () {
-            selectStackToCopy();
-        }
-
         pasteButton.onclick = function () {
             pasteStack();
         }
@@ -260,7 +256,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-	    blocks.setMakeButton(makeButton);
+            blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
 
@@ -294,8 +290,8 @@ define(function (require) {
             // createjs.LoadQueue(true, null, true);
 
             // Enable touch interactions if supported on the current device.
-     	    // FIXME: voodoo
-     	    createjs.Touch.enable(stage, false, true);
+            // FIXME: voodoo
+            createjs.Touch.enable(stage, false, true);
             // createjs.Touch.enable(stage);
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
@@ -412,7 +408,7 @@ define(function (require) {
                     update = true;
                 });
                 callback(text);
-		blocks.setMsgText(text);
+                blocks.setMsgText(text);
             }
             img.src = 'data:image/svg+xml;base64,' + window.btoa(
                 unescape(encodeURIComponent(svgData)));
@@ -722,14 +718,14 @@ define(function (require) {
             update = true;
         }
 
-        function updateParameterBlock(turtle, blk) {
+        function updateParameterBlock(activity, turtle, blk) {
             // FIXME: how to autogenerate this list?
             if (blocks.blockList[blk].protoblock.parameter) {
                 var value = 0;
                 switch (blocks.blockList[blk].name) {
                 case 'box':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var name = parseArg(turtle, cblk);
+                    var name = parseArg(activity, turtle, cblk);
                     var i = findBox(name);
                     if (i == null) {
                         errorMsg('Cannot find box ' + name + '.');
@@ -873,8 +869,11 @@ define(function (require) {
                 var turtle = 0;
                 if (blocks.blockList[startHere].name == 'start') {
                     var turtle = blocks.blockList[startHere].value;
-                }
-                console.log('starting on start with turtle ' + turtle);
+                    console.log('starting on start with turtle ' + turtle);
+                } else {
+                    console.log('starting on ' + blocks.blockList[startHere].name + ' with turtle ' + turtle);
+		}
+
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
@@ -954,7 +953,7 @@ define(function (require) {
             var args = [];
             if(blocks.blockList[blk].protoblock.args > 0) {
                 for (var i = 1; i < blocks.blockList[blk].protoblock.args + 1; i++) {
-                    args.push(parseArg(turtle, blocks.blockList[blk].connections[i]));
+                    args.push(parseArg(activity, turtle, blocks.blockList[blk].connections[i]));
                 }
             }
 
@@ -1054,14 +1053,21 @@ define(function (require) {
                 }
                 break;
             case 'while':
+		// While is tricky because we need to recalculate
+		// args[0] each time, so we requeue the While block itself.
                 if (args.length == 2) {
-                    while (args[0]) {
-                    	childFlow = args[1];
+                    if (args[0]) {
+			// Requeue the while block
+			var parentBlk = blocks.blockList[blk].connections[0];
+			var queueBlock = new Queue(blk, 1, parentBlk);
+			activity.parentFlowQueue[turtle].push(parentBlk);
+			turtles.turtleList[turtle].queue.push(queueBlock);
+			// and queue the childFlow
+                        childFlow = args[1];
                         childFlowCount = 1;
                     }
                 }
                 break;
-
             case 'storein':
                  if (args.length == 2) {
                     doStorein(args[0], args[1]);
@@ -1172,11 +1178,18 @@ define(function (require) {
                     eval(evalFlowDict[blocks.blockList[blk].name]);
                 } else {
                     // Could be an arg block, so we need to print its value
+		    console.log('running an arg block?');
                     if (blocks.blockList[blk].isArgBlock()) {
-                        args.push(parseArg(turtle, blk));
+                        args.push(parseArg(activity, turtle, blk));
+			console.log('block: ' + blk + ' turtle: ' + turtle);
+			console.log('block name: ' + blocks.blockList[blk].name);
+			console.log('block value: ' + blocks.blockList[blk].value);
                         var msgContainer = msgText.parent;
                         msgContainer.visible = true;
-                        msgText.text = blocks.blockList[blk].value.toString();
+			if (blocks.blockList[blk].value == null) {
+                            msgText.text = 'null block value';
+			} else {
+                            msgText.text = blocks.blockList[blk].value.toString();			}
                         msgContainer.updateCache();
                         stage.swapChildren(msgContainer, last(stage.children));
                         stopTurtle = true;
@@ -1192,6 +1205,8 @@ define(function (require) {
 
             // If there is a child flow, queue it.
             if (childFlow != null) {
+		console.log('queuing ' + childFlow + ' ' + childFlowCount + ' ' + blk);
+
                 var queueBlock = new Queue(childFlow, childFlowCount, blk);
                 // We need to keep track of the parent block to the
                 // child flow so we can unlightlight the parent block
@@ -1239,7 +1254,7 @@ define(function (require) {
                 }
                 if (turtleDelay > 0) {
                     for (pblk in activity.parameterQueue[turtle]) {
-                        updateParameterBlock(turtle, activity.parameterQueue[turtle][pblk]);
+                        updateParameterBlock(activity, turtle, activity.parameterQueue[turtle][pblk]);
                     }
                 }
                 runFromBlock(activity, turtle, nextBlock);
@@ -1273,7 +1288,7 @@ define(function (require) {
             }
         }
 
-        function parseArg(turtle, blk) {
+        function parseArg(activity, turtle, blk) {
             // Retrieve the value of a block.
             if (blk == null) {
                 errorMsg('Missing argument');
@@ -1282,8 +1297,8 @@ define(function (require) {
             }
 
             if (blocks.blockList[blk].protoblock.parameter) {
-                if (this.parameterQueue[turtle].indexOf(blk) == -1) {
-                    this.parameterQueue[turtle].push(blk);
+                if (activity.parameterQueue[turtle].indexOf(blk) == -1) {
+                    activity.parameterQueue[turtle].push(blk);
                 }
             }
 
@@ -1293,7 +1308,7 @@ define(function (require) {
                 switch (blocks.blockList[blk].name) {
                 case 'box':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var name = parseArg(turtle, cblk);
+                    var name = parseArg(activity,turtle, cblk);
                     var i = findBox(name);
                     if (i == null) {
                         errorMsg('Cannot find box ' + name + '.');
@@ -1305,7 +1320,7 @@ define(function (require) {
                     break;
                 case 'sqrt':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var a = parseArg(turtle, cblk);
+                    var a = parseArg(activity,turtle, cblk);
                     if (a < 0) {
                         errorMsg('Cannot take square root of negative number.');
                         stopTurtle = true;
@@ -1316,69 +1331,79 @@ define(function (require) {
                 case 'mod':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = (Number(a) % Number(b));
+                    break;
+                case 'not':
+                    var cblk = blocks.blockList[blk].connections[1];
+                    var a = parseArg(activity,turtle, cblk);
+                    var b = !a;
+                    blocks.blockList[blk].value = b;
                     break;
                 case 'greater':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = (Number(a) > Number(b));
                     break;
                 case 'equal':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = (a == b);
                     break;
                 case 'not':
-                    var cblk1 = blocks.blockList[blk].connections[1];
-                    var a = parseArg(turtle, cblk1);
-                    blocks.blockList[blk].value = (!a);
-                    break;                     
+                    var cblk = blocks.blockList[blk].connections[1];
+                    var a = parseArg(activity,turtle, cblk);
+                    blocks.blockList[blk].value = !a;
+                    break;
                 case 'less':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
-                    blocks.blockList[blk].value = (Number(a) < Number(b));
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
+		    var result = (Number(a) < Number(b));
+		    console.log(result);
+		    console.log('assigning result to less blk');
+                    blocks.blockList[blk].value = result;
+		    console.log(blocks.blockList[blk].value);
                     break;
                 case 'random':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doRandom(a, b);
                     break;
                 case 'plus':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doPlus(a, b);
                     break;
                 case 'multiply':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doMultiply(a, b);
                     break;
                 case 'divide':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doDivide(a, b);
                     break;
                 case 'minus':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doMinus(a, b);
                     break;
                 case 'heading':
@@ -1401,6 +1426,21 @@ define(function (require) {
                     break;
                 case 'pensize':
                     blocks.blockList[blk].value = turtles.turtleList[turtle].stroke;
+                    break;
+                case 'and':
+                    var cblk1 = blocks.blockList[blk].connections[1];
+                    var cblk2 = blocks.blockList[blk].connections[2];
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
+                    blocks.blockList[blk].value =  a && b;
+                    break;
+                case 'or':
+                    console.log("works")
+                    var cblk1 = blocks.blockList[blk].connections[1];
+                    var cblk2 = blocks.blockList[blk].connections[2];
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
+                    blocks.blockList[blk].value =  a || b;
                     break;
                 default:
                     if (blocks.blockList[blk].name in evalArgDict) {
@@ -1543,11 +1583,6 @@ define(function (require) {
             return null;
         }
 
-        function selectStackToCopy() {
-            // TODO: something with the cursor
-            blocks.selectingStack = true;
-        }
-
         function pasteStack() {
             blocks.pasteStack();
         }
@@ -1630,6 +1665,26 @@ define(function (require) {
             stopTurtleContainer.visible = true;
         }
 
+        function updatePasteButton() {
+            pasteContainer.removeChild(pasteContainer.children[0]);
+            var img = new Image();
+            img.onload = function() {
+                var originalSize = 55; // this is the original svg size
+                var halfSize = Math.floor(cellSize / 2);
+
+                bitmap = new createjs.Bitmap(img);
+                if (cellSize != originalSize) {
+                    bitmap.scaleX = cellSize / originalSize;
+                    bitmap.scaleY = cellSize / originalSize;
+                }
+                bitmap.regX = halfSize / bitmap.scaleX;
+                bitmap.regY = halfSize / bitmap.scaleY;
+                pasteContainer.addChild(bitmap)
+                update = true;
+            }
+            img.src = 'icons/paste-button.svg';
+        }
+
         function setupAndroidToolbar() {
             var toolbar = docById('main-toolbar');
             toolbar.style.display = 'none';
@@ -1668,7 +1723,7 @@ define(function (require) {
 
             // Misc. other buttons
             // FIXME: empty-trash is the wrong name
-            var menuNames = [['copy', selectStackToCopy], ['paste', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen], ['empty-trash',  deleteBlocks], ['restore-trash', restoreTrash]];
+            var menuNames = [['paste-disabled', pasteStack], ['Cartesian', doCartesian], ['polar', doPolar], ['samples', doOpenSamples], ['open', doOpen], ['empty-trash',  deleteBlocks], ['restore-trash', restoreTrash]];
             if (server) {
                 menuNames.push(['save', doSave]);
             }
@@ -1829,6 +1884,10 @@ define(function (require) {
 
         function makeButton(name, x, y, size) {
             var container = new createjs.Container();
+            if (name == 'paste-disabled-button') {
+                pasteContainer = container;
+            }
+
             stage.addChild(container);
             container.x = x;
             container.y = y;

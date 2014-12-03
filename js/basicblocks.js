@@ -296,28 +296,40 @@ function initBasicProtoBlocks(palettes, blocks) {
     var greaterBlock = new ProtoBlock('greater');
     greaterBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['greater'] = greaterBlock;
-    greaterBlock.boolean2ArgBlock();
+    greaterBlock.booleanTwoArgBlock();
     greaterBlock.staticLabels.push('&gt;');
     greaterBlock.fontsize = '24px';
 
     var lessBlock = new ProtoBlock('less');
     lessBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['less'] = lessBlock;
-    lessBlock.boolean2ArgBlock();
+    lessBlock.booleanTwoArgBlock();
     lessBlock.staticLabels.push('&lt;');
     lessBlock.fontsize = '24px';
 
     var equalBlock = new ProtoBlock('equal');
     equalBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['equal'] = equalBlock;
-    equalBlock.boolean2ArgBlock();
+    equalBlock.booleanTwoArgBlock();
     equalBlock.staticLabels.push('=');
     equalBlock.fontsize = '24px';
-    
+
+    var andBlock = new ProtoBlock('and');
+    andBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['and'] = andBlock;
+    andBlock.booleanTwoBooleanArgBlock();
+    andBlock.staticLabels.push('and');
+
+    var orBlock = new ProtoBlock('or');
+    orBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['or'] = orBlock;
+    orBlock.booleanTwoBooleanArgBlock();
+    orBlock.staticLabels.push('or');
+
     var notBlock = new ProtoBlock('not');
     notBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['not'] = notBlock;
-    notBlock.boolean1ArgBlock();
+    notBlock.booleanOneBooleanArgBlock();
     notBlock.staticLabels.push('not');
 
     // Blocks palette
@@ -358,7 +370,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;
-    actionBlock.blockClamp1ArgBlock();
+    actionBlock.blockClampOneArgBlock();
     actionBlock.defaults.push('action');
     actionBlock.staticLabels.push('action');
 
@@ -373,7 +385,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['start'] = startBlock;
-    startBlock.blockClamp0ArgBlock();
+    startBlock.blockClampZeroArgBlock();
     startBlock.staticLabels.push('start');
 
     // Flow palette
@@ -387,14 +399,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     var repeatBlock = new ProtoBlock('repeat');
     repeatBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['repeat'] = repeatBlock;
-    repeatBlock.flowClamp1ArgBlock();
+    repeatBlock.flowClampOneArgBlock();
     repeatBlock.staticLabels.push('repeat');
     repeatBlock.defaults.push(4);
 
     var foreverBlock = new ProtoBlock('forever');
     foreverBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['forever'] = foreverBlock;
-    foreverBlock.flowClamp0ArgBlock();
+    foreverBlock.flowClampZeroArgBlock();
     foreverBlock.staticLabels.push('forever');
 
     var breakBlock = new ProtoBlock('break');

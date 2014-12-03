@@ -121,6 +121,10 @@
   * fixed some race conditions
   * fill broken in save to SVG
   * fix race condition in palettes load
+  * hover to invoke copy stack
+  * while block (GCI - drakosvlad)
+  * not block (GCI - Daksh Shah)
+  * and block (GCI - Ignacio Rodriguez)
 
 TODO:
   * enable docking to any for boxes, equal
@@ -138,6 +142,7 @@ TODO:
   * use graphical error messages
 
 BUGS:
+  * copy stack copies instances instead of making new blocks?
   * do action menu has wrong value?
   * don't save full-sized bitmap to session
   * fix canvas sizing, resizing

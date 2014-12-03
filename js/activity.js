@@ -718,14 +718,14 @@ define(function (require) {
             update = true;
         }
 
-        function updateParameterBlock(turtle, blk) {
+        function updateParameterBlock(activity, turtle, blk) {
             // FIXME: how to autogenerate this list?
             if (blocks.blockList[blk].protoblock.parameter) {
                 var value = 0;
                 switch (blocks.blockList[blk].name) {
                 case 'box':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var name = parseArg(turtle, cblk);
+                    var name = parseArg(activity, turtle, cblk);
                     var i = findBox(name);
                     if (i == null) {
                         errorMsg('Cannot find box ' + name + '.');
@@ -950,7 +950,7 @@ define(function (require) {
             var args = [];
             if(blocks.blockList[blk].protoblock.args > 0) {
                 for (var i = 1; i < blocks.blockList[blk].protoblock.args + 1; i++) {
-                    args.push(parseArg(turtle, blocks.blockList[blk].connections[i]));
+                    args.push(parseArg(activity, turtle, blocks.blockList[blk].connections[i]));
                 }
             }
 
@@ -1153,7 +1153,7 @@ define(function (require) {
                 } else {
                     // Could be an arg block, so we need to print its value
                     if (blocks.blockList[blk].isArgBlock()) {
-                        args.push(parseArg(turtle, blk));
+                        args.push(activity, parseArg(turtle, blk));
                         var msgContainer = msgText.parent;
                         msgContainer.visible = true;
                         msgText.text = blocks.blockList[blk].value.toString();
@@ -1219,7 +1219,7 @@ define(function (require) {
                 }
                 if (turtleDelay > 0) {
                     for (pblk in activity.parameterQueue[turtle]) {
-                        updateParameterBlock(turtle, activity.parameterQueue[turtle][pblk]);
+                        updateParameterBlock(activity, turtle, activity.parameterQueue[turtle][pblk]);
                     }
                 }
                 runFromBlock(activity, turtle, nextBlock);
@@ -1253,7 +1253,7 @@ define(function (require) {
             }
         }
 
-        function parseArg(turtle, blk) {
+        function parseArg(activity, turtle, blk) {
             // Retrieve the value of a block.
             if (blk == null) {
                 errorMsg('Missing argument');
@@ -1262,8 +1262,8 @@ define(function (require) {
             }
 
             if (blocks.blockList[blk].protoblock.parameter) {
-                if (this.parameterQueue[turtle].indexOf(blk) == -1) {
-                    this.parameterQueue[turtle].push(blk);
+                if (activity.parameterQueue[turtle].indexOf(blk) == -1) {
+                    activity.parameterQueue[turtle].push(blk);
                 }
             }
 
@@ -1273,7 +1273,7 @@ define(function (require) {
                 switch (blocks.blockList[blk].name) {
                 case 'box':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var name = parseArg(turtle, cblk);
+                    var name = parseArg(activity,turtle, cblk);
                     var i = findBox(name);
                     if (i == null) {
                         errorMsg('Cannot find box ' + name + '.');
@@ -1285,7 +1285,7 @@ define(function (require) {
                     break;
                 case 'sqrt':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var a = parseArg(turtle, cblk);
+                    var a = parseArg(activity,turtle, cblk);
                     if (a < 0) {
                         errorMsg('Cannot take square root of negative number.');
                         stopTurtle = true;
@@ -1296,75 +1296,75 @@ define(function (require) {
                 case 'mod':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = (Number(a) % Number(b));
                     break;
                 case 'not':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var a = parseArg(turtle, cblk);
+                    var a = parseArg(activity,turtle, cblk);
                     var b = !a;
                     blocks.blockList[blk].value = b;
                     break;
                 case 'greater':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = (Number(a) > Number(b));
                     break;
                 case 'equal':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = (a == b);
                     break;
                 case 'not':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var a = parseArg(turtle, cblk);
+                    var a = parseArg(activity,turtle, cblk);
                     blocks.blockList[blk].value = !a;
                     break;                     
                 case 'less':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = (Number(a) < Number(b));
                     break;
                 case 'random':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doRandom(a, b);
                     break;
                 case 'plus':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doPlus(a, b);
                     break;
                 case 'multiply':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doMultiply(a, b);
                     break;
                 case 'divide':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doDivide(a, b);
                     break;
                 case 'minus':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value = doMinus(a, b);
                     break;
                 case 'heading':
@@ -1391,8 +1391,8 @@ define(function (require) {
                 case 'and':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
-                    var a = parseArg(turtle, cblk1);
-                    var b = parseArg(turtle, cblk2);
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value =  a && b;
                     break;
                 default:

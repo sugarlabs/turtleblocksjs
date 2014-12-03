@@ -74,7 +74,7 @@ define(function (require) {
         var currentKey = '';
         var currentKeyCode = 0;
         var lastKeyCode = 0;
-	var pasteContainer = null;
+        var pasteContainer = null;
 
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
@@ -256,7 +256,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-	    blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
+            blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
 
@@ -1300,13 +1300,12 @@ define(function (require) {
                     var b = parseArg(turtle, cblk2);
                     blocks.blockList[blk].value = (Number(a) % Number(b));
                     break;
-
-            case 'not':
+                case 'not':
                     var cblk = blocks.blockList[blk].connections[1];
-                    var a = parseArg(turtle, cblk1);
-                blocks.blockList[blk].value = !a;
-                break;
-
+                    var a = parseArg(turtle, cblk);
+                    var b = !a;
+                    blocks.blockList[blk].value = b;
+                    break;
                 case 'greater':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
@@ -1322,9 +1321,9 @@ define(function (require) {
                     blocks.blockList[blk].value = (a == b);
                     break;
                 case 'not':
-                    var cblk1 = blocks.blockList[blk].connections[1];
-                    var a = parseArg(turtle, cblk1);
-                    blocks.blockList[blk].value = (!a);
+                    var cblk = blocks.blockList[blk].connections[1];
+                    var a = parseArg(turtle, cblk);
+                    blocks.blockList[blk].value = !a;
                     break;                     
                 case 'less':
                     var cblk1 = blocks.blockList[blk].connections[1];
@@ -1619,8 +1618,8 @@ define(function (require) {
             stopTurtleContainer.visible = true;
         }
 
-	function updatePasteButton() {
-	    pasteContainer.removeChild(pasteContainer.children[0]);
+        function updatePasteButton() {
+            pasteContainer.removeChild(pasteContainer.children[0]);
             var img = new Image();
             img.onload = function() {
                 var originalSize = 55; // this is the original svg size
@@ -1630,14 +1629,14 @@ define(function (require) {
                 if (cellSize != originalSize) {
                     bitmap.scaleX = cellSize / originalSize;
                     bitmap.scaleY = cellSize / originalSize;
-                }		
+                }                
                 bitmap.regX = halfSize / bitmap.scaleX;
                 bitmap.regY = halfSize / bitmap.scaleY;
-		pasteContainer.addChild(bitmap)
-		update = true;
-	    }
-	    img.src = 'icons/paste-button.svg';
-	}
+                pasteContainer.addChild(bitmap)
+                update = true;
+            }
+            img.src = 'icons/paste-button.svg';
+        }
 
         function setupAndroidToolbar() {
             var toolbar = docById('main-toolbar');
@@ -1838,9 +1837,9 @@ define(function (require) {
 
         function makeButton(name, x, y, size) {
             var container = new createjs.Container();
-	    if (name == 'paste-disabled-button') {
-		pasteContainer = container;
-	    }
+            if (name == 'paste-disabled-button') {
+                pasteContainer = container;
+            }
 
             stage.addChild(container);
             container.x = x;
@@ -1856,7 +1855,7 @@ define(function (require) {
                 if (size != originalSize) {
                     bitmap.scaleX = size / originalSize;
                     bitmap.scaleY = size / originalSize;
-                }		
+                }
                 bitmap.regX = halfSize / bitmap.scaleX;
                 bitmap.regY = halfSize / bitmap.scaleY;
 

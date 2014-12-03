@@ -1032,10 +1032,16 @@ define(function (require) {
                 break;
             case 'until':
                 if (args.length == 2) {
-                    childFlow=args[1];
-                    childFlowCount=1; 
-                    while (!args[0])
+                    //childFlow=args[1]; // run the task once before check
+                    //childFlowCount=1;
+                    //console.log(args[1]);
+                    while (!args[0]){
                         childFlow = args[1];
+                        childFlowCount=1;
+                    } 
+                    /*else{
+                        childFlowCount=1;
+                    }*/
                 }
                 break;
 

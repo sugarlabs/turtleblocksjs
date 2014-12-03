@@ -1032,13 +1032,13 @@ define(function (require) {
                 break;
             case 'until':
                 if (args.length == 2) {
-                    while (!args[0]){
+                    childFlow=args[1];
+                    childFlowCount=1; 
+                    while (!args[0])
                         childFlow = args[1];
-                        childFlowCount=1;    
-                    }
                 }
                 break;
-                   
+
             case 'if':
                 if (args.length == 2) {
                     if (args[0]) {

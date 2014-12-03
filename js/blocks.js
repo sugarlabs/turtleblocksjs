@@ -1220,6 +1220,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             topBlockLoop += 1;
             if (topBlockLoop > 2 * this.blockList.length) {
                 console.log('infinite loop finding topBlock?');
+                console.log(myBlock.name);
                 break;
             }
             blk = myBlock.connections[0];
@@ -2785,12 +2786,7 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {	
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'mouseover';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
-
+	displayMsg(blocks, 'mouseover');
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
@@ -2798,11 +2794,7 @@ function loadEventHandlers(blocks, myBlock) {
 
     var moved = false;
     myBlock.container.on('click', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'click';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	displayMsg(blocks, 'click');
         if (!moved) {
             if (blocks.selectingStack) {
                 var topBlock = blocks.findTopBlock(thisBlock);
@@ -2821,27 +2813,15 @@ function loadEventHandlers(blocks, myBlock) {
     }, true);
 
     myBlock.container.on('pressmove', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'pressmove';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	displayMsg(blocks, 'pressmove');
     });
 
     myBlock.container.on('pressup', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'pressup';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	displayMsg(blocks, 'pressup');
     });
 
     myBlock.container.on('mousedown', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'mousedown';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	displayMsg(blocks, 'mousedown');
 
 	// Track time for detecting long pause.
         var d = new Date();
@@ -2864,31 +2844,19 @@ function loadEventHandlers(blocks, myBlock) {
         };
 
 	myBlock.container.on('mouseout', function(event) {
-            var msgContainer = blocks.msgText.parent;
-            msgContainer.visible = true;
-            blocks.msgText.text = 'mousedown -> mouseout';
-            msgContainer.updateCache();
-            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	    displayMsg(blocks, 'mousedown->mouseout');
 	    mouseoutCallback(blocks, myBlock, event, moved);
 	});
 
 	myBlock.container.on('pressup', function(event) {
-            var msgContainer = blocks.msgText.parent;
-            msgContainer.visible = true;
-            blocks.msgText.text = 'mousedown -> pressup';
-            msgContainer.updateCache();
-            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	    displayMsg(blocks, 'mousedown->pressup');
 	});
 
         myBlock.container.on('pressmove', function(event) {
 	    // FIXME: More voodoo
 	    event.nativeEvent.preventDefault();
 
-            var msgContainer = blocks.msgText.parent;
-            msgContainer.visible = true;
-            blocks.msgText.text = 'mousedown->pressmove';
-            msgContainer.updateCache();
-            blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	    displayMsg(blocks, 'mousedown->pressmove');
 
 	    // FIXME: need to remove timer
 	    if (blocks.timeOut != null) {
@@ -2939,13 +2907,19 @@ function loadEventHandlers(blocks, myBlock) {
     }, true);
 
     myBlock.container.on('mouseout', function(event) {
-        var msgContainer = blocks.msgText.parent;
-        msgContainer.visible = true;
-        blocks.msgText.text = 'mouseout';
-        msgContainer.updateCache();
-        blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+	// displayMsg(blocks, 'mouseout');
 	mouseoutCallback(blocks, myBlock, event, moved);
     }, true);
+}
+
+
+function displayMsg(blocks, text) {
+    return;
+    var msgContainer = blocks.msgText.parent;
+    msgContainer.visible = true;
+    blocks.msgText.text = text;
+    msgContainer.updateCache();
+    blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
 }
 
 

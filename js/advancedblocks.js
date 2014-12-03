@@ -99,6 +99,13 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     hideBlocks.zeroArgBlock();
     hideBlocks.staticLabels.push('hide');
 
+    var evalBlock = new ProtoBlock('eval');
+    evalBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['eval'] = evalBlock;
+    evalBlock.twoArgMathBlock();
+    evalBlock.docks[1][2] = 'textin';
+    evalBlock.staticLabels.push('eval');
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);

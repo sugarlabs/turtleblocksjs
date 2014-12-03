@@ -869,8 +869,11 @@ define(function (require) {
                 var turtle = 0;
                 if (blocks.blockList[startHere].name == 'start') {
                     var turtle = blocks.blockList[startHere].value;
-                }
-                console.log('starting on start with turtle ' + turtle);
+                    console.log('starting on start with turtle ' + turtle);
+                } else {
+                    console.log('starting on ' + blocks.blockList[startHere].name + ' with turtle ' + turtle);
+		}
+
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
@@ -1035,8 +1038,16 @@ define(function (require) {
                 }
                 break;
             case 'while':
+		// While is tricky because we need to recalculate
+		// args[0] each time, so we requeue the While block itself.
                 if (args.length == 2) {
-                    while (args[0]) {
+                    if (args[0]) {
+			// Requeue the while block
+			var parentBlk = blocks.blockList[blk].connections[0];
+			var queueBlock = new Queue(blk, 1, parentBlk);
+			activity.parentFlowQueue[turtle].push(parentBlk);
+			turtles.turtleList[turtle].queue.push(queueBlock);
+			// and queue the childFlow
                         childFlow = args[1];
                         childFlowCount = 1;
                     }
@@ -1152,11 +1163,18 @@ define(function (require) {
                     eval(evalFlowDict[blocks.blockList[blk].name]);
                 } else {
                     // Could be an arg block, so we need to print its value
+		    console.log('running an arg block?');
                     if (blocks.blockList[blk].isArgBlock()) {
-                        args.push(activity, parseArg(turtle, blk));
+                        args.push(parseArg(activity, turtle, blk));
+			console.log('block: ' + blk + ' turtle: ' + turtle);
+			console.log('block name: ' + blocks.blockList[blk].name);
+			console.log('block value: ' + blocks.blockList[blk].value);
                         var msgContainer = msgText.parent;
                         msgContainer.visible = true;
-                        msgText.text = blocks.blockList[blk].value.toString();
+			if (blocks.blockList[blk].value == null) {
+                            msgText.text = 'null block value';
+			} else {
+                            msgText.text = blocks.blockList[blk].value.toString();			}
                         msgContainer.updateCache();
                         stage.swapChildren(msgContainer, last(stage.children));
                         stopTurtle = true;
@@ -1172,6 +1190,8 @@ define(function (require) {
 
             // If there is a child flow, queue it.
             if (childFlow != null) {
+		console.log('queuing ' + childFlow + ' ' + childFlowCount + ' ' + blk);
+
                 var queueBlock = new Queue(childFlow, childFlowCount, blk);
                 // We need to keep track of the parent block to the
                 // child flow so we can unlightlight the parent block
@@ -1330,7 +1350,11 @@ define(function (require) {
                     var cblk2 = blocks.blockList[blk].connections[2];
                     var a = parseArg(activity,turtle, cblk1);
                     var b = parseArg(activity,turtle, cblk2);
-                    blocks.blockList[blk].value = (Number(a) < Number(b));
+		    var result = (Number(a) < Number(b));
+		    console.log(result);
+		    console.log('assigning result to less blk');
+                    blocks.blockList[blk].value = result;
+		    console.log(blocks.blockList[blk].value);
                     break;
                 case 'random':
                     var cblk1 = blocks.blockList[blk].connections[1];

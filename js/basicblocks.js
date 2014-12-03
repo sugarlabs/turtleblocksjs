@@ -313,12 +313,18 @@ function initBasicProtoBlocks(palettes, blocks) {
     equalBlock.booleanTwoArgBlock();
     equalBlock.staticLabels.push('=');
     equalBlock.fontsize = '24px';
-    
+
     var andBlock = new ProtoBlock('and');
     andBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['and'] = andBlock;
     andBlock.booleanTwoBooleanArgBlock();
     andBlock.staticLabels.push('and');
+
+    var orBlock = new ProtoBlock('or');
+    orBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['or'] = orBlock;
+    orBlock.booleanTwoBooleanArgBlock();
+    orBlock.staticLabels.push('or');
 
     var notBlock = new ProtoBlock('not');
     notBlock.palette = palettes.dict['number'];

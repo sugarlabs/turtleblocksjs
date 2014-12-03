@@ -1344,7 +1344,7 @@ define(function (require) {
                     var cblk = blocks.blockList[blk].connections[1];
                     var a = parseArg(activity,turtle, cblk);
                     blocks.blockList[blk].value = !a;
-                    break;                     
+                    break;
                 case 'less':
                     var cblk1 = blocks.blockList[blk].connections[1];
                     var cblk2 = blocks.blockList[blk].connections[2];
@@ -1418,6 +1418,14 @@ define(function (require) {
                     var a = parseArg(activity,turtle, cblk1);
                     var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value =  a && b;
+                    break;
+                case 'or':
+                    console.log("works")
+                    var cblk1 = blocks.blockList[blk].connections[1];
+                    var cblk2 = blocks.blockList[blk].connections[2];
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
+                    blocks.blockList[blk].value =  a || b;
                     break;
                 default:
                     if (blocks.blockList[blk].name in evalArgDict) {
@@ -1653,7 +1661,7 @@ define(function (require) {
                 if (cellSize != originalSize) {
                     bitmap.scaleX = cellSize / originalSize;
                     bitmap.scaleY = cellSize / originalSize;
-                }                
+                }
                 bitmap.regX = halfSize / bitmap.scaleX;
                 bitmap.regY = halfSize / bitmap.scaleY;
                 pasteContainer.addChild(bitmap)

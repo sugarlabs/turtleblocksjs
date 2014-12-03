@@ -18,6 +18,7 @@ var evalFlowDict = {
     'print': "if (args.length == 1) {var msgContainer = msgText.parent; msgContainer.visible = true; msgText.text = args[0].toString(); msgContainer.updateCache(); stage.swapChildren(msgContainer, last(stage.children));};",
     'showblocks': "showBlocks(); turtleDelay = DEFAULTDELAY;",
     'hideblocks': "hideBlocks(); turtleDelay = 0;",
+    'speak': "speak(args[0]);"
 };
 
 var evalArgDict = {
@@ -107,6 +108,14 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     evalBlock.staticLabels.push('eval');
     evalBlock.staticLabels.push('f(x)');
     evalBlock.staticLabels.push('x');
+    
+    var speakBlock = new ProtoBlock('speak');
+    speakBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['speak'] = speakBlock;
+    speakBlock.oneArgBlock();
+    speakBlock.staticLabels.push('speak');
+    speakBlock.docks[1][2] = 'textin';
+    
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

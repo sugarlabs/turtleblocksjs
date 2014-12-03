@@ -1463,6 +1463,7 @@ define(function (require) {
             }
         }
 
+		
         function hideBlocks() {
             // Hide all the blocks.
             blocks.hide();

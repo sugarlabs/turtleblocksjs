@@ -1030,17 +1030,21 @@ define(function (require) {
                 }
                 break;
             case 'until':
+                // until is just the same as while with a not in the condition
+                // plus it also needs to run once before the test
+                childFlow = args[1];
+                childFlowCount = 1;
                 if (args.length == 2) {
-                    //childFlow=args[1]; // run the task once before check
-                    //childFlowCount=1;
-                    //console.log(args[1]);
-                    while (!args[0]){
+                    if (!args[0]) {
+                        // Requeue
+                        var parentBlk = blocks.blockList[blk].connections[0];
+                        var queueBlock = new Queue(blk, 1, parentBlk);
+                        activity.parentFlowQueue[turtle].push(parentBlk);
+                        turtles.turtleList[turtle].queue.push(queueBlock);
+                        // queue the childFlow
                         childFlow = args[1];
-                        childFlowCount=1;
-                    } 
-                    /*else{
-                        childFlowCount=1;
-                    }*/
+                        childFlowCount = 1;
+                    }
                 }
                 break;
 

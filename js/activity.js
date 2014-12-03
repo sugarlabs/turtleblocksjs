@@ -1291,6 +1291,13 @@ define(function (require) {
                 return blocks.blockList[blk].value;
             } else if (blocks.blockList[blk].isArgBlock()) {
                 switch (blocks.blockList[blk].name) {
+                case 'eval':
+                    var cblk1 = blocks.blockList[blk].connections[1];
+                    var cblk2 = blocks.blockList[blk].connections[2];
+                    var a = parseArg(activity,turtle, cblk1);
+                    var b = parseArg(activity,turtle, cblk2);
+                    blocks.blockList[blk].value = Number(eval(a.replace(/x/g, b.toString())));
+                    break;
                 case 'box':
                     var cblk = blocks.blockList[blk].connections[1];
                     var name = parseArg(activity,turtle, cblk);

@@ -355,6 +355,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.scale = scale;
     }
 
+    // We need to tell the activity if we are dragging so it won't
+    // scroll the canvas
+    this.setDragging = function(setDraggingFlag) {
+	this.setDraggingFlag = setDraggingFlag;
+    }
 
     // set up copy/paste buttons
     this.makeCopyPasteButtons = function(makeButton, updatePasteButton) {
@@ -2786,6 +2791,7 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {	
+	blocks.setDraggingFlag(true);
 	displayMsg(blocks, 'mouseover');
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
@@ -2844,6 +2850,7 @@ function loadEventHandlers(blocks, myBlock) {
         };
 
 	myBlock.container.on('mouseout', function(event) {
+	    blocks.setDraggingFlag(false);
 	    displayMsg(blocks, 'mousedown->mouseout');
 	    mouseoutCallback(blocks, myBlock, event, moved);
 	});
@@ -2907,7 +2914,8 @@ function loadEventHandlers(blocks, myBlock) {
     }, true);
 
     myBlock.container.on('mouseout', function(event) {
-	// displayMsg(blocks, 'mouseout');
+	blocks.setDraggingFlag(false);
+	displayMsg(blocks, 'mouseout');
 	mouseoutCallback(blocks, myBlock, event, moved);
     }, true);
 }

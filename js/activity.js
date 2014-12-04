@@ -81,6 +81,10 @@ define(function (require) {
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
 
+	// initial scroll position
+	var scrollX = 0;
+	var scrollY = 0;
+
         // default values
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
         var DEFAULTDELAY = 500;  // milleseconds
@@ -115,6 +119,7 @@ define(function (require) {
 
         var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
         console.log('on XO? ' + onXO);
+
         var cellSize = 55;
         if (onXO) {
             cellSize = 75;
@@ -122,6 +127,8 @@ define(function (require) {
 
         var onscreenButtons = [];
         var onscreenMenu = [];
+
+	var draggingContainer = false;
 
         fastButton.onclick = function () {
             doFastButton();
@@ -257,6 +264,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
+	    blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
@@ -292,8 +300,7 @@ define(function (require) {
 
             // Enable touch interactions if supported on the current device.
             // FIXME: voodoo
-            createjs.Touch.enable(stage, false, true);
-            // createjs.Touch.enable(stage);
+            // createjs.Touch.enable(stage, false, true);
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
             // Enabled mouse over and mouse out events.
@@ -350,6 +357,36 @@ define(function (require) {
             // Set up event handler for stage mouse events
             stage.on('stagemousedown', function(event) {
                 stageMouseDown = true;
+		var x = event.stageX;
+		var y = event.stageY;
+		console.log('mouseDown (' + x + ', ' + y + ')');
+
+		stage.on('stagemousemove', function(event) {
+		if (stageMouseDown && !draggingContainer) {
+		    var dx = event.stageX - x;
+		    var dy = event.stageY - y;
+		    console.log('mouseMove (' + event.stageX + ', ' + event.stageY + ') (' + x + ', ' + y + ') (' + dx + ', ' + dy + ')');
+		    x = event.stageX;
+		    y = event.stageY;
+		    if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }
+		    if (dy > 10) { dy = 10; } else if (dy < -10) { dy = -10; }
+		    scrollX += dx;
+		    if (scrollX < 0) {
+			scrollX = 0;
+		    } else if (scrollX > 1200) {
+			scrollX = 1200;
+		    }
+		    scrollY += dy;
+		    if (scrollY < 0) {
+			scrollY = 0;
+		    } else if (scrollY > 900) {
+			scrollY = 900;
+		    }
+		    window.scrollTo(scrollX, scrollY);
+		    update = true;
+		}
+	    });
+
             });
 
             stage.on('stagemouseup', function(event) {
@@ -358,6 +395,10 @@ define(function (require) {
 
             this.document.onkeydown = keyPressed;
         }
+
+	function setDraggingContainer(flag) {
+	    draggingContainer = flag;
+	}
 
         function createGrid(imagePath) {
             var img = new Image();

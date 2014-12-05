@@ -362,13 +362,10 @@ define(function (require) {
 		console.log('mouseDown (' + x + ', ' + y + ')');
 
 		stage.on('stagemousemove', function(event) {
-		if (stageMouseDown && draggingContainer) {
-		    console.log('dragging ' + blocks.activeBlock)
-		    mousemoveCallback(blocks, blocks.blockList[blocks.activeBlock], event);
-                } else if (stageMouseDown) {
+		if (stageMouseDown && !draggingContainer) {
 		    var dx = event.stageX - x;
 		    var dy = event.stageY - y;
-		    // console.log('mouseMove (' + event.stageX + ', ' + event.stageY + ') (' + x + ', ' + y + ') (' + dx + ', ' + dy + ')');
+		    console.log('mouseMove (' + event.stageX + ', ' + event.stageY + ') (' + x + ', ' + y + ') (' + dx + ', ' + dy + ')');
 		    x = event.stageX;
 		    y = event.stageY;
 		    if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }

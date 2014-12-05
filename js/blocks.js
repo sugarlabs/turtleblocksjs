@@ -191,6 +191,22 @@ function ProtoBlock(name) {
         this.copyDock(FLOWCLAMPBOOLEANDOCKS);
     }
 
+    // E.g., if then else.  Two "child" flows are docked in expandable
+    // clamps. The additional argument is a boolean. There is flow
+    // above and below.
+    this.doubleFlowClampBooleanArgBlock = function() {
+        this.style = 'clamp';
+	this.middleOffet = 116;
+        this.bottomOffset = 200;
+        this.expandable = true;
+        this.size = 5;
+        this.args = 3;
+	// TODO: Make artwork an array
+        this.artwork = FLOWCLAMPBOOLEANARG;
+        this.extraArtwork = FLOWCLAMPMIDDLE;
+        this.copyDock(DOUBLEFLOWCLAMPBOOLEANDOCKS);
+    }
+
     // E.g., forever. Unlike start, there is flow above and below.
     this.blockClampZeroArgBlock = function() {
         this.style = 'clamp';

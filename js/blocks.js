@@ -2827,8 +2827,8 @@ function loadEventHandlers(blocks, myBlock) {
     });
 
     myBlock.container.on('mousedown', function(event) {
-	displayMsg(blocks, 'mousedown');
 	blocks.setDraggingFlag(true);
+	displayMsg(blocks, 'mousedown');
 
 	// Track time for detecting long pause.
         var d = new Date();

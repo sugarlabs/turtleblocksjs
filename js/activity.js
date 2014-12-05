@@ -252,6 +252,7 @@ define(function (require) {
             docById('loader').className = 'loader';
 
             stage = new createjs.Stage(canvas);
+			createjs.Touch.enable(stage);
 
             createjs.Ticker.addEventListener('tick', tick);
 

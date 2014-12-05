@@ -2593,28 +2593,30 @@ function loadThumbnail(blocks, thisBlock) {
         return;
     }
     var image = new Image();
-    image.src = blocks.blockList[thisBlock].value;
-    var bitmap = new createjs.Bitmap(image);
-    blocks.blockList[thisBlock].container.addChild(bitmap);
-    // FIXME: Determine these values computationally based on the size
-    // of the media block.
-    if (image.width > image.height) {
-        bitmap.scaleX = 108 / image.width;
-        bitmap.scaleY = 108 / image.width;
-        bitmap.scale = 108 / image.width;
-    } else {
-        bitmap.scaleX = 80 / image.height;
-        bitmap.scaleY = 80 / image.height;
-        bitmap.scale = 80 / image.height;
-    }
-    bitmap.x = 18;
-    bitmap.y = 2;
-    try {
+
+    image.onload = function() {
+	var bitmap = new createjs.Bitmap(image);
+	// FIXME: Determine these values computationally based on the size
+	// of the media block.
+	if (image.width > image.height) {
+            bitmap.scaleX = 108 / image.width;
+            bitmap.scaleY = 108 / image.width;
+            bitmap.scale = 108 / image.width;
+	} else {
+            bitmap.scaleX = 80 / image.height;
+            bitmap.scaleY = 80 / image.height;
+            bitmap.scale = 80 / image.height;
+	}
+	blocks.blockList[thisBlock].container.addChild(bitmap);
+	bitmap.x = 18;
+	bitmap.y = 2;
+
         blocks.blockList[thisBlock].container.updateCache();
-    } catch (e) {
-        console.log(e);
+	blocks.refreshCanvas();
     }
-    blocks.refreshCanvas();
+
+    image.src = blocks.blockList[thisBlock].value;
+
 }
 
 // Open a file from the DOM.

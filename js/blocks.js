@@ -2834,14 +2834,6 @@ function loadEventHandlers(blocks, myBlock) {
         }
     }, true);
 
-    myBlock.container.on('pressmove', function(event) {
-	displayMsg(blocks, 'pressmove');
-    });
-
-    myBlock.container.on('pressup', function(event) {
-	displayMsg(blocks, 'pressup');
-    });
-
     myBlock.container.on('mousedown', function(event) {
 	blocks.setDraggingFlag(true);
 	displayMsg(blocks, 'mousedown');

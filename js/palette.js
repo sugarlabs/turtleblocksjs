@@ -98,7 +98,7 @@ function Palettes (canvas, stage, cellSize, refreshCanvas) {
                     me.buttons[name].visible = false;
 
                     me.dict[name].makeMenu();
-                    me.dict[name].moveMenu(me.cellSize, me.y);
+                    me.dict[name].moveMenu(me.cellSize, me.cellSize);
                     me.dict[name].updateMenu(false);
 
                     loadPaletteButtonHandler(me, name);

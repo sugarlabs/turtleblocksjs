@@ -1745,6 +1745,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.value = this.turtles.turtleList.length;
             this.turtles.add(myBlock);
         }
+        else if (name == 'camera') {
+			myBlock.value = '##__CAMERA__##';
+        }
 
         for (var i = 0; i < myBlock.docks.length; i++) {
             myBlock.connections.push(null);

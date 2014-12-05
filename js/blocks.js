@@ -2873,7 +2873,9 @@ function loadEventHandlers(blocks, myBlock) {
 	});
 
 	myBlock.container.on('pressup', function(event) {
+	    blocks.setDraggingFlag(false);
 	    displayMsg(blocks, 'mousedown->pressup');
+	    mouseoutCallback(blocks, myBlock, event, moved);
 	});
 
         myBlock.container.on('pressmove', function(event) {

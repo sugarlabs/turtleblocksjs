@@ -200,7 +200,7 @@ function ProtoBlock(name) {
     // clamps. The additional argument is a boolean. There is flow
     // above and below.
     this.doubleFlowClampBooleanArgBlock = function() {
-        this.style = 'clamp';
+        this.style = 'doubleclamp';
         this.middleOffset = 116;
         this.bottomOffset = 84;
         this.expandable = true;
@@ -347,6 +347,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.expandableBlocks = [];
     // Blocks that contain child flows of blocks
     this.clampBlocks = [];
+    this.doubleExpandable = [];
     // Blocks that are used as arguments to other blocks
     this.argBlocks = [];
     // Blocks that return values
@@ -427,6 +428,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 this.argBlocks.push(this.protoBlockDict[proto].name);
                 this.valueBlocks.push(this.protoBlockDict[proto].name);
             }
+            if (this.protoBlockDict[proto].style == 'doubleclamp') {
+                this.doubleExpandable.push(this.protoBlockDict[proto].name);
+            }
+
         }
     }
 
@@ -1361,6 +1366,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // We need a label for most blocks.
         // TODO: use Text exclusively for all block labels.
         myBlock.text = new createjs.Text('', '20px Arial', '#000000');
+        doubleExpandable = this.doubleExpandable;
 
         // Get the block labels from the protoblock
         var block_label = '';
@@ -1409,7 +1415,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
             loadEventHandlers(me, myBlock);
             me.refreshCanvas();
-            if (myBlock.name == 'ifthenelse') {
+            if (doubleExpandable.indexOf(myBlock.name) != -1) {
               me.middleImageLoad(myBlock);
             }
             else {

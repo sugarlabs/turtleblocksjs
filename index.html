@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/activity.css">
 	
 	<script src="mespeak.js"></script>
+	<script src="jquery.js"></script>
 	
 	
     <script data-main="js/loader" src="lib/require.js"> </script>
@@ -75,6 +76,10 @@
     <div class="canvasHolder">
 	<!-- <canvas id="myCanvas" width="760" height="570"></canvas> -->
 	<canvas id="myCanvas" width="1200" height="900"></canvas>
+	<div class="contenedor">
+			<video id="camara" autoplay controls style="visibility:hidden;"></video>
+	</div>
+	<canvas id="foto" style="visibility:hidden;"></canvas>
 	<div id="labelDiv"></div>
 	<div id="ioDiv">
           <input class="file" type="file" id="myMedia" accept="image/*"/>

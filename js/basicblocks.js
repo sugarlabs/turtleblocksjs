@@ -343,6 +343,11 @@ function initBasicProtoBlocks(palettes, blocks) {
     cameraBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['camera'] = cameraBlock;
     cameraBlock.mediaBlock();
+    
+    var videoBlock = new ProtoBlock('video');
+    videoBlock.palette = palettes.dict['turtle'];
+    blocks.protoBlockDict['video'] = videoBlock;
+    videoBlock.mediaBlock();
 
     var textBlock = new ProtoBlock('text');
     textBlock.palette = palettes.dict['blocks'];

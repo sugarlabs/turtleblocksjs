@@ -1219,6 +1219,54 @@ define(function (require) {
 						
                         }
                         
+                        if (len == 13 && args[1].substr(0, 13) == "##__VIDEO__##"){
+							window.URL = window.URL || window.webkitURL;
+							navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
+							function() {
+								alert('Su navegador no soporta navigator.getUserMedia().');
+							};
+
+							//Este objeto guardará algunos datos sobre la cámara
+							window.datosVideo = {
+								'StreamVideo': null,
+								'url': null
+							}
+                            var test = function(){
+								var oCamara, oFoto, oContexto, w, h;
+								var canvas = document.getElementById("foto");
+								oCamara = jQuery('#camara');
+								oFoto = jQuery('#foto');
+								w = oCamara.width();
+								h = oCamara.height();
+								oFoto.attr({
+									'width': w,
+									'height': h
+								});
+								oContexto = oFoto[0].getContext('2d');
+								oContexto.drawImage(oCamara[0], 0, 0, w, h);
+								console.log(args[1]);
+								turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
+                                //console.log(blocks.blockList[thisBlock].value);
+                                console.log(blocks.blockList["camera"]);
+							}
+						
+						navigator.getUserMedia({
+							'audio': false,
+							'video': true
+						}, function(streamVideo) {
+							jQuery("#camara").hide();
+							datosVideo.StreamVideo = streamVideo;
+							datosVideo.url = window.URL.createObjectURL(streamVideo);
+							jQuery('#camara').attr('src', datosVideo.url);
+							console.log("Hello");
+							window.setInterval(test, 0.1);
+
+						}, function() {
+							alert('No fue posible obtener acceso a la cámara.');
+						});
+						
+                        }
+                        
                         else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
                             turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                         } else if (len > 8 && args[1].substr(0, 8) == 'https://') {

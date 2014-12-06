@@ -192,7 +192,7 @@ function ProtoBlock(name) {
         this.size = 3;
         this.args = 2;
         this.artwork.push(FLOWCLAMPBOOLEANARG);
-        this.artwork.push(ACTIONCLAMPBOTTOM);
+        this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(FLOWCLAMPBOOLEANDOCKS);
     }
 
@@ -208,7 +208,7 @@ function ProtoBlock(name) {
         this.args = 3;
         this.artwork.push(FLOWCLAMPBOOLEANARG);
         this.artwork.push(FLOWCLAMPMIDDLE);
-        this.artwork.push(ACTIONCLAMPBOTTOM);
+        this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(DOUBLEFLOWCLAMPBOOLEANDOCKS);
     }
 
@@ -220,7 +220,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 1;
         this.artwork.push(ACTIONCLAMP0ARG);
-        this.artwork.push(ACTIONCLAMPBOTTOM);
+        this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(ACTIONCLAMP0ARGDOCKS);
     }
 
@@ -232,7 +232,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 1;
         this.artwork.push(ACTIONCLAMP1ARG);
-        this.artwork.push(ACTIONCLAMPBOTTOM);
+        this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(ACTIONCLAMP1ARGDOCKS);
     }
 

@@ -1809,7 +1809,21 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         var postProcess = null;
         var postProcessArg = null;
-        // TODO: define post process for camera and media blocks
+	var me = this;
+	var thisBlock = this.blockList.length;
+	if (name == 'media') {
+	    postProcess = function(args) {
+		var thisBlock = args[0];
+		var value = args[1];
+		me.blockList[thisBlock].value = value;
+                if (value == null) {
+                    loadThumbnail(me, thisBlock, 'images/load-media.svg');
+                } else {
+                    loadThumbnail(me, thisBlock, null);
+		}
+	    }
+	    postProcessArg = [thisBlock, null];
+	}
 
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
@@ -1842,57 +1856,64 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var cblk = blk + 1;
         for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
             var value = myBlock.protoblock.defaults[i];
+	    var me = this;
+	    var thisBlock = this.blockList.length;
             if (myBlock.docks[i + 1][2] == 'anyin') {
                 if (value == null) {
                     console.log('cannot set default value');
                 } else if (typeof(value) == 'string') {
-                    this.makeNewBlock('text');
-                    last(this.blockList).value = value;
-                    var label = value.toString();
-                    if (label.length > 8) {
-                        label = label.substr(0, 7) + '...';
-                    }
-                    if (last(this.blockList).text == null) {
-                        console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
-                    } else {
-                        last(this.blockList).text.text = label;
-                    }
+		    postProcess = function(args) {
+			var thisBlock = args[0];
+			var value = args[1];
+			me.blockList[thisBlock].value = value;
+			var label = value.toString();
+			if (label.length > 8) {
+                            label = label.substr(0, 7) + '...';
+			}
+                        me.blockList[thisBlock].text.text = label;
+		    }
+                    this.makeNewBlock('text', postProcess, [thisBlock, value]);
                 } else {
-                    this.makeNewBlock('number');
-                    last(this.blockList).value = value;
-                    if (last(this.blockList).text == null) {
-                        console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
-                    } else {
-                        last(this.blockList).text.text = value.toString();
-                    }
+		    postProcess = function(args) {
+			var thisBlock = args[0];
+			var value = args[1];
+			me.blockList[thisBlock].value = value;
+                        me.blockList[thisBlock].text.text = value.toString();
+		    }
+                    this.makeNewBlock('number', postProcess, [thisBlock, value]);
                 }
             } else if (myBlock.docks[i + 1][2] == 'textin') {
-                this.makeNewBlock('text');
-                last(this.blockList).value = value;
-                if (last(this.blockList).text == null) {
-                    console.log('new block not ready yet: cannot set value for text ' + last(this.blockList).name);
-                } else {
-                    if (value == null) {
-                        last(this.blockList).text.text = '---';
-                    } else {
-                        var label = value.toString();
-                        if (label.length > 8) {
-                            label = label.substr(0, 7) + '...';
-                        }
-                        last(this.blockList).text.text = label;
-                    }
-                }
+		postProcess = function(args) {
+		    var thisBlock = args[0];
+		    var value = args[1];
+		    me.blockList[thisBlock].value = value;
+		    var label = value.toString();
+		    if (label.length > 8) {
+                        label = label.substr(0, 7) + '...';
+		    }
+                    me.blockList[thisBlock].text.text = label;
+		}
+                this.makeNewBlock('text', postProcess, [thisBlock, value]);
             } else if (myBlock.docks[i + 1][2] == 'mediain') {
-                this.makeNewBlock('media');
-                last(this.blockList).value = value;
+		postProcess = function(args) {
+		    var thisBlock = args[0];
+		    var value = args[1];
+		    me.blockList[thisBlock].value = value;
+                    if (value == null) {
+                        loadThumbnail(me, thisBlock, 'images/load-media.svg');
+                    } else {
+                        loadThumbnail(me, thisBlock, null);
+		    }
+		}
+                this.makeNewBlock('media', postProcess, [thisBlock, value]);
             } else {
-                this.makeNewBlock('number');
-                if (last(this.blockList).text == null) {
-                    console.log('cannot set value for text ' + last(this.blockList).name);
-                } else {
-                    last(this.blockList).value = value;
-                    last(this.blockList).text.text = value.toString();
-                }
+		postProcess = function(args) {
+		    var thisBlock = args[0];
+		    var value = args[1];
+		    me.blockList[thisBlock].value = value;
+                    me.blockList[thisBlock].text.text = value.toString();
+		}
+                this.makeNewBlock('number', postProcess, [thisBlock, value]);
             }
 
             var myConnectionBlock = this.blockList[cblk + i];
@@ -2350,9 +2371,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     var thisBlock = args[0];
                     var value = args[1];
                     me.blockList[thisBlock].value = value;
-                    if (value != null) {
-                        loadThumbnail(me, thisBlock);
-                    }
+                    if (value == null) {
+                        loadThumbnail(me, thisBlock, 'images/load-media.svg');
+                    } else {
+                        loadThumbnail(me, thisBlock, null);
+		    }
                 }
                 this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                 break;
@@ -2693,8 +2716,8 @@ function labelChanged() {
 
 
 // Load an image thumbnail onto into block.
-function loadThumbnail(blocks, thisBlock) {
-    if (blocks.blockList[thisBlock].value == null) {
+function loadThumbnail(blocks, thisBlock, imagePath) {
+    if (blocks.blockList[thisBlock].value == null && imagePath == null) {
         console.log('loadThumbnail: no image to load?');
         return;
     }
@@ -2721,9 +2744,13 @@ function loadThumbnail(blocks, thisBlock) {
         blocks.refreshCanvas();
     }
 
-    image.src = blocks.blockList[thisBlock].value;
-
+    if (imagePath == null) {
+	image.src = blocks.blockList[thisBlock].value;
+    } else {
+	image.src = imagePath;
+    }
 }
+
 
 // Open a file from the DOM.
 function doOpenMedia(blocks, thisBlock) {
@@ -2737,7 +2764,7 @@ function doOpenMedia(blocks, thisBlock) {
                 if (blocks.blockList[thisBlock].container.children.length > 2) {
                     blocks.blockList[thisBlock].container.removeChild(last(blocks.blockList[thisBlock].container.children));
                 }
-                loadThumbnail(blocks, thisBlock);
+                loadThumbnail(blocks, thisBlock, null);
             }
         });
         reader.readAsDataURL(fileChooser.files[0]);

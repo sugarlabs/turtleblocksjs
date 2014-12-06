@@ -291,12 +291,12 @@ function Palette (palettes, name, color, bgcolor) {
                 // create graphics for the palette entry for this block
                 this.protoContainers[modname] = new createjs.Container();
                 var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
-		// Multicolumn
-		if (y > 600) {
-		    this.x += 160;
-		    this.y = 0;
-		    y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
-		}
+                // Multicolumn
+                if (y > 600) {
+                  this.x += 160;
+                  this.y = 0;
+                  y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
+                }
                 this.protoContainers[modname].x = this.menuContainer.x + this.x;
                 this.protoContainers[modname].y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
                 this.palettes.stage.addChild(this.protoContainers[modname]);
@@ -347,15 +347,21 @@ function Palette (palettes, name, color, bgcolor) {
         } else {
             var bottom_label = '';
         }
+        if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
+          var mid_label = myBlock.staticLabels[2];
+          var top_label = myBlock.staticLabels[1];
+          var block_label = myBlock.staticLabels[0];
+        }
         if (myBlock.name == 'box') {
             var artwork = VALUEBLOCK;  // so the label will fit
         } else {
             var artwork = myBlock.artwork[0];
         }
 
+
         function processBitmap(me, modname, bitmap, args) {
-	    var myBlock = args[0];
-	    var blk = args[1];
+      	    var myBlock = args[0];
+            var blk = args[1];
             me.protoContainers[modname].addChild(bitmap);
             bitmap.x = 20;
             bitmap.y = 0;
@@ -366,43 +372,78 @@ function Palette (palettes, name, color, bgcolor) {
             if (!me.protoList[blk].expandable) {
                 bounds = me.protoContainers[modname].getBounds();
                 me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-		var hitArea = new createjs.Shape();
-		hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
-		me.protoContainers[modname].hitArea = hitArea;
+            		var hitArea = new createjs.Shape();
+            		hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
+            		me.protoContainers[modname].hitArea = hitArea;
 
                 loadPaletteMenuItemHandler(me, blk, modname, me);
                 me.palettes.refreshCanvas();
-            } else {
-		finishExpandable(me, modname, myBlock, blk);
-	    }
+            }
+            else {
+                if (myBlock.style == 'doubleclamp') {
+                    middleExpandable(me, modname, myBlock, blk)
+                }
+                else {
+		                finishExpandable(me, modname, myBlock, blk);
+               }
+	          }
         }
 
         makePaletteBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBitmap, [myBlock, blk]);
 
-	function finishExpandable (me, modname, myBlock, blk) {
+        function middleExpandable (me, modname, myBlock, blk) {
+          if (me.protoList[blk].expandable) {
+            middleArtwork = myBlock.artwork[1];
+
+            function processBottomBitmap(me, modname, bitmap, middleOffset) {
+              me.protoContainers[modname].addChild(bitmap);
+              bitmap.x = 20;
+              bitmap.y = middleOffset;
+              bitmap.scaleX = paletteScale;
+              bitmap.scaleY = paletteScale;
+              bitmap.scale = paletteScale;
+
+              bounds = me.protoContainers[modname].getBounds();
+              me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+            }
+
+            var middleOffset = Math.floor(me.protoList[blk].middleOffset * paletteScale);
+            makePaletteBitmap(me, middleArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('mid_label', mid_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, middleOffset);
+            finishExpandable(me, modname, myBlock, blk)
+          }
+        }
+
+        function finishExpandable (me, modname, myBlock, blk) {
             if (me.protoList[blk].expandable) {
-		bottomArtwork = last(myBlock.artwork);
+  		        bottomArtwork = last(myBlock.artwork);
 
-		function processBottomBitmap(me, modname, bitmap, bottomOffset) {
-                    me.protoContainers[modname].addChild(bitmap);
-                    bitmap.x = 20;
-                    bitmap.y = bottomOffset;
-                    bitmap.scaleX = paletteScale;
-                    bitmap.scaleY = paletteScale;
-                    bitmap.scale = paletteScale;
+  		        function processBottomBitmap(me, modname, bitmap, bottomOffset) {
+                      me.protoContainers[modname].addChild(bitmap);
+                      bitmap.x = 20;
+                      if (me.protoList[blk].middleOffset != undefined) {
+                        var middleOffset = Math.floor(me.protoList[blk].middleOffset * paletteScale);
+                      }
+                      else {
+                        var middleOffset = 0;
+                      }
+                      console.log(middleOffset);
+                      bitmap.y = middleOffset + bottomOffset;
+                      bitmap.scaleX = paletteScale;
+                      bitmap.scaleY = paletteScale;
+                      bitmap.scale = paletteScale;
 
-                    bounds = me.protoContainers[modname].getBounds();
-                    me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-		    var hitArea = new createjs.Shape();
-		    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
-		    me.protoContainers[modname].hitArea = hitArea;
-                    loadPaletteMenuItemHandler(me, blk, modname, me);
-                    me.palettes.refreshCanvas();
-		}
+                      bounds = me.protoContainers[modname].getBounds();
+                      me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+              		    var hitArea = new createjs.Shape();
+              		    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
+              		    me.protoContainers[modname].hitArea = hitArea;
+                      loadPaletteMenuItemHandler(me, blk, modname, me);
+                      me.palettes.refreshCanvas();
+		         }
 
-		var bottomOffset = Math.floor(me.protoList[blk].bottomOffset * paletteScale);
-		makePaletteBitmap(me, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, bottomOffset);
-	    }
+		         var bottomOffset = Math.floor(me.protoList[blk].bottomOffset * paletteScale);
+		         makePaletteBitmap(me, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, bottomOffset);
+	         }
         }
     }
 

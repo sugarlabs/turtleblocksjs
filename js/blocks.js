@@ -1504,6 +1504,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
                 // console.log('recaching ' + myBlock.name);
                 myBlock.loadComplete = true;
+		if (myBlock.postprocess != null) {
+		    myBlock.postprocess();
+		}
                 me.refreshCanvas();
                 me.cleanupAfterLoad();
             }
@@ -1511,6 +1514,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, myBlock);
         } else {
             myBlock.loadComplete = true;
+	    if (myBlock.postprocess != null) {
+		myBlock.postprocess();
+	    }
             this.refreshCanvas();
             this.cleanupAfterLoad();
         }
@@ -1692,8 +1698,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.visible = true;
     }
 
-    this.makeNewBlockWithConnections = function(name, blockOffset, connections) {
-        myBlock = this.makeNewBlock(name);
+    this.makeNewBlockWithConnections = function(name, blockOffset, connections, postprocess) {
+        myBlock = this.makeNewBlock(name, postprocess);
         if (myBlock == null) {
             console.log('could not make block ' + name);
             return;
@@ -1710,7 +1716,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
-    this.makeNewBlock = function(name) {
+    this.makeNewBlock = function(name, postprocess) {
         // Create a new block
         if (!name in this.protoBlockDict) {
             console.log('makeNewBlock: no prototype for ' + name);
@@ -1725,10 +1731,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             console.log('failed to make protoblock for ' + name);
             return null;
         }
+
         // We copy the dock because expandable blocks modify it.
         var myBlock = last(this.blockList);
         myBlock.copyDocks();
         myBlock.copySize();
+
+	// We may need to do some postprocessing to the block
+	myBlock.postprocess = postprocess;
 
         // We need a container for the block graphics.
         myBlock.container = new createjs.Container();
@@ -1744,14 +1754,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.makeBlock = function(name, arg) {
         // Make a new block from a proto block.
         // Called from palettes (and from the load block).
+
+	var postprocess = null;
+	// TODO: define post process for camera and media blocks
+
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
-                    this.makeNewBlock(proto);
+                    this.makeNewBlock(proto, postprocess);
                     break;
                 } else {
                     if (this.protoBlockDict[proto].defaults[0] == arg) {
-                        this.makeNewBlock(proto);
+                        this.makeNewBlock(proto, postprocess);
                         break;
                     }
                 }
@@ -2418,6 +2432,9 @@ function Block(protoblock) {
     this.size = 1; // Proto size is copied here.
     this.docks = []; // Proto dock is copied here.
     this.connections = []; // Blocks that cannot be run on their own.
+
+    // Some blocks have some post process after they are first loaded.
+    this.postprocess = null;
 
     this.copySize = function() {
         this.size = this.protoblock.size;

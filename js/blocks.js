@@ -111,7 +111,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 2;
         this.artwork.push(BASICBLOCK2ARG);
-	this.artwork.push(BASICBLOCK2ARGBOTTOM);
+        this.artwork.push(BASICBLOCK2ARGBOTTOM);
         this.copyDock(BASICBLOCK2ARGDOCKS);
     }
 
@@ -358,7 +358,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     // We need access to the msg block.
     this.setMsgText = function(msgText) {
-	this.msgText = msgText;
+        this.msgText = msgText;
     }
 
     // We need access to the turtles list because we associate a
@@ -381,28 +381,28 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // We need to tell the activity if we are dragging so it won't
     // scroll the canvas
     this.setDragging = function(setDraggingFlag) {
-	this.setDraggingFlag = setDraggingFlag;
+        this.setDraggingFlag = setDraggingFlag;
     }
 
     // set up copy/paste buttons
     this.makeCopyPasteButtons = function(makeButton, updatePasteButton) {
-	var blocks = this;
-	this.updatePasteButton = updatePasteButton;
-	this.copyButton = makeButton('copy-button', 0, 0, 55);
-	this.copyButton.visible = false;
+        var blocks = this;
+        this.updatePasteButton = updatePasteButton;
+        this.copyButton = makeButton('copy-button', 0, 0, 55);
+        this.copyButton.visible = false;
         this.copyButton.on('click', function(event) {
             var topBlock = blocks.findTopBlock(blocks.activeBlock);
             blocks.selectedStack = topBlock;
-	    blocks.copyButton.visible = false;
-	    blocks.dismissButton.visible = false;
-	    blocks.updatePasteButton();
+            blocks.copyButton.visible = false;
+            blocks.dismissButton.visible = false;
+            blocks.updatePasteButton();
             blocks.refreshCanvas();
-	});
-	this.dismissButton = makeButton('cancel-button', 0, 0, 55);
-	this.dismissButton.visible = false;
+        });
+        this.dismissButton = makeButton('cancel-button', 0, 0, 55);
+        this.dismissButton.visible = false;
         this.dismissButton.on('click', function(event) {
-	    blocks.copyButton.visible = false;
-	    blocks.dismissButton.visible = false;
+            blocks.copyButton.visible = false;
+            blocks.dismissButton.visible = false;
             blocks.refreshCanvas();
         });
     }
@@ -1126,13 +1126,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         lastChild = last(myBlock.container.children);
         myBlock.container.swapChildren(myBlock.text, lastChild);
 
-        try {
-            // FIXME: Is there a race condition?
-            if (myBlock.loadComplete) {
-                myBlock.container.updateCache();
-            }
-        } catch (e) {
-            console.log(e);
+        if (myBlock.loadComplete) {
+            myBlock.container.updateCache();
         }
     }
 
@@ -1522,7 +1517,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         if (myBlock.isExpandableBlock()) {
             // Expandable blocks also have some extra parts.
-	    bottomArtwork = last(myBlock.protoblock.artwork);
+            bottomArtwork = last(myBlock.protoblock.artwork);
             var bottomOffset = myBlock.protoblock.bottomOffset;
             myBlock.fillerBitmaps = [];
             myBlock.bottomBitmap = null;
@@ -1552,9 +1547,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
                 // console.log('recaching ' + myBlock.name);
                 myBlock.loadComplete = true;
-		if (myBlock.postprocess != null) {
-		    myBlock.postprocess();
-		}
+                if (myBlock.postProcess != null) {
+                    myBlock.postProcess(myBlock.postProcessArg);
+                }
                 me.refreshCanvas();
                 me.cleanupAfterLoad();
             }
@@ -1562,9 +1557,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, myBlock);
         } else {
             myBlock.loadComplete = true;
-	    if (myBlock.postprocess != null) {
-		myBlock.postprocess();
-	    }
+            if (myBlock.postProcess != null) {
+                myBlock.postProcess(myBlock.postProcessArg);
+            }
             this.refreshCanvas();
             this.cleanupAfterLoad();
         }
@@ -1607,27 +1602,27 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.collapseContainer = new createjs.Container();
 
                 var image = new Image();
-		image.onload = function() {
+                image.onload = function() {
                     myBlock.collapseBitmap = new createjs.Bitmap(image);
                     myBlock.collapseContainer.addChild(myBlock.collapseBitmap);
-		    finishCollapseButton(myBlock);
-		}
+                    finishCollapseButton(myBlock);
+                }
                 image.src = 'images/collapse.svg';
 
-		finishCollapseButton = function(myBlock) {
+                finishCollapseButton = function(myBlock) {
                     var image = new Image();
-		    image.onload = function() {
-			myBlock.expandBitmap = new createjs.Bitmap(image);
-			myBlock.collapseContainer.addChild(myBlock.expandBitmap);
-			myBlock.expandBitmap.visible = false;
-			var bounds = myBlock.collapseContainer.getBounds();
-			myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-			loadCollapsibleEventHandlers(me, myBlock);
-		    }
+                    image.onload = function() {
+                        myBlock.expandBitmap = new createjs.Bitmap(image);
+                        myBlock.collapseContainer.addChild(myBlock.expandBitmap);
+                        myBlock.expandBitmap.visible = false;
+                        var bounds = myBlock.collapseContainer.getBounds();
+                        myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                        loadCollapsibleEventHandlers(me, myBlock);
+                    }
                     image.src = 'images/expand.svg';
-		}
+                }
 
-		me.stage.addChild(myBlock.collapseContainer);
+                me.stage.addChild(myBlock.collapseContainer);
                 myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
                 myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
             }
@@ -1754,8 +1749,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.visible = true;
     }
 
-    this.makeNewBlockWithConnections = function(name, blockOffset, connections, postprocess) {
-        myBlock = this.makeNewBlock(name, postprocess);
+    this.makeNewBlockWithConnections = function(name, blockOffset, connections, postProcess, postProcessArg) {
+        myBlock = this.makeNewBlock(name, postProcess, postProcessArg);
         if (myBlock == null) {
             console.log('could not make block ' + name);
             return;
@@ -1772,7 +1767,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
-    this.makeNewBlock = function(name, postprocess) {
+    this.makeNewBlock = function(name, postProcess, postProcessArg) {
         // Create a new block
         if (!name in this.protoBlockDict) {
             console.log('makeNewBlock: no prototype for ' + name);
@@ -1793,8 +1788,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.copyDocks();
         myBlock.copySize();
 
-	// We may need to do some postprocessing to the block
-	myBlock.postprocess = postprocess;
+        // We may need to do some postProcessing to the block
+        myBlock.postProcess = postProcess;
+        myBlock.postProcessArg = postProcessArg;
 
         // We need a container for the block graphics.
         myBlock.container = new createjs.Container();
@@ -1811,17 +1807,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Make a new block from a proto block.
         // Called from palettes (and from the load block).
 
-	var postprocess = null;
-	// TODO: define post process for camera and media blocks
+        var postProcess = null;
+        var postProcessArg = null;
+        // TODO: define post process for camera and media blocks
 
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
-                    this.makeNewBlock(proto, postprocess);
+                    this.makeNewBlock(proto, postProcess, postProcessArg);
                     break;
                 } else {
                     if (this.protoBlockDict[proto].defaults[0] == arg) {
-                        this.makeNewBlock(proto, postprocess);
+                        this.makeNewBlock(proto, postProcess, postProcessArg);
                         break;
                     }
                 }
@@ -2121,15 +2118,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.triggerLongPress = function(myBlock) {
-	this.timeOut == null;
-	// FIXME: top block in stack
-	console.log('BRING UP COPY BUTTON FOR BLOCK ' + myBlock.name);
-	this.copyButton.visible = true;
-	this.copyButton.x = myBlock.container.x - 27;
-	this.copyButton.y = myBlock.container.y - 27;
-	this.dismissButton.visible = true;
-	this.dismissButton.x = myBlock.container.x + 27;
-	this.dismissButton.y = myBlock.container.y - 27;
+        this.timeOut == null;
+        // FIXME: top block in stack
+        console.log('BRING UP COPY BUTTON FOR BLOCK ' + myBlock.name);
+        this.copyButton.visible = true;
+        this.copyButton.x = myBlock.container.x - 27;
+        this.copyButton.y = myBlock.container.y - 27;
+        this.dismissButton.visible = true;
+        this.dismissButton.x = myBlock.container.x + 27;
+        this.dismissButton.y = myBlock.container.y - 27;
         this.refreshCanvas();
     }
 
@@ -2313,102 +2310,137 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (name in NAMEDICT) {
                 name = NAMEDICT[name];
             }
+
+            var me = this;
             switch (name) {
                 // A few special cases.
-                case 'start':
-                    blkData[4][0] = null;
-                    blkData[4][2] = null;
-                    this.makeNewBlockWithConnections('start', blockOffset, blkData[4]);
-                    last(this.blockList).value = this.turtles.turtleList.length;
+            case 'start':
+                blkData[4][0] = null;
+                blkData[4][2] = null;
 
-                    this.turtles.add(last(this.blockList));
-                    break;
-                case 'action':
-                case 'hat':
-                    blkData[4][0] = null;
-                    blkData[4][3] = null;
-                    this.makeNewBlockWithConnections('action', blockOffset, blkData[4]);
-                    break;
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = me.turtles.turtleList.length;
 
-                    // Value blocks need a default value set.
-                case 'number':
-                case 'text':
-                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = value;
-                    this.updateBlockText(thisBlock);
-                    break;
+                    me.turtles.add(me.blockList[thisBlock]);
+                }
+                this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'action':
+            case 'hat':
+                blkData[4][0] = null;
+                blkData[4][3] = null;
+                this.makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null);
+                break;
 
-                    // Load the thumbnail into a media block.
-                case 'media':
-                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = value;
+                // Value blocks need a default value set.
+            case 'number':
+            case 'text':
+                postProcess = function(args) {
+                    var thisBlock = args[0];
+                    var value = args[1];
+                    me.blockList[thisBlock].value = value;
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                break;
+
+                // Load the thumbnail into a media block.
+            case 'media':
+                postProcess = function(args) {
+                    var thisBlock = args[0];
+                    var value = args[1];
+                    me.blockList[thisBlock].value = value;
                     if (value != null) {
-                        loadThumbnail(this, thisBlock);
+                        loadThumbnail(me, thisBlock);
                     }
-                    break;
+                }
+                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                break;
 
-                    // Define some constants for legacy blocks for
-                    // backward compatibility with Python projects.
-                case 'red':
-                case 'white':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = 0;
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'orange':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = 10;
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'yellow':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = 20;
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'green':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = 40;
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'blue':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = 70;
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'leftpos':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = -(canvas.width / 2);
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'rightpos':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = (canvas.width / 2);
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'toppos':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = (canvas.height / 2);
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'botpos':
-                case 'bottompos':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = -(canvas.height / 2);
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'width':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = canvas.width;
-                    this.updateBlockText(thisBlock);
-                    break;
-                case 'height':
-                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4]);
-                    this.blockList[thisBlock].value = canvas.height;
-                    this.updateBlockText(thisBlock);
-                    break;
-                default:
-                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
-                    break;
+                // Define some constants for legacy blocks for
+                // backward compatibility with Python projects.
+            case 'red':
+            case 'white':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = 0;
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'orange':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = 10;
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'yellow':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = 20;
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'green':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = 40;
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'blue':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = 70;
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'leftpos':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = -(canvas.width / 2);
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'rightpos':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = (canvas.width / 2);
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'toppos':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = (canvas.height / 2);
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'botpos':
+            case 'bottompos':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = -(canvas.height / 2);
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'width':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = canvas.width;
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            case 'height':
+                postProcess = function(thisBlock) {
+                    me.blockList[thisBlock].value = canvas.height;
+                    me.updateBlockText(thisBlock);
+                }
+                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                break;
+            default:
+                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], null);
+                break;
             }
             if (thisBlock == this.blockList.length - 1) {
                 if (this.blockList[thisBlock].connections[0] == null) {
@@ -2490,7 +2522,8 @@ function Block(protoblock) {
     this.connections = []; // Blocks that cannot be run on their own.
 
     // Some blocks have some post process after they are first loaded.
-    this.postprocess = null;
+    this.postProcess = null;
+    this.postProcessArg = null;
 
     this.copySize = function() {
         this.size = this.protoblock.size;
@@ -2668,24 +2701,24 @@ function loadThumbnail(blocks, thisBlock) {
     var image = new Image();
 
     image.onload = function() {
-	var bitmap = new createjs.Bitmap(image);
-	// FIXME: Determine these values computationally based on the size
-	// of the media block.
-	if (image.width > image.height) {
+        var bitmap = new createjs.Bitmap(image);
+        // FIXME: Determine these values computationally based on the size
+        // of the media block.
+        if (image.width > image.height) {
             bitmap.scaleX = 108 / image.width;
             bitmap.scaleY = 108 / image.width;
             bitmap.scale = 108 / image.width;
-	} else {
+        } else {
             bitmap.scaleX = 80 / image.height;
             bitmap.scaleY = 80 / image.height;
             bitmap.scale = 80 / image.height;
-	}
-	blocks.blockList[thisBlock].container.addChild(bitmap);
-	bitmap.x = 18;
-	bitmap.y = 2;
+        }
+        blocks.blockList[thisBlock].container.addChild(bitmap);
+        bitmap.x = 18;
+        bitmap.y = 2;
 
         blocks.blockList[thisBlock].container.updateCache();
-	blocks.refreshCanvas();
+        blocks.refreshCanvas();
     }
 
     image.src = blocks.blockList[thisBlock].value;
@@ -2882,8 +2915,8 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {
-	blocks.setDraggingFlag(true);
-	displayMsg(blocks, 'mouseover');
+        blocks.setDraggingFlag(true);
+        displayMsg(blocks, 'mouseover');
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
@@ -2891,7 +2924,7 @@ function loadEventHandlers(blocks, myBlock) {
 
     var moved = false;
     myBlock.container.on('click', function(event) {
-	displayMsg(blocks, 'click');
+        displayMsg(blocks, 'click');
         if (!moved) {
             if (blocks.selectingStack) {
                 var topBlock = blocks.findTopBlock(thisBlock);
@@ -2910,13 +2943,13 @@ function loadEventHandlers(blocks, myBlock) {
     }, true);
 
     myBlock.container.on('mousedown', function(event) {
-	blocks.setDraggingFlag(true);
-	displayMsg(blocks, 'mousedown');
+        blocks.setDraggingFlag(true);
+        displayMsg(blocks, 'mousedown');
 
-	// Track time for detecting long pause.
+        // Track time for detecting long pause.
         var d = new Date();
         blocks.time = d.getTime();
-	blocks.timeOut = setTimeout(function(){blocks.triggerLongPress(myBlock);}, LONGPRESSTIME);
+        blocks.timeOut = setTimeout(function(){blocks.triggerLongPress(myBlock);}, LONGPRESSTIME);
 
         // Always show the trash when there is a block selected.
         trashcan.show();
@@ -2933,29 +2966,29 @@ function loadEventHandlers(blocks, myBlock) {
             y: myBlock.container.y - Math.round(event.stageY / blocks.scale)
         };
 
-	myBlock.container.on('mouseout', function(event) {
-	    blocks.setDraggingFlag(false);
-	    displayMsg(blocks, 'mousedown->mouseout');
-	    mouseoutCallback(blocks, myBlock, event, moved);
-	});
+        myBlock.container.on('mouseout', function(event) {
+            blocks.setDraggingFlag(false);
+            displayMsg(blocks, 'mousedown->mouseout');
+            mouseoutCallback(blocks, myBlock, event, moved);
+        });
 
-	myBlock.container.on('pressup', function(event) {
-	    blocks.setDraggingFlag(false);
-	    displayMsg(blocks, 'mousedown->pressup');
-	    mouseoutCallback(blocks, myBlock, event, moved);
-	});
+        myBlock.container.on('pressup', function(event) {
+            blocks.setDraggingFlag(false);
+            displayMsg(blocks, 'mousedown->pressup');
+            mouseoutCallback(blocks, myBlock, event, moved);
+        });
 
         myBlock.container.on('pressmove', function(event) {
-	    // FIXME: More voodoo
-	    event.nativeEvent.preventDefault();
+            // FIXME: More voodoo
+            event.nativeEvent.preventDefault();
 
-	    displayMsg(blocks, 'mousedown->pressmove');
+            displayMsg(blocks, 'mousedown->pressmove');
 
-	    // FIXME: need to remove timer
-	    if (blocks.timeOut != null) {
-		clearTimeout(blocks.timeOut);
-		blocks.timeOut = null;
-	    }
+            // FIXME: need to remove timer
+            if (blocks.timeOut != null) {
+                clearTimeout(blocks.timeOut);
+                blocks.timeOut = null;
+            }
             moved = true;
             var oldX = myBlock.container.x;
             var oldY = myBlock.container.y;
@@ -3000,9 +3033,9 @@ function loadEventHandlers(blocks, myBlock) {
     }, true);
 
     myBlock.container.on('mouseout', function(event) {
-	blocks.setDraggingFlag(false);
-	displayMsg(blocks, 'mouseout');
-	mouseoutCallback(blocks, myBlock, event, moved);
+        blocks.setDraggingFlag(false);
+        displayMsg(blocks, 'mouseout');
+        mouseoutCallback(blocks, myBlock, event, moved);
     }, true);
 }
 
@@ -3023,7 +3056,7 @@ function mouseoutCallback(blocks, myBlock, event, moved) {
     // FIXME: need to remove timer
     if (blocks.timeOut != null) {
         clearTimeout(blocks.timeOut);
-	blocks.timeOut = null;
+        blocks.timeOut = null;
     }
     trashcan.hide();
     if (moved) {

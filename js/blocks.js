@@ -82,7 +82,7 @@ function ProtoBlock(name) {
     // What follows are the initializations for different block
     // styles.
 
-    // E.g., penup, pendown
+    // E.g., penup, pendown, stop playback
     this.zeroArgBlock = function() {
         this.args = 0;
         this.artwork.push(BASICBLOCK);
@@ -101,6 +101,13 @@ function ProtoBlock(name) {
         this.args = 1;
         this.artwork.push(BASICBLOCK1ARG);
         this.copyDock(BASICBLOCK1ARGDOCKS);
+    }
+
+    // E.g., playback
+    this.onemediaArgBlock = function() {
+        this.args = 1;
+        this.artwork.push(BASICBLOCK1ARG);
+        this.copyDock(BASICBLOCK1ARGMEDIADOCKS);
     }
 
     // E.g., setxy. These are expandable.

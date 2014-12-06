@@ -196,8 +196,8 @@ function ProtoBlock(name) {
     // above and below.
     this.doubleFlowClampBooleanArgBlock = function() {
         this.style = 'clamp';
-	this.middleOffet = 116;
-        this.bottomOffset = 200;
+        this.middleOffset = 116;
+        this.bottomOffset = 84;
         this.expandable = true;
         this.size = 5;
         this.args = 3;
@@ -336,7 +336,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // We need to keep track of certain classes of blocks that exhibit
     // different types of behavior.
 
-    // Blocks with parts that expand, e.g., 
+    // Blocks with parts that expand, e.g.,
     this.expandableBlocks = [];
     // Blocks that contain child flows of blocks
     this.clampBlocks = [];
@@ -1402,12 +1402,61 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
             loadEventHandlers(me, myBlock);
             me.refreshCanvas();
+            if (myBlock.name == 'ifthenelse') {
+              me.middleImageLoad(myBlock);
+            }
+            else {
+              me.finishImageLoad(myBlock);
+            }
 
-            me.finishImageLoad(myBlock);
+          }
+
+          makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
         }
 
-        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
-    }
+      this.middleImageLoad = function(myBlock) {
+          // Load a block image and create any extra parts. Image
+          // components are loaded asynchronously so most the work
+          // happens in callbacks.
+
+          var thisBlock = this.blockList.indexOf(myBlock);
+
+          // We need a label for most blocks.
+          // TODO: use Text exclusively for all block labels.
+          myBlock.text = new createjs.Text('', '20px Arial', '#000000');
+
+          // Get the block labels from the protoblock
+          var block_label = myBlock.protoblock.staticLabels[2];
+
+          var middleOffset = myBlock.protoblock.middleOffset;
+
+          // Create the bitmap for the block.
+          function processBitmap(me, name, bitmap, myBlock) {
+            myBlock.bitmap = bitmap;
+            myBlock.container.addChild(myBlock.bitmap);
+            myBlock.bitmap.x = myBlock.bitmap.x;
+            myBlock.bitmap.y = myBlock.bitmap.y + middleOffset;
+            myBlock.bitmap.name = 'bmp_' + thisBlock;
+            myBlock.bitmap.cursor = 'pointer';
+            me.refreshCanvas();
+          }
+
+          makeBitmap(this, myBlock.protoblock.extraArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
+
+          // Create the highlight bitmap for the block.
+          function processHighlightBitmap(me, name, bitmap, myBlock) {
+            myBlock.middleHighlightBitmap = bitmap;
+            myBlock.container.addChild(myBlock.middleHighlightBitmap);
+            myBlock.middleHighlightBitmap.x = myBlock.bitmap.x;
+            myBlock.middleHighlightBitmap.y = myBlock.bitmap.y;;
+            myBlock.middleHighlightBitmap.name = 'bmp_highlight_' + thisBlock;
+            myBlock.middleHighlightBitmap.cursor = 'pointer';
+            myBlock.middleHighlightBitmap.visible = false;
+            me.finishImageLoad(myBlock);
+          }
+
+          makeBitmap(this, myBlock.protoblock.extraArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
+        }
 
     this.finishImageLoad = function(myBlock) {
 
@@ -1607,6 +1656,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         if (thisBlock != null) {
             var myBlock = this.blockList[thisBlock];
+            try {
+              myBlock.middleHighlightBitmap.visible = false;
+            } catch(e) {}
             if (myBlock.collapsed) {
                 if (['start', 'action'].indexOf(myBlock.name) != -1) {
                     myBlock.highlightCollapseBlockBitmap.visible = false;
@@ -1651,6 +1703,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 this.unhighlight(null);
             }
             var myBlock = this.blockList[blk];
+
+            try {
+              myBlock.middleHighlightBitmap.visible = true;
+            } catch(e) {}
+
             if (myBlock.collapsed) {
                 if (['start', 'action'].indexOf(myBlock.name) != -1) {
                     myBlock.highlightCollapseBlockBitmap.visible = true;
@@ -2825,7 +2882,7 @@ function loadEventHandlers(blocks, myBlock) {
     hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
     myBlock.container.hitArea = hitArea;
 
-    myBlock.container.on('mouseover', function(event) {	
+    myBlock.container.on('mouseover', function(event) {
 	blocks.setDraggingFlag(true);
 	displayMsg(blocks, 'mouseover');
         blocks.highlight(thisBlock, true);
@@ -3002,7 +3059,7 @@ function sendStackToTrash(blocks, myBlock) {
         }
         myBlock.connections[0] = null;
     }
-    
+
     if (myBlock.name == 'start') {
         turtle = myBlock.value;
         if (turtle != null) {

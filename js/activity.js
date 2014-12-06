@@ -1086,7 +1086,7 @@ define(function (require) {
                         turtles.turtleList[turtle].queue.push(queueBlock);
                     }
                 }
-                break;                
+                break;
             case 'if':
                 if (args.length == 2) {
                     if (args[0]) {
@@ -1095,6 +1095,18 @@ define(function (require) {
                     }
                 }
                 break;
+            case 'ifthenelse':
+              if (args.length == 3) {
+                if (args[0]) {
+                  childFlow = args[1];
+                  childFlowCount = 1;
+                  }
+                else {
+                  childFlow = args[2];
+                  childFlowCount = 1;
+                  }
+              }
+              break;
             case 'while':
 		// While is tricky because we need to recalculate
 		// args[0] each time, so we requeue the While block itself.
@@ -1506,7 +1518,7 @@ define(function (require) {
             }
         }
 
-		
+
         function hideBlocks() {
             // Hide all the blocks.
             blocks.hide();

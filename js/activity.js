@@ -262,6 +262,7 @@ define(function (require) {
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
 
             palettes.setBlocks(blocks);
+	    palettes.setDragging(setDraggingContainer);
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);

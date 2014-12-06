@@ -51,7 +51,7 @@ function Palettes (canvas, stage, cellSize, refreshCanvas) {
     }
 
     this.setDragging = function(setDraggingFlag) {
-	this.setDraggingFlag = setDraggingFlag;
+        this.setDraggingFlag = setDraggingFlag;
     }
 
     this.makeMenu = function() {
@@ -182,14 +182,14 @@ function Palettes (canvas, stage, cellSize, refreshCanvas) {
 // Palette Button event handlers
 function loadPaletteButtonHandler(palettes, name) {
     palettes.buttons[name].on('mouseover', function(event) {
-	palettes.setDraggingFlag(true);
+        palettes.setDraggingFlag(true);
         palettes.bitmaps[name].visible = false;
         palettes.highlightBitmaps[name].visible = true;
         palettes.refreshCanvas();
     });
 
     palettes.buttons[name].on('mouseout', function(event) {
-	palettes.setDraggingFlag(false);
+        palettes.setDraggingFlag(false);
         palettes.bitmaps[name].visible = true;
         palettes.highlightBitmaps[name].visible = false;
         palettes.refreshCanvas();
@@ -261,9 +261,9 @@ function Palette (palettes, name, color, bgcolor) {
             this.makeMenu();
         } else {
             // hide the menu while we update
-	    if(hide) {
-		this.hide();
-	    }
+            if(hide) {
+                this.hide();
+            }
         }
         for (var blk in this.protoList) {
             // Create a proto block for each palette entry.
@@ -360,7 +360,7 @@ function Palette (palettes, name, color, bgcolor) {
 
 
         function processBitmap(me, modname, bitmap, args) {
-      	    var myBlock = args[0];
+                  var myBlock = args[0];
             var blk = args[1];
             me.protoContainers[modname].addChild(bitmap);
             bitmap.x = 20;
@@ -372,9 +372,9 @@ function Palette (palettes, name, color, bgcolor) {
             if (!me.protoList[blk].expandable) {
                 bounds = me.protoContainers[modname].getBounds();
                 me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-            		var hitArea = new createjs.Shape();
-            		hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
-            		me.protoContainers[modname].hitArea = hitArea;
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                me.protoContainers[modname].hitArea = hitArea;
 
                 loadPaletteMenuItemHandler(me, blk, modname, me);
                 me.palettes.refreshCanvas();
@@ -384,9 +384,9 @@ function Palette (palettes, name, color, bgcolor) {
                     middleExpandable(me, modname, myBlock, blk)
                 }
                 else {
-		                finishExpandable(me, modname, myBlock, blk);
+                    finishExpandable(me, modname, myBlock, blk);
                }
-	          }
+            }
         }
 
         makePaletteBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBitmap, [myBlock, blk]);
@@ -407,7 +407,7 @@ function Palette (palettes, name, color, bgcolor) {
               me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
             }
 
-            var middleOffset = Math.floor(me.protoList[blk].middleOffset * paletteScale);
+            var middleOffset = Math.floor(me.protoList[blk].artworkOffset[0] * paletteScale);
             makePaletteBitmap(me, middleArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('mid_label', mid_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, middleOffset);
             finishExpandable(me, modname, myBlock, blk)
           }
@@ -415,35 +415,35 @@ function Palette (palettes, name, color, bgcolor) {
 
         function finishExpandable (me, modname, myBlock, blk) {
             if (me.protoList[blk].expandable) {
-  		        bottomArtwork = last(myBlock.artwork);
+                bottomArtwork = last(myBlock.artwork);
 
-  		        function processBottomBitmap(me, modname, bitmap, bottomOffset) {
-                      me.protoContainers[modname].addChild(bitmap);
-                      bitmap.x = 20;
-                      if (me.protoList[blk].middleOffset != undefined) {
-                        var middleOffset = Math.floor(me.protoList[blk].middleOffset * paletteScale);
-                      }
-                      else {
+                function processBottomBitmap(me, modname, bitmap, artworkOffset) {
+                    me.protoContainers[modname].addChild(bitmap);
+                    bitmap.x = 20;
+                    if (me.protoList[blk].artworkOffset.length > 1) {
+                        var middleOffset = Math.floor(me.protoList[blk].artworkOffset[0] * paletteScale);
+                    }
+                    else {
                         var middleOffset = 0;
-                      }
-                      console.log(middleOffset);
-                      bitmap.y = middleOffset + bottomOffset;
-                      bitmap.scaleX = paletteScale;
-                      bitmap.scaleY = paletteScale;
-                      bitmap.scale = paletteScale;
+                    }
+                    console.log(middleOffset);
+                    bitmap.y = middleOffset + artworkOffset;
+                    bitmap.scaleX = paletteScale;
+                    bitmap.scaleY = paletteScale;
+                    bitmap.scale = paletteScale;
 
-                      bounds = me.protoContainers[modname].getBounds();
-                      me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-              		    var hitArea = new createjs.Shape();
-              		    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
-              		    me.protoContainers[modname].hitArea = hitArea;
-                      loadPaletteMenuItemHandler(me, blk, modname, me);
-                      me.palettes.refreshCanvas();
-		         }
+                    bounds = me.protoContainers[modname].getBounds();
+                    me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                    var hitArea = new createjs.Shape();
+                    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                    me.protoContainers[modname].hitArea = hitArea;
+                    loadPaletteMenuItemHandler(me, blk, modname, me);
+                    me.palettes.refreshCanvas();
+                }
 
-		         var bottomOffset = Math.floor(me.protoList[blk].bottomOffset * paletteScale);
-		         makePaletteBitmap(me, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, bottomOffset);
-	         }
+                var artworkOffset = Math.floor(last(me.protoList[blk].artworkOffset) * paletteScale);
+                makePaletteBitmap(me, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, artworkOffset);
+            }
         }
     }
 
@@ -483,7 +483,7 @@ function Palette (palettes, name, color, bgcolor) {
     this.hideMenuItems = function(init) {
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = false;
-	    // FIXME: Is this race condition still happening?
+            // FIXME: Is this race condition still happening?
             try {
                 this.protoContainers[i].updateCache();
             } catch (e) {
@@ -615,13 +615,13 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
 // Palette Menu event handlers
 function loadPaletteMenuHandler(palette) {
     palette.menuContainer.on('mouseover', function(event) {
-	palette.palettes.setDraggingFlag(true);
+        palette.palettes.setDraggingFlag(true);
         // palette.highlight();
         // palette.palettes.refreshCanvas();
     });
 
     palette.menuContainer.on('mouseout', function(event) {
-	palette.palettes.setDraggingFlag(false);
+        palette.palettes.setDraggingFlag(false);
         // palette.unhighlight();
         // palette.palettes.refreshCanvas();
     });
@@ -643,7 +643,7 @@ function loadPaletteMenuHandler(palette) {
     });
 
     palette.menuContainer.on('mousedown', function(event) {
-	palette.palettes.setDraggingFlag(true);
+        palette.palettes.setDraggingFlag(true);
         // FIXME: move them all
         var offset = {
             x: palette.menuContainer.x - event.stageX,
@@ -664,7 +664,7 @@ function loadPaletteMenuHandler(palette) {
     });
 
     palette.menuContainer.on('mouseout',function(event) {
-	palette.palettes.setDraggingFlag(false);
+        palette.palettes.setDraggingFlag(false);
     });
 }
 

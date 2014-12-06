@@ -41,10 +41,10 @@ function ProtoBlock(name) {
     // Does the block expand (or collapse) when other blocks are
     // attached? e.g., start, repeat...
     this.expandable = false;
-    // When a block is expandable, its bottom is drawn with a separate
-    // SVG. Bottom offset is the y position of that SVG relative to
+    // When a block is expandable, its artwork is drawn with a separate
+    // SVGs. artworkOffset is the y position of the SVGs relative to
     // the top of the block.
-    this.bottomOffset = 0;
+    this.artworkOffset = [];
     // When a block is expanded, filler blocks are inserted. Filler
     // offset is the height of the filler blocks.
     this.fillerOffset = STANDARDBLOCKHEIGHT;
@@ -105,7 +105,7 @@ function ProtoBlock(name) {
 
     // E.g., setxy. These are expandable.
     this.twoArgBlock = function() {
-        this.bottomOffset = 49;
+        this.artworkOffset = [49];
         this.expandable = true;
         this.style = 'twoarg';
         this.size = 2;
@@ -126,7 +126,7 @@ function ProtoBlock(name) {
 
     // E.g., plus, minus, multiply, divide. These are also expandable.
     this.twoArgMathBlock = function() {
-        this.bottomOffset = 49;
+        this.artworkOffset = [49];
         this.expandable = true;
         this.style = 'arg';
         this.size = 2;
@@ -161,7 +161,7 @@ function ProtoBlock(name) {
     // There are no additional arguments and no flow above or below.
     this.flowClampZeroArgBlock = function() {
         this.style = 'clamp';
-        this.bottomOffset = 74;
+        this.artworkOffset = [74];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -174,7 +174,7 @@ function ProtoBlock(name) {
     // The additional argument is a name. Again, no flow above or below.
     this.flowClampOneArgBlock = function() {
         this.style = 'clamp';
-        this.bottomOffset = 74;
+        this.artworkOffset = [74];
         this.expandable = true;
         this.size = 2;
         this.args = 2;
@@ -187,7 +187,7 @@ function ProtoBlock(name) {
     // additional argument is a boolean. There is flow above and below.
     this.flowClampBooleanArgBlock = function() {
         this.style = 'clamp';
-        this.bottomOffset = 116;
+        this.artworkOffset = [116];
         this.expandable = true;
         this.size = 3;
         this.args = 2;
@@ -201,8 +201,7 @@ function ProtoBlock(name) {
     // above and below.
     this.doubleFlowClampBooleanArgBlock = function() {
         this.style = 'doubleclamp';
-        this.middleOffset = 116;
-        this.bottomOffset = 84;
+        this.artworkOffset = [116, 84];
         this.expandable = true;
         this.size = 5;
         this.args = 3;
@@ -215,7 +214,7 @@ function ProtoBlock(name) {
     // E.g., forever. Unlike start, there is flow above and below.
     this.blockClampZeroArgBlock = function() {
         this.style = 'clamp';
-        this.bottomOffset = 86;
+        this.artworkOffset = [86];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -227,7 +226,7 @@ function ProtoBlock(name) {
     // E.g., repeat. Unlike action, there is a flow above and below.
     this.blockClampOneArgBlock = function() {
         this.style = 'clamp';
-        this.bottomOffset = 86;
+        this.artworkOffset = [86];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -477,9 +476,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Next, we adjust the clamp size to match the size of the
         // child flow.
         var docksChanged = false;
-        var bottomOffset = myBlock.protoblock.bottomOffset;
+        var artworkOffset = last(myBlock.protoblock.artworkOffset);
         var fillerOffset = myBlock.protoblock.fillerOffset;
-        var currentFillerCount = myBlock.fillerCount;
+        var currentFillerCount = myBlock.fillerCount[0];
         if (childFlowSize < currentFillerCount + 1) {
             // We may have to remove filler.
             var n = currentFillerCount - childFlowSize + 1;
@@ -488,7 +487,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 this.removeFiller(blk);
                 // And decrement the count and the offset to the
                 // bottom dock position.
-                myBlock.fillerCount -= 1;
+                myBlock.fillerCount[0] -= 1;
                 last(myBlock.docks)[1] -= fillerOffset;
                 docksChanged = true;
             }
@@ -498,10 +497,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             for (var i = 0; i < n; i++) {
                 var c = i + currentFillerCount;
                 // We need to add filler.
-                this.addFiller(blk, bottomOffset + c * fillerOffset, c);
+                this.addFiller(blk, artworkOffset + c * fillerOffset, c);
                 // And increment the count and the offset to the
                 // bottom dock position.
-                myBlock.fillerCount += 1;
+                myBlock.fillerCount[0] += 1;
                 last(myBlock.docks)[1] += fillerOffset;
                 docksChanged = true;
             }
@@ -545,9 +544,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // Next, adjust the block size to match.
         var docksChanged = false;
-        var bottomOffset = myBlock.protoblock.bottomOffset;
+        var artworkOffset = last(myBlock.protoblock.artworkOffset);
         var fillerOffset = myBlock.protoblock.fillerOffset;
-        var currentFillerCount = myBlock.fillerCount;
+        var currentFillerCount = myBlock.fillerCount[0];
         if (firstArgumentSize < currentFillerCount + 1) {
             // We need to remove filler.
             var n = currentFillerCount - firstArgumentSize + 1;
@@ -556,7 +555,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 this.removeFiller(blk);
                 // And decrement the count and the offset to the
                 // bottom dock position.
-                myBlock.fillerCount -= 1;
+                myBlock.fillerCount[0] -= 1;
                 myBlock.docks[2][1] -= fillerOffset;
                 docksChanged = true;
                 if (!myBlock.isArgBlock()) {
@@ -572,10 +571,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             for (var i = 0; i < n; i++) {
                 var c = i + currentFillerCount;
                 // Add the filler to the container.
-                this.addFiller(blk, bottomOffset + c * fillerOffset, c);
+                this.addFiller(blk, artworkOffset + c * fillerOffset, c);
                 // And increment the count and the offset to the
                 // bottom dock position.
-                myBlock.fillerCount += 1;
+                myBlock.fillerCount[0] += 1;
                 myBlock.docks[2][1] += fillerOffset;
                 docksChanged = true;
                 if (!myBlock.isArgBlock()) {
@@ -616,7 +615,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // When we remove filler, we cache it in case it is added back
         // in later.
         var myBlock = this.blockList[blk];
-        var fillerBitmap = myBlock.fillerBitmaps.pop();
+        var fillerBitmap = myBlock.fillerBitmaps[0].pop();
 
         myBlock.container.removeChild(fillerBitmap);
         this.bitmapCache[fillerBitmap.name] = fillerBitmap;
@@ -640,7 +639,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var myBlock = this.blockList[blk];
 
         function processBitmap(me, name, bitmap, myBlock) {
-            myBlock.fillerBitmaps.push(bitmap);
+            myBlock.fillerBitmaps[0].push(bitmap);
             myBlock.container.addChild(bitmap);
             bitmap.x = myBlock.bitmap.x;
             bitmap.y = myBlock.bitmap.y + offset;
@@ -666,7 +665,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         function processHighlightBitmap(me, name, bitmap, myBlock) {
-            myBlock.highlightFillerBitmaps.push(bitmap);
+            myBlock.highlightFillerBitmaps[0].push(bitmap);
             myBlock.container.addChild(bitmap);
             bitmap.x = myBlock.bitmap.x;
             bitmap.y = myBlock.bitmap.y + offset;
@@ -1436,7 +1435,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
           // Get the block labels from the protoblock
           var block_label = myBlock.protoblock.staticLabels[2];
 
-          var middleOffset = myBlock.protoblock.middleOffset;
+          var middleOffset = myBlock.protoblock.artworkOffset[0];
 
           // Create the bitmap for the block.
           function processBitmap(me, name, bitmap, myBlock) {
@@ -1524,15 +1523,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (myBlock.isExpandableBlock()) {
             // Expandable blocks also have some extra parts.
             bottomArtwork = last(myBlock.protoblock.artwork);
-            var bottomOffset = myBlock.protoblock.bottomOffset;
-            myBlock.fillerBitmaps = [];
+            var artworkOffset = last(myBlock.protoblock.artworkOffset);
+            myBlock.fillerBitmaps = [[], []];
             myBlock.bottomBitmap = null;
 
             function processBottomBitmap(me, name, bitmap, myBlock) {
                 myBlock.bottomBitmap = bitmap;
                 myBlock.container.addChild(myBlock.bottomBitmap);
                 myBlock.bottomBitmap.x = myBlock.bitmap.x;
-                myBlock.bottomBitmap.y = myBlock.bitmap.y + bottomOffset;
+                myBlock.bottomBitmap.y = myBlock.bitmap.y + artworkOffset;
                 myBlock.bottomBitmap.name = 'bmp_' + thisBlock + '_bottom';
                 me.refreshCanvas();
             }
@@ -1543,7 +1542,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.highlightBottomBitmap = bitmap;
                 myBlock.container.addChild(myBlock.highlightBottomBitmap);
                 myBlock.highlightBottomBitmap.x = myBlock.bitmap.x;
-                myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + bottomOffset;
+                myBlock.highlightBottomBitmap.y = myBlock.bitmap.y + artworkOffset;
                 myBlock.highlightBottomBitmap.name = 'bmp_' + thisBlock + '_highlight_bottom';
                 myBlock.highlightBottomBitmap.visible = false;
 
@@ -1669,9 +1668,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.bitmap.visible = true;
                 myBlock.highlightBitmap.visible = false;
                 if (this.blockList[thisBlock].isExpandableBlock()) {
-                    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-                        myBlock.fillerBitmaps[i].visible = true;
-                        myBlock.highlightFillerBitmaps[i].visible = false;
+                    for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
+                        myBlock.fillerBitmaps[0][i].visible = true;
+                        myBlock.highlightFillerBitmaps[0][i].visible = false;
                     }
                     if (myBlock.bottomBitmap != null) {
                         myBlock.bottomBitmap.visible = true;
@@ -1718,9 +1717,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.bitmap.visible = false;
                 myBlock.highlightBitmap.visible = true;
                 if (myBlock.isExpandableBlock()) {
-                    for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-                        myBlock.fillerBitmaps[i].visible = false;
-                        myBlock.highlightFillerBitmaps[i].visible = true;
+                    for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
+                        myBlock.fillerBitmaps[0][i].visible = false;
+                        myBlock.highlightFillerBitmaps[0][i].visible = true;
                     }
                     if (myBlock.bottomBitmap != null) {
                         myBlock.bottomBitmap.visible = false;
@@ -2111,7 +2110,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction'] = myActionBlock;
         myActionBlock.palette = this.palettes.dict['blocks'];
-        myActionBlock.bottomOffset = 86;
+        myActionBlock.artworkOffset = [86];
         myActionBlock.fillerOffset = 42;
         myActionBlock.args = 1;
         myActionBlock.defaults.push(name);
@@ -2535,10 +2534,10 @@ function Block(protoblock) {
     this.highlightBitmap = null;
 
     // Expandable block features.
-    this.fillerCount = 0;
-    this.fillerBitmaps = [];
+    this.fillerCount = [0, 0];
+    this.fillerBitmaps = [[], []];
     this.bottomBitmap = null;
-    this.highlightFillerBitmaps = [];
+    this.highlightFillerBitmaps = [[], []];
     this.highlightBottomBitmap = null;
 
     // Start and Action blocks has a collapse button (in a separate
@@ -2822,8 +2821,8 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.bottomBitmap.visible = false;
                 myBlock.highlightBottomBitmap.visible = true;
                 for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-                    myBlock.fillerBitmaps[i].visible = false;
-                    myBlock.highlightFillerBitmaps[i].visible = true;
+                    myBlock.fillerBitmaps[0][i].visible = false;
+                    myBlock.highlightFillerBitmaps[0][i].visible = true;
                 }
                 if (blocks.dragGroup.length > 0) {
                     for (var b = 0; b < blocks.dragGroup.length; b++) {
@@ -2846,8 +2845,8 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.bottomBitmap.visible = false;
                 myBlock.highlightBottomBitmap.visible = false;
                 for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
-                    myBlock.fillerBitmaps[i].visible = false;
-                    myBlock.highlightFillerBitmaps[i].visible = false;
+                    myBlock.fillerBitmaps[0][i].visible = false;
+                    myBlock.highlightFillerBitmaps[0][i].visible = false;
                 }
                 if (myBlock.name == 'action') {
                     // Label the collapsed block with the action label

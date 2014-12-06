@@ -65,7 +65,7 @@ function ProtoBlock(name) {
     // Default fontsize used for static labels.
     this.fontsize = '18px';
     // The SVG template used to generate the block graphic.
-    this.artwork = null;
+    this.artwork = [];
     // Docks define where blocks connect and which connections are
     // valid.
     this.docks = [];
@@ -85,21 +85,21 @@ function ProtoBlock(name) {
     // E.g., penup, pendown
     this.zeroArgBlock = function() {
         this.args = 0;
-        this.artwork = BASICBLOCK;
+        this.artwork.push(BASICBLOCK);
         this.copyDock(BASICBLOCKDOCKS);
     }
 
     // E.g., break
     this.basicBlockNoFlow = function() {
         this.args = 0;
-        this.artwork = BASICBLOCKNOFLOW;
+        this.artwork.push(BASICBLOCKNOFLOW);
         this.copyDock(BASICBLOCKNOFLOWDOCKS);
     }
 
     // E.g., forward, right
     this.oneArgBlock = function() {
         this.args = 1;
-        this.artwork = BASICBLOCK1ARG;
+        this.artwork.push(BASICBLOCK1ARG);
         this.copyDock(BASICBLOCK1ARGDOCKS);
     }
 
@@ -110,7 +110,8 @@ function ProtoBlock(name) {
         this.style = 'twoarg';
         this.size = 2;
         this.args = 2;
-        this.artwork = BASICBLOCK2ARG;
+        this.artwork.push(BASICBLOCK2ARG);
+	this.artwork.push(BASICBLOCK2ARGBOTTOM);
         this.copyDock(BASICBLOCK2ARGDOCKS);
     }
 
@@ -119,7 +120,7 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
-        this.artwork = ARG1BLOCK;
+        this.artwork.push(ARG1BLOCK);
         this.copyDock(ARG1BLOCKDOCKS);
     }
 
@@ -130,7 +131,8 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 2;
-        this.artwork = ARG2BLOCK;
+        this.artwork.push(ARG2BLOCK);
+        this.artwork.push(ARG2BLOCKBOTTOM);
         this.copyDock(ARG2BLOCKDOCKS);
     }
 
@@ -140,7 +142,7 @@ function ProtoBlock(name) {
         this.style = 'value';
         this.size = 1;
         this.args = 0;
-        this.artwork = VALUEBLOCK;
+        this.artwork.push(VALUEBLOCK);
         this.copyDock(VALUEBLOCKDOCKS);
     }
 
@@ -151,7 +153,7 @@ function ProtoBlock(name) {
         this.style = 'value';
         this.size = 1;
         this.args = 0;
-        this.artwork = MEDIABLOCK;
+        this.artwork.push(MEDIABLOCK);
         this.copyDock(MEDIABLOCKDOCKS);
     }
 
@@ -163,7 +165,8 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-        this.artwork = FLOWCLAMP0ARG;
+        this.artwork.push(FLOWCLAMP0ARG);
+        this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(FLOWCLAMP0ARGDOCKS);
     }
 
@@ -175,7 +178,8 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 2;
         this.args = 2;
-        this.artwork = FLOWCLAMP1ARG;
+        this.artwork.push(FLOWCLAMP1ARG);
+        this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(FLOWCLAMP1ARGDOCKS);
     }
 
@@ -187,7 +191,8 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 3;
         this.args = 2;
-        this.artwork = FLOWCLAMPBOOLEANARG;
+        this.artwork.push(FLOWCLAMPBOOLEANARG);
+        this.artwork.push(ACTIONCLAMPBOTTOM);
         this.copyDock(FLOWCLAMPBOOLEANDOCKS);
     }
 
@@ -201,9 +206,9 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 5;
         this.args = 3;
-	// TODO: Make artwork an array
-        this.artwork = FLOWCLAMPBOOLEANARG;
-        this.extraArtwork = FLOWCLAMPMIDDLE;
+        this.artwork.push(FLOWCLAMPBOOLEANARG);
+        this.artwork.push(FLOWCLAMPMIDDLE);
+        this.artwork.push(ACTIONCLAMPBOTTOM);
         this.copyDock(DOUBLEFLOWCLAMPBOOLEANDOCKS);
     }
 
@@ -214,7 +219,8 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-        this.artwork = ACTIONCLAMP0ARG;
+        this.artwork.push(ACTIONCLAMP0ARG);
+        this.artwork.push(ACTIONCLAMPBOTTOM);
         this.copyDock(ACTIONCLAMP0ARGDOCKS);
     }
 
@@ -225,7 +231,8 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-        this.artwork = ACTIONCLAMP1ARG;
+        this.artwork.push(ACTIONCLAMP1ARG);
+        this.artwork.push(ACTIONCLAMPBOTTOM);
         this.copyDock(ACTIONCLAMP1ARGDOCKS);
     }
 
@@ -234,7 +241,7 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 0;
-        this.artwork = BOOLEAN0ARG;
+        this.artwork.push(BOOLEAN0ARG);
         this.copyDock(BOOLEAN0ARGDOCKS);
     }
 
@@ -243,7 +250,7 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 1;
-        this.artwork = BOOLEAN1BOOLEANARG;
+        this.artwork.push(BOOLEAN1BOOLEANARG);
         this.copyDock(BOOLEAN1BOOLEANARGDOCKS);
     }
 
@@ -252,7 +259,7 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 3;
         this.args = 2;
-        this.artwork = BOOLEAN2BOOLEANARGS;
+        this.artwork.push(BOOLEAN2BOOLEANARGS);
         this.copyDock(BOOLEAN2BOOLEANARGSDOCKS);
     }
 
@@ -262,7 +269,7 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 2;
-        this.artwork = BOOLEAN2ARG;
+        this.artwork.push(BOOLEAN2ARG);
         this.copyDock(BOOLEAN2ARGDOCKS);
     }
 
@@ -272,7 +279,7 @@ function ProtoBlock(name) {
         this.parameter = true;
         this.size = 1;
         this.args = 0;
-        this.artwork = VALUEBLOCK;
+        this.artwork.push(VALUEBLOCK);
         this.copyDock(VALUEBLOCKDOCKS);
     }
 }
@@ -1377,7 +1384,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.refreshCanvas();
         }
 
-        makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
+        makeBitmap(this, myBlock.protoblock.artwork[0].replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
 
         // Create the highlight bitmap for the block.
         function processHighlightBitmap(me, name, bitmap, myBlock) {
@@ -1411,7 +1418,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
           }
 
-          makeBitmap(this, myBlock.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
+          makeBitmap(this, myBlock.protoblock.artwork[0].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
         }
 
       this.middleImageLoad = function(myBlock) {
@@ -1441,7 +1448,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.refreshCanvas();
           }
 
-          makeBitmap(this, myBlock.protoblock.extraArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
+          makeBitmap(this, myBlock.protoblock.artwork[1].replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
 
           // Create the highlight bitmap for the block.
           function processHighlightBitmap(me, name, bitmap, myBlock) {
@@ -1455,7 +1462,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             me.finishImageLoad(myBlock);
           }
 
-          makeBitmap(this, myBlock.protoblock.extraArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
+          makeBitmap(this, myBlock.protoblock.artwork[1].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
         }
 
     this.finishImageLoad = function(myBlock) {
@@ -1515,15 +1522,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         if (myBlock.isExpandableBlock()) {
             // Expandable blocks also have some extra parts.
-            if (myBlock.isArgBlock()) {
-                var bottomArtwork = ARG2BLOCKBOTTOM;
-            } else if (myBlock.isTwoArgBlock()) {
-                var bottomArtwork = BASICBLOCK2ARGBOTTOM;
-            } else if (myBlock.protoblock.palette.name == 'flow') {
-                var bottomArtwork = FLOWCLAMPBOTTOM;
-            } else {
-                var bottomArtwork = ACTIONCLAMPBOTTOM;
-            }
+	    bottomArtwork = last(myBlock.protoblock.artwork);
             var bottomOffset = myBlock.protoblock.bottomOffset;
             myBlock.fillerBitmaps = [];
             myBlock.bottomBitmap = null;

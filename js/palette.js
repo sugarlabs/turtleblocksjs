@@ -50,6 +50,10 @@ function Palettes (canvas, stage, cellSize, refreshCanvas) {
         this.scale = scale;
     }
 
+    this.setDragging = function(setDraggingFlag) {
+	this.setDraggingFlag = setDraggingFlag;
+    }
+
     this.makeMenu = function() {
         // First, an icon/button for each palette
         this.x = 0;
@@ -178,12 +182,14 @@ function Palettes (canvas, stage, cellSize, refreshCanvas) {
 // Palette Button event handlers
 function loadPaletteButtonHandler(palettes, name) {
     palettes.buttons[name].on('mouseover', function(event) {
+	palettes.setDraggingFlag(true);
         palettes.bitmaps[name].visible = false;
         palettes.highlightBitmaps[name].visible = true;
         palettes.refreshCanvas();
     });
 
     palettes.buttons[name].on('mouseout', function(event) {
+	palettes.setDraggingFlag(false);
         palettes.bitmaps[name].visible = true;
         palettes.highlightBitmaps[name].visible = false;
         palettes.refreshCanvas();
@@ -344,7 +350,7 @@ function Palette (palettes, name, color, bgcolor) {
         if (myBlock.name == 'box') {
             var artwork = VALUEBLOCK;  // so the label will fit
         } else {
-            var artwork = myBlock.artwork;
+            var artwork = myBlock.artwork[0];
         }
 
         function processBitmap(me, modname, bitmap, args) {
@@ -375,17 +381,7 @@ function Palette (palettes, name, color, bgcolor) {
 
 	function finishExpandable (me, modname, myBlock, blk) {
             if (me.protoList[blk].expandable) {
-		if (myBlock.style == 'arg') {
-                    var bottomArtwork = ARG2BLOCKBOTTOM;
-		} else if (myBlock.style == 'twoarg') {
-                    var bottomArtwork = BASICBLOCK2ARGBOTTOM;
-		} else if (myBlock.style == 'value') {
-                    var bottomArtwork = BASICBLOCK2ARGBOTTOM;
-		} else if (myBlock.palette == 'flow') {
-                    var bottomArtwork = FLOWCLAMPBOTTOM;
-		} else {
-                    var bottomArtwork = ACTIONCLAMPBOTTOM;
-		}
+		bottomArtwork = last(myBlock.artwork);
 
 		function processBottomBitmap(me, modname, bitmap, bottomOffset) {
                     me.protoContainers[modname].addChild(bitmap);
@@ -578,11 +574,13 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
 // Palette Menu event handlers
 function loadPaletteMenuHandler(palette) {
     palette.menuContainer.on('mouseover', function(event) {
+	palette.palettes.setDraggingFlag(true);
         // palette.highlight();
         // palette.palettes.refreshCanvas();
     });
 
     palette.menuContainer.on('mouseout', function(event) {
+	palette.palettes.setDraggingFlag(false);
         // palette.unhighlight();
         // palette.palettes.refreshCanvas();
     });
@@ -604,6 +602,7 @@ function loadPaletteMenuHandler(palette) {
     });
 
     palette.menuContainer.on('mousedown', function(event) {
+	palette.palettes.setDraggingFlag(true);
         // FIXME: move them all
         var offset = {
             x: palette.menuContainer.x - event.stageX,
@@ -624,6 +623,7 @@ function loadPaletteMenuHandler(palette) {
     });
 
     palette.menuContainer.on('mouseout',function(event) {
+	palette.palettes.setDraggingFlag(false);
     });
 }
 

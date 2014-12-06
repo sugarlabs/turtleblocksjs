@@ -1197,7 +1197,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var x = myBlock.bitmap.x
                 var y = myBlock.bitmap.y
             }
-            if (myBlock.isValueBlock() && myBlock.name != 'media') {
+            if (myBlock.isValueBlock() && (myBlock.name != 'media' || myBlock.name != 'camera') ) {
                 myBlock.label = docById(myBlock.getBlockId());
                 myBlock.label.addEventListener(
                     'change', function() {
@@ -1476,7 +1476,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         // Value blocks get a modifiable text label
-        if (myBlock.isValueBlock() && myBlock.name != 'media') {
+        if (myBlock.isValueBlock() && (myBlock.name != 'media' || myBlock.name != 'camera') ) {
             if (myBlock.value == null) {
                 if (myBlock.name == 'text') {
                     myBlock.value = '---';
@@ -1830,6 +1830,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 	    }
 	    postProcessArg = [thisBlock, null];
 	}
+    else if (name == 'camera') {
+	    postProcess = function(args) {
+		var thisBlock = args[0];
+		var value = args[1];
+		me.blockList[thisBlock].value = value;
+                if (value == null) {
+                    loadThumbnail(me, thisBlock, 'images/camera.svg');
+                } else {
+                    loadThumbnail(me, thisBlock, null);
+		}
+	    }
+	    postProcessArg = [thisBlock, null];
+	}
 
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
@@ -1852,6 +1865,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (name == 'start') {
             myBlock.value = this.turtles.turtleList.length;
             this.turtles.add(myBlock);
+        }
+        
+        else if (name == 'camera') {//remove this
+            console.log("elseifcamera");
+			myBlock.value = '##__CAMERA__##';
+            console.log(myBlock.text);
+            //loadThumbnail(this, myBlock);
+            
         }
 
         for (var i = 0; i < myBlock.docks.length; i++) {
@@ -2388,6 +2409,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
                 // Define some constants for legacy blocks for
                 // backward compatibility with Python projects.
+            case 'camera':
+                    console.log("case-camera-1");
+                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4]);
+                    console.log("case-camera-2");
+                    this.blockList[thisBlock].value = '##__CAMERA__##';
+                    console.log(this.blockList[thisBlock].text);
+                    this.blockList[thisBlock].label
+                    //this.blockList[thisBlock].text="";
+                    console.log("case-camera-3");
+                    //this.label.style.display = '';
+                    loadThumbnail(this, thisBlock, "images/camera.svg");
+                    break;
             case 'red':
             case 'white':
                 postProcess = function(thisBlock) {
@@ -2965,7 +2998,7 @@ function loadEventHandlers(blocks, myBlock) {
                 blocks.selectingStack = false;
             } else if (myBlock.name == 'media') {
                 doOpenMedia(blocks, thisBlock);
-            } else if (myBlock.isValueBlock() && myBlock.name != 'media') {
+            } else if (myBlock.isValueBlock() && (myBlock.name != 'media' || myBlock.name != 'camera') ) {
                 myBlock.label.style.display = '';
             } else {
                 var topBlock = blocks.findTopBlock(thisBlock);

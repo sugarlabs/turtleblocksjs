@@ -427,7 +427,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['until'] = untilBlock;
     untilBlock.flowClampBooleanArgBlock();
     untilBlock.staticLabels.push('until');
-    untilBlock.staticLabels.push('repeat');    
+    untilBlock.staticLabels.push('repeat');
 
     var whileBlock = new ProtoBlock('while');
     whileBlock.palette = palettes.dict['flow'];
@@ -441,6 +441,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['vspace'] = vspaceBlock;
     vspaceBlock.zeroArgBlock();
     // vspaceBlock.staticLabels.push('');
+
+    var ifthenelseBlock = new ProtoBlock('ifthenelse');
+    ifthenelseBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['ifthenelse'] = ifthenelseBlock;
+    ifthenelseBlock.doubleFlowClampBooleanArgBlock();
+    ifthenelseBlock.staticLabels.push('if');
+    ifthenelseBlock.staticLabels.push('then');
+    ifthenelseBlock.staticLabels.push('else');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

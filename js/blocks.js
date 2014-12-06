@@ -1811,13 +1811,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.makeBlock = function(name, arg) {
         // Make a new block from a proto block.
-        // Called from palettes (and from the load block).
+        // Called from palettes.
 
         var postProcess = null;
         var postProcessArg = null;
 	var me = this;
 	var thisBlock = this.blockList.length;
-	if (name == 'media') {
+	if (name == 'start') {
+	    postProcess = function(thisBlock) {
+		me.blockList[thisBlock].value = me.turtles.turtleList.length;
+		me.turtles.add(me.blockList[thisBlock]);
+	    }
+	    postProcessArg = thisBlock;
+	} else if (name == 'media') {
 	    postProcess = function(args) {
 		var thisBlock = args[0];
 		var value = args[1];
@@ -1850,8 +1856,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // Each start block gets its own turtle.
         if (name == 'start') {
-            myBlock.value = this.turtles.turtleList.length;
-            this.turtles.add(myBlock);
         }
 
         for (var i = 0; i < myBlock.docks.length; i++) {

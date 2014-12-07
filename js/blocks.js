@@ -1141,7 +1141,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.updateBlockLabels = function() {
-	console.log('updateBlockLabels');
         // The modifiable labels are stored in the DOM with a unique
         // id for each block.  For the moment, we only have labels for
         // number and text blocks.
@@ -1151,15 +1150,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         for (var blk = 0; blk < this.blockList.length; blk++) {
             var myBlock = this.blockList[blk];
             if (myBlock.name == 'number') {
-                if (myBlock.label == null) {
-                    if (myBlock.value == null) {
-			console.log('block value was null ... assigning 100');
-                        myBlock.value = 100;
-                    }
-                    value = myBlock.value.toString();
-                } else {
-                    value = myBlock.label.value;
+                if (myBlock.value == null) {
+		    console.log('block value was null ... assigning 100');
+                    myBlock.value = 100;
                 }
+                value = myBlock.value.toString();
                 text = '<textarea id="' + myBlock.getBlockId() +
                     '" style="position: absolute; ' +
                     '-webkit-user-select: text;" ' +
@@ -1168,14 +1163,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     'cols="8", rows="1", maxlength="8">' +
                     value + '</textarea>'
             } else if (myBlock.name == 'text') {
-                if (myBlock.label == null) {
-                    if (myBlock.value == null) {
-                        myBlock.value = 'text';
-                    }
-                    value = myBlock.value;
-                } else {
-                    value = myBlock.label.value;
+                if (myBlock.value == null) {
+		    console.log('block value was null ... assigning text');
+                    myBlock.value = 'text';
                 }
+                value = myBlock.value;
                 text = '<textarea id="' + myBlock.getBlockId() +
                     '" style="position: absolute; ' +
                     '-webkit-user-select: text;" ' +
@@ -1842,11 +1834,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 	    postProcess = function(args) {
 		var thisBlock = args[0];
 		var value = args[1];
-		me.blockList[thisBlock].value = 100;
+		me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value.toString();
 		me.updateBlockLabels();
 	    }
-	    postProcessArg = [thisBlock, null];
+	    postProcessArg = [thisBlock, 100];
 	} else if (name == 'media') {
 	    postProcess = function(args) {
 		var thisBlock = args[0];
@@ -1928,6 +1920,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 		    }
                     this.makeNewBlock('text', postProcess, [thisBlock, value]);
                 } else {
+		    console.log('adding number argument');
 		    postProcess = function(args) {
 			var thisBlock = args[0];
 			var value = args[1];
@@ -2414,6 +2407,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 postProcess = function(args) {
                     var thisBlock = args[0];
                     var value = args[1];
+		    console.log('assigning block value ' + value);
                     me.blockList[thisBlock].value = value;
                     me.updateBlockText(thisBlock);
 		    me.updateBlockLabels();

@@ -19,6 +19,7 @@ define(function (require) {
     var icon = require('sugar-web/graphics/icon');
     require('easeljs');
     require('preloadjs');
+    require('howler');
     // require('activity/utils');
     require('activity/artwork');
     require('activity/munsell');
@@ -76,14 +77,15 @@ define(function (require) {
         var currentKeyCode = 0;
         var lastKeyCode = 0;
         var pasteContainer = null;
+        var sounds = [];
 
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
 
-	// initial scroll position
-	var scrollX = 0;
-	var scrollY = 0;
+	    // initial scroll position
+	    var scrollX = 0;
+	    var scrollY = 0;
 
         // default values
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
@@ -621,6 +623,12 @@ define(function (require) {
             // The stop button was pressed. Stop the turtle and clean
             // up a few odds and ends.
             stopTurtle = true;
+
+            for (sound in sounds) {
+                sounds[sound].stop();
+            }
+            sounds = [];
+
             if (buttonsVisible && !toolbarButtonsVisible) {
                 hideStopButton();
             }
@@ -1326,6 +1334,17 @@ define(function (require) {
                 turtles.turtleList[turtle].doPenDown();
                 break;
             case 'vspace':
+                break;
+            case 'playback':
+                sound = new Howl({urls: [args[0]]});
+                sounds.push(sound);
+                sound.play();
+                break;
+            case 'stopplayback':
+                for (sound in sounds) {
+                    sounds[sound].stop();
+                }
+                sounds = [];
                 break;
             default:
                 if (blocks.blockList[blk].name in evalFlowDict) {

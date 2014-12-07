@@ -208,7 +208,7 @@ function ProtoBlock(name) {
         this.style = 'doubleclamp';
         this.artworkOffset = [116, 200];
         this.expandable = true;
-        this.size = 6;
+        this.size = 4;
         this.args = 3;
         this.artwork.push(FLOWCLAMPBOOLEANARG);
         this.artwork.push(FLOWCLAMPMIDDLE);
@@ -728,19 +728,39 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             console.log('SOMETHING VERY BROKEN');
         }
 
+	console.log('get stacksize of ' + myBlock.name);
+	console.log(myBlock.isClampBlock());
         if (myBlock.isClampBlock()) {
             var c = myBlock.connections.length - 2;
+	    var csize = 0;
             if (c > 0) {
                  var cblk = myBlock.connections[c];
                 if (cblk != null) {
-                    size = this.getStackSize(cblk);
-                    if (size == 0) {
-                        size = 1; // minimum of 1 slot in clamp
-                    }
-                }
-                // add top and bottom of clamp
-                size += myBlock.size;
+                    csize = this.getStackSize(cblk);
+		}
+                if (csize == 0) {
+                    size = 1; // minimum of 1 slot in clamp
+                } else {
+		    size = csize;
+		}
             }
+	    if (myBlock.isDoubleClampBlock()) {
+		var c = myBlock.connections.length - 3;
+		var csize = 0;
+		if (c > 0) {
+                    var cblk = myBlock.connections[c];
+                    if (cblk != null) {
+			var csize = this.getStackSize(cblk);
+		    }
+		    if (csize == 0) {
+                        size += 1; // minimum of 1 slot in clamp
+		    } else {
+			size += csize;
+		    }
+		}
+	    }
+            // add top and bottom of clamp
+            size += myBlock.size;
         } else {
             size = myBlock.size;
         }
@@ -1237,6 +1257,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (myBlock.connections == null) {
             return blk;
         }
+
         if (myBlock.connections.length == 0) {
             return blk;
         }
@@ -1249,6 +1270,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 console.log(myBlock.name);
                 break;
             }
+	    console.log('find top: ' + myBlock.name + ' ' + myBlock.connections[0].name);
             blk = myBlock.connections[0];
         }
         return blk;
@@ -1435,7 +1457,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
           var block_label = myBlock.protoblock.staticLabels[2];
 
           var middleOffset = myBlock.protoblock.artworkOffset[0];
-	  console.log('middle Offset ' + middleOffset);
 
           // Create the bitmap for the block.
           function processBitmap(me, name, bitmap, myBlock) {
@@ -2674,7 +2695,11 @@ function Block(protoblock) {
     }
 
     this.isClampBlock = function() {
-        return this.protoblock.style == 'clamp';
+        return this.protoblock.style == 'clamp' || this.isDoubleClampBlock();
+    }
+
+    this.isDoubleClampBlock = function() {
+        return this.protoblock.style == 'doubleclamp';
     }
 
     this.isNoRunBlock = function() {

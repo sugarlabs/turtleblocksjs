@@ -23,6 +23,11 @@ var MINIMUMDOCKDISTANCE = 400;
 // Length of a long touch
 var LONGPRESSTIME = 2000;
 
+// Special value flags to uniquely identify these media blocks.
+var CAMERAVALUE = "##__CAMERA__##";
+var VIDEOVALUE = "##__VIDEO__##";
+
+
 // There are three "classes" defined in this file: ProtoBlocks,
 // Blocks, and Block. Protoblocks are the prototypes from which Blocks
 // are created; Blocks is the list of all blocks; and Block is a block
@@ -1148,6 +1153,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (myBlock.name == 'number') {
                 if (myBlock.label == null) {
                     if (myBlock.value == null) {
+			console.log('block value was null ... assigning 100');
                         myBlock.value = 100;
                     }
                     value = myBlock.value.toString();
@@ -1440,12 +1446,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
           // Create the bitmap for the block.
           function processBitmap(me, name, bitmap, myBlock) {
-            myBlock.bitmap = bitmap;
-            myBlock.container.addChild(myBlock.bitmap);
-            myBlock.bitmap.x = myBlock.bitmap.x;
-            myBlock.bitmap.y = myBlock.bitmap.y + middleOffset;
-            myBlock.bitmap.name = 'bmp_' + thisBlock;
-            myBlock.bitmap.cursor = 'pointer';
+            myBlock.middlebitmap = bitmap;
+            myBlock.container.addChild(myBlock.middlebitmap);
+            myBlock.middlebitmap.x = myBlock.bitmap.x;
+            myBlock.middlebitmap.y = myBlock.bitmap.y + middleOffset;
+            myBlock.middlebitmap.name = 'bmp_' + thisBlock;
+            myBlock.middlebitmap.cursor = 'pointer';
             me.refreshCanvas();
           }
 
@@ -1857,7 +1863,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 	    postProcess = function(args) {
 		var thisBlock = args[0];
 		var value = args[1];
-		me.blockList[thisBlock].value = value;
+		me.blockList[thisBlock].value = CAMERAVALUE;
                 if (value == null) {
                     loadThumbnail(me, thisBlock, 'images/camera.svg');
                 } else {
@@ -1869,7 +1875,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 	    postProcess = function(args) {
 		var thisBlock = args[0];
 		var value = args[1];
-		me.blockList[thisBlock].value = value;
+		me.blockList[thisBlock].value = VIDEOVALUE;
                 if (value == null) {
                     loadThumbnail(me, thisBlock, 'images/video.svg');
                 } else {
@@ -2433,7 +2439,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 postProcess = function(args) {
                     var thisBlock = args[0];
                     var value = args[1];
-                    me.blockList[thisBlock].value = '##__CAMERA__##';
+                    me.blockList[thisBlock].value = CAMERAVALUE;
                     loadThumbnail(me, thisBlock, "images/camera.svg");
 
 		}
@@ -2443,7 +2449,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 postProcess = function(args) {
                     var thisBlock = args[0];
                     var value = args[1];
-                    me.blockList[thisBlock].value = '##__VIDEO__##';
+                    me.blockList[thisBlock].value = VIDEOVALUE;
                     loadThumbnail(me, thisBlock, "images/video.svg");
 
 		}
@@ -2596,9 +2602,13 @@ function Block(protoblock) {
 
     // Expandable block features.
     this.fillerCount = [0, 0];
+
     this.fillerBitmaps = [[], []];
+    this.middleBitmap = null;
     this.bottomBitmap = null;
+
     this.highlightFillerBitmaps = [[], []];
+    this.middleHighlightBitmap = null;
     this.highlightBottomBitmap = null;
 
     // Start and Action blocks has a collapse button (in a separate

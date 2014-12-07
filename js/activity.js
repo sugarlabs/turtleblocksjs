@@ -88,6 +88,9 @@ define(function (require) {
 	    var scrollY = 0;
 
         // default values
+	var CAMERAVALUE = "##__CAMERA__##";
+	var VIDEOVALUE = "##__VIDEO__##";
+
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
         var DEFAULTDELAY = 500;  // milleseconds
 
@@ -369,11 +372,11 @@ define(function (require) {
 		if (stageMouseDown && !draggingContainer) {
 		    var dx = event.stageX - x;
 		    var dy = event.stageY - y;
-		    console.log('mouseMove (' + event.stageX + ', ' + event.stageY + ') (' + x + ', ' + y + ') (' + dx + ', ' + dy + ')');
 		    x = event.stageX;
 		    y = event.stageY;
 		    if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }
 		    if (dy > 10) { dy = 10; } else if (dy < -10) { dy = -10; }
+		    console.log('mouseMove (' + dx + ', ' + dy + ') scroll (' + scrollX + ', ' + scrollY + ')');
 		    scrollX += dx;
 		    if (scrollX < 0) {
 			scrollX = 0;
@@ -1180,103 +1183,11 @@ define(function (require) {
                 if (args.length == 2) {
                     if (typeof(args[1]) == 'string') {
                         var len = args[1].length;
-                        if (len == 14 && args[1].substr(0, 14) == "##__CAMERA__##"){
-							window.URL = window.URL || window.webkitURL;
-							navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
-							function() {
-								alert('Su navegador no soporta navigator.getUserMedia().');
-							};
-
-							//Este objeto guardará algunos datos sobre la cámara
-							window.datosVideo = {
-								'StreamVideo': null,
-								'url': null
-							}
-                            var test = function(){
-								var oCamara, oFoto, oContexto, w, h;
-								var canvas = document.getElementById("foto");
-								oCamara = jQuery('#camara');
-								oFoto = jQuery('#foto');
-								w = oCamara.width();
-								h = oCamara.height();
-								oFoto.attr({
-									'width': w,
-									'height': h
-								});
-								oContexto = oFoto[0].getContext('2d');
-								oContexto.drawImage(oCamara[0], 0, 0, w, h);
-								console.log(args[1]);
-								turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
-                                //console.log(blocks.blockList[thisBlock].value);
-                                console.log(blocks.blockList["camera"]);
-							}
-						
-						navigator.getUserMedia({
-							'audio': false,
-							'video': true
-						}, function(streamVideo) {
-							jQuery("#camara").hide();
-							datosVideo.StreamVideo = streamVideo;
-							datosVideo.url = window.URL.createObjectURL(streamVideo);
-							jQuery('#camara').attr('src', datosVideo.url);
-							console.log("Hello");
-							window.setTimeout(test, 1000);
-
-						}, function() {
-							alert('No fue posible obtener acceso a la cámara.');
-						});
-						
-                        }
-                        
-                        if (len == 13 && args[1].substr(0, 13) == "##__VIDEO__##"){
-							window.URL = window.URL || window.webkitURL;
-							navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
-							function() {
-								alert('Su navegador no soporta navigator.getUserMedia().');
-							};
-
-							//Este objeto guardará algunos datos sobre la cámara
-							window.datosVideo = {
-								'StreamVideo': null,
-								'url': null
-							}
-                            var test = function(){
-								var oCamara, oFoto, oContexto, w, h;
-								var canvas = document.getElementById("foto");
-								oCamara = jQuery('#camara');
-								oFoto = jQuery('#foto');
-								w = oCamara.width();
-								h = oCamara.height();
-								oFoto.attr({
-									'width': w,
-									'height': h
-								});
-								oContexto = oFoto[0].getContext('2d');
-								oContexto.drawImage(oCamara[0], 0, 0, w, h);
-								console.log(args[1]);
-								turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
-                                //console.log(blocks.blockList[thisBlock].value);
-                                console.log(blocks.blockList["camera"]);
-							}
-						
-						navigator.getUserMedia({
-							'audio': false,
-							'video': true
-						}, function(streamVideo) {
-							jQuery("#camara").hide();
-							datosVideo.StreamVideo = streamVideo;
-							datosVideo.url = window.URL.createObjectURL(streamVideo);
-							jQuery('#camara').attr('src', datosVideo.url);
-							console.log("Hello");
-							window.setInterval(test, 0.1);
-
-						}, function() {
-							alert('No fue posible obtener acceso a la cámara.');
-						});
-						
-                        }
-                        
-                        else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
+                        if (len == 14 && args[1].substr(0, 14) == CAMERAVALUE){
+			    doShowCamera(turtles);
+                        } else if (len == 13 && args[1].substr(0, 13) == VIDEOVALUE){
+			    doShowVideo(turtles);
+                        } else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
                             turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                         } else if (len > 8 && args[1].substr(0, 8) == 'https://') {
                             turtles.turtleList[turtle].doShowURL(args[0], args[1]);
@@ -2196,4 +2107,93 @@ function fileBasename(file) {
         parts.pop(); // throw away suffix
         return parts.join('.');
     }
+}
+
+function doShowCamera(turtles) {
+    window.URL = window.URL || window.webkitURL;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
+	function() {
+	    alert('Su navegador no soporta navigator.getUserMedia().');
+	};
+    //Este objeto guardará algunos datos sobre la cámara
+    window.datosVideo = {
+	'StreamVideo': null,
+	'url': null
+    }
+    var test = function(){
+	var oCamara, oFoto, oContexto, w, h;
+	var canvas = document.getElementById("foto");
+	oCamara = jQuery('#camara');
+	oFoto = jQuery('#foto');
+	w = oCamara.width();
+	h = oCamara.height();
+	oFoto.attr({
+	    'width': w,
+	    'height': h
+	});
+	oContexto = oFoto[0].getContext('2d');
+	oContexto.drawImage(oCamara[0], 0, 0, w, h);
+	console.log(args[1]);
+	turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
+        //console.log(blocks.blockList[thisBlock].value);
+        console.log(blocks.blockList["camera"]);
+    }
+    navigator.getUserMedia({
+	'audio': false,
+	'video': true
+    }, function(streamVideo) {
+	jQuery("#camara").hide();
+	datosVideo.StreamVideo = streamVideo;
+	datosVideo.url = window.URL.createObjectURL(streamVideo);
+	jQuery('#camara').attr('src', datosVideo.url);
+	console.log("Hello");
+	window.setTimeout(test, 1000);
+    }, function() {
+	alert('No fue posible obtener acceso a la cámara.');
+    });
+}
+
+
+function doShowVideo(turtles) {
+    window.URL = window.URL || window.webkitURL;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
+	function() {
+	    alert('Su navegador no soporta navigator.getUserMedia().');
+	};
+    //Este objeto guardará algunos datos sobre la cámara
+    window.datosVideo = {
+	'StreamVideo': null,
+	'url': null
+    }
+    var test = function(){
+	var oCamara, oFoto, oContexto, w, h;
+	var canvas = document.getElementById("foto");
+	oCamara = jQuery('#camara');
+	oFoto = jQuery('#foto');
+	w = oCamara.width();
+	h = oCamara.height();
+	oFoto.attr({
+	    'width': w,
+	    'height': h
+	});
+	oContexto = oFoto[0].getContext('2d');
+	oContexto.drawImage(oCamara[0], 0, 0, w, h);
+	console.log(args[1]);
+	turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
+        //console.log(blocks.blockList[thisBlock].value);
+        console.log(blocks.blockList["camera"]);
+    }
+    navigator.getUserMedia({
+	'audio': false,
+	'video': true
+    }, function(streamVideo) {
+	jQuery("#camara").hide();
+	datosVideo.StreamVideo = streamVideo;
+	datosVideo.url = window.URL.createObjectURL(streamVideo);
+	jQuery('#camara').attr('src', datosVideo.url);
+	console.log("Hello");
+	window.setInterval(test, 0.1);
+    }, function() {
+	alert('No fue posible obtener acceso a la cámara.');
+    });
 }

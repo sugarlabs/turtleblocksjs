@@ -426,7 +426,6 @@ function Palette (palettes, name, color, bgcolor) {
                     else {
                         var middleOffset = 0;
                     }
-                    console.log(middleOffset);
                     bitmap.y = middleOffset + artworkOffset;
                     bitmap.scaleX = paletteScale;
                     bitmap.scaleY = paletteScale;

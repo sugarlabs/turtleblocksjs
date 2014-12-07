@@ -735,16 +735,17 @@ define(function (require) {
                 }
             } else {
                 console.log('loading start');
-                blocks.makeNewBlock('start');
-                blocks.blockList[0].x = 50;
-                blocks.blockList[0].y = 50;
-                blocks.blockList[0].connections = [null, null, null];
-                blocks.blockList[0].value = turtles.turtleList.length;
-                turtles.add(blocks.blockList[0]);
+		postProcess = function(thisBlock) {
+                    blocks.blockList[0].x = 50;
+                    blocks.blockList[0].y = 50;
+                    blocks.blockList[0].connections = [null, null, null];
+                    blocks.blockList[0].value = turtles.turtleList.length;
+                    turtles.add(blocks.blockList[0]);
+		    blocks.updateBlockPositions();
+		    blocks.updateBlockLabels();
+		}
+                blocks.makeNewBlock('start', postProcess, null);
             }
-            blocks.updateBlockPositions();
-            blocks.updateBlockLabels();
-
             update = true;
         }
 

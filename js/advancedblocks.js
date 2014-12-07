@@ -115,8 +115,22 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     speakBlock.oneArgBlock();
     speakBlock.staticLabels.push('speak');
     speakBlock.docks[1][2] = 'textin';
-    
 
+    var audioBlock = new ProtoBlock('playback');
+    audioBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['playback'] = audioBlock;
+    audioBlock.defaults.push(null);
+    audioBlock.oneArgBlock();
+    audioBlock.docks[1][2] = 'mediain';
+    audioBlock.staticLabels.push('playback');
+
+    var audioStopBlock = new ProtoBlock('stopplayback');
+    audioStopBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['stopplayback'] = audioStopBlock;
+    audioStopBlock.zeroArgBlock();
+    audioStopBlock.staticLabels.push('stop playback');
+    audioStopBlock.fontsize = '14px';
+ 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);

@@ -269,6 +269,7 @@ define(function (require) {
             palettes.setBlocks(blocks);
 	    palettes.setDragging(setDraggingContainer);
             turtles.setBlocks(blocks);
+	    turtles.setDragging(setDraggingContainer);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
 	    blocks.setDragging(setDraggingContainer);

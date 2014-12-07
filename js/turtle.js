@@ -469,6 +469,10 @@ function Turtles(canvas, stage, refreshCanvas) {
         this.blocks = blocks;
     }
 
+    this.setDragging = function(setDraggingFlag) {
+        this.setDraggingFlag = setDraggingFlag;
+    }
+
     // The list of all of our turtles, one for each start block.
     this.turtleList = [];
 
@@ -535,6 +539,7 @@ function Turtles(canvas, stage, refreshCanvas) {
         var turtles = this;
 
         myTurtle.container.on('mousedown', function(event) {
+            turtles.setDraggingFlag(true);
             var offset = {
                 x: myTurtle.container.x - event.stageX,
                 y: myTurtle.container.y - event.stageY
@@ -557,6 +562,7 @@ function Turtles(canvas, stage, refreshCanvas) {
         });
 
         myTurtle.container.on('mouseout', function(event) {
+            turtles.setDraggingFlag(false);
             myTurtle.bitmap.scaleX = 1;
             myTurtle.bitmap.scaleY = 1;
             myTurtle.bitmap.scale = 1;

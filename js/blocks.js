@@ -1525,6 +1525,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             bottomArtwork = last(myBlock.protoblock.artwork);
             var artworkOffset = last(myBlock.protoblock.artworkOffset);
             myBlock.fillerBitmaps = [[], []];
+            myBlock.highlightfillerBitmaps = [[], []];
             myBlock.bottomBitmap = null;
 
             function processBottomBitmap(me, name, bitmap, myBlock) {
@@ -2890,7 +2891,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                     myBlock.middleBitmap.visible = false;
                     myBlock.middleHighlightBitmap.visible = true;
 		}
-                for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+                for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
                     myBlock.fillerBitmaps[0][i].visible = false;
                     myBlock.highlightFillerBitmaps[0][i].visible = true;
                 }
@@ -2914,7 +2915,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.highlightBitmap.visible = false;
                 myBlock.bottomBitmap.visible = false;
                 myBlock.highlightBottomBitmap.visible = false;
-                for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
+                for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
                     myBlock.fillerBitmaps[0][i].visible = false;
                     myBlock.highlightFillerBitmaps[0][i].visible = false;
                 }

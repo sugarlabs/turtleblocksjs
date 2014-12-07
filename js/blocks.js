@@ -3034,6 +3034,10 @@ function loadEventHandlers(blocks, myBlock) {
             } else if (myBlock.name == 'media') {
                 doOpenMedia(blocks, thisBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
+		if (myBlock.label == null) {
+		    console.log('adding missing block label');
+		    blocks.updateBlockLabels();
+		}
                 myBlock.label.style.display = '';
             } else {
                 var topBlock = blocks.findTopBlock(thisBlock);

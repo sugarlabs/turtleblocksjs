@@ -206,9 +206,9 @@ function ProtoBlock(name) {
     // above and below.
     this.doubleFlowClampBooleanArgBlock = function() {
         this.style = 'doubleclamp';
-        this.artworkOffset = [116, 84];
+        this.artworkOffset = [116, 200];
         this.expandable = true;
-        this.size = 5;
+        this.size = 6;
         this.args = 3;
         this.artwork.push(FLOWCLAMPBOOLEANARG);
         this.artwork.push(FLOWCLAMPMIDDLE);
@@ -1435,6 +1435,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
           var block_label = myBlock.protoblock.staticLabels[2];
 
           var middleOffset = myBlock.protoblock.artworkOffset[0];
+	  console.log('middle Offset ' + middleOffset);
 
           // Create the bitmap for the block.
           function processBitmap(me, name, bitmap, myBlock) {
@@ -1442,7 +1443,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.addChild(myBlock.middlebitmap);
             myBlock.middlebitmap.x = myBlock.bitmap.x;
             myBlock.middlebitmap.y = myBlock.bitmap.y + middleOffset;
-            myBlock.middlebitmap.name = 'bmp_' + thisBlock;
+            myBlock.middlebitmap.name = 'bmp_middle_' + thisBlock;
             myBlock.middlebitmap.cursor = 'pointer';
             me.refreshCanvas();
           }
@@ -1454,8 +1455,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.middleHighlightBitmap = bitmap;
             myBlock.container.addChild(myBlock.middleHighlightBitmap);
             myBlock.middleHighlightBitmap.x = myBlock.bitmap.x;
-            myBlock.middleHighlightBitmap.y = myBlock.bitmap.y;;
-            myBlock.middleHighlightBitmap.name = 'bmp_highlight_' + thisBlock;
+            myBlock.middleHighlightBitmap.y = myBlock.bitmap.y + middleOffset;
+            myBlock.middleHighlightBitmap.name = 'bmp_middle_highlight_' + thisBlock;
             myBlock.middleHighlightBitmap.cursor = 'pointer';
             myBlock.middleHighlightBitmap.visible = false;
             me.finishImageLoad(myBlock);
@@ -2885,6 +2886,10 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.highlightBitmap.visible = true;
                 myBlock.bottomBitmap.visible = false;
                 myBlock.highlightBottomBitmap.visible = true;
+		if (myBlock.middleBitmap != null) {
+                    myBlock.middleBitmap.visible = false;
+                    myBlock.middleHighlightBitmap.visible = true;
+		}
                 for (var i = 0; i < myBlock.fillerBitmaps.length; i++) {
                     myBlock.fillerBitmaps[0][i].visible = false;
                     myBlock.highlightFillerBitmaps[0][i].visible = true;
@@ -2913,6 +2918,10 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                     myBlock.fillerBitmaps[0][i].visible = false;
                     myBlock.highlightFillerBitmaps[0][i].visible = false;
                 }
+		if (myBlock.middleBitmap != null) {
+                    myBlock.middleBitmap.visible = false;
+                    myBlock.middleHighlightBitmap.visible = false;
+		}
                 if (myBlock.name == 'action') {
                     // Label the collapsed block with the action label
                     if (myBlock.connections[1] != null) {
@@ -3034,6 +3043,7 @@ function loadEventHandlers(blocks, myBlock) {
             } else if (myBlock.name == 'media') {
                 doOpenMedia(blocks, thisBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
+		// FIXME: Why does this happen???
 		if (myBlock.label == null) {
 		    console.log('adding missing block label');
 		    blocks.updateBlockLabels();

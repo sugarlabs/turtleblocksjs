@@ -407,7 +407,7 @@ function Palette (palettes, name, color, bgcolor) {
               me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
             }
 
-            var middleOffset = Math.floor(me.protoList[blk].artworkOffset[0] * paletteScale);
+            var middleOffset = Math.floor(me.protoList[blk].artworkOffset[1] * paletteScale);
             makePaletteBitmap(me, middleArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('mid_label', mid_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, middleOffset);
             finishExpandable(me, modname, myBlock, blk)
           }
@@ -420,12 +420,7 @@ function Palette (palettes, name, color, bgcolor) {
                 function processBottomBitmap(me, modname, bitmap, artworkOffset) {
                     me.protoContainers[modname].addChild(bitmap);
                     bitmap.x = 20;
-                    if (me.protoList[blk].artworkOffset.length > 1) {
-                        var middleOffset = Math.floor(me.protoList[blk].artworkOffset[0] * paletteScale);
-                    }
-                    else {
-                        var middleOffset = 0;
-                    }
+                    var middleOffset = Math.floor(me.protoList[blk].artworkOffset[1] * paletteScale);
                     bitmap.y = artworkOffset;
                     bitmap.scaleX = paletteScale;
                     bitmap.scaleY = paletteScale;
@@ -440,7 +435,7 @@ function Palette (palettes, name, color, bgcolor) {
                     me.palettes.refreshCanvas();
                 }
 
-                var artworkOffset = Math.floor(last(me.protoList[blk].artworkOffset) * paletteScale);
+                var artworkOffset = Math.floor(me.protoList[blk].artworkOffset[2] * paletteScale);
                 makePaletteBitmap(me, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, artworkOffset);
             }
         }

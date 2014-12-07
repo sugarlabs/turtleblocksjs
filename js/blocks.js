@@ -120,7 +120,7 @@ function ProtoBlock(name) {
 
     // E.g., setxy. These are expandable.
     this.twoArgBlock = function() {
-        this.artworkOffset = [49];
+        this.artworkOffset = [0, 0, 49];
         this.expandable = true;
         this.style = 'twoarg';
         this.size = 2;
@@ -144,7 +144,7 @@ function ProtoBlock(name) {
 
     // E.g., plus, minus, multiply, divide. These are also expandable.
     this.twoArgMathBlock = function() {
-        this.artworkOffset = [49];
+        this.artworkOffset = [0, 0, 49];
         this.expandable = true;
         this.style = 'arg';
         this.size = 2;
@@ -184,7 +184,7 @@ function ProtoBlock(name) {
     // There are no additional arguments and no flow above or below.
     this.flowClampZeroArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [74];
+        this.artworkOffset = [0, 0, 74];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -198,7 +198,7 @@ function ProtoBlock(name) {
     // The additional argument is a name. Again, no flow above or below.
     this.flowClampOneArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [74];
+        this.artworkOffset = [0, 0, 74];
         this.expandable = true;
         this.size = 2;
         this.args = 2;
@@ -212,7 +212,7 @@ function ProtoBlock(name) {
     // additional argument is a boolean. There is flow above and below.
     this.flowClampBooleanArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [116];
+        this.artworkOffset = [0, 0, 116];
         this.expandable = true;
         this.size = 3;
         this.args = 2;
@@ -227,7 +227,7 @@ function ProtoBlock(name) {
     // above and below.
     this.doubleFlowClampBooleanArgBlock = function() {
         this.style = 'doubleclamp';
-        this.artworkOffset = [116, 200];
+        this.artworkOffset = [0, 116, 200];
         this.expandable = true;
         this.size = 4;
         this.args = 3;
@@ -240,7 +240,7 @@ function ProtoBlock(name) {
     // E.g., forever. Unlike start, there is flow above and below.
     this.blockClampZeroArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [86];
+        this.artworkOffset = [0, 0, 86];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -253,7 +253,7 @@ function ProtoBlock(name) {
     // E.g., repeat. Unlike action, there is a flow above and below.
     this.blockClampOneArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [86];
+        this.artworkOffset = [0, 0, 86];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
@@ -514,7 +514,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Next, we adjust the clamp size to match the size of the
         // child flow.
         var docksChanged = false;
-        var artworkOffset = last(myBlock.protoblock.artworkOffset);
+        var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
         var fillerOffset = myBlock.protoblock.fillerOffset;
         var currentFillerCount = myBlock.fillerCount[0];
         if (childFlowSize < currentFillerCount + 1) {
@@ -582,7 +582,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // Next, adjust the block size to match.
         var docksChanged = false;
-        var artworkOffset = last(myBlock.protoblock.artworkOffset);
+        var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
         var fillerOffset = myBlock.protoblock.fillerOffset;
         var currentFillerCount = myBlock.fillerCount[0];
         if (firstArgumentSize < currentFillerCount + 1) {
@@ -1487,7 +1487,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
           // Get the block labels from the protoblock
           var block_label = myBlock.protoblock.staticLabels[2];
 
-          var middleOffset = myBlock.protoblock.artworkOffset[0];
+          var middleOffset = myBlock.protoblock.artworkOffset[MID];
 
           // Create the bitmap for the block.
           function processBitmap(me, name, bitmap, myBlock) {
@@ -1573,7 +1573,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (myBlock.isExpandableBlock()) {
             // Expandable blocks also have some extra parts.
             bottomArtwork = myBlock.protoblock.artwork[BOT];
-            var artworkOffset = last(myBlock.protoblock.artworkOffset);
+            var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
             myBlock.fillerBitmaps = [[], []];
             myBlock.highlightfillerBitmaps = [[], []];
 
@@ -2201,7 +2201,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction'] = myActionBlock;
         myActionBlock.palette = this.palettes.dict['blocks'];
-        myActionBlock.artworkOffset = [86];
+        myActionBlock.artworkOffset = [0, 0, 86];
         myActionBlock.fillerOffset = 42;
         myActionBlock.args = 1;
         myActionBlock.defaults.push(name);

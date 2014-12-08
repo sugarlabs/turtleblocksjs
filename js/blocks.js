@@ -545,7 +545,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 		for (var i = 0; i < n; i++) {
                     var c = i + currentFillerCount;
                     // We need to add filler.
-                    me.addFiller(blk, clamp, artworkOffset + c * fillerOffset, c);
+                    me.addFiller(blk, clamp, artworkOffset + c * fillerOffset, c); 
                     // And increment the count and the offset to the
                     // bottom dock position.
                     myBlock.fillerCount[clamp - 1] += 1;
@@ -574,10 +574,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // any flow that continues from this block is positioned
         // properly.
         if (docksChanged) {
-            if (last(myBlock.connections) != null) {
-                this.loopCounter = 0;
-                this.adjustDocks(blk);
-            }
+            this.loopCounter = 0;
+            this.adjustDocks(blk);
         }
     }
 

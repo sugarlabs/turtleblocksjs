@@ -64,6 +64,12 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     keyboardBlock.parameterBlock();
     keyboardBlock.staticLabels.push('keyboard');
 
+    var loudnessBlock = new ProtoBlock('loudness');
+    loudnessBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['loudness'] = loudnessBlock;
+    loudnessBlock.parameterBlock();
+    loudnessBlock.staticLabels.push('loudness');
+
     // Extras palette
     var pubBlock = new ProtoBlock('publish');
     pubBlock.palette = palettes.dict['extras'];
@@ -108,7 +114,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     evalBlock.staticLabels.push('eval');
     evalBlock.staticLabels.push('f(x)');
     evalBlock.staticLabels.push('x');
-    
+
     var speakBlock = new ProtoBlock('speak');
     speakBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['speak'] = speakBlock;
@@ -130,7 +136,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     audioStopBlock.zeroArgBlock();
     audioStopBlock.staticLabels.push('stop playback');
     audioStopBlock.fontsize = '14px';
- 
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);

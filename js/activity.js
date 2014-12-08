@@ -20,6 +20,9 @@ define(function (require) {
     require('easeljs');
     require('preloadjs');
     require('howler');
+    require('p5.min');
+    require('p5.sound');
+    require('p5.dom');
     // require('activity/utils');
     require('activity/artwork');
     require('activity/munsell');
@@ -78,7 +81,8 @@ define(function (require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
         var sounds = [];
-
+        var mic = new p5.AudioIn()
+        mic.start();
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
@@ -88,8 +92,8 @@ define(function (require) {
 	    var scrollY = 0;
 
         // default values
-	var CAMERAVALUE = "##__CAMERA__##";
-	var VIDEOVALUE = "##__VIDEO__##";
+        var CAMERAVALUE = "##__CAMERA__##";
+        var VIDEOVALUE = "##__VIDEO__##";
 
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
         var DEFAULTDELAY = 500;  // milleseconds
@@ -133,7 +137,7 @@ define(function (require) {
         var onscreenButtons = [];
         var onscreenMenu = [];
 
-	var draggingContainer = false;
+        var draggingContainer = false;
 
         fastButton.onclick = function () {
             doFastButton();
@@ -1197,7 +1201,7 @@ define(function (require) {
                         } else if (len > 7 && args[1].substr(0, 7) == 'file://') {
                             turtles.turtleList[turtle].doShowURL(args[0], args[1]);
                         }
-                            
+
                         else {
                             turtles.turtleList[turtle].doShowText(args[0], args[1]);
                         }
@@ -1534,6 +1538,14 @@ define(function (require) {
                     var a = parseArg(activity,turtle, cblk1);
                     var b = parseArg(activity,turtle, cblk2);
                     blocks.blockList[blk].value =  a || b;
+                    break;
+                case 'loudness':
+                    if (!mic.enabled) {
+                        blocks.blockList[blk].value = null;
+                    }
+                    else {
+                        blocks.blockList[blk].value = mic.getLevel() / 2;
+                    }
                     break;
                 default:
                     if (blocks.blockList[blk].name in evalArgDict) {

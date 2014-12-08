@@ -20,7 +20,6 @@ define(function (require) {
     require('easeljs');
     require('preloadjs');
     require('howler');
-    require('p5.min');
     require('p5.sound');
     require('p5.dom');
     // require('activity/utils');

@@ -496,53 +496,78 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
 
-        // First we need to count up the number of (and size of) the
-        // blocks inside the clamp; The child flow is the
-        // second-to-last argument.
-        var c = myBlock.connections.length - 2;
-        this.sizeCounter = 0;
-        if (c > 0 && myBlock.connections[c] != null) {
-            var childFlowSize = this.getStackSize(myBlock.connections[c]);
-            if (childFlowSize < 1) {
-                // The clamp size is never less than 1.
-                childFlowSize = 1;
+	function clampAdjuster(me, blk, myBlock, clamp) {
+            // First we need to count up the number of (and size of) the
+            // blocks inside the clamp; The child flow is the
+            // second-to-last argument.
+	    if (clamp == BOT) {
+		var c = myBlock.connections.length - 2;
+	    } else {  // MID
+		var c = myBlock.connections.length - 3;
+	    }
+            me.sizeCounter = 0;
+            if (c > 0 && myBlock.connections[c] != null) {
+		var childFlowSize = me.getStackSize(myBlock.connections[c]);
+		if (childFlowSize < 1) {
+                    // The clamp size is never less than 1.
+                    childFlowSize = 1;
+		}
+            } else {
+		var childFlowSize = 1;
             }
-        } else {
-            var childFlowSize = 1;
-        }
 
-        // Next, we adjust the clamp size to match the size of the
-        // child flow.
-        var docksChanged = false;
-        var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
-        var fillerOffset = myBlock.protoblock.fillerOffset;
-        var currentFillerCount = myBlock.fillerCount[0];
-        if (childFlowSize < currentFillerCount + 1) {
-            // We may have to remove filler.
-            var n = currentFillerCount - childFlowSize + 1;
-            for (var i = 0; i < n; i++) {
-                // We need to remove filler.
-                this.removeFiller(blk);
-                // And decrement the count and the offset to the
-                // bottom dock position.
-                myBlock.fillerCount[0] -= 1;
-                last(myBlock.docks)[1] -= fillerOffset;
-                docksChanged = true;
+            // Next, we adjust the clamp size to match the size of the
+            // child flow.
+            var docksChanged = false;
+            var artworkOffset = myBlock.protoblock.artworkOffset[clamp];
+            var fillerOffset = myBlock.protoblock.fillerOffset;
+            var currentFillerCount = myBlock.fillerCount[clamp - 1];
+            if (childFlowSize < currentFillerCount + 1) {
+		// We may have to remove filler.
+		var n = currentFillerCount - childFlowSize + 1;
+		for (var i = 0; i < n; i++) {
+                    // We need to remove filler.
+                    me.removeFiller(blk, clamp);
+                    // And decrement the count and the offset to the
+                    // bottom dock position.
+                    myBlock.fillerCount[clamp - 1] -= 1;
+		    if (clamp == BOT) {
+			last(myBlock.docks)[1] -= fillerOffset;
+		    } else {  // MID
+			myBlock.docks[3][1] -= fillerOffset;
+			myBlock.docks[4][1] -= fillerOffset;
+		    }
+                    docksChanged = true;
+		}
+            } else if (childFlowSize > currentFillerCount) {
+		// We may have to add filler.
+		var n = childFlowSize - currentFillerCount - 1;
+		for (var i = 0; i < n; i++) {
+                    var c = i + currentFillerCount;
+                    // We need to add filler.
+                    me.addFiller(blk, clamp, artworkOffset + c * fillerOffset, c);
+                    // And increment the count and the offset to the
+                    // bottom dock position.
+                    myBlock.fillerCount[clamp - 1] += 1;
+		    if (clamp == BOT) {
+			last(myBlock.docks)[1] += fillerOffset;
+		    } else {  // MID
+			myBlock.docks[3][1] += fillerOffset;
+			myBlock.docks[4][1] += fillerOffset;
+		    }
+                    docksChanged = true;
+		}
             }
-        } else if (childFlowSize > currentFillerCount) {
-            // We may have to add filler.
-            var n = childFlowSize - currentFillerCount - 1;
-            for (var i = 0; i < n; i++) {
-                var c = i + currentFillerCount;
-                // We need to add filler.
-                this.addFiller(blk, artworkOffset + c * fillerOffset, c);
-                // And increment the count and the offset to the
-                // bottom dock position.
-                myBlock.fillerCount[0] += 1;
-                last(myBlock.docks)[1] += fillerOffset;
-                docksChanged = true;
-            }
-        }
+	    return docksChanged;
+	}
+
+	var docksChanged = false;
+	if (myBlock.isDoubleClampBlock()) {
+	    docksChanged = clampAdjuster(this, blk, myBlock, MID);
+	}
+	if (clampAdjuster(this, blk, myBlock, BOT)) {
+	    docksChanged = true;
+	}
 
         // Finally, since the block size has changed and consequently
         // the dock positions have changed, we need to make sure that
@@ -590,10 +615,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var n = currentFillerCount - firstArgumentSize + 1;
             for (var i = 0; i < n; i++) {
                 // Remove the filler from the container.
-                this.removeFiller(blk);
+                this.removeFiller(blk, BOT);
                 // And decrement the count and the offset to the
                 // bottom dock position.
-                myBlock.fillerCount[0] -= 1;
+                myBlock.fillerCount[BOT - 1] -= 1;
                 myBlock.docks[2][1] -= fillerOffset;
                 docksChanged = true;
                 if (!myBlock.isArgBlock()) {
@@ -609,10 +634,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             for (var i = 0; i < n; i++) {
                 var c = i + currentFillerCount;
                 // Add the filler to the container.
-                this.addFiller(blk, artworkOffset + c * fillerOffset, c);
+                this.addFiller(blk, BOT, artworkOffset + c * fillerOffset, c);
                 // And increment the count and the offset to the
                 // bottom dock position.
-                myBlock.fillerCount[0] += 1;
+                myBlock.fillerCount[BOT - 1] += 1;
                 myBlock.docks[2][1] += fillerOffset;
                 docksChanged = true;
                 if (!myBlock.isArgBlock()) {
@@ -649,15 +674,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
-    this.removeFiller = function(blk) {
+    this.removeFiller = function(blk, clamp) {
         // When we remove filler, we cache it in case it is added back
         // in later.
         var myBlock = this.blockList[blk];
-        var fillerBitmap = myBlock.fillerBitmaps[0].pop();
+        var fillerBitmap = myBlock.fillerBitmaps[clamp - 1].pop();
 
         myBlock.container.removeChild(fillerBitmap);
         this.bitmapCache[fillerBitmap.name] = fillerBitmap;
 
+	if (clamp == MID) {
+            myBlock.bitmap[MID].y -= myBlock.protoblock.fillerOffset;
+            myBlock.highlightBitmap[MID].y = myBlock.bitmap[MID].y;
+	}
         myBlock.bitmap[BOT].y -= myBlock.protoblock.fillerOffset;
         myBlock.highlightBitmap[BOT].y = myBlock.bitmap[BOT].y;
 
@@ -667,27 +696,32 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.uncache();
             myBlock.bounds = myBlock.container.getBounds();
             myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+	    console.log('recaching');
         } catch (e) {
             console.log(e);
         }
     }
 
-    this.addFiller = function(blk, offset, c) {
+    this.addFiller = function(blk, clamp, offset, c) {
         // Add filler to an expandable block.
         var myBlock = this.blockList[blk];
 
-        function processBitmap(me, name, bitmap, myBlock) {
-            myBlock.fillerBitmaps[0].push(bitmap);
+        function processBitmap(me, name, bitmap, args) {
+	    myBlock = args[0];
+	    offset = args[1];
+	    clamp = args[2];
+	    console.log(name + ' ' + clamp + ' ' + offset);
+            myBlock.fillerBitmaps[clamp - 1].push(bitmap);
             myBlock.container.addChild(bitmap);
-            bitmap.x = myBlock.bitmap[TOP].x;
-            bitmap.y = myBlock.bitmap[TOP].y + offset;
+	    bitmap.x = myBlock.bitmap[TOP].x;
+	    bitmap.y = myBlock.bitmap[TOP].y + offset;
             bitmap.name = name;
 
             me.refreshCanvas();
         }
 
         // We generate a unique name to use as the key in the cache.
-        var name = 'bmp_' + blk + '_filler_' + c;
+        var name = 'bmp_' + blk + '_filler_' + clamp + '_' + c;
         // FIXME: Why doesn't !name in this.bitmapCache work?
         if (this.bitmapCache[name] == undefined) {
             if (myBlock.isArgBlock()) {
@@ -697,22 +731,34 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap, myBlock);
+	    console.log(name + ' ' + clamp + ' ' + offset);
+            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap, [myBlock, offset, clamp]);
         } else {
-            processBitmap(this, name, this.bitmapCache[name], myBlock);
+	    console.log(name + ' ' + clamp + ' ' + offset);
+            processBitmap(this, name, this.bitmapCache[name], [myBlock, offset, clamp]);
         }
 
-        function processHighlightBitmap(me, name, bitmap, myBlock) {
-            myBlock.highlightFillerBitmaps[0].push(bitmap);
+        function processHighlightBitmap(me, name, bitmap, args) {
+	    myBlock = args[0];
+	    offset = args[1];
+	    clamp = args[2];
+	    console.log(name + ' ' + clamp + ' ' + offset);
+            myBlock.highlightFillerBitmaps[clamp - 1].push(bitmap);
             myBlock.container.addChild(bitmap);
-            bitmap.x = myBlock.bitmap[TOP].x;
-            bitmap.y = myBlock.bitmap[TOP].y + offset;
+	    bitmap.x = myBlock.bitmap[TOP].x;
+	    bitmap.y = myBlock.bitmap[TOP].y + offset;
             bitmap.name = name;
-            // Hide highlight to start
+
+            // Hide highlight to start.
             bitmap.visible = false;
 
-            myBlock.bitmap[BOT].y += myBlock.protoblock.fillerOffset;
-            myBlock.highlightBitmap[BOT].y = myBlock.bitmap[BOT].y;
+	    // Move the block parts.
+	    if (clamp == MID) {
+  		myBlock.bitmap[MID].y += myBlock.protoblock.fillerOffset;
+		myBlock.highlightBitmap[MID].y = myBlock.bitmap[MID].y;
+	    }
+	    myBlock.bitmap[BOT].y += myBlock.protoblock.fillerOffset;
+	    myBlock.highlightBitmap[BOT].y = myBlock.bitmap[BOT].y;
 
             try {
                 // There is a potential race conditon such that the
@@ -720,6 +766,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.container.uncache();
                 myBlock.bounds = myBlock.container.getBounds();
                 myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+		console.log('recaching');
             } catch (e) {
                 console.log(e);
             }
@@ -728,7 +775,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         // And the same for the highlight blocks
-        var name = 'bmp_' + blk + '_highlight_filler_' + c;
+        var name = 'bmp_' + blk + '_highlight_filler_' + clamp + '_' + c;
         if (this.bitmapCache[name] == undefined) {
             if (myBlock.isArgBlock()) {
                 var artwork = ARG2BLOCKFILLER;
@@ -737,9 +784,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap, myBlock);
+	    console.log(name + ' ' + clamp + ' ' + offset);
+            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap, [myBlock, offset, clamp]);
         } else {
-            processHighlightBitmap(this, name, this.bitmapCache[name], myBlock);
+            processHighlightBitmap(this, name, this.bitmapCache[name], [myBlock, offset, clamp]);
         }
     }
 
@@ -1716,8 +1764,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.highlightBitmap[TOP].visible = false;
                 if (this.blockList[thisBlock].isExpandableBlock()) {
                     for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
+			console.log('0) ' + i + ' ' + myBlock.highlightFillerBitmaps[0][i].y);
                         myBlock.fillerBitmaps[0][i].visible = true;
                         myBlock.highlightFillerBitmaps[0][i].visible = false;
+                    }
+                    for (var i = 0; i < myBlock.fillerBitmaps[1].length; i++) {
+			console.log('1) ' + i + ' ' + myBlock.highlightFillerBitmaps[1][i].y);
+                        myBlock.fillerBitmaps[1][i].visible = true;
+                        myBlock.highlightFillerBitmaps[1][i].visible = false;
                     }
 		    if (myBlock.bitmap[MID] != null) {
                         myBlock.bitmap[MID].visible = true;
@@ -1765,8 +1819,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.highlightBitmap[TOP].visible = true;
                 if (myBlock.isExpandableBlock()) {
                     for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
+			console.log('0: ' + i + ' ' + myBlock.highlightFillerBitmaps[0][i].x + ' ' + myBlock.highlightFillerBitmaps[0][i].y);
                         myBlock.fillerBitmaps[0][i].visible = false;
                         myBlock.highlightFillerBitmaps[0][i].visible = true;
+                    }
+                    for (var i = 0; i < myBlock.fillerBitmaps[1].length; i++) {
+			console.log('1: ' + i + ' ' + myBlock.highlightFillerBitmaps[1][i].x + ' ' + myBlock.highlightFillerBitmaps[1][i].y);
+                        myBlock.fillerBitmaps[1][i].visible = false;
+                        myBlock.highlightFillerBitmaps[1][i].visible = true;
                     }
 		    if (myBlock.bitmap[MID] != null) {
 			myBlock.bitmap[MID].visible = false;

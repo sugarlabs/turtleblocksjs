@@ -607,7 +607,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var docksChanged = false;
         var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
         var fillerOffset = myBlock.protoblock.fillerOffset;
-        var currentFillerCount = myBlock.fillerCount[0];
+        var currentFillerCount = myBlock.fillerCount[BOT];
         if (firstArgumentSize < currentFillerCount + 1) {
             // We need to remove filler.
             var n = currentFillerCount - firstArgumentSize + 1;

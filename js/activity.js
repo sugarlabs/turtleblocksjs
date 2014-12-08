@@ -81,7 +81,6 @@ define(function (require) {
         var pasteContainer = null;
         var sounds = [];
         var mic = new p5.AudioIn()
-        mic.start();
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
@@ -1540,6 +1539,7 @@ define(function (require) {
                     break;
                 case 'loudness':
                     if (!mic.enabled) {
+                        mic.start();
                         blocks.blockList[blk].value = null;
                     }
                     else {

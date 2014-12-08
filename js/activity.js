@@ -1543,7 +1543,7 @@ define(function (require) {
                         blocks.blockList[blk].value = null;
                     }
                     else {
-                        blocks.blockList[blk].value = mic.getLevel() / 2;
+                        blocks.blockList[blk].value = mic.getLevel();
                     }
                     break;
                 default:

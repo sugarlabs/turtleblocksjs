@@ -125,8 +125,13 @@
   * while block (GCI - drakosvlad)
   * not block (GCI - Daksh Shah)
   * and block (GCI - Ignacio Rodriguez)
+  * if-then-else block (GCI - Ignacio Rodriguez)
+  * camera block for Firefox (GCI - Rafael Cordano)
+  * video block for Firefox (GCI - Rafael Cordano)
+  * speak block for Firefox (GCI - Rafael Cordano)
 
 TODO:
+  * media blocks in Chrome
   * enable docking to any for boxes, equal
   * enable number names for actions and boxes
   * query turtle blocks
@@ -142,10 +147,8 @@ TODO:
   * use graphical error messages
 
 BUGS:
+  * jumpy scrolling
   * copy stack copies instances instead of making new blocks?
-  * do action menu has wrong value?
   * don't save full-sized bitmap to session
-  * fix canvas sizing, resizing
   * cannot open same file twice in a row (no change event?)
-  * occasional bad init ???
 

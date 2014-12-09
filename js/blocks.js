@@ -1621,7 +1621,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             bottomArtwork = myBlock.protoblock.artwork[BOT];
             var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
             myBlock.fillerBitmaps = [[], []];
-            myBlock.highlightfillerBitmaps = [[], []];
+            myBlock.highlightFillerBitmaps = [[], []];
 
             function processBottomBitmap(me, name, bitmap, myBlock) {
                 myBlock.bitmap[BOT] = bitmap;

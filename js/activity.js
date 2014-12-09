@@ -85,9 +85,9 @@ define(function (require) {
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
 
-	    // initial scroll position
-	    var scrollX = 0;
-	    var scrollY = 0;
+           // initial scroll position
+           var scrollX = 0;
+           var scrollY = 0;
 
         // default values
         var CAMERAVALUE = "##__CAMERA__##";
@@ -259,7 +259,7 @@ define(function (require) {
             docById('loader').className = 'loader';
 
             stage = new createjs.Stage(canvas);
-			createjs.Touch.enable(stage);
+                     createjs.Touch.enable(stage);
 
             createjs.Ticker.addEventListener('tick', tick);
 
@@ -269,12 +269,12 @@ define(function (require) {
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
 
             palettes.setBlocks(blocks);
-	    palettes.setDragging(setDraggingContainer);
+           palettes.setDragging(setDraggingContainer);
             turtles.setBlocks(blocks);
-	    turtles.setDragging(setDraggingContainer);
+           turtles.setDragging(setDraggingContainer);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-	    blocks.setDragging(setDraggingContainer);
+           blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
@@ -367,35 +367,35 @@ define(function (require) {
             // Set up event handler for stage mouse events
             stage.on('stagemousedown', function(event) {
                 stageMouseDown = true;
-		var x = event.stageX;
-		var y = event.stageY;
-		console.log('mouseDown (' + x + ', ' + y + ')');
+              var x = event.stageX;
+              var y = event.stageY;
+              console.log('mouseDown (' + x + ', ' + y + ')');
 
-		stage.on('stagemousemove', function(event) {
-		if (stageMouseDown && !draggingContainer) {
-		    var dx = event.stageX - x;
-		    var dy = event.stageY - y;
-		    x = event.stageX;
-		    y = event.stageY;
-		    if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }
-		    if (dy > 10) { dy = 10; } else if (dy < -10) { dy = -10; }
-		    console.log('mouseMove (' + dx + ', ' + dy + ') scroll (' + scrollX + ', ' + scrollY + ')');
-		    scrollX += dx;
-		    if (scrollX < 0) {
-			scrollX = 0;
-		    } else if (scrollX > 1200) {
-			scrollX = 1200;
-		    }
-		    scrollY += dy;
-		    if (scrollY < 0) {
-			scrollY = 0;
-		    } else if (scrollY > 900) {
-			scrollY = 900;
-		    }
-		    window.scrollTo(scrollX, scrollY);
-		    update = true;
-		}
-	    });
+              stage.on('stagemousemove', function(event) {
+              if (stageMouseDown && !draggingContainer) {
+                  var dx = event.stageX - x;
+                  var dy = event.stageY - y;
+                  x = event.stageX;
+                  y = event.stageY;
+                  if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }
+                  if (dy > 10) { dy = 10; } else if (dy < -10) { dy = -10; }
+                  console.log('mouseMove (' + dx + ', ' + dy + ') scroll (' + scrollX + ', ' + scrollY + ')');
+                  scrollX += dx;
+                  if (scrollX < 0) {
+                     scrollX = 0;
+                  } else if (scrollX > 1200) {
+                     scrollX = 1200;
+                  }
+                  scrollY += dy;
+                  if (scrollY < 0) {
+                     scrollY = 0;
+                  } else if (scrollY > 900) {
+                     scrollY = 900;
+                  }
+                  window.scrollTo(scrollX, scrollY);
+                  update = true;
+              }
+           });
 
             });
 
@@ -406,9 +406,9 @@ define(function (require) {
             this.document.onkeydown = keyPressed;
         }
 
-	function setDraggingContainer(flag) {
-	    draggingContainer = flag;
-	}
+       function setDraggingContainer(flag) {
+           draggingContainer = flag;
+       }
 
         function createGrid(imagePath) {
             var img = new Image();
@@ -741,15 +741,15 @@ define(function (require) {
                 }
             } else {
                 console.log('loading start');
-		postProcess = function(thisBlock) {
+              postProcess = function(thisBlock) {
                     blocks.blockList[0].x = 50;
                     blocks.blockList[0].y = 50;
                     blocks.blockList[0].connections = [null, null, null];
                     blocks.blockList[0].value = turtles.turtleList.length;
                     turtles.add(blocks.blockList[0]);
-		    blocks.updateBlockPositions();
-		    blocks.updateBlockLabels();
-		}
+                  blocks.updateBlockPositions();
+                  blocks.updateBlockLabels();
+              }
                 blocks.makeNewBlock('start', postProcess, null);
             }
             update = true;
@@ -931,7 +931,7 @@ define(function (require) {
                     console.log('starting on start with turtle ' + turtle);
                 } else {
                     console.log('starting on ' + blocks.blockList[startHere].name + ' with turtle ' + turtle);
-		}
+              }
 
                 turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
@@ -1124,16 +1124,16 @@ define(function (require) {
               }
               break;
             case 'while':
-		// While is tricky because we need to recalculate
-		// args[0] each time, so we requeue the While block itself.
+              // While is tricky because we need to recalculate
+              // args[0] each time, so we requeue the While block itself.
                 if (args.length == 2) {
                     if (args[0]) {
-			// Requeue the while block
-			var parentBlk = blocks.blockList[blk].connections[0];
-			var queueBlock = new Queue(blk, 1, parentBlk);
-			activity.parentFlowQueue[turtle].push(parentBlk);
-			turtles.turtleList[turtle].queue.push(queueBlock);
-			// and queue the childFlow
+                     // Requeue the while block
+                     var parentBlk = blocks.blockList[blk].connections[0];
+                     var queueBlock = new Queue(blk, 1, parentBlk);
+                     activity.parentFlowQueue[turtle].push(parentBlk);
+                     turtles.turtleList[turtle].queue.push(queueBlock);
+                     // and queue the childFlow
                         childFlow = args[1];
                         childFlowCount = 1;
                     }
@@ -1187,9 +1187,9 @@ define(function (require) {
                     if (typeof(args[1]) == 'string') {
                         var len = args[1].length;
                         if (len == 14 && args[1].substr(0, 14) == CAMERAVALUE){
-			    doShowCamera(args, turtles, turtle, errorMsg);
+                         doShowCamera(args, turtles, turtle, errorMsg);
                         } else if (len == 13 && args[1].substr(0, 13) == VIDEOVALUE){
-			    doShowVideo(args, turtles, turtle, errorMsg);
+                         doShowVideo(args, turtles, turtle, errorMsg);
                         } else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
                             turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                         } else if (len > 8 && args[1].substr(0, 8) == 'https://') {
@@ -1266,18 +1266,18 @@ define(function (require) {
                     eval(evalFlowDict[blocks.blockList[blk].name]);
                 } else {
                     // Could be an arg block, so we need to print its value
-		    console.log('running an arg block?');
+                  console.log('running an arg block?');
                     if (blocks.blockList[blk].isArgBlock()) {
                         args.push(parseArg(activity, turtle, blk));
-			console.log('block: ' + blk + ' turtle: ' + turtle);
-			console.log('block name: ' + blocks.blockList[blk].name);
-			console.log('block value: ' + blocks.blockList[blk].value);
+                     console.log('block: ' + blk + ' turtle: ' + turtle);
+                     console.log('block name: ' + blocks.blockList[blk].name);
+                     console.log('block value: ' + blocks.blockList[blk].value);
                         var msgContainer = msgText.parent;
                         msgContainer.visible = true;
-			if (blocks.blockList[blk].value == null) {
+                     if (blocks.blockList[blk].value == null) {
                             msgText.text = 'null block value';
-			} else {
-                            msgText.text = blocks.blockList[blk].value.toString();			}
+                     } else {
+                            msgText.text = blocks.blockList[blk].value.toString();                     }
                         msgContainer.updateCache();
                         stage.swapChildren(msgContainer, last(stage.children));
                         stopTurtle = true;
@@ -1293,7 +1293,7 @@ define(function (require) {
 
             // If there is a child flow, queue it.
             if (childFlow != null) {
-		console.log('queuing ' + childFlow + ' ' + childFlowCount + ' ' + blk);
+              console.log('queuing ' + childFlow + ' ' + childFlowCount + ' ' + blk);
 
                 var queueBlock = new Queue(childFlow, childFlowCount, blk);
                 // We need to keep track of the parent block to the
@@ -1460,11 +1460,11 @@ define(function (require) {
                     var cblk2 = blocks.blockList[blk].connections[2];
                     var a = parseArg(activity,turtle, cblk1);
                     var b = parseArg(activity,turtle, cblk2);
-		    var result = (Number(a) < Number(b));
-		    console.log(result);
-		    console.log('assigning result to less blk');
+                  var result = (Number(a) < Number(b));
+                  console.log(result);
+                  console.log('assigning result to less blk');
                     blocks.blockList[blk].value = result;
-		    console.log(blocks.blockList[blk].value);
+                  console.log(blocks.blockList[blk].value);
                     break;
                 case 'random':
                     var cblk1 = blocks.blockList[blk].connections[1];
@@ -2125,40 +2125,40 @@ function fileBasename(file) {
 function doShowCamera(args, turtles, turtle, errorMsg) {
     window.URL = window.URL || window.webkitURL;
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
-	function() {
-	    errorMsg('Your browser does not support navigator.getUserMedia().');
-	};
+       function() {
+           errorMsg('Your browser does not support navigator.getUserMedia().');
+       };
     //Este objeto guardará algunos datos sobre la cámara
     window.datosVideo = {
-	'StreamVideo': null,
-	'url': null
+       'StreamVideo': null,
+       'url': null
     }
     var test = function(){
-	var oCamara, oFoto, oContexto, w, h;
-	var canvas = document.getElementById("photo");
-	oCamara = jQuery('#camera');
-	oFoto = jQuery('#photo');
-	w = oCamara.width();
-	h = oCamara.height();
-	oFoto.attr({
-	    'width': w,
-	    'height': h
-	});
-	oContexto = oFoto[0].getContext('2d');
-	oContexto.drawImage(oCamara[0], 0, 0, w, h);
-	turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
+       var oCamara, oFoto, oContexto, w, h;
+       var canvas = document.getElementById("photo");
+       oCamara = jQuery('#camera');
+       oFoto = jQuery('#photo');
+       w = oCamara.width();
+       h = oCamara.height();
+       oFoto.attr({
+           'width': w,
+           'height': h
+       });
+       oContexto = oFoto[0].getContext('2d');
+       oContexto.drawImage(oCamara[0], 0, 0, w, h);
+       turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
     }
     navigator.getUserMedia({
-	'audio': false,
-	'video': true
+       'audio': false,
+       'video': true
     }, function(streamVideo) {
-	jQuery("#camera").hide();
-	datosVideo.StreamVideo = streamVideo;
-	datosVideo.url = window.URL.createObjectURL(streamVideo);
-	jQuery('#camera').attr('src', datosVideo.url);
-	window.setTimeout(test, 1000);
+       jQuery("#camera").hide();
+       datosVideo.StreamVideo = streamVideo;
+       datosVideo.url = window.URL.createObjectURL(streamVideo);
+       jQuery('#camera').attr('src', datosVideo.url);
+       window.setTimeout(test, 1000);
     }, function() {
-	errorMsg('Cannot access the camera.');
+       errorMsg('Cannot access the camera.');
     });
 }
 
@@ -2166,39 +2166,39 @@ function doShowCamera(args, turtles, turtle, errorMsg) {
 function doShowVideo(args, turtles, turtle, errorMsg) {
     window.URL = window.URL || window.webkitURL;
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
-	function() {
-	    errorMsg('Your browser does not support navigator.getUserMedia().');
-	};
+       function() {
+           errorMsg('Your browser does not support navigator.getUserMedia().');
+       };
     //Este objeto guardará algunos datos sobre la cámara
     window.datosVideo = {
-	'StreamVideo': null,
-	'url': null
+       'StreamVideo': null,
+       'url': null
     }
     var test = function(){
-	var oCamara, oFoto, oContexto, w, h;
-	var canvas = document.getElementById("photo");
-	oCamara = jQuery('#camera');
-	oFoto = jQuery('#photo');
-	w = oCamara.width();
-	h = oCamara.height();
-	oFoto.attr({
-	    'width': w,
-	    'height': h
-	});
-	oContexto = oFoto[0].getContext('2d');
-	oContexto.drawImage(oCamara[0], 0, 0, w, h);
-	turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
+       var oCamara, oFoto, oContexto, w, h;
+       var canvas = document.getElementById("photo");
+       oCamara = jQuery('#camera');
+       oFoto = jQuery('#photo');
+       w = oCamara.width();
+       h = oCamara.height();
+       oFoto.attr({
+           'width': w,
+           'height': h
+       });
+       oContexto = oFoto[0].getContext('2d');
+       oContexto.drawImage(oCamara[0], 0, 0, w, h);
+       turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
     }
     navigator.getUserMedia({
-	'audio': false,
-	'video': true
+       'audio': false,
+       'video': true
     }, function(streamVideo) {
-	jQuery("#camera").hide();
-	datosVideo.StreamVideo = streamVideo;
-	datosVideo.url = window.URL.createObjectURL(streamVideo);
-	jQuery('#camera').attr('src', datosVideo.url);
-	window.setInterval(test, 0.1);
+       jQuery("#camera").hide();
+       datosVideo.StreamVideo = streamVideo;
+       datosVideo.url = window.URL.createObjectURL(streamVideo);
+       jQuery('#camera').attr('src', datosVideo.url);
+       window.setInterval(test, 0.1);
     }, function() {
-	errorMsg('Cannot access the camera.');
+       errorMsg('Cannot access the camera.');
     });
 }

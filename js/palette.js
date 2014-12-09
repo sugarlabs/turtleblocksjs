@@ -595,6 +595,7 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
     }
 
     me.protoContainers[blkname].on('mousedown', function(event) {
+        me.palettes.setDraggingFlag(true);
         // Create the block.
         var newBlock = makeBlock(blk, blkname, palette);
         // Move the drag group under the cursor.

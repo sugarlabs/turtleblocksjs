@@ -339,16 +339,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     mediaBlock.mediaBlock();
     mediaBlock.docks[0][2] = 'mediaout';
     
-    var cameraBlock = new ProtoBlock('camera');
-    cameraBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['camera'] = cameraBlock;
-    cameraBlock.mediaBlock();
-    
-    var videoBlock = new ProtoBlock('video');
-    videoBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['video'] = videoBlock;
-    videoBlock.mediaBlock();
-
     var textBlock = new ProtoBlock('text');
     textBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['text'] = textBlock;
@@ -459,6 +449,16 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifthenelseBlock.staticLabels.push('if');
     ifthenelseBlock.staticLabels.push('then');
     ifthenelseBlock.staticLabels.push('else');
+
+    var cameraBlock = new ProtoBlock('camera');
+    cameraBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['camera'] = cameraBlock;
+    cameraBlock.mediaBlock();
+    
+    var videoBlock = new ProtoBlock('video');
+    videoBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['video'] = videoBlock;
+    videoBlock.mediaBlock();
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

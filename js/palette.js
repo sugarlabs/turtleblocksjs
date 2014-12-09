@@ -188,6 +188,13 @@ function loadPaletteButtonHandler(palettes, name) {
         palettes.refreshCanvas();
     });
 
+    palettes.buttons[name].on('pressup', function(event) {
+        palettes.setDraggingFlag(false);
+        palettes.bitmaps[name].visible = true;
+        palettes.highlightBitmaps[name].visible = false;
+        palettes.refreshCanvas();
+    });
+
     palettes.buttons[name].on('mouseout', function(event) {
         palettes.setDraggingFlag(false);
         palettes.bitmaps[name].visible = true;

@@ -74,11 +74,11 @@ function Turtle (name, turtles) {
             this.drawingCanvas.graphics.lineTo(nx, ny);
             // var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + '" stroke-linecap="round" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
             // this.svgOutput += svg;
-	    if (!this.svgPath) {
-		this.svgPath = true;
-		this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
-	    }
-	    this.svgOutput += nx + ',' + ny + ' ';
+            if (!this.svgPath) {
+                this.svgPath = true;
+                this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
+            }
+            this.svgOutput += nx + ',' + ny + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }
@@ -118,15 +118,15 @@ function Turtle (name, turtles) {
         // Draw an arc if the pen is down.
         if (this.penState) {
             this.drawingCanvas.graphics.arc(cx, cy, radius, sa, ea, anticlockwise);
-	    if (!this.svgPath) {
-		this.svgPath = true;
-		this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
-	    }
-	    if (anticlockwise) {
-		var sweep = 0;
-	    } else {
-		var sweep = 1;
-	    }
+            if (!this.svgPath) {
+                this.svgPath = true;
+                this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
+            }
+            if (anticlockwise) {
+                var sweep = 0;
+            } else {
+                var sweep = 1;
+            }
             this.svgOutput += 'A ' + radius + ',' + radius + ' 0 1 ' + sweep + ' ' + nx + ',' + ny + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
@@ -182,7 +182,7 @@ function Turtle (name, turtles) {
         this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
 
         this.svgOutput = '';
-	this.svgPath = false;
+        this.svgPath = false;
 
         this.turtles.refreshCanvas();
     }
@@ -393,32 +393,32 @@ function Turtle (name, turtles) {
         this.color = Number(hue);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-	this.closeSVG();
+        this.closeSVG();
     }
 
     this.doSetValue = function(shade) {
         this.value = Number(shade);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-	this.closeSVG();
+        this.closeSVG();
     }
 
     this.doSetChroma = function(chroma) {
         this.chroma = Number(chroma);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-	this.closeSVG();
+        this.closeSVG();
     }
 
     this.doSetPensize = function(size) {
         this.stroke = size;
         this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
-	this.closeSVG();
+        this.closeSVG();
     }
 
     this.doPenUp = function() {
         this.penState = false;
-	this.closeSVG();
+        this.closeSVG();
     }
 
     this.doPenDown = function() {
@@ -434,22 +434,22 @@ function Turtle (name, turtles) {
     this.doEndFill = function() {
         /// redraw the points with fill enabled
         this.drawingCanvas.graphics.endFill();
-	this.closeSVG();
+        this.closeSVG();
         this.fillState = false;
     }
 
     this.closeSVG = function() {
-	if (this.svgPath) {
-	    this.svgOutput += '" style="stroke-linecap:round;fill:';
+        if (this.svgPath) {
+            this.svgOutput += '" style="stroke-linecap:round;fill:';
             if (this.fillState) {
-		this.svgOutput += this.canvasColor + ';';
-	    } else {
-		this.svgOutput += 'none;';
-	    }
-	    this.svgOutput += 'stroke:' + this.canvasColor + ';';
-	    this.svgOutput += 'stroke-width:' + this.stroke + 'pt;" />';
-	    this.svgPath = false;
-	}
+                this.svgOutput += this.canvasColor + ';';
+            } else {
+                this.svgOutput += 'none;';
+            }
+            this.svgOutput += 'stroke:' + this.canvasColor + ';';
+            this.svgOutput += 'stroke-width:' + this.stroke + 'pt;" />';
+            this.svgPath = false;
+        }
     }
 };
 
@@ -545,6 +545,14 @@ function Turtles(canvas, stage, refreshCanvas) {
                 y: myTurtle.container.y - event.stageY
             }
 
+            myTurtle.container.on('pressup', function(event) {
+                turtles.setDraggingFlag(false);
+                myTurtle.bitmap.scaleX = 1;
+                myTurtle.bitmap.scaleY = 1;
+                myTurtle.bitmap.scale = 1;
+                turtles.refreshCanvas();
+            });
+
             myTurtle.container.on('pressmove', function(event) {
                 myTurtle.container.x = event.stageX + offset.x;
                 myTurtle.container.y = event.stageY + offset.y;
@@ -594,12 +602,12 @@ function Turtles(canvas, stage, refreshCanvas) {
     }
 
     this.running = function() {
-	for (turtle in this.turtleList) {
-	    if (this.turtleList[turtle].running) {
-		return true;
-	    }
-	}
-	return false;
+        for (turtle in this.turtleList) {
+            if (this.turtleList[turtle].running) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

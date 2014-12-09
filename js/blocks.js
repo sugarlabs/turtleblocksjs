@@ -2973,6 +2973,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     myBlock.collapseContainer.hitArea = hitArea;
 
     myBlock.collapseContainer.on('mouseover', function(event) {
+        blocks.setDraggingFlag(true);
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
@@ -2990,12 +2991,12 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.collapseBlockBitmap.visible = false;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
                 myBlock.collapseText.visible = false;
-              for (b in myBlocks.bitmap) {
+              for (b in myBlock.bitmap) {
                   if (myBlock.bitmap[b] != null) {
                      myBlock.bitmap[b].visible = false;
                   }
               }
-              for (b in myBlocks.highlightBitmap) {
+              for (b in myBlock.highlightBitmap) {
                   if (myBlock.highlightBitmap[b] != null) {
                      myBlock.highlightBitmap[b].visible = true;
                   }
@@ -3020,12 +3021,12 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.collapseBlockBitmap.visible = true;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
                 myBlock.collapseText.visible = true;
-              for (b in myBlocks.bitmap) {
+              for (b in myBlock.bitmap) {
                   if (myBlock.bitmap[b] != null) {
                      myBlock.bitmap[b].visible = false;
                   }
               }
-              for (b in myBlocks.highlightBitmap) {
+              for (b in myBlock.highlightBitmap) {
                   if (myBlock.highlightBitmap[b] != null) {
                      myBlock.highlightBitmap[b].visible = false;
                   }
@@ -3062,6 +3063,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     });
 
     myBlock.collapseContainer.on('mousedown', function(event) {
+        blocks.setDraggingFlag(true);
         // Always show the trash when there is a block selected.
         trashcan.show();
         moved = false;
@@ -3104,27 +3106,37 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         });
     });
 
-    myBlock.collapseContainer.on('mouseout', function(event) {
-        // Always hide the trash when there is no block selected.
-        trashcan.hide();
-        blocks.unhighlight(thisBlock);
-        if (moved) {
-            // Check if block is in the trash.
-            if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
-                sendStackToTrash(blocks, myBlock);
-            } else {
-                // Otherwise, process move.
-                blocks.blockMoved(thisBlock);
-            }
-        }
-
-        if (blocks.activeBlock != myBlock) {
-            return;
-        }
-        blocks.unhighlight(null);
-        blocks.activeBlock = null;
-        blocks.refreshCanvas();
+    myBlock.collapseContainer.on('pressup', function(event) {
+        collapseOut(blocks, myBlock, thisBlock, moved, event);
     });
+
+    myBlock.collapseContainer.on('mouseout', function(event) {
+        collapseOut(blocks, myBlock, thisBlock, moved, event);
+    });
+}
+
+
+function collapseOut(blocks, myBlock, thisBlock, moved, event) {
+    blocks.setDraggingFlag(false);
+    // Always hide the trash when there is no block selected.
+    trashcan.hide();
+    blocks.unhighlight(thisBlock);
+    if (moved) {
+        // Check if block is in the trash.
+        if (trashcan.overTrashcan(event.stageX / blocks.scale, event.stageY / blocks.scale)) {
+            sendStackToTrash(blocks, myBlock);
+        } else {
+            // Otherwise, process move.
+            blocks.blockMoved(thisBlock);
+        }
+    }
+
+    if (blocks.activeBlock != myBlock) {
+        return;
+    }
+    blocks.unhighlight(null);
+    blocks.activeBlock = null;
+    blocks.refreshCanvas();
 }
 
 

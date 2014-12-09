@@ -831,6 +831,8 @@ define(function (require) {
                 case 'keyboard':
                     value = lastKeyCode;
                     break;
+		case 'loudness':
+		    value = Math.round(mic.getLevel() * 1000);
                 default:
                     console.log('??? ' + blocks.blockList[blk].name);
                     break;
@@ -1548,7 +1550,7 @@ define(function (require) {
                         blocks.blockList[blk].value = null;
                     }
                     else {
-                        blocks.blockList[blk].value = mic.getLevel() * 1000;
+                        blocks.blockList[blk].value = Math.round(mic.getLevel() * 1000);
                     }
                     break;
                 default:

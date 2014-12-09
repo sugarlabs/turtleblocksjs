@@ -385,19 +385,17 @@ define(function (require) {
                         if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }
                         if (dy > 10) { dy = 10; } else if (dy < -10) { dy = -10; }
                         // console.log('mouseMove (' + dx + ', ' + dy + ') scroll (' + scrollX + ', ' + scrollY + ')');
-                        scrollX += dx;
-                        if (scrollX < 0) {
-                            scrollX = 0;
-                        } else if (scrollX > 1200) {
-                            scrollX = 1200;
-                        }
-                        scrollY += dy;
-                        if (scrollY < 0) {
-                            scrollY = 0;
-                        } else if (scrollY > 900) {
-                            scrollY = 900;
-                        }
-                        window.scrollTo(scrollX, scrollY);
+			if (scrollX + dx < 0) {
+			    dx = 0;
+			} else if (scrollX + dx > 1200) {
+			    dx = 0;
+			}
+			if (scrollY + dy < 0) {
+			    dy = 0;
+			} else if (scrollY + dy > 900) {
+			    dy = 0;
+			}
+                        window.scrollBy(dx, dy);
                         update = true;
                     }
                 });

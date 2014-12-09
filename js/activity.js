@@ -85,9 +85,9 @@ define(function (require) {
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
 
-           // initial scroll position
-           var scrollX = 0;
-           var scrollY = 0;
+        // initial scroll position
+        var scrollX = 0;
+        var scrollY = 0;
 
         // default values
         var CAMERAVALUE = "##__CAMERA__##";
@@ -269,12 +269,12 @@ define(function (require) {
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
 
             palettes.setBlocks(blocks);
-           palettes.setDragging(setDraggingContainer);
+            palettes.setDragging(setDraggingContainer);
             turtles.setBlocks(blocks);
-           turtles.setDragging(setDraggingContainer);
+            turtles.setDragging(setDraggingContainer);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
-           blocks.setDragging(setDraggingContainer);
+            blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
@@ -367,40 +367,45 @@ define(function (require) {
             // Set up event handler for stage mouse events
             stage.on('stagemousedown', function(event) {
                 stageMouseDown = true;
-              var x = event.stageX;
-              var y = event.stageY;
-              console.log('mouseDown (' + x + ', ' + y + ')');
+                var x = event.stageX;
+                var y = event.stageY;
+                // console.log('mouseDown (' + x + ', ' + y + ') (' + window.pageXOffset + ', ' + window.pageYOffset + ')');
+		// Make sure scroll position is in sync with actual window scroll.
+                scrollX = window.pageXOffset;
+                scrollY = window.pageYOffset;
 
-              stage.on('stagemousemove', function(event) {
-              if (stageMouseDown && !draggingContainer) {
-                  var dx = event.stageX - x;
-                  var dy = event.stageY - y;
-                  x = event.stageX;
-                  y = event.stageY;
-                  if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }
-                  if (dy > 10) { dy = 10; } else if (dy < -10) { dy = -10; }
-                  console.log('mouseMove (' + dx + ', ' + dy + ') scroll (' + scrollX + ', ' + scrollY + ')');
-                  scrollX += dx;
-                  if (scrollX < 0) {
-                     scrollX = 0;
-                  } else if (scrollX > 1200) {
-                     scrollX = 1200;
-                  }
-                  scrollY += dy;
-                  if (scrollY < 0) {
-                     scrollY = 0;
-                  } else if (scrollY > 900) {
-                     scrollY = 900;
-                  }
-                  window.scrollTo(scrollX, scrollY);
-                  update = true;
-              }
-           });
-
+                stage.on('stagemousemove', function(event) {
+                    if (x < 55 || y < 55 || x > 1145 || y > 845) {
+                        // console.log('no dragging from the edges');
+                    } else if (stageMouseDown && !draggingContainer) {
+                        var dx = event.stageX - x;
+                        var dy = event.stageY - y;
+                        x = event.stageX;
+                        y = event.stageY;
+                        if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }
+                        if (dy > 10) { dy = 10; } else if (dy < -10) { dy = -10; }
+                        // console.log('mouseMove (' + dx + ', ' + dy + ') scroll (' + scrollX + ', ' + scrollY + ')');
+                        scrollX += dx;
+                        if (scrollX < 0) {
+                            scrollX = 0;
+                        } else if (scrollX > 1200) {
+                            scrollX = 1200;
+                        }
+                        scrollY += dy;
+                        if (scrollY < 0) {
+                            scrollY = 0;
+                        } else if (scrollY > 900) {
+                            scrollY = 900;
+                        }
+                        window.scrollTo(scrollX, scrollY);
+                        update = true;
+                    }
+                });
             });
 
             stage.on('stagemouseup', function(event) {
                 stageMouseDown = false;
+                // console.log('mouseUp (' + event.stageX + ', ' + event.stageY + ')');
             });
 
             this.document.onkeydown = keyPressed;

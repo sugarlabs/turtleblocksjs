@@ -833,6 +833,7 @@ define(function (require) {
                     break;
 		case 'loudness':
 		    value = Math.round(mic.getLevel() * 1000);
+                    break;
                 default:
                     console.log('??? ' + blocks.blockList[blk].name);
                     break;

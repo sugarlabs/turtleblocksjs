@@ -111,6 +111,8 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['eval'] = evalBlock;
     evalBlock.twoArgMathBlock();
     evalBlock.docks[1][2] = 'textin';
+    evalBlock.defaults.push('x');
+    evalBlock.defaults.push(100);
     evalBlock.staticLabels.push('eval');
     evalBlock.staticLabels.push('f(x)');
     evalBlock.staticLabels.push('x');

@@ -338,7 +338,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['media'] = mediaBlock;
     mediaBlock.mediaBlock();
     mediaBlock.docks[0][2] = 'mediaout';
-    
+
     var textBlock = new ProtoBlock('text');
     textBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['text'] = textBlock;
@@ -454,11 +454,18 @@ function initBasicProtoBlocks(palettes, blocks) {
     cameraBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['camera'] = cameraBlock;
     cameraBlock.mediaBlock();
-    
+
     var videoBlock = new ProtoBlock('video');
     videoBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['video'] = videoBlock;
     videoBlock.mediaBlock();
+
+    var stopVideoCamBlock = new ProtoBlock('stopvideocam');
+    stopVideoCamBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;
+    stopVideoCamBlock.zeroArgBlock();
+    stopVideoCamBlock.staticLabels.push('stop video/camera');
+    stopVideoCamBlock.fontsize = '12px';
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

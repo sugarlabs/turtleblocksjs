@@ -12,8 +12,7 @@
 // Note: This code is inspired by the Python Turtle Blocks project
 // (https://github.com/walterbender/turtleart), but implemented from
 // scratch. -- Walter Bender, October 2014.
-meSpeak.loadConfig("mespeak_config.json");
-meSpeak.loadVoice("voices/en/en.json");
+
 define(function (require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
@@ -22,6 +21,7 @@ define(function (require) {
     require('howler');
     require('p5.sound');
     require('p5.dom');
+    require('mespeak');
     // require('activity/utils');
     require('activity/artwork');
     require('activity/munsell');
@@ -36,6 +36,9 @@ define(function (require) {
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
+
+	meSpeak.loadConfig("lib/mespeak_config.json");
+	meSpeak.loadVoice("lib/voices/en/en.json");
 
         // Initialize the activity.
         activity.setup();

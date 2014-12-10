@@ -84,6 +84,7 @@ define(function (require) {
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
+        var cameraID = null;
 
            // initial scroll position
            var scrollX = 0;
@@ -634,6 +635,8 @@ define(function (require) {
                 sounds[sound].stop();
             }
             sounds = [];
+
+            doStopVideoCam();
 
             if (buttonsVisible && !toolbarButtonsVisible) {
                 hideStopButton();
@@ -1187,9 +1190,9 @@ define(function (require) {
                     if (typeof(args[1]) == 'string') {
                         var len = args[1].length;
                         if (len == 14 && args[1].substr(0, 14) == CAMERAVALUE){
-                         doShowCamera(args, turtles, turtle, errorMsg);
+                         doUseCamera(args, turtles, turtle, false);
                         } else if (len == 13 && args[1].substr(0, 13) == VIDEOVALUE){
-                         doShowVideo(args, turtles, turtle, errorMsg);
+                         doUseCamera(args, turtles, turtle, true);
                         } else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
                             turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                         } else if (len > 8 && args[1].substr(0, 8) == 'https://') {
@@ -1260,6 +1263,9 @@ define(function (require) {
                     sounds[sound].stop();
                 }
                 sounds = [];
+                break;
+            case 'stopvideocam':
+                doStopVideoCam();
                 break;
             default:
                 if (blocks.blockList[blk].name in evalFlowDict) {
@@ -2122,83 +2128,48 @@ function fileBasename(file) {
 }
 
 
-function doShowCamera(args, turtles, turtle, errorMsg) {
-    window.URL = window.URL || window.webkitURL;
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
-       function() {
-           errorMsg('Your browser does not support navigator.getUserMedia().');
-       };
-    //Este objeto guardará algunos datos sobre la cámara
-    window.datosVideo = {
-       'StreamVideo': null,
-       'url': null
+function doUseCamera(args, turtles, turtle, isVideo) {
+    w = 320;
+    h = 240;
+    current = 0;
+
+    function setup() {
+        elements = document.getElementsByTagName('video');
+        for(var x=0; x < elements.length; x++){
+            elements[x].parentNode.removeChild(elements[x]);
+        }
+        videocapture = p5.prototype.createCapture(p5.prototype.VIDEO);
+        videocapture.size(w, h);
     }
-    var test = function(){
-       var oCamara, oFoto, oContexto, w, h;
-       var canvas = document.getElementById("photo");
-       oCamara = jQuery('#camera');
-       oFoto = jQuery('#photo');
-       w = oCamara.width();
-       h = oCamara.height();
-       oFoto.attr({
-           'width': w,
-           'height': h
-       });
-       oContexto = oFoto[0].getContext('2d');
-       oContexto.drawImage(oCamara[0], 0, 0, w, h);
-       turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
+
+    function draw() {
+        video = document.getElementsByTagName('video')[0];
+        if (video != undefined) {
+            var canvas = document.getElementById('camCanvas');
+            canvas.width = w;
+            canvas.height = h;
+            var context = canvas.getContext("2d");
+            context.drawImage(video, 0, 0, w, h);
+            data = canvas.toDataURL("image/png");
+            turtles.turtleList[turtle].doShowImage(args[0], data);
+        }
     }
-    navigator.getUserMedia({
-       'audio': false,
-       'video': true
-    }, function(streamVideo) {
-       jQuery("#camera").hide();
-       datosVideo.StreamVideo = streamVideo;
-       datosVideo.url = window.URL.createObjectURL(streamVideo);
-       jQuery('#camera').attr('src', datosVideo.url);
-       window.setTimeout(test, 1000);
-    }, function() {
-       errorMsg('Cannot access the camera.');
-    });
+    if (!isVideo) { window.setTimeout(doStopVideoCam, 4000); }
+    setup();
+    if (!isVideo) {
+        cameraID = window.setInterval(draw, 10);
+    }
+    else {
+        cameraID = window.setInterval(draw, 100)
+    }
+
 }
 
-
-function doShowVideo(args, turtles, turtle, errorMsg) {
-    window.URL = window.URL || window.webkitURL;
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia ||
-       function() {
-           errorMsg('Your browser does not support navigator.getUserMedia().');
-       };
-    //Este objeto guardará algunos datos sobre la cámara
-    window.datosVideo = {
-       'StreamVideo': null,
-       'url': null
+function doStopVideoCam(){
+    window.clearInterval(cameraID);
+    elements = document.getElementsByTagName('video');
+    for(var x=0; x < elements.length; x++){
+        elements[x].parentNode.removeChild(elements[x]);
     }
-    var test = function(){
-       var oCamara, oFoto, oContexto, w, h;
-       var canvas = document.getElementById("photo");
-       oCamara = jQuery('#camera');
-       oFoto = jQuery('#photo');
-       w = oCamara.width();
-       h = oCamara.height();
-       oFoto.attr({
-           'width': w,
-           'height': h
-       });
-       oContexto = oFoto[0].getContext('2d');
-       oContexto.drawImage(oCamara[0], 0, 0, w, h);
-       turtles.turtleList[turtle].doShowImage(args[0], canvas.toDataURL("image/png"));
-    }
-    navigator.getUserMedia({
-       'audio': false,
-       'video': true
-    }, function(streamVideo) {
-       jQuery("#camera").hide();
-       datosVideo.StreamVideo = streamVideo;
-       datosVideo.url = window.URL.createObjectURL(streamVideo);
-       jQuery('#camera').attr('src', datosVideo.url);
-       window.setInterval(test, 0.1);
-    }, function() {
-       errorMsg('Cannot access the camera.');
-    });
+    cameraID = null;
 }

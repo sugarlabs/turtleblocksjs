@@ -1308,8 +1308,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 console.log(myBlock.name);
                 break;
             }
-           console.log('find top: ' + myBlock.name + ' ' + myBlock.connections[0].name);
             blk = myBlock.connections[0];
+	    myBlock = this.blockList[blk];
         }
         return blk;
     }
@@ -3034,6 +3034,16 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
             y: myBlock.collapseContainer.y - Math.round(event.stageY / blocks.scale)
         };
 
+        myBlock.collapseContainer.on('pressup', function(event) {
+            collapseOut(blocks, myBlock, thisBlock, moved, event);
+            moved = false;
+        });
+
+        myBlock.collapseContainer.on('mouseout', function(event) {
+            collapseOut(blocks, myBlock, thisBlock, moved, event);
+            moved = false;
+        });
+
         myBlock.collapseContainer.on('pressmove', function(event) {
             moved = true;
             var oldX = myBlock.collapseContainer.x;
@@ -3070,10 +3080,12 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
     myBlock.collapseContainer.on('pressup', function(event) {
         collapseOut(blocks, myBlock, thisBlock, moved, event);
+        moved = false;
     });
 
     myBlock.collapseContainer.on('mouseout', function(event) {
         collapseOut(blocks, myBlock, thisBlock, moved, event);
+        moved = false;
     });
 }
 
@@ -3116,7 +3128,7 @@ function loadEventHandlers(blocks, myBlock) {
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
-    }, true);
+    });
 
     var moved = false;
     myBlock.container.on('click', function(event) {
@@ -3141,7 +3153,7 @@ function loadEventHandlers(blocks, myBlock) {
                 blocks.runLogo(topBlock);
             }
         }
-    }, true);
+    });
 
     myBlock.container.on('mousedown', function(event) {
         blocks.setDraggingFlag(true);
@@ -3171,12 +3183,14 @@ function loadEventHandlers(blocks, myBlock) {
             blocks.setDraggingFlag(false);
             displayMsg(blocks, 'mousedown->mouseout');
             mouseoutCallback(blocks, myBlock, event, moved);
+	    moved = false;
         });
 
         myBlock.container.on('pressup', function(event) {
             blocks.setDraggingFlag(false);
             displayMsg(blocks, 'mousedown->pressup');
             mouseoutCallback(blocks, myBlock, event, moved);
+	    moved = false;
         });
 
         myBlock.container.on('pressmove', function(event) {
@@ -3230,14 +3244,14 @@ function loadEventHandlers(blocks, myBlock) {
                 }
             }
             blocks.refreshCanvas();
-        }, true);
-    }, true);
+        });
+    });
 
     myBlock.container.on('mouseout', function(event) {
         blocks.setDraggingFlag(false);
         displayMsg(blocks, 'mouseout');
         mouseoutCallback(blocks, myBlock, event, moved);
-    }, true);
+    });
 }
 
 

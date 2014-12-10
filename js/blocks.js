@@ -502,7 +502,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // second-to-last argument.
             if (clamp == BOT) {
                 var c = myBlock.connections.length - 2;
-            } else {  // MID
+            } else { // MID
                 var c = myBlock.connections.length - 3;
             }
             me.sizeCounter = 0;
@@ -516,15 +516,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var offset = delta * myBlock.protoblock.fillerOffset;
                 if (clamp == BOT) {
                     last(myBlock.docks)[1] += offset;
-		} else {  // MID
+                } else { // MID
                     myBlock.docks[3][1] += offset;
                     myBlock.docks[4][1] += offset;
-		    for (var filler in myBlock.fillerBitmaps[BOT]) {
-			myBlock.fillerBitmaps[BOT][filler].y += offset;
-		    }
-		    for (var filler in myBlock.highlightFillerBitmaps[BOT]) {
-			myBlock.highlightFillerBitmaps[BOT][filler].y += offset;
-		    }
+                    for (var filler in myBlock.fillerBitmaps[BOT]) {
+                        myBlock.fillerBitmaps[BOT][filler].y += offset;
+                    }
+                    for (var filler in myBlock.highlightFillerBitmaps[BOT]) {
+                        myBlock.highlightFillerBitmaps[BOT][filler].y += offset;
+                    }
                 }
             }
 
@@ -541,12 +541,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 // Add filler.
                 var c = myBlock.fillerCount[clamp];
                 adjustFillerAndDocks(myBlock, clamp, 1);
-                me.addFiller(blk, clamp, c); 
+                me.addFiller(blk, clamp, c);
                 docksChanged = true;
             }
             return docksChanged;
         }
-        
+
         var docksChanged = false;
         if (myBlock.isDoubleClampBlock()) {
             docksChanged = clampAdjuster(this, blk, myBlock, MID);
@@ -579,7 +579,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // First we determine the size of the first argument.
         var c = myBlock.connections[1];
-	var firstArgumentSize = 1; // Minimum size
+        var firstArgumentSize = 1; // Minimum size
         if (c != null) {
             firstArgumentSize = Math.max(this.getBlockSize(c), 1);
         }
@@ -598,7 +598,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.docks[3][1] -= myBlock.protoblock.fillerOffset;
             }
             myBlock.size -= 1;
-        } 
+        }
         while (firstArgumentSize > myBlock.fillerCount[BOT] + 1) {
             // Add filler.
             this.addFiller(blk, BOT, myBlock.fillerCount[BOT]);
@@ -647,10 +647,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.removeChild(fillerBitmap);
         this.bitmapCache[fillerBitmap.name] = fillerBitmap;
 
-       if (clamp == MID) {
+        if (clamp == MID) {
             myBlock.bitmap[MID].y -= myBlock.protoblock.fillerOffset;
             myBlock.highlightBitmap[MID].y = myBlock.bitmap[MID].y;
-       }
+        }
         myBlock.bitmap[BOT].y -= myBlock.protoblock.fillerOffset;
         myBlock.highlightBitmap[BOT].y = myBlock.bitmap[BOT].y;
 
@@ -669,9 +669,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Add filler to an expandable block.
         var myBlock = this.blockList[blk];
         var offset = myBlock.protoblock.artworkOffset[clamp] + c * myBlock.protoblock.fillerOffset;
-	if (clamp == BOT) {
-	    offset += myBlock.fillerCount[MID] * myBlock.protoblock.fillerOffset;
-	}
+        if (clamp == BOT) {
+            offset += myBlock.fillerCount[MID] * myBlock.protoblock.fillerOffset;
+        }
 
         function processBitmap(me, name, bitmap, args) {
             myBlock = args[0];
@@ -770,33 +770,33 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         if (myBlock.isClampBlock()) {
             var c = myBlock.connections.length - 2;
-           var csize = 0;
+            var csize = 0;
             if (c > 0) {
-                 var cblk = myBlock.connections[c];
+                var cblk = myBlock.connections[c];
                 if (cblk != null) {
                     csize = this.getStackSize(cblk);
-              }
+                }
                 if (csize == 0) {
                     size = 1; // minimum of 1 slot in clamp
                 } else {
-                  size = csize;
-              }
+                    size = csize;
+                }
             }
-           if (myBlock.isDoubleClampBlock()) {
-              var c = myBlock.connections.length - 3;
-              var csize = 0;
-              if (c > 0) {
+            if (myBlock.isDoubleClampBlock()) {
+                var c = myBlock.connections.length - 3;
+                var csize = 0;
+                if (c > 0) {
                     var cblk = myBlock.connections[c];
                     if (cblk != null) {
-                     var csize = this.getStackSize(cblk);
-                  }
-                  if (csize == 0) {
+                        var csize = this.getStackSize(cblk);
+                    }
+                    if (csize == 0) {
                         size += 1; // minimum of 1 slot in clamp
-                  } else {
-                     size += csize;
-                  }
-              }
-           }
+                    } else {
+                        size += csize;
+                    }
+                }
+            }
             // add top and bottom of clamp
             size += myBlock.size;
         } else {
@@ -1209,7 +1209,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var myBlock = this.blockList[blk];
             if (myBlock.name == 'number') {
                 if (myBlock.value == null) {
-                  console.log('block value was null ... assigning 100');
+                    console.log('block value was null ... assigning 100');
                     myBlock.value = 100;
                 }
                 value = myBlock.value.toString();
@@ -1222,7 +1222,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     value + '</textarea>'
             } else if (myBlock.name == 'text') {
                 if (myBlock.value == null) {
-                  console.log('block value was null ... assigning text');
+                    console.log('block value was null ... assigning text');
                     myBlock.value = 'text';
                 }
                 value = myBlock.value;
@@ -1304,13 +1304,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         while (myBlock.connections[0] != null) {
             topBlockLoop += 1;
             if (topBlockLoop > 2 * this.blockList.length) {
-		// Could happen if the block data is malformed.
+                // Could happen if the block data is malformed.
                 console.log('infinite loop finding topBlock?');
                 console.log(myBlock.name);
                 break;
             }
             blk = myBlock.connections[0];
-	    myBlock = this.blockList[blk];
+            myBlock = this.blockList[blk];
         }
         return blk;
     }
@@ -1333,12 +1333,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         while (last(myBlock.connections) != null) {
             bottomBlockLoop += 1;
             if (bottomBlockLoop > 2 * this.blockList.length) {
-		// Could happen if the block data is malformed.
+                // Could happen if the block data is malformed.
                 console.log('infinite loop finding bottomBlock?');
                 break;
             }
             blk = last(myBlock.connections);
-	    myBlock = this.blockList[blk];
+            myBlock = this.blockList[blk];
         }
         return blk;
     }
@@ -1472,47 +1472,46 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             loadEventHandlers(me, myBlock);
             me.refreshCanvas();
             if (doubleExpandable.indexOf(myBlock.name) != -1) {
-              me.middleImageLoad(myBlock);
-            }
-            else {
-              me.finishImageLoad(myBlock);
+                me.middleImageLoad(myBlock);
+            } else {
+                me.finishImageLoad(myBlock);
             }
 
-          }
-
-          makeBitmap(this, myBlock.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
         }
 
-      this.middleImageLoad = function(myBlock) {
-          // Load a block image and create any extra parts. Image
-          // components are loaded asynchronously so most the work
-          // happens in callbacks.
+        makeBitmap(this, myBlock.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
+    }
 
-          var thisBlock = this.blockList.indexOf(myBlock);
+    this.middleImageLoad = function(myBlock) {
+        // Load a block image and create any extra parts. Image
+        // components are loaded asynchronously so most the work
+        // happens in callbacks.
 
-          // We need a label for most blocks.
-          // TODO: use Text exclusively for all block labels.
-          myBlock.text = new createjs.Text('', '20px Arial', '#000000');
+        var thisBlock = this.blockList.indexOf(myBlock);
 
-          // Get the block labels from the protoblock
-          var block_label = myBlock.protoblock.staticLabels[2];
+        // We need a label for most blocks.
+        // TODO: use Text exclusively for all block labels.
+        myBlock.text = new createjs.Text('', '20px Arial', '#000000');
 
-          var middleOffset = myBlock.protoblock.artworkOffset[MID];
+        // Get the block labels from the protoblock
+        var block_label = myBlock.protoblock.staticLabels[2];
 
-          // Create the bitmap for the block.
-          function processBitmap(me, name, bitmap, myBlock) {
+        var middleOffset = myBlock.protoblock.artworkOffset[MID];
+
+        // Create the bitmap for the block.
+        function processBitmap(me, name, bitmap, myBlock) {
             myBlock.bitmap[MID] = bitmap;
             myBlock.container.addChild(myBlock.bitmap[MID]);
             myBlock.bitmap[MID].x = myBlock.bitmap[TOP].x;
             myBlock.bitmap[MID].y = myBlock.bitmap[TOP].y + middleOffset;
             myBlock.bitmap[MID].name = 'bmp_middle_' + thisBlock;
             me.refreshCanvas();
-          }
+        }
 
-          makeBitmap(this, myBlock.protoblock.artwork[MID].replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
+        makeBitmap(this, myBlock.protoblock.artwork[MID].replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
 
-          // Create the highlight bitmap for the block.
-          function processHighlightBitmap(me, name, bitmap, myBlock) {
+        // Create the highlight bitmap for the block.
+        function processHighlightBitmap(me, name, bitmap, myBlock) {
             myBlock.highlightBitmap[MID] = bitmap;
             myBlock.container.addChild(myBlock.highlightBitmap[MID]);
             myBlock.highlightBitmap[MID].x = myBlock.bitmap[TOP].x;
@@ -1520,10 +1519,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.highlightBitmap[MID].name = 'bmp_middle_highlight_' + thisBlock;
             myBlock.highlightBitmap[MID].visible = false;
             me.finishImageLoad(myBlock);
-          }
-
-          makeBitmap(this, myBlock.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
         }
+
+        makeBitmap(this, myBlock.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
+    }
 
     this.finishImageLoad = function(myBlock) {
 
@@ -1881,69 +1880,69 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         var postProcess = null;
         var postProcessArg = null;
-       var me = this;
-       var thisBlock = this.blockList.length;
-       if (name == 'start') {
-           postProcess = function(thisBlock) {
-              me.blockList[thisBlock].value = me.turtles.turtleList.length;
-              me.turtles.add(me.blockList[thisBlock]);
-           }
-           postProcessArg = thisBlock;
-       } else if (name == 'text') {
-           postProcess = function(args) {
-              var thisBlock = args[0];
-              var value = args[1];
-              me.blockList[thisBlock].value = value;
+        var me = this;
+        var thisBlock = this.blockList.length;
+        if (name == 'start') {
+            postProcess = function(thisBlock) {
+                me.blockList[thisBlock].value = me.turtles.turtleList.length;
+                me.turtles.add(me.blockList[thisBlock]);
+            }
+            postProcessArg = thisBlock;
+        } else if (name == 'text') {
+            postProcess = function(args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value;
-              me.updateBlockLabels();
-           }
-           postProcessArg = [thisBlock, 'text'];
-       } else if (name == 'number') {
-           postProcess = function(args) {
-              var thisBlock = args[0];
-              var value = args[1];
-              me.blockList[thisBlock].value = value;
+                me.updateBlockLabels();
+            }
+            postProcessArg = [thisBlock, 'text'];
+        } else if (name == 'number') {
+            postProcess = function(args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value.toString();
-              me.updateBlockLabels();
-           }
-           postProcessArg = [thisBlock, 100];
-       } else if (name == 'media') {
-           postProcess = function(args) {
-              var thisBlock = args[0];
-              var value = args[1];
-              me.blockList[thisBlock].value = value;
+                me.updateBlockLabels();
+            }
+            postProcessArg = [thisBlock, 100];
+        } else if (name == 'media') {
+            postProcess = function(args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                me.blockList[thisBlock].value = value;
                 if (value == null) {
                     loadThumbnail(me, thisBlock, 'images/load-media.svg');
                 } else {
                     loadThumbnail(me, thisBlock, null);
-              }
-           }
-           postProcessArg = [thisBlock, null];
-       } else if (name == 'camera') {
-           postProcess = function(args) {
-              var thisBlock = args[0];
-              var value = args[1];
-              me.blockList[thisBlock].value = CAMERAVALUE;
+                }
+            }
+            postProcessArg = [thisBlock, null];
+        } else if (name == 'camera') {
+            postProcess = function(args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                me.blockList[thisBlock].value = CAMERAVALUE;
                 if (value == null) {
                     loadThumbnail(me, thisBlock, 'images/camera.svg');
                 } else {
                     loadThumbnail(me, thisBlock, null);
-              }
-           }
-           postProcessArg = [thisBlock, null];
-       } else if (name == 'video') {
-           postProcess = function(args) {
-              var thisBlock = args[0];
-              var value = args[1];
-              me.blockList[thisBlock].value = VIDEOVALUE;
+                }
+            }
+            postProcessArg = [thisBlock, null];
+        } else if (name == 'video') {
+            postProcess = function(args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                me.blockList[thisBlock].value = VIDEOVALUE;
                 if (value == null) {
                     loadThumbnail(me, thisBlock, 'images/video.svg');
                 } else {
                     loadThumbnail(me, thisBlock, null);
-              }
-           }
-           postProcessArg = [thisBlock, null];
-       }
+                }
+            }
+            postProcessArg = [thisBlock, null];
+        }
 
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
@@ -1969,67 +1968,67 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var cblk = blk + 1;
         for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
             var value = myBlock.protoblock.defaults[i];
-           var me = this;
-           var thisBlock = this.blockList.length;
+            var me = this;
+            var thisBlock = this.blockList.length;
             if (myBlock.docks[i + 1][2] == 'anyin') {
                 if (value == null) {
                     console.log('cannot set default value');
                 } else if (typeof(value) == 'string') {
-                  postProcess = function(args) {
-                     var thisBlock = args[0];
-                     var value = args[1];
-                     me.blockList[thisBlock].value = value;
-                     var label = value.toString();
-                     if (label.length > 8) {
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].value = value;
+                        var label = value.toString();
+                        if (label.length > 8) {
                             label = label.substr(0, 7) + '...';
-                     }
+                        }
                         me.blockList[thisBlock].text.text = label;
-                     me.updateBlockLabels();
-                  }
+                        me.updateBlockLabels();
+                    }
                     this.makeNewBlock('text', postProcess, [thisBlock, value]);
                 } else {
-                  console.log('adding number argument');
-                  postProcess = function(args) {
-                     var thisBlock = args[0];
-                     var value = args[1];
-                     me.blockList[thisBlock].value = value;
+                    console.log('adding number argument');
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].value = value;
                         me.blockList[thisBlock].text.text = value.toString();
-                     me.updateBlockLabels();
-                  }
+                        me.updateBlockLabels();
+                    }
                     this.makeNewBlock('number', postProcess, [thisBlock, value]);
                 }
             } else if (myBlock.docks[i + 1][2] == 'textin') {
-              postProcess = function(args) {
-                  var thisBlock = args[0];
-                  var value = args[1];
-                  me.blockList[thisBlock].value = value;
-                  var label = value.toString();
-                  if (label.length > 8) {
+                postProcess = function(args) {
+                    var thisBlock = args[0];
+                    var value = args[1];
+                    me.blockList[thisBlock].value = value;
+                    var label = value.toString();
+                    if (label.length > 8) {
                         label = label.substr(0, 7) + '...';
-                  }
+                    }
                     me.blockList[thisBlock].text.text = label;
-                  me.updateBlockLabels();
-              }
+                    me.updateBlockLabels();
+                }
                 this.makeNewBlock('text', postProcess, [thisBlock, value]);
             } else if (myBlock.docks[i + 1][2] == 'mediain') {
-              postProcess = function(args) {
-                  var thisBlock = args[0];
-                  var value = args[1];
-                  me.blockList[thisBlock].value = value;
+                postProcess = function(args) {
+                    var thisBlock = args[0];
+                    var value = args[1];
+                    me.blockList[thisBlock].value = value;
                     if (value == null) {
                         loadThumbnail(me, thisBlock, 'images/load-media.svg');
                     } else {
                         loadThumbnail(me, thisBlock, null);
-                  }
-              }
+                    }
+                }
                 this.makeNewBlock('media', postProcess, [thisBlock, value]);
             } else {
-              postProcess = function(args) {
-                  var thisBlock = args[0];
-                  var value = args[1];
-                  me.blockList[thisBlock].value = value;
+                postProcess = function(args) {
+                    var thisBlock = args[0];
+                    var value = args[1];
+                    me.blockList[thisBlock].value = value;
                     me.blockList[thisBlock].text.text = value.toString();
-              }
+                }
                 this.makeNewBlock('number', postProcess, [thisBlock, value]);
             }
 
@@ -2451,157 +2450,157 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var me = this;
             // A few special cases.
             switch (name) {
-            case 'start':
-                blkData[4][0] = null;
-                blkData[4][2] = null;
+                case 'start':
+                    blkData[4][0] = null;
+                    blkData[4][2] = null;
 
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = me.turtles.turtleList.length;
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = me.turtles.turtleList.length;
 
-                    me.turtles.add(me.blockList[thisBlock]);
-                }
-                this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'action':
-            case 'hat':
-                blkData[4][0] = null;
-                blkData[4][3] = null;
-                this.makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null);
-                break;
+                        me.turtles.add(me.blockList[thisBlock]);
+                    }
+                    this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'action':
+                case 'hat':
+                    blkData[4][0] = null;
+                    blkData[4][3] = null;
+                    this.makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null);
+                    break;
 
-            // Value blocks need a default value set.
-            case 'number':
-            case 'text':
-                postProcess = function(args) {
-                    var thisBlock = args[0];
-                    var value = args[1];
-                  console.log('assigning block value ' + value);
-                    me.blockList[thisBlock].value = value;
-                    me.updateBlockText(thisBlock);
-                  me.updateBlockLabels();
-                }
-                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
-                break;
+                    // Value blocks need a default value set.
+                case 'number':
+                case 'text':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        console.log('assigning block value ' + value);
+                        me.blockList[thisBlock].value = value;
+                        me.updateBlockText(thisBlock);
+                        me.updateBlockLabels();
+                    }
+                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                    break;
 
-            // Load a thumbnail into a media blocks.
-            case 'media':
-                postProcess = function(args) {
-                    var thisBlock = args[0];
-                    var value = args[1];
-                    me.blockList[thisBlock].value = value;
-                    if (value == null) {
-                        loadThumbnail(me, thisBlock, 'images/load-media.svg');
-                    } else {
-                        loadThumbnail(me, thisBlock, null);
-                  }
-                }
-                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
-                break;
-            case 'camera':
-                postProcess = function(args) {
-                    var thisBlock = args[0];
-                    var value = args[1];
-                    me.blockList[thisBlock].value = CAMERAVALUE;
-                    loadThumbnail(me, thisBlock, "images/camera.svg");
+                    // Load a thumbnail into a media blocks.
+                case 'media':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].value = value;
+                        if (value == null) {
+                            loadThumbnail(me, thisBlock, 'images/load-media.svg');
+                        } else {
+                            loadThumbnail(me, thisBlock, null);
+                        }
+                    }
+                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                    break;
+                case 'camera':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].value = CAMERAVALUE;
+                        loadThumbnail(me, thisBlock, "images/camera.svg");
 
-              }
-                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
-                break;
-            case 'video':
-                postProcess = function(args) {
-                    var thisBlock = args[0];
-                    var value = args[1];
-                    me.blockList[thisBlock].value = VIDEOVALUE;
-                    loadThumbnail(me, thisBlock, "images/video.svg");
+                    }
+                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                    break;
+                case 'video':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].value = VIDEOVALUE;
+                        loadThumbnail(me, thisBlock, "images/video.svg");
 
-              }
-                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
-                break;
+                    }
+                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                    break;
 
-            // Define some constants for legacy blocks for
-            // backward compatibility with Python projects.
-            case 'red':
-            case 'white':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = 0;
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'orange':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = 10;
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'yellow':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = 20;
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'green':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = 40;
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'blue':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = 70;
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'leftpos':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = -(canvas.width / 2);
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'rightpos':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = (canvas.width / 2);
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'toppos':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = (canvas.height / 2);
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'botpos':
-            case 'bottompos':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = -(canvas.height / 2);
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'width':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = canvas.width;
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'height':
-                postProcess = function(thisBlock) {
-                    me.blockList[thisBlock].value = canvas.height;
-                    me.updateBlockText(thisBlock);
-                }
-                this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            default:
-                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], null);
-                break;
+                    // Define some constants for legacy blocks for
+                    // backward compatibility with Python projects.
+                case 'red':
+                case 'white':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = 0;
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'orange':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = 10;
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'yellow':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = 20;
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'green':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = 40;
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'blue':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = 70;
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'leftpos':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = -(canvas.width / 2);
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'rightpos':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = (canvas.width / 2);
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'toppos':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = (canvas.height / 2);
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'botpos':
+                case 'bottompos':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = -(canvas.height / 2);
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'width':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = canvas.width;
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'height':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = canvas.height;
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                default:
+                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4], null);
+                    break;
             }
             if (thisBlock == this.blockList.length - 1) {
                 if (this.blockList[thisBlock].connections[0] == null) {
@@ -2630,8 +2629,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.refreshCanvas();
 
         // We need to wait for the blocks to load before expanding them.
-        setTimeout(function() {blockBlocks.expandTwoArgs();}, 1000);
-        setTimeout(function() {blockBlocks.expandClamps();}, 2000);
+        setTimeout(function() {
+            blockBlocks.expandTwoArgs();
+        }, 1000);
+        setTimeout(function() {
+            blockBlocks.expandClamps();
+        }, 2000);
     }
 
     blockBlocks = this;
@@ -2651,7 +2654,7 @@ function Block(protoblock) {
     this.y = 0;
     this.collapsed = false; // Is this block in a collapsed stack?
     this.trash = false; // Is this block in the trash?
-    this.loadComplete = false;  // Has the block finished loading?
+    this.loadComplete = false; // Has the block finished loading?
     this.label = null; // Editable textview in DOM.
     this.text = null; // A dynamically generated text label on block itself.
     this.value = null; // Value for number, text, and media blocks.
@@ -2664,8 +2667,16 @@ function Block(protoblock) {
 
     // Expandable block features.
     this.fillerCount = [0, 0, 0];
-    this.fillerBitmaps = [[], [], []];
-    this.highlightFillerBitmaps = [[], [], []];
+    this.fillerBitmaps = [
+        [],
+        [],
+        []
+    ];
+    this.highlightFillerBitmaps = [
+        [],
+        [],
+        []
+    ];
 
     // Start and Action blocks has a collapse button (in a separate
     // container).
@@ -2885,9 +2896,9 @@ function loadThumbnail(blocks, thisBlock, imagePath) {
     }
 
     if (imagePath == null) {
-       image.src = blocks.blockList[thisBlock].value;
+        image.src = blocks.blockList[thisBlock].value;
     } else {
-       image.src = imagePath;
+        image.src = imagePath;
     }
 }
 
@@ -2948,16 +2959,16 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.collapseBlockBitmap.visible = false;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
                 myBlock.collapseText.visible = false;
-              for (b in myBlock.bitmap) {
-                  if (myBlock.bitmap[b] != null) {
-                     myBlock.bitmap[b].visible = false;
-                  }
-              }
-              for (b in myBlock.highlightBitmap) {
-                  if (myBlock.highlightBitmap[b] != null) {
-                     myBlock.highlightBitmap[b].visible = true;
-                  }
-              }
+                for (b in myBlock.bitmap) {
+                    if (myBlock.bitmap[b] != null) {
+                        myBlock.bitmap[b].visible = false;
+                    }
+                }
+                for (b in myBlock.highlightBitmap) {
+                    if (myBlock.highlightBitmap[b] != null) {
+                        myBlock.highlightBitmap[b].visible = true;
+                    }
+                }
                 for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
                     myBlock.fillerBitmaps[MID][i].visible = false;
                     myBlock.highlightFillerBitmaps[MID][i].visible = true;
@@ -2982,16 +2993,16 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.collapseBlockBitmap.visible = true;
                 myBlock.highlightCollapseBlockBitmap.visible = false;
                 myBlock.collapseText.visible = true;
-              for (b in myBlock.bitmap) {
-                  if (myBlock.bitmap[b] != null) {
-                     myBlock.bitmap[b].visible = false;
-                  }
-              }
-              for (b in myBlock.highlightBitmap) {
-                  if (myBlock.highlightBitmap[b] != null) {
-                     myBlock.highlightBitmap[b].visible = false;
-                  }
-              }
+                for (b in myBlock.bitmap) {
+                    if (myBlock.bitmap[b] != null) {
+                        myBlock.bitmap[b].visible = false;
+                    }
+                }
+                for (b in myBlock.highlightBitmap) {
+                    if (myBlock.highlightBitmap[b] != null) {
+                        myBlock.highlightBitmap[b].visible = false;
+                    }
+                }
                 for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
                     myBlock.fillerBitmaps[MID][i].visible = false;
                     myBlock.highlightFillerBitmaps[MID][i].visible = false;
@@ -3144,11 +3155,11 @@ function loadEventHandlers(blocks, myBlock) {
             } else if (myBlock.name == 'media') {
                 doOpenMedia(blocks, thisBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
-              // FIXME: Why does this happen???
-              if (myBlock.label == null) {
-                  console.log('adding missing block label');
-                  blocks.updateBlockLabels();
-              }
+                // FIXME: Why does this happen???
+                if (myBlock.label == null) {
+                    console.log('adding missing block label');
+                    blocks.updateBlockLabels();
+                }
                 myBlock.label.style.display = '';
             } else {
                 var topBlock = blocks.findTopBlock(thisBlock);
@@ -3165,7 +3176,9 @@ function loadEventHandlers(blocks, myBlock) {
         // Track time for detecting long pause.
         var d = new Date();
         blocks.time = d.getTime();
-        blocks.timeOut = setTimeout(function(){blocks.triggerLongPress(myBlock);}, LONGPRESSTIME);
+        blocks.timeOut = setTimeout(function() {
+            blocks.triggerLongPress(myBlock);
+        }, LONGPRESSTIME);
 
         // Always show the trash when there is a block selected.
         trashcan.show();
@@ -3186,14 +3199,14 @@ function loadEventHandlers(blocks, myBlock) {
             blocks.setDraggingFlag(false);
             displayMsg(blocks, 'mousedown->mouseout');
             mouseoutCallback(blocks, myBlock, event, moved);
-	    moved = false;
+            moved = false;
         });
 
         myBlock.container.on('pressup', function(event) {
             blocks.setDraggingFlag(false);
             displayMsg(blocks, 'mousedown->pressup');
             mouseoutCallback(blocks, myBlock, event, moved);
-	    moved = false;
+            moved = false;
         });
 
         myBlock.container.on('pressmove', function(event) {
@@ -3337,7 +3350,7 @@ function makeBitmap(me, data, name, callback, args) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
     var img = new Image();
-    img.onload = function () {
+    img.onload = function() {
         bitmap = new createjs.Bitmap(img);
         callback(me, name, bitmap, args);
     }
@@ -3347,8 +3360,7 @@ function makeBitmap(me, data, name, callback, args) {
 }
 
 
-function httpGet(projectName)
-{
+function httpGet(projectName) {
     var xmlHttp = null;
 
     xmlHttp = new XMLHttpRequest();
@@ -3366,8 +3378,7 @@ function httpGet(projectName)
 }
 
 
-function httpPost(projectName, data)
-{
+function httpPost(projectName, data) {
     var xmlHttp = null;
     // console.log('sending ' + data);
     xmlHttp = new XMLHttpRequest();

@@ -642,7 +642,10 @@ define(function (require) {
             }
             sounds = [];
 
-            doStopVideoCam();
+	    if (cameraID != null) {
+		doStopVideoCam(cameraID);
+		cameraID = null;
+	    }
 
             if (buttonsVisible && !toolbarButtonsVisible) {
                 hideStopButton();
@@ -1274,7 +1277,9 @@ define(function (require) {
                 sounds = [];
                 break;
             case 'stopvideocam':
-                doStopVideoCam();
+		if (cameraID != null) {
+                    doStopVideoCam(cameraID);
+		}
                 break;
             default:
                 if (blocks.blockList[blk].name in evalFlowDict) {
@@ -2174,11 +2179,10 @@ function doUseCamera(args, turtles, turtle, isVideo) {
 
 }
 
-function doStopVideoCam(){
+function doStopVideoCam(cameraID){
     window.clearInterval(cameraID);
     elements = document.getElementsByTagName('video');
     for(var x=0; x < elements.length; x++){
         elements[x].parentNode.removeChild(elements[x]);
     }
-    cameraID = null;
 }

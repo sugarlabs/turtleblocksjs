@@ -1304,6 +1304,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         while (myBlock.connections[0] != null) {
             topBlockLoop += 1;
             if (topBlockLoop > 2 * this.blockList.length) {
+		// Could happen if the block data is malformed.
                 console.log('infinite loop finding topBlock?');
                 console.log(myBlock.name);
                 break;
@@ -1332,10 +1333,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         while (last(myBlock.connections) != null) {
             bottomBlockLoop += 1;
             if (bottomBlockLoop > 2 * this.blockList.length) {
+		// Could happen if the block data is malformed.
                 console.log('infinite loop finding bottomBlock?');
                 break;
             }
             blk = last(myBlock.connections);
+	    myBlock = this.blockList[blk];
         }
         return blk;
     }

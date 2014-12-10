@@ -95,8 +95,8 @@ function ProtoBlock(name) {
     this.zeroArgBlock = function() {
         this.args = 0;
         this.artwork.push(BASICBLOCK);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(BASICBLOCKDOCKS);
     }
 
@@ -104,8 +104,8 @@ function ProtoBlock(name) {
     this.basicBlockNoFlow = function() {
         this.args = 0;
         this.artwork.push(BASICBLOCKNOFLOW);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(BASICBLOCKNOFLOWDOCKS);
     }
 
@@ -113,8 +113,8 @@ function ProtoBlock(name) {
     this.oneArgBlock = function() {
         this.args = 1;
         this.artwork.push(BASICBLOCK1ARG);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(BASICBLOCK1ARGDOCKS);
     }
 
@@ -126,7 +126,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 2;
         this.artwork.push(BASICBLOCK2ARG);
-       this.artwork.push(null);
+        this.artwork.push(null);
         this.artwork.push(BASICBLOCK2ARGBOTTOM);
         this.copyDock(BASICBLOCK2ARGDOCKS);
     }
@@ -137,8 +137,8 @@ function ProtoBlock(name) {
         this.size = 1;
         this.args = 1;
         this.artwork.push(ARG1BLOCK);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(ARG1BLOCKDOCKS);
     }
 
@@ -150,7 +150,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 2;
         this.artwork.push(ARG2BLOCK);
-       this.artwork.push(null);
+        this.artwork.push(null);
         this.artwork.push(ARG2BLOCKBOTTOM);
         this.copyDock(ARG2BLOCKDOCKS);
     }
@@ -162,8 +162,8 @@ function ProtoBlock(name) {
         this.size = 1;
         this.args = 0;
         this.artwork.push(VALUEBLOCK);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(VALUEBLOCKDOCKS);
     }
 
@@ -175,8 +175,8 @@ function ProtoBlock(name) {
         this.size = 1;
         this.args = 0;
         this.artwork.push(MEDIABLOCK);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(MEDIABLOCKDOCKS);
     }
 
@@ -189,7 +189,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 1;
         this.artwork.push(FLOWCLAMP0ARG);
-       this.artwork.push(null);
+        this.artwork.push(null);
         this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(FLOWCLAMP0ARGDOCKS);
     }
@@ -203,7 +203,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 2;
         this.artwork.push(FLOWCLAMP1ARG);
-       this.artwork.push(null);
+        this.artwork.push(null);
         this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(FLOWCLAMP1ARGDOCKS);
     }
@@ -217,7 +217,7 @@ function ProtoBlock(name) {
         this.size = 3;
         this.args = 2;
         this.artwork.push(FLOWCLAMPBOOLEANARG);
-       this.artwork.push(null);
+        this.artwork.push(null);
         this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(FLOWCLAMPBOOLEANDOCKS);
     }
@@ -245,7 +245,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 1;
         this.artwork.push(ACTIONCLAMP0ARG);
-       this.artwork.push(null);
+        this.artwork.push(null);
         this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(ACTIONCLAMP0ARGDOCKS);
     }
@@ -258,7 +258,7 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 1;
         this.artwork.push(ACTIONCLAMP1ARG);
-       this.artwork.push(null);
+        this.artwork.push(null);
         this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(ACTIONCLAMP1ARGDOCKS);
     }
@@ -269,8 +269,8 @@ function ProtoBlock(name) {
         this.size = 1;
         this.args = 0;
         this.artwork.push(BOOLEAN0ARG);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(BOOLEAN0ARGDOCKS);
     }
 
@@ -280,8 +280,8 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 1;
         this.artwork.push(BOOLEAN1BOOLEANARG);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(BOOLEAN1BOOLEANARGDOCKS);
     }
 
@@ -291,8 +291,8 @@ function ProtoBlock(name) {
         this.size = 3;
         this.args = 2;
         this.artwork.push(BOOLEAN2BOOLEANARGS);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(BOOLEAN2BOOLEANARGSDOCKS);
     }
 
@@ -303,8 +303,8 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 2;
         this.artwork.push(BOOLEAN2ARG);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(BOOLEAN2ARGDOCKS);
     }
 
@@ -315,8 +315,8 @@ function ProtoBlock(name) {
         this.size = 1;
         this.args = 0;
         this.artwork.push(VALUEBLOCK);
-       this.artwork.push(null);
-       this.artwork.push(null);
+        this.artwork.push(null);
+        this.artwork.push(null);
         this.copyDock(VALUEBLOCKDOCKS);
     }
 }
@@ -496,78 +496,64 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
 
-       function clampAdjuster(me, blk, myBlock, clamp) {
+        function clampAdjuster(me, blk, myBlock, clamp) {
             // First we need to count up the number of (and size of) the
             // blocks inside the clamp; The child flow is the
             // second-to-last argument.
-           if (clamp == BOT) {
-              var c = myBlock.connections.length - 2;
-           } else {  // MID
-              var c = myBlock.connections.length - 3;
-           }
+            if (clamp == BOT) {
+                var c = myBlock.connections.length - 2;
+            } else {  // MID
+                var c = myBlock.connections.length - 3;
+            }
             me.sizeCounter = 0;
+            var childFlowSize = 1;
             if (c > 0 && myBlock.connections[c] != null) {
-              var childFlowSize = me.getStackSize(myBlock.connections[c]);
-              if (childFlowSize < 1) {
-                    // The clamp size is never less than 1.
-                    childFlowSize = 1;
-              }
-            } else {
-              var childFlowSize = 1;
+                childFlowSize = Math.max(me.getStackSize(myBlock.connections[c]), 1);
+            }
+
+            function adjustFillerAndDocks(myBlock, clamp, delta) {
+                myBlock.fillerCount[clamp] += delta;
+                var offset = delta * myBlock.protoblock.fillerOffset;
+                if (clamp == BOT) {
+                    last(myBlock.docks)[1] += offset;
+		} else {  // MID
+                    myBlock.docks[3][1] += offset;
+                    myBlock.docks[4][1] += offset;
+		    for (var filler in myBlock.fillerBitmaps[BOT]) {
+			myBlock.fillerBitmaps[BOT][filler].y += offset;
+		    }
+		    for (var filler in myBlock.highlightFillerBitmaps[BOT]) {
+			myBlock.highlightFillerBitmaps[BOT][filler].y += offset;
+		    }
+                }
             }
 
             // Next, we adjust the clamp size to match the size of the
             // child flow.
             var docksChanged = false;
-            var artworkOffset = myBlock.protoblock.artworkOffset[clamp];
-            var fillerOffset = myBlock.protoblock.fillerOffset;
-            var currentFillerCount = myBlock.fillerCount[clamp - 1];
-            if (childFlowSize < currentFillerCount + 1) {
-              // We may have to remove filler.
-              var n = currentFillerCount - childFlowSize + 1;
-              for (var i = 0; i < n; i++) {
-                    // We need to remove filler.
-                    me.removeFiller(blk, clamp);
-                    // And decrement the count and the offset to the
-                    // bottom dock position.
-                    myBlock.fillerCount[clamp - 1] -= 1;
-                  if (clamp == BOT) {
-                     last(myBlock.docks)[1] -= fillerOffset;
-                  } else {  // MID
-                     myBlock.docks[3][1] -= fillerOffset;
-                     myBlock.docks[4][1] -= fillerOffset;
-                  }
-                    docksChanged = true;
-              }
-            } else if (childFlowSize > currentFillerCount) {
-              // We may have to add filler.
-              var n = childFlowSize - currentFillerCount - 1;
-              for (var i = 0; i < n; i++) {
-                    var c = i + currentFillerCount;
-                    // We need to add filler.
-                    me.addFiller(blk, clamp, artworkOffset + c * fillerOffset, c); 
-                    // And increment the count and the offset to the
-                    // bottom dock position.
-                    myBlock.fillerCount[clamp - 1] += 1;
-                  if (clamp == BOT) {
-                     last(myBlock.docks)[1] += fillerOffset;
-                  } else {  // MID
-                     myBlock.docks[3][1] += fillerOffset;
-                     myBlock.docks[4][1] += fillerOffset;
-                  }
-                    docksChanged = true;
-              }
+            while (childFlowSize < myBlock.fillerCount[clamp] + 1) {
+                // Remove filler.
+                adjustFillerAndDocks(myBlock, clamp, -1);
+                me.removeFiller(blk, clamp);
+                docksChanged = true;
             }
-           return docksChanged;
-       }
-
-       var docksChanged = false;
-       if (myBlock.isDoubleClampBlock()) {
-           docksChanged = clampAdjuster(this, blk, myBlock, MID);
-       }
-       if (clampAdjuster(this, blk, myBlock, BOT)) {
-           docksChanged = true;
-       }
+            while (childFlowSize > myBlock.fillerCount[clamp] + 1) {
+                // Add filler.
+                var c = myBlock.fillerCount[clamp];
+                adjustFillerAndDocks(myBlock, clamp, 1);
+                me.addFiller(blk, clamp, c); 
+                docksChanged = true;
+            }
+            return docksChanged;
+        }
+        
+        var docksChanged = false;
+        if (myBlock.isDoubleClampBlock()) {
+            docksChanged = clampAdjuster(this, blk, myBlock, MID);
+        }
+        if (clampAdjuster(this, blk, myBlock, BOT)) {
+            docksChanged = true;
+        }
 
         // Finally, since the block size has changed and consequently
         // the dock positions have changed, we need to make sure that
@@ -593,58 +579,38 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // First we determine the size of the first argument.
         var c = myBlock.connections[1];
-        if (c == null) {
-            var firstArgumentSize = 0;
-        } else {
-            var firstArgumentSize = this.getBlockSize(c);
-        }
-
-        if (firstArgumentSize < 1) {
-            firstArgumentSize = 1; // Minimum size
+	var firstArgumentSize = 1; // Minimum size
+        if (c != null) {
+            firstArgumentSize = Math.max(this.getBlockSize(c), 1);
         }
 
         // Next, adjust the block size to match.
         var docksChanged = false;
-        var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
-        var fillerOffset = myBlock.protoblock.fillerOffset;
-        var currentFillerCount = myBlock.fillerCount[BOT];
-        if (firstArgumentSize < currentFillerCount + 1) {
-            // We need to remove filler.
-            var n = currentFillerCount - firstArgumentSize + 1;
-            for (var i = 0; i < n; i++) {
-                // Remove the filler from the container.
-                this.removeFiller(blk, BOT);
-                // And decrement the count and the offset to the
-                // bottom dock position.
-                myBlock.fillerCount[BOT - 1] -= 1;
-                myBlock.docks[2][1] -= fillerOffset;
-                docksChanged = true;
-                if (!myBlock.isArgBlock()) {
-                    // Blocks with "out flow", e.g., setxy, have
-                    // another dock position to adjust.
-                    myBlock.docks[3][1] -= fillerOffset;
-                }
-                myBlock.size -= 1;
+        while (firstArgumentSize < myBlock.fillerCount[BOT] + 1) {
+            // Remove filler.
+            this.removeFiller(blk, BOT);
+            myBlock.fillerCount[BOT] -= 1;
+            myBlock.docks[2][1] -= myBlock.protoblock.fillerOffset;
+            docksChanged = true;
+            if (!myBlock.isArgBlock()) {
+                // Blocks with "out flow", e.g., setxy, have
+                // another dock position to adjust.
+                myBlock.docks[3][1] -= myBlock.protoblock.fillerOffset;
             }
-        } else if (firstArgumentSize > currentFillerCount) {
-            // We need to add filler.
-            var n = firstArgumentSize - currentFillerCount - 1;
-            for (var i = 0; i < n; i++) {
-                var c = i + currentFillerCount;
-                // Add the filler to the container.
-                this.addFiller(blk, BOT, artworkOffset + c * fillerOffset, c);
-                // And increment the count and the offset to the
-                // bottom dock position.
-                myBlock.fillerCount[BOT - 1] += 1;
-                myBlock.docks[2][1] += fillerOffset;
-                docksChanged = true;
-                if (!myBlock.isArgBlock()) {
-                    // Blocks with "out flow", e.g., setxy, have
-                    // another dock position to adjust.
-                    myBlock.docks[3][1] += fillerOffset;
-                }
-                myBlock.size += 1;
+            myBlock.size -= 1;
+        } 
+        while (firstArgumentSize > myBlock.fillerCount[BOT] + 1) {
+            // Add filler.
+            this.addFiller(blk, BOT, myBlock.fillerCount[BOT]);
+            myBlock.fillerCount[BOT] += 1;
+            myBlock.docks[2][1] += myBlock.protoblock.fillerOffset;
+            docksChanged = true;
+            if (!myBlock.isArgBlock()) {
+                // Blocks with "out flow", e.g., setxy, have
+                // another dock position to adjust.
+                myBlock.docks[3][1] += myBlock.protoblock.fillerOffset;
             }
+            myBlock.size += 1;
         }
 
         // Finally, since the block size has changed and consequently
@@ -676,7 +642,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // When we remove filler, we cache it in case it is added back
         // in later.
         var myBlock = this.blockList[blk];
-        var fillerBitmap = myBlock.fillerBitmaps[clamp - 1].pop();
+        var fillerBitmap = myBlock.fillerBitmaps[clamp].pop();
 
         myBlock.container.removeChild(fillerBitmap);
         this.bitmapCache[fillerBitmap.name] = fillerBitmap;
@@ -694,27 +660,28 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.uncache();
             myBlock.bounds = myBlock.container.getBounds();
             myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-           console.log('recaching');
         } catch (e) {
             console.log(e);
         }
     }
 
-    this.addFiller = function(blk, clamp, offset, c) {
+    this.addFiller = function(blk, clamp, c) {
         // Add filler to an expandable block.
         var myBlock = this.blockList[blk];
+        var offset = myBlock.protoblock.artworkOffset[clamp] + c * myBlock.protoblock.fillerOffset;
+	if (clamp == BOT) {
+	    offset += myBlock.fillerCount[MID] * myBlock.protoblock.fillerOffset;
+	}
 
         function processBitmap(me, name, bitmap, args) {
-           myBlock = args[0];
-           offset = args[1];
-           clamp = args[2];
-           console.log(name + ' ' + clamp + ' ' + offset);
-            myBlock.fillerBitmaps[clamp - 1].push(bitmap);
+            myBlock = args[0];
+            offset = args[1];
+            clamp = args[2];
+            myBlock.fillerBitmaps[clamp].push(bitmap);
             myBlock.container.addChild(bitmap);
-           bitmap.x = myBlock.bitmap[TOP].x;
-           bitmap.y = myBlock.bitmap[TOP].y + offset;
+            bitmap.x = myBlock.bitmap[TOP].x;
+            bitmap.y = myBlock.bitmap[TOP].y + offset;
             bitmap.name = name;
-
             me.refreshCanvas();
         }
 
@@ -729,34 +696,31 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-           console.log(name + ' ' + clamp + ' ' + offset);
             makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap, [myBlock, offset, clamp]);
         } else {
-           console.log(name + ' ' + clamp + ' ' + offset);
             processBitmap(this, name, this.bitmapCache[name], [myBlock, offset, clamp]);
         }
 
         function processHighlightBitmap(me, name, bitmap, args) {
-           myBlock = args[0];
-           offset = args[1];
-           clamp = args[2];
-           console.log(name + ' ' + clamp + ' ' + offset);
-            myBlock.highlightFillerBitmaps[clamp - 1].push(bitmap);
+            myBlock = args[0];
+            offset = args[1];
+            clamp = args[2];
+            myBlock.highlightFillerBitmaps[clamp].push(bitmap);
             myBlock.container.addChild(bitmap);
-           bitmap.x = myBlock.bitmap[TOP].x;
-           bitmap.y = myBlock.bitmap[TOP].y + offset;
+            bitmap.x = myBlock.bitmap[TOP].x;
+            bitmap.y = myBlock.bitmap[TOP].y + offset;
             bitmap.name = name;
 
             // Hide highlight to start.
             bitmap.visible = false;
 
-           // Move the block parts.
-           if (clamp == MID) {
+            // Move the block parts.
+            if (clamp == MID) {
                 myBlock.bitmap[MID].y += myBlock.protoblock.fillerOffset;
-              myBlock.highlightBitmap[MID].y = myBlock.bitmap[MID].y;
-           }
-           myBlock.bitmap[BOT].y += myBlock.protoblock.fillerOffset;
-           myBlock.highlightBitmap[BOT].y = myBlock.bitmap[BOT].y;
+                myBlock.highlightBitmap[MID].y = myBlock.bitmap[MID].y;
+            }
+            myBlock.bitmap[BOT].y += myBlock.protoblock.fillerOffset;
+            myBlock.highlightBitmap[BOT].y = myBlock.bitmap[BOT].y;
 
             try {
                 // There is a potential race conditon such that the
@@ -764,11 +728,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.container.uncache();
                 myBlock.bounds = myBlock.container.getBounds();
                 myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-              console.log('recaching');
             } catch (e) {
                 console.log(e);
             }
-
             me.refreshCanvas();
         }
 
@@ -782,7 +744,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-           console.log(name + ' ' + clamp + ' ' + offset);
             makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap, [myBlock, offset, clamp]);
         } else {
             processHighlightBitmap(this, name, this.bitmapCache[name], [myBlock, offset, clamp]);
@@ -1620,8 +1581,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // Expandable blocks also have some extra parts.
             bottomArtwork = myBlock.protoblock.artwork[BOT];
             var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
-            myBlock.fillerBitmaps = [[], []];
-            myBlock.highlightFillerBitmaps = [[], []];
 
             function processBottomBitmap(me, name, bitmap, myBlock) {
                 myBlock.bitmap[BOT] = bitmap;
@@ -1761,20 +1720,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.bitmap[TOP].visible = true;
                 myBlock.highlightBitmap[TOP].visible = false;
                 if (this.blockList[thisBlock].isExpandableBlock()) {
-                    for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
-                     console.log('0) ' + i + ' ' + myBlock.highlightFillerBitmaps[0][i].y);
-                        myBlock.fillerBitmaps[0][i].visible = true;
-                        myBlock.highlightFillerBitmaps[0][i].visible = false;
+                    for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
+                        myBlock.fillerBitmaps[MID][i].visible = true;
+                        myBlock.highlightFillerBitmaps[MID][i].visible = false;
                     }
-                    for (var i = 0; i < myBlock.fillerBitmaps[1].length; i++) {
-                     console.log('1) ' + i + ' ' + myBlock.highlightFillerBitmaps[1][i].y);
-                        myBlock.fillerBitmaps[1][i].visible = true;
-                        myBlock.highlightFillerBitmaps[1][i].visible = false;
+                    for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
+                        myBlock.fillerBitmaps[BOT][i].visible = true;
+                        myBlock.highlightFillerBitmaps[BOT][i].visible = false;
                     }
-                  if (myBlock.bitmap[MID] != null) {
+                    if (myBlock.bitmap[MID] != null) {
                         myBlock.bitmap[MID].visible = true;
-                     myBlock.highlightBitmap[MID].visible = false;
-                  }
+                        myBlock.highlightBitmap[MID].visible = false;
+                    }
                     if (myBlock.bitmap[BOT] != null) {
                         myBlock.bitmap[BOT].visible = true;
                         myBlock.highlightBitmap[BOT].visible = false;
@@ -1816,20 +1773,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 myBlock.bitmap[TOP].visible = false;
                 myBlock.highlightBitmap[TOP].visible = true;
                 if (myBlock.isExpandableBlock()) {
-                    for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
-                     console.log('0: ' + i + ' ' + myBlock.highlightFillerBitmaps[0][i].x + ' ' + myBlock.highlightFillerBitmaps[0][i].y);
-                        myBlock.fillerBitmaps[0][i].visible = false;
-                        myBlock.highlightFillerBitmaps[0][i].visible = true;
+                    for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
+                        myBlock.fillerBitmaps[MID][i].visible = false;
+                        myBlock.highlightFillerBitmaps[MID][i].visible = true;
                     }
-                    for (var i = 0; i < myBlock.fillerBitmaps[1].length; i++) {
-                     console.log('1: ' + i + ' ' + myBlock.highlightFillerBitmaps[1][i].x + ' ' + myBlock.highlightFillerBitmaps[1][i].y);
-                        myBlock.fillerBitmaps[1][i].visible = false;
-                        myBlock.highlightFillerBitmaps[1][i].visible = true;
+                    for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
+                        myBlock.fillerBitmaps[BOT][i].visible = false;
+                        myBlock.highlightFillerBitmaps[BOT][i].visible = true;
                     }
-                  if (myBlock.bitmap[MID] != null) {
-                     myBlock.bitmap[MID].visible = false;
-                     myBlock.highlightBitmap[MID].visible = true;
-                  }
+                    if (myBlock.bitmap[MID] != null) {
+                        myBlock.bitmap[MID].visible = false;
+                        myBlock.highlightBitmap[MID].visible = true;
+                    }
                     if (myBlock.bitmap[BOT] != null) {
                         myBlock.bitmap[BOT].visible = false;
                         myBlock.highlightBitmap[BOT].visible = true;
@@ -2705,10 +2660,9 @@ function Block(protoblock) {
     this.highlightBitmap = [null, null, null];
 
     // Expandable block features.
-    this.fillerCount = [0, 0];
-
-    this.fillerBitmaps = [[], []];
-    this.highlightFillerBitmaps = [[], []];
+    this.fillerCount = [0, 0, 0];
+    this.fillerBitmaps = [[], [], []];
+    this.highlightFillerBitmaps = [[], [], []];
 
     // Start and Action blocks has a collapse button (in a separate
     // container).
@@ -3001,9 +2955,13 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                      myBlock.highlightBitmap[b].visible = true;
                   }
               }
-                for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
-                    myBlock.fillerBitmaps[0][i].visible = false;
-                    myBlock.highlightFillerBitmaps[0][i].visible = true;
+                for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
+                    myBlock.fillerBitmaps[MID][i].visible = false;
+                    myBlock.highlightFillerBitmaps[MID][i].visible = true;
+                }
+                for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
+                    myBlock.fillerBitmaps[BOT][i].visible = false;
+                    myBlock.highlightFillerBitmaps[BOT][i].visible = true;
                 }
                 if (blocks.dragGroup.length > 0) {
                     for (var b = 0; b < blocks.dragGroup.length; b++) {
@@ -3031,9 +2989,13 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                      myBlock.highlightBitmap[b].visible = false;
                   }
               }
-                for (var i = 0; i < myBlock.fillerBitmaps[0].length; i++) {
-                    myBlock.fillerBitmaps[0][i].visible = false;
-                    myBlock.highlightFillerBitmaps[0][i].visible = false;
+                for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
+                    myBlock.fillerBitmaps[MID][i].visible = false;
+                    myBlock.highlightFillerBitmaps[MID][i].visible = false;
+                }
+                for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
+                    myBlock.fillerBitmaps[BOT][i].visible = false;
+                    myBlock.highlightFillerBitmaps[BOT][i].visible = false;
                 }
                 if (myBlock.name == 'action') {
                     // Label the collapsed block with the action label

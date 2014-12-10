@@ -37,8 +37,8 @@ define(function (require) {
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
 
-	meSpeak.loadConfig("lib/mespeak_config.json");
-	meSpeak.loadVoice("lib/voices/en/en.json");
+        meSpeak.loadConfig("lib/mespeak_config.json");
+        meSpeak.loadVoice("lib/voices/en/en.json");
 
         // Initialize the activity.
         activity.setup();
@@ -374,7 +374,7 @@ define(function (require) {
                 var x = event.stageX;
                 var y = event.stageY;
                 // console.log('mouseDown (' + x + ', ' + y + ') (' + window.pageXOffset + ', ' + window.pageYOffset + ')');
-		// Make sure scroll position is in sync with actual window scroll.
+                // Make sure scroll position is in sync with actual window scroll.
                 scrollX = window.pageXOffset;
                 scrollY = window.pageYOffset;
 
@@ -389,16 +389,16 @@ define(function (require) {
                         if (dx > 10) { dx = 10; } else if (dx < -10) { dx = -10; }
                         if (dy > 10) { dy = 10; } else if (dy < -10) { dy = -10; }
                         // console.log('mouseMove (' + dx + ', ' + dy + ') scroll (' + scrollX + ', ' + scrollY + ')');
-			if (scrollX + dx < 0) {
-			    dx = 0;
-			} else if (scrollX + dx > 1200) {
-			    dx = 0;
-			}
-			if (scrollY + dy < 0) {
-			    dy = 0;
-			} else if (scrollY + dy > 900) {
-			    dy = 0;
-			}
+                        if (scrollX + dx < 0) {
+                            dx = 0;
+                        } else if (scrollX + dx > 1200) {
+                            dx = 0;
+                        }
+                        if (scrollY + dy < 0) {
+                            dy = 0;
+                        } else if (scrollY + dy > 900) {
+                            dy = 0;
+                        }
                         window.scrollBy(dx, dy);
                         update = true;
                     }
@@ -413,9 +413,13 @@ define(function (require) {
             this.document.onkeydown = keyPressed;
         }
 
-       function setDraggingContainer(flag) {
-           draggingContainer = flag;
-       }
+        function setCameraID(id) {
+            cameraID = id;
+        }
+
+        function setDraggingContainer(flag) {
+            draggingContainer = flag;
+        }
 
         function createGrid(imagePath) {
             var img = new Image();
@@ -642,10 +646,9 @@ define(function (require) {
             }
             sounds = [];
 
-	    if (cameraID != null) {
-		doStopVideoCam(cameraID);
-		cameraID = null;
-	    }
+            if (cameraID != null) {
+                doStopVideoCam(cameraID, setCameraID);
+            }
 
             if (buttonsVisible && !toolbarButtonsVisible) {
                 hideStopButton();
@@ -838,8 +841,8 @@ define(function (require) {
                 case 'keyboard':
                     value = lastKeyCode;
                     break;
-		case 'loudness':
-		    value = Math.round(mic.getLevel() * 1000);
+                case 'loudness':
+                    value = Math.round(mic.getLevel() * 1000);
                     break;
                 default:
                     console.log('??? ' + blocks.blockList[blk].name);
@@ -1202,9 +1205,9 @@ define(function (require) {
                     if (typeof(args[1]) == 'string') {
                         var len = args[1].length;
                         if (len == 14 && args[1].substr(0, 14) == CAMERAVALUE){
-                         doUseCamera(args, turtles, turtle, false);
+                         doUseCamera(args, turtles, turtle, false, SetCameraID);
                         } else if (len == 13 && args[1].substr(0, 13) == VIDEOVALUE){
-                         doUseCamera(args, turtles, turtle, true);
+                         doUseCamera(args, turtles, turtle, true, setCameraID);
                         } else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
                             turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                         } else if (len > 8 && args[1].substr(0, 8) == 'https://') {
@@ -1277,9 +1280,9 @@ define(function (require) {
                 sounds = [];
                 break;
             case 'stopvideocam':
-		if (cameraID != null) {
-                    doStopVideoCam(cameraID);
-		}
+                if (cameraID != null) {
+                    doStopVideoCam(cameraID, setCameraID);
+                }
                 break;
             default:
                 if (blocks.blockList[blk].name in evalFlowDict) {
@@ -2142,7 +2145,7 @@ function fileBasename(file) {
 }
 
 
-function doUseCamera(args, turtles, turtle, isVideo) {
+function doUseCamera(args, turtles, turtle, isVideo, setCameraID) {
     w = 320;
     h = 240;
     current = 0;
@@ -2176,13 +2179,15 @@ function doUseCamera(args, turtles, turtle, isVideo) {
     else {
         cameraID = window.setInterval(draw, 100)
     }
-
+    setCameraID(cameraID);
 }
 
-function doStopVideoCam(cameraID){
+
+function doStopVideoCam(cameraID, setCameraID){
     window.clearInterval(cameraID);
     elements = document.getElementsByTagName('video');
     for(var x=0; x < elements.length; x++){
         elements[x].parentNode.removeChild(elements[x]);
     }
+    setCameraID(null);
 }

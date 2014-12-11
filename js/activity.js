@@ -350,9 +350,8 @@ define(function(require) {
             // Scale the canvas relative to the screen size.
             onResize();
 
-            if (onAndroid || !onXO) {
-                setupAndroidToolbar();
-            } else {
+            setupAndroidToolbar();
+            if (onXO) {
                 var saveName = docById('mySaveName');
                 saveName.style.visibility = 'hidden';
             }
@@ -1854,6 +1853,7 @@ define(function(require) {
 
             openContainer = makeButton('open-toolbar-button', x, y, btnSize);
             loadToolbarButtonHandler(openContainer, doOpenToolbarButton);
+	    openContainer.visible = false;
 
             for (name in buttonNames) {
                 x += dx;
@@ -1862,7 +1862,7 @@ define(function(require) {
                     x, y, btnSize);
                 loadToolbarButtonHandler(container, buttonNames[name][1]);
                 onscreenButtons.push(container);
-                container.visible = false;
+                // container.visible = false;
 
                 if (buttonNames[name][0] == 'stop-turtle') {
                     console.log('FOUND STOP-TURTLE BUTTON');

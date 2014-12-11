@@ -1326,8 +1326,6 @@ define(function(require) {
 
             // If there is a child flow, queue it.
             if (childFlow != null) {
-                console.log('queuing ' + childFlow + ' ' + childFlowCount + ' ' + blk);
-
                 var queueBlock = new Queue(childFlow, childFlowCount, blk);
                 // We need to keep track of the parent block to the
                 // child flow so we can unlightlight the parent block
@@ -1849,11 +1847,9 @@ define(function(require) {
             var dy = 0;
 
             closeContainer = makeButton('close-toolbar-button', x, y, btnSize);
-            loadToolbarButtonHandler(closeContainer, doCloseToolbarButton);
-            loadButtonDragHandler(closeContainer, x, y, null);
+            loadButtonDragHandler(closeContainer, x, y, doCloseToolbarButton);
 
             openContainer = makeButton('open-toolbar-button', x, y, btnSize);
-            loadToolbarButtonHandler(openContainer, null);
             loadButtonDragHandler(openContainer, x, y, doOpenToolbarButton);
             openContainer.visible = false;
 
@@ -1862,12 +1858,10 @@ define(function(require) {
                 y += dy;
                 var container = makeButton(buttonNames[name][0] + '-button',
                     x, y, btnSize);
-                loadToolbarButtonHandler(container, buttonNames[name][1]);
+                loadButtonDragHandler(container, x, y, buttonNames[name][1]);
                 onscreenButtons.push(container);
-                // container.visible = false;
 
                 if (buttonNames[name][0] == 'stop-turtle') {
-                    console.log('FOUND STOP-TURTLE BUTTON');
                     stopTurtleContainer = container;
                     stopTurtleContainerX = x;
                     stopTurtleContainerY = y;
@@ -1901,7 +1895,6 @@ define(function(require) {
             var dx = 0;
             var dy = btnSize;
             menuContainer = makeButton('menu-button', x, y, btnSize);
-            loadToolbarButtonHandler(menuContainer, null);
             loadButtonDragHandler(menuContainer, x, y, doMenuButton);
 
             for (name in menuNames) {
@@ -1909,7 +1902,7 @@ define(function(require) {
                 y += dy;
                 var container = makeButton(menuNames[name][0] + '-button',
                     x, y, btnSize);
-                loadToolbarButtonHandler(container, menuNames[name][1]);
+                loadButtonDragHandler(container, x, y, menuNames[name][1]);
                 onscreenMenu.push(container);
                 container.visible = false;
             }

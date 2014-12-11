@@ -1850,10 +1850,12 @@ define(function(require) {
 
             closeContainer = makeButton('close-toolbar-button', x, y, btnSize);
             loadToolbarButtonHandler(closeContainer, doCloseToolbarButton);
+            loadButtonDragHandler(closeContainer, x, y, null);
 
             openContainer = makeButton('open-toolbar-button', x, y, btnSize);
-            loadToolbarButtonHandler(openContainer, doOpenToolbarButton);
-	    openContainer.visible = false;
+            loadToolbarButtonHandler(openContainer, null);
+            loadButtonDragHandler(openContainer, x, y, doOpenToolbarButton);
+            openContainer.visible = false;
 
             for (name in buttonNames) {
                 x += dx;
@@ -1899,7 +1901,8 @@ define(function(require) {
             var dx = 0;
             var dy = btnSize;
             menuContainer = makeButton('menu-button', x, y, btnSize);
-            loadToolbarButtonHandler(menuContainer, doMenuButton);
+            loadToolbarButtonHandler(menuContainer, null);
+            loadButtonDragHandler(menuContainer, x, y, doMenuButton);
 
             for (name in menuNames) {
                 x += dx;
@@ -2087,12 +2090,48 @@ define(function(require) {
 
         function loadToolbarButtonHandler(container, action) {
             container.on('click', function(event) {
-                action();
+                if (action != null) {
+                    action();
+                }
             });
         }
 
-    });
+        function loadButtonDragHandler(container, ox, oy, action) {
+            container.on('mousedown', function(event) {
+                moved = true;
 
+                var offset = {
+                    x: container.x - Math.round(event.stageX / blocks.scale),
+                    y: container.y - Math.round(event.stageY / blocks.scale)
+                };
+
+                container.on('mouseout', function(event) {
+                    container.x = ox;
+                    container.y = oy;
+                    if (action != null && moved) {
+                        action();
+                    }
+                    moved = false;
+                });
+
+                container.on('pressup', function(event) {
+                    container.x = ox;
+                    container.y = oy;
+                    if (action != null && moved) {
+                        action();
+                    }
+                    moved = false;
+                });
+
+                container.on('pressmove', function(event) {
+                    moved = true;
+                    container.x = Math.round(event.stageX / blocks.scale) + offset.x;
+                    container.y = Math.round(event.stageY / blocks.scale) + offset.y;
+                    update = true;
+                });
+            });
+        }
+    });
 });
 
 

@@ -687,8 +687,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // We generate a unique name to use as the key in the cache.
         var name = 'bmp_' + blk + '_filler_' + clamp + '_' + c;
-        // FIXME: Why doesn't !name in this.bitmapCache work?
-        if (this.bitmapCache[name] == undefined) {
+        if (!(name in this.bitmapCache)) {
             if (myBlock.isArgBlock()) {
                 var artwork = ARG2BLOCKFILLER;
             } else if (myBlock.isTwoArgBlock()) {
@@ -2120,7 +2119,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.renameBoxes = function(oldName, newName) {
-        for (blk = 0; blk < this.blockList.length; blk++) {
+        for (var blk = 0; blk < this.blockList.length; blk++) {
             if (this.blockList[blk].name == 'text') {
                 var c = this.blockList[blk].connections[0];
                 if (c != null && this.blockList[c].name == 'box') {
@@ -2140,7 +2139,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.renameDos = function(oldName, newName) {
-        for (blk = 0; blk < this.blockList.length; blk++) {
+        for (var blk = 0; blk < this.blockList.length; blk++) {
             if (this.blockList[blk].name == 'text') {
                 var c = this.blockList[blk].connections[0];
                 if (c != null && this.blockList[c].name == 'do') {
@@ -2979,7 +2978,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 }
                 if (blocks.dragGroup.length > 0) {
                     for (var b = 0; b < blocks.dragGroup.length; b++) {
-                        blk = blocks.dragGroup[b];
+                        var blk = blocks.dragGroup[b];
                         if (b != 0) {
                             blocks.blockList[blk].collapsed = false;
                             blocks.blockList[blk].container.visible = true;
@@ -3023,7 +3022,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
                 myBlock.container.swapChildren(myBlock.collapseText, lastChild);
                 if (blocks.dragGroup.length > 0) {
                     for (var b = 0; b < blocks.dragGroup.length; b++) {
-                        blk = blocks.dragGroup[b];
+                        var blk = blocks.dragGroup[b];
                         if (b != 0) {
                             blocks.blockList[blk].collapsed = true;
                             blocks.blockList[blk].container.visible = false;
@@ -3081,7 +3080,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
             blocks.findDragGroup(thisBlock)
             if (blocks.dragGroup.length > 0) {
                 for (var b = 0; b < blocks.dragGroup.length; b++) {
-                    blk = blocks.dragGroup[b];
+                    var blk = blocks.dragGroup[b];
                     if (b != 0) {
                         blocks.moveBlockRelative(blk, dx, dy);
                     }

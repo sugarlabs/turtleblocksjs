@@ -1826,7 +1826,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             console.log('could not make block ' + name);
             return;
         }
-        for (var c in connections) {
+        for (var c = 0; c < connections.length; c++) {
             if (c == myBlock.docks.length) {
                 break;
             }

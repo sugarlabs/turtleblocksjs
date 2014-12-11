@@ -618,14 +618,6 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
 function loadPaletteMenuHandler(palette) {
     palette.menuContainer.on('mouseover', function(event) {
         palette.palettes.setDraggingFlag(true);
-        // palette.highlight();
-        // palette.palettes.refreshCanvas();
-    });
-
-    palette.menuContainer.on('mouseout', function(event) {
-        palette.palettes.setDraggingFlag(false);
-        // palette.unhighlight();
-        // palette.palettes.refreshCanvas();
     });
 
     palette.menuContainer.on('click', function(event) {
@@ -646,14 +638,21 @@ function loadPaletteMenuHandler(palette) {
 
     palette.menuContainer.on('mousedown', function(event) {
         palette.palettes.setDraggingFlag(true);
-        // FIXME: move them all
+        // Move them all?
         var offset = {
             x: palette.menuContainer.x - event.stageX,
             y: palette.menuContainer.y - event.stageY
         };
 
+	palette.menuContainer.on('pressup',function(event) {
+            palette.palettes.setDraggingFlag(false);
+	});
+
+	palette.menuContainer.on('mouseout',function(event) {
+            palette.palettes.setDraggingFlag(false);
+	});
+
         palette.menuContainer.on('pressmove', function(event) {
-            moved = true;
             var oldX = palette.menuContainer.x;
             var oldY = palette.menuContainer.y;
             palette.menuContainer.x = event.stageX + offset.x;

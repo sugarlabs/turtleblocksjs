@@ -129,9 +129,12 @@
   * camera block for Firefox (GCI - Rafael Cordano)
   * video block for Firefox (GCI - Rafael Cordano)
   * speak block for Firefox (GCI - Rafael Cordano)
+  * media blocks in Chrome
+  * implement if-then-else, while, until
+  * implement and or not
+  * fixed problem with block resizing
 
 TODO:
-  * media blocks in Chrome
   * enable docking to any for boxes, equal
   * enable number names for actions and boxes
   * query turtle blocks
@@ -139,8 +142,6 @@ TODO:
   * use snap to pixels
   * user defined blocks
   * more sensors
-  * implement if-then-else, while, until
-  * implement and or not
   * i18n
   * RTL support
   * scroll instead of zoom?

@@ -77,7 +77,7 @@ define(function(require) {
         var thumbnails;
         var thumbnailsVisible = false;
         var buttonsVisible = true;
-        var toolbarButtonsVisible = false;
+        var toolbarButtonsVisible = true;
         var openContainer = null;
         var closeContainer = null;
         var menuButtonsVisible = false;
@@ -385,7 +385,7 @@ define(function(require) {
                     if (x < 55 || y < 55 || x > 1145 || y > 845) {
                         // console.log('no dragging from the edges');
                     } else if (stageMouseDown && !draggingContainer) {
-                        var dx = event.stageX - x;
+                        var dx = 0; // event.stageX - x;
                         var dy = event.stageY - y;
                         x = event.stageX;
                         y = event.stageY;

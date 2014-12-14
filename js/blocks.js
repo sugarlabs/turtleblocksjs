@@ -749,6 +749,81 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
+    this.addRemoveVspaceBlock = function(blk) {
+        var myBlock = blockBlocks.blockList[blk];
+
+        var c = myBlock.connections[myBlock.connections.length - 2];
+        if (c == null) {
+            var secondArgumentSize = 0;
+        } else {
+            var secondArgumentSize = this.getBlockSize(c);
+        }
+
+        if (secondArgumentSize < 1) {
+            secondArgumentSize = 1; // Minimum size
+        }
+
+        var currentFillerCount = howManyBelow(blk);
+
+        console.log('secondArgumentSize')
+        console.log(secondArgumentSize)
+        console.log(currentFillerCount)
+
+        if (false) { // secondArgumentSize < currentFillerCount + 1) {
+            // Remove a vspace block
+            var n = Math.abs(secondArgumentSize - currentFillerCount - 1);
+            console.log('remove ' + n)
+            for (var nextBlock, nextBlockObj, i = 0; i < n; i++) {
+                // Really don't know if this is the best way to remove connections and blocks.
+		var n = myBlock.connections.length;
+                nextBlock = myBlock.connections[n - 1];
+                nextBlockObj = this.blockList[nextBlock];
+		if (nextBlockObj) {
+		    myBlock.connections[n - 1] = nextBlockObj.connections[1];
+                    this.blockList[nextBlockObj.connections[1]].connections[0] = blk;
+                    nextBlockObj.connections = [null,null];
+                    nextBlockObj.hide();
+		} else {
+		    myBlock.connections[n - 1] = null
+                }
+            }
+        } else if (secondArgumentSize > currentFillerCount + 1) {
+            // Add a vspace block
+            var n = secondArgumentSize - currentFillerCount - 1;
+            console.log('add ' + n)
+            for (var nextBlock, newPos, i = 0; i < n; i++) {
+                nextBlock = last(myBlock.connections);
+                console.log(myBlock.connections)
+                console.log(nextBlock)
+                console.log(!!nextBlock)
+                newPos = blockBlocks.blockList.length;
+
+                blockBlocks.makeNewBlockWithConnections('vspace',newPos,[null,null],function(args){
+                    var vspace=args[1];
+                    var nextBlock = args[0];
+                    console.log(vspace)
+                    var vspaceBlock = blockBlocks.blockList[vspace];
+                    vspaceBlock.connections[0] = blk;
+                    vspaceBlock.connections[1] = nextBlock;
+                    myBlock.connections[myBlock.connections.length - 1] = vspace;
+                    if (nextBlock) {
+                        blockBlocks.blockList[nextBlock].connections[0] = vspace;
+                    }
+                },[nextBlock,newPos]);
+            }
+        }
+
+        function howManyBelow(blk) {
+            // Need to know how many vspace blocks are below the block we're checking against
+            var nextBlock = last(blockBlocks.blockList[blk].connections);
+            if (nextBlock && blockBlocks.blockList[nextBlock].name == 'vspace') {
+                return 1 + howManyBelow(nextBlock);
+                // Recurse until it isn't a vspace
+            }
+            return 0;
+        }
+    }
+
     this.getStackSize = function(blk) {
         // How many block units (fillerOffest) in this stack?
         var size = 0;
@@ -1043,6 +1118,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             for (var i = 0; i < checkTwoArgBlocks.length; i++) {
                 this.adjustExpandableTwoArgBlock(checkTwoArgBlocks[i]);
             }
+        }
+
+        var newBlockObj = this.blockList[newBlock];
+        if (newBlockObj && !newBlockObj.isArgBlock() && newBlockObj.connections[newBlockObj.connections.length - 2] == thisBlock) {
+            this.addRemoveVspaceBlock(newBlock);
         }
 
         // Recheck if the connection is inside of a expandable block.
@@ -2929,6 +3009,7 @@ function doOpenMedia(blocks, thisBlock) {
 // These are the event handlers for collapsible blocks.
 function loadCollapsibleEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
+    var blk;
 
     var bounds = myBlock.collapseContainer.getBounds();
     var hitArea = new createjs.Shape();

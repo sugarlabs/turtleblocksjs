@@ -595,9 +595,13 @@ define(function(require) {
                 blocks.moveBlockRelative(blk, dx, dy);
                 blocks.blockList[blk].hide();
                 if (blocks.blockList[blk].name == 'start') {
+                    console.log('start blk ' + blk + ' value is ' + blocks.blockList[blk].value)
                     turtle = blocks.blockList[blk].value;
-                    turtles.turtleList[turtle].trash = true;
-                    turtles.turtleList[turtle].container.visible = false;
+                    if (turtle != null) {
+                        console.log('sending turtle ' + turtle + ' to trash');
+                        turtles.turtleList[turtle].trash = true;
+                        turtles.turtleList[turtle].container.visible = false;
+                    }
                 }
             }
             if (addStartBlock) {
@@ -607,6 +611,8 @@ define(function(require) {
                 last(blocks.blockList).connections = [null, null, null];
                 turtles.add(last(blocks.blockList));
                 last(blocks.blockList).value = turtles.turtleList.length - 1;
+                blocks.updateBlockPositions();
+                blocks.updateBlockLabels();
             }
             // Overwrite session data too.
             console.log('overwriting session data');
@@ -616,9 +622,6 @@ define(function(require) {
             } else {
                 // Sorry! No Web Storage support..
             }
-
-            blocks.updateBlockPositions();
-            blocks.updateBlockLabels();
 
             update = true;
         }

@@ -26,6 +26,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.next = null;
     this.page = 0; // 4x4 image matrix per page
     this.server = true;
+    this.lock = false;
 
     this.setServer = function(server) {
         this.server = server;
@@ -37,6 +38,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     }
 
     this.show = function(scale) {
+        this.lock = false;
         this.scale = scale;
         this.page = 0;
         if (this.server) {
@@ -76,27 +78,27 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             this.container.x = Math.floor(((this.canvas.width / scale) - 650) / 2);
             this.container.y = 27;
 
-            function processBackground(me, name, bitmap, extras) {
-                me.container.addChild(bitmap);
+            function processBackground(viewer, name, bitmap, extras) {
+                viewer.container.addChild(bitmap);
 
-		function processPrev(me, name, bitmap, extras) {
-                    me.prev = bitmap;
-                    me.container.addChild(me.prev);
-                    me.prev.x = 270;
-                    me.prev.y = 535;
+                function processPrev(viewer, name, bitmap, extras) {
+                    viewer.prev = bitmap;
+                    viewer.container.addChild(viewer.prev);
+                    viewer.prev.x = 270;
+                    viewer.prev.y = 535;
 
-		    function processNext(me, name, bitmap, scale) {
-			me.next = bitmap;
-			me.container.addChild(me.next);
-			me.next.x = 325;
-			me.next.y = 535;
-			me.container.visible = true;
-			me.refreshCanvas();
-			me.completeInit();
-		    }
-		    makeViewerBitmap(me, NEXTBUTTON, 'viewer', processNext, null);
-		}
-		makeViewerBitmap(me, PREVBUTTON, 'viewer', processPrev, null);
+                    function processNext(viewer, name, bitmap, scale) {
+                        viewer.next = bitmap;
+                        viewer.container.addChild(viewer.next);
+                        viewer.next.x = 325;
+                        viewer.next.y = 535;
+                        viewer.container.visible = true;
+                        viewer.refreshCanvas();
+                        viewer.completeInit();
+                    }
+                    makeViewerBitmap(viewer, NEXTBUTTON, 'viewer', processNext, null);
+                }
+                makeViewerBitmap(viewer, PREVBUTTON, 'viewer', processPrev, null);
             }
             makeViewerBitmap(this, BACKGROUND, 'viewer', processBackground, null);
         } else {
@@ -106,7 +108,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         }
     }
 
-    this.downloadImage = function(p, i, prepareNextImage) {
+    this.downloadImage = function(p, prepareNextImage) {
         if (this.server) {
             var header = ''; // 'data:image/png;base64,';
             var name = this.projectFiles[p] + '.b64';
@@ -119,61 +121,61 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             var data = header + SAMPLESSVG[name];
         }
         var image = new Image();
-        var me = this;
+        var viewer = this;
 
         image.onload = function() {
             bitmap = new createjs.Bitmap(data);
             bitmap.scaleX = 0.5;
             bitmap.scaleY = 0.5;
-            me.container.addChild(bitmap);
-            lastChild = last(me.container.children);
-            me.container.swapChildren(bitmap, lastChild);
+            viewer.container.addChild(bitmap);
+            lastChild = last(viewer.container.children);
+            viewer.container.swapChildren(bitmap, lastChild);
 
-            me.dict[me.projectFiles[p]] = bitmap;
-            x = 5 + (i % 4) * 160;
-            y = 55 + Math.floor((i % 16) / 4) * 120;
-            me.dict[me.projectFiles[p]].x = x;
-            me.dict[me.projectFiles[p]].y = y;
-            me.dict[me.projectFiles[p]].visible = true;
-            console.log('update after creating image ' + i);
-            // me.refreshCanvas;
+            viewer.dict[viewer.projectFiles[p]] = bitmap;
+            x = 5 + (p % 4) * 160;
+            y = 55 + Math.floor((p % 16) / 4) * 120;
+            viewer.dict[viewer.projectFiles[p]].x = x;
+            viewer.dict[viewer.projectFiles[p]].y = y;
+            viewer.dict[viewer.projectFiles[p]].visible = true;
+            console.log('update after creating image ' + p);
+            viewer.refreshCanvas();
             if (prepareNextImage != null) {
-                prepareNextImage(me, i + 1, p + 1);
+                prepareNextImage(viewer, p + 1);
             }
         }
         image.src = data;
     }
 
     this.completeInit = function() {
-        var i = 0;
         var p = 0;
-        this.prepareNextImage(this, i, p);
+        this.prepareNextImage(this, p);
+        loadThumbnailContainerHandler(this);
     }
 
-    this.prepareNextImage = function(me, i, p) {
+    this.prepareNextImage = function(viewer, p) {
         // TODO: this.projectFiles.sort()
         // Only download the images on the first page.
-        if (p < me.projectFiles.length && i < (me.page * 16 + 16)) {
-            console.log('prepareNextImage ' + i + ' ' + p);
-            if (me.projectFiles[p] in me.dict) {
-                me.dict[me.projectFiles[p]].visible = true;
-                x = 5 + (i % 4) * 160;
-                y = 55 + Math.floor((i % 16) / 4) * 120;
-                me.dict[me.projectFiles[p]].x = x;
-                me.dict[me.projectFiles[p]].y = y;
-                me.dict[me.projectFiles[p]].visible = true;
-                me.prepareNextImage(me, i + 1, p + 1)
+        if (p < viewer.projectFiles.length && p < (viewer.page * 16 + 16)) {
+            console.log('prepareNextImage ' + p);
+            if (viewer.projectFiles[p] in viewer.dict) {
+                x = 5 + (p % 4) * 160;
+                y = 55 + Math.floor((p % 16) / 4) * 120;
+                viewer.dict[viewer.projectFiles[p]].x = x;
+                viewer.dict[viewer.projectFiles[p]].y = y;
+                viewer.dict[viewer.projectFiles[p]].visible = true;
+                viewer.prepareNextImage(viewer, p + 1)
             } else {
-                me.downloadImage(p, i, me.prepareNextImage);
+                viewer.downloadImage(p, viewer.prepareNextImage);
             }
         } else {
-            console.log('showing buttons');
-            if (i % 16 == 0) {
-                me.next.visible = true;
+            if (viewer.page == 0) {
+                viewer.prev.visible = false;
             }
-            me.prev.visible = false;
-            me.refreshCanvas();
-            loadThumbnailContainerHandler(me);
+            console.log(viewer.projectFiles.length);
+            if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
+                viewer.next.visible = true;
+            }
+            viewer.refreshCanvas();
         }
     }
 }
@@ -188,14 +190,29 @@ function loadThumbnailContainerHandler(viewer) {
     hitArea.y = 0;
     viewer.container.hitArea = hitArea;
     viewer.container.on('click', function(event) {
+        // We need a lock to "debouce" the click.
+        if (viewer.lock) {
+            console.log('sample viewer is locked');
+            return;
+        }
         var x = (event.stageX / viewer.scale) - viewer.container.x;
         var y = (event.stageY / viewer.scale) - viewer.container.y;
         if (x > 600 && y < 55) {
             // Cancel
+            for (var p = 0; p < viewer.projectFiles.length; p++) {
+                viewer.dict[viewer.projectFiles[p]].visible = false;
+            }
             viewer.closeViewer();
         } else if (y > 535) {
+            var min = viewer.page * 16;
+            var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
             if (viewer.prev.visible && x < 325) {
-                // Previous page
+                // Hide the current page.
+                console.log('hiding ' + min + ' to ' + max);
+                for (var p = min; p < max; p++) {
+                    viewer.dict[viewer.projectFiles[p]].visible = false;
+                }
+                // Go back to previous page.
                 viewer.page -= 1;
                 if (viewer.page == 0) {
                     viewer.prev.visible = false;
@@ -203,33 +220,29 @@ function loadThumbnailContainerHandler(viewer) {
                 if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
                     viewer.next.visible = true;
                 }
+                // Show the current page.
+                var min = viewer.page * 16;
+                var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
+                console.log('showing ' + min + ' to ' + max);
+                for (var p = min; p < max; p++) {
+                    viewer.dict[viewer.projectFiles[p]].visible = true;
+                }
             } else if (viewer.next.visible && x > 325) {
-                // Next page
+                // Hide the current page.
+                console.log('hiding ' + min + ' to ' + max);
+                for (var p = min; p < max; p++) {
+                    viewer.dict[viewer.projectFiles[p]].visible = false;
+                }
+                // Advance to next page.
                 viewer.page += 1;
                 viewer.prev.visible = true;
                 if ((viewer.page + 1) * 16 + 1 > viewer.projectFiles.length) {
                     viewer.next.visible = false;
                 }
+                console.log('preparing next page of images');
+                viewer.prepareNextImage(viewer, max);
             }
-            var min = viewer.page * 16;
-            var max = min + 16;
-            var i = 0;
-            for (p in viewer.projectFiles) {
-                if (i >= min && i < max) {
-                    // Show it if it has already been downloaded.
-                    if (viewer.projectFiles[p] in viewer.dict) {
-                        viewer.dict[viewer.projectFiles[p]].visible = true;
-                    } else {
-                        viewer.downloadImage(p, i, null);
-                    }
-                } else {
-                    // Hide it if it has already been downloaded.
-                    if (viewer.projectFiles[p] in viewer.dict) {
-                        viewer.dict[viewer.projectFiles[p]].visible = false;
-                    }
-                }
-                i += 1;
-            }
+            console.log('refresh');
             viewer.refreshCanvas();
         } else {
             // Select an entry
@@ -237,8 +250,13 @@ function loadThumbnailContainerHandler(viewer) {
             var row = Math.floor((y - 55) / 120);
             var p = row * 4 + col + 16 * viewer.page;
             if (p < viewer.projectFiles.length) {
+                viewer.lock = true;
+                console.log('locking viewer');
+                console.log('closing viewer');
                 viewer.closeViewer();
+                console.log('sending to trash');
                 viewer.sendAllToTrash(false);
+                console.log('loading project');
                 viewer.loadProject(viewer.projectFiles[p] + '.tb');
             }
         }
@@ -286,13 +304,13 @@ function httpGet(projectName) {
 }
 
 
-function makeViewerBitmap(me, data, name, callback, extras) {
+function makeViewerBitmap(viewer, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
     var img = new Image();
     img.onload = function() {
         bitmap = new createjs.Bitmap(img);
-        callback(me, name, bitmap, extras);
+        callback(viewer, name, bitmap, extras);
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));

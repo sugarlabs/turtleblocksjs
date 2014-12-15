@@ -33,8 +33,10 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     }
 
     this.hide = function() {
-        this.container.visible = false;
-        this.refreshCanvas();
+        if (this.container != null) {
+            this.container.visible = false;
+            this.refreshCanvas();
+	}
     }
 
     this.show = function(scale) {
@@ -64,7 +66,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                 }
             } catch (e) {
                 console.log(e);
-                return;
+                return false;
             }
         } else {
             // FIXME: grab files from a local server?
@@ -95,6 +97,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                         viewer.container.visible = true;
                         viewer.refreshCanvas();
                         viewer.completeInit();
+			return true;
                     }
                     makeViewerBitmap(viewer, NEXTBUTTON, 'viewer', processNext, null);
                 }
@@ -105,6 +108,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             this.container.visible = true;
             this.refreshCanvas();
             this.completeInit();
+	    return true;
         }
     }
 

@@ -687,10 +687,13 @@ define(function(require) {
                 thumbnailsVisible = false;
                 showBlocks();
             } else {
-                thumbnailsVisible = true;
-                hideBlocks();
-                stage.swapChildren(thumbnails.container, last(stage.children));
-                thumbnails.show(scale);
+                if (!thumbnails.show(scale)) {
+		    console.log('thumbnails not available');
+		} else {
+                    stage.swapChildren(thumbnails.container, last(stage.children));
+                    thumbnailsVisible = true;
+                    hideBlocks();
+		}
             }
         }
 

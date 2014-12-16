@@ -1491,287 +1491,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.refreshCanvas();
     }
 
-    this.imageLoad = function(myBlock) {
-        // Load a block image and create any extra parts. Image
-        // components are loaded asynchronously so most the work
-        // happens in callbacks.
-
-        var thisBlock = this.blockList.indexOf(myBlock);
-
-        // We need a label for most blocks.
-        // TODO: use Text exclusively for all block labels.
-        myBlock.text = new createjs.Text('', '20px Arial', '#000000');
-        doubleExpandable = this.doubleExpandable;
-
-        // Get the block labels from the protoblock
-        var block_label = '';
-        if (myBlock.protoblock.staticLabels.length > 0) {
-            block_label = myBlock.protoblock.staticLabels[0];
-        }
-
-        var top_label = '';
-        if (myBlock.protoblock.staticLabels.length > 1) {
-            top_label = myBlock.protoblock.staticLabels[1];
-        }
-
-        // Create the bitmap for the block.
-        function processBitmap(me, name, bitmap, myBlock) {
-            myBlock.bitmap[TOP] = bitmap;
-            myBlock.container.addChild(myBlock.bitmap[TOP]);
-            myBlock.bitmap[TOP].x = 0;
-            myBlock.bitmap[TOP].y = 0;
-            myBlock.bitmap[TOP].name = 'bmp_' + thisBlock;
-            myBlock.bitmap[TOP].cursor = 'pointer';
-            me.refreshCanvas();
-        }
-
-        makeBitmap(this, myBlock.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
-
-        // Create the highlight bitmap for the block.
-        function processHighlightBitmap(me, name, bitmap, myBlock) {
-            myBlock.highlightBitmap[TOP] = bitmap;
-            myBlock.container.addChild(myBlock.highlightBitmap[TOP]);
-            myBlock.highlightBitmap[TOP].x = 0;
-            myBlock.highlightBitmap[TOP].y = 0;
-            myBlock.highlightBitmap[TOP].name = 'bmp_highlight_' + thisBlock;
-            myBlock.highlightBitmap[TOP].cursor = 'pointer';
-            // Hide it to start
-            myBlock.highlightBitmap[TOP].visible = false;
-
-            if (myBlock.text != null) {
-                // Make sure text is on top.
-                lastChild = last(myBlock.container.children);
-                myBlock.container.swapChildren(myBlock.text, lastChild);
-            }
-
-            // At this point, it should be safe to calculate the
-            // bounds of the container and cache its contents.
-            myBlock.bounds = myBlock.container.getBounds();
-            myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-            loadEventHandlers(me, myBlock);
-            me.refreshCanvas();
-            if (doubleExpandable.indexOf(myBlock.name) != -1) {
-                me.middleImageLoad(myBlock);
-            } else {
-                me.finishImageLoad(myBlock);
-            }
-
-        }
-
-        makeBitmap(this, myBlock.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
-    }
-
-    this.middleImageLoad = function(myBlock) {
-        // Load a block image and create any extra parts. Image
-        // components are loaded asynchronously so most the work
-        // happens in callbacks.
-
-        var thisBlock = this.blockList.indexOf(myBlock);
-
-        // We need a label for most blocks.
-        // TODO: use Text exclusively for all block labels.
-        myBlock.text = new createjs.Text('', '20px Arial', '#000000');
-
-        // Get the block labels from the protoblock
-        var block_label = myBlock.protoblock.staticLabels[2];
-
-        var middleOffset = myBlock.protoblock.artworkOffset[MID];
-
-        // Create the bitmap for the block.
-        function processBitmap(me, name, bitmap, myBlock) {
-            myBlock.bitmap[MID] = bitmap;
-            myBlock.container.addChild(myBlock.bitmap[MID]);
-            myBlock.bitmap[MID].x = myBlock.bitmap[TOP].x;
-            myBlock.bitmap[MID].y = myBlock.bitmap[TOP].y + middleOffset;
-            myBlock.bitmap[MID].name = 'bmp_middle_' + thisBlock;
-            me.refreshCanvas();
-        }
-
-        makeBitmap(this, myBlock.protoblock.artwork[MID].replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), myBlock.name, processBitmap, myBlock);
-
-        // Create the highlight bitmap for the block.
-        function processHighlightBitmap(me, name, bitmap, myBlock) {
-            myBlock.highlightBitmap[MID] = bitmap;
-            myBlock.container.addChild(myBlock.highlightBitmap[MID]);
-            myBlock.highlightBitmap[MID].x = myBlock.bitmap[TOP].x;
-            myBlock.highlightBitmap[MID].y = myBlock.bitmap[TOP].y + middleOffset;
-            myBlock.highlightBitmap[MID].name = 'bmp_middle_highlight_' + thisBlock;
-            myBlock.highlightBitmap[MID].visible = false;
-            me.finishImageLoad(myBlock);
-        }
-
-        makeBitmap(this, myBlock.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', myBlock.protoblock.fontsize), '', processHighlightBitmap, myBlock);
-    }
-
-    this.finishImageLoad = function(myBlock) {
-
-        var thisBlock = this.blockList.indexOf(myBlock);
-
-        var bottom_label = '';
-        if (myBlock.protoblock.staticLabels.length > 2) {
-            bottom_label = myBlock.protoblock.staticLabels[2];
-        }
-
-        // Value blocks get a modifiable text label
-        if (myBlock.name == 'text' || myBlock.name == 'number') {
-            if (myBlock.value == null) {
-                if (myBlock.name == 'text') {
-                    myBlock.value = '---';
-                } else {
-                    myBlock.value = 100;
-                }
-            }
-
-            var label = myBlock.value.toString();
-            if (label.length > 8) {
-                label = label.substr(0, 7) + '...';
-            }
-            myBlock.text.text = label;
-            myBlock.text.textAlign = 'center';
-            myBlock.text.textBaseline = 'alphabetic';
-            myBlock.container.addChild(myBlock.text);
-            myBlock.text.x = VALUETEXTX;
-            myBlock.text.y = VALUETEXTY;
-
-            this.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
-
-            // Make sure text is on top.
-            lastChild = last(myBlock.container.children);
-            myBlock.container.swapChildren(myBlock.text, lastChild);
-            myBlock.container.updateCache();
-        }
-
-        if (myBlock.protoblock.parameter) {
-            // Parameter blocks get a text label to show their current value
-            myBlock.text.textAlign = 'right';
-            myBlock.text.textBaseline = 'alphabetic';
-            myBlock.container.addChild(myBlock.text);
-            if (myBlock.name == 'box') {
-                myBlock.text.x = BOXTEXTX;
-            } else {
-                myBlock.text.x = PARAMETERTEXTX;
-            }
-            myBlock.text.y = VALUETEXTY;
-
-            lastChild = last(myBlock.container.children);
-            myBlock.container.swapChildren(myBlock.text, lastChild);
-            myBlock.container.updateCache();
-        }
-
-        if (myBlock.isExpandableBlock()) {
-            // Expandable blocks also have some extra parts.
-            bottomArtwork = myBlock.protoblock.artwork[BOT];
-            var artworkOffset = myBlock.protoblock.artworkOffset[BOT];
-
-            function processBottomBitmap(me, name, bitmap, myBlock) {
-                myBlock.bitmap[BOT] = bitmap;
-                myBlock.container.addChild(myBlock.bitmap[BOT]);
-                myBlock.bitmap[BOT].x = myBlock.bitmap[TOP].x;
-                myBlock.bitmap[BOT].y = myBlock.bitmap[TOP].y + artworkOffset;
-                myBlock.bitmap[BOT].name = 'bmp_' + thisBlock + '_bottom';
-                me.refreshCanvas();
-            }
-
-            makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processBottomBitmap, myBlock);
-
-            function processHighlightBottomBitmap(me, name, bitmap, myBlock) {
-                myBlock.highlightBitmap[BOT] = bitmap;
-                myBlock.container.addChild(myBlock.highlightBitmap[BOT]);
-                myBlock.highlightBitmap[BOT].x = myBlock.bitmap[TOP].x;
-                myBlock.highlightBitmap[BOT].y = myBlock.bitmap[TOP].y + artworkOffset;
-                myBlock.highlightBitmap[BOT].name = 'bmp_' + thisBlock + '_highlight_bottom';
-                myBlock.highlightBitmap[BOT].visible = false;
-
-                // We added a bottom block, so we need to recache.
-                myBlock.container.uncache();
-                myBlock.bounds = myBlock.container.getBounds();
-                myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-                // console.log('recaching ' + myBlock.name);
-                myBlock.loadComplete = true;
-                if (myBlock.postProcess != null) {
-                    myBlock.postProcess(myBlock.postProcessArg);
-                }
-                me.refreshCanvas();
-                me.cleanupAfterLoad();
-            }
-
-            makeBitmap(this, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, myBlock);
-        } else {
-            myBlock.loadComplete = true;
-            if (myBlock.postProcess != null) {
-                myBlock.postProcess(myBlock.postProcessArg);
-            }
-            this.refreshCanvas();
-            this.cleanupAfterLoad();
-        }
-
-        // Start blocks and Action blocks can collapse, so add an
-        // event handler
-        if (['start', 'action'].indexOf(myBlock.name) != -1) {
-            block_label = ''; // We use a Text element for the label
-
-            function processCollapseBitmap(me, name, bitmap, myBlock) {
-                myBlock.collapseBlockBitmap = bitmap;
-                myBlock.container.addChild(myBlock.collapseBlockBitmap);
-                myBlock.collapseBlockBitmap.visible = false;
-                me.refreshCanvas();
-            }
-
-            makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processCollapseBitmap, myBlock);
-
-            function processHighlightCollapseBitmap(me, name, bitmap, myBlock) {
-                myBlock.highlightCollapseBlockBitmap = bitmap;
-                myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
-                myBlock.highlightCollapseBlockBitmap.visible = false;
-                me.refreshCanvas();
-
-                if (myBlock.name == 'action') {
-                    myBlock.collapseText = new createjs.Text('action', '20px Arial', '#000000');
-                    myBlock.collapseText.x = ACTIONTEXTX;
-                    myBlock.collapseText.y = ACTIONTEXTY;
-                    myBlock.collapseText.textAlign = 'right';
-                } else {
-                    myBlock.collapseText = new createjs.Text('start', '20px Arial', '#000000');
-                    myBlock.collapseText.x = STARTTEXTX;
-                    myBlock.collapseText.y = ACTIONTEXTY;
-                    myBlock.collapseText.textAlign = 'left';
-                }
-                myBlock.collapseText.textBaseline = 'alphabetic';
-                myBlock.container.addChild(myBlock.collapseText);
-                myBlock.collapseText.visible = false;
-
-                myBlock.collapseContainer = new createjs.Container();
-
-                var image = new Image();
-                image.onload = function() {
-                    myBlock.collapseBitmap = new createjs.Bitmap(image);
-                    myBlock.collapseContainer.addChild(myBlock.collapseBitmap);
-                    finishCollapseButton(myBlock);
-                }
-                image.src = 'images/collapse.svg';
-
-                finishCollapseButton = function(myBlock) {
-                    var image = new Image();
-                    image.onload = function() {
-                        myBlock.expandBitmap = new createjs.Bitmap(image);
-                        myBlock.collapseContainer.addChild(myBlock.expandBitmap);
-                        myBlock.expandBitmap.visible = false;
-                        var bounds = myBlock.collapseContainer.getBounds();
-                        myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                        loadCollapsibleEventHandlers(me, myBlock);
-                    }
-                    image.src = 'images/expand.svg';
-                }
-
-                me.stage.addChild(myBlock.collapseContainer);
-                myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
-                myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
-            }
-
-            makeBitmap(this, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', myBlock.protoblock.fontsize), '', processHighlightCollapseBitmap, myBlock);
-        }
-    }
-
     this.unhighlightAll = function() {
         for (blk in this.blockList) {
             this.unhighlight(blk);
@@ -1927,7 +1646,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
-        this.blockList.push(new Block(this.protoBlockDict[name]));
+        this.blockList.push(new Block(this.protoBlockDict[name], this));
         if (last(this.blockList) == null) {
             console.log('failed to make protoblock for ' + name);
             return null;
@@ -1949,7 +1668,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.y = myBlock.y;
 
         // and we need to load the images into the container.
-        this.imageLoad(myBlock);
+        myBlock.imageLoad();
         return myBlock;
     }
 
@@ -2722,13 +2441,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
 
 // Define block instance objects and any methods that are intra-block.
-function Block(protoblock) {
+function Block(protoblock, blocks) {
     if (protoblock == null) {
         console.log('null protoblock sent to Block');
         return;
     }
     this.protoblock = protoblock;
     this.name = protoblock.name;
+    this.blocks = blocks;
     this.x = 0;
     this.y = 0;
     this.collapsed = false; // Is this block in a collapsed stack?
@@ -2787,6 +2507,287 @@ function Block(protoblock) {
 
     this.getInfo = function() {
         return this.name + ' block';
+    }
+
+    this.imageLoad = function() {
+        // Load any artwork associated with the block and create any
+        // extra parts. Image components are loaded asynchronously so
+        // most the work happens in callbacks.
+
+        var thisBlock = this.blocks.blockList.indexOf(this);
+
+        // We need a label for most blocks.
+        // TODO: use Text exclusively for all block labels.
+        this.text = new createjs.Text('', '20px Arial', '#000000');
+        doubleExpandable = this.blocks.doubleExpandable;
+
+        // Get the block labels from the protoblock
+        var block_label = '';
+        if (this.protoblock.staticLabels.length > 0) {
+            block_label = this.protoblock.staticLabels[0];
+        }
+
+        var top_label = '';
+        if (this.protoblock.staticLabels.length > 1) {
+            top_label = this.protoblock.staticLabels[1];
+        }
+
+        // Create the bitmap for the block.
+        function processBitmap(blocks, name, bitmap, me) {
+            me.bitmap[TOP] = bitmap;
+            me.container.addChild(me.bitmap[TOP]);
+            me.bitmap[TOP].x = 0;
+            me.bitmap[TOP].y = 0;
+            me.bitmap[TOP].name = 'bmp_' + thisBlock;
+            me.bitmap[TOP].cursor = 'pointer';
+            blocks.refreshCanvas();
+        }
+
+        makeBitmap(this.blocks, this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), this.name, processBitmap, this);
+
+        // Create the highlight bitmap for the block.
+        function processHighlightBitmap(blocks, name, bitmap, me) {
+            me.highlightBitmap[TOP] = bitmap;
+            me.container.addChild(me.highlightBitmap[TOP]);
+            me.highlightBitmap[TOP].x = 0;
+            me.highlightBitmap[TOP].y = 0;
+            me.highlightBitmap[TOP].name = 'bmp_highlight_' + thisBlock;
+            me.highlightBitmap[TOP].cursor = 'pointer';
+            // Hide it to start
+            me.highlightBitmap[TOP].visible = false;
+
+            if (me.text != null) {
+                // Make sure text is on top.
+                lastChild = last(me.container.children);
+                me.container.swapChildren(me.text, lastChild);
+            }
+
+            // At me point, it should be safe to calculate the
+            // bounds of the container and cache its contents.
+            me.bounds = me.container.getBounds();
+            me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
+            loadEventHandlers(blocks, me);
+            me.blocks.refreshCanvas();
+            if (doubleExpandable.indexOf(me.name) != -1) {
+                me.middleImageLoad();
+            } else {
+                me.finishImageLoad();
+            }
+
+        }
+
+        makeBitmap(this.blocks, this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
+    }
+
+    this.middleImageLoad = function() {
+        // Load a block image and create any extra parts. Image
+        // components are loaded asynchronously so most the work
+        // happens in callbacks.
+
+        var thisBlock = this.blocks.blockList.indexOf(this);
+
+        // We need a label for most blocks.
+        // TODO: use Text exclusively for all block labels.
+        this.text = new createjs.Text('', '20px Arial', '#000000');
+
+        // Get the block labels from the protoblock
+        var block_label = this.protoblock.staticLabels[2];
+
+        var middleOffset = this.protoblock.artworkOffset[MID];
+
+        // Create the bitmap for the block.
+        function processBitmap(blocks, name, bitmap, me) {
+            me.bitmap[MID] = bitmap;
+            me.container.addChild(me.bitmap[MID]);
+            me.bitmap[MID].x = me.bitmap[TOP].x;
+            me.bitmap[MID].y = me.bitmap[TOP].y + middleOffset;
+            me.bitmap[MID].name = 'bmp_middle_' + thisBlock;
+            me.refreshCanvas();
+        }
+
+        makeBitmap(this.blocks, this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), this.name, processBitmap, this);
+
+        // Create the highlight bitmap for the block.
+        function processHighlightBitmap(blocks, name, bitmap, me) {
+            me.highlightBitmap[MID] = bitmap;
+            me.container.addChild(me.highlightBitmap[MID]);
+            me.highlightBitmap[MID].x = me.bitmap[TOP].x;
+            me.highlightBitmap[MID].y = me.bitmap[TOP].y + middleOffset;
+            me.highlightBitmap[MID].name = 'bmp_middle_highlight_' + thisBlock;
+            me.highlightBitmap[MID].visible = false;
+            me.finishImageLoad();
+        }
+
+        makeBitmap(this.blocks, this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
+    }
+
+    this.finishImageLoad = function() {
+
+        var thisBlock = this.blocks.blockList.indexOf(this);
+
+        var bottom_label = '';
+        if (this.protoblock.staticLabels.length > 2) {
+            bottom_label = this.protoblock.staticLabels[2];
+        }
+
+        // Value blocks get a modifiable text label
+        if (this.name == 'text' || this.name == 'number') {
+            if (this.value == null) {
+                if (this.name == 'text') {
+                    this.value = '---';
+                } else {
+                    this.value = 100;
+                }
+            }
+
+            var label = this.value.toString();
+            if (label.length > 8) {
+                label = label.substr(0, 7) + '...';
+            }
+            this.text.text = label;
+            this.text.textAlign = 'center';
+            this.text.textBaseline = 'alphabetic';
+            this.container.addChild(this.text);
+            this.text.x = VALUETEXTX;
+            this.text.y = VALUETEXTY;
+
+            this.blocks.adjustLabelPosition(thisBlock, this.container.x, this.container.y);
+
+            // Make sure text is on top.
+            lastChild = last(this.container.children);
+            this.container.swapChildren(this.text, lastChild);
+            this.container.updateCache();
+        }
+
+        if (this.protoblock.parameter) {
+            // Parameter blocks get a text label to show their current value
+            this.text.textAlign = 'right';
+            this.text.textBaseline = 'alphabetic';
+            this.container.addChild(this.text);
+            if (this.name == 'box') {
+                this.text.x = BOXTEXTX;
+            } else {
+                this.text.x = PARAMETERTEXTX;
+            }
+            this.text.y = VALUETEXTY;
+
+            lastChild = last(this.container.children);
+            this.container.swapChildren(this.text, lastChild);
+            this.container.updateCache();
+        }
+
+        if (this.isExpandableBlock()) {
+            // Expandable blocks also have some extra parts.
+            bottomArtwork = this.protoblock.artwork[BOT];
+            var artworkOffset = this.protoblock.artworkOffset[BOT];
+
+            function processBottomBitmap(blocks, name, bitmap, me) {
+                me.bitmap[BOT] = bitmap;
+                me.container.addChild(me.bitmap[BOT]);
+                me.bitmap[BOT].x = me.bitmap[TOP].x;
+                me.bitmap[BOT].y = me.bitmap[TOP].y + artworkOffset;
+                me.bitmap[BOT].name = 'bmp_' + thisBlock + '_bottom';
+                me.blocks.refreshCanvas();
+            }
+
+            makeBitmap(this.blocks, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processBottomBitmap, this);
+
+            function processHighlightBottomBitmap(blocks, name, bitmap, me) {
+                me.highlightBitmap[BOT] = bitmap;
+                me.container.addChild(me.highlightBitmap[BOT]);
+                me.highlightBitmap[BOT].x = me.bitmap[TOP].x;
+                me.highlightBitmap[BOT].y = me.bitmap[TOP].y + artworkOffset;
+                me.highlightBitmap[BOT].name = 'bmp_' + thisBlock + '_highlight_bottom';
+                me.highlightBitmap[BOT].visible = false;
+
+                // We added a bottom block, so we need to recache.
+                me.container.uncache();
+                me.bounds = me.container.getBounds();
+                me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
+                // console.log('recaching ' + me.name);
+                me.blocks.loadComplete = true;
+                if (me.postProcess != null) {
+                    me.postProcess(me.postProcessArg);
+                }
+                me.blocks.refreshCanvas();
+                me.blocks.cleanupAfterLoad();
+            }
+
+            makeBitmap(this.blocks, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, this);
+        } else {
+            this.blocks.loadComplete = true;
+            if (this.postProcess != null) {
+                this.postProcess(this.postProcessArg);
+            }
+            this.blocks.refreshCanvas();
+            this.blocks.cleanupAfterLoad();
+        }
+
+        // Start blocks and Action blocks can collapse, so add an
+        // event handler
+        if (['start', 'action'].indexOf(this.name) != -1) {
+            block_label = ''; // We use a Text element for the label
+
+            function processCollapseBitmap(blocks, name, bitmap, me) {
+                me.collapseBlockBitmap = bitmap;
+                me.container.addChild(me.collapseBlockBitmap);
+                me.collapseBlockBitmap.visible = false;
+                blocks.refreshCanvas();
+            }
+
+            makeBitmap(this.blocks, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processCollapseBitmap, this);
+
+            function processHighlightCollapseBitmap(blocks, name, bitmap, me) {
+                me.highlightCollapseBlockBitmap = bitmap;
+                me.container.addChild(me.highlightCollapseBlockBitmap);
+                me.highlightCollapseBlockBitmap.visible = false;
+                me.blocks.refreshCanvas();
+
+                if (me.name == 'action') {
+                    me.collapseText = new createjs.Text('action', '20px Arial', '#000000');
+                    me.collapseText.x = ACTIONTEXTX;
+                    me.collapseText.y = ACTIONTEXTY;
+                    me.collapseText.textAlign = 'right';
+                } else {
+                    me.collapseText = new createjs.Text('start', '20px Arial', '#000000');
+                    me.collapseText.x = STARTTEXTX;
+                    me.collapseText.y = ACTIONTEXTY;
+                    me.collapseText.textAlign = 'left';
+                }
+                me.collapseText.textBaseline = 'alphabetic';
+                me.container.addChild(me.collapseText);
+                me.collapseText.visible = false;
+
+                me.collapseContainer = new createjs.Container();
+
+                var image = new Image();
+                image.onload = function() {
+                    me.collapseBitmap = new createjs.Bitmap(image);
+                    me.collapseContainer.addChild(me.collapseBitmap);
+                    finishCollapseButton(me);
+                }
+                image.src = 'images/collapse.svg';
+
+                finishCollapseButton = function(me) {
+                    var image = new Image();
+                    image.onload = function() {
+                        me.expandBitmap = new createjs.Bitmap(image);
+                        me.collapseContainer.addChild(me.expandBitmap);
+                        me.expandBitmap.visible = false;
+                        var bounds = me.collapseContainer.getBounds();
+                        me.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                        loadCollapsibleEventHandlers(me.blocks, me);
+                    }
+                    image.src = 'images/expand.svg';
+                }
+
+                me.blocks.stage.addChild(me.collapseContainer);
+                me.collapseContainer.x = me.container.x + COLLAPSEBUTTONXOFF;
+                me.collapseContainer.y = me.container.y + COLLAPSEBUTTONYOFF;
+            }
+
+            makeBitmap(this.blocks, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processHighlightCollapseBitmap, this);
+        }
     }
 
     this.hide = function() {

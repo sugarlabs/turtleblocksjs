@@ -368,9 +368,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.stackList = [];
     // The blocks that need expanding
     this.expandablesList = [];
-    // Cached filler bitmaps that have been removed from expandable
-    // blocks. We can reuse them.
-    this.bitmapCache = {};
     // Number of blocks to load
     this.loadCounter = 0;
     // Stacks of blocks that need adjusting as blocks are repositioned
@@ -534,14 +531,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             while (childFlowSize < myBlock.fillerCount[clamp] + 1) {
                 // Remove filler.
                 adjustFillerAndDocks(myBlock, clamp, -1);
-                me.removeFiller(blk, clamp);
+                myBlock.removeFiller(clamp);
                 docksChanged = true;
             }
             while (childFlowSize > myBlock.fillerCount[clamp] + 1) {
                 // Add filler.
                 var c = myBlock.fillerCount[clamp];
                 adjustFillerAndDocks(myBlock, clamp, 1);
-                me.addFiller(blk, clamp, c);
+                myBlock.addFiller(clamp, c);
                 docksChanged = true;
             }
             return docksChanged;
@@ -588,7 +585,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var docksChanged = false;
         while (firstArgumentSize < myBlock.fillerCount[BOT] + 1) {
             // Remove filler.
-            this.removeFiller(blk, BOT);
+            myBlock.removeFiller(BOT);
             myBlock.fillerCount[BOT] -= 1;
             myBlock.docks[2][1] -= myBlock.protoblock.fillerOffset;
             docksChanged = true;
@@ -601,7 +598,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
         while (firstArgumentSize > myBlock.fillerCount[BOT] + 1) {
             // Add filler.
-            this.addFiller(blk, BOT, myBlock.fillerCount[BOT]);
+            myBlock.addFiller(BOT, myBlock.fillerCount[BOT]);
             myBlock.fillerCount[BOT] += 1;
             myBlock.docks[2][1] += myBlock.protoblock.fillerOffset;
             docksChanged = true;
@@ -635,117 +632,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     this.adjustDocks(blk);
                 }
             }
-        }
-    }
-
-    this.removeFiller = function(blk, clamp) {
-        // When we remove filler, we cache it in case it is added back
-        // in later.
-        var myBlock = this.blockList[blk];
-        var fillerBitmap = myBlock.fillerBitmaps[clamp].pop();
-
-        myBlock.container.removeChild(fillerBitmap);
-        this.bitmapCache[fillerBitmap.name] = fillerBitmap;
-
-        if (clamp == MID) {
-            myBlock.bitmap[MID].y -= myBlock.protoblock.fillerOffset;
-            myBlock.highlightBitmap[MID].y = myBlock.bitmap[MID].y;
-        }
-        myBlock.bitmap[BOT].y -= myBlock.protoblock.fillerOffset;
-        myBlock.highlightBitmap[BOT].y = myBlock.bitmap[BOT].y;
-
-        try {
-            // FIXME: There is a potential race conditon such that the
-            // container cache is not yet ready.
-            myBlock.container.uncache();
-            myBlock.bounds = myBlock.container.getBounds();
-            myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    this.addFiller = function(blk, clamp, c) {
-        // Add filler to an expandable block.
-        var myBlock = this.blockList[blk];
-        var offset = myBlock.protoblock.artworkOffset[clamp] + c * myBlock.protoblock.fillerOffset;
-        if (clamp == BOT) {
-            offset += myBlock.fillerCount[MID] * myBlock.protoblock.fillerOffset;
-        }
-
-        function processBitmap(me, name, bitmap, args) {
-            myBlock = args[0];
-            offset = args[1];
-            clamp = args[2];
-            myBlock.fillerBitmaps[clamp].push(bitmap);
-            myBlock.container.addChild(bitmap);
-            bitmap.x = myBlock.bitmap[TOP].x;
-            bitmap.y = myBlock.bitmap[TOP].y + offset;
-            bitmap.name = name;
-            me.refreshCanvas();
-        }
-
-        // We generate a unique name to use as the key in the cache.
-        var name = 'bmp_' + blk + '_filler_' + clamp + '_' + c;
-        if (!(name in this.bitmapCache)) {
-            if (myBlock.isArgBlock()) {
-                var artwork = ARG2BLOCKFILLER;
-            } else if (myBlock.isTwoArgBlock()) {
-                var artwork = BASICBLOCK2ARGFILLER;
-            } else {
-                var artwork = CLAMPFILLER;
-            }
-            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processBitmap, [myBlock, offset, clamp]);
-        } else {
-            processBitmap(this, name, this.bitmapCache[name], [myBlock, offset, clamp]);
-        }
-
-        function processHighlightBitmap(me, name, bitmap, args) {
-            myBlock = args[0];
-            offset = args[1];
-            clamp = args[2];
-            myBlock.highlightFillerBitmaps[clamp].push(bitmap);
-            myBlock.container.addChild(bitmap);
-            bitmap.x = myBlock.bitmap[TOP].x;
-            bitmap.y = myBlock.bitmap[TOP].y + offset;
-            bitmap.name = name;
-
-            // Hide highlight to start.
-            bitmap.visible = false;
-
-            // Move the block parts.
-            if (clamp == MID) {
-                myBlock.bitmap[MID].y += myBlock.protoblock.fillerOffset;
-                myBlock.highlightBitmap[MID].y = myBlock.bitmap[MID].y;
-            }
-            myBlock.bitmap[BOT].y += myBlock.protoblock.fillerOffset;
-            myBlock.highlightBitmap[BOT].y = myBlock.bitmap[BOT].y;
-
-            try {
-                // There is a potential race conditon such that the
-                // container cache is not yet ready.
-                myBlock.container.uncache();
-                myBlock.bounds = myBlock.container.getBounds();
-                myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-            } catch (e) {
-                console.log(e);
-            }
-            me.refreshCanvas();
-        }
-
-        // And the same for the highlight blocks
-        var name = 'bmp_' + blk + '_highlight_filler_' + clamp + '_' + c;
-        if (this.bitmapCache[name] == undefined) {
-            if (myBlock.isArgBlock()) {
-                var artwork = ARG2BLOCKFILLER;
-            } else if (myBlock.isTwoArgBlock()) {
-                var artwork = BASICBLOCK2ARGFILLER;
-            } else {
-                var artwork = CLAMPFILLER;
-            }
-            makeBitmap(this, artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.protoblock.palette.name]), name, processHighlightBitmap, [myBlock, offset, clamp]);
-        } else {
-            processHighlightBitmap(this, name, this.bitmapCache[name], [myBlock, offset, clamp]);
         }
     }
 
@@ -2476,6 +2362,9 @@ function Block(protoblock, blocks) {
         [],
         []
     ];
+    // Cached filler bitmaps that have been removed from expandable
+    // blocks. We can reuse them.
+    this.bitmapCache = {};
 
     // Start and Action blocks has a collapse button (in a separate
     // container).
@@ -2509,6 +2398,118 @@ function Block(protoblock, blocks) {
         return this.name + ' block';
     }
 
+    this.removeFiller = function(clamp) {
+        // When we remove filler, we cache it in case it is added back
+        // in later.
+        var thisBlock = this.blocks.blockList.indexOf(this);
+        var fillerBitmap = this.fillerBitmaps[clamp].pop();
+
+        this.container.removeChild(fillerBitmap);
+        this.bitmapCache[fillerBitmap.name] = fillerBitmap;
+
+        if (clamp == MID) {
+            this.bitmap[MID].y -= this.protoblock.fillerOffset;
+            this.highlightBitmap[MID].y = this.bitmap[MID].y;
+        }
+        this.bitmap[BOT].y -= this.protoblock.fillerOffset;
+        this.highlightBitmap[BOT].y = this.bitmap[BOT].y;
+
+        try {
+            // FIXME: There is a potential race conditon such that the
+            // container cache is not yet ready.
+            this.container.uncache();
+            this.bounds = this.container.getBounds();
+            this.container.cache(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    this.addFiller = function(clamp, c) {
+        // Add filler to an expandable block.
+        var thisBlock = this.blocks.blockList.indexOf(this);
+        var offset = this.protoblock.artworkOffset[clamp] + c * this.protoblock.fillerOffset;
+        if (clamp == BOT) {
+            offset += this.fillerCount[MID] * this.protoblock.fillerOffset;
+        }
+
+        function processBitmap(name, bitmap, args) {
+            me = args[0];
+            offset = args[1];
+            clamp = args[2];
+	    console.log(me + ' ' + clamp + ' ' + me.fillerBitmaps);
+            me.fillerBitmaps[clamp].push(bitmap);
+            me.container.addChild(bitmap);
+            bitmap.x = me.bitmap[TOP].x;
+            bitmap.y = me.bitmap[TOP].y + offset;
+            bitmap.name = name;
+            me.blocks.refreshCanvas();
+        }
+
+        // We generate a unique name to use as the key in the cache.
+        var name = 'bmp_' + thisBlock + '_filler_' + clamp + '_' + c;
+        if (!(name in this.bitmapCache)) {
+            if (this.isArgBlock()) {
+                var artwork = ARG2BLOCKFILLER;
+            } else if (this.isTwoArgBlock()) {
+                var artwork = BASICBLOCK2ARGFILLER;
+            } else {
+                var artwork = CLAMPFILLER;
+            }
+            makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]), name, processBitmap, [this, offset, clamp]);
+        } else {
+            processBitmap(name, this.bitmapCache[name], [this, offset, clamp]);
+        }
+
+        function processHighlightBitmap(name, bitmap, args) {
+            me = args[0];
+            offset = args[1];
+            clamp = args[2];
+            me.highlightFillerBitmaps[clamp].push(bitmap);
+            me.container.addChild(bitmap);
+            bitmap.x = me.bitmap[TOP].x;
+            bitmap.y = me.bitmap[TOP].y + offset;
+            bitmap.name = name;
+
+            // Hide highlight to start.
+            bitmap.visible = false;
+
+            // Move the block parts.
+            if (clamp == MID) {
+                me.bitmap[MID].y += me.protoblock.fillerOffset;
+                me.highlightBitmap[MID].y = me.bitmap[MID].y;
+            }
+            me.bitmap[BOT].y += me.protoblock.fillerOffset;
+            me.highlightBitmap[BOT].y = me.bitmap[BOT].y;
+
+            try {
+                // There is a potential race conditon such that the
+                // container cache is not yet ready.
+                me.container.uncache();
+                me.bounds = me.container.getBounds();
+                me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
+            } catch (e) {
+                console.log(e);
+            }
+            me.blocks.refreshCanvas();
+        }
+
+        // And the same for the highlight blocks
+        var name = 'bmp_' + thisBlock + '_highlight_filler_' + clamp + '_' + c;
+        if (this.bitmapCache[name] == undefined) {
+            if (this.isArgBlock()) {
+                var artwork = ARG2BLOCKFILLER;
+            } else if (this.isTwoArgBlock()) {
+                var artwork = BASICBLOCK2ARGFILLER;
+            } else {
+                var artwork = CLAMPFILLER;
+            }
+            makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]), name, processHighlightBitmap, [this, offset, clamp]);
+        } else {
+            processHighlightBitmap(name, this.bitmapCache[name], [this, offset, clamp]);
+        }
+    }
+
     this.imageLoad = function() {
         // Load any artwork associated with the block and create any
         // extra parts. Image components are loaded asynchronously so
@@ -2533,20 +2534,20 @@ function Block(protoblock, blocks) {
         }
 
         // Create the bitmap for the block.
-        function processBitmap(blocks, name, bitmap, me) {
+        function processBitmap(name, bitmap, me) {
             me.bitmap[TOP] = bitmap;
             me.container.addChild(me.bitmap[TOP]);
             me.bitmap[TOP].x = 0;
             me.bitmap[TOP].y = 0;
             me.bitmap[TOP].name = 'bmp_' + thisBlock;
             me.bitmap[TOP].cursor = 'pointer';
-            blocks.refreshCanvas();
+            me.blocks.refreshCanvas();
         }
 
-        makeBitmap(this.blocks, this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), this.name, processBitmap, this);
+        makeBitmap(this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), this.name, processBitmap, this);
 
         // Create the highlight bitmap for the block.
-        function processHighlightBitmap(blocks, name, bitmap, me) {
+        function processHighlightBitmap(name, bitmap, me) {
             me.highlightBitmap[TOP] = bitmap;
             me.container.addChild(me.highlightBitmap[TOP]);
             me.highlightBitmap[TOP].x = 0;
@@ -2576,7 +2577,7 @@ function Block(protoblock, blocks) {
 
         }
 
-        makeBitmap(this.blocks, this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
+        makeBitmap(this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
     }
 
     this.middleImageLoad = function() {
@@ -2596,19 +2597,19 @@ function Block(protoblock, blocks) {
         var middleOffset = this.protoblock.artworkOffset[MID];
 
         // Create the bitmap for the block.
-        function processBitmap(blocks, name, bitmap, me) {
+        function processBitmap(name, bitmap, me) {
             me.bitmap[MID] = bitmap;
             me.container.addChild(me.bitmap[MID]);
             me.bitmap[MID].x = me.bitmap[TOP].x;
             me.bitmap[MID].y = me.bitmap[TOP].y + middleOffset;
             me.bitmap[MID].name = 'bmp_middle_' + thisBlock;
-            me.refreshCanvas();
+            me.blocks.refreshCanvas();
         }
 
-        makeBitmap(this.blocks, this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), this.name, processBitmap, this);
+        makeBitmap(this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), this.name, processBitmap, this);
 
         // Create the highlight bitmap for the block.
-        function processHighlightBitmap(blocks, name, bitmap, me) {
+        function processHighlightBitmap(name, bitmap, me) {
             me.highlightBitmap[MID] = bitmap;
             me.container.addChild(me.highlightBitmap[MID]);
             me.highlightBitmap[MID].x = me.bitmap[TOP].x;
@@ -2618,7 +2619,7 @@ function Block(protoblock, blocks) {
             me.finishImageLoad();
         }
 
-        makeBitmap(this.blocks, this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
+        makeBitmap(this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
     }
 
     this.finishImageLoad = function() {
@@ -2681,7 +2682,7 @@ function Block(protoblock, blocks) {
             bottomArtwork = this.protoblock.artwork[BOT];
             var artworkOffset = this.protoblock.artworkOffset[BOT];
 
-            function processBottomBitmap(blocks, name, bitmap, me) {
+            function processBottomBitmap(name, bitmap, me) {
                 me.bitmap[BOT] = bitmap;
                 me.container.addChild(me.bitmap[BOT]);
                 me.bitmap[BOT].x = me.bitmap[TOP].x;
@@ -2690,9 +2691,9 @@ function Block(protoblock, blocks) {
                 me.blocks.refreshCanvas();
             }
 
-            makeBitmap(this.blocks, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processBottomBitmap, this);
+            makeBitmap(bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processBottomBitmap, this);
 
-            function processHighlightBottomBitmap(blocks, name, bitmap, me) {
+            function processHighlightBottomBitmap(name, bitmap, me) {
                 me.highlightBitmap[BOT] = bitmap;
                 me.container.addChild(me.highlightBitmap[BOT]);
                 me.highlightBitmap[BOT].x = me.bitmap[TOP].x;
@@ -2713,7 +2714,7 @@ function Block(protoblock, blocks) {
                 me.blocks.cleanupAfterLoad();
             }
 
-            makeBitmap(this.blocks, bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, this);
+            makeBitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, this);
         } else {
             this.blocks.loadComplete = true;
             if (this.postProcess != null) {
@@ -2728,16 +2729,16 @@ function Block(protoblock, blocks) {
         if (['start', 'action'].indexOf(this.name) != -1) {
             block_label = ''; // We use a Text element for the label
 
-            function processCollapseBitmap(blocks, name, bitmap, me) {
+            function processCollapseBitmap(name, bitmap, me) {
                 me.collapseBlockBitmap = bitmap;
                 me.container.addChild(me.collapseBlockBitmap);
                 me.collapseBlockBitmap.visible = false;
-                blocks.refreshCanvas();
+                me.blocks.refreshCanvas();
             }
 
-            makeBitmap(this.blocks, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processCollapseBitmap, this);
+            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processCollapseBitmap, this);
 
-            function processHighlightCollapseBitmap(blocks, name, bitmap, me) {
+            function processHighlightCollapseBitmap(name, bitmap, me) {
                 me.highlightCollapseBlockBitmap = bitmap;
                 me.container.addChild(me.highlightCollapseBlockBitmap);
                 me.highlightCollapseBlockBitmap.visible = false;
@@ -2786,7 +2787,7 @@ function Block(protoblock, blocks) {
                 me.collapseContainer.y = me.container.y + COLLAPSEBUTTONYOFF;
             }
 
-            makeBitmap(this.blocks, ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processHighlightCollapseBitmap, this);
+            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processHighlightCollapseBitmap, this);
         }
     }
 
@@ -3427,13 +3428,13 @@ function sendStackToTrash(blocks, myBlock) {
 }
 
 
-function makeBitmap(me, data, name, callback, args) {
+function makeBitmap(data, name, callback, args) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
     var img = new Image();
     img.onload = function() {
         bitmap = new createjs.Bitmap(img);
-        callback(me, name, bitmap, args);
+        callback(name, bitmap, args);
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));

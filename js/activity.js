@@ -612,7 +612,6 @@ define(function(require) {
                 turtles.add(last(blocks.blockList));
                 last(blocks.blockList).value = turtles.turtleList.length - 1;
                 blocks.updateBlockPositions();
-                blocks.updateBlockLabels();
             }
             // Overwrite session data too.
             console.log('overwriting session data');
@@ -777,7 +776,6 @@ define(function(require) {
                     blocks.blockList[0].value = turtles.turtleList.length;
                     turtles.add(blocks.blockList[0]);
                     blocks.updateBlockPositions();
-                    blocks.updateBlockLabels();
                 }
                 blocks.makeNewBlock('start', postProcess, null);
             }

@@ -1109,7 +1109,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.y = y;
             myBlock.x = x
             myBlock.y = y
-            this.adjustLabelPosition(blk, myBlock.container.x, myBlock.container.y);
             if (myBlock.collapseContainer != null) {
                 myBlock.collapseContainer.x = x + COLLAPSEBUTTONXOFF;
                 myBlock.collapseContainer.y = y + COLLAPSEBUTTONYOFF;
@@ -1129,7 +1128,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.container.y += dy;
             myBlock.x = myBlock.container.x;
             myBlock.y = myBlock.container.y;
-            this.adjustLabelPosition(blk, myBlock.container.x, myBlock.container.y);
             if (myBlock.collapseContainer != null) {
                 myBlock.collapseContainer.x += dx;
                 myBlock.collapseContainer.y += dy;
@@ -1159,95 +1157,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.swapChildren(myBlock.text, lastChild);
 
         if (myBlock.loadComplete) {
+	    console.log('load complete: updating cache');
             myBlock.container.updateCache();
-        }
-    }
-
-    this.updateBlockLabels = function() {
-        // The modifiable labels are stored in the DOM with a unique
-        // id for each block.  For the moment, we only have labels for
-        // number and text blocks.
-        var html = ''
-        var text = ''
-        var value = ''
-        for (var blk = 0; blk < this.blockList.length; blk++) {
-            var myBlock = this.blockList[blk];
-            if (myBlock.name == 'number') {
-                if (myBlock.value == null) {
-                    console.log('block value was null ... assigning 100');
-                    myBlock.value = 100;
-                }
-                value = myBlock.value.toString();
-                text = '<textarea id="' + myBlock.getBlockId() +
-                    '" style="position: absolute; ' +
-                    '-webkit-user-select: text;" ' +
-                    'class="number", ' +
-                    'onkeypress="if(event.keyCode==13){return false;}"' +
-                    'cols="8", rows="1", maxlength="8">' +
-                    value + '</textarea>'
-            } else if (myBlock.name == 'text') {
-                if (myBlock.value == null) {
-                    console.log('block value was null ... assigning text');
-                    myBlock.value = 'text';
-                }
-                value = myBlock.value;
-                text = '<textarea id="' + myBlock.getBlockId() +
-                    '" style="position: absolute; ' +
-                    '-webkit-user-select: text;" ' +
-                    'class="text", ' +
-                    'cols="8", rows="1", maxlength="80">' +
-                    value + '</textarea>'
-            } else {
-                text = ''
-            }
-            html = html + text
-        }
-        labelElem.innerHTML = html;
-
-        // Then create a list of the label elements
-        for (var blk = 0; blk < this.blockList.length; blk++) {
-            var myBlock = this.blockList[blk];
-            if (myBlock == null) {
-                console.log('null block in block list');
-                continue;
-            }
-            if (myBlock.bitmap[TOP] == null) {
-                var x = myBlock.x
-                var y = myBlock.y
-            } else {
-                var x = myBlock.bitmap[TOP].x
-                var y = myBlock.bitmap[TOP].y
-            }
-            if (myBlock.name == 'text' || myBlock.name == 'number') {
-                myBlock.label = docById(myBlock.getBlockId());
-                myBlock.label.addEventListener(
-                    'change', function() {
-                        labelChanged();
-                    });
-                this.adjustLabelPosition(blk, x, y);
-                // Hide the label until we need to change it
-                myBlock.label.style.display = 'none';
-            } else {
-                myBlock.label = null;
-            }
-        }
-    }
-
-    this.adjustLabelPosition = function(blk, x, y) {
-        // Move the label when the block moves.
-        var myBlock = this.blockList[blk];
-        var canvasLeft = canvas.offsetLeft + 28;
-        var canvasTop = canvas.offsetTop + 6;
-
-        if (myBlock.label == null) {
-            return;
-        }
-        if (myBlock.protoblock.name == 'number') {
-            myBlock.label.style.left = Math.round(x * this.scale + canvasLeft) + 'px';
-        } else if (myBlock.protoblock.name == 'text') {
-            myBlock.label.style.left = Math.round(x * this.scale + canvasLeft) + 'px';
-        }
-        myBlock.label.style.top = Math.round(y * this.scale + canvasTop) + 'px';
+        } else {
+	    console.log('load not yet complete for ' + blk);
+	}
     }
 
     this.findTopBlock = function(blk) {
@@ -1578,7 +1492,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var value = args[1];
                 me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value;
-                me.updateBlockLabels();
             }
             postProcessArg = [thisBlock, 'text'];
         } else if (name == 'number') {
@@ -1587,7 +1500,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var value = args[1];
                 me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value.toString();
-                me.updateBlockLabels();
             }
             postProcessArg = [thisBlock, 100];
         } else if (name == 'media') {
@@ -1667,17 +1579,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                             label = label.substr(0, 7) + '...';
                         }
                         me.blockList[thisBlock].text.text = label;
-                        me.updateBlockLabels();
                     }
                     this.makeNewBlock('text', postProcess, [thisBlock, value]);
                 } else {
-                    console.log('adding number argument');
                     postProcess = function(args) {
                         var thisBlock = args[0];
                         var value = args[1];
                         me.blockList[thisBlock].value = value;
                         me.blockList[thisBlock].text.text = value.toString();
-                        me.updateBlockLabels();
                     }
                     this.makeNewBlock('number', postProcess, [thisBlock, value]);
                 }
@@ -1691,7 +1600,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         label = label.substr(0, 7) + '...';
                     }
                     me.blockList[thisBlock].text.text = label;
-                    me.updateBlockLabels();
                 }
                 this.makeNewBlock('text', postProcess, [thisBlock, value]);
             } else if (myBlock.docks[i + 1][2] == 'mediain') {
@@ -1811,7 +1719,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     if (this.blockList[blk].value == oldName) {
                         this.blockList[blk].value = newName;
                         this.blockList[blk].text.text = newName;
-                        this.blockList[blk].label.value = newName;
+                        // this.blockList[blk].label.value = newName;
                         try {
                             this.blockList[blk].container.updateCache();
                         } catch (e) {
@@ -1831,7 +1739,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     if (this.blockList[blk].value == oldName) {
                         this.blockList[blk].value = newName;
                         this.blockList[blk].text.text = newName;
-                        this.blockList[blk].label.value = newName;
+                        // this.blockList[blk].label.value = newName;
                         try {
                             this.blockList[blk].container.updateCache();
                         } catch (e) {
@@ -1940,7 +1848,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.triggerLongPress = function(myBlock) {
         this.timeOut == null;
         // FIXME: top block in stack
-        console.log('BRING UP COPY BUTTON FOR BLOCK ' + myBlock.name);
         this.copyButton.visible = true;
         this.copyButton.x = myBlock.container.x - 27;
         this.copyButton.y = myBlock.container.y - 27;
@@ -1991,8 +1898,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.loadNewBlocks = function(blockObjs) {
-        // We'll need a list of existing storein and action names.
-        console.log(blockObjs);
         // Check for blocks connected to themselves,
         // and for action blocks not connected to text blocks.
         for (var b = 0; b < blockObjs.length; b++) {
@@ -2001,11 +1906,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 if (blkData[4][c] == blkData[0]) {
                     console.log('Circular connection in block data: ' + blkData);
                     console.log('Punting loading of new blocks!');
+		    console.log(blockObjs);
                     return;
                 }
             }
         }
 
+        // We'll need a list of existing storein and action names.
         var currentActionNames = [];
         var currentStoreinNames = [];
         for (var b = 0; b < this.blockList.length; b++) {
@@ -2158,10 +2065,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     postProcess = function(args) {
                         var thisBlock = args[0];
                         var value = args[1];
-                        console.log('assigning block value ' + value);
                         me.blockList[thisBlock].value = value;
                         me.updateBlockText(thisBlock);
-                        me.updateBlockLabels();
                     }
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
@@ -2304,7 +2209,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         this.updateBlockPositions();
-        // this.updateBlockLabels();
         for (var blk = 0; blk < this.adjustTheseDocks.length; blk++) {
             this.loopCounter = 0;
             this.adjustDocks(this.adjustTheseDocks[blk]);
@@ -2437,7 +2341,6 @@ function Block(protoblock, blocks) {
             me = args[0];
             offset = args[1];
             clamp = args[2];
-	    console.log(me + ' ' + clamp + ' ' + me.fillerBitmaps);
             me.fillerBitmaps[clamp].push(bitmap);
             me.container.addChild(bitmap);
             bitmap.x = me.bitmap[TOP].x;
@@ -2652,8 +2555,6 @@ function Block(protoblock, blocks) {
             this.text.x = VALUETEXTX;
             this.text.y = VALUETEXTY;
 
-            this.blocks.adjustLabelPosition(thisBlock, this.container.x, this.container.y);
-
             // Make sure text is on top.
             lastChild = last(this.container.children);
             this.container.swapChildren(this.text, lastChild);
@@ -2705,8 +2606,7 @@ function Block(protoblock, blocks) {
                 me.container.uncache();
                 me.bounds = me.container.getBounds();
                 me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
-                // console.log('recaching ' + me.name);
-                me.blocks.loadComplete = true;
+                me.loadComplete = true;
                 if (me.postProcess != null) {
                     me.postProcess(me.postProcessArg);
                 }
@@ -2716,7 +2616,7 @@ function Block(protoblock, blocks) {
 
             makeBitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, this);
         } else {
-            this.blocks.loadComplete = true;
+            this.loadComplete = true;
             if (this.postProcess != null) {
                 this.postProcess(this.postProcessArg);
             }
@@ -2864,83 +2764,62 @@ function $() {
 
 
 // Update the block values as they change in the DOM label
-function labelChanged() {
+function labelChanged(myBlock) {
     // For some reason, arg passing from the DOM is not working
     // properly, so we need to find the label that changed.
 
-    var blocks = blockBlocks;
-    var myBlock = null;
-    var oldValue = '';
-    var newValue = '';
-    for (var blk = 0; blk < blocks.blockList.length; blk++) {
-        if (blocks.blockList[blk].name == 'text') {
-            if (blocks.blockList[blk].value != blocks.blockList[blk].label.value) {
-                myBlock = blocks.blockList[blk];
-                oldValue = myBlock.value;
-                newValue = myBlock.label.value;
-                break;
-            }
-        }
-        if (blocks.blockList[blk].name == 'number') {
-            if (blocks.blockList[blk].value != blocks.blockList[blk].label.value) {
-                myBlock = blocks.blockList[blk];
-                oldValue = myBlock.value;
-                newValue = myBlock.label.value;
-                break;
-            }
-        }
-    }
-
     if (myBlock == null) {
-        console.log('cannot find the label that changed');
         return;
     }
 
-    // Update the block value and label.
-    if (myBlock.label != null) {
-        myBlock.value = myBlock.label.value;
-        var label = myBlock.value.toString();
-        if (label.length > 8) {
-            label = label.substr(0, 7) + '...';
-        }
-        myBlock.text.text = label;
-        // and hide the DOM textview...
-        myBlock.label.style.display = 'none';
-        // Make sure text is on top.
-        lastChild = last(myBlock.container.children);
-        myBlock.container.swapChildren(myBlock.text, lastChild);
-        try {
-            myBlock.container.updateCache();
-        } catch (e) {
-            console.log(e);
-        }
-        blocks.refreshCanvas();
+    var oldValue = myBlock.value;
+    var newValue = myBlock.label.value;
+
+    // Update the block value and block text.
+    myBlock.value = newValue;
+    var label = myBlock.value.toString();
+    if (label.length > 8) {
+        label = label.substr(0, 7) + '...';
     }
+    myBlock.text.text = label;
+
+    // and hide the DOM textview...
+    myBlock.label.style.display = 'none';
+
+    // Make sure text is on top.
+    lastChild = last(myBlock.container.children);
+    myBlock.container.swapChildren(myBlock.text, lastChild);
+    try {
+        myBlock.container.updateCache();
+    } catch (e) {
+        console.log(e);
+    }
+    myBlock.blocks.refreshCanvas();
 
     // TODO: Garbage collection in palette (remove old proto block)
     // TODO: Don't allow duplicate action names
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {
-        var cblock = blocks.blockList[c];
+        var cblock = myBlock.blocks.blockList[c];
         switch (cblock.name) {
             case 'action':
                 // If the label was the name of an action, update the
-                // associated run blocks and the palette buttons
+                // associated run myBlock.blocks and the palette buttons
                 if (myBlock.value != 'action') {
-                    blocks.newDoBlock(myBlock.value);
+                    myBlock.blocks.newDoBlock(myBlock.value);
                 }
-                blocks.renameDos(oldValue, newValue);
-                blocks.palettes.updatePalettes();
+                myBlock.blocks.renameDos(oldValue, newValue);
+                myBlock.blocks.palettes.updatePalettes();
                 break;
             case 'storein':
                 // If the label was the name of a storein, update the
-                //associated box blocks and the palette buttons
+                //associated box myBlock.blocks and the palette buttons
                 if (myBlock.value != 'box') {
-                    blocks.newStoreinBlock(myBlock.value);
-                    blocks.newBoxBlock(myBlock.value);
+                    myBlock.blocks.newStoreinBlock(myBlock.value);
+                    myBlock.blocks.newBoxBlock(myBlock.value);
                 }
-                blocks.renameBoxes(oldValue, newValue);
-                blocks.palettes.updatePalettes();
+                myBlock.blocks.renameBoxes(oldValue, newValue);
+                myBlock.blocks.palettes.updatePalettes();
                 break;
         }
     }
@@ -3031,6 +2910,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
     var moved = false;
     myBlock.collapseContainer.on('click', function(event) {
+	hideDOMLabel();
         if (!moved) {
             // Find the blocks to collapse/expand
             blocks.findDragGroup(thisBlock)
@@ -3121,6 +3001,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     });
 
     myBlock.collapseContainer.on('mousedown', function(event) {
+	hideDOMLabel();
         blocks.setDraggingFlag(true);
         // Always show the trash when there is a block selected.
         trashcan.show();
@@ -3229,6 +3110,7 @@ function loadEventHandlers(blocks, myBlock) {
     var moved = false;
     myBlock.container.on('click', function(event) {
         displayMsg(blocks, 'click');
+	hideDOMLabel();
         if (!moved) {
             if (blocks.selectingStack) {
                 var topBlock = blocks.findTopBlock(thisBlock);
@@ -3237,12 +3119,43 @@ function loadEventHandlers(blocks, myBlock) {
             } else if (myBlock.name == 'media') {
                 doOpenMedia(blocks, thisBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
-                // FIXME: Why does this happen???
-                if (myBlock.label == null) {
-                    console.log('adding missing block label');
-                    blocks.updateBlockLabels();
-                }
-                myBlock.label.style.display = '';
+                var x = myBlock.container.x
+                var y = myBlock.container.y
+		var canvasLeft = blocks.canvas.offsetLeft + 28;
+		var canvasTop = blocks.canvas.offsetTop + 6;
+
+	        if (myBlock.name == 'text') {
+		    labelElem.innerHTML = '<textarea id="' + 'textLabel' +
+			'" style="position: absolute; ' +
+			'-webkit-user-select: text;" ' +
+			'class="text", ' +
+			'cols="8", rows="1", maxlength="80">' +
+			myBlock.value + '</textarea>';
+		    myBlock.label = docById('textLabel');
+		    myBlock.label.addEventListener(
+			'change', function() {
+			    labelChanged(myBlock);
+			});
+		    myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
+		    myBlock.label.style.top = Math.round(y * blocks.scale + canvasTop) + 'px';
+		    myBlock.label.style.display = '';
+		} else {
+		    labelElem.innerHTML = '<textarea id="' + 'numberLabel' +
+			'" style="position: absolute; ' +
+			'-webkit-user-select: text;" ' +
+			'class="number", ' +
+			'onkeypress="if(event.keyCode==13){return false;}"' +
+			'cols="8", rows="1", maxlength="8">' +
+			myBlock.value + '</textarea>';
+		    myBlock.label = docById('numberLabel');
+		    myBlock.label.addEventListener(
+			'change', function() {
+			    labelChanged(myBlock);
+			});
+		    myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
+		    myBlock.label.style.top = Math.round(y * blocks.scale + canvasTop) + 'px';
+		    myBlock.label.style.display = '';
+		}
             } else {
                 var topBlock = blocks.findTopBlock(thisBlock);
                 console.log('running from ' + blocks.blockList[topBlock].name);
@@ -3252,6 +3165,7 @@ function loadEventHandlers(blocks, myBlock) {
     });
 
     myBlock.container.on('mousedown', function(event) {
+	hideDOMLabel();
         blocks.setDraggingFlag(true);
         displayMsg(blocks, 'mousedown');
 
@@ -3302,6 +3216,9 @@ function loadEventHandlers(blocks, myBlock) {
                 clearTimeout(blocks.timeOut);
                 blocks.timeOut = null;
             }
+	    if (!moved && myBlock.label != null) {
+		myBlock.label.style.display = 'none';
+	    }
             moved = true;
             var oldX = myBlock.container.x;
             var oldY = myBlock.container.y;
@@ -3328,9 +3245,6 @@ function loadEventHandlers(blocks, myBlock) {
                 myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
             }
 
-            // Move the label.
-            blocks.adjustLabelPosition(thisBlock, myBlock.container.x, myBlock.container.y);
-
             // Move any connected blocks.
             blocks.findDragGroup(thisBlock)
             if (blocks.dragGroup.length > 0) {
@@ -3350,6 +3264,18 @@ function loadEventHandlers(blocks, myBlock) {
         displayMsg(blocks, 'mouseout');
         mouseoutCallback(blocks, myBlock, event, moved);
     });
+}
+
+
+function hideDOMLabel() {
+    var textLabel = docById('textLabel');
+    if (textLabel != null) {
+	textLabel.style.display = 'none';
+    }
+    var numberLabel = docById('numberLabel');
+    if (numberLabel != null) {
+	numberLabel.style.display = 'none';
+    }
 }
 
 

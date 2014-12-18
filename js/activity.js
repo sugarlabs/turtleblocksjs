@@ -1299,6 +1299,41 @@ define(function(require) {
                         doStopVideoCam(cameraID, setCameraID);
                     }
                     break;
+                case 'xturtle': case 'yturtle':
+                    blkname = blocks.blockList[blk].name;
+                    isy = false;
+                    if (blkname == 'yturtle') {
+                        isy = true;
+                    }
+                    searchname = args[0];
+                    totalturtles = turtles.turtleList.length;
+
+                    value = null;
+                    found = false;
+
+                    for (var i=0; i < totalturtles; i++) {
+                        searchturtle = turtles.turtleList[i];
+                        if (searchname == searchturtle.name && !found) {
+                            x = turtles.screenX2turtleX(searchturtle.container.x);
+                            y = turtles.screenY2turtleY(searchturtle.container.y);
+                            value = x;
+                            if (isy) {
+                                value = y;
+                            }
+                            found = true;
+                        }
+                    }
+
+                    if (value == null) {
+                        errorMsg('The turtle you specified didnt exists.')
+                    }
+                    else {
+                        blocks.blockList[blk].value = value;
+                        console.log(blocks.blockList[blk].value);
+                    }
+
+                    break;
+
                 default:
                     if (blocks.blockList[blk].name in evalFlowDict) {
                         eval(evalFlowDict[blocks.blockList[blk].name]);

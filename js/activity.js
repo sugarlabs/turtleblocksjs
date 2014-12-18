@@ -1333,7 +1333,36 @@ define(function(require) {
                     }
 
                     break;
+                case 'startTurtle':
+                    searchname = args[0];
+                    totalturtles = turtles.turtleList.length;
+                    found = false;
+                    foundturtle = null;
 
+                    for (var i=0; i < totalturtles; i++) {
+                        searchturtle = turtles.turtleList[i];
+                        if (searchname == searchturtle.name && !found) {
+                            found = true;
+                            foundturtle = i;
+                        }}
+
+                    found = false;
+                    finalblock = null;
+                    for (blk in blocks.blockList) {
+                        blkName = blocks.blockList[blk].name;
+                        blkValue = blocks.blockList[blk].value;
+                        if (blkName == 'start' && blkValue == parseInt(searchname) && !found) {
+                            found = true;
+                            finalblock = blk;
+                        }
+                    }
+                    if (!found) {
+                        errorMsg('The turtle you specified didnt exists.')
+                    }
+                    else {
+                        runLogoCommands(finalblock);
+                    }
+                    break;
                 default:
                     if (blocks.blockList[blk].name in evalFlowDict) {
                         eval(evalFlowDict[blocks.blockList[blk].name]);

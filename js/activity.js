@@ -1101,14 +1101,7 @@ define(function(require) {
                     }
                     break;
                 case 'break':
-                    for (i = 0; i < turtles.turtleList[turtle].queue.length; i++) {
-                        var j = turtles.turtleList[turtle].queue.length - i - 1;
-                        // FIXME: have a method for identifying these parents
-                        if (['forever', 'repeat', 'while', 'until'].indexOf(blocks.blockList[turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
-                            turtles.turtleList[turtle].queue[j].count = 1;
-                            break;
-                        }
-                    }
+                    doBreak(turtle);
                     break;
                 case 'wait':
                     if (args.length == 1) {
@@ -1332,26 +1325,29 @@ define(function(require) {
 
                     break;
                 case 'startTurtle':
-                    var searchname = args[0];
-                    var found = false;
-                    var startHere = null;
-                    var blkName = null;
-                    var blkValue = null;
+                    var startHere = getTargetTurtle(args);
 
-                    for (blk in blocks.blockList) {
-                        blkName = blocks.blockList[blk].name;
-                        blkValue = blocks.blockList[blk].value;
-                        if (blkName == 'start' && blkValue == parseInt(searchname) && !found) {
-                            found = true;
-                            startHere = blk;
-                        }
-                    }
-                    if (!found) {
-                        errorMsg('The turtle you specified didnt exists.')
+                    if (!startHere) {
+                        errorMsg('Cannot find turtle: ' + args[0])
                     }
                     else {
-                        runLogoCommands(startHere);
+                        var targetTurtle = blocks.blockList[startHere].value;
+                        turtles.turtleList[targetTurtle].queue = [];
+                        activity.parentFlowQueue[targetTurtle] = [];
+                        activity.unhightlightQueue[targetTurtle] = [];
+                        activity.parameterQueue[targetTurtle] = [];
+                        runFromBlock(activity, targetTurtle, startHere);
                     }
+                    break;
+                case 'stopTurtle':
+                    var startHere = getTargetTurtle(args);
+                    var targetTurtle = blocks.blockList[startHere].value;
+
+                    turtles.turtleList[targetTurtle].queue = [];
+                    activity.parentFlowQueue[targetTurtle] = [];
+                    activity.unhightlightQueue[targetTurtle] = [];
+                    activity.parameterQueue[targetTurtle] = [];
+                    doBreak(targetTurtle);
                     break;
                 default:
                     if (blocks.blockList[blk].name in evalFlowDict) {
@@ -1470,6 +1466,33 @@ define(function(require) {
                 stage.swapChildren(turtles.turtleList[turtle].Container, lastChild);
                 // }
                 update = true;
+            }
+        }
+
+        function getTargetTurtle(args) {
+            var targetTurtleName = args[0];
+            var startHere = null;
+
+            for (blk in blocks.blockList) {
+                var blkName = blocks.blockList[blk].name;
+                var targetTurtle = blocks.blockList[blk].value;
+                if (blkName == 'start' && targetTurtle == parseInt(targetTurtleName)) {
+                    startHere = blk;
+                    break;
+                }
+            }
+
+            return startHere;
+        }
+
+        function doBreak(turtle) {
+            for (i = 0; i < turtles.turtleList[turtle].queue.length; i++) {
+                var j = turtles.turtleList[turtle].queue.length - i - 1;
+                // FIXME: have a method for identifying these parents
+                if (['forever', 'repeat', 'while', 'until'].indexOf(blocks.blockList[turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
+                    turtles.turtleList[turtle].queue[j].count = 1;
+                break;
+                }
             }
         }
 

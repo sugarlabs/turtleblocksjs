@@ -413,6 +413,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     startTurtleBlock.defaults.push('0');
     startTurtleBlock.staticLabels.push('start turtle');
 
+    var stopTurtleBlock = new ProtoBlock('stopTurtle');
+    stopTurtleBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
+    stopTurtleBlock.oneArgBlock();
+    stopTurtleBlock.fontsize = '16px';
+    stopTurtleBlock.docks[1][2] = 'textin';
+    stopTurtleBlock.defaults.push('0');
+    stopTurtleBlock.staticLabels.push('stop turtle');
+
     // Flow palette
     var waitBlock = new ProtoBlock('wait');
     waitBlock.palette = palettes.dict['flow'];

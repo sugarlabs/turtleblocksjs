@@ -117,6 +117,22 @@ function initBasicProtoBlocks(palettes, blocks) {
     setxyBlock.staticLabels.push('y');
     setxyBlock.docks[1][2] = 'numberin'; // override default
 
+    var getxTurtleBlock = new ProtoBlock('xturtle');
+    getxTurtleBlock.palette = palettes.dict['turtle'];
+    blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
+    getxTurtleBlock.oneArgBlock();
+    getxTurtleBlock.staticLabels.push('turtle x');
+    getxTurtleBlock.defaults.push('0');
+    getxTurtleBlock.docks[1][2] = 'textin';
+
+    var getyTurtleBlock = new ProtoBlock('yturtle');
+    getyTurtleBlock.palette = palettes.dict['turtle'];
+    blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
+    getyTurtleBlock.oneArgBlock();
+    getyTurtleBlock.staticLabels.push('turtle y');
+    getyTurtleBlock.defaults.push('0');
+    getyTurtleBlock.docks[1][2] = 'textin'; 
+
     var xBlock = new ProtoBlock('x');
     xBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['x'] = xBlock;

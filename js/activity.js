@@ -1103,14 +1103,7 @@ define(function(require) {
                     }
                     break;
                 case 'break':
-                    for (i = 0; i < turtles.turtleList[turtle].queue.length; i++) {
-                        var j = turtles.turtleList[turtle].queue.length - i - 1;
-                        // FIXME: have a method for identifying these parents
-                        if (['forever', 'repeat', 'while', 'until'].indexOf(blocks.blockList[turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
-                            turtles.turtleList[turtle].queue[j].count = 1;
-                            break;
-                        }
-                    }
+                    doBreak(turtle);
                     break;
                 case 'wait':
                     if (args.length == 1) {
@@ -1348,6 +1341,16 @@ define(function(require) {
                         runFromBlock(activity, targetTurtle, startHere);
                     }
                     break;
+                case 'stopTurtle':
+                    var startHere = getTargetTurtle(args);
+                    var targetTurtle = blocks.blockList[startHere].value;
+
+                    turtles.turtleList[targetTurtle].queue = [];
+                    activity.parentFlowQueue[targetTurtle] = [];
+                    activity.unhightlightQueue[targetTurtle] = [];
+                    activity.parameterQueue[targetTurtle] = [];
+                    doBreak(targetTurtle);
+                    break;
                 default:
                     if (blocks.blockList[blk].name in evalFlowDict) {
                         eval(evalFlowDict[blocks.blockList[blk].name]);
@@ -1482,6 +1485,17 @@ define(function(require) {
             }
 
             return startHere;
+        }
+
+        function doBreak(turtle) {
+            for (i = 0; i < turtles.turtleList[turtle].queue.length; i++) {
+                var j = turtles.turtleList[turtle].queue.length - i - 1;
+                // FIXME: have a method for identifying these parents
+                if (['forever', 'repeat', 'while', 'until'].indexOf(blocks.blockList[turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
+                    turtles.turtleList[turtle].queue[j].count = 1;
+                break;
+                }
+            }
         }
 
         function parseArg(activity, turtle, blk) {

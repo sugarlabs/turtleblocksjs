@@ -1333,7 +1333,28 @@ define(function(require) {
                     }
 
                     break;
+                case 'startTurtle':
+                    var searchname = args[0];
+                    var found = false;
+                    var startHere = null;
+                    var blkName = null;
+                    var blkValue = null;
 
+                    for (blk in blocks.blockList) {
+                        blkName = blocks.blockList[blk].name;
+                        blkValue = blocks.blockList[blk].value;
+                        if (blkName == 'start' && blkValue == parseInt(searchname) && !found) {
+                            found = true;
+                            startHere = blk;
+                        }
+                    }
+                    if (!found) {
+                        errorMsg('The turtle you specified didnt exists.')
+                    }
+                    else {
+                        runLogoCommands(startHere);
+                    }
+                    break;
                 default:
                     if (blocks.blockList[blk].name in evalFlowDict) {
                         eval(evalFlowDict[blocks.blockList[blk].name]);

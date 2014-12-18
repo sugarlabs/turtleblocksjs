@@ -1334,25 +1334,18 @@ define(function(require) {
 
                     break;
                 case 'startTurtle':
-                    var searchname = args[0];
-                    var found = false;
-                    var startHere = null;
-                    var blkName = null;
-                    var blkValue = null;
+                    var startHere = getTargetTurtle(args);
 
-                    for (blk in blocks.blockList) {
-                        blkName = blocks.blockList[blk].name;
-                        blkValue = blocks.blockList[blk].value;
-                        if (blkName == 'start' && blkValue == parseInt(searchname) && !found) {
-                            found = true;
-                            startHere = blk;
-                        }
-                    }
-                    if (!found) {
-                        errorMsg('The turtle you specified didnt exists.')
+                    if (!startHere) {
+                        errorMsg('Cannot find turtle: ' + args[0])
                     }
                     else {
-                        runLogoCommands(startHere);
+                        var targetTurtle = blocks.blockList[startHere].value;
+                        turtles.turtleList[targetTurtle].queue = [];
+                        activity.parentFlowQueue[targetTurtle] = [];
+                        activity.unhightlightQueue[targetTurtle] = [];
+                        activity.parameterQueue[targetTurtle] = [];
+                        runFromBlock(activity, targetTurtle, startHere);
                     }
                     break;
                 default:
@@ -1473,6 +1466,22 @@ define(function(require) {
                 // }
                 update = true;
             }
+        }
+
+        function getTargetTurtle(args) {
+            var targetTurtleName = args[0];
+            var startHere = null;
+
+            for (blk in blocks.blockList) {
+                var blkName = blocks.blockList[blk].name;
+                var targetTurtle = blocks.blockList[blk].value;
+                if (blkName == 'start' && targetTurtle == parseInt(targetTurtleName)) {
+                    startHere = blk;
+                    break;
+                }
+            }
+
+            return startHere;
         }
 
         function parseArg(activity, turtle, blk) {

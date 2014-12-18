@@ -1334,7 +1334,12 @@ define(function(require) {
                     }
                     else {
                         var targetTurtle = blocks.blockList[startHere].value;
+                        if (turtles.turtleList[targetTurtle].running) {
+                            errorMsg('Turtle is already running.');
+                            break;
+                        }
                         turtles.turtleList[targetTurtle].queue = [];
+                        turtles.turtleList[targetTurtle].running = true;
                         activity.parentFlowQueue[targetTurtle] = [];
                         activity.unhightlightQueue[targetTurtle] = [];
                         activity.parameterQueue[targetTurtle] = [];
@@ -1344,7 +1349,6 @@ define(function(require) {
                 case 'stopTurtle':
                     var startHere = getTargetTurtle(args);
                     var targetTurtle = blocks.blockList[startHere].value;
-
                     turtles.turtleList[targetTurtle].queue = [];
                     activity.parentFlowQueue[targetTurtle] = [];
                     activity.unhightlightQueue[targetTurtle] = [];

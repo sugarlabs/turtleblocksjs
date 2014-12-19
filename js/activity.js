@@ -2162,15 +2162,18 @@ define(function(require) {
             return container;
         }
 
-        function loadToolbarButtonHandler(container, action) {
-            container.on('click', function(event) {
-                if (action != null) {
-                    action();
-                }
-            });
-        }
+        // function loadToolbarButtonHandler(container, action) {
+        //     container.on('click', function(event) {
+        //         if (action != null) {
+        //             action();
+        //         }
+        //     });
+        // }
 
         function loadButtonDragHandler(container, ox, oy, action) {
+	    // Prevent multiple button presses (i.e., debounce).
+	    var locked = false;
+
             container.on('mousedown', function(event) {
                 var moved = true;
 		console.log('mousedown event: ' + moved);
@@ -2191,10 +2194,14 @@ define(function(require) {
                 // });
 
                 container.on('pressup', function(event) {
-		    console.log('pressup event: ' + moved);
+		    console.log('pressup event: ' + moved + ' ' + locked);
                     container.x = ox;
                     container.y = oy;
-                    if (action != null && moved) {
+                    if (action != null && moved && !locked) {
+			locked = true;
+			setTimeout(function() {
+			    locked = false;
+			}, 500);
                         action();
                     }
                     moved = false;

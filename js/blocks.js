@@ -2904,7 +2904,16 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     });
 
     var moved = false;
+    var locked = false;
     myBlock.collapseContainer.on('click', function(event) {
+	if (locked) {
+	    console.log('debouncing click');
+	    return;
+	}
+	locked = true;
+	setTimeout(function() {
+	    locked = false;
+	}, 500);
         hideDOMLabel();
         if (!moved) {
             // Find the blocks to collapse/expand
@@ -3103,7 +3112,16 @@ function loadEventHandlers(blocks, myBlock) {
     });
 
     var moved = false;
+    var locked = false;
     myBlock.container.on('click', function(event) {
+	if (locked) {
+	    console.log('debouncing click');
+	    return;
+	}
+	locked = true;
+	setTimeout(function() {
+	    locked = false;
+	}, 500);
         displayMsg(blocks, 'click');
         hideDOMLabel();
         if (!moved) {

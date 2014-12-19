@@ -376,7 +376,7 @@ define(function(require) {
                 stageMouseDown = true;
                 var x = event.stageX;
                 var y = event.stageY;
-                // console.log('mouseDown (' + x + ', ' + y + ') (' + window.pageXOffset + ', ' + window.pageYOffset + ')');
+
                 // Make sure scroll position is in sync with actual window scroll.
                 scrollX = window.pageXOffset;
                 scrollY = window.pageYOffset;
@@ -399,7 +399,6 @@ define(function(require) {
                         } else if (dy < -10) {
                             dy = -10;
                         }
-                        // console.log('mouseMove (' + dx + ', ' + dy + ') scroll (' + scrollX + ', ' + scrollY + ')');
                         if (scrollX + dx < 0) {
                             dx = 0;
                         } else if (scrollX + dx > 1200) {
@@ -687,12 +686,12 @@ define(function(require) {
                 showBlocks();
             } else {
                 if (!thumbnails.show(scale)) {
-		    console.log('thumbnails not available');
-		} else {
+                    console.log('thumbnails not available');
+                } else {
                     stage.swapChildren(thumbnails.container, last(stage.children));
                     thumbnailsVisible = true;
                     hideBlocks();
-		}
+                }
             }
         }
 
@@ -1290,47 +1289,12 @@ define(function(require) {
                         doStopVideoCam(cameraID, setCameraID);
                     }
                     break;
-                case 'xturtle': case 'yturtle':
-                    blkname = blocks.blockList[blk].name;
-                    isy = false;
-                    if (blkname == 'yturtle') {
-                        isy = true;
-                    }
-                    searchname = args[0];
-                    totalturtles = turtles.turtleList.length;
-
-                    value = null;
-                    found = false;
-
-                    for (var i=0; i < totalturtles; i++) {
-                        searchturtle = turtles.turtleList[i];
-                        if (searchname == searchturtle.name && !found) {
-                            x = turtles.screenX2turtleX(searchturtle.container.x);
-                            y = turtles.screenY2turtleY(searchturtle.container.y);
-                            value = x;
-                            if (isy) {
-                                value = y;
-                            }
-                            found = true;
-                        }
-                    }
-
-                    if (value == null) {
-                        errorMsg('The turtle you specified didnt exists.')
-                    }
-                    else {
-                        blocks.blockList[blk].value = value;
-                        console.log(blocks.blockList[blk].value);
-                    }
-
-                    break;
                 case 'startTurtle':
                     var startHere = getTargetTurtle(args);
 
                     if (!startHere) {
                         errorMsg('Cannot find turtle: ' + args[0])
-                    }
-                    else {
+                    } else {
                         var targetTurtle = blocks.blockList[startHere].value;
                         if (turtles.turtleList[targetTurtle].running) {
                             errorMsg('Turtle is already running.');
@@ -1478,9 +1442,9 @@ define(function(require) {
             var startHere = null;
 
             for (blk in blocks.blockList) {
-                var blkName = blocks.blockList[blk].name;
+                var name = blocks.blockList[blk].name;
                 var targetTurtle = blocks.blockList[blk].value;
-                if (blkName == 'start' && targetTurtle == parseInt(targetTurtleName)) {
+                if (name == 'start' && targetTurtle == parseInt(targetTurtleName)) {
                     startHere = blk;
                     break;
                 }
@@ -1495,7 +1459,7 @@ define(function(require) {
                 // FIXME: have a method for identifying these parents
                 if (['forever', 'repeat', 'while', 'until'].indexOf(blocks.blockList[turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
                     turtles.turtleList[turtle].queue[j].count = 1;
-                break;
+                    break;
                 }
             }
         }
@@ -1633,6 +1597,26 @@ define(function(require) {
                         break;
                     case 'y':
                         blocks.blockList[blk].value = turtles.screenY2turtleY(turtles.turtleList[turtle].container.y);
+                        break;
+                    case 'xturtle':
+                    case 'yturtle':
+                        var cblk = blocks.blockList[blk].connections[1];
+                        var targetTurtle = parseArg(activity, turtle, cblk);
+                        for (var i = 0; i < turtles.turtleList.length; i++) {
+                            thisTurtle = turtles.turtleList[i];
+                            if (targetTurtle == thisTurtle.name) {
+                                if (blocks.blockList[blk].name == 'yturtle') {
+                                    blocks.blockList[blk].value = turtles.screenY2turtleY(thisTurtle.container.y);
+                                } else {
+		                    blocks.blockList[blk].value = turtles.screenX2turtleX(thisTurtle.container.x);
+			        }
+			        break;
+                            }
+                        }
+                        if (i == turtles.turtleList.length) {
+                            errorMsg('Could not find turtle ' + targetTurtle);
+                            blocks.blockList[blk].value = 0;
+                        }
                         break;
                     case 'color':
                         blocks.blockList[blk].value = turtles.turtleList[turtle].color;

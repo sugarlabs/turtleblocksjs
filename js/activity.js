@@ -2180,15 +2180,15 @@ define(function(require) {
                     y: container.y - Math.round(event.stageY / blocks.scale)
                 };
 
-                container.on('mouseout', function(event) {
-		    console.log('mouseout event: ' + moved);
-                    container.x = ox;
-                    container.y = oy;
-                    if (action != null && moved) {
-                        action();
-                    }
-                    moved = false;
-                });
+                // container.on('mouseout', function(event) {
+		//    console.log('mouseout event: ' + moved);
+                //    container.x = ox;
+                //    container.y = oy;
+                //    if (action != null && moved) {
+                //        action();
+                //    }
+                //    moved = false;
+                // });
 
                 container.on('pressup', function(event) {
 		    console.log('pressup event: ' + moved);

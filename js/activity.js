@@ -2172,7 +2172,8 @@ define(function(require) {
 
         function loadButtonDragHandler(container, ox, oy, action) {
             container.on('mousedown', function(event) {
-                moved = true;
+                var moved = true;
+		console.log('mousedown event: ' + moved);
 
                 var offset = {
                     x: container.x - Math.round(event.stageX / blocks.scale),
@@ -2180,6 +2181,7 @@ define(function(require) {
                 };
 
                 container.on('mouseout', function(event) {
+		    console.log('mouseout event: ' + moved);
                     container.x = ox;
                     container.y = oy;
                     if (action != null && moved) {
@@ -2189,6 +2191,7 @@ define(function(require) {
                 });
 
                 container.on('pressup', function(event) {
+		    console.log('pressup event: ' + moved);
                     container.x = ox;
                     container.y = oy;
                     if (action != null && moved) {

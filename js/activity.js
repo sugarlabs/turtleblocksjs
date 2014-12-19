@@ -87,7 +87,12 @@ define(function(require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
         var sounds = [];
-        var mic = new p5.AudioIn()
+	try {
+            var mic = new p5.AudioIn()
+	} catch (e) {
+	    console.log('microphone not available');
+	    var mic = null;
+	}
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
@@ -853,7 +858,12 @@ define(function(require) {
                         value = lastKeyCode;
                         break;
                     case 'loudness':
-                        value = Math.round(mic.getLevel() * 1000);
+                        if (mic == null) {
+                            errorMsg('The microphone is not available.');
+                            value = 0;
+                        } else {
+                            value = Math.round(mic.getLevel() * 1000);
+                        }
                         break;
                     default:
                         console.log('??? ' + blocks.blockList[blk].name);

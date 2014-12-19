@@ -661,16 +661,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             console.log('remove ' + n)
             for (var nextBlock, nextBlockObj, i = 0; i < n; i++) {
                 // Really don't know if this is the best way to remove connections and blocks.
-		var n = myBlock.connections.length;
+                var n = myBlock.connections.length;
                 nextBlock = myBlock.connections[n - 1];
                 nextBlockObj = this.blockList[nextBlock];
-		if (nextBlockObj) {
-		    myBlock.connections[n - 1] = nextBlockObj.connections[1];
+                if (nextBlockObj) {
+                    myBlock.connections[n - 1] = nextBlockObj.connections[1];
                     this.blockList[nextBlockObj.connections[1]].connections[0] = blk;
                     nextBlockObj.connections = [null,null];
                     nextBlockObj.hide();
-		} else {
-		    myBlock.connections[n - 1] = null
+                } else {
+                    myBlock.connections[n - 1] = null
                 }
             }
         } else if (secondArgumentSize > currentFillerCount + 1) {
@@ -1157,11 +1157,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.swapChildren(myBlock.text, lastChild);
 
         if (myBlock.loadComplete) {
-	    console.log('load complete: updating cache');
+            console.log('load complete: updating cache');
             myBlock.container.updateCache();
         } else {
-	    console.log('load not yet complete for ' + blk);
-	}
+            console.log('load not yet complete for ' + blk);
+        }
     }
 
     this.findTopBlock = function(blk) {
@@ -1301,52 +1301,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (!this.visible) {
             return;
         }
-
         if (blk != null) {
             var thisBlock = blk;
         } else {
             var thisBlock = this.highlightedBlock;
         }
-
         if (thisBlock != null) {
-            var myBlock = this.blockList[thisBlock];
-            if (myBlock.collapsed) {
-                if (['start', 'action'].indexOf(myBlock.name) != -1) {
-                    myBlock.highlightCollapseBlockBitmap.visible = false;
-                    myBlock.collapseBlockBitmap.visible = true;
-                    myBlock.collapseText.visible = true;
-                }
-            } else {
-                myBlock.bitmap[TOP].visible = true;
-                myBlock.highlightBitmap[TOP].visible = false;
-                if (this.blockList[thisBlock].isExpandableBlock()) {
-                    for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
-                        myBlock.fillerBitmaps[MID][i].visible = true;
-                        myBlock.highlightFillerBitmaps[MID][i].visible = false;
-                    }
-                    for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
-                        myBlock.fillerBitmaps[BOT][i].visible = true;
-                        myBlock.highlightFillerBitmaps[BOT][i].visible = false;
-                    }
-                    if (myBlock.bitmap[MID] != null) {
-                        myBlock.bitmap[MID].visible = true;
-                        myBlock.highlightBitmap[MID].visible = false;
-                    }
-                    if (myBlock.bitmap[BOT] != null) {
-                        myBlock.bitmap[BOT].visible = true;
-                        myBlock.highlightBitmap[BOT].visible = false;
-                    }
-                    if (['start', 'action'].indexOf(myBlock.name) != -1) {
-                        myBlock.collapseText.visible = false;
-                    }
-                }
-            }
-            try {
-                myBlock.container.updateCache();
-            } catch (e) {
-                console.log(e);
-            }
-            this.refreshCanvas();
+	    this.blockList[thisBlock].unhighlight();
         }
         if (this.highlightedBlock = thisBlock) {
             this.highlightedBlock = null;
@@ -1361,46 +1322,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (unhighlight) {
                 this.unhighlight(null);
             }
-            var myBlock = this.blockList[blk];
-
-            if (myBlock.collapsed) {
-                if (['start', 'action'].indexOf(myBlock.name) != -1) {
-                    myBlock.highlightCollapseBlockBitmap.visible = true;
-                    myBlock.collapseBlockBitmap.visible = false;
-                    myBlock.collapseText.visible = true;
-                }
-            } else {
-                myBlock.bitmap[TOP].visible = false;
-                myBlock.highlightBitmap[TOP].visible = true;
-                if (myBlock.isExpandableBlock()) {
-                    for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
-                        myBlock.fillerBitmaps[MID][i].visible = false;
-                        myBlock.highlightFillerBitmaps[MID][i].visible = true;
-                    }
-                    for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
-                        myBlock.fillerBitmaps[BOT][i].visible = false;
-                        myBlock.highlightFillerBitmaps[BOT][i].visible = true;
-                    }
-                    if (myBlock.bitmap[MID] != null) {
-                        myBlock.bitmap[MID].visible = false;
-                        myBlock.highlightBitmap[MID].visible = true;
-                    }
-                    if (myBlock.bitmap[BOT] != null) {
-                        myBlock.bitmap[BOT].visible = false;
-                        myBlock.highlightBitmap[BOT].visible = true;
-                    }
-                    if (['start', 'action'].indexOf(myBlock.name) != -1) {
-                        myBlock.collapseText.visible = false;
-                    }
-                }
-            }
-            try {
-                myBlock.container.updateCache();
-            } catch (e) {
-                console.log(e);
-            }
+            this.blockList[blk].highlight();
             this.highlightedBlock = blk;
-            this.refreshCanvas();
         }
     }
 
@@ -1906,7 +1829,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 if (blkData[4][c] == blkData[0]) {
                     console.log('Circular connection in block data: ' + blkData);
                     console.log('Punting loading of new blocks!');
-		    console.log(blockObjs);
+                    console.log(blockObjs);
                     return;
                 }
             }
@@ -2300,6 +2223,78 @@ function Block(protoblock, blocks) {
 
     this.getInfo = function() {
         return this.name + ' block';
+    }
+
+    this.highlight = function() {
+        if (this.collapsed) {
+            if (['start', 'action'].indexOf(this.name) != -1) {
+                this.highlightCollapseBlockBitmap.visible = true;
+                this.collapseBlockBitmap.visible = false;
+                this.collapseText.visible = true;
+            }
+        } else {
+            this.bitmap[TOP].visible = false;
+            this.highlightBitmap[TOP].visible = true;
+            if (this.isExpandableBlock()) {
+                for (var i = 0; i < this.fillerBitmaps[MID].length; i++) {
+                    this.fillerBitmaps[MID][i].visible = false;
+                    this.highlightFillerBitmaps[MID][i].visible = true;
+                }
+                for (var i = 0; i < this.fillerBitmaps[BOT].length; i++) {
+                    this.fillerBitmaps[BOT][i].visible = false;
+                    this.highlightFillerBitmaps[BOT][i].visible = true;
+                }
+                if (this.bitmap[MID] != null) {
+                    this.bitmap[MID].visible = false;
+                    this.highlightBitmap[MID].visible = true;
+                }
+                if (this.bitmap[BOT] != null) {
+                    this.bitmap[BOT].visible = false;
+                    this.highlightBitmap[BOT].visible = true;
+                }
+                if (['start', 'action'].indexOf(this.name) != -1) {
+                    this.collapseText.visible = false;
+                }
+            }
+        }
+        this.container.updateCache();
+        this.blocks.refreshCanvas();
+    }
+
+    this.unhighlight = function() {
+        if (this.collapsed) {
+            if (['start', 'action'].indexOf(this.name) != -1) {
+                this.highlightCollapseBlockBitmap.visible = false;
+                this.collapseBlockBitmap.visible = true;
+                this.collapseText.visible = true;
+            }
+        } else {
+            this.bitmap[TOP].visible = true;
+            this.highlightBitmap[TOP].visible = false;
+            if (this.isExpandableBlock()) {
+                for (var i = 0; i < this.fillerBitmaps[MID].length; i++) {
+                    this.fillerBitmaps[MID][i].visible = true;
+                    this.highlightFillerBitmaps[MID][i].visible = false;
+                }
+                for (var i = 0; i < this.fillerBitmaps[BOT].length; i++) {
+                    this.fillerBitmaps[BOT][i].visible = true;
+                    this.highlightFillerBitmaps[BOT][i].visible = false;
+                }
+                if (this.bitmap[MID] != null) {
+                    this.bitmap[MID].visible = true;
+                    this.highlightBitmap[MID].visible = false;
+                }
+                if (this.bitmap[BOT] != null) {
+                    this.bitmap[BOT].visible = true;
+                    this.highlightBitmap[BOT].visible = false;
+                }
+                if (['start', 'action'].indexOf(this.name) != -1) {
+                    this.collapseText.visible = false;
+                }
+            }
+        }
+        this.container.updateCache();
+        this.blocks.refreshCanvas();
     }
 
     this.removeFiller = function(clamp) {
@@ -2910,7 +2905,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
     var moved = false;
     myBlock.collapseContainer.on('click', function(event) {
-	hideDOMLabel();
+        hideDOMLabel();
         if (!moved) {
             // Find the blocks to collapse/expand
             blocks.findDragGroup(thisBlock)
@@ -3001,7 +2996,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     });
 
     myBlock.collapseContainer.on('mousedown', function(event) {
-	hideDOMLabel();
+        hideDOMLabel();
         blocks.setDraggingFlag(true);
         // Always show the trash when there is a block selected.
         trashcan.show();
@@ -3110,7 +3105,7 @@ function loadEventHandlers(blocks, myBlock) {
     var moved = false;
     myBlock.container.on('click', function(event) {
         displayMsg(blocks, 'click');
-	hideDOMLabel();
+        hideDOMLabel();
         if (!moved) {
             if (blocks.selectingStack) {
                 var topBlock = blocks.findTopBlock(thisBlock);
@@ -3121,41 +3116,41 @@ function loadEventHandlers(blocks, myBlock) {
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
                 var x = myBlock.container.x
                 var y = myBlock.container.y
-		var canvasLeft = blocks.canvas.offsetLeft + 28;
-		var canvasTop = blocks.canvas.offsetTop + 6;
+                var canvasLeft = blocks.canvas.offsetLeft + 28;
+                var canvasTop = blocks.canvas.offsetTop + 6;
 
-	        if (myBlock.name == 'text') {
-		    labelElem.innerHTML = '<textarea id="' + 'textLabel' +
-			'" style="position: absolute; ' +
-			'-webkit-user-select: text;" ' +
-			'class="text", ' +
-			'cols="8", rows="1", maxlength="80">' +
-			myBlock.value + '</textarea>';
-		    myBlock.label = docById('textLabel');
-		    myBlock.label.addEventListener(
-			'change', function() {
-			    labelChanged(myBlock);
-			});
-		    myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
-		    myBlock.label.style.top = Math.round(y * blocks.scale + canvasTop) + 'px';
-		    myBlock.label.style.display = '';
-		} else {
-		    labelElem.innerHTML = '<textarea id="' + 'numberLabel' +
-			'" style="position: absolute; ' +
-			'-webkit-user-select: text;" ' +
-			'class="number", ' +
-			'onkeypress="if(event.keyCode==13){return false;}"' +
-			'cols="8", rows="1", maxlength="8">' +
-			myBlock.value + '</textarea>';
-		    myBlock.label = docById('numberLabel');
-		    myBlock.label.addEventListener(
-			'change', function() {
-			    labelChanged(myBlock);
-			});
-		    myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
-		    myBlock.label.style.top = Math.round(y * blocks.scale + canvasTop) + 'px';
-		    myBlock.label.style.display = '';
-		}
+                if (myBlock.name == 'text') {
+                    labelElem.innerHTML = '<textarea id="' + 'textLabel' +
+                        '" style="position: absolute; ' +
+                        '-webkit-user-select: text;" ' +
+                        'class="text", ' +
+                        'cols="8", rows="1", maxlength="80">' +
+                        myBlock.value + '</textarea>';
+                    myBlock.label = docById('textLabel');
+                    myBlock.label.addEventListener(
+                        'change', function() {
+                            labelChanged(myBlock);
+                        });
+                    myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
+                    myBlock.label.style.top = Math.round(y * blocks.scale + canvasTop) + 'px';
+                    myBlock.label.style.display = '';
+                } else {
+                    labelElem.innerHTML = '<textarea id="' + 'numberLabel' +
+                        '" style="position: absolute; ' +
+                        '-webkit-user-select: text;" ' +
+                        'class="number", ' +
+                        'onkeypress="if(event.keyCode==13){return false;}"' +
+                        'cols="8", rows="1", maxlength="8">' +
+                        myBlock.value + '</textarea>';
+                    myBlock.label = docById('numberLabel');
+                    myBlock.label.addEventListener(
+                        'change', function() {
+                            labelChanged(myBlock);
+                        });
+                    myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
+                    myBlock.label.style.top = Math.round(y * blocks.scale + canvasTop) + 'px';
+                    myBlock.label.style.display = '';
+                }
             } else {
                 var topBlock = blocks.findTopBlock(thisBlock);
                 console.log('running from ' + blocks.blockList[topBlock].name);
@@ -3165,7 +3160,7 @@ function loadEventHandlers(blocks, myBlock) {
     });
 
     myBlock.container.on('mousedown', function(event) {
-	hideDOMLabel();
+        hideDOMLabel();
         blocks.setDraggingFlag(true);
         displayMsg(blocks, 'mousedown');
 
@@ -3216,9 +3211,9 @@ function loadEventHandlers(blocks, myBlock) {
                 clearTimeout(blocks.timeOut);
                 blocks.timeOut = null;
             }
-	    if (!moved && myBlock.label != null) {
-		myBlock.label.style.display = 'none';
-	    }
+            if (!moved && myBlock.label != null) {
+                myBlock.label.style.display = 'none';
+            }
             moved = true;
             var oldX = myBlock.container.x;
             var oldY = myBlock.container.y;
@@ -3270,11 +3265,11 @@ function loadEventHandlers(blocks, myBlock) {
 function hideDOMLabel() {
     var textLabel = docById('textLabel');
     if (textLabel != null) {
-	textLabel.style.display = 'none';
+        textLabel.style.display = 'none';
     }
     var numberLabel = docById('numberLabel');
     if (numberLabel != null) {
-	numberLabel.style.display = 'none';
+        numberLabel.style.display = 'none';
     }
 }
 

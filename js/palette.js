@@ -181,6 +181,9 @@ function Palettes (canvas, stage, cellSize, refreshCanvas) {
 
 // Palette Button event handlers
 function loadPaletteButtonHandler(palettes, name) {
+    locked = false;
+
+    // A palette button opens or closes a palette.
     palettes.buttons[name].on('mouseover', function(event) {
         palettes.setDraggingFlag(true);
         palettes.bitmaps[name].visible = false;
@@ -203,6 +206,14 @@ function loadPaletteButtonHandler(palettes, name) {
     });
 
     palettes.buttons[name].on('click', function(event) {
+	if (locked) {
+	    console.log('debouncing click');
+	    return;
+	}
+	locked = true;
+	setTimeout(function() {
+	    locked = false;
+	}, 500);
         for (var i in palettes.dict) {
             if (palettes.dict[i] == palettes.dict[name]) {
                 palettes.dict[name].showMenu(true);
@@ -572,9 +583,20 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas) {
 
 // Menu Item event handlers
 function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
+    // A menu item is a protoblock that is used to create a new block.
+    locked = false;
+
     // On a click make a new block; then close the menu.
     // FIXME: add drag and add move (move them all)
     me.protoContainers[blkname].on('click', function(event) {
+	if (locked) {
+	    console.log('debouncing click');
+	    return;
+	}
+	locked = true;
+	setTimeout(function() {
+	    locked = false;
+	}, 500);
         // makeBlock(blk, blkname, palette);
         // palette.hideMenuItems();
         // palette.palettes.refreshCanvas();
@@ -616,11 +638,24 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
 
 // Palette Menu event handlers
 function loadPaletteMenuHandler(palette) {
+    // The palette menu is the container for the protoblocks. One
+    // palette per palette button.
+
+    locked = false;
+
     palette.menuContainer.on('mouseover', function(event) {
         palette.palettes.setDraggingFlag(true);
     });
 
     palette.menuContainer.on('click', function(event) {
+	if (locked) {
+	    console.log('debouncing click');
+	    return;
+	}
+	locked = true;
+	setTimeout(function() {
+	    locked = false;
+	}, 500);
         for (p in palette.palettes.dict) {
             if (palette.name != p) {
                 if (palette.palettes.dict[p].visible) {

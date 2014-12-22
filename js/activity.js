@@ -686,10 +686,12 @@ define(function(require) {
 
         function doOpenSamples() {
             if (thumbnailsVisible) {
+		console.log('hiding thumbnails');
                 thumbnails.hide();
                 thumbnailsVisible = false;
                 showBlocks();
             } else {
+		console.log('showing thumbnails');
                 if (!thumbnails.show(scale)) {
                     console.log('thumbnails not available');
                 } else {
@@ -735,6 +737,7 @@ define(function(require) {
             try {
                 // Post the project
                 var returnValue = httpPost(projectName, prepareExport());
+		errorMsg('Saved ' + projectName + ' to turtle.sugarlabs.org');
 
                 var img = new Image();
                 var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);

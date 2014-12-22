@@ -376,7 +376,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var boxBlock = new ProtoBlock('box');
     boxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['box'] = boxBlock;
-    boxBlock.oneArgMathBlock();
+    boxBlock.oneArgMathWithLabelBlock();
     boxBlock.defaults.push('box');
     boxBlock.staticLabels.push('box');
     boxBlock.docks[1][2] = 'textin';

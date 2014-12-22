@@ -142,6 +142,17 @@ function ProtoBlock(name) {
         this.copyDock(ARG1BLOCKDOCKS);
     }
 
+    // E.g., box
+    this.oneArgMathWithLabelBlock = function() {
+        this.style = 'arg';
+        this.size = 1;
+        this.args = 1;
+        this.artwork.push(ARG1LABELBLOCK);
+        this.artwork.push(null);
+        this.artwork.push(null);
+        this.copyDock(ARG1BLOCKDOCKS);
+    }
+
     // E.g., plus, minus, multiply, divide. These are also expandable.
     this.twoArgMathBlock = function() {
         this.artworkOffset = [0, 0, 49];
@@ -190,7 +201,7 @@ function ProtoBlock(name) {
         this.args = 1;
         this.artwork.push(FLOWCLAMP0ARG);
         this.artwork.push(null);
-        this.artwork.push(ACTIONCLAMPBOTTOM);
+        this.artwork.push(FLOWCLAMPBOTTOM);
         this.copyDock(FLOWCLAMP0ARGDOCKS);
     }
 
@@ -246,7 +257,7 @@ function ProtoBlock(name) {
         this.args = 1;
         this.artwork.push(ACTIONCLAMP0ARG);
         this.artwork.push(null);
-        this.artwork.push(FLOWCLAMPBOTTOM);
+        this.artwork.push(ACTIONCLAMPBOTTOM);
         this.copyDock(ACTIONCLAMP0ARGDOCKS);
     }
 
@@ -259,7 +270,7 @@ function ProtoBlock(name) {
         this.args = 1;
         this.artwork.push(ACTIONCLAMP1ARG);
         this.artwork.push(null);
-        this.artwork.push(FLOWCLAMPBOTTOM);
+        this.artwork.push(ACTIONCLAMPBOTTOM);
         this.copyDock(ACTIONCLAMP1ARGDOCKS);
     }
 

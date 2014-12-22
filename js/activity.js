@@ -414,7 +414,8 @@ define(function(require) {
                         } else if (scrollY + dy > 900) {
                             dy = 0;
                         }
-                        window.scrollBy(dx, dy);
+			// Let browser handle scrolling???
+                        // window.scrollBy(dx, dy);
                         update = true;
                     }
                 });

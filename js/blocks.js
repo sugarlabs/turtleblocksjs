@@ -190,7 +190,7 @@ function ProtoBlock(name) {
         this.args = 1;
         this.artwork.push(FLOWCLAMP0ARG);
         this.artwork.push(null);
-        this.artwork.push(FLOWCLAMPBOTTOM);
+        this.artwork.push(ACTIONCLAMPBOTTOM);
         this.copyDock(FLOWCLAMP0ARGDOCKS);
     }
 
@@ -3142,6 +3142,7 @@ function loadEventHandlers(blocks, myBlock) {
                         '" style="position: absolute; ' +
                         '-webkit-user-select: text;" ' +
                         'class="text", ' +
+                        'onkeypress="if(event.keyCode==13){return false;}"' +
                         'cols="8", rows="1", maxlength="80">' +
                         myBlock.value + '</textarea>';
                     myBlock.label = docById('textLabel');

@@ -731,6 +731,8 @@ define(function(require) {
 
         function saveProject(projectName) {
             palettes.updatePalettes();
+	    var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
+	    projectName = punctuationless.replace(/\s{2,}/g,'_');
             if (fileExt(projectName) != 'tb') {
                 projectName += '.tb';
             }

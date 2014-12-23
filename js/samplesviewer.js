@@ -193,19 +193,34 @@ function loadThumbnailContainerHandler(viewer) {
     hitArea.x = 0;
     hitArea.y = 0;
     viewer.container.hitArea = hitArea;
+
+    var locked = false;
     viewer.container.on('click', function(event) {
         // We need a lock to "debouce" the click.
+	if (locked) {
+	    console.log('debouncing click');
+	    return;
+	}
+	locked = true;
+	setTimeout(function() {
+	    locked = false;
+	}, 500);
         if (viewer.lock) {
             console.log('sample viewer is locked');
             return;
         }
+
         var x = (event.stageX / viewer.scale) - viewer.container.x;
         var y = (event.stageY / viewer.scale) - viewer.container.y;
         if (x > 600 && y < 55) {
+	    console.log('closing viewer');
             // Cancel
-            for (var p = 0; p < viewer.projectFiles.length; p++) {
-                viewer.dict[viewer.projectFiles[p]].visible = false;
-            }
+            // for (var p = 0; p < viewer.projectFiles.length; p++) {
+            //     if (viewer.projectsFiles[p] in viewer.dict) {
+            //         viewer.dict[viewer.projectFiles[p]].visible = false;
+            //     }
+            // }
+	    viewer.hide();
             viewer.closeViewer();
         } else if (y > 535) {
             var min = viewer.page * 16;

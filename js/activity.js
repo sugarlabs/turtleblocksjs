@@ -344,7 +344,7 @@ define(function(require) {
             var URL = window.location.href;
             console.log(URL);
             var projectName = null;
-            if (URL.substr(0, 4) == 'file') {
+            if (URL.substr(0, 4) == 'file' && !onAndroid) {
                 console.log('running from filesystem');
                 server = false;
                 saveButton.style.visibility = 'hidden';

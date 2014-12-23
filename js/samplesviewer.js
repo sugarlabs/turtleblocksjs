@@ -26,7 +26,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.next = null;
     this.page = 0; // 4x4 image matrix per page
     this.server = true;
-    this.lock = false;
+    this.locked = false;
 
     this.setServer = function(server) {
         this.server = server;
@@ -36,11 +36,11 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         if (this.container != null) {
             this.container.visible = false;
             this.refreshCanvas();
-	}
+        }
     }
 
     this.show = function(scale) {
-        this.lock = false;
+        this.locked = false;
         this.scale = scale;
         this.page = 0;
         if (this.server) {
@@ -97,7 +97,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                         viewer.container.visible = true;
                         viewer.refreshCanvas();
                         viewer.completeInit();
-			return true;
+                        return true;
                     }
                     makeViewerBitmap(viewer, NEXTBUTTON, 'viewer', processNext, null);
                 }
@@ -108,7 +108,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             this.container.visible = true;
             this.refreshCanvas();
             this.completeInit();
-	    return true;
+            return true;
         }
     }
 
@@ -141,7 +141,6 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             viewer.dict[viewer.projectFiles[p]].x = x;
             viewer.dict[viewer.projectFiles[p]].y = y;
             viewer.dict[viewer.projectFiles[p]].visible = true;
-            console.log('update after creating image ' + p);
             viewer.refreshCanvas();
             if (prepareNextImage != null) {
                 prepareNextImage(viewer, p + 1);
@@ -160,7 +159,6 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         // TODO: this.projectFiles.sort()
         // Only download the images on the first page.
         if (p < viewer.projectFiles.length && p < (viewer.page * 16 + 16)) {
-            console.log('prepareNextImage ' + p);
             if (viewer.projectFiles[p] in viewer.dict) {
                 x = 5 + (p % 4) * 160;
                 y = 55 + Math.floor((p % 16) / 4) * 120;
@@ -175,7 +173,6 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             if (viewer.page == 0) {
                 viewer.prev.visible = false;
             }
-            console.log(viewer.projectFiles.length);
             if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
                 viewer.next.visible = true;
             }
@@ -197,15 +194,15 @@ function loadThumbnailContainerHandler(viewer) {
     var locked = false;
     viewer.container.on('click', function(event) {
         // We need a lock to "debouce" the click.
-	if (locked) {
-	    console.log('debouncing click');
-	    return;
-	}
-	locked = true;
-	setTimeout(function() {
-	    locked = false;
-	}, 500);
-        if (viewer.lock) {
+        if (locked) {
+            console.log('debouncing click');
+            return;
+        }
+        locked = true;
+        setTimeout(function() {
+            locked = false;
+        }, 500);
+        if (viewer.locked) {
             console.log('sample viewer is locked');
             return;
         }
@@ -213,21 +210,20 @@ function loadThumbnailContainerHandler(viewer) {
         var x = (event.stageX / viewer.scale) - viewer.container.x;
         var y = (event.stageY / viewer.scale) - viewer.container.y;
         if (x > 600 && y < 55) {
-	    console.log('closing viewer');
+            console.log('closing viewer');
             // Cancel
             // for (var p = 0; p < viewer.projectFiles.length; p++) {
             //     if (viewer.projectsFiles[p] in viewer.dict) {
             //         viewer.dict[viewer.projectFiles[p]].visible = false;
             //     }
             // }
-	    viewer.hide();
+            viewer.hide();
             viewer.closeViewer();
         } else if (y > 535) {
             var min = viewer.page * 16;
             var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
             if (viewer.prev.visible && x < 325) {
                 // Hide the current page.
-                console.log('hiding ' + min + ' to ' + max);
                 for (var p = min; p < max; p++) {
                     viewer.dict[viewer.projectFiles[p]].visible = false;
                 }
@@ -242,13 +238,11 @@ function loadThumbnailContainerHandler(viewer) {
                 // Show the current page.
                 var min = viewer.page * 16;
                 var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
-                console.log('showing ' + min + ' to ' + max);
                 for (var p = min; p < max; p++) {
                     viewer.dict[viewer.projectFiles[p]].visible = true;
                 }
             } else if (viewer.next.visible && x > 325) {
                 // Hide the current page.
-                console.log('hiding ' + min + ' to ' + max);
                 for (var p = min; p < max; p++) {
                     viewer.dict[viewer.projectFiles[p]].visible = false;
                 }
@@ -258,10 +252,8 @@ function loadThumbnailContainerHandler(viewer) {
                 if ((viewer.page + 1) * 16 + 1 > viewer.projectFiles.length) {
                     viewer.next.visible = false;
                 }
-                console.log('preparing next page of images');
                 viewer.prepareNextImage(viewer, max);
             }
-            console.log('refresh');
             viewer.refreshCanvas();
         } else {
             // Select an entry
@@ -269,13 +261,10 @@ function loadThumbnailContainerHandler(viewer) {
             var row = Math.floor((y - 55) / 120);
             var p = row * 4 + col + 16 * viewer.page;
             if (p < viewer.projectFiles.length) {
-                viewer.lock = true;
-                console.log('locking viewer');
-                console.log('closing viewer');
+                viewer.locked = true;
+                viewer.hide();
                 viewer.closeViewer();
-                console.log('sending to trash');
                 viewer.sendAllToTrash(false);
-                console.log('loading project');
                 viewer.loadProject(viewer.projectFiles[p] + '.tb');
             }
         }

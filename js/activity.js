@@ -290,7 +290,7 @@ define(function(require) {
             blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
-            thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doOpenSamples, loadProject, sendAllToTrash);
+            thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
 
             initBasicProtoBlocks(palettes, blocks);
             initAdvancedProtoBlocks(palettes, blocks);
@@ -345,9 +345,11 @@ define(function(require) {
             console.log(URL);
             var projectName = null;
             if (URL.substr(0, 4) == 'file') {
+                console.log('running from filesystem');
                 server = false;
                 saveButton.style.visibility = 'hidden';
             } else {
+                console.log('running from server');
                 server = true;
                 stopButton.style.visibility = 'hidden';
             }
@@ -414,7 +416,7 @@ define(function(require) {
                         } else if (scrollY + dy > 900) {
                             dy = 0;
                         }
-			// Let browser handle scrolling???
+                        // Let browser handle scrolling???
                         // window.scrollBy(dx, dy);
                         update = true;
                     }
@@ -685,20 +687,26 @@ define(function(require) {
             }
         }
 
+        function doCloseSamples() {
+            console.log('hiding thumbnails');
+            thumbnails.hide();
+            thumbnailsVisible = false;
+            showBlocks();
+        }
+
         function doOpenSamples() {
             if (thumbnailsVisible) {
-		console.log('hiding thumbnails');
-                thumbnails.hide();
-                thumbnailsVisible = false;
-                showBlocks();
+                doCloseSamples();
             } else {
-		console.log('showing thumbnails');
+                console.log('showing thumbnails');
                 if (!thumbnails.show(scale)) {
                     console.log('thumbnails not available');
-                } else {
+                } else if (!thumbnails.locked) {
                     stage.swapChildren(thumbnails.container, last(stage.children));
                     thumbnailsVisible = true;
                     hideBlocks();
+                } else {
+                    console.log('thumbnails locked');
                 }
             }
         }
@@ -732,15 +740,15 @@ define(function(require) {
 
         function saveProject(projectName) {
             palettes.updatePalettes();
-	    var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
-	    projectName = punctuationless.replace(/ /g,'_');
+            var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
+            projectName = punctuationless.replace(/ /g,'_');
             if (fileExt(projectName) != 'tb') {
                 projectName += '.tb';
             }
             try {
                 // Post the project
                 var returnValue = httpPost(projectName, prepareExport());
-		errorMsg('Saved ' + projectName + ' to turtle.sugarlabs.org');
+                errorMsg('Saved ' + projectName + ' to turtle.sugarlabs.org');
 
                 var img = new Image();
                 var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
@@ -1624,9 +1632,9 @@ define(function(require) {
                                 if (blocks.blockList[blk].name == 'yturtle') {
                                     blocks.blockList[blk].value = turtles.screenY2turtleY(thisTurtle.container.y);
                                 } else {
-		                    blocks.blockList[blk].value = turtles.screenX2turtleX(thisTurtle.container.x);
-			        }
-			        break;
+                                    blocks.blockList[blk].value = turtles.screenX2turtleX(thisTurtle.container.x);
+                                }
+                                break;
                             }
                         }
                         if (i == turtles.turtleList.length) {
@@ -2177,12 +2185,12 @@ define(function(require) {
         // }
 
         function loadButtonDragHandler(container, ox, oy, action) {
-	    // Prevent multiple button presses (i.e., debounce).
-	    var locked = false;
+            // Prevent multiple button presses (i.e., debounce).
+            var locked = false;
 
             container.on('mousedown', function(event) {
                 var moved = true;
-		console.log('mousedown event: ' + moved);
+                console.log('mousedown event: ' + moved);
 
                 var offset = {
                     x: container.x - Math.round(event.stageX / blocks.scale),
@@ -2190,7 +2198,7 @@ define(function(require) {
                 };
 
                 // container.on('mouseout', function(event) {
-		//    console.log('mouseout event: ' + moved);
+                //    console.log('mouseout event: ' + moved);
                 //    container.x = ox;
                 //    container.y = oy;
                 //    if (action != null && moved) {
@@ -2200,14 +2208,14 @@ define(function(require) {
                 // });
 
                 container.on('pressup', function(event) {
-		    console.log('pressup event: ' + moved + ' ' + locked);
+                    console.log('pressup event: ' + moved + ' ' + locked);
                     container.x = ox;
                     container.y = oy;
                     if (action != null && moved && !locked) {
-			locked = true;
-			setTimeout(function() {
-			    locked = false;
-			}, 500);
+                        locked = true;
+                        setTimeout(function() {
+                            locked = false;
+                        }, 500);
                         action();
                     }
                     moved = false;

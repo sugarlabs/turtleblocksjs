@@ -312,7 +312,7 @@ function Palette(palettes, name, color, bgcolor) {
                 this.protoContainers[modname] = new createjs.Container();
                 var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
                 // Multicolumn
-                if (y > 600) {
+                if (y > 789) {
                     this.x += 160;
                     this.y = 0;
                     y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;

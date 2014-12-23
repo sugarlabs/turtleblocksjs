@@ -75,7 +75,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas) {
                     }
                 }
 
-                makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#282828'), name, processButton, null);
+                makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#96d3f3'), name, processButton, null);
 
                 function processHighlightButton(me, name, bitmap, extras) {
                     me.highlightBitmaps[name] = bitmap;
@@ -635,6 +635,8 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
 
     me.protoContainers[blkname].on('mousedown', function(event) {
         moved = false;
+	saveX = palette.protoContainers[blkname].x;
+	saveY = palette.protoContainers[blkname].y;
         if (me.draggingProtoBlock) {
             return;
         }

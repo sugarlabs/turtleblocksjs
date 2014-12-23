@@ -122,6 +122,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['speak'] = speakBlock;
     speakBlock.oneArgBlock();
     speakBlock.staticLabels.push('speak');
+    speakBlock.defaults.push('hello');
     speakBlock.docks[1][2] = 'textin';
 
     var audioBlock = new ProtoBlock('playback');

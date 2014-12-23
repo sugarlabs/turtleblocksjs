@@ -11,9 +11,6 @@
 
 // All things related to palettes
 
-// For DOM access to the palettes
-// var palettePalettes = null;
-
 var paletteBlocks = null;
 var paletteScale = 0.75;
 
@@ -60,7 +57,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas) {
         this.y = this.cellSize;
         for (var name in this.dict) {
             if (name in this.buttons) {
-                // console.log('button ' + name + ' has already been created');
+                console.log('button ' + name + ' has already been created');
                 this.dict[name].updateMenu(true);
             } else {
                 this.buttons[name] = new createjs.Container();
@@ -114,6 +111,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas) {
     }
 
     this.showMenus = function() {
+        // Show the menu buttons, but not the palettes.
         for (var name in this.buttons) {
             this.buttons[name].visible = true;
         }
@@ -124,6 +122,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas) {
     }
 
     this.hideMenus = function() {
+        // Hide the menu buttons and the palettes themselves.
         for (var name in this.buttons) {
             this.buttons[name].visible = false;
         }
@@ -503,7 +502,8 @@ function Palette(palettes, name, color, bgcolor) {
         }
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = false;
-            // FIXME: Is this race condition still happening?
+            // If hideMenuItems is called too soon in the init
+            // process, there can be a race condition.
             try {
                 this.protoContainers[i].updateCache();
             } catch (e) {
@@ -595,8 +595,12 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     add('blocks', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').
     add('extras', 'white', '#ff0066');
-    // palettePalettes = palettes;
-    palettes.hide();
+
+    // Give the palettes time to load.
+    setTimeout(function() {
+        palettes.show();
+        palettes.bringToTop();
+    }, 2000);
     return palettes;
 }
 
@@ -631,10 +635,9 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
 
     me.protoContainers[blkname].on('mousedown', function(event) {
         moved = false;
-	if (me.draggingProtoBlock) {
-	    console.log('already dragging a protoblock');
-	    return;
-	}
+        if (me.draggingProtoBlock) {
+            return;
+        }
         if (locked) {
             console.log('debouncing click');
             return;
@@ -643,7 +646,6 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
         setTimeout(function() {
             locked = false;
         }, 500);
-        console.log('mousedown: ' + moved);
         me.palettes.setDraggingFlag(true);
         var offset = {
             x: palette.protoContainers[blkname].x - event.stageX,
@@ -652,7 +654,7 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
 
         me.protoContainers[blkname].on('pressmove', function(event) {
             moved = true;
-	    me.draggingProtoBlock = true;
+            me.draggingProtoBlock = true;
             var oldX = me.protoContainers[blkname].x;
             var oldY = me.protoContainers[blkname].y;
             me.protoContainers[blkname].x = event.stageX + offset.x;
@@ -663,12 +665,10 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
         });
     });
 
-    // me.protoContainers[blkname].on('mouseout', function(event) {
     me.protoContainers[blkname].on('pressup', function(event) {
-        console.log('pressup: ' + moved);
         if (moved) {
             moved = false;
-	    me.draggingProtoBlock = false;
+            me.draggingProtoBlock = false;
             palette.palettes.setDraggingFlag(false);
             // Create the block.
             var newBlock = makeBlock(blk, blkname, palette);
@@ -680,7 +680,7 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
                 paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / me.palettes.scale) + dx, Math.round(event.stageY / me.palettes.scale) + dy);
             }
         }
-        // Return protoblock to palette.
+        // Return protoblock we've been dragging back to the palette.
         me.protoContainers[blkname].x = saveX;
         me.protoContainers[blkname].y = saveY;
         palette.palettes.refreshCanvas();

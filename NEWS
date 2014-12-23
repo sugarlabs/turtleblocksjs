@@ -133,11 +133,12 @@
   * implement if-then-else, while, until
   * implement and or not
   * fixed problem with block resizing
+  * drag palette items
+  * query turtle blocks
 
 TODO:
   * enable docking to any for boxes, equal
   * enable number names for actions and boxes
-  * query turtle blocks
   * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks
@@ -146,6 +147,8 @@ TODO:
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
+  * palettes open by default
+  * default start block position needs to move
 
 BUGS:
   * jumpy scrolling

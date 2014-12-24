@@ -29,6 +29,7 @@ define(function(require) {
     require('activity/turtle');
     require('activity/palette');
     require('activity/blocks');
+    require('activity/savebox');
     require('activity/samplesviewer');
     require('activity/samples');
     require('activity/basicblocks');
@@ -74,6 +75,7 @@ define(function(require) {
         var turtles;
         var palettes;
         var blocks;
+	var savebox;
         var thumbnails;
         var thumbnailsVisible = false;
         var buttonsVisible = true;
@@ -232,7 +234,7 @@ define(function(require) {
         }
 
         saveButton.onclick = function() {
-            doSave();
+            doSaveBox();
         }
 
         // Make the activity stop with the stop button.
@@ -289,6 +291,8 @@ define(function(require) {
             blocks.setLogo(runLogoCommands);
             blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
+
+            savebox = new SaveBox(canvas, stage, refreshCanvas, doSave);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
 
@@ -358,10 +362,8 @@ define(function(require) {
             onResize();
 
             setupAndroidToolbar();
-            if (onXO) {
-                var saveName = docById('mySaveName');
-                saveName.style.visibility = 'hidden';
-            }
+            var saveName = docById('mySaveName');
+            saveName.style.visibility = 'hidden';
 
             thumbnails.setServer(server);
 
@@ -1869,6 +1871,10 @@ define(function(require) {
             this.fileChooser.click();
         }
 
+	function doSaveBox() {
+	    savebox.show(scale);
+	}
+
         function doSave() {
             // FIXME: show input form and then save after name has been entered
 
@@ -1975,7 +1981,7 @@ define(function(require) {
                 ['restore-trash', restoreTrash]
             ];
             if (server) {
-                menuNames.push(['save', doSave]);
+                menuNames.push(['save', doSaveBox]);
             }
 
             // Upper righthand corner
@@ -2001,19 +2007,6 @@ define(function(require) {
                 onscreenMenu.push(container);
                 container.visible = false;
             }
-
-            var saveName = docById('mySaveName');
-            if (server) {
-                var x = last(onscreenMenu).x;
-                var y = last(onscreenMenu).y;
-                console.log(x + ' ' + y);
-                saveName.style.position = 'absolute';
-                var left = x - 82;
-                saveName.style.left = canvas.offsetLeft + left + 'px';
-                var top = y + btnSize;
-                saveName.style.top = canvas.offsetTop + top + 'px';
-            }
-            saveName.style.visibility = 'hidden';
         }
 
         function doMenuButton() {

@@ -30,6 +30,7 @@ define(function(require) {
     require('activity/palette');
     require('activity/blocks');
     require('activity/savebox');
+    require('activity/clearbox');
     require('activity/samplesviewer');
     require('activity/samples');
     require('activity/basicblocks');
@@ -75,7 +76,8 @@ define(function(require) {
         var turtles;
         var palettes;
         var blocks;
-	var savebox;
+	var saveBox;
+	var clearBox;
         var thumbnails;
         var thumbnailsVisible = false;
         var buttonsVisible = true;
@@ -292,7 +294,8 @@ define(function(require) {
             blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
-            savebox = new SaveBox(canvas, stage, refreshCanvas, doSave);
+            saveBox = new SaveBox(canvas, stage, refreshCanvas, doSave);
+	    clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
 
@@ -591,8 +594,8 @@ define(function(require) {
             update = true;
         }
 
-        function deleteBlocks() {
-            sendAllToTrash(true);
+        function deleteBlocksBox() {
+	    clearBox.show(scale);
         }
 
         // FIXME: confirm???
@@ -615,8 +618,8 @@ define(function(require) {
             }
             if (addStartBlock) {
                 blocks.makeNewBlock('start');
-                last(blocks.blockList).x = 50;
-                last(blocks.blockList).y = 50;
+                last(blocks.blockList).x = 250;
+                last(blocks.blockList).y = 250;
                 last(blocks.blockList).connections = [null, null, null];
                 turtles.add(last(blocks.blockList));
                 last(blocks.blockList).value = turtles.turtleList.length - 1;
@@ -790,8 +793,8 @@ define(function(require) {
             } else {
                 console.log('loading start');
                 postProcess = function(thisBlock) {
-                    blocks.blockList[0].x = 50;
-                    blocks.blockList[0].y = 50;
+                    blocks.blockList[0].x = 250;
+                    blocks.blockList[0].y = 250;
                     blocks.blockList[0].connections = [null, null, null];
                     blocks.blockList[0].value = turtles.turtleList.length;
                     turtles.add(blocks.blockList[0]);
@@ -1872,7 +1875,7 @@ define(function(require) {
         }
 
 	function doSaveBox() {
-	    savebox.show(scale);
+	    saveBox.show(scale);
 	}
 
         function doSave() {
@@ -1977,7 +1980,7 @@ define(function(require) {
                 ['polar', doPolar],
                 ['samples', doOpenSamples],
                 ['open', doOpen],
-                ['empty-trash', deleteBlocks],
+                ['empty-trash', deleteBlocksBox],
                 ['restore-trash', restoreTrash]
             ];
             if (server) {

@@ -135,6 +135,8 @@
   * fixed problem with block resizing
   * drag palette items
   * query turtle blocks
+  * confirm on clear
+  * save dialog
 
 TODO:
   * enable docking to any for boxes, equal

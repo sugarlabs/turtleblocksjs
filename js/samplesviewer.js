@@ -97,6 +97,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                         viewer.container.visible = true;
                         viewer.refreshCanvas();
                         viewer.completeInit();
+			loadThumbnailContainerHandler(viewer);
                         return true;
                     }
                     makeViewerBitmap(viewer, NEXTBUTTON, 'viewer', processNext, null);
@@ -152,7 +153,6 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.completeInit = function() {
         var p = 0;
         this.prepareNextImage(this, p);
-        loadThumbnailContainerHandler(this);
     }
 
     this.prepareNextImage = function(viewer, p) {

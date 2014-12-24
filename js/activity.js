@@ -350,8 +350,8 @@ define(function(require) {
             var projectName = null;
             if (URL.substr(0, 4) == 'file' && !onAndroid) {
                 console.log('running from filesystem');
-                server = false;
-                saveButton.style.visibility = 'hidden';
+                // server = false;
+                // saveButton.style.visibility = 'hidden';
             } else {
                 console.log('running from server');
                 server = true;

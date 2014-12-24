@@ -662,10 +662,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         var currentFillerCount = howManyBelow(blk);
 
-        console.log('secondArgumentSize')
-        console.log(secondArgumentSize)
-        console.log(currentFillerCount)
-
         if (false) { // secondArgumentSize < currentFillerCount + 1) {
             // Remove a vspace block
             var n = Math.abs(secondArgumentSize - currentFillerCount - 1);
@@ -687,18 +683,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         } else if (secondArgumentSize > currentFillerCount + 1) {
             // Add a vspace block
             var n = secondArgumentSize - currentFillerCount - 1;
-            console.log('add ' + n)
             for (var nextBlock, newPos, i = 0; i < n; i++) {
                 nextBlock = last(myBlock.connections);
-                console.log(myBlock.connections)
-                console.log(nextBlock)
-                console.log(!!nextBlock)
                 newPos = blockBlocks.blockList.length;
 
                 blockBlocks.makeNewBlockWithConnections('vspace',newPos,[null,null],function(args){
                     var vspace=args[1];
                     var nextBlock = args[0];
-                    console.log(vspace)
                     var vspaceBlock = blockBlocks.blockList[vspace];
                     vspaceBlock.connections[0] = blk;
                     vspaceBlock.connections[1] = nextBlock;
@@ -889,14 +880,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 console.log('inifinite loop checking for expandables?');
                 break;
             }
-            // console.log('checking if ' + blk + ' is expandable');
             checkExpandableBlocks.push(blk);
             blk = this.insideExpandableBlock(blk);
         }
 
         var checkTwoArgBlocks = [];
         var myBlock = this.blockList[thisBlock];
-        // console.log('block moved ' + myBlock.name);
         var c = myBlock.connections[0];
         if (c != null) {
             var cBlock = this.blockList[c];
@@ -1653,7 +1642,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     if (this.blockList[blk].value == oldName) {
                         this.blockList[blk].value = newName;
                         this.blockList[blk].text.text = newName;
-                        // this.blockList[blk].label.value = newName;
                         try {
                             this.blockList[blk].container.updateCache();
                         } catch (e) {
@@ -1673,7 +1661,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     if (this.blockList[blk].value == oldName) {
                         this.blockList[blk].value = newName;
                         this.blockList[blk].text.text = newName;
-                        // this.blockList[blk].label.value = newName;
                         try {
                             this.blockList[blk].container.updateCache();
                         } catch (e) {

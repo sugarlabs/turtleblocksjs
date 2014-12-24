@@ -39,7 +39,7 @@ function SaveBox(canvas, stage, refreshCanvas, save) {
 
             function processBackground(box, name, bitmap, extras) {
                 box.container.addChild(bitmap);
-		loadThumbnailContainerHandler(box);
+		loadSaveContainerHandler(box);
 		box.completeShow();
             }
             makeBoxBitmap(this, BUTTONBOX, 'box', processBackground, null);
@@ -52,16 +52,17 @@ function SaveBox(canvas, stage, refreshCanvas, save) {
 	this.container.visible = true;
 	this.refreshCanvas();
 	var saveName = docById('mySaveName');
-	saveName.style.visibility = '';
+	saveName.style.visibility = 'visible';
         saveName.style.position = 'absolute';
-        saveName.style.left = this.container.x + 'px';
-	var top = this.container.y + 140;
+	var left = this.canvas.offsetLeft + this.container.x + 64;
+        saveName.style.left = left + 'px';
+	var top = this.canvas.offsetTop + this.container.y + 160;
         saveName.style.top = top + 'px';
     }
 }
 
 
-function loadThumbnailContainerHandler(box) {
+function loadSaveContainerHandler(box) {
     var hitArea = new createjs.Shape();
     this.bounds = box.container.getBounds();
     hitArea.graphics.beginFill('#FFF').drawRect(bounds.x, bounds.y, bounds. width, bounds.height);

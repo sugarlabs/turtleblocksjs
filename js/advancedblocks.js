@@ -71,6 +71,13 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     loudnessBlock.staticLabels.push('loudness');
 
     // Extras palette
+    var waitBlock = new ProtoBlock('wait');
+    waitBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['wait'] = waitBlock;
+    waitBlock.oneArgBlock();
+    waitBlock.staticLabels.push('wait');
+    waitBlock.defaults.push(1);
+
     var pubBlock = new ProtoBlock('publish');
     pubBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['publish'] = pubBlock;

@@ -423,13 +423,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     stopTurtleBlock.staticLabels.push('stop turtle');
 
     // Flow palette
-    var waitBlock = new ProtoBlock('wait');
-    waitBlock.palette = palettes.dict['flow'];
-    blocks.protoBlockDict['wait'] = waitBlock;
-    waitBlock.oneArgBlock();
-    waitBlock.staticLabels.push('wait');
-    waitBlock.defaults.push(1);
-
     var repeatBlock = new ProtoBlock('repeat');
     repeatBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['repeat'] = repeatBlock;

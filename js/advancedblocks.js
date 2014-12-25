@@ -78,6 +78,12 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     waitBlock.staticLabels.push('wait');
     waitBlock.defaults.push(1);
 
+    var vspaceBlock = new ProtoBlock('vspace');
+    vspaceBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['vspace'] = vspaceBlock;
+    vspaceBlock.zeroArgBlock();
+    // vspaceBlock.staticLabels.push('');
+
     var pubBlock = new ProtoBlock('publish');
     pubBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['publish'] = pubBlock;
@@ -144,8 +150,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     audioStopBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['stopplayback'] = audioStopBlock;
     audioStopBlock.zeroArgBlock();
-    audioStopBlock.staticLabels.push('stop playback');
-    audioStopBlock.fontsize = '14px';
+    audioStopBlock.staticLabels.push('stop');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

@@ -463,12 +463,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     whileBlock.staticLabels.push('while');
     whileBlock.staticLabels.push('do');
 
-    var vspaceBlock = new ProtoBlock('vspace');
-    vspaceBlock.palette = palettes.dict['flow'];
-    blocks.protoBlockDict['vspace'] = vspaceBlock;
-    vspaceBlock.zeroArgBlock();
-    // vspaceBlock.staticLabels.push('');
-
     var ifthenelseBlock = new ProtoBlock('ifthenelse');
     ifthenelseBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['ifthenelse'] = ifthenelseBlock;

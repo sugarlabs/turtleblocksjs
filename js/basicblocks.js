@@ -117,6 +117,18 @@ function initBasicProtoBlocks(palettes, blocks) {
     setxyBlock.staticLabels.push('y');
     setxyBlock.docks[1][2] = 'numberin'; // override default
 
+    var xBlock = new ProtoBlock('x');
+    xBlock.palette = palettes.dict['turtle'];
+    blocks.protoBlockDict['x'] = xBlock;
+    xBlock.parameterBlock();
+    xBlock.staticLabels.push('x');
+
+    var yBlock = new ProtoBlock('y');
+    yBlock.palette = palettes.dict['turtle'];
+    blocks.protoBlockDict['y'] = yBlock;
+    yBlock.parameterBlock();
+    yBlock.staticLabels.push('y');
+
     var getxTurtleBlock = new ProtoBlock('xturtle');
     getxTurtleBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
@@ -132,42 +144,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     getyTurtleBlock.staticLabels.push('turtle y');
     getyTurtleBlock.defaults.push('0');
     getyTurtleBlock.docks[1][2] = 'textin'; 
-
-    var xBlock = new ProtoBlock('x');
-    xBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['x'] = xBlock;
-    xBlock.parameterBlock();
-    xBlock.staticLabels.push('x');
-
-    var yBlock = new ProtoBlock('y');
-    yBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['y'] = yBlock;
-    yBlock.parameterBlock();
-    yBlock.staticLabels.push('y');
-
-    var showBlock = new ProtoBlock('show');
-    showBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['show'] = showBlock;
-    showBlock.twoArgBlock();
-    showBlock.defaults.push(24);
-    showBlock.defaults.push('text');
-    showBlock.staticLabels.push('show');
-    showBlock.staticLabels.push('size');
-    showBlock.staticLabels.push('obj');
-    showBlock.docks[1][2] = 'numberin'; // override default
-    showBlock.docks[2][2] = 'anyin'; // override default
-
-    var shellBlock = new ProtoBlock('turtleshell');
-    shellBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['turtleshell'] = shellBlock;
-    shellBlock.twoArgBlock();
-    shellBlock.defaults.push(55);
-    shellBlock.defaults.push(null);
-    shellBlock.staticLabels.push('shell');
-    shellBlock.staticLabels.push('size');
-    shellBlock.staticLabels.push('image');
-    shellBlock.docks[1][2] = 'numberin'; // override default
-    shellBlock.docks[2][2] = 'mediain'; // override default
 
     // Pen palette
     var setcolorBlock = new ProtoBlock('setcolor');
@@ -349,18 +325,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     notBlock.staticLabels.push('not');
 
     // Blocks palette
-    var mediaBlock = new ProtoBlock('media');
-    mediaBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['media'] = mediaBlock;
-    mediaBlock.mediaBlock();
-    mediaBlock.docks[0][2] = 'mediaout';
-
-    var textBlock = new ProtoBlock('text');
-    textBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['text'] = textBlock;
-    textBlock.valueBlock();
-    textBlock.docks[0][2] = 'textout';
-
     var storeinBlock = new ProtoBlock('storein');
     storeinBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['storein'] = storeinBlock;
@@ -422,6 +386,60 @@ function initBasicProtoBlocks(palettes, blocks) {
     stopTurtleBlock.defaults.push('0');
     stopTurtleBlock.staticLabels.push('stop turtle');
 
+    // Media palette
+    var showBlock = new ProtoBlock('show');
+    showBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['show'] = showBlock;
+    showBlock.twoArgBlock();
+    showBlock.defaults.push(24);
+    showBlock.defaults.push('text');
+    showBlock.staticLabels.push('show');
+    showBlock.staticLabels.push('size');
+    showBlock.staticLabels.push('obj');
+    showBlock.docks[1][2] = 'numberin'; // override default
+    showBlock.docks[2][2] = 'anyin'; // override default
+
+    var shellBlock = new ProtoBlock('turtleshell');
+    shellBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['turtleshell'] = shellBlock;
+    shellBlock.twoArgBlock();
+    shellBlock.defaults.push(55);
+    shellBlock.defaults.push(null);
+    shellBlock.staticLabels.push('shell');
+    shellBlock.staticLabels.push('size');
+    shellBlock.staticLabels.push('image');
+    shellBlock.docks[1][2] = 'numberin'; // override default
+    shellBlock.docks[2][2] = 'mediain'; // override default
+
+    var mediaBlock = new ProtoBlock('media');
+    mediaBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['media'] = mediaBlock;
+    mediaBlock.mediaBlock();
+    mediaBlock.docks[0][2] = 'mediaout';
+
+    var textBlock = new ProtoBlock('text');
+    textBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['text'] = textBlock;
+    textBlock.valueBlock();
+    textBlock.docks[0][2] = 'textout';
+
+    var cameraBlock = new ProtoBlock('camera');
+    cameraBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['camera'] = cameraBlock;
+    cameraBlock.mediaBlock();
+
+    var videoBlock = new ProtoBlock('video');
+    videoBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['video'] = videoBlock;
+    videoBlock.mediaBlock();
+
+    var stopVideoCamBlock = new ProtoBlock('stopvideocam');
+    stopVideoCamBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;
+    stopVideoCamBlock.zeroArgBlock();
+    stopVideoCamBlock.staticLabels.push('stop video/camera');
+    stopVideoCamBlock.fontsize = '12px';
+
     // Flow palette
     var repeatBlock = new ProtoBlock('repeat');
     repeatBlock.palette = palettes.dict['flow'];
@@ -470,23 +488,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifthenelseBlock.staticLabels.push('if');
     ifthenelseBlock.staticLabels.push('then');
     ifthenelseBlock.staticLabels.push('else');
-
-    var cameraBlock = new ProtoBlock('camera');
-    cameraBlock.palette = palettes.dict['sensors'];
-    blocks.protoBlockDict['camera'] = cameraBlock;
-    cameraBlock.mediaBlock();
-
-    var videoBlock = new ProtoBlock('video');
-    videoBlock.palette = palettes.dict['sensors'];
-    blocks.protoBlockDict['video'] = videoBlock;
-    videoBlock.mediaBlock();
-
-    var stopVideoCamBlock = new ProtoBlock('stopvideocam');
-    stopVideoCamBlock.palette = palettes.dict['sensors'];
-    blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;
-    stopVideoCamBlock.zeroArgBlock();
-    stopVideoCamBlock.staticLabels.push('stop video/camera');
-    stopVideoCamBlock.fontsize = '12px';
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

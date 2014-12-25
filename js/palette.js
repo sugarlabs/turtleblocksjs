@@ -594,6 +594,7 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     add('boolean', 'black', '#ff00ff').
     add('flow', 'black', '#fd6600').
     add('blocks', 'black', '#ffc000').
+    add('media', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').
     add('extras', 'white', '#ff0066');
 

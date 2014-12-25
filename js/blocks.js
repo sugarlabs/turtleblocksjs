@@ -674,7 +674,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 if (nextBlockObj) {
                     myBlock.connections[n - 1] = nextBlockObj.connections[1];
                     this.blockList[nextBlockObj.connections[1]].connections[0] = blk;
-                    nextBlockObj.connections = [null,null];
+                    nextBlockObj.connections = [null, null];
                     nextBlockObj.hide();
                 } else {
                     myBlock.connections[n - 1] = null
@@ -687,8 +687,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 nextBlock = last(myBlock.connections);
                 newPos = blockBlocks.blockList.length;
 
-                blockBlocks.makeNewBlockWithConnections('vspace',newPos,[null,null],function(args){
-                    var vspace=args[1];
+                blockBlocks.makeNewBlockWithConnections('vspace', newPos, [null, null], function(args) {
+                    var vspace = args[1];
                     var nextBlock = args[0];
                     var vspaceBlock = blockBlocks.blockList[vspace];
                     vspaceBlock.connections[0] = blk;
@@ -697,7 +697,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     if (nextBlock) {
                         blockBlocks.blockList[nextBlock].connections[0] = vspace;
                     }
-                },[nextBlock,newPos]);
+                }, [nextBlock, newPos]);
             }
         }
 
@@ -885,6 +885,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         var checkTwoArgBlocks = [];
+        var checkArgBlocks = [];
         var myBlock = this.blockList[thisBlock];
         var c = myBlock.connections[0];
         if (c != null) {
@@ -997,18 +998,27 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     }
                 }
             }
+            // We also care about the second-to-last connection to an arg block.
+            var n = this.blockList[newBlock].connections.length;
+            if (this.blockList[newBlock].connections[n - 2] == thisBlock) {
+                console.log('checking ' + this.blockList[newBlock].name);
+                checkArgBlocks.push(newBlock);
+            }
         }
+        // If we changed the contents of a arg block, see if we need a vspace.
+        if (checkArgBlocks.length > 0) {
+            console.log('checkArgBlocks ' + checkArgBlocks);
+            for (var i = 0; i < checkArgBlocks.length; i++) {
+                this.addRemoveVspaceBlock(checkArgBlocks[i]);
+            }
+        }
+
         // If we changed the contents of a two-arg block, we need to
         // adjust it.
         if (checkTwoArgBlocks.length > 0) {
             for (var i = 0; i < checkTwoArgBlocks.length; i++) {
                 this.adjustExpandableTwoArgBlock(checkTwoArgBlocks[i]);
             }
-        }
-
-        var newBlockObj = this.blockList[newBlock];
-        if (newBlockObj && !newBlockObj.isArgBlock() && newBlockObj.connections[newBlockObj.connections.length - 2] == thisBlock) {
-            this.addRemoveVspaceBlock(newBlock);
         }
 
         // Recheck if the connection is inside of a expandable block.
@@ -1307,7 +1317,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var thisBlock = this.highlightedBlock;
         }
         if (thisBlock != null) {
-	    this.blockList[thisBlock].unhighlight();
+            this.blockList[thisBlock].unhighlight();
         }
         if (this.highlightedBlock = thisBlock) {
             this.highlightedBlock = null;
@@ -2904,14 +2914,14 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     var moved = false;
     var locked = false;
     myBlock.collapseContainer.on('click', function(event) {
-	if (locked) {
-	    console.log('debouncing click');
-	    return;
-	}
-	locked = true;
-	setTimeout(function() {
-	    locked = false;
-	}, 500);
+        if (locked) {
+            console.log('debouncing click');
+            return;
+        }
+        locked = true;
+        setTimeout(function() {
+            locked = false;
+        }, 500);
         hideDOMLabel();
         if (!moved) {
             // Find the blocks to collapse/expand
@@ -3112,14 +3122,14 @@ function loadEventHandlers(blocks, myBlock) {
     var moved = false;
     var locked = false;
     myBlock.container.on('click', function(event) {
-	if (locked) {
-	    console.log('debouncing click');
-	    return;
-	}
-	locked = true;
-	setTimeout(function() {
-	    locked = false;
-	}, 500);
+        if (locked) {
+            console.log('debouncing click');
+            return;
+        }
+        locked = true;
+        setTimeout(function() {
+            locked = false;
+        }, 500);
         displayMsg(blocks, 'click');
         hideDOMLabel();
         if (!moved) {

@@ -1023,35 +1023,37 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
         }
 
-	// FIXME: Make these callbacks so there is no race condition.
-	setTimeout(function() {
+        // FIXME: Make these callbacks so there is no race condition.
+        recheckExpandables = function(blocks) {
             // Recheck if the connection is inside of a expandable block.
-            var blk = this.insideExpandableBlock(thisBlock);
+            var blk = blocks.insideExpandableBlock(thisBlock);
             var expandableLoopCounter = 0;
             while (blk != null) {
-		// Extra check for malformed data.
-		expandableLoopCounter += 1;
-		if (expandableLoopCounter > 2 * this.blockList.length) {
+                // Extra check for malformed data.
+                expandableLoopCounter += 1;
+                if (expandableLoopCounter > 2 * blocks.blockList.length) {
                     console.log('Infinite loop checking for expandables?');
-                    console.log(this.blockList);
+                    console.log(blocks.blockList);
                     break;
-		}
-		if (checkExpandableBlocks.indexOf(blk) == -1) {
+                }
+                if (checkExpandableBlocks.indexOf(blk) == -1) {
                     checkExpandableBlocks.push(blk);
-		}
-		blk = this.insideExpandableBlock(blk);
+                }
+                blk = blocks.insideExpandableBlock(blk);
             }
-	}, 1000);
+        }
+        setTimeout(recheckExpandables(this), 1000);
 
-	setTimeout(function() {
+        recheckClamps = function(blocks) {
             // If we changed the contents of an expandable block, we need
             // to adjust its clamp.
             if (checkExpandableBlocks.length > 0) {
-		for (var i = 0; i < checkExpandableBlocks.length; i++) {
-                    this.adjustExpandableClampBlock(checkExpandableBlocks[i]);
-		}
+                for (var i = 0; i < checkExpandableBlocks.length; i++) {
+                    blocks.adjustExpandableClampBlock(checkExpandableBlocks[i]);
+                }
             }
-	}, 2000);
+        }
+        setTimeout(recheckClamps(this), 2000);
     }
 
     this.testConnectionType = function(type1, type2) {
@@ -2155,7 +2157,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         this.refreshCanvas();
 
-	// FIXME: Make these callbacks so there is no race condition.
+        // FIXME: Make these callbacks so there is no race condition.
         // We need to wait for the blocks to load before expanding them.
         setTimeout(function() {
             blockBlocks.expandTwoArgs();

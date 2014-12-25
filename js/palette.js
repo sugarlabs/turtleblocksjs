@@ -330,7 +330,7 @@ function Palette(palettes, name, color, bgcolor) {
                 var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
                 if (['action', 'start'].indexOf(blkname) != -1) {
                     height += 2 * STANDARDBLOCKHEIGHT;
-                } else if (['media'].indexOf(blkname) != -1) {
+                } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
                     height += STANDARDBLOCKHEIGHT;
                 }
                 this.size += Math.ceil(height * paletteScale);

@@ -411,17 +411,17 @@ function initBasicProtoBlocks(palettes, blocks) {
     shellBlock.docks[1][2] = 'numberin'; // override default
     shellBlock.docks[2][2] = 'mediain'; // override default
 
-    var mediaBlock = new ProtoBlock('media');
-    mediaBlock.palette = palettes.dict['media'];
-    blocks.protoBlockDict['media'] = mediaBlock;
-    mediaBlock.mediaBlock();
-    mediaBlock.docks[0][2] = 'mediaout';
-
     var textBlock = new ProtoBlock('text');
     textBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['text'] = textBlock;
     textBlock.valueBlock();
     textBlock.docks[0][2] = 'textout';
+
+    var mediaBlock = new ProtoBlock('media');
+    mediaBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['media'] = mediaBlock;
+    mediaBlock.mediaBlock();
+    mediaBlock.docks[0][2] = 'mediaout';
 
     var cameraBlock = new ProtoBlock('camera');
     cameraBlock.palette = palettes.dict['media'];
@@ -437,8 +437,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     stopVideoCamBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;
     stopVideoCamBlock.zeroArgBlock();
-    stopVideoCamBlock.staticLabels.push('stop video/camera');
-    stopVideoCamBlock.fontsize = '12px';
+    stopVideoCamBlock.staticLabels.push('stop');
 
     // Flow palette
     var repeatBlock = new ProtoBlock('repeat');

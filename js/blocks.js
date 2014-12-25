@@ -667,7 +667,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var n = Math.abs(secondArgumentSize - currentFillerCount - 1);
             console.log('remove ' + n)
             for (var nextBlock, nextBlockObj, i = 0; i < n; i++) {
-                // Really don't know if this is the best way to remove connections and blocks.
+                // Really don't know if this is the best way to remove
+                // connections and blocks.
                 var n = myBlock.connections.length;
                 nextBlock = myBlock.connections[n - 1];
                 nextBlockObj = this.blockList[nextBlock];
@@ -702,7 +703,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         function howManyBelow(blk) {
-            // Need to know how many vspace blocks are below the block we're checking against
+            // Need to know how many vspace blocks are below the block
+            // we're checking against.
             var nextBlock = last(blockBlocks.blockList[blk].connections);
             if (nextBlock && blockBlocks.blockList[nextBlock].name == 'vspace') {
                 return 1 + howManyBelow(nextBlock);
@@ -1021,29 +1023,35 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
         }
 
-        // Recheck if the connection is inside of a expandable block.
-        var blk = this.insideExpandableBlock(thisBlock);
-        var expandableLoopCounter = 0;
-        while (blk != null) {
-            // Extra check for malformed data.
-            expandableLoopCounter += 1;
-            if (expandableLoopCounter > 2 * this.blockList.length) {
-                console.log('inifinite loop checking for expandables?');
-                console.log(this.blockList);
-                break;
+	// FIXME: Make these callbacks so there is no race condition.
+	setTimeout(function() {
+            // Recheck if the connection is inside of a expandable block.
+            var blk = this.insideExpandableBlock(thisBlock);
+            var expandableLoopCounter = 0;
+            while (blk != null) {
+		// Extra check for malformed data.
+		expandableLoopCounter += 1;
+		if (expandableLoopCounter > 2 * this.blockList.length) {
+                    console.log('Infinite loop checking for expandables?');
+                    console.log(this.blockList);
+                    break;
+		}
+		if (checkExpandableBlocks.indexOf(blk) == -1) {
+                    checkExpandableBlocks.push(blk);
+		}
+		blk = this.insideExpandableBlock(blk);
             }
-            if (checkExpandableBlocks.indexOf(blk) == -1) {
-                checkExpandableBlocks.push(blk);
+	}, 1000);
+
+	setTimeout(function() {
+            // If we changed the contents of an expandable block, we need
+            // to adjust its clamp.
+            if (checkExpandableBlocks.length > 0) {
+		for (var i = 0; i < checkExpandableBlocks.length; i++) {
+                    this.adjustExpandableClampBlock(checkExpandableBlocks[i]);
+		}
             }
-            blk = this.insideExpandableBlock(blk);
-        }
-        // If we changed the contents of an expandable block, we need
-        // to adjust its clamp.
-        if (checkExpandableBlocks.length > 0) {
-            for (var i = 0; i < checkExpandableBlocks.length; i++) {
-                this.adjustExpandableClampBlock(checkExpandableBlocks[i]);
-            }
-        }
+	}, 2000);
     }
 
     this.testConnectionType = function(type1, type2) {
@@ -2147,6 +2155,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         this.refreshCanvas();
 
+	// FIXME: Make these callbacks so there is no race condition.
         // We need to wait for the blocks to load before expanding them.
         setTimeout(function() {
             blockBlocks.expandTwoArgs();

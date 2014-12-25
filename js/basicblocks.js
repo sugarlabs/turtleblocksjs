@@ -310,40 +310,40 @@ function initBasicProtoBlocks(palettes, blocks) {
     modBlock.staticLabels.push('mod');
 
     var greaterBlock = new ProtoBlock('greater');
-    greaterBlock.palette = palettes.dict['number'];
+    greaterBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['greater'] = greaterBlock;
     greaterBlock.booleanTwoArgBlock();
     greaterBlock.staticLabels.push('&gt;');
     greaterBlock.fontsize = '24px';
 
     var lessBlock = new ProtoBlock('less');
-    lessBlock.palette = palettes.dict['number'];
+    lessBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['less'] = lessBlock;
     lessBlock.booleanTwoArgBlock();
     lessBlock.staticLabels.push('&lt;');
     lessBlock.fontsize = '24px';
 
     var equalBlock = new ProtoBlock('equal');
-    equalBlock.palette = palettes.dict['number'];
+    equalBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['equal'] = equalBlock;
     equalBlock.booleanTwoArgBlock();
     equalBlock.staticLabels.push('=');
     equalBlock.fontsize = '24px';
 
     var andBlock = new ProtoBlock('and');
-    andBlock.palette = palettes.dict['number'];
+    andBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['and'] = andBlock;
     andBlock.booleanTwoBooleanArgBlock();
     andBlock.staticLabels.push('and');
 
     var orBlock = new ProtoBlock('or');
-    orBlock.palette = palettes.dict['number'];
+    orBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['or'] = orBlock;
     orBlock.booleanTwoBooleanArgBlock();
     orBlock.staticLabels.push('or');
 
     var notBlock = new ProtoBlock('not');
-    notBlock.palette = palettes.dict['number'];
+    notBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['not'] = notBlock;
     notBlock.booleanOneBooleanArgBlock();
     notBlock.staticLabels.push('not');

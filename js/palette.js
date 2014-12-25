@@ -591,6 +591,7 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     add('turtle', 'black', '#00b700').
     add('pen', 'black', '#00c0e7').
     add('number', 'black', '#ff00ff').
+    add('boolean', 'black', '#ff00ff').
     add('flow', 'black', '#fd6600').
     add('blocks', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').

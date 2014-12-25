@@ -26,7 +26,6 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     this.next = null;
     this.page = 0; // 4x4 image matrix per page
     this.server = true;
-    this.locked = false;
 
     this.setServer = function(server) {
         this.server = server;
@@ -40,7 +39,6 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     }
 
     this.show = function(scale) {
-        this.locked = false;
         this.scale = scale;
         this.page = 0;
         if (this.server) {
@@ -202,10 +200,6 @@ function loadThumbnailContainerHandler(viewer) {
         setTimeout(function() {
             locked = false;
         }, 500);
-        if (viewer.locked) {
-            console.log('sample viewer is locked');
-            return;
-        }
 
         var x = (event.stageX / viewer.scale) - viewer.container.x;
         var y = (event.stageY / viewer.scale) - viewer.container.y;
@@ -261,7 +255,6 @@ function loadThumbnailContainerHandler(viewer) {
             var row = Math.floor((y - 55) / 120);
             var p = row * 4 + col + 16 * viewer.page;
             if (p < viewer.projectFiles.length) {
-                viewer.locked = true;
                 viewer.hide();
                 viewer.closeViewer();
                 viewer.sendAllToTrash(false);

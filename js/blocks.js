@@ -650,40 +650,29 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var myBlock = blockBlocks.blockList[blk];
 
         var c = myBlock.connections[myBlock.connections.length - 2];
-        if (c == null) {
-            var secondArgumentSize = 0;
-        } else {
-            var secondArgumentSize = this.getBlockSize(c);
+        var secondArgumentSize = 1;
+        if (c != null) {
+            var secondArgumentSize = Math.max(this.getBlockSize(c), 1);
         }
 
-        if (secondArgumentSize < 1) {
-            secondArgumentSize = 1; // Minimum size
-        }
-
-        var currentFillerCount = howManyBelow(blk);
-
-        if (false) { // secondArgumentSize < currentFillerCount + 1) {
+        var vSpaceCount = howManyVSpaceBlocksBelow(blk);
+        if (secondArgumentSize < vSpaceCount + 1) {
             // Remove a vspace block
-            var n = Math.abs(secondArgumentSize - currentFillerCount - 1);
-            console.log('remove ' + n)
-            for (var nextBlock, nextBlockObj, i = 0; i < n; i++) {
-                // Really don't know if this is the best way to remove
-                // connections and blocks.
-                var n = myBlock.connections.length;
-                nextBlock = myBlock.connections[n - 1];
-                nextBlockObj = this.blockList[nextBlock];
-                if (nextBlockObj) {
-                    myBlock.connections[n - 1] = nextBlockObj.connections[1];
-                    this.blockList[nextBlockObj.connections[1]].connections[0] = blk;
-                    nextBlockObj.connections = [null, null];
-                    nextBlockObj.hide();
-                } else {
-                    myBlock.connections[n - 1] = null
+            var n = Math.abs(secondArgumentSize - vSpaceCount - 1);
+            for (var i = 0; i < n; i++) {
+                var lastConnection = myBlock.connections.length - 1;
+                var vspaceBlock = this.blockList[myBlock.connections[lastConnection]];
+                var nextBlockIndex = vspaceBlock.connections[1];
+                myBlock.connections[lastConnection] = nextBlockIndex;
+                if (nextBlockIndex != null) {
+                    this.blockList[nextBlockIndex].connections[0] = blk;
                 }
+                vspaceBlock.connections = [null, null];
+                vspaceBlock.hide();
             }
-        } else if (secondArgumentSize > currentFillerCount + 1) {
+        } else if (secondArgumentSize > vSpaceCount + 1) {
             // Add a vspace block
-            var n = secondArgumentSize - currentFillerCount - 1;
+            var n = secondArgumentSize - vSpaceCount - 1;
             for (var nextBlock, newPos, i = 0; i < n; i++) {
                 nextBlock = last(myBlock.connections);
                 newPos = blockBlocks.blockList.length;
@@ -702,12 +691,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
         }
 
-        function howManyBelow(blk) {
+        function howManyVSpaceBlocksBelow(blk) {
             // Need to know how many vspace blocks are below the block
             // we're checking against.
             var nextBlock = last(blockBlocks.blockList[blk].connections);
             if (nextBlock && blockBlocks.blockList[nextBlock].name == 'vspace') {
-                return 1 + howManyBelow(nextBlock);
+                return 1 + howManyVSpaceBlocksBelow(nextBlock);
                 // Recurse until it isn't a vspace
             }
             return 0;
@@ -1023,8 +1012,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
         }
 
+        var blocks = this;
+
         // FIXME: Make these callbacks so there is no race condition.
-        recheckExpandables = function(blocks) {
+        setTimeout(function() {
             // Recheck if the connection is inside of a expandable block.
             var blk = blocks.insideExpandableBlock(thisBlock);
             var expandableLoopCounter = 0;
@@ -1041,10 +1032,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
                 blk = blocks.insideExpandableBlock(blk);
             }
-        }
-        setTimeout(recheckExpandables(this), 1000);
+            blocks.refreshCanvas();
+        }, 1000);
 
-        recheckClamps = function(blocks) {
+        setTimeout(function() {
             // If we changed the contents of an expandable block, we need
             // to adjust its clamp.
             if (checkExpandableBlocks.length > 0) {
@@ -1052,8 +1043,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     blocks.adjustExpandableClampBlock(checkExpandableBlocks[i]);
                 }
             }
-        }
-        setTimeout(recheckClamps(this), 2000);
+            blocks.refreshCanvas();
+        }, 2000);
     }
 
     this.testConnectionType = function(type1, type2) {

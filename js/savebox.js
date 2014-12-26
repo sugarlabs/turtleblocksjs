@@ -56,9 +56,9 @@ function SaveBox(canvas, stage, refreshCanvas, save) {
 	var saveName = docById('mySaveName');
 	saveName.style.visibility = 'visible';
         saveName.style.position = 'absolute';
-	var left = this.canvas.offsetLeft + this.container.x + 84;
+	var left = Math.floor((this.canvas.width - 180) / 2); // this.canvas.offsetLeft + this.container.x + 84;
         saveName.style.left = left + 'px';
-	var top = this.canvas.offsetTop + this.container.y + 160;
+	var top = 185; // this.canvas.offsetTop + this.container.y + 160;
         saveName.style.top = top + 'px';
     }
 }

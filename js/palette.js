@@ -289,19 +289,17 @@ function Palette(palettes, name, color, bgcolor) {
             var blkname = this.protoList[blk].name;
             var modname = blkname;
             switch (blkname) {
+                // Use the name of the action in the label
                 case 'do':
-                    // Use the name of the action in the label
                     modname = 'do ' + this.protoList[blk].defaults[0];
                     // Call makeBlock with the name of the action
                     var arg = this.protoList[blk].defaults[0];
                     break;
                 case 'storein':
-                    // Use the name of the box in the label
                     modname = 'store in ' + this.protoList[blk].defaults[0];
                     var arg = this.protoList[blk].defaults[0];
                     break;
                 case 'box':
-                    // Use the name of the box in the label
                     modname = this.protoList[blk].defaults[0];
                     var arg = this.protoList[blk].defaults[0];
                     break;
@@ -328,7 +326,9 @@ function Palette(palettes, name, color, bgcolor) {
 
                 // We use a filler for the menu background
                 var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
-                if (['action', 'start'].indexOf(blkname) != -1) {
+                if (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1) {
+                    height = STANDARDBLOCKHEIGHT;
+                } else if (['action', 'start'].indexOf(blkname) != -1) {
                     height += 2 * STANDARDBLOCKHEIGHT;
                 } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
                     height += STANDARDBLOCKHEIGHT;
@@ -351,39 +351,60 @@ function Palette(palettes, name, color, bgcolor) {
 
     this.finishPaletteEntry = function(blkname, modname, blk) {
         var myBlock = paletteBlocks.protoBlockDict[blkname];
-        if (blkname == 'text') {
-            var block_label = 'text';
-        } else if (blkname == 'number') {
-            var block_label = '100';
-        } else if (blkname != modname) {
-            // Override label for do, storein, and box
-            var block_label = this.protoList[blk].defaults[0];
-        } else if (myBlock.staticLabels.length > 0) {
-            var block_label = myBlock.staticLabels[0];
-        } else {
-            var block_label = blkname;
-        }
-        if (myBlock.staticLabels.length > 1) {
-            var top_label = myBlock.staticLabels[1];
-        } else {
-            var top_label = '';
-        }
-        if (myBlock.staticLabels.length > 2) {
-            var bottom_label = myBlock.staticLabels[2];
-        } else {
-            var bottom_label = '';
-        }
-        if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
-            var mid_label = myBlock.staticLabels[2];
-            var top_label = myBlock.staticLabels[1];
-            var block_label = myBlock.staticLabels[0];
-        }
-        if (myBlock.name == 'box') {
-            var artwork = VALUEBLOCK; // so the label will fit
-        } else {
-            var artwork = myBlock.artwork[0];
+        var block_label = '';
+        var top_label = '';
+        var mid_label = '';
+        var bottom_label = '';
+
+        switch (myBlock.name) {
+        case 'text':
+            block_label = 'text';
+            break;
+        case 'number':
+            block_label = '100';
+            break;
+        default:
+            if (blkname != modname) {
+                // Override label for do, storein, and box
+                block_label = this.protoList[blk].defaults[0];
+            } else if (myBlock.staticLabels.length > 0) {
+                block_label = myBlock.staticLabels[0];
+            } else {
+                block_label = blkname;
+            }
         }
 
+        switch (myBlock.name) {
+        case 'box':
+            // so the label will fit
+            var artwork = VALUEBLOCK;
+            break;
+        case 'if':
+        case 'until':
+        case 'while':
+            // so the block will fit
+            var artwork = BASICBLOCK;
+            break;
+        case 'ifthenelse':
+            // so the block will fit
+            var artwork = BASICBLOCK;
+            block_label = myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2];
+            break;
+        default:
+            var artwork = myBlock.artwork[0];
+            if (myBlock.staticLabels.length > 1) {
+                top_label = myBlock.staticLabels[1];
+            }
+            if (myBlock.staticLabels.length > 2) {
+                bottom_label = myBlock.staticLabels[2];
+            }
+            if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
+                mid_label = myBlock.staticLabels[2];
+                top_label = myBlock.staticLabels[1];
+                block_label = myBlock.staticLabels[0];
+            }
+            break;
+        }
 
         function processBitmap(me, modname, bitmap, args) {
             var myBlock = args[0];
@@ -395,7 +416,7 @@ function Palette(palettes, name, color, bgcolor) {
             bitmap.scaleY = paletteScale;
             bitmap.scale = paletteScale;
 
-            if (!me.protoList[blk].expandable) {
+            if (!me.protoList[blk].expandable || (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1)) {
                 bounds = me.protoContainers[modname].getBounds();
                 me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
                 var hitArea = new createjs.Shape();
@@ -637,8 +658,8 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
 
     me.protoContainers[blkname].on('mousedown', function(event) {
         moved = false;
-	saveX = palette.protoContainers[blkname].x;
-	saveY = palette.protoContainers[blkname].y;
+        saveX = palette.protoContainers[blkname].x;
+        saveY = palette.protoContainers[blkname].y;
         if (me.draggingProtoBlock) {
             return;
         }

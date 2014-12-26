@@ -12,7 +12,7 @@
 // All things related to palettes
 
 var paletteBlocks = null;
-var paletteScale = 0.75;
+var paletteScale = 1.0; // 0.75;
 
 
 function paletteBlockButtonPush(name, arg) {

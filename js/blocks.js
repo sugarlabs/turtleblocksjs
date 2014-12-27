@@ -1731,10 +1731,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.newDoBlock = function(name) {
         var myDoBlock = new ProtoBlock('do');
         this.protoBlockDict['myDo'] = myDoBlock;
+	myDoBlock.oneArgBlock();
         myDoBlock.palette = this.palettes.dict['blocks'];
         myDoBlock.args = 1;
         myDoBlock.defaults.push(name);
-	mtDoBlock.staticLabels.push('do');
+	myDoBlock.staticLabels.push('do');
         myDoBlock.docks = [
             [20, 0, 'out'],
             [98, 20, 'textin'],
@@ -1749,6 +1750,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.newActionBlock = function(name) {
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction'] = myActionBlock;
+	myActionBlock.blockClampOneArgBlock();
         myActionBlock.palette = this.palettes.dict['blocks'];
         myActionBlock.artworkOffset = [0, 0, 86];
         myActionBlock.fillerOffset = 42;

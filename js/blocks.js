@@ -1712,13 +1712,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 	console.log('newBoxBlock ' + name);
         var myBoxBlock = new ProtoBlock('box');
         this.protoBlockDict['myBox_' + name] = myBoxBlock;
+	myBoxBlock.oneArgMathWithLabelBlock();
         myBoxBlock.palette = this.palettes.dict['blocks'];
         myBoxBlock.args = 1;
         myBoxBlock.defaults.push(name);
+	myBoxBlock.staticLabels.push('box');
         myBoxBlock.style = 'arg';
         myBoxBlock.docks = [
             [0, 20, 'numberout'],
-            [68, 20, 'textin']
+            [136, 20, 'textin']
         ];
         if (name == 'box') {
             return;
@@ -1732,6 +1734,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myDoBlock.palette = this.palettes.dict['blocks'];
         myDoBlock.args = 1;
         myDoBlock.defaults.push(name);
+	mtDoBlock.staticLabels.push('do');
         myDoBlock.docks = [
             [20, 0, 'out'],
             [98, 20, 'textin'],
@@ -1751,6 +1754,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myActionBlock.fillerOffset = 42;
         myActionBlock.args = 1;
         myActionBlock.defaults.push(name);
+	myActionBlock.staticLabels.push('action');
         myActionBlock.expandable = true;
         myActionBlock.style = 'clamp';
         myActionBlock.docks = [

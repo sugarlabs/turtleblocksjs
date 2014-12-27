@@ -1477,10 +1477,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
+		    console.log('creating ' + name + ' block with no args');
                     this.makeNewBlock(proto, postProcess, postProcessArg);
                     break;
                 } else {
                     if (this.protoBlockDict[proto].defaults[0] == arg) {
+			console.log('creating ' + name + ' block with default arg ' + arg);
                         this.makeNewBlock(proto, postProcess, postProcessArg);
                         break;
                     }
@@ -1684,12 +1686,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.newStoreinBlock = function(name) {
+	console.log('newStoreinBlock ' + name);
         var myStoreinBlock = new ProtoBlock('storein');
-        this.protoBlockDict['myStorein'] = myStoreinBlock;
+        this.protoBlockDict['myStorein_' + name] = myStoreinBlock;
         myStoreinBlock.palette = this.palettes.dict['blocks'];
         myStoreinBlock.twoArgBlock();
         myStoreinBlock.defaults.push(name);
         myStoreinBlock.defaults.push(100);
+	myStoreinBlock.staticLabels.push('store in');
+	myStoreinBlock.staticLabels.push('name');
+	myStoreinBlock.staticLabels.push('value');
         myStoreinBlock.docks = [
             [20, 0, 'out'],
             [98, 20, 'textin'],
@@ -1703,8 +1709,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.newBoxBlock = function(name) {
+	console.log('newBoxBlock ' + name);
         var myBoxBlock = new ProtoBlock('box');
-        this.protoBlockDict['myBox'] = myBoxBlock;
+        this.protoBlockDict['myBox_' + name] = myBoxBlock;
         myBoxBlock.palette = this.palettes.dict['blocks'];
         myBoxBlock.args = 1;
         myBoxBlock.defaults.push(name);
@@ -2806,6 +2813,7 @@ function labelChanged(myBlock) {
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {
         var cblock = myBlock.blocks.blockList[c];
+	console.log('label changed' + ' ' + myBlock.name);
         switch (cblock.name) {
             case 'action':
                 // If the label was the name of an action, update the
@@ -2813,6 +2821,7 @@ function labelChanged(myBlock) {
                 if (myBlock.value != 'action') {
                     myBlock.blocks.newDoBlock(myBlock.value);
                 }
+	        console.log('rename action: ' + myBlock.value);
                 myBlock.blocks.renameDos(oldValue, newValue);
                 myBlock.blocks.palettes.updatePalettes();
                 break;

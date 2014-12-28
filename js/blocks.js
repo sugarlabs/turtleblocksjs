@@ -992,13 +992,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // We also care about the second-to-last connection to an arg block.
             var n = this.blockList[newBlock].connections.length;
             if (this.blockList[newBlock].connections[n - 2] == thisBlock) {
-                console.log('checking ' + this.blockList[newBlock].name);
-                checkArgBlocks.push(newBlock);
+		// Only flow blocks.
+		if (this.blockList[newBlock].docks[n - 1][2] == 'in') {
+                    checkArgBlocks.push(newBlock);
+		}
             }
         }
         // If we changed the contents of a arg block, see if we need a vspace.
         if (checkArgBlocks.length > 0) {
-            console.log('checkArgBlocks ' + checkArgBlocks);
             for (var i = 0; i < checkArgBlocks.length; i++) {
                 this.addRemoveVspaceBlock(checkArgBlocks[i]);
             }

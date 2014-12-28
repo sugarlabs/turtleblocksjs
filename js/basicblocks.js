@@ -233,6 +233,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     plusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['plus'] = plusBlock;
     plusBlock.twoArgMathBlock();
+    plusBlock.docks[0][2] = 'anyout';
+    plusBlock.docks[1][2] = 'anyin';
+    plusBlock.docks[2][2] = 'anyin';
     plusBlock.staticLabels.push('+');
     plusBlock.fontsize = '24px';
 
@@ -316,7 +319,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     storeinBlock.defaults.push('box');
     storeinBlock.defaults.push(100);
     storeinBlock.docks[1][2] = 'textin';
-    storeinBlock.docks[2][2] = 'numberin';
+    storeinBlock.docks[2][2] = 'anyin';
     storeinBlock.staticLabels.push('store in');
     storeinBlock.staticLabels.push('name');
     storeinBlock.staticLabels.push('value');
@@ -327,6 +330,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.oneArgMathWithLabelBlock();
     boxBlock.defaults.push('box');
     boxBlock.staticLabels.push('box');
+    boxBlock.docks[0][2] = 'anyout';
     boxBlock.docks[1][2] = 'textin';
     // Show the value in the box as if it were a parameter.
     boxBlock.parameter = true;

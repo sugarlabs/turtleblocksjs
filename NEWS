@@ -137,10 +137,15 @@
   * query turtle blocks
   * confirm on clear
   * save dialog
+  * palettes open by default
+  * default start block position needs to move
+  * copy stack copies instances instead of making new blocks?
+  * enable number names for actions
+  * enable number names for turtles
 
 TODO:
   * enable docking to any for boxes, equal
-  * enable number names for actions and boxes
+  * enable number names for boxes
   * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks
@@ -149,12 +154,8 @@ TODO:
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
-  * palettes open by default
-  * default start block position needs to move
 
 BUGS:
   * jumpy scrolling
-  * copy stack copies instances instead of making new blocks?
   * don't save full-sized bitmap to session
   * cannot open same file twice in a row (no change event?)
-

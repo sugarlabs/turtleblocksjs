@@ -360,7 +360,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     doBlock.oneArgBlock();
     doBlock.defaults.push('action');
     doBlock.staticLabels.push('do');
-    doBlock.docks[1][2] = 'textin';
+    doBlock.docks[1][2] = 'anyin';
 
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['blocks'];

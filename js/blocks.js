@@ -205,8 +205,7 @@ function ProtoBlock(name) {
         this.copyDock(FLOWCLAMP0ARGDOCKS);
     }
 
-    // E.g., action. A "child" flow is docked in an expandable clamp.
-    // The additional argument is a name. Again, no flow above or below.
+    // E.g., repeat. Unlike action, there is a flow above and below.
     this.flowClampOneArgBlock = function() {
         this.style = 'clamp';
         this.artworkOffset = [0, 0, 74];
@@ -261,7 +260,8 @@ function ProtoBlock(name) {
         this.copyDock(ACTIONCLAMP0ARGDOCKS);
     }
 
-    // E.g., repeat. Unlike action, there is a flow above and below.
+    // E.g., action. A "child" flow is docked in an expandable clamp.
+    // The additional argument is a name. Again, no flow above or below.
     this.blockClampOneArgBlock = function() {
         this.style = 'clamp';
         this.artworkOffset = [0, 0, 86];
@@ -1055,16 +1055,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (type1 == 'out' && type2 == 'in') {
             return true;
         }
-        if (type1 == 'numberin' && type2 == 'numberout') {
+        if (type1 == 'numberin' && ['numberout', 'anyout'].indexOf(type2) != -1) {
             return true;
         }
-        if (type1 == 'numberout' && type2 == 'numberin') {
+        if (['numberout', 'anyout'].indexOf(type1) != -1 && type2 == 'numberin') {
             return true;
         }
-        if (type1 == 'textin' && type2 == 'textout') {
+        if (type1 == 'textin' && ['textout', 'anyout'].indexOf(type2) != -1) {
             return true;
         }
-        if (type1 == 'textout' && type2 == 'textin') {
+        if (['textout', 'anyout'].indexOf(type1) != -1 && type2 == 'textin') {
             return true;
         }
         if (type1 == 'booleanout' && type2 == 'booleanin') {
@@ -1082,10 +1082,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (type1 == 'mediain' && type2 == 'textout') {
             return true;
         }
-        if (type1 == 'anyin' && ['textout', 'mediaout', 'numberout'].indexOf(type2) != -1) {
+        if (type2 == 'mediain' && type1 == 'textout') {
             return true;
         }
-        if (type2 == 'anyin' && ['textout', 'mediaout', 'numberout'].indexOf(type1) != -1) {
+        if (type1 == 'anyin' && ['textout', 'mediaout', 'numberout', 'anyout'].indexOf(type2) != -1) {
+            return true;
+        }
+        if (type2 == 'anyin' && ['textout', 'mediaout', 'numberout', 'anyout'].indexOf(type1) != -1) {
             return true;
         }
         return false;

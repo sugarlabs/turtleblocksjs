@@ -318,7 +318,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     storeinBlock.twoArgBlock();
     storeinBlock.defaults.push('box');
     storeinBlock.defaults.push(100);
-    storeinBlock.docks[1][2] = 'textin';
+    storeinBlock.docks[1][2] = 'anyin';
     storeinBlock.docks[2][2] = 'anyin';
     storeinBlock.staticLabels.push('store in');
     storeinBlock.staticLabels.push('name');
@@ -331,7 +331,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.defaults.push('box');
     boxBlock.staticLabels.push('box');
     boxBlock.docks[0][2] = 'anyout';
-    boxBlock.docks[1][2] = 'textin';
+    boxBlock.docks[1][2] = 'anyin';
     // Show the value in the box as if it were a parameter.
     boxBlock.parameter = true;
 

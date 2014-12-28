@@ -76,8 +76,8 @@ define(function(require) {
         var turtles;
         var palettes;
         var blocks;
-	var saveBox;
-	var clearBox;
+        var saveBox;
+        var clearBox;
         var thumbnails;
         var thumbnailsVisible = false;
         var buttonsVisible = true;
@@ -91,12 +91,12 @@ define(function(require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
         var sounds = [];
-	try {
+        try {
             var mic = new p5.AudioIn()
-	} catch (e) {
-	    console.log('microphone not available');
-	    var mic = null;
-	}
+        } catch (e) {
+            console.log('microphone not available');
+            var mic = null;
+        }
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
@@ -295,7 +295,7 @@ define(function(require) {
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             saveBox = new SaveBox(canvas, stage, refreshCanvas, doSave);
-	    clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
+            clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
 
@@ -595,7 +595,7 @@ define(function(require) {
         }
 
         function deleteBlocksBox() {
-	    clearBox.show(scale);
+            clearBox.show(scale);
         }
 
         // FIXME: confirm???
@@ -888,10 +888,10 @@ define(function(require) {
                         console.log('??? ' + blocks.blockList[blk].name);
                         break;
                 }
-		if (typeof(value) == 'string') {
-		    blocks.blockList[blk].text.text = value;
-		} else {
-		    blocks.blockList[blk].text.text = Math.round(value).toString();		}
+                if (typeof(value) == 'string') {
+                    blocks.blockList[blk].text.text = value;
+                } else {
+                    blocks.blockList[blk].text.text = Math.round(value).toString();                }
                 blocks.blockList[blk].container.updateCache();
                 update = true;
             }
@@ -980,10 +980,10 @@ define(function(require) {
                 showStopButton();
             }
 
-	    // And mark all turtles as not running.
+            // And mark all turtles as not running.
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-		turtles.turtleList[turtle].running = false;
-	    }
+                turtles.turtleList[turtle].running = false;
+            }
 
             // (2) Execute the stack.
             // A bit complicated because we have lots of corner cases:
@@ -1145,13 +1145,13 @@ define(function(require) {
                     }
                 case 'repeat':
                     if (args.length == 2) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             childFlow = args[1];
                             childFlowCount = Math.floor(args[0]);
-			}
+                        }
                     }
                     break;
                 case 'until':
@@ -1206,6 +1206,7 @@ define(function(require) {
                     break;
                 case 'storein':
                     if (args.length == 2) {
+                        console.log('storein ' + args[1] + ' ' + typeof(args[1]));
                         doStorein(args[0], args[1]);
                     }
                     break;
@@ -1214,72 +1215,72 @@ define(function(require) {
                     break;
                 case 'setxy':
                     if (args.length == 2) {
-			if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doSetXY(args[0], args[1]);
-			}
+                        }
                     }
                     break;
                 case 'arc':
                     if (args.length == 2) {
-			if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doArc(args[0], args[1]);
-			}
+                        }
                     }
                     break;
                 case 'forward':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doForward(args[0]);
-			}
+                        }
                     }
                     break;
                 case 'back':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doForward(-args[0]);
-			}
+                        }
                     }
                     break;
                 case 'right':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doRight(args[0]);
-			}
+                        }
                     }
                     break;
                 case 'left':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doRight(-args[0]);
-			}
+                        }
                     }
                     break;
                 case 'setheading':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doSetHeading(args[0]);
-			}
+                        }
                     }
                     break;
                 case 'show':
@@ -1308,52 +1309,52 @@ define(function(require) {
                     break;
                 case 'turtleshell':
                     if (args.length == 2) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doTurtleShell(args[0], args[1]);
-			}
+                        }
                     }
                     break;
                 case 'setcolor':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doSetColor(args[0]);
-			}
+                        }
                     }
                     break;
                 case 'setshade':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doSetValue(args[0]);
-			}
+                        }
                     }
                     break;
                 case 'setgrey':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doSetChroma(args[0]);
-			}
+                        }
                     }
                     break;
                 case 'setpensize':
                     if (args.length == 1) {
-			if (typeof(args[0]) == 'string') {
-			    errorMsg('Not a number.');
-			    stopTurtle = true;
-			} else {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
                             turtles.turtleList[turtle].doSetPensize(args[0]);
-			}
+                        }
                     }
                     break;
                 case 'beginfill':
@@ -1540,12 +1541,12 @@ define(function(require) {
         }
 
         function getTargetTurtle(args) {
-	    // The target turtle name can be a string or an int.
-	    if (typeof(args[0]) == 'string') {
-		var targetTurtleName = parseInt(args[0])
-	    } else {
-		var targetTurtleName = args[0];
-	    }
+            // The target turtle name can be a string or an int.
+            if (typeof(args[0]) == 'string') {
+                var targetTurtleName = parseInt(args[0])
+            } else {
+                var targetTurtleName = args[0];
+            }
 
             var startHere = null;
 
@@ -1657,10 +1658,7 @@ define(function(require) {
                         var a = parseArg(activity, turtle, cblk1);
                         var b = parseArg(activity, turtle, cblk2);
                         var result = (Number(a) < Number(b));
-                        console.log(result);
-                        console.log('assigning result to less blk');
                         blocks.blockList[blk].value = result;
-                        console.log(blocks.blockList[blk].value);
                         break;
                     case 'random':
                         var cblk1 = blocks.blockList[blk].connections[1];
@@ -1746,7 +1744,6 @@ define(function(require) {
                         blocks.blockList[blk].value = a && b;
                         break;
                     case 'or':
-                        console.log("works")
                         var cblk1 = blocks.blockList[blk].connections[1];
                         var cblk2 = blocks.blockList[blk].connections[2];
                         var a = parseArg(activity, turtle, cblk1);
@@ -1841,56 +1838,56 @@ define(function(require) {
 
         // Math functions
         function doRandom(a, b) {
-	    if (typeof(a) == 'string' || typeof(b) == 'string') {
+            if (typeof(a) == 'string' || typeof(b) == 'string') {
                 errorMsg('Not a number.');
                 stopTurtle = true;
                 return 0;
-	    }
+            }
             return Math.floor(Math.random() * (Number(b) - Number(a) + 1) + Number(a));
         }
 
         function doPlus(a, b) {
-	    if (typeof(a) == 'string' || typeof(b) == 'string') {
-		if (typeof(a) == 'string') {
-		    var aString = a;
+            if (typeof(a) == 'string' || typeof(b) == 'string') {
+                if (typeof(a) == 'string') {
+                    var aString = a;
                 } else {
-		    var aString = a.toString();
-		}
-		if (typeof(b) == 'string') {
-		    var bString = b;
+                    var aString = a.toString();
+                }
+                if (typeof(b) == 'string') {
+                    var bString = b;
                 } else {
-		    var bString = b.toString();
-		}
-		return aString + bString;
-	    } else {
-		return Number(a) + Number(b);
+                    var bString = b.toString();
+                }
+                return aString + bString;
+            } else {
+                return Number(a) + Number(b);
             }
-	}
+        }
 
         function doMinus(a, b) {
-	    if (typeof(a) == 'string' || typeof(b) == 'string') {
+            if (typeof(a) == 'string' || typeof(b) == 'string') {
                 errorMsg('Not a number.');
                 stopTurtle = true;
                 return 0;
-	    }
+            }
             return Number(a) - Number(b);
         }
 
         function doMultiply(a, b) {
-	    if (typeof(a) == 'string' || typeof(b) == 'string') {
+            if (typeof(a) == 'string' || typeof(b) == 'string') {
                 errorMsg('Not a number.');
                 stopTurtle = true;
                 return 0;
-	    }
+            }
             return Number(a) * Number(b);
         }
 
         function doDivide(a, b) {
-	    if (typeof(a) == 'string' || typeof(b) == 'string') {
+            if (typeof(a) == 'string' || typeof(b) == 'string') {
                 errorMsg('Not a number.');
                 stopTurtle = true;
                 return 0;
-	    }
+            }
             if (Number(b) == 0) {
                 errorMsg('Cannot divide by zero.');
                 stopTurtle = true;
@@ -1983,9 +1980,9 @@ define(function(require) {
             this.fileChooser.click();
         }
 
-	function doSaveBox() {
-	    saveBox.show(scale);
-	}
+        function doSaveBox() {
+            saveBox.show(scale);
+        }
 
         function doSave() {
             // FIXME: show input form and then save after name has been entered

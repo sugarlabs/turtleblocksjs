@@ -142,10 +142,10 @@
   * copy stack copies instances instead of making new blocks?
   * enable number names for actions
   * enable number names for turtles
-
-TODO:
   * enable docking to any for boxes, equal
   * enable number names for boxes
+
+TODO:
   * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks

@@ -992,10 +992,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // We also care about the second-to-last connection to an arg block.
             var n = this.blockList[newBlock].connections.length;
             if (this.blockList[newBlock].connections[n - 2] == thisBlock) {
-		// Only flow blocks.
-		if (this.blockList[newBlock].docks[n - 1][2] == 'in') {
+                // Only flow blocks.
+                if (this.blockList[newBlock].docks[n - 1][2] == 'in') {
                     checkArgBlocks.push(newBlock);
-		}
+                }
             }
         }
         // If we changed the contents of a arg block, see if we need a vspace.
@@ -1172,7 +1172,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.container.swapChildren(myBlock.text, lastChild);
 
         if (myBlock.loadComplete) {
-            console.log('load complete: updating cache');
             myBlock.container.updateCache();
         } else {
             console.log('load not yet complete for ' + blk);
@@ -1435,7 +1434,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         } else if (name == 'number') {
             postProcess = function(args) {
                 var thisBlock = args[0];
-                var value = args[1];
+                var value = Number(args[1]);
                 me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value.toString();
             }
@@ -1481,12 +1480,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
-		    console.log('creating ' + name + ' block with no args');
+                    console.log('creating ' + name + ' block with no args');
                     this.makeNewBlock(proto, postProcess, postProcessArg);
                     break;
                 } else {
                     if (this.protoBlockDict[proto].defaults[0] == arg) {
-			console.log('creating ' + name + ' block with default arg ' + arg);
+                        console.log('creating ' + name + ' block with default arg ' + arg);
                         this.makeNewBlock(proto, postProcess, postProcessArg);
                         break;
                     }
@@ -1524,7 +1523,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 } else {
                     postProcess = function(args) {
                         var thisBlock = args[0];
-                        var value = args[1];
+                        var value = Number(args[1]);
                         me.blockList[thisBlock].value = value;
                         me.blockList[thisBlock].text.text = value.toString();
                     }
@@ -1690,16 +1689,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.newStoreinBlock = function(name) {
-	console.log('newStoreinBlock ' + name);
         var myStoreinBlock = new ProtoBlock('storein');
         this.protoBlockDict['myStorein_' + name] = myStoreinBlock;
         myStoreinBlock.palette = this.palettes.dict['blocks'];
         myStoreinBlock.twoArgBlock();
         myStoreinBlock.defaults.push(name);
         myStoreinBlock.defaults.push(100);
-	myStoreinBlock.staticLabels.push('store in');
-	myStoreinBlock.staticLabels.push('name');
-	myStoreinBlock.staticLabels.push('value');
+        myStoreinBlock.staticLabels.push('store in');
+        myStoreinBlock.staticLabels.push('name');
+        myStoreinBlock.staticLabels.push('value');
         if (name == 'box') {
             return;
         }
@@ -1707,13 +1705,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.newBoxBlock = function(name) {
-	console.log('newBoxBlock ' + name);
         var myBoxBlock = new ProtoBlock('box');
         this.protoBlockDict['myBox_' + name] = myBoxBlock;
-	myBoxBlock.oneArgMathWithLabelBlock();
+        myBoxBlock.oneArgMathWithLabelBlock();
         myBoxBlock.palette = this.palettes.dict['blocks'];
         myBoxBlock.defaults.push(name);
-	myBoxBlock.staticLabels.push('box');
+        myBoxBlock.staticLabels.push('box');
         myBoxBlock.style = 'arg';
         if (name == 'box') {
             return;
@@ -1724,10 +1721,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.newDoBlock = function(name) {
         var myDoBlock = new ProtoBlock('do');
         this.protoBlockDict['myDo'] = myDoBlock;
-	myDoBlock.oneArgBlock();
+        myDoBlock.oneArgBlock();
         myDoBlock.palette = this.palettes.dict['blocks'];
         myDoBlock.defaults.push(name);
-	myDoBlock.staticLabels.push('do');
+        myDoBlock.staticLabels.push('do');
         if (name == 'action') {
             return;
         }
@@ -1737,12 +1734,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.newActionBlock = function(name) {
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction'] = myActionBlock;
-	myActionBlock.blockClampOneArgBlock();
+        myActionBlock.blockClampOneArgBlock();
         myActionBlock.palette = this.palettes.dict['blocks'];
         myActionBlock.artworkOffset = [0, 0, 86];
         myActionBlock.fillerOffset = 42;
         myActionBlock.defaults.push(name);
-	myActionBlock.staticLabels.push('action');
+        myActionBlock.staticLabels.push('action');
         myActionBlock.expandable = true;
         myActionBlock.style = 'clamp';
         if (name == 'action') {
@@ -1802,14 +1799,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 y = 0;
             }
             if (myBlock.isValueBlock()) {
-		switch(myBlock.name) {
-		case 'media':
+                switch(myBlock.name) {
+                case 'media':
                     blockItem = [b, [myBlock.name, null], x, y, []];
-		    break;
-		default:
+                    break;
+                default:
                     blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
-		    break;
-		}
+                    break;
+                }
             } else {
                 blockItem = [b, myBlock.name, x, y, []];
             }
@@ -1993,6 +1990,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
                     // Value blocks need a default value set.
                 case 'number':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].value = Number(value);
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                    break;
                 case 'text':
                     postProcess = function(args) {
                         var thisBlock = args[0];
@@ -2806,7 +2811,7 @@ function labelChanged(myBlock) {
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {
         var cblock = myBlock.blocks.blockList[c];
-	console.log('label changed' + ' ' + myBlock.name);
+        console.log('label changed' + ' ' + myBlock.name);
         switch (cblock.name) {
             case 'action':
                 // If the label was the name of an action, update the
@@ -2814,7 +2819,7 @@ function labelChanged(myBlock) {
                 if (myBlock.value != 'action') {
                     myBlock.blocks.newDoBlock(myBlock.value);
                 }
-	        console.log('rename action: ' + myBlock.value);
+                console.log('rename action: ' + myBlock.value);
                 myBlock.blocks.renameDos(oldValue, newValue);
                 myBlock.blocks.palettes.updatePalettes();
                 break;

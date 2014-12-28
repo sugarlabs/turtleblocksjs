@@ -57,7 +57,6 @@ function Palettes(canvas, stage, cellSize, refreshCanvas) {
         this.y = this.cellSize;
         for (var name in this.dict) {
             if (name in this.buttons) {
-                console.log('button ' + name + ' has already been created');
                 this.dict[name].updateMenu(true);
             } else {
                 this.buttons[name] = new createjs.Container();

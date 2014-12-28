@@ -84,6 +84,47 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     vspaceBlock.zeroArgBlock();
     // vspaceBlock.staticLabels.push('');
 
+    var printBlock = new ProtoBlock('print');
+    printBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['print'] = printBlock;
+    printBlock.oneArgBlock();
+    printBlock.staticLabels.push('print');
+    printBlock.docks[1][2] = 'anyin';
+
+    var getxTurtleBlock = new ProtoBlock('xturtle');
+    getxTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
+    getxTurtleBlock.oneArgMathBlock();
+    getxTurtleBlock.staticLabels.push('turtle x');
+    getxTurtleBlock.defaults.push('0');
+    getxTurtleBlock.docks[1][2] = 'textin';
+
+    var getyTurtleBlock = new ProtoBlock('yturtle');
+    getyTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
+    getyTurtleBlock.oneArgMathBlock();
+    getyTurtleBlock.staticLabels.push('turtle y');
+    getyTurtleBlock.defaults.push('0');
+    getyTurtleBlock.docks[1][2] = 'textin'; 
+
+    var startTurtleBlock = new ProtoBlock('startTurtle');
+    startTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
+    startTurtleBlock.oneArgBlock();
+    startTurtleBlock.fontsize = '16px';
+    startTurtleBlock.docks[1][2] = 'anyin';
+    startTurtleBlock.defaults.push(0);
+    startTurtleBlock.staticLabels.push('start turtle');
+
+    var stopTurtleBlock = new ProtoBlock('stopTurtle');
+    stopTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
+    stopTurtleBlock.oneArgBlock();
+    stopTurtleBlock.fontsize = '16px';
+    stopTurtleBlock.docks[1][2] = 'anyin';
+    stopTurtleBlock.defaults.push(0);
+    stopTurtleBlock.staticLabels.push('stop turtle');
+
     var pubBlock = new ProtoBlock('publish');
     pubBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['publish'] = pubBlock;
@@ -99,13 +140,6 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     svgBlock.defaults.push('title');
     svgBlock.staticLabels.push('save svg');
     svgBlock.docks[1][2] = 'textin';
-
-    var printBlock = new ProtoBlock('print');
-    printBlock.palette = palettes.dict['extras'];
-    blocks.protoBlockDict['print'] = printBlock;
-    printBlock.oneArgBlock();
-    printBlock.staticLabels.push('print');
-    printBlock.docks[1][2] = 'anyin';
 
     var showBlocks = new ProtoBlock('showblocks');
     showBlocks.palette = palettes.dict['extras'];

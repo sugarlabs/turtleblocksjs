@@ -129,22 +129,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     yBlock.parameterBlock();
     yBlock.staticLabels.push('y');
 
-    var getxTurtleBlock = new ProtoBlock('xturtle');
-    getxTurtleBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
-    getxTurtleBlock.oneArgMathBlock();
-    getxTurtleBlock.staticLabels.push('turtle x');
-    getxTurtleBlock.defaults.push('0');
-    getxTurtleBlock.docks[1][2] = 'textin';
-
-    var getyTurtleBlock = new ProtoBlock('yturtle');
-    getyTurtleBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
-    getyTurtleBlock.oneArgMathBlock();
-    getyTurtleBlock.staticLabels.push('turtle y');
-    getyTurtleBlock.defaults.push('0');
-    getyTurtleBlock.docks[1][2] = 'textin'; 
-
     // Pen palette
     var setcolorBlock = new ProtoBlock('setcolor');
     setcolorBlock.palette = palettes.dict['pen'];
@@ -367,24 +351,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['start'] = startBlock;
     startBlock.blockClampZeroArgBlock();
     startBlock.staticLabels.push('start');
-
-    var startTurtleBlock = new ProtoBlock('startTurtle');
-    startTurtleBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
-    startTurtleBlock.oneArgBlock();
-    startTurtleBlock.fontsize = '16px';
-    startTurtleBlock.docks[1][2] = 'textin';
-    startTurtleBlock.defaults.push('0');
-    startTurtleBlock.staticLabels.push('start turtle');
-
-    var stopTurtleBlock = new ProtoBlock('stopTurtle');
-    stopTurtleBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
-    stopTurtleBlock.oneArgBlock();
-    stopTurtleBlock.fontsize = '16px';
-    stopTurtleBlock.docks[1][2] = 'textin';
-    stopTurtleBlock.defaults.push('0');
-    stopTurtleBlock.staticLabels.push('stop turtle');
 
     // Media palette
     var showBlock = new ProtoBlock('show');

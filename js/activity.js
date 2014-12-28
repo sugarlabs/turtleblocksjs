@@ -977,6 +977,11 @@ define(function(require) {
                 showStopButton();
             }
 
+	    // And mark all turtles as not running.
+            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+		turtles.turtleList[turtle].running = false;
+	    }
+
             // (2) Execute the stack.
             // A bit complicated because we have lots of corner cases:
             if (startHere != null) {
@@ -1467,13 +1472,19 @@ define(function(require) {
         }
 
         function getTargetTurtle(args) {
-            var targetTurtleName = args[0];
+	    // The target turtle name can be a string or an int.
+	    if (typeof(args[0]) == 'string') {
+		var targetTurtleName = parseInt(args[0])
+	    } else {
+		var targetTurtleName = args[0];
+	    }
+
             var startHere = null;
 
             for (blk in blocks.blockList) {
                 var name = blocks.blockList[blk].name;
                 var targetTurtle = blocks.blockList[blk].value;
-                if (name == 'start' && targetTurtle == parseInt(targetTurtleName)) {
+                if (name == 'start' && targetTurtle == targetTurtleName) {
                     startHere = blk;
                     break;
                 }

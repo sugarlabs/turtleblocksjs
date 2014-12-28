@@ -96,16 +96,16 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
     getxTurtleBlock.oneArgMathBlock();
     getxTurtleBlock.staticLabels.push('turtle x');
-    getxTurtleBlock.defaults.push('0');
-    getxTurtleBlock.docks[1][2] = 'textin';
+    getxTurtleBlock.defaults.push(0);
+    getxTurtleBlock.docks[1][2] = 'anyin';
 
     var getyTurtleBlock = new ProtoBlock('yturtle');
     getyTurtleBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
     getyTurtleBlock.oneArgMathBlock();
     getyTurtleBlock.staticLabels.push('turtle y');
-    getyTurtleBlock.defaults.push('0');
-    getyTurtleBlock.docks[1][2] = 'textin'; 
+    getyTurtleBlock.defaults.push(0);
+    getyTurtleBlock.docks[1][2] = 'anyin'; 
 
     var startTurtleBlock = new ProtoBlock('startTurtle');
     startTurtleBlock.palette = palettes.dict['extras'];

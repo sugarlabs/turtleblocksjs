@@ -461,7 +461,6 @@ function Turtles(canvas, stage, refreshCanvas) {
     this.scale = 1.0;
 
     this.setScale = function(scale) {
-        console.log('setting scale to ' + scale);
         this.scale = scale;
     }
 

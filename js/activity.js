@@ -1206,7 +1206,6 @@ define(function(require) {
                     break;
                 case 'storein':
                     if (args.length == 2) {
-                        console.log('storein ' + args[1] + ' ' + typeof(args[1]));
                         doStorein(args[0], args[1]);
                     }
                     break;

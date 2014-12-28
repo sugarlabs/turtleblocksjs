@@ -1696,12 +1696,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 	myStoreinBlock.staticLabels.push('store in');
 	myStoreinBlock.staticLabels.push('name');
 	myStoreinBlock.staticLabels.push('value');
-        myStoreinBlock.docks = [
-            [20, 0, 'out'],
-            [98, 20, 'textin'],
-            [98, 62, 'numberin'],
-            [20, 84, 'in']
-        ];
         if (name == 'box') {
             return;
         }
@@ -1714,14 +1708,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.protoBlockDict['myBox_' + name] = myBoxBlock;
 	myBoxBlock.oneArgMathWithLabelBlock();
         myBoxBlock.palette = this.palettes.dict['blocks'];
-        myBoxBlock.args = 1;
         myBoxBlock.defaults.push(name);
 	myBoxBlock.staticLabels.push('box');
         myBoxBlock.style = 'arg';
-        myBoxBlock.docks = [
-            [0, 20, 'numberout'],
-            [136, 20, 'textin']
-        ];
         if (name == 'box') {
             return;
         }
@@ -1733,14 +1722,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.protoBlockDict['myDo'] = myDoBlock;
 	myDoBlock.oneArgBlock();
         myDoBlock.palette = this.palettes.dict['blocks'];
-        myDoBlock.args = 1;
         myDoBlock.defaults.push(name);
 	myDoBlock.staticLabels.push('do');
-        myDoBlock.docks = [
-            [20, 0, 'out'],
-            [98, 20, 'textin'],
-            [20, 42, 'in']
-        ];
         if (name == 'action') {
             return;
         }
@@ -1754,17 +1737,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myActionBlock.palette = this.palettes.dict['blocks'];
         myActionBlock.artworkOffset = [0, 0, 86];
         myActionBlock.fillerOffset = 42;
-        myActionBlock.args = 1;
         myActionBlock.defaults.push(name);
 	myActionBlock.staticLabels.push('action');
         myActionBlock.expandable = true;
         myActionBlock.style = 'clamp';
-        myActionBlock.docks = [
-            [20, 0, 'unavailable'],
-            [98, 34, 'textin'],
-            [38, 55, 'in'],
-            [20, 80, 'unavailable']
-        ];
         if (name == 'action') {
             return;
         }
@@ -1822,7 +1798,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 y = 0;
             }
             if (myBlock.isValueBlock()) {
-                blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
+		switch(myBlock.name) {
+		case 'media':
+                    blockItem = [b, [myBlock.name, null], x, y, []];
+		    break;
+		default:
+                    blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
+		    break;
+		}
             } else {
                 blockItem = [b, myBlock.name, x, y, []];
             }

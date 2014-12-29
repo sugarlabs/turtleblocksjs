@@ -15,6 +15,7 @@ var paletteBlocks = null;
 var PALETTESCALE = 1.0;
 var PALETTEOFFSET = 20;
 
+
 function paletteBlockButtonPush(name, arg) {
     // console.log('paletteBlockButtonPush' + name + ' ' + arg);
     blk = paletteBlocks.makeBlock(name, arg);
@@ -178,6 +179,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas) {
     return this;
 }
 
+
 // Palette Button event handlers
 function loadPaletteButtonHandler(palettes, name) {
     var locked = false;
@@ -250,25 +252,25 @@ function Palette(palettes, name, color, bgcolor) {
         if (this.menuContainer == null) {
             this.menuContainer = new createjs.Container();
 
-            function processHeader(me, name, bitmap, extras) {
-                me.menuContainer.addChild(bitmap);
+            function processHeader(palette, name, bitmap, extras) {
+                palette.menuContainer.addChild(bitmap);
 
                 var image = new Image();
-                image.src = 'images/' + me.name + '.svg';
+                image.src = 'images/' + palette.name + '.svg';
                 var icon = new createjs.Bitmap(image);
                 icon.scaleX = 0.8;
                 icon.scaleY = 0.8;
-                me.menuContainer.addChild(icon);
-                me.palettes.container.addChild(me.menuContainer);
+                palette.menuContainer.addChild(icon);
+                palette.palettes.container.addChild(palette.menuContainer);
 
                 var hitArea = new createjs.Shape();
                 hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
                 hitArea.x = MENUWIDTH / 2;
                 hitArea.y = STANDARDBLOCKHEIGHT / 2;
-                me.menuContainer.hitArea = hitArea;
-                me.menuContainer.visible = false;
+                palette.menuContainer.hitArea = hitArea;
+                palette.menuContainer.visible = false;
 
-                loadPaletteMenuHandler(me);
+                loadPaletteMenuHandler(palette);
             }
 
             makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name), this.name, processHeader, null);
@@ -326,6 +328,7 @@ function Palette(palettes, name, color, bgcolor) {
 
                 // We use a filler for the menu background
                 var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
+		// Some blocks are not shown full-size on the palette.
                 if (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1) {
                     height = STANDARDBLOCKHEIGHT;
                 } else if (['action', 'start'].indexOf(blkname) != -1) {
@@ -336,12 +339,12 @@ function Palette(palettes, name, color, bgcolor) {
                 this.size += Math.ceil(height * PALETTESCALE);
                 this.y += Math.ceil(height * PALETTESCALE);
 
-                function processFiller(me, modname, bitmap, extras) {
-                    me.protoBackgrounds[modname].addChild(bitmap);
+                function processFiller(palette, modname, bitmap, extras) {
+                    palette.protoBackgrounds[modname].addChild(bitmap);
                     bitmap.y = 0;
-                    bounds = me.protoBackgrounds[modname].getBounds();
-                    me.protoBackgrounds[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-                    me.finishPaletteEntry(extras[0], modname, extras[1]);
+                    bounds = palette.protoBackgrounds[modname].getBounds();
+                    palette.protoBackgrounds[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                    palette.finishPaletteEntry(extras[0], modname, extras[1]);
                 }
 
                 makePaletteBitmap(this, PALETTEFILLER.replace(/filler_height/g, height.toString()), modname, processFiller, [blkname, blk]);
@@ -406,80 +409,80 @@ function Palette(palettes, name, color, bgcolor) {
             break;
         }
 
-        function processBitmap(me, modname, bitmap, args) {
+        function processBitmap(palette, modname, bitmap, args) {
             var myBlock = args[0];
             var blk = args[1];
-            me.protoContainers[modname].addChild(bitmap);
+            palette.protoContainers[modname].addChild(bitmap);
             bitmap.x = PALETTEOFFSET;
             bitmap.y = 0;
             bitmap.scaleX = PALETTESCALE;
             bitmap.scaleY = PALETTESCALE;
             bitmap.scale = PALETTESCALE;
 
-            if (!me.protoList[blk].expandable || (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1)) {
-                bounds = me.protoContainers[modname].getBounds();
-                me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+            if (!palette.protoList[blk].expandable || (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1)) {
+                bounds = palette.protoContainers[modname].getBounds();
+                palette.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
                 var hitArea = new createjs.Shape();
                 hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
-                me.protoContainers[modname].hitArea = hitArea;
+                palette.protoContainers[modname].hitArea = hitArea;
 
-                loadPaletteMenuItemHandler(me, blk, modname, me);
-                me.palettes.refreshCanvas();
+                loadPaletteMenuItemHandler(palette, blk, modname);
+                palette.palettes.refreshCanvas();
             } else {
                 if (myBlock.style == 'doubleclamp') {
-                    middleExpandable(me, modname, myBlock, blk)
+                    middleExpandable(palette, modname, myBlock, blk)
                 } else {
-                    finishExpandable(me, modname, myBlock, blk);
+                    finishExpandable(palette, modname, myBlock, blk);
                 }
             }
         }
 
         makePaletteBitmap(this, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBitmap, [myBlock, blk]);
 
-        function middleExpandable(me, modname, myBlock, blk) {
-            if (me.protoList[blk].expandable) {
+        function middleExpandable(palette, modname, myBlock, blk) {
+            if (palette.protoList[blk].expandable) {
                 middleArtwork = myBlock.artwork[1];
 
-                function processMiddleBitmap(me, modname, bitmap, middleOffset) {
-                    me.protoContainers[modname].addChild(bitmap);
+                function processMiddleBitmap(palette, modname, bitmap, middleOffset) {
+                    palette.protoContainers[modname].addChild(bitmap);
                     bitmap.x = PALETTEOFFSET;
                     bitmap.y = middleOffset;
                     bitmap.scaleX = PALETTESCALE;
                     bitmap.scaleY = PALETTESCALE;
                     bitmap.scale = PALETTESCALE;
 
-                    finishExpandable(me, modname, myBlock, blk)
+                    finishExpandable(palette, modname, myBlock, blk)
                 }
 
-                var middleOffset = Math.floor(me.protoList[blk].artworkOffset[1] * PALETTESCALE);
-                makePaletteBitmap(me, middleArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('mid_label', mid_label).replace('font_size', myBlock.fontsize), modname, processMiddleBitmap, middleOffset);
+                var middleOffset = Math.floor(palette.protoList[blk].artworkOffset[1] * PALETTESCALE);
+                makePaletteBitmap(palette, middleArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('mid_label', mid_label).replace('font_size', myBlock.fontsize), modname, processMiddleBitmap, middleOffset);
             }
         }
 
-        function finishExpandable(me, modname, myBlock, blk) {
-            if (me.protoList[blk].expandable) {
+        function finishExpandable(palette, modname, myBlock, blk) {
+            if (palette.protoList[blk].expandable) {
                 bottomArtwork = last(myBlock.artwork);
 
-                function processBottomBitmap(me, modname, bitmap, artworkOffset) {
-                    me.protoContainers[modname].addChild(bitmap);
+                function processBottomBitmap(palette, modname, bitmap, artworkOffset) {
+                    palette.protoContainers[modname].addChild(bitmap);
                     bitmap.x = PALETTEOFFSET;
-                    var middleOffset = Math.floor(me.protoList[blk].artworkOffset[1] * PALETTESCALE);
+                    var middleOffset = Math.floor(palette.protoList[blk].artworkOffset[1] * PALETTESCALE);
                     bitmap.y = artworkOffset;
                     bitmap.scaleX = PALETTESCALE;
                     bitmap.scaleY = PALETTESCALE;
                     bitmap.scale = PALETTESCALE;
 
-                    bounds = me.protoContainers[modname].getBounds();
-                    me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                    bounds = palette.protoContainers[modname].getBounds();
+                    palette.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
                     var hitArea = new createjs.Shape();
                     hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
-                    me.protoContainers[modname].hitArea = hitArea;
-                    loadPaletteMenuItemHandler(me, blk, modname, me);
-                    me.palettes.refreshCanvas();
+                    palette.protoContainers[modname].hitArea = hitArea;
+                    loadPaletteMenuItemHandler(palette, blk, modname);
+                    palette.palettes.refreshCanvas();
                 }
 
-                var artworkOffset = Math.floor(me.protoList[blk].artworkOffset[2] * PALETTESCALE);
-                makePaletteBitmap(me, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, artworkOffset);
+                var artworkOffset = Math.floor(palette.protoList[blk].artworkOffset[2] * PALETTESCALE);
+                makePaletteBitmap(palette, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, artworkOffset);
             }
         }
     }
@@ -603,8 +606,8 @@ function Palette(palettes, name, color, bgcolor) {
     }
 
     return this;
-
 };
+
 
 function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     // Instantiate the palettes object.
@@ -627,8 +630,9 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     return palettes;
 }
 
+
 // Menu Item event handlers
-function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
+function loadPaletteMenuItemHandler(palette, blk, blkname) {
     // A menu item is a protoblock that is used to create a new block.
     var locked = false;
     var moved = false;
@@ -657,11 +661,11 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
         return paletteBlockButtonPush(palette.protoList[blk].name, arg);
     }
 
-    me.protoContainers[blkname].on('mousedown', function(event) {
+    palette.protoContainers[blkname].on('mousedown', function(event) {
         moved = false;
         saveX = palette.protoContainers[blkname].x;
         saveY = palette.protoContainers[blkname].y;
-        if (me.draggingProtoBlock) {
+        if (palette.draggingProtoBlock) {
             return;
         }
         if (locked) {
@@ -672,40 +676,41 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
         setTimeout(function() {
             locked = false;
         }, 500);
-        me.palettes.setDraggingFlag(true);
+        palette.palettes.setDraggingFlag(true);
         var offset = {
-            x: palette.protoContainers[blkname].x - Math.round(event.stageX / me.palettes.scale) - PALETTEOFFSET,
-            y: palette.protoContainers[blkname].y - Math.round(event.stageY / me.palettes.scale)
+            x: palette.protoContainers[blkname].x - Math.round(event.stageX / palette.palettes.scale) - PALETTEOFFSET,
+            y: palette.protoContainers[blkname].y - Math.round(event.stageY / palette.palettes.scale)
         };
 
-        me.protoContainers[blkname].on('pressmove', function(event) {
+        palette.protoContainers[blkname].on('pressmove', function(event) {
             moved = true;
-            me.draggingProtoBlock = true;
-            me.protoContainers[blkname].x = Math.round(event.stageX / me.palettes.scale) - PALETTEOFFSET;
-            me.protoContainers[blkname].y = Math.round(event.stageY / me.palettes.scale);
+            palette.draggingProtoBlock = true;
+            palette.protoContainers[blkname].x = Math.round(event.stageX / palette.palettes.scale) - PALETTEOFFSET;
+            palette.protoContainers[blkname].y = Math.round(event.stageY / palette.palettes.scale);
             palette.palettes.refreshCanvas();
         });
     });
 
-    me.protoContainers[blkname].on('pressup', function(event) {
+    palette.protoContainers[blkname].on('pressup', function(event) {
         if (moved) {
             moved = false;
-            me.draggingProtoBlock = false;
+            palette.draggingProtoBlock = false;
             palette.palettes.setDraggingFlag(false);
             // Create the block.
             var newBlock = makeBlockFromPalette(blk, blkname, palette);
             // Move the drag group under the cursor.
             paletteBlocks.findDragGroup(newBlock);
             for (i in paletteBlocks.dragGroup) {
-                paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / me.palettes.scale), Math.round(event.stageY / me.palettes.scale));
+                paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale), Math.round(event.stageY / palette.palettes.scale));
             }
         }
         // Return protoblock we've been dragging back to the palette.
-        me.protoContainers[blkname].x = saveX;
-        me.protoContainers[blkname].y = saveY;
+        palette.protoContainers[blkname].x = saveX;
+        palette.protoContainers[blkname].y = saveY;
         palette.palettes.refreshCanvas();
     });
 }
+
 
 // Palette Menu event handlers
 function loadPaletteMenuHandler(palette) {
@@ -746,8 +751,8 @@ function loadPaletteMenuHandler(palette) {
         palette.palettes.setDraggingFlag(true);
         // Move them all?
         var offset = {
-            x: palette.menuContainer.x - event.stageX,
-            y: palette.menuContainer.y - event.stageY
+            x: palette.menuContainer.x - Math.round(event.stageX / palette.palettes.scale),
+            y: palette.menuContainer.y - Math.round(event.stageY / palette.palettes.scale)
         };
 
         palette.menuContainer.on('pressup', function(event) {
@@ -761,8 +766,8 @@ function loadPaletteMenuHandler(palette) {
         palette.menuContainer.on('pressmove', function(event) {
             var oldX = palette.menuContainer.x;
             var oldY = palette.menuContainer.y;
-            palette.menuContainer.x = event.stageX + offset.x;
-            palette.menuContainer.y = event.stageY + offset.y;
+            palette.menuContainer.x = Math.round(event.stageX / palette.palettes.scale) + offset.x;
+            palette.menuContainer.y = Math.round(event.stageY / palette.palettes.scale) + offset.y;
             palette.palettes.refreshCanvas();
             var dx = palette.menuContainer.x - oldX;
             var dy = palette.menuContainer.y - oldY;
@@ -776,13 +781,13 @@ function loadPaletteMenuHandler(palette) {
 }
 
 
-function makePaletteBitmap(me, data, name, callback, extras) {
+function makePaletteBitmap(palette, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
     var img = new Image();
     img.onload = function() {
         bitmap = new createjs.Bitmap(img);
-        callback(me, name, bitmap, extras);
+        callback(palette, name, bitmap, extras);
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));

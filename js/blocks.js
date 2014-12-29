@@ -2902,8 +2902,6 @@ function doOpenMedia(blocks, thisBlock) {
 // These are the event handlers for collapsible blocks.
 function loadCollapsibleEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
-    var blk;
-
     var bounds = myBlock.collapseContainer.getBounds();
     var hitArea = new createjs.Shape();
     var w2 = bounds.width;
@@ -2933,91 +2931,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         }, 500);
         hideDOMLabel();
         if (!moved) {
-            // Find the blocks to collapse/expand
-            blocks.findDragGroup(thisBlock)
-            if (myBlock.collapsed) {
-                myBlock.collapsed = false;
-                myBlock.collapseBitmap.visible = true;
-                myBlock.expandBitmap.visible = false;
-                myBlock.collapseBlockBitmap.visible = false;
-                myBlock.highlightCollapseBlockBitmap.visible = false;
-                myBlock.collapseText.visible = false;
-                for (b in myBlock.bitmap) {
-                    if (myBlock.bitmap[b] != null) {
-                        myBlock.bitmap[b].visible = false;
-                    }
-                }
-                for (b in myBlock.highlightBitmap) {
-                    if (myBlock.highlightBitmap[b] != null) {
-                        myBlock.highlightBitmap[b].visible = true;
-                    }
-                }
-                for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
-                    myBlock.fillerBitmaps[MID][i].visible = false;
-                    myBlock.highlightFillerBitmaps[MID][i].visible = true;
-                }
-                for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
-                    myBlock.fillerBitmaps[BOT][i].visible = false;
-                    myBlock.highlightFillerBitmaps[BOT][i].visible = true;
-                }
-                if (blocks.dragGroup.length > 0) {
-                    for (var b = 0; b < blocks.dragGroup.length; b++) {
-                        var blk = blocks.dragGroup[b];
-                        if (b != 0) {
-                            blocks.blockList[blk].collapsed = false;
-                            blocks.blockList[blk].container.visible = true;
-                        }
-                    }
-                }
-            } else {
-                myBlock.collapsed = true;
-                myBlock.collapseBitmap.visible = false;
-                myBlock.expandBitmap.visible = true;
-                myBlock.collapseBlockBitmap.visible = true;
-                myBlock.highlightCollapseBlockBitmap.visible = false;
-                myBlock.collapseText.visible = true;
-                for (b in myBlock.bitmap) {
-                    if (myBlock.bitmap[b] != null) {
-                        myBlock.bitmap[b].visible = false;
-                    }
-                }
-                for (b in myBlock.highlightBitmap) {
-                    if (myBlock.highlightBitmap[b] != null) {
-                        myBlock.highlightBitmap[b].visible = false;
-                    }
-                }
-                for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
-                    myBlock.fillerBitmaps[MID][i].visible = false;
-                    myBlock.highlightFillerBitmaps[MID][i].visible = false;
-                }
-                for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
-                    myBlock.fillerBitmaps[BOT][i].visible = false;
-                    myBlock.highlightFillerBitmaps[BOT][i].visible = false;
-                }
-                if (myBlock.name == 'action') {
-                    // Label the collapsed block with the action label
-                    if (myBlock.connections[1] != null) {
-                        myBlock.collapseText.text = blocks.blockList[myBlock.connections[1]].value;
-                    } else {
-                        myBlock.collapseText.text = '';
-                    }
-                }
-                lastChild = last(myBlock.container.children);
-                myBlock.container.swapChildren(myBlock.collapseText, lastChild);
-                if (blocks.dragGroup.length > 0) {
-                    for (var b = 0; b < blocks.dragGroup.length; b++) {
-                        var blk = blocks.dragGroup[b];
-                        if (b != 0) {
-                            blocks.blockList[blk].collapsed = true;
-                            blocks.blockList[blk].container.visible = false;
-                        }
-                    }
-                }
-            }
-
-            myBlock.collapseContainer.updateCache();
-            myBlock.container.updateCache();
-            blocks.refreshCanvas();
+	    collapseToggle(blocks, myBlock);
         }
     });
 
@@ -3085,6 +2999,71 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         collapseOut(blocks, myBlock, thisBlock, moved, event);
         moved = false;
     });
+}
+
+
+function collapseToggle(blocks, myBlock) {
+    // Find the blocks to collapse/expand
+    var thisBlock = blocks.blockList.indexOf(myBlock);
+    blocks.findDragGroup(thisBlock)
+
+    function toggle(collapse) {
+        myBlock.collapsed = !collapse;
+        myBlock.collapseBitmap.visible = collapse;
+        myBlock.expandBitmap.visible = !collapse;
+        myBlock.collapseBlockBitmap.visible = !collapse;
+        myBlock.highlightCollapseBlockBitmap.visible = false;
+        myBlock.collapseText.visible = !collapse;
+
+        for (var b in myBlock.bitmap) {
+            if (myBlock.bitmap[b] != null) {
+                myBlock.bitmap[b].visible = false;
+            }
+        }
+
+        for (var b in myBlock.highlightBitmap) {
+            if (myBlock.highlightBitmap[b] != null) {
+                myBlock.highlightBitmap[b].visible = collapse;
+            }
+        }
+
+        for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
+            myBlock.fillerBitmaps[MID][i].visible = false;
+            myBlock.highlightFillerBitmaps[MID][i].visible = collapse;
+        }
+
+        for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
+            myBlock.fillerBitmaps[BOT][i].visible = false;
+            myBlock.highlightFillerBitmaps[BOT][i].visible = collapse;
+        }
+
+        if (myBlock.name != 'start') {
+            // Label the collapsed block with the action label
+            if (myBlock.connections[1] != null) {
+                myBlock.collapseText.text = blocks.blockList[myBlock.connections[1]].value;
+            } else {
+                myBlock.collapseText.text = '';
+            }
+        }
+        var lastChild = last(myBlock.container.children);
+        myBlock.container.swapChildren(myBlock.collapseText, lastChild);
+
+        if (blocks.dragGroup.length > 0) {
+            for (var b = 0; b < blocks.dragGroup.length; b++) {
+                var blk = blocks.dragGroup[b];
+                if (b != 0) {
+                    blocks.blockList[blk].collapsed = !collapse;
+                    blocks.blockList[blk].container.visible = collapse;
+                }
+            }
+        }
+    }
+
+    toggle(myBlock.collapsed);
+    myBlock.collapseContainer.updateCache();
+    myBlock.container.updateCache();
+    blocks.refreshCanvas();
+    return;
 }
 
 

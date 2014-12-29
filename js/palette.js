@@ -12,8 +12,8 @@
 // All things related to palettes
 
 var paletteBlocks = null;
-var paletteScale = 1.0; // 0.75;
-
+var PALETTESCALE = 1.0;
+var PALETTEOFFSET = 20;
 
 function paletteBlockButtonPush(name, arg) {
     // console.log('paletteBlockButtonPush' + name + ' ' + arg);
@@ -333,8 +333,8 @@ function Palette(palettes, name, color, bgcolor) {
                 } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
                     height += STANDARDBLOCKHEIGHT;
                 }
-                this.size += Math.ceil(height * paletteScale);
-                this.y += Math.ceil(height * paletteScale);
+                this.size += Math.ceil(height * PALETTESCALE);
+                this.y += Math.ceil(height * PALETTESCALE);
 
                 function processFiller(me, modname, bitmap, extras) {
                     me.protoBackgrounds[modname].addChild(bitmap);
@@ -410,11 +410,11 @@ function Palette(palettes, name, color, bgcolor) {
             var myBlock = args[0];
             var blk = args[1];
             me.protoContainers[modname].addChild(bitmap);
-            bitmap.x = 20;
+            bitmap.x = PALETTEOFFSET;
             bitmap.y = 0;
-            bitmap.scaleX = paletteScale;
-            bitmap.scaleY = paletteScale;
-            bitmap.scale = paletteScale;
+            bitmap.scaleX = PALETTESCALE;
+            bitmap.scaleY = PALETTESCALE;
+            bitmap.scale = PALETTESCALE;
 
             if (!me.protoList[blk].expandable || (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1)) {
                 bounds = me.protoContainers[modname].getBounds();
@@ -442,16 +442,16 @@ function Palette(palettes, name, color, bgcolor) {
 
                 function processMiddleBitmap(me, modname, bitmap, middleOffset) {
                     me.protoContainers[modname].addChild(bitmap);
-                    bitmap.x = 20;
+                    bitmap.x = PALETTEOFFSET;
                     bitmap.y = middleOffset;
-                    bitmap.scaleX = paletteScale;
-                    bitmap.scaleY = paletteScale;
-                    bitmap.scale = paletteScale;
+                    bitmap.scaleX = PALETTESCALE;
+                    bitmap.scaleY = PALETTESCALE;
+                    bitmap.scale = PALETTESCALE;
 
                     finishExpandable(me, modname, myBlock, blk)
                 }
 
-                var middleOffset = Math.floor(me.protoList[blk].artworkOffset[1] * paletteScale);
+                var middleOffset = Math.floor(me.protoList[blk].artworkOffset[1] * PALETTESCALE);
                 makePaletteBitmap(me, middleArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('mid_label', mid_label).replace('font_size', myBlock.fontsize), modname, processMiddleBitmap, middleOffset);
             }
         }
@@ -462,12 +462,12 @@ function Palette(palettes, name, color, bgcolor) {
 
                 function processBottomBitmap(me, modname, bitmap, artworkOffset) {
                     me.protoContainers[modname].addChild(bitmap);
-                    bitmap.x = 20;
-                    var middleOffset = Math.floor(me.protoList[blk].artworkOffset[1] * paletteScale);
+                    bitmap.x = PALETTEOFFSET;
+                    var middleOffset = Math.floor(me.protoList[blk].artworkOffset[1] * PALETTESCALE);
                     bitmap.y = artworkOffset;
-                    bitmap.scaleX = paletteScale;
-                    bitmap.scaleY = paletteScale;
-                    bitmap.scale = paletteScale;
+                    bitmap.scaleX = PALETTESCALE;
+                    bitmap.scaleY = PALETTESCALE;
+                    bitmap.scale = PALETTESCALE;
 
                     bounds = me.protoContainers[modname].getBounds();
                     me.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
@@ -478,7 +478,7 @@ function Palette(palettes, name, color, bgcolor) {
                     me.palettes.refreshCanvas();
                 }
 
-                var artworkOffset = Math.floor(me.protoList[blk].artworkOffset[2] * paletteScale);
+                var artworkOffset = Math.floor(me.protoList[blk].artworkOffset[2] * PALETTESCALE);
                 makePaletteBitmap(me, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, artworkOffset);
             }
         }
@@ -674,20 +674,16 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
         }, 500);
         me.palettes.setDraggingFlag(true);
         var offset = {
-            x: palette.protoContainers[blkname].x - event.stageX,
-            y: palette.protoContainers[blkname].y - event.stageY
+            x: palette.protoContainers[blkname].x - Math.round(event.stageX / me.palettes.scale) - PALETTEOFFSET,
+            y: palette.protoContainers[blkname].y - Math.round(event.stageY / me.palettes.scale)
         };
 
         me.protoContainers[blkname].on('pressmove', function(event) {
             moved = true;
             me.draggingProtoBlock = true;
-            var oldX = me.protoContainers[blkname].x;
-            var oldY = me.protoContainers[blkname].y;
-            me.protoContainers[blkname].x = event.stageX + offset.x;
-            me.protoContainers[blkname].y = event.stageY + offset.y;
+            me.protoContainers[blkname].x = Math.round(event.stageX / me.palettes.scale) - PALETTEOFFSET;
+            me.protoContainers[blkname].y = Math.round(event.stageY / me.palettes.scale);
             palette.palettes.refreshCanvas();
-            var dx = me.protoContainers[blkname].x - oldX;
-            var dy = me.protoContainers[blkname].y - oldY;
         });
     });
 
@@ -700,10 +696,8 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
             var newBlock = makeBlockFromPalette(blk, blkname, palette);
             // Move the drag group under the cursor.
             paletteBlocks.findDragGroup(newBlock);
-            var dx = 0; // -50;
-            var dy = 0; // -21;
             for (i in paletteBlocks.dragGroup) {
-                paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / me.palettes.scale) + dx, Math.round(event.stageY / me.palettes.scale) + dy);
+                paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / me.palettes.scale), Math.round(event.stageY / me.palettes.scale));
             }
         }
         // Return protoblock we've been dragging back to the palette.

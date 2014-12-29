@@ -1617,14 +1617,14 @@ define(function(require) {
                             stopTurtle = true;
                             a = -a;
                         }
-                        blocks.blockList[blk].value = (Math.sqrt(Number(a)));
+                        blocks.blockList[blk].value = doSqrt(a);
                         break;
                     case 'mod':
                         var cblk1 = blocks.blockList[blk].connections[1];
                         var cblk2 = blocks.blockList[blk].connections[2];
                         var a = parseArg(activity, turtle, cblk1);
                         var b = parseArg(activity, turtle, cblk2);
-                        blocks.blockList[blk].value = (Number(a) % Number(b));
+                        blocks.blockList[blk].value = doMod(a, b);
                         break;
                     case 'not':
                         var cblk = blocks.blockList[blk].connections[1];
@@ -1771,7 +1771,6 @@ define(function(require) {
             }
         }
 
-
         function hideBlocks() {
             // Hide all the blocks.
             blocks.hide();
@@ -1844,6 +1843,26 @@ define(function(require) {
             }
             return Math.floor(Math.random() * (Number(b) - Number(a) + 1) + Number(a));
         }
+
+	function doMod(a, b) {
+            if (typeof(a) == 'string' || typeof(b) == 'string') {
+                errorMsg('Not a number.');
+                stopTurtle = true;
+                return 0;
+            }
+	    var v = Number(a) % Number(b);
+	    console.log(a + ' ' + b + ' ' + v);
+	    return Number(a) % Number(b);
+	}
+
+	function doSqrt(a) {
+            if (typeof(a) == 'string') {
+                errorMsg('Not a number.');
+                stopTurtle = true;
+                return 0;
+            }
+	    return Math.sqrt(Number(a));
+	}
 
         function doPlus(a, b) {
             if (typeof(a) == 'string' || typeof(b) == 'string') {

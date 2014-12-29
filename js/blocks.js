@@ -1480,12 +1480,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
-                    console.log('creating ' + name + ' block with no args');
+                    // console.log('creating ' + name + ' block with no args');
                     this.makeNewBlock(proto, postProcess, postProcessArg);
                     break;
                 } else {
                     if (this.protoBlockDict[proto].defaults[0] == arg) {
-                        console.log('creating ' + name + ' block with default arg ' + arg);
+                        // console.log('creating ' + name + ' block with default arg ' + arg);
                         this.makeNewBlock(proto, postProcess, postProcessArg);
                         break;
                     }
@@ -1720,7 +1720,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.newDoBlock = function(name) {
         var myDoBlock = new ProtoBlock('do');
-        this.protoBlockDict['myDo'] = myDoBlock;
+        this.protoBlockDict['myDo_' + name] = myDoBlock;
         myDoBlock.oneArgBlock();
         myDoBlock.palette = this.palettes.dict['blocks'];
         myDoBlock.defaults.push(name);
@@ -1733,7 +1733,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.newActionBlock = function(name) {
         var myActionBlock = new ProtoBlock('action');
-        this.protoBlockDict['myAction'] = myActionBlock;
+        this.protoBlockDict['myAction_' + name] = myActionBlock;
         myActionBlock.blockClampOneArgBlock();
         myActionBlock.palette = this.palettes.dict['blocks'];
         myActionBlock.artworkOffset = [0, 0, 86];

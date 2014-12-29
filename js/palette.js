@@ -16,6 +16,7 @@ var paletteScale = 1.0; // 0.75;
 
 
 function paletteBlockButtonPush(name, arg) {
+    // console.log('paletteBlockButtonPush' + name + ' ' + arg);
     blk = paletteBlocks.makeBlock(name, arg);
     return blk;
 }
@@ -634,9 +635,10 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
     var saveX = palette.protoContainers[blkname].x;
     var saveY = palette.protoContainers[blkname].y;
 
-    function makeBlock(blk, blkname, palette) {
+    function makeBlockFromPalette(blk, blkname, palette) {
         var arg = '__NOARG__';
-        switch (blkname) {
+        // console.log('makeBlockFromPalette ' + blkname + ' ' + palette.protoList[blk].name + ' ' + palette.protoList[blk].defaults[0]);
+        switch (palette.protoList[blk].name) {
             case 'do':
                 blkname = 'do ' + palette.protoList[blk].defaults[0];
                 var arg = palette.protoList[blk].defaults[0];
@@ -695,7 +697,7 @@ function loadPaletteMenuItemHandler(me, blk, blkname, palette) {
             me.draggingProtoBlock = false;
             palette.palettes.setDraggingFlag(false);
             // Create the block.
-            var newBlock = makeBlock(blk, blkname, palette);
+            var newBlock = makeBlockFromPalette(blk, blkname, palette);
             // Move the drag group under the cursor.
             paletteBlocks.findDragGroup(newBlock);
             var dx = 0; // -50;

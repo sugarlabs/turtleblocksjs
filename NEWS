@@ -144,6 +144,8 @@
   * enable number names for turtles
   * enable docking to any for boxes, equal
   * enable number names for boxes
+  * fixed the problem with prototypes on the blocks palette
+  * fixed highlighting of boolean blocks
 
 TODO:
   * use busy cursor where approporate
@@ -154,6 +156,7 @@ TODO:
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
+  * preserve collapse state between save/load
 
 BUGS:
   * jumpy scrolling

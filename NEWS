@@ -146,8 +146,11 @@
   * enable number names for boxes
   * fixed the problem with prototypes on the blocks palette
   * fixed highlighting of boolean blocks
+  * global collapse stack button
+  * smoother hand-off between palette and canvas when dragging blocks
 
 TODO:
+  * plugin mechanism
   * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks

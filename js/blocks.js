@@ -430,6 +430,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.setDraggingFlag = setDraggingFlag;
     }
 
+    // Toggle state of collapsible blocks.
+    this.toggleCollapsibles = function() {
+        for (var blk in this.blockList) {
+            var myBlock = this.blockList[blk];
+            if (['start', 'action'].indexOf(myBlock.name) != -1) {
+                collapseToggle(this, myBlock);
+            }
+        }
+    }
+
     // set up copy/paste buttons
     this.makeCopyPasteButtons = function(makeButton, updatePasteButton) {
         var blocks = this;

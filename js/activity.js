@@ -654,6 +654,12 @@ define(function(require) {
             }
         }
 
+        function toggleCollapsibleStacks() {
+            if (blocks.visible) {
+		blocks.toggleCollapsibles();
+            }
+        }
+
         function stop() {
             //
             createjs.Ticker.removeEventListener('tick', tick);
@@ -2065,7 +2071,8 @@ define(function(require) {
                 ['stop-turtle', doStopButton],
                 ['clear', allClear],
                 ['palette', changePaletteVisibility],
-                ['hide-blocks', changeBlockVisibility]
+                ['hide-blocks', changeBlockVisibility],
+		['collapse-blocks', toggleCollapsibleStacks]
             ];
 
             var btnSize = cellSize;

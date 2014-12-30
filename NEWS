@@ -148,6 +148,7 @@
   * fixed highlighting of boolean blocks
   * global collapse stack button
   * smoother hand-off between palette and canvas when dragging blocks
+  * work-around for number/string conversion error
 
 TODO:
   * plugin mechanism

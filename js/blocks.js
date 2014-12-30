@@ -2792,11 +2792,23 @@ function labelChanged(myBlock) {
         return;
     }
 
+    console.log('label changed on ' + myBlock.name);
     var oldValue = myBlock.value;
     var newValue = myBlock.label.value;
 
     // Update the block value and block text.
-    myBlock.value = newValue;
+    if (myBlock.name == 'number') {
+        try {
+            myBlock.value = Number(newValue);
+            console.log('assigned ' + myBlock.value + ' to number block (' + typeof(myBlock.value) + ')');
+        } catch (e) {
+            console.log(e);
+            // FIXME: Expose errorMsg to blocks
+            // errorMsg('Not a number.');
+        }
+    } else {
+        myBlock.value = newValue;
+    }
     var label = myBlock.value.toString();
     if (label.length > 8) {
         label = label.substr(0, 7) + '...';
@@ -2941,7 +2953,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         }, 500);
         hideDOMLabel();
         if (!moved) {
-	    collapseToggle(blocks, myBlock);
+            collapseToggle(blocks, myBlock);
         }
     });
 

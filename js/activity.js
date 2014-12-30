@@ -656,7 +656,7 @@ define(function(require) {
 
         function toggleCollapsibleStacks() {
             if (blocks.visible) {
-		blocks.toggleCollapsibles();
+                blocks.toggleCollapsibles();
             }
         }
 
@@ -1593,6 +1593,14 @@ define(function(require) {
             }
 
             if (blocks.blockList[blk].isValueBlock()) {
+                if (blocks.blockList[blk].name == 'number' && typeof(blocks.blockList[blk].value) == 'string') {
+                    // FIXME: number block has string value
+                    try {
+                        blocks.blockList[blk].value = Number(blocks.blockList[blk].value);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
                 return blocks.blockList[blk].value;
             } else if (blocks.blockList[blk].isArgBlock()) {
                 switch (blocks.blockList[blk].name) {
@@ -1850,25 +1858,25 @@ define(function(require) {
             return Math.floor(Math.random() * (Number(b) - Number(a) + 1) + Number(a));
         }
 
-	function doMod(a, b) {
+        function doMod(a, b) {
             if (typeof(a) == 'string' || typeof(b) == 'string') {
                 errorMsg('Not a number.');
                 stopTurtle = true;
                 return 0;
             }
-	    var v = Number(a) % Number(b);
-	    console.log(a + ' ' + b + ' ' + v);
-	    return Number(a) % Number(b);
-	}
+            var v = Number(a) % Number(b);
+            console.log(a + ' ' + b + ' ' + v);
+            return Number(a) % Number(b);
+        }
 
-	function doSqrt(a) {
+        function doSqrt(a) {
             if (typeof(a) == 'string') {
                 errorMsg('Not a number.');
                 stopTurtle = true;
                 return 0;
             }
-	    return Math.sqrt(Number(a));
-	}
+            return Math.sqrt(Number(a));
+        }
 
         function doPlus(a, b) {
             if (typeof(a) == 'string' || typeof(b) == 'string') {
@@ -2072,7 +2080,7 @@ define(function(require) {
                 ['clear', allClear],
                 ['palette', changePaletteVisibility],
                 ['hide-blocks', changeBlockVisibility],
-		['collapse-blocks', toggleCollapsibleStacks]
+                ['collapse-blocks', toggleCollapsibleStacks]
             ];
 
             var btnSize = cellSize;

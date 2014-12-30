@@ -149,6 +149,7 @@
   * global collapse stack button
   * smoother hand-off between palette and canvas when dragging blocks
   * work-around for number/string conversion error
+  * adjust docks for vspace added outside of stacks
 
 TODO:
   * plugin mechanism
@@ -166,3 +167,4 @@ BUGS:
   * jumpy scrolling
   * don't save full-sized bitmap to session
   * cannot open same file twice in a row (no change event?)
+  * find out where number block values are being set to string

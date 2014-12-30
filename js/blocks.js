@@ -1008,7 +1008,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
         }
-        // If we changed the contents of a arg block, see if we need a vspace.
+        // If we changed the contents of a arg block, we may need a vspace.
         if (checkArgBlocks.length > 0) {
             for (var i = 0; i < checkArgBlocks.length; i++) {
                 this.addRemoveVspaceBlock(checkArgBlocks[i]);
@@ -1027,7 +1027,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // FIXME: Make these callbacks so there is no race condition.
         setTimeout(function() {
-            // Recheck if the connection is inside of a expandable block.
+	    // First, adjust the docks for any blocks that may have
+            // had a vspace added.
+            for (var i = 0; i < checkArgBlocks.length; i++) {
+		blocks.adjustDocks(checkArgBlocks[i]);
+	    }
+	    // Next, recheck if the connection is inside of a
+            // expandable block.
             var blk = blocks.insideExpandableBlock(thisBlock);
             var expandableLoopCounter = 0;
             while (blk != null) {
@@ -1044,7 +1050,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 blk = blocks.insideExpandableBlock(blk);
             }
             blocks.refreshCanvas();
-        }, 1000);
+        }, 500);
 
         setTimeout(function() {
             // If we changed the contents of an expandable block, we need
@@ -1055,7 +1061,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
             blocks.refreshCanvas();
-        }, 2000);
+        }, 1000);
     }
 
     this.testConnectionType = function(type1, type2) {

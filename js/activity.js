@@ -101,6 +101,8 @@ define(function(require) {
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
         var cameraID = null;
+        var toLang = null;
+        var fromLang = null;
 
         // initial scroll position
         var scrollX = 0;
@@ -1425,6 +1427,10 @@ define(function(require) {
                     activity.parameterQueue[targetTurtle] = [];
                     doBreak(targetTurtle);
                     break;
+                case 'setlang':
+                    fromLang = parseArg(activity, turtle, blocks.blockList[blk].connections[1]);
+                    toLang = parseArg(activity, turtle, blocks.blockList[blk].connections[2]);
+                    break;
                 default:
                     if (blocks.blockList[blk].name in evalFlowDict) {
                         eval(evalFlowDict[blocks.blockList[blk].name]);
@@ -1769,6 +1775,37 @@ define(function(require) {
                             blocks.blockList[blk].value = null;
                         } else {
                             blocks.blockList[blk].value = Math.round(mic.getLevel() * 1000);
+                        }
+                        break;
+                    case 'translate':
+                    case 'detectlang':
+                        // FIXME: Is that key supposed to be public?
+                        var publicKey = 'nGhwbdV7TrtzC9qLp3DZ';
+                        var secretKey = '3b68e1d00446eed728cdda66280a8312';
+                        var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
+                        var apiURL = 'https://community-onehourtranslation.p.mashape.com/mt/'
+
+                        if (blocks.blockList[blk].name == 'translate') {
+                            var KEY = 'TranslatedText'
+                            var text = parseArg(activity, turtle, blocks.blockList[blk].connections[1]);
+                            targetLang = 'Spanish';
+                            var args =  "translate/text?public_key=" + publicKey + "&secret_key=" + secretKey + "&source_content=" + text + "&source_language=" + fromLang + "&target_language=" + toLang
+                        }
+                        else if(blocks.blockList[blk].name == 'detectlang') {
+                            var KEY = 'language'
+                            var text = parseArg(activity, turtle, blocks.blockList[blk].connections[1]);
+                            var args = "detect/text?public_key=" + publicKey + "&secret_key=" + secretKey + "&source_content=" + text
+                        }
+                        var request = new XMLHttpRequest();
+                        request.open("GET", apiURL + args, false);
+                        request.setRequestHeader("X-Mashape-Authorization", mashapeKey)
+                        request.send(null);
+                        value = JSON.parse(request.responseText)['results'][KEY];
+                        if (!value) {
+                            errorMsg('Did you set a correct language with the setlang block?')
+                        }
+                        else {
+                            blocks.blockList[blk].value = value;
                         }
                         break;
                     default:

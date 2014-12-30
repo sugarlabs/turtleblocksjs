@@ -105,7 +105,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     getyTurtleBlock.oneArgMathBlock();
     getyTurtleBlock.staticLabels.push('turtle y');
     getyTurtleBlock.defaults.push(0);
-    getyTurtleBlock.docks[1][2] = 'anyin'; 
+    getyTurtleBlock.docks[1][2] = 'anyin';
 
     var startTurtleBlock = new ProtoBlock('startTurtle');
     startTurtleBlock.palette = palettes.dict['extras'];
@@ -185,6 +185,33 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['stopplayback'] = audioStopBlock;
     audioStopBlock.zeroArgBlock();
     audioStopBlock.staticLabels.push('stop');
+
+    var TranslateBlock = new ProtoBlock('translate');
+    TranslateBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['translate'] = TranslateBlock;
+    TranslateBlock.oneArgMathBlock();
+    TranslateBlock.docks[0][2] = 'textout'
+    TranslateBlock.docks[1][2] = 'textin'
+    TranslateBlock.defaults.push('Hello');
+    TranslateBlock.staticLabels.push('translate');
+
+    var DetectLangBlock = new ProtoBlock('detectlang');
+    DetectLangBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['detectlang'] = DetectLangBlock;
+    DetectLangBlock.oneArgMathBlock();
+    DetectLangBlock.docks[0][2] = 'textout';
+    DetectLangBlock.docks[1][2] = 'anyin';
+    DetectLangBlock.defaults.push('Hello');
+    DetectLangBlock.staticLabels.push('detect lang');
+
+    var SetLangBlock = new ProtoBlock('setlang');
+    SetLangBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['setlang'] = SetLangBlock;
+    SetLangBlock.twoArgBlock();
+    SetLangBlock.docks[1][2] = 'anyin';
+    SetLangBlock.docks[2][2] = 'anyin';
+    SetLangBlock.defaults.push('English', 'Spanish');
+    SetLangBlock.staticLabels.push('set lang', 'source', 'target');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

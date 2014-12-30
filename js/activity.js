@@ -1830,6 +1830,7 @@ define(function(require) {
                 turtles.turtleList[turtle].container.visible = false;
             }
             trashcan.hide();
+            palettes.hide();
             update = true;
         }
 

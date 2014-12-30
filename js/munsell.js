@@ -75,12 +75,15 @@ interpColor = function(hex1, hex2, p) {
 
 function getcolor(color) {
     var h1 = Math.floor(color / 2.5);
+    var h2 = h1 + 1;
+    p = h2 - (color / 2.5);
+
     h1 %= 40; // doesn't guarentee it will be positive.
     while (h1 < 0) {
         h1 += 40;
     }
-    var h2 = h1 + 1;
-    p = h2 - (color / 2.5);
+
+    h2 = h1 + 1;
     if (h2 == 40) {
 	h2 = 0;
     }

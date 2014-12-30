@@ -154,7 +154,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     hideBlocks.staticLabels.push('hide');
 
     var evalBlock = new ProtoBlock('eval');
-    evalBlock.palette = palettes.dict['extras'];
+    evalBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['eval'] = evalBlock;
     evalBlock.twoArgMathBlock();
     evalBlock.docks[1][2] = 'textin';
@@ -186,8 +186,10 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     audioStopBlock.zeroArgBlock();
     audioStopBlock.staticLabels.push('stop');
 
+    // Mashape palette
+
     var TranslateBlock = new ProtoBlock('translate');
-    TranslateBlock.palette = palettes.dict['extras'];
+    TranslateBlock.palette = palettes.dict['mashape'];
     blocks.protoBlockDict['translate'] = TranslateBlock;
     TranslateBlock.oneArgMathBlock();
     TranslateBlock.docks[0][2] = 'textout'
@@ -196,7 +198,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     TranslateBlock.staticLabels.push('translate');
 
     var DetectLangBlock = new ProtoBlock('detectlang');
-    DetectLangBlock.palette = palettes.dict['extras'];
+    DetectLangBlock.palette = palettes.dict['mashape'];
     blocks.protoBlockDict['detectlang'] = DetectLangBlock;
     DetectLangBlock.oneArgMathBlock();
     DetectLangBlock.docks[0][2] = 'textout';
@@ -205,7 +207,7 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     DetectLangBlock.staticLabels.push('detect lang');
 
     var SetLangBlock = new ProtoBlock('setlang');
-    SetLangBlock.palette = palettes.dict['extras'];
+    SetLangBlock.palette = palettes.dict['mashape'];
     blocks.protoBlockDict['setlang'] = SetLangBlock;
     SetLangBlock.twoArgBlock();
     SetLangBlock.docks[1][2] = 'anyin';

@@ -620,7 +620,8 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     add('blocks', 'black', '#ffc000').
     add('media', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').
-    add('extras', 'white', '#ff0066');
+    add('extras', 'white', '#ff0066').
+    add('mashape', 'white', '#ff0066');
 
     // Give the palettes time to load.
     setTimeout(function() {

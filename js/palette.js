@@ -263,11 +263,18 @@ function Palette(palettes, name, color, bgcolor) {
                 palette.menuContainer.addChild(icon);
                 palette.palettes.container.addChild(palette.menuContainer);
 
+                var image = new Image();
+                image.src = 'images/close.svg';
+                var icon = new createjs.Bitmap(image);
+                icon.scaleX = 0.7;
+                icon.scaleY = 0.7;
+                icon.x = MENUWIDTH - STANDARDBLOCKHEIGHT ;
+                palette.menuContainer.addChild(icon);
+
                 var hitArea = new createjs.Shape();
                 hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
                 hitArea.x = MENUWIDTH / 2;
                 hitArea.y = STANDARDBLOCKHEIGHT / 2;
-                palette.menuContainer.hitArea = hitArea;
                 palette.menuContainer.visible = false;
 
                 loadPaletteMenuHandler(palette);
@@ -719,12 +726,25 @@ function loadPaletteMenuHandler(palette) {
     // palette per palette button.
 
     var locked = false;
+    var closed = false;
+
+    palette.menuContainer.getChildAt(2).on('click', function(event) {
+        // FIXME: When I open the palette again, its back to the posicion where was closed.
+        palette.hide();
+        closed = true;
+        palette.palettes.refreshCanvas();
+    });
 
     palette.menuContainer.on('mouseover', function(event) {
         palette.palettes.setDraggingFlag(true);
     });
 
     palette.menuContainer.on('click', function(event) {
+        if (closed) {
+            console.log('palette is closed, return')
+            closed = false;
+            return;
+        }
         if (locked) {
             console.log('debouncing click');
             return;

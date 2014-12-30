@@ -150,6 +150,8 @@
   * smoother hand-off between palette and canvas when dragging blocks
   * work-around for number/string conversion error
   * adjust docks for vspace added outside of stacks
+  * add mashape palette
+  * translation blocks (w/Ignacio Rodriguez)
 
 TODO:
   * plugin mechanism

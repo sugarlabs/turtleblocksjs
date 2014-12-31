@@ -733,18 +733,17 @@ function loadPaletteMenuHandler(palette) {
     var locked = false;
     var closed = false;
 
-    palette.menuContainer.getChildAt(2).on('click', function(event) {
-        // FIXME: When I open the palette again, its back to the posicion where was closed.
-        palette.hide();
-        closed = true;
-        palette.palettes.refreshCanvas();
-    });
-
     palette.menuContainer.on('mouseover', function(event) {
         palette.palettes.setDraggingFlag(true);
     });
 
     palette.menuContainer.on('click', function(event) {
+	if (Math.round(event.stageX / palette.palettes.scale) > palette.menuContainer.x + MENUWIDTH - STANDARDBLOCKHEIGHT) {
+            palette.hide();
+            closed = true;
+            palette.palettes.refreshCanvas();
+	};
+
         if (closed) {
             console.log('palette is closed, return')
             closed = false;

@@ -791,6 +791,8 @@ function loadPaletteMenuHandler(palette) {
             palette.palettes.refreshCanvas();
             var dx = palette.menuContainer.x - oldX;
             var dy = palette.menuContainer.y - oldY;
+            // Hide the menu items while drag.
+            palette.hideMenuItems(false);
             palette.moveMenuItemsRelative(dx, dy);
         });
     });

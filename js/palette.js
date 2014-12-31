@@ -256,32 +256,32 @@ function Palette(palettes, name, color, bgcolor) {
                 palette.menuContainer.addChild(bitmap);
 
                 var image = new Image();
-		image.onload = function() {		
+                image.onload = function() {
                     var icon = new createjs.Bitmap(image);
                     icon.scaleX = 0.8;
                     icon.scaleY = 0.8;
                     palette.menuContainer.addChild(icon);
                     palette.palettes.container.addChild(palette.menuContainer);
 
-		    var closeImage = new Image();
-		    closeImage.onload = function() {
-			var closeIcon = new createjs.Bitmap(closeImage);
-			closeIcon.scaleX = 0.7;
-			closeIcon.scaleY = 0.7;
-			closeIcon.x = MENUWIDTH - STANDARDBLOCKHEIGHT;
-			palette.menuContainer.addChild(closeIcon);
+                    var closeImage = new Image();
+                    closeImage.onload = function() {
+                        var closeIcon = new createjs.Bitmap(closeImage);
+                        closeIcon.scaleX = 0.7;
+                        closeIcon.scaleY = 0.7;
+                        closeIcon.x = MENUWIDTH - STANDARDBLOCKHEIGHT;
+                        palette.menuContainer.addChild(closeIcon);
 
-			var hitArea = new createjs.Shape();
-			hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
-			hitArea.x = MENUWIDTH / 2;
-			hitArea.y = STANDARDBLOCKHEIGHT / 2;
-			palette.menuContainer.hitArea = hitArea;
-			palette.menuContainer.visible = false;
+                        var hitArea = new createjs.Shape();
+                        hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
+                        hitArea.x = MENUWIDTH / 2;
+                        hitArea.y = STANDARDBLOCKHEIGHT / 2;
+                        palette.menuContainer.hitArea = hitArea;
+                        palette.menuContainer.visible = false;
 
-			loadPaletteMenuHandler(palette);
-		    }
+                        loadPaletteMenuHandler(palette);
+                    }
                     closeImage.src = 'images/close.svg';
-		}
+                }
                 image.src = 'images/' + palette.name + '.svg';
             }
 
@@ -340,7 +340,7 @@ function Palette(palettes, name, color, bgcolor) {
 
                 // We use a filler for the menu background
                 var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
-		// Some blocks are not shown full-size on the palette.
+                // Some blocks are not shown full-size on the palette.
                 if (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1) {
                     height = STANDARDBLOCKHEIGHT;
                 } else if (['action', 'start'].indexOf(blkname) != -1) {
@@ -737,11 +737,11 @@ function loadPaletteMenuHandler(palette) {
     });
 
     palette.menuContainer.on('click', function(event) {
-	if (Math.round(event.stageX / palette.palettes.scale) > palette.menuContainer.x + MENUWIDTH - STANDARDBLOCKHEIGHT) {
+        if (Math.round(event.stageX / palette.palettes.scale) > palette.menuContainer.x + MENUWIDTH - STANDARDBLOCKHEIGHT) {
             palette.hide();
             palette.palettes.refreshCanvas();
             return;
-	}
+         }
 
         if (locked) {
             console.log('debouncing click');

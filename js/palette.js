@@ -256,28 +256,33 @@ function Palette(palettes, name, color, bgcolor) {
                 palette.menuContainer.addChild(bitmap);
 
                 var image = new Image();
+		image.onload = function() {		
+                    var icon = new createjs.Bitmap(image);
+                    icon.scaleX = 0.8;
+                    icon.scaleY = 0.8;
+                    palette.menuContainer.addChild(icon);
+                    palette.palettes.container.addChild(palette.menuContainer);
+
+		    var closeImage = new Image();
+		    closeImage.onload = function() {
+			var closeIcon = new createjs.Bitmap(closeImage);
+			closeIcon.scaleX = 0.7;
+			closeIcon.scaleY = 0.7;
+			closeIcon.x = MENUWIDTH - STANDARDBLOCKHEIGHT;
+			palette.menuContainer.addChild(closeIcon);
+
+			var hitArea = new createjs.Shape();
+			hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
+			hitArea.x = MENUWIDTH / 2;
+			hitArea.y = STANDARDBLOCKHEIGHT / 2;
+			palette.menuContainer.hitArea = hitArea;
+			palette.menuContainer.visible = false;
+
+			loadPaletteMenuHandler(palette);
+		    }
+                    closeImage.src = 'images/close.svg';
+		}
                 image.src = 'images/' + palette.name + '.svg';
-                var icon = new createjs.Bitmap(image);
-                icon.scaleX = 0.8;
-                icon.scaleY = 0.8;
-                palette.menuContainer.addChild(icon);
-                palette.palettes.container.addChild(palette.menuContainer);
-
-                var image = new Image();
-                image.src = 'images/close.svg';
-                var icon = new createjs.Bitmap(image);
-                icon.scaleX = 0.7;
-                icon.scaleY = 0.7;
-                icon.x = MENUWIDTH - STANDARDBLOCKHEIGHT ;
-                palette.menuContainer.addChild(icon);
-
-                var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
-                hitArea.x = MENUWIDTH / 2;
-                hitArea.y = STANDARDBLOCKHEIGHT / 2;
-                palette.menuContainer.visible = false;
-
-                loadPaletteMenuHandler(palette);
             }
 
             makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name), this.name, processHeader, null);
@@ -288,7 +293,7 @@ function Palette(palettes, name, color, bgcolor) {
         if (this.menuContainer == null) {
             this.makeMenu();
         } else {
-            // hide the menu while we update
+            // Hide the menu while we update.
             if (hide) {
                 this.hide();
             }

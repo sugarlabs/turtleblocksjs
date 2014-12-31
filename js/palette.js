@@ -731,7 +731,6 @@ function loadPaletteMenuHandler(palette) {
     // palette per palette button.
 
     var locked = false;
-    var closed = false;
 
     palette.menuContainer.on('mouseover', function(event) {
         palette.palettes.setDraggingFlag(true);
@@ -740,15 +739,10 @@ function loadPaletteMenuHandler(palette) {
     palette.menuContainer.on('click', function(event) {
 	if (Math.round(event.stageX / palette.palettes.scale) > palette.menuContainer.x + MENUWIDTH - STANDARDBLOCKHEIGHT) {
             palette.hide();
-            closed = true;
             palette.palettes.refreshCanvas();
-	};
-
-        if (closed) {
-            console.log('palette is closed, return')
-            closed = false;
             return;
-        }
+	}
+
         if (locked) {
             console.log('debouncing click');
             return;
@@ -757,6 +751,7 @@ function loadPaletteMenuHandler(palette) {
         setTimeout(function() {
             locked = false;
         }, 500);
+
         for (p in palette.palettes.dict) {
             if (palette.name != p) {
                 if (palette.palettes.dict[p].visible) {

@@ -152,6 +152,7 @@
   * adjust docks for vspace added outside of stacks
   * add mashape palette
   * translation blocks (w/Ignacio Rodriguez)
+  * color forces max chroma; hue just sets hue.
 
 TODO:
   * plugin mechanism

@@ -143,6 +143,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     colorBlock.parameterBlock();
     colorBlock.staticLabels.push('color');
 
+    var sethueBlock = new ProtoBlock('sethue');
+    sethueBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['sethue'] = sethueBlock;
+    sethueBlock.oneArgBlock();
+    sethueBlock.defaults.push(0);
+    sethueBlock.staticLabels.push('set hue');
+
     var setshadeBlock = new ProtoBlock('setshade');
     setshadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setshade'] = setshadeBlock;

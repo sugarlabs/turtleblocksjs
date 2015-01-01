@@ -10,7 +10,7 @@
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
 // Turtles
-var DEFAULTCOLOR = 5;
+var DEFAULTCOLOR = 0;
 var DEFAULTVALUE = 50;
 var DEFAULTCHROMA = 100;
 var DEFAULTSTROKE = 5;
@@ -150,7 +150,7 @@ function Turtle (name, turtles) {
         this.y = 0;
         this.orientation = 0.0;
         var i = this.turtles.turtleList.indexOf(this) % 10;
-        this.color = 5 + (i * 10);
+        this.color = i * 10;
         this.value = DEFAULTVALUE;
         this.chroma = DEFAULTCHROMA;
         this.stroke = DEFAULTSTROKE;
@@ -389,7 +389,18 @@ function Turtle (name, turtles) {
         this.turtles.refreshCanvas();
     }
 
-    this.doSetColor = function(hue) {
+    this.doSetColor = function(color) {
+	// Color sets hue but also selects maximum chroma.
+        this.color = Number(color);
+	var results = getcolor(this.color);
+        this.canvasValue = results[0];
+        this.canvasChroma = results[1];
+        this.canvasColor = results[2];
+        this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+        this.closeSVG();
+    }
+
+    this.doSetHue = function(hue) {
         this.color = Number(hue);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
@@ -532,7 +543,7 @@ function Turtles(canvas, stage, refreshCanvas) {
 
         makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
 
-        myTurtle.color = 5 + (i * 10);
+        myTurtle.color = i * 10;
         myTurtle.canvasColor = getMunsellColor(myTurtle.color, DEFAULTVALUE, DEFAULTCHROMA);
 
         var turtles = this;

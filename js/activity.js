@@ -860,6 +860,7 @@ define(function(require) {
                         value = turtles.turtleList[turtle].orientation;
                         break;
                     case 'color':
+                    case 'hue':
                         value = turtles.turtleList[turtle].color;
                         break;
                     case 'shade':
@@ -1334,6 +1335,16 @@ define(function(require) {
                         }
                     }
                     break;
+                case 'sethue':
+                    if (args.length == 1) {
+                        if (typeof(args[0]) == 'string') {
+                            errorMsg('Not a number.');
+                            stopTurtle = true;
+                        } else {
+                            turtles.turtleList[turtle].doSetHue(args[0]);
+                        }
+                    }
+                    break;
                 case 'setshade':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
@@ -1744,6 +1755,7 @@ define(function(require) {
                         }
                         break;
                     case 'color':
+                    case 'hue':
                         blocks.blockList[blk].value = turtles.turtleList[turtle].color;
                         break;
                     case 'shade':

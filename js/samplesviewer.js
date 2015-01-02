@@ -179,17 +179,92 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     }
 }
 
+function hideCurrentPage(viewer) {
+    var min = viewer.page * 16;
+    var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
+    // Hide the current page.
+    for (var p = min; p < max; p++) {
+        viewer.dict[viewer.projectFiles[p]].visible = false;
+    }
+    // Go back to previous page.
+    viewer.page -= 1;
+    if (viewer.page == 0) {
+        viewer.prev.visible = false;
+    }
+    if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
+        viewer.next.visible = true;
+    }
+    // Show the current page.
+    var min = viewer.page * 16;
+    var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
+    for (var p = min; p < max; p++) {
+        viewer.dict[viewer.projectFiles[p]].visible = true;
+    }
+    viewer.refreshCanvas();
+}
+
+function showNextPage(viewer) {
+    var min = viewer.page * 16;
+    var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
+    // Hide the current page.
+    for (var p = min; p < max; p++) {
+        viewer.dict[viewer.projectFiles[p]].visible = false;
+    }
+    // Advance to next page.
+    viewer.page += 1;
+    viewer.prev.visible = true;
+    if ((viewer.page + 1) * 16 + 1 > viewer.projectFiles.length) {
+        viewer.next.visible = false;
+    }
+    viewer.prepareNextImage(viewer, max);
+    viewer.refreshCanvas();
+}
+
+function viewerClicked(viewer, event) {
+    var x = (event.stageX / viewer.scale) - viewer.container.x;
+    var y = (event.stageY / viewer.scale) - viewer.container.y;
+    if (x > 600 && y < 55) {
+        console.log('closing viewer');
+        // Cancel
+        // for (var p = 0; p < viewer.projectFiles.length; p++) {
+        //     if (viewer.projectsFiles[p] in viewer.dict) {
+        //         viewer.dict[viewer.projectFiles[p]].visible = false;
+        //     }
+        // }
+        viewer.hide();
+        viewer.closeViewer();
+    } else if (y > 535) {
+        if (viewer.prev.visible && x < 325) {
+            hideCurrentPage(viewer);
+        } else if (viewer.next.visible && x > 325) {
+            showNextPage(viewer)
+        }
+    } else {
+        // Select an entry
+        var col = Math.floor((x - 5) / 160);
+        var row = Math.floor((y - 55) / 120);
+        var p = row * 4 + col + 16 * viewer.page;
+        if (p < viewer.projectFiles.length) {
+            viewer.hide();
+            viewer.closeViewer();
+            viewer.sendAllToTrash(false);
+            viewer.loadProject(viewer.projectFiles[p] + '.tb');
+        }
+    }
+}
 
 function loadThumbnailContainerHandler(viewer) {
     var hitArea = new createjs.Shape();
     var w = 650;
     var h = 590;
+    var startX, startY, endX, endY;
     hitArea.graphics.beginFill('#FFF').drawRect(0, 0, w, h);
     hitArea.x = 0;
     hitArea.y = 0;
     viewer.container.hitArea = hitArea;
 
     var locked = false;
+
     viewer.container.on('click', function(event) {
         // We need a lock to "debouce" the click.
         if (locked) {
@@ -200,70 +275,36 @@ function loadThumbnailContainerHandler(viewer) {
         setTimeout(function() {
             locked = false;
         }, 500);
+        viewerClicked(viewer, event)
+    });
 
-        var x = (event.stageX / viewer.scale) - viewer.container.x;
-        var y = (event.stageY / viewer.scale) - viewer.container.y;
-        if (x > 600 && y < 55) {
-            console.log('closing viewer');
-            // Cancel
-            // for (var p = 0; p < viewer.projectFiles.length; p++) {
-            //     if (viewer.projectsFiles[p] in viewer.dict) {
-            //         viewer.dict[viewer.projectFiles[p]].visible = false;
-            //     }
-            // }
-            viewer.hide();
-            viewer.closeViewer();
-        } else if (y > 535) {
-            var min = viewer.page * 16;
-            var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
-            if (viewer.prev.visible && x < 325) {
-                // Hide the current page.
-                for (var p = min; p < max; p++) {
-                    viewer.dict[viewer.projectFiles[p]].visible = false;
-                }
-                // Go back to previous page.
-                viewer.page -= 1;
-                if (viewer.page == 0) {
-                    viewer.prev.visible = false;
-                }
-                if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
-                    viewer.next.visible = true;
-                }
-                // Show the current page.
-                var min = viewer.page * 16;
-                var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
-                for (var p = min; p < max; p++) {
-                    viewer.dict[viewer.projectFiles[p]].visible = true;
-                }
-            } else if (viewer.next.visible && x > 325) {
-                // Hide the current page.
-                for (var p = min; p < max; p++) {
-                    viewer.dict[viewer.projectFiles[p]].visible = false;
-                }
-                // Advance to next page.
-                viewer.page += 1;
-                viewer.prev.visible = true;
-                if ((viewer.page + 1) * 16 + 1 > viewer.projectFiles.length) {
-                    viewer.next.visible = false;
-                }
-                viewer.prepareNextImage(viewer, max);
+    viewer.container.on('mousedown', function(event) {
+        startX = event.stageX;
+        startY = event.stageY;
+        locked = true;
+    });
+
+    viewer.container.on('pressup', function(event) {
+        endX = event.stageX;
+        endY = event.stageY;
+        if (endY > startY + 30 || endX > startX + 30) {
+            // Down or right
+            if (viewer.next.visible) {
+                showNextPage(viewer);
             }
-            viewer.refreshCanvas();
-        } else {
-            // Select an entry
-            var col = Math.floor((x - 5) / 160);
-            var row = Math.floor((y - 55) / 120);
-            var p = row * 4 + col + 16 * viewer.page;
-            if (p < viewer.projectFiles.length) {
-                viewer.hide();
-                viewer.closeViewer();
-                viewer.sendAllToTrash(false);
-                viewer.loadProject(viewer.projectFiles[p] + '.tb');
+        }
+        else if(endY < startY - 30 || endX < startX - 30) {
+            // Up or left
+            if (viewer.prev.visible) {
+                hideCurrentPage(viewer);
             }
+        }
+        else {
+            locked = false;
+            viewerClicked(viewer, event)
         }
     });
 }
-
 
 function fileExt(file) {
     var parts = file.split('.');

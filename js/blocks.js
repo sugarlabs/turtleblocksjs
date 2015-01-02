@@ -1371,12 +1371,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.visible = true;
     }
 
-    this.makeNewBlockWithConnections = function(name, blockOffset, connections, postProcess, postProcessArg) {
+    this.makeNewBlockWithConnections = function(name, blockOffset, connections, postProcess, postProcessArg, collapsed) {
+        if (typeof(collapsed) === "undefined") { collapsed = false }
         myBlock = this.makeNewBlock(name, postProcess, postProcessArg);
         if (myBlock == null) {
             console.log('could not make block ' + name);
             return;
         }
+        myBlock.collapsed = !collapsed;
         for (var c = 0; c < connections.length; c++) {
             if (c == myBlock.docks.length) {
                 break;
@@ -1971,37 +1973,50 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         for (var b = 0; b < blockObjs.length; b++) {
             var thisBlock = blockOffset + b;
             var blkData = blockObjs[b];
-            if (typeof(blkData[1]) == 'string') {
-                var name = blkData[1];
+            oldData = blkData;
+            var collapsed = undefined;
+
+            // Old support
+            if (typeof(oldData[1]) == 'string') {
+                blkData[1] = [blkData[1], true];
+            }
+            if (typeof(oldData[1]) == 'object' && typeof(oldData[1][1]) != 'boolean' && typeof(oldData[1][2]) == 'undefined') {
+                blkData[1] = [blkData[1][0], blkData[1][1], true];
+            }
+
+            if (blkData[1].length == 2) {
+                var name = blkData[1][0];
+                var collapsed = blkData[1][1]
                 var value = null;
-            } else {
+            }
+            else {
                 var name = blkData[1][0];
                 var value = blkData[1][1];
+                var collapsed = blkData[1][2];
             }
 
             if (name in NAMEDICT) {
                 name = NAMEDICT[name];
             }
-
             var me = this;
             // A few special cases.
             switch (name) {
+                // Only add 'collapsed' arg to start, action blocks.
                 case 'start':
                     blkData[4][0] = null;
                     blkData[4][2] = null;
 
                     postProcess = function(thisBlock) {
                         me.blockList[thisBlock].value = me.turtles.turtleList.length;
-
                         me.turtles.add(me.blockList[thisBlock]);
                     }
-                    this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, thisBlock);
+                    this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, thisBlock, collapsed);
                     break;
                 case 'action':
                 case 'hat':
                     blkData[4][0] = null;
                     blkData[4][3] = null;
-                    this.makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null);
+                    this.makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null, collapsed);
                     break;
 
                     // Value blocks need a default value set.

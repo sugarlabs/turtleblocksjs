@@ -805,11 +805,21 @@ define(function(require) {
                     blocks.blockList[0].y = 250;
                     blocks.blockList[0].connections = [null, null, null];
                     blocks.blockList[0].value = turtles.turtleList.length;
+                    blocks.blockList[0].collapsed = true;
                     turtles.add(blocks.blockList[0]);
                     blocks.updateBlockPositions();
                 }
                 blocks.makeNewBlock('start', postProcess, null);
             }
+            setTimeout(function() {
+                for (var blk = 0; blk < blocks.blockList.length; blk++) {
+                    var myBlock = blocks.blockList[blk];
+                    if (['start', 'action'].indexOf(myBlock.name) != -1) {
+                        collapseToggle(blocks, myBlock)
+                        myBlock.unhighlight()
+                    }
+                }
+            }, 3000);
             update = true;
         }
 
@@ -2037,9 +2047,9 @@ define(function(require) {
                     continue;
                 }
                 if (blocks.blockList[blk].isValueBlock()) {
-                    var name = [myBlock.name, myBlock.value];
+                    var name = [myBlock.name, myBlock.value, myBlock.collapsed];
                 } else {
-                    var name = myBlock.name;
+                    var name = [myBlock.name, myBlock.collapsed];
                 }
 
                 connections = [];

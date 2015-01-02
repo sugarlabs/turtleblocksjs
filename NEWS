@@ -153,8 +153,12 @@
   * add mashape palette
   * translation blocks (w/Ignacio Rodriguez)
   * color forces max chroma; hue just sets hue.
+  * preserve collapse state between save/load (w/Ignacio Rodriguez)
+  * swipe to page samples viewer (w/Ignacio Rodriguez)
 
 TODO:
+  * rotate turtles with gesture
+  * save/restore turtle state
   * plugin mechanism
   * use busy cursor where approporate
   * use snap to pixels
@@ -164,7 +168,6 @@ TODO:
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
-  * preserve collapse state between save/load
 
 BUGS:
   * jumpy scrolling

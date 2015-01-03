@@ -1830,6 +1830,55 @@ define(function(require) {
                             blocks.blockList[blk].value = value;
                         }
                         break;
+                    case 'weatherincity':
+                    case 'weatherincityhigh':
+                    case 'weatherincitylow':
+                        var block = blocks.blockList[blk];
+
+                        // FIXME: Is that key supposed to be public?
+                        var mashapeKey = '6wpXujB5ORmshs7zZRrUS2g06qrQp1wfHCpjsnOyndEuMjSM8a';
+                        var apiURL = 'https://george-vustrey-weather.p.mashape.com/api.php?location=';
+                        var key = {'weatherincity': 'condition',
+                                   'weatherincityhigh': 'high_celsius',
+                                   'weatherincitylow': 'low_celsius'}[block.name]
+                        var intOutput = {'weatherincity': false,
+                                         'weatherincityhigh': true,
+                                         'weatherincitylow': true}[block.name]
+
+                        var conns = block.connections;
+                        var city = parseArg(activity, turtle, conns[1]);
+                        var daysAhead = parseInt(parseArg(activity, turtle, conns[2]));
+
+                        if (daysAhead < -1 || daysAhead > 5) {
+                            errorMsg('Weather forcast "days ahead" must be in the range of -1 to 5');
+                            break;
+                        }
+
+                        if (block.cacheCity === city && block.cache !== undefined) {
+                            var response = block.cache;
+                        } else {
+                            var request = new XMLHttpRequest();
+                            request.open('GET', apiURL + city, false);
+                            request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+                            request.send(null);
+
+                            var response = request.responseText;
+                            block.cacheCity = city;
+                            block.cache = response;
+                        }
+
+                        forcast = JSON.parse(response);
+                        if (forcast[0].error !== undefined) {
+                            errorMsg('Weather error: ' + forcast[0].error);
+                        } else {
+                            var index = daysAhead + 1;
+                            if (intOutput) {
+                                block.value = parseInt(forcast[index][key]);
+                            } else {
+                                block.value = forcast[index][key];
+                            }
+                        }
+                        break;
                     default:
                         if (blocks.blockList[blk].name in evalArgDict) {
                             eval(evalArgDict[blocks.blockList[blk].name]);

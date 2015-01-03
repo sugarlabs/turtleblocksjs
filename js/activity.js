@@ -36,8 +36,6 @@ define(function(require) {
     require('activity/basicblocks');
     require('activity/advancedblocks');
 
-    var MASHAPE_KEY = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
-
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
 
@@ -1450,10 +1448,6 @@ define(function(require) {
                     activity.parameterQueue[targetTurtle] = [];
                     doBreak(targetTurtle);
                     break;
-                case 'setlang':
-                    fromLang = parseArg(activity, turtle, blocks.blockList[blk].connections[1]);
-                    toLang = parseArg(activity, turtle, blocks.blockList[blk].connections[2]);
-                    break;
                 default:
                     if (blocks.blockList[blk].name in evalFlowDict) {
                         eval(evalFlowDict[blocks.blockList[blk].name]);
@@ -1799,82 +1793,6 @@ define(function(require) {
                             blocks.blockList[blk].value = null;
                         } else {
                             blocks.blockList[blk].value = Math.round(mic.getLevel() * 1000);
-                        }
-                        break;
-                    case 'translate':
-                    case 'detectlang':
-                        // FIXME: Is that key supposed to be public?
-                        var publicKey = 'nGhwbdV7TrtzC9qLp3DZ';
-                        var secretKey = '3b68e1d00446eed728cdda66280a8312';
-                        var apiURL = 'https://community-onehourtranslation.p.mashape.com/mt/'
-
-                        if (blocks.blockList[blk].name == 'translate') {
-                            var KEY = 'TranslatedText'
-                            var text = parseArg(activity, turtle, blocks.blockList[blk].connections[1]);
-                            targetLang = 'Spanish';
-                            var args =  "translate/text?public_key=" + publicKey + "&secret_key=" + secretKey + "&source_content=" + text + "&source_language=" + fromLang + "&target_language=" + toLang
-                        }
-                        else if(blocks.blockList[blk].name == 'detectlang') {
-                            var KEY = 'language'
-                            var text = parseArg(activity, turtle, blocks.blockList[blk].connections[1]);
-                            var args = "detect/text?public_key=" + publicKey + "&secret_key=" + secretKey + "&source_content=" + text
-                        }
-                        var request = new XMLHttpRequest();
-                        request.open("GET", apiURL + args, false);
-                        request.setRequestHeader("X-Mashape-Authorization", MASHAPE_KEY)
-                        request.send(null);
-                        value = JSON.parse(request.responseText)['results'][KEY];
-                        if (!value) {
-                            errorMsg('Did you set a correct language with the setlang block?')
-                        }
-                        else {
-                            blocks.blockList[blk].value = value;
-                        }
-                        break;
-                    case 'weatherincity':
-                    case 'weatherincityhigh':
-                    case 'weatherincitylow':
-                        var block = blocks.blockList[blk];
-                        var apiURL = 'https://george-vustrey-weather.p.mashape.com/api.php?location=';
-                        var key = {'weatherincity': 'condition',
-                                   'weatherincityhigh': 'high_celsius',
-                                   'weatherincitylow': 'low_celsius'}[block.name]
-                        var intOutput = {'weatherincity': false,
-                                         'weatherincityhigh': true,
-                                         'weatherincitylow': true}[block.name]
-
-                        var conns = block.connections;
-                        var city = parseArg(activity, turtle, conns[1]);
-                        var daysAhead = parseInt(parseArg(activity, turtle, conns[2]));
-
-                        if (daysAhead < -1 || daysAhead > 5) {
-                            errorMsg('Weather forcast "days ahead" must be in the range of -1 to 5');
-                            break;
-                        }
-
-                        if (block.cacheCity === city && block.cache !== undefined) {
-                            var response = block.cache;
-                        } else {
-                            var request = new XMLHttpRequest();
-                            request.open('GET', apiURL + city, false);
-                            request.setRequestHeader('X-Mashape-Authorization', MASHAPE_KEY);
-                            request.send(null);
-
-                            var response = request.responseText;
-                            block.cacheCity = city;
-                            block.cache = response;
-                        }
-
-                        forcast = JSON.parse(response);
-                        if (forcast[0].error !== undefined) {
-                            errorMsg('Weather error: ' + forcast[0].error);
-                        } else {
-                            var index = daysAhead + 1;
-                            if (intOutput) {
-                                block.value = parseInt(forcast[index][key]);
-                            } else {
-                                block.value = forcast[index][key];
-                            }
                         }
                         break;
                     default:

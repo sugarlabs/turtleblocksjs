@@ -9,16 +9,19 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+var MASHAPE_KEY = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
+
 // Definition of special blocks less commonly included.
 
 // Define block actions here (flow blocks and arg blocks)
 var evalFlowDict = {
-    'publish': "if (args.length == 1) {doPublish(args[0]);};",
-    'savesvg': "if (args.length == 1) {doSaveSVG(canvas, turtles, args[0])};",
-    'print': "if (args.length == 1) {var msgContainer = msgText.parent; msgContainer.visible = true; msgText.text = args[0].toString(); msgContainer.updateCache(); stage.swapChildren(msgContainer, last(stage.children));};",
-    'showblocks': "showBlocks(); turtleDelay = DEFAULTDELAY;",
-    'hideblocks': "hideBlocks(); turtleDelay = 0;",
-    'speak': "meSpeak.speak(args[0]);"
+    'publish': 'if (args.length == 1) {doPublish(args[0]);};',
+    'savesvg': 'if (args.length == 1) {doSaveSVG(canvas, turtles, args[0])};',
+    'print': 'if (args.length == 1) {var msgContainer = msgText.parent; msgContainer.visible = true; msgText.text = args[0].toString(); msgContainer.updateCache(); stage.swapChildren(msgContainer, last(stage.children));};',
+    'showblocks': 'showBlocks(); turtleDelay = DEFAULTDELAY;',
+    'hideblocks': 'hideBlocks(); turtleDelay = 0;',
+    'speak': 'meSpeak.speak(args[0]);',
+    'setlang': 'fromLang = parseArg(activity, turtle, blocks.blockList[blk].connections[1]); toLang = parseArg(activity, turtle, blocks.blockList[blk].connections[2]);'
 };
 
 var evalArgDict = {
@@ -27,6 +30,11 @@ var evalArgDict = {
     'mousey': 'blocks.blockList[blk].value = stageY;',
     'mousebutton': 'blocks.blockList[blk].value = stageMouseDown;',
     'keyboard': 'blocks.blockList[blk].value = currentKeyCode; lastKeyCode = currentKeyCode; currentKey = ""; currentKeyCode = 0;',
+    'translate': 'var publicKey = "nGhwbdV7TrtzC9qLp3DZ"; var secretKey = "3b68e1d00446eed728cdda66280a8312"; var apiURL = "https://community-onehourtranslation.p.mashape.com/mt/" var KEY = "TranslatedText" var text = parseArg(activity, turtle, blocks.blockList[blk].connections[1]); var targetLang = "Spanish"; var args = "translate/text?public_key=" + publicKey + "&secret_key=" + secretKey + "&source_content=" + text + "&source_language=" + fromLang + "&target_language=" + toLang; var request = new XMLHttpRequest(); request.open("GET", apiURL + args, false); request.setRequestHeader("X-Mashape-Authorization", MASHAPE_KEY); request.send(null); var value = JSON.parse(request.responseText)["results"][KEY]; if (!value) { value = ""; } blocks.blockList[blk].value = value;',
+    'detectlang': 'var publicKey = "nGhwbdV7TrtzC9qLp3DZ"; var secretKey = "3b68e1d00446eed728cdda66280a8312"; var apiURL = "https://community-onehourtranslation.p.mashape.com/mt/" var KEY = "language"; var text = parseArg(activity, turtle, blocks.blockList[blk].connections[1]); var args = "detect/text?public_key=" + publicKey + "&secret_key=" + secretKey + "&source_content=" + text; var request = new XMLHttpRequest(); request.open("GET", apiURL + args, false); request.setRequestHeader("X-Mashape-Authorization", MASHAPE_KEY); request.send(null); var value = JSON.parse(request.responseText)["results"][KEY]; if (!value) { value = ""; } blocks.blockList[blk].value = value;',
+    'weatherincity': 'var block = blocks.blockList[blk]; var apiURL = "https://george-vustrey-weather.p.mashape.com/api.php?location="; var conns = block.connections; var city = parseArg(activity, turtle, conns[1]); var daysAhead = parseInt(parseArg(activity, turtle, conns[2])); if (block.cacheCity === city && block.cache !== undefined) { var response = block.cache; } else { var request = new XMLHttpRequest(); request.open("GET", apiURL + city, false); request.setRequestHeader("X-Mashape-Authorization", MASHAPE_KEY); request.send(null); var response = request.responseText; block.cacheCity = city; block.cache = response; } var forecast = JSON.parse(response); block.value = forecast[daysAhead + 1]["condition"];',
+    'weatherincityhigh': 'var block = blocks.blockList[blk]; var apiURL = "https://george-vustrey-weather.p.mashape.com/api.php?location="; var conns = block.connections; var city = parseArg(activity, turtle, conns[1]); var daysAhead = parseInt(parseArg(activity, turtle, conns[2])); if (block.cacheCity === city && block.cache !== undefined) { var response = block.cache; } else { var request = new XMLHttpRequest(); request.open("GET", apiURL + city, false); request.setRequestHeader("X-Mashape-Authorization", MASHAPE_KEY); request.send(null); var response = request.responseText; block.cacheCity = city; block.cache = response; } var forecast = JSON.parse(response); block.value = parseInt(forecast[daysAhead + 1]["high_celsius"]);',
+    'weatherincitylow': 'var block = blocks.blockList[blk]; var apiURL = "https://george-vustrey-weather.p.mashape.com/api.php?location="; var conns = block.connections; var city = parseArg(activity, turtle, conns[1]); var daysAhead = parseInt(parseArg(activity, turtle, conns[2])); if (block.cacheCity === city && block.cache !== undefined) { var response = block.cache; } else { var request = new XMLHttpRequest(); request.open("GET", apiURL + city, false); request.setRequestHeader("X-Mashape-Authorization", MASHAPE_KEY); request.send(null); var response = request.responseText; block.cacheCity = city; block.cache = response; } var forecast = JSON.parse(response); block.value = parseInt(forecast[daysAhead + 1]["low_celsius"]);',
 };
 
 // Define block prototypes here

@@ -1984,9 +1984,25 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 blkData[1] = [blkData[1][0], blkData[1][1], true];
             }
 
+            if (blkData[1].length == 2 && blkData[1][0][0] == 'start') {
+                // xcor, ycor, heading, color, shade, pensize, grey
+                blkData[1] = [[blkData[1][0], blkData[1][1]], null, null, null, null, null, null, null]
+            }
             if (blkData[1].length == 2) {
                 var name = blkData[1][0];
                 var collapsed = blkData[1][1]
+                var value = null;
+            }
+            else if(blkData[1].length == 8) {
+                var name = blkData[1][0][0];
+                var collapsed = blkData[1][0][1];
+                var turtleX = blkData[1][1];
+                var turtleY = blkData[1][2];
+                var turtleH = blkData[1][3];
+                var turtleC = blkData[1][4];
+                var turtleS = blkData[1][5];
+                var turtleP = blkData[1][6];
+                var turtleG = blkData[1][7];
                 var value = null;
             }
             else {
@@ -2006,11 +2022,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     blkData[4][0] = null;
                     blkData[4][2] = null;
 
-                    postProcess = function(thisBlock) {
+                    postProcess = function(args) {
+                        thisBlock = args[0]
+                        turtleX = args[1];
+                        turtleY = args[2];
+                        turtleH = args[3];
+                        turtleC = args[4];
+                        turtleS = args[5];
+                        turtleP = args[6];
+                        turtleG = args[7];
                         me.blockList[thisBlock].value = me.turtles.turtleList.length;
-                        me.turtles.add(me.blockList[thisBlock]);
+                        me.turtles.add(me.blockList[thisBlock], turtleX, turtleY, turtleH, turtleC, turtleS, turtleP, turtleG);
                     }
-                    this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, thisBlock, collapsed);
+                    this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, [thisBlock, turtleX, turtleY, turtleH, turtleC, turtleS, turtleP, turtleG], collapsed);
                     break;
                 case 'action':
                 case 'hat':

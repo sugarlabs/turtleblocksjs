@@ -387,6 +387,7 @@ function Turtle (name, turtles) {
         this.orientation %= 360;
         this.bitmap.rotation = this.orientation;
         this.turtles.refreshCanvas();
+        this.container.updateCache();
     }
 
     this.doSetColor = function(color) {
@@ -486,7 +487,7 @@ function Turtles(canvas, stage, refreshCanvas) {
     // The list of all of our turtles, one for each start block.
     this.turtleList = [];
 
-    this.add = function(startBlock) {
+    this.add = function(startBlock, turtleX, turtleY, turtleH, turtleC, turtleS, turtleP, turtleG) {
         // Add a new turtle for each start block
         if (startBlock != null) {
             console.log('adding a new turtle ' + startBlock.name);
@@ -496,6 +497,9 @@ function Turtles(canvas, stage, refreshCanvas) {
         var i = this.turtleList.length;
         var turtleName = i.toString();
         var myTurtle = new Turtle(turtleName, this);
+        if (typeof(turtleX) != "undefined") { myTurtle.x = turtleX; }
+        if (typeof(turtleY) != "undefined") { myTurtle.y = turtleY; }
+
         this.turtleList.push(myTurtle);
 
         // Each turtle needs its own canvas.
@@ -588,6 +592,13 @@ function Turtles(canvas, stage, refreshCanvas) {
         });
 
         document.getElementById('loader').className = '';
+        setTimeout(function() {
+                if (typeof(turtleH) != "undefined") { myTurtle.doSetHeading(turtleH); }
+                if (typeof(turtleP) != "undefined") { myTurtle.doSetPensize(turtleP); }
+                if (typeof(turtleG) != "undefined") { myTurtle.doSetChroma(turtleG); }
+                if (typeof(turtleS) != "undefined") { myTurtle.doSetValue(turtleS); }
+                if (typeof(turtleC) != "undefined") { myTurtle.doSetColor(turtleC); }
+        }, 1000);
         this.refreshCanvas();
     }
 

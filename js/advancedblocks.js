@@ -224,10 +224,9 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     weatherBlock.docks[1][2] = 'anyin';
     weatherBlock.defaults.push('Canberra');
     weatherBlock.defaults.push(1);
-    weatherBlock.fontsize = '10px';
-    weatherBlock.staticLabels.push('weather forcast');
+    weatherBlock.staticLabels.push('forecast');
     weatherBlock.staticLabels.push('city');
-    weatherBlock.staticLabels.push('day +/-');
+    weatherBlock.staticLabels.push('day');
 
     var weatherHighBlock = new ProtoBlock('weatherincityhigh');
     weatherHighBlock.palette = palettes.dict['mashape'];
@@ -236,10 +235,9 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     weatherHighBlock.docks[1][2] = 'anyin';
     weatherHighBlock.defaults.push('Canberra');
     weatherHighBlock.defaults.push(1);
-    weatherHighBlock.fontsize = '10px';
-    weatherHighBlock.staticLabels.push('high temp.');
+    weatherHighBlock.staticLabels.push('high');
     weatherHighBlock.staticLabels.push('city');
-    weatherHighBlock.staticLabels.push('day +/-');
+    weatherHighBlock.staticLabels.push('day');
 
     var weatherLowBlock = new ProtoBlock('weatherincitylow');
     weatherLowBlock.palette = palettes.dict['mashape'];
@@ -248,10 +246,9 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     weatherLowBlock.docks[1][2] = 'anyin';
     weatherLowBlock.defaults.push('Canberra');
     weatherLowBlock.defaults.push(1);
-    weatherLowBlock.fontsize = '10px';
-    weatherLowBlock.staticLabels.push('low temp.');
+    weatherLowBlock.staticLabels.push('low');
     weatherLowBlock.staticLabels.push('city');
-    weatherLowBlock.staticLabels.push('day +/-');
+    weatherLowBlock.staticLabels.push('day');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

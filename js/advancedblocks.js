@@ -215,6 +215,44 @@ function initAdvancedProtoBlocks(palettes, blocks) {
     SetLangBlock.defaults.push('English', 'Spanish');
     SetLangBlock.staticLabels.push('set lang', 'source', 'target');
 
+    // FIXME: Make blocks wider, not text smaller
+    var weatherBlock = new ProtoBlock('weatherincity');
+    weatherBlock.palette = palettes.dict['mashape'];
+    blocks.protoBlockDict['weatherincity'] = weatherBlock;
+    weatherBlock.twoArgMathBlock();
+    weatherBlock.docks[0][2] = 'textout';
+    weatherBlock.docks[1][2] = 'anyin';
+    weatherBlock.defaults.push('Canberra');
+    weatherBlock.defaults.push(1);
+    weatherBlock.fontsize = '10px';
+    weatherBlock.staticLabels.push('weather forcast');
+    weatherBlock.staticLabels.push('city');
+    weatherBlock.staticLabels.push('day +/-');
+
+    var weatherHighBlock = new ProtoBlock('weatherincityhigh');
+    weatherHighBlock.palette = palettes.dict['mashape'];
+    blocks.protoBlockDict['weatherincityhigh'] = weatherHighBlock;
+    weatherHighBlock.twoArgMathBlock();
+    weatherHighBlock.docks[1][2] = 'anyin';
+    weatherHighBlock.defaults.push('Canberra');
+    weatherHighBlock.defaults.push(1);
+    weatherHighBlock.fontsize = '10px';
+    weatherHighBlock.staticLabels.push('high temp.');
+    weatherHighBlock.staticLabels.push('city');
+    weatherHighBlock.staticLabels.push('day +/-');
+
+    var weatherLowBlock = new ProtoBlock('weatherincitylow');
+    weatherLowBlock.palette = palettes.dict['mashape'];
+    blocks.protoBlockDict['weatherincitylow'] = weatherLowBlock;
+    weatherLowBlock.twoArgMathBlock();
+    weatherLowBlock.docks[1][2] = 'anyin';
+    weatherLowBlock.defaults.push('Canberra');
+    weatherLowBlock.defaults.push(1);
+    weatherLowBlock.fontsize = '10px';
+    weatherLowBlock.staticLabels.push('low temp.');
+    weatherLowBlock.staticLabels.push('city');
+    weatherLowBlock.staticLabels.push('day +/-');
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);

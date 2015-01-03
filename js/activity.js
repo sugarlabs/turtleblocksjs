@@ -2049,7 +2049,15 @@ define(function(require) {
                 if (blocks.blockList[blk].isValueBlock()) {
                     var name = [myBlock.name, myBlock.value, myBlock.collapsed];
                 } else {
-                    var name = [myBlock.name, myBlock.collapsed];
+                    if (myBlock.name == 'start') {
+                        // It's a turtleee!
+                        turtle = turtles.turtleList[myBlock.value];
+                        // xcor, ycor, heading, color, shade, pensize, grey
+                        var name = [[myBlock.name, myBlock.collapsed], turtle.x, turtle.y, turtle.orientation, turtle.color, turtle.value, turtle.stroke, turtle.chroma]
+                    }
+                    else {
+                        var name = [myBlock.name, myBlock.collapsed];
+                    }
                 }
 
                 connections = [];

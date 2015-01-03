@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014, 2015 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         this.page = 0;
         if (this.server) {
             try {
-                var rawData = httpGet();
+                var rawData = httpGetProject();
                 var obj = JSON.parse(rawData);
                 // console.log('json parse: ' + obj);
                 // Look for base64-encoded png
@@ -95,7 +95,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
                         viewer.container.visible = true;
                         viewer.refreshCanvas();
                         viewer.completeInit();
-			loadThumbnailContainerHandler(viewer);
+                        loadThumbnailContainerHandler(viewer);
                         return true;
                     }
                     makeViewerBitmap(viewer, NEXTBUTTON, 'viewer', processNext, null);
@@ -116,7 +116,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             var header = ''; // 'data:image/png;base64,';
             var name = this.projectFiles[p] + '.b64';
             // console.log('getting ' + name + ' from server');
-            var data = header + httpGet(name);
+            var data = header + httpGetProject(name);
         } else {
             var header = 'data:image/svg+xml;utf8,';
             var name = this.projectFiles[p] + '.svg';
@@ -179,6 +179,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
     }
 }
 
+
 function hideCurrentPage(viewer) {
     var min = viewer.page * 16;
     var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
@@ -203,6 +204,7 @@ function hideCurrentPage(viewer) {
     viewer.refreshCanvas();
 }
 
+
 function showNextPage(viewer) {
     var min = viewer.page * 16;
     var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
@@ -220,17 +222,12 @@ function showNextPage(viewer) {
     viewer.refreshCanvas();
 }
 
+
 function viewerClicked(viewer, event) {
     var x = (event.stageX / viewer.scale) - viewer.container.x;
     var y = (event.stageY / viewer.scale) - viewer.container.y;
     if (x > 600 && y < 55) {
         console.log('closing viewer');
-        // Cancel
-        // for (var p = 0; p < viewer.projectFiles.length; p++) {
-        //     if (viewer.projectsFiles[p] in viewer.dict) {
-        //         viewer.dict[viewer.projectFiles[p]].visible = false;
-        //     }
-        // }
         viewer.hide();
         viewer.closeViewer();
     } else if (y > 535) {
@@ -252,6 +249,7 @@ function viewerClicked(viewer, event) {
         }
     }
 }
+
 
 function loadThumbnailContainerHandler(viewer) {
     var hitArea = new createjs.Shape();
@@ -292,19 +290,18 @@ function loadThumbnailContainerHandler(viewer) {
             if (viewer.next.visible) {
                 showNextPage(viewer);
             }
-        }
-        else if(endY < startY - 30 || endX < startX - 30) {
+        } else if (endY < startY - 30 || endX < startX - 30) {
             // Up or left
             if (viewer.prev.visible) {
                 hideCurrentPage(viewer);
             }
-        }
-        else {
+        } else {
             locked = false;
             viewerClicked(viewer, event)
         }
     });
 }
+
 
 function fileExt(file) {
     var parts = file.split('.');
@@ -328,7 +325,7 @@ function fileBasename(file) {
 }
 
 
-function httpGet(projectName) {
+function httpGetProject(projectName) {
     var xmlHttp = null;
 
     xmlHttp = new XMLHttpRequest();

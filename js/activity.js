@@ -36,6 +36,8 @@ define(function(require) {
     require('activity/basicblocks');
     require('activity/advancedblocks');
 
+    var MASHAPE_KEY = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
+
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
 
@@ -1804,7 +1806,6 @@ define(function(require) {
                         // FIXME: Is that key supposed to be public?
                         var publicKey = 'nGhwbdV7TrtzC9qLp3DZ';
                         var secretKey = '3b68e1d00446eed728cdda66280a8312';
-                        var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
                         var apiURL = 'https://community-onehourtranslation.p.mashape.com/mt/'
 
                         if (blocks.blockList[blk].name == 'translate') {
@@ -1820,7 +1821,7 @@ define(function(require) {
                         }
                         var request = new XMLHttpRequest();
                         request.open("GET", apiURL + args, false);
-                        request.setRequestHeader("X-Mashape-Authorization", mashapeKey)
+                        request.setRequestHeader("X-Mashape-Authorization", MASHAPE_KEY)
                         request.send(null);
                         value = JSON.parse(request.responseText)['results'][KEY];
                         if (!value) {
@@ -1834,9 +1835,6 @@ define(function(require) {
                     case 'weatherincityhigh':
                     case 'weatherincitylow':
                         var block = blocks.blockList[blk];
-
-                        // FIXME: Is that key supposed to be public?
-                        var mashapeKey = '6wpXujB5ORmshs7zZRrUS2g06qrQp1wfHCpjsnOyndEuMjSM8a';
                         var apiURL = 'https://george-vustrey-weather.p.mashape.com/api.php?location=';
                         var key = {'weatherincity': 'condition',
                                    'weatherincityhigh': 'high_celsius',
@@ -1859,7 +1857,7 @@ define(function(require) {
                         } else {
                             var request = new XMLHttpRequest();
                             request.open('GET', apiURL + city, false);
-                            request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+                            request.setRequestHeader('X-Mashape-Authorization', MASHAPE_KEY);
                             request.send(null);
 
                             var response = request.responseText;

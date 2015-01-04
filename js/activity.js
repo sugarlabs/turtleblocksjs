@@ -351,16 +351,17 @@ define(function(require) {
             });
 
             var URL = window.location.href;
-            console.log(URL);
             var projectName = null;
-            if (URL.substr(0, 4) == 'file' && !onAndroid) {
-                console.log('running from filesystem');
-                server = false;
-                saveButton.style.visibility = 'hidden';
-            } else {
-                console.log('running from server');
+            try {
+                httpGet(null);
+                console.log('running from server or the user can access to examples.');
                 server = true;
                 stopButton.style.visibility = 'hidden';
+            }
+            catch (e) {
+                console.log('running from filesystem or the connection isnt secure');
+                server = false;
+                saveButton.style.visibility = 'hidden';
             }
 
             // Scale the canvas relative to the screen size.

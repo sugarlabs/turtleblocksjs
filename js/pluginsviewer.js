@@ -327,10 +327,10 @@ function httpGetPlugin(pluginName) {
     xmlHttp = new XMLHttpRequest();
 
     if (pluginName == null) {
-        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
+        xmlHttp.open("GET", window.location.protocol + '//' + window.location.host + '/server/', false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     } else {
-        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + pluginName, false);
+        xmlHttp.open("GET", window.location.protocol + '//' + window.location.host + '/server/' + pluginName, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
         // xmlHttp.setRequestHeader('x-project-id', pluginName);
     }

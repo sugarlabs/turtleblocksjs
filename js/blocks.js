@@ -3451,10 +3451,10 @@ function httpGet(projectName) {
     xmlHttp = new XMLHttpRequest();
 
     if (projectName == null) {
-        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server', false);
+        xmlHttp.open("GET", window.location.protocol + '//' + window.location.host + '/server/', false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     } else {
-        xmlHttp.open("GET", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+        xmlHttp.open("GET", window.location.protocol + '//' + window.location.host + '/server/' + projectName, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
         // xmlHttp.setRequestHeader('x-project-id', projectName);
     }
@@ -3467,7 +3467,7 @@ function httpPost(projectName, data) {
     var xmlHttp = null;
     // console.log('sending ' + data);
     xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", 'https://turtle.sugarlabs.org/server/' + projectName, false);
+    xmlHttp.open("POST", window.location.protocol + '//' + window.location.host + '/server/' + projectName, false);
     xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     // xmlHttp.setRequestHeader('x-project-id', projectName);
     xmlHttp.send(data);

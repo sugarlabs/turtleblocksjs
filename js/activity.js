@@ -34,6 +34,7 @@ define(function(require) {
     require('activity/samplesviewer');
     require('activity/samples');
     require('activity/basicblocks');
+    require('activity/plugins');
     require('activity/advancedblocks');
 
     // Manipulate the DOM only when it is ready.
@@ -302,6 +303,7 @@ define(function(require) {
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
 
             initBasicProtoBlocks(palettes, blocks);
+	    console.log('init Advanced Blocks');
             initAdvancedProtoBlocks(palettes, blocks);
 
             // Set up a file chooser for the doOpen function.

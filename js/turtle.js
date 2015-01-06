@@ -387,8 +387,8 @@ function Turtle (name, turtles) {
         this.orientation %= 360;
         this.bitmap.rotation = this.orientation;
         this.turtles.refreshCanvas();
-        this.container.updateCache();
-    }
+        this.container.updateCache()
+;    }
 
     this.doSetColor = function(color) {
 	// Color sets hue but also selects maximum chroma.

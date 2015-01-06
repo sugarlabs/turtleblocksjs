@@ -13,16 +13,24 @@
     <link rel="stylesheet" href="css/activity.css">
 
     <script>
-    if (window.location.protocol == "http:")
-          window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+    /*if (window.location.protocol == "http:")
+          window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);*/
     </script>
 
     <script src="lib/mespeak.js"></script>
     <script src="lib/reqwest.js"></script>
     <script src="lib/p5.js"></script>
 
-
+    <link rel=" stylesheet" type="text/css" href="css/joyride-2.1.css">
     <script data-main="js/loader" src="lib/require.js"> </script>
+    <style>
+    .helpDiv {
+          float: right;
+          position: absolute;
+          margin-top: 57px;
+          z-index: -1;
+    }
+    </style>
 </head>
 
 <body id="body">
@@ -52,9 +60,9 @@
 
     <div id="main-toolbar" class="toolbar">
         <button class="toolbutton" id="activity-button" title="My Activity"></button>
-	<button class="toolbutton" id="open-toolbar-button"></button>
-	<button class="toolbutton" id="menu-button"></button>
-	<button class="toolbutton" id="close-toolbar-button"></button>
+        <button class="toolbutton" id="open-toolbar-button"></button>
+        <button class="toolbutton" id="menu-button"></button>
+        <button class="toolbutton" id="close-toolbar-button"></button>
         <button class="toolbutton" id="fast-button" title="Fast"></button>
         <button class="toolbutton" id="slow-button" title="Slow"></button>
         <button class="toolbutton" id="stop-turtle-button" title="Stop turtle"></button>
@@ -63,13 +71,13 @@
         <button class="toolbutton" id="hide-blocks-button" title="Hide/Show Blocks"></button>
         <button class="toolbutton" id="cartesian-button" title="Cartesian Grid"></button>
         <button class="toolbutton" id="polar-button" title="Polar Grid"></button>
-	<button class="toolbutton" id="copy-button" title="Copy"></button>
-	<button class="toolbutton" id="paste-button" title="Paste"></button>
-	<button class="toolbutton" id="empty-trash-button" title="Empty trash"></button>
-	<button class="toolbutton" id="restore-trash-button" title="Restore from trash"></button>
-	<button class="toolbutton" id="samples-button" title="Examples"></button>
-	<button class="toolbutton" id="open-button" title="Open"></button>
-	<button class="toolbutton" id="save-button" title="Save"></button>
+        <button class="toolbutton" id="copy-button" title="Copy"></button>
+        <button class="toolbutton" id="paste-button" title="Paste"></button>
+        <button class="toolbutton" id="empty-trash-button" title="Empty trash"></button>
+        <button class="toolbutton" id="restore-trash-button" title="Restore from trash"></button>
+        <button class="toolbutton" id="samples-button" title="Examples"></button>
+        <button class="toolbutton" id="open-button" title="Open"></button>
+        <button class="toolbutton" id="save-button" title="Save"></button>
         <button class="toolbutton pull-right" id="stop-button" title="Exit"></button>
     </div>
 
@@ -81,16 +89,116 @@
 
     <div class="canvasHolder">
 	<!-- <canvas id="myCanvas" width="760" height="570"></canvas> -->
-	<canvas id="myCanvas" width="1200" height="900"></canvas>
-	<canvas id="camCanvas" style="visibility:hidden;"></canvas>
-	<div id="labelDiv"></div>
-	<div id="ioDiv">
+        <!-- Help buttons! -->
+        <div class='helpDiv' id="paletteInfo" style="margin-left: 55px"></div>
+        <div class='helpDiv' id="basicInfo" style="margin-left: 200px"></div>
+        <div class='helpDiv' id="hbutton-0"></div>
+        <div class='helpDiv' id="hbutton-1"></div>
+        <div class='helpDiv' id="hbutton-2"></div>
+        <div class='helpDiv' id="hbutton-3"></div>
+        <div class='helpDiv' id="hbutton-4"></div>
+        <div class='helpDiv' id="hbutton-5"></div>
+        <div class='helpDiv' id="hbutton-6"></div>
+        <div class='helpDiv' id="hbutton-7"></div>
+
+        <div class='helpDiv' id="vbutton-0"></div>
+        <div class='helpDiv' id="vbutton-1"></div>
+        <div class='helpDiv' id="vbutton-2"></div>
+        <div class='helpDiv' id="vbutton-3"></div>
+        <div class='helpDiv' id="vbutton-4"></div>
+        <div class='helpDiv' id="vbutton-5"></div>
+        <div class='helpDiv' id="vbutton-6"></div>
+        <div class='helpDiv' id="vbutton-7"></div>
+        <div class='helpDiv' id="vbutton-8"></div>
+        <div class='helpDiv' id="turtle"></div>
+
+
+        <canvas id="myCanvas" width="1200" height="900"></canvas>
+        <canvas id="camCanvas" style="visibility:hidden;"></canvas>
+        <div id="labelDiv"></div>
+        <div id="ioDiv">
           <input class="file" type="file" id="myMedia" accept="image/*"/>
           <input class="file" type="file" id="myOpenFile" accept=".ta, .tb"/>
-	  <input class="savename" type="text" id="mySaveName" />
-	  <!-- <input class="file" type="file" id="mySaveFile" accept=".ta, .tb" nwsaveas="turtle-project.tb" /> -->
-	</div>
+          <input class="savename" type="text" id="mySaveName" />
+  <!-- <input class="file" type="file" id="mySaveFile" accept=".ta, .tb" nwsaveas="turtle-project.tb" /> -->
+        </div>
+        <div id="audio"></div>
     </div>
-    <div id="audio"></div>
+
+    <ol id="joyRideTipContent">
+      <!-- <li data-id="turtle" data-button="Close"><h2>The turtle</h2><p>This is the main turtle, the turtle is .. bla bla bla.</p></li> -->
+      <li data-text="Take a tour" class="custom"><h2>Welcome</h2><p>To Turtle Art: A Logo-inspired turtle that draws colorful pictures with snap-together visual programming blocks"</p></li>
+      <li data-id="paletteInfo" data-options="tipLocation:left"><h2>Palette buttons</h2><p>In that toolbar are the palette buttons. You can click for show/hide the blocks palette.</p></li>
+      <li data-id="basicInfo" data-options="tipLocation:left"><h2>Blocks palette</h2><p>That is the palette you will see when you click a palette button. You can drag and drop the blocks to the canvas.</p></li>
+      <li data-id="hbutton-0" data-button="Next"><h2>Expand/Collapse toolbar</h2><p>You can click this button for expand, collapse the toolbar and get the next buttons.</p></li>
+      <li data-id="hbutton-1" data-button="Next"><h2>Run fast</h2><p>Click for run the project in fast mode.</p></li>
+      <li data-id="hbutton-2" data-button="Next"><h2>Run slow</h2><p>Click for run the project in slow mode.</p></li>
+      <li data-id="hbutton-3" data-button="Next"><h2>Stop</h2><p>Stop the current project</p></li>
+      <li data-id="hbutton-4" data-button="Next"><h2>Clean</h2><p>Clean the screen, return the turtles to initial position.</p></li>
+      <li data-id="hbutton-5" data-button="Next"><h2>Show/hide palettes</h2><p>Hide or show blocks palettes</p></li>
+      <li data-id="hbutton-6" data-button="Next"><h2>Show/hide blocks</h2><p>Hide the blocks and the palettes.</p></li>
+      <li data-id="hbutton-7" data-button="Next"><h2>Expand/collapse collapsable blocks</h2><p>Expand/collapse collapsable buttons, e.g, start, action</p></li>
+
+      <li data-id="vbutton-0" data-button="Next" data-options="tipLocation:right"><h2>Expand/collapse option toolbar</h2><p>You can click this button for expand, collapse the toolbar and get the next buttons.</p></li>
+      <li data-id="vbutton-1" data-button="Next" data-options="tipLocation:right"><h2>Paste</h2><p>FIXME: What does this button?</p></li>
+      <li data-id="vbutton-2" data-button="Next" data-options="tipLocation:right"><h2>Cartesian</h2><p>Show/hide cartesian grid</p></li>
+      <li data-id="vbutton-3" data-button="Next" data-options="tipLocation:right"><h2>Polar</h2><p>Show/hide polar grid</p></li>
+      <li data-id="vbutton-4" data-button="Next" data-options="tipLocation:right"><h2>Load server samples</h2><p>This button open a samples viewer, you can click one for get it</p></li>
+      <li data-id="vbutton-5" data-button="Next" data-options="tipLocation:right"><h2>Load server from file</h2><p>You can load your own turtle art projects!</p></li>
+      <li data-id="vbutton-6" data-button="Next" data-options="tipLocation: right"><h2>Delete all</h2><p>This button remove all content of the canvas, including the blocks.</p></li>
+      <li data-id="vbutton-7" data-button="Next" data-options="tipLocation:right"><h2>FIXME: ¿Undo?</h2><p>FIXME: ¿Undo?</p></li>
+      <li data-id="vbutton-8" data-button="Next" data-options="tipLocation:right"><h2>Save project to server</h2><p>You can save project to servers, ¡click me!</p></li>
+      <li data-button="Close" data-options="tipLocation:right"><h2>Welcome</h2><p>Congratulations, you have finished the tour, now, you can use turtlejs!</p></li>
+    </ol>
+
+    <script src="lib/jquery-1.10.1.js"></script>  
+    <script src="lib/jquery.cookie.js"></script>
+    <script src="lib/jquery.joyride-2.1.js"></script>
+    <script>
+    var scaled = 0;
+    var current = 0;
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    if (w > h) {
+      scale = w / 1200;
+    }
+    else {
+      scale = w / 900;
+    }
+
+    total = 7
+    for (i = 0; i <= total; i++) {
+      scaled = current * scale;
+      document.getElementById("hbutton-" + i).style.marginLeft = scaled + "px";
+      current += 55;
+    }
+
+    current = 0
+    total = 8
+    for (i = 0; i <= total; i++) {
+      scaled = current * scale;
+      console.log(document.getElementById("vbutton-" + i));
+      document.getElementById("vbutton-" + i).style.marginLeft = w - (2 * (scale * 55)) + "px";
+      document.getElementById("vbutton-" + i).style.marginTop = scaled + "px";
+      current += 55;
+    }
+    // Fix me.. X, Y of turtle...
+    /*
+    x = w*scale / (2.0 * scale);
+    y = h*scale / (2.0 * scale);
+    document.getElementById("turtle").style.marginTop = 0;
+    document.getElementById("turtle").style.top = x + "px";
+    document.getElementById("turtle").style.left = y + "px";
+    */
+    setTimeout(function intro() {
+        $('#joyRideTipContent').joyride({
+          cookieMonster: true,
+          cookieName: 'turtlejstour',
+          cookieDomain: false,
+          autoStart: true,
+          modal:true,
+          expose: false});
+    }, 100);
+    </script>
 </body>
 </html>

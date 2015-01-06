@@ -2185,6 +2185,10 @@ define(function(require) {
                 onscreenMenu.push(container);
                 container.visible = false;
             }
+            cookie = getCookie("turtlejstour");
+            if (!cookie) {
+                setTimeout(doMenuButton, 1500);
+            }
         }
 
         function doMenuButton() {
@@ -2533,4 +2537,15 @@ function doStopVideoCam(cameraID, setCameraID) {
         elements[x].parentNode.removeChild(elements[x]);
     }
     setCameraID(null);
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
 }

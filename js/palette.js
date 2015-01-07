@@ -15,6 +15,20 @@ var paletteBlocks = null;
 var PALETTESCALE = 1.0;
 var PALETTEOFFSET = 20;
 
+function _(text) {
+    replaced = text;
+    replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×"];
+    for (p = 0; p < replace.length; p++) {
+        replaced = replaced.replace(replace[p], "");
+    }
+    replaced = replaced.replace(" ", "-");
+    translation = document.webL10n.get(replaced);
+    if (translation == '') {
+        translation = text;
+    };
+    return translation;
+};
+
 
 function paletteBlockButtonPush(name, arg) {
     // console.log('paletteBlockButtonPush' + name + ' ' + arg);
@@ -285,7 +299,7 @@ function Palette(palettes, name, color, bgcolor) {
                 image.src = 'images/' + palette.name + '.svg';
             }
 
-            makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name), this.name, processHeader, null);
+            makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)), this.name, processHeader, null);
         }
     }
 
@@ -373,7 +387,7 @@ function Palette(palettes, name, color, bgcolor) {
 
         switch (myBlock.name) {
         case 'text':
-            block_label = 'text';
+            block_label = _('text');
             break;
         case 'number':
             block_label = '100';
@@ -383,7 +397,7 @@ function Palette(palettes, name, color, bgcolor) {
                 // Override label for do, storein, and box
                 block_label = this.protoList[blk].defaults[0];
             } else if (myBlock.staticLabels.length > 0) {
-                block_label = myBlock.staticLabels[0];
+                block_label = _(myBlock.staticLabels[0]);
             } else {
                 block_label = blkname;
             }
@@ -403,20 +417,20 @@ function Palette(palettes, name, color, bgcolor) {
         case 'ifthenelse':
             // so the block will fit
             var artwork = BASICBLOCK;
-            block_label = myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2];
+            block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
             break;
         default:
             var artwork = myBlock.artwork[0];
             if (myBlock.staticLabels.length > 1) {
-                top_label = myBlock.staticLabels[1];
+                top_label = _(myBlock.staticLabels[1]);
             }
             if (myBlock.staticLabels.length > 2) {
-                bottom_label = myBlock.staticLabels[2];
+                bottom_label = _(myBlock.staticLabels[2]);
             }
             if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
-                mid_label = myBlock.staticLabels[2];
-                top_label = myBlock.staticLabels[1];
-                block_label = myBlock.staticLabels[0];
+                mid_label = _(myBlock.staticLabels[2]);
+                top_label = _(myBlock.staticLabels[1]);
+                block_label = _(myBlock.staticLabels[0]);
             }
             break;
         }

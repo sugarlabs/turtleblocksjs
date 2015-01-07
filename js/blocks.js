@@ -415,7 +415,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // Two-arg blocks with two arguments (expandable).
     this.twoArgBlocks = [];
     // Blocks that don't run when clicked.
-    this.noRunBlocks = ['action'];
+    this.noRunBlocks = [];
 
     // We need access to the msg block.
     this.setMsgText = function(msgText) {
@@ -1042,12 +1042,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // FIXME: Make these callbacks so there is no race condition.
         setTimeout(function() {
-	    // First, adjust the docks for any blocks that may have
+            // First, adjust the docks for any blocks that may have
             // had a vspace added.
             for (var i = 0; i < checkArgBlocks.length; i++) {
-		blocks.adjustDocks(checkArgBlocks[i]);
-	    }
-	    // Next, recheck if the connection is inside of a
+                blocks.adjustDocks(checkArgBlocks[i]);
+            }
+            // Next, recheck if the connection is inside of a
             // expandable block.
             var blk = blocks.insideExpandableBlock(thisBlock);
             var expandableLoopCounter = 0;
@@ -1462,6 +1462,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var value = args[1];
                 me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value;
+                me.blockList[thisBlock].container.updateCache();
             }
             postProcessArg = [thisBlock, _('text')];
         } else if (name == 'number') {
@@ -1470,6 +1471,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var value = Number(args[1]);
                 me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value.toString();
+                me.blockList[thisBlock].container.updateCache();
             }
             postProcessArg = [thisBlock, 100];
         } else if (name == 'media') {
@@ -1551,6 +1553,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                             label = label.substr(0, 7) + '...';
                         }
                         me.blockList[thisBlock].text.text = label;
+                        me.blockList[thisBlock].container.updateCache();
                     }
                     this.makeNewBlock('text', postProcess, [thisBlock, value]);
                 } else {
@@ -1601,8 +1604,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (myBlock.name == 'action') {
                 // Make sure we don't make two actions with the same name.
                 value = this.findUniqueActionName(_('action'));
+                console.log('renaming action block to ' + value);
                 if (value != _('action')) {
-                    myConnectionBlock.text.text = value;
+		    // There is a race condition with creation of new
+		    // text block, hence the timeout.
+		    setTimeout(function() {
+			myConnectionBlock.text.text = value;
+			myConnectionBlock.value = value;
+			myConnectionBlock.container.updateCache();
+		    }, 1000);
                     this.newDoBlock(value);
                     this.palettes.updatePalettes();
                 }
@@ -2338,7 +2348,11 @@ function Block(protoblock, blocks) {
                     this.highlightBitmap[BOT].visible = true;
                 }
                 if (['start', 'action'].indexOf(this.name) != -1) {
-                    this.collapseText.visible = false;
+                    // There could be a race condition when making a
+                    // new action block.
+                    if (this.collapseText != null) {
+                        this.collapseText.visible = false;
+                    }
                 }
             }
         }

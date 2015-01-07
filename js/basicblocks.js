@@ -43,6 +43,20 @@ var NAMEDICT = {
     'shell': 'turtleshell'
 };
 
+function _(text) {
+    replaced = text;
+    replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×"];
+    for (p = 0; p < replace.length; p++) {
+        replaced = replaced.replace(replace[p], "");
+    }
+    replaced = replaced.replace(" ", "-");
+    translation = document.webL10n.get(replaced);
+    if (translation == '') {
+        translation = text;
+    };
+    return translation;
+};
+
 // Define blocks here
 function initBasicProtoBlocks(palettes, blocks) {
     blocks.palettes = palettes;
@@ -323,7 +337,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     storeinBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['storein'] = storeinBlock;
     storeinBlock.twoArgBlock();
-    storeinBlock.defaults.push('box');
+    storeinBlock.defaults.push(_('box'));
     storeinBlock.defaults.push(100);
     storeinBlock.docks[1][2] = 'anyin';
     storeinBlock.docks[2][2] = 'anyin';
@@ -335,7 +349,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['box'] = boxBlock;
     boxBlock.oneArgMathWithLabelBlock();
-    boxBlock.defaults.push('box');
+    boxBlock.defaults.push(_('box'));
     boxBlock.staticLabels.push('box');
     boxBlock.docks[0][2] = 'anyout';
     boxBlock.docks[1][2] = 'anyin';
@@ -346,14 +360,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;
     actionBlock.blockClampOneArgBlock();
-    actionBlock.defaults.push('action');
+    actionBlock.defaults.push(_('action'));
     actionBlock.staticLabels.push('action');
 
     var doBlock = new ProtoBlock('do');
     doBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['do'] = doBlock;
     doBlock.oneArgBlock();
-    doBlock.defaults.push('action');
+    doBlock.defaults.push(_('action'));
     doBlock.staticLabels.push('do');
     doBlock.docks[1][2] = 'anyin';
 

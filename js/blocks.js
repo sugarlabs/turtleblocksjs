@@ -41,10 +41,13 @@ var BOT = 2;
 // methods common to all blocks.
 
 function _(text) {
-    // this function add a fallback for the case of translation not found
-    // can be removed when we find how to read the localization.ini
-    // file in the case of local html file opened in the browser
-    translation = document.webL10n.get(text);
+    replaced = text;
+    replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×"];
+    for (p = 0; p < replace.length; p++) {
+        replaced = replaced.replace(replace[p], "");
+    }
+    replaced = replaced.replace(" ", "-");
+    translation = document.webL10n.get(replaced);
     if (translation == '') {
         translation = text;
     };
@@ -1460,7 +1463,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 me.blockList[thisBlock].value = value;
                 me.blockList[thisBlock].text.text = value;
             }
-            postProcessArg = [thisBlock, 'text'];
+            postProcessArg = [thisBlock, _('text')];
         } else if (name == 'number') {
             postProcess = function(args) {
                 var thisBlock = args[0];
@@ -1597,8 +1600,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myConnectionBlock.connections = [blk];
             if (myBlock.name == 'action') {
                 // Make sure we don't make two actions with the same name.
-                value = this.findUniqueActionName('action');
-                if (value != 'action') {
+                value = this.findUniqueActionName(_('action'));
+                if (value != _('action')) {
                     myConnectionBlock.text.text = value;
                     this.newDoBlock(value);
                     this.palettes.updatePalettes();
@@ -1725,9 +1728,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myStoreinBlock.twoArgBlock();
         myStoreinBlock.defaults.push(name);
         myStoreinBlock.defaults.push(100);
-        myStoreinBlock.staticLabels.push('store in');
-        myStoreinBlock.staticLabels.push('name');
-        myStoreinBlock.staticLabels.push('value');
+        myStoreinBlock.staticLabels.push(_('store in'));
+        myStoreinBlock.staticLabels.push(_('name'));
+        myStoreinBlock.staticLabels.push(_('value'));
         if (name == 'box') {
             return;
         }
@@ -1740,7 +1743,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBoxBlock.oneArgMathWithLabelBlock();
         myBoxBlock.palette = this.palettes.dict['blocks'];
         myBoxBlock.defaults.push(name);
-        myBoxBlock.staticLabels.push('box');
+        myBoxBlock.staticLabels.push(_('box'));
         myBoxBlock.style = 'arg';
         if (name == 'box') {
             return;
@@ -1754,7 +1757,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myDoBlock.oneArgBlock();
         myDoBlock.palette = this.palettes.dict['blocks'];
         myDoBlock.defaults.push(name);
-        myDoBlock.staticLabels.push('do');
+        myDoBlock.staticLabels.push(_('do'));
         if (name == 'action') {
             return;
         }
@@ -1769,7 +1772,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myActionBlock.artworkOffset = [0, 0, 86];
         myActionBlock.fillerOffset = 42;
         myActionBlock.defaults.push(name);
-        myActionBlock.staticLabels.push('action');
+        myActionBlock.staticLabels.push(_('action'));
         myActionBlock.expandable = true;
         myActionBlock.style = 'clamp';
         if (name == 'action') {
@@ -2505,18 +2508,13 @@ function Block(protoblock, blocks) {
         // Get the block labels from the protoblock
         var block_label = '';
         if (this.protoblock.staticLabels.length > 0) {
-            block_label = this.protoblock.staticLabels[0];
+            block_label = _(this.protoblock.staticLabels[0]);
         }
 
         var top_label = '';
         if (this.protoblock.staticLabels.length > 1) {
-            top_label = this.protoblock.staticLabels[1];
+            top_label = _(this.protoblock.staticLabels[1]);
         }
-
-        // Translate labels.
-        top_label = _(top_label);
-        block_label = _(block_label);
-
         // Create the bitmap for the block.
         function processBitmap(name, bitmap, me) {
             me.bitmap[TOP] = bitmap;
@@ -2612,7 +2610,7 @@ function Block(protoblock, blocks) {
 
         var bottom_label = '';
         if (this.protoblock.staticLabels.length > 2) {
-            bottom_label = this.protoblock.staticLabels[2];
+            bottom_label = _(this.protoblock.staticLabels[2]);
         }
 
         // Value blocks get a modifiable text label
@@ -2717,7 +2715,7 @@ function Block(protoblock, blocks) {
                 me.blocks.refreshCanvas();
             }
 
-            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processCollapseBitmap, this);
+            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', _(block_label)).replace('font_size', this.protoblock.fontsize), '', processCollapseBitmap, this);
 
             function processHighlightCollapseBitmap(name, bitmap, me) {
                 me.highlightCollapseBlockBitmap = bitmap;
@@ -2899,7 +2897,7 @@ function labelChanged(myBlock) {
             case 'action':
                 // If the label was the name of an action, update the
                 // associated run myBlock.blocks and the palette buttons
-                if (myBlock.value != 'action') {
+                if (myBlock.value != _('action')) {
                     myBlock.blocks.newDoBlock(myBlock.value);
                 }
                 console.log('rename action: ' + myBlock.value);

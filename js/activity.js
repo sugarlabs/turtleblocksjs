@@ -22,7 +22,7 @@ define(function(require) {
     require('p5.sound');
     require('p5.dom');
     require('mespeak');
-    // require('activity/utils');
+    require('activity/utils');
     require('activity/artwork');
     require('activity/munsell');
     require('activity/trash');
@@ -2425,89 +2425,6 @@ define(function(require) {
 });
 
 
-function httpGet(projectName) {
-    var xmlHttp = null;
-
-    xmlHttp = new XMLHttpRequest();
-
-    if (projectName == null) {
-        xmlHttp.open('GET', window.location.origin + '/server/', false);
-        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-    } else {
-        xmlHttp.open('GET', window.location.origin + '/server/' + projectName, false);
-        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-        // xmlHttp.setRequestHeader('x-project-id', projectName);
-    }
-    xmlHttp.send();
-    xmlHttp.onerror = function() { throw 'cant access to server'; };
-    return xmlHttp.responseText;
-}
-
-
-function httpPost(projectName, data) {
-    var xmlHttp = null;
-    console.log('sending ' + data);
-    xmlHttp = new XMLHttpRequest();
-    xmlHttp.open('POST', window.location.origin + '/server/' + projectName, false);
-    xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-    // xmlHttp.setRequestHeader('x-project-id', projectName);
-    xmlHttp.send(data);
-    // return xmlHttp.responseText;
-    return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
-}
-
-
-function docById(id) {
-    return document.getElementById(id);
-}
-
-
-function last(myList) {
-    var i = myList.length;
-    if (i == 0) {
-        return null;
-    } else {
-        return myList[i - 1];
-    }
-}
-
-
-function doSVG(canvas, turtles, width, height, scale) {
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
-    svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
-    svg += this.svgOutput;
-    for (var turtle in turtles.turtleList) {
-        turtles.turtleList[turtle].closeSVG();
-        svg += turtles.turtleList[turtle].svgOutput;
-    }
-    svg += '</g>';
-    svg += '</svg>';
-    return svg;
-}
-
-
-function fileExt(file) {
-    var parts = file.split('.');
-    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
-        return '';
-    }
-    return parts.pop();
-}
-
-
-function fileBasename(file) {
-    var parts = file.split('.');
-    if (parts.length == 1) {
-        return parts[0];
-    } else if (parts[0] == '' && parts.length == 2) {
-        return file;
-    } else {
-        parts.pop(); // throw away suffix
-        return parts.join('.');
-    }
-}
-
-
 function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID) {
     w = 320;
     h = 240;
@@ -2562,20 +2479,4 @@ function doStopVideoCam(cameraID, setCameraID) {
         }
     }
     setCameraID(null);
-}
-
-
-function getCookie(cname) {
-    var name = cname + '=';
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length,c.length);
-        }
-    }
-    return '';
 }

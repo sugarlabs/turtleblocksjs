@@ -43,7 +43,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
         this.page = 0;
         if (this.server) {
             try {
-                var rawData = httpGetProject();
+                var rawData = httpGet();
                 var obj = JSON.parse(rawData);
                 // console.log('json parse: ' + obj);
                 // Look for base64-encoded png
@@ -116,7 +116,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
             var header = ''; // 'data:image/png;base64,';
             var name = this.projectFiles[p] + '.b64';
             // console.log('getting ' + name + ' from server');
-            var data = header + httpGetProject(name);
+            var data = header + httpGet(name);
         } else {
             var header = 'data:image/svg+xml;utf8,';
             var name = this.projectFiles[p] + '.svg';
@@ -303,46 +303,6 @@ function loadThumbnailContainerHandler(viewer) {
 }
 
 
-function fileExt(file) {
-    var parts = file.split('.');
-    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
-        return '';
-    }
-    return parts.pop();
-}
-
-
-function fileBasename(file) {
-    var parts = file.split('.');
-    if (parts.length == 1) {
-        return parts[0];
-    } else if (parts[0] == '' && parts.length == 2) {
-        return file;
-    } else {
-        parts.pop(); // throw away suffix
-        return parts.join('.');
-    }
-}
-
-
-function httpGetProject(projectName) {
-    var xmlHttp = null;
-
-    xmlHttp = new XMLHttpRequest();
-
-    if (projectName == null) {
-        xmlHttp.open("GET", window.location.origin + '/server/', false);
-        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-    } else {
-        xmlHttp.open("GET", window.location.origin + '/server/' + projectName, false);
-        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-        // xmlHttp.setRequestHeader('x-project-id', projectName);
-    }
-    xmlHttp.send();
-    return xmlHttp.responseText;
-}
-
-
 function makeViewerBitmap(viewer, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
@@ -353,14 +313,4 @@ function makeViewerBitmap(viewer, data, name, callback, extras) {
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
-}
-
-
-function last(myList) {
-    var i = myList.length;
-    if (i == 0) {
-        return null;
-    } else {
-        return myList[i - 1];
-    }
 }

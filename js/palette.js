@@ -829,13 +829,3 @@ function makePaletteBitmap(palette, data, name, callback, extras) {
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
 }
-
-
-function last(myList) {
-    var i = myList.length;
-    if (i == 0) {
-        return null;
-    } else {
-        return myList[i - 1];
-    }
-}

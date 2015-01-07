@@ -18,18 +18,13 @@ var evalArgDict = JSON.parse(ARGPLUGINS);
 
 // Define block prototypes here
 function initAdvancedProtoBlocks(palettes, blocks) {
-    console.log('in initAdvancedProtoBlocks');
-    console.log(BLOCKPLUGINS);
     var pluginBlocksDict = JSON.parse(BLOCKPLUGINS);
-    console.log('pluginBlocksDict = ');
-    console.log(pluginBlocksDict);
-
     blocks.palettes = palettes;
 
 
     // Create the plugin protoblocks from the dictionary
     for (var name in pluginBlocksDict) {
-	console.log('loading plugin block ' + name);
+	// console.log('loading plugin block ' + name);
 	eval(pluginBlocksDict[name]);
     }
 

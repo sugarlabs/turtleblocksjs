@@ -42,7 +42,7 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
         this.page = 0;
         if (this.server) {
             try {
-                var rawData = httpGetPlugin();
+                var rawData = httpGet();
                 var obj = JSON.parse(rawData);
                 // console.log('json parse: ' + obj);
                 // Look for svg
@@ -115,7 +115,7 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
         var name = this.pluginFiles[p] + '.svg';
         // console.log('getting ' + name + ' from samples');
         if (this.server) {
-            var data = header + httpGetPlugin(name);
+            var data = header + httpGet(name);
         } else {
             var data = header + SAMPLESSVG[name];
         }
@@ -299,46 +299,6 @@ function loadThumbnailContainerHandler(viewer) {
 }
 
 
-function fileExt(file) {
-    var parts = file.split('.');
-    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
-        return '';
-    }
-    return parts.pop();
-}
-
-
-function fileBasename(file) {
-    var parts = file.split('.');
-    if (parts.length == 1) {
-        return parts[0];
-    } else if (parts[0] == '' && parts.length == 2) {
-        return file;
-    } else {
-        parts.pop(); // throw away suffix
-        return parts.join('.');
-    }
-}
-
-
-function httpGetPlugin(pluginName) {
-    var xmlHttp = null;
-
-    xmlHttp = new XMLHttpRequest();
-
-    if (pluginName == null) {
-        xmlHttp.open("GET", window.location.origin + '/server/', false);
-        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-    } else {
-        xmlHttp.open("GET", window.location.origin + '/server/' + pluginName, false);
-        xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
-        // xmlHttp.setRequestHeader('x-project-id', pluginName);
-    }
-    xmlHttp.send();
-    return xmlHttp.responseText;
-}
-
-
 function makeViewerBitmap(viewer, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
@@ -349,14 +309,4 @@ function makeViewerBitmap(viewer, data, name, callback, extras) {
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
-}
-
-
-function last(myList) {
-    var i = myList.length;
-    if (i == 0) {
-        return null;
-    } else {
-        return myList[i - 1];
-    }
 }

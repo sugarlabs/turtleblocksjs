@@ -1548,7 +1548,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         me.blockList[thisBlock].value = value;
                         var label = value.toString();
                         if (label.length > 8) {
-                            label = label.substr(0, 7) + 'text';
+                            label = label.substr(0, 7) + '...';
                         }
                         me.blockList[thisBlock].text.text = label;
                     }

@@ -47,11 +47,15 @@ function _(text) {
         replaced = replaced.replace(replace[p], "");
     }
     replaced = replaced.replace(" ", "-");
-    translation = document.webL10n.get(replaced);
-    if (translation == '') {
-        translation = text;
-    };
-    return translation;
+    try {
+	translation = document.webL10n.get(replaced);
+	if (translation == '') {
+            translation = text;
+	};
+	return translation;
+    } catch (e) {
+	return text;
+    }
 };
 
 

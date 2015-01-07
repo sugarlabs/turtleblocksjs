@@ -276,7 +276,6 @@ function Turtle (name, turtles) {
             return;
         }
         var image = new Image();
-        image.src = myImage;
         var me = this;
         image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
@@ -292,6 +291,7 @@ function Turtle (name, turtles) {
             bitmap.rotation = me.orientation;
             me.turtles.refreshCanvas();
         }
+        image.src = myImage;
     }
 
     this.doShowURL = function(size, myURL) {

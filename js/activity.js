@@ -304,7 +304,7 @@ define(function(require) {
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
 
             initBasicProtoBlocks(palettes, blocks);
-	    console.log('init Advanced Blocks');
+            console.log('init Advanced Blocks');
             initAdvancedProtoBlocks(palettes, blocks);
 
             // Set up a file chooser for the doOpen function.
@@ -1310,9 +1310,9 @@ define(function(require) {
                         if (typeof(args[1]) == 'string') {
                             var len = args[1].length;
                             if (len == 14 && args[1].substr(0, 14) == CAMERAVALUE) {
-                                doUseCamera(args, turtles, turtle, false, SetCameraID);
+                                doUseCamera(args, turtles, turtle, false, cameraID, setCameraID);
                             } else if (len == 13 && args[1].substr(0, 13) == VIDEOVALUE) {
-                                doUseCamera(args, turtles, turtle, true, setCameraID);
+                                doUseCamera(args, turtles, turtle, true, cameraID, setCameraID);
                             } else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
                                 turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                             } else if (len > 8 && args[1].substr(0, 8) == 'https://') {
@@ -2508,7 +2508,7 @@ function fileBasename(file) {
 }
 
 
-function doUseCamera(args, turtles, turtle, isVideo, setCameraID) {
+function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID) {
     w = 320;
     h = 240;
     current = 0;
@@ -2534,35 +2534,48 @@ function doUseCamera(args, turtles, turtle, isVideo, setCameraID) {
             turtles.turtleList[turtle].doShowImage(args[0], data);
         }
     }
+
     if (!isVideo) {
-        window.setTimeout(doStopVideoCam, 4000);
+        window.setTimeout(function() {
+            doStopVideoCam(cameraID, setCameraID);
+        }, 4000);
     }
+
     setup();
+
     if (!isVideo) {
         cameraID = window.setInterval(draw, 10);
     } else {
         cameraID = window.setInterval(draw, 100)
     }
+
     setCameraID(cameraID);
 }
 
 
 function doStopVideoCam(cameraID, setCameraID) {
-    window.clearInterval(cameraID);
-    elements = document.getElementsByTagName('video');
-    for (var x = 0; x < elements.length; x++) {
-        elements[x].parentNode.removeChild(elements[x]);
+    if (cameraID != null) {
+        window.clearInterval(cameraID);
+        elements = document.getElementsByTagName('video');
+        for (var x = 0; x < elements.length; x++) {
+            elements[x].parentNode.removeChild(elements[x]);
+        }
     }
     setCameraID(null);
 }
 
+
 function getCookie(cname) {
-    var name = cname + "=";
+    var name = cname + '=';
     var ca = document.cookie.split(';');
     for(var i=0; i<ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
     }
-    return "";
+    return '';
 }

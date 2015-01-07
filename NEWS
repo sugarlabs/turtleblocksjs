@@ -155,6 +155,8 @@
   * color forces max chroma; hue just sets hue.
   * preserve collapse state between save/load (w/Ignacio Rodriguez)
   * swipe to page samples viewer (w/Ignacio Rodriguez)
+  * i18n (w/Ignacio Rodriguez)
+  * mashape blocks (w/Ignacio Rodriguez and Sam Parkinson)
 
 TODO:
   * rotate turtles with gesture
@@ -164,7 +166,6 @@ TODO:
   * use snap to pixels
   * user defined blocks
   * more sensors
-  * i18n
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages

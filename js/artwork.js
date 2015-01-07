@@ -21,8 +21,8 @@
 
 // The relative position of the button added to collapsible blocks,
 // e.g., start and action. (TODO: Calculate these values.)
-var COLLAPSEBUTTONXOFF = -45;
-var COLLAPSEBUTTONYOFF = 14;
+var COLLAPSEBUTTONXOFF = -48;
+var COLLAPSEBUTTONYOFF = 9;
 
 // Without any scaling, blocks are multiples of a standard height.
 var STANDARDBLOCKHEIGHT = 42;

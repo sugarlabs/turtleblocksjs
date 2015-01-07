@@ -3206,7 +3206,7 @@ function loadEventHandlers(blocks, myBlock) {
                         '-webkit-user-select: text;" ' +
                         'class="text", ' +
                         'onkeypress="if(event.keyCode==13){return false;}"' +
-                        'cols="8", rows="1", maxlength="80">' +
+                        'cols="8", rows="1", maxlength="256">' +
                         myBlock.value + '</textarea>';
                     myBlock.label = docById('textLabel');
                     myBlock.label.addEventListener(

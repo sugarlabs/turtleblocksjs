@@ -15,6 +15,18 @@ var paletteBlocks = null;
 var PALETTESCALE = 1.0;
 var PALETTEOFFSET = 20;
 
+function _(text) {
+    // this function add a fallback for the case of translation not found
+    // can be removed when we find how to read the localization.ini
+    // file in the case of local html file opened in the browser
+    translation = document.webL10n.get(text);
+    if (translation == '') {
+        translation = text;
+    };
+    return translation;
+};
+
+
 
 function paletteBlockButtonPush(name, arg) {
     // console.log('paletteBlockButtonPush' + name + ' ' + arg);
@@ -285,7 +297,7 @@ function Palette(palettes, name, color, bgcolor) {
                 image.src = 'images/' + palette.name + '.svg';
             }
 
-            makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', this.name), this.name, processHeader, null);
+            makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)), this.name, processHeader, null);
         }
     }
 
@@ -387,6 +399,7 @@ function Palette(palettes, name, color, bgcolor) {
             } else {
                 block_label = blkname;
             }
+            block_label = _(block_label)
         }
 
         switch (myBlock.name) {

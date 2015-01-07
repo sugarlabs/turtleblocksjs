@@ -40,6 +40,18 @@ var BOT = 2;
 // Protoblock contain generic information about blocks and some
 // methods common to all blocks.
 
+function _(text) {
+    // this function add a fallback for the case of translation not found
+    // can be removed when we find how to read the localization.ini
+    // file in the case of local html file opened in the browser
+    translation = document.webL10n.get(text);
+    if (translation == '') {
+        translation = text;
+    };
+    return translation;
+};
+
+
 function ProtoBlock(name) {
     // Name is used run-dictionary index, and palette label.
     this.name = name;
@@ -2500,6 +2512,10 @@ function Block(protoblock, blocks) {
         if (this.protoblock.staticLabels.length > 1) {
             top_label = this.protoblock.staticLabels[1];
         }
+
+        // Translate labels.
+        top_label = _(top_label);
+        block_label = _(block_label);
 
         // Create the bitmap for the block.
         function processBitmap(name, bitmap, me) {

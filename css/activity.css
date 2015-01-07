@@ -96,6 +96,11 @@ body {
   display: none;
 }
 
+#main-toolbar #help-button {
+  background-image: url(../icons/help-button.svg);
+  display: none;
+}
+
 input.file {
     visibility: hidden;
 }

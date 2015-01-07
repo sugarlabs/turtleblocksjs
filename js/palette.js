@@ -639,11 +639,6 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas) {
     // Give the palettes time to load.
     setTimeout(function() {
         palettes.show();
-        cookie = getCookie("turtlejstour");
-        if (!cookie) {
-            palettes.dict['turtle'].show();
-            palettes.dict['turtle'].showMenuItems();
-        }
         palettes.bringToTop();
     }, 2000);
     return palettes;
@@ -829,15 +824,4 @@ function last(myList) {
     } else {
         return myList[i - 1];
     }
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
-    }
-    return "";
 }

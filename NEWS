@@ -157,11 +157,11 @@
   * swipe to page samples viewer (w/Ignacio Rodriguez)
   * i18n (w/Ignacio Rodriguez)
   * mashape blocks (w/Ignacio Rodriguez and Sam Parkinson)
+  * save/restore turtle state (w/Ignacio Rodriguez)
 
 TODO:
   * rotate turtles with gesture
-  * save/restore turtle state
-  * plugin mechanism
+  * finish plugin mechanism
   * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks

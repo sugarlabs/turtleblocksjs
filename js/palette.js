@@ -23,13 +23,14 @@ function paletteBlockButtonPush(name, arg) {
 }
 
 
-function Palettes(canvas, stage, cellSize, refreshCanvas) {
+function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     this.canvas = canvas;
     this.stage = stage;
     this.cellSize = cellSize;
     this.halfCellSize = Math.floor(cellSize / 2);
     this.refreshCanvas = refreshCanvas;
     this.originalSize = 55; // this is the original svg size
+    this.trashcan = trashcan;
 
     // The collection of palettes.
     this.dict = {};
@@ -621,9 +622,9 @@ function Palette(palettes, name, color, bgcolor) {
 };
 
 
-function initPalettes(canvas, stage, cellSize, refreshCanvas) {
+function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     // Instantiate the palettes object.
-    var palettes = new Palettes(canvas, stage, cellSize, refreshCanvas).
+    var palettes = new Palettes(canvas, stage, cellSize, refreshCanvas, trashcan).
     add('turtle', 'black', '#00b700').
     add('pen', 'black', '#00c0e7').
     add('number', 'black', '#ff00ff').
@@ -732,6 +733,7 @@ function loadPaletteMenuHandler(palette) {
     // palette per palette button.
 
     var locked = false;
+    var trashcan = palette.palettes.trashcan;
 
     palette.menuContainer.on('mouseover', function(event) {
         palette.palettes.setDraggingFlag(true);
@@ -769,6 +771,7 @@ function loadPaletteMenuHandler(palette) {
     });
 
     palette.menuContainer.on('mousedown', function(event) {
+        trashcan.show();
         palette.palettes.setDraggingFlag(true);
         // Move them all?
         var offset = {
@@ -778,10 +781,20 @@ function loadPaletteMenuHandler(palette) {
 
         palette.menuContainer.on('pressup', function(event) {
             palette.palettes.setDraggingFlag(false);
+            if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
+                palette.hide();
+                palette.palettes.refreshCanvas();
+            }
+            trashcan.hide();
         });
 
         palette.menuContainer.on('mouseout', function(event) {
             palette.palettes.setDraggingFlag(false);
+            if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
+                palette.hide();
+                palette.palettes.refreshCanvas();
+            }
+            trashcan.hide();
         });
 
         palette.menuContainer.on('pressmove', function(event) {
@@ -792,6 +805,14 @@ function loadPaletteMenuHandler(palette) {
             palette.palettes.refreshCanvas();
             var dx = palette.menuContainer.x - oldX;
             var dy = palette.menuContainer.y - oldY;
+
+            // If we are over the trash, warn the user.
+            if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
+                trashcan.highlight();
+            } else {
+                trashcan.unhighlight();
+            }
+
             // Hide the menu items while drag.
             palette.hideMenuItems(false);
             palette.moveMenuItemsRelative(dx, dy);

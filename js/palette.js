@@ -15,20 +15,6 @@ var paletteBlocks = null;
 var PALETTESCALE = 1.0;
 var PALETTEOFFSET = 20;
 
-function _(text) {
-    replaced = text;
-    replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×"];
-    for (p = 0; p < replace.length; p++) {
-        replaced = replaced.replace(replace[p], "");
-    }
-    replaced = replaced.replace(" ", "-");
-    translation = document.webL10n.get(replaced);
-    if (translation == '') {
-        translation = text;
-    };
-    return translation;
-};
-
 
 function paletteBlockButtonPush(name, arg) {
     // console.log('paletteBlockButtonPush' + name + ' ' + arg);

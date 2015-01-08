@@ -39,26 +39,6 @@ var BOT = 2;
 
 // Protoblock contain generic information about blocks and some
 // methods common to all blocks.
-
-function _(text) {
-    replaced = text;
-    replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×"];
-    for (p = 0; p < replace.length; p++) {
-        replaced = replaced.replace(replace[p], "");
-    }
-    replaced = replaced.replace(" ", "-");
-    try {
-	translation = document.webL10n.get(replaced);
-	if (translation == '') {
-            translation = text;
-	};
-	return translation;
-    } catch (e) {
-	return text;
-    }
-};
-
-
 function ProtoBlock(name) {
     // Name is used run-dictionary index, and palette label.
     this.name = name;

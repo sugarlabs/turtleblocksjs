@@ -318,10 +318,16 @@ define(function(require) {
                 var reader = new FileReader();
 
                 reader.onload = (function(theFile) {
-                    var rawData = reader.result;
-                    var cleanData = rawData.replace('\n', ' ');
-                    var obj = JSON.parse(cleanData);
-                    blocks.loadNewBlocks(obj);
+                    // Show busy cursor.
+                    document.body.style.cursor = 'wait';
+                    setTimeout(function() {
+                        var rawData = reader.result;
+                        var cleanData = rawData.replace('\n', ' ');
+                        var obj = JSON.parse(cleanData);
+                        blocks.loadNewBlocks(obj);
+                        // Restore default cursor.
+                        document.body.style.cursor = 'default';
+                    }, 200);
                 });
 
                 console.log(fileChooser.files[0]);
@@ -729,61 +735,74 @@ define(function(require) {
         }
 
         function loadProject(projectName) {
+            // Show busy cursor.
+            document.body.style.cursor = 'wait';
             palettes.updatePalettes();
-            if (fileExt(projectName) != 'tb') {
-                projectName += '.tb';
-            }
-            try {
-                if (server) {
-                    var rawData = httpGet(projectName);
-                    console.log('receiving ' + rawData);
-                    var cleanData = rawData.replace('\n', ' ');
-                } else {
-                    // FIXME: Workaround until we have a local server
-                    if (projectName in SAMPLESTB) {
-                        var cleanData = SAMPLESTB[projectName];
-                    } else {
-                        var cleanData = SAMPLESTB['card-01.tb'];
-                    }
-                    console.log(cleanData);
+            setTimeout(function() {
+                if (fileExt(projectName) != 'tb') {
+                    projectName += '.tb';
                 }
-                var obj = JSON.parse(cleanData);
-                blocks.loadNewBlocks(obj);
-            } catch (e) {
-                loadStart();
-            }
-            update = true;
+                try {
+                    if (server) {
+                        var rawData = httpGet(projectName);
+                        console.log('receiving ' + rawData);
+                        var cleanData = rawData.replace('\n', ' ');
+                    } else {
+                        // FIXME: Workaround until we have a local server
+                        if (projectName in SAMPLESTB) {
+                            var cleanData = SAMPLESTB[projectName];
+                        } else {
+                            var cleanData = SAMPLESTB['card-01.tb'];
+                        }
+                        console.log(cleanData);
+                    }
+                    var obj = JSON.parse(cleanData);
+                    blocks.loadNewBlocks(obj);
+                } catch (e) {
+                    loadStart();
+                }
+                // Restore default cursor
+                document.body.style.cursor = 'default';
+                update = true;
+            }, 200);
         }
 
         function saveProject(projectName) {
             palettes.updatePalettes();
-            var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
-            projectName = punctuationless.replace(/ /g,'_');
-            if (fileExt(projectName) != 'tb') {
-                projectName += '.tb';
-            }
-            try {
-                // Post the project
-                var returnValue = httpPost(projectName, prepareExport());
-                errorMsg('Saved ' + projectName + ' to ' + window.location.host);
-
-                var img = new Image();
-                var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
-                img.onload = function() {
-                    var bitmap = new createjs.Bitmap(img);
-                    var bounds = bitmap.getBounds();
-                    bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                    // and base64-encoded png
-                    httpPost(projectName.replace('.tb', '.b64'), bitmap.getCacheDataURL());
+            // Show busy cursor.
+            document.body.style.cursor = 'wait';
+            setTimeout(function() {
+                var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
+                projectName = punctuationless.replace(/ /g,'_');
+                if (fileExt(projectName) != 'tb') {
+                    projectName += '.tb';
                 }
-                img.src = 'data:image/svg+xml;base64,' + window.btoa(
-                    unescape(encodeURIComponent(svgData)));
+                try {
+                    // Post the project
+                    var returnValue = httpPost(projectName, prepareExport());
+                    errorMsg('Saved ' + projectName + ' to ' + window.location.host);
 
-                return returnValue;
-            } catch (e) {
-                console.log(e);
-                return;
-            }
+                    var img = new Image();
+                    var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
+                    img.onload = function() {
+                        var bitmap = new createjs.Bitmap(img);
+                        var bounds = bitmap.getBounds();
+                        bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                        // and base64-encoded png
+                        httpPost(projectName.replace('.tb', '.b64'), bitmap.getCacheDataURL());
+                    }
+                    img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                        unescape(encodeURIComponent(svgData)));
+                    // Restore default cursor
+                    document.body.style.cursor = 'default';
+                    return returnValue;
+                } catch (e) {
+                    console.log(e);
+                    // Restore default cursor
+                    document.body.style.cursor = 'default';
+                    return;
+                }
+            }, 200);
         }
 
         function loadStart() {

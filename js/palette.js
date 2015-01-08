@@ -34,7 +34,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     // The collection of palettes.
     this.dict = {};
-    this.buttons = {};
+    this.buttons = {};  // The toolbar button for each palette.
     this.bitmaps = {};
     this.highlightBitmaps = {};
 
@@ -75,39 +75,40 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
                         bitmap.scaleX = me.cellSize / me.originalSize;
                         bitmap.scaleY = me.cellSize / me.originalSize;
                     }
+
+                    function processHighlightButton(me, name, bitmap, extras) {
+			me.highlightBitmaps[name] = bitmap;
+			me.buttons[name].addChild(me.highlightBitmaps[name]);
+			me.highlightBitmaps[name].visible = false;
+
+			function processButtonIcon(me, name, bitmap, extras) {
+			    me.buttons[name].addChild(bitmap);
+			    if (me.cellSize != me.originalSize) {
+				bitmap.scaleX = me.cellSize / me.originalSize;
+				bitmap.scaleY = me.cellSize / me.originalSize;
+			    }
+
+			    var hitArea = new createjs.Shape();
+			    hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
+			    hitArea.x = me.halfCellSize;
+			    hitArea.y = me.halfCellSize;
+			    me.buttons[name].hitArea = hitArea;
+			    me.buttons[name].visible = false;
+
+			    me.dict[name].makeMenu();
+			    me.dict[name].moveMenu(me.cellSize, me.cellSize);
+			    me.dict[name].updateMenu(false);
+
+			    loadPaletteButtonHandler(me, name);
+			    }
+			makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
+                    }
+
+                    makePaletteBitmap(me, PALETTEBUTTON.replace('fill_color', '#4d4d4d'), name, processHighlightButton, null);
                 }
 
                 makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#96d3f3'), name, processButton, null);
 
-                function processHighlightButton(me, name, bitmap, extras) {
-                    me.highlightBitmaps[name] = bitmap;
-                    me.buttons[name].addChild(me.highlightBitmaps[name]);
-                    me.highlightBitmaps[name].visible = false;
-
-                    var image = new Image();
-                    image.src = 'images/' + name + '.svg';
-                    var icon = new createjs.Bitmap(image);
-                    me.buttons[name].addChild(icon);
-                    if (me.cellSize != me.originalSize) {
-                        icon.scaleX = me.cellSize / me.originalSize;
-                        icon.scaleY = me.cellSize / me.originalSize;
-                    }
-
-                    var hitArea = new createjs.Shape();
-                    hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
-                    hitArea.x = me.halfCellSize;
-                    hitArea.y = me.halfCellSize;
-                    me.buttons[name].hitArea = hitArea;
-                    me.buttons[name].visible = false;
-
-                    me.dict[name].makeMenu();
-                    me.dict[name].moveMenu(me.cellSize, me.cellSize);
-                    me.dict[name].updateMenu(false);
-
-                    loadPaletteButtonHandler(me, name);
-                }
-
-                makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#4d4d4d'), name, processHighlightButton, null);
             }
         }
     }
@@ -256,21 +257,17 @@ function Palette(palettes, name, color, bgcolor) {
             function processHeader(palette, name, bitmap, extras) {
                 palette.menuContainer.addChild(bitmap);
 
-                var image = new Image();
-                image.onload = function() {
-                    var icon = new createjs.Bitmap(image);
-                    icon.scaleX = 0.8;
-                    icon.scaleY = 0.8;
-                    palette.menuContainer.addChild(icon);
+		function processButtonIcon(palette, name, bitmap, extras) {
+                    bitmap.scaleX = 0.8;
+                    bitmap.scaleY = 0.8;
+                    palette.menuContainer.addChild(bitmap);
                     palette.palettes.container.addChild(palette.menuContainer);
 
-                    var closeImage = new Image();
-                    closeImage.onload = function() {
-                        var closeIcon = new createjs.Bitmap(closeImage);
-                        closeIcon.scaleX = 0.7;
-                        closeIcon.scaleY = 0.7;
-                        closeIcon.x = MENUWIDTH - STANDARDBLOCKHEIGHT;
-                        palette.menuContainer.addChild(closeIcon);
+		    function processCloseIcon(palette, name, bitmap, extras) {
+                        palette.menuContainer.addChild(bitmap);
+                        bitmap.scaleX = 0.7;
+                        bitmap.scaleY = 0.7;
+                        bitmap.x = MENUWIDTH - STANDARDBLOCKHEIGHT;
 
                         var hitArea = new createjs.Shape();
                         hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
@@ -281,9 +278,9 @@ function Palette(palettes, name, color, bgcolor) {
 
                         loadPaletteMenuHandler(palette);
                     }
-                    closeImage.src = 'images/close.svg';
+		    makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
                 }
-                image.src = 'images/' + palette.name + '.svg';
+		makePaletteBitmap(palette, PALETTEICONS[name], name, processButtonIcon, null);
             }
 
             makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)), this.name, processHeader, null);

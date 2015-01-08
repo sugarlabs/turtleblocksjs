@@ -92,6 +92,7 @@ define(function(require) {
         var currentKeyCode = 0;
         var lastKeyCode = 0;
         var pasteContainer = null;
+        var openingPlugin = false;
         var sounds = [];
         try {
             var mic = new p5.AudioIn()
@@ -140,6 +141,7 @@ define(function(require) {
         var samplesButton = docById('samples-button');
         var openButton = docById('open-button');
         var saveButton = docById('save-button');
+        var pluginButton = docById('plugin-button');
         var stopButton = docById('stop-button');
 
         var onAndroid = /Android/i.test(navigator.userAgent);
@@ -243,6 +245,10 @@ define(function(require) {
             doSaveBox();
         }
 
+        pluginButton.onclick = function() {
+            doOpenPlugin();
+        }
+
         // Make the activity stop with the stop button.
         var stopButton = docById('stop-button');
         stopButton.addEventListener('click', function(e) {
@@ -324,7 +330,11 @@ define(function(require) {
                         var rawData = reader.result;
                         var cleanData = rawData.replace('\n', ' ');
                         var obj = JSON.parse(cleanData);
-                        blocks.loadNewBlocks(obj);
+                        if (openingPlugin) {
+                            console.log('TODO: Load the plugin');
+                        } else {
+                            blocks.loadNewBlocks(obj);
+                        }
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
                     }, 200);
@@ -2063,6 +2073,14 @@ define(function(require) {
         }
 
         function doOpen() {
+            openingPlugin = false;
+            // Click on the file open chooser in the DOM.
+            this.fileChooser.focus();
+            this.fileChooser.click();
+        }
+
+        function doOpenPlugin() {
+            openingPlugin = true;
             // Click on the file open chooser in the DOM.
             this.fileChooser.focus();
             this.fileChooser.click();
@@ -2176,6 +2194,7 @@ define(function(require) {
                 ['polar', doPolar],
                 ['samples', doOpenSamples],
                 ['open', doOpen],
+                ['plugin', doOpenPlugin],
                 ['empty-trash', deleteBlocksBox],
                 ['restore-trash', restoreTrash]
             ];
@@ -2219,7 +2238,7 @@ define(function(require) {
                 palettes.show();
                 menuButtonsVisible = false;
                 doMenuAnimation(1);
-                content = '<ol id="tour"><li data-text="Take a tour"><h2>Welcome to Turtle Blocks</h2><p>Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>Palette buttons</h2><p>This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.</p></li><li data-id="hbutton-0" data-button="Next"><h2>Expand/collapse toolbar</h2><p>This button opens and closes the primary toolbar.</p></li><li data-id="hbutton-1" data-button="Next"><h2>Run fast</h2><p>Click to run the project in fast mode.</p></li><li data-id="hbutton-2" data-button="Next"><h2>Run slow</h2><p>Click to run the project in slow mode.</p></li><li data-id="hbutton-3" data-button="Next"><h2>Stop</h2><p>Stop the current project.</p></li><li data-id="hbutton-4" data-button="Next"><h2>Clean</h2><p>Clear the screen and return the turtles to their initial positions.</p></li><li data-id="hbutton-5" data-button="Next"><h2>Show/hide palettes</h2><p>Hide or show the block palettes.</p></li><li data-id="hbutton-6" data-button="Next"><h2>Show/hide blocks</h2><p>Hide or show the blocks and the palettes.</p></li><li data-id="hbutton-7" data-button="Next"><h2>Expand/collapse collapsable blocks</h2><p>Expand or collapse stacks of blocks, e.g, start and action stacks.</p></li><li data-id="vbutton-0" data-button="Next" data-options="tipLocation:right"><h2>Expand/collapse option toolbar</h2><p>Click this button to expand or collapse the auxillary toolbar.</p></li><li data-id="vbutton-1" data-button="Next" data-options="tipLocation:right"><h2>Paste</h2><p>The paste button is enabled then there are blocks copied onto the clipboard.</p></li><li data-id="vbutton-2" data-button="Next" data-options="tipLocation:right"><h2>Cartesian</h2><p>Show or hide a Cartesian-coordinate grid.</p></li><li data-id="vbutton-3" data-button="Next" data-options="tipLocation:right"><h2>Polar</h2><p>Show or hide a polar-coordinate grid.</p></li><li data-id="vbutton-4" data-button="Next" data-options="tipLocation:right"><h2>Load samples from server</h2><p>This button open a viewer for loading example projects.</p></li><li data-id="vbutton-5" data-button="Next" data-options="tipLocation:right"><h2>Load project from file</h2><p>You can also load projects from the file system.</p></li><li data-id="vbutton-6" data-button="Next" data-options="tipLocation: right"><h2>Delete all</h2><p>Remove all content on the canvas, including the blocks.</p></li><li data-id="vbutton-7" data-button="Next" data-options="tipLocation:right"><h2>Undo</h2><p>Restore blocks from the trash.</p></li><li data-id="vbutton-8" data-button="Next" data-options="tipLocation:right"><h2>Save project</h2><p>Save your project to a server.</p></li><li data-button="Close" data-options="tipLocation:right"><h2>Welcome</h2><p>Congratulations, you have finished the tour. Please enjoy Turtle Blocks!</p></li></ol>';
+                content = '<ol id="tour"><li data-text="Take a tour"><h2>Welcome to Turtle Blocks</h2><p>Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>Palette buttons</h2><p>This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.</p></li><li data-id="hbutton-0" data-button="Next"><h2>Expand/collapse toolbar</h2><p>This button opens and closes the primary toolbar.</p></li><li data-id="hbutton-1" data-button="Next"><h2>Run fast</h2><p>Click to run the project in fast mode.</p></li><li data-id="hbutton-2" data-button="Next"><h2>Run slow</h2><p>Click to run the project in slow mode.</p></li><li data-id="hbutton-3" data-button="Next"><h2>Stop</h2><p>Stop the current project.</p></li><li data-id="hbutton-4" data-button="Next"><h2>Clean</h2><p>Clear the screen and return the turtles to their initial positions.</p></li><li data-id="hbutton-5" data-button="Next"><h2>Show/hide palettes</h2><p>Hide or show the block palettes.</p></li><li data-id="hbutton-6" data-button="Next"><h2>Show/hide blocks</h2><p>Hide or show the blocks and the palettes.</p></li><li data-id="hbutton-7" data-button="Next"><h2>Expand/collapse collapsable blocks</h2><p>Expand or collapse stacks of blocks, e.g, start and action stacks.</p></li><li data-id="hbutton-8" data-button="Next"><h2>Help</h2><p>Show these messages.</p></li><li data-id="vbutton-0" data-button="Next" data-options="tipLocation:right"><h2>Expand/collapse option toolbar</h2><p>Click this button to expand or collapse the auxillary toolbar.</p></li><li data-id="vbutton-1" data-button="Next" data-options="tipLocation:right"><h2>Paste</h2><p>The paste button is enabled then there are blocks copied onto the clipboard.</p></li><li data-id="vbutton-2" data-button="Next" data-options="tipLocation:right"><h2>Cartesian</h2><p>Show or hide a Cartesian-coordinate grid.</p></li><li data-id="vbutton-3" data-button="Next" data-options="tipLocation:right"><h2>Polar</h2><p>Show or hide a polar-coordinate grid.</p></li><li data-id="vbutton-4" data-button="Next" data-options="tipLocation:right"><h2>Load samples from server</h2><p>This button open a viewer for loading example projects.</p></li><li data-id="vbutton-5" data-button="Next" data-options="tipLocation:right"><h2>Load project from file</h2><p>You can also load projects from the file system.</p></li><li data-id="vbutton-6" data-button="Next" data-options="tipLocation:right"><h2>Load plugin from file</h2><p>You can load new blocks from the file system.</p></li><li data-id="vbutton-7" data-button="Next" data-options="tipLocation: right"><h2>Delete all</h2><p>Remove all content on the canvas, including the blocks.</p></li><li data-id="vbutton-8" data-button="Next" data-options="tipLocation:right"><h2>Undo</h2><p>Restore blocks from the trash.</p></li><li data-id="vbutton-9" data-button="Next" data-options="tipLocation:right"><h2>Save project</h2><p>Save your project to a server.</p></li><li data-button="Close" data-options="tipLocation:right"><h2>Welcome</h2><p>Congratulations, you have finished the tour. Please enjoy Turtle Blocks!</p></li></ol>';
             }
             document.getElementById("tourData").innerHTML = content;
             settings = {autoStart: true, modal:true, expose: false}

@@ -81,6 +81,7 @@
         <button class="toolbutton" id="open-button" title="Open"></button>
         <button class="toolbutton" id="save-button" title="Save"></button>
         <button class="toolbutton" id="help-button" title="Help"></button>
+        <button class="toolbutton" id="plugin-button" title="Help"></button>
         <button class="toolbutton pull-right" id="stop-button" title="Exit"></button>
     </div>
 
@@ -102,6 +103,7 @@
         <div class='helpDiv' id="hbutton-5"></div>
         <div class='helpDiv' id="hbutton-6"></div>
         <div class='helpDiv' id="hbutton-7"></div>
+        <div class='helpDiv' id="hbutton-8"></div>
 
         <div class='helpDiv' id="vbutton-0"></div>
         <div class='helpDiv' id="vbutton-1"></div>
@@ -112,6 +114,7 @@
         <div class='helpDiv' id="vbutton-6"></div>
         <div class='helpDiv' id="vbutton-7"></div>
         <div class='helpDiv' id="vbutton-8"></div>
+        <div class='helpDiv' id="vbutton-9"></div>
         <div class='helpDiv' id="turtle"></div>
 
         <canvas id="myCanvas" width="1200" height="900"></canvas>
@@ -139,7 +142,7 @@
       scale = w / 900;
     }
 
-    total = 7
+    total = 8
     for (i = 0; i <= total; i++) {
       scaled = current * scale;
       document.getElementById("hbutton-" + i).style.marginLeft = scaled + "px";
@@ -147,7 +150,7 @@
     }
 
     current = 0
-    total = 8
+    total = 9
     for (i = 0; i <= total; i++) {
       scaled = current * scale;
       document.getElementById("vbutton-" + i).style.marginLeft = w - (2 * (scale * 55)) + "px";

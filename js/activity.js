@@ -71,6 +71,11 @@ define(function(require) {
             var files = false;
         }
 
+        // Set up a file chooser for the doOpen function.
+        var fileChooser = docById('myOpenFile');
+        // Set up a file chooser for the doOpenPlugin function.
+        var pluginChooser = docById('myOpenPlugin');
+
         // Are we running off of a server?
         var server = true;
         var scale = 1;
@@ -92,7 +97,6 @@ define(function(require) {
         var currentKeyCode = 0;
         var lastKeyCode = 0;
         var pasteContainer = null;
-        var openingPlugin = false;
         var sounds = [];
         try {
             var mic = new p5.AudioIn()
@@ -313,12 +317,11 @@ define(function(require) {
             console.log('init Advanced Blocks');
             initAdvancedProtoBlocks(palettes, blocks);
 
-            // Set up a file chooser for the doOpen function.
-            this.fileChooser = docById('myOpenFile');
+	    // TODO: Load any plugins saved in local storage
 
             // FIXME: won't allow selecting same file twice in a row
             // since there is no 'change' event.
-            this.fileChooser.addEventListener('change', function(event) {
+            fileChooser.addEventListener('change', function(event) {
 
                 // Read file here.
                 var reader = new FileReader();
@@ -330,11 +333,7 @@ define(function(require) {
                         var rawData = reader.result;
                         var cleanData = rawData.replace('\n', ' ');
                         var obj = JSON.parse(cleanData);
-                        if (openingPlugin) {
-                            console.log('TODO: Load the plugin');
-                        } else {
-                            blocks.loadNewBlocks(obj);
-                        }
+                        blocks.loadNewBlocks(obj);
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
                     }, 200);
@@ -342,6 +341,60 @@ define(function(require) {
 
                 console.log(fileChooser.files[0]);
                 reader.readAsText(fileChooser.files[0]);
+            }, false);
+
+            // FIXME: won't allow selecting same file twice in a row
+            // since there is no 'change' event.
+            pluginChooser.addEventListener('change', function(event) {
+
+                // Read file here.
+                var reader = new FileReader();
+
+                reader.onload = (function(theFile) {
+                    // Show busy cursor.
+                    document.body.style.cursor = 'wait';
+                    setTimeout(function() {
+                        var rawData = reader.result;
+                        var cleanData = rawData.split('\n');
+			for (i = 0; i < cleanData.length; i++) {
+			    if (cleanData[i].length == 0) {
+				continue;
+                            }
+			    if (cleanData[i][0] == '/') {
+				continue;
+			    }
+			    try {
+				var obj = JSON.parse(cleanData[i]);
+				console.log(obj);
+				// TODO: Create the palette
+
+				for (var flow in obj["FLOWPLUGINS"]) {
+				    evalFlowDict[flow] = obj["FLOWPLUGINS"][flow];
+				}
+				for (var arg in obj["ARGPLUGINS"]) {
+				    evalArgDict[arg] = obj["ARGPLUGINS"][arg];
+				}
+				// Create the plugin protoblocks.
+				for (var block in obj["BLOCKPLUGINS"]) {
+				    eval(obj["BLOCKPLUGINS"][block]);
+				}
+				// Push the protoblocks onto their palettes.
+				for (var protoblock in blocks.protoBlocksDict) {
+				    blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+				}
+			    } catch (e) {
+				errorMsg(e);
+				break;
+			    }
+			    // TODO: Save plugins to local storage.
+			}
+                        // Restore default cursor.
+                        document.body.style.cursor = 'default';
+                    }, 200);
+                });
+
+                console.log(pluginChooser.files[0]);
+                reader.readAsText(pluginChooser.files[0]);
             }, false);
 
             this.svgOutput = '';
@@ -2073,17 +2126,15 @@ define(function(require) {
         }
 
         function doOpen() {
-            openingPlugin = false;
-            // Click on the file open chooser in the DOM.
-            this.fileChooser.focus();
-            this.fileChooser.click();
+            // Click on the file open chooser in the DOM (.ta, .tb).
+            fileChooser.focus();
+            fileChooser.click();
         }
 
         function doOpenPlugin() {
-            openingPlugin = true;
-            // Click on the file open chooser in the DOM.
-            this.fileChooser.focus();
-            this.fileChooser.click();
+            // Click on the plugin open chooser in the DOM (.json).
+            pluginChooser.focus();
+            pluginChooser.click();
         }
 
         function doSaveBox() {

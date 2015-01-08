@@ -527,6 +527,7 @@ function Palette(palettes, name, color, bgcolor) {
             this.menuContainer.visible = false;
             this.hideMenuItems(true);
         }
+	this.moveMenu(this.palettes.cellSize, this.palettes.cellSize);
     }
 
     this.showMenu = function() {

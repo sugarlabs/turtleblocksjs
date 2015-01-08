@@ -317,7 +317,7 @@ define(function(require) {
             console.log('init Advanced Blocks');
             initAdvancedProtoBlocks(palettes, blocks);
 
-	    // TODO: Load any plugins saved in local storage
+            // TODO: Load any plugins saved in local storage
 
             // FIXME: won't allow selecting same file twice in a row
             // since there is no 'change' event.
@@ -356,38 +356,59 @@ define(function(require) {
                     setTimeout(function() {
                         var rawData = reader.result;
                         var cleanData = rawData.split('\n');
-			for (i = 0; i < cleanData.length; i++) {
-			    if (cleanData[i].length == 0) {
-				continue;
+                        for (i = 0; i < cleanData.length; i++) {
+                            if (cleanData[i].length == 0) {
+                                continue;
                             }
-			    if (cleanData[i][0] == '/') {
-				continue;
-			    }
-			    try {
-				var obj = JSON.parse(cleanData[i]);
-				console.log(obj);
-				// TODO: Create the palette
+                            if (cleanData[i][0] == '/') {
+                                continue;
+                            }
+                            try {
+                                var obj = JSON.parse(cleanData[i]);
+                                for (var name in obj['PALETTEPLUGINS']) {
+                                    PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
+                                    // TODO: GET THESE FROM PLUGIN
+                                    PALETTEFILLCOLORS[name] = '#ff0066';
+                                    PALETTESTROKECOLORS[name] = '#ef003e';
+                                    PALETTEHIGHLIGHTCOLORS[name] = '#ffb1b3';
+				    console.log('adding palette ' + name);
+				    palettes.add(name, 'white', '#ff0066');
+				    palettes.makeMenu();
+				    update = true;
+                                }
+                                for (var flow in obj['FLOWPLUGINS']) {
+                                    evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
+                                }
+                                for (var arg in obj['ARGPLUGINS']) {
+                                    evalArgDict[arg] = obj['ARGPLUGINS'][arg];
+                                }
+                                // Create the plugin protoblocks.
+                                for (var block in obj['BLOCKPLUGINS']) {
+				    console.log('adding block ' + block);
+                                    eval(obj['BLOCKPLUGINS'][block]);
+                                }
+                                // Push the protoblocks onto their palettes.
+                                for (var protoblock in blocks.protoBlockDict) {
+                                    blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+                                }
+				// Populate the lists of block types.
+				blocks.findBlockTypes();
+                            } catch (e) {
+                                errorMsg(e);
+                                break;
+                            }
+                            // TODO: Save plugins to local storage.
+                        }
 
-				for (var flow in obj["FLOWPLUGINS"]) {
-				    evalFlowDict[flow] = obj["FLOWPLUGINS"][flow];
-				}
-				for (var arg in obj["ARGPLUGINS"]) {
-				    evalArgDict[arg] = obj["ARGPLUGINS"][arg];
-				}
-				// Create the plugin protoblocks.
-				for (var block in obj["BLOCKPLUGINS"]) {
-				    eval(obj["BLOCKPLUGINS"][block]);
-				}
-				// Push the protoblocks onto their palettes.
-				for (var protoblock in blocks.protoBlocksDict) {
-				    blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
-				}
-			    } catch (e) {
-				errorMsg(e);
-				break;
+			// Refresh the palettes.
+			setTimeout(function() {
+			    if (palettes.visible) {
+				palettes.hide();
 			    }
-			    // TODO: Save plugins to local storage.
-			}
+			    palettes.show();
+			    palettes.bringToTop();
+			}, 1000);
+
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
                     }, 200);

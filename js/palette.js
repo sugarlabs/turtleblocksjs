@@ -40,6 +40,8 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     this.visible = true;
     this.scale = 1.0;
+    this.x = 0;
+    this.y = this.cellSize;
 
     this.current = 'turtle';
 
@@ -56,12 +58,11 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     this.makeMenu = function() {
         // First, an icon/button for each palette
-        this.x = 0;
-        this.y = this.cellSize;
         for (var name in this.dict) {
             if (name in this.buttons) {
                 this.dict[name].updateMenu(true);
             } else {
+		console.log('makeMenu: ' + name);
                 this.buttons[name] = new createjs.Container();
                 this.stage.addChild(this.buttons[name]);
                 this.buttons[name].x = this.x;
@@ -77,31 +78,31 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
                     }
 
                     function processHighlightButton(me, name, bitmap, extras) {
-			me.highlightBitmaps[name] = bitmap;
-			me.buttons[name].addChild(me.highlightBitmaps[name]);
-			me.highlightBitmaps[name].visible = false;
+                        me.highlightBitmaps[name] = bitmap;
+                        me.buttons[name].addChild(me.highlightBitmaps[name]);
+                        me.highlightBitmaps[name].visible = false;
 
-			function processButtonIcon(me, name, bitmap, extras) {
-			    me.buttons[name].addChild(bitmap);
-			    if (me.cellSize != me.originalSize) {
-				bitmap.scaleX = me.cellSize / me.originalSize;
-				bitmap.scaleY = me.cellSize / me.originalSize;
-			    }
+                        function processButtonIcon(me, name, bitmap, extras) {
+                            me.buttons[name].addChild(bitmap);
+                            if (me.cellSize != me.originalSize) {
+                                bitmap.scaleX = me.cellSize / me.originalSize;
+                                bitmap.scaleY = me.cellSize / me.originalSize;
+                            }
 
-			    var hitArea = new createjs.Shape();
-			    hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
-			    hitArea.x = me.halfCellSize;
-			    hitArea.y = me.halfCellSize;
-			    me.buttons[name].hitArea = hitArea;
-			    me.buttons[name].visible = false;
+                            var hitArea = new createjs.Shape();
+                            hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
+                            hitArea.x = me.halfCellSize;
+                            hitArea.y = me.halfCellSize;
+                            me.buttons[name].hitArea = hitArea;
+                            me.buttons[name].visible = false;
 
-			    me.dict[name].makeMenu();
-			    me.dict[name].moveMenu(me.cellSize, me.cellSize);
-			    me.dict[name].updateMenu(false);
+                            me.dict[name].makeMenu();
+                            me.dict[name].moveMenu(me.cellSize, me.cellSize);
+                            me.dict[name].updateMenu(false);
 
-			    loadPaletteButtonHandler(me, name);
-			    }
-			makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
+                            loadPaletteButtonHandler(me, name);
+                            }
+                        makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
                     }
 
                     makePaletteBitmap(me, PALETTEBUTTON.replace('fill_color', '#4d4d4d'), name, processHighlightButton, null);
@@ -257,13 +258,13 @@ function Palette(palettes, name, color, bgcolor) {
             function processHeader(palette, name, bitmap, extras) {
                 palette.menuContainer.addChild(bitmap);
 
-		function processButtonIcon(palette, name, bitmap, extras) {
+                function processButtonIcon(palette, name, bitmap, extras) {
                     bitmap.scaleX = 0.8;
                     bitmap.scaleY = 0.8;
                     palette.menuContainer.addChild(bitmap);
                     palette.palettes.container.addChild(palette.menuContainer);
 
-		    function processCloseIcon(palette, name, bitmap, extras) {
+                    function processCloseIcon(palette, name, bitmap, extras) {
                         palette.menuContainer.addChild(bitmap);
                         bitmap.scaleX = 0.7;
                         bitmap.scaleY = 0.7;
@@ -278,9 +279,9 @@ function Palette(palettes, name, color, bgcolor) {
 
                         loadPaletteMenuHandler(palette);
                     }
-		    makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
+                    makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
                 }
-		makePaletteBitmap(palette, PALETTEICONS[name], name, processButtonIcon, null);
+                makePaletteBitmap(palette, PALETTEICONS[name], name, processButtonIcon, null);
             }
 
             makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)), this.name, processHeader, null);
@@ -524,7 +525,7 @@ function Palette(palettes, name, color, bgcolor) {
             this.menuContainer.visible = false;
             this.hideMenuItems(true);
         }
-	this.moveMenu(this.palettes.cellSize, this.palettes.cellSize);
+        this.moveMenu(this.palettes.cellSize, this.palettes.cellSize);
     }
 
     this.showMenu = function() {
@@ -631,9 +632,8 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     add('blocks', 'black', '#ffc000').
     add('media', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').
-    add('extras', 'white', '#ff0066').
-    add('mashape', 'white', '#ff0066');
-
+    add('extras', 'white', '#ff0066');
+    // add('mashape', 'white', '#ff0066');
 
     // Give the palettes time to load.
     setTimeout(function() {

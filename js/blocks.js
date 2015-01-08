@@ -399,7 +399,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // Two-arg blocks with two arguments (expandable).
     this.twoArgBlocks = [];
     // Blocks that don't run when clicked.
-    this.noRunBlocks = [];
+    this.noRunBlocks = ['action'];
 
     // We need access to the msg block.
     this.setMsgText = function(msgText) {

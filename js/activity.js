@@ -39,8 +39,8 @@ define(function(require) {
     require(['domReady!'], function(doc) {
 
         try {
-            meSpeak.loadConfig("lib/mespeak_config.json");
-            meSpeak.loadVoice("lib/voices/en/en.json");
+            meSpeak.loadConfig('lib/mespeak_config.json');
+            meSpeak.loadVoice('lib/voices/en/en.json');
         } catch (e) {
             console.log(e);
         }
@@ -100,6 +100,9 @@ define(function(require) {
 
         var pluginObjs = {
             'PALETTEPLUGINS': {},
+            'PALETTEFILLCOLORS': {},
+            'PALETTESTROKECOLORS': {},
+            'PALETTEHIGHLIGHTCOLORS': {},
             'FLOWPLUGINS': {},
             'ARGPLUGINS': {},
             'BLOCKPLUGINS': {}
@@ -124,8 +127,8 @@ define(function(require) {
         var scrollY = 0;
 
         // default values
-        var CAMERAVALUE = "##__CAMERA__##";
-        var VIDEOVALUE = "##__VIDEO__##";
+        var CAMERAVALUE = '##__CAMERA__##';
+        var VIDEOVALUE = '##__VIDEO__##';
 
         var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
         var DEFAULTDELAY = 500; // milleseconds
@@ -375,14 +378,17 @@ define(function(require) {
                                 continue;
                             }
                             try {
-                                processPluginData(cleanData[i], palettes, blocks);
+                                var obj = processPluginData(cleanData[i], palettes, blocks);
                             } catch (e) {
+                                var obj = null;
                                 errorMsg(e);
                                 break;
                             }
 
                             // Save plugins to local storage.
-                            localStorage.setItem('plugins', preparePluginExports(obj));
+                            if (obj != null) {
+                                localStorage.setItem('plugins', preparePluginExports(obj));
+                            }
                         }
 
                         // Refresh the palettes.
@@ -2087,6 +2093,15 @@ define(function(require) {
             for (var name in obj['PALETTEPLUGINS']) {
                 pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
             }
+            for (var name in obj['PALETTEFILLCOLORS']) {
+                pluginObjs['PALETTEFILLCOLORS'][name] = obj['PALETTEFILLCOLORS'][name];
+            }
+            for (var name in obj['PALETTESTROKECOLORS']) {
+                pluginObjs['PALETTESTROKECOLORS'][name] = obj['PALETTESTROKECOLORS'][name];
+            }
+            for (var name in obj['PALETTEHIGHLIGHTCOLORS']) {
+                pluginObjs['PALETTEHIGHLIGHTCOLORS'][name] = obj['PALETTEHIGHLIGHTCOLORS'][name];
+            }
             for (var flow in obj['FLOWPLUGINS']) {
                 pluginObjs['FLOWPLUGINS'][flow] = obj['FLOWPLUGINS'][flow];
             }
@@ -2302,18 +2317,18 @@ define(function(require) {
         }
 
         function showHelp(firstTime) {
-            cookie = getCookie("turtlejstour");
+            cookie = getCookie('turtlejstour');
             if (firstTime && cookie) {
                 content = '<ol id="tour"></ol>'
             } else {
                 // Random year :)
-                document.cookie = "turtlejstour=ready; expires=Fri, 31 Dec 2037 23:59:59 GMT"
+                document.cookie = 'turtlejstour=ready; expires=Fri, 31 Dec 2037 23:59:59 GMT'
                 palettes.show();
                 menuButtonsVisible = false;
                 doMenuAnimation(1);
                 content = '<ol id="tour"><li data-text="Take a tour"><h2>Welcome to Turtle Blocks</h2><p>Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>Palette buttons</h2><p>This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.</p></li><li data-id="hbutton-0" data-button="Next"><h2>Expand/collapse toolbar</h2><p>This button opens and closes the primary toolbar.</p></li><li data-id="hbutton-1" data-button="Next"><h2>Run fast</h2><p>Click to run the project in fast mode.</p></li><li data-id="hbutton-2" data-button="Next"><h2>Run slow</h2><p>Click to run the project in slow mode.</p></li><li data-id="hbutton-3" data-button="Next"><h2>Stop</h2><p>Stop the current project.</p></li><li data-id="hbutton-4" data-button="Next"><h2>Clean</h2><p>Clear the screen and return the turtles to their initial positions.</p></li><li data-id="hbutton-5" data-button="Next"><h2>Show/hide palettes</h2><p>Hide or show the block palettes.</p></li><li data-id="hbutton-6" data-button="Next"><h2>Show/hide blocks</h2><p>Hide or show the blocks and the palettes.</p></li><li data-id="hbutton-7" data-button="Next"><h2>Expand/collapse collapsable blocks</h2><p>Expand or collapse stacks of blocks, e.g, start and action stacks.</p></li><li data-id="hbutton-8" data-button="Next"><h2>Help</h2><p>Show these messages.</p></li><li data-id="vbutton-0" data-button="Next" data-options="tipLocation:right"><h2>Expand/collapse option toolbar</h2><p>Click this button to expand or collapse the auxillary toolbar.</p></li><li data-id="vbutton-1" data-button="Next" data-options="tipLocation:right"><h2>Paste</h2><p>The paste button is enabled then there are blocks copied onto the clipboard.</p></li><li data-id="vbutton-2" data-button="Next" data-options="tipLocation:right"><h2>Cartesian</h2><p>Show or hide a Cartesian-coordinate grid.</p></li><li data-id="vbutton-3" data-button="Next" data-options="tipLocation:right"><h2>Polar</h2><p>Show or hide a polar-coordinate grid.</p></li><li data-id="vbutton-4" data-button="Next" data-options="tipLocation:right"><h2>Load samples from server</h2><p>This button open a viewer for loading example projects.</p></li><li data-id="vbutton-5" data-button="Next" data-options="tipLocation:right"><h2>Load project from file</h2><p>You can also load projects from the file system.</p></li><li data-id="vbutton-6" data-button="Next" data-options="tipLocation:right"><h2>Load plugin from file</h2><p>You can load new blocks from the file system.</p></li><li data-id="vbutton-7" data-button="Next" data-options="tipLocation: right"><h2>Delete all</h2><p>Remove all content on the canvas, including the blocks.</p></li><li data-id="vbutton-8" data-button="Next" data-options="tipLocation:right"><h2>Undo</h2><p>Restore blocks from the trash.</p></li><li data-id="vbutton-9" data-button="Next" data-options="tipLocation:right"><h2>Save project</h2><p>Save your project to a server.</p></li><li data-button="Close" data-options="tipLocation:right"><h2>Welcome</h2><p>Congratulations, you have finished the tour. Please enjoy Turtle Blocks!</p></li></ol>';
             }
-            document.getElementById("tourData").innerHTML = content;
+            document.getElementById('tourData').innerHTML = content;
             settings = {
                 autoStart: true,
                 modal: true,
@@ -2560,9 +2575,9 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID) {
             var canvas = document.getElementById('camCanvas');
             canvas.width = w;
             canvas.height = h;
-            var context = canvas.getContext("2d");
+            var context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, w, h);
-            data = canvas.toDataURL("image/png");
+            data = canvas.toDataURL('image/png');
             turtles.turtleList[turtle].doShowImage(args[0], data);
         }
     }

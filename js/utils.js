@@ -123,34 +123,77 @@ function _(text) {
 
 
 function processPluginData(pluginData, palettes, blocks) {
+    // Plugins are JSON-encoded dictionaries.
     var obj = JSON.parse(pluginData);
+
+    // Create a palette entry.
     for (var name in obj['PALETTEPLUGINS']) {
         PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
-        // TODO: GET THESE FROM PLUGIN
-        PALETTEFILLCOLORS[name] = '#ff0066';
-        PALETTESTROKECOLORS[name] = '#ef003e';
-        PALETTEHIGHLIGHTCOLORS[name] = '#ffb1b3';
-        console.log('adding palette ' + name);
-        palettes.add(name, 'white', '#ff0066');
-        palettes.makeMenu();
-        update = true;
+
+        var fillColor = '#ff0066';
+        if (obj['PALETTEFILLCOLORS'] != null) {
+            if (obj['PALETTEFILLCOLORS'][name] != null) {
+                var fillColor = obj['PALETTEFILLCOLORS'][name];
+		console.log(fillColor);
+            }
+        }
+        PALETTEFILLCOLORS[name] = fillColor;
+
+        var strokeColor = '#ef003e';
+        if (obj['PALETTESTROKECOLORS'] != null) {
+            if (obj['PALETTESTROKECOLORS'][name] != null) {
+                var strokeColor = obj['PALETTESTROKECOLORS'][name];
+		console.log(strokeColor);
+            }
+        }
+        PALETTESTROKECOLORS[name] = strokeColor;
+
+        var highlightColor = '#ffb1b3';
+        if (obj['PALETTEHIGHLIGHTCOLORS'] != null) {
+            if (obj['PALETTEHIGHLIGHTCOLORS'][name] != null) {
+                var highlightColor = obj['PALETTEHIGHLIGHTCOLORS'][name];
+		console.log(highlightColor);
+            }
+        }
+        PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
+
+	if (name in palettes.buttons) {
+            console.log('palette ' + name + ' already exists');
+        } else {
+            console.log('adding palette ' + name);
+            palettes.add(name, 'white', '#ff0066');
+            palettes.makeMenu();
+        }
     }
+
+    // Populate the flow-block dictionary, i.e., the code that is
+    // eval'd by this block.
     for (var flow in obj['FLOWPLUGINS']) {
         evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
     }
+
+    // Populate the arg-block dictionary, i.e., the code that is
+    // eval'd by this block.
     for (var arg in obj['ARGPLUGINS']) {
         evalArgDict[arg] = obj['ARGPLUGINS'][arg];
     }
+
     // Create the plugin protoblocks.
     for (var block in obj['BLOCKPLUGINS']) {
-        console.log('adding block ' + block);
+        console.log('adding plugin block ' + block);
         eval(obj['BLOCKPLUGINS'][block]);
     }
+
     // Push the protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
     }
+
+    palettes.updatePalettes();
+
     // Populate the lists of block types.
     blocks.findBlockTypes();
-}
 
+    // Return the object in case we need to save it to local storage.
+    return obj;
+}

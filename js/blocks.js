@@ -19,8 +19,8 @@ var blockBlocks = null;
 var MINIMUMDOCKDISTANCE = 400;
 
 // Special value flags to uniquely identify these media blocks.
-var CAMERAVALUE = "##__CAMERA__##";
-var VIDEOVALUE = "##__VIDEO__##";
+var CAMERAVALUE = '##__CAMERA__##';
+var VIDEOVALUE = '##__VIDEO__##';
 
 // Length of a long touch
 var LONGPRESSTIME = 2000;
@@ -1369,7 +1369,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.makeNewBlockWithConnections = function(name, blockOffset, connections, postProcess, postProcessArg, collapsed) {
-        if (typeof(collapsed) === "undefined") {
+        if (typeof(collapsed) === 'undefined') {
             collapsed = false
         }
         myBlock = this.makeNewBlock(name, postProcess, postProcessArg);
@@ -2091,7 +2091,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         var thisBlock = args[0];
                         var value = args[1];
                         me.blockList[thisBlock].value = CAMERAVALUE;
-                        loadThumbnail(me, thisBlock, "images/camera.svg");
+                        loadThumbnail(me, thisBlock, 'images/camera.svg');
 
                     }
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
@@ -2101,7 +2101,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         var thisBlock = args[0];
                         var value = args[1];
                         me.blockList[thisBlock].value = VIDEOVALUE;
-                        loadThumbnail(me, thisBlock, "images/video.svg");
+                        loadThumbnail(me, thisBlock, 'images/video.svg');
 
                     }
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
@@ -2956,8 +2956,8 @@ function loadThumbnail(blocks, thisBlock, imagePath) {
 
 // Open a file from the DOM.
 function doOpenMedia(blocks, thisBlock) {
-    var fileChooser = docById("myMedia");
-    fileChooser.addEventListener("change", function(event) {
+    var fileChooser = docById('myMedia');
+    fileChooser.addEventListener('change', function(event) {
         var reader = new FileReader();
         reader.onloadend = (function() {
             if (reader.result) {

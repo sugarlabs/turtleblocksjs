@@ -159,6 +159,7 @@
   * mashape blocks (w/Ignacio Rodriguez and Sam Parkinson)
   * save/restore turtle state (w/Ignacio Rodriguez)
   * plugin mechanism
+  * save colors; allow overwriting plugins
 
 TODO:
   * mechansim for removing plugins

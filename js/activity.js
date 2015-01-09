@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014,2015 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -8,11 +8,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-
 // Note: This code is inspired by the Python Turtle Blocks project
 // (https://github.com/walterbender/turtleart), but implemented from
 // scratch. -- Walter Bender, October 2014.
-
 define(function(require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
@@ -49,7 +47,9 @@ define(function(require) {
 
         // Initialize the activity.
         activity.setup();
-        setTimeout(function() { showHelp(true) }, 1000);
+        setTimeout(function() {
+            showHelp(true)
+        }, 1000);
 
         // Colorize the activity icon.
         var activityButton = docById('activity-button');
@@ -98,7 +98,12 @@ define(function(require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
 
-	var pluginObjs = {'PALETTEPLUGINS': {}, 'FLOWPLUGINS': {}, 'ARGPLUGINS': {}, 'BLOCKPLUGINS': {}};
+        var pluginObjs = {
+            'PALETTEPLUGINS': {},
+            'FLOWPLUGINS': {},
+            'ARGPLUGINS': {},
+            'BLOCKPLUGINS': {}
+        };
 
         var sounds = [];
         try {
@@ -321,10 +326,10 @@ define(function(require) {
             initAdvancedProtoBlocks(palettes, blocks);
 
             // TODO: Load any plugins saved in local storage
-	    var pluginData = localStorage.getItem('plugins');
-	    if (pluginData != null) {
-		processPluginData(pluginData);
-	    }
+            var pluginData = localStorage.getItem('plugins');
+            if (pluginData != null) {
+                processPluginData(pluginData, palettes, blocks);
+            }
 
             // FIXME: won't allow selecting same file twice in a row
             // since there is no 'change' event.
@@ -370,14 +375,14 @@ define(function(require) {
                                 continue;
                             }
                             try {
-				processPluginData(cleanData[i]);
+                                processPluginData(cleanData[i], palettes, blocks);
                             } catch (e) {
                                 errorMsg(e);
                                 break;
                             }
 
                             // Save plugins to local storage.
-			    localStorage.setItem('plugins', preparePluginExports(obj));
+                            localStorage.setItem('plugins', preparePluginExports(obj));
                         }
 
                         // Refresh the palettes.
@@ -429,8 +434,7 @@ define(function(require) {
                 console.log('running from server or the user can access to examples.');
                 server = true;
                 stopButton.style.visibility = 'hidden';
-            }
-            catch (e) {
+            } catch (e) {
                 console.log('running from filesystem or the connection isnt secure');
                 server = false;
                 saveButton.style.visibility = 'hidden';
@@ -510,38 +514,6 @@ define(function(require) {
 
             this.document.onkeydown = keyPressed;
         }
-
-	function processPluginData(pluginData) {
-            var obj = JSON.parse(pluginData);
-            for (var name in obj['PALETTEPLUGINS']) {
-                PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
-                // TODO: GET THESE FROM PLUGIN
-                PALETTEFILLCOLORS[name] = '#ff0066';
-                PALETTESTROKECOLORS[name] = '#ef003e';
-                PALETTEHIGHLIGHTCOLORS[name] = '#ffb1b3';
-                console.log('adding palette ' + name);
-                palettes.add(name, 'white', '#ff0066');
-                palettes.makeMenu();
-                update = true;
-            }
-            for (var flow in obj['FLOWPLUGINS']) {
-                evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
-            }
-            for (var arg in obj['ARGPLUGINS']) {
-                evalArgDict[arg] = obj['ARGPLUGINS'][arg];
-            }
-            // Create the plugin protoblocks.
-            for (var block in obj['BLOCKPLUGINS']) {
-                console.log('adding block ' + block);
-                eval(obj['BLOCKPLUGINS'][block]);
-            }
-            // Push the protoblocks onto their palettes.
-            for (var protoblock in blocks.protoBlockDict) {
-                blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
-            }
-            // Populate the lists of block types.
-            blocks.findBlockTypes();
-	}
 
         function setCameraID(id) {
             cameraID = id;
@@ -868,7 +840,7 @@ define(function(require) {
             document.body.style.cursor = 'wait';
             setTimeout(function() {
                 var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
-                projectName = punctuationless.replace(/ /g,'_');
+                projectName = punctuationless.replace(/ /g, '_');
                 if (fileExt(projectName) != 'tb') {
                     projectName += '.tb';
                 }
@@ -1028,7 +1000,8 @@ define(function(require) {
                 if (typeof(value) == 'string') {
                     blocks.blockList[blk].text.text = value;
                 } else {
-                    blocks.blockList[blk].text.text = Math.round(value).toString();                }
+                    blocks.blockList[blk].text.text = Math.round(value).toString();
+                }
                 blocks.blockList[blk].container.updateCache();
                 update = true;
             }
@@ -2109,8 +2082,8 @@ define(function(require) {
             blocks.pasteStack();
         }
 
-	function preparePluginExports(obj) {
-	    // add obj to plugin dictionary and return as JSON encoded text
+        function preparePluginExports(obj) {
+            // add obj to plugin dictionary and return as JSON encoded text
             for (var name in obj['PALETTEPLUGINS']) {
                 pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
             }
@@ -2123,8 +2096,8 @@ define(function(require) {
             for (var block in obj['BLOCKPLUGINS']) {
                 pluginObjs['BLOCKPLUGINS'][block] = obj['BLOCKPLUGINS'][block];
             }
-	    return JSON.stringify(pluginObjs);
-	}
+            return JSON.stringify(pluginObjs);
+        }
 
         function prepareExport() {
             // We don't save blocks in the trash, so we need to
@@ -2153,9 +2126,10 @@ define(function(require) {
                         // It's a turtleee!
                         turtle = turtles.turtleList[myBlock.value];
                         // xcor, ycor, heading, color, shade, pensize, grey
-                        var name = [[myBlock.name, myBlock.collapsed], turtle.x, turtle.y, turtle.orientation, turtle.color, turtle.value, turtle.stroke, turtle.chroma]
-                    }
-                    else {
+                        var name = [
+                            [myBlock.name, myBlock.collapsed], turtle.x, turtle.y, turtle.orientation, turtle.color, turtle.value, turtle.stroke, turtle.chroma
+                        ]
+                    } else {
                         var name = [myBlock.name, myBlock.collapsed];
                     }
                 }
@@ -2331,8 +2305,7 @@ define(function(require) {
             cookie = getCookie("turtlejstour");
             if (firstTime && cookie) {
                 content = '<ol id="tour"></ol>'
-            }
-            else {
+            } else {
                 // Random year :)
                 document.cookie = "turtlejstour=ready; expires=Fri, 31 Dec 2037 23:59:59 GMT"
                 palettes.show();
@@ -2341,7 +2314,11 @@ define(function(require) {
                 content = '<ol id="tour"><li data-text="Take a tour"><h2>Welcome to Turtle Blocks</h2><p>Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>Palette buttons</h2><p>This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.</p></li><li data-id="hbutton-0" data-button="Next"><h2>Expand/collapse toolbar</h2><p>This button opens and closes the primary toolbar.</p></li><li data-id="hbutton-1" data-button="Next"><h2>Run fast</h2><p>Click to run the project in fast mode.</p></li><li data-id="hbutton-2" data-button="Next"><h2>Run slow</h2><p>Click to run the project in slow mode.</p></li><li data-id="hbutton-3" data-button="Next"><h2>Stop</h2><p>Stop the current project.</p></li><li data-id="hbutton-4" data-button="Next"><h2>Clean</h2><p>Clear the screen and return the turtles to their initial positions.</p></li><li data-id="hbutton-5" data-button="Next"><h2>Show/hide palettes</h2><p>Hide or show the block palettes.</p></li><li data-id="hbutton-6" data-button="Next"><h2>Show/hide blocks</h2><p>Hide or show the blocks and the palettes.</p></li><li data-id="hbutton-7" data-button="Next"><h2>Expand/collapse collapsable blocks</h2><p>Expand or collapse stacks of blocks, e.g, start and action stacks.</p></li><li data-id="hbutton-8" data-button="Next"><h2>Help</h2><p>Show these messages.</p></li><li data-id="vbutton-0" data-button="Next" data-options="tipLocation:right"><h2>Expand/collapse option toolbar</h2><p>Click this button to expand or collapse the auxillary toolbar.</p></li><li data-id="vbutton-1" data-button="Next" data-options="tipLocation:right"><h2>Paste</h2><p>The paste button is enabled then there are blocks copied onto the clipboard.</p></li><li data-id="vbutton-2" data-button="Next" data-options="tipLocation:right"><h2>Cartesian</h2><p>Show or hide a Cartesian-coordinate grid.</p></li><li data-id="vbutton-3" data-button="Next" data-options="tipLocation:right"><h2>Polar</h2><p>Show or hide a polar-coordinate grid.</p></li><li data-id="vbutton-4" data-button="Next" data-options="tipLocation:right"><h2>Load samples from server</h2><p>This button open a viewer for loading example projects.</p></li><li data-id="vbutton-5" data-button="Next" data-options="tipLocation:right"><h2>Load project from file</h2><p>You can also load projects from the file system.</p></li><li data-id="vbutton-6" data-button="Next" data-options="tipLocation:right"><h2>Load plugin from file</h2><p>You can load new blocks from the file system.</p></li><li data-id="vbutton-7" data-button="Next" data-options="tipLocation: right"><h2>Delete all</h2><p>Remove all content on the canvas, including the blocks.</p></li><li data-id="vbutton-8" data-button="Next" data-options="tipLocation:right"><h2>Undo</h2><p>Restore blocks from the trash.</p></li><li data-id="vbutton-9" data-button="Next" data-options="tipLocation:right"><h2>Save project</h2><p>Save your project to a server.</p></li><li data-button="Close" data-options="tipLocation:right"><h2>Welcome</h2><p>Congratulations, you have finished the tour. Please enjoy Turtle Blocks!</p></li></ol>';
             }
             document.getElementById("tourData").innerHTML = content;
-            settings = {autoStart: true, modal:true, expose: false}
+            settings = {
+                autoStart: true,
+                modal: true,
+                expose: false
+            }
             jQuery('#tour').joyride('destroy');
             jQuery('#tour').joyride(settings);
         }
@@ -2618,3 +2595,4 @@ function doStopVideoCam(cameraID, setCameraID) {
     }
     setCameraID(null);
 }
+

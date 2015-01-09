@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014,2015 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -8,7 +8,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-
 function httpGet(projectName) {
     var xmlHttp = null;
 
@@ -77,7 +76,7 @@ function fileExt(file) {
 
 function fileBasename(file) {
     var parts = file.split('.');
-    if (parts.length == 1 ) {
+    if (parts.length == 1) {
         return parts[0];
     } else if (parts[0] == '' && parts.length == 2) {
         return file;
@@ -91,13 +90,13 @@ function fileBasename(file) {
 function getCookie(cname) {
     var name = cname + '=';
     var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') {
+        while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }
         if (c.indexOf(name) == 0) {
-            return c.substring(name.length,c.length);
+            return c.substring(name.length, c.length);
         }
     }
     return '';
@@ -112,13 +111,46 @@ function _(text) {
     }
     replaced = replaced.replace(" ", "-");
     try {
-	translation = document.webL10n.get(replaced);
-	if (translation == '') {
+        translation = document.webL10n.get(replaced);
+        if (translation == '') {
             translation = text;
-	};
-	return translation;
+        };
+        return translation;
     } catch (e) {
-	return text;
+        return text;
     }
 };
+
+
+function processPluginData(pluginData, palettes, blocks) {
+    var obj = JSON.parse(pluginData);
+    for (var name in obj['PALETTEPLUGINS']) {
+        PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
+        // TODO: GET THESE FROM PLUGIN
+        PALETTEFILLCOLORS[name] = '#ff0066';
+        PALETTESTROKECOLORS[name] = '#ef003e';
+        PALETTEHIGHLIGHTCOLORS[name] = '#ffb1b3';
+        console.log('adding palette ' + name);
+        palettes.add(name, 'white', '#ff0066');
+        palettes.makeMenu();
+        update = true;
+    }
+    for (var flow in obj['FLOWPLUGINS']) {
+        evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
+    }
+    for (var arg in obj['ARGPLUGINS']) {
+        evalArgDict[arg] = obj['ARGPLUGINS'][arg];
+    }
+    // Create the plugin protoblocks.
+    for (var block in obj['BLOCKPLUGINS']) {
+        console.log('adding block ' + block);
+        eval(obj['BLOCKPLUGINS'][block]);
+    }
+    // Push the protoblocks onto their palettes.
+    for (var protoblock in blocks.protoBlockDict) {
+        blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+    }
+    // Populate the lists of block types.
+    blocks.findBlockTypes();
+}
 

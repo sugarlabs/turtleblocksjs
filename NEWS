@@ -158,10 +158,11 @@
   * i18n (w/Ignacio Rodriguez)
   * mashape blocks (w/Ignacio Rodriguez and Sam Parkinson)
   * save/restore turtle state (w/Ignacio Rodriguez)
+  * plugin mechanism
 
 TODO:
+  * mechansim for removing plugins
   * rotate turtles with gesture
-  * finish plugin mechanism
   * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks

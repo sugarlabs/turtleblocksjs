@@ -62,7 +62,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
             if (name in this.buttons) {
                 this.dict[name].updateMenu(true);
             } else {
-		console.log('makeMenu: ' + name);
+                console.log('makeMenu: ' + name);
                 this.buttons[name] = new createjs.Container();
                 this.stage.addChild(this.buttons[name]);
                 this.buttons[name].x = this.x;

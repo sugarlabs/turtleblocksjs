@@ -97,6 +97,9 @@ define(function(require) {
         var currentKeyCode = 0;
         var lastKeyCode = 0;
         var pasteContainer = null;
+
+	var pluginObjs = {'PALETTEPLUGINS': {}, 'FLOWPLUGINS': {}, 'ARGPLUGINS': {}, 'BLOCKPLUGINS': {}};
+
         var sounds = [];
         try {
             var mic = new p5.AudioIn()
@@ -318,6 +321,10 @@ define(function(require) {
             initAdvancedProtoBlocks(palettes, blocks);
 
             // TODO: Load any plugins saved in local storage
+	    var pluginData = localStorage.getItem('plugins');
+	    if (pluginData != null) {
+		processPluginData(pluginData);
+	    }
 
             // FIXME: won't allow selecting same file twice in a row
             // since there is no 'change' event.
@@ -339,7 +346,6 @@ define(function(require) {
                     }, 200);
                 });
 
-                console.log(fileChooser.files[0]);
                 reader.readAsText(fileChooser.files[0]);
             }, false);
 
@@ -364,57 +370,30 @@ define(function(require) {
                                 continue;
                             }
                             try {
-                                var obj = JSON.parse(cleanData[i]);
-                                for (var name in obj['PALETTEPLUGINS']) {
-                                    PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
-                                    // TODO: GET THESE FROM PLUGIN
-                                    PALETTEFILLCOLORS[name] = '#ff0066';
-                                    PALETTESTROKECOLORS[name] = '#ef003e';
-                                    PALETTEHIGHLIGHTCOLORS[name] = '#ffb1b3';
-				    console.log('adding palette ' + name);
-				    palettes.add(name, 'white', '#ff0066');
-				    palettes.makeMenu();
-				    update = true;
-                                }
-                                for (var flow in obj['FLOWPLUGINS']) {
-                                    evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
-                                }
-                                for (var arg in obj['ARGPLUGINS']) {
-                                    evalArgDict[arg] = obj['ARGPLUGINS'][arg];
-                                }
-                                // Create the plugin protoblocks.
-                                for (var block in obj['BLOCKPLUGINS']) {
-				    console.log('adding block ' + block);
-                                    eval(obj['BLOCKPLUGINS'][block]);
-                                }
-                                // Push the protoblocks onto their palettes.
-                                for (var protoblock in blocks.protoBlockDict) {
-                                    blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
-                                }
-				// Populate the lists of block types.
-				blocks.findBlockTypes();
+				processPluginData(cleanData[i]);
                             } catch (e) {
                                 errorMsg(e);
                                 break;
                             }
-                            // TODO: Save plugins to local storage.
+
+                            // Save plugins to local storage.
+			    localStorage.setItem('plugins', preparePluginExports(obj));
                         }
 
-			// Refresh the palettes.
-			setTimeout(function() {
-			    if (palettes.visible) {
-				palettes.hide();
-			    }
-			    palettes.show();
-			    palettes.bringToTop();
-			}, 1000);
+                        // Refresh the palettes.
+                        setTimeout(function() {
+                            if (palettes.visible) {
+                                palettes.hide();
+                            }
+                            palettes.show();
+                            palettes.bringToTop();
+                        }, 1000);
 
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
                     }, 200);
                 });
 
-                console.log(pluginChooser.files[0]);
                 reader.readAsText(pluginChooser.files[0]);
             }, false);
 
@@ -531,6 +510,38 @@ define(function(require) {
 
             this.document.onkeydown = keyPressed;
         }
+
+	function processPluginData(pluginData) {
+            var obj = JSON.parse(pluginData);
+            for (var name in obj['PALETTEPLUGINS']) {
+                PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
+                // TODO: GET THESE FROM PLUGIN
+                PALETTEFILLCOLORS[name] = '#ff0066';
+                PALETTESTROKECOLORS[name] = '#ef003e';
+                PALETTEHIGHLIGHTCOLORS[name] = '#ffb1b3';
+                console.log('adding palette ' + name);
+                palettes.add(name, 'white', '#ff0066');
+                palettes.makeMenu();
+                update = true;
+            }
+            for (var flow in obj['FLOWPLUGINS']) {
+                evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
+            }
+            for (var arg in obj['ARGPLUGINS']) {
+                evalArgDict[arg] = obj['ARGPLUGINS'][arg];
+            }
+            // Create the plugin protoblocks.
+            for (var block in obj['BLOCKPLUGINS']) {
+                console.log('adding block ' + block);
+                eval(obj['BLOCKPLUGINS'][block]);
+            }
+            // Push the protoblocks onto their palettes.
+            for (var protoblock in blocks.protoBlockDict) {
+                blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+            }
+            // Populate the lists of block types.
+            blocks.findBlockTypes();
+	}
 
         function setCameraID(id) {
             cameraID = id;
@@ -2097,6 +2108,23 @@ define(function(require) {
         function pasteStack() {
             blocks.pasteStack();
         }
+
+	function preparePluginExports(obj) {
+	    // add obj to plugin dictionary and return as JSON encoded text
+            for (var name in obj['PALETTEPLUGINS']) {
+                pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
+            }
+            for (var flow in obj['FLOWPLUGINS']) {
+                pluginObjs['FLOWPLUGINS'][flow] = obj['FLOWPLUGINS'][flow];
+            }
+            for (var arg in obj['ARGPLUGINS']) {
+                pluginObjs['ARGPLUGINS'][arg] = obj['ARGPLUGINS'][arg];
+            }
+            for (var block in obj['BLOCKPLUGINS']) {
+                pluginObjs['BLOCKPLUGINS'][block] = obj['BLOCKPLUGINS'][block];
+            }
+	    return JSON.stringify(pluginObjs);
+	}
 
         function prepareExport() {
             // We don't save blocks in the trash, so we need to

@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014,2015 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -8,14 +8,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-
 // Munsell data converted to sRGB
 //
 // Munsell data derived from CPAN Color::Model::Munsell
 // http://search.cpan.org/~tonodera/Color-Model-Munsell-0.02/
 // which is a vast improvement over the Munsell Perl module 
 // written by Walter Bender and Jon Orwant back in the day.
-
 function getMunsellColor(hue, value, chroma) {
     // hue (aka color) 0-100 -> 0-39
     // value (aka shade) 0-100 -> 0-10
@@ -85,7 +83,7 @@ function getcolor(color) {
 
     h2 = h1 + 1;
     if (h2 == 40) {
-	h2 = 0;
+        h2 = 0;
     }
 
     var v = Math.floor(COLORS40[h1][0] * p + COLORS40[h2][0] * (1 - p));
@@ -622,3 +620,4 @@ MUNSELL = [
     "#e3e3e3", "#f2e2e5", "#ffdbe3", "#ffd4e1", "#ffcde1", "#ffcde1", "#ffcde1", "#ffcde1", "#ffcde1", "#ffcde1", "#ffcde1", "#ffcde1", "#ffcde1", "#ffcde1", "#ffcde1",
     "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"
 ];
+

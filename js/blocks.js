@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014,2015 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -8,9 +8,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-
 // All things related to blocks
-
 // A place in the DOM to put modifiable labels (textareas).
 var labelElem = docById('labelDiv');
 
@@ -20,12 +18,12 @@ var blockBlocks = null;
 // connecting them.
 var MINIMUMDOCKDISTANCE = 400;
 
-// Length of a long touch
-var LONGPRESSTIME = 2000;
-
 // Special value flags to uniquely identify these media blocks.
 var CAMERAVALUE = "##__CAMERA__##";
 var VIDEOVALUE = "##__VIDEO__##";
+
+// Length of a long touch
+var LONGPRESSTIME = 2000;
 
 // Block bitmaps
 var TOP = 0;
@@ -345,7 +343,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     // We keep a dictionary for the proto blocks,
     this.protoBlockDict = {}
-    // and a list of the blocks we create.
+        // and a list of the blocks we create.
     this.blockList = [];
 
     // Track the time with mouse down.
@@ -942,8 +940,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
                 // Look for available connections.
                 if (this.testConnectionType(
-                    blkType,
-                    this.blockList[b].docks[i][2])) {
+                        blkType,
+                        this.blockList[b].docks[i][2])) {
                     x2 = this.blockList[b].container.x + this.blockList[b].docks[i][0];
                     y2 = this.blockList[b].container.y + this.blockList[b].docks[i][1];
                     dist = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
@@ -1371,7 +1369,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.makeNewBlockWithConnections = function(name, blockOffset, connections, postProcess, postProcessArg, collapsed) {
-        if (typeof(collapsed) === "undefined") { collapsed = false }
+        if (typeof(collapsed) === "undefined") {
+            collapsed = false
+        }
         myBlock = this.makeNewBlock(name, postProcess, postProcessArg);
         if (myBlock == null) {
             console.log('could not make block ' + name);
@@ -1590,13 +1590,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 value = this.findUniqueActionName(_('action'));
                 console.log('renaming action block to ' + value);
                 if (value != _('action')) {
-		    // There is a race condition with creation of new
-		    // text block, hence the timeout.
-		    setTimeout(function() {
-			myConnectionBlock.text.text = value;
-			myConnectionBlock.value = value;
-			myConnectionBlock.container.updateCache();
-		    }, 1000);
+                    // There is a race condition with creation of new
+                    // text block, hence the timeout.
+                    setTimeout(function() {
+                        myConnectionBlock.text.text = value;
+                        myConnectionBlock.value = value;
+                        myConnectionBlock.container.updateCache();
+                    }, 1000);
                     this.newDoBlock(value);
                     this.palettes.updatePalettes();
                 }
@@ -1826,13 +1826,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 y = 0;
             }
             if (myBlock.isValueBlock()) {
-                switch(myBlock.name) {
-                case 'media':
-                    blockItem = [b, [myBlock.name, null], x, y, []];
-                    break;
-                default:
-                    blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
-                    break;
+                switch (myBlock.name) {
+                    case 'media':
+                        blockItem = [b, [myBlock.name, null], x, y, []];
+                        break;
+                    default:
+                        blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
+                        break;
                 }
             } else {
                 blockItem = [b, myBlock.name, x, y, []];
@@ -1995,14 +1995,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
             if (blkData[1].length == 2 && blkData[1][0][0] == 'start') {
                 // xcor, ycor, heading, color, shade, pensize, grey
-                blkData[1] = [[blkData[1][0], blkData[1][1]], null, null, null, null, null, null, null]
+                blkData[1] = [
+                    [blkData[1][0], blkData[1][1]], null, null, null, null, null, null, null
+                ]
             }
             if (blkData[1].length == 2) {
                 var name = blkData[1][0];
                 var collapsed = blkData[1][1]
                 var value = null;
-            }
-            else if(blkData[1].length == 8) {
+            } else if (blkData[1].length == 8) {
                 var name = blkData[1][0][0];
                 var collapsed = blkData[1][0][1];
                 var turtleX = blkData[1][1];
@@ -2013,8 +2014,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var turtleP = blkData[1][6];
                 var turtleG = blkData[1][7];
                 var value = null;
-            }
-            else {
+            } else {
                 var name = blkData[1][0];
                 var value = blkData[1][1];
                 var collapsed = blkData[1][2];
@@ -3222,7 +3222,8 @@ function loadEventHandlers(blocks, myBlock) {
                         myBlock.value + '</textarea>';
                     myBlock.label = docById('textLabel');
                     myBlock.label.addEventListener(
-                        'change', function() {
+                        'change',
+                        function() {
                             labelChanged(myBlock);
                         });
                     myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
@@ -3238,7 +3239,8 @@ function loadEventHandlers(blocks, myBlock) {
                         myBlock.value + '</textarea>';
                     myBlock.label = docById('numberLabel');
                     myBlock.label.addEventListener(
-                        'change', function() {
+                        'change',
+                        function() {
                             labelChanged(myBlock);
                         });
                     myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
@@ -3453,5 +3455,5 @@ function makeBitmap(data, name, callback, args) {
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
-
 }
+

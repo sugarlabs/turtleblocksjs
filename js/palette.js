@@ -8,9 +8,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-
 // All things related to palettes
-
 var paletteBlocks = null;
 var PALETTESCALE = 1.0;
 var PALETTEOFFSET = 20;
@@ -34,7 +32,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     // The collection of palettes.
     this.dict = {};
-    this.buttons = {};  // The toolbar button for each palette.
+    this.buttons = {}; // The toolbar button for each palette.
     this.bitmaps = {};
     this.highlightBitmaps = {};
 
@@ -101,7 +99,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
                             me.dict[name].updateMenu(false);
 
                             loadPaletteButtonHandler(me, name);
-                            }
+                        }
                         makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
                     }
 
@@ -371,53 +369,53 @@ function Palette(palettes, name, color, bgcolor) {
         var bottom_label = '';
 
         switch (myBlock.name) {
-        case 'text':
-            block_label = _('text');
-            break;
-        case 'number':
-            block_label = '100';
-            break;
-        default:
-            if (blkname != modname) {
-                // Override label for do, storein, and box
-                block_label = this.protoList[blk].defaults[0];
-            } else if (myBlock.staticLabels.length > 0) {
-                block_label = _(myBlock.staticLabels[0]);
-            } else {
-                block_label = blkname;
-            }
+            case 'text':
+                block_label = _('text');
+                break;
+            case 'number':
+                block_label = '100';
+                break;
+            default:
+                if (blkname != modname) {
+                    // Override label for do, storein, and box
+                    block_label = this.protoList[blk].defaults[0];
+                } else if (myBlock.staticLabels.length > 0) {
+                    block_label = _(myBlock.staticLabels[0]);
+                } else {
+                    block_label = blkname;
+                }
         }
 
         switch (myBlock.name) {
-        case 'box':
-            // so the label will fit
-            var artwork = VALUEBLOCK;
-            break;
-        case 'if':
-        case 'until':
-        case 'while':
-            // so the block will fit
-            var artwork = BASICBLOCK;
-            break;
-        case 'ifthenelse':
-            // so the block will fit
-            var artwork = BASICBLOCK;
-            block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
-            break;
-        default:
-            var artwork = myBlock.artwork[0];
-            if (myBlock.staticLabels.length > 1) {
-                top_label = _(myBlock.staticLabels[1]);
-            }
-            if (myBlock.staticLabels.length > 2) {
-                bottom_label = _(myBlock.staticLabels[2]);
-            }
-            if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
-                mid_label = _(myBlock.staticLabels[2]);
-                top_label = _(myBlock.staticLabels[1]);
-                block_label = _(myBlock.staticLabels[0]);
-            }
-            break;
+            case 'box':
+                // so the label will fit
+                var artwork = VALUEBLOCK;
+                break;
+            case 'if':
+            case 'until':
+            case 'while':
+                // so the block will fit
+                var artwork = BASICBLOCK;
+                break;
+            case 'ifthenelse':
+                // so the block will fit
+                var artwork = BASICBLOCK;
+                block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
+                break;
+            default:
+                var artwork = myBlock.artwork[0];
+                if (myBlock.staticLabels.length > 1) {
+                    top_label = _(myBlock.staticLabels[1]);
+                }
+                if (myBlock.staticLabels.length > 2) {
+                    bottom_label = _(myBlock.staticLabels[2]);
+                }
+                if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
+                    mid_label = _(myBlock.staticLabels[2]);
+                    top_label = _(myBlock.staticLabels[1]);
+                    block_label = _(myBlock.staticLabels[0]);
+                }
+                break;
         }
 
         function processBitmap(palette, modname, bitmap, args) {
@@ -633,7 +631,6 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     add('media', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').
     add('extras', 'white', '#ff0066');
-    // add('mashape', 'white', '#ff0066');
 
     // Give the palettes time to load.
     setTimeout(function() {
@@ -742,7 +739,7 @@ function loadPaletteMenuHandler(palette) {
             palette.hide();
             palette.palettes.refreshCanvas();
             return;
-         }
+        }
 
         if (locked) {
             console.log('debouncing click');
@@ -834,3 +831,4 @@ function makePaletteBitmap(palette, data, name, callback, extras) {
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
 }
+

@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014,2015 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -8,17 +8,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-
 // Define below are the inline SVGs used for turtles and blocks. SVGs
 // are modified by fill_color, stroke_color, block_label, et al. using
 // .replace, e.g.,
 // BASICBLOCK.replace(/fill_color/g,
 // PALETTEFILLCOLORS['turtle']).replace(/stroke_color/g,
 // PALETTESTROKECOLORS['turtle']).replace('block_label', 'clear'));
-
 // Chrome can load the image type "data:image/svg+xml;utf8," inline,
 // but Firefox cannot, so we set it in the async methods instead.
-
 // The relative position of the button added to collapsible blocks,
 // e.g., start and action. (TODO: Calculate these values.)
 var COLLAPSEBUTTONXOFF = -48;
@@ -37,21 +34,36 @@ var TURTLESVG = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55">
 // basic block, 0 args (fill_color, stroke_color, block_label)
 var BASICBLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="46">' + '<g transform="scale(2,2)">' + '<path d="m 0.5,8.5 0,-4 c 0,-2.09 1.91,-4 4,-4 l 4,0 0,2 10,0 0,-2 30,0 4,0 c 2.09,0 4,1.91 4,4 l 0,12 c 0,2.09 -1.91,4 -4,4 l -4,0 -30,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.09,0 -4,-1.91 -4,-4 l 0,-4 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="105" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var BASICBLOCKDOCKS = [[20, 0, 'out'], [20, 42, 'in']];
+var BASICBLOCKDOCKS = [
+    [20, 0, 'out'],
+    [20, 42, 'in']
+];
 
 var BASICBLOCKNOFLOW = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="56">' + '<g transform="matrix(2,0,0,2,0,-2)">' + '<path d="m 0.5,14.5 0,-9 c 0,-2.1 1.96,-3.5 4,-4 l 4,0 0,2 10,0 0,-2 30,0 4,0 c 2.1,0 4,1.9 4,4 l 0,9 0,4 c 0,2.1 -1.9,4 -4,4 l -4,0 -30,0 -5,6 -5,-6 -4,0 c -2.1,0 -4,-1.9 -4,-4 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var BASICBLOCKNOFLOWDOCKS = [[20, 0, 'out'], [20, 42, 'unavailable']];
+var BASICBLOCKNOFLOWDOCKS = [
+    [20, 0, 'out'],
+    [20, 42, 'unavailable']
+];
 
 // basic block, 1 arg (fill_color, stroke_color, block_label)
 var BASICBLOCK1ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="46">' + '<g transform="scale(2,2)">' + '<path d="m 0.5,8.5 0,-4 a 4,4 90 0 1 4,-4 l 4,0 0,2 10,0 0,-2 30,0 4,0 a 4,4 90 0 1 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 a 4,4 90 0 1 -4,4 l -4,0 -30,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 a 4,4 90 0 1 -4,-4 l 0,-4 0,-4 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var BASICBLOCK1ARGDOCKS = [[20, 0, 'out'], [98, 20, 'numberin'], [20, 42, 'in']];
+var BASICBLOCK1ARGDOCKS = [
+    [20, 0, 'out'],
+    [98, 20, 'numberin'],
+    [20, 42, 'in']
+];
 
 // basic block, 2 args (fill_color, stroke_color, block_label, top_label)
 var BASICBLOCK2ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="51">' + '<g transform="matrix(2,0,0,2,29,0)">' + '<path d="m -14,4.5 c 0,-2.0943951 1.905605,-4 4,-4 l 4,0 0,2 10,0 0,-2 22.5,0 7.5,0 4,0 c 2.094395,0 3.492035,1.9681383 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,12.5 -56,0 c 0,-4 0,-16.5 0,-20.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<rect width="110" height="2" x="2" y="49" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="25" style="font-size:12px">top_label</tspan>' + '</text>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="45" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var BASICBLOCK2ARGDOCKS = [[20, 0, 'out'], [98, 20, 'textin'], [98, 62, 'numberin'], [20, 84, 'in']];
+var BASICBLOCK2ARGDOCKS = [
+    [20, 0, 'out'],
+    [98, 20, 'textin'],
+    [98, 62, 'numberin'],
+    [20, 84, 'in']
+];
 
 // basic block 2 arg filler (fill_color, stroke_color)
 var BASICBLOCK2ARGFILLER = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="114" height="42">' + '<path d="m 0,0 0,42 114,0 0,-42 z" style="fill:fill_color;fill-opacity:1;stroke:none" />' + '<rect width="2" height="42" x="0" y="0" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<rect width="2" height="42" x="112" y="0" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '</svg>';
@@ -62,7 +74,9 @@ var BASICBLOCK2ARGBOTTOM = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1
 // value block (fill_color, stroke_color, block_label)
 var VALUEBLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="42">' + '<path d="m 17,1 134,0 0,40 -134,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="25" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var VALUEBLOCKDOCKS = [[0, 20, 'numberout']];
+var VALUEBLOCKDOCKS = [
+    [0, 20, 'numberout']
+];
 
 // Offsets for placing text ontop of value blocks.
 var BOXTEXTX = 120;
@@ -73,21 +87,35 @@ var VALUETEXTY = 26;
 // media block (fill_color, stroke_color, block_label)
 var MEDIABLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="84">' + '<path d="m 17,1 134,0 0,82 -134,0 0,-58 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="135" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var MEDIABLOCKDOCKS = [[0, 20, 'mediaout']];
+var MEDIABLOCKDOCKS = [
+    [0, 20, 'mediaout']
+];
 
 // 1arg block (fill_color, stroke_color, block_label)
 var ARG1BLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="42">' + '<g transform="matrix(2,0,0,2,-20,0)">' + '<path d="m 12.5,9.5 6,0 0,-9 c 15.333333,0 43.666667,0 59,0 l 4,0 c 2.094395,0 3.492035,1.9681384 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 c -15.333333,0 -43.666667,0 -59,0 l 0,-9 -6,0 0,3 -2,0 0,-8 2,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="125" y="28" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
 var ARG1LABELBLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="42">' + '<g transform="matrix(2,0,0,2,-20,0)">' + '<path d="m 12.5,9.5 6,0 0,-9 c 15.333333,0 43.666667,0 59,0 l 4,0 c 2.094395,0 3.492035,1.9681384 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 c -15.333333,0 -43.666667,0 -59,0 l 0,-9 -6,0 0,3 -2,0 0,-8 2,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="35" y="28" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var ARG1BLOCKDOCKS = [[0, 20, 'numberout'], [136, 20, 'numberin']];
+var ARG1BLOCKDOCKS = [
+    [0, 20, 'numberout'],
+    [136, 20, 'numberin']
+];
 
 // 2arg block (fill_color, stroke_color, block_label, top_label)
 var ARG2BLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="84" height="49">' + '<g transform="scale(2,2)" style="stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none">' + '<path d="m 8.5,8.5 0,-4 c 0,-2.0943951 1.905605,-4 4,-4 l 4,0 10,0 7,0 4,0 c 2.094395,0 3.492035,1.9681383 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,11.5 -33,0 0,-11.5 0,-1 -6,0 0,3 -2,0 0,-8 2,0 0,3 6,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />' + '</g>' + '<rect width="64" height="2" x="18" y="47" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="50" y="48" style="font-size:font_size;text-align:center;text-anchor:middle">block_label</tspan>' + '</text>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="64" y="25" style="font-size:12px">top_label</tspan>' + '</text>' + '</svg>';
 
-var ARG2BLOCKDOCKS = [[0, 20, 'numberout'], [68, 20, 'numberin'], [68, 62, 'numberin']];
+var ARG2BLOCKDOCKS = [
+    [0, 20, 'numberout'],
+    [68, 20, 'numberin'],
+    [68, 62, 'numberin']
+];
 
-var ARG3BLOCKDOCKS = [[0, 20, 'numberout'], [68, 20, 'numberin'], [68, 62, 'numberin'], [68, 108, 'numberin']];
+var ARG3BLOCKDOCKS = [
+    [0, 20, 'numberout'],
+    [68, 20, 'numberin'],
+    [68, 62, 'numberin'],
+    [68, 108, 'numberin']
+];
 
 // (fill_color, stroke_color)
 var ARG2BLOCKFILLER = '<svg xmlns="http://www.w3.org/2000/svg" width="84" height="42">' + '<path d="m 16,0 0,42 68,0 0,-42 z" style="fill:fill_color;fill-opacity:1;stroke:none" />' + '<rect width="2" height="42" x="16" y="0" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<rect width="2" height="42" x="82" y="0" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '</svg>';
@@ -101,7 +129,11 @@ var ARG2BLOCKBOTTOM = '<svg xmlns="http://www.w3.org/2000/svg" width="84" height
 // forever (fill_color, stroke_color, block_label)
 var FLOWCLAMP0ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="74">' + '<g transform="scale(2,2)">' + '<path d="m 0.5,8.5 0,-4 c 0,-2.09 1.91,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 21,0 4,0 c 2.09,0 3.74,1.92 4,4 l 0,12 c 0,2.09 -1.91,4 -4,4 l -4,0 -21,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.62,0 -5,2.38 -5,5 l 0,11 -8,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<rect width="14" height="4" x="2" y="70" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="105" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var FLOWCLAMP0ARGDOCKS = [[20, 0, 'out'], [38, 42, 'in'], [20, 126, 'in']];
+var FLOWCLAMP0ARGDOCKS = [
+    [20, 0, 'out'],
+    [38, 42, 'in'],
+    [20, 126, 'in']
+];
 
 // Text label positions
 var STARTTEXTX = 20;
@@ -111,7 +143,12 @@ var ACTIONTEXTY = 40;
 // repeat (fill_color, stroke_color, block_label)
 var FLOWCLAMP1ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="74">' + '<g transform="scale(2,2)">' + '<path d="m 0.5,8.5 0,-4 c 0,-2.09 1.91,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 21,0 4,0 c 2.09,0 3.74,1.92 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 c 0,2.09 -1.91,4 -4,4 l -4,0 -21,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.62,0 -5,2.38 -5,5 l 0,11 -8,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<rect width="14" height="4" x="2" y="70" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var FLOWCLAMP1ARGDOCKS = [[20, 0, 'out'], [98, 20, 'numberin'], [38, 42, 'in'], [20, 126, 'in']];
+var FLOWCLAMP1ARGDOCKS = [
+    [20, 0, 'out'],
+    [98, 20, 'numberin'],
+    [38, 42, 'in'],
+    [20, 126, 'in']
+];
 
 // (fill_color, stroke_color)
 var CLAMPFILLER = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="42">' + '<path d="m 0,0 18,0 c 0,14.000002 0,27.999998 0,42 L 0,42 z" style="fill:fill_color;fill-opacity:1;stroke:none" />' + '<rect width="2" height="42" x="0" y="0" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<rect width="2" height="42" x="16" y="0" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '</svg>';
@@ -125,19 +162,39 @@ var FLOWCLAMPBOTTOM = '<svg xmlns="http://www.w3.org/2000/svg" width="114" heigh
 // if (fill_color, stroke_color, block_label, top_label)
 var FLOWCLAMPBOOLEANARG = '<svg xmlns="http://www.w3.org/2000/svg" width="72" height="116">' + '<g transform="scale(2,2)">' + '<path d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 0,2 10,0 0,-2 9,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,15 c -4.18879,0 -8,3.81121 -8,8 0,4.18879 3.81121,8 8,8 l 0,2 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.617994,0 -5,2.382006 -5,5 l 0,11 -8,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<rect width="13" height="1" x="2.5" y="114.5" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:fill_color;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="49" y="60" style="font-size:font_size">block_label</tspan>' + '</text>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="59" y="78" style="font-size:12px">top_label</tspan>' + '</text>' + '</svg>';
 
-var FLOWCLAMPBOOLEANDOCKS = [[20, 0, 'out'], [56, 40, 'booleanin'], [38, 84, 'in'], [20, 168, 'in']];
+var FLOWCLAMPBOOLEANDOCKS = [
+    [20, 0, 'out'],
+    [56, 40, 'booleanin'],
+    [38, 84, 'in'],
+    [20, 168, 'in']
+];
 
-var DOUBLEFLOWCLAMPBOOLEANDOCKS = [[20, 0, 'out'], [56, 40, 'booleanin'], [38, 84, 'in'], [38, 168, 'in'], [20, 252, 'in']];
+var DOUBLEFLOWCLAMPBOOLEANDOCKS = [
+    [20, 0, 'out'],
+    [56, 40, 'booleanin'],
+    [38, 84, 'in'],
+    [38, 168, 'in'],
+    [20, 252, 'in']
+];
 
 // start (fill_color, stroke_color, block_label)
 var ACTIONCLAMP0ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="88">' + '<g transform="matrix(2,0,0,2,0,14)" style="fill:fill_color;fill-opacity:1">' + '<path d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 5,-7 5,7 9,0 21,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,12 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -21,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.617994,0 -5,2.382006 -5,5 l -8,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="56" y="43" style="font-size:font_size">block_label</tspan>' + '</text>' + '<rect width="14" height="4" x="2" y="62" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<path d="m 1.1048469,67.104845 15.7903081,0 c 0,6.59677 0,13.193539 0,19.790309 l -15.7903081,0 z" style="fill:fill_color;fill-opacity:1;stroke:fill_color;stroke-width:2.20969129;stroke-linecap:round;stroke-opacity:1" />' + '<path d="m 1.0355239,67.18479 0,19.594575" style="fill:fill_color;fill-opacity:1;stroke:none" />' + '<rect width="2" height="22" x="-2.904625e-09" y="66" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<rect width="2" height="22" x="16" y="66" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '</svg>';
 
-var ACTIONCLAMP0ARGDOCKS = [[20, 0, 'unavailable'], [38, 55, 'in'], [20, 80, 'unavailable']];
+var ACTIONCLAMP0ARGDOCKS = [
+    [20, 0, 'unavailable'],
+    [38, 55, 'in'],
+    [20, 80, 'unavailable']
+];
 
 // action (fill_color, stroke_color, block_label)
 var ACTIONCLAMP1ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="88">' + '<g transform="matrix(2,0,0,2,0,14)" style="fill:fill_color;fill-opacity:1;stroke:#c48d00;stroke-opacity:1">' + '<path d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 5,-7 5,7 9,0 21,0 4,0 c 2.094395,0 3.740222,1.9217781 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -21,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.617994,0 -5,2.382006 -5,5 l -8,0 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<rect width="14" height="4" x="2" y="62" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="40" style="font-size:font_size">block_label</tspan>' + '</text>' + '<path d="m 1.104846,67.104846 15.790308,0 c 0,6.59677 0,13.193538 0,19.790308 l -15.790308,0 z" style="fill:fill_color;fill-opacity:1;stroke:fill_color;stroke-width:2.20969129;stroke-linecap:round;stroke-opacity:0.94117647" />' + '<path d="m 1.035523,67.18479 0,19.594575" style="fill:stroke_color;fill-opacity:1;stroke:none" />' + '<rect width="2" height="22" x="0" y="66" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<rect width="2" height="22" x="16" y="66" style="fill:stroke_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '</svg>';
 
-var ACTIONCLAMP1ARGDOCKS = [[20, 0, 'unavailable'], [98, 34, 'anyin'], [38, 55, 'in'], [20, 80, 'unavailable']];
+var ACTIONCLAMP1ARGDOCKS = [
+    [20, 0, 'unavailable'],
+    [98, 34, 'anyin'],
+    [38, 55, 'in'],
+    [20, 80, 'unavailable']
+];
 
 // (fill_color, stroke_color)
 var ACTIONCLAMPBOTTOM = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="64">' + '<path d="m 17,1 c 0,5.235988 4.764012,10 10,10 l 8,0 0,4 20,0 0,-4 50,0 c 3.8873,0 8,4.112699 8,8 l 0,24 c 0,4.18879 -3.81121,8 -8,8 L 55,51 37,51 27,63 17,51 9,51 C 4.8112098,51 1,47.18879 1,43 L 1,1 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />' + '<rect width="13" height="1" x="2.5" y="0.5" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:fill_color;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />' + '</svg>';
@@ -147,21 +204,34 @@ var ACTIONCLAMPCOLLAPSED = '<svg xmlns="http://www.w3.org/2000/svg" width="114" 
 // mouse button (fill_color, stroke_color, block_label)
 var BOOLEAN0ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="175" height="42">' + '<g transform="matrix(2,0,0,2,0,4)" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-opacity:1">' + '<path d="m 0.5,8.5 c 0,-3.6651914 3.3348086,-7 7,-7 l 1,0 0,-3 78.5,0 0,20 -78.5,0 0,-3 -1,0 c -3.6651914,0 -7,-3.334809 -7,-7 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="158" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var BOOLEAN0ARGDOCKS = [[0, 6, 'booleanout']];
+var BOOLEAN0ARGDOCKS = [
+    [0, 6, 'booleanout']
+];
 
 // (fill_color, stroke_color)
 var BOOLEAN1BOOLEANARG = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="101" height="62"> <g transform="matrix(2,0,0,2,-1,-22)"> <path d="m 1,27.5 c 0,-3.685 2.86,-7 6.5,-7 l 1,0 0,-1 c 0,-4.2 3.8,-8 8,-8 l 34,0 0,8 c 0,0 -8.505162,-0.14648 -8.5,8 0.0052,8.14648 8.5,8 8.5,8 l 0,6 -30,0 -12,0 0,-7 -1,0 C 3.8,34.5 1,31.185 1,27.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" /></g> <text style="font-size:font_size;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan x="73" y="34">block_label</tspan></text> </svg>';
 
-var BOOLEAN1BOOLEANARGDOCKS = [[0, 18, 'booleanout'], [84, 18, 'booleanin']];
+var BOOLEAN1BOOLEANARGDOCKS = [
+    [0, 18, 'booleanout'],
+    [84, 18, 'booleanin']
+];
 
 var BOOLEAN2BOOLEANARGS = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="101" height="124"> <g transform="matrix(2,0,0,2,-1,40)"> <path d="m 1,27.5 c 0,-3.685 2.86,-7 6.5,-7 l 1,0 0,-32 c 0,-4.2 3.8,-8 8,-8 l 34,0 0,7.5 c 0,0 -8.616981,0.639408 -8.5,8 0.116981,7.3605918 8.5,8 8.5,8 l 0,5.75 0,9.75 c 0,0 -8.505162,-0.14648 -8.5,8 0.0052,8.14648 8.5,8 8.5,8 l 0,6 -30,0 -12,0 0,-7 -1,0 C 3.8,34.5 1,31.185 1,27.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" /></g> <text style="font-size:font_size;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan x="73" y="65">block_label</tspan></text> </svg>';
 
-var BOOLEAN2BOOLEANARGSDOCKS = [[0, 80, 'booleanout'], [84, 18, 'booleanin'], [84, 81, 'booleanin']];
+var BOOLEAN2BOOLEANARGSDOCKS = [
+    [0, 80, 'booleanout'],
+    [84, 18, 'booleanin'],
+    [84, 81, 'booleanin']
+];
 
 // = (fill_color, stroke_color, block_label)
 var BOOLEAN2ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="102" height="84">' + '<g transform="scale(2,2)">' + '<path d="m 1,27.5 c 0,-3.67 2.86,-7 6.5,-7 l 1,0 0,-12 c 0,-4.2 3.8,-8 8,-8 l 34,0 0,8 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,17 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,8 -30,0 -12,0 0,-7 -1,0 C 3.8,34.5 1,31.2 1,27.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="74" y="56" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
-var BOOLEAN2ARGDOCKS = [[0, 40, 'booleanout'], [86, 20, 'numberin'], [86, 62, 'numberin']];
+var BOOLEAN2ARGDOCKS = [
+    [0, 40, 'booleanout'],
+    [86, 20, 'numberin'],
+    [86, 62, 'numberin']
+];
 
 // Palette-related artwork
 
@@ -189,11 +259,44 @@ var BORDER = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120">'
 
 // palette artwork
 // Palettes have different colored blocks
-var PALETTEFILLCOLORS = {'turtle': '#00b700', 'pen': '#00c0e7', 'blocks': '#ffc000', 'media': '#ffc000', 'number': '#ff00ff', 'boolean': '#ff00ff', 'flow': '#fd6600', 'sensors': '#ff0066', 'extras': '#ff0066', 'mashape': '#ff0066'};
+var PALETTEFILLCOLORS = {
+    'turtle': '#00b700',
+    'pen': '#00c0e7',
+    'blocks': '#ffc000',
+    'media': '#ffc000',
+    'number': '#ff00ff',
+    'boolean': '#ff00ff',
+    'flow': '#fd6600',
+    'sensors': '#ff0066',
+    'extras': '#ff0066',
+    'mashape': '#ff0066'
+};
 
-var PALETTESTROKECOLORS = {'turtle': '#007b00', 'pen': '#0081a9', 'blocks': '#c48d00', 'media': '#c48d00', 'number': '#c700d3', 'boolean': '#c700d3', 'flow': '#ac3d00', 'sensors': '#ef003e', 'extras': '#ef003e', 'mashape': '#ef003e'};
+var PALETTESTROKECOLORS = {
+    'turtle': '#007b00',
+    'pen': '#0081a9',
+    'blocks': '#c48d00',
+    'media': '#c48d00',
+    'number': '#c700d3',
+    'boolean': '#c700d3',
+    'flow': '#ac3d00',
+    'sensors': '#ef003e',
+    'extras': '#ef003e',
+    'mashape': '#ef003e'
+};
 
-var PALETTEHIGHLIGHTCOLORS = {'turtle': '#00f200', 'pen': '#00f2ff', 'blocks': '#ffdc00', 'media': '#ffdc00', 'number': '#ff9fff', 'boolean': '#ff9fff', 'flow': '#ffa548', 'sensors': '#ffb1b3', 'extras': '#ffb1b3', 'mashape': '#ffb1b3'};
+var PALETTEHIGHLIGHTCOLORS = {
+    'turtle': '#00f200',
+    'pen': '#00f2ff',
+    'blocks': '#ffdc00',
+    'media': '#ffdc00',
+    'number': '#ff9fff',
+    'boolean': '#ff9fff',
+    'flow': '#ffa548',
+    'sensors': '#ffb1b3',
+    'extras': '#ffb1b3',
+    'mashape': '#ffb1b3'
+};
 
 var CLOSEICON = '<svg width="55" height="55" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55"><g transform="translate(0-997.36)"><path fill="#282828" d="m0 997.36h55v54.998h-55z"/><g fill="#fff"><path d="m44.971 1036.26c1.675 1.674 1.675 4.39 0 6.06-1.675 1.674-4.391 1.674-6.07 0l-28.875-28.872c-1.675-1.674-1.675-4.39 0-6.06 1.675-1.674 4.391-1.674 6.07 0l28.875 28.872"/><path d="m16.09 1042.33c-1.675 1.674-4.391 1.674-6.07 0-1.675-1.674-1.675-4.39 0-6.06l28.875-28.871c1.675-1.674 4.391-1.674 6.07 0 1.675 1.674 1.675 4.39 0 6.06l-28.875 28.871"/></g></g></svg>';
 
@@ -211,8 +314,19 @@ var BLOCKSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" heig
 
 var MEDIAPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <g transform="matrix(0.67,0,0,0.67,9.075,9.075)"> <path d="m 46.7405,44.669 c 0,2.511 -1.528,4.331 -4.332,4.331 l -29.457,0 0,-43 29.458,0 c 2.15,0 4.332,2.154 4.332,4.33 l -0.001,34.339 0,0 z" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <line style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" x1="22.2155" x2="22.2155" y1="6.1209998" y2="48.881001" /> <path d="m 8.2585,14.464 c 0,0 2.084,0.695 4.17,0.695 2.086,0 4.173,-0.695 4.173,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <path d="m 8.2585,28.021 c 0,0 1.912,0.695 4.345,0.695 2.433,0 3.999,-0.695 3.999,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <path d="m 8.2585,41.232 c 0,0 1.736,0.695 4.518,0.695 2.781,0 3.825,-0.695 3.825,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> </g> </svg> ';
 
-var SENSORSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"> <g transform="matrix(0.87078705,0,0,0.87078705,3.2821055,2.9298726)" style="display:block"> <line y2="23.993" y1="32.438999" x2="16.966999" x1="16.966999" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round" /> <line y2="28.215" y1="28.215" x2="34.938" x1="29.636999" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round" /> <rect width="9.7939997" height="7.599" x="42.157001" y="24.312" style="fill:#ffffff;stroke:#ffffff;stroke-width:2.25;stroke-linecap:round" /> <path d="m 16.967,23.993 c 0,-2.334 -1.892,-4.224 -4.224,-4.224 -2.332,0 -4.223,1.889 -4.223,4.224" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 25.413,32.439 c 0,2.334 -1.891,4.224 -4.224,4.224 -2.332,0 -4.223,-1.89 -4.223,-4.224" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 25.413,32.439 c 0,-2.332 1.893,-4.226 4.224,-4.226" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 8.52,23.993 c 0,2.332 -1.892,4.222 -4.223,4.222" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <rect width="14.477" height="11.35" x="31.945" y="22.438" style="fill:#ffffff;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> </g></svg> '; 
+var SENSORSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"> <g transform="matrix(0.87078705,0,0,0.87078705,3.2821055,2.9298726)" style="display:block"> <line y2="23.993" y1="32.438999" x2="16.966999" x1="16.966999" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round" /> <line y2="28.215" y1="28.215" x2="34.938" x1="29.636999" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round" /> <rect width="9.7939997" height="7.599" x="42.157001" y="24.312" style="fill:#ffffff;stroke:#ffffff;stroke-width:2.25;stroke-linecap:round" /> <path d="m 16.967,23.993 c 0,-2.334 -1.892,-4.224 -4.224,-4.224 -2.332,0 -4.223,1.889 -4.223,4.224" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 25.413,32.439 c 0,2.334 -1.891,4.224 -4.224,4.224 -2.332,0 -4.223,-1.89 -4.223,-4.224" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 25.413,32.439 c 0,-2.332 1.893,-4.226 4.224,-4.226" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 8.52,23.993 c 0,2.332 -1.892,4.222 -4.223,4.222" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <rect width="14.477" height="11.35" x="31.945" y="22.438" style="fill:#ffffff;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> </g></svg> ';
 
 var EXTRASPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <g transform="matrix(0.64,0,0,0.63959066,9.90448,9.9400384)" > <polygon points="26.891,12.363 17.238,16.369 14.659,4.975 20.555,2.531 " style="fill:#ffffff" /> <polygon points="42.646,26.88 38.649,17.228 50.04,14.654 52.477,20.55 " style="fill:#ffffff" /> <polygon points="28.117,42.645 37.775,38.645 40.349,50.029 34.453,52.471 " style="fill:#ffffff" /> <polygon points="37.824,16.315 28.171,12.309 34.394,2.439 40.295,4.882 " style="fill:#ffffff" /> <polygon points="38.628,37.791 42.623,28.139 52.493,34.365 50.055,40.258 " style="fill:#ffffff" /> <polygon points="16.385,37.76 12.391,28.105 2.515,34.34 4.953,40.234 " style="fill:#ffffff" /> <polygon points="12.319,26.875 16.32,17.216 4.936,14.643 2.493,20.539 " style="fill:#ffffff" /> <polygon points="26.939,42.623 17.287,38.629 14.719,50.018 20.609,52.461 " style="fill:#ffffff" /> <path d="m 39.925,22.352 c 2.845,6.863 -0.412,14.728 -7.274,17.574 -6.867,2.85 -14.734,-0.418 -17.578,-7.281 -2.84,-6.862 0.418,-14.733 7.279,-17.572 6.862,-2.845 14.734,0.417 17.573,7.279 z" style="fill:none;stroke:#ffffff;stroke-width:11.69439983" /> </g> </svg> ';
 
-var PALETTEICONS = {'turtle': TURTLEPALETTEICON, 'pen': PENPALETTEICON, 'number': NUMBERPALETTEICON, 'boolean': BOOLEANPALETTEICON, 'flow': FLOWPALETTEICON, 'blocks': BLOCKSPALETTEICON, 'media': MEDIAPALETTEICON, 'sensors': SENSORSPALETTEICON, 'extras': EXTRASPALETTEICON}
+var PALETTEICONS = {
+    'turtle': TURTLEPALETTEICON,
+    'pen': PENPALETTEICON,
+    'number': NUMBERPALETTEICON,
+    'boolean': BOOLEANPALETTEICON,
+    'flow': FLOWPALETTEICON,
+    'blocks': BLOCKSPALETTEICON,
+    'media': MEDIAPALETTEICON,
+    'sensors': SENSORSPALETTEICON,
+    'extras': EXTRASPALETTEICON
+}
+

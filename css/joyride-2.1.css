@@ -145,7 +145,7 @@ body {
 .joyride-tip-guide h6 { font-size: 14px; }
 .joyride-tip-guide p {
   margin: 0 0 18px 0;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 18px;
 }
 .joyride-tip-guide a {
@@ -162,11 +162,11 @@ body {
 .joyride-tip-guide .joyride-next-tip {
   width: auto;
   padding: 6px 18px 4px;
-  font-size: 13px;
+  font-size: 14px;
   text-decoration: none;
   color: rgb(255,255,255);
-  border: solid 1px rgb(0,60,180);
-  background: rgb(0,99,255);
+  border: solid 1px rgb(150,211,243)
+  background: rgb(0,175,255);
   background: -moz-linear-gradient(top, rgb(0,99,255) 0%, rgb(0,85,214) 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(0,99,255)), color-stop(100%,rgb(0,85,214)));
   background: -webkit-linear-gradient(top, rgb(0,99,255) 0%,rgb(0,85,214) 100%);
@@ -185,8 +185,8 @@ body {
 
 .joyride-next-tip:hover {
   color: rgb(255,255,255) !important;
-  border: solid 1px rgb(0,60,180) !important;
-  background: rgb(43,128,255);
+  border: solid 1px rgb(150,211,243) !important;
+  background: rgb(0,175,255);
   background: -moz-linear-gradient(top, rgb(43,128,255) 0%, rgb(29,102,211) 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(43,128,255)), color-stop(100%,rgb(29,102,211)));
   background: -webkit-linear-gradient(top, rgb(43,128,255) 0%,rgb(29,102,211) 100%);
@@ -218,7 +218,7 @@ body {
   color: rgba(255,255,255,0.4) !important;
   text-decoration: none;
   font-family: Verdana, sans-serif;
-  font-size: 25px;
+  font-size: 26px;
   font-weight: bold;
   border-bottom: none !important;
 }

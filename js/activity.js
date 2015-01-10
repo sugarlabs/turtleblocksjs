@@ -32,7 +32,6 @@ define(function(require) {
     require('activity/samplesviewer');
     require('activity/samples');
     require('activity/basicblocks');
-    require('activity/plugins');
     require('activity/advancedblocks');
 
     // Manipulate the DOM only when it is ready.
@@ -97,6 +96,9 @@ define(function(require) {
         var currentKeyCode = 0;
         var lastKeyCode = 0;
         var pasteContainer = null;
+
+	var evalFlowDict = {};
+	var evalArgDict = {};
 
         var pluginObjs = {
             'PALETTEPLUGINS': {},
@@ -325,13 +327,14 @@ define(function(require) {
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
 
             initBasicProtoBlocks(palettes, blocks);
-            console.log('init Advanced Blocks');
-            initAdvancedProtoBlocks(palettes, blocks);
+
+	    // Advanced blocks are stored in a plugin.
+	    processPluginData(ADVANCEDBLOCKDATA, palettes, blocks, evalFlowDict, evalArgDict);
 
             // TODO: Load any plugins saved in local storage
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
-                processPluginData(pluginData, palettes, blocks);
+                processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict);
             }
 
             // FIXME: won't allow selecting same file twice in a row
@@ -386,7 +389,7 @@ define(function(require) {
 			}
 
                         try {
-                            var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks);
+                            var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict);
                         } catch (e) {
                             var obj = null;
                             errorMsg(e);

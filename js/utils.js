@@ -127,7 +127,7 @@ function _(text) {
 };
 
 
-function processPluginData(pluginData, palettes, blocks) {
+function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict) {
     // Plugins are JSON-encoded dictionaries.
     var obj = JSON.parse(pluginData);
 
@@ -201,4 +201,34 @@ function processPluginData(pluginData, palettes, blocks) {
 
     // Return the object in case we need to save it to local storage.
     return obj;
+}
+
+
+function doSaveSVG(canvas, turtles, desc) {
+    var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + desc + '</title>\n</head>\n<body>\n';
+    var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0);
+    var tail = '</body>\n</html>';
+    // TODO: figure out if popups are blocked
+    var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
+}
+
+
+// Some block-specific code
+
+// Publish to FB
+function doPublish(desc) {
+    var url = doSave();
+    console.log('push ' + url + ' to FB');
+    var descElem = docById("description");
+    var msg = desc + ' ' + descElem.value + ' ' + url;
+    console.log('comment: ' + msg);
+    var post_cb = function() {
+        FB.api('/me/feed', 'post', {
+            message: msg
+        });
+    };
+
+    FB.login(post_cb, {
+        scope: 'publish_actions'
+    });
 }

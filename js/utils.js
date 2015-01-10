@@ -36,6 +36,11 @@ function httpPost(projectName, data) {
 }
 
 
+function docByTagName(tag) {
+    document.getElementsByTagName(tag);
+}
+
+
 function docById(id) {
     return document.getElementById(id);
 }

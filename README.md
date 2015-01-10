@@ -1,4 +1,5 @@
-# Running a local server on Ubuntu Guide
+# Server
+## Running a local server on Ubuntu Guide
 
 [Clone the server](https://github.com/tchx84/turtleblocksjs-server)  and [change the api key](https://github.com/tchx84/turtleblocksjs-server/blob/master/settings.py#L26) to your TurtleJS key.
 
@@ -48,3 +49,29 @@ Now, you need to run the TurtleJS server.
 <pre><code>cd /home/path/to/server/ 
 ./server.py </code></pre>
 If everything is ok in you browser you should able to access to <pre>localhost</pre> and see TurtleJS instance.
+
+Plugins
+===
+How to get plugins
+---
+You can find plugins in the [official app repository](https://github.com/walterbender/turtleblocksjs).
+The plugins are identified by the extension <code>**.json**</code>
+You need to download the plugins for load it.
+[(In this guide I will use this plugin)](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json)
+
+How to load plugins
+---
+Under the Option Toolbar (click it if its not expanded) you will see that option:
+
+<img src='http://people.sugarlabs.org/ignacio/plugin-button.svg'>
+
+Click it and File Chooser will appear. 
+In the file chooser select the <code>**.json**</code> plugin and click 'Open'
+<img src='http://people.sugarlabs.org/ignacio/LoadPluginsFileChooser.png'>
+
+After you click it, you will see the blocks in the palettes. 
+(In this case the plugin create custom blocks palette: *mashape*)
+<img src='http://people.sugarlabs.org/ignacio/LoadPluginMashape.png'>
+
+Also, the plugin now is in the browser cache. 
+You don't need to load it every time you run TurtleJS.

@@ -887,7 +887,7 @@ define(function(require) {
             }
             if (sessionData != null) {
                 try {
-                    console.log('restoring session');
+                    console.log('restoring session: ' + sessionData);
                     var obj = JSON.parse(sessionData);
                     blocks.loadNewBlocks(obj);
                 } catch (e) {}

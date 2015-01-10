@@ -32,7 +32,6 @@ define(function(require) {
     require('activity/samplesviewer');
     require('activity/samples');
     require('activity/basicblocks');
-    require('activity/advancedblocks');
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
@@ -343,8 +342,6 @@ define(function(require) {
                     this.request = this.handler = this.userCallback = null;
                 }
             }, null);
-
-            processPluginData(ADVANCEDBLOCKDATA, palettes, blocks, evalFlowDict, evalArgDict);
 
             // TODO: Load any plugins saved in local storage
             var pluginData = localStorage.getItem('plugins');

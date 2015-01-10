@@ -333,9 +333,7 @@ define(function(require) {
                 var req = this.request;
                 if (req.readyState == 4) {
                     if (this.localmode || req.status == 200) {
-			console.log(req.responseText);
 			var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, evalFlowDict, evalArgDict);
-			console.log(obj);
                     }
                     else {
                         if (self.console) console.log('Failed to load advanced blocks: Received status ' + req.status + '.');
@@ -344,7 +342,7 @@ define(function(require) {
                 }
             }, null);
 
-            // TODO: Load any plugins saved in local storage
+            // Load any plugins saved in local storage.
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
                 processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict);

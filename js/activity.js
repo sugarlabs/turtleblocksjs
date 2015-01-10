@@ -333,6 +333,7 @@ define(function(require) {
                 var req = this.request;
                 if (req.readyState == 4) {
                     if (this.localmode || req.status == 200) {
+			console.log(req.responseText);
 			var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, evalFlowDict, evalArgDict);
 			console.log(obj);
                     }

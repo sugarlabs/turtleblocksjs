@@ -369,26 +369,32 @@ define(function(require) {
                     document.body.style.cursor = 'wait';
                     setTimeout(function() {
                         var rawData = reader.result;
-                        var cleanData = rawData.split('\n');
-                        for (i = 0; i < cleanData.length; i++) {
-                            if (cleanData[i].length == 0) {
-                                continue;
-                            }
-                            if (cleanData[i][0] == '/') {
-                                continue;
-                            }
-                            try {
-                                var obj = processPluginData(cleanData[i], palettes, blocks);
-                            } catch (e) {
-                                var obj = null;
-                                errorMsg(e);
-                                break;
-                            }
+                        var lineData = rawData.split('\n');
+			var cleanData = '';
 
-                            // Save plugins to local storage.
-                            if (obj != null) {
-                                localStorage.setItem('plugins', preparePluginExports(obj));
+			// We need to remove blank lines and comments
+			// and then join the data back together for
+			// processing as JSON.
+                        for (i = 0; i < lineData.length; i++) {
+                            if (lineData[i].length == 0) {
+                                continue;
                             }
+                            if (lineData[i][0] == '/') {
+                                continue;
+                            }
+			    cleanData += lineData[i];
+			}
+			
+                        try {
+                            var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks);
+                        } catch (e) {
+                            var obj = null;
+                            errorMsg(e);
+                        }
+
+                        // Save plugins to local storage.
+                        if (obj != null) {
+                            localStorage.setItem('plugins', preparePluginExports(obj));
                         }
 
                         // Refresh the palettes.

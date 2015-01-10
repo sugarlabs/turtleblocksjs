@@ -36,6 +36,27 @@ function httpPost(projectName, data) {
 }
 
 
+function HttpRequest(url, loadCallback, userCallback) {
+    // userCallback is an optional callback-handler.
+    var req = this.request = new XMLHttpRequest();
+    this.handler = loadCallback;
+    this.url = url;
+    this.localmode = Boolean(self.location.href.search(/^file:/i) == 0);
+    this.userCallback = userCallback;
+    var objref = this;
+    try {
+        req.open('GET', url);
+        req.onreadystatechange = function() { objref.handler(); };
+        req.send('');
+    }
+    catch(e) {
+        if (self.console) console.log('Failed to load resource from ' + url + ': Network error.');
+        if (typeof userCallback == 'function') userCallback(false, 'network error');
+        this.request = this.handler = this.userCallback = null;
+    }
+}
+
+
 function docByTagName(tag) {
     document.getElementsByTagName(tag);
 }
@@ -127,6 +148,32 @@ function _(text) {
 };
 
 
+function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict, evalArgDict) {
+    var lineData = rawData.split('\n');
+    var cleanData = '';
+
+    // We need to remove blank lines and comments and then
+    // join the data back together for processing as JSON.
+    for (i = 0; i < lineData.length; i++) {
+        if (lineData[i].length == 0) {
+            continue;
+        }
+        if (lineData[i][0] == '/') {
+            continue;
+        }
+        cleanData += lineData[i];
+    }
+
+    try {
+        var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict);
+    } catch (e) {
+        var obj = null;
+        errorMsg(e);
+    }
+    return obj;
+}
+
+
 function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict) {
     // Plugins are JSON-encoded dictionaries.
     var obj = JSON.parse(pluginData);
@@ -139,7 +186,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
         if (obj['PALETTEFILLCOLORS'] != null) {
             if (obj['PALETTEFILLCOLORS'][name] != null) {
                 var fillColor = obj['PALETTEFILLCOLORS'][name];
-		console.log(fillColor);
+                console.log(fillColor);
             }
         }
         PALETTEFILLCOLORS[name] = fillColor;
@@ -148,7 +195,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
         if (obj['PALETTESTROKECOLORS'] != null) {
             if (obj['PALETTESTROKECOLORS'][name] != null) {
                 var strokeColor = obj['PALETTESTROKECOLORS'][name];
-		console.log(strokeColor);
+                console.log(strokeColor);
             }
         }
         PALETTESTROKECOLORS[name] = strokeColor;
@@ -157,12 +204,12 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
         if (obj['PALETTEHIGHLIGHTCOLORS'] != null) {
             if (obj['PALETTEHIGHLIGHTCOLORS'][name] != null) {
                 var highlightColor = obj['PALETTEHIGHLIGHTCOLORS'][name];
-		console.log(highlightColor);
+                console.log(highlightColor);
             }
         }
         PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
 
-	if (name in palettes.buttons) {
+        if (name in palettes.buttons) {
             console.log('palette ' + name + ' already exists');
         } else {
             console.log('adding palette ' + name);

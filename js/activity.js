@@ -328,8 +328,23 @@ define(function(require) {
 
             initBasicProtoBlocks(palettes, blocks);
 
-	    // Advanced blocks are stored in a plugin.
-	    processPluginData(ADVANCEDBLOCKDATA, palettes, blocks, evalFlowDict, evalArgDict);
+	    // Advanced blocks are stored in a locally stored
+	    // JSON-encoded plugin.
+            new HttpRequest('advancedblocks.json', function () {
+                var req = this.request;
+                if (req.readyState == 4) {
+                    if (this.localmode || req.status == 200) {
+			var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, evalFlowDict, evalArgDict);
+			console.log(obj);
+                    }
+                    else {
+                        if (self.console) console.log('Failed to load advanced blocks: Received status ' + req.status + '.');
+                    }
+                    this.request = this.handler = this.userCallback = null;
+                }
+            }, null);
+
+            processPluginData(ADVANCEDBLOCKDATA, palettes, blocks, evalFlowDict, evalArgDict);
 
             // TODO: Load any plugins saved in local storage
             var pluginData = localStorage.getItem('plugins');
@@ -371,30 +386,7 @@ define(function(require) {
                     // Show busy cursor.
                     document.body.style.cursor = 'wait';
                     setTimeout(function() {
-                        var rawData = reader.result;
-                        var lineData = rawData.split('\n');
-			var cleanData = '';
-
-			// We need to remove blank lines and comments
-			// and then join the data back together for
-			// processing as JSON.
-                        for (i = 0; i < lineData.length; i++) {
-                            if (lineData[i].length == 0) {
-                                continue;
-                            }
-                            if (lineData[i][0] == '/') {
-                                continue;
-                            }
-			    cleanData += lineData[i];
-			}
-
-                        try {
-                            var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict);
-                        } catch (e) {
-                            var obj = null;
-                            errorMsg(e);
-                        }
-
+			obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, evalFlowDict, evalArgDict);
                         // Save plugins to local storage.
                         if (obj != null) {
                             localStorage.setItem('plugins', preparePluginExports(obj));

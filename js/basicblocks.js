@@ -466,6 +466,11 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifthenelseBlock.staticLabels.push('then');
     ifthenelseBlock.staticLabels.push('else');
 
+    var vspaceBlock = new ProtoBlock('vspace');
+    vspaceBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['vspace'] = vspaceBlock;
+    vspaceBlock.zeroArgBlock();
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);

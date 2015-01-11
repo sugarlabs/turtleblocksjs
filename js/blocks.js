@@ -2781,6 +2781,7 @@ function Block(protoblock, blocks) {
         this.container.visible = false;
         if (this.collapseContainer != null) {
             this.collapseContainer.visible = false;
+            this.highlightCollapseContainer.visible = false;
             this.collapseText.visible = false;
         }
     }
@@ -2792,6 +2793,7 @@ function Block(protoblock, blocks) {
                 this.container.visible = true;
                 if (this.collapseContainer != null) {
                     this.collapseContainer.visible = true;
+		    this.highlightCollapseContainer.visible = false;
                     this.collapseText.visible = true;
                 }
             }
@@ -3101,6 +3103,7 @@ function collapseToggle(blocks, myBlock) {
     blocks.findDragGroup(thisBlock)
 
     function toggle(collapse) {
+	console.log('toggle collapse ' + myBlock.name + ' ' + collapse);
         myBlock.collapsed = !collapse;
         myBlock.collapseBitmap.visible = collapse;
         myBlock.expandBitmap.visible = !collapse;

@@ -2004,6 +2004,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var collapsed = blkData[1][1]
                 var value = null;
             } else if (blkData[1].length == 8) {
+		// Start block
                 var name = blkData[1][0][0];
                 var collapsed = blkData[1][0][1];
                 var turtleX = blkData[1][1];
@@ -2337,6 +2338,12 @@ function Block(protoblock, blocks) {
                     if (this.collapseText != null) {
                         this.collapseText.visible = false;
                     }
+                    if (this.collapseBlockBitmap.visible != null) {
+                        this.collapseBlockBitmap.visible = false;
+                    }
+                    if (this.highlightCollapseBlockBitmap.visible != null) {
+                        this.highlightCollapseBlockBitmap.visible = false;
+                    }
                 }
             }
         }
@@ -2372,6 +2379,8 @@ function Block(protoblock, blocks) {
                     this.highlightBitmap[BOT].visible = false;
                 }
                 if (['start', 'action'].indexOf(this.name) != -1) {
+                    this.highlightCollapseBlockBitmap.visible = false;
+                    this.collapseBlockBitmap.visible = false;
                     this.collapseText.visible = false;
                 }
             }
@@ -3082,6 +3091,11 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
 
 function collapseToggle(blocks, myBlock) {
+    if (['start', 'action'].indexOf(myBlock.name) == -1) {
+	console.log('Do not collapse ' + myBlock.name);
+        return;
+    }
+
     // Find the blocks to collapse/expand
     var thisBlock = blocks.blockList.indexOf(myBlock);
     blocks.findDragGroup(thisBlock)

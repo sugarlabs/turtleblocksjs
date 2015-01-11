@@ -459,10 +459,9 @@ define(function(require) {
                 }
             }
             if (projectName != null) {
-                console.log('load ' + projectName);
-                loadProject(projectName);
+                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName); }, 2000);
             } else {
-                loadStart();
+                setTimeout(function () { loadStart(); }, 2000);
             }
 
             // Set up event handler for stage mouse events

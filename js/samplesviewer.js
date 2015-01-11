@@ -40,7 +40,6 @@ function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
 
     this.show = function(scale) {
         this.scale = scale;
-        this.page = 0;
         if (this.server) {
             try {
                 var rawData = httpGet();

@@ -1880,6 +1880,10 @@ define(function(require) {
                         var b = parseArg(activity, turtle, cblk2);
                         blocks.blockList[blk].value = a || b;
                         break;
+		    case 'time':
+                        var d = new Date();
+                        blocks.blockList[blk].value = (d.getTime() - time) / 1000;
+                        break;
                     case 'loudness':
                         if (!mic.enabled) {
                             mic.start();

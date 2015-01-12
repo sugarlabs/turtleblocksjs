@@ -23,7 +23,6 @@
 },
 
 "ARGPLUGINS":{
-"time":"var d = new Date(); blocks.blockList[blk].value = (d.getTime() - time) / 1000;",
 "mousex":"blocks.blockList[blk].value = stageX;",
 "mousey":"blocks.blockList[blk].value = stageY;",
 "mousebutton":"blocks.blockList[blk].value = stageMouseDown;",
@@ -31,7 +30,6 @@
 },
 
 "BLOCKPLUGINS":{
-"time":"var timeBlock = new ProtoBlock(\"time\"); timeBlock.palette = palettes.dict[\"sensors\"]; blocks.protoBlockDict[\"time\"] = timeBlock; timeBlock.parameterBlock(); timeBlock.staticLabels.push(\"time\");",
 "mousex":"var mousexBlock = new ProtoBlock(\"mousex\"); mousexBlock.palette = palettes.dict[\"sensors\"]; blocks.protoBlockDict[\"mousex\"] = mousexBlock; mousexBlock.parameterBlock(); mousexBlock.staticLabels.push(\"mouse x\");",
 "mousey":"var mouseyBlock = new ProtoBlock(\"mousey\"); mouseyBlock.palette = palettes.dict[\"sensors\"]; blocks.protoBlockDict[\"mousey\"] = mouseyBlock; mouseyBlock.parameterBlock(); mouseyBlock.staticLabels.push(\"mouse y\");",
 "mousebutton":"var mousebuttonBlock = new ProtoBlock(\"mousebutton\"); mousebuttonBlock.palette = palettes.dict[\"sensors\"]; blocks.protoBlockDict[\"mousebutton\"] = mousebuttonBlock; mousebuttonBlock.booleanZeroArgBlock(); mousebuttonBlock.staticLabels.push(\"mouse button\");",

@@ -471,6 +471,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['vspace'] = vspaceBlock;
     vspaceBlock.zeroArgBlock();
 
+    var timeBlock = new ProtoBlock("time");
+    timeBlock.palette = palettes.dict["sensors"];
+    blocks.protoBlockDict["time"] = timeBlock;
+    timeBlock.parameterBlock();
+    timeBlock.staticLabels.push("time");
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);

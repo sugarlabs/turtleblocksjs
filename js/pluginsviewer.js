@@ -19,7 +19,8 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
     this.closeViewer = close;
     this.loadPlugin = load;
     this.dict = {};
-    this.pluginFiles = [];
+    // FIXME: Server support
+    this.pluginFiles = [['translate', 'imgurl'], ['weather','imgurl']];
     this.container = null;
     this.prev = null;
     this.next = null;
@@ -39,7 +40,8 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
 
     this.show = function(scale) {
         this.scale = scale;
-        this.page = 0;
+        // FIXME: Add server support.
+        /*
         if (this.server) {
             try {
                 var rawData = httpGet();
@@ -69,6 +71,7 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
             // FIXME: grab files from a local server?
             this.pluginFiles = SAMPLEPLUGINS;
         }
+        */
         console.log('found these projects: ' + this.pluginFiles.sort());
 
         if (this.container == null) {
@@ -111,18 +114,15 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
     }
 
     this.downloadImage = function(p, prepareNextImage) {
-        var header = 'data:image/svg+xml;utf8,';
-        var name = this.pluginFiles[p] + '.svg';
-        // console.log('getting ' + name + ' from samples');
-        if (this.server) {
-            var data = header + httpGet(name);
-        } else {
-            var data = header + SAMPLESSVG[name];
-        }
+        // FIXME: Load server image.
+        // var name = this.pluginFiles[p][1];
+        // var data = getHTTPFile(name);
+        var data = 'data:image/svg+xml;utf8,' +  SAMPLESSVG['card-04.svg'];
         var image = new Image();
         var viewer = this;
 
         image.onload = function() {
+            // TODO: Label with plugin name
             bitmap = new createjs.Bitmap(data);
             bitmap.scaleX = 0.5;
             bitmap.scaleY = 0.5;
@@ -239,7 +239,7 @@ function viewerClicked(viewer, event) {
         if (p < viewer.pluginFiles.length) {
             viewer.hide();
             viewer.closeViewer();
-            viewer.loadPlugin(viewer.pluginFiles[p] + '.json');
+            viewer.loadPlugin(viewer.pluginFiles[p][0] + '.json');
         }
     }
 }

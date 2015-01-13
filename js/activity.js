@@ -32,6 +32,7 @@ define(function(require) {
     require('activity/samplesviewer');
     require('activity/samples');
     require('activity/basicblocks');
+    require('activity/pluginsviewer');
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
@@ -85,6 +86,7 @@ define(function(require) {
         var clearBox;
         var thumbnails;
         var thumbnailsVisible = false;
+        var pluginsVisible = false;
         var buttonsVisible = true;
         var toolbarButtonsVisible = true;
         var openContainer = null;
@@ -158,6 +160,7 @@ define(function(require) {
         var openButton = docById('open-button');
         var saveButton = docById('save-button');
         var pluginButton = docById('plugin-button');
+        var pluginsButton = docById('plugins-button')
         var stopButton = docById('stop-button');
 
         var onAndroid = /Android/i.test(navigator.userAgent);
@@ -265,6 +268,10 @@ define(function(require) {
             doOpenPlugin();
         }
 
+        pluginsButton.onclick = function() {
+            doOpenPlugins();
+        }
+
         // Make the activity stop with the stop button.
         var stopButton = docById('stop-button');
         stopButton.addEventListener('click', function(e) {
@@ -325,6 +332,7 @@ define(function(require) {
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
+            plugins = new PluginsViewer(canvas, stage, refreshCanvas, doClosePlugins, doLoadPlugins)
 
             initBasicProtoBlocks(palettes, blocks);
 
@@ -783,6 +791,57 @@ define(function(require) {
                 update = false; // Only update once
                 stage.update(event);
             }
+        }
+
+        function doOpenPlugins() {
+            if (pluginsVisible) {
+                doCloseSamples();
+            }
+            else {
+                console.log('showing plugins');
+                if (!plugins.show(scale)) {
+                    console.log('plugins not available');
+                } else if (!thumbnails.locked) {
+                    stage.swapChildren(thumbnails.container, last(stage.children));
+                    pluginsVisible = true;
+                    hideBlocks();
+                } else {
+                    console.log('plugin locked');
+                }
+            }
+        }
+
+        function doClosePlugins() {
+            console.log('hiding plugin viewer');
+            plugins.hide();
+            pluginsVisible = false;
+            palettes.show();
+
+        }
+
+        function doLoadPlugins(plugin) {
+            console.log('loading ' + plugin);
+            // Show busy cursor
+            document.body.style.cursor = 'wait';
+            setTimeout(function() {
+                plugindata = getRootFile(plugin);
+                console.log('plugin data: ' + plugindata);
+			    obj = processRawPluginData(plugindata, palettes, blocks, errorMsg, evalFlowDict, evalArgDict);
+                // Save plugins to local storage.
+                if (obj != null) {
+                    localStorage.setItem('plugins', preparePluginExports(obj));
+                }
+                // Refresh the palettes.
+                setTimeout(function() {
+                    if (palettes.visible) {
+                        palettes.hide();
+                    }
+                    palettes.show();
+                    palettes.bringToTop();
+                }, 1000);
+                // Restore default cursor
+                document.body.style.cursor = 'default';
+            }, 200);
         }
 
         function doCloseSamples() {
@@ -2322,6 +2381,7 @@ define(function(require) {
                 ['polar', doPolar],
                 ['samples', doOpenSamples],
                 ['open', doOpen],
+                ['plugins', doOpenPlugins],
                 ['plugin', doOpenPlugin],
                 ['empty-trash', deleteBlocksBox],
                 ['restore-trash', restoreTrash]

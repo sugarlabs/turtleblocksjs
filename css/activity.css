@@ -31,6 +31,11 @@ body {
   display: none;
 }
 
+#main-toolbar #plugins-button {
+  background-image: url(../icons/plugins-button.svg);
+  display: none;
+}
+
 #main-toolbar #paste-button {
   background-image: url(../icons/paste-button.svg);
   display: none;

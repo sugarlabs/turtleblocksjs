@@ -9,9 +9,13 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 // All things related to palettes
+require('activity/utils');
+
 var paletteBlocks = null;
 var PALETTESCALE = 1.0;
 var PALETTEOFFSET = 20;
+BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
+                   'media', 'sensors', 'extras'];
 
 
 function paletteBlockButtonPush(name, arg) {
@@ -162,6 +166,14 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     this.add = function(name, color, bgcolor) {
         this.dict[name] = new Palette(this, name, color, bgcolor);
         return this;
+    }
+
+    this.remove = function(name) {
+        delete this.dict[name];
+        this.buttons[name].removeAllChildren();
+        delete this.buttons[name];
+        this.y -= this.cellSize;
+        this.makeMenu();
     }
 
     this.bringToTop = function() {
@@ -779,6 +791,9 @@ function loadPaletteMenuHandler(palette) {
             if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
                 palette.hide();
                 palette.palettes.refreshCanvas();
+                if (BUILTINPALETTES.indexOf(palette.name) === -1) {
+                    promptPaletteDelete(palette);
+                }
             }
             trashcan.hide();
         });
@@ -817,6 +832,30 @@ function loadPaletteMenuHandler(palette) {
     palette.menuContainer.on('mouseout', function(event) {
         palette.palettes.setDraggingFlag(false);
     });
+}
+
+
+function promptPaletteDelete(palette) {
+    var msg = 'Do you want to remove all "%s" blocks from your project?'.replace('%s', palette.name)
+    if (!confirm(msg)) {
+        return;
+    }
+
+    palette.palettes.remove(palette.name);
+
+    delete pluginObjs['PALETTEHIGHLIGHTCOLORS'][palette.name];
+    delete pluginObjs['PALETTESTROKECOLORS'][palette.name];
+    delete pluginObjs['PALETTEFILLCOLORS'][palette.name];
+    delete pluginObjs['PALETTEPLUGINS'][palette.name];
+
+    for (var i = 0; i < palette.protoList.length; i++) {
+        var name = palette.protoList[i].name;
+        delete pluginObjs['FLOWPLUGINS'][name];
+        delete pluginObjs['ARGPLUGINS'][name];
+        delete pluginObjs['BLOCKPLUGINS'][name];
+    }
+
+    localStorage.plugins = preparePluginExports({});
 }
 
 

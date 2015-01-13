@@ -251,6 +251,33 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 }
 
 
+function preparePluginExports(obj) {
+    // add obj to plugin dictionary and return as JSON encoded text
+    for (var name in obj['PALETTEPLUGINS']) {
+        pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
+    }
+    for (var name in obj['PALETTEFILLCOLORS']) {
+        pluginObjs['PALETTEFILLCOLORS'][name] = obj['PALETTEFILLCOLORS'][name];
+    }
+    for (var name in obj['PALETTESTROKECOLORS']) {
+        pluginObjs['PALETTESTROKECOLORS'][name] = obj['PALETTESTROKECOLORS'][name];
+    }
+    for (var name in obj['PALETTEHIGHLIGHTCOLORS']) {
+        pluginObjs['PALETTEHIGHLIGHTCOLORS'][name] = obj['PALETTEHIGHLIGHTCOLORS'][name];
+    }
+    for (var flow in obj['FLOWPLUGINS']) {
+        pluginObjs['FLOWPLUGINS'][flow] = obj['FLOWPLUGINS'][flow];
+    }
+    for (var arg in obj['ARGPLUGINS']) {
+        pluginObjs['ARGPLUGINS'][arg] = obj['ARGPLUGINS'][arg];
+    }
+    for (var block in obj['BLOCKPLUGINS']) {
+        pluginObjs['BLOCKPLUGINS'][block] = obj['BLOCKPLUGINS'][block];
+    }
+    return JSON.stringify(pluginObjs);
+}
+
+
 function doSaveSVG(canvas, turtles, desc) {
     var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + desc + '</title>\n</head>\n<body>\n';
     var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0);

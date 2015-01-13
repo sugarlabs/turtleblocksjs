@@ -99,7 +99,7 @@ define(function(require) {
 	var evalFlowDict = {};
 	var evalArgDict = {};
 
-        var pluginObjs = {
+        pluginObjs = {
             'PALETTEPLUGINS': {},
             'PALETTEFILLCOLORS': {},
             'PALETTESTROKECOLORS': {},
@@ -2125,32 +2125,6 @@ define(function(require) {
 
         function pasteStack() {
             blocks.pasteStack();
-        }
-
-        function preparePluginExports(obj) {
-            // add obj to plugin dictionary and return as JSON encoded text
-            for (var name in obj['PALETTEPLUGINS']) {
-                pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
-            }
-            for (var name in obj['PALETTEFILLCOLORS']) {
-                pluginObjs['PALETTEFILLCOLORS'][name] = obj['PALETTEFILLCOLORS'][name];
-            }
-            for (var name in obj['PALETTESTROKECOLORS']) {
-                pluginObjs['PALETTESTROKECOLORS'][name] = obj['PALETTESTROKECOLORS'][name];
-            }
-            for (var name in obj['PALETTEHIGHLIGHTCOLORS']) {
-                pluginObjs['PALETTEHIGHLIGHTCOLORS'][name] = obj['PALETTEHIGHLIGHTCOLORS'][name];
-            }
-            for (var flow in obj['FLOWPLUGINS']) {
-                pluginObjs['FLOWPLUGINS'][flow] = obj['FLOWPLUGINS'][flow];
-            }
-            for (var arg in obj['ARGPLUGINS']) {
-                pluginObjs['ARGPLUGINS'][arg] = obj['ARGPLUGINS'][arg];
-            }
-            for (var block in obj['BLOCKPLUGINS']) {
-                pluginObjs['BLOCKPLUGINS'][block] = obj['BLOCKPLUGINS'][block];
-            }
-            return JSON.stringify(pluginObjs);
         }
 
         function prepareExport() {

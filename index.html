@@ -131,33 +131,5 @@
         <div id='tourData'></div>
     </div>
 
-    <script>
-    var scaled = 0;
-    var current = 0;
-    var w = window.innerWidth;
-    var h = window.innerHeight;
-    if (w > h) {
-      scale = w / 1200;
-    }
-    else {
-      scale = w / 900;
-    }
-
-    total = 8
-    for (i = 0; i <= total; i++) {
-      scaled = current * scale;
-      document.getElementById("hbutton-" + i).style.marginLeft = scaled + "px";
-      current += 55;
-    }
-
-    current = 0
-    total = 9
-    for (i = 0; i <= total; i++) {
-      scaled = current * scale;
-      document.getElementById("vbutton-" + i).style.marginLeft = w - (2 * (scale * 55)) + "px";
-      document.getElementById("vbutton-" + i).style.marginTop = scaled + "px";
-      current += 55;
-    }
-    </script>
 </body>
 </html>

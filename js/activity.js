@@ -2315,7 +2315,6 @@ define(function(require) {
             }
 
             // Misc. other buttons
-            // FIXME: empty-trash is the wrong name
             var menuNames = [
                 ['paste-disabled', pasteStack],
                 ['Cartesian', doCartesian],
@@ -2356,7 +2355,33 @@ define(function(require) {
         }
 
         function showHelp(firstTime) {
-            cookie = getCookie('turtlejstour');
+            var cookie = getCookie('turtlejstour');
+            if (firstTime) {
+		var scaled = 0;
+		var current = 0;
+		if (window.innerWidth > window.innerHeight) {
+		    var scale = window.innerWidth / 1200;
+		}
+		else {
+		    var scale = window.innerWidth / 900;
+		}
+
+		for (var i = 0; i <= 8; i++) {
+		    scaled = current * scale;
+		    console.log(scaled + 'hbutton-' + i);
+		    docById('hbutton-' + i).style.marginLeft = scaled + 'px';
+		    current += cellSize;
+		}
+
+		current = 0
+		for (i = 0; i <= 9; i++) {
+		    scaled = current * scale;
+		    console.log(scaled + 'vbutton-' + i);
+		    docById('vbutton-' + i).style.marginLeft = window.innerWidth - (2 * (scale * cellSize)) + 'px';
+		    docById('vbutton-' + i).style.marginTop = scaled + 'px';
+		    current += cellSize;
+		}
+	    }
             if (firstTime && cookie) {
                 content = '<ol id="tour"></ol>'
             } else {
@@ -2536,14 +2561,6 @@ define(function(require) {
 
             return container;
         }
-
-        // function loadToolbarButtonHandler(container, action) {
-        //     container.on('click', function(event) {
-        //         if (action != null) {
-        //             action();
-        //         }
-        //     });
-        // }
 
         function loadButtonDragHandler(container, ox, oy, action) {
             // Prevent multiple button presses (i.e., debounce).

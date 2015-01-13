@@ -294,6 +294,7 @@ define(function(require) {
 
         // ErrorMsg block
         var errorMsgText = null;
+        var errorMsgArrow = null;
 
         // Get things started
         init();
@@ -429,7 +430,6 @@ define(function(require) {
             createMsgContainer('#ffcbc4', '#ff0031', function(text) {
                 errorMsgText = text;
             });
-            errorMsgArrow = null;
 
             var URL = window.location.href;
             var projectName = null;
@@ -573,6 +573,11 @@ define(function(require) {
 
                 container.on('click', function(event) {
                     container.visible = false;
+		    // On the possibility that there was an error
+		    // arrow associated with this container
+		    if (errorMsgArrow !== null) {
+			errorMsgArrow.removeAllChildren(); // Hide the error arrow.
+		    }
                     update = true;
                 });
                 callback(text);
@@ -933,18 +938,23 @@ define(function(require) {
                 var toX   = blocks.blockList[blk].x;
                 var toY   = blocks.blockList[blk].y;
 
-                errorMsgArrow = new createjs.Container();
-                stage.addChild(errorMsgArrow);
+		if (errorMsgArrow == null) {
+                    errorMsgArrow = new createjs.Container();
+                    stage.addChild(errorMsgArrow);
+		}
 
                 var line = new createjs.Shape();
                 errorMsgArrow.addChild(line);
-                line.graphics.setStrokeStyle(2).beginStroke('#ff0031')
+                line.graphics.setStrokeStyle(4).beginStroke('#ff0031')
                              .moveTo(fromX, fromY).lineTo(toX, toY);
+		stage.swapChildren(errorMsgArrow, last(stage.children));
+		update = true;
 
                 /* FIXME: Get an arrow that points in the right direction
                 var angle = Math.atan2(toX - fromX, toY - fromY) / Math.PI * 180;
                 var head = new createjs.Shape();
-                errorMsgArrow.addChild(head);
+                
+errorMsgArrow.addChild(head);
                 head.graphics.setStrokeStyle(2).beginStroke('#ff0031')
                              .moveTo(-10, 10).lineTo(0, 0).lineTo(-10, -10);
                 head.x        = toX;
@@ -1054,6 +1064,7 @@ define(function(require) {
             errorMsgText.parent.visible = false; // hide the error message window
             if (errorMsgArrow !== null) {
                 errorMsgArrow.removeAllChildren(); // hide the error arrow
+		update = true;
             }
             msgText.parent.visible = false; // hide the message window
 
@@ -2102,6 +2113,7 @@ define(function(require) {
             errorMsgText.parent.visible = false;
             if (errorMsgArrow !== null) {
                 errorMsgArrow.removeAllChildren();
+		update = true;
             }
             msgText.parent.visible = false;
             setBackgroundColor(-1);

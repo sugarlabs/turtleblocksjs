@@ -921,10 +921,6 @@ define(function(require) {
             update = true;
         }
 
-        // function addTurtle(myBlock) {
-        //    turtles.add(myBlock);
-        // }
-
         function errorMsg(msg, blk) {
             var errorMsgContainer = errorMsgText.parent;
             errorMsgContainer.visible = true;
@@ -934,9 +930,9 @@ define(function(require) {
             if (blk !== undefined && blk !== null
                 && !blocks.blockList[blk].collapsed) {
                 var fromX = (canvas.width - 1000) / 2;
-                var fromY = 110;
-                var toX   = blocks.blockList[blk].x;
-                var toY   = blocks.blockList[blk].y;
+                var fromY = 128;
+                var toX = blocks.blockList[blk].x;
+                var toY = blocks.blockList[blk].y;
 
 		if (errorMsgArrow == null) {
                     errorMsgArrow = new createjs.Container();
@@ -945,22 +941,17 @@ define(function(require) {
 
                 var line = new createjs.Shape();
                 errorMsgArrow.addChild(line);
-                line.graphics.setStrokeStyle(4).beginStroke('#ff0031')
-                             .moveTo(fromX, fromY).lineTo(toX, toY);
+                line.graphics.setStrokeStyle(4).beginStroke('#ff0031').moveTo(fromX, fromY).lineTo(toX, toY);
 		stage.swapChildren(errorMsgArrow, last(stage.children));
 		update = true;
 
-                /* FIXME: Get an arrow that points in the right direction
-                var angle = Math.atan2(toX - fromX, toY - fromY) / Math.PI * 180;
+                var angle = Math.atan2(toX - fromX, fromY - toY) / Math.PI * 180;
                 var head = new createjs.Shape();
-                
-errorMsgArrow.addChild(head);
-                head.graphics.setStrokeStyle(2).beginStroke('#ff0031')
-                             .moveTo(-10, 10).lineTo(0, 0).lineTo(-10, -10);
-                head.x        = toX;
-                head.y        = toY;
+		errorMsgArrow.addChild(head);
+                head.graphics.setStrokeStyle(4).beginStroke('#ff0031').moveTo(-10, 18).lineTo(0, 0).lineTo(10, 18);
+                head.x = toX;
+                head.y = toY;
                 head.rotation = angle;
-                */
             }
 
             stage.swapChildren(errorMsgContainer, last(stage.children));

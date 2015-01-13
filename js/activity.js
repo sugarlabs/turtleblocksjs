@@ -429,6 +429,7 @@ define(function(require) {
             createMsgContainer('#ffcbc4', '#ff0031', function(text) {
                 errorMsgText = text;
             });
+            errorMsgArrow = null;
 
             var URL = window.location.href;
             var projectName = null;
@@ -919,12 +920,41 @@ define(function(require) {
         //    turtles.add(myBlock);
         // }
 
-        function errorMsg(msg) {
+        function errorMsg(msg, blk) {
             var errorMsgContainer = errorMsgText.parent;
             errorMsgContainer.visible = true;
             errorMsgText.text = msg;
-            errorMsgContainer.updateCache();
             stage.swapChildren(errorMsgContainer, last(stage.children));
+
+            if (blk !== undefined && blk !== null
+                && !blocks.blockList[blk].collapsed) {
+                var fromX = (canvas.width - 1000) / 2;
+                var fromY = 110;
+                var toX   = blocks.blockList[blk].x;
+                var toY   = blocks.blockList[blk].y;
+
+                errorMsgArrow = new createjs.Container();
+                stage.addChild(errorMsgArrow);
+
+                var line = new createjs.Shape();
+                errorMsgArrow.addChild(line);
+                line.graphics.setStrokeStyle(2).beginStroke('#ff0031')
+                             .moveTo(fromX, fromY).lineTo(toX, toY);
+
+                /* FIXME: Get an arrow that points in the right direction
+                var angle = Math.atan2(toX - fromX, toY - fromY) / Math.PI * 180;
+                var head = new createjs.Shape();
+                errorMsgArrow.addChild(head);
+                head.graphics.setStrokeStyle(2).beginStroke('#ff0031')
+                             .moveTo(-10, 10).lineTo(0, 0).lineTo(-10, -10);
+                head.x        = toX;
+                head.y        = toY;
+                head.rotation = angle;
+                */
+            }
+
+            stage.swapChildren(errorMsgContainer, last(stage.children));
+            errorMsgContainer.updateCache();
         }
 
         function clearParameterBlocks() {
@@ -1022,6 +1052,9 @@ define(function(require) {
             blocks.unhighlightAll();
             blocks.bringToTop(); // Draw under blocks.
             errorMsgText.parent.visible = false; // hide the error message window
+            if (errorMsgArrow !== null) {
+                errorMsgArrow.removeAllChildren(); // hide the error arrow
+            }
             msgText.parent.visible = false; // hide the message window
 
             // We run the logo commands here.
@@ -1237,7 +1270,7 @@ define(function(require) {
                             }
                         }
                         if (!foundAction) {
-                            errorMsg('Cannot find action ' + args[0] + '.');
+                            errorMsg('Cannot find action ' + args[0] + '.', blk);
                             stopTurtle = true;
                         }
                     }
@@ -1258,7 +1291,7 @@ define(function(require) {
                 case 'repeat':
                     if (args.length == 2) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             childFlow = args[1];
@@ -1327,7 +1360,7 @@ define(function(require) {
                 case 'setxy':
                     if (args.length == 2) {
                         if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doSetXY(args[0], args[1]);
@@ -1337,7 +1370,7 @@ define(function(require) {
                 case 'arc':
                     if (args.length == 2) {
                         if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doArc(args[0], args[1]);
@@ -1347,7 +1380,7 @@ define(function(require) {
                 case 'forward':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doForward(args[0]);
@@ -1357,7 +1390,7 @@ define(function(require) {
                 case 'back':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doForward(-args[0]);
@@ -1367,7 +1400,7 @@ define(function(require) {
                 case 'right':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doRight(args[0]);
@@ -1377,7 +1410,7 @@ define(function(require) {
                 case 'left':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doRight(-args[0]);
@@ -1387,7 +1420,7 @@ define(function(require) {
                 case 'setheading':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doSetHeading(args[0]);
@@ -1421,7 +1454,7 @@ define(function(require) {
                 case 'turtleshell':
                     if (args.length == 2) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doTurtleShell(args[0], args[1]);
@@ -1431,7 +1464,7 @@ define(function(require) {
                 case 'setcolor':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doSetColor(args[0]);
@@ -1441,7 +1474,7 @@ define(function(require) {
                 case 'sethue':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doSetHue(args[0]);
@@ -1451,7 +1484,7 @@ define(function(require) {
                 case 'setshade':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doSetValue(args[0]);
@@ -1461,7 +1494,7 @@ define(function(require) {
                 case 'setgrey':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doSetChroma(args[0]);
@@ -1471,7 +1504,7 @@ define(function(require) {
                 case 'setpensize':
                     if (args.length == 1) {
                         if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.');
+                            errorMsg('Not a number.', blk);
                             stopTurtle = true;
                         } else {
                             turtles.turtleList[turtle].doSetPensize(args[0]);
@@ -1517,11 +1550,11 @@ define(function(require) {
                     var startHere = getTargetTurtle(args);
 
                     if (!startHere) {
-                        errorMsg('Cannot find turtle: ' + args[0])
+                        errorMsg('Cannot find turtle: ' + args[0], blk)
                     } else {
                         var targetTurtle = blocks.blockList[startHere].value;
                         if (turtles.turtleList[targetTurtle].running) {
-                            errorMsg('Turtle is already running.');
+                            errorMsg('Turtle is already running.', blk);
                             break;
                         }
                         turtles.turtleList[targetTurtle].queue = [];
@@ -1563,7 +1596,7 @@ define(function(require) {
                             stage.swapChildren(msgContainer, last(stage.children));
                             stopTurtle = true;
                         } else {
-                            errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.');
+                            errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.', blk);
                             stopTurtle = true;
                         }
                     }
@@ -1732,7 +1765,7 @@ define(function(require) {
                         var name = parseArg(activity, turtle, cblk);
                         var i = findBox(name);
                         if (i == null) {
-                            errorMsg('Cannot find box ' + name + '.');
+                            errorMsg('Cannot find box ' + name + '.', blk);
                             stopTurtle = true;
                             blocks.blockList[blk].value = null;
                         } else {
@@ -1743,7 +1776,7 @@ define(function(require) {
                         var cblk = blocks.blockList[blk].connections[1];
                         var a = parseArg(activity, turtle, cblk);
                         if (a < 0) {
-                            errorMsg('Cannot take square root of negative number.');
+                            errorMsg('Cannot take square root of negative number.', blk);
                             stopTurtle = true;
                             a = -a;
                         }
@@ -1849,7 +1882,7 @@ define(function(require) {
                             }
                         }
                         if (i == turtles.turtleList.length) {
-                            errorMsg('Could not find turtle ' + targetTurtle);
+                            errorMsg('Could not find turtle ' + targetTurtle, blk);
                             blocks.blockList[blk].value = 0;
                         }
                         break;
@@ -2067,6 +2100,9 @@ define(function(require) {
             boxList = [];
             time = 0;
             errorMsgText.parent.visible = false;
+            if (errorMsgArrow !== null) {
+                errorMsgArrow.removeAllChildren();
+            }
             msgText.parent.visible = false;
             setBackgroundColor(-1);
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {

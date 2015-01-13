@@ -2330,32 +2330,27 @@ define(function(require) {
 
         function showHelp(firstTime) {
             var cookie = getCookie('turtlejstour');
+
             if (firstTime) {
-		var scaled = 0;
-		var current = 0;
-		if (window.innerWidth > window.innerHeight) {
-		    var scale = window.innerWidth / 1200;
-		}
-		else {
-		    var scale = window.innerWidth / 900;
-		}
+              var scaled = 0;
+              var current = 0;
+              for (var i = 0; i <= 8; i++) {
+                scaled = current * scale;
+                console.log(scaled + 'hbutton-' + i);
+                docById('hbutton-' + i).style.marginLeft = scaled + 'px';
+                current += cellSize;
+              }
+              current = 0
+              for (i = 0; i <= 9; i++) {
+                scaled = current * scale;
+                console.log(scaled + 'vbutton-' + i);
+                docById('vbutton-' + i).style.marginLeft = window.innerWidth - (2 * (scale * cellSize)) + 'px';
+                docById('vbutton-' + i).style.marginTop = scaled + 'px';
+                current += cellSize;
+              }
+            }
 
-		for (var i = 0; i <= 8; i++) {
-		    scaled = current * scale;
-		    console.log(scaled + 'hbutton-' + i);
-		    docById('hbutton-' + i).style.marginLeft = scaled + 'px';
-		    current += cellSize;
-		}
 
-		current = 0
-		for (i = 0; i <= 9; i++) {
-		    scaled = current * scale;
-		    console.log(scaled + 'vbutton-' + i);
-		    docById('vbutton-' + i).style.marginLeft = window.innerWidth - (2 * (scale * cellSize)) + 'px';
-		    docById('vbutton-' + i).style.marginTop = scaled + 'px';
-		    current += cellSize;
-		}
-	    }
             if (firstTime && cookie) {
                 content = '<ol id="tour"></ol>'
             } else {

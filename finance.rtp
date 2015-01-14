@@ -42,14 +42,18 @@ var apiURL = 'https://currency-exchange.p.mashape.com/exchange?from=' + from + '
 if (block.cacheFor === apiURL && block.cache !== undefined) {
     var response = block.cache;
 } else {
-    var request = new XMLHttpRequest();
-    request.open('GET', apiURL, false);
-    request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
-    request.send(null);
+    try {
+        var request = new XMLHttpRequest();
+        request.open('GET', apiURL, false);
+        request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+        request.send(null);
 
-    var response = request.responseText;
-    block.cacheFor = apiURL;
-    block.cache = response;
+        var response = request.responseText;
+        block.cacheFor = apiURL;
+        block.cache = response;
+    } catch (e) {
+        errorMsg('Could not connect to Currency API', blk);
+    }
 }
 
 block.value = parseFloat(response);
@@ -75,13 +79,17 @@ var apiURL = 'http://www.corsproxy.com/dev.markitondemand.com/Api/v2/Quote/json?
 if (block.cacheFor === apiURL && block.cache !== undefined) {
     var response = block.cache;
 } else {
-    var request = new XMLHttpRequest();
-    request.open('GET', apiURL, false);
-    request.send(null);
+    try {
+        var request = new XMLHttpRequest();
+        request.open('GET', apiURL, false);
+        request.send(null);
 
-    var response = request.responseText;
-    block.cacheFor = apiURL;
-    block.cache = response;
+        var response = request.responseText;
+        block.cacheFor = apiURL;
+        block.cache = response;
+    } catch (e) {
+        errorMsg('Could not connect to Markit On Demand API', blk);
+    }
 }
 
 j = JSON.parse(response);

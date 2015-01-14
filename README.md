@@ -75,3 +75,59 @@ After you click it, you will see the blocks in the palettes.
 
 Also, the plugin now is in the browser cache. 
 You don't need to load it every time you run TurtleJS.
+
+#How to make plugins
+
+##Prerequisites
+
+* First of all, you would need to be familiar with [JSON](http://en.wikipedia.org/wiki/JSON)
+
+  About JSON: JSON (JavaScript Object Notation), is an open standard format that uses human-readable text to transmit data objects consisting of attributeâ€“value pairs. It is used primarily to transmit data between a server and web application, as an alternative to XML.
+  To learn more about json, go to http://www.json.org/
+
+* Secondly, you should of course have your turtleblocksjs up and running... To run it, you can simply fire the command:
+<pre><code>python -m SimpleHTTPServer</code></pre>
+From your directory of the cloned repository.
+
+* To know what code to write inside the blocks, in the dictionaryâ€™s element, You will need to know javascript and how to write plugins in that, somewhat similar to [this](https://github.com/walterbender/turtleblocksjs/commit/000ab18a8a55f37a55a13c395826290e0afd4b18)
+
+##A little Heads up on it
+
+Now that you know JSON and have turtleblocksjs running, you can first of all go through some example plugins and how to install them. How to do that, is given in the [README.md file of the repository](https://github.com/walterbender/turtleblocksjs/blob/master/README.md)
+
+Plugins are a dictionary of json-encoded components: a flow-block dictionary, an arg-block dictionary, a block dictionary, and a palette dictionary. 
+* The flow-block dictionary is a set of commands that are evaluated when a flow block is run
+* The arg-block dictionary is a set of commands that are evaluated when an arg block is run
+* The block dictionary defines the new blocks in the plugin
+* The palette dictionary defines icons (svg) associated with the palettes populated by the blocks found in the plugin.
+
+##Layout and Format
+<pre>
+  <code>
+  {
+    "FLOWPLUGINS":{},
+    "ARGSPLUGINS":{},
+    "BLOCKPLUGINS":{},	
+    "PALETTEFILLCOLORS":{},
+    "PALETTESTROKECOLORS":{},
+    "PALETTEHIGHLIGHTCOLORS":{},
+    "PALETTEPLUGINS":{}
+  } 
+  </code>
+</pre>
+
+Format for `PALETTEFILLCOLORS`, `PALATTEHIGHLIGHTCOLORS` and `PALATTESTROKECOLORS`:
+<pre><code>{"[palatte name]":"[color hex code]"}</code></pre>
+Example: ```"PALETTESTROKECOLORS":{"mashape":"#ef003e"}```
+
+Format for `PALATTEPLUGINS`:
+<pre><code>{"[palatte name]":"[svg file code]"}</code></pre>
+Example: ```"PALETTEPLUGINS":{"mashape":"<?xml version........</svg>"}```
+
+Format for blocks:
+<pre><code>"{[name of the block]":"code of the block"}</code></pre>
+Example: ```"BLOCKPLUGINS":{"translate":"var ....", "detectlang":"var ....", "setlang":"var ...."}, ```
+
+##References
+* For a list of valid blocks in turtleblocks3d go to https://github.com/walterbender/turtleblocksjs/blob/master/js/blocks.js#L92 and scroll through code blocks to search. Example: `BASICBLOCK`, `BASICBLOCKNOFLOW`, `BASICBLOCK1ARG`...
+* Example plugins: [advancedblocks.json](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json), [translate.json](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json), [weather.json](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json)

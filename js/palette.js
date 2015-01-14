@@ -548,13 +548,6 @@ function Palette(palettes, name, color, bgcolor) {
         }
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = false;
-            // If hideMenuItems is called too soon in the init
-            // process, there can be a race condition.
-            try {
-                this.protoContainers[i].updateCache();
-            } catch (e) {
-                console.log('container not ready? ' + e);
-            }
         }
         this.visible = false;
 
@@ -576,7 +569,6 @@ function Palette(palettes, name, color, bgcolor) {
         }
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = true;
-            this.protoContainers[i].updateCache();
         }
         this.visible = true;
 

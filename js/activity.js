@@ -145,19 +145,19 @@ define(function(require) {
         // Used to track mouse state for mouse button block
         var stageMouseDown = false;
 
-        var fastButton = docById('fast-button');
-        var slowButton = docById('slow-button');
-        var stopTurtleButton = docById('stop-turtle-button');
-        var clearButton = docById('clear-button');
-        var paletteButton = docById('palette-button');
-        var blockButton = docById('hide-blocks-button');
-        var pasteButton = docById('paste-button');
-        var cartesianButton = docById('cartesian-button');
-        var polarButton = docById('polar-button');
-        var samplesButton = docById('samples-button');
-        var openButton = docById('open-button');
-        var saveButton = docById('save-button');
-        var pluginButton = docById('plugin-button');
+        // var fastButton = docById('fast-button');
+        // var slowButton = docById('slow-button');
+        // var stopTurtleButton = docById('stop-turtle-button');
+        // var clearButton = docById('clear-button');
+        // var paletteButton = docById('palette-button');
+        // var blockButton = docById('hide-blocks-button');
+        // var pasteButton = docById('paste-button');
+        // var cartesianButton = docById('cartesian-button');
+        // var polarButton = docById('polar-button');
+        // var samplesButton = docById('samples-button');
+        // var openButton = docById('open-button');
+        // var saveButton = docById('save-button');
+        // var pluginButton = docById('plugin-button');
         var stopButton = docById('stop-button');
 
         var onAndroid = /Android/i.test(navigator.userAgent);
@@ -176,17 +176,9 @@ define(function(require) {
 
         var draggingContainer = false;
 
-        fastButton.onclick = function() {
-            doFastButton();
-        }
-
         function doFastButton() {
             turtleDelay = 0;
             runLogoCommands();
-        }
-
-        slowButton.onclick = function() {
-            doSlowButton();
         }
 
         function doSlowButton() {
@@ -195,31 +187,11 @@ define(function(require) {
         }
 
         var stopTurtle = false;
-        stopTurtleButton.onclick = function() {
-            doStopTurtle();
-        }
-
         function doStopButton() {
             doStopTurtle();
         }
 
-        paletteButton.onclick = function() {
-            changePaletteVisibility();
-        }
-
-        blockButton.onclick = function() {
-            changeBlockVisibility();
-        }
-
-        clearButton.onclick = function() {
-            allClear();
-        }
-
         var cartesianVisible = false;
-        cartesianButton.onclick = function() {
-            doCartesian();
-        }
-
         function doCartesian() {
             if (cartesianVisible) {
                 hideCartesian();
@@ -231,10 +203,6 @@ define(function(require) {
         }
 
         var polarVisible = false;
-        polarButton.onclick = function() {
-            doPolar();
-        }
-
         function doPolar() {
             if (polarVisible) {
                 hidePolar();
@@ -243,26 +211,6 @@ define(function(require) {
                 showPolar();
                 polarVisible = true;
             }
-        }
-
-        pasteButton.onclick = function() {
-            pasteStack();
-        }
-
-        samplesButton.onclick = function() {
-            doOpenSamples();
-        }
-
-        openButton.onclick = function() {
-            doOpen();
-        }
-
-        saveButton.onclick = function() {
-            doSaveBox();
-        }
-
-        pluginButton.onclick = function() {
-            doOpenPlugin();
         }
 
         // Make the activity stop with the stop button.
@@ -437,11 +385,9 @@ define(function(require) {
                 httpGet(null);
                 console.log('running from server or the user can access to examples.');
                 server = true;
-                stopButton.style.visibility = 'hidden';
             } catch (e) {
                 console.log('running from filesystem or the connection isnt secure');
                 server = false;
-                saveButton.style.visibility = 'hidden';
             }
 
             // Scale the canvas relative to the screen size.
@@ -2336,14 +2282,12 @@ define(function(require) {
               var current = 0;
               for (var i = 0; i <= 8; i++) {
                 scaled = current * scale;
-                console.log(scaled + 'hbutton-' + i);
                 docById('hbutton-' + i).style.marginLeft = scaled + 'px';
                 current += cellSize;
               }
               current = 0
               for (i = 0; i <= 9; i++) {
                 scaled = current * scale;
-                console.log(scaled + 'vbutton-' + i);
                 docById('vbutton-' + i).style.marginLeft = window.innerWidth - (2 * (scale * cellSize)) + 'px';
                 docById('vbutton-' + i).style.marginTop = scaled + 'px';
                 current += cellSize;

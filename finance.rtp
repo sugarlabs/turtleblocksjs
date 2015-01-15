@@ -74,7 +74,7 @@ var block = blocks.blockList[blk];
 var conns = block.connections;
 
 var stock = parseArg(activity, turtle, conns[1]);
-var apiURL = 'http://www.corsproxy.com/dev.markitondemand.com/Api/v2/Quote/json?symbol=' + stock;
+var apiURL = 'https://cors-anywhere.herokuapp.com/dev.markitondemand.com/Api/v2/Quote/json?symbol=' + stock;
 
 if (block.cacheFor === apiURL && block.cache !== undefined) {
     var response = block.cache;

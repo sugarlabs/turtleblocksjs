@@ -160,20 +160,30 @@
   * save/restore turtle state (w/Ignacio Rodriguez)
   * plugin mechanism
   * save colors; allow overwriting plugins
+  * mechansim for removing plugins (w/Sam Parkinson)
+  * rotate turtles with gesture (w/Sam Parkinson)
+  * use busy cursor where approporate (w/Ignacio Rodriguez)
 
 TODO:
-  * mechansim for removing plugins
-  * rotate turtles with gesture
-  * use busy cursor where approporate
   * use snap to pixels
   * user defined blocks
   * more sensors
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
+  * add plugins to parameter update table
+  * find a way to read pixels
+  * use Cordova to read the accelerometer
 
 BUGS:
+  * fix palettes on Firefox
+  * find an approach to cameras and microphone that work on Android (Cordova?)
+  * sample projects cannot be shown on Android
+  * clean up palette buttons layout after removing a plugin
+  * remove unused do blocks (when associated action is removed)
   * jumpy scrolling
   * don't save full-sized bitmap to session
   * cannot open same file twice in a row (no change event?)
   * find out where number block values are being set to string
+  * fix all the problems with layering
+  * find a scalable approach to drawing on the canvas

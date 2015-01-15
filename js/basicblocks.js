@@ -471,11 +471,35 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['vspace'] = vspaceBlock;
     vspaceBlock.zeroArgBlock();
 
-    var timeBlock = new ProtoBlock("time");
-    timeBlock.palette = palettes.dict["sensors"];
-    blocks.protoBlockDict["time"] = timeBlock;
+    var timeBlock = new ProtoBlock('time');
+    timeBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['time'] = timeBlock;
     timeBlock.parameterBlock();
-    timeBlock.staticLabels.push("time");
+    timeBlock.staticLabels.push('time');
+
+    var mousexBlock = new ProtoBlock('mousex');
+    mousexBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['mousex'] = mousexBlock;
+    mousexBlock.parameterBlock();
+    mousexBlock.staticLabels.push('mouse x');
+
+    var mouseyBlock = new ProtoBlock('mousey');
+    mouseyBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['mousey'] = mouseyBlock;
+    mouseyBlock.parameterBlock();
+    mouseyBlock.staticLabels.push('mouse y');
+
+    var mousebuttonBlock = new ProtoBlock('mousebutton');
+    mousebuttonBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
+    mousebuttonBlock.booleanZeroArgBlock();
+    mousebuttonBlock.staticLabels.push('mouse button');
+
+    var keyboardBlock = new ProtoBlock('keyboard');
+    keyboardBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['keyboard'] = keyboardBlock;
+    keyboardBlock.parameterBlock();
+    keyboardBlock.staticLabels.push('keyboard');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

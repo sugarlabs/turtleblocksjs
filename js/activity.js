@@ -144,20 +144,9 @@ define(function(require) {
 
         // Used to track mouse state for mouse button block
         var stageMouseDown = false;
+	var stageX = 0;
+	var stageY = 0;
 
-        // var fastButton = docById('fast-button');
-        // var slowButton = docById('slow-button');
-        // var stopTurtleButton = docById('stop-turtle-button');
-        // var clearButton = docById('clear-button');
-        // var paletteButton = docById('palette-button');
-        // var blockButton = docById('hide-blocks-button');
-        // var pasteButton = docById('paste-button');
-        // var cartesianButton = docById('cartesian-button');
-        // var polarButton = docById('polar-button');
-        // var samplesButton = docById('samples-button');
-        // var openButton = docById('open-button');
-        // var saveButton = docById('save-button');
-        // var pluginButton = docById('plugin-button');
         var stopButton = docById('stop-button');
 
         var onAndroid = /Android/i.test(navigator.userAgent);
@@ -414,6 +403,9 @@ define(function(require) {
             // Set up event handler for stage mouse events
             stage.on('stagemousedown', function(event) {
                 stageMouseDown = true;
+		stageX = event.stageX - 600;
+		stageY = 450 - event.stageY;
+
                 var x = event.stageX;
                 var y = event.stageY;
 
@@ -422,6 +414,8 @@ define(function(require) {
                 scrollY = window.pageYOffset;
 
                 stage.on('stagemousemove', function(event) {
+		    stageX = event.stageX - 600;
+		    stageY = 450 - event.stageY;
                     if (x < 55 || y < 55 || x > 1145 || y > 845) {
                         // console.log('no dragging from the edges');
                     } else if (stageMouseDown && !draggingContainer) {
@@ -1864,6 +1858,21 @@ define(function(require) {
 		    case 'time':
                         var d = new Date();
                         blocks.blockList[blk].value = (d.getTime() - time) / 1000;
+                        break;
+                    case 'mousex':
+                        blocks.blockList[blk].value = stageX;
+                        break;
+                    case 'mousey':
+                        blocks.blockList[blk].value = stageY;
+                        break;
+		    case 'mousebutton':
+                        blocks.blockList[blk].value = stageMouseDown;
+                        break;
+                    case 'keyboard':
+                        blocks.blockList[blk].value = currentKeyCode;
+                        lastKeyCode = currentKeyCode;
+                        currentKey = '';
+                        currentKeyCode = 0;
                         break;
                     case 'loudness':
                         if (!mic.enabled) {

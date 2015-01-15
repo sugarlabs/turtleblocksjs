@@ -41,11 +41,16 @@ def pluginify(data):
     sections_list = data.split('//*')
     sections_pairs = []
     globals_ = ''
+    specific_globals = {'arg': '', 'flow': '', 'block': ''}
     for section in sections_list:
         match = re.match('(.*)\*\/\/([^\0]*)', section.strip())
         if match:
             if match.group(1).strip() == 'globals':
                 globals_ = globals_ + match.group(2).strip()
+            elif match.group(1).strip().endswith('-globals'):
+                type_, _ = match.group(1).strip().split('-')
+                specific_globals[type_] = specific_globals[type_] + \
+                                          match.group(2).strip()
             elif match.group(1).strip() == 'comment':
                 continue
             else:
@@ -59,7 +64,7 @@ def pluginify(data):
         type_, name = key.split(':')
 
         if type_ in JS_TYPES:
-            value = globals_ + value
+            value = globals_ + specific_globals[type_] + value
         value = value.replace('\n', '')
 
         type_ = NAMES[type_]

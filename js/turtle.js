@@ -471,6 +471,7 @@ function Turtles(canvas, stage, refreshCanvas) {
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
     this.scale = 1.0;
+    this.rotating = false;
 
     this.setScale = function(scale) {
         this.scale = scale;
@@ -553,6 +554,10 @@ function Turtles(canvas, stage, refreshCanvas) {
         var turtles = this;
 
         myTurtle.container.on('mousedown', function(event) {
+            if (turtles.rotating) {
+                return;
+            }
+
             turtles.setDraggingFlag(true);
             var offset = {
                 x: myTurtle.container.x - event.stageX,
@@ -568,11 +573,43 @@ function Turtles(canvas, stage, refreshCanvas) {
             });
 
             myTurtle.container.on('pressmove', function(event) {
+                if (turtles.rotating) {
+                    return;
+                }
+
                 myTurtle.container.x = event.stageX + offset.x;
                 myTurtle.container.y = event.stageY + offset.y;
                 myTurtle.x = turtles.screenX2turtleX(myTurtle.container.x);
                 myTurtle.y = turtles.screenY2turtleY(myTurtle.container.y);
                 turtles.refreshCanvas();
+            });
+        });
+
+        myTurtle.container.on('click', function(event) {
+            var fromX, fromY;
+
+            myTurtle.container.on('mousedown', function(event) {
+                turtles.rotating = true;
+                fromX = event.stageX;
+                fromY = event.stageY;
+            }, null, true);  // once = true
+
+            myTurtle.container.on('pressmove', function(event) {
+                if (turtles.rotating && fromX !== undefined) {
+                    var rad = Math.atan2(fromY - event.stageY, fromX - event.stageX);
+                    var deg = rad * 180 / Math.PI - 90;
+                    deg %= 360;
+
+                    // Only rotate if there is a more than 1/2 deg difference
+                    if (Math.abs(deg - myTurtle.orientation) > 0.5) {
+                        myTurtle.doSetHeading(deg);
+                        turtles.refreshCanvas();
+                    }
+                }
+            });
+
+            myTurtle.container.on('pressup', function(event) {
+                turtles.rotating = false;
             });
         });
 

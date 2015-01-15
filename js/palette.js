@@ -25,6 +25,22 @@ function paletteBlockButtonPush(name, arg) {
 }
 
 
+// There are several components to the palette system:
+//
+// (1) A palette button (in the Palettes.buttons dictionary) is a
+// button that envokes a palette; The buttons have artwork associated
+// with them: a bitmap and a highlighted bitmap that is shown when the
+// mouse is over the button.
+//
+// loadPaletteButtonHandler is the event handler for pelette buttons.
+//
+// (2) A menu (in the Palettes.dict dictionary) is the palette
+// itself. It consists of a title bar with an icon, label, and close
+// button, and individual graphics for each protoblock on the
+// menu. There is a background behind each protoblock as well.
+//
+
+
 function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     this.canvas = canvas;
     this.stage = stage;

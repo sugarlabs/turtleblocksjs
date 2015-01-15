@@ -164,11 +164,13 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
         cleanData += lineData[i];
     }
 
+    // Note to plugin developers: You may want to comment out this
+    // try/catch while debugging your plugin.
     try {
         var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict);
     } catch (e) {
-        var obj = null;
-        errorMsg(e);
+       var obj = null;
+       errorMsg('Error loading plugin: ' + e);
     }
     return obj;
 }
@@ -179,6 +181,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     var obj = JSON.parse(pluginData);
 
     // Create a palette entry.
+    var newPalette = false;
     for (var name in obj['PALETTEPLUGINS']) {
         PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
 
@@ -214,8 +217,12 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
         } else {
             console.log('adding palette ' + name);
             palettes.add(name, 'white', '#ff0066');
-            palettes.makeMenu();
+	    newPalette = true;
         }
+    }
+
+    if (newPalette) {
+        palettes.makeMenu();
     }
 
     // Populate the flow-block dictionary, i.e., the code that is
@@ -238,7 +245,11 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     // Push the protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
-        blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+	if (blocks.protoBlockDict[protoblock].palette == undefined) {
+	    console.log('Cannot find palette for protoblock ' + protoblock);
+	} else {
+            blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+	}
     }
 
     palettes.updatePalettes();

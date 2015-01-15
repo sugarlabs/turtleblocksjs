@@ -2926,7 +2926,7 @@ function labelChanged(myBlock) {
 }
 
 
-// Load an image thumbnail onto into block.
+// Load an image thumbnail onto block.
 function loadThumbnail(blocks, thisBlock, imagePath) {
     if (blocks.blockList[thisBlock].value == null && imagePath == null) {
         console.log('loadThumbnail: no image to load?');

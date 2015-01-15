@@ -1244,16 +1244,28 @@ define(function(require) {
                 case 'until':
                     // Similar to 'while'
                     if (args.length == 2) {
-                        //que child Flow
+                        // Queue the child flow.
                         childFlow = args[1];
                         childFlowCount = 1;
                         if (!args[0]) {
-                            // Requeue
+                            // Requeue.
                             var parentBlk = blocks.blockList[blk].connections[0];
                             var queueBlock = new Queue(blk, 1, parentBlk);
                             activity.parentFlowQueue[turtle].push(parentBlk);
                             turtles.turtleList[turtle].queue.push(queueBlock);
-                        }
+                        } else {
+			    // Since an until block was requeued each
+			    // time, we need to flush the queue of all
+			    // but the last one, otherwise the child
+			    // of the while block is executed multiple
+			    // times.
+			    var queueLength = turtles.turtleList[turtle].queue.length;
+			    for (var i = queueLength - 1; i > 0; i--) {
+				if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
+				    turtles.turtleList[turtle].queue.pop();
+				}
+			    }
+			}
                     }
                     break;
                 case 'if':
@@ -1280,15 +1292,27 @@ define(function(require) {
                     // args[0] each time, so we requeue the While block itself.
                     if (args.length == 2) {
                         if (args[0]) {
-                            // Requeue the while block
+                            // Requeue the while block...
                             var parentBlk = blocks.blockList[blk].connections[0];
                             var queueBlock = new Queue(blk, 1, parentBlk);
                             activity.parentFlowQueue[turtle].push(parentBlk);
                             turtles.turtleList[turtle].queue.push(queueBlock);
-                            // and queue the childFlow
+                            // and queue the child flow.
                             childFlow = args[1];
                             childFlowCount = 1;
-                        }
+                        } else {
+			    // Since a while block was requeued each
+			    // time, we need to flush the queue of all
+			    // but the last one, otherwise the child
+			    // of the while block is executed multiple
+			    // times.
+			    var queueLength = turtles.turtleList[turtle].queue.length;
+			    for (var i = queueLength - 1; i > 0; i--) {
+				if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
+				    turtles.turtleList[turtle].queue.pop();
+				}
+			    }
+			}
                     }
                     break;
                 case 'storein':

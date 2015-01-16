@@ -243,6 +243,11 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
         eval(obj['BLOCKPLUGINS'][block]);
     }
 
+    // Create the globals.
+    if ('GLOBALS' in obj) {
+      eval(obj['GLOBALS']);
+    }
+
     // Push the protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
 	if (blocks.protoBlockDict[protoblock].palette == undefined) {
@@ -285,6 +290,10 @@ function preparePluginExports(obj) {
     for (var block in obj['BLOCKPLUGINS']) {
         pluginObjs['BLOCKPLUGINS'][block] = obj['BLOCKPLUGINS'][block];
     }
+    if ('GLOBALS' in obj) {
+        pluginObjs['GLOBALS'] = obj['GLOBALS'];
+    }
+
     return JSON.stringify(pluginObjs);
 }
 

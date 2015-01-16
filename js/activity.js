@@ -2125,17 +2125,27 @@ define(function(require) {
                     continue;
                 }
                 if (blocks.blockList[blk].isValueBlock()) {
-                    var name = [myBlock.name, myBlock.value, myBlock.collapsed];
+                    var args = {'value': myBlock.value};
                 } else {
                     if (myBlock.name == 'start') {
                         // It's a turtleee!
                         turtle = turtles.turtleList[myBlock.value];
-                        // xcor, ycor, heading, color, shade, pensize, grey
-                        var name = [
-                            [myBlock.name, myBlock.collapsed], turtle.x, turtle.y, turtle.orientation, turtle.color, turtle.value, turtle.stroke, turtle.chroma
-                        ]
+                        var args = {'collapsed': myBlock.collapsed,
+                                    'xcor': turtle.x,
+                                    'ycor': turtle.y,
+                                    'heading': turtle.orientation,
+                                    'color': turtle.color,
+                                    'shade': turtle.value,
+                                    'pensize': turtle.stroke,
+                                    'grey': turtle.chroma};
+
                     } else {
-                        var name = [myBlock.name, myBlock.collapsed];
+                        if (myBlock.name in ['action', 'hat']) {
+                          var args = {'collapsed': myBlock.collapsed}
+                        }
+                        else {
+                          var args = {};
+                        }
                     }
                 }
 
@@ -2148,7 +2158,7 @@ define(function(require) {
                         connections.push(mapConnection);
                     }
                 }
-                data.push([blockMap.indexOf(blk), name, myBlock.container.x, myBlock.container.y, connections]);
+                data.push([blockMap.indexOf(blk), [myBlock.name, args], myBlock.container.x, myBlock.container.y, connections]);
             }
             return JSON.stringify(data);
         }

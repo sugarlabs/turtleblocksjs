@@ -249,7 +249,11 @@ fiber += blockFoodData[3];
 fat += blockFoodData[4];
 
 //* flow:digest *//
-calories, protein, carbohydrate, fiber, fat = 0;
+calories = 0;
+protein = 0;
+carbohydrate = 0;
+fiber = 0;
+fat = 0;
 
 //* arg:fiber *//
 block.value = fiber;

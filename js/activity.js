@@ -2191,6 +2191,14 @@ define(function(require) {
             }
         }
 
+        function saveToFile() {
+            var filename = prompt('Filename:');
+            if (fileExt(filename) != 'tb') {
+                filename += '.tb';
+            }
+            download(filename, prepareExport());
+        };
+
         function hideStopButton() {
             stopTurtleContainer.x = stopTurtleContainerX;
             stopTurtleContainer.y = stopTurtleContainerY;
@@ -2276,7 +2284,8 @@ define(function(require) {
                 ['open', doOpen],
                 ['plugin', doOpenPlugin],
                 ['empty-trash', deleteBlocksBox],
-                ['restore-trash', restoreTrash]
+                ['restore-trash', restoreTrash],
+                ['save-to-file', saveToFile]
             ];
             if (server) {
                 menuNames.push(['save', doSaveBox]);

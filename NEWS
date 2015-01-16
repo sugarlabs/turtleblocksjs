@@ -163,6 +163,8 @@
   * mechansim for removing plugins (w/Sam Parkinson)
   * rotate turtles with gesture (w/Sam Parkinson)
   * use busy cursor where approporate (w/Ignacio Rodriguez)
+  * can open same file twice in a row (w/Ignacio Rodriguez)
+  * fix palettes on Firefox (w/Ignacio Rodriguez)
 
 TODO:
   * use snap to pixels
@@ -174,9 +176,12 @@ TODO:
   * add plugins to parameter update table
   * find a way to read pixels
   * use Cordova to read the accelerometer
+  * expand blocks horizontally
+  * three-arg flow blocks
+  * three-arg arg blocks
+  * write SVG generator
 
 BUGS:
-  * fix palettes on Firefox
   * find an approach to cameras and microphone that work on Android (Cordova?)
   * sample projects cannot be shown on Android
   * clean up palette buttons layout after removing a plugin
@@ -186,3 +191,4 @@ BUGS:
   * find out where number block values are being set to string
   * fix all the problems with layering
   * find a scalable approach to drawing on the canvas
+  * fix race conditions

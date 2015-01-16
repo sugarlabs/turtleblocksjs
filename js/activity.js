@@ -739,7 +739,7 @@ define(function(require) {
                 if (!thumbnails.show(scale)) {
                     console.log('thumbnails not available');
                 } else if (!thumbnails.locked) {
-                    stage.swapChildren(thumbnails.container, last(stage.children));
+                    stage.setChildIndex(thumbnails.container, stage.getNumChildren() - 1);
                     thumbnailsVisible = true;
                     hideBlocks();
                 } else {
@@ -864,7 +864,7 @@ define(function(require) {
             var errorMsgContainer = errorMsgText.parent;
             errorMsgContainer.visible = true;
             errorMsgText.text = msg;
-            stage.swapChildren(errorMsgContainer, last(stage.children));
+            stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
 
             if (blk !== undefined && blk !== null
                 && !blocks.blockList[blk].collapsed) {
@@ -881,7 +881,7 @@ define(function(require) {
                 var line = new createjs.Shape();
                 errorMsgArrow.addChild(line);
                 line.graphics.setStrokeStyle(4).beginStroke('#ff0031').moveTo(fromX, fromY).lineTo(toX, toY);
-                stage.swapChildren(errorMsgArrow, last(stage.children));
+                stage.setChildIndex(errorMsgArrow, stage.getNumChildren() - 1);
                 update = true;
 
                 var angle = Math.atan2(toX - fromX, fromY - toY) / Math.PI * 180;
@@ -893,7 +893,7 @@ define(function(require) {
                 head.rotation = angle;
             }
 
-            stage.swapChildren(errorMsgContainer, last(stage.children));
+            stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
             errorMsgContainer.updateCache();
         }
 
@@ -1558,7 +1558,7 @@ define(function(require) {
                                 msgText.text = blocks.blockList[blk].value.toString();
                             }
                             msgContainer.updateCache();
-                            stage.swapChildren(msgContainer, last(stage.children));
+                            stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
                             stopTurtle = true;
                         } else {
                             errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.', blk);
@@ -1651,9 +1651,9 @@ define(function(require) {
                 }
 
                 // Make sure the turtles are on top.
-                var lastChild = last(stage.children);
+                var i = stage.getNumChildren() - 1;
                 // for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                stage.swapChildren(turtles.turtleList[turtle].Container, lastChild);
+                stage.setChildIndex(turtles.turtleList[turtle].Container, i);
                 // }
                 update = true;
             }

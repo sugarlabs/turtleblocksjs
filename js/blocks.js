@@ -1191,8 +1191,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myBlock.text.text = label;
 
         // Make sure text is on top.
-        lastChild = last(myBlock.container.children);
-        myBlock.container.swapChildren(myBlock.text, lastChild);
+        z = myBlock.container.getNumChildren() - 1;
+        myBlock.container.setChildIndex(myBlock.text, z);
 
         if (myBlock.loadComplete) {
             myBlock.container.updateCache();
@@ -2544,8 +2544,8 @@ function Block(protoblock, blocks) {
 
             if (me.text != null) {
                 // Make sure text is on top.
-                lastChild = last(me.container.children);
-                me.container.swapChildren(me.text, lastChild);
+                z = me.container.getNumChildren() - 1;
+                me.container.setChildIndex(me.text, z);
             }
 
             // At me point, it should be safe to calculate the
@@ -2638,8 +2638,8 @@ function Block(protoblock, blocks) {
             this.text.y = VALUETEXTY;
 
             // Make sure text is on top.
-            lastChild = last(this.container.children);
-            this.container.swapChildren(this.text, lastChild);
+            z = this.container.getNumChildren() - 1;
+            this.container.setChildIndex(this.text, z);
             this.container.updateCache();
         }
 
@@ -2655,8 +2655,8 @@ function Block(protoblock, blocks) {
             }
             this.text.y = VALUETEXTY;
 
-            lastChild = last(this.container.children);
-            this.container.swapChildren(this.text, lastChild);
+            z = this.container.getNumChildren() - 1;
+            this.container.setChildIndex(this.text, z);
             this.container.updateCache();
         }
 
@@ -2881,8 +2881,8 @@ function labelChanged(myBlock) {
     myBlock.label.style.display = 'none';
 
     // Make sure text is on top.
-    lastChild = last(myBlock.container.children);
-    myBlock.container.swapChildren(myBlock.text, lastChild);
+    var z = myBlock.container.getNumChildren() - 1;
+    myBlock.container.setChildIndex(myBlock.text, z);
     try {
         myBlock.container.updateCache();
     } catch (e) {
@@ -3135,8 +3135,8 @@ function collapseToggle(blocks, myBlock) {
                 myBlock.collapseText.text = '';
             }
         }
-        var lastChild = last(myBlock.container.children);
-        myBlock.container.swapChildren(myBlock.collapseText, lastChild);
+        var z = myBlock.container.getNumChildren() - 1;
+        myBlock.container.setChildIndex(myBlock.collapseText, z);
 
         if (blocks.dragGroup.length > 0) {
             for (var b = 0; b < blocks.dragGroup.length; b++) {
@@ -3282,9 +3282,9 @@ function loadEventHandlers(blocks, myBlock) {
         trashcan.show();
 
         // Bump the bitmap in front of its siblings.
-        blocks.stage.swapChildren(myBlock.container, last(blocks.stage.children));
+        blocks.stage.setChildIndex(myBlock.container, blocks.stage.getNumChildren() - 1);
         if (myBlock.collapseContainer != null) {
-            blocks.stage.swapChildren(myBlock.collapseContainer, last(blocks.stage.children));
+            blocks.stage.setChildIndex(myBlock.collapseContainer, blocks.stage.getNumChildren() - 1);
         }
 
         moved = false;
@@ -3340,8 +3340,8 @@ function loadEventHandlers(blocks, myBlock) {
 
             if (myBlock.isValueBlock() && myBlock.name != 'media') {
                 // Ensure text is on top
-                var lastChild = last(myBlock.container.children);
-                myBlock.container.swapChildren(myBlock.text, lastChild);
+                var z = myBlock.container.getNumChildren() - 1;
+                myBlock.container.setChildIndex(myBlock.text, z);
             } else if (myBlock.collapseContainer != null) {
                 myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
                 myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
@@ -3387,7 +3387,7 @@ function displayMsg(blocks, text) {
     msgContainer.visible = true;
     blocks.msgText.text = text;
     msgContainer.updateCache();
-    blocks.stage.swapChildren(msgContainer, last(blocks.stage.children));
+    blocks.stage.setChildIndex(msgContainer, blocks.stage.getNumChildren() - 1);
 }
 
 

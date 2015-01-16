@@ -50,7 +50,7 @@ def pluginify(data):
             elif match.group(1).strip().endswith('-globals'):
                 type_, _ = match.group(1).strip().split('-')
                 specific_globals[type_] = specific_globals[type_] + \
-                                          match.group(2).strip()
+                    match.group(2).strip()
             elif match.group(1).strip() == 'comment':
                 continue
             else:
@@ -68,7 +68,7 @@ def pluginify(data):
         value = value.replace('\n', '')
 
         type_ = NAMES[type_]
-        if not type_ in outp:
+        if type_ not in outp:
             outp[type_] = {}
         outp[type_][name] = value
 

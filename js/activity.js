@@ -959,9 +959,12 @@ define(function(require) {
                         value = lastKeyCode;
                         break;
                     default:
+                        // console.log(name);
                         if (name in evalParameterDict) {
+                            // console.log(evalParameterDict[name]);
                             eval(evalParameterDict[name]);
                         } else {
+                            // console.log('nada');
                             return;
                         }
                         break;

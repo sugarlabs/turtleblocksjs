@@ -304,6 +304,16 @@ function ProtoBlock(name) {
         this.copyDock(BOOLEAN2BOOLEANARGSDOCKS);
     }
 
+    this.booleanOneArgBlock = function() {
+        this.style = 'arg';
+        this.size = 1;
+        this.args = 1;
+        this.artwork.push(BOOLEAN1ARG);
+        this.artwork.push(null);
+        this.artwork.push(null);
+        this.copyDock(BOOLEAN1ARGDOCKS);
+    }
+
     // E.g., greater, less, equal. (FIXME: These should be
     // expandable.)
     this.booleanTwoArgBlock = function() {

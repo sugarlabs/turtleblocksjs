@@ -28,7 +28,35 @@ or
 Converts a rtp (readable TurtleBlocks plugin) file into a json file to load
 into Turtle Blocks JS.  For more information, run `python pluginify.py syntax`
 '''
-SYNTAX = 'TODO'
+SYNTAX = '''
+In rst, a block is not defined with braces
+rather it starts where you add //* *// and it's scope is until the next block starts, 
+or the end of file in case it is the last block.
+
+To comment, just type //* comment *// followed by your multi line comment, 
+comments are ignored and not added in the JSON plugin. 
+They get rejected as soon as you run the pluginify, although they would remain in your rtp file.
+Example: //* comment *// Your single or multi line comment here...
+
+Define all the global variable under the block, 
+//* globals *// these will get added to all the code blocks in the created JSON.
+Example: You can define the API Key, like var mashapeKey = '(keycode)'; in globals
+
+But the global variables don't end there, you can also declare specific global variables
+Specific global vars, are the ones that get applied to a set of similar blocks,
+for example the variables under //* arg-globals *// would be added to all the arg blocks
+
+All the valid block types are defined in the NAME dictionary 
+(flow, arg, block, palatte-icon, palatte-fill, palette-stroke, palette-highlight)
+To define a block you need to type //* (blocktype):(blockname) *//
+Example: //* arg-globals *// var block = blocks.blockList[blk];
+
+JS_TYPES v/s NAMES Block types defined under the JS_TYPES are similar to the one's defined under NAMES with just one difference,
+That the ones in JS_TYPES will have the access to the global variables,
+while the ones in NAMES and not in JS_TYPES are the ones that are not accessing the global variables.
+Example: flow is in both JS_TYPES and NAMES, so it would have access to global variables 
+while palette-icon is in NAMES but not in JS_TYPES so it would not have access to global variables
+'''
 
 NAMES = {'flow': 'FLOWPLUGINS', 'arg': 'ARGPLUGINS', 'block': 'BLOCKPLUGINS',
          'palette-icon': 'PALETTEPLUGINS', 'palette-fill': 'PALETTEFILLCOLORS',

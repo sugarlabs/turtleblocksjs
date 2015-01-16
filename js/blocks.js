@@ -1760,6 +1760,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.protoBlockDict['myDo_' + name] = myDoBlock;
         myDoBlock.oneArgBlock();
         myDoBlock.palette = this.palettes.dict['blocks'];
+        myDoBlock.docks[1][2] = 'anyin';
         myDoBlock.defaults.push(name);
         myDoBlock.staticLabels.push(_('do'));
         if (name == 'action') {

@@ -1,5 +1,8 @@
-# Server
-## Running a local server on Ubuntu Guide
+Server
+======
+
+Running a local server
+----------------------
 
 [Clone the server](https://github.com/tchx84/turtleblocksjs-server) and
 [change the api key]
@@ -28,7 +31,9 @@ sudo unlink alias.conf
 sudo unlink alias.load
 ```
 
-# Apache TurtleJS Config
+Apache TurtleJS Config
+----------------------
+
 Copy this into `/etc/apache2/sites-enabled/turtlejs.conf`
 
 ```
@@ -58,16 +63,19 @@ cd /home/path/to/server/
 If everything is ok in your browser you should able to access to
 <pre>localhost</pre> and see TurtleJS instance.
 
-#Plugins
+Plugins
+=======
 
-##How to get plugins
+How to get plugins
+------------------
 
 You can find plugins in the [official app repository](https://github.com/walterbender/turtleblocksjs/plugins).
 The plugins are identified by the extension <code>**.json**</code>
 You need to download the plugins for load it.
 [(In this guide I will use this plugin)](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json)
 
-##How to load plugins
+How to load plugins
+-------------------
 
 Under the Option Toolbar (click it if it is not expanded) you will see
 this option:
@@ -87,7 +95,8 @@ src='http://people.sugarlabs.org/ignacio/LoadPluginMashape.png'>
 The plugin is saved in the browser local storage so you don't need to
 reload it every time you run TurtleJS.
 
-##How to make a plugin
+How to make a plugin
+====================
 
 Plugins allow developers add new palettes and blocks to support
 additional functionality without having to make any changes to the
@@ -96,7 +105,8 @@ extensions. If a plugin is present, it is loaded when the activity is
 launched and any palettes or blocks defined by the plugin are made
 available to the user.
 
-###Prerequisites
+Prerequisites
+-------------
 
 * You will need to familiarize yourself with [JSON](http://en.wikipedia.org/wiki/JSON)
 
@@ -122,7 +132,8 @@ available to the user.
 
 * We provide a tool to help you (see the section on Pluginify below).
 
-###The Plugin Dictionary
+The Plugin Dictionary
+---------------------
 
 Now that you know JSON and have turtleblocksjs running, you can go
 through [some example
@@ -150,7 +161,8 @@ and a palette dictionary.
     highlighted (in the plugin's palatte)
   * `plugins` Code of the svg icon used to show/hide the palatte
 
-###Layout and Format
+Layout and Format
+-----------------
 <pre>
   <code>
   {
@@ -178,7 +190,9 @@ Format for blocks:
 <pre><code>"{[name of the block]":"code of the block"}</code></pre>
 Example: ```"BLOCKPLUGINS":{"translate":"var ....", "detectlang":"var ....", "setlang":"var ...."}, ```
 
-###Pluginify
+Pluginify
+---------
+
 You can use
 [pluginify.py](https://github.com/DakshShah/turtleblocksjs/blob/b798401b8ac155ed720da18d933afabc96d14ee1/pluginify.py)
 to convert a `.rtp` (Readable Turtleblocks Plugin) to a `.json`
@@ -196,7 +210,8 @@ that it can be used in TurtleBlocksjs. To convert it to JSON, run
 
 [.rtp syntax](https://github.com/DakshShah/turtleblocksjs/blob/b798401b8ac155ed720da18d933afabc96d14ee1/pluginify.py#L31)
 
-###References
+References
+----------
 * List of valid blocks styles in turtleblocksjs:
   * `zeroArgBlock`: E.g., penup, pendown
   * `basicBlockNoFlow`: E.g., break
@@ -226,4 +241,7 @@ that it can be used in TurtleBlocksjs. To convert it to JSON, run
 
   See the line ```TranslateBlock.oneArgMathBlock();``` That is how you define the block style `oneArgMathBlock` to `TranslateBlock`. To define your own block, use any of the style methods listed above.
 
-* Example plugins: [advancedblocks.json](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json), [translate.json](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json), [weather.json](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/weather.json), [maths.rtp](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/maths.rtp)
+Example plugins
+---------------
+
+[advancedblocks.json](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json), [translate.json](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json), [weather.json](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/weather.json), [maths.rtp](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/maths.rtp)

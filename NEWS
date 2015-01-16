@@ -183,7 +183,6 @@ BUGS:
   * remove unused do blocks (when associated action is removed)
   * jumpy scrolling
   * don't save full-sized bitmap to session
-  * cannot open same file twice in a row (no change event?)
   * find out where number block values are being set to string
   * fix all the problems with layering
   * find a scalable approach to drawing on the canvas

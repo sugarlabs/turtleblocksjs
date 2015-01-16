@@ -286,8 +286,7 @@ define(function(require) {
                 processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict);
             }
 
-            // FIXME: won't allow selecting same file twice in a row
-            // since there is no 'change' event.
+            fileChooser.addEventListener('click', function(event) { this.value = null; });
             fileChooser.addEventListener('change', function(event) {
 
                 // Read file here.
@@ -309,8 +308,7 @@ define(function(require) {
                 reader.readAsText(fileChooser.files[0]);
             }, false);
 
-            // FIXME: won't allow selecting same file twice in a row
-            // since there is no 'change' event.
+            pluginChooser.addEventListener('click', function(event) { this.value = null; });
             pluginChooser.addEventListener('change', function(event) {
 
                 // Read file here.

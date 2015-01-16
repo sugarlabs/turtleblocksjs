@@ -96,8 +96,9 @@ define(function(require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
 
-	var evalFlowDict = {};
-	var evalArgDict = {};
+        var evalFlowDict = {};
+        var evalArgDict = {};
+        var evalParameterDict = {};
 
         pluginObjs = {
             'PALETTEPLUGINS': {},
@@ -144,8 +145,8 @@ define(function(require) {
 
         // Used to track mouse state for mouse button block
         var stageMouseDown = false;
-	var stageX = 0;
-	var stageY = 0;
+        var stageX = 0;
+        var stageY = 0;
 
         var stopButton = docById('stop-button');
 
@@ -265,13 +266,13 @@ define(function(require) {
 
             initBasicProtoBlocks(palettes, blocks);
 
-	    // Advanced blocks are stored in a locally stored
-	    // JSON-encoded plugin.
+            // Advanced blocks are stored in a locally stored
+            // JSON-encoded plugin.
             new HttpRequest('advancedblocks.json', function () {
                 var req = this.request;
                 if (req.readyState == 4) {
                     if (this.localmode || req.status == 200) {
-			var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, evalFlowDict, evalArgDict);
+                        var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict);
                     }
                     else {
                         if (self.console) console.log('Failed to load advanced blocks: Received status ' + req.status + '.');
@@ -283,7 +284,7 @@ define(function(require) {
             // Load any plugins saved in local storage.
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
-                processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict);
+                processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict);
             }
 
             fileChooser.addEventListener('click', function(event) { this.value = null; });
@@ -318,7 +319,7 @@ define(function(require) {
                     // Show busy cursor.
                     document.body.style.cursor = 'wait';
                     setTimeout(function() {
-			obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, evalFlowDict, evalArgDict);
+                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict);
                         // Save plugins to local storage.
                         if (obj != null) {
                             localStorage.setItem('plugins', preparePluginExports(obj));
@@ -401,8 +402,8 @@ define(function(require) {
             // Set up event handler for stage mouse events
             stage.on('stagemousedown', function(event) {
                 stageMouseDown = true;
-		stageX = event.stageX - 600;
-		stageY = 450 - event.stageY;
+                stageX = event.stageX - 600;
+                stageY = 450 - event.stageY;
 
                 var x = event.stageX;
                 var y = event.stageY;
@@ -412,8 +413,8 @@ define(function(require) {
                 scrollY = window.pageYOffset;
 
                 stage.on('stagemousemove', function(event) {
-		    stageX = event.stageX - 600;
-		    stageY = 450 - event.stageY;
+                    stageX = event.stageX - 600;
+                    stageY = 450 - event.stageY;
                     if (x < 55 || y < 55 || x > 1145 || y > 845) {
                         // console.log('no dragging from the edges');
                     } else if (stageMouseDown && !draggingContainer) {
@@ -511,11 +512,11 @@ define(function(require) {
 
                 container.on('click', function(event) {
                     container.visible = false;
-		    // On the possibility that there was an error
-		    // arrow associated with this container
-		    if (errorMsgArrow !== null) {
-			errorMsgArrow.removeAllChildren(); // Hide the error arrow.
-		    }
+                    // On the possibility that there was an error
+                    // arrow associated with this container
+                    if (errorMsgArrow !== null) {
+                        errorMsgArrow.removeAllChildren(); // Hide the error arrow.
+                    }
                     update = true;
                 });
                 callback(text);
@@ -872,20 +873,20 @@ define(function(require) {
                 var toX = blocks.blockList[blk].x;
                 var toY = blocks.blockList[blk].y;
 
-		if (errorMsgArrow == null) {
+                if (errorMsgArrow == null) {
                     errorMsgArrow = new createjs.Container();
                     stage.addChild(errorMsgArrow);
-		}
+                }
 
                 var line = new createjs.Shape();
                 errorMsgArrow.addChild(line);
                 line.graphics.setStrokeStyle(4).beginStroke('#ff0031').moveTo(fromX, fromY).lineTo(toX, toY);
-		stage.swapChildren(errorMsgArrow, last(stage.children));
-		update = true;
+                stage.swapChildren(errorMsgArrow, last(stage.children));
+                update = true;
 
                 var angle = Math.atan2(toX - fromX, fromY - toY) / Math.PI * 180;
                 var head = new createjs.Shape();
-		errorMsgArrow.addChild(head);
+                errorMsgArrow.addChild(head);
                 head.graphics.setStrokeStyle(4).beginStroke('#ff0031').moveTo(-10, 18).lineTo(0, 0).lineTo(10, 18);
                 head.x = toX;
                 head.y = toY;
@@ -907,16 +908,17 @@ define(function(require) {
         }
 
         function updateParameterBlock(activity, turtle, blk) {
-            // FIXME: how to autogenerate this list?
+            // Update the label on parameter blocks
             if (blocks.blockList[blk].protoblock.parameter) {
+                var name = blocks.blockList[blk].name;
                 var value = 0;
-                switch (blocks.blockList[blk].name) {
+                switch (name) {
                     case 'box':
                         var cblk = blocks.blockList[blk].connections[1];
-                        var name = parseArg(activity, turtle, cblk, blk);
-                        var i = findBox(name);
+                        var boxname = parseArg(activity, turtle, cblk, blk);
+                        var i = findBox(boxname);
                         if (i == null) {
-                            errorMsg('Cannot find box ' + name + '.');
+                            errorMsg('Cannot find box ' + boxname + '.');
                         } else {
                             value = boxList[i][1];
                         }
@@ -956,16 +958,13 @@ define(function(require) {
                     case 'keyboard':
                         value = lastKeyCode;
                         break;
-                    case 'loudness':
-                        if (mic == null) {
-                            errorMsg('The microphone is not available.');
-                            value = 0;
-                        } else {
-                            value = Math.round(mic.getLevel() * 1000);
-                        }
-                        break;
                     default:
-                        console.log('??? ' + blocks.blockList[blk].name);
+                        if (name in evalParameterDict) {
+                            eval(evalParameterDict[name]);
+                        } else {
+                            console.log('No method for updating parameter block' + name);
+                            return;
+                        }
                         break;
                 }
                 if (typeof(value) == 'string') {
@@ -993,7 +992,7 @@ define(function(require) {
             errorMsgText.parent.visible = false; // hide the error message window
             if (errorMsgArrow !== null) {
                 errorMsgArrow.removeAllChildren(); // hide the error arrow
-		update = true;
+                update = true;
             }
             msgText.parent.visible = false; // hide the message window
 
@@ -1252,18 +1251,18 @@ define(function(require) {
                             activity.parentFlowQueue[turtle].push(parentBlk);
                             turtles.turtleList[turtle].queue.push(queueBlock);
                         } else {
-			    // Since an until block was requeued each
-			    // time, we need to flush the queue of all
-			    // but the last one, otherwise the child
-			    // of the while block is executed multiple
-			    // times.
-			    var queueLength = turtles.turtleList[turtle].queue.length;
-			    for (var i = queueLength - 1; i > 0; i--) {
-				if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
-				    turtles.turtleList[turtle].queue.pop();
-				}
-			    }
-			}
+                            // Since an until block was requeued each
+                            // time, we need to flush the queue of all
+                            // but the last one, otherwise the child
+                            // of the while block is executed multiple
+                            // times.
+                            var queueLength = turtles.turtleList[turtle].queue.length;
+                            for (var i = queueLength - 1; i > 0; i--) {
+                                if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
+                                    turtles.turtleList[turtle].queue.pop();
+                                }
+                            }
+                        }
                     }
                     break;
                 case 'if':
@@ -1299,18 +1298,18 @@ define(function(require) {
                             childFlow = args[1];
                             childFlowCount = 1;
                         } else {
-			    // Since a while block was requeued each
-			    // time, we need to flush the queue of all
-			    // but the last one, otherwise the child
-			    // of the while block is executed multiple
-			    // times.
-			    var queueLength = turtles.turtleList[turtle].queue.length;
-			    for (var i = queueLength - 1; i > 0; i--) {
-				if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
-				    turtles.turtleList[turtle].queue.pop();
-				}
-			    }
-			}
+                            // Since a while block was requeued each
+                            // time, we need to flush the queue of all
+                            // but the last one, otherwise the child
+                            // of the while block is executed multiple
+                            // times.
+                            var queueLength = turtles.turtleList[turtle].queue.length;
+                            for (var i = queueLength - 1; i > 0; i--) {
+                                if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
+                                    turtles.turtleList[turtle].queue.pop();
+                                }
+                            }
+                        }
                     }
                     break;
                 case 'storein':
@@ -1877,7 +1876,7 @@ define(function(require) {
                         var b = parseArg(activity, turtle, cblk2, blk);
                         blocks.blockList[blk].value = a || b;
                         break;
-		    case 'time':
+                    case 'time':
                         var d = new Date();
                         blocks.blockList[blk].value = (d.getTime() - time) / 1000;
                         break;
@@ -1887,7 +1886,7 @@ define(function(require) {
                     case 'mousey':
                         blocks.blockList[blk].value = stageY;
                         break;
-		    case 'mousebutton':
+                    case 'mousebutton':
                         blocks.blockList[blk].value = stageMouseDown;
                         break;
                     case 'keyboard':
@@ -2081,7 +2080,7 @@ define(function(require) {
             errorMsgText.parent.visible = false;
             if (errorMsgArrow !== null) {
                 errorMsgArrow.removeAllChildren();
-		update = true;
+                update = true;
             }
             msgText.parent.visible = false;
             setBackgroundColor(-1);

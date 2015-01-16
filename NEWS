@@ -165,6 +165,7 @@
   * use busy cursor where approporate (w/Ignacio Rodriguez)
   * can open same file twice in a row (w/Ignacio Rodriguez)
   * fix palettes on Firefox (w/Ignacio Rodriguez)
+  * add plugins to parameter update table
 
 TODO:
   * use snap to pixels
@@ -173,7 +174,6 @@ TODO:
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
-  * add plugins to parameter update table
   * find a way to read pixels
   * use Cordova to read the accelerometer
   * expand blocks horizontally

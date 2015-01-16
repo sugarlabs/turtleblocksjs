@@ -1,0 +1,183 @@
+//* comment *//
+
+Copyright (C) 2015 Walter Bender
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+//* parameter:loudness *//
+if (mic == null) {errorMsg('The microphone is not available.');
+    value = 0;
+} else {
+    value = Math.round(mic.getLevel() * 1000);
+};
+
+
+//* flow:publish *//
+if (args.length == 1) {
+    doPublish(args[0]);
+};
+
+//* flow:savesvg *//
+if (args.length == 1) {
+    doSaveSVG(canvas, turtles, args[0])
+};
+
+//* flow:print *//
+if (args.length == 1) {
+    var msgContainer = msgText.parent;
+    msgContainer.visible = true;
+    msgText.text = args[0].toString();
+    msgContainer.updateCache();
+    stage.swapChildren(msgContainer, last(stage.children));
+};
+
+//* flow:showblocks *//
+showBlocks();
+turtleDelay = DEFAULTDELAY;
+
+//* flow:hideblocks *//
+hideBlocks();
+turtleDelay = 0;
+
+//* flow:speak *//
+meSpeak.speak(args[0])
+
+//* block:loudness *//
+var loudnessBlock = new ProtoBlock('loudness');
+loudnessBlock.palette = palettes.dict['sensors'];
+blocks.protoBlockDict['loudness'] = loudnessBlock;
+loudnessBlock.parameterBlock();
+loudnessBlock.staticLabels.push('loudness');
+
+//* block:wait *//
+var waitBlock = new ProtoBlock('wait');
+waitBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['wait'] = waitBlock;
+waitBlock.oneArgBlock();
+waitBlock.staticLabels.push('wait');
+waitBlock.defaults.push(1);
+
+//* block:print *//
+var printBlock = new ProtoBlock('print');
+printBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['print'] = printBlock;
+printBlock.oneArgBlock();
+printBlock.staticLabels.push('print');
+printBlock.docks[1][2] = 'anyin';
+
+//* block:xturtle *//
+var getxTurtleBlock = new ProtoBlock('xturtle');
+getxTurtleBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
+getxTurtleBlock.oneArgMathBlock();
+getxTurtleBlock.staticLabels.push('turtle x');
+getxTurtleBlock.defaults.push(0);
+getxTurtleBlock.docks[1][2] = 'anyin';
+
+//* block:yturtle *//
+var getyTurtleBlock = new ProtoBlock('yturtle');
+getyTurtleBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
+getyTurtleBlock.oneArgMathBlock();
+getyTurtleBlock.staticLabels.push('turtle y');
+getyTurtleBlock.defaults.push(0);
+getyTurtleBlock.docks[1][2] = 'anyin';
+
+//* block:startTurtle *//
+var startTurtleBlock = new ProtoBlock('startTurtle');
+startTurtleBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
+startTurtleBlock.oneArgBlock();
+startTurtleBlock.docks[1][2] = 'anyin';
+startTurtleBlock.defaults.push(0);
+startTurtleBlock.staticLabels.push('start turtle');
+
+//* block:stopTurtle *//
+var stopTurtleBlock = new ProtoBlock('stopTurtle');
+stopTurtleBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
+stopTurtleBlock.oneArgBlock();
+stopTurtleBlock.docks[1][2] = 'anyin';
+stopTurtleBlock.defaults.push(0);
+stopTurtleBlock.staticLabels.push('stop turtle');
+
+//* block:publish *//
+var pubBlock = new ProtoBlock('publish');
+pubBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['publish'] = pubBlock;
+pubBlock.oneArgBlock();
+pubBlock.defaults.push('comment');
+pubBlock.staticLabels.push('publish');
+pubBlock.docks[1][2] = 'textin';
+
+//* block:savesvg *//
+var svgBlock = new ProtoBlock('savesvg');
+svgBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['savesvg'] = svgBlock;
+svgBlock.oneArgBlock();
+svgBlock.defaults.push('title');
+svgBlock.staticLabels.push('save svg');
+svgBlock.docks[1][2] = 'textin';
+
+//* block:showblocks *//
+var showBlocks = new ProtoBlock('showblocks');
+showBlocks.palette = palettes.dict['extras'];
+blocks.protoBlockDict['showblocks'] = showBlocks;
+showBlocks.zeroArgBlock();
+showBlocks.staticLabels.push('show');
+
+//* block:hideblocks *//
+var hideBlocks = new ProtoBlock('hideblocks');
+hideBlocks.palette = palettes.dict['extras'];
+blocks.protoBlockDict['hideblocks'] = hideBlocks;
+hideBlocks.zeroArgBlock();
+hideBlocks.staticLabels.push('hide');
+
+//* block:eval *//
+var evalBlock = new ProtoBlock('eval');
+evalBlock.palette = palettes.dict['number'];
+blocks.protoBlockDict['eval'] = evalBlock;
+evalBlock.twoArgMathBlock();
+evalBlock.docks[1][2] = 'textin';
+evalBlock.defaults.push('x');
+evalBlock.defaults.push(100);
+evalBlock.staticLabels.push('eval');
+evalBlock.staticLabels.push('f(x)');
+evalBlock.staticLabels.push('x');
+
+//* block:speak *//
+var speakBlock = new ProtoBlock('speak');
+speakBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['speak'] = speakBlock;
+speakBlock.oneArgBlock();
+speakBlock.staticLabels.push('speak');
+speakBlock.defaults.push('hello');
+speakBlock.docks[1][2] = 'textin';
+
+//* block:playback *//
+var audioBlock = new ProtoBlock('playback');
+audioBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['playback'] = audioBlock;
+audioBlock.defaults.push(null);
+audioBlock.oneArgBlock();
+audioBlock.docks[1][2] = 'mediain';
+audioBlock.staticLabels.push('playback');
+
+//* block:stopplayback *//
+var audioStopBlock = new ProtoBlock('stopplayback');
+audioStopBlock.palette = palettes.dict['extras'];
+blocks.protoBlockDict['stopplayback'] = audioStopBlock;
+audioStopBlock.zeroArgBlock();
+audioStopBlock.staticLabels.push('stop')
+

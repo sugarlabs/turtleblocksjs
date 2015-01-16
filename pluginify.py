@@ -74,7 +74,19 @@ Example:
 var block = blocks.blockList[blk];
 var connections = block.connections;
 
-To define a block you need to type: //* (blocktype):(blockname) *//
+You can declare functions for parameter blocks to be evaluated when
+the block labels are updated with the //* parameter:(blockname) *//
+tag.
+
+Example:
+//* parameter:loudness *//
+if (mic == null) {errorMsg("The microphone is not available.");
+    value = 0;
+} else {
+    value = Math.round(mic.getLevel() * 1000);
+}
+
+To define a block you need to type: //* block:(blockname) *//
 
 Example:
 //* block:power *//
@@ -102,16 +114,17 @@ Example:
 '''
 
 NAMES = {'flow': 'FLOWPLUGINS', 'arg': 'ARGPLUGINS', 'block': 'BLOCKPLUGINS',
+         'parameter': 'PARAMETERPLUGINS',
          'palette-icon': 'PALETTEPLUGINS', 'palette-fill': 'PALETTEFILLCOLORS',
          'palette-stroke': 'PALETTESTROKECOLORS',
          'palette-highlight': 'PALETTEHIGHLIGHTCOLORS'}
-JS_TYPES = ('flow', 'arg', 'block')
+JS_TYPES = ('flow', 'arg', 'block', 'parameter')
 
 
 def pluginify(data):
     sections_list = data.split('//*')
     sections_pairs = []
-    specific_globals = {'arg': '', 'flow': '', 'block': ''}
+    specific_globals = {'arg': '', 'flow': '', 'block': '', 'parameter': ''}
     globals_ = None
     for section in sections_list:
         match = re.match('(.*)\*\/\/([^\0]*)', section.strip())

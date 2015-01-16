@@ -148,7 +148,8 @@ function _(text) {
 };
 
 
-function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict, evalArgDict) {
+function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict) {
+    console.log(rawData);
     var lineData = rawData.split('\n');
     var cleanData = '';
 
@@ -167,7 +168,7 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
     // Note to plugin developers: You may want to comment out this
     // try/catch while debugging your plugin.
     try {
-        var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict);
+        var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict);
     } catch (e) {
        var obj = null;
        errorMsg('Error loading plugin: ' + e);
@@ -176,48 +177,51 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
 }
 
 
-function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict) {
+function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict) {
     // Plugins are JSON-encoded dictionaries.
+    console.log(pluginData);
     var obj = JSON.parse(pluginData);
 
     // Create a palette entry.
     var newPalette = false;
-    for (var name in obj['PALETTEPLUGINS']) {
-        PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
+    if ('PALETTEPLUGINS' in obj) {
+        for (var name in obj['PALETTEPLUGINS']) {
+            PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
 
-        var fillColor = '#ff0066';
-        if (obj['PALETTEFILLCOLORS'] != null) {
-            if (obj['PALETTEFILLCOLORS'][name] != null) {
-                var fillColor = obj['PALETTEFILLCOLORS'][name];
-                console.log(fillColor);
+            var fillColor = '#ff0066';
+            if ('PALETTEFILLCOLORS' in obj) {
+                if (name in obj['PALETTEFILLCOLORS']) {
+                    var fillColor = obj['PALETTEFILLCOLORS'][name];
+                    console.log(fillColor);
+                }
             }
-        }
-        PALETTEFILLCOLORS[name] = fillColor;
+            PALETTEFILLCOLORS[name] = fillColor;
 
-        var strokeColor = '#ef003e';
-        if (obj['PALETTESTROKECOLORS'] != null) {
-            if (obj['PALETTESTROKECOLORS'][name] != null) {
-                var strokeColor = obj['PALETTESTROKECOLORS'][name];
-                console.log(strokeColor);
+            var strokeColor = '#ef003e';
+            if ('PALETTESTROKECOLORS' in obj) {
+                if (name in obj['PALETTESTROKECOLORS']) {
+                    var strokeColor = obj['PALETTESTROKECOLORS'][name];
+                    console.log(strokeColor);
+                }
             }
-        }
-        PALETTESTROKECOLORS[name] = strokeColor;
+            PALETTESTROKECOLORS[name] = strokeColor;
 
-        var highlightColor = '#ffb1b3';
-        if (obj['PALETTEHIGHLIGHTCOLORS'] != null) {
-            if (obj['PALETTEHIGHLIGHTCOLORS'][name] != null) {
-                var highlightColor = obj['PALETTEHIGHLIGHTCOLORS'][name];
-                console.log(highlightColor);
+            var highlightColor = '#ffb1b3';
+            if ('PALETTEHIGHLIGHTCOLORS' in obj) {
+                if (name in obj['PALETTEHIGHLIGHTCOLORS']) {
+                    var highlightColor = obj['PALETTEHIGHLIGHTCOLORS'][name];
+                    console.log(highlightColor);
+                }
             }
-        }
-        PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
+            PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
 
-        if (name in palettes.buttons) {
-            console.log('palette ' + name + ' already exists');
-        } else {
-            console.log('adding palette ' + name);
-            palettes.add(name, 'white', '#ff0066');
-	    newPalette = true;
+            if (name in palettes.buttons) {
+                console.log('palette ' + name + ' already exists');
+            } else {
+                console.log('adding palette ' + name);
+                palettes.add(name, 'white', '#ff0066');
+                newPalette = true;
+            }
         }
     }
 
@@ -227,20 +231,26 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     // Populate the flow-block dictionary, i.e., the code that is
     // eval'd by this block.
-    for (var flow in obj['FLOWPLUGINS']) {
-        evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
+    if ('FLOWPLUGINS' in obj) {
+        for (var flow in obj['FLOWPLUGINS']) {
+            evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
+        }
     }
 
     // Populate the arg-block dictionary, i.e., the code that is
     // eval'd by this block.
-    for (var arg in obj['ARGPLUGINS']) {
-        evalArgDict[arg] = obj['ARGPLUGINS'][arg];
+    if ('ARGPLUGINS' in obj) {
+        for (var arg in obj['ARGPLUGINS']) {
+            evalArgDict[arg] = obj['ARGPLUGINS'][arg];
+        }
     }
 
     // Create the plugin protoblocks.
-    for (var block in obj['BLOCKPLUGINS']) {
-        console.log('adding plugin block ' + block);
-        eval(obj['BLOCKPLUGINS'][block]);
+    if ('BLOCKPLUGINS' in obj) {
+        for (var block in obj['BLOCKPLUGINS']) {
+            console.log('adding plugin block ' + block);
+            eval(obj['BLOCKPLUGINS'][block]);
+        }
     }
 
     // Create the globals.
@@ -248,13 +258,19 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
       eval(obj['GLOBALS']);
     }
 
+    if ('PARAMETERPLUGINS' in obj) {
+        for (var parameter in obj['PARAMETERPLUGINS']) {
+            evalParameterDict[parameter] = obj['PARAMETERPLUGINS'][parameter];
+        }
+    }
+
     // Push the protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
-	if (blocks.protoBlockDict[protoblock].palette == undefined) {
-	    console.log('Cannot find palette for protoblock ' + protoblock);
-	} else {
+        if (blocks.protoBlockDict[protoblock].palette == undefined) {
+            console.log('Cannot find palette for protoblock ' + protoblock);
+        } else {
             blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
-	}
+        }
     }
 
     palettes.updatePalettes();

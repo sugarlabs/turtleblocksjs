@@ -225,11 +225,11 @@ var BOOLEAN2BOOLEANARGSDOCKS = [
 ];
 
 // = (fill_color, stroke_color, block_label)
-var BOOLEAN1ARG = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="102" height="44"> <g transform="matrix(2,0,0,2,0,-40)" style="fill:fill_color;stroke:stroke_color;stroke-opacity:1"> <path d="m 1,27.5 c 0,-3.67 2.86,-7 6.5,-7 l 1,0 0,0 c 0,0 3.8,0 8,0 l 34,0 0,9 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,8 -30,0 -12,0 0,-7 -1,0 C 3.8,34.5 1,31.2 1,27.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" /> </g> <text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"> <tspan x="74" y="28" id="tspan10">block_label</tspan> </text> </svg>';
+var BOOLEAN1ARG = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="102" height="50"> <g transform="matrix(2,0,0,2,0,-34)" style="fill:fill_color;stroke:stroke_color;stroke-opacity:1"> <path d="m 1,27.5 c 0,-3.67 2.86,-7 6.5,-7 l 0.5,0 0.5,0 0,-3 c 2.675131,-0.0613 31.337699,-0.221858 34,0 l 0,4 8,0 0,8 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,8 -30,0 -12,0 0,-7 -1,0 C 3.8,34.5 1,31.2 1,27.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" /> </g> <text style="font-size:font_size;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"> <tspan x="74" y="28" id="tspan10">block_label</tspan> </text> </svg>';
 
 var BOOLEAN1ARGDOCKS = [
-    [0, 40, 'booleanout'],
-    [86, 20, 'numberin']
+    [0, 6, 'booleanout'],
+    [86, 28, 'numberin']
 ];
 
 // = (fill_color, stroke_color, block_label)

@@ -53,6 +53,24 @@ turtleDelay = 0;
 //* flow:speak *//
 meSpeak.speak(args[0])
 
+//* flow:setturtlename *//
+var cblk = blocks.blockList[blk].connections[1];
+var sourceName = args[0];
+var targetName = args[1];
+var thisTurtle = null;
+var foundTurtle = false;
+for (var i = 0; i < turtles.turtleList.length; i++) {
+    thisTurtle = turtles.turtleList[i];
+    if (sourceName == thisTurtle.name) {
+        thisTurtle.name = targetName;
+        foundTurtle = true;
+        break;
+    }
+}
+if (!foundTurtle) {
+    errorMsg('Could not find turtle ' + sourceName, blk);
+}
+
 //* block:loudness *//
 var loudnessBlock = new ProtoBlock('loudness');
 loudnessBlock.palette = palettes.dict['sensors'];
@@ -181,3 +199,15 @@ blocks.protoBlockDict['stopplayback'] = audioStopBlock;
 audioStopBlock.zeroArgBlock();
 audioStopBlock.staticLabels.push('stop')
 
+//* block:setturtlename *//
+var setTurtleName = new ProtoBlock('setturtlename');
+setTurtleName.palette = palettes.dict['extras'];
+blocks.protoBlockDict['setturtlename'] = setTurtleName;
+setTurtleName.twoArgBlock();
+setTurtleName.docks[1][2] = 'anyin';
+setTurtleName.docks[2][2] = 'anyin';
+setTurtleName.defaults.push('0');
+setTurtleName.defaults.push('yertle');
+setTurtleName.staticLabels.push('set\nturtle\nname');
+setTurtleName.staticLabels.push('source');
+setTurtleName.staticLabels.push('target');

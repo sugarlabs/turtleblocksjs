@@ -1990,51 +1990,42 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.loadCounter = blockObjs.length;
         console.log(this.loadCounter + ' blocks to load');
         var blockOffset = this.blockList.length;
-        for (var b = 0; b < blockObjs.length; b++) {
+        for (var b = 0; b < this.loadCounter; b++) {
             var thisBlock = blockOffset + b;
             var blkData = blockObjs[b];
-            oldData = blkData;
-            var collapsed = undefined;
 
-            // Old support
-            if (typeof(oldData[1]) == 'string') {
-                blkData[1] = [blkData[1], true];
+            if (typeof(blkData[1]) == 'object') {
+              if (typeof(blkData[1][1]) == 'number' | typeof(blkData[1][1]) == 'string') {
+                blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
+                if (blkInfo[0] in ['start', 'action', 'hat']) {
+                  blkInfo[1]['collapsed'] = false;
+                }
+              }
+              else {
+                // new
+                blkInfo = blkData[1];
+              }
             }
-            if (typeof(oldData[1]) == 'object' && typeof(oldData[1][1]) != 'boolean' && typeof(oldData[1][2]) == 'undefined') {
-                blkData[1] = [blkData[1][0], blkData[1][1], true];
+            else {
+              blkInfo = [blkData[1], {'value': null}];
+              if (blkInfo[0] in ['start', 'action', 'hat']) {
+                blkInfo[1]['collapsed'] = false;
+              }
             }
 
-            if (blkData[1].length == 2 && blkData[1][0][0] == 'start') {
-                // xcor, ycor, heading, color, shade, pensize, grey
-                blkData[1] = [
-                    [blkData[1][0], blkData[1][1]], null, null, null, null, null, null, null
-                ]
+            var name = blkInfo[0];
+
+            var collapsed = false;
+            if (blkInfo[0] in ['start', 'action', 'hat']) {
+              collapsed = blkInfo[1]['collapsed'];
             }
-            if (blkData[1].length == 2) {
-                var name = blkData[1][0];
-                var collapsed = blkData[1][1]
-                var value = null;
-            } else if (blkData[1].length == 8) {
-		// Start block
-                var name = blkData[1][0][0];
-                var collapsed = blkData[1][0][1];
-                var turtleX = blkData[1][1];
-                var turtleY = blkData[1][2];
-                var turtleH = blkData[1][3];
-                var turtleC = blkData[1][4];
-                var turtleS = blkData[1][5];
-                var turtleP = blkData[1][6];
-                var turtleG = blkData[1][7];
-                var value = null;
-            } else {
-                var name = blkData[1][0];
-                var value = blkData[1][1];
-                var collapsed = blkData[1][2];
-            }
+
+            var value = blkInfo[1]['value'];
 
             if (name in NAMEDICT) {
                 name = NAMEDICT[name];
             }
+
             var me = this;
             // A few special cases.
             switch (name) {
@@ -2044,18 +2035,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     blkData[4][2] = null;
 
                     postProcess = function(args) {
-                        thisBlock = args[0]
-                        turtleX = args[1];
-                        turtleY = args[2];
-                        turtleH = args[3];
-                        turtleC = args[4];
-                        turtleS = args[5];
-                        turtleP = args[6];
-                        turtleG = args[7];
+                        var thisBlock = args[0];
+                        var blkInfo = args[1];
                         me.blockList[thisBlock].value = me.turtles.turtleList.length;
-                        me.turtles.add(me.blockList[thisBlock], turtleX, turtleY, turtleH, turtleC, turtleS, turtleP, turtleG);
+                        me.turtles.add(me.blockList[thisBlock], blkInfo);
                     }
-                    this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, [thisBlock, turtleX, turtleY, turtleH, turtleC, turtleS, turtleP, turtleG], collapsed);
+                    this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, [thisBlock, blkInfo[1]], collapsed);
                     break;
                 case 'action':
                 case 'hat':
@@ -3482,4 +3467,3 @@ function makeBitmap(data, name, callback, args) {
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
 }
-

@@ -488,18 +488,30 @@ function Turtles(canvas, stage, refreshCanvas) {
     // The list of all of our turtles, one for each start block.
     this.turtleList = [];
 
-    this.add = function(startBlock, turtleX, turtleY, turtleH, turtleC, turtleS, turtleP, turtleG) {
+    this.add = function(startBlock, infoDict) {
         // Add a new turtle for each start block
         if (startBlock != null) {
             console.log('adding a new turtle ' + startBlock.name);
         } else {
             console.log('adding a new turtle startBlock is null');
         };
+
+        var blkInfoAvailable = false;
+
+        if (typeof(infoDict) == 'object') {
+          if (Object.keys(infoDict).length == 8) {
+            blkInfoAvailable = true;
+          }
+        }
+
         var i = this.turtleList.length;
         var turtleName = i.toString();
         var myTurtle = new Turtle(turtleName, this);
-        if (typeof(turtleX) != "undefined") { myTurtle.x = turtleX; }
-        if (typeof(turtleY) != "undefined") { myTurtle.y = turtleY; }
+
+        if (blkInfoAvailable) {
+            myTurtle.x = infoDict['xcor'];
+            myTurtle.y = infoDict['ycor'];
+        }
 
         this.turtleList.push(myTurtle);
 
@@ -630,11 +642,13 @@ function Turtles(canvas, stage, refreshCanvas) {
 
         document.getElementById('loader').className = '';
         setTimeout(function() {
-                if (typeof(turtleH) != "undefined") { myTurtle.doSetHeading(turtleH); }
-                if (typeof(turtleP) != "undefined") { myTurtle.doSetPensize(turtleP); }
-                if (typeof(turtleG) != "undefined") { myTurtle.doSetChroma(turtleG); }
-                if (typeof(turtleS) != "undefined") { myTurtle.doSetValue(turtleS); }
-                if (typeof(turtleC) != "undefined") { myTurtle.doSetColor(turtleC); }
+                if (blkInfoAvailable) {
+                  myTurtle.doSetHeading(infoDict['heading']);
+                  myTurtle.doSetPensize(infoDict['pensize']);
+                  myTurtle.doSetChroma(infoDict['grey']);
+                  myTurtle.doSetValue(infoDict['shade']);
+                  myTurtle.doSetColor(infoDict['color']);
+                }
         }, 1000);
         this.refreshCanvas();
     }

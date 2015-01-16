@@ -962,7 +962,6 @@ define(function(require) {
                         if (name in evalParameterDict) {
                             eval(evalParameterDict[name]);
                         } else {
-                            console.log('No method for updating parameter block' + name);
                             return;
                         }
                         break;

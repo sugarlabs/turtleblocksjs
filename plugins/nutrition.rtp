@@ -53,14 +53,14 @@ var block = blocks.blockList[blk];
 var conns = block.connections;
 
 //* block-globals *//
-var get_eatme = function (name, label, font_size) {
+var get_eatme = function (name, label, fontSize) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['eatme'];
     blocks.protoBlockDict[name] = block;
     block.oneArgMathBlock();
     block.staticLabels.push(label);
-    if (typeof(font_size) == 'number') {
-        block.fontsize = font_size + 'px'
+    if (typeof(fontSize) == 'number') {
+        block.fontsize = fontSize + 'px'
     }
 };
 var show_value = function (name, label) {
@@ -100,7 +100,7 @@ get_eatme('get_calories', 'get calories');
 get_eatme('get_protein', 'get protein');
 
 //* block:get_carbohydrates *//
-get_eatme('get_carbohydrates', 'get carbohydrates', 12);
+get_eatme('get_carbohydrates', 'get carbs');
 
 //* block:get_fiber *//
 get_eatme('get_fiber', 'get fiber');
@@ -112,19 +112,34 @@ get_eatme('get_fat', 'get fat');
 get_eatme('get_name', 'get name');
 
 //* block:calories *//
-show_value('calories', 'calories eaten', 14);
+show_value('calories', 'calories');
+
+//* parameter:calories *//
+value = calories;
 
 //* block:protein *//
-show_value('protein', 'protein eaten');
+show_value('protein', 'protein');
+
+//* parameter:protein *//
+value = protein;
 
 //* block:carbohydrates *//
-show_value('carbohydrates', 'carbohydrates eaten', 12);
+show_value('carbohydrates', 'carbs');
+
+//* parameter:carbohydrates *//
+value = carbohydrates;
 
 //* block:fiber *//
-show_value('fiber', 'fiber eaten');
+show_value('fiber', 'fiber');
+
+//* parameter:fiber *//
+value = fiber;
 
 //* block:fat *//
-show_value('fat', 'fat eaten');
+show_value('fat', 'fat');
+
+//* parameter:fat *//
+value = fat;
 
 //* block:eat *//
 eat('eat', 'eat');

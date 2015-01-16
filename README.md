@@ -59,6 +59,17 @@ The plugins are identified by the extension <code>**.json**</code>
 You need to download the plugins for load it.
 [(In this guide I will use this plugin)](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json)
 
+List of plugins
+---
+
+* [Turtle Blocks Mindstorm](https://github.com/SAMdroid-apps/turtlestorm)
+* [Maths](https://github.com/walterbender/turtleblocksjs/blob/master/maths.json)
+* [Translate](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json)
+* [Weather](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json)
+* [Logic](https://github.com/walterbender/turtleblocksjs/blob/master/logic.json)
+* [Finance](https://github.com/walterbender/turtleblocksjs/blob/master/finance.json)
+
+
 How to load plugins
 ---
 Under the Option Toolbar (click it if its not expanded) you will see that option:

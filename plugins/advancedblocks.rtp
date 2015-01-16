@@ -98,19 +98,19 @@ printBlock.docks[1][2] = 'anyin';
 var getxTurtleBlock = new ProtoBlock('xturtle');
 getxTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
-getxTurtleBlock.oneArgMathBlock();
-getxTurtleBlock.staticLabels.push('turtle x');
-getxTurtleBlock.defaults.push(0);
+getxTurtleBlock.oneArgBlock();
 getxTurtleBlock.docks[1][2] = 'anyin';
+getxTurtleBlock.staticLabels.push('turtle x');
+getxTurtleBlock.defaults.push('0');
 
 //* block:yturtle *//
 var getyTurtleBlock = new ProtoBlock('yturtle');
 getyTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
-getyTurtleBlock.oneArgMathBlock();
-getyTurtleBlock.staticLabels.push('turtle y');
-getyTurtleBlock.defaults.push(0);
+getyTurtleBlock.oneArgBlock();
 getyTurtleBlock.docks[1][2] = 'anyin';
+getyTurtleBlock.staticLabels.push('turtle y');
+getyTurtleBlock.defaults.push('0');
 
 //* block:startTurtle *//
 var startTurtleBlock = new ProtoBlock('startTurtle');
@@ -118,7 +118,7 @@ startTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
 startTurtleBlock.oneArgBlock();
 startTurtleBlock.docks[1][2] = 'anyin';
-startTurtleBlock.defaults.push(0);
+startTurtleBlock.defaults.push('0');
 startTurtleBlock.staticLabels.push('start turtle');
 
 //* block:stopTurtle *//
@@ -127,7 +127,7 @@ stopTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
 stopTurtleBlock.oneArgBlock();
 stopTurtleBlock.docks[1][2] = 'anyin';
-stopTurtleBlock.defaults.push(0);
+stopTurtleBlock.defaults.push('0');
 stopTurtleBlock.staticLabels.push('stop turtle');
 
 //* block:publish *//
@@ -207,7 +207,7 @@ setTurtleName.twoArgBlock();
 setTurtleName.docks[1][2] = 'anyin';
 setTurtleName.docks[2][2] = 'anyin';
 setTurtleName.defaults.push('0');
-setTurtleName.defaults.push('yertle');
+setTurtleName.defaults.push('Yertle');
 setTurtleName.staticLabels.push('set\nturtle\nname');
 setTurtleName.staticLabels.push('source');
 setTurtleName.staticLabels.push('target');

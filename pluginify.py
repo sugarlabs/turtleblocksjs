@@ -25,37 +25,80 @@ or
 
     python pluginify.py (file) > plugin.json
 
-Converts a rtp (readable TurtleBlocks plugin) file into a json file to load
-into Turtle Blocks JS.  For more information, run `python pluginify.py syntax`
+Converts an RTP (readable TurtleBlocks plugin) file into a JSON file
+to load into Turtle Blocks JS.  For more information, run
+`python pluginify.py syntax`
 '''
+
 SYNTAX = '''
-In rst, a block is not defined with braces
-rather it starts where you add //* *// and it's scope is until the next block starts, 
-or the end of file in case it is the last block.
 
-To comment, just type //* comment *// followed by your multi line comment, 
-comments are ignored and not added in the JSON plugin. 
-They get rejected as soon as you run the pluginify, although they would remain in your rtp file.
-Example: //* comment *// Your single or multi line comment here...
+In an RST file, new blocks are not defined with braces (as is typical of
+Javascript); rather they start whenever you add //* *// and their scope is
+until the next block starts (or the end of file in the case that it is
+the last block).
 
-Define all the global variable under the block, 
-//* globals *// these will get added to all the code blocks in the created JSON.
-Example: You can define the API Key, like var mashapeKey = '(keycode)'; in globals
+To add a comment, just type //* comment *// followed by your multi-
+line comment. pluginify ignores comments, i.e., they are not added in
+the JSON plugin.
 
-But the global variables don't end there, you can also declare specific global variables
-Specific global vars, are the ones that get applied to a set of similar blocks,
-for example the variables under //* arg-globals *// would be added to all the arg blocks
+Example:
+//* comment *// Your single or multi line comment here...
 
-All the valid block types are defined in the NAME dictionary 
-(flow, arg, block, palatte-icon, palatte-fill, palette-stroke, palette-highlight)
-To define a block you need to type //* (blocktype):(blockname) *//
-Example: //* arg-globals *// var block = blocks.blockList[blk];
+Global variables are defined in a section //* globals *//.
 
-JS_TYPES v/s NAMES Block types defined under the JS_TYPES are similar to the one's defined under NAMES with just one difference,
-That the ones in JS_TYPES will have the access to the global variables,
-while the ones in NAMES and not in JS_TYPES are the ones that are not accessing the global variables.
-Example: flow is in both JS_TYPES and NAMES, so it would have access to global variables 
-while palette-icon is in NAMES but not in JS_TYPES so it would not have access to global variables
+Example:
+//* globals *//
+var calories = 0;
+var protein = 0;
+var carbohydrate = 0;
+var fiber = 0;
+var fat = 0;
+
+Define all the global variables under the section
+//* block-globals *//.
+
+These definitions will be added to all the code blocks in the created
+JSON output. Note that these "globals" included in each block but are
+local in context to each block.
+
+Example: You can define a common API Key to be used by all blocks.
+//* block-globals *//
+var mashapeKey = '(keycode)'; in globals.
+
+You can also declare global variables specific to argument blocks that
+get applied to a set of similar blocks, e.g., the variables under
+//* arg-globals *// will be added to all the arg blocks.
+
+Example:
+//* arg-globals *//
+var block = blocks.blockList[blk];
+var connections = block.connections;
+
+To define a block you need to type: //* (blocktype):(blockname) *//
+
+Example:
+//* block:power *//
+var block = new ProtoBlock('power');
+block.palette = palettes.dict['maths'];
+blocks.protoBlockDict['power'] = block;
+block.twoArgMathBlock();
+block.defaults.push(10, 2);
+block.staticLabels.push('power', 'base', 'exp.');
+
+Graphical elements (icons, colors) are defined in the own sections:
+
+Palette icons are defined as //* palette-icon:(palette name) *//
+
+Example:
+//* palette-icon:food *//
+<svg ...> ... </svg>
+
+Similarly for block colors:
+
+Example:
+//* palette-fill:food *// #FFFFFF
+//* palette-stroke:food *// #A0A0A0
+//* palette-highlight:food *// #D5D5D5
 '''
 
 NAMES = {'flow': 'FLOWPLUGINS', 'arg': 'ARGPLUGINS', 'block': 'BLOCKPLUGINS',

@@ -268,7 +268,7 @@ define(function(require) {
 
             // Advanced blocks are stored in a locally stored
             // JSON-encoded plugin.
-            new HttpRequest('advancedblocks.json', function () {
+            new HttpRequest('plugins/advancedblocks.json', function () {
                 var req = this.request;
                 if (req.readyState == 4) {
                     if (this.localmode || req.status == 200) {

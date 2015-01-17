@@ -99,6 +99,7 @@ define(function(require) {
         var evalFlowDict = {};
         var evalArgDict = {};
         var evalParameterDict = {};
+        var evalSetterDict = {};
 
         pluginObjs = {
             'PALETTEPLUGINS': {},
@@ -272,7 +273,7 @@ define(function(require) {
                 var req = this.request;
                 if (req.readyState == 4) {
                     if (this.localmode || req.status == 200) {
-                        var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict);
+                        var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict);
                     }
                     else {
                         if (self.console) console.log('Failed to load advanced blocks: Received status ' + req.status + '.');
@@ -284,7 +285,7 @@ define(function(require) {
             // Load any plugins saved in local storage.
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
-                processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict);
+                processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict);
             }
 
             fileChooser.addEventListener('click', function(event) { this.value = null; });
@@ -319,7 +320,7 @@ define(function(require) {
                     // Show busy cursor.
                     document.body.style.cursor = 'wait';
                     setTimeout(function() {
-                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict);
+                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict);
                         // Save plugins to local storage.
                         if (obj != null) {
                             localStorage.setItem('plugins', preparePluginExports(obj));
@@ -1160,6 +1161,47 @@ define(function(require) {
             }
         }
 
+        function blockSetter(blk, value, turtleId) {
+            var turtle = turtles.turtleList[turtleId];
+
+            switch (blocks.blockList[blk].name) {
+                case 'x':
+                    turtle.doSetXY(value, turtle.x);
+                    break;
+                case 'y':
+                    turtle.doSetXY(turtle.y, value);
+                    break;
+                case 'color':
+                    turtle.doSetColor(value);
+                    break;
+                case 'shade':
+                    turtle.doSetValue(value);
+                    break;
+                case 'grey':
+                    turtle.doSetChroma(value);
+                    break;
+                case 'pensize':
+                    turtle.doSetPensize(value);
+                    break;
+                case 'box':
+                    var cblk = blocks.blockList[blk].connections[1];
+                    var name = parseArg(activity, turtle, cblk, blk);
+                    var i = findBox(name);
+                    if (i == null) {
+                        errorMsg('Cannot find box ' + name + '.', blk);
+                    } else {
+                        doStorein(name, value);
+                    }
+                    break;
+                default:
+                    if (blocks.blockList[blk].name in evalSetterDict) {
+                        eval(evalSetterDict[blocks.blockList[blk].name]);
+                        break;
+                    }
+                    errorMsg('Block does not support incrementing', blk);
+            }
+        }
+
         function runFromBlockNow(activity, turtle, blk) {
             // Run a stack of blocks, beginning with blk.
             // (1) Evaluate any arguments (beginning with connection[1]);
@@ -1341,6 +1383,19 @@ define(function(require) {
                 case 'storein':
                     if (args.length == 2) {
                         doStorein(args[0], args[1]);
+                    }
+                    break;
+                case 'incrementOne':
+                    var i = 1;
+                case 'increment':
+                    // If the 2nd arg is not set, default to 1
+                    if (args.length == 2) {
+                        var i = args[1];
+                    }
+
+                    if (args.length >= 1) {
+                        var settingBlk = blocks.blockList[blk].connections[1];
+                        blockSetter(settingBlk, args[0] + i, turtle);
                     }
                     break;
                 case 'clear':

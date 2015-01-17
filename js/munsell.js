@@ -93,21 +93,22 @@ function getcolor(color) {
 }
 
 
+// Searches for nearest match to high chroma colors, scaled from 0-100
 function searchColors(r, g, b) {
     var nearestColor = -1;
     var distance = 10000000;
-    for (i = 0; i < COLORS40.length; i++) {
-	hex = COLORS40[i][2];
-        var r1 = parseInt(hex.substr(1, 2), 16);
-        var g1 = parseInt(hex.substr(3, 2), 16);
-        var b1 = parseInt(hex.substr(5, 2), 16);
+    for (i = 0; i < 100; i++) {
+	var color = getcolor(i);
+        var r1 = parseInt(color[2].substr(1, 2), 16);
+        var g1 = parseInt(color[2].substr(3, 2), 16);
+        var b1 = parseInt(color[2].substr(5, 2), 16);
 	var distSquared = (r1 - r) * (r1 - r) + (g1 - g) * (g1 - g) + (b1 - b) * (b1 - b);
 	if (distSquared < distance) {
 	    distance = distSquared;
 	    nearestColor = i;
 	}
     }
-    return Math.round(nearestColor * 2.5);  /* convert from 40 -> 100 */
+    return nearestColor;
 }
 
 

@@ -187,9 +187,13 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     }
 
     this.remove = function(name) {
-        delete this.dict[name];
         this.buttons[name].removeAllChildren();
+        var btnKeys = Object.keys(this.dict);
+        for (var btnKey = btnKeys.indexOf(name) + 1; btnKey < btnKeys.length; btnKey++) {
+            this.buttons[btnKeys[btnKey]].y -= this.cellSize;
+        }
         delete this.buttons[name];
+        delete this.dict[name];
         this.y -= this.cellSize;
         this.makeMenu();
     }

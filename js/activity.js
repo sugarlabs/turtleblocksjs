@@ -1929,6 +1929,24 @@ define(function(require) {
                             blocks.blockList[blk].value = Math.round(mic.getLevel() * 1000);
                         }
                         break;
+                    case 'getcolorpixel':
+                        var wasVisible = turtles.turtleList[turtle].container.visible;
+                        turtles.turtleList[turtle].container.visible = false;
+                        var x = turtles.screenY2turtleY(turtles.turtleList[turtle].container.x);
+                        var y = turtles.screenY2turtleY(turtles.turtleList[turtle].container.y)
+                        refreshCanvas();
+                        var ctx = canvas.getContext("2d");
+                        var imgData = ctx.getImageData(x, y, 1, 1).data;
+                        var color = searchColors(imgData[0], imgData[1], imgData[2]);
+                        if (imgData[3] == 0) {
+                            color = body.style.background.substring(body.style.background.indexOf('(') + 1, body.style.background.lastIndexOf(')')).split(/,\s*/),
+                            color = searchColors(color[0], color[1], color[2]);
+                        }
+                        blocks.blockList[blk].value = color;
+                        if (wasVisible) {
+                            turtles.turtleList[turtle].container.visible = true;
+                        }
+                        break;
                     default:
                         if (blocks.blockList[blk].name in evalArgDict) {
                             eval(evalArgDict[blocks.blockList[blk].name]);

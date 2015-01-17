@@ -36,3 +36,17 @@ the palette to the main area. You can delete a block by dragging it
 back onto the palette. Click anywhere on a "stack" of blocks to start
 executing that stack or by clicking in the Rabbit (fast) or Turtle
 (slow) on the Main Toolbar.
+
+Getting Started Documentation
+-----------------------------
+
+Google Code-in participant Jasmine Park has created some guides to
+using Turtle Blocks: [Turtle Blocks: An Introductory Manual](http://people.sugarlabs.org/walter/TurtleBlocksIntroductoryManual.pdf) and [Turtle Blocks: A Manual for Advanced Blocks](http://people.sugarlabs.org/walter/TurtleBlocksAdvancedBlocksManual.pdf)
+
+
+Advanced Features
+-----------------
+
+Turtle Blocks has a plugin mechanism that is used to add new
+blocks. You can learn more about how to use plugins (and how to write
+them) from the [Plugins Guide](https://github.com/walterbender/turtleblocksjs/blob/master/plugins.md).

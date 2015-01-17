@@ -1677,7 +1677,7 @@ define(function(require) {
                 // Make sure the turtles are on top.
                 var i = stage.getNumChildren() - 1;
                 // for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                stage.setChildIndex(turtles.turtleList[turtle].Container, i);
+                stage.setChildIndex(turtles.turtleList[turtle].container, i);
                 // }
                 update = true;
             }

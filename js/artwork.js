@@ -56,7 +56,7 @@ var BASICBLOCK1ARGDOCKS = [
 ];
 
 // basic block, 1 boolean arg (fill_color, stroke_color, block_label)
-var BASICBLOCK1BOOLEANARG = '<svg height="126" width="114" version="1.1" xmlns="http://www.w3.org/2000/svg"> <path d="m 1.0030561,65 0,-48 0,-8 c 0,-4.1887902 3.8112098,-8 8,-8 l 7.9999999,0 0,4 20,0 0,-4 18,0 8,0 c 4.18879,0 8,3.8112098 8,8 l 0,30 c -8.37758,0 -16,7.62242 -16,16 0,8.37758 7.62242,16 16,16 l 0,4 0,6 34.000004,0 c 3.8873,0 8,4.1127 8,8 l 0,24 c 0,4.18879 -3.81121,8 -8,8 l -50.000004,0 -20,0 0,4 -16,0 0,-4 -9.9999999,0 c -4.1887902,0 -8,-3.81121 -8,-8 l 0,-76" stroke-width="2" fill="fill_color" stroke="stroke_color" id="path18" stroke-linecap="round"/> <text x="52" font-size="16" letter-spacing="0" y="44" text-anchor="end" line-height="125%" id="text10" word-spacing="0" font-family="Sans"> <tspan x="101" y="104" id="tspan12">block_label</tspan> </text> </svg>';
+var BASICBLOCK1BOOLEANARG = '<svg height="130" width="114" version="1.1" xmlns="http://www.w3.org/2000/svg"> <path d="M 1,65 1,17 1,9 C 1,4.8112098 4.8112098,1 9,1 l 8,0 0,4 20,0 0,-4 18,0 8,0 c 4.18879,0 8,3.8112098 8,8 l 0,30 c -8.37758,0 -16,7.62242 -16,16 0,8.37758 7.62242,16 16,16 l 0,4 0,10 34,0 c 3.8873,0 8,4.1127 8,8 l 0,24 c 0,4.18879 -3.81456,8.16742 -8,8 l -50,0 -20,0 0,4 -16,0 0,-4 -10,0 c -4.1887902,0 -8,-3.81121 -8,-8 L 1,37" stroke-width="2" fill="fill_color" stroke="stroke_color" stroke-linecap="round"/> <text x="52" font-size="16" letter-spacing="0" y="44" text-anchor="end" line-height="125%" id="text10" word-spacing="0" font-family="Sans"> <tspan x="101" y="104" style="font-size:font_size">block_label</tspan> </text> </svg>';
 
 var BASICBLOCK1BOOLEANARGDOCKS = [
     [20, 0, 'out'],

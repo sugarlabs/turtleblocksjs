@@ -368,7 +368,7 @@ function Palette(palettes, name, color, bgcolor) {
                 // We use a filler for the menu background
                 var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
                 // Some blocks are not shown full-size on the palette.
-                if (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1) {
+                if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
                     height = STANDARDBLOCKHEIGHT;
                 } else if (['action', 'start'].indexOf(blkname) != -1) {
                     height += 2 * STANDARDBLOCKHEIGHT;
@@ -424,6 +424,7 @@ function Palette(palettes, name, color, bgcolor) {
             case 'if':
             case 'until':
             case 'while':
+            case 'waitFor':
                 // so the block will fit
                 var artwork = BASICBLOCK;
                 break;

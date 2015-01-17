@@ -14,6 +14,7 @@
 // http://search.cpan.org/~tonodera/Color-Model-Munsell-0.02/
 // which is a vast improvement over the Munsell Perl module 
 // written by Walter Bender and Jon Orwant back in the day.
+
 function getMunsellColor(hue, value, chroma) {
     // hue (aka color) 0-100 -> 0-39
     // value (aka shade) 0-100 -> 0-10
@@ -89,6 +90,24 @@ function getcolor(color) {
     var v = Math.floor(COLORS40[h1][0] * p + COLORS40[h2][0] * (1 - p));
     var c = Math.floor(COLORS40[h1][1] * p + COLORS40[h2][1] * (1 - p));
     return [v * 10., c * 100. / 14, interpColor(COLORS40[h1][2], COLORS40[h2][2], p)];
+}
+
+
+function searchColors(r, g, b) {
+    var nearestColor = -1;
+    var distance = 10000000;
+    for (i = 0; i < COLORS40.length; i++) {
+	hex = COLORS40[i][2];
+        var r1 = parseInt(hex.substr(1, 2), 16);
+        var g1 = parseInt(hex.substr(3, 2), 16);
+        var b1 = parseInt(hex.substr(5, 2), 16);
+	var distSquared = (r1 - r) * (r1 - r) + (g1 - g) * (g1 - g) + (b1 - b) * (b1 - b);
+	if (distSquared < distance) {
+	    distance = distSquared;
+	    nearestColor = i;
+	}
+    }
+    return Math.round(nearestColor * 2.5);  /* convert from 40 -> 100 */
 }
 
 

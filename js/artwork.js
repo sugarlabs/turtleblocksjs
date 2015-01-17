@@ -55,6 +55,15 @@ var BASICBLOCK1ARGDOCKS = [
     [20, 42, 'in']
 ];
 
+// basic block, 1 boolean arg (fill_color, stroke_color, block_label)
+var BASICBLOCK1BOOLEANARG = '<svg height="126" width="114" version="1.1" xmlns="http://www.w3.org/2000/svg"> <path d="m 1.0030561,65 0,-48 0,-8 c 0,-4.1887902 3.8112098,-8 8,-8 l 7.9999999,0 0,4 20,0 0,-4 18,0 8,0 c 4.18879,0 8,3.8112098 8,8 l 0,30 c -8.37758,0 -16,7.62242 -16,16 0,8.37758 7.62242,16 16,16 l 0,4 0,6 34.000004,0 c 3.8873,0 8,4.1127 8,8 l 0,24 c 0,4.18879 -3.81121,8 -8,8 l -50.000004,0 -20,0 0,4 -16,0 0,-4 -9.9999999,0 c -4.1887902,0 -8,-3.81121 -8,-8 l 0,-76" stroke-width="2" fill="fill_color" stroke="stroke_color" id="path18" stroke-linecap="round"/> <text x="52" font-size="16" letter-spacing="0" y="44" text-anchor="end" line-height="125%" id="text10" word-spacing="0" font-family="Sans"> <tspan x="101" y="104" id="tspan12">block_label</tspan> </text> </svg>';
+
+var BASICBLOCK1BOOLEANARGDOCKS = [
+    [20, 0, 'out'],
+    [57, 40, 'booleanin'],
+    [20, 123, 'in']
+];
+
 // basic block, 2 args (fill_color, stroke_color, block_label, top_label)
 var BASICBLOCK2ARG = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="51">' + '<g transform="matrix(2,0,0,2,29,0)">' + '<path d="m -14,4.5 c 0,-2.0943951 1.905605,-4 4,-4 l 4,0 0,2 10,0 0,-2 22.5,0 7.5,0 4,0 c 2.094395,0 3.492035,1.9681383 4,4 l 0,4 -4,0 0,-3 -4,0 0,10 4,0 0,-3 4,0 0,12.5 -56,0 c 0,-4 0,-16.5 0,-20.5 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<rect width="110" height="2" x="2" y="49" style="fill:fill_color;fill-opacity:1;fill-rule:nonzero;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="25" style="font-size:12px">top_label</tspan>' + '</text>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="90" y="45" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 

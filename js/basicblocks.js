@@ -451,6 +451,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     untilBlock.staticLabels.push('until');
     untilBlock.staticLabels.push('do');
 
+    var waitForBlock = new ProtoBlock('waitFor');
+    waitForBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['waitFor'] = waitForBlock;
+    waitForBlock.oneBooleanArgBlock();
+    waitForBlock.staticLabels.push('wait for');
+
     var whileBlock = new ProtoBlock('while');
     whileBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['while'] = whileBlock;

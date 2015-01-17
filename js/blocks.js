@@ -115,6 +115,16 @@ function ProtoBlock(name) {
         this.copyDock(BASICBLOCK1ARGDOCKS);
     }
 
+    // E.g., wait for
+    this.oneBooleanArgBlock = function() {
+        this.args = 1;
+        this.size = 3;
+        this.artwork.push(BASICBLOCK1BOOLEANARG);
+        this.artwork.push(null);
+        this.artwork.push(null);
+        this.copyDock(BASICBLOCK1BOOLEANARGDOCKS);
+    }
+
     // E.g., setxy. These are expandable.
     this.twoArgBlock = function() {
         this.artworkOffset = [0, 0, 49];

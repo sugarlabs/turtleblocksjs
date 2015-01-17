@@ -1267,6 +1267,30 @@ define(function(require) {
                         }
                     }
                     break;
+                case 'waitFor':
+                    if (args.length == 1) {
+                        if (!args[0]) {
+                            // Requeue.
+                            var parentBlk = blocks.blockList[blk].connections[0];
+                            var queueBlock = new Queue(blk, 1, parentBlk);
+                            activity.parentFlowQueue[turtle].push(parentBlk);
+                            turtles.turtleList[turtle].queue.push(queueBlock);
+                            doWait(0.05);
+                        } else {
+                            // Since a wait for block was requeued each
+                            // time, we need to flush the queue of all
+                            // but the last one, otherwise the child
+                            // of the while block is executed multiple
+                            // times.
+                            var queueLength = turtles.turtleList[turtle].queue.length;
+                            for (var i = queueLength - 1; i > 0; i--) {
+                                if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
+                                    turtles.turtleList[turtle].queue.pop();
+                                }
+                            }
+                        }
+                    }
+                    break;
                 case 'if':
                     if (args.length == 2) {
                         if (args[0]) {

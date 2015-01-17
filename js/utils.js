@@ -148,7 +148,7 @@ function _(text) {
 };
 
 
-function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict) {
+function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict) {
     // console.log(rawData);
     var lineData = rawData.split('\n');
     var cleanData = '';
@@ -168,7 +168,7 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
     // Note to plugin developers: You may want to comment out this
     // try/catch while debugging your plugin.
     try {
-        var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict);
+        var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict);
     } catch (e) {
        var obj = null;
        errorMsg('Error loading plugin: ' + e);
@@ -177,7 +177,7 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
 }
 
 
-function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict) {
+function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict) {
     // Plugins are JSON-encoded dictionaries.
     // console.log(pluginData);
     var obj = JSON.parse(pluginData);
@@ -242,6 +242,14 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     if ('ARGPLUGINS' in obj) {
         for (var arg in obj['ARGPLUGINS']) {
             evalArgDict[arg] = obj['ARGPLUGINS'][arg];
+        }
+    }
+
+    // Populate the setter dictionary, i.e., the code that is
+    // used to set a value block.
+    if ('SETTERPLUGINS' in obj) {
+        for (var setter in obj['SETTERPLUGINS']) {
+            evalSetterDict[setter] = obj['SETTERPLUGINS'][setter];
         }
     }
 

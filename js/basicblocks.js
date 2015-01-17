@@ -349,6 +349,21 @@ function initBasicProtoBlocks(palettes, blocks) {
     // Show the value in the box as if it were a parameter.
     boxBlock.parameter = true;
 
+    var incrementOneBlock = new ProtoBlock('incrementOne');
+    incrementOneBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['incrementOne'] = incrementOneBlock;
+    incrementOneBlock.oneArgBlock();
+    boxBlock.docks[1][2] = 'anyin';
+    incrementOneBlock.staticLabels.push('add on 1');
+
+    var incrementBlock = new ProtoBlock('increment');
+    incrementBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['increment'] = incrementBlock;
+    incrementBlock.twoArgBlock();
+    incrementBlock.docks[1][2] = 'anyin';
+    incrementBlock.docks[2][2] = 'anyin';
+    incrementBlock.staticLabels.push('add on', 'to', 'value');
+
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;

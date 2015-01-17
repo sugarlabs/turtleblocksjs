@@ -97,6 +97,13 @@ block.twoArgMathBlock();
 block.defaults.push(10, 2);
 block.staticLabels.push('power', 'base', 'exp.');
 
+You should also define a setter for a parameter block (if appropriate).
+You can do this using the setter setion:
+
+//* setter:myValue *//
+myValue = value;
+updateDisplayOfMyValue();
+
 Graphical elements (icons, colors) are defined in the own sections:
 
 Palette icons are defined as //* palette-icon:(palette name) *//
@@ -114,17 +121,17 @@ Example:
 '''
 
 NAMES = {'flow': 'FLOWPLUGINS', 'arg': 'ARGPLUGINS', 'block': 'BLOCKPLUGINS',
-         'parameter': 'PARAMETERPLUGINS',
+         'parameter': 'PARAMETERPLUGINS', 'setter': 'SETTERPLUGINS',
          'palette-icon': 'PALETTEPLUGINS', 'palette-fill': 'PALETTEFILLCOLORS',
          'palette-stroke': 'PALETTESTROKECOLORS',
          'palette-highlight': 'PALETTEHIGHLIGHTCOLORS'}
-JS_TYPES = ('flow', 'arg', 'block', 'parameter')
+JS_TYPES = ('flow', 'arg', 'block', 'parameter', 'setter')
 
 
 def pluginify(data):
     sections_list = data.split('//*')
     sections_pairs = []
-    specific_globals = {'arg': '', 'flow': '', 'block': '', 'parameter': ''}
+    specific_globals = {x:'' for x in JS_TYPES}
     globals_ = None
     for section in sections_list:
         match = re.match('(.*)\*\/\/([^\0]*)', section.strip())

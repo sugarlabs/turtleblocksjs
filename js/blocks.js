@@ -1717,21 +1717,35 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.renameDos = function(oldName, newName) {
+        var blockPalette = this.palettes.dict['blocks'];
+        var nameChanged = false;
+        // Update the blocks, do->oldName should be do->newName
         for (var blk = 0; blk < this.blockList.length; blk++) {
-            if (this.blockList[blk].name == 'text') {
-                var c = this.blockList[blk].connections[0];
-                if (c != null && this.blockList[c].name == 'do') {
-                    if (this.blockList[blk].value == oldName) {
-                        this.blockList[blk].value = newName;
-                        this.blockList[blk].text.text = newName;
-                        try {
-                            this.blockList[blk].container.updateCache();
-                        } catch (e) {
-                            console.log(e);
-                        }
-                    }
-                }
+            var myBlk = this.blockList[blk];
+            var blkParent = this.blockList[myBlk.connections[0]];
+            if (blkParent == null) { continue; }
+            if (!blkParent.name in ['do', 'action']) { continue; }
+            var blockValue = myBlk.value;
+            if (blockValue == oldName) {
+                myBlk.value = newName;
+                myBlk.text.text = newName;
+                myBlk.container.updateCache();
             }
+        }
+
+        // Update the palette
+        for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
+            var block = blockPalette.protoList[blockId];
+            if (block.name == 'do' && block.defaults[0] != _('action') && block.defaults[0] == oldName) {
+                blockPalette.protoList.splice(blockPalette.protoList.indexOf(block), 1);
+                delete this.protoBlockDict['myDo_' + oldName];
+                blockPalette.y = 0;
+                nameChanged = true;
+            }
+        }
+        // Force an update if the name has changed.
+        if (nameChanged) {
+            regeneratePalette(blockPalette);
         }
     }
 
@@ -3454,6 +3468,43 @@ function sendStackToTrash(blocks, myBlock) {
         }
     }
 
+    if (myBlock.name == 'action'){
+        var actionArg = blocks.blockList[myBlock.connections[1]];
+        var actionName = actionArg.value;
+        for (var blockId = 0; blockId < blocks.blockList.length; blockId++) {
+            var myBlk = blocks.blockList[blockId];
+            var blkParent = blocks.blockList[myBlk.connections[0]];
+            if (blkParent == null) { continue; }
+            if (!blkParent.name in ['do', 'action']) {
+                continue;
+            }
+            var blockValue = myBlk.value;
+            if (blockValue == _('action')) { continue; }
+            if (blockValue == actionName) {
+                blkParent.hide();
+                myBlk.hide();
+                myBlk.trash = true;
+                blkParent.trash = true;
+            }
+        }
+
+        var blockPalette = blocks.palettes.dict['blocks'];
+        var blockRemoved = false;
+        for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
+            var block = blockPalette.protoList[blockId];
+            if (block.name == 'do' && block.defaults[0] != _('action') && block.defaults[0] == actionName) {
+                blockPalette.protoList.splice(blockPalette.protoList.indexOf(block), 1);
+                delete blocks.protoBlockDict['myDo_' + actionName];
+                blockPalette.y = 0;
+                blockRemoved = true;
+            }
+        }
+        // Force an update if a block was removed.
+        if (blockRemoved) {
+            regeneratePalette(blockPalette);
+        }
+    }
+
     // put drag group in trash
     blocks.findDragGroup(thisBlock);
     for (var b = 0; b < blocks.dragGroup.length; b++) {
@@ -3476,4 +3527,13 @@ function makeBitmap(data, name, callback, args) {
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
+}
+
+function regeneratePalette(palette) {
+    palette.visible = false;
+    palette.hideMenuItems();
+    palette.protoContainers = {};
+    palette.protoBackgrounds = {};
+
+    palette.palettes.updatePalettes();
 }

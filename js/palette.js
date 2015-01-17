@@ -569,17 +569,6 @@ function Palette(palettes, name, color, bgcolor) {
             this.protoContainers[i].visible = false;
         }
         this.visible = false;
-
-        // Move the menus below up
-        var below = false;
-        for (var p in this.palettes.dict) {
-            if (!init && below) {
-                // this.palettes.dict[p].moveMenuRelative(0, -this.size);
-            }
-            if (p == this.name) {
-                below = true;
-            }
-        }
     }
 
     this.showMenuItems = function(init) {
@@ -590,17 +579,6 @@ function Palette(palettes, name, color, bgcolor) {
             this.protoContainers[i].visible = true;
         }
         this.visible = true;
-
-        // Move the menus below down
-        var below = false;
-        for (var p in this.palettes.dict) {
-            if (!init && below) {
-                // this.palettes.dict[p].moveMenuRelative(0, this.size);
-            }
-            if (p == this.name) {
-                below = true;
-            }
-        }
     }
 
     this.moveMenuItems = function(x, y) {

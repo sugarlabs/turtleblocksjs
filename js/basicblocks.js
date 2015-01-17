@@ -354,7 +354,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['incrementOne'] = incrementOneBlock;
     incrementOneBlock.oneArgBlock();
     boxBlock.docks[1][2] = 'anyin';
-    incrementOneBlock.staticLabels.push('add on 1');
+    incrementOneBlock.staticLabels.push('add 1 to');
 
     var incrementBlock = new ProtoBlock('increment');
     incrementBlock.palette = palettes.dict['blocks'];
@@ -362,7 +362,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     incrementBlock.twoArgBlock();
     incrementBlock.docks[1][2] = 'anyin';
     incrementBlock.docks[2][2] = 'anyin';
-    incrementBlock.staticLabels.push('add on', 'to', 'value');
+    incrementBlock.staticLabels.push('add', 'to', 'value');
 
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];

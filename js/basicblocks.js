@@ -220,6 +220,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     backgroundBlock.zeroArgBlock();
     backgroundBlock.staticLabels.push('background');
 
+    var getColorPixel = new ProtoBlock('getcolorpixel');
+    getColorPixel.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['getcolorpixel'] = getColorPixel;
+    getColorPixel.parameterBlock();
+    getColorPixel.staticLabels.push('get pixel color');
+
     // Numbers palette
     var numberBlock = new ProtoBlock('number');
     numberBlock.palette = palettes.dict['number'];

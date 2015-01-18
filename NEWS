@@ -166,29 +166,31 @@
   * can open same file twice in a row (w/Ignacio Rodriguez)
   * fix palettes on Firefox (w/Ignacio Rodriguez)
   * add plugins to parameter update table
+  * number block values are being set to string (Sam Parkinson)
+  * fix problems with layering (Sam Parkinson)
+  * more sensors (accelerometer w/Ignacio Rodriguez)
+  * read pixels (w/Ignacio Rodriguez)
+  * find an approach to cameras and microphone that work on Android
+    (w/Sam Parkinson)
+  * remove unused do blocks (when associated action is removed)
+    (w/Ignacio ROdriguez)
+  * clean up palette buttons layout after removing a plugin
+    (w/Ignacio ROdriguez)
 
 TODO:
   * use snap to pixels
   * user defined blocks
-  * more sensors
   * RTL support
   * scroll instead of zoom?
   * use graphical error messages
-  * find a way to read pixels
-  * use Cordova to read the accelerometer
   * expand blocks horizontally
   * three-arg flow blocks
   * three-arg arg blocks
   * write SVG generator
 
-BUGS:
-  * find an approach to cameras and microphone that work on Android (Cordova?)
+KNOWN BUGS:
   * sample projects cannot be shown on Android
-  * clean up palette buttons layout after removing a plugin
-  * remove unused do blocks (when associated action is removed)
   * jumpy scrolling
   * don't save full-sized bitmap to session
-  * find out where number block values are being set to string
-  * fix all the problems with layering
   * find a scalable approach to drawing on the canvas
   * fix race conditions

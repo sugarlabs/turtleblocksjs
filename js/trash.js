@@ -83,6 +83,11 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
     }
     makeTrash(this);
 
+    this.resizeEvent = function() {
+        this.container.x = (this.canvas.width / 2) - ((TRASHWIDTH / 2) * (this.size / this.iconsize));
+        this.container.y = this.canvas.height - (TRASHHEIGHT * (this.size / this.iconsize));
+    }
+
     this.hide = function() {
         this.container.visible = false;
         this.refreshCanvas();

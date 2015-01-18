@@ -187,6 +187,10 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     }
 
     this.remove = function(name) {
+        if (!(name in this.buttons)) {
+            console.log('Palette.remove: Cannot find palette ' + name);
+            return;
+        }
         this.buttons[name].removeAllChildren();
         var btnKeys = Object.keys(this.dict);
         for (var btnKey = btnKeys.indexOf(name) + 1; btnKey < btnKeys.length; btnKey++) {
@@ -784,6 +788,7 @@ function loadPaletteMenuHandler(palette) {
             if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
                 palette.hide();
                 palette.palettes.refreshCanvas();
+		// Only delete plugin palettes.
                 if (BUILTINPALETTES.indexOf(palette.name) === -1) {
                     promptPaletteDelete(palette);
                 }
@@ -834,6 +839,7 @@ function promptPaletteDelete(palette) {
         return;
     }
 
+    console.log('removing palette ' + palette.name);
     palette.palettes.remove(palette.name);
 
     delete pluginObjs['PALETTEHIGHLIGHTCOLORS'][palette.name];

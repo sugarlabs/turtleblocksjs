@@ -2238,7 +2238,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         me.blockList[args[0]].value = args[1];
                         me.updateBlockText(args[0]);
                     }
-                    console.log(value);
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
                 default:

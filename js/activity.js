@@ -1499,7 +1499,7 @@ define(function(require) {
                                 turtles.turtleList[turtle].doShowText(args[0], args[1][1]);
                             }
                             else {
-                                errorMsg(_('you need to select a file'));
+                                errorMsg(_('You must select a file.'));
                             }
                         }
                         else {
@@ -2015,7 +2015,7 @@ define(function(require) {
                         }
                         break;
                     case 'loadFile':
-                        // just for dont get the error in the console
+                        // No need to do anything here.
                         break;
                     default:
                         if (blocks.blockList[blk].name in evalArgDict) {

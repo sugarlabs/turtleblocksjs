@@ -1119,10 +1119,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (type2 == 'mediain' && type1 == 'textout') {
             return true;
         }
-        if (type1 == 'anyin' && ['textout', 'mediaout', 'numberout', 'anyout'].indexOf(type2) != -1) {
+        if (type1 == 'filein' && type2 == 'fileout') {
             return true;
         }
-        if (type2 == 'anyin' && ['textout', 'mediaout', 'numberout', 'anyout'].indexOf(type1) != -1) {
+        if (type1 == 'fileout' && type2 == 'filein') {
+            return true;
+        }
+        if (type1 == 'anyin' && ['textout', 'mediaout', 'numberout', 'anyout', 'fileout'].indexOf(type2) != -1) {
+            return true;
+        }
+        if (type2 == 'anyin' && ['textout', 'mediaout', 'numberout', 'anyout', 'fileout'].indexOf(type1) != -1) {
             return true;
         }
         return false;
@@ -1191,12 +1197,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // When we create new blocks, we may not have assigned the
         // value yet.
         var myBlock = this.blockList[blk];
+        var maxLength = 8;
         if (myBlock.text == null) {
             return;
         }
-        var label = myBlock.value.toString();
-        if (label.length > 8) {
-            label = label.substr(0, 7) + '...';
+        if (myBlock.name == 'loadFile') {
+            try { var label = myBlock.value[0].toString(); }
+            catch (e) { var label = _('open file'); }
+            maxLength = 10;
+        }
+        else {
+            var label = myBlock.value.toString();
+        }
+        if (label.length > maxLength) {
+            label = label.substr(0, maxLength - 1) + '...';
         }
         myBlock.text.text = label;
 
@@ -1514,6 +1528,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
             postProcessArg = [thisBlock, null];
+        } else if (name == 'loadFile') {
+            postProcess = function(args) {
+                me.updateBlockText(args[0]);
+            }
+            postProcessArg = [thisBlock, null];
         }
 
         for (var proto in this.protoBlockDict) {
@@ -1593,6 +1612,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     }
                 }
                 this.makeNewBlock('media', postProcess, [thisBlock, value]);
+            } else if (myBlock.docks[i + 1][2] == 'filein') {
+                postProcess = function(blk) {
+                    me.updateBlockText(blk);
+                }
+                this.makeNewBlock('loadFile', postProcess, thisBlock);
             } else {
                 postProcess = function(args) {
                     var thisBlock = args[0];
@@ -2208,6 +2232,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         me.updateBlockText(thisBlock);
                     }
                     this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'loadFile':
+                    postProcess = function(args) {
+                        me.blockList[args[0]].value = args[1];
+                        me.updateBlockText(args[0]);
+                    }
+                    console.log(value);
+                    this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
                 default:
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], null);
@@ -3005,6 +3037,24 @@ function doOpenMedia(blocks, thisBlock) {
     fileChooser.click();
 }
 
+function doOpenFile(blocks, thisBlock) {
+    var fileChooser = docById('myOpenAll');
+    var block = blocks.blockList[thisBlock];
+    fileChooser.addEventListener('change', function(event) {
+        var reader = new FileReader();
+        reader.onloadend = (function() {
+            if (reader.result) {
+                block.value = [fileChooser.files[0].name, reader.result];
+                blocks.updateBlockText(thisBlock);
+            }
+        });
+        reader.readAsText(fileChooser.files[0]);
+    }, false);
+
+    fileChooser.focus();
+    fileChooser.click();
+}
+
 
 // TODO: Consolidate into loadEventHandlers
 // These are the event handlers for collapsible blocks.
@@ -3241,6 +3291,8 @@ function loadEventHandlers(blocks, myBlock) {
                 blocks.selectingStack = false;
             } else if (myBlock.name == 'media') {
                 doOpenMedia(blocks, thisBlock);
+            } else if(myBlock.name == 'loadFile') {
+                doOpenFile(blocks, thisBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
                 var x = myBlock.container.x
                 var y = myBlock.container.y

@@ -419,6 +419,14 @@ function Palette(palettes, name, color, bgcolor) {
                     block_label = this.protoList[blk].defaults[0];
                 } else if (myBlock.staticLabels.length > 0) {
                     block_label = _(myBlock.staticLabels[0]);
+                    if (block_label == '') {
+                        if (blkname == 'loadFile') {
+                            block_label = _('open file')
+                        }
+                        else {
+                            block_label = blkname;
+                        }
+                    }
                 } else {
                     block_label = blkname;
                 }

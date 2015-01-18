@@ -85,10 +85,6 @@ if (!foundTurtle) {
     errorMsg('Could not find turtle ' + sourceName, blk);
 }
 
-//* arg:accelerometer *//
-var block = blocks.blockList[blk];
-block.value = JSON.stringify(accelerometer);
-
 //* arg:accelerometerx *//
 var block = blocks.blockList[blk];
 block.value = accelerometer['x'];
@@ -242,34 +238,24 @@ setTurtleName.staticLabels.push('set\nturtle\nname');
 setTurtleName.staticLabels.push('source');
 setTurtleName.staticLabels.push('target');
 
-//* block:accelerometer *//
-var accelerometerBlk = new ProtoBlock('accelerometer');
-accelerometerBlk.palette = palettes.dict['sensors'];
-blocks.protoBlockDict['accelerometer'] = accelerometerBlk;
-accelerometerBlk.parameterBlock();
-accelerometerBlk.staticLabels.push('accelerometer');
-accelerometerBlk.fontsize = '12px';
-
 //* block:accelerometerx *//
 var accelerometerXBlk = new ProtoBlock('accelerometerx');
 accelerometerXBlk.palette = palettes.dict['sensors'];
 blocks.protoBlockDict['accelerometer'] = accelerometerXBlk;
 accelerometerXBlk.parameterBlock();
-accelerometerXBlk.staticLabels.push('accelerometer x');
-accelerometerXBlk.fontsize = '12px';
+accelerometerXBlk.staticLabels.push('motion x');
 
 //* block:accelerometery *//
 var accelerometerYBlk = new ProtoBlock('accelerometery');
 accelerometerYBlk.palette = palettes.dict['sensors'];
 blocks.protoBlockDict['accelerometery'] = accelerometerYBlk;
 accelerometerYBlk.parameterBlock();
-accelerometerYBlk.staticLabels.push('accelerometer y');
-accelerometerYBlk.fontsize = '12px';
+accelerometerYBlk.staticLabels.push('motion y');
 
 //* block:accelerometerz *//
 var accelerometerZBlk = new ProtoBlock('accelerometerz');
 accelerometerZBlk.palette = palettes.dict['sensors'];
 blocks.protoBlockDict['accelerometerz'] = accelerometerZBlk;
 accelerometerZBlk.parameterBlock();
-accelerometerZBlk.staticLabels.push('accelerometer z');
-accelerometerZBlk.fontsize = '12px';
+accelerometerZBlk.staticLabels.push('motion z');
+

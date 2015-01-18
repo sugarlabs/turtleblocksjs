@@ -379,10 +379,11 @@ define(function(require) {
                 server = false;
             }
 
+            setupAndroidToolbar();
+
             // Scale the canvas relative to the screen size.
             onResize();
 
-            setupAndroidToolbar();
             var saveName = docById('mySaveName');
             saveName.style.visibility = 'hidden';
 
@@ -574,19 +575,26 @@ define(function(require) {
         }
 
         function onResize() {
-            var w = window.innerWidth;
-            var h = window.innerHeight;
+            if (!onAndroid) {
+                var w = window.innerWidth;
+                var h = window.innerHeight;
+            } else {
+                var w = window.outerWidth;
+                var h = window.outerHeight;
+            }
+
+            
             if (w > h) {
                 scale = w / 1200;
-                stage.canvas.width = 1200 * scale;
-                stage.canvas.height = 900 * scale
             } else {
                 scale = w / 900;
-                stage.canvas.width = 900 * scale;
-                stage.canvas.height = 1200 * scale
             }
             stage.scaleX = scale;
             stage.scaleY = scale;
+
+            stage.canvas.width = w;
+            stage.canvas.height = h;
+            document.body.style.overflow = 'hidden';
 
             console.log('Resize: scale ' + scale +
                 ', windowW ' + w + ', windowH ' + h +
@@ -596,6 +604,8 @@ define(function(require) {
             turtles.setScale(scale);
             blocks.setScale(scale);
             palettes.setScale(scale);
+            trashcan.resizeEvent(scale);
+            setupRightMenu(scale);
             update = true;
         }
 
@@ -2163,7 +2173,7 @@ define(function(require) {
 
         function setBackgroundColor(turtle) {
             /// change body background in DOM to current color
-            var body = docById('body');
+            var body = document.body;
             if (turtle == -1) {
                 body.style.background = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
             } else {
@@ -2373,6 +2383,17 @@ define(function(require) {
                 }
             }
 
+            setupRightMenu(scale);
+        }
+
+        function setupRightMenu(scale) {
+            if (menuContainer !== undefined) {
+                stage.removeChild(menuContainer);
+                for (i in onscreenMenu) {
+                    stage.removeChild(onscreenMenu[i]);
+                }
+            }
+
             // Misc. other buttons
             var menuNames = [
                 ['paste-disabled', pasteStack],
@@ -2388,7 +2409,7 @@ define(function(require) {
                 menuNames.push(['save', doSaveBox]);
             }
 
-            // Upper righthand corner
+            var btnSize = cellSize;
             var x = Math.floor(canvas.width / scale) - btnSize;
             var y = Math.floor(btnSize / 2);
             // if (onAndroid) {
@@ -2397,8 +2418,10 @@ define(function(require) {
             // if we are in the lower right
             // y -= 80;
             // };
+
             var dx = 0;
             var dy = btnSize;
+
             menuContainer = makeButton('menu-button', x, y, btnSize);
             loadButtonDragHandler(menuContainer, x, y, doMenuButton);
 

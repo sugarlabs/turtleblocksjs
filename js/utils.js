@@ -8,6 +8,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
+function canvasPixelRatio() {
+    var devicePixelRatio = window.devicePixelRatio || 1;
+    var context = document.querySelector('#myCanvas').getContext('2d');
+    var backingStoreRatio = context.webkitBackingStorePixelRatio ||
+                            context.mozBackingStorePixelRatio ||
+                            context.msBackingStorePixelRatio ||
+                            context.oBackingStorePixelRatio ||
+                            context.backingStorePixelRatio || 1;
+    return devicePixelRatio / backingStoreRatio;
+}
+
 function httpGet(projectName) {
     var xmlHttp = null;
 

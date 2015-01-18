@@ -10,11 +10,6 @@
     <link rel="stylesheet" href="lib/sugar-web/graphics/css/sugar.css">
     <link rel="stylesheet" href="css/activity.css">
 
-    <script>
-    if (window.location.protocol == "http:")
-    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
-    </script>
-
     <script src="lib/mespeak.js"></script>
     <script src="lib/reqwest.js"></script>
     <script src="lib/p5.js"></script>
@@ -100,6 +95,7 @@
         <div class='helpDiv' id="helpEnd"></div>
 
         <canvas id="myCanvas" width="1200" height="900"></canvas>
+        <video id="camVideo" style="visibility:hidden;"></video>
         <canvas id="camCanvas" style="visibility:hidden;"></canvas>
         <div id="labelDiv"></div>
         <div id="ioDiv">

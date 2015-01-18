@@ -15,6 +15,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+//* globals *//
+var accelerometer = {'x': null, 'y': null, 'z': null};
+function saveAccelerometerData(event) {
+    accelerometer['x'] = event.accelerationIncludingGravity.x;
+    accelerometer['y'] = event.accelerationIncludingGravity.y;
+    accelerometer['z'] = event.accelerationIncludingGravity.z;
+};
+if (window.DeviceMotionEvent) {
+    window.addEventListener("devicemotion", saveAccelerometerData, false);
+}
+else{
+    console.log("DeviceMotionEvent is not supported (no accelerometer)");
+}
+
 //* parameter:loudness *//
 if (mic == null) {errorMsg('The microphone is not available.');
     value = 0;
@@ -70,6 +84,22 @@ for (var i = 0; i < turtles.turtleList.length; i++) {
 if (!foundTurtle) {
     errorMsg('Could not find turtle ' + sourceName, blk);
 }
+
+//* arg:accelerometer *//
+var block = blocks.blockList[blk];
+block.value = JSON.stringify(accelerometer);
+
+//* arg:accelerometerx *//
+var block = blocks.blockList[blk];
+block.value = accelerometer['x'];
+
+//* arg:accelerometery *//
+var block = blocks.blockList[blk];
+block.value = accelerometer['y'];
+
+//* arg:accelerometerz *//
+var block = blocks.blockList[blk];
+block.value = accelerometer['z'];
 
 //* block:loudness *//
 var loudnessBlock = new ProtoBlock('loudness');
@@ -211,3 +241,35 @@ setTurtleName.defaults.push('Yertle');
 setTurtleName.staticLabels.push('set\nturtle\nname');
 setTurtleName.staticLabels.push('source');
 setTurtleName.staticLabels.push('target');
+
+//* block:accelerometer *//
+var accelerometerBlk = new ProtoBlock('accelerometer');
+accelerometerBlk.palette = palettes.dict['sensors'];
+blocks.protoBlockDict['accelerometer'] = accelerometerBlk;
+accelerometerBlk.parameterBlock();
+accelerometerBlk.staticLabels.push('accelerometer');
+accelerometerBlk.fontsize = '12px';
+
+//* block:accelerometerx *//
+var accelerometerXBlk = new ProtoBlock('accelerometerx');
+accelerometerXBlk.palette = palettes.dict['sensors'];
+blocks.protoBlockDict['accelerometer'] = accelerometerXBlk;
+accelerometerXBlk.parameterBlock();
+accelerometerXBlk.staticLabels.push('accelerometer x');
+accelerometerXBlk.fontsize = '12px';
+
+//* block:accelerometery *//
+var accelerometerYBlk = new ProtoBlock('accelerometery');
+accelerometerYBlk.palette = palettes.dict['sensors'];
+blocks.protoBlockDict['accelerometery'] = accelerometerYBlk;
+accelerometerYBlk.parameterBlock();
+accelerometerYBlk.staticLabels.push('accelerometer y');
+accelerometerYBlk.fontsize = '12px';
+
+//* block:accelerometerz *//
+var accelerometerZBlk = new ProtoBlock('accelerometerz');
+accelerometerZBlk.palette = palettes.dict['sensors'];
+blocks.protoBlockDict['accelerometerz'] = accelerometerZBlk;
+accelerometerZBlk.parameterBlock();
+accelerometerZBlk.staticLabels.push('accelerometer z');
+accelerometerZBlk.fontsize = '12px';

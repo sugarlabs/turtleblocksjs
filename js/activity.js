@@ -1987,8 +1987,8 @@ define(function(require) {
                     case 'getcolorpixel':
                         var wasVisible = turtles.turtleList[turtle].container.visible;
                         turtles.turtleList[turtle].container.visible = false;
-                        var x = turtles.screenY2turtleY(turtles.turtleList[turtle].container.x);
-                        var y = turtles.screenY2turtleY(turtles.turtleList[turtle].container.y)
+                        var x = turtles.turtleList[turtle].container.x;
+                        var y = turtles.turtleList[turtle].container.y;
                         refreshCanvas();
                         var ctx = canvas.getContext("2d");
                         var imgData = ctx.getImageData(x, y, 1, 1).data;

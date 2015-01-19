@@ -32,6 +32,9 @@ function httpGet(projectName) {
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     }
     xmlHttp.send();
+    if (xmlHttp.status > 299) {
+        throw 'Error from server';
+    }
     return xmlHttp.responseText;
 }
 

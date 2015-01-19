@@ -119,12 +119,19 @@ var block = blocks.blockList[blk];
 block.value = localHeap.pop();
 
 //* flow:saveHeap *//
+function downloadFile(filename, mimetype, content) {
+    var download = document.createElement('a');
+    download.setAttribute('href', 'data:' + mimetype + ';charset=utf-8,' + content);
+    download.setAttribute('download', filename);
+    document.body.appendChild(download);
+    download.click();
+    document.body.removeChild(download);
+};
 var block = blocks.blockList[blk];
 var conns = block.connections;
 var arg = parseArg(activity, turtle, conns[1]);
 if (arg) {
-    var blob = new Blob([JSON.stringify(localHeap)], {type: "text/json;charset=utf-8"});
-    saveAs(blob, arg);
+    downloadFile(arg, 'text/json', JSON.stringify(localHeap));
 };
 
 //* flow:loadHeap *//

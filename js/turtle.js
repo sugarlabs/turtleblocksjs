@@ -391,9 +391,9 @@ function Turtle (name, turtles) {
     }
 
     this.doSetColor = function(color) {
-	// Color sets hue but also selects maximum chroma.
+        // Color sets hue but also selects maximum chroma.
         this.color = Number(color);
-	var results = getcolor(this.color);
+        var results = getcolor(this.color);
         this.canvasValue = results[0];
         this.canvasChroma = results[1];
         this.canvasColor = results[2];
@@ -518,6 +518,9 @@ function Turtles(canvas, stage, refreshCanvas) {
         // Each turtle needs its own canvas.
         myTurtle.drawingCanvas = new createjs.Shape();
         this.stage.addChild(myTurtle.drawingCanvas);
+        // In theory, this prevents some unnecessary refresh of the
+        // canvas.
+        myTurtle.drawingCanvas.tickEnabled = false;
 
         var turtleImage = new Image();
         i %= 10;

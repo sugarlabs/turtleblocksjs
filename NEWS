@@ -176,12 +176,13 @@
     (w/Ignacio ROdriguez)
   * clean up palette buttons layout after removing a plugin
     (w/Ignacio ROdriguez)
+  * use snap to pixels
 
 TODO:
-  * use snap to pixels
+  * save to javascript
   * user defined blocks
   * RTL support
-  * scroll instead of zoom?
+  * zoom and scroll?
   * use graphical error messages
   * expand blocks horizontally
   * three-arg flow blocks
@@ -190,7 +191,6 @@ TODO:
 
 KNOWN BUGS:
   * sample projects cannot be shown on Android
-  * jumpy scrolling
   * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
   * fix race conditions

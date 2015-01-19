@@ -76,6 +76,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     this.current = 'turtle';
 
     this.container = new createjs.Container();
+    this.container.snapToPixelEnabled = true;
     this.stage.addChild(this.container);
 
     this.setScale = function(scale) {
@@ -94,6 +95,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
             } else {
                 console.log('makeMenu: ' + name);
                 this.buttons[name] = new createjs.Container();
+		this.buttons[name].snapToPixelEnabled = true;
                 this.stage.addChild(this.buttons[name]);
                 this.buttons[name].x = this.x;
                 this.buttons[name].y = this.y;
@@ -300,6 +302,7 @@ function Palette(palettes, name, color, bgcolor) {
         // Create the menu button
         if (this.menuContainer == null) {
             this.menuContainer = new createjs.Container();
+	    this.menuContainer.snapToPixelEnabled = true;
 
             function processHeader(palette, name, bitmap, extras) {
                 palette.menuContainer.addChild(bitmap);
@@ -366,7 +369,10 @@ function Palette(palettes, name, color, bgcolor) {
             if (!this.protoContainers[modname]) {
                 // create graphics for the palette entry for this block
                 this.protoBackgrounds[modname] = new createjs.Container();
+		this.protoBackgrounds[modname].snapToPixelEnabled = true;
                 this.protoContainers[modname] = new createjs.Container();
+		this.protoContainers[modname].snapToPixelEnabled = true;
+
                 var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
                 // Multicolumn
                 if (y > maxPaletteHight()) {

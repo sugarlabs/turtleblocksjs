@@ -1452,6 +1452,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // We need a container for the block graphics.
         myBlock.container = new createjs.Container();
         this.stage.addChild(myBlock.container);
+	myBlock.container.snapToPixelEnabled = true;
         myBlock.container.x = myBlock.x;
         myBlock.container.y = myBlock.y;
 
@@ -2797,6 +2798,7 @@ function Block(protoblock, blocks) {
                 me.collapseText.visible = false;
 
                 me.collapseContainer = new createjs.Container();
+		me.collapseContainer.snapToPixelEnabled = true;
 
                 var image = new Image();
                 image.onload = function() {

@@ -2126,8 +2126,6 @@ define(function(require) {
                 stopTurtle = true;
                 return 0;
             }
-            var v = Number(a) % Number(b);
-            console.log(a + ' ' + b + ' ' + v);
             return Number(a) % Number(b);
         }
 
@@ -2674,25 +2672,12 @@ define(function(require) {
 
             container.on('mousedown', function(event) {
                 var moved = true;
-                console.log('mousedown event: ' + moved);
-
                 var offset = {
                     x: container.x - Math.round(event.stageX / blocks.scale),
                     y: container.y - Math.round(event.stageY / blocks.scale)
                 };
 
-                // container.on('mouseout', function(event) {
-                //    console.log('mouseout event: ' + moved);
-                //    container.x = ox;
-                //    container.y = oy;
-                //    if (action != null && moved) {
-                //        action();
-                //    }
-                //    moved = false;
-                // });
-
                 container.on('pressup', function(event) {
-                    console.log('pressup event: ' + moved + ' ' + locked);
                     container.x = ox;
                     container.y = oy;
                     if (action != null && moved && !locked) {

@@ -417,6 +417,11 @@ function Palette(palettes, name, color, bgcolor) {
 
     this.finishPaletteEntry = function(blkname, modname, blk) {
         var myBlock = paletteBlocks.protoBlockDict[blkname];
+	if (myBlock == null) {
+	    console.log('Could not find block ' + blkname);
+	    return;
+	}
+
         var block_label = '';
         var top_label = '';
         var mid_label = '';

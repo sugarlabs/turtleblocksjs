@@ -58,7 +58,9 @@ List of plugins
 * [Turtle Blocks Mindstorm](https://github.com/SAMdroid-apps/turtlestorm)
 * [Maths](https://github.com/walterbender/turtleblocksjs/blob/master/maths.json)
 * [Translate](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json)
+* [Dictionary](https://github.com/walterbender/turtleblocksjs/blob/master/dictionary.json)
 * [Weather](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json)
 * [Logic](https://github.com/walterbender/turtleblocksjs/blob/master/logic.json)
 * [Finance](https://github.com/walterbender/turtleblocksjs/blob/master/finance.json)
+* [Advanced Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json)
 

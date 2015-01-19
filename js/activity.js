@@ -302,9 +302,9 @@ define(function(require) {
                     setTimeout(function() {
                         var rawData = reader.result;
                         var cleanData = rawData.replace('\n', ' ');
-			console.log(cleanData);
+            console.log(cleanData);
                         var obj = JSON.parse(cleanData);
-			console.log(obj)
+            console.log(obj)
                         blocks.loadNewBlocks(obj);
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
@@ -2330,7 +2330,7 @@ define(function(require) {
             if (fileExt(filename) != 'tb') {
                 filename += '.tb';
             }
-            download(filename, prepareExport());
+            download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
         };
 
         function hideStopButton() {

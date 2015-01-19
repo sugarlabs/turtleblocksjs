@@ -50,3 +50,15 @@ Advanced Features
 Turtle Blocks has a plugin mechanism that is used to add new
 blocks. You can learn more about how to use plugins (and how to write
 them) from the [Plugins Guide](https://github.com/walterbender/turtleblocksjs/blob/master/plugins.md).
+
+
+List of plugins
+---------------
+
+* [Turtle Blocks Mindstorm](https://github.com/SAMdroid-apps/turtlestorm)
+* [Maths](https://github.com/walterbender/turtleblocksjs/blob/master/maths.json)
+* [Translate](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json)
+* [Weather](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json)
+* [Logic](https://github.com/walterbender/turtleblocksjs/blob/master/logic.json)
+* [Finance](https://github.com/walterbender/turtleblocksjs/blob/master/finance.json)
+

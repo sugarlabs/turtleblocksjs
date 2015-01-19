@@ -13,6 +13,7 @@
 // blocks can be dragged. Once in the trash area, they are marked as
 // trash and hidden. There is a menu button that can be used to
 // restore trash.
+require(['activity/utils']);
 
 var TRASHWIDTH = 320;
 var TRASHHEIGHT = 120;
@@ -71,16 +72,13 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
         img.src = 'images/trash.svg';
     }
 
-    this.stage.addChild(this.container);
-    // FIXME: this.iconsize not yet defined.
-    this.container.x = (this.canvas.width / 2) - ((TRASHWIDTH / 2) * (this.size / this.iconsize));
-    this.container.y = this.canvas.height - (TRASHHEIGHT * (this.size / this.iconsize));
-    var onAndroid = /Android/i.test(navigator.userAgent);
-    if (onAndroid) {
-        // FIXME: check the right value
-        // space for the bottom android toolbar
-        this.container.y -= 80;
+    this.resizeEvent = function(scale) {
+        this.container.x = (this.canvas.width * 1/scale / 2) - ((TRASHWIDTH / 2) * (this.size / this.iconsize));
+        this.container.y = (this.canvas.height * 1/scale) - (TRASHHEIGHT * (this.size / this.iconsize));
     }
+
+    this.stage.addChild(this.container);
+    this.resizeEvent(1);
     makeTrash(this);
 
     this.hide = function() {

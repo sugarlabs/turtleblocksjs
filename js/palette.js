@@ -17,6 +17,16 @@ var PALETTELEFTMARGIN = 20;
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
                        'media', 'sensors', 'extras'];
 
+function maxPaletteHight() {
+    var onAndroid = /Android/i.test(navigator.userAgent);
+    if (onAndroid) {
+        var h = window.outerHeight;
+    } else {
+        var h = window.innerHeight;
+    }
+    return Math.min(789, h * canvasPixelRatio());
+}
+
 
 function paletteBlockButtonPush(name, arg) {
     // console.log('paletteBlockButtonPush' + name + ' ' + arg);
@@ -359,7 +369,7 @@ function Palette(palettes, name, color, bgcolor) {
                 this.protoContainers[modname] = new createjs.Container();
                 var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
                 // Multicolumn
-                if (y > 789) {
+                if (y > maxPaletteHight()) {
                     this.x += 160;
                     this.y = 0;
                     y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html manifest="cache.appcache">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -17,6 +17,7 @@
     <script src="lib/jquery.cookie.js"></script>
     <script src="lib/jquery.joyride-2.1.js"></script>
     <script src="lib/webL10n.js"></script>
+
     <link rel="prefetch" type="application/l10n" href="./localization.ini" />
     <link rel=" stylesheet" type="text/css" href="css/joyride-2.1.css">
     <script data-main="js/loader" src="lib/require.js"> </script>
@@ -28,6 +29,11 @@
           z-index: -1;
     }
     </style>
+
+    <link rel="manifest" href="android_chrome_manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="activity/activity-icon-color-4-00.png">
+    <meta name="theme-color" content="#96D3F3">
 </head>
 
 <body id="body">

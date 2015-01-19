@@ -310,7 +310,7 @@ setTurtleName.staticLabels.push('target');
 //* block:accelerometerx *//
 var accelerometerXBlk = new ProtoBlock('accelerometerx');
 accelerometerXBlk.palette = palettes.dict['sensors'];
-blocks.protoBlockDict['accelerometer'] = accelerometerXBlk;
+blocks.protoBlockDict['accelerometerx'] = accelerometerXBlk;
 accelerometerXBlk.parameterBlock();
 accelerometerXBlk.staticLabels.push('motion x');
 

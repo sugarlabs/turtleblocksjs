@@ -1,7 +1,6 @@
 CACHE MANIFEST
-# Version 3
+# Version 4
 
-CACHE
 # JS
 js/munsell.js
 js/clearbox.js
@@ -89,7 +88,7 @@ images/trash.svg
 images/camera.svg
 images/polar.svg
 images/Cartesian.svg
-images/collapse.
+images/collapse.svg
 images/highlights/trash.svg
 images/expand.svg
 images/close.svg

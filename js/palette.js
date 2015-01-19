@@ -646,7 +646,8 @@ function Palette(palettes, name, color, bgcolor) {
 };
 
 
-function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
+var blocks = undefined;
+function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, b) {
     // Instantiate the palettes object on first load.
     var palettes = new Palettes(canvas, stage, cellSize, refreshCanvas, trashcan).
     add('turtle', 'black', '#00b700').
@@ -658,6 +659,7 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     add('media', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').
     add('extras', 'white', '#ff0066');
+    blocks = b;
 
     // Give the palettes time to load.
     setTimeout(function() {
@@ -699,6 +701,9 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
     }
 
     palette.protoContainers[blkname].on('mousedown', function(event) {
+        var stage = palette.palettes.stage;
+        stage.setChildIndex(palette.protoContainers[blkname], stage.getNumChildren() - 1);
+
         moved = false;
         saveX = palette.protoContainers[blkname].x;
         saveY = palette.protoContainers[blkname].y;
@@ -740,6 +745,8 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             for (i in paletteBlocks.dragGroup) {
                 paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale), Math.round(event.stageY / palette.palettes.scale));
             }
+            // Dock with other blocks if needed
+            blocks.blockMoved(newBlock);
         }
         // Return protoblock we've been dragging back to the palette.
         palette.protoContainers[blkname].x = saveX;

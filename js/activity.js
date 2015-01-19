@@ -250,8 +250,8 @@ define(function(require) {
 
             trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
             turtles = new Turtles(canvas, stage, refreshCanvas);
-            palettes = initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan);
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
+            palettes = initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, blocks);
 
             palettes.setBlocks(blocks);
             palettes.setDragging(setDraggingContainer);

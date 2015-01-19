@@ -587,18 +587,21 @@ define(function(require) {
                 var h = window.outerHeight;
             }
 
-            
-            if (w > h) {
-                scale = w / 1200;
+            var smallSide = Math.min(w, h);
+            if (smallSide < cellSize * 10) {
+                scale = smallSide / (cellSize * 10);
             } else {
-                scale = w / 900;
+                if (w > h) {
+                    scale = w / 1200;
+                } else {
+                    scale = w / 900;
+                }
             }
             stage.scaleX = scale;
             stage.scaleY = scale;
 
             stage.canvas.width = w;
             stage.canvas.height = h;
-            document.body.style.overflow = 'hidden';
 
             console.log('Resize: scale ' + scale +
                 ', windowW ' + w + ', windowH ' + h +
@@ -2425,7 +2428,7 @@ define(function(require) {
             }
 
             var btnSize = cellSize;
-            var x = Math.floor(canvas.width / scale) - btnSize;
+            var x = Math.floor(canvas.width / scale) - btnSize / 2;
             var y = Math.floor(btnSize / 2);
             // if (onAndroid) {
             // FIXME: check for the correct value

@@ -432,6 +432,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['video'] = videoBlock;
     videoBlock.mediaBlock();
 
+    var loadFile = new ProtoBlock('loadFile');
+    loadFile.palette = palettes.dict['media'];
+    blocks.protoBlockDict['loadFile'] = loadFile;
+    loadFile.parameterBlock();
+    loadFile.docks[0][2] = 'fileout';
+    loadFile.staticLabels.push('');
+
     var stopVideoCamBlock = new ProtoBlock('stopvideocam');
     stopVideoCamBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;

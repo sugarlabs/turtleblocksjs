@@ -73,6 +73,8 @@ define(function(require) {
         var fileChooser = docById('myOpenFile');
         // Set up a file chooser for the doOpenPlugin function.
         var pluginChooser = docById('myOpenPlugin');
+        // The file chooser for all files.
+        var allFilesChooser = docById('myOpenAll')
 
         // Are we running off of a server?
         var server = true;
@@ -309,6 +311,8 @@ define(function(require) {
 
                 reader.readAsText(fileChooser.files[0]);
             }, false);
+
+            allFilesChooser.addEventListener('click', function(event) { this.value = null; });
 
             pluginChooser.addEventListener('click', function(event) { this.value = null; });
             pluginChooser.addEventListener('change', function(event) {
@@ -1490,7 +1494,15 @@ define(function(require) {
                             } else {
                                 turtles.turtleList[turtle].doShowText(args[0], args[1]);
                             }
-                        } else {
+                        } else if (typeof(args[1]) == 'object' && blocks.blockList[blocks.blockList[blk].connections[2]].name == 'loadFile') {
+                            if (args[1]) {
+                                turtles.turtleList[turtle].doShowText(args[0], args[1][1]);
+                            }
+                            else {
+                                errorMsg(_('You must select a file.'));
+                            }
+                        }
+                        else {
                             turtles.turtleList[turtle].doShowText(args[0], args[1]);
                         }
                     }
@@ -2002,6 +2014,9 @@ define(function(require) {
                             turtles.turtleList[turtle].container.visible = true;
                         }
                         break;
+                    case 'loadFile':
+                        // No need to do anything here.
+                        break;
                     default:
                         if (blocks.blockList[blk].name in evalArgDict) {
                             eval(evalArgDict[blocks.blockList[blk].name]);
@@ -2222,7 +2237,7 @@ define(function(require) {
                     // Don't save blocks in the trash.
                     continue;
                 }
-                if (blocks.blockList[blk].isValueBlock()) {
+                if (blocks.blockList[blk].isValueBlock() || blocks.blockList[blk].name == 'loadFile') {
                     var args = {'value': myBlock.value};
                 } else {
                     if (myBlock.name == 'start') {

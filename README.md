@@ -62,5 +62,6 @@ List of plugins
 * [Weather](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json)
 * [Logic](https://github.com/walterbender/turtleblocksjs/blob/master/logic.json)
 * [Finance](https://github.com/walterbender/turtleblocksjs/blob/master/finance.json)
+* [Nutrition](https://github.com/walterbender/turtleblocksjs/blob/master/nutrition.json)
 * [Advanced Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json)
 

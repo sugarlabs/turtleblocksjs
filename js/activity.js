@@ -302,7 +302,9 @@ define(function(require) {
                     setTimeout(function() {
                         var rawData = reader.result;
                         var cleanData = rawData.replace('\n', ' ');
+			console.log(cleanData);
                         var obj = JSON.parse(cleanData);
+			console.log(obj)
                         blocks.loadNewBlocks(obj);
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
@@ -778,7 +780,7 @@ define(function(require) {
                     if (server) {
                         var rawData = httpGet(projectName);
                         console.log('receiving ' + rawData);
-                        var cleanData = rawData.replace('\n', ' ');
+                        var cleanData = rawData.replace('\n', '');
                     } else {
                         // FIXME: Workaround until we have a local server
                         if (projectName in SAMPLESTB) {

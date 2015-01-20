@@ -380,6 +380,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     incrementBlock.staticLabels.push('add', 'to', 'value');
 
     // Media palette
+    var speakBlock = new ProtoBlock('speak');
+    speakBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['speak'] = speakBlock;
+    speakBlock.oneArgBlock();
+    speakBlock.staticLabels.push('speak');
+    speakBlock.defaults.push('hello');
+    speakBlock.docks[1][2] = 'textin';
+
     var showBlock = new ProtoBlock('show');
     showBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['show'] = showBlock;
@@ -499,6 +507,20 @@ function initBasicProtoBlocks(palettes, blocks) {
     vspaceBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['vspace'] = vspaceBlock;
     vspaceBlock.zeroArgBlock();
+
+    var waitBlock = new ProtoBlock('wait');
+    waitBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['wait'] = waitBlock;
+    waitBlock.oneArgBlock();
+    waitBlock.staticLabels.push('wait');
+    waitBlock.defaults.push(1);
+
+    var printBlock = new ProtoBlock('print');
+    printBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['print'] = printBlock;
+    printBlock.oneArgBlock();
+    printBlock.staticLabels.push('print');
+    printBlock.docks[1][2] = 'anyin';
 
     // Sensors palette
     var timeBlock = new ProtoBlock('time');

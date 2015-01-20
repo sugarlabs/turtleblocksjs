@@ -1293,6 +1293,21 @@ define(function(require) {
                     if (args.length == 1) {
                         doWait(turtle, args[0]);
                     }
+                    break;
+                case 'print':
+                    if (args.length == 1) {
+                        var msgContainer = msgText.parent;
+                        msgContainer.visible = true;
+                        msgText.text = args[0].toString();
+                        msgContainer.updateCache();
+                        stage.swapChildren(msgContainer, last(stage.children));
+                    }
+                    break;
+                case 'speak':
+                    if (args.length == 1) {
+                        meSpeak.speak(args[0])
+                    }
+                    break;
                 case 'repeat':
                     if (args.length == 2) {
                         if (typeof(args[0]) == 'string') {

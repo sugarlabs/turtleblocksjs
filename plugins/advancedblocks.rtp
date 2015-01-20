@@ -16,19 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
-var accelerometer = {'x': null, 'y': null, 'z': null};
-function saveAccelerometerData(event) {
-    accelerometer['x'] = event.accelerationIncludingGravity.x;
-    accelerometer['y'] = event.accelerationIncludingGravity.y;
-    accelerometer['z'] = event.accelerationIncludingGravity.z;
-};
-if (window.DeviceMotionEvent) {
-    window.addEventListener("devicemotion", saveAccelerometerData, false);
-}
-else{
-    console.log("DeviceMotionEvent is not supported (no accelerometer)");
-}
-
 //* parameter:loudness *//
 if (mic == null) {errorMsg('The microphone is not available.');
     value = 0;
@@ -46,15 +33,6 @@ if (args.length == 1) {
     doSaveSVG(canvas, turtles, args[0])
 };
 
-//* flow:print *//
-if (args.length == 1) {
-    var msgContainer = msgText.parent;
-    msgContainer.visible = true;
-    msgText.text = args[0].toString();
-    msgContainer.updateCache();
-    stage.swapChildren(msgContainer, last(stage.children));
-};
-
 //* flow:showblocks *//
 showBlocks();
 turtleDelay = DEFAULTDELAY;
@@ -63,43 +41,12 @@ turtleDelay = DEFAULTDELAY;
 hideBlocks();
 turtleDelay = 0;
 
-//* flow:speak *//
-meSpeak.speak(args[0])
-
-//* arg:accelerometerx *//
-var block = blocks.blockList[blk];
-block.value = accelerometer['x'];
-
-//* arg:accelerometery *//
-var block = blocks.blockList[blk];
-block.value = accelerometer['y'];
-
-//* arg:accelerometerz *//
-var block = blocks.blockList[blk];
-block.value = accelerometer['z'];
-
 //* block:loudness *//
 var loudnessBlock = new ProtoBlock('loudness');
 loudnessBlock.palette = palettes.dict['sensors'];
 blocks.protoBlockDict['loudness'] = loudnessBlock;
 loudnessBlock.parameterBlock();
 loudnessBlock.staticLabels.push('loudness');
-
-//* block:wait *//
-var waitBlock = new ProtoBlock('wait');
-waitBlock.palette = palettes.dict['extras'];
-blocks.protoBlockDict['wait'] = waitBlock;
-waitBlock.oneArgBlock();
-waitBlock.staticLabels.push('wait');
-waitBlock.defaults.push(1);
-
-//* block:print *//
-var printBlock = new ProtoBlock('print');
-printBlock.palette = palettes.dict['extras'];
-blocks.protoBlockDict['print'] = printBlock;
-printBlock.oneArgBlock();
-printBlock.staticLabels.push('print');
-printBlock.docks[1][2] = 'anyin';
 
 //* block:publish *//
 var pubBlock = new ProtoBlock('publish');
@@ -145,15 +92,6 @@ evalBlock.staticLabels.push('eval');
 evalBlock.staticLabels.push('f(x)');
 evalBlock.staticLabels.push('x');
 
-//* block:speak *//
-var speakBlock = new ProtoBlock('speak');
-speakBlock.palette = palettes.dict['media'];
-blocks.protoBlockDict['speak'] = speakBlock;
-speakBlock.oneArgBlock();
-speakBlock.staticLabels.push('speak');
-speakBlock.defaults.push('hello');
-speakBlock.docks[1][2] = 'textin';
-
 //* block:playback *//
 var audioBlock = new ProtoBlock('playback');
 audioBlock.palette = palettes.dict['extras'];
@@ -169,24 +107,3 @@ audioStopBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['stopplayback'] = audioStopBlock;
 audioStopBlock.zeroArgBlock();
 audioStopBlock.staticLabels.push('stop')
-
-//* block:accelerometerx *//
-var accelerometerXBlk = new ProtoBlock('accelerometerx');
-accelerometerXBlk.palette = palettes.dict['sensors'];
-blocks.protoBlockDict['accelerometerx'] = accelerometerXBlk;
-accelerometerXBlk.parameterBlock();
-accelerometerXBlk.staticLabels.push('motion x');
-
-//* block:accelerometery *//
-var accelerometerYBlk = new ProtoBlock('accelerometery');
-accelerometerYBlk.palette = palettes.dict['sensors'];
-blocks.protoBlockDict['accelerometery'] = accelerometerYBlk;
-accelerometerYBlk.parameterBlock();
-accelerometerYBlk.staticLabels.push('motion y');
-
-//* block:accelerometerz *//
-var accelerometerZBlk = new ProtoBlock('accelerometerz');
-accelerometerZBlk.palette = palettes.dict['sensors'];
-blocks.protoBlockDict['accelerometerz'] = accelerometerZBlk;
-accelerometerZBlk.parameterBlock();
-accelerometerZBlk.staticLabels.push('motion z');

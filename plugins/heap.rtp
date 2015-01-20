@@ -93,7 +93,6 @@ blocks.protoBlockDict['push'] = pushBlk;
 pushBlk.oneArgBlock();
 pushBlk.docks[1][2] = 'anyin';
 pushBlk.staticLabels.push('push');
-pushBlk.fontsize = '14px';
 
 //* block:pop *//
 var popBlk = new ProtoBlock('pop');
@@ -101,7 +100,6 @@ popBlk.palette = palettes.dict['extras'];
 blocks.protoBlockDict['pop'] = popBlk;
 popBlk.parameterBlock();
 popBlk.staticLabels.push('pop');
-popBlk.fontsize = '14px';
 
 //* block:showHeap *//
 var showHeap = new ProtoBlock('showHeap');

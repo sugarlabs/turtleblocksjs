@@ -66,24 +66,6 @@ turtleDelay = 0;
 //* flow:speak *//
 meSpeak.speak(args[0])
 
-//* flow:setturtlename *//
-var cblk = blocks.blockList[blk].connections[1];
-var sourceName = args[0];
-var targetName = args[1];
-var thisTurtle = null;
-var foundTurtle = false;
-for (var i = 0; i < turtles.turtleList.length; i++) {
-    thisTurtle = turtles.turtleList[i];
-    if (sourceName == thisTurtle.name) {
-        thisTurtle.name = targetName;
-        foundTurtle = true;
-        break;
-    }
-}
-if (!foundTurtle) {
-    errorMsg('Could not find turtle ' + sourceName, blk);
-}
-
 //* arg:accelerometerx *//
 var block = blocks.blockList[blk];
 block.value = accelerometer['x'];
@@ -118,42 +100,6 @@ blocks.protoBlockDict['print'] = printBlock;
 printBlock.oneArgBlock();
 printBlock.staticLabels.push('print');
 printBlock.docks[1][2] = 'anyin';
-
-//* block:xturtle *//
-var getxTurtleBlock = new ProtoBlock('xturtle');
-getxTurtleBlock.palette = palettes.dict['extras'];
-blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
-getxTurtleBlock.oneArgBlock();
-getxTurtleBlock.docks[1][2] = 'anyin';
-getxTurtleBlock.staticLabels.push('turtle x');
-getxTurtleBlock.defaults.push('0');
-
-//* block:yturtle *//
-var getyTurtleBlock = new ProtoBlock('yturtle');
-getyTurtleBlock.palette = palettes.dict['extras'];
-blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
-getyTurtleBlock.oneArgBlock();
-getyTurtleBlock.docks[1][2] = 'anyin';
-getyTurtleBlock.staticLabels.push('turtle y');
-getyTurtleBlock.defaults.push('0');
-
-//* block:startTurtle *//
-var startTurtleBlock = new ProtoBlock('startTurtle');
-startTurtleBlock.palette = palettes.dict['extras'];
-blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
-startTurtleBlock.oneArgBlock();
-startTurtleBlock.docks[1][2] = 'anyin';
-startTurtleBlock.defaults.push('0');
-startTurtleBlock.staticLabels.push('start turtle');
-
-//* block:stopTurtle *//
-var stopTurtleBlock = new ProtoBlock('stopTurtle');
-stopTurtleBlock.palette = palettes.dict['extras'];
-blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
-stopTurtleBlock.oneArgBlock();
-stopTurtleBlock.docks[1][2] = 'anyin';
-stopTurtleBlock.defaults.push('0');
-stopTurtleBlock.staticLabels.push('stop turtle');
 
 //* block:publish *//
 var pubBlock = new ProtoBlock('publish');
@@ -223,19 +169,6 @@ audioStopBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['stopplayback'] = audioStopBlock;
 audioStopBlock.zeroArgBlock();
 audioStopBlock.staticLabels.push('stop')
-
-//* block:setturtlename *//
-var setTurtleName = new ProtoBlock('setturtlename');
-setTurtleName.palette = palettes.dict['extras'];
-blocks.protoBlockDict['setturtlename'] = setTurtleName;
-setTurtleName.twoArgBlock();
-setTurtleName.docks[1][2] = 'anyin';
-setTurtleName.docks[2][2] = 'anyin';
-setTurtleName.defaults.push('0');
-setTurtleName.defaults.push('Yertle');
-setTurtleName.staticLabels.push('set\nturtle\nname');
-setTurtleName.staticLabels.push('source');
-setTurtleName.staticLabels.push('target');
 
 //* block:accelerometerx *//
 var accelerometerXBlk = new ProtoBlock('accelerometerx');

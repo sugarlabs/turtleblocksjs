@@ -17,14 +17,17 @@ var PALETTELEFTMARGIN = 20;
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
                        'media', 'sensors', 'extras'];
 
-function maxPaletteHight() {
+function maxPaletteHight(menuSize) {
     var onAndroid = /Android/i.test(navigator.userAgent);
     if (onAndroid) {
         var h = window.outerHeight;
     } else {
         var h = window.innerHeight;
     }
-    return Math.min(789, h * canvasPixelRatio());
+    // Palettes don't start at the top of the screen and the last
+    // block in a palette cannot start at the bottom of the screen,
+    // hence - 2 * menuSize.
+    return h * canvasPixelRatio() - (2 * menuSize);
 }
 
 
@@ -375,7 +378,7 @@ function Palette(palettes, name, color, bgcolor) {
 
                 var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
                 // Multicolumn
-                if (y > maxPaletteHight()) {
+                if (y > maxPaletteHight(this.palettes.originalSize)) {
                     this.x += 160;
                     this.y = 0;
                     y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;

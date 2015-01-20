@@ -220,12 +220,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     backgroundBlock.zeroArgBlock();
     backgroundBlock.staticLabels.push('background');
 
-    var getColorPixel = new ProtoBlock('getcolorpixel');
-    getColorPixel.palette = palettes.dict['pen'];
-    blocks.protoBlockDict['getcolorpixel'] = getColorPixel;
-    getColorPixel.parameterBlock();
-    getColorPixel.staticLabels.push('get pixel color');
-
     // Numbers palette
     var numberBlock = new ProtoBlock('number');
     numberBlock.palette = palettes.dict['number'];
@@ -349,21 +343,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     // Show the value in the box as if it were a parameter.
     boxBlock.parameter = true;
 
-    var incrementOneBlock = new ProtoBlock('incrementOne');
-    incrementOneBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['incrementOne'] = incrementOneBlock;
-    incrementOneBlock.oneArgBlock();
-    boxBlock.docks[1][2] = 'anyin';
-    incrementOneBlock.staticLabels.push('add 1 to');
-
-    var incrementBlock = new ProtoBlock('increment');
-    incrementBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['increment'] = incrementBlock;
-    incrementBlock.twoArgBlock();
-    incrementBlock.docks[1][2] = 'anyin';
-    incrementBlock.docks[2][2] = 'anyin';
-    incrementBlock.staticLabels.push('add', 'to', 'value');
-
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;
@@ -384,6 +363,21 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['start'] = startBlock;
     startBlock.blockClampZeroArgBlock();
     startBlock.staticLabels.push('start');
+
+    var incrementOneBlock = new ProtoBlock('incrementOne');
+    incrementOneBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['incrementOne'] = incrementOneBlock;
+    incrementOneBlock.oneArgBlock();
+    boxBlock.docks[1][2] = 'anyin';
+    incrementOneBlock.staticLabels.push('add 1 to');
+
+    var incrementBlock = new ProtoBlock('increment');
+    incrementBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['increment'] = incrementBlock;
+    incrementBlock.twoArgBlock();
+    incrementBlock.docks[1][2] = 'anyin';
+    incrementBlock.docks[2][2] = 'anyin';
+    incrementBlock.staticLabels.push('add', 'to', 'value');
 
     // Media palette
     var showBlock = new ProtoBlock('show');
@@ -500,11 +494,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifthenelseBlock.staticLabels.push('then');
     ifthenelseBlock.staticLabels.push('else');
 
+    // Extras palette
     var vspaceBlock = new ProtoBlock('vspace');
     vspaceBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['vspace'] = vspaceBlock;
     vspaceBlock.zeroArgBlock();
 
+    // Sensors palette
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['time'] = timeBlock;
@@ -534,6 +530,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['keyboard'] = keyboardBlock;
     keyboardBlock.parameterBlock();
     keyboardBlock.staticLabels.push('keyboard');
+
+    var getColorPixel = new ProtoBlock('getcolorpixel');
+    getColorPixel.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['getcolorpixel'] = getColorPixel;
+    getColorPixel.parameterBlock();
+    getColorPixel.staticLabels.push('get pixel color');
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

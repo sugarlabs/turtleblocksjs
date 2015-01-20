@@ -75,6 +75,8 @@ function ProtoBlock(name) {
     // Docks define where blocks connect and which connections are
     // valid.
     this.docks = [];
+    // The filepath of the image.
+    this.image = null;
 
     // We need a copy of the dock, since it is modified by individual
     // blocks as they are expanded or contracted.
@@ -1452,12 +1454,35 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // We need a container for the block graphics.
         myBlock.container = new createjs.Container();
         this.stage.addChild(myBlock.container);
-	myBlock.container.snapToPixelEnabled = true;
+        myBlock.container.snapToPixelEnabled = true;
         myBlock.container.x = myBlock.x;
         myBlock.container.y = myBlock.y;
 
         // and we need to load the images into the container.
         myBlock.imageLoad();
+        // FIXME: Works correctly with mediaBlocks, not with others.
+        if (myBlock.image) {
+            var image = new Image();
+            image.onload = function() {
+                var bitmap = new createjs.Bitmap(image);
+                // FIXME: Determine these values computationally based on the size
+                // of the media block.
+                if (image.width > image.height) {
+                    bitmap.scaleX = 108 / image.width;
+                    bitmap.scaleY = 108 / image.width;
+                    bitmap.scale = 108 / image.width;
+                } else {
+                    bitmap.scaleX = 80 / image.height;
+                    bitmap.scaleY = 80 / image.height;
+                    bitmap.scale = 80 / image.height;
+                }
+                myBlock.container.addChild(bitmap);
+                bitmap.x = 40;
+                bitmap.y = 2;
+                myBlock.container.updateCache();
+            }
+            image.src = myBlock.image;
+        }
         return myBlock;
     }
 
@@ -2302,6 +2327,7 @@ function Block(protoblock, blocks) {
     this.label = null; // Editable textview in DOM.
     this.text = null; // A dynamically generated text label on block itself.
     this.value = null; // Value for number, text, and media blocks.
+    this.image = protoblock.image; // The file path of the image.
 
     // All blocks have at a container and least one bitmap.
     this.container = null;
@@ -2566,12 +2592,12 @@ function Block(protoblock, blocks) {
 
         // Get the block labels from the protoblock
         var block_label = '';
-        if (this.protoblock.staticLabels.length > 0) {
+        if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
             block_label = _(this.protoblock.staticLabels[0]);
         }
 
         var top_label = '';
-        if (this.protoblock.staticLabels.length > 1) {
+        if (this.protoblock.staticLabels.length > 1 && !this.protoblock.image) {
             top_label = _(this.protoblock.staticLabels[1]);
         }
         // Create the bitmap for the block.
@@ -2668,7 +2694,7 @@ function Block(protoblock, blocks) {
         var thisBlock = this.blocks.blockList.indexOf(this);
 
         var bottom_label = '';
-        if (this.protoblock.staticLabels.length > 2) {
+        if (this.protoblock.staticLabels.length > 2 && !this.protoblock.image) {
             bottom_label = _(this.protoblock.staticLabels[2]);
         }
 
@@ -2798,7 +2824,7 @@ function Block(protoblock, blocks) {
                 me.collapseText.visible = false;
 
                 me.collapseContainer = new createjs.Container();
-		me.collapseContainer.snapToPixelEnabled = true;
+        me.collapseContainer.snapToPixelEnabled = true;
 
                 var image = new Image();
                 image.onload = function() {
@@ -3162,7 +3188,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
 function collapseToggle(blocks, myBlock) {
     if (['start', 'action'].indexOf(myBlock.name) == -1) {
-	console.log('Do not collapse ' + myBlock.name);
+    console.log('Do not collapse ' + myBlock.name);
         return;
     }
 
@@ -3171,7 +3197,7 @@ function collapseToggle(blocks, myBlock) {
     blocks.findDragGroup(thisBlock)
 
     function toggle(collapse) {
-	console.log('toggle collapse ' + myBlock.name + ' ' + collapse);
+    console.log('toggle collapse ' + myBlock.name + ' ' + collapse);
         myBlock.collapsed = !collapse;
         myBlock.collapseBitmap.visible = collapse;
         myBlock.expandBitmap.visible = !collapse;

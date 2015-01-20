@@ -2439,12 +2439,6 @@ define(function(require) {
             var btnSize = cellSize;
             var x = Math.floor(canvas.width / scale) - btnSize / 2;
             var y = Math.floor(btnSize / 2);
-            // if (onAndroid) {
-            // FIXME: check for the correct value
-            // space for the bottom android toolbar
-            // if we are in the lower right
-            // y -= 80;
-            // };
 
             var dx = 0;
             var dy = btnSize;
@@ -2460,6 +2454,15 @@ define(function(require) {
                 loadButtonDragHandler(container, x, y, menuNames[name][1]);
                 onscreenMenu.push(container);
                 container.visible = false;
+            }
+
+            if (menuButtonsVisible) {
+                for (button in onscreenMenu) {
+                    onscreenMenu[button].visible = true;
+                }
+                if (server) {
+                    saveName.style.visibility = 'visible';
+                }
             }
         }
 

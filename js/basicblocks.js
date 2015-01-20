@@ -508,6 +508,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['vspace'] = vspaceBlock;
     vspaceBlock.zeroArgBlock();
 
+    var hspaceBlock = new ProtoBlock('hspace');
+    hspaceBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['hspace'] = hspaceBlock;
+    hspaceBlock.oneArgMathBlock();
+    hspaceBlock.docks[0][2] = 'anyout';
+    hspaceBlock.docks[1][2] = 'anyin';
+
     var waitBlock = new ProtoBlock('wait');
     waitBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['wait'] = waitBlock;

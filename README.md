@@ -67,4 +67,5 @@ List of plugins
 * [Nutrition](https://github.com/walterbender/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
 * [Advanced Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json): a misc. collection of utility blocks
 * [Heap](https://github.com/walterbender/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data
+* [Accelerometer](https://github.com/walterbender/turtleblocksjs/blob/master/accelerometer.json): blocks for accessing an accelerometer
 

@@ -57,13 +57,14 @@ them) from the [Plugins Guide](https://github.com/walterbender/turtleblocksjs/bl
 List of plugins
 ---------------
 
-* [Turtle Blocks Mindstorm](https://github.com/SAMdroid-apps/turtlestorm)
-* [Maths](https://github.com/walterbender/turtleblocksjs/blob/master/maths.json)
-* [Translate](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json)
-* [Dictionary](https://github.com/walterbender/turtleblocksjs/blob/master/dictionary.json)
-* [Weather](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json)
-* [Logic](https://github.com/walterbender/turtleblocksjs/blob/master/logic.json)
-* [Finance](https://github.com/walterbender/turtleblocksjs/blob/master/finance.json)
-* [Nutrition](https://github.com/walterbender/turtleblocksjs/blob/master/nutrition.json)
-* [Advanced Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json)
+* [Turtle Blocks Mindstorm](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorm robotics kit
+* [Maths](https://github.com/walterbender/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
+* [Translate](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
+* [Dictionary](https://github.com/walterbender/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions
+* [Weather](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json): blocks to retrieve global weather forecasts
+* [Logic](https://github.com/walterbender/turtleblocksjs/blob/master/logic.json): blocks for bitwise Boolean operations
+* [Finance](https://github.com/walterbender/turtleblocksjs/blob/master/finance.json): a block for looking up market prices
+* [Nutrition](https://github.com/walterbender/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
+* [Advanced Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json): a misc. collection of utility blocks
+* [Heap](https://github.com/walterbender/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data
 

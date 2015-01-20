@@ -248,6 +248,14 @@ define(function(require) {
 
             createjs.Ticker.addEventListener('tick', tick);
 
+            createMsgContainer('#ffffff', '#7a7a7a', function(text) {
+                msgText = text;
+            });
+
+            createMsgContainer('#ffcbc4', '#ff0031', function(text) {
+                errorMsgText = text;
+            });
+
             trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
             turtles = new Turtles(canvas, stage, refreshCanvas);
             blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
@@ -365,14 +373,6 @@ define(function(require) {
             cartesianBitmap = createGrid('images/Cartesian.svg');
 
             polarBitmap = createGrid('images/polar.svg');
-
-            createMsgContainer('#ffffff', '#7a7a7a', function(text) {
-                msgText = text;
-            });
-
-            createMsgContainer('#ffcbc4', '#ff0031', function(text) {
-                errorMsgText = text;
-            });
 
             var URL = window.location.href;
             var projectName = null;
@@ -881,6 +881,10 @@ define(function(require) {
         }
 
         function errorMsg(msg, blk) {
+            if (errorMsgText == null) {
+                // The container may not be ready yet... so do nothing
+                return;
+            }
             var errorMsgContainer = errorMsgText.parent;
             errorMsgContainer.visible = true;
             errorMsgText.text = msg;

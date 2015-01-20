@@ -370,6 +370,31 @@ function Palette(palettes, name, color, bgcolor) {
                     var arg = this.protoList[blk].defaults[0];
                     break;
             }
+
+	    function calculateContainerXY(palette) {
+                var y = palette.menuContainer.y + palette.y + STANDARDBLOCKHEIGHT;
+                // Multicolumn
+                if (y > maxPaletteHight(palette.palettes.originalSize)) {
+                    palette.x += 160;
+                    palette.y = 0;
+                    y = palette.menuContainer.y + palette.y + STANDARDBLOCKHEIGHT;
+                }
+	    }
+
+	    function calculateHeight(palette, blkname) {
+                // We use a filler for the menu background
+                var height = STANDARDBLOCKHEIGHT * Math.ceil(last(palette.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
+                // Some blocks are not shown full-size on the palette.
+                if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
+                    height = STANDARDBLOCKHEIGHT;
+                } else if (['action', 'start'].indexOf(blkname) != -1) {
+                    height += 2 * STANDARDBLOCKHEIGHT;
+                } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
+                    height += STANDARDBLOCKHEIGHT;
+                }
+		return height
+	    }
+
             if (!this.protoContainers[modname]) {
                 // create graphics for the palette entry for this block
                 this.protoBackgrounds[modname] = new createjs.Container();
@@ -377,13 +402,8 @@ function Palette(palettes, name, color, bgcolor) {
                 this.protoContainers[modname] = new createjs.Container();
 		this.protoContainers[modname].snapToPixelEnabled = true;
 
-                var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
-                // Multicolumn
-                if (y > maxPaletteHight(this.palettes.originalSize)) {
-                    this.x += 160;
-                    this.y = 0;
-                    y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
-                }
+		calculateContainerXY(this)
+
                 this.protoBackgrounds[modname].x = this.menuContainer.x + this.x;
                 this.protoBackgrounds[modname].y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
                 this.protoBackgrounds[modname].visible = false;
@@ -393,16 +413,7 @@ function Palette(palettes, name, color, bgcolor) {
                 this.palettes.stage.addChild(this.protoContainers[modname]);
                 this.protoContainers[modname].visible = false;
 
-                // We use a filler for the menu background
-                var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
-                // Some blocks are not shown full-size on the palette.
-                if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
-                    height = STANDARDBLOCKHEIGHT;
-                } else if (['action', 'start'].indexOf(blkname) != -1) {
-                    height += 2 * STANDARDBLOCKHEIGHT;
-                } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
-                    height += STANDARDBLOCKHEIGHT;
-                }
+		var height = calculateHeight(this, blkname);
                 this.size += Math.ceil(height * PROTOBLOCKSCALE);
                 this.y += Math.ceil(height * PROTOBLOCKSCALE);
 
@@ -416,24 +427,8 @@ function Palette(palettes, name, color, bgcolor) {
 
                 makePaletteBitmap(this, PALETTEFILLER.replace(/filler_height/g, height.toString()), modname, processFiller, [blkname, blk]);
             } else {
-                var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
-                // Multicolumn
-                if (y > maxPaletteHight(this.palettes.originalSize)) {
-                    this.x += 160;
-                    this.y = 0;
-                    y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
-                }
-                // We use a filler for the menu background
-                var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
-                // Some blocks are not shown full-size on the palette.
-                if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
-                    height = STANDARDBLOCKHEIGHT;
-                } else if (['action', 'start'].indexOf(blkname) != -1) {
-                    height += 2 * STANDARDBLOCKHEIGHT;
-                } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
-                    height += STANDARDBLOCKHEIGHT;
-                }
-                this.size += Math.ceil(height * PROTOBLOCKSCALE);
+		calculateContainerXY(this)
+		var height = calculateHeight(this, blkname);
                 this.y += Math.ceil(height * PROTOBLOCKSCALE);
 	    }
         }

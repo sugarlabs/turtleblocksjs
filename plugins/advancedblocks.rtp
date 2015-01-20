@@ -201,7 +201,7 @@ evalBlock.staticLabels.push('x');
 
 //* block:speak *//
 var speakBlock = new ProtoBlock('speak');
-speakBlock.palette = palettes.dict['extras'];
+speakBlock.palette = palettes.dict['media'];
 blocks.protoBlockDict['speak'] = speakBlock;
 speakBlock.oneArgBlock();
 speakBlock.staticLabels.push('speak');

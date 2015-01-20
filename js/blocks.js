@@ -1524,9 +1524,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var value = args[1];
                 me.blockList[thisBlock].value = value;
                 if (value == null) {
-                    loadThumbnail(me, thisBlock, 'images/load-media.svg');
+                    me.blockList[thisBlock].image = 'images/load-media.svg';
                 } else {
-                    loadThumbnail(me, thisBlock, null);
+                    me.blockList[thisBlock].image = null;
                 }
             }
             postProcessArg = [thisBlock, null];
@@ -1536,9 +1536,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var value = args[1];
                 me.blockList[thisBlock].value = CAMERAVALUE;
                 if (value == null) {
-                    loadThumbnail(me, thisBlock, 'images/camera.svg');
+                    me.blockList[thisBlock].image = 'images/camera.svg';
                 } else {
-                    loadThumbnail(me, thisBlock, null);
+                    me.blockList[thisBlock].image = null;
                 }
             }
             postProcessArg = [thisBlock, null];
@@ -1548,9 +1548,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var value = args[1];
                 me.blockList[thisBlock].value = VIDEOVALUE;
                 if (value == null) {
-                    loadThumbnail(me, thisBlock, 'images/video.svg');
+                    me.blockList[thisBlock].image = 'images/video.svg';
                 } else {
-                    loadThumbnail(me, thisBlock, null);
+                    me.blockList[thisBlock].image = null;
                 }
             }
             postProcessArg = [thisBlock, null];
@@ -3054,6 +3054,8 @@ function doOpenMedia(blocks, thisBlock) {
                 if (blocks.blockList[thisBlock].container.children.length > 2) {
                     blocks.blockList[thisBlock].container.removeChild(last(blocks.blockList[thisBlock].container.children));
                 }
+                thisBlock.image = null;
+                blocks.refreshCanvas();
                 loadThumbnail(blocks, thisBlock, null);
             }
         });

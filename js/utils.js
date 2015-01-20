@@ -337,16 +337,13 @@ function preparePluginExports(obj) {
 
 
 function doSaveSVG(canvas, turtles, desc) {
-    var head = '<!DOCTYPE html>\n<html>\n<head>\n<title>' + desc + '</title>\n</head>\n<body>\n';
     var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0);
-    var tail = '</body>\n</html>';
-    // TODO: figure out if popups are blocked
-    var svgWindow = window.open('data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
+    download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
 }
 
-function download(filename, text) {
+function download(filename, data) {
     var a = document.createElement('a');
-    a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    a.setAttribute('href', data);
     a.setAttribute('download', filename);
     document.body.appendChild(a);
     a.click();

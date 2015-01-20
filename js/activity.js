@@ -302,9 +302,9 @@ define(function(require) {
                     setTimeout(function() {
                         var rawData = reader.result;
                         var cleanData = rawData.replace('\n', ' ');
-			console.log(cleanData);
+            console.log(cleanData);
                         var obj = JSON.parse(cleanData);
-			console.log(obj)
+            console.log(obj)
                         blocks.loadNewBlocks(obj);
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
@@ -2330,7 +2330,7 @@ define(function(require) {
             if (fileExt(filename) != 'tb') {
                 filename += '.tb';
             }
-            download(filename, prepareExport());
+            download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
         };
 
         function hideStopButton() {
@@ -2439,12 +2439,6 @@ define(function(require) {
             var btnSize = cellSize;
             var x = Math.floor(canvas.width / scale) - btnSize / 2;
             var y = Math.floor(btnSize / 2);
-            // if (onAndroid) {
-            // FIXME: check for the correct value
-            // space for the bottom android toolbar
-            // if we are in the lower right
-            // y -= 80;
-            // };
 
             var dx = 0;
             var dy = btnSize;
@@ -2460,6 +2454,15 @@ define(function(require) {
                 loadButtonDragHandler(container, x, y, menuNames[name][1]);
                 onscreenMenu.push(container);
                 container.visible = false;
+            }
+
+            if (menuButtonsVisible) {
+                for (button in onscreenMenu) {
+                    onscreenMenu[button].visible = true;
+                }
+                if (server) {
+                    saveName.style.visibility = 'visible';
+                }
             }
         }
 

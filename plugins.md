@@ -15,17 +15,14 @@ How to load plugins
 Under the Option Toolbar (click it if it is not expanded) you will see
 this option:
 
-<img src='http://people.sugarlabs.org/ignacio/plugin-button.svg'>
+<img src='http://people.sugarlabs.org/walter/plugin-button.svg'>
 
 Click it and a file chooser will appear. 
 
-In the file chooser select the <code>**.json**</code> plugin and click 'Open'
-<img src='http://people.sugarlabs.org/ignacio/LoadPluginsFileChooser.png'>
+In the file chooser select a plugin file (they have <code>**.json**</code> file suffixes) and click 'Open'.
 
-After you click it, you will see the blocks defined by the plugin in
-the palettes. (In the case of the translate plugin, new blocks will be
-added to a new palette, *mashape*) <img
-src='http://people.sugarlabs.org/ignacio/LoadPluginMashape.png'>
+The file will open and load new blocks into the palettes. Many plugins define their own palettes, so you will likely see a new palette button at the bottom of the column of buttons on the left side of the screen. (In the case of the translate plugin, new blocks will be added to a new palette, *mashape*) <img
+src='http://people.sugarlabs.org/walter/mashape.svg'>
 
 The plugin is saved in the browser local storage so you don't need to
 reload it every time you run TurtleJS.
@@ -72,7 +69,7 @@ The Plugin Dictionary
 
 Now that you know JSON and have turtleblocksjs running, you can go
 through [some example
-plugins](https://github.com/walterbender/turtleblocksjs/blob/readmeupdate/README.md#references)
+plugins](https://github.com/walterbender/turtleblocksjs/blob/master/README.md#Plugins)
 and learn [how to install
 them.](https://github.com/walterbender/turtleblocksjs/blob/master/README.md#how-to-load-plugins)
 
@@ -130,7 +127,7 @@ Pluginify
 ---------
 
 You can use
-[pluginify.py](https://github.com/DakshShah/turtleblocksjs/blob/b798401b8ac155ed720da18d933afabc96d14ee1/pluginify.py)
+[pluginify.py](https://github.com/walterbender/turtleblocksjs/blob/master/pluginify.py)
 to convert a `.rtp` (Readable Turtleblocks Plugin) to a `.json`
 plugin.
 
@@ -138,13 +135,13 @@ Writing plugins directly in JSON is tedious. To make the job easier
 for you, we have created the readable Turtle Blocks plugin (RTP)
 format. The syntax is available in `python pluginify.py syntax`
 
-[.rtp example](https://github.com/DakshShah/turtleblocksjs/blob/b798401b8ac155ed720da18d933afabc96d14ee1/finance.rtp)
+[.rtp example](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/finance.rtp)
 
 Once you have made an RTP file it is time to convert it to JSON so
 that it can be used in TurtleBlocksjs. To convert it to JSON, run
 `python pluginify.py filename.rtp`
 
-[.rtp syntax](https://github.com/DakshShah/turtleblocksjs/blob/b798401b8ac155ed720da18d933afabc96d14ee1/pluginify.py#L31)
+[.rtp syntax](https://github.com/walterbender/turtleblocksjs/blob/master/pluginify.py#L33)
 
 References
 ----------

@@ -1,0 +1,63 @@
+//* comment *//
+
+Copyright (C) 2015 Ignacio Rodriguez
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+//* globals *//
+var accelerometer = {'x': null, 'y': null, 'z': null};
+function saveAccelerometerData(event) {
+    accelerometer['x'] = event.accelerationIncludingGravity.x;
+    accelerometer['y'] = event.accelerationIncludingGravity.y;
+    accelerometer['z'] = event.accelerationIncludingGravity.z;
+};
+if (window.DeviceMotionEvent) {
+    window.addEventListener("devicemotion", saveAccelerometerData, false);
+}
+else{
+    console.log("DeviceMotionEvent is not supported (no accelerometer)");
+}
+
+//* arg:accelerometerx *//
+var block = blocks.blockList[blk];
+block.value = accelerometer['x'];
+
+//* arg:accelerometery *//
+var block = blocks.blockList[blk];
+block.value = accelerometer['y'];
+
+//* arg:accelerometerz *//
+var block = blocks.blockList[blk];
+block.value = accelerometer['z'];
+
+//* block:accelerometerx *//
+var accelerometerXBlk = new ProtoBlock('accelerometerx');
+accelerometerXBlk.palette = palettes.dict['sensors'];
+blocks.protoBlockDict['accelerometerx'] = accelerometerXBlk;
+accelerometerXBlk.parameterBlock();
+accelerometerXBlk.staticLabels.push('motion x');
+
+//* block:accelerometery *//
+var accelerometerYBlk = new ProtoBlock('accelerometery');
+accelerometerYBlk.palette = palettes.dict['sensors'];
+blocks.protoBlockDict['accelerometery'] = accelerometerYBlk;
+accelerometerYBlk.parameterBlock();
+accelerometerYBlk.staticLabels.push('motion y');
+
+//* block:accelerometerz *//
+var accelerometerZBlk = new ProtoBlock('accelerometerz');
+accelerometerZBlk.palette = palettes.dict['sensors'];
+blocks.protoBlockDict['accelerometerz'] = accelerometerZBlk;
+accelerometerZBlk.parameterBlock();
+accelerometerZBlk.staticLabels.push('motion z');

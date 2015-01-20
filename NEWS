@@ -177,8 +177,18 @@
   * clean up palette buttons layout after removing a plugin
     (w/Ignacio ROdriguez)
   * use snap to pixels
+  * add images to blocks (w/Ignacio Rodriguez)
+  * reorganize palettes and plugins
+  * fix positioning problem with palettes due to multiple copies of the
+    protoblocks being added to the protoList
 
 TODO:
+  * use nop blocks when encountering unknown blocks during load
+  * expand boolean blocks
+  * save stacks to personal palette
+  * scroll palette buttons with a gesture when there are too many
+  * scroll/page menus when they get too big (instead of wrapping)
+  * more efficient until and while?
   * save to javascript
   * user defined blocks
   * RTL support

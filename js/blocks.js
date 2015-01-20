@@ -3081,7 +3081,6 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     var locked = false;
     myBlock.collapseContainer.on('click', function(event) {
         if (locked) {
-            console.log('debouncing click');
             return;
         }
         locked = true;

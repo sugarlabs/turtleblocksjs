@@ -771,7 +771,7 @@ define(function(require) {
         function loadProject(projectName) {
             // Show busy cursor.
             document.body.style.cursor = 'wait';
-            palettes.updatePalettes();
+            // palettes.updatePalettes();
             setTimeout(function() {
                 if (fileExt(projectName) != 'tb') {
                     projectName += '.tb';
@@ -802,7 +802,7 @@ define(function(require) {
         }
 
         function saveProject(projectName) {
-            palettes.updatePalettes();
+            // palettes.updatePalettes();
             // Show busy cursor.
             document.body.style.cursor = 'wait';
             setTimeout(function() {
@@ -841,7 +841,7 @@ define(function(require) {
 
         function loadStart() {
             // where to put this?
-            palettes.updatePalettes();
+            // palettes.updatePalettes();
 
             sessionData = null;
             // Try restarting where we were when we hit save.

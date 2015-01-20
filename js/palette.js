@@ -96,7 +96,6 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
             if (name in this.buttons) {
                 this.dict[name].updateMenu(true);
             } else {
-                console.log('makeMenu: ' + name);
                 this.buttons[name] = new createjs.Container();
 		this.buttons[name].snapToPixelEnabled = true;
                 this.stage.addChild(this.buttons[name]);
@@ -262,7 +261,6 @@ function loadPaletteButtonHandler(palettes, name) {
 
     palettes.buttons[name].on('click', function(event) {
         if (locked) {
-            console.log('debouncing click');
             return;
         }
         locked = true;
@@ -349,10 +347,13 @@ function Palette(palettes, name, color, bgcolor) {
                 this.hide();
             }
         }
+	this.x = 0;
+	this.y = 0;
         for (var blk in this.protoList) {
             // Create a proto block for each palette entry.
             var blkname = this.protoList[blk].name;
             var modname = blkname;
+
             switch (blkname) {
                 // Use the name of the action in the label
                 case 'do':
@@ -414,7 +415,27 @@ function Palette(palettes, name, color, bgcolor) {
                 }
 
                 makePaletteBitmap(this, PALETTEFILLER.replace(/filler_height/g, height.toString()), modname, processFiller, [blkname, blk]);
-            }
+            } else {
+                var y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
+                // Multicolumn
+                if (y > maxPaletteHight(this.palettes.originalSize)) {
+                    this.x += 160;
+                    this.y = 0;
+                    y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
+                }
+                // We use a filler for the menu background
+                var height = STANDARDBLOCKHEIGHT * Math.ceil(last(this.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
+                // Some blocks are not shown full-size on the palette.
+                if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
+                    height = STANDARDBLOCKHEIGHT;
+                } else if (['action', 'start'].indexOf(blkname) != -1) {
+                    height += 2 * STANDARDBLOCKHEIGHT;
+                } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
+                    height += STANDARDBLOCKHEIGHT;
+                }
+                this.size += Math.ceil(height * PROTOBLOCKSCALE);
+                this.y += Math.ceil(height * PROTOBLOCKSCALE);
+	    }
         }
     }
 
@@ -652,7 +673,9 @@ function Palette(palettes, name, color, bgcolor) {
     };
 
     this.add = function(protoblock) {
-        this.protoList.push(protoblock);
+	if (this.protoList.indexOf(protoblock) == -1) {
+            this.protoList.push(protoblock);
+	}
         return this;
     }
 
@@ -694,7 +717,6 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
 
     function makeBlockFromPalette(blk, blkname, palette) {
         var arg = '__NOARG__';
-        // console.log('makeBlockFromPalette ' + blkname + ' ' + palette.protoList[blk].name + ' ' + palette.protoList[blk].defaults[0]);
         switch (palette.protoList[blk].name) {
             case 'do':
                 blkname = 'do ' + palette.protoList[blk].defaults[0];
@@ -725,7 +747,6 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             return;
         }
         if (locked) {
-            console.log('debouncing click');
             return;
         }
         locked = true;
@@ -790,7 +811,6 @@ function loadPaletteMenuHandler(palette) {
         }
 
         if (locked) {
-            console.log('debouncing click');
             return;
         }
         locked = true;

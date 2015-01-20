@@ -239,7 +239,7 @@ var svgBlock = new ProtoBlock('savesvg');
 svgBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['savesvg'] = svgBlock;
 svgBlock.oneArgBlock();
-svgBlock.defaults.push('title');
+svgBlock.defaults.push(_('title') + '.svg');
 svgBlock.staticLabels.push('save svg');
 svgBlock.docks[1][2] = 'textin';
 

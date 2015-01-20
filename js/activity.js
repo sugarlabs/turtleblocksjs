@@ -1190,6 +1190,9 @@ define(function(require) {
                 case 'y':
                     turtle.doSetXY(turtle.y, value);
                     break;
+                case 'heading':
+                    turtle.doSetHeading(value);
+                    break;
                 case 'color':
                     turtle.doSetColor(value);
                     break;

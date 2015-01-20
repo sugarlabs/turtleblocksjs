@@ -107,7 +107,7 @@ showHeap.palette = palettes.dict['extras'];
 blocks.protoBlockDict['showHeap'] = showHeap;
 showHeap.zeroArgBlock();
 showHeap.staticLabels.push('show heap');
-showHeap.fontsize = '14px';
+showHeap.fontsize = '16px';
 
 //* block:emptyHeap *//
 var emptyHeap = new ProtoBlock('emptyHeap');
@@ -115,7 +115,7 @@ emptyHeap.palette = palettes.dict['extras'];
 blocks.protoBlockDict['emptyHeap'] = emptyHeap;
 emptyHeap.zeroArgBlock();
 emptyHeap.staticLabels.push('empty heap');
-emptyHeap.fontsize = '14px';
+emptyHeap.fontsize = '16px';
 
 //* block:saveHeap *//
 var saveHeap = new ProtoBlock('saveHeap');
@@ -125,7 +125,7 @@ saveHeap.oneArgBlock();
 saveHeap.defaults.push('heap.json');
 saveHeap.docks[1][2] = 'textin';
 saveHeap.staticLabels.push('save heap');
-saveHeap.fontsize = '14px';
+saveHeap.fontsize = '16px';
 
 //* block:loadHeap *//
 var loadHeap = new ProtoBlock('loadHeap');
@@ -133,6 +133,6 @@ loadHeap.palette = palettes.dict['extras'];
 blocks.protoBlockDict['loadHeap'] = loadHeap;
 loadHeap.oneArgBlock();
 loadHeap.staticLabels.push('load heap');
-loadHeap.fontsize = '14px';
+loadHeap.fontsize = '16px';
 loadHeap.docks[1][2] = 'filein';
 loadHeap.defaults = [[null, null]];

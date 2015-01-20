@@ -99,11 +99,13 @@ blocks.protoBlockDict['playback'] = audioBlock;
 audioBlock.defaults.push(null);
 audioBlock.oneArgBlock();
 audioBlock.docks[1][2] = 'mediain';
-audioBlock.staticLabels.push('playback');
+audioBlock.staticLabels.push('play back');
+audioBlock.fontsize = '16px';
 
 //* block:stopplayback *//
 var audioStopBlock = new ProtoBlock('stopplayback');
 audioStopBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['stopplayback'] = audioStopBlock;
 audioStopBlock.zeroArgBlock();
-audioStopBlock.staticLabels.push('stop')
+audioStopBlock.staticLabels.push('stop play');
+audioStopBlock.fontsize = '16px';

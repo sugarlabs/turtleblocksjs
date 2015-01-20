@@ -61,6 +61,7 @@ startTurtleBlock.oneArgBlock();
 startTurtleBlock.docks[1][2] = 'anyin';
 startTurtleBlock.defaults.push('0');
 startTurtleBlock.staticLabels.push('start turtle');
+startTurtleBlock.fontsize = '16px';
 
 //* block:stopTurtle *//
 var stopTurtleBlock = new ProtoBlock('stopTurtle');
@@ -70,6 +71,7 @@ stopTurtleBlock.oneArgBlock();
 stopTurtleBlock.docks[1][2] = 'anyin';
 stopTurtleBlock.defaults.push('0');
 stopTurtleBlock.staticLabels.push('stop turtle');
+stopTurtleBlock.fontsize = '16px';
 
 //* block:setturtlename *//
 var setTurtleName = new ProtoBlock('setturtlename');
@@ -80,6 +82,7 @@ setTurtleName.docks[1][2] = 'anyin';
 setTurtleName.docks[2][2] = 'anyin';
 setTurtleName.defaults.push('0');
 setTurtleName.defaults.push('Yertle');
-setTurtleName.staticLabels.push('set\nturtle\nname');
+setTurtleName.staticLabels.push('turtle name');
 setTurtleName.staticLabels.push('source');
 setTurtleName.staticLabels.push('target');
+setTurtleName.fontsize = '16px';

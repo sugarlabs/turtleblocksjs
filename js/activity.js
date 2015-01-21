@@ -473,7 +473,7 @@ define(function(require) {
 	        var delta = Math.max(-1, Math.min(1, (data)));
 
             if (event.clientX < cellSize) {
-                palettes.menuScrollEvent(-delta);
+                palettes.menuScrollEvent(delta);
             }
         }
 

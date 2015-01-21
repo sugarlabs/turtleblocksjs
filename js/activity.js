@@ -98,6 +98,7 @@ define(function(require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
 
+        // Blocks defined by plugins and saved in local storage
         var evalFlowDict = {};
         var evalArgDict = {};
         var evalParameterDict = {};
@@ -112,6 +113,9 @@ define(function(require) {
             'ARGPLUGINS': {},
             'BLOCKPLUGINS': {}
         };
+
+        // Stacks of blocks saved in local storage
+        var macroDict = {};
 
         var sounds = [];
         try {
@@ -292,6 +296,14 @@ define(function(require) {
                 }
             }, null);
 
+            // Load any macros saved in local storage.
+            var macroData = localStorage.getItem('macros');
+            if (macroData != null) {
+                processMacroData(macroData, blocks, macroDict);
+            } else {
+                blocks.setMacroDictionary(macroDict);
+            }
+
             // Load any plugins saved in local storage.
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
@@ -470,7 +482,7 @@ define(function(require) {
 
         function scrollEvent(event) {
             var data = event.wheelDelta || -event.detail;
-	        var delta = Math.max(-1, Math.min(1, (data)));
+                var delta = Math.max(-1, Math.min(1, (data)));
 
             if (event.clientX < cellSize) {
                 palettes.menuScrollEvent(delta);

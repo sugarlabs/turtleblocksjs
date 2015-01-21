@@ -427,6 +427,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.msgText = msgText;
     }
 
+    // We need access to the macro dictionary because we add to it.
+    this.setMacroDictionary = function(obj) {
+        this.macroDict = obj;
+    }
+
     // We need access to the turtles list because we associate a
     // turtle with each start block.
     this.setTurtles = function(turtles) {
@@ -460,26 +465,49 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
     }
 
-    // set up copy/paste buttons
+    // set up copy/paste, dismiss, and copy-stack buttons
     this.makeCopyPasteButtons = function(makeButton, updatePasteButton) {
         var blocks = this;
         this.updatePasteButton = updatePasteButton;
+
         this.copyButton = makeButton('copy-button', 0, 0, 55);
         this.copyButton.visible = false;
+
+        this.dismissButton = makeButton('cancel-button', 0, 0, 55);
+        this.dismissButton.visible = false;
+
+        this.saveStackButton = makeButton('save-blocks-button', 0, 0, 55);
+        this.saveStackButton.visible = false;
+
         this.copyButton.on('click', function(event) {
             var topBlock = blocks.findTopBlock(blocks.activeBlock);
             blocks.selectedStack = topBlock;
             blocks.copyButton.visible = false;
+            blocks.saveStackButton.visible = false;
             blocks.dismissButton.visible = false;
             blocks.updatePasteButton();
             blocks.refreshCanvas();
         });
-        this.dismissButton = makeButton('cancel-button', 0, 0, 55);
-        this.dismissButton.visible = false;
+
         this.dismissButton.on('click', function(event) {
             blocks.copyButton.visible = false;
+            blocks.saveStackButton.visible = false;
             blocks.dismissButton.visible = false;
             blocks.refreshCanvas();
+        });
+
+        this.saveStackButton.on('click', function(event) {
+            var topBlock = blocks.findTopBlock(blocks.activeBlock);
+            if (blocks.blockList[topBlock].name != 'action') {
+                console.log('You can only save action stacks.');
+            } else {
+                blocks.selectedStack = topBlock;
+                blocks.copyButton.visible = false;
+                blocks.saveStackButton.visible = false;
+                blocks.dismissButton.visible = false;
+                blocks.saveStack();
+                blocks.refreshCanvas();
+            }
         });
     }
 
@@ -665,7 +693,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 if (myBlock.connections[0] != null) {
                     this.loopCounter = 0;
                     this.adjustDocks(myBlock.connections[0]);
-		}
+                }
             } else if (myBlock.isArgBlock()) {
                 // Arg blocks such as plus, minus, etc.
                 if (myBlock.connections[2] != null) {
@@ -1903,6 +1931,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.dismissButton.visible = true;
         this.dismissButton.x = myBlock.container.x + 27;
         this.dismissButton.y = myBlock.container.y - 27;
+        this.saveStackButton.visible = true;
+        this.saveStackButton.x = myBlock.container.x + 82;
+        this.saveStackButton.y = myBlock.container.y - 27;
         this.refreshCanvas();
     }
 
@@ -1912,6 +1943,29 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         if (this.selectedStack == null) {
             return;
         }
+        var blockObjs = this.copyBlocksToObj();
+        this.loadNewBlocks(blockObjs);
+    }
+
+    this.saveStack = function() {
+        // Save a stack of blocks to local storage and the my-stack
+        // palette by creating a blockObjs and ...
+        if (this.selectedStack == null) {
+            return;
+        }
+        var blockObjs = this.copyBlocksToObj();
+        var nameBlk = blockObjs[0][4][1];
+        if (nameBlk == null) {
+            console.log('action not named... skipping');
+        } else {
+            console.log(blockObjs[nameBlk][1][1]);
+            var name = blockObjs[nameBlk][1][1];
+            localStorage.setItem('macros', prepareMacroExports(name, blockObjs, this.macroDict));
+            this.addToMyPalette(name, blockObjs);
+        }
+    }
+
+    this.copyBlocksToObj = function() {
         var blockObjs = [];
         var blockMap = {};
 
@@ -1950,7 +2004,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
         }
-        this.loadNewBlocks(blockObjs);
+        return blockObjs;
+    }
+
+    this.addToMyPalette = function(name, obj) {
+        console.log('NOT IMPLEMENTED');
     }
 
     this.loadNewBlocks = function(blockObjs) {
@@ -2285,19 +2343,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     // Check that name is in the proto list
                     if (!name in this.protoBlockDict || this.protoBlockDict[name] == null) {
                         // Lots of assumptions here.
-			// TODO: figure out if it is a flow or an arg block.
+                        // TODO: figure out if it is a flow or an arg block.
                         // Substitute a NOP block for an unknown block.
                         n = blkData[4].length;
                         console.log(n + ': substituting nop block for ' + name);
                         switch (n) {
                         case 2:
-			    name = 'nopZeroArgBlock';
+                            name = 'nopZeroArgBlock';
                             break;
                         case 3:
-			    name = 'nopOneArgBlock';
+                            name = 'nopOneArgBlock';
                             break;
                         default:
-			    name = 'nopTwoArgBlock';
+                            name = 'nopTwoArgBlock';
                             break;
                         }
                     }

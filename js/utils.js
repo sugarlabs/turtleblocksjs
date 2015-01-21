@@ -345,6 +345,27 @@ function preparePluginExports(obj) {
 }
 
 
+function processMacroData(macroData, blocks, macroDict) {
+    // Macros are stored in a JSON-encoded dictionary.
+    console.log(macroData);
+    var obj = JSON.parse(macroData);
+    for (name in obj) {
+        console.log('adding ' + name + ' to macroDict');
+        macroDict[name] = obj[name];
+        blocks.addToMyPalette(name, macroDict[name]);
+    }
+    blocks.setMacroDictionary(macroDict);
+}
+
+
+function prepareMacroExports(name, stack, macroDict) {
+    if (name != null) {
+        macroDict[name] = stack;
+    }
+    return JSON.stringify(macroDict);
+}
+
+
 function doSaveSVG(canvas, turtles, desc) {
     var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0);
     download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');

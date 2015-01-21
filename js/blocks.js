@@ -1441,15 +1441,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.makeNewBlock = function(name, postProcess, postProcessArg) {
         // Create a new block
         if (!name in this.protoBlockDict) {
+            // Should never happen: nop blocks should be substituted
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
         if (this.protoBlockDict[name] == null) {
+            // Should never happen
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
         this.blockList.push(new Block(this.protoBlockDict[name], this));
         if (last(this.blockList) == null) {
+            // Should never happen
             console.log('failed to make protoblock for ' + name);
             return null;
         }
@@ -2279,6 +2282,25 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
                 default:
+                    // Check that name is in the proto list
+                    if (!name in this.protoBlockDict || this.protoBlockDict[name] == null) {
+                        // Lots of assumptions here.
+			// TODO: figure out if it is a flow or an arg block.
+                        // Substitute a NOP block for an unknown block.
+                        n = blkData[4].length;
+                        console.log(n + ': substituting nop block for ' + name);
+                        switch (n) {
+                        case 2:
+			    name = 'nopZeroArgBlock';
+                            break;
+                        case 3:
+			    name = 'nopOneArgBlock';
+                            break;
+                        default:
+			    name = 'nopTwoArgBlock';
+                            break;
+                        }
+                    }
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], null);
                     break;
             }

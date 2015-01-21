@@ -569,9 +569,54 @@ function initBasicProtoBlocks(palettes, blocks) {
     getColorPixel.parameterBlock();
     getColorPixel.staticLabels.push('get pixel color');
 
+    // NOP blocks (used as placeholders when loaded blocks not found)
+    var nopValueBlock = new ProtoBlock('nopValue');
+    blocks.protoBlockDict['nopValue'] = nopValueBlock;
+    nopValueBlock.valueBlock();
+    nopValueBlock.staticLabels.push(_('unknown'));
+    nopValueBlock.docks[0][2] = 'anyout';
+
+    var nopOneArgMathBlock = new ProtoBlock('nopOneArgMathBlock');
+    blocks.protoBlockDict['nopOneArgMathBlock'] = nopOneArgMathBlock;
+    nopOneArgMathBlock.oneArgMathBlock();
+    nopOneArgMathBlock.staticLabels.push(_('unknown'));
+    nopOneArgMathBlock.docks[0][2] = 'anyout';
+    nopOneArgMathBlock.docks[1][2] = 'anyin';
+
+    var nopTwoArgMathBlock = new ProtoBlock('nopTwoArgMathBlock');
+    blocks.protoBlockDict['nopTwoArgMathBlock'] = nopTwoArgMathBlock;
+    nopTwoArgMathBlock.twoArgMathBlock();
+    nopTwoArgMathBlock.staticLabels.push(_('unknown'));
+    nopTwoArgMathBlock.docks[0][2] = 'anyout';
+    nopTwoArgMathBlock.docks[1][2] = 'anyin';
+    nopTwoArgMathBlock.docks[2][2] = 'anyin';
+
+    var nopZeroArgBlock = new ProtoBlock('nopZeroArgBlock');
+    blocks.protoBlockDict['nopZeroArgBlock'] = nopZeroArgBlock;
+    nopZeroArgBlock.zeroArgBlock();
+    nopZeroArgBlock.staticLabels.push(_('unknown'));
+
+    var nopOneArgBlock = new ProtoBlock('nopOneArgBlock');
+    blocks.protoBlockDict['nopOneArgBlock'] = nopOneArgBlock;
+    nopOneArgBlock.oneArgBlock();
+    nopOneArgBlock.staticLabels.push(_('unknown'));
+    nopOneArgBlock.docks[1][2] = 'anyin';
+
+    var nopTwoArgBlock = new ProtoBlock('nopTwoArgBlock');
+    blocks.protoBlockDict['nopTwoArgBlock'] = nopTwoArgBlock;
+    nopTwoArgBlock.twoArgBlock();
+    nopTwoArgBlock.staticLabels.push(_('unknown'));
+    nopTwoArgBlock.docks[1][2] = 'anyin';
+    nopTwoArgBlock.docks[2][2] = 'anyin';
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
-        blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+        if (blocks.protoBlockDict[protoblock].palette != null) {
+            blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
+        } else {
+	    // FIXME: should be an 'unknown' palette (gray)
+	    blocks.protoBlockDict[protoblock].palette = palettes.dict['turtle'];
+        }
     }
 
     // Populate the lists of block types.

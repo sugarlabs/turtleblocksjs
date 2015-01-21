@@ -18,16 +18,10 @@ var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
                        'media', 'sensors', 'extras'];
 
 function maxPaletteHight(menuSize) {
-    var onAndroid = /Android/i.test(navigator.userAgent);
-    if (onAndroid) {
-        var h = window.outerHeight;
-    } else {
-        var h = window.innerHeight;
-    }
     // Palettes don't start at the top of the screen and the last
     // block in a palette cannot start at the bottom of the screen,
     // hence - 2 * menuSize.
-    return h * canvasPixelRatio() - (2 * menuSize);
+    return windowHeight() * canvasPixelRatio() - (2 * menuSize);
 }
 
 
@@ -61,6 +55,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     this.stage = stage;
     this.cellSize = cellSize;
     this.halfCellSize = Math.floor(cellSize / 2);
+    this.scrollSpeed = 3;
     this.refreshCanvas = refreshCanvas;
     this.originalSize = 55; // this is the original svg size
     this.trashcan = trashcan;
@@ -88,6 +83,29 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     this.setDragging = function(setDraggingFlag) {
         this.setDraggingFlag = setDraggingFlag;
+    }
+
+    this.menuScrollEvent = function(direction, scrollSpeed) {
+        var keys = Object.keys(this.buttons);
+        if (windowHeight() >= this.cellSize * (keys.length + 1)) {
+            return;
+        }
+
+        if (this.buttons[keys[0]].y > this.cellSize && direction > 0) {
+            return;
+        }
+        if (this.buttons[last(keys)].y < windowHeight() && direction < 0) {
+            return;
+        }
+
+        scrollSpeed = scrollSpeed || this.scrollSpeed;
+
+        for (var name in this.buttons) {
+            this.buttons[name].y += direction * scrollSpeed;
+            this.buttons[name].visible =
+                !(this.buttons[name].y < this.halfCellSize);
+        }
+        this.stage.update();
     }
 
     this.makeMenu = function() {
@@ -236,6 +254,27 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 // Palette Button event handlers
 function loadPaletteButtonHandler(palettes, name) {
     var locked = false;
+    var scrolling = false;
+
+    palettes.buttons[name].on('mousedown', function (event) {
+        scrolling = true;
+        lastY = event.stageY;
+
+        palettes.buttons[name].on('pressmove', function (event) {
+            if (!scrolling) {
+                return;
+            }
+
+            diff = event.stageY - lastY;
+            palettes.menuScrollEvent(diff, 1);
+            lastY = event.stageY;
+        });
+
+        palettes.buttons[name].on('pressup', function (event) {
+            scrolling = false;
+        }, null, true);  // once = true
+    });
+
 
     // A palette button opens or closes a palette.
     palettes.buttons[name].on('mouseover', function(event) {

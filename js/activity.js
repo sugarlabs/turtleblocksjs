@@ -407,6 +407,9 @@ define(function(require) {
                 setTimeout(function () { loadStart(); }, 2000);
             }
 
+            document.addEventListener('mousewheel', scrollEvent, false);
+            document.addEventListener('DOMMouseScroll', scrollEvent, false);
+
             // Set up event handler for stage mouse events
             stage.on('stagemousedown', function(event) {
                 stageMouseDown = true;
@@ -463,6 +466,15 @@ define(function(require) {
             });
 
             this.document.onkeydown = keyPressed;
+        }
+
+        function scrollEvent(event) {
+            var data = event.wheelDelta || -event.detail;
+	        var delta = Math.max(-1, Math.min(1, (data)));
+
+            if (event.clientX < cellSize) {
+                palettes.menuScrollEvent(-delta);
+            }
         }
 
         function setCameraID(id) {
@@ -2009,6 +2021,11 @@ define(function(require) {
                     case 'time':
                         var d = new Date();
                         blocks.blockList[blk].value = (d.getTime() - time) / 1000;
+                        break;
+                    case 'hspace':
+                        var cblk = blocks.blockList[blk].connections[1];
+                        var v = parseArg(activity, turtle, cblk, blk);
+                        blocks.blockList[blk].value = v;
                         break;
                     case 'mousex':
                         blocks.blockList[blk].value = stageX;

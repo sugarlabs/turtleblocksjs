@@ -19,6 +19,15 @@ function canvasPixelRatio() {
     return devicePixelRatio / backingStoreRatio;
 }
 
+function windowHeight() {
+    var onAndroid = /Android/i.test(navigator.userAgent);
+    if (onAndroid) {
+        return window.outerHeight;
+    } else {
+        return window.innerHeight;
+    }
+}
+
 function httpGet(projectName) {
     var xmlHttp = null;
 

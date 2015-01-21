@@ -381,7 +381,8 @@ function Palette(palettes, name, color, bgcolor) {
                 makePaletteBitmap(palette, PALETTEICONS[name], name, processButtonIcon, null);
             }
 
-            makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)), this.name, processHeader, null);
+            // TODO: Set header width based on the number of columns
+            makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)).replace(/header_width/g, '200'), this.name, processHeader, null);
         }
     }
 
@@ -848,13 +849,13 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             palette.palettes.setDraggingFlag(false);
             if (palette.name == 'myblocks') {
                 // If we are on the myblocks palette, it is a macro.
-		var macroName = blkname.replace('macro_', '');
-		var obj = palette.palettes.macroDict[macroName];
-		// Set the position of the top block in the stack
-		// before loading.
-		obj[0][2] = palette.protoContainers[blkname].x;
-		obj[0][3] = palette.protoContainers[blkname].y;
-		console.log('loading macro ' + macroName);
+                var macroName = blkname.replace('macro_', '');
+                var obj = palette.palettes.macroDict[macroName];
+                // Set the position of the top block in the stack
+                // before loading.
+                obj[0][2] = palette.protoContainers[blkname].x;
+                obj[0][3] = palette.protoContainers[blkname].y;
+                console.log('loading macro ' + macroName);
                 paletteBlocks.loadNewBlocks(obj);
             } else {
                 // Create the block.

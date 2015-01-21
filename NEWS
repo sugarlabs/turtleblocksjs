@@ -181,10 +181,10 @@
   * reorganize palettes and plugins
   * fix positioning problem with palettes due to multiple copies of the
     protoblocks being added to the protoList
+  * expand boolean blocks
 
 TODO:
   * use nop blocks when encountering unknown blocks during load
-  * expand boolean blocks
   * save stacks to personal palette
   * scroll palette buttons with a gesture when there are too many
   * scroll/page menus when they get too big (instead of wrapping)

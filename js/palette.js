@@ -444,6 +444,11 @@ function Palette(palettes, name, color, bgcolor) {
                     case 'number':
                         block_label = '100';
                         break;
+                    case 'less':
+                    case 'greater':
+                    case 'equal':
+                        bottom_label = _(myBlock.staticLabels[0]);
+                        break;
                     default:
                         if (blkname != modname) {
                             // Override label for do, storein, and box

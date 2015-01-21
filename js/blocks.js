@@ -326,15 +326,16 @@ function ProtoBlock(name) {
         this.copyDock(BOOLEAN1ARGDOCKS);
     }
 
-    // E.g., greater, less, equal. (FIXME: These should be
-    // expandable.)
+    // E.g., greater, less, equal
     this.booleanTwoArgBlock = function() {
         this.style = 'arg';
+        this.artworkOffset = [0, 0, 42];
         this.size = 2;
         this.args = 2;
+        this.expandable = true;
         this.artwork.push(BOOLEAN2ARG);
         this.artwork.push(null);
-        this.artwork.push(null);
+        this.artwork.push(BOOLEAN2ARGBOTTOM);
         this.copyDock(BOOLEAN2ARGDOCKS);
     }
 
@@ -629,7 +630,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.fillerCount[BOT] -= 1;
             myBlock.docks[2][1] -= myBlock.protoblock.fillerOffset;
             docksChanged = true;
-            if (!myBlock.isArgBlock()) {
+            if (['less', 'greater', 'equal'].indexOf(myBlock.name) != -1) {
+                // Booleans have to shift down when removing filler
+                myBlock.docks[0][1] -= myBlock.protoblock.fillerOffset;
+            } else if (!myBlock.isArgBlock()) {
                 // Blocks with "out flow", e.g., setxy, have
                 // another dock position to adjust.
                 myBlock.docks[3][1] -= myBlock.protoblock.fillerOffset;
@@ -642,7 +646,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myBlock.fillerCount[BOT] += 1;
             myBlock.docks[2][1] += myBlock.protoblock.fillerOffset;
             docksChanged = true;
-            if (!myBlock.isArgBlock()) {
+            if (['less', 'greater', 'equal'].indexOf(myBlock.name) != -1) {
+                // Booleans have to shift up when adding filler
+                myBlock.docks[0][1] += myBlock.protoblock.fillerOffset;
+            } else if (!myBlock.isArgBlock()) {
                 // Blocks with "out flow", e.g., setxy, have
                 // another dock position to adjust.
                 myBlock.docks[3][1] += myBlock.protoblock.fillerOffset;
@@ -654,7 +661,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // the dock positions have changed, we need to make sure that
         // any argument flows from this block are positioned properly.
         if (docksChanged) {
-            if (myBlock.isArgBlock()) {
+            if (['less', 'greater', 'equal'].indexOf(myBlock.name) != -1) {
+                if (myBlock.connections[0] != null) {
+                    this.loopCounter = 0;
+                    this.adjustDocks(myBlock.connections[0]);
+		}
+            } else if (myBlock.isArgBlock()) {
                 // Arg blocks such as plus, minus, etc.
                 if (myBlock.connections[2] != null) {
                     this.loopCounter = 0;
@@ -2517,7 +2529,9 @@ function Block(protoblock, blocks) {
         // We generate a unique name to use as the key in the cache.
         var name = 'bmp_' + thisBlock + '_filler_' + clamp + '_' + c;
         if (!(name in this.bitmapCache)) {
-            if (this.isArgBlock()) {
+            if (['less', 'greater', 'equal'].indexOf(this.name) != -1) {
+                var artwork = BOOLEAN2ARGFILLER;
+            } else if (this.isArgBlock()) {
                 var artwork = ARG2BLOCKFILLER;
             } else if (this.isTwoArgBlock()) {
                 var artwork = BASICBLOCK2ARGFILLER;
@@ -2565,7 +2579,9 @@ function Block(protoblock, blocks) {
         // And the same for the highlight blocks
         var name = 'bmp_' + thisBlock + '_highlight_filler_' + clamp + '_' + c;
         if (this.bitmapCache[name] == undefined) {
-            if (this.isArgBlock()) {
+            if (['less', 'greater', 'equal'].indexOf(this.name) != -1) {
+                var artwork = BOOLEAN2ARGFILLER;
+            } else if (this.isArgBlock()) {
                 var artwork = ARG2BLOCKFILLER;
             } else if (this.isTwoArgBlock()) {
                 var artwork = BASICBLOCK2ARGFILLER;
@@ -2696,6 +2712,8 @@ function Block(protoblock, blocks) {
         var bottom_label = '';
         if (this.protoblock.staticLabels.length > 2 && !this.protoblock.image) {
             bottom_label = _(this.protoblock.staticLabels[2]);
+        } else if (['less', 'greater', 'equal'].indexOf(this.name) != -1) {
+            bottom_label = _(this.protoblock.staticLabels[0]);
         }
 
         // Value blocks get a modifiable text label

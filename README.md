@@ -8,11 +8,9 @@ easy entry point for beginners. It also has "high ceiling"
 programming, graphics, mathematics, and Computer Science features
 which will challenge the more adventurous student.
 
-.. note ::
-
-   Turtle Blocks JS closely parallels the Python version of Turtle
-   Blocks, the version included in the Sugar distribution. Sugar users
-   probably want to use Turtle Blocks rather than Turtle Blocks JS.
+> Note: Turtle Blocks JS closely parallels the Python version of Turtle
+> Blocks, the version included in the Sugar distribution. Sugar users
+> probably want to use Turtle Blocks rather than Turtle Blocks JS.
 
 ![Turtle Blocks](https://github.com/walterbender/turtleblocksjs/raw/master/screenshots/screenshot.png "Turtle Blocks")
 
@@ -57,7 +55,7 @@ them) from the [Plugins Guide](https://github.com/walterbender/turtleblocksjs/bl
 List of plugins
 ---------------
 
-* [Turtle Blocks Mindstorms](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorms robotics kit
+* [Mindstorms](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorms robotics kit
 * [Maths](https://github.com/walterbender/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
 * [Translate](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
 * [Dictionary](https://github.com/walterbender/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions

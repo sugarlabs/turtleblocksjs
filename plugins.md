@@ -9,9 +9,7 @@ The plugins are identified by the extension <code>**.json**</code>
 You need to download the plugins for load it.
 [(In this guide I will use this plugin)](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json)
 
-<img src='http://raw.githubusercontent.com/walterbender/turtleblocksjs/master/screenshots/foodplugin.png'>
-
-The Nutrition plugin is illustrated above.
+![Nutrition Plugin](https://github.com/walterbender/turtleblocksjs/raw/master/screenshots/foodplugin.png "The Nutrition plugin")
 
 How to load plugins
 -------------------

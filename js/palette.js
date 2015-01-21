@@ -56,6 +56,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     this.cellSize = cellSize;
     this.halfCellSize = Math.floor(cellSize / 2);
     this.scrollSpeed = 3;
+    this.scrollDiff = 0;
     this.refreshCanvas = refreshCanvas;
     this.originalSize = 55; // this is the original svg size
     this.trashcan = trashcan;
@@ -91,19 +92,21 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
             return;
         }
 
-        if (this.buttons[keys[0]].y > this.cellSize && direction > 0) {
-            return;
-        }
-        if (this.buttons[last(keys)].y < windowHeight() && direction < 0) {
-            return;
-        }
-
         scrollSpeed = scrollSpeed || this.scrollSpeed;
+        var diff = direction * scrollSpeed;
+        if (this.buttons[keys[0]].y + diff > this.cellSize && direction > 0) {
+            return;
+        }
+        if (this.buttons[last(keys)].y + diff < windowHeight() / this.scale - this.cellSize && direction < 0) {
+            return;
+        }
 
+
+        this.scrollDiff += diff;
         for (var name in this.buttons) {
-            this.buttons[name].y += direction * scrollSpeed;
+            this.buttons[name].y += diff;
             this.buttons[name].visible =
-                !(this.buttons[name].y < this.halfCellSize);
+                !(this.buttons[name].y < 0);
         }
         this.stage.update();
     }
@@ -118,7 +121,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
                 this.buttons[name].snapToPixelEnabled = true;
                 this.stage.addChild(this.buttons[name]);
                 this.buttons[name].x = this.x;
-                this.buttons[name].y = this.y;
+                this.buttons[name].y = this.y + this.scrollDiff;
                 this.y += this.cellSize;
 
                 function processButton(me, name, bitmap, extras) {

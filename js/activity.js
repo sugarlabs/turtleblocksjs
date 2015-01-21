@@ -300,10 +300,11 @@ define(function(require) {
             // Load any macros saved in local storage.
             var macroData = localStorage.getItem('macros');
             if (macroData != null) {
-                processMacroData(macroData, blocks, macroDict);
-            } else {
-                blocks.setMacroDictionary(macroDict);
+                processMacroData(macroData, palettes, blocks, macroDict);
             }
+	    // Blocks and palettes need access to the macros dictionary.
+            blocks.setMacroDictionary(macroDict);
+            palettes.setMacroDictionary(macroDict);
 
             // Load any plugins saved in local storage.
             var pluginData = localStorage.getItem('plugins');

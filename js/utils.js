@@ -345,16 +345,20 @@ function preparePluginExports(obj) {
 }
 
 
-function processMacroData(macroData, blocks, macroDict) {
+function processMacroData(macroData, palettes, blocks, macroDict) {
     // Macros are stored in a JSON-encoded dictionary.
     console.log(macroData);
     var obj = JSON.parse(macroData);
-    for (name in obj) {
-        console.log('adding ' + name + ' to macroDict');
-        macroDict[name] = obj[name];
-        blocks.addToMyPalette(name, macroDict[name]);
+    if (obj != {}) {
+        console.log('adding myblocks palette');
+        palettes.add('myblocks', 'black', '#a0a0a0');
+        for (name in obj) {
+            console.log('adding ' + name + ' to macroDict');
+            macroDict[name] = obj[name];
+            blocks.addToMyPalette(name, macroDict[name]);
+        }
+        palettes.makeMenu();
     }
-    blocks.setMacroDictionary(macroDict);
 }
 
 

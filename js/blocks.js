@@ -1974,6 +1974,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var name = blockObjs[nameBlk][1][1];
             localStorage.setItem('macros', prepareMacroExports(name, blockObjs, this.macroDict));
             this.addToMyPalette(name, blockObjs);
+            this.palettes.makeMenu();
         }
     }
 
@@ -2020,7 +2021,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.addToMyPalette = function(name, obj) {
-        console.log('NOT IMPLEMENTED');
+	// On the palette we store the macro as a basic block.
+        var myBlock = new ProtoBlock('macro_' + name);
+        this.protoBlockDict['macro_' + name] = myBlock;
+        myBlock.palette = this.palettes.dict['myblocks'];
+        myBlock.zeroArgBlock();
+        myBlock.staticLabels.push(_(name));
     }
 
     this.loadNewBlocks = function(blockObjs) {
@@ -3083,7 +3089,6 @@ function labelChanged(myBlock) {
     }
     myBlock.blocks.refreshCanvas();
 
-    // TODO: Garbage collection in palette (remove old proto block)
     // TODO: Don't allow duplicate action names
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {

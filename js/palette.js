@@ -15,7 +15,7 @@ var paletteBlocks = null;
 var PROTOBLOCKSCALE = 1.0;
 var PALETTELEFTMARGIN = 20;
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
-                       'media', 'sensors', 'extras'];
+                       'media', 'sensors', 'extras', 'myblocks'];
 
 function maxPaletteHight(menuSize) {
     // Palettes don't start at the top of the screen and the last
@@ -80,6 +80,11 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     this.setScale = function(scale) {
         this.scale = scale;
+    }
+
+    // We need access to the macro dictionary because we load them.
+    this.setMacroDictionary = function(obj) {
+        this.macroDict = obj;
     }
 
     this.setDragging = function(setDraggingFlag) {
@@ -841,15 +846,27 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             moved = false;
             palette.draggingProtoBlock = false;
             palette.palettes.setDraggingFlag(false);
-            // Create the block.
-            var newBlock = makeBlockFromPalette(blk, blkname, palette);
-            // Move the drag group under the cursor.
-            paletteBlocks.findDragGroup(newBlock);
-            for (i in paletteBlocks.dragGroup) {
-                paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale), Math.round(event.stageY / palette.palettes.scale));
+            if (palette.name == 'myblocks') {
+                // If we are on the myblocks palette, it is a macro.
+		var macroName = blkname.replace('macro_', '');
+		var obj = palette.palettes.macroDict[macroName];
+		// Set the position of the top block in the stack
+		// before loading.
+		obj[0][2] = palette.protoContainers[blkname].x;
+		obj[0][3] = palette.protoContainers[blkname].y;
+		console.log('loading macro ' + macroName);
+                paletteBlocks.loadNewBlocks(obj);
+            } else {
+                // Create the block.
+                var newBlock = makeBlockFromPalette(blk, blkname, palette);
+                // Move the drag group under the cursor.
+                paletteBlocks.findDragGroup(newBlock);
+                for (i in paletteBlocks.dragGroup) {
+                    paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale), Math.round(event.stageY / palette.palettes.scale));
+                }
+                // Dock with other blocks if needed
+                blocks.blockMoved(newBlock);
             }
-            // Dock with other blocks if needed
-            blocks.blockMoved(newBlock);
         }
         // Return protoblock we've been dragging back to the palette.
         palette.protoContainers[blkname].x = saveX;

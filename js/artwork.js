@@ -292,7 +292,7 @@ var PALETTEFILLCOLORS = {
     'flow': '#fd6600',
     'sensors': '#ff0066',
     'extras': '#ff0066',
-    'mashape': '#ff0066'
+    'myblocks': '#a0a0a0'
 };
 
 var PALETTESTROKECOLORS = {
@@ -305,7 +305,7 @@ var PALETTESTROKECOLORS = {
     'flow': '#ac3d00',
     'sensors': '#ef003e',
     'extras': '#ef003e',
-    'mashape': '#ef003e'
+    'myblocks': '#808080'
 };
 
 var PALETTEHIGHLIGHTCOLORS = {
@@ -318,7 +318,7 @@ var PALETTEHIGHLIGHTCOLORS = {
     'flow': '#ffa548',
     'sensors': '#ffb1b3',
     'extras': '#ffb1b3',
-    'mashape': '#ffb1b3'
+    'myblocks': '#d0d0d0'
 };
 
 var CLOSEICON = '<svg width="55" height="55" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55"><g transform="translate(0-997.36)"><path fill="#282828" d="m0 997.36h55v54.998h-55z"/><g fill="#fff"><path d="m44.971 1036.26c1.675 1.674 1.675 4.39 0 6.06-1.675 1.674-4.391 1.674-6.07 0l-28.875-28.872c-1.675-1.674-1.675-4.39 0-6.06 1.675-1.674 4.391-1.674 6.07 0l28.875 28.872"/><path d="m16.09 1042.33c-1.675 1.674-4.391 1.674-6.07 0-1.675-1.674-1.675-4.39 0-6.06l28.875-28.871c1.675-1.674 4.391-1.674 6.07 0 1.675 1.674 1.675 4.39 0 6.06l-28.875 28.871"/></g></g></svg>';
@@ -341,6 +341,8 @@ var SENSORSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" hei
 
 var EXTRASPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <g transform="matrix(0.64,0,0,0.63959066,9.90448,9.9400384)" > <polygon points="26.891,12.363 17.238,16.369 14.659,4.975 20.555,2.531 " style="fill:#ffffff" /> <polygon points="42.646,26.88 38.649,17.228 50.04,14.654 52.477,20.55 " style="fill:#ffffff" /> <polygon points="28.117,42.645 37.775,38.645 40.349,50.029 34.453,52.471 " style="fill:#ffffff" /> <polygon points="37.824,16.315 28.171,12.309 34.394,2.439 40.295,4.882 " style="fill:#ffffff" /> <polygon points="38.628,37.791 42.623,28.139 52.493,34.365 50.055,40.258 " style="fill:#ffffff" /> <polygon points="16.385,37.76 12.391,28.105 2.515,34.34 4.953,40.234 " style="fill:#ffffff" /> <polygon points="12.319,26.875 16.32,17.216 4.936,14.643 2.493,20.539 " style="fill:#ffffff" /> <polygon points="26.939,42.623 17.287,38.629 14.719,50.018 20.609,52.461 " style="fill:#ffffff" /> <path d="m 39.925,22.352 c 2.845,6.863 -0.412,14.728 -7.274,17.574 -6.867,2.85 -14.734,-0.418 -17.578,-7.281 -2.84,-6.862 0.418,-14.733 7.279,-17.572 6.862,-2.845 14.734,0.417 17.573,7.279 z" style="fill:none;stroke:#ffffff;stroke-width:11.69439983" /> </g> </svg> ';
 
+var MYBLOCKSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="55" height="55"> <path d="m 15.719636,31.331478 0.114372,5.261133 11.437247,6.290486 L 27.5,29.387146" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="m 27.728744,29.501519 0.05719,13.381578 11.723178,-7.548583 0,-4.689272 -5.947368,3.545548" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="m 10.001012,27.328441 5.604251,-5.146761 -5.832996,-2.973684 12.123482,-7.091093 5.718623,3.316801 5.489879,-3.088056 12.123482,7.319838 -5.832996,2.401822 5.489878,5.032388 -11.322874,7.205466 -5.947369,-5.261134 -6.290485,5.261134 -11.322875,-6.976721 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="M 16.40587,21.952935 27.156883,15.204959 38.937247,22.067308 27.614372,28.815283 16.40587,21.952935 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <g transform="matrix(0.39620698,0,0,0.39620698,28.654032,26.094918)" style="display:block"> <path d="m 33.233,35.1 10.102,10.1 c 0.752,0.75 1.217,1.783 1.217,2.932 0,2.287 -1.855,4.143 -4.146,4.143 -1.145,0 -2.178,-0.463 -2.932,-1.211 l -10.102,-10.103 -10.1,10.1 c -0.75,0.75 -1.787,1.211 -2.934,1.211 -2.284,0 -4.143,-1.854 -4.143,-4.141 0,-1.146 0.465,-2.184 1.212,-2.934 L 21.511,35.095 11.409,24.995 c -0.747,-0.748 -1.212,-1.785 -1.212,-2.93 0,-2.289 1.854,-4.146 4.146,-4.146 1.143,0 2.18,0.465 2.93,1.214 L 27.372,29.235 37.474,19.132 c 0.754,-0.749 1.787,-1.214 2.934,-1.214 2.289,0 4.146,1.856 4.146,4.145 0,1.146 -0.467,2.18 -1.217,2.932 L 33.233,35.1 z" style="fill:#ffffff;stroke:#010101;stroke-width:3.5" /> <circle cx="27.371" cy="10.849" r="8.1219997" style="fill:#ffffff;stroke:#010101;stroke-width:3.5" /> </g></svg>';
+
 var PALETTEICONS = {
     'turtle': TURTLEPALETTEICON,
     'pen': PENPALETTEICON,
@@ -350,6 +352,7 @@ var PALETTEICONS = {
     'blocks': BLOCKSPALETTEICON,
     'media': MEDIAPALETTEICON,
     'sensors': SENSORSPALETTEICON,
-    'extras': EXTRASPALETTEICON
+    'extras': EXTRASPALETTEICON,
+    'myblocks': MYBLOCKSPALETTEICON
 }
 

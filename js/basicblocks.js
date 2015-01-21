@@ -420,17 +420,20 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     var mediaBlock = new ProtoBlock('media');
     mediaBlock.palette = palettes.dict['media'];
+    mediaBlock.image = 'images/load-media.svg'
     blocks.protoBlockDict['media'] = mediaBlock;
     mediaBlock.mediaBlock();
     mediaBlock.docks[0][2] = 'mediaout';
 
     var cameraBlock = new ProtoBlock('camera');
     cameraBlock.palette = palettes.dict['media'];
+    cameraBlock.image = 'images/camera.svg'
     blocks.protoBlockDict['camera'] = cameraBlock;
     cameraBlock.mediaBlock();
 
     var videoBlock = new ProtoBlock('video');
     videoBlock.palette = palettes.dict['media'];
+    videoBlock.image = 'images/video.svg'
     blocks.protoBlockDict['video'] = videoBlock;
     videoBlock.mediaBlock();
 

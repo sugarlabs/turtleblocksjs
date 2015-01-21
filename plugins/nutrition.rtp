@@ -47,6 +47,13 @@ var foodData = {'apple': [72, 0, 19, 3, 0],
 //* flow-globals *//
 var block = blocks.blockList[blk];
 var conns = block.connections;
+function showMsg(data   ) {
+    var msgContainer = msgText.parent;
+    msgContainer.visible = true;
+    msgText.text = JSON.stringify(data);
+    msgContainer.updateCache();
+    stage.swapChildren(msgContainer, last(stage.children));
+};
 
 //* arg-globals *//
 var block = blocks.blockList[blk];
@@ -62,6 +69,7 @@ var get_eatme = function (name, label, fontSize) {
     if (typeof(fontSize) == 'number') {
         block.fontsize = fontSize + 'px'
     }
+    block.docks[1][2] = 'mediain';
 };
 var show_value = function (name, label) {
     var block = new ProtoBlock(name);
@@ -76,7 +84,7 @@ var eat = function (name, label) {
     blocks.protoBlockDict[name] = block;
     block.oneArgBlock();
     block.staticLabels.push(label);
-    block.docks[1][2] = 'anyin';
+    block.docks[1][2] = 'mediain';
 };
 var action = function (name, label) {
     var block = new ProtoBlock(name);
@@ -88,7 +96,8 @@ var action = function (name, label) {
 var food_block = function (blkname, name) {
     var block = new ProtoBlock(blkname);
     block.palette = palettes.dict['food'];
-    block.parameterBlock();
+    block.image = 'images/food/' + blkname + '.svg';
+    block.mediaBlock();
     blocks.protoBlockDict[blkname] = block;
     block.staticLabels.push(name);
 };
@@ -201,62 +210,81 @@ food_block('cookie', 'cookie');
 //* block:water *//
 food_block('water', 'water');
 
-//* arg:apple *//
+//* flow:apple *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:banana *//
+//* flow:banana *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:orange *//
+//* flow:orange *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:bread *//
+//* flow:bread *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:corn *//
+//* flow:corn *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:potato *//
+//* flow:potato *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:sweetpotato *//
+//* flow:sweetpotato *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:tomato *//
+//* flow:tomato *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:broccoli *//
+//* flow:broccoli *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:riceandbeans *//
+//* flow:riceandbeans *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:tamale *//
+//* flow:tamale *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:cheese *//
+//* flow:cheese *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:chicken *//
+//* flow:chicken *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:fish *//
+//* flow:fish *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:beef *//
+//* flow:beef *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:cake *//
+//* flow:cake *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:cookie *//
+//* flow:cookie *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
-//* arg:water *//
+//* flow:water *//
 block.value = foodData[block.name];
+showMsg(block.value);
 
 //* flow:eat *//
-var blockFoodData = parseArg(activity, turtle, conns[1]);
+console.log();
+var blockFoodData = foodData[blocks.blockList[conns[1]].name];
 calories += blockFoodData[0];
 protein += blockFoodData[1];
 carbohydrate += blockFoodData[2];
@@ -286,23 +314,23 @@ block.value = carbohydrate;
 block.value = fat;
 
 //* arg:get_calories *//
-var blockFoodData = parseArg(activity, turtle, conns[1]);
+var blockFoodData = foodData[blocks.blockList[conns[1]].name];
 block.value = blockFoodData[0];
 
 //* arg:get_protein *//
-var blockFoodData = parseArg(activity, turtle, conns[1]);
+var blockFoodData = foodData[blocks.blockList[conns[1]].name];
 block.value = blockFoodData[1];
 
 //* arg:get_carbohydrates *//
-var blockFoodData = parseArg(activity, turtle, conns[1]);
+var blockFoodData = foodData[blocks.blockList[conns[1]].name];
 block.value = blockFoodData[2];
 
 //* arg:get_fiber *//
-var blockFoodData = parseArg(activity, turtle, conns[1]);
+var blockFoodData = foodData[blocks.blockList[conns[1]].name];
 block.value = blockFoodData[3];
 
 //* arg:get_fat *//
-var blockFoodData = parseArg(activity, turtle, conns[1]);
+var blockFoodData = foodData[blocks.blockList[conns[1]].name];
 block.value = blockFoodData[4];
 
 //* arg:get_name *//

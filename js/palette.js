@@ -391,6 +391,8 @@ function Palette(palettes, name, color, bgcolor) {
                     height += 2 * STANDARDBLOCKHEIGHT;
                 } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
                     height += STANDARDBLOCKHEIGHT;
+                } else if (palette.protoList[blk].image) {
+                    height += STANDARDBLOCKHEIGHT;
                 }
                 return height
             }
@@ -493,7 +495,33 @@ function Palette(palettes, name, color, bgcolor) {
                         }
                         break;
                     }
-
+                    // FIXME: works correctly only with mediaBlocks
+                    if (myBlock.image) {
+                        mid_label = '';
+                        block_label = '';
+                        top_label = '';
+                        bottom_label = '';
+                        var image = new Image();
+                        image.onload = function() {
+                            var bitmap = new createjs.Bitmap(image);
+                            // FIXME: Determine these values computationally based on the size
+                            // of the media block.
+                            if (image.width > image.height) {
+                                bitmap.scaleX = 108 / image.width;
+                                bitmap.scaleY = 108 / image.width;
+                                bitmap.scale = 108 / image.width;
+                            } else {
+                                bitmap.scaleX = 80 / image.height;
+                                bitmap.scaleY = 80 / image.height;
+                                bitmap.scale = 80 / image.height;
+                            }
+                            palette.protoContainers[modname].addChild(bitmap);
+                            bitmap.x = 40;
+                            bitmap.y = 2;
+                            palette.protoContainers[modname].updateCache();
+                        }
+                        image.src = myBlock.image;
+                    }
                     function processBitmap(palette, modname, bitmap, args) {
                         var myBlock = args[0];
                         var blk = args[1];

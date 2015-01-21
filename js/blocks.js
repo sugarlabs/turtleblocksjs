@@ -422,9 +422,17 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // Blocks that don't run when clicked.
     this.noRunBlocks = ['action'];
 
-    // We need access to the msg block.
+    // We need to know if we are processing a copy or save stack command.
+    this.inLongPress = false;
+
+    // We need access to the msg block...
     this.setMsgText = function(msgText) {
         this.msgText = msgText;
+    }
+
+    // and the Error msg function.
+    this.setErrorMsg = function(errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
     // We need access to the macro dictionary because we add to it.
@@ -485,6 +493,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blocks.copyButton.visible = false;
             blocks.saveStackButton.visible = false;
             blocks.dismissButton.visible = false;
+	    blocks.inLongPress = false;
             blocks.updatePasteButton();
             blocks.refreshCanvas();
         });
@@ -493,13 +502,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blocks.copyButton.visible = false;
             blocks.saveStackButton.visible = false;
             blocks.dismissButton.visible = false;
+	    blocks.inLongPress = false;
             blocks.refreshCanvas();
         });
 
         this.saveStackButton.on('click', function(event) {
             var topBlock = blocks.findTopBlock(blocks.activeBlock);
+	    blocks.inLongPress = false;
             if (blocks.blockList[topBlock].name != 'action') {
                 console.log('You can only save action stacks.');
+		blocks.errorMsg(_('You can only save "action" stacks.'));
             } else {
                 blocks.selectedStack = topBlock;
                 blocks.copyButton.visible = false;
@@ -1924,7 +1936,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.triggerLongPress = function(myBlock) {
         this.timeOut == null;
-        // FIXME: top block in stack
+	this.inLongPress = true;
         this.copyButton.visible = true;
         this.copyButton.x = myBlock.container.x - 27;
         this.copyButton.y = myBlock.container.y - 27;
@@ -3391,7 +3403,6 @@ function loadEventHandlers(blocks, myBlock) {
 
     myBlock.container.on('mouseover', function(event) {
         blocks.setDraggingFlag(true);
-        displayMsg(blocks, 'mouseover');
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
@@ -3407,7 +3418,6 @@ function loadEventHandlers(blocks, myBlock) {
         setTimeout(function() {
             locked = false;
         }, 500);
-        displayMsg(blocks, 'click');
         hideDOMLabel();
         if (!moved) {
             if (blocks.selectingStack) {
@@ -3460,9 +3470,11 @@ function loadEventHandlers(blocks, myBlock) {
                     myBlock.label.style.display = '';
                 }
             } else {
-                var topBlock = blocks.findTopBlock(thisBlock);
-                console.log('running from ' + blocks.blockList[topBlock].name);
-                blocks.runLogo(topBlock);
+		if (!blocks.inLongPress) {
+                    var topBlock = blocks.findTopBlock(thisBlock);
+                    console.log('running from ' + blocks.blockList[topBlock].name);
+                    blocks.runLogo(topBlock);
+		}
             }
         }
     });
@@ -3470,9 +3482,9 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.on('mousedown', function(event) {
         hideDOMLabel();
         blocks.setDraggingFlag(true);
-        displayMsg(blocks, 'mousedown');
 
         // Track time for detecting long pause.
+	// FIXME: Only for top block in stack
         var d = new Date();
         blocks.time = d.getTime();
         blocks.timeOut = setTimeout(function() {
@@ -3496,23 +3508,23 @@ function loadEventHandlers(blocks, myBlock) {
 
         myBlock.container.on('mouseout', function(event) {
             blocks.setDraggingFlag(false);
-            displayMsg(blocks, 'mousedown->mouseout');
-            mouseoutCallback(blocks, myBlock, event, moved);
+	    if (!blocks.inLongPress) {
+		mouseoutCallback(blocks, myBlock, event, moved);
+            }
             moved = false;
         });
 
         myBlock.container.on('pressup', function(event) {
             blocks.setDraggingFlag(false);
-            displayMsg(blocks, 'mousedown->pressup');
-            mouseoutCallback(blocks, myBlock, event, moved);
+	    if (!blocks.inLongPress) {
+		mouseoutCallback(blocks, myBlock, event, moved);
+	    }
             moved = false;
         });
 
         myBlock.container.on('pressmove', function(event) {
             // FIXME: More voodoo
             event.nativeEvent.preventDefault();
-
-            displayMsg(blocks, 'mousedown->pressmove');
 
             // FIXME: need to remove timer
             if (blocks.timeOut != null) {
@@ -3564,8 +3576,9 @@ function loadEventHandlers(blocks, myBlock) {
 
     myBlock.container.on('mouseout', function(event) {
         blocks.setDraggingFlag(false);
-        displayMsg(blocks, 'mouseout');
-        mouseoutCallback(blocks, myBlock, event, moved);
+	if (!blocks.inLongPress) {
+            mouseoutCallback(blocks, myBlock, event, moved);
+	}
     });
 }
 

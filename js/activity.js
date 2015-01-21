@@ -271,6 +271,7 @@ define(function(require) {
             turtles.setDragging(setDraggingContainer);
             blocks.setTurtles(turtles);
             blocks.setLogo(runLogoCommands);
+	    blocks.setErrorMsg(errorMsg);
             blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 

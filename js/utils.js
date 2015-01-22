@@ -158,7 +158,7 @@ function _(text) {
     for (p = 0; p < replace.length; p++) {
         replaced = replaced.replace(replace[p], "");
     }
-    replaced = replaced.replace(" ", "-");
+    replaced = replaced.replace(/ /g, '-');
     try {
         translation = document.webL10n.get(replaced);
         if (translation == '') {

@@ -936,7 +936,9 @@ function loadPaletteMenuHandler(palette) {
                 // Only delete plugin palettes.
                 if (BUILTINPALETTES.indexOf(palette.name) === -1) {
                     promptPaletteDelete(palette);
-                }
+                } else if (palette.name == 'myblocks') {
+                    promptMacrosDelete(palette);
+		}
             }
             trashcan.hide();
         });
@@ -1000,6 +1002,24 @@ function promptPaletteDelete(palette) {
     }
 
     localStorage.plugins = preparePluginExports({});
+}
+
+
+function promptMacrosDelete(palette) {
+    var msg = 'Do you want to remove all the stacks from your custom palette?';
+    if (!confirm(msg)) {
+        return;
+    }
+
+    console.log('removing macros from ' + palette.name);
+    for (var i = 0; i < palette.protoList.length; i++) {
+        var name = palette.protoList[i].name;
+	delete palette.protoContainers[name];
+	delete palette.protoBackgrounds[name];
+        palette.protoList.splice(i, 1);
+    }
+    palette.palettes.updatePalettes();
+    localStorage.macros = prepareMacroExports(null, null, {});
 }
 
 

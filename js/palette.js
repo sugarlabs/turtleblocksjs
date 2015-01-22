@@ -344,57 +344,66 @@ function Palette(palettes, name, color, bgcolor) {
     this.x = 0;
     this.y = 0;
     this.size = 0;
+    this.columns = 0;
     this.draggingProtoBlock = false;
+    this.mouseHandled = false;
 
-    this.makeMenu = function() {
-        // Create the menu button
+    this.makeMenu = function(createHeader) {
         if (this.menuContainer == null) {
             this.menuContainer = new createjs.Container();
             this.menuContainer.snapToPixelEnabled = true;
-
-            function processHeader(palette, name, bitmap, extras) {
-                palette.menuContainer.addChild(bitmap);
-
-                function processButtonIcon(palette, name, bitmap, extras) {
-                    bitmap.scaleX = 0.8;
-                    bitmap.scaleY = 0.8;
-                    palette.menuContainer.addChild(bitmap);
-                    palette.palettes.container.addChild(palette.menuContainer);
-
-                    function processCloseIcon(palette, name, bitmap, extras) {
-                        palette.menuContainer.addChild(bitmap);
-                        bitmap.scaleX = 0.7;
-                        bitmap.scaleY = 0.7;
-                        bitmap.x = MENUWIDTH - STANDARDBLOCKHEIGHT;
-
-                        var hitArea = new createjs.Shape();
-                        hitArea.graphics.beginFill('#FFF').drawEllipse(-MENUWIDTH / 2, -STANDARDBLOCKHEIGHT / 2, MENUWIDTH, STANDARDBLOCKHEIGHT);
-                        hitArea.x = MENUWIDTH / 2;
-                        hitArea.y = STANDARDBLOCKHEIGHT / 2;
-                        palette.menuContainer.hitArea = hitArea;
-                        palette.menuContainer.visible = false;
-
-                        loadPaletteMenuHandler(palette);
-                    }
-                    makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
-                }
-                makePaletteBitmap(palette, PALETTEICONS[name], name, processButtonIcon, null);
-            }
-
-            // TODO: Set header width based on the number of columns
-            makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)).replace(/header_width/g, '200'), this.name, processHeader, null);
         }
+        if (!createHeader) {
+            return;
+        };
+        var paletteWidth = MENUWIDTH + (this.columns * 160);
+        this.menuContainer.removeAllChildren();
+
+        // Create the menu button
+        function processHeader(palette, name, bitmap, extras) {
+            palette.menuContainer.addChild(bitmap);
+
+            function processButtonIcon(palette, name, bitmap, extras) {
+                bitmap.scaleX = 0.8;
+                bitmap.scaleY = 0.8;
+                palette.menuContainer.addChild(bitmap);
+                palette.palettes.container.addChild(palette.menuContainer);
+
+                function processCloseIcon(palette, name, bitmap, extras) {
+                    palette.menuContainer.addChild(bitmap);
+                    bitmap.scaleX = 0.7;
+                    bitmap.scaleY = 0.7;
+                    bitmap.x = paletteWidth - STANDARDBLOCKHEIGHT;
+
+                    var hitArea = new createjs.Shape();
+                    hitArea.graphics.beginFill('#FFF').drawEllipse(-paletteWidth / 2, -STANDARDBLOCKHEIGHT / 2, paletteWidth, STANDARDBLOCKHEIGHT);
+                    hitArea.x = paletteWidth / 2;
+                    hitArea.y = STANDARDBLOCKHEIGHT / 2;
+                    palette.menuContainer.hitArea = hitArea;
+                    palette.menuContainer.visible = false;
+                    if (!palette.mouseHandled) {
+                        loadPaletteMenuHandler(palette);
+                        palette.mouseHandled = true;
+                    };
+                }
+                makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
+            }
+            makePaletteBitmap(palette, PALETTEICONS[name], name, processButtonIcon, null);
+        }
+
+        makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)).replace(/header_width/g, paletteWidth), this.name, processHeader, null);
     }
 
     this.updateMenu = function(hide) {
         if (this.menuContainer == null) {
-            this.makeMenu();
+            this.makeMenu(false);
         } else {
             // Hide the menu while we update.
             if (hide) {
                 this.hide();
             }
         }
+        this.columns = 0;
         this.x = 0;
         this.y = 0;
         for (var blk in this.protoList) {
@@ -426,6 +435,7 @@ function Palette(palettes, name, color, bgcolor) {
                     palette.x += 160;
                     palette.y = 0;
                     y = palette.menuContainer.y + palette.y + STANDARDBLOCKHEIGHT;
+                    palette.columns += 1;
                 }
             }
 
@@ -660,6 +670,7 @@ function Palette(palettes, name, color, bgcolor) {
                 this.y += Math.ceil(height * PROTOBLOCKSCALE);
             }
         }
+        this.makeMenu(true);
     }
 
     this.moveMenu = function(x, y) {
@@ -884,13 +895,14 @@ function loadPaletteMenuHandler(palette) {
 
     var locked = false;
     var trashcan = palette.palettes.trashcan;
+    var paletteWidth = MENUWIDTH + (palette.columns * 160);
 
     palette.menuContainer.on('mouseover', function(event) {
         palette.palettes.setDraggingFlag(true);
     });
 
     palette.menuContainer.on('click', function(event) {
-        if (Math.round(event.stageX / palette.palettes.scale) > palette.menuContainer.x + MENUWIDTH - STANDARDBLOCKHEIGHT) {
+        if (Math.round(event.stageX / palette.palettes.scale) > palette.menuContainer.x + paletteWidth - STANDARDBLOCKHEIGHT) {
             palette.hide();
             palette.palettes.refreshCanvas();
             return;

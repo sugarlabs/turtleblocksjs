@@ -507,18 +507,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         });
 
         this.saveStackButton.on('click', function(event) {
+            // Only invoked from action blocks.
             var topBlock = blocks.findTopBlock(blocks.activeBlock);
 	    blocks.inLongPress = false;
-            if (blocks.blockList[topBlock].name != 'action') {
-                console.log('You can only save action stacks.');
-		blocks.errorMsg(_('You can only save "action" stacks.'));
-            } else {
-                blocks.selectedStack = topBlock;
-                blocks.copyButton.visible = false;
-                blocks.saveStackButton.visible = false;
-                blocks.dismissButton.visible = false;
-                blocks.saveStack();
-            }
+            blocks.selectedStack = topBlock;
+            blocks.copyButton.visible = false;
+            blocks.saveStackButton.visible = false;
+            blocks.dismissButton.visible = false;
+            blocks.saveStack();
             blocks.refreshCanvas();
         });
     }
@@ -1943,9 +1939,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         this.dismissButton.visible = true;
         this.dismissButton.x = myBlock.container.x + 27;
         this.dismissButton.y = myBlock.container.y - 27;
-        this.saveStackButton.visible = true;
-        this.saveStackButton.x = myBlock.container.x + 82;
-        this.saveStackButton.y = myBlock.container.y - 27;
+        if (myBlock.name == 'action') {
+            this.saveStackButton.visible = true;
+            this.saveStackButton.x = myBlock.container.x + 82;
+            this.saveStackButton.y = myBlock.container.y - 27;
+        }
         this.refreshCanvas();
     }
 

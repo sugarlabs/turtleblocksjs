@@ -518,8 +518,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 blocks.saveStackButton.visible = false;
                 blocks.dismissButton.visible = false;
                 blocks.saveStack();
-                blocks.refreshCanvas();
             }
+            blocks.refreshCanvas();
         });
     }
 

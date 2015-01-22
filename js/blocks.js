@@ -3486,13 +3486,15 @@ function loadEventHandlers(blocks, myBlock) {
         hideDOMLabel();
         blocks.setDraggingFlag(true);
 
-        // Track time for detecting long pause.
-	// FIXME: Only for top block in stack
-        var d = new Date();
-        blocks.time = d.getTime();
-        blocks.timeOut = setTimeout(function() {
-            blocks.triggerLongPress(myBlock);
-        }, LONGPRESSTIME);
+        // Track time for detecting long pause...
+	// but only for top block in stack
+	if (myBlock.connections[0] == null) {
+            var d = new Date();
+            blocks.time = d.getTime();
+            blocks.timeOut = setTimeout(function() {
+                blocks.triggerLongPress(myBlock);
+            }, LONGPRESSTIME);
+        }
 
         // Always show the trash when there is a block selected.
         trashcan.show();

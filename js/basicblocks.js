@@ -572,12 +572,16 @@ function initBasicProtoBlocks(palettes, blocks) {
     // NOP blocks (used as placeholders when loaded blocks not found)
     var nopValueBlock = new ProtoBlock('nopValue');
     blocks.protoBlockDict['nopValue'] = nopValueBlock;
+    nopValueBlock.hidden = true;
+    nopValueBlock.palette = palettes.dict['myblock'];
     nopValueBlock.valueBlock();
     nopValueBlock.staticLabels.push(_('unknown'));
     nopValueBlock.docks[0][2] = 'anyout';
 
     var nopOneArgMathBlock = new ProtoBlock('nopOneArgMathBlock');
     blocks.protoBlockDict['nopOneArgMathBlock'] = nopOneArgMathBlock;
+    nopOneArgMathBlock.hidden = true;
+    nopOneArgMathBlock.palette = palettes.dict['myblock'];
     nopOneArgMathBlock.oneArgMathBlock();
     nopOneArgMathBlock.staticLabels.push(_('unknown'));
     nopOneArgMathBlock.docks[0][2] = 'anyout';
@@ -586,6 +590,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     var nopTwoArgMathBlock = new ProtoBlock('nopTwoArgMathBlock');
     blocks.protoBlockDict['nopTwoArgMathBlock'] = nopTwoArgMathBlock;
     nopTwoArgMathBlock.twoArgMathBlock();
+    nopTwoArgMathBlock.hidden = true;
+    nopTwoArgMathBlock.palette = palettes.dict['myblock'];
     nopTwoArgMathBlock.staticLabels.push(_('unknown'));
     nopTwoArgMathBlock.docks[0][2] = 'anyout';
     nopTwoArgMathBlock.docks[1][2] = 'anyin';
@@ -593,17 +599,23 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     var nopZeroArgBlock = new ProtoBlock('nopZeroArgBlock');
     blocks.protoBlockDict['nopZeroArgBlock'] = nopZeroArgBlock;
+    nopZeroArgBlock.hidden = true;
+    nopZeroArgBlock.palette = palettes.dict['myblock'];
     nopZeroArgBlock.zeroArgBlock();
     nopZeroArgBlock.staticLabels.push(_('unknown'));
 
     var nopOneArgBlock = new ProtoBlock('nopOneArgBlock');
     blocks.protoBlockDict['nopOneArgBlock'] = nopOneArgBlock;
+    nopOneArgBlock.hidden = true;
+    nopOneArgBlock.palette = palettes.dict['myblock'];
     nopOneArgBlock.oneArgBlock();
     nopOneArgBlock.staticLabels.push(_('unknown'));
     nopOneArgBlock.docks[1][2] = 'anyin';
 
     var nopTwoArgBlock = new ProtoBlock('nopTwoArgBlock');
     blocks.protoBlockDict['nopTwoArgBlock'] = nopTwoArgBlock;
+    nopTwoArgBlock.hidden = true;
+    nopTwoArgBlock.palette = palettes.dict['myblock'];
     nopTwoArgBlock.twoArgBlock();
     nopTwoArgBlock.staticLabels.push(_('unknown'));
     nopTwoArgBlock.docks[1][2] = 'anyin';
@@ -613,9 +625,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     for (var protoblock in blocks.protoBlockDict) {
         if (blocks.protoBlockDict[protoblock].palette != null) {
             blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
-        } else {
-	    // FIXME: should be an 'unknown' palette (gray)
-	    blocks.protoBlockDict[protoblock].palette = palettes.dict['turtle'];
         }
     }
 

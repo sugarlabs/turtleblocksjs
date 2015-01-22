@@ -347,9 +347,8 @@ function preparePluginExports(obj) {
 
 function processMacroData(macroData, palettes, blocks, macroDict) {
     // Macros are stored in a JSON-encoded dictionary.
-    console.log(macroData);
-    var obj = JSON.parse(macroData);
-    if (obj != {}) {
+    if (macroData != '{}') {
+        var obj = JSON.parse(macroData);
         console.log('adding myblocks palette');
         palettes.add('myblocks', 'black', '#a0a0a0');
         for (name in obj) {

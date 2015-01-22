@@ -398,6 +398,11 @@ function Palette(palettes, name, color, bgcolor) {
         this.x = 0;
         this.y = 0;
         for (var blk in this.protoList) {
+	    // Don't show hidden blocks on the menus
+            if (this.protoList[blk].hidden) {
+                continue;
+            }
+
             // Create a proto block for each palette entry.
             var blkname = this.protoList[blk].name;
             var modname = blkname;

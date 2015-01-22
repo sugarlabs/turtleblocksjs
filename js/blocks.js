@@ -77,6 +77,8 @@ function ProtoBlock(name) {
     this.docks = [];
     // The filepath of the image.
     this.image = null;
+    // Hidden: don't show on any palette
+    this.hidden = false;
 
     // We need a copy of the dock, since it is modified by individual
     // blocks as they are expanded or contracted.

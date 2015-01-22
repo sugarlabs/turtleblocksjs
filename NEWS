@@ -173,24 +173,24 @@
   * find an approach to cameras and microphone that work on Android
     (w/Sam Parkinson)
   * remove unused do blocks (when associated action is removed)
-    (w/Ignacio ROdriguez)
+    (w/Ignacio Rodriguez)
   * clean up palette buttons layout after removing a plugin
-    (w/Ignacio ROdriguez)
+    (w/Ignacio Rodriguez)
   * use snap to pixels
   * add images to blocks (w/Ignacio Rodriguez)
   * reorganize palettes and plugins
   * fix positioning problem with palettes due to multiple copies of the
     protoblocks being added to the protoList
   * expand boolean blocks
+  * save stacks to personal palette
+  * use nop blocks when encountering unknown blocks during load
+  * scroll palette buttons with a gesture when there are too many
+    (Sam Parkinson)
 
 TODO:
-  * use nop blocks when encountering unknown blocks during load
-  * save stacks to personal palette
-  * scroll palette buttons with a gesture when there are too many
-  * scroll/page menus when they get too big (instead of wrapping)
+  * scroll/page menus when they get too big (instead of wrapping)???
   * more efficient until and while?
   * save to javascript
-  * user defined blocks
   * RTL support
   * zoom and scroll?
   * use graphical error messages
@@ -198,6 +198,8 @@ TODO:
   * three-arg flow blocks
   * three-arg arg blocks
   * write SVG generator
+  * user defined blocks
+  * try to detect difference between unknown flow and arg blocks
 
 KNOWN BUGS:
   * sample projects cannot be shown on Android

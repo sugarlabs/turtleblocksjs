@@ -152,6 +152,8 @@ function getCookie(cname) {
 }
 
 
+// Enable me for generate new data for localization.ini
+// var translated = "";
 function _(text) {
     replaced = text;
     replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×"];
@@ -159,6 +161,12 @@ function _(text) {
         replaced = replaced.replace(replace[p], "");
     }
     replaced = replaced.replace(/ /g, '-');
+    // Enable me for generate new data for localization.ini
+    // txt = "\n" + replaced + " = " + text;
+    // if (translated.lastIndexOf(txt) == -1) {
+    //     translated = translated + txt;
+    //  }
+    // You can log translated in console.
     try {
         translation = document.webL10n.get(replaced);
         if (translation == '') {

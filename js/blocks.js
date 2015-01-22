@@ -2366,6 +2366,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         n = blkData[4].length;
                         console.log(n + ': substituting nop block for ' + name);
                         switch (n) {
+                        case 1:
+                            name = 'nopValueBlock';
+                            break;
                         case 2:
                             name = 'nopZeroArgBlock';
                             break;

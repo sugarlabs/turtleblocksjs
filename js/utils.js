@@ -100,10 +100,10 @@ function last(myList) {
 }
 
 
-function doSVG(canvas, turtles, width, height, scale) {
+function doSVG(canvas, logo, turtles, width, height, scale) {
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
     svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
-    svg += this.svgOutput;
+    svg += logo.svgOutput;
     for (var turtle in turtles.turtleList) {
         turtles.turtleList[turtle].closeSVG();
         svg += turtles.turtleList[turtle].svgOutput;

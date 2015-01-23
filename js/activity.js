@@ -29,6 +29,7 @@ define(function(require) {
     require('activity/turtle');
     require('activity/palette');
     require('activity/blocks');
+    require('activity/logo');
     require('activity/savebox');
     require('activity/clearbox');
     require('activity/samplesviewer');
@@ -85,6 +86,7 @@ define(function(require) {
         var turtles;
         var palettes;
         var blocks;
+        var logo;
         var saveBox;
         var clearBox;
         var thumbnails;
@@ -100,12 +102,6 @@ define(function(require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
 
-        // Blocks defined by plugins and saved in local storage
-        var evalFlowDict = {};
-        var evalArgDict = {};
-        var evalParameterDict = {};
-        var evalSetterDict = {};
-
         pluginObjs = {
             'PALETTEPLUGINS': {},
             'PALETTEFILLCOLORS': {},
@@ -119,13 +115,6 @@ define(function(require) {
         // Stacks of blocks saved in local storage
         var macroDict = {};
 
-        var sounds = [];
-        try {
-            var mic = new p5.AudioIn()
-        } catch (e) {
-            console.log('microphone not available');
-            var mic = null;
-        }
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
@@ -141,7 +130,6 @@ define(function(require) {
         var CAMERAVALUE = '##__CAMERA__##';
         var VIDEOVALUE = '##__VIDEO__##';
 
-        var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
         var DEFAULTDELAY = 500; // milleseconds
 
         var turtleDelay = DEFAULTDELAY;
@@ -175,19 +163,29 @@ define(function(require) {
 
         var draggingContainer = false;
 
+        function allClear() {
+            logo.boxes = {};
+            logo.time = 0;
+            hideMsgs();
+            logo.setBackgroundColor(-1);
+            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                turtles.turtleList[turtle].doClear();
+            }
+        }
+
         function doFastButton() {
-            turtleDelay = 0;
-            runLogoCommands();
+            logo.setTurtleDelay(0);
+            logo.runLogoCommands();
         }
 
         function doSlowButton() {
-            turtleDelay = DEFAULTDELAY;
-            runLogoCommands();
+            logo.setTurtleDelay(DEFAULTDELAY);
+            logo.runLogoCommands();
         }
 
         var stopTurtle = false;
         function doStopButton() {
-            doStopTurtle();
+            logo.doStopTurtle();
         }
 
         var cartesianVisible = false;
@@ -226,9 +224,6 @@ define(function(require) {
 
         // The dictionary of box name: value
         var boxes = {};
-
-        // Set the default background color...
-        setBackgroundColor(-1);
 
         // Coordinate grid
         var cartesianBitmap = null;
@@ -272,10 +267,20 @@ define(function(require) {
             turtles.setBlocks(blocks);
             turtles.setDragging(setDraggingContainer);
             blocks.setTurtles(turtles);
-            blocks.setLogo(runLogoCommands);
-	    blocks.setErrorMsg(errorMsg);
+            blocks.setErrorMsg(errorMsg);
             blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
+
+            // TODO: clean up this mess.
+            logo = new Logo(blocks, turtles, stage, refreshCanvas, msgText,
+                            errorMsg, hideMsgs, onStopTurtle, onRunTurtle,
+                            prepareExport, getStageX, getStageY,
+                            getStageMouseDown, getCurrentKeyCode,
+                            clearCurrentKeyCode, meSpeak);
+            blocks.setLogo(logo);
+
+            // Set the default background color...
+            logo.setBackgroundColor(-1);
 
             saveBox = new SaveBox(canvas, stage, refreshCanvas, doSave);
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
@@ -290,7 +295,7 @@ define(function(require) {
                 var req = this.request;
                 if (req.readyState == 4) {
                     if (this.localmode || req.status == 200) {
-                        var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict);
+                        var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
                     }
                     else {
                         if (self.console) console.log('Failed to load advanced blocks: Received status ' + req.status + '.');
@@ -304,14 +309,14 @@ define(function(require) {
             if (macroData != null) {
                 processMacroData(macroData, palettes, blocks, macroDict);
             }
-	    // Blocks and palettes need access to the macros dictionary.
+            // Blocks and palettes need access to the macros dictionary.
             blocks.setMacroDictionary(macroDict);
             palettes.setMacroDictionary(macroDict);
 
             // Load any plugins saved in local storage.
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
-                processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict);
+                processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
             }
 
             fileChooser.addEventListener('click', function(event) { this.value = null; });
@@ -350,7 +355,7 @@ define(function(require) {
                     // Show busy cursor.
                     document.body.style.cursor = 'wait';
                     setTimeout(function() {
-                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict);
+                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
                         // Save plugins to local storage.
                         if (obj != null) {
                             localStorage.setItem('plugins', preparePluginExports(obj));
@@ -372,8 +377,6 @@ define(function(require) {
 
                 reader.readAsText(pluginChooser.files[0]);
             }, false);
-
-            this.svgOutput = '';
 
             // Workaround to chrome security issues
             // createjs.LoadQueue(true, null, true);
@@ -493,16 +496,16 @@ define(function(require) {
             }
         }
 
-	function getStageX() {
-	    return stageX;
+        function getStageX() {
+            return stageX;
         }
 
-	function getStageY() {
-	    return stageY;
+        function getStageY() {
+            return stageY;
         }
 
-	function getStageMouseDown() {
-	    return stageMouseDown;
+        function getStageMouseDown() {
+            return stageMouseDown;
         }
 
         function setCameraID(id) {
@@ -593,13 +596,13 @@ define(function(require) {
             if (event.altKey) {
                 switch (event.keyCode) {
                     case 69: // 'E'
-                        allClear();
+                        logo.allClear();
                         break;
                     case 82: // 'R'
                         doFastButton();
                         break;
                     case 83: // 'S'
-                        doStopTurtle();
+                        logo.doStopTurtle();
                         break;
                 }
             } else if (event.ctrlKey) {} else {
@@ -620,14 +623,14 @@ define(function(require) {
             }
         }
 
-	function getCurrentKeyCode() {
-	    return currentKeyCode;
-	}
+        function getCurrentKeyCode() {
+            return currentKeyCode;
+        }
 
-	function clearCurrentKeyCode() {
+        function clearCurrentKeyCode() {
             currentKey = '';
             currentKeyCode = 0;
-	}
+        }
 
         function onResize() {
             if (!onAndroid) {
@@ -760,39 +763,19 @@ define(function(require) {
             createjs.Ticker.removeEventListener('tick', tick);
         }
 
-	function onStopTurtle() {
-	    // TODO: plugin support
-            if (buttonsVisible && !toolbarButtonsVisible) {
-		hideStopButton();
-            }
-	}
-
-	function onRunTurtle() {
-	    // TODO: plugin support
-            // If the stop button is hidden, show it.
-            if (buttonsVisible && !toolbarButtonsVisible) {
-		showStopButton();
-            }
-	}
-
-        function doStopTurtle() {
-            // The stop button was pressed. Stop the turtle and clean
-            // up a few odds and ends.
-            stopTurtle = true;
-
-            for (var sound in sounds) {
-                sounds[sound].stop();
-            }
-            sounds = [];
-
-            if (cameraID != null) {
-                doStopVideoCam(cameraID, setCameraID);
-            }
-
+        function onStopTurtle() {
+            // TODO: plugin support
             if (buttonsVisible && !toolbarButtonsVisible) {
                 hideStopButton();
             }
-            blocks.bringToTop();
+        }
+
+        function onRunTurtle() {
+            // TODO: plugin support
+            // If the stop button is hidden, show it.
+            if (buttonsVisible && !toolbarButtonsVisible) {
+                showStopButton();
+            }
         }
 
         function refreshCanvas() {
@@ -881,7 +864,7 @@ define(function(require) {
                     errorMsg('Saved ' + projectName + ' to ' + window.location.host);
 
                     var img = new Image();
-                    var svgData = doSVG(canvas, turtles, 320, 240, 320 / canvas.width);
+                    var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
                     img.onload = function() {
                         var bitmap = new createjs.Bitmap(img);
                         var bounds = bitmap.getBounds();
@@ -944,6 +927,15 @@ define(function(require) {
             update = true;
         }
 
+        function hideMsgs() {
+            errorMsgText.parent.visible = false;
+            if (errorMsgArrow !== null) {
+                errorMsgArrow.removeAllChildren();
+                refreshCanvas();
+            }
+            msgText.parent.visible = false;
+        }
+
         function errorMsg(msg, blk) {
             if (errorMsgText == null) {
                 // The container may not be ready yet... so do nothing
@@ -983,1143 +975,6 @@ define(function(require) {
 
             stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
             errorMsgContainer.updateCache();
-        }
-
-        function clearParameterBlocks() {
-            for (var blk in blocks.blockList) {
-                if (blocks.blockList[blk].parameter) {
-                    blocks.blockList[blk].text.text = '';
-                    blocks.blockList[blk].container.updateCache();
-                }
-            }
-            update = true;
-        }
-
-        function updateParameterBlock(activity, turtle, blk) {
-            // Update the label on parameter blocks
-            if (blocks.blockList[blk].protoblock.parameter) {
-                var name = blocks.blockList[blk].name;
-                var value = 0;
-                switch (name) {
-                    case 'box':
-                        var cblk = blocks.blockList[blk].connections[1];
-                        var boxname = parseArg(activity, turtle, cblk, blk);
-                        if (boxname in boxes) {
-                            value = boxes[boxname];
-                        } else {
-                            errorMsg('Cannot find box ' + boxname + '.');
-                        }
-                        break;
-                    case 'x':
-                        value = turtles.turtleList[turtle].x;
-                        break;
-                    case 'y':
-                        value = turtles.turtleList[turtle].y;
-                        break;
-                    case 'heading':
-                        value = turtles.turtleList[turtle].orientation;
-                        break;
-                    case 'color':
-                    case 'hue':
-                        value = turtles.turtleList[turtle].color;
-                        break;
-                    case 'shade':
-                        value = turtles.turtleList[turtle].value;
-                        break;
-                    case 'grey':
-                        value = turtles.turtleList[turtle].chroma;
-                        break;
-                    case 'pensize':
-                        value = turtles.turtleList[turtle].stroke;
-                        break;
-                    case 'time':
-                        var d = new Date();
-                        value = (d.getTime() - time) / 1000;
-                        break;
-                    case 'mousex':
-                        value = stageX;
-                        break;
-                    case 'mousey':
-                        value = stageY;
-                        break;
-                    case 'keyboard':
-                        value = lastKeyCode;
-                        break;
-                    default:
-                        // console.log(name);
-                        if (name in evalParameterDict) {
-                            // console.log(evalParameterDict[name]);
-                            eval(evalParameterDict[name]);
-                        } else {
-                            // console.log('nada');
-                            return;
-                        }
-                        break;
-                }
-                if (typeof(value) == 'string') {
-                    blocks.blockList[blk].text.text = value;
-                } else {
-                    blocks.blockList[blk].text.text = Math.round(value).toString();
-                }
-                blocks.blockList[blk].container.updateCache();
-                update = true;
-            }
-        }
-
-        function runLogoCommands(startHere) {
-            // Save the state before running
-            if (typeof(Storage) !== 'undefined') {
-                localStorage.setItem('sessiondata', prepareExport());
-                // console.log(localStorage.getItem('sessiondata'));
-            } else {
-                // Sorry! No Web Storage support..
-            }
-
-            stopTurtle = false;
-            blocks.unhighlightAll();
-            blocks.bringToTop(); // Draw under blocks.
-            errorMsgText.parent.visible = false; // hide the error message window
-            if (errorMsgArrow !== null) {
-                errorMsgArrow.removeAllChildren(); // hide the error arrow
-                update = true;
-            }
-            msgText.parent.visible = false; // hide the message window
-
-            // We run the logo commands here.
-            var d = new Date();
-            time = d.getTime();
-
-            // Each turtle needs to keep its own wait time.
-            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                waitTime[turtle] = 0;
-            }
-            // console.log(blocks.blockList);
-
-            // First we need to reconcile the values in all the value blocks
-            // with their associated textareas.
-            for (var blk = 0; blk < blocks.blockList.length; blk++) {
-                if (blocks.blockList[blk].label != null) {
-                    blocks.blockList[blk].value = blocks.blockList[blk].label.value;
-                }
-            }
-
-            // Init the graphic state.
-            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                turtles.turtleList[turtle].container.x = turtles.turtleX2screenX(turtles.turtleList[turtle].x);
-                turtles.turtleList[turtle].container.y = turtles.turtleY2screenY(turtles.turtleList[turtle].y);
-            }
-
-            // Execute turtle code here...  Find the start block
-            // (or the top of each stack) and build a list of all of
-            // the named action stacks.
-            var startBlocks = [];
-            blocks.findStacks();
-            actions = {};
-            for (var blk = 0; blk < blocks.stackList.length; blk++) {
-                if (blocks.blockList[blocks.stackList[blk]].name == 'start') {
-                    // Don't start on a start block in the trash.
-                    if (!blocks.blockList[blocks.stackList[blk]].trash) {
-                        // Don't start on a start block with no connections.
-                        if (blocks.blockList[blocks.stackList[blk]].connections[1] != null) {
-                            startBlocks.push(blocks.stackList[blk]);
-                        }
-                    }
-                } else if (blocks.blockList[blocks.stackList[blk]].name == 'action') {
-                    // Does the action stack have a name?
-                    var c = blocks.blockList[blocks.stackList[blk]].connections[1];
-                    var b = blocks.blockList[blocks.stackList[blk]].connections[2];
-                    if (c != null && b != null) {
-                        // Don't use an action block in the trash.
-                        if (!blocks.blockList[blocks.stackList[blk]].trash) {
-                            actions[blocks.blockList[c].value] = b;
-                        }
-                    }
-                }
-            }
-
-            this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
-
-            this.parentFlowQueue = {};
-            this.unhightlightQueue = {};
-            this.parameterQueue = {};
-
-            if (turtleDelay == 0) {
-                // Don't update parameters when running full speed.
-                clearParameterBlocks();
-            }
-
-            // If the stop button is hidden, show it.
-            if (buttonsVisible && !toolbarButtonsVisible) {
-                showStopButton();
-            }
-
-            // And mark all turtles as not running.
-            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                turtles.turtleList[turtle].running = false;
-            }
-
-            // (2) Execute the stack.
-            // A bit complicated because we have lots of corner cases:
-            if (startHere != null) {
-                console.log('startHere is ' + blocks.blockList[startHere].name);
-                // If a block to start from was passed, find its
-                // associated turtle, i.e., which turtle should we use?
-                var turtle = 0;
-                if (blocks.blockList[startHere].name == 'start') {
-                    var turtle = blocks.blockList[startHere].value;
-                    console.log('starting on start with turtle ' + turtle);
-                } else {
-                    console.log('starting on ' + blocks.blockList[startHere].name + ' with turtle ' + turtle);
-                }
-
-                turtles.turtleList[turtle].queue = [];
-                this.parentFlowQueue[turtle] = [];
-                this.unhightlightQueue[turtle] = [];
-                this.parameterQueue[turtle] = [];
-                turtles.turtleList[turtle].running = true;
-                runFromBlock(this, turtle, startHere);
-            } else if (startBlocks.length > 0) {
-                // If there are start blocks, run them all.
-                for (var b = 0; b < startBlocks.length; b++) {
-                    turtle = blocks.blockList[startBlocks[b]].value;
-                    turtles.turtleList[turtle].queue = [];
-                    this.parentFlowQueue[turtle] = [];
-                    this.unhightlightQueue[turtle] = [];
-                    this.parameterQueue[turtle] = [];
-                    if (!turtles.turtleList[turtle].trash) {
-                        console.log('running from turtle ' + turtle);
-                        turtles.turtleList[turtle].running = true;
-                        runFromBlock(this, turtle, startBlocks[b]);
-                    }
-                }
-            } else {
-                // Or run from the top of each stack.
-                // Find a turtle
-                turtle = null;
-                for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                    if (!turtles.turtleList[turtle].trash) {
-                        console.log('found turtle ' + turtle);
-                        break;
-                    }
-                }
-
-                if (turtle == null) {
-                    console.log('could not find a turtle');
-                    turtle = turtles.turtleList.length;
-                    turtles.add(null);
-                }
-
-                console.log('running with turtle ' + turtle);
-                turtles.turtleList[turtle].queue = [];
-                this.parentFlowQueue[turtle] = [];
-                this.unhightlightQueue[turtle] = [];
-                this.parameterQueue[turtle] = [];
-
-                for (var blk = 0; blk < blocks.stackList.length; blk++) {
-                    if (blocks.blockList[blk].isNoRunBlock()) {
-                        continue;
-                    } else {
-                        if (!blocks.blockList[blocks.stackList[blk]].trash) {
-                            if (blocks.blockList[blocks.stackList[blk]].name == 'start' && blocks.blockList[blocks.stackList[blk]].connections[1] == null) {
-                                continue;
-                            }
-                            // This is a degenerative case.
-                            turtles.turtleList[0].running = true;
-                            runFromBlock(this, 0, blocks.stackList[blk]);
-                        }
-                    }
-                }
-            }
-            update = true;
-        }
-
-        function runFromBlock(activity, turtle, blk) {
-            if (blk == null) {
-                return;
-            }
-
-            var delay = turtleDelay + waitTime[turtle];
-            waitTime[turtle] = 0;
-            if (!stopTurtle) {
-                setTimeout(function() {
-                    runFromBlockNow(activity, turtle, blk);
-                }, delay);
-            }
-        }
-
-        function blockSetter(blk, value, turtleId) {
-            var turtle = turtles.turtleList[turtleId];
-
-            switch (blocks.blockList[blk].name) {
-                case 'x':
-                    turtle.doSetXY(value, turtle.x);
-                    break;
-                case 'y':
-                    turtle.doSetXY(turtle.y, value);
-                    break;
-                case 'heading':
-                    turtle.doSetHeading(value);
-                    break;
-                case 'color':
-                    turtle.doSetColor(value);
-                    break;
-                case 'shade':
-                    turtle.doSetValue(value);
-                    break;
-                case 'grey':
-                    turtle.doSetChroma(value);
-                    break;
-                case 'pensize':
-                    turtle.doSetPensize(value);
-                    break;
-                case 'box':
-                    var cblk = blocks.blockList[blk].connections[1];
-                    var name = parseArg(activity, turtle, cblk, blk);
-                    if (name in boxes) {
-                        boxes[name] = value;
-                    } else {
-                        errorMsg('Cannot find box ' + name + '.', blk);
-                    }
-                    break;
-                default:
-                    if (blocks.blockList[blk].name in evalSetterDict) {
-                        eval(evalSetterDict[blocks.blockList[blk].name]);
-                        break;
-                    }
-                    errorMsg('Block does not support incrementing', blk);
-            }
-        }
-
-        function runFromBlockNow(activity, turtle, blk) {
-            // Run a stack of blocks, beginning with blk.
-            // (1) Evaluate any arguments (beginning with connection[1]);
-            var args = [];
-            if (blocks.blockList[blk].protoblock.args > 0) {
-                for (var i = 1; i < blocks.blockList[blk].protoblock.args + 1; i++) {
-                    args.push(parseArg(activity, turtle, blocks.blockList[blk].connections[i], blk));
-                }
-            }
-
-            // (2) Run function associated with the block;
-            if (blocks.blockList[blk].isValueBlock()) {
-                var nextFlow = null;
-            } else {
-                // All flow blocks have a nextFlow, but it can be null
-                // (end of flow)
-                var nextFlow = last(blocks.blockList[blk].connections);
-            }
-
-            if (nextFlow != null) {
-                var queueBlock = new Queue(nextFlow, 1, blk);
-                turtles.turtleList[turtle].queue.push(queueBlock);
-            }
-
-            // Some flow blocks have childflows, e.g., repeat
-            var childFlow = null;
-            var childFlowCount = 0;
-
-            if (turtleDelay > 0) {
-                blocks.highlight(blk, false);
-            }
-
-            switch (blocks.blockList[blk].name) {
-                case 'start':
-                    if (args.length == 1) {
-                        childFlow = args[0];
-                        childFlowCount = 1;
-                    }
-                    break;
-                case 'do':
-                    if (args.length == 1) {
-                        if (args[0] in actions) {
-                            childFlow = actions[args[0]];
-                            childFlowCount = 1;
-                        } else {
-                            errorMsg('Cannot find action ' + args[0] + '.', blk);
-                            stopTurtle = true;
-                        }
-                    }
-                    break;
-                case 'forever':
-                    if (args.length == 1) {
-                        childFlow = args[0];
-                        childFlowCount = -1;
-                    }
-                    break;
-                case 'break':
-                    doBreak(turtle);
-                    break;
-                case 'wait':
-                    if (args.length == 1) {
-                        doWait(turtle, args[0]);
-                    }
-                    break;
-                case 'print':
-                    if (args.length == 1) {
-                        var msgContainer = msgText.parent;
-                        msgContainer.visible = true;
-                        msgText.text = args[0].toString();
-                        msgContainer.updateCache();
-                        stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
-                    }
-                    break;
-                case 'speak':
-                    if (args.length == 1) {
-                        meSpeak.speak(args[0])
-                    }
-                    break;
-                case 'repeat':
-                    if (args.length == 2) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            childFlow = args[1];
-                            childFlowCount = Math.floor(args[0]);
-                        }
-                    }
-                    break;
-                case 'until':
-                    // Similar to 'while'
-                    if (args.length == 2) {
-                        // Queue the child flow.
-                        childFlow = args[1];
-                        childFlowCount = 1;
-                        if (!args[0]) {
-                            // Requeue.
-                            var parentBlk = blocks.blockList[blk].connections[0];
-                            var queueBlock = new Queue(blk, 1, parentBlk);
-                            activity.parentFlowQueue[turtle].push(parentBlk);
-                            turtles.turtleList[turtle].queue.push(queueBlock);
-                        } else {
-                            // Since an until block was requeued each
-                            // time, we need to flush the queue of all
-                            // but the last one, otherwise the child
-                            // of the while block is executed multiple
-                            // times.
-                            var queueLength = turtles.turtleList[turtle].queue.length;
-                            for (var i = queueLength - 1; i > 0; i--) {
-                                if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
-                                    turtles.turtleList[turtle].queue.pop();
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 'waitFor':
-                    if (args.length == 1) {
-                        if (!args[0]) {
-                            // Requeue.
-                            var parentBlk = blocks.blockList[blk].connections[0];
-                            var queueBlock = new Queue(blk, 1, parentBlk);
-                            activity.parentFlowQueue[turtle].push(parentBlk);
-                            turtles.turtleList[turtle].queue.push(queueBlock);
-                            doWait(0.05);
-                        } else {
-                            // Since a wait for block was requeued each
-                            // time, we need to flush the queue of all
-                            // but the last one, otherwise the child
-                            // of the while block is executed multiple
-                            // times.
-                            var queueLength = turtles.turtleList[turtle].queue.length;
-                            for (var i = queueLength - 1; i > 0; i--) {
-                                if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
-                                    turtles.turtleList[turtle].queue.pop();
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 'if':
-                    if (args.length == 2) {
-                        if (args[0]) {
-                            childFlow = args[1];
-                            childFlowCount = 1;
-                        }
-                    }
-                    break;
-                case 'ifthenelse':
-                    if (args.length == 3) {
-                        if (args[0]) {
-                            childFlow = args[1];
-                            childFlowCount = 1;
-                        } else {
-                            childFlow = args[2];
-                            childFlowCount = 1;
-                        }
-                    }
-                    break;
-                case 'while':
-                    // While is tricky because we need to recalculate
-                    // args[0] each time, so we requeue the While block itself.
-                    if (args.length == 2) {
-                        if (args[0]) {
-                            // Requeue the while block...
-                            var parentBlk = blocks.blockList[blk].connections[0];
-                            var queueBlock = new Queue(blk, 1, parentBlk);
-                            activity.parentFlowQueue[turtle].push(parentBlk);
-                            turtles.turtleList[turtle].queue.push(queueBlock);
-                            // and queue the child flow.
-                            childFlow = args[1];
-                            childFlowCount = 1;
-                        } else {
-                            // Since a while block was requeued each
-                            // time, we need to flush the queue of all
-                            // but the last one, otherwise the child
-                            // of the while block is executed multiple
-                            // times.
-                            var queueLength = turtles.turtleList[turtle].queue.length;
-                            for (var i = queueLength - 1; i > 0; i--) {
-                                if (turtles.turtleList[turtle].queue[i].parentBlk == blk) {
-                                    turtles.turtleList[turtle].queue.pop();
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 'storein':
-                    if (args.length == 2) {
-                        boxes[args[0]] = args[1];
-                    }
-                    break;
-                case 'incrementOne':
-                    var i = 1;
-                case 'increment':
-                    // If the 2nd arg is not set, default to 1
-                    if (args.length == 2) {
-                        var i = args[1];
-                    }
-
-                    if (args.length >= 1) {
-                        var settingBlk = blocks.blockList[blk].connections[1];
-                        blockSetter(settingBlk, args[0] + i, turtle);
-                    }
-                    break;
-                case 'clear':
-                    turtles.turtleList[turtle].doClear();
-                    break;
-                case 'setxy':
-                    if (args.length == 2) {
-                        if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doSetXY(args[0], args[1]);
-                        }
-                    }
-                    break;
-                case 'arc':
-                    if (args.length == 2) {
-                        if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doArc(args[0], args[1]);
-                        }
-                    }
-                    break;
-                case 'forward':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doForward(args[0]);
-                        }
-                    }
-                    break;
-                case 'back':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doForward(-args[0]);
-                        }
-                    }
-                    break;
-                case 'right':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doRight(args[0]);
-                        }
-                    }
-                    break;
-                case 'left':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doRight(-args[0]);
-                        }
-                    }
-                    break;
-                case 'setheading':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doSetHeading(args[0]);
-                        }
-                    }
-                    break;
-                case 'show':
-                    if (args.length == 2) {
-                        if (typeof(args[1]) == 'string') {
-                            var len = args[1].length;
-                            if (len == 14 && args[1].substr(0, 14) == CAMERAVALUE) {
-                                doUseCamera(args, turtles, turtle, false, cameraID, setCameraID, errorMsg);
-                            } else if (len == 13 && args[1].substr(0, 13) == VIDEOVALUE) {
-                                doUseCamera(args, turtles, turtle, true, cameraID, setCameraID, errorMsg);
-                            } else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
-                                turtles.turtleList[turtle].doShowImage(args[0], args[1]);
-                            } else if (len > 8 && args[1].substr(0, 8) == 'https://') {
-                                turtles.turtleList[turtle].doShowURL(args[0], args[1]);
-                            } else if (len > 7 && args[1].substr(0, 7) == 'http://') {
-                                turtles.turtleList[turtle].doShowURL(args[0], args[1]);
-                            } else if (len > 7 && args[1].substr(0, 7) == 'file://') {
-                                turtles.turtleList[turtle].doShowURL(args[0], args[1]);
-                            } else {
-                                turtles.turtleList[turtle].doShowText(args[0], args[1]);
-                            }
-                        } else if (typeof(args[1]) == 'object' && blocks.blockList[blocks.blockList[blk].connections[2]].name == 'loadFile') {
-                            if (args[1]) {
-                                turtles.turtleList[turtle].doShowText(args[0], args[1][1]);
-                            }
-                            else {
-                                errorMsg(_('You must select a file.'));
-                            }
-                        }
-                        else {
-                            turtles.turtleList[turtle].doShowText(args[0], args[1]);
-                        }
-                    }
-                    break;
-                case 'turtleshell':
-                    if (args.length == 2) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doTurtleShell(args[0], args[1]);
-                        }
-                    }
-                    break;
-                case 'setcolor':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doSetColor(args[0]);
-                        }
-                    }
-                    break;
-                case 'sethue':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doSetHue(args[0]);
-                        }
-                    }
-                    break;
-                case 'setshade':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doSetValue(args[0]);
-                        }
-                    }
-                    break;
-                case 'setgrey':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doSetChroma(args[0]);
-                        }
-                    }
-                    break;
-                case 'setpensize':
-                    if (args.length == 1) {
-                        if (typeof(args[0]) == 'string') {
-                            errorMsg('Not a number.', blk);
-                            stopTurtle = true;
-                        } else {
-                            turtles.turtleList[turtle].doSetPensize(args[0]);
-                        }
-                    }
-                    break;
-                case 'beginfill':
-                    turtles.turtleList[turtle].doStartFill();
-                    break;
-                case 'endfill':
-                    turtles.turtleList[turtle].doEndFill();
-                    break;
-                case 'fillscreen':
-                    setBackgroundColor(turtle);
-                    break;
-                case 'penup':
-                    turtles.turtleList[turtle].doPenUp();
-                    break;
-                case 'pendown':
-                    turtles.turtleList[turtle].doPenDown();
-                    break;
-                case 'vspace':
-                    break;
-                case 'playback':
-                    sound = new Howl({
-                        urls: [args[0]]
-                    });
-                    sounds.push(sound);
-                    sound.play();
-                    break;
-                case 'stopplayback':
-                    for (sound in sounds) {
-                        sounds[sound].stop();
-                    }
-                    sounds = [];
-                    break;
-                case 'stopvideocam':
-                    if (cameraID != null) {
-                        doStopVideoCam(cameraID, setCameraID);
-                    }
-                    break;
-                case 'startTurtle':
-                    var startHere = getTargetTurtle(args);
-
-                    if (!startHere) {
-                        errorMsg('Cannot find turtle: ' + args[0], blk)
-                    } else {
-                        var targetTurtle = blocks.blockList[startHere].value;
-                        if (turtles.turtleList[targetTurtle].running) {
-                            errorMsg('Turtle is already running.', blk);
-                            break;
-                        }
-                        turtles.turtleList[targetTurtle].queue = [];
-                        turtles.turtleList[targetTurtle].running = true;
-                        activity.parentFlowQueue[targetTurtle] = [];
-                        activity.unhightlightQueue[targetTurtle] = [];
-                        activity.parameterQueue[targetTurtle] = [];
-                        runFromBlock(activity, targetTurtle, startHere);
-                    }
-                    break;
-                case 'stopTurtle':
-                    var startHere = getTargetTurtle(args);
-                    var targetTurtle = blocks.blockList[startHere].value;
-                    turtles.turtleList[targetTurtle].queue = [];
-                    activity.parentFlowQueue[targetTurtle] = [];
-                    activity.unhightlightQueue[targetTurtle] = [];
-                    activity.parameterQueue[targetTurtle] = [];
-                    doBreak(targetTurtle);
-                    break;
-                default:
-                    if (blocks.blockList[blk].name in evalFlowDict) {
-                        eval(evalFlowDict[blocks.blockList[blk].name]);
-                    } else {
-                        // Could be an arg block, so we need to print its value
-                        console.log('running an arg block?');
-                        if (blocks.blockList[blk].isArgBlock()) {
-                            args.push(parseArg(activity, turtle, blk));
-                            console.log('block: ' + blk + ' turtle: ' + turtle);
-                            console.log('block name: ' + blocks.blockList[blk].name);
-                            console.log('block value: ' + blocks.blockList[blk].value);
-                            var msgContainer = msgText.parent;
-                            msgContainer.visible = true;
-                            if (blocks.blockList[blk].value == null) {
-                                msgText.text = 'null block value';
-                            } else {
-                                msgText.text = blocks.blockList[blk].value.toString();
-                            }
-                            msgContainer.updateCache();
-                            stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
-                            stopTurtle = true;
-                        } else {
-                            errorMsg('I do not know how to ' + blocks.blockList[blk].name + '.', blk);
-                            stopTurtle = true;
-                        }
-                    }
-                    break;
-            }
-
-            // (3) Queue block below this block.
-
-            // If there is a child flow, queue it.
-            if (childFlow != null) {
-                var queueBlock = new Queue(childFlow, childFlowCount, blk);
-                // We need to keep track of the parent block to the
-                // child flow so we can unlightlight the parent block
-                // after the child flow completes.
-                activity.parentFlowQueue[turtle].push(blk);
-                turtles.turtleList[turtle].queue.push(queueBlock);
-            }
-
-            var nextBlock = null;
-            // Run the last flow in the queue.
-            if (turtles.turtleList[turtle].queue.length > 0) {
-                nextBlock = last(turtles.turtleList[turtle].queue).blk;
-                // Since the forever block starts at -1, it will never == 1.
-                if (last(turtles.turtleList[turtle].queue).count == 1) {
-                    // Finished child so pop it off the queue.
-                    turtles.turtleList[turtle].queue.pop();
-                } else {
-                    // Decrement the counter for repeating this flow.
-                    last(turtles.turtleList[turtle].queue).count -= 1;
-                }
-            }
-
-            if (nextBlock != null) {
-                parentBlk = null;
-                if (turtles.turtleList[turtle].queue.length > 0) {
-                    parentBlk = last(turtles.turtleList[turtle].queue).parentBlk;
-                }
-
-                if (parentBlk != blk) {
-                    // The wait block waits waitTime longer than other
-                    // blocks before it is unhighlighted.
-                    setTimeout(function() {
-                        blocks.unhighlight(blk);
-                    }, turtleDelay + waitTime[turtle]);
-                }
-
-                if (last(blocks.blockList[blk].connections) == null) {
-                    // If we are at the end of the child flow, queue
-                    // the unhighlighting of the parent block to the
-                    // flow.
-                    if (activity.parentFlowQueue[turtle].length > 0 && turtles.turtleList[turtle].queue.length > 0 && last(turtles.turtleList[turtle].queue).parentBlk != last(activity.parentFlowQueue[turtle])) {
-                        activity.unhightlightQueue[turtle].push(activity.parentFlowQueue[turtle].pop());
-                    } else if (activity.unhightlightQueue[turtle].length > 0) {
-                        // The child flow is finally complete, so unhighlight.
-                        setTimeout(function() {
-                            blocks.unhighlight(activity.unhightlightQueue[turtle].pop());
-                        }, turtleDelay);
-                    }
-                }
-                if (turtleDelay > 0) {
-                    for (var pblk in activity.parameterQueue[turtle]) {
-                        updateParameterBlock(activity, turtle, activity.parameterQueue[turtle][pblk]);
-                    }
-                }
-                runFromBlock(activity, turtle, nextBlock);
-            } else {
-                // Make sure SVG path is closed.
-                turtles.turtleList[turtle].closeSVG();
-                // Mark the turtle as not running.
-                turtles.turtleList[turtle].running = false;
-                if (!turtles.running()) {
-                    if (buttonsVisible && !toolbarButtonsVisible) {
-                        hideStopButton();
-                    }
-                }
-
-                // Nothing else to do... so cleaning up.
-                if (turtles.turtleList[turtle].queue.length == 0 || blk != last(turtles.turtleList[turtle].queue).parentBlk) {
-                    setTimeout(function() {
-                        blocks.unhighlight(blk);
-                    }, turtleDelay);
-                }
-
-                // Unhighlight any parent blocks still highlighted.
-                for (var b in activity.parentFlowQueue[turtle]) {
-                    blocks.unhighlight(activity.parentFlowQueue[turtle][b]);
-                }
-
-                // Make sure the turtles are on top.
-                var i = stage.getNumChildren() - 1;
-                // for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                stage.setChildIndex(turtles.turtleList[turtle].container, i);
-                // }
-                update = true;
-            }
-        }
-
-        function getTargetTurtle(args) {
-            // The target turtle name can be a string or an int.
-            if (typeof(args[0]) == 'string') {
-                var targetTurtleName = parseInt(args[0])
-            } else {
-                var targetTurtleName = args[0];
-            }
-
-            var startHere = null;
-
-            for (var blk in blocks.blockList) {
-                var name = blocks.blockList[blk].name;
-                var targetTurtle = blocks.blockList[blk].value;
-                if (name == 'start' && targetTurtle == targetTurtleName) {
-                    startHere = blk;
-                    break;
-                }
-            }
-
-            return startHere;
-        }
-
-        function doBreak(turtle) {
-            for (var i = 0; i < turtles.turtleList[turtle].queue.length; i++) {
-                var j = turtles.turtleList[turtle].queue.length - i - 1;
-                // FIXME: have a method for identifying these parents
-                if (['forever', 'repeat', 'while', 'until'].indexOf(blocks.blockList[turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
-                    turtles.turtleList[turtle].queue[j].count = 1;
-                    break;
-                }
-            }
-        }
-
-        function parseArg(activity, turtle, blk, parentBlk) {
-            // Retrieve the value of a block.
-            if (blk == null) {
-                errorMsg('Missing argument', parentBlk);
-                stopTurtle = true;
-                return null
-            }
-
-            if (blocks.blockList[blk].protoblock.parameter) {
-                if (activity.parameterQueue[turtle].indexOf(blk) == -1) {
-                    activity.parameterQueue[turtle].push(blk);
-                }
-            }
-
-            if (blocks.blockList[blk].isValueBlock()) {
-                if (blocks.blockList[blk].name == 'number' && typeof(blocks.blockList[blk].value) == 'string') {
-                    // FIXME: number block has string value
-                    try {
-                        blocks.blockList[blk].value = Number(blocks.blockList[blk].value);
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
-                return blocks.blockList[blk].value;
-            } else if (blocks.blockList[blk].isArgBlock()) {
-                switch (blocks.blockList[blk].name) {
-                    case 'eval':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = Number(eval(a.replace(/x/g, b.toString())));
-                        break;
-                    case 'box':
-                        var cblk = blocks.blockList[blk].connections[1];
-                        var name = parseArg(activity, turtle, cblk, blk);
-                        if (name in boxes) {
-                            blocks.blockList[blk].value = boxes[name];
-                        } else {
-                            errorMsg('Cannot find box ' + name + '.', blk);
-                            stopTurtle = true;
-                            blocks.blockList[blk].value = null;
-                        }
-                        break;
-                    case 'sqrt':
-                        var cblk = blocks.blockList[blk].connections[1];
-                        var a = parseArg(activity, turtle, cblk, blk);
-                        if (a < 0) {
-                            errorMsg('Cannot take square root of negative number.', blk);
-                            stopTurtle = true;
-                            a = -a;
-                        }
-                        blocks.blockList[blk].value = doSqrt(a);
-                        break;
-                    case 'mod':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = doMod(a, b);
-                        break;
-                    case 'not':
-                        var cblk = blocks.blockList[blk].connections[1];
-                        var a = parseArg(activity, turtle, cblk, blk);
-                        blocks.blockList[blk].value = !a;
-                        break;
-                    case 'greater':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = (Number(a) > Number(b));
-                        break;
-                    case 'equal':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = (a == b);
-                        break;
-                    case 'less':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        var result = (Number(a) < Number(b));
-                        blocks.blockList[blk].value = result;
-                        break;
-                    case 'random':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = doRandom(a, b);
-                        break;
-                    case 'plus':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = doPlus(a, b);
-                        break;
-                    case 'multiply':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = doMultiply(a, b);
-                        break;
-                    case 'divide':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = doDivide(a, b);
-                        break;
-                    case 'minus':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = doMinus(a, b);
-                        break;
-                    case 'heading':
-                        blocks.blockList[blk].value = turtles.turtleList[turtle].orientation;
-                        break;
-                    case 'x':
-                        blocks.blockList[blk].value = turtles.screenX2turtleX(turtles.turtleList[turtle].container.x);
-                        break;
-                    case 'y':
-                        blocks.blockList[blk].value = turtles.screenY2turtleY(turtles.turtleList[turtle].container.y);
-                        break;
-                    case 'xturtle':
-                    case 'yturtle':
-                        var cblk = blocks.blockList[blk].connections[1];
-                        var targetTurtle = parseArg(activity, turtle, cblk, blk);
-                        for (var i = 0; i < turtles.turtleList.length; i++) {
-                            var thisTurtle = turtles.turtleList[i];
-                            if (targetTurtle == thisTurtle.name) {
-                                if (blocks.blockList[blk].name == 'yturtle') {
-                                    blocks.blockList[blk].value = turtles.screenY2turtleY(thisTurtle.container.y);
-                                } else {
-                                    blocks.blockList[blk].value = turtles.screenX2turtleX(thisTurtle.container.x);
-                                }
-                                break;
-                            }
-                        }
-                        if (i == turtles.turtleList.length) {
-                            errorMsg('Could not find turtle ' + targetTurtle, blk);
-                            blocks.blockList[blk].value = 0;
-                        }
-                        break;
-                    case 'color':
-                    case 'hue':
-                        blocks.blockList[blk].value = turtles.turtleList[turtle].color;
-                        break;
-                    case 'shade':
-                        blocks.blockList[blk].value = turtles.turtleList[turtle].value;
-                        break;
-                    case 'grey':
-                        blocks.blockList[blk].value = turtles.turtleList[turtle].chroma;
-                        break;
-                    case 'pensize':
-                        blocks.blockList[blk].value = turtles.turtleList[turtle].stroke;
-                        break;
-                    case 'and':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = a && b;
-                        break;
-                    case 'or':
-                        var cblk1 = blocks.blockList[blk].connections[1];
-                        var cblk2 = blocks.blockList[blk].connections[2];
-                        var a = parseArg(activity, turtle, cblk1, blk);
-                        var b = parseArg(activity, turtle, cblk2, blk);
-                        blocks.blockList[blk].value = a || b;
-                        break;
-                    case 'time':
-                        var d = new Date();
-                        blocks.blockList[blk].value = (d.getTime() - time) / 1000;
-                        break;
-                    case 'hspace':
-                        var cblk = blocks.blockList[blk].connections[1];
-                        var v = parseArg(activity, turtle, cblk, blk);
-                        blocks.blockList[blk].value = v;
-                        break;
-                    case 'mousex':
-                        blocks.blockList[blk].value = stageX;
-                        break;
-                    case 'mousey':
-                        blocks.blockList[blk].value = stageY;
-                        break;
-                    case 'mousebutton':
-                        blocks.blockList[blk].value = stageMouseDown;
-                        break;
-                    case 'keyboard':
-                        blocks.blockList[blk].value = currentKeyCode;
-                        lastKeyCode = currentKeyCode;
-                        currentKey = '';
-                        currentKeyCode = 0;
-                        break;
-                    case 'loudness':
-                        if (!mic.enabled) {
-                            mic.start();
-                            blocks.blockList[blk].value = null;
-                        } else {
-                            blocks.blockList[blk].value = Math.round(mic.getLevel() * 1000);
-                        }
-                        break;
-                    case 'getcolorpixel':
-                        var wasVisible = turtles.turtleList[turtle].container.visible;
-                        turtles.turtleList[turtle].container.visible = false;
-                        var x = turtles.turtleList[turtle].container.x;
-                        var y = turtles.turtleList[turtle].container.y;
-                        refreshCanvas();
-                        var ctx = canvas.getContext("2d");
-                        var imgData = ctx.getImageData(x, y, 1, 1).data;
-                        var color = searchColors(imgData[0], imgData[1], imgData[2]);
-                        if (imgData[3] == 0) {
-                            color = body.style.background.substring(body.style.background.indexOf('(') + 1, body.style.background.lastIndexOf(')')).split(/,\s*/),
-                            color = searchColors(color[0], color[1], color[2]);
-                        }
-                        blocks.blockList[blk].value = color;
-                        if (wasVisible) {
-                            turtles.turtleList[turtle].container.visible = true;
-                        }
-                        break;
-                    case 'loadFile':
-                        // No need to do anything here.
-                        break;
-                    default:
-                        if (blocks.blockList[blk].name in evalArgDict) {
-                            eval(evalArgDict[blocks.blockList[blk].name]);
-                        } else {
-                            console.log('ERROR: I do not know how to ' + blocks.blockList[blk].name);
-                        }
-                        break;
-                }
-                return blocks.blockList[blk].value;
-            } else {
-                return blk;
-            }
         }
 
         function hideBlocks() {
@@ -2168,116 +1023,6 @@ define(function(require) {
             polarBitmap.visible = true;
             polarBitmap.updateCache();
             update = true;
-        }
-
-        function doWait(turtle, secs) {
-            waitTime[turtle] = Number(secs) * 1000;
-        }
-
-        // Math functions
-        function doRandom(a, b) {
-            if (typeof(a) == 'string' || typeof(b) == 'string') {
-                errorMsg('Not a number.');
-                stopTurtle = true;
-                return 0;
-            }
-            return Math.floor(Math.random() * (Number(b) - Number(a) + 1) + Number(a));
-        }
-
-        function doMod(a, b) {
-            if (typeof(a) == 'string' || typeof(b) == 'string') {
-                errorMsg('Not a number.');
-                stopTurtle = true;
-                return 0;
-            }
-            return Number(a) % Number(b);
-        }
-
-        function doSqrt(a) {
-            if (typeof(a) == 'string') {
-                errorMsg('Not a number.');
-                stopTurtle = true;
-                return 0;
-            }
-            return Math.sqrt(Number(a));
-        }
-
-        function doPlus(a, b) {
-            if (typeof(a) == 'string' || typeof(b) == 'string') {
-                if (typeof(a) == 'string') {
-                    var aString = a;
-                } else {
-                    var aString = a.toString();
-                }
-                if (typeof(b) == 'string') {
-                    var bString = b;
-                } else {
-                    var bString = b.toString();
-                }
-                return aString + bString;
-            } else {
-                return Number(a) + Number(b);
-            }
-        }
-
-        function doMinus(a, b) {
-            if (typeof(a) == 'string' || typeof(b) == 'string') {
-                errorMsg('Not a number.');
-                stopTurtle = true;
-                return 0;
-            }
-            return Number(a) - Number(b);
-        }
-
-        function doMultiply(a, b) {
-            if (typeof(a) == 'string' || typeof(b) == 'string') {
-                errorMsg('Not a number.');
-                stopTurtle = true;
-                return 0;
-            }
-            return Number(a) * Number(b);
-        }
-
-        function doDivide(a, b) {
-            if (typeof(a) == 'string' || typeof(b) == 'string') {
-                errorMsg('Not a number.');
-                stopTurtle = true;
-                return 0;
-            }
-            if (Number(b) == 0) {
-                errorMsg('Cannot divide by zero.');
-                stopTurtle = true;
-                return 0;
-            } else {
-                return Number(a) / Number(b);
-            }
-        }
-
-        function setBackgroundColor(turtle) {
-            /// change body background in DOM to current color
-            var body = document.body;
-            if (turtle == -1) {
-                body.style.background = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
-            } else {
-                body.style.background = turtles.turtleList[turtle].canvasColor;
-            }
-            this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
-        }
-
-        function allClear() {
-            // Clear all the boxes.
-            boxes = {};
-            time = 0;
-            errorMsgText.parent.visible = false;
-            if (errorMsgArrow !== null) {
-                errorMsgArrow.removeAllChildren();
-                update = true;
-            }
-            msgText.parent.visible = false;
-            setBackgroundColor(-1);
-            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                turtles.turtleList[turtle].doClear();
-            }
         }
 
         function pasteStack() {
@@ -2427,7 +1172,7 @@ define(function(require) {
             var buttonNames = [
                 ['fast', doFastButton],
                 ['slow', doSlowButton],
-                ['stop-turtle', doStopButton],
+                ['stop-turtle', logo.doStopButton],
                 ['clear', allClear],
                 ['palette', changePaletteVisibility],
                 ['hide-blocks', changeBlockVisibility],
@@ -2757,83 +1502,3 @@ define(function(require) {
         }
     });
 });
-
-
-var hasSetupCamera = false;
-function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, errorMsg) {
-    var w = 320;
-    var h = 240;
-
-    var streaming = false;
-    var video = document.querySelector('#camVideo');
-    var canvas = document.querySelector('#camCanvas');
-    navigator.getMedia = (navigator.getUserMedia ||
-                          navigator.mozGetUserMedia ||
-                          navigator.webkitGetUserMedia ||
-                          navigator.msGetUserMedia);
-    if (navigator.getMedia === undefined) {
-        errorMsg('Your browser does not support the webcam');
-    }
-
-    if (!hasSetupCamera) {
-        navigator.getMedia(
-            {video: true, audio: false},
-            function (stream) {
-                if (navigator.mozGetUserMedia) {
-                    video.mozSrcObject = stream;
-                } else {
-                    var vendorURL = window.URL || window.webkitURL;
-                    video.src = vendorURL.createObjectURL(stream);
-                }
-                video.play();
-                hasSetupCamera = true;
-            }, function (error) {
-                errorMsg('Could not connect to camera');
-                console.log('Could not connect to camera', error);
-        });
-    } else {
-        streaming = true;
-        video.play();
-        if (isVideo) {
-            cameraID = window.setInterval(draw, 100);
-            setCameraID(cameraID);
-        } else {
-            draw();
-        }
-    }
-
-    video.addEventListener('canplay', function (event) {
-        console.log('canplay', streaming, hasSetupCamera);
-        if (!streaming) {
-            video.setAttribute('width', w);
-            video.setAttribute('height', h);
-            canvas.setAttribute('width', w);
-            canvas.setAttribute('height', h);
-            streaming = true;
-
-            if (isVideo) {
-                cameraID = window.setInterval(draw, 100);
-                setCameraID(cameraID);
-            } else {
-                draw();
-            }
-        }
-    }, false);
-
-    function draw() {
-        canvas.width = w;
-        canvas.height = h;
-        canvas.getContext('2d').drawImage(video, 0, 0, w, h);
-        var data = canvas.toDataURL('image/png');
-        turtles.turtleList[turtle].doShowImage(args[0], data);
-    }
-}
-
-
-function doStopVideoCam(cameraID, setCameraID) {
-    if (cameraID != null) {
-        window.clearInterval(cameraID);
-    }
-    setCameraID(null);
-    document.querySelector('#camVideo').pause();
-}

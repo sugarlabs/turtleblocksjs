@@ -450,8 +450,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     // We need to access the "pseudo-Logo interpreter" when we click
     // on blocks.
-    this.setLogo = function(runLogo) {
-        this.runLogo = runLogo;
+    this.setLogo = function(logo) {
+        this.logo = logo;
     }
 
     // The scale of the graphics is determined by screen size.
@@ -3481,7 +3481,7 @@ function loadEventHandlers(blocks, myBlock) {
 		if (!blocks.inLongPress) {
                     var topBlock = blocks.findTopBlock(thisBlock);
                     console.log('running from ' + blocks.blockList[topBlock].name);
-                    blocks.runLogo(topBlock);
+                    blocks.logo.runLogoCommands(topBlock);
 		}
             }
         }

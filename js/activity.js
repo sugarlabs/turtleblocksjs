@@ -484,10 +484,16 @@ define(function(require) {
 
         function scrollEvent(event) {
             var data = event.wheelDelta || -event.detail;
-                var delta = Math.max(-1, Math.min(1, (data)));
+            var delta = Math.max(-1, Math.min(1, (data)));
+            var scrollSpeed = 3;
 
             if (event.clientX < cellSize) {
-                palettes.menuScrollEvent(delta);
+                palettes.menuScrollEvent(delta, scrollSpeed);
+            } else {
+                palette = palettes.findPalette(event.clientX, event.clientY);
+                if (palette) {
+                    palette.scrollEvent(delta, scrollSpeed);
+                }
             }
         }
 

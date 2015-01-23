@@ -28,7 +28,7 @@ bitcoinRate.twoArgMathBlock();
 bitcoinRate.docks[1][2] = 'anyin';
 bitcoinRate.docks[2][2] = 'numberin';
 bitcoinRate.defaults.push('USD', 100);
-bitcoinRate.staticLabels.push('bitcoin', 'from', '100');
+bitcoinRate.staticLabels.push('bitcoin', 'from', 'value');
 
 //* arg:bitcoinrate *//
 

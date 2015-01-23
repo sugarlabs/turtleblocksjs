@@ -8,9 +8,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
+//
 // Note: This code is inspired by the Python Turtle Blocks project
 // (https://github.com/walterbender/turtleart), but implemented from
 // scratch. -- Walter Bender, October 2014.
+
 define(function(require) {
     var activity = require('sugar-web/activity/activity');
     var icon = require('sugar-web/graphics/icon');
@@ -219,11 +221,11 @@ define(function(require) {
         // Do we need to update the stage?
         var update = true;
 
-        // The list of [action name, block]
-        var actionList = [];
+        // The dictionary of action name: block
+        var actions = {};
 
-        // The list of [box name, value]
-        var boxList = [];
+        // The dictionary of box name: value
+        var boxes = {};
 
         // Set the default background color...
         setBackgroundColor(-1);
@@ -737,12 +739,18 @@ define(function(require) {
             createjs.Ticker.removeEventListener('tick', tick);
         }
 
+	function onStopTurtle() {
+            if (buttonsVisible && !toolbarButtonsVisible) {
+		hideStopButton();
+            }
+	}
+
         function doStopTurtle() {
             // The stop button was pressed. Stop the turtle and clean
             // up a few odds and ends.
             stopTurtle = true;
 
-            for (sound in sounds) {
+            for (var sound in sounds) {
                 sounds[sound].stop();
             }
             sounds = [];
@@ -948,7 +956,7 @@ define(function(require) {
         }
 
         function clearParameterBlocks() {
-            for (blk in blocks.blockList) {
+            for (var blk in blocks.blockList) {
                 if (blocks.blockList[blk].parameter) {
                     blocks.blockList[blk].text.text = '';
                     blocks.blockList[blk].container.updateCache();
@@ -966,11 +974,10 @@ define(function(require) {
                     case 'box':
                         var cblk = blocks.blockList[blk].connections[1];
                         var boxname = parseArg(activity, turtle, cblk, blk);
-                        var i = findBox(boxname);
-                        if (i == null) {
-                            errorMsg('Cannot find box ' + boxname + '.');
+                        if (boxname in boxes) {
+                            value = boxes[boxname];
                         } else {
-                            value = boxList[i][1];
+                            errorMsg('Cannot find box ' + boxname + '.');
                         }
                         break;
                     case 'x':
@@ -1077,7 +1084,7 @@ define(function(require) {
             // the named action stacks.
             var startBlocks = [];
             blocks.findStacks();
-            actionList = [];
+            actions = {};
             for (var blk = 0; blk < blocks.stackList.length; blk++) {
                 if (blocks.blockList[blocks.stackList[blk]].name == 'start') {
                     // Don't start on a start block in the trash.
@@ -1094,7 +1101,7 @@ define(function(require) {
                     if (c != null && b != null) {
                         // Don't use an action block in the trash.
                         if (!blocks.blockList[blocks.stackList[blk]].trash) {
-                            actionList.push([blocks.blockList[c].value, b]);
+                            actions[blocks.blockList[c].value] = b;
                         }
                     }
                 }
@@ -1238,11 +1245,10 @@ define(function(require) {
                 case 'box':
                     var cblk = blocks.blockList[blk].connections[1];
                     var name = parseArg(activity, turtle, cblk, blk);
-                    var i = findBox(name);
-                    if (i == null) {
-                        errorMsg('Cannot find box ' + name + '.', blk);
+                    if (name in boxes) {
+                        boxes[name] = value;
                     } else {
-                        doStorein(name, value);
+                        errorMsg('Cannot find box ' + name + '.', blk);
                     }
                     break;
                 default:
@@ -1295,16 +1301,10 @@ define(function(require) {
                     break;
                 case 'do':
                     if (args.length == 1) {
-                        var foundAction = false;
-                        for (i = 0; i < actionList.length; i++) {
-                            if (actionList[i][0] == args[0]) {
-                                childFlow = actionList[i][1];
-                                childFlowCount = 1;
-                                foundAction = true;
-                                break;
-                            }
-                        }
-                        if (!foundAction) {
+                        if (args[0] in actions) {
+                            childFlow = actions[args[0]];
+                            childFlowCount = 1;
+                        } else {
                             errorMsg('Cannot find action ' + args[0] + '.', blk);
                             stopTurtle = true;
                         }
@@ -1449,7 +1449,7 @@ define(function(require) {
                     break;
                 case 'storein':
                     if (args.length == 2) {
-                        doStorein(args[0], args[1]);
+                        boxes[args[0]] = args[1];
                     }
                     break;
                 case 'incrementOne':
@@ -1882,13 +1882,12 @@ define(function(require) {
                     case 'box':
                         var cblk = blocks.blockList[blk].connections[1];
                         var name = parseArg(activity, turtle, cblk, blk);
-                        var i = findBox(name);
-                        if (i == null) {
+                        if (name in boxes) {
+                            blocks.blockList[blk].value = boxes[name];
+                        } else {
                             errorMsg('Cannot find box ' + name + '.', blk);
                             stopTurtle = true;
                             blocks.blockList[blk].value = null;
-                        } else {
-                            blocks.blockList[blk].value = boxList[i][1];
                         }
                         break;
                     case 'sqrt':
@@ -2151,18 +2150,6 @@ define(function(require) {
             waitTime[turtle] = Number(secs) * 1000;
         }
 
-        // Logo functions
-        function doStorein(name, value) {
-            if (name != null) {
-                i = findBox(name);
-                if (i == null) {
-                    boxList.push([name, value]);
-                } else {
-                    boxList[i][1] = value;
-                }
-            }
-        }
-
         // Math functions
         function doRandom(a, b) {
             if (typeof(a) == 'string' || typeof(b) == 'string') {
@@ -2255,7 +2242,7 @@ define(function(require) {
 
         function allClear() {
             // Clear all the boxes.
-            boxList = [];
+            boxes = {};
             time = 0;
             errorMsgText.parent.visible = false;
             if (errorMsgArrow !== null) {
@@ -2267,16 +2254,6 @@ define(function(require) {
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].doClear();
             }
-        }
-
-        function findBox(name) {
-            // Return the index of the box with name name.
-            for (i = 0; i < boxList.length; i++) {
-                if (boxList[i][0] == name) {
-                    return i;
-                }
-            }
-            return null;
         }
 
         function pasteStack() {

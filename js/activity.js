@@ -493,6 +493,18 @@ define(function(require) {
             }
         }
 
+	function getStageX() {
+	    return stageX;
+        }
+
+	function getStageY() {
+	    return stageY;
+        }
+
+	function getStageMouseDown() {
+	    return stageMouseDown;
+        }
+
         function setCameraID(id) {
             cameraID = id;
         }
@@ -607,6 +619,15 @@ define(function(require) {
                 }
             }
         }
+
+	function getCurrentKeyCode() {
+	    return currentKeyCode;
+	}
+
+	function clearCurrentKeyCode() {
+            currentKey = '';
+            currentKeyCode = 0;
+	}
 
         function onResize() {
             if (!onAndroid) {
@@ -735,13 +756,22 @@ define(function(require) {
         }
 
         function stop() {
-            //
+            // FIXME: who calls this???
             createjs.Ticker.removeEventListener('tick', tick);
         }
 
 	function onStopTurtle() {
+	    // TODO: plugin support
             if (buttonsVisible && !toolbarButtonsVisible) {
 		hideStopButton();
+            }
+	}
+
+	function onRunTurtle() {
+	    // TODO: plugin support
+            // If the stop button is hidden, show it.
+            if (buttonsVisible && !toolbarButtonsVisible) {
+		showStopButton();
             }
 	}
 
@@ -1096,8 +1126,8 @@ define(function(require) {
                     }
                 } else if (blocks.blockList[blocks.stackList[blk]].name == 'action') {
                     // Does the action stack have a name?
-                    c = blocks.blockList[blocks.stackList[blk]].connections[1];
-                    b = blocks.blockList[blocks.stackList[blk]].connections[2];
+                    var c = blocks.blockList[blocks.stackList[blk]].connections[1];
+                    var b = blocks.blockList[blocks.stackList[blk]].connections[2];
                     if (c != null && b != null) {
                         // Don't use an action block in the trash.
                         if (!blocks.blockList[blocks.stackList[blk]].trash) {
@@ -1330,7 +1360,7 @@ define(function(require) {
                         msgContainer.visible = true;
                         msgText.text = args[0].toString();
                         msgContainer.updateCache();
-                        stage.swapChildren(msgContainer, last(stage.children));
+                        stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
                     }
                     break;
                 case 'speak':
@@ -1776,7 +1806,7 @@ define(function(require) {
                     }
                 }
                 if (turtleDelay > 0) {
-                    for (pblk in activity.parameterQueue[turtle]) {
+                    for (var pblk in activity.parameterQueue[turtle]) {
                         updateParameterBlock(activity, turtle, activity.parameterQueue[turtle][pblk]);
                     }
                 }
@@ -1823,7 +1853,7 @@ define(function(require) {
 
             var startHere = null;
 
-            for (blk in blocks.blockList) {
+            for (var blk in blocks.blockList) {
                 var name = blocks.blockList[blk].name;
                 var targetTurtle = blocks.blockList[blk].value;
                 if (name == 'start' && targetTurtle == targetTurtleName) {
@@ -1836,7 +1866,7 @@ define(function(require) {
         }
 
         function doBreak(turtle) {
-            for (i = 0; i < turtles.turtleList[turtle].queue.length; i++) {
+            for (var i = 0; i < turtles.turtleList[turtle].queue.length; i++) {
                 var j = turtles.turtleList[turtle].queue.length - i - 1;
                 // FIXME: have a method for identifying these parents
                 if (['forever', 'repeat', 'while', 'until'].indexOf(blocks.blockList[turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
@@ -1910,8 +1940,7 @@ define(function(require) {
                     case 'not':
                         var cblk = blocks.blockList[blk].connections[1];
                         var a = parseArg(activity, turtle, cblk, blk);
-                        var b = !a;
-                        blocks.blockList[blk].value = b;
+                        blocks.blockList[blk].value = !a;
                         break;
                     case 'greater':
                         var cblk1 = blocks.blockList[blk].connections[1];
@@ -1926,11 +1955,6 @@ define(function(require) {
                         var a = parseArg(activity, turtle, cblk1, blk);
                         var b = parseArg(activity, turtle, cblk2, blk);
                         blocks.blockList[blk].value = (a == b);
-                        break;
-                    case 'not':
-                        var cblk = blocks.blockList[blk].connections[1];
-                        var a = parseArg(activity, turtle, cblk, blk);
-                        blocks.blockList[blk].value = !a;
                         break;
                     case 'less':
                         var cblk1 = blocks.blockList[blk].connections[1];
@@ -1989,7 +2013,7 @@ define(function(require) {
                         var cblk = blocks.blockList[blk].connections[1];
                         var targetTurtle = parseArg(activity, turtle, cblk, blk);
                         for (var i = 0; i < turtles.turtleList.length; i++) {
-                            thisTurtle = turtles.turtleList[i];
+                            var thisTurtle = turtles.turtleList[i];
                             if (targetTurtle == thisTurtle.name) {
                                 if (blocks.blockList[blk].name == 'yturtle') {
                                     blocks.blockList[blk].value = turtles.screenY2turtleY(thisTurtle.container.y);

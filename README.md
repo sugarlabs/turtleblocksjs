@@ -49,7 +49,7 @@ Advanced Features
 
 Turtle Blocks has a plugin mechanism that is used to add new
 blocks. You can learn more about how to use plugins (and how to write
-them) from the [Plugins Guide](https://github.com/walterbender/turtleblocksjs/blob/master/plugins.md).
+them) from the [Plugins Guide](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/README.md).
 
 
 List of plugins
@@ -62,6 +62,7 @@ List of plugins
 * [Weather](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json): blocks to retrieve global weather forecasts
 * [Logic](https://github.com/walterbender/turtleblocksjs/blob/master/logic.json): blocks for bitwise Boolean operations
 * [Finance](https://github.com/walterbender/turtleblocksjs/blob/master/finance.json): a block for looking up market prices
+* [Bitcoin](https://github.com/walterbender/turtleblocksjs/blob/master/bitcoin.json): a block for looking up bitcoin exchange rates
 * [Nutrition](https://github.com/walterbender/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
 * [Advanced Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json): a misc. collection of utility blocks
 * [Heap](https://github.com/walterbender/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data

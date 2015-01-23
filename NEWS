@@ -186,8 +186,13 @@
   * use nop blocks when encountering unknown blocks during load
   * scroll palette buttons with a gesture when there are too many
     (Sam Parkinson)
+  * only show save on action blocks
+  * only show copy/save menu from top block
+  * plugin for RoDi (w/Martin Abente)
 
 TODO:
+  * save errors
+  * display rubrics
   * scroll/page menus when they get too big (instead of wrapping)???
   * more efficient until and while?
   * save to javascript
@@ -206,3 +211,4 @@ KNOWN BUGS:
   * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
   * fix race conditions
+  * sometimes scrolling menus does not work

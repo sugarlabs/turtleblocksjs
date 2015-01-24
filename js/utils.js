@@ -479,7 +479,7 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
         canvas.height = h;
         canvas.getContext('2d').drawImage(video, 0, 0, w, h);
         var data = canvas.toDataURL('image/png');
-        this.turtles.turtleList[turtle].doShowImage(args[0], data);
+        turtles.turtleList[turtle].doShowImage(args[0], data);
     }
 }
 

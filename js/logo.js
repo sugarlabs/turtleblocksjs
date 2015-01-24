@@ -37,10 +37,6 @@ function Logo(blocks, turtles, stage, refreshCanvas, msgText, errorMsg,
     this.evalParameterDict = {};
     this.evalSetterDict = {};
 
-    this.parentFlowQueue = {};
-    this.unhightlightQueue = {};
-    this.parameterQueue = {};
-
     this.boxes = {};
     this.actions = {};
 
@@ -395,7 +391,9 @@ function Logo(blocks, turtles, stage, refreshCanvas, msgText, errorMsg,
             // (i.e., end of a flow).
             var nextFlow = last(logo.blocks.blockList[blk].connections);
             var queueBlock = new Queue(nextFlow, 1, blk);
-            logo.turtles.turtleList[turtle].queue.push(queueBlock);
+	    if (nextFlow != null) {  // Not sure why this check is needed.
+		logo.turtles.turtleList[turtle].queue.push(queueBlock);
+	    }
         }
 
         // Some flow blocks have childflows, e.g., repeat.
@@ -842,23 +840,16 @@ function Logo(blocks, turtles, stage, refreshCanvas, msgText, errorMsg,
             // child flow completes.
             logo.parentFlowQueue[turtle].push(blk);
             logo.turtles.turtleList[turtle].queue.push(queueBlock);
-	    console.log('queuing child flow ' + logo.blocks.blockList[childFlow].name + ' ' + childFlowCount);
         }
 
         var nextBlock = null;
         // Run the last flow in the queue.
-	console.log('queue length is ' + logo.turtles.turtleList[turtle].queue.length);
         if (logo.turtles.turtleList[turtle].queue.length > 0) {
             nextBlock = last(logo.turtles.turtleList[turtle].queue).blk;
-	    console.log('nextBlock: ' + nextBlock + ' queue count ' + last(logo.turtles.turtleList[turtle].queue).count);
             // Since the forever block starts at -1, it will never == 1.
             if (last(logo.turtles.turtleList[turtle].queue).count == 1) {
                 // Finished child so pop it off the queue.
                 logo.turtles.turtleList[turtle].queue.pop();
-		if (logo.turtles.turtleList[turtle].queue.length > 0) {
-		    console.log(last(logo.turtles.turtleList[turtle].queue).blk);
-		    // nextBlock = last(logo.turtles.turtleList[turtle].queue).blk;
-		}
             } else {
                 // Decrement the counter for repeating logo flow.
                 last(logo.turtles.turtleList[turtle].queue).count -= 1;
@@ -896,7 +887,6 @@ function Logo(blocks, turtles, stage, refreshCanvas, msgText, errorMsg,
                     logo.updateParameterBlock(logo, turtle, logo.parameterQueue[turtle][pblk]);
                 }
             }
-	    console.log('running next block ' + logo.blocks.blockList[nextBlock].name);
             logo.runFromBlock(logo, turtle, nextBlock);
         } else {
             // Make sure SVG path is closed.

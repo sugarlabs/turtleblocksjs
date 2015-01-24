@@ -212,3 +212,5 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * fix race conditions
   * sometimes scrolling menus does not work
+  * reloading camera block gets double image
+  * coordinate grids offset in Y

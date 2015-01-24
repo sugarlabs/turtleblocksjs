@@ -323,6 +323,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, msgText, errorMsg,
 
         var delay = logo.turtleDelay + logo.waitTimes[turtle];
         logo.waitTimes[turtle] = 0;
+
         if (!logo.stopTurtle) {
             setTimeout(function() {
                 logo.runFromBlockNow(logo, turtle, blk);

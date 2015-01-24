@@ -1172,7 +1172,7 @@ define(function(require) {
             var buttonNames = [
                 ['fast', doFastButton],
                 ['slow', doSlowButton],
-                ['stop-turtle', logo.doStopButton],
+                ['stop-turtle', doStopButton],
                 ['clear', allClear],
                 ['palette', changePaletteVisibility],
                 ['hide-blocks', changeBlockVisibility],

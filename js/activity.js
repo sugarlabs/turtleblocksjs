@@ -272,7 +272,7 @@ define(function(require) {
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             // TODO: clean up this mess.
-            logo = new Logo(blocks, turtles, stage, refreshCanvas, msgText,
+            logo = new Logo(blocks, turtles, stage, refreshCanvas, textMsg,
                             errorMsg, hideMsgs, onStopTurtle, onRunTurtle,
                             prepareExport, getStageX, getStageY,
                             getStageMouseDown, getCurrentKeyCode,
@@ -935,6 +935,18 @@ define(function(require) {
             }
             msgText.parent.visible = false;
         }
+
+        function textMsg(msg) {
+            if (msgText == null) {
+                // The container may not be ready yet... so do nothing
+                return;
+            }
+            var msgContainer = msgText.parent;
+            msgContainer.visible = true;
+            msgText.text = msg;
+            msgContainer.updateCache();
+            stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
+	}
 
         function errorMsg(msg, blk) {
             if (errorMsgText == null) {

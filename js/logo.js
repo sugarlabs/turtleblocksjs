@@ -11,7 +11,7 @@
 
 var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
 
-function Logo(blocks, turtles, stage, refreshCanvas, msgText, errorMsg,
+function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
               getStageY, getStageMouseDown, getCurrentKeyCode,
               clearCurrentKeyCode, meSpeak) {
@@ -20,7 +20,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, msgText, errorMsg,
     this.turtles = turtles;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
-    this.msgText = msgText;
+    this.textMsg = textMsg;
     this.errorMsg = errorMsg;
     this.hideMsgs = hideMsgs;
     this.onStopTurtle = onStopTurtle;
@@ -439,11 +439,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, msgText, errorMsg,
                 break;
             case 'print':
                 if (args.length == 1) {
-                    var msgContainer = logo.msgText.parent;
-                    msgContainer.visible = true;
-                    logo.msgText.text = args[0].toString();
-                    msgContainer.updateCache();
-                    logo.stage.setChildIndex(msgContainer, logo.stage.getNumChildren() - 1);
+		    logo.textMsg(args[0].toString());
                 }
                 break;
             case 'speak':

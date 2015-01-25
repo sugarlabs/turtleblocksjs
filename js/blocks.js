@@ -495,7 +495,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blocks.copyButton.visible = false;
             blocks.saveStackButton.visible = false;
             blocks.dismissButton.visible = false;
-	    blocks.inLongPress = false;
+            blocks.inLongPress = false;
             blocks.updatePasteButton();
             blocks.refreshCanvas();
         });
@@ -504,14 +504,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             blocks.copyButton.visible = false;
             blocks.saveStackButton.visible = false;
             blocks.dismissButton.visible = false;
-	    blocks.inLongPress = false;
+            blocks.inLongPress = false;
             blocks.refreshCanvas();
         });
 
         this.saveStackButton.on('click', function(event) {
             // Only invoked from action blocks.
             var topBlock = blocks.findTopBlock(blocks.activeBlock);
-	    blocks.inLongPress = false;
+            blocks.inLongPress = false;
             blocks.selectedStack = topBlock;
             blocks.copyButton.visible = false;
             blocks.saveStackButton.visible = false;
@@ -1516,25 +1516,30 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // FIXME: Works correctly with mediaBlocks, not with others.
         if (myBlock.image) {
             var image = new Image();
-            image.onload = function() {
-                var bitmap = new createjs.Bitmap(image);
-                // FIXME: Determine these values computationally based on the size
-                // of the media block.
-                if (image.width > image.height) {
-                    bitmap.scaleX = 108 / image.width;
-                    bitmap.scaleY = 108 / image.width;
-                    bitmap.scale = 108 / image.width;
-                } else {
-                    bitmap.scaleX = 80 / image.height;
-                    bitmap.scaleY = 80 / image.height;
-                    bitmap.scale = 80 / image.height;
+            var arg = postProcessArg[1];
+            // Don't load a graphic if there is an image, as it is
+            // added later.
+            if ([null, CAMERAVALUE, VIDEOVALUE].indexOf(arg) != -1) {
+                image.onload = function() {
+                    var bitmap = new createjs.Bitmap(image);
+                    // FIXME: Determine these values computationally based on the size
+                    // of the media block.
+                    if (image.width > image.height) {
+                        bitmap.scaleX = 108 / image.width;
+                        bitmap.scaleY = 108 / image.width;
+                        bitmap.scale = 108 / image.width;
+                    } else {
+                        bitmap.scaleX = 80 / image.height;
+                        bitmap.scaleY = 80 / image.height;
+                        bitmap.scale = 80 / image.height;
+                    }
+                    myBlock.container.addChild(bitmap);
+                    bitmap.x = 40;
+                    bitmap.y = 2;
+                    myBlock.container.updateCache();
                 }
-                myBlock.container.addChild(bitmap);
-                bitmap.x = 40;
-                bitmap.y = 2;
-                myBlock.container.updateCache();
+                image.src = myBlock.image;
             }
-            image.src = myBlock.image;
         }
         return myBlock;
     }
@@ -1684,10 +1689,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     var thisBlock = args[0];
                     var value = args[1];
                     me.blockList[thisBlock].value = value;
-                    if (value == null) {
-                        loadThumbnail(me, thisBlock, 'images/load-media.svg');
-                    } else {
-                        loadThumbnail(me, thisBlock, null);
+                    if (value != null) {
+                        // loadThumbnail(me, thisBlock, null);
                     }
                 }
                 this.makeNewBlock('media', postProcess, [thisBlock, value]);
@@ -1934,7 +1937,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     this.triggerLongPress = function(myBlock) {
         this.timeOut == null;
-	this.inLongPress = true;
+        this.inLongPress = true;
         this.copyButton.visible = true;
         this.copyButton.x = myBlock.container.x - 27;
         this.copyButton.y = myBlock.container.y - 27;
@@ -2021,7 +2024,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.addToMyPalette = function(name, obj) {
-	// On the palette we store the macro as a basic block.
+        // On the palette we store the macro as a basic block.
         var myBlock = new ProtoBlock('macro_' + name);
         this.protoBlockDict['macro_' + name] = myBlock;
         myBlock.palette = this.palettes.dict['myblocks'];
@@ -2233,16 +2236,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     }
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
-
-                    // Load a thumbnail into a media blocks.
                 case 'media':
+                    // Load a thumbnail into a media blocks.
                     postProcess = function(args) {
                         var thisBlock = args[0];
                         var value = args[1];
                         me.blockList[thisBlock].value = value;
-                        if (value == null) {
-                            loadThumbnail(me, thisBlock, 'images/load-media.svg');
-                        } else {
+                        if (value != null) {
+                            // Load artwork onto media block.
+                            console.log('loadNewBlocks: load media block');
                             loadThumbnail(me, thisBlock, null);
                         }
                     }
@@ -2253,8 +2255,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         var thisBlock = args[0];
                         var value = args[1];
                         me.blockList[thisBlock].value = CAMERAVALUE;
-                        loadThumbnail(me, thisBlock, 'images/camera.svg');
-
                     }
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
@@ -2263,8 +2263,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         var thisBlock = args[0];
                         var value = args[1];
                         me.blockList[thisBlock].value = VIDEOVALUE;
-                        loadThumbnail(me, thisBlock, 'images/video.svg');
-
                     }
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
@@ -3174,6 +3172,7 @@ function doOpenMedia(blocks, thisBlock) {
                 }
                 thisBlock.image = null;
                 blocks.refreshCanvas();
+                console.log('doOpenMedia: load media block');
                 loadThumbnail(blocks, thisBlock, null);
             }
         });
@@ -3478,11 +3477,11 @@ function loadEventHandlers(blocks, myBlock) {
                     myBlock.label.style.display = '';
                 }
             } else {
-		if (!blocks.inLongPress) {
+                if (!blocks.inLongPress) {
                     var topBlock = blocks.findTopBlock(thisBlock);
                     console.log('running from ' + blocks.blockList[topBlock].name);
                     blocks.logo.runLogoCommands(topBlock);
-		}
+                }
             }
         }
     });
@@ -3492,8 +3491,8 @@ function loadEventHandlers(blocks, myBlock) {
         blocks.setDraggingFlag(true);
 
         // Track time for detecting long pause...
-	// but only for top block in stack
-	if (myBlock.connections[0] == null) {
+        // but only for top block in stack
+        if (myBlock.connections[0] == null) {
             var d = new Date();
             blocks.time = d.getTime();
             blocks.timeOut = setTimeout(function() {
@@ -3518,17 +3517,17 @@ function loadEventHandlers(blocks, myBlock) {
 
         myBlock.container.on('mouseout', function(event) {
             blocks.setDraggingFlag(false);
-	    if (!blocks.inLongPress) {
-		mouseoutCallback(blocks, myBlock, event, moved);
+            if (!blocks.inLongPress) {
+                mouseoutCallback(blocks, myBlock, event, moved);
             }
             moved = false;
         });
 
         myBlock.container.on('pressup', function(event) {
             blocks.setDraggingFlag(false);
-	    if (!blocks.inLongPress) {
-		mouseoutCallback(blocks, myBlock, event, moved);
-	    }
+            if (!blocks.inLongPress) {
+                mouseoutCallback(blocks, myBlock, event, moved);
+            }
             moved = false;
         });
 
@@ -3586,9 +3585,9 @@ function loadEventHandlers(blocks, myBlock) {
 
     myBlock.container.on('mouseout', function(event) {
         blocks.setDraggingFlag(false);
-	if (!blocks.inLongPress) {
+        if (!blocks.inLongPress) {
             mouseoutCallback(blocks, myBlock, event, moved);
-	}
+        }
     });
 }
 

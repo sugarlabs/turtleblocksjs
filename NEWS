@@ -189,6 +189,7 @@
   * only show save on action blocks
   * only show copy/save menu from top block
   * plugin for RoDi (w/Martin Abente)
+  * fixed problem with reloading camera or media block getting double image
 
 TODO:
   * save errors
@@ -212,5 +213,4 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * fix race conditions
   * sometimes scrolling menus does not work
-  * reloading camera block gets double image
   * coordinate grids offset in Y

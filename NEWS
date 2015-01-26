@@ -191,6 +191,7 @@
   * plugin for RoDi (w/Martin Abente)
   * fixed problem with reloading camera or media block getting double image
   * fix coordinate grids offset due to scaling
+  * step-by-step playback mode
 
 TODO:
   * save errors

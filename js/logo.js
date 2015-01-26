@@ -11,6 +11,7 @@
 
 var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
 var DEFAULTDELAY = 500; // milleseconds
+var TURTLESTEP = -1;  // Run in step-by-step mode
 
 
 function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
@@ -50,6 +51,11 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.stopTurtle = false;
     this.lastKeyCode = null;
 
+    // When running in step-by-step mode, the next command to run is
+    // queued here.
+    this.stepQueue = [];
+    this.unhighlightBlk = null;
+
     this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
 
     try {
@@ -59,8 +65,22 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         this.mic = null;
     }
 
-    this.setTurtleDelay = function (turtleDelay) {
+    this.setTurtleDelay = function(turtleDelay) {
         this.turtleDelay = turtleDelay;
+    }
+
+    this.step = function() {
+        // Take one step in excuting Logo commands.
+        if (this.stepQueue.length == 0) {
+            errorMsg('Finished running blocks');
+        } else {
+            if (this.unhighlightBlk != null) {
+                this.blocks.unhighlight(this.unhighlightBlk);
+                this.unhighlightBlk = null;
+            }
+            obj = this.stepQueue.pop();  // [turtle, blk]
+            this.runFromBlockNow(this, obj[0], obj[1]);
+        }
     }
 
     this.doStopTurtle = function() {
@@ -79,6 +99,9 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
         this.onStopTurtle();
         this.blocks.bringToTop();
+
+        this.stepQueue = [];
+        this.unhighlightBlk = null;
     }
 
     this.clearParameterBlocks = function() {
@@ -327,9 +350,14 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         logo.waitTimes[turtle] = 0;
 
         if (!logo.stopTurtle) {
-            setTimeout(function() {
-                logo.runFromBlockNow(logo, turtle, blk);
-            }, delay);
+            if (logo.turtleDelay == TURTLESTEP) {
+                // Step mode
+                logo.stepQueue.push([turtle, blk]);
+            } else {
+                setTimeout(function() {
+                    logo.runFromBlockNow(logo, turtle, blk);
+                }, delay);
+            }
         }
     }
 
@@ -394,16 +422,16 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             // (i.e., end of a flow).
             var nextFlow = last(logo.blocks.blockList[blk].connections);
             var queueBlock = new Queue(nextFlow, 1, blk);
-	    if (nextFlow != null) {  // Not sure why this check is needed.
-		logo.turtles.turtleList[turtle].queue.push(queueBlock);
-	    }
+            if (nextFlow != null) {  // Not sure why this check is needed.
+                logo.turtles.turtleList[turtle].queue.push(queueBlock);
+            }
         }
 
         // Some flow blocks have childflows, e.g., repeat.
         var childFlow = null;
         var childFlowCount = 0;
 
-        if (logo.turtleDelay > 0) {
+        if (logo.turtleDelay != 0) {
             logo.blocks.highlight(blk, false);
         }
 
@@ -441,7 +469,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'print':
                 if (args.length == 1) {
-		    logo.textMsg(args[0].toString());
+                    logo.textMsg(args[0].toString());
                 }
                 break;
             case 'speak':
@@ -864,9 +892,13 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             if (parentBlk != blk) {
                 // The wait block waits waitTimes longer than other
                 // blocks before it is unhighlighted.
-                setTimeout(function() {
-                    logo.blocks.unhighlight(blk);
-                }, logo.turtleDelay + logo.waitTimes[turtle]);
+                if (logo.turtleDelay == TURTLESTEP) {
+                    logo.unhighlightBlk = blk;
+                } else if (logo.turtleDelay > 0) {
+                    setTimeout(function() {
+                        logo.blocks.unhighlight(blk);
+                    }, logo.turtleDelay + logo.waitTimes[turtle]);
+                }
             }
 
             if (last(logo.blocks.blockList[blk].connections) == null) {
@@ -876,12 +908,14 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     logo.unhightlightQueue[turtle].push(logo.parentFlowQueue[turtle].pop());
                 } else if (logo.unhightlightQueue[turtle].length > 0) {
                     // The child flow is finally complete, so unhighlight.
-                    setTimeout(function() {
-                        logo.blocks.unhighlight(logo.unhightlightQueue[turtle].pop());
-                    }, logo.turtleDelay);
+                    if (turtleDelay != 0) {
+                        setTimeout(function() {
+                            logo.blocks.unhighlight(logo.unhightlightQueue[turtle].pop());
+                        }, logo.turtleDelay);
+                    }
                 }
             }
-            if (logo.turtleDelay > 0) {
+            if (logo.turtleDelay != 0) {
                 for (var pblk in logo.parameterQueue[turtle]) {
                     logo.updateParameterBlock(logo, turtle, logo.parameterQueue[turtle][pblk]);
                 }

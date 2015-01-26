@@ -130,9 +130,8 @@ define(function(require) {
         var CAMERAVALUE = '##__CAMERA__##';
         var VIDEOVALUE = '##__VIDEO__##';
 
-        var DEFAULTDELAY = 500; // milleseconds
-
-        var turtleDelay = DEFAULTDELAY;
+        var DEFAULTDELAY = 500;  // milleseconds
+	var TURTLESTEP = -1;  // Run in step-by-step mode
 
         // Time when we hit run
         var time = 0;
@@ -181,6 +180,17 @@ define(function(require) {
         function doSlowButton() {
             logo.setTurtleDelay(DEFAULTDELAY);
             logo.runLogoCommands();
+        }
+
+        function doStepButton() {
+            if (logo.stepQueue.length == 0) {
+                logo.setTurtleDelay(TURTLESTEP);
+                // Queue and take first step.
+                logo.runLogoCommands();
+                logo.step();
+            } else {
+                logo.step();
+            }
         }
 
         var stopTurtle = false;
@@ -1166,6 +1176,7 @@ define(function(require) {
             var buttonNames = [
                 ['fast', doFastButton],
                 ['slow', doSlowButton],
+                ['step', doStepButton],
                 ['stop-turtle', doStopButton],
                 ['clear', allClear],
                 ['palette', changePaletteVisibility],
@@ -1265,13 +1276,13 @@ define(function(require) {
             if (firstTime) {
               var scaled = 0;
               var current = 0;
-              for (var i = 0; i <= 8; i++) {
+              for (var i = 0; i < 10; i++) {
                 scaled = current * scale;
                 docById('helpHButton-' + i).style.marginLeft = scaled + 'px';
                 current += cellSize;
               }
               current = 0
-              for (i = 0; i <= 9; i++) {
+              for (i = 0; i < 10; i++) {
                 scaled = current * scale;
                 docById('helpVButton-' + i).style.marginLeft = window.innerWidth - (2 * (scale * cellSize)) + 'px';
                 docById('helpVButton-' + i).style.marginTop = scaled + 'px';
@@ -1290,7 +1301,7 @@ define(function(require) {
                 palettes.show();
                 menuButtonsVisible = false;
                 doMenuAnimation(1);
-                content = '<ol style="visibility:hidden; font-size:0px" id="tour"><li data-text="Take a tour"><h2>' + _('Welcome to Turtle Blocks') + '</h2><p>' + _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.') + '</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>' + _('Palette buttons') + '</h2><p>' + _('This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.') + '</p></li><li data-id="helpHButton-0" data-button="Next"><h2>' + _('Expand/collapse toolbar') + '</h2><p>' + _('This button opens and closes the primary toolbar.') + '</p></li><li data-id="helpHButton-1" data-button="Next"><h2>' + _('Run fast') + '</h2><p>' + _('Click to run the project in fast mode.') + '</p></li><li data-id="helpHButton-2" data-button="Next"><h2>' + _('Run slow') + '</h2><p>' + _('Click to run the project in slow mode.') + '</p></li><li data-id="helpHButton-3" data-button="Next"><h2>' + _('Stop') + '</h2><p>' + _('Stop the current project.') + '</p></li><li data-id="helpHButton-4" data-button="Next"><h2>' + _('Clean') + '</h2><p>' + _('Clear the screen and return the turtles to their initial positions.') + '</p></li><li data-id="helpHButton-5" data-button="Next"><h2>' + _('Show/hide palettes') + '</h2><p>' + _('Hide or show the block palettes.') + '</p></li><li data-id="helpHButton-6" data-button="Next"><h2>' + _('Show/hide blocks') + '</h2><p>' + _('Hide or show the blocks and the palettes.') + '</p></li><li data-id="helpHButton-7" data-button="Next"><h2>' + _('Expand/collapse collapsable blocks') + '</h2><p>' + _('Expand or collapse stacks of blocks, e.g, start and action stacks.') + '</p></li><li data-id="helpHButton-8" data-button="Next"><h2>' + _('Help') + '</h2><p>' + _('Show these messages.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Expand/collapse option toolbar') + '</h2><p>' + _('Click this button to expand or collapse the auxillary toolbar.') + '</p></li><li data-id="helpVButton-1" data-button="Next" data-options="tipLocation:right"><h2>' + _('Paste') + '</h2><p>' + _('The paste button is enabled then there are blocks copied onto the clipboard.') + '</p></li><li data-id="helpVButton-2" data-button="Next" data-options="tipLocation:right"><h2>' + _('Cartesian') + '</h2><p>' + _('Show or hide a Cartesian-coordinate grid.') + '</p></li><li data-id="helpVButton-3" data-button="Next" data-options="tipLocation:right"><h2>' + _('Polar') + '</h2><p>' + _('Show or hide a polar-coordinate grid.') + '</p></li><li data-id="helpVButton-4" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load samples from server') + '</h2><p>' + _('This button open a viewer for loading example projects.') + '</p></li><li data-id="helpVButton-5" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load project from file') + '</h2><p>' + _('You can also load projects from the file system.') + '</p></li><li data-id="helpVButton-6" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load plugin from file') + '</h2><p>' + _('You can load new blocks from the file system.') + '</p></li><li data-id="helpVButton-7" data-button="Next" data-options="tipLocation: right"><h2>' + _('Delete all') + '</h2><p>' + _('Remove all content on the canvas, including the blocks.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-opt  ions="tipLocation:right"><h2>' + _('Undo') + '</h2><p>' + _('Restore blocks from the trash.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Save project') + '</h2><p>' + _('Save your project to a server.') + '</p></li><li data-id="helpEnd" data-button="Close"><h2>' + _('Congratulations.') + '</h2><p>' + _('You have finished the tour. Please enjoy Turtle Blocks!') + '</p></li></ol>';
+                content = '<ol style="visibility:hidden; font-size:0px" id="tour"><li data-text="Take a tour"><h2>' + _('Welcome to Turtle Blocks') + '</h2><p>' + _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.') + '</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>' + _('Palette buttons') + '</h2><p>' + _('This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.') + '</p></li><li data-id="helpHButton-0" data-button="Next"><h2>' + _('Expand/collapse toolbar') + '</h2><p>' + _('This button opens and closes the primary toolbar.') + '</p></li><li data-id="helpHButton-1" data-button="Next"><h2>' + _('Run fast') + '</h2><p>' + _('Click to run the project in fast mode.') + '</p></li><li data-id="helpHButton-2" data-button="Next"><h2>' + _('Run slow') + '</h2><p>' + _('Click to run the project in slow mode.') + '</p></li><li data-id="helpHButton-3" data-button="Next"><h2>' + _('Run step by step') + '</h2><p>' + _('Click to run the project step by step.') + '</p></li><li data-id="helpHButton-4" data-button="Next"><h2>' + _('Stop') + '</h2><p>' + _('Stop the current project.') + '</p></li><li data-id="helpHButton-5" data-button="Next"><h2>' + _('Clean') + '</h2><p>' + _('Clear the screen and return the turtles to their initial positions.') + '</p></li><li data-id="helpHButton-6" data-button="Next"><h2>' + _('Show/hide palettes') + '</h2><p>' + _('Hide or show the block palettes.') + '</p></li><li data-id="helpHButton-7" data-button="Next"><h2>' + _('Show/hide blocks') + '</h2><p>' + _('Hide or show the blocks and the palettes.') + '</p></li><li data-id="helpHButton-8" data-button="Next"><h2>' + _('Expand/collapse collapsable blocks') + '</h2><p>' + _('Expand or collapse stacks of blocks, e.g, start and action stacks.') + '</p></li><li data-id="helpHButton-9" data-button="Next"><h2>' + _('Help') + '</h2><p>' + _('Show these messages.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Expand/collapse option toolbar') + '</h2><p>' + _('Click this button to expand or collapse the auxillary toolbar.') + '</p></li><li data-id="helpVButton-1" data-button="Next" data-options="tipLocation:right"><h2>' + _('Paste') + '</h2><p>' + _('The paste button is enabled then there are blocks copied onto the clipboard.') + '</p></li><li data-id="helpVButton-2" data-button="Next" data-options="tipLocation:right"><h2>' + _('Cartesian') + '</h2><p>' + _('Show or hide a Cartesian-coordinate grid.') + '</p></li><li data-id="helpVButton-3" data-button="Next" data-options="tipLocation:right"><h2>' + _('Polar') + '</h2><p>' + _('Show or hide a polar-coordinate grid.') + '</p></li><li data-id="helpVButton-4" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load samples from server') + '</h2><p>' + _('This button open a viewer for loading example projects.') + '</p></li><li data-id="helpVButton-5" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load project from file') + '</h2><p>' + _('You can also load projects from the file system.') + '</p></li><li data-id="helpVButton-6" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load plugin from file') + '</h2><p>' + _('You can load new blocks from the file system.') + '</p></li><li data-id="helpVButton-7" data-button="Next" data-options="tipLocation: right"><h2>' + _('Delete all') + '</h2><p>' + _('Remove all content on the canvas, including the blocks.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-opt  ions="tipLocation:right"><h2>' + _('Undo') + '</h2><p>' + _('Restore blocks from the trash.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Save project') + '</h2><p>' + _('Save your project to a server.') + '</p></li><li data-id="helpEnd" data-button="Close"><h2>' + _('Congratulations.') + '</h2><p>' + _('You have finished the tour. Please enjoy Turtle Blocks!') + '</p></li></ol>';
             }
             docById('tourData').innerHTML = content;
             settings = {

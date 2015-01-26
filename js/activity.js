@@ -183,7 +183,11 @@ define(function(require) {
         }
 
         function doStepButton() {
-            if (logo.stepQueue.length == 0) {
+	    var turtleCount = 0;
+	    for (var turtle in logo.stepQueue) {
+		turtleCount += 1;
+	    }
+            if (turtleCount == 0) {
                 logo.setTurtleDelay(TURTLESTEP);
                 // Queue and take first step.
                 logo.runLogoCommands();

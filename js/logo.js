@@ -53,7 +53,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     // When running in step-by-step mode, the next command to run is
     // queued here.
-    this.stepQueue = [];
+    this.stepQueue = {};
     this.unhighlightBlk = null;
 
     this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
@@ -70,16 +70,23 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.step = function() {
-        // Take one step in excuting Logo commands.
-        if (this.stepQueue.length == 0) {
-            errorMsg('Finished running blocks');
-        } else {
-            if (this.unhighlightBlk != null) {
-                this.blocks.unhighlight(this.unhighlightBlk);
-                this.unhighlightBlk = null;
-            }
-            obj = this.stepQueue.pop();  // [turtle, blk]
-            this.runFromBlockNow(this, obj[0], obj[1]);
+        // Take one step for each turtle in excuting Logo commands.
+	var finished = true;
+	for (turtle in this.stepQueue) {
+	    if (this.stepQueue[turtle].length > 0) {
+		finished = false;
+		if (this.unhighlightBlk != null) {
+		    this.blocks.unhighlight(this.unhighlightBlk);
+		    this.unhighlightBlk = null;
+		}
+		var blk = this.stepQueue[turtle].pop();
+		if (blk != null) {
+		    this.runFromBlockNow(this, turtle, blk);
+		}
+	    }
+        }
+        if (finished) {
+            errorMsg('Finished running blocks.');
         }
     }
 
@@ -100,7 +107,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         this.onStopTurtle();
         this.blocks.bringToTop();
 
-        this.stepQueue = [];
+        this.stepQueue = {};
         this.unhighlightBlk = null;
     }
 
@@ -352,7 +359,10 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         if (!logo.stopTurtle) {
             if (logo.turtleDelay == TURTLESTEP) {
                 // Step mode
-                logo.stepQueue.push([turtle, blk]);
+		if (!(turtle in logo.stepQueue)) {
+		    logo.stepQueue[turtle] = [];
+		}
+                logo.stepQueue[turtle].push(blk);
             } else {
                 setTimeout(function() {
                     logo.runFromBlockNow(logo, turtle, blk);

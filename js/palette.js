@@ -17,11 +17,12 @@ var PALETTELEFTMARGIN = 20;
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
                        'media', 'sensors', 'extras', 'myblocks'];
 
-function maxPaletteHight(menuSize) {
+function maxPaletteHeight(menuSize) {
     // Palettes don't start at the top of the screen and the last
     // block in a palette cannot start at the bottom of the screen,
-    // hence - 2 * menuSize.
-    return windowHeight() * canvasPixelRatio() - (2 * menuSize);
+    // hence - 3 * menuSize.
+    var h = windowHeight() * canvasPixelRatio() - (3 * menuSize);
+    return h - (h % STANDARDBLOCKHEIGHT) + STANDARDBLOCKHEIGHT / 2;
 }
 
 
@@ -55,7 +56,6 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     this.stage = stage;
     this.cellSize = cellSize;
     this.halfCellSize = Math.floor(cellSize / 2);
-    this.scrollSpeed = 3;
     this.scrollDiff = 0;
     this.refreshCanvas = refreshCanvas;
     this.originalSize = 55; // this is the original svg size
@@ -80,6 +80,10 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     this.setScale = function(scale) {
         this.scale = scale;
+
+        for (var i in this.dict) {
+            this.dict[i].resizeEvent();
+        }
     }
 
     // We need access to the macro dictionary because we load them.
@@ -97,7 +101,6 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
             return;
         }
 
-        scrollSpeed = scrollSpeed || this.scrollSpeed;
         var diff = direction * scrollSpeed;
         if (this.buttons[keys[0]].y + diff > this.cellSize && direction > 0) {
             return;
@@ -255,6 +258,19 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
         this.refreshCanvas();
     }
 
+    this.findPalette = function (x, y) {
+        for (var name in this.dict) {
+            var px = this.dict[name].menuContainer.x;
+            var py = this.dict[name].menuContainer.y;
+            var height = Math.min(maxPaletteHeight(this.cellSize), this.dict[name].y);
+            if (this.dict[name].menuContainer.visible && px < x &&
+                x < px + MENUWIDTH && py < y && y < py + height) {
+                return this.dict[name];
+            }
+        }
+        return null;
+    }
+
     return this;
 }
 
@@ -340,8 +356,8 @@ function Palette(palettes, name, color, bgcolor) {
     this.menuContainer = null;
     this.protoList = [];
     this.protoContainers = {};
-    this.protoBackgrounds = {};
-    this.x = 0;
+    this.background = null;
+    this.scrollDiff = 0
     this.y = 0;
     this.size = 0;
     this.columns = 0;
@@ -394,6 +410,48 @@ function Palette(palettes, name, color, bgcolor) {
         makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)).replace(/header_width/g, paletteWidth), this.name, processHeader, null);
     }
 
+    this.resizeEvent = function () {
+        this.updateBackground();
+        this.updateBlockMasks();
+    }
+
+    this.updateBlockMasks = function () {
+        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
+        for (var i in this.protoContainers) {
+            var s = new createjs.Shape();
+            s.graphics.r(0, 0, MENUWIDTH, h);
+            s.x = this.background.x;
+            s.y = this.background.y;
+            this.protoContainers[i].mask = s;
+        }
+    }
+
+    this.updateBackground = function () {
+        if (this.menuContainer === null) {
+            return;
+        }
+
+        if (this.background !== null) {
+            this.background.removeAllChildren();
+        } else {
+            this.background = new createjs.Container();
+            this.background.snapToPixelEnabled = true;
+            this.background.visible = false;
+            this.palettes.stage.addChild(this.background);
+            setupBackgroundEvents(this);
+        }
+
+        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
+        var shape = new createjs.Shape();
+        shape.graphics.f('#b3b3b3').r(0, 0, MENUWIDTH, h).ef();
+        shape.width = MENUWIDTH;
+        shape.height = h;
+        this.background.addChild(shape);
+
+        this.background.x = this.menuContainer.x;
+        this.background.y = this.menuContainer.y + STANDARDBLOCKHEIGHT;
+    }
+
     this.updateMenu = function(hide) {
         if (this.menuContainer == null) {
             this.makeMenu(false);
@@ -403,8 +461,6 @@ function Palette(palettes, name, color, bgcolor) {
                 this.hide();
             }
         }
-        this.columns = 0;
-        this.x = 0;
         this.y = 0;
         for (var blk in this.protoList) {
 	    // Don't show hidden blocks on the menus
@@ -435,13 +491,6 @@ function Palette(palettes, name, color, bgcolor) {
 
             function calculateContainerXY(palette) {
                 var y = palette.menuContainer.y + palette.y + STANDARDBLOCKHEIGHT;
-                // Multicolumn
-                if (y > maxPaletteHight(palette.palettes.originalSize)) {
-                    palette.x += 160;
-                    palette.y = 0;
-                    y = palette.menuContainer.y + palette.y + STANDARDBLOCKHEIGHT;
-                    palette.columns += 1;
-                }
             }
 
             function calculateHeight(palette, blkname) {
@@ -462,31 +511,23 @@ function Palette(palettes, name, color, bgcolor) {
 
             if (!this.protoContainers[modname]) {
                 // create graphics for the palette entry for this block
-                this.protoBackgrounds[modname] = new createjs.Container();
-                this.protoBackgrounds[modname].snapToPixelEnabled = true;
                 this.protoContainers[modname] = new createjs.Container();
                 this.protoContainers[modname].snapToPixelEnabled = true;
 
                 calculateContainerXY(this)
 
-                this.protoBackgrounds[modname].x = this.menuContainer.x + this.x;
-                this.protoBackgrounds[modname].y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
-                this.protoBackgrounds[modname].visible = false;
-                this.protoContainers[modname].x = this.menuContainer.x + this.x;
-                this.protoContainers[modname].y = this.menuContainer.y + this.y + STANDARDBLOCKHEIGHT;
-                this.palettes.stage.addChild(this.protoBackgrounds[modname]);
+                this.protoContainers[modname].x = this.menuContainer.x;
+                this.protoContainers[modname].y = this.menuContainer.y + this.y + this.scrollDiff + STANDARDBLOCKHEIGHT;
                 this.palettes.stage.addChild(this.protoContainers[modname]);
                 this.protoContainers[modname].visible = false;
 
                 var height = calculateHeight(this, blkname);
                 this.size += Math.ceil(height * PROTOBLOCKSCALE);
                 this.y += Math.ceil(height * PROTOBLOCKSCALE);
+                this.updateBackground();
 
                 function processFiller(palette, modname, bitmap, extras) {
-                    palette.protoBackgrounds[modname].addChild(bitmap);
                     bitmap.y = 0;
-                    var bounds = palette.protoBackgrounds[modname].getBounds();
-                    palette.protoBackgrounds[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
                     var blkname = extras[0];
                     var blk = extras[1];
                     var myBlock = paletteBlocks.protoBlockDict[blkname];
@@ -698,6 +739,14 @@ function Palette(palettes, name, color, bgcolor) {
 
     this.show = function() {
         this.showMenu();
+
+        for (var i in this.protoContainers) {
+            this.protoContainers[i].visible = true;
+        }
+        this.updateBlockMasks();
+        if (this.background !== null) {
+            this.background.visible = true;
+        }
     }
 
     this.hideMenu = function() {
@@ -713,45 +762,72 @@ function Palette(palettes, name, color, bgcolor) {
     }
 
     this.hideMenuItems = function(init) {
-        for (var i in this.protoBackgrounds) {
-            this.protoBackgrounds[i].visible = false;
-        }
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = false;
+        }
+        if (this.background !== null) {
+            this.background.visible = false;
         }
         this.visible = false;
     }
 
     this.showMenuItems = function(init) {
-        for (var i in this.protoBackgrounds) {
-            this.protoBackgrounds[i].visible = true;
-        }
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = true;
+        }
+        this.updateBlockMasks();
+        if (this.background !== null) {
+            this.background.visible = true;
         }
         this.visible = true;
     }
 
     this.moveMenuItems = function(x, y) {
-        for (var i in this.protoBackgrounds) {
-            this.protoBackgrounds[i].x = x;
-            this.protoBackgrounds[i].y = y;
-        }
         for (var i in this.protoContainers) {
             this.protoContainers[i].x = x;
             this.protoContainers[i].y = y;
         }
+        if (this.background !== null) {
+            this.background.x = x;
+            this.background.y = y;
+        }
     }
 
     this.moveMenuItemsRelative = function(dx, dy) {
-        for (var i in this.protoBackgrounds) {
-            this.protoBackgrounds[i].x += dx;
-            this.protoBackgrounds[i].y += dy;
-        }
         for (var i in this.protoContainers) {
             this.protoContainers[i].x += dx;
             this.protoContainers[i].y += dy;
         }
+        if (this.background !== null) {
+            this.background.x += dx;
+            this.background.y += dy;
+        }
+    }
+
+    this.scrollEvent = function (direction, scrollSpeed) {
+        var diff = direction * scrollSpeed;
+        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
+
+        if (this.y < maxPaletteHeight(this.palettes.cellSize)) {
+            return;
+        }
+        if (this.scrollDiff + diff > 0 && direction > 0) {
+            return;
+        }
+        if (this.y + this.scrollDiff < h && direction < 0) {
+            return;
+        }
+
+        this.scrollDiff += diff;
+        for (var i in this.protoContainers) {
+            this.protoContainers[i].y += diff;
+            this.protoContainers[i].visible = true;
+        }
+        this.updateBlockMasks();
+
+        var stage = this.palettes.stage;
+        stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
+        this.palettes.stage.update();
     }
 
     this.getInfo = function() {
@@ -797,6 +873,35 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, b) {
 }
 
 
+var MODEUNSURE = 0;
+var MODEDRAG = 1;
+var MODESCROLL = 2;
+var DECIDEDISTANCE = 20;
+
+
+function setupBackgroundEvents(palette) {
+    var scrolling = false;
+    palette.background.on('mousedown', function (event) {
+        scrolling = true;
+        var lastY = event.stageY;
+
+        palette.background.on('pressmove', function (event) {
+            if (!scrolling) {
+                return;
+            }
+
+            var diff = event.stageY - lastY;
+            palette.scrollEvent(diff, 1);
+            lastY = event.stageY;
+        });
+
+        palette.background.on('pressup', function (event) {
+            scrolling = false;
+        }, null, true);  // once = true
+    });
+}
+
+
 // Menu Item event handlers
 function loadPaletteMenuItemHandler(palette, blk, blkname) {
     // A menu item is a protoblock that is used to create a new block.
@@ -804,6 +909,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
     var moved = false;
     var saveX = palette.protoContainers[blkname].x;
     var saveY = palette.protoContainers[blkname].y;
+    var bgScrolling = false;
 
     function makeBlockFromPalette(blk, blkname, palette) {
         var arg = '__NOARG__';
@@ -832,7 +938,10 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
 
         moved = false;
         saveX = palette.protoContainers[blkname].x;
-        saveY = palette.protoContainers[blkname].y;
+        saveY = palette.protoContainers[blkname].y - palette.scrollDiff;
+        var startX = event.stageX;
+        var startY = event.stageY;
+        var lastY = event.stageY;
         if (palette.draggingProtoBlock) {
             return;
         }
@@ -843,18 +952,33 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
         setTimeout(function() {
             locked = false;
         }, 500);
-        palette.palettes.setDraggingFlag(true);
-        var offset = {
-            x: palette.protoContainers[blkname].x - Math.round(event.stageX / palette.palettes.scale) - PALETTELEFTMARGIN,
-            y: palette.protoContainers[blkname].y - Math.round(event.stageY / palette.palettes.scale)
-        };
+
+        var mode = MODEUNSURE;
 
         palette.protoContainers[blkname].on('pressmove', function(event) {
-            moved = true;
-            palette.draggingProtoBlock = true;
-            palette.protoContainers[blkname].x = Math.round(event.stageX / palette.palettes.scale) - PALETTELEFTMARGIN;
-            palette.protoContainers[blkname].y = Math.round(event.stageY / palette.palettes.scale);
-            palette.palettes.refreshCanvas();
+            if (mode === MODEDRAG) {
+                moved = true;
+                palette.palettes.setDraggingFlag(true);
+                palette.draggingProtoBlock = true;
+                palette.protoContainers[blkname].x = Math.round(event.stageX / palette.palettes.scale) - PALETTELEFTMARGIN;
+                palette.protoContainers[blkname].y = Math.round(event.stageY / palette.palettes.scale);
+                palette.palettes.refreshCanvas();
+                return;
+            }
+
+            if (mode === MODESCROLL) {
+                var diff = event.stageY - lastY;
+                palette.scrollEvent(diff, 1);
+                lastY = event.stageY;
+                return;
+            }
+
+            var xd = Math.abs(event.stageX - startX);
+            var yd = Math.abs(event.stageY - startY);
+            var diff = Math.sqrt(xd * xd + yd * yd);
+            if (mode === MODEUNSURE && diff > DECIDEDISTANCE) {
+                mode = yd > xd? MODESCROLL : MODEDRAG;
+            }
         });
     });
 
@@ -884,11 +1008,11 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 // Dock with other blocks if needed
                 blocks.blockMoved(newBlock);
             }
+            // Return protoblock we've been dragging back to the palette.
+            palette.protoContainers[blkname].x = saveX;
+            palette.protoContainers[blkname].y = saveY + palette.scrollDiff;
+            palette.palettes.refreshCanvas();
         }
-        // Return protoblock we've been dragging back to the palette.
-        palette.protoContainers[blkname].x = saveX;
-        palette.protoContainers[blkname].y = saveY;
-        palette.palettes.refreshCanvas();
     });
 }
 

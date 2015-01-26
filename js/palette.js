@@ -20,8 +20,9 @@ var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
 function maxPaletteHeight(menuSize) {
     // Palettes don't start at the top of the screen and the last
     // block in a palette cannot start at the bottom of the screen,
-    // hence - 2 * menuSize.
-    return windowHeight() * canvasPixelRatio() - (2 * menuSize);
+    // hence - 3 * menuSize.
+    var h = windowHeight() * canvasPixelRatio() - (3 * menuSize);
+    return h - (h % STANDARDBLOCKHEIGHT) + STANDARDBLOCKHEIGHT / 2;
 }
 
 
@@ -79,6 +80,10 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     this.setScale = function(scale) {
         this.scale = scale;
+
+        for (var i in this.dict) {
+            this.dict[i].resizeEvent();
+        }
     }
 
     // We need access to the macro dictionary because we load them.
@@ -397,7 +402,27 @@ function Palette(palettes, name, color, bgcolor) {
         }
     }
 
-    this.updateBackground = function (hide) {
+    this.resizeEvent = function () {
+        this.updateBackground();
+        this.updateBlockMasks();
+    }
+
+    this.updateBlockMasks = function () {
+        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
+        for (var i in this.protoContainers) {
+            var s = new createjs.Shape();
+            s.graphics.r(0, 0, MENUWIDTH, h);
+            s.x = this.background.x;
+            s.y = this.background.y;
+            this.protoContainers[i].mask = s;
+        }
+    }
+
+    this.updateBackground = function () {
+        if (this.menuContainer === null) {
+            return;
+        }
+
         if (this.background !== null) {
             this.background.removeAllChildren();
         } else {
@@ -405,13 +430,14 @@ function Palette(palettes, name, color, bgcolor) {
             this.background.snapToPixelEnabled = true;
             this.background.visible = false;
             this.palettes.stage.addChild(this.background);
+            setupBackgroundEvents(this);
         }
 
         var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
         var shape = new createjs.Shape();
         shape.graphics.f('#b3b3b3').r(0, 0, MENUWIDTH, h).ef();
         shape.width = MENUWIDTH;
-        shape.height = this.y;
+        shape.height = h;
         this.background.addChild(shape);
 
         this.background.x = this.menuContainer.x;
@@ -700,10 +726,10 @@ function Palette(palettes, name, color, bgcolor) {
     this.show = function() {
         this.showMenu();
 
-        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
         for (var i in this.protoContainers) {
-            this.protoContainers[i].visible = !(this.menuContainer.y > this.protoContainers[i].y || this.protoContainers[i].y - STANDARDBLOCKHEIGHT * 2 > h);
+            this.protoContainers[i].visible = true;
         }
+        this.updateBlockMasks();
         if (this.background !== null) {
             this.background.visible = true;
         }
@@ -732,10 +758,10 @@ function Palette(palettes, name, color, bgcolor) {
     }
 
     this.showMenuItems = function(init) {
-        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
         for (var i in this.protoContainers) {
-            this.protoContainers[i].visible = !(this.menuContainer.y > this.protoContainers[i].y || this.protoContainers[i].y - STANDARDBLOCKHEIGHT * 2 > h);
+            this.protoContainers[i].visible = true;
         }
+        this.updateBlockMasks();
         if (this.background !== null) {
             this.background.visible = true;
         }
@@ -781,8 +807,9 @@ function Palette(palettes, name, color, bgcolor) {
         this.scrollDiff += diff;
         for (var i in this.protoContainers) {
             this.protoContainers[i].y += diff;
-            this.protoContainers[i].visible = !(this.menuContainer.y > this.protoContainers[i].y || this.protoContainers[i].y - STANDARDBLOCKHEIGHT * 2 > h);
+            this.protoContainers[i].visible = true;
         }
+        this.updateBlockMasks();
 
         var stage = this.palettes.stage;
         stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
@@ -838,6 +865,29 @@ var MODESCROLL = 2;
 var DECIDEDISTANCE = 20;
 
 
+function setupBackgroundEvents(palette) {
+    var scrolling = false;
+    palette.background.on('mousedown', function (event) {
+        scrolling = true;
+        var lastY = event.stageY;
+
+        palette.background.on('pressmove', function (event) {
+            if (!scrolling) {
+                return;
+            }
+
+            var diff = event.stageY - lastY;
+            palette.scrollEvent(diff, 1);
+            lastY = event.stageY;
+        });
+
+        palette.background.on('pressup', function (event) {
+            scrolling = false;
+        }, null, true);  // once = true
+    });
+}
+
+
 // Menu Item event handlers
 function loadPaletteMenuItemHandler(palette, blk, blkname) {
     // A menu item is a protoblock that is used to create a new block.
@@ -867,25 +917,6 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
         }
         return paletteBlockButtonPush(palette.protoList[blk].name, arg);
     }
-
-    /*palette.protoBackgrounds[blkname].on('mousedown', function (event) {
-        bgScrolling = true;
-        lastY = event.stageY;
-
-        palette.protoBackgrounds[blkname].on('pressmove', function (event) {
-            if (!bgScrolling) {
-                return;
-            }
-
-            var diff = event.stageY - lastY;
-            palette.scrollEvent(diff, 1);
-            lastY = event.stageY;
-        });
-
-        palette.protoBackgrounds[blkname].on('pressup', function (event) {
-            bgScrolling = false;
-        }, null, true);  // once = true
-    });*/
 
     palette.protoContainers[blkname].on('mousedown', function(event) {
         var stage = palette.palettes.stage;

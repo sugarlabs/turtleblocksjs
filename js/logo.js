@@ -388,7 +388,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'box':
                 var cblk = this.blocks.blockList[blk].connections[1];
-                var name = parseArg(logo, turtle, cblk, blk);
+                var name = this.parseArg(logo, turtle, cblk, blk);
                 if (name in this.boxes) {
                     this.boxes[name] = value;
                 } else {
@@ -835,7 +835,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     // Could be an arg block, so we need to print its value.
                     console.log('running an arg block?');
                     if (logo.blocks.blockList[blk].isArgBlock()) {
-                        args.push(parseArg(logo, turtle, blk));
+                        args.push(logo.parseArg(logo, turtle, blk));
                         console.log('block: ' + blk + ' turtle: ' + turtle);
                         console.log('block name: ' + logo.blocks.blockList[blk].name);
                         console.log('block value: ' + logo.blocks.blockList[blk].value);
@@ -908,7 +908,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     logo.unhightlightQueue[turtle].push(logo.parentFlowQueue[turtle].pop());
                 } else if (logo.unhightlightQueue[turtle].length > 0) {
                     // The child flow is finally complete, so unhighlight.
-                    if (turtleDelay != 0) {
+                    if (logo.turtleDelay != 0) {
                         setTimeout(function() {
                             logo.blocks.unhighlight(logo.unhightlightQueue[turtle].pop());
                         }, logo.turtleDelay);
@@ -1010,13 +1010,13 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'eval':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = Number(eval(a.replace(/x/g, b.toString())));
                     break;
                 case 'box':
                     var cblk = logo.blocks.blockList[blk].connections[1];
-                    var name = parseArg(logo, turtle, cblk, blk);
+                    var name = logo.parseArg(logo, turtle, cblk, blk);
                     if (name in logo.boxes) {
                         logo.blocks.blockList[blk].value = boxes[name];
                     } else {
@@ -1027,7 +1027,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     break;
                 case 'sqrt':
                     var cblk = logo.blocks.blockList[blk].connections[1];
-                    var a = parseArg(logo, turtle, cblk, blk);
+                    var a = logo.parseArg(logo, turtle, cblk, blk);
                     if (a < 0) {
                         logo.errorMsg('Cannot take square root of negative number.', blk);
                         logo.stopTurtle = true;
@@ -1038,70 +1038,70 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'mod':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = logo.doMod(a, b);
                     break;
                 case 'not':
                     var cblk = logo.blocks.blockList[blk].connections[1];
-                    var a = parseArg(logo, turtle, cblk, blk);
+                    var a = logo.parseArg(logo, turtle, cblk, blk);
                     logo.blocks.blockList[blk].value = !a;
                     break;
                 case 'greater':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = (Number(a) > Number(b));
                     break;
                 case 'equal':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = (a == b);
                     break;
                 case 'less':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     var result = (Number(a) < Number(b));
                     logo.blocks.blockList[blk].value = result;
                     break;
                 case 'random':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = logo.doRandom(a, b);
                     break;
                 case 'plus':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = logo.doPlus(a, b);
                     break;
                 case 'multiply':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = logo.doMultiply(a, b);
                     break;
                 case 'divide':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = logo.doDivide(a, b);
                     break;
                 case 'minus':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = logo.doMinus(a, b);
                     break;
                 case 'heading':
@@ -1116,7 +1116,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'xturtle':
                 case 'yturtle':
                     var cblk = logo.blocks.blockList[blk].connections[1];
-                    var targetTurtle = parseArg(logo, turtle, cblk, blk);
+                    var targetTurtle = logo.parseArg(logo, turtle, cblk, blk);
                     for (var i = 0; i < logo.turtles.turtleList.length; i++) {
                         var logoTurtle = logo.turtles.turtleList[i];
                         if (targetTurtle == logoTurtle.name) {
@@ -1149,15 +1149,15 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'and':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = a && b;
                     break;
                 case 'or':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
-                    var a = parseArg(logo, turtle, cblk1, blk);
-                    var b = parseArg(logo, turtle, cblk2, blk);
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = a || b;
                     break;
                 case 'time':
@@ -1166,7 +1166,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     break;
                 case 'hspace':
                     var cblk = logo.blocks.blockList[blk].connections[1];
-                    var v = parseArg(logo, turtle, cblk, blk);
+                    var v = logo.parseArg(logo, turtle, cblk, blk);
                     logo.blocks.blockList[blk].value = v;
                     break;
                 case 'mousex':

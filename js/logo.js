@@ -10,6 +10,8 @@
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
 var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
+var DEFAULTDELAY = 500; // milleseconds
+
 
 function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
@@ -799,8 +801,8 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 doBreak(targetTurtle);
                 break;
             default:
-                if (logo.blocks.blockList[blk].name in evalFlowDict) {
-                    eval(evalFlowDict[logo.blocks.blockList[blk].name]);
+                if (logo.blocks.blockList[blk].name in logo.evalFlowDict) {
+                    eval(logo.evalFlowDict[logo.blocks.blockList[blk].name]);
                 } else {
                     // Could be an arg block, so we need to print its value.
                     console.log('running an arg block?');
@@ -1287,4 +1289,28 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.setCameraID = function(id) {
         this.cameraID = id;
     }
+
+    this.hideBlocks = function() {
+            // Hide all the blocks.
+            this.blocks.hide();
+            // And hide some other things.
+            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+                this.turtles.turtleList[turtle].container.visible = false;
+            }
+            //trashcan.hide();
+            //palettes.hide();
+            this.refreshCanvas();
+        }
+
+    this.showBlocks = function() {
+            // Show all the blocks.
+            this.blocks.show();
+            this.blocks.bringToTop();
+            // And show some other things.
+            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+                this.turtles.turtleList[turtle].container.visible = true;
+            }
+            // trashcan.show();
+            this.refreshCanvas();
+        }
 }

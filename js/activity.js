@@ -752,9 +752,9 @@ define(function(require) {
 
         function changeBlockVisibility() {
             if (blocks.visible) {
-                hideBlocks();
+                logo.hideBlocks();
             } else {
-                showBlocks();
+                logo.showBlocks();
             }
         }
 
@@ -801,7 +801,7 @@ define(function(require) {
             console.log('hiding thumbnails');
             thumbnails.hide();
             thumbnailsVisible = false;
-            showBlocks();
+            logo.showBlocks();
         }
 
         function doOpenSamples() {
@@ -814,7 +814,7 @@ define(function(require) {
                 } else if (!thumbnails.locked) {
                     stage.setChildIndex(thumbnails.container, stage.getNumChildren() - 1);
                     thumbnailsVisible = true;
-                    hideBlocks();
+                    logo.hideBlocks();
                 } else {
                     console.log('thumbnails locked');
                 }
@@ -993,30 +993,6 @@ define(function(require) {
 
             stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
             errorMsgContainer.updateCache();
-        }
-
-        function hideBlocks() {
-            // Hide all the blocks.
-            blocks.hide();
-            // And hide some other things.
-            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                turtles.turtleList[turtle].container.visible = false;
-            }
-            trashcan.hide();
-            palettes.hide();
-            update = true;
-        }
-
-        function showBlocks() {
-            // Show all the blocks.
-            blocks.show();
-            blocks.bringToTop();
-            // And show some other things.
-            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                turtles.turtleList[turtle].container.visible = true;
-            }
-            trashcan.show();
-            update = true;
         }
 
         function hideCartesian() {

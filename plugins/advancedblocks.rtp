@@ -34,12 +34,12 @@ if (args.length == 1) {
 };
 
 //* flow:showblocks *//
-showBlocks();
-turtleDelay = DEFAULTDELAY;
+logo.showBlocks();
+logo.setTurtleDelay(DEFAULTDELAY);
 
 //* flow:hideblocks *//
-hideBlocks();
-turtleDelay = 0;
+logo.hideBlocks();
+logo.setTurtleDelay(0);
 
 //* block:loudness *//
 var loudnessBlock = new ProtoBlock('loudness');

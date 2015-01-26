@@ -667,6 +667,12 @@ define(function(require) {
             palettes.setScale(scale);
             trashcan.resizeEvent(scale);
             setupRightMenu(scale);
+
+            // Reposition coordinate grids.
+            cartesianBitmap.x = (canvas.width / (2 * scale)) - (600);
+            cartesianBitmap.y = (canvas.height / (2 * scale)) - (450);
+            polarBitmap.x = (canvas.width / (2 * scale)) - (600);
+            polarBitmap.y = (canvas.height / (2 * scale)) - (450);
             update = true;
         }
 
@@ -946,7 +952,7 @@ define(function(require) {
             msgText.text = msg;
             msgContainer.updateCache();
             stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
-	}
+        }
 
         function errorMsg(msg, blk) {
             if (errorMsgText == null) {

@@ -53,7 +53,7 @@ if (block.cacheFor === apiURL && block.cache !== undefined) {
         block.cacheFor = apiURL;
         block.cache = response;
     } catch (e) {
-        errorMsg('Could not connect to Currency API', blk);
+        logo.errorMsg('Could not connect to Currency API', blk);
     }
 }
 

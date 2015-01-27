@@ -45,7 +45,7 @@ request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
 request.send(null);
 var value = JSON.parse(request.responseText)['results'][key];
 if (!value) {
-   errorMsg('Problem with the language setting.', blk);
+   logo.errorMsg('Problem with the language setting.', blk);
    value = '';
 }
 logo.blocks.blockList[blk].value = value;
@@ -61,7 +61,7 @@ request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
 request.send(null);
 var value = JSON.parse(request.responseText)['results'][key];
 if (!value) {
-   errorMsg('Problem with the language setting.', blk);
+   logo.errorMsg('Problem with the language setting.', blk);
    value = '';
 }
 logo.blocks.blockList[blk].value = value;

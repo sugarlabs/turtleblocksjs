@@ -35,7 +35,7 @@ var conns = block.connections;
 var city = logo.parseArg(logo, turtle, conns[1]);
 var daysAhead = parseInt(logo.parseArg(logo, turtle, conns[2]));
 if (daysAhead < -1 || daysAhead > 5) {
-   errorMsg('Days ahead must be in the range of -1 to 5.', blk);
+   logo.errorMsg('Days ahead must be in the range of -1 to 5.', blk);
    daysAhead = 0;
 }
 if (block.cacheCity === city && block.cache !== undefined) {
@@ -59,7 +59,7 @@ var conns = block.connections;
 var city = logo.parseArg(logo, turtle, conns[1]);
 var daysAhead = parseInt(logo.parseArg(logo, turtle, conns[2]));
 if (daysAhead < -1 || daysAhead > 5) {
-   errorMsg('Days ahead must be in the range of -1 to 5.', blk);
+   logo.errorMsg('Days ahead must be in the range of -1 to 5.', blk);
    daysAhead = 0;
 }
 if (block.cacheCity === city && block.cache !== undefined) {
@@ -83,7 +83,7 @@ var conns = block.connections;
 var city = logo.parseArg(logo, turtle, conns[1]);
 var daysAhead = parseInt(logo.parseArg(logo, turtle, conns[2]));
 if (daysAhead < -1 || daysAhead > 5) {
-   errorMsg('Days ahead must be in the range of -1 to 5.', blk);
+   logo.errorMsg('Days ahead must be in the range of -1 to 5.', blk);
    daysAhead = 0;
 }
 if (block.cacheCity === city && block.cache !== undefined) {

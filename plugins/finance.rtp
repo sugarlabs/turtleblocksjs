@@ -52,7 +52,7 @@ if (block.cacheFor === apiURL && block.cache !== undefined) {
         block.cacheFor = apiURL;
         block.cache = response;
     } catch (e) {
-        errorMsg('Could not connect to Currency API', blk);
+        logo.errorMsg('Could not connect to Currency API', blk);
     }
 }
 
@@ -88,16 +88,16 @@ if (block.cacheFor === apiURL && block.cache !== undefined) {
         block.cacheFor = apiURL;
         block.cache = response;
     } catch (e) {
-        errorMsg('Could not connect to Markit On Demand API', blk);
+        logo.errorMsg('Could not connect to Markit On Demand API', blk);
     }
 }
 
 j = JSON.parse(response);
 if (j.Status !== 'SUCCESS') {
     if (j.Message.indexOf('No symbol matches') !== -1) {
-        errorMsg('No stock symbol %s found.  Try another, eg. GOOG, AAPL'.replace('%s', stock), blk);
+        logo.errorMsg('No stock symbol %s found.  Try another, eg. GOOG, AAPL'.replace('%s', stock), blk);
     } else {
-        errorMsg(j.Message, blk);
+        logo.errorMsg(j.Message, blk);
     }
 } else {
     block.value = j.LastPrice;

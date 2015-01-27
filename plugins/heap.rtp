@@ -58,11 +58,11 @@ var arg = logo.parseArg(logo, turtle, conns[1]);
 var oldHeap = localHeap;
 if (blocks.blockList[conns[1]].name == 'loadFile') {
     if (!arg) {
-        errorMsg(_('You need to select a file.'));
+        logo.errorMsg(_('You need to select a file.'));
     }
     else {
         if (arg.length != 2) {
-            errorMsg(_('You need to select a file.'));
+            logo.errorMsg(_('You need to select a file.'));
         }
         else {
             try {
@@ -73,13 +73,13 @@ if (blocks.blockList[conns[1]].name == 'loadFile') {
             }
             catch (e) {
                 localHeap = oldHeap;
-                errorMsg(_('The file you selected does not contain a valid heap.'));
+                logo.errorMsg(_('The file you selected does not contain a valid heap.'));
             }
         }
     }
 }
 else {
-    errorMsg(_('The loadHeap block needs a loadFile block.'))
+    logo.errorMsg(_('The loadHeap block needs a loadFile block.'))
 };
 
 //* block:push *//

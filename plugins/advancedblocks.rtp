@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
 //* parameter:loudness *//
-if (mic == null) {errorMsg('The microphone is not available.');
+if (mic == null) {logo.errorMsg('The microphone is not available.');
     value = 0;
 } else {
     value = Math.round(mic.getLevel() * 1000);

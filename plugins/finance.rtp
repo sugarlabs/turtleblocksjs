@@ -29,6 +29,7 @@ currencyRate.docks[1][2] = 'anyin';
 currencyRate.docks[2][2] = 'anyin';
 currencyRate.defaults.push('AUD', 'USD');
 currencyRate.staticLabels.push('currency', 'from', 'to');
+currencyRate.fontsize = '14px';
 
 //* arg:currencyrate *//
 

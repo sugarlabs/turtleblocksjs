@@ -192,6 +192,7 @@
   * fixed problem with reloading camera or media block getting double image
   * fix coordinate grids offset due to scaling
   * step-by-step playback mode
+  * sometimes scrolling menus does not work (Sam Parkinson)
 
 TODO:
   * save errors
@@ -207,10 +208,14 @@ TODO:
   * write SVG generator
   * user defined blocks
   * try to detect difference between unknown flow and arg blocks
+  * change color of stroke when highlighting blocks
 
 KNOWN BUGS:
   * sample projects cannot be shown on Android
   * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
   * fix race conditions
-  * sometimes scrolling menus does not work
+  * cannot combine various run modes
+  * sometimes loading projects leaves stacks expanded and collapsed at
+    the same time.
+  * not all blocks highlight when using step-by-step mode

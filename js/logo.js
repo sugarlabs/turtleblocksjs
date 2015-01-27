@@ -86,7 +86,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 	    }
         }
         if (finished) {
-            errorMsg('Finished running blocks.');
+            this.errorMsg('Finished running blocks.');
         }
     }
 
@@ -133,7 +133,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (boxname in this.boxes) {
                         value = this.boxes[boxname];
                     } else {
-                        errorMsg('Cannot find box ' + boxname + '.');
+                        this.errorMsg('Cannot find box ' + boxname + '.');
                     }
                     break;
                 case 'x':
@@ -690,9 +690,9 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (typeof(args[1]) == 'string') {
                         var len = args[1].length;
                         if (len == 14 && args[1].substr(0, 14) == CAMERAVALUE) {
-                            doUseCamera(args, turtles, turtle, false, logo.cameraID, logo.setCameraID, errorMsg);
+                            doUseCamera(args, logo.turtles, turtle, false, logo.cameraID, logo.setCameraID, logo.errorMsg);
                         } else if (len == 13 && args[1].substr(0, 13) == VIDEOVALUE) {
-                            doUseCamera(args, turtles, turtle, true, logo.cameraID, logo.setCameraID, errorMsg);
+                            doUseCamera(args, logo.turtles, turtle, true, logo.cameraID, logo.setCameraID, logo.errorMsg);
                         } else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
                             logo.turtles.turtleList[turtle].doShowImage(args[0], args[1]);
                         } else if (len > 8 && args[1].substr(0, 8) == 'https://') {

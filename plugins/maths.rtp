@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* arg-globals *//
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
 //* block-globals *//
@@ -46,33 +46,33 @@ block.twoArgMathBlock();
 block.defaults.push(10, 2);
 block.staticLabels.push('power', 'base', 'exp.');
 //* arg:power *//
-var base = parseArg(activity, turtle, conns[1]);
-var exp  = parseArg(activity, turtle, conns[2]);
+var base = logo.parseArg(logo, turtle, conns[1]);
+var exp  = logo.parseArg(logo, turtle, conns[2]);
 block.value = Math.pow(base, exp);
 
 //* block:sin *// simpleOneArgBlock('sin');
-//* arg:sin *// block.value = Math.sin(parseArg(activity, turtle, conns[1]));
+//* arg:sin *// block.value = Math.sin(logo.parseArg(logo, turtle, conns[1]));
 //* block:cos *// simpleOneArgBlock('cos');
-//* arg:cos *// block.value = Math.cos(parseArg(activity, turtle, conns[1]));
+//* arg:cos *// block.value = Math.cos(logo.parseArg(logo, turtle, conns[1]));
 //* block:tan *// simpleOneArgBlock('tan');
-//* arg:sin *// block.value = Math.tan(parseArg(activity, turtle, conns[1]));
+//* arg:sin *// block.value = Math.tan(logo.parseArg(logo, turtle, conns[1]));
 
 //* block:asin *// simpleOneArgBlock('asin');
-//* arg:asin *// block.value = Math.asin(parseArg(activity, turtle, conns[1]));
+//* arg:asin *// block.value = Math.asin(logo.parseArg(logo, turtle, conns[1]));
 //* block:acos *// simpleOneArgBlock('acos');
-//* arg:acos *// block.value = Math.acos(parseArg(activity, turtle, conns[1]));
+//* arg:acos *// block.value = Math.acos(logo.parseArg(logo, turtle, conns[1]));
 //* block:atan *// simpleOneArgBlock('atan');
-//* arg:atan *// block.value = Math.atan(parseArg(activity, turtle, conns[1]));
+//* arg:atan *// block.value = Math.atan(logo.parseArg(logo, turtle, conns[1]));
 
 //* block:floor *// simpleOneArgBlock('floor');
-//* arg:floor *// block.value = Math.floor(parseArg(activity, turtle, conns[1]));
+//* arg:floor *// block.value = Math.floor(logo.parseArg(logo, turtle, conns[1]));
 //* block:ceiling *// simpleOneArgBlock('ceiling');
-//* arg:ceiling *// block.value = Math.ceil(parseArg(activity, turtle, conns[1]));
+//* arg:ceiling *// block.value = Math.ceil(logo.parseArg(logo, turtle, conns[1]));
 
 //* block:degrees *// simpleOneArgBlock('degrees', 'to degrees');
-//* arg:degrees *// block.value = parseArg(activity, turtle, conns[1]) * (180/Math.PI);
+//* arg:degrees *// block.value = logo.parseArg(logo, turtle, conns[1]) * (180/Math.PI);
 //* block:radians *// simpleOneArgBlock('radians', 'to radians');
-//* arg:radians *// block.value = parseArg(activity, turtle, conns[1]) * (Math.PI/180);
+//* arg:radians *// block.value = logo.parseArg(logo, turtle, conns[1]) * (Math.PI/180);
 
 //* block:pi *// staticBlock('pi', 'π');
 //* arg:pi *// block.value = Math.PI;

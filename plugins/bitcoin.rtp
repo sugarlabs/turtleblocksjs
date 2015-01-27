@@ -32,11 +32,11 @@ bitcoinRate.staticLabels.push('bitcoin', 'from', 'value');
 
 //* arg:bitcoinrate *//
 
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
-var from = parseArg(activity, turtle, conns[1]);
-var amount = parseArg(activity, turtle, conns[2]);
+var from = logo.parseArg(logo, turtle, conns[1]);
+var amount = logo.parseArg(logo, turtle, conns[2]);
 
 var apiURL = 'https://community-bitcointy.p.mashape.com/convert/' + amount + '/' + from;
 

@@ -28,9 +28,9 @@ dictionaryBlk.staticLabels.push('define');
 dictionaryBlk.defaults.push('turtle');
 
 //* arg:dictionary *//
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
-var word = (parseArg(activity, turtle, conns[1])).toLowerCase();
+var word = (logo.parseArg(logo, turtle, conns[1])).toLowerCase();
 var apiURL = "https://montanaflynn-dictionary.p.mashape.com/define?word=" + word;
 var request = new XMLHttpRequest();
 request.open('GET', apiURL, false);

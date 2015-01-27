@@ -29,10 +29,10 @@ rodiBlink.defaults.push(1000);
 
 //* flow:rodiblink *//
 
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
-var rate = parseArg(activity, turtle, conns[1]);
+var rate = logo.parseArg(logo, turtle, conns[1]);
 
 var apiURL = RODI_BASE_URL + '/led/' + rate + '/';
 

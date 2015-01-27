@@ -45,7 +45,7 @@ var foodData = {'apple': [72, 0, 19, 3, 0],
 };
 
 //* flow-globals *//
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 function showMsg(data   ) {
     var msgContainer = msgText.parent;
@@ -56,7 +56,7 @@ function showMsg(data   ) {
 };
 
 //* arg-globals *//
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
 //* block-globals *//
@@ -284,7 +284,7 @@ showMsg(block.value);
 
 //* flow:eat *//
 console.log();
-var blockFoodData = foodData[blocks.blockList[conns[1]].name];
+var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
 calories += blockFoodData[0];
 protein += blockFoodData[1];
 carbohydrate += blockFoodData[2];
@@ -314,27 +314,27 @@ block.value = carbohydrate;
 block.value = fat;
 
 //* arg:get_calories *//
-var blockFoodData = foodData[blocks.blockList[conns[1]].name];
+var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[0];
 
 //* arg:get_protein *//
-var blockFoodData = foodData[blocks.blockList[conns[1]].name];
+var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[1];
 
 //* arg:get_carbohydrates *//
-var blockFoodData = foodData[blocks.blockList[conns[1]].name];
+var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[2];
 
 //* arg:get_fiber *//
-var blockFoodData = foodData[blocks.blockList[conns[1]].name];
+var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[3];
 
 //* arg:get_fat *//
-var blockFoodData = foodData[blocks.blockList[conns[1]].name];
+var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[4];
 
 //* arg:get_name *//
-block.value = blocks.blockList[conns[1]].name;
+block.value = logo.blocks.blockList[conns[1]].name;
 
 
 //* palette-icon:food *//

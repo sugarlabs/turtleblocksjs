@@ -19,24 +19,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 localHeap = [];
 
 //* flow:showHeap *//
-var block = blocks.blockList[blk];
-var msgContainer = msgText.parent;
-msgContainer.visible = true;
-msgText.text = JSON.stringify(localHeap);
-msgContainer.updateCache();
-stage.swapChildren(msgContainer, last(stage.children));
+var block = logo.blocks.blockList[blk];
+logo.textMsg(JSON.stringify(localHeap));
 
 //* flow:emptyHeap *//
 localHeap = [];
 
 //* flow:push *//
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
-var arg = parseArg(activity, turtle, conns[1]);
+var arg = logo.parseArg(logo, turtle, conns[1]);
 localHeap.push(arg);
 
 //* arg:pop *//
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 block.value = localHeap.pop();
 
 //* flow:saveHeap *//
@@ -48,17 +44,17 @@ function downloadFile(filename, mimetype, content) {
     download.click();
     document.body.removeChild(download);
 };
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
-var arg = parseArg(activity, turtle, conns[1]);
+var arg = logo.parseArg(logo, turtle, conns[1]);
 if (arg) {
     downloadFile(arg, 'text/json', JSON.stringify(localHeap));
 };
 
 //* flow:loadHeap *//
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
-var arg = parseArg(activity, turtle, conns[1]);
+var arg = logo.parseArg(logo, turtle, conns[1]);
 var oldHeap = localHeap;
 if (blocks.blockList[conns[1]].name == 'loadFile') {
     if (!arg) {

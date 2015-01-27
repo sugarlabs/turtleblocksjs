@@ -23,6 +23,14 @@ if (mic == null) {logo.errorMsg('The microphone is not available.');
     value = Math.round(mic.getLevel() * 1000);
 };
 
+//* arg:loudness *//
+if (!logo.mic.enabled) {
+    logo.mic.start();
+    logo.blocks.blockList[blk].value = null;
+} else {
+    logo.blocks.blockList[blk].value = Math.round(logo.mic.getLevel() * 1000);
+}
+
 //* flow:publish *//
 if (args.length == 1) {
     doPublish(args[0]);

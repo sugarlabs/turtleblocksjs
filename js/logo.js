@@ -1184,14 +1184,6 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     logo.blocks.blockList[blk].value = logo.lastKeyCode;
                     logo.clearCurrentKeyCode();
                     break;
-                case 'loudness':
-                    if (!logo.mic.enabled) {
-                        logo.mic.start();
-                        logo.blocks.blockList[blk].value = null;
-                    } else {
-                        logo.blocks.blockList[blk].value = Math.round(logo.mic.getLevel() * 1000);
-                    }
-                    break;
                 case 'getcolorpixel':
                     var wasVisible = logo.turtles.turtleList[turtle].container.visible;
                     logo.turtles.turtleList[turtle].container.visible = false;

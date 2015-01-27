@@ -1516,7 +1516,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // FIXME: Works correctly with mediaBlocks, not with others.
         if (myBlock.image) {
             var image = new Image();
-            var arg = postProcessArg[1];
+	    if (postProcessArg != null && postProcessArg.length > 1) {
+		var arg = postProcessArg[1];
+	    } else {
+		var arg = null;
+	    }
             // Don't load a graphic if there is an image, as it is
             // added later.
             if ([null, CAMERAVALUE, VIDEOVALUE].indexOf(arg) != -1) {

@@ -219,3 +219,5 @@ KNOWN BUGS:
   * sometimes loading projects leaves stacks expanded and collapsed at
     the same time.
   * not all blocks highlight when using step-by-step mode
+  * clear block does not clear
+  * problem with saveName

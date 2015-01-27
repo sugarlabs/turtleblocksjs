@@ -196,7 +196,6 @@
 TODO:
   * save errors
   * display rubrics
-  * scroll/page menus when they get too big (instead of wrapping)???
   * more efficient until and while?
   * save to javascript
   * RTL support

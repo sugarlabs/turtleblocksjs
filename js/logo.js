@@ -54,7 +54,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     // When running in step-by-step mode, the next command to run is
     // queued here.
     this.stepQueue = {};
-    this.unhighlightBlk = null;
+    this.unhighlightStepQueue = {};
 
     this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
 
@@ -75,9 +75,9 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 	for (turtle in this.stepQueue) {
 	    if (this.stepQueue[turtle].length > 0) {
 		finished = false;
-		if (this.unhighlightBlk != null) {
-		    this.blocks.unhighlight(this.unhighlightBlk);
-		    this.unhighlightBlk = null;
+		if (turtle in this.unhighlightStepQueue && this.unhighlightStepQueue[turtle] != null) {
+		    this.blocks.unhighlight(this.unhighlightStepQueue[turtle]);
+		    this.unhighlightStepQueue[turtle] = null;
 		}
 		var blk = this.stepQueue[turtle].pop();
 		if (blk != null) {
@@ -108,7 +108,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         this.blocks.bringToTop();
 
         this.stepQueue = {};
-        this.unhighlightBlk = null;
+        this.unhighlightQueue = {};
     }
 
     this.clearParameterBlocks = function() {
@@ -903,7 +903,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 // The wait block waits waitTimes longer than other
                 // blocks before it is unhighlighted.
                 if (logo.turtleDelay == TURTLESTEP) {
-                    logo.unhighlightBlk = blk;
+                    logo.unhighlightStepQueue[turtle] = blk;
                 } else if (logo.turtleDelay > 0) {
                     setTimeout(function() {
                         logo.blocks.unhighlight(blk);

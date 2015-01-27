@@ -1275,6 +1275,7 @@ define(function(require) {
                     onscreenMenu[button].visible = true;
                 }
                 if (server) {
+		    var saveName = docById('mySaveName');
                     saveName.style.visibility = 'visible';
                 }
             }

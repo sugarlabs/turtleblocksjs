@@ -849,20 +849,15 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         console.log('block: ' + blk + ' turtle: ' + turtle);
                         console.log('block name: ' + logo.blocks.blockList[blk].name);
                         console.log('block value: ' + logo.blocks.blockList[blk].value);
-                        var msgContainer = logo.msgText.parent;
-                        msgContainer.visible = true;
                         if (logo.blocks.blockList[blk].value == null) {
-                            logo.msgText.text = 'null block value';
+                            logo.textMsg('null block value');
                         } else {
-                            logo.msgText.text = logo.blocks.blockList[blk].value.toString();
+                            logo.textMsg(logo.blocks.blockList[blk].value.toString());
                         }
-                        msgContainer.updateCache();
-                        logo.stage.setChildIndex(msgContainer, logo.stage.getNumChildren() - 1);
-                        logo.stopTurtle = true;
                     } else {
                         logo.errorMsg('I do not know how to ' + logo.blocks.blockList[blk].name + '.', blk);
-                        logo.stopTurtle = true;
                     }
+                    logo.stopTurtle = true;
                 }
                 break;
         }

@@ -943,6 +943,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
     palette.protoContainers[blkname].on('mousedown', function(event) {
         var stage = palette.palettes.stage;
         stage.setChildIndex(palette.protoContainers[blkname], stage.getNumChildren() - 1);
+        palette.protoContainers[blkname].mask = null;
 
         moved = false;
         saveX = palette.protoContainers[blkname].x;
@@ -1019,6 +1020,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             // Return protoblock we've been dragging back to the palette.
             palette.protoContainers[blkname].x = saveX;
             palette.protoContainers[blkname].y = saveY + palette.scrollDiff;
+            palette.updateBlockMasks();
             palette.palettes.refreshCanvas();
         }
     });

@@ -30,15 +30,15 @@ else{
 }
 
 //* arg:accelerometerx *//
-var block = logo.blocks.blockList[blk];
+var block = blocks.blockList[blk];
 block.value = accelerometer['x'];
 
 //* arg:accelerometery *//
-var block = logo.blocks.blockList[blk];
+var block = blocks.blockList[blk];
 block.value = accelerometer['y'];
 
 //* arg:accelerometerz *//
-var block = logo.blocks.blockList[blk];
+var block = blocks.blockList[blk];
 block.value = accelerometer['z'];
 
 //* block:accelerometerx *//

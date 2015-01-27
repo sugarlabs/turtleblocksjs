@@ -81,6 +81,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     this.setScale = function(scale) {
         this.scale = scale;
 
+        this.updateButtonMasks();
         for (var i in this.dict) {
             this.dict[i].resizeEvent();
         }
@@ -97,9 +98,6 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
 
     this.menuScrollEvent = function(direction, scrollSpeed) {
         var keys = Object.keys(this.buttons);
-        if (windowHeight() >= this.cellSize * (keys.length + 1)) {
-            return;
-        }
 
         var diff = direction * scrollSpeed;
         if (this.buttons[keys[0]].y + diff > this.cellSize && direction > 0) {
@@ -113,10 +111,20 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
         this.scrollDiff += diff;
         for (var name in this.buttons) {
             this.buttons[name].y += diff;
-            this.buttons[name].visible =
-                !(this.buttons[name].y < 0);
+            this.buttons[name].visible = true;
         }
+        this.updateButtonMasks();
         this.stage.update();
+    }
+
+    this.updateButtonMasks = function () {
+        for (var name in this.buttons) {
+            var s = new createjs.Shape();
+            s.graphics.r(0, 0, this.cellSize, windowHeight() / this.scale);
+            s.x = 0;
+            s.y = this.cellSize / 2;
+            this.buttons[name].mask = s;
+        }
     }
 
     this.makeMenu = function() {

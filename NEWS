@@ -193,6 +193,8 @@
   * fix coordinate grids offset due to scaling
   * step-by-step playback mode
   * sometimes scrolling menus does not work (Sam Parkinson)
+  * update plugins to new logo "class"
+  * allow for changes to playback mode while running
 
 TODO:
   * save errors
@@ -219,5 +221,4 @@ KNOWN BUGS:
   * sometimes loading projects leaves stacks expanded and collapsed at
     the same time.
   * not all blocks highlight when using step-by-step mode
-  * clear block does not clear
   * problem with saveName

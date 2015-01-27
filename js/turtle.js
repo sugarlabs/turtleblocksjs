@@ -676,6 +676,12 @@ function Turtles(canvas, stage, refreshCanvas) {
         return this.canvas.height / (2.0 * this.scale) - y;
     }
 
+    this.markAsStopped = function() {
+        for (turtle in this.turtleList) {
+            this.turtleList[turtle].running = false;
+        }
+    }
+
     this.running = function() {
         for (turtle in this.turtleList) {
             if (this.turtleList[turtle].running) {

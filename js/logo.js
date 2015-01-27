@@ -71,10 +71,8 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.step = function() {
         // Take one step for each turtle in excuting Logo commands.
-	var finished = true;
 	for (turtle in this.stepQueue) {
 	    if (this.stepQueue[turtle].length > 0) {
-		finished = false;
 		if (turtle in this.unhighlightStepQueue && this.unhighlightStepQueue[turtle] != null) {
 		    this.blocks.unhighlight(this.unhighlightStepQueue[turtle]);
 		    this.unhighlightStepQueue[turtle] = null;
@@ -85,15 +83,13 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 		}
 	    }
         }
-        if (finished) {
-            this.errorMsg('Finished running blocks.');
-        }
     }
 
     this.doStopTurtle = function() {
         // The stop button was pressed. Stop the turtle and clean up a
         // few odds and ends.
         this.stopTurtle = true;
+	this.turtles.markAsStopped();
 
         for (var sound in this.sounds) {
             this.sounds[sound].stop();

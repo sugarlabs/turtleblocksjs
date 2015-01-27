@@ -174,25 +174,38 @@ define(function(require) {
 
         function doFastButton() {
             logo.setTurtleDelay(0);
-            logo.runLogoCommands();
+            if (!turtles.running()) {
+                logo.runLogoCommands();
+            } else {
+                logo.step();
+            }
         }
 
         function doSlowButton() {
             logo.setTurtleDelay(DEFAULTDELAY);
-            logo.runLogoCommands();
+            if (!turtles.running()) {
+                logo.runLogoCommands();
+            } else {
+                logo.step();
+            }
         }
 
         function doStepButton() {
-	    var turtleCount = 0;
-	    for (var turtle in logo.stepQueue) {
-		turtleCount += 1;
-	    }
-            if (turtleCount == 0) {
+            var turtleCount = 0;
+            for (var turtle in logo.stepQueue) {
+                turtleCount += 1;
+            }
+            if (turtleCount == 0 || logo.turtleDelay != TURTLESTEP) {
+                // Either we haven't set up a queue or we are
+                // switching modes.
                 logo.setTurtleDelay(TURTLESTEP);
                 // Queue and take first step.
-                logo.runLogoCommands();
+                if (!turtles.running()) {
+                    logo.runLogoCommands();
+                }
                 logo.step();
             } else {
+                logo.setTurtleDelay(TURTLESTEP);
                 logo.step();
             }
         }
@@ -1275,7 +1288,7 @@ define(function(require) {
                     onscreenMenu[button].visible = true;
                 }
                 if (server) {
-		    var saveName = docById('mySaveName');
+                    var saveName = docById('mySaveName');
                     saveName.style.visibility = 'visible';
                 }
             }

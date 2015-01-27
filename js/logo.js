@@ -1019,7 +1019,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var name = logo.parseArg(logo, turtle, cblk, blk);
                     if (name in logo.boxes) {
-                        logo.blocks.blockList[blk].value = boxes[name];
+                        logo.blocks.blockList[blk].value = logo.boxes[name];
                     } else {
                         logo.errorMsg('Cannot find box ' + name + '.', blk);
                         logo.stopTurtle = true;

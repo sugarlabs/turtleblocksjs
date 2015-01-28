@@ -1718,6 +1718,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myConnectionBlock.connections = [blk];
             if (myBlock.name == 'action') {
                 // Make sure we don't make two actions with the same name.
+		console.log('calling findUniqueActionName');
                 value = this.findUniqueActionName(_('action'));
                 console.log('renaming action block to ' + value);
                 if (value != _('action')) {
@@ -1728,6 +1729,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         myConnectionBlock.value = value;
                         myConnectionBlock.container.updateCache();
                     }, 1000);
+		    console.log('calling newDoBlock with value ' + value);
                     this.newDoBlock(value);
                     this.palettes.updatePalettes();
                 }
@@ -2078,6 +2080,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Scan for any action blocks to identify duplicates.
         for (var b = 0; b < blockObjs.length; b++) {
             var blkData = blockObjs[b];
+	    console.log(blkData[1] + ' is of type ' + typeof(blkData[1]));
             if (typeof(blkData[1]) != 'string') {
                 if (blkData[1][0] == 'text') {
                     var key = blkData[1][1];
@@ -2089,12 +2092,22 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     if (blkData[4][1] != null) {
                         actionNames[b] = blkData[4][1];
                     }
+                } else if (blkData[1][0] == 'action') {
+		    console.log('action block ' + blkData[4][1]);
+                    if (blkData[4][1] != null) {
+                        actionNames[b] = blkData[4][1];
+                    }
                 } else if (blkData[1][0] == 'storein') {
                     if (blkData[4][1] != null) {
                         storeinNames[b] = blkData[4][1];
                     }
+		} else if (blkData[1] == 'do' || blkData[1] == 'stack') {
+                    if (blkData[4][1] != null) {
+			doNames[b] = blkData[4][1];
+                    }
                 }
             } else if (blkData[1] == 'action') {
+		console.log('action block ' + blkData[4][1]);
                 if (blkData[4][1] != null) {
                     actionNames[b] = blkData[4][1];
                 }
@@ -2121,13 +2134,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
         }
 
+	console.log(actionNames);
         // Make sure action names are unique.
         for (var b in actionNames) {
             // Is there a proto do block with this name? If so, find a
             // new name.
             // Name = the value of the connected label.
             var blkData = blockObjs[actionNames[b]];
-            var name = blkData[1][1];
+	    if (typeof(blkData[1][1]) == 'string') {
+		var name = blkData[1][1];
+            } else {
+		var name = blkData[1][1]['value'];
+            }
+            console.log(name);
             var oldName = name;
             var i = 0;
             while (currentActionNames.indexOf(name) != -1) {
@@ -2141,16 +2160,22 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
             // Change the name of the action...
             console.log('action ' + oldName + ' is being renamed ' + name);
-            blkData[1][1] = name;
+            blkData[1][1] = {'value': name};
             // add a new do block to the palette...
             this.newDoBlock(name);
             updatePalettes = true;
             // and any do blocks
             for (var d in doNames) {
                 var doBlkData = blockObjs[doNames[d]];
-                if (doBlkData[1][1] == oldName) {
-                    doBlkData[1][1] = name;
-                }
+		if (typeof(doBlkData[1][1]) == 'string') {
+                    if (doBlkData[1][1] == oldName) {
+			doBlkData[1][1] = name;
+                    }
+		} else {
+                    if (doBlkData[1][1]['value'] == oldName) {
+			doBlkData[1][1] = {'value': name};
+                    }
+		}
             }
         }
 

@@ -3680,7 +3680,7 @@ function sendStackToTrash(blocks, myBlock) {
             var myBlk = blocks.blockList[blockId];
             var blkParent = blocks.blockList[myBlk.connections[0]];
             if (blkParent == null) { continue; }
-            if (['do', 'action'].indexOf(blkParent.name) == -1) {
+            if (['do', 'action'].indexOf(blkParent.name) != -1) {
                 continue;
             }
             var blockValue = myBlk.value;

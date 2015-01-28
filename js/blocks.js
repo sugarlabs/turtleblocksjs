@@ -2721,7 +2721,7 @@ function Block(protoblock, blocks) {
             } else {
                 var artwork = CLAMPFILLER;
             }
-            makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]), name, processHighlightBitmap, [this, offset, clamp]);
+            makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]), name, processHighlightBitmap, [this, offset, clamp]);
         } else {
             processHighlightBitmap(name, this.bitmapCache[name], [this, offset, clamp]);
         }
@@ -2793,7 +2793,7 @@ function Block(protoblock, blocks) {
 
         }
 
-        makeBitmap(this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
+        makeBitmap(this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
     }
 
     this.middleImageLoad = function() {
@@ -2835,7 +2835,7 @@ function Block(protoblock, blocks) {
             me.finishImageLoad();
         }
 
-        makeBitmap(this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
+        makeBitmap(this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
     }
 
     this.finishImageLoad = function() {
@@ -2929,7 +2929,7 @@ function Block(protoblock, blocks) {
                 me.blocks.cleanupAfterLoad();
             }
 
-            makeBitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, this);
+            makeBitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, this);
         } else {
             this.loadComplete = true;
             if (this.postProcess != null) {
@@ -3003,7 +3003,7 @@ function Block(protoblock, blocks) {
                 me.collapseContainer.y = me.container.y + COLLAPSEBUTTONYOFF;
             }
 
-            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processHighlightCollapseBitmap, this);
+            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processHighlightCollapseBitmap, this);
         }
     }
 

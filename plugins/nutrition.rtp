@@ -47,12 +47,8 @@ var foodData = {'apple': [72, 0, 19, 3, 0],
 //* flow-globals *//
 var block = logo.blocks.blockList[blk];
 var conns = block.connections;
-function showMsg(data   ) {
-    var msgContainer = msgText.parent;
-    msgContainer.visible = true;
-    msgText.text = JSON.stringify(data);
-    msgContainer.updateCache();
-    stage.swapChildren(msgContainer, last(stage.children));
+function showMsg(data) {
+    logo.textMsg(JSON.stringify(data));
 };
 
 //* arg-globals *//

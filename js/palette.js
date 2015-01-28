@@ -632,10 +632,12 @@ function Palette(palettes, name, color, bgcolor) {
                                 bitmap.scaleY = 80 / image.height;
                                 bitmap.scale = 80 / image.height;
                             }
-                            palette.protoContainers[modname].addChild(bitmap);
-                            bitmap.x = 40;
-                            bitmap.y = 2;
-                            palette.protoContainers[modname].updateCache();
+                            setTimeout(function() {
+                                palette.protoContainers[modname].addChild(bitmap);
+                                bitmap.x = 40;
+                                bitmap.y = 2;
+                                palette.protoContainers[modname].updateCache();
+                            }, 1000);
                         }
                         image.src = myBlock.image;
                     }

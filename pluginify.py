@@ -126,6 +126,8 @@ NAMES = {'flow': 'FLOWPLUGINS', 'arg': 'ARGPLUGINS', 'block': 'BLOCKPLUGINS',
          'palette-stroke': 'PALETTESTROKECOLORS',
          'palette-highlight': 'PALETTEHIGHLIGHTCOLORS'}
 JS_TYPES = ('flow', 'arg', 'block', 'parameter', 'setter')
+# 'blkName': 'imageData',
+IMAGES= {}
 
 
 def pluginify(data):
@@ -161,10 +163,18 @@ def pluginify(data):
             value = specific_globals[type_] + value
         value = value.replace('\n', '')
 
-        type_ = NAMES[type_]
-        if type_ not in outp:
-            outp[type_] = {}
-        outp[type_][name] = value
+        if type_ in NAMES:
+            type_ = NAMES[type_]
+            if type_ not in outp:
+                outp[type_] = {}
+            outp[type_][name] = value
+
+        if type_ == 'image':
+            # TODO: Detect if its png
+            IMAGES[name] = 'data:image/svg+xml;utf8,' + value;
+
+    if IMAGES:
+        outp['IMAGES'] = IMAGES;
 
     return json.dumps(outp)
 

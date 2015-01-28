@@ -1835,7 +1835,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var myBlk = this.blockList[blk];
             var blkParent = this.blockList[myBlk.connections[0]];
             if (blkParent == null) { continue; }
-            if (!blkParent.name in ['do', 'action']) { continue; }
+            if (['do', 'action'].indexOf(blkParent.name) == -1) { continue; }
             var blockValue = myBlk.value;
             if (blockValue == oldName) {
                 myBlk.value = newName;
@@ -2170,7 +2170,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             if (typeof(blkData[1]) == 'object') {
                 if (typeof(blkData[1][1]) == 'number' | typeof(blkData[1][1]) == 'string') {
                     blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
-                    if (blkInfo[0] in ['start', 'action', 'hat']) {
+                    if (['start', 'action', 'hat'].indexOf != -1) {
                         blkInfo[1]['collapsed'] = false;
                     }
                 }
@@ -2180,7 +2180,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
             else {
                 blkInfo = [blkData[1], {'value': null}];
-                if (blkInfo[0] in ['start', 'action', 'hat']) {
+                if (['start', 'action', 'hat'].indexOf != -1) {
                     blkInfo[1]['collapsed'] = false;
                 }
             }
@@ -3021,7 +3021,7 @@ function Block(protoblock, blocks) {
     }
 
     this.isNoRunBlock = function() {
-        return this.name in ['action'];
+        return this.name == 'action';
     }
 
     this.isExpandableBlock = function() {
@@ -3680,7 +3680,7 @@ function sendStackToTrash(blocks, myBlock) {
             var myBlk = blocks.blockList[blockId];
             var blkParent = blocks.blockList[myBlk.connections[0]];
             if (blkParent == null) { continue; }
-            if (!blkParent.name in ['do', 'action']) {
+            if (['do', 'action'].indexOf(blkParent.name) == -1) {
                 continue;
             }
             var blockValue = myBlk.value;

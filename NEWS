@@ -195,6 +195,8 @@
   * sometimes scrolling menus does not work (Sam Parkinson)
   * update plugins to new logo "class"
   * allow for changes to playback mode while running
+  * fixed problem with saveName
+  * fixed multiple problems with collapsed stacks
 
 TODO:
   * save errors
@@ -218,7 +220,4 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * fix race conditions
   * cannot combine various run modes
-  * sometimes loading projects leaves stacks expanded and collapsed at
-    the same time.
   * not all blocks highlight when using step-by-step mode
-  * problem with saveName

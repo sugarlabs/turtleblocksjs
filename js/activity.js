@@ -160,6 +160,8 @@ define(function(require) {
         var onscreenButtons = [];
         var onscreenMenu = [];
 
+        pluginsImages = {};
+
         var draggingContainer = false;
 
         function allClear() {

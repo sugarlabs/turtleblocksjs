@@ -260,6 +260,14 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
         palettes.makeMenu();
     }
 
+    // Define the image blocks
+    if ('IMAGES' in obj)  {
+        for (var blkName in obj['IMAGES'])  {
+            pluginsImages[blkName] = obj['IMAGES'][blkName];
+        }
+    }
+
+
     // Populate the flow-block dictionary, i.e., the code that is
     // eval'd by this block.
     if ('FLOWPLUGINS' in obj) {
@@ -347,6 +355,9 @@ function preparePluginExports(obj) {
     }
     if ('GLOBALS' in obj) {
         pluginObjs['GLOBALS'] = obj['GLOBALS'];
+    }
+    if ('IMAGES' in obj) {
+        pluginObjs['IMAGES'] = obj['IMAGES'];
     }
 
     return JSON.stringify(pluginObjs);

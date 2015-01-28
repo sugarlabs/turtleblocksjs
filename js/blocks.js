@@ -2071,55 +2071,54 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // Don't make duplicate action names.
         // Add a palette entry for any new storein blocks.
-        // TODO: check for new storein blocks
         var stringNames = [];
         var stringValues = {}; // label: [blocks with that label]
         var actionNames = {}; // action block: label block
         var storeinNames = {}; // storein block: label block
         var doNames = {}; // do block: label block
-        // Scan for any action blocks to identify duplicates.
+
+        // Scan for any new action and storein blocks to identify
+        // duplicates.
         for (var b = 0; b < blockObjs.length; b++) {
             var blkData = blockObjs[b];
-	    console.log(blkData[1] + ' is of type ' + typeof(blkData[1]));
-            if (typeof(blkData[1]) != 'string') {
-                if (blkData[1][0] == 'text') {
-                    var key = blkData[1][1];
-                    if (stringValues[key] == undefined) {
-                        stringValues[key] = [];
-                    }
-                    stringValues[key].push(b);
-                } else if (blkData[1][0] == 'hat') {
-                    if (blkData[4][1] != null) {
-                        actionNames[b] = blkData[4][1];
-                    }
-                } else if (blkData[1][0] == 'action') {
-		    console.log('action block ' + blkData[4][1]);
-                    if (blkData[4][1] != null) {
-                        actionNames[b] = blkData[4][1];
-                    }
-                } else if (blkData[1][0] == 'storein') {
-                    if (blkData[4][1] != null) {
-                        storeinNames[b] = blkData[4][1];
-                    }
-		} else if (blkData[1] == 'do' || blkData[1] == 'stack') {
-                    if (blkData[4][1] != null) {
-			doNames[b] = blkData[4][1];
-                    }
+	    // blkData[1] could be a string or an object.
+            if (typeof(blkData[1]) == 'string') {
+		var name = blkData[1];
+	    } else {
+		var name = blkData[1][0];
+	    }
+
+	    switch(name) {
+	    case 'text':
+                var key = blkData[1][1];
+                if (stringValues[key] == undefined) {
+                    stringValues[key] = [];
                 }
-            } else if (blkData[1] == 'action') {
-		console.log('action block ' + blkData[4][1]);
+                stringValues[key].push(b);
+		break;
+	    case 'action':
                 if (blkData[4][1] != null) {
                     actionNames[b] = blkData[4][1];
                 }
-            } else if (blkData[1] == 'storein') {
+	    case 'hat':
+                if (blkData[4][1] != null) {
+                    actionNames[b] = blkData[4][1];
+                }
+		break;
+	    case 'storein':
                 if (blkData[4][1] != null) {
                     storeinNames[b] = blkData[4][1];
                 }
-            } else if (blkData[1] == 'do' || blkData[1] == 'stack') {
+		break;
+	    case 'do':
+	    case 'stack':
                 if (blkData[4][1] != null) {
-                    doNames[b] = blkData[4][1];
+		    doNames[b] = blkData[4][1];
                 }
-            }
+		break;
+	    default:
+		break;
+	    }
         }
 
         var updatePalettes = false;
@@ -2128,8 +2127,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var blkData = blockObjs[storeinNames[b]];
             if (currentStoreinNames.indexOf(blkData[1][1]) == -1) {
                 console.log('adding new palette entries for ' + blkData[1][1]);
-                this.newStoreinBlock(blkData[1][1]);
-                this.newBoxBlock(blkData[1][1]);
+		if (typeof(blkData[1][1]) == 'string') {
+		    var name = blkData[1][1];
+		} else {
+		    var name = blkData[1][1]['value'];
+		}
+		console.log(name);
+                this.newStoreinBlock(name);
+                this.newBoxBlock(name);
                 updatePalettes = true;
             }
         }
@@ -2146,7 +2151,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {
 		var name = blkData[1][1]['value'];
             }
-            console.log(name);
             var oldName = name;
             var i = 0;
             while (currentActionNames.indexOf(name) != -1) {
@@ -3347,7 +3351,6 @@ function collapseToggle(blocks, myBlock) {
     blocks.findDragGroup(thisBlock)
 
     function toggle(collapse) {
-        console.log('toggle collapse: block ' + myBlock.name + ' collapse state as ' + collapse + '. setting it to ' + !collapse);
         myBlock.collapsed = !collapse;
         myBlock.collapseBitmap.visible = collapse;
         myBlock.expandBitmap.visible = !collapse;

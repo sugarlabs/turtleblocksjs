@@ -1463,6 +1463,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             console.log('could not make block ' + name);
             return;
         }
+	console.log('setting collapsed flag for ' + name + ' to ' + !collapsed);
         myBlock.collapsed = !collapsed;
         for (var c = 0; c < connections.length; c++) {
             if (c == myBlock.docks.length) {
@@ -1516,11 +1517,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // FIXME: Works correctly with mediaBlocks, not with others.
         if (myBlock.image) {
             var image = new Image();
-	    if (postProcessArg != null && postProcessArg.length > 1) {
-		var arg = postProcessArg[1];
-	    } else {
-		var arg = null;
-	    }
+            if (postProcessArg != null && postProcessArg.length > 1) {
+                var arg = postProcessArg[1];
+            } else {
+                var arg = null;
+            }
             // Don't load a graphic if there is an image, as it is
             // added later.
             if ([null, CAMERAVALUE, VIDEOVALUE].indexOf(arg) != -1) {
@@ -2167,29 +2168,35 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var blkData = blockObjs[b];
 
             if (typeof(blkData[1]) == 'object') {
-              if (typeof(blkData[1][1]) == 'number' | typeof(blkData[1][1]) == 'string') {
-                blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
-                if (blkInfo[0] in ['start', 'action', 'hat']) {
-                  blkInfo[1]['collapsed'] = false;
+                if (typeof(blkData[1][1]) == 'number' | typeof(blkData[1][1]) == 'string') {
+                    blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
+                    if (blkInfo[0] in ['start', 'action', 'hat']) {
+                        console.log('1) assigning collapsed = false to ' + blkInfo[0]);
+                        blkInfo[1]['collapsed'] = false;
+                    }
                 }
-              }
-              else {
-                // new
-                blkInfo = blkData[1];
-              }
+                else {
+                    console.log('new ' + blkData[0] + ' ' + blkData[1]);
+                    blkInfo = blkData[1];
+		    if ('collapsed' in blkInfo[1]) {
+			console.log('collaspsed state is ' + blkInfo[1]['collapsed']);
+		    }
+                }
             }
             else {
-              blkInfo = [blkData[1], {'value': null}];
-              if (blkInfo[0] in ['start', 'action', 'hat']) {
-                blkInfo[1]['collapsed'] = false;
-              }
+                blkInfo = [blkData[1], {'value': null}];
+                if (blkInfo[0] in ['start', 'action', 'hat']) {
+                    console.log('2) assigning collapsed = false to ' + blkInfo[0]);
+                    blkInfo[1]['collapsed'] = false;
+                }
             }
 
             var name = blkInfo[0];
 
             var collapsed = false;
-            if (blkInfo[0] in ['start', 'action', 'hat']) {
-              collapsed = blkInfo[1]['collapsed'];
+            if (['start', 'action', 'hat'].indexOf(name) != -1) {
+                collapsed = blkInfo[1]['collapsed'];
+                console.log(blkInfo[0] + ' has collapsed flag set to ' + collapsed);
             }
 
             var value = blkInfo[1]['value'];
@@ -2212,12 +2219,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         me.blockList[thisBlock].value = me.turtles.turtleList.length;
                         me.turtles.add(me.blockList[thisBlock], blkInfo);
                     }
+                    console.log('making start block in collapsed state ' + collapsed);
                     this.makeNewBlockWithConnections('start', blockOffset, blkData[4], postProcess, [thisBlock, blkInfo[1]], collapsed);
                     break;
                 case 'action':
                 case 'hat':
                     blkData[4][0] = null;
                     blkData[4][3] = null;
+                    console.log('making action block in collapsed state ' + collapsed);
                     this.makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null, collapsed);
                     break;
 
@@ -3238,6 +3247,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
         }, 500);
         hideDOMLabel();
         if (!moved) {
+            console.log('clicked on collapse button');
             collapseToggle(blocks, myBlock);
         }
     });
@@ -3311,7 +3321,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
 function collapseToggle(blocks, myBlock) {
     if (['start', 'action'].indexOf(myBlock.name) == -1) {
-    console.log('Do not collapse ' + myBlock.name);
+        console.log('Do not collapse ' + myBlock.name);
         return;
     }
 
@@ -3320,7 +3330,7 @@ function collapseToggle(blocks, myBlock) {
     blocks.findDragGroup(thisBlock)
 
     function toggle(collapse) {
-    console.log('toggle collapse ' + myBlock.name + ' ' + collapse);
+        console.log('toggle collapse: block ' + myBlock.name + ' collapse state as ' + collapse + '. setting it to ' + !collapse);
         myBlock.collapsed = !collapse;
         myBlock.collapseBitmap.visible = collapse;
         myBlock.expandBitmap.visible = !collapse;

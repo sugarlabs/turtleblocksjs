@@ -131,7 +131,7 @@ define(function(require) {
         var VIDEOVALUE = '##__VIDEO__##';
 
         var DEFAULTDELAY = 500;  // milleseconds
-	var TURTLESTEP = -1;  // Run in step-by-step mode
+        var TURTLESTEP = -1;  // Run in step-by-step mode
 
         // Time when we hit run
         var time = 0;
@@ -793,6 +793,7 @@ define(function(require) {
 
         function toggleCollapsibleStacks() {
             if (blocks.visible) {
+		console.log('calling toggleCollapsibles');
                 blocks.toggleCollapsibles();
             }
         }
@@ -955,13 +956,8 @@ define(function(require) {
                 blocks.makeNewBlock('start', postProcess, null);
             }
             setTimeout(function() {
-                for (var blk = 0; blk < blocks.blockList.length; blk++) {
-                    var myBlock = blocks.blockList[blk];
-                    if (['start', 'action'].indexOf(myBlock.name) != -1) {
-                        collapseToggle(blocks, myBlock)
-                        myBlock.unhighlight()
-                    }
-                }
+		console.log('calling toggleCollapsibles after timeout');
+                blocks.toggleCollapsibles();
             }, 3000);
             update = true;
         }
@@ -1078,27 +1074,21 @@ define(function(require) {
                 }
                 if (blocks.blockList[blk].isValueBlock() || blocks.blockList[blk].name == 'loadFile') {
                     var args = {'value': myBlock.value};
+                } else  if (myBlock.name == 'start') {
+                    // It's a turtle.
+                    turtle = turtles.turtleList[myBlock.value];
+                    var args = {'collapsed': myBlock.collapsed,
+                                'xcor': turtle.x,
+                                'ycor': turtle.y,
+                                'heading': turtle.orientation,
+                                'color': turtle.color,
+                                'shade': turtle.value,
+                                'pensize': turtle.stroke,
+                                'grey': turtle.chroma};
+                } else if (myBlock.name == 'action') {
+                    var args = {'collapsed': myBlock.collapsed}
                 } else {
-                    if (myBlock.name == 'start') {
-                        // It's a turtleee!
-                        turtle = turtles.turtleList[myBlock.value];
-                        var args = {'collapsed': myBlock.collapsed,
-                                    'xcor': turtle.x,
-                                    'ycor': turtle.y,
-                                    'heading': turtle.orientation,
-                                    'color': turtle.color,
-                                    'shade': turtle.value,
-                                    'pensize': turtle.stroke,
-                                    'grey': turtle.chroma};
-
-                    } else {
-                        if (myBlock.name in ['action', 'hat']) {
-                          var args = {'collapsed': myBlock.collapsed}
-                        }
-                        else {
-                          var args = {};
-                        }
-                    }
+                    var args = {};
                 }
 
                 connections = [];

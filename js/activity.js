@@ -1266,7 +1266,8 @@ define(function(require) {
             var dx = 0;
             var dy = btnSize;
 
-            menuContainer = makeButton('menu-button', x, y, btnSize);
+            menuContainer = makeButton('menu-button', x, y, btnSize,
+                                       menuButtonsVisible? 90 : undefined);
             loadButtonDragHandler(menuContainer, x, y, doMenuButton);
 
             for (name in menuNames) {
@@ -1453,7 +1454,7 @@ define(function(require) {
             update = true;
         }
 
-        function makeButton(name, x, y, size) {
+        function makeButton(name, x, y, size, rotation) {
             var container = new createjs.Container();
             if (name == 'paste-disabled-button') {
                 pasteContainer = container;
@@ -1476,6 +1477,9 @@ define(function(require) {
                 }
                 bitmap.regX = halfSize / bitmap.scaleX;
                 bitmap.regY = halfSize / bitmap.scaleY;
+                if (rotation !== undefined) {
+                    bitmap.rotation = rotation;
+                }
 
                 container.addChild(bitmap);
                 var hitArea = new createjs.Shape();

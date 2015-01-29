@@ -322,16 +322,16 @@ var PALETTEHIGHLIGHTCOLORS = {
 };
 
 var HIGHLIGHTSTROKECOLORS = {
-    'turtle': '#000000',
-    'pen': '#000000',
-    'blocks': '#000000',
-    'media': '#000000',
-    'number': '#000000',
-    'boolean': '#000000',
-    'flow': '#000000',
-    'sensors': '#000000',
-    'extras': '#000000',
-    'myblocks': '#000000'
+    'turtle': '#007b00',
+    'pen': '#0081a9',
+    'blocks': '#845b00',
+    'media': '#845b00',
+    'number': '#c700d3',
+    'boolean': '#c700d3',
+    'flow': '#ac3d00',
+    'sensors': '#ef003e',
+    'extras': '#ef003e',
+    'myblocks': '#404040'
 }
 
 var CLOSEICON = '<svg width="55" height="55" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 55"><g transform="translate(0-997.36)"><path fill="#282828" d="m0 997.36h55v54.998h-55z"/><g fill="#fff"><path d="m44.971 1036.26c1.675 1.674 1.675 4.39 0 6.06-1.675 1.674-4.391 1.674-6.07 0l-28.875-28.872c-1.675-1.674-1.675-4.39 0-6.06 1.675-1.674 4.391-1.674 6.07 0l28.875 28.872"/><path d="m16.09 1042.33c-1.675 1.674-4.391 1.674-6.07 0-1.675-1.674-1.675-4.39 0-6.06l28.875-28.871c1.675-1.674 4.391-1.674 6.07 0 1.675 1.674 1.675 4.39 0 6.06l-28.875 28.871"/></g></g></svg>';

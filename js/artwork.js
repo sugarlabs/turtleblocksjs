@@ -322,15 +322,15 @@ var PALETTEHIGHLIGHTCOLORS = {
 };
 
 var HIGHLIGHTSTROKECOLORS = {
-    'turtle': '#007b00',
-    'pen': '#0081a9',
-    'blocks': '#845b00',
-    'media': '#845b00',
-    'number': '#c700d3',
-    'boolean': '#c700d3',
-    'flow': '#ac3d00',
-    'sensors': '#ef003e',
-    'extras': '#ef003e',
+    'turtle': '#004300',
+    'pen': '#004463',
+    'blocks': '#472d00',
+    'media': '#472d00',
+    'number': '#9300a3',
+    'boolean': '#9300a3',
+    'flow': '#690700',
+    'sensors': '#890032',
+    'extras': '#890032',
     'myblocks': '#404040'
 }
 

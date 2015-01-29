@@ -172,6 +172,9 @@ define(function(require) {
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].doClear();
             }
+
+            blocksContainer.x = 0;
+            blocksContainer.y = 0;
         }
 
         function doFastButton() {
@@ -276,6 +279,10 @@ define(function(require) {
             stage = new createjs.Stage(canvas);
             createjs.Touch.enable(stage);
 
+            blocksContainer = new createjs.Container();
+            stage.addChild(blocksContainer);
+            setupBlocksContainerEvents();
+
             createjs.Ticker.addEventListener('tick', tick);
 
             createMsgContainer('#ffffff', '#7a7a7a', function(text) {
@@ -288,7 +295,7 @@ define(function(require) {
 
             trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
             turtles = new Turtles(canvas, stage, refreshCanvas);
-            blocks = new Blocks(canvas, stage, refreshCanvas, trashcan);
+            blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan);
             palettes = initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, blocks);
 
             palettes.setBlocks(blocks);
@@ -514,6 +521,32 @@ define(function(require) {
             });
 
             this.document.onkeydown = keyPressed;
+        }
+
+        function setupBlocksContainerEvents() {
+            var moving = false;
+            stage.on('stagemousedown', function (event) {
+                if (stage.getObjectUnderPoint() !== null) {
+                    return;
+                }
+
+                moving = true;
+                lastCords = {x: event.stageX, y: event.stageY};
+
+                stage.on('stagemousemove', function (event) {
+                    if (!moving) {
+                        return;
+                    }
+
+                    blocksContainer.x += event.stageX - lastCords.x;
+                    blocksContainer.y += event.stageY - lastCords.y;
+                    lastCords = {x: event.stageX, y: event.stageY};
+                });
+
+                stage.on('stagemouseup', function (event) {
+                    moving = false;
+                }, null, true);  // once = true
+            });
         }
 
         function scrollEvent(event) {
@@ -1003,8 +1036,8 @@ define(function(require) {
                 && !blocks.blockList[blk].collapsed) {
                 var fromX = (canvas.width - 1000) / 2;
                 var fromY = 128;
-                var toX = blocks.blockList[blk].x;
-                var toY = blocks.blockList[blk].y;
+                var toX = blocks.blockList[blk].x + blocksContainer.x;
+                var toY = blocks.blockList[blk].y + blocksContainer.y;
 
                 if (errorMsgArrow == null) {
                     errorMsgArrow = new createjs.Container();

@@ -264,7 +264,7 @@ var PALETTEFILLER = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height=
 
 var PALETTEHEADER = '<svg xmlns="http://www.w3.org/2000/svg" width="header_width" height="42">' + '<rect width="header_width" height="42" x="0" y="0" style="fill:fill_color;fill-opacity:1;stroke:none" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan  x="55" y="30" style="font-size:24px;text-align:start;text-anchor:start;fill:#ffffff">palette_label</tspan>' + '</text>' + '</svg>';
 
-var PALETTEBUTTON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55">' + '<rect width="55" height="55" x="0" y="0" style="fill:fill_color;fill-opacity:1;stroke:none" />' + '</svg>';
+var PALETTEBUTTON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55">' + '<circle cx="27.5" cy="27.5" r="27.5" x="0" y="0" style="fill:fill_color;fill-opacity:1;stroke:none" />' + '</svg>';
 
 // samples-viewer related artwork
 

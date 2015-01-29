@@ -197,6 +197,8 @@
   * allow for changes to playback mode while running
   * fixed problem with saveName
   * fixed multiple problems with collapsed stacks
+  * change color of stroke when highlighting blocks
+  * added image, and palette-stroke-highlight args to rtps files.
 
 TODO:
   * save errors
@@ -212,7 +214,6 @@ TODO:
   * write SVG generator
   * user defined blocks
   * try to detect difference between unknown flow and arg blocks
-  * change color of stroke when highlighting blocks
 
 KNOWN BUGS:
   * sample projects cannot be shown on Android

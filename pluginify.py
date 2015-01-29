@@ -124,7 +124,8 @@ NAMES = {'flow': 'FLOWPLUGINS', 'arg': 'ARGPLUGINS', 'block': 'BLOCKPLUGINS',
          'parameter': 'PARAMETERPLUGINS', 'setter': 'SETTERPLUGINS',
          'palette-icon': 'PALETTEPLUGINS', 'palette-fill': 'PALETTEFILLCOLORS',
          'palette-stroke': 'PALETTESTROKECOLORS',
-         'palette-highlight': 'PALETTEHIGHLIGHTCOLORS'}
+         'palette-highlight': 'PALETTEHIGHLIGHTCOLORS',
+         'palette-stroke-highlight': 'HIGHLIGHTSTROKECOLORS'}
 JS_TYPES = ('flow', 'arg', 'block', 'parameter', 'setter')
 # 'blkName': 'imageData',
 IMAGES= {}

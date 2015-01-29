@@ -246,6 +246,15 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
             }
             PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
 
+            var strokeHighlightColor = '#000000';
+            if ('HIGHLIGHTSTROKECOLORS' in obj) {
+                if (name in obj['HIGHLIGHTSTROKECOLORS']) {
+                    var strokeHighlightColor = obj['HIGHLIGHTSTROKECOLORS'][name];
+                    console.log(highlightColor);
+                }
+            }
+            HIGHLIGHTSTROKECOLORS[name] = strokeHighlightColor;
+
             if (name in palettes.buttons) {
                 console.log('palette ' + name + ' already exists');
             } else {

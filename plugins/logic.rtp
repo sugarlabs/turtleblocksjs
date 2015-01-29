@@ -67,3 +67,5 @@ var LogicArgBlock = function (name, label) {
 //* palette-fill:logic *// #ff00ff
 //* palette-stroke:logic *// #C700D3
 //* palette-highlight:logic *// #FF9FFF
+//* palette-stroke-highlight:logic *// #000000
+

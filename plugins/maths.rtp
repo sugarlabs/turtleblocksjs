@@ -111,3 +111,5 @@ block.value = Math.pow(base, exp);
 //* palette-fill:maths *// #ff0066
 //* palette-stroke:maths *// #ef003e
 //* palette-highlight:maths *// #ffb1b3
+//* palette-stroke-highlight:maths *// #000000
+

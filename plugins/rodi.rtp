@@ -221,3 +221,4 @@ block.value = distance;
 //* palette-fill:rodi *// #ff0066
 //* palette-stroke:rodi *// #ef003e
 //* palette-highlight:rodi *// #ffb1b3
+//* palette-stroke-highlight:rodi *// #000000

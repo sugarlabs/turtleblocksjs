@@ -102,3 +102,5 @@ SetLangBlock.staticLabels.push('set lang', 'source', 'target');
 //* palette-fill:mashape *// #ff0066
 //* palette-stroke:mashape *// #ef003e
 //* palette-highlight:mashape *// #ffb1b3
+//* palette-stroke-highlight:mashape *// #000000
+

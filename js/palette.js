@@ -15,7 +15,8 @@ var paletteBlocks = null;
 var PROTOBLOCKSCALE = 1.0;
 var PALETTELEFTMARGIN = 20;
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
-                       'media', 'sensors', 'extras', 'myblocks'];
+    'media', 'sensors', 'extras', 'myblocks'
+];
 
 function maxPaletteHeight(menuSize) {
     // Palettes don't start at the top of the screen and the last
@@ -116,7 +117,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
         this.stage.update();
     }
 
-    this.updateButtonMasks = function () {
+    this.updateButtonMasks = function() {
         for (var name in this.buttons) {
             var s = new createjs.Shape();
             s.graphics.r(0, 0, this.cellSize, windowHeight() / this.scale);
@@ -254,7 +255,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
         this.refreshCanvas();
     }
 
-    this.findPalette = function (x, y) {
+    this.findPalette = function(x, y) {
         for (var name in this.dict) {
             var px = this.dict[name].menuContainer.x;
             var py = this.dict[name].menuContainer.y;
@@ -276,11 +277,11 @@ function loadPaletteButtonHandler(palettes, name) {
     var locked = false;
     var scrolling = false;
 
-    palettes.buttons[name].on('mousedown', function (event) {
+    palettes.buttons[name].on('mousedown', function(event) {
         scrolling = true;
         lastY = event.stageY;
 
-        palettes.buttons[name].on('pressmove', function (event) {
+        palettes.buttons[name].on('pressmove', function(event) {
             if (!scrolling) {
                 return;
             }
@@ -290,9 +291,9 @@ function loadPaletteButtonHandler(palettes, name) {
             lastY = event.stageY;
         });
 
-        palettes.buttons[name].on('pressup', function (event) {
+        palettes.buttons[name].on('pressup', function(event) {
             scrolling = false;
-        }, null, true);  // once = true
+        }, null, true); // once = true
     });
 
 
@@ -403,12 +404,12 @@ function Palette(palettes, name, color, bgcolor) {
         makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)).replace(/header_width/g, paletteWidth), this.name, processHeader, null);
     }
 
-    this.resizeEvent = function () {
+    this.resizeEvent = function() {
         this.updateBackground();
         this.updateBlockMasks();
     }
 
-    this.updateBlockMasks = function () {
+    this.updateBlockMasks = function() {
         var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
         for (var i in this.protoContainers) {
             var s = new createjs.Shape();
@@ -419,7 +420,7 @@ function Palette(palettes, name, color, bgcolor) {
         }
     }
 
-    this.updateBackground = function () {
+    this.updateBackground = function() {
         if (this.menuContainer === null) {
             return;
         }
@@ -535,97 +536,88 @@ function Palette(palettes, name, color, bgcolor) {
                     var bottom_label = '';
 
                     switch (myBlock.name) {
-                    case 'text':
-                        block_label = _('text');
-                        break;
-                    case 'number':
-                        block_label = '100';
-                        break;
-                    case 'less':
-                    case 'greater':
-                    case 'equal':
-                        bottom_label = _(myBlock.staticLabels[0]);
-                        break;
-                    default:
-                        if (blkname != modname) {
-                            // Override label for do, storein, and box
-                            block_label = palette.protoList[blk].defaults[0];
-                        } else if (myBlock.staticLabels.length > 0) {
-                            block_label = _(myBlock.staticLabels[0]);
-                            if (block_label == '') {
-                                if (blkname == 'loadFile') {
-                                    block_label = _('open file')
+                        case 'text':
+                            block_label = _('text');
+                            break;
+                        case 'number':
+                            block_label = '100';
+                            break;
+                        case 'less':
+                        case 'greater':
+                        case 'equal':
+                            bottom_label = _(myBlock.staticLabels[0]);
+                            break;
+                        default:
+                            if (blkname != modname) {
+                                // Override label for do, storein, and box
+                                block_label = palette.protoList[blk].defaults[0];
+                            } else if (myBlock.staticLabels.length > 0) {
+                                block_label = _(myBlock.staticLabels[0]);
+                                if (block_label == '') {
+                                    if (blkname == 'loadFile') {
+                                        block_label = _('open file')
+                                    } else {
+                                        block_label = blkname;
+                                    }
                                 }
-                                else {
-                                    block_label = blkname;
-                                }
+                            } else {
+                                block_label = blkname;
                             }
-                        } else {
-                            block_label = blkname;
-                        }
                     }
 
-                    switch (myBlock.name) {
-                    case 'box':
-                        // so the label will fit
-                        var artwork = VALUEBLOCK;
-                        break;
-                    case 'if':
-                    case 'until':
-                    case 'while':
-                    case 'waitFor':
-                        // so the block will fit
-                        var artwork = BASICBLOCK;
-                        break;
-                    case 'ifthenelse':
-                        // so the block will fit
-                        var artwork = BASICBLOCK;
-                        block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
-                        break;
-                    default:
-                        var artwork = myBlock.artwork[0];
-                        if (myBlock.staticLabels.length > 1) {
-                            top_label = _(myBlock.staticLabels[1]);
-                        }
-                        if (myBlock.staticLabels.length > 2) {
-                            bottom_label = _(myBlock.staticLabels[2]);
-                        }
-                        if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
-                            mid_label = _(myBlock.staticLabels[2]);
-                            top_label = _(myBlock.staticLabels[1]);
-                            block_label = _(myBlock.staticLabels[0]);
-                        }
-                        break;
-                    }
-                    // FIXME: works correctly only with mediaBlocks
+                    // Don't display the label on image blocks.
                     if (myBlock.image) {
                         mid_label = '';
                         block_label = '';
                         top_label = '';
                         bottom_label = '';
-                        var image = new Image();
-                        image.onload = function() {
-                            var bitmap = new createjs.Bitmap(image);
-                            // FIXME: Determine these values computationally based on the size
-                            // of the media block.
-                            if (image.width > image.height) {
-                                bitmap.scaleX = 108 / image.width;
-                                bitmap.scaleY = 108 / image.width;
-                                bitmap.scale = 108 / image.width;
-                            } else {
-                                bitmap.scaleX = 80 / image.height;
-                                bitmap.scaleY = 80 / image.height;
-                                bitmap.scale = 80 / image.height;
-                            }
-                            setTimeout(function() {
-                                palette.protoContainers[modname].addChild(bitmap);
-                                bitmap.x = 40;
-                                bitmap.y = 2;
-                                palette.protoContainers[modname].updateCache();
-                            }, 1000);
-                        }
-                        image.src = myBlock.image;
                     }
+
+                    switch (myBlock.name) {
+                        case 'box':
+                            // so the label will fit
+                            var artwork = VALUEBLOCK;
+                            break;
+                        case 'if':
+                        case 'until':
+                        case 'while':
+                        case 'waitFor':
+                            // so the block will fit
+                            var artwork = BASICBLOCK;
+                            break;
+                        case 'ifthenelse':
+                            // so the block will fit
+                            var artwork = BASICBLOCK;
+                            block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
+                            break;
+                        default:
+                            var artwork = myBlock.artwork[0];
+                            if (myBlock.staticLabels.length > 1) {
+                                top_label = _(myBlock.staticLabels[1]);
+                            }
+                            if (myBlock.staticLabels.length > 2) {
+                                bottom_label = _(myBlock.staticLabels[2]);
+                            }
+                            if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
+                                mid_label = _(myBlock.staticLabels[2]);
+                                top_label = _(myBlock.staticLabels[1]);
+                                block_label = _(myBlock.staticLabels[0]);
+                            }
+                            break;
+                    }
+
+                    function calculateBounds(palette, blk, modname) {
+                        var bounds = palette.protoContainers[modname].getBounds();
+                        palette.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
+
+                        var hitArea = new createjs.Shape();
+                        hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                        palette.protoContainers[modname].hitArea = hitArea;
+
+                        loadPaletteMenuItemHandler(palette, blk, modname);
+                        palette.palettes.refreshCanvas();
+                    }
+
                     function processBitmap(palette, modname, bitmap, args) {
                         var myBlock = args[0];
                         var blk = args[1];
@@ -636,15 +628,25 @@ function Palette(palettes, name, color, bgcolor) {
                         bitmap.scaleY = PROTOBLOCKSCALE;
                         bitmap.scale = PROTOBLOCKSCALE;
 
-                        if (!palette.protoList[blk].expandable || (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1)) {
-                            bounds = palette.protoContainers[modname].getBounds();
-                            palette.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-                            var hitArea = new createjs.Shape();
-                            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
-                            palette.protoContainers[modname].hitArea = hitArea;
-
-                            loadPaletteMenuItemHandler(palette, blk, modname);
-                            palette.palettes.refreshCanvas();
+                        if (myBlock.image) {
+                            var image = new Image();
+                            image.onload = function() {
+                                var bitmap = new createjs.Bitmap(image);
+                                if (image.width > image.height) {
+                                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
+                                } else {
+                                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
+                                }
+                                palette.protoContainers[modname].addChild(bitmap);
+                                bitmap.x = MEDIASAFEAREA[0];
+                                bitmap.y = MEDIASAFEAREA[1];
+                                calculateBounds(palette, blk, modname);
+                            }
+                            image.src = myBlock.image;
+                        } else if (!palette.protoList[blk].expandable) {
+                            calculateBounds(palette, blk, modname);
+                        } else if (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1) {
+                            calculateBounds(palette, blk, modname);
                         } else {
                             if (myBlock.style == 'doubleclamp') {
                                 middleExpandable(palette, modname, myBlock, blk)
@@ -689,13 +691,7 @@ function Palette(palettes, name, color, bgcolor) {
                                 bitmap.scaleY = PROTOBLOCKSCALE;
                                 bitmap.scale = PROTOBLOCKSCALE;
 
-                                bounds = palette.protoContainers[modname].getBounds();
-                                palette.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
-                                var hitArea = new createjs.Shape();
-                                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
-                                palette.protoContainers[modname].hitArea = hitArea;
-                                loadPaletteMenuItemHandler(palette, blk, modname);
-                                palette.palettes.refreshCanvas();
+                                calculateBounds(palette, blk, modname);
                             }
 
                             var artworkOffset = Math.floor(palette.protoList[blk].artworkOffset[2] * PROTOBLOCKSCALE);
@@ -799,7 +795,7 @@ function Palette(palettes, name, color, bgcolor) {
         }
     }
 
-    this.scrollEvent = function (direction, scrollSpeed) {
+    this.scrollEvent = function(direction, scrollSpeed) {
         var diff = direction * scrollSpeed;
         var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
 
@@ -845,6 +841,7 @@ function Palette(palettes, name, color, bgcolor) {
 
 
 var blocks = undefined;
+
 function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, b) {
     // Instantiate the palettes object on first load.
     var palettes = new Palettes(canvas, stage, cellSize, refreshCanvas, trashcan).
@@ -876,11 +873,11 @@ var DECIDEDISTANCE = 20;
 
 function setupBackgroundEvents(palette) {
     var scrolling = false;
-    palette.background.on('mousedown', function (event) {
+    palette.background.on('mousedown', function(event) {
         scrolling = true;
         var lastY = event.stageY;
 
-        palette.background.on('pressmove', function (event) {
+        palette.background.on('pressmove', function(event) {
             if (!scrolling) {
                 return;
             }
@@ -890,9 +887,9 @@ function setupBackgroundEvents(palette) {
             lastY = event.stageY;
         });
 
-        palette.background.on('pressup', function (event) {
+        palette.background.on('pressup', function(event) {
             scrolling = false;
-        }, null, true);  // once = true
+        }, null, true); // once = true
     });
 }
 
@@ -973,7 +970,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             var yd = Math.abs(event.stageY - startY);
             var diff = Math.sqrt(xd * xd + yd * yd);
             if (mode === MODEUNSURE && diff > DECIDEDISTANCE) {
-                mode = yd > xd? MODESCROLL : MODEDRAG;
+                mode = yd > xd ? MODESCROLL : MODEDRAG;
             }
         });
     });
@@ -993,7 +990,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 obj[0][3] = palette.protoContainers[blkname].y;
                 console.log('loading macro ' + macroName);
                 paletteBlocks.loadNewBlocks(obj);
-		// FIXME: collapse is wrong.
+                // FIXME: collapse is wrong.
             } else {
                 // Create the block.
                 var newBlock = makeBlockFromPalette(blk, blkname, palette);

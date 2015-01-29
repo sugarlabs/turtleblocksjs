@@ -199,6 +199,7 @@
   * fixed multiple problems with collapsed stacks
   * change color of stroke when highlighting blocks
   * added image, and palette-stroke-highlight args to rtps files.
+  * combine various run modes (switch between fast, slow, and step on the fly)
 
 TODO:
   * save errors
@@ -212,13 +213,15 @@ TODO:
   * three-arg flow blocks
   * three-arg arg blocks
   * write SVG generator
-  * user defined blocks
+  * user defined blocks (block/plugin factory)
   * try to detect difference between unknown flow and arg blocks
 
 KNOWN BUGS:
+  * show blocks should put blocks on top of everything else
+  * blocks in a stack being dragged should be on top of everything else
   * sample projects cannot be shown on Android
   * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
   * fix race conditions
-  * cannot combine various run modes
   * not all blocks highlight when using step-by-step mode
+  * collapse bug manifests itself when loading custom stacks

@@ -795,7 +795,7 @@ define(function(require) {
 
         function toggleCollapsibleStacks() {
             if (blocks.visible) {
-		console.log('calling toggleCollapsibles');
+                console.log('calling toggleCollapsibles');
                 blocks.toggleCollapsibles();
             }
         }
@@ -889,7 +889,7 @@ define(function(require) {
                 update = true;
             }, 200);
             setTimeout(function() {
-		console.log('calling toggleCollapsibles after timeout');
+                console.log('calling toggleCollapsibles after timeout');
                 blocks.toggleCollapsibles();
             }, 3000);
         }
@@ -962,7 +962,7 @@ define(function(require) {
                 blocks.makeNewBlock('start', postProcess, null);
             }
             setTimeout(function() {
-		console.log('calling toggleCollapsibles after timeout');
+                console.log('calling toggleCollapsibles after timeout');
                 blocks.toggleCollapsibles();
             }, 3000);
             update = true;

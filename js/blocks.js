@@ -1718,7 +1718,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             myConnectionBlock.connections = [blk];
             if (myBlock.name == 'action') {
                 // Make sure we don't make two actions with the same name.
-		console.log('calling findUniqueActionName');
+                console.log('calling findUniqueActionName');
                 value = this.findUniqueActionName(_('action'));
                 console.log('renaming action block to ' + value);
                 if (value != _('action')) {
@@ -1729,7 +1729,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         myConnectionBlock.value = value;
                         myConnectionBlock.container.updateCache();
                     }, 1000);
-		    console.log('calling newDoBlock with value ' + value);
+                    console.log('calling newDoBlock with value ' + value);
                     this.newDoBlock(value);
                     this.palettes.updatePalettes();
                 }
@@ -2081,44 +2081,44 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // duplicates.
         for (var b = 0; b < blockObjs.length; b++) {
             var blkData = blockObjs[b];
-	    // blkData[1] could be a string or an object.
+            // blkData[1] could be a string or an object.
             if (typeof(blkData[1]) == 'string') {
-		var name = blkData[1];
-	    } else {
-		var name = blkData[1][0];
-	    }
+                var name = blkData[1];
+            } else {
+                var name = blkData[1][0];
+            }
 
-	    switch(name) {
-	    case 'text':
+            switch(name) {
+            case 'text':
                 var key = blkData[1][1];
                 if (stringValues[key] == undefined) {
                     stringValues[key] = [];
                 }
                 stringValues[key].push(b);
-		break;
-	    case 'action':
+                break;
+            case 'action':
                 if (blkData[4][1] != null) {
                     actionNames[b] = blkData[4][1];
                 }
-	    case 'hat':
+            case 'hat':
                 if (blkData[4][1] != null) {
                     actionNames[b] = blkData[4][1];
                 }
-		break;
-	    case 'storein':
+                break;
+            case 'storein':
                 if (blkData[4][1] != null) {
                     storeinNames[b] = blkData[4][1];
                 }
-		break;
-	    case 'do':
-	    case 'stack':
+                break;
+            case 'do':
+            case 'stack':
                 if (blkData[4][1] != null) {
-		    doNames[b] = blkData[4][1];
+                    doNames[b] = blkData[4][1];
                 }
-		break;
-	    default:
-		break;
-	    }
+                break;
+            default:
+                break;
+            }
         }
 
         var updatePalettes = false;
@@ -2127,29 +2127,29 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var blkData = blockObjs[storeinNames[b]];
             if (currentStoreinNames.indexOf(blkData[1][1]) == -1) {
                 console.log('adding new palette entries for ' + blkData[1][1]);
-		if (typeof(blkData[1][1]) == 'string') {
-		    var name = blkData[1][1];
-		} else {
-		    var name = blkData[1][1]['value'];
-		}
-		console.log(name);
+                if (typeof(blkData[1][1]) == 'string') {
+                    var name = blkData[1][1];
+                } else {
+                    var name = blkData[1][1]['value'];
+                }
+                console.log(name);
                 this.newStoreinBlock(name);
                 this.newBoxBlock(name);
                 updatePalettes = true;
             }
         }
 
-	console.log(actionNames);
+        console.log(actionNames);
         // Make sure action names are unique.
         for (var b in actionNames) {
             // Is there a proto do block with this name? If so, find a
             // new name.
             // Name = the value of the connected label.
             var blkData = blockObjs[actionNames[b]];
-	    if (typeof(blkData[1][1]) == 'string') {
-		var name = blkData[1][1];
+            if (typeof(blkData[1][1]) == 'string') {
+                var name = blkData[1][1];
             } else {
-		var name = blkData[1][1]['value'];
+                var name = blkData[1][1]['value'];
             }
             var oldName = name;
             var i = 0;
@@ -2171,15 +2171,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // and any do blocks
             for (var d in doNames) {
                 var doBlkData = blockObjs[doNames[d]];
-		if (typeof(doBlkData[1][1]) == 'string') {
+                if (typeof(doBlkData[1][1]) == 'string') {
                     if (doBlkData[1][1] == oldName) {
-			doBlkData[1][1] = name;
+                        doBlkData[1][1] = name;
                     }
-		} else {
+                } else {
                     if (doBlkData[1][1]['value'] == oldName) {
-			doBlkData[1][1] = {'value': name};
+                        doBlkData[1][1] = {'value': name};
                     }
-		}
+                }
             }
         }
 
@@ -3341,7 +3341,7 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
 function collapseToggle(blocks, myBlock) {
     if (['start', 'action'].indexOf(myBlock.name) == -1) {
-	// Should not happen, but just in case.
+        // Should not happen, but just in case.
         // console.log('Do not collapse ' + myBlock.name);
         return;
     }

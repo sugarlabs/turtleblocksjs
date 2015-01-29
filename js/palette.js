@@ -471,7 +471,7 @@ function Palette(palettes, name, color, bgcolor) {
         }
         this.y = 0;
         for (var blk in this.protoList) {
-	    // Don't show hidden blocks on the menus
+            // Don't show hidden blocks on the menus
             if (this.protoList[blk].hidden) {
                 continue;
             }
@@ -1008,6 +1008,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 obj[0][3] = palette.protoContainers[blkname].y;
                 console.log('loading macro ' + macroName);
                 paletteBlocks.loadNewBlocks(obj);
+		// FIXME: collapse is wrong.
             } else {
                 // Create the block.
                 var newBlock = makeBlockFromPalette(blk, blkname, palette);
@@ -1091,7 +1092,7 @@ function loadPaletteMenuHandler(palette) {
                     promptPaletteDelete(palette);
                 } else if (palette.name == 'myblocks') {
                     promptMacrosDelete(palette);
-		}
+                }
             }
             trashcan.hide();
         });
@@ -1167,8 +1168,8 @@ function promptMacrosDelete(palette) {
     console.log('removing macros from ' + palette.name);
     for (var i = 0; i < palette.protoList.length; i++) {
         var name = palette.protoList[i].name;
-	delete palette.protoContainers[name];
-	delete palette.protoBackgrounds[name];
+        delete palette.protoContainers[name];
+        delete palette.protoBackgrounds[name];
         palette.protoList.splice(i, 1);
     }
     palette.palettes.updatePalettes();

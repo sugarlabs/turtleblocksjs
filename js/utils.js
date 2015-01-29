@@ -246,7 +246,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
             }
             PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
 
-            var strokeHighlightColor = '#000000';
+            var strokeHighlightColor = '#404040';
             if ('HIGHLIGHTSTROKECOLORS' in obj) {
                 if (name in obj['HIGHLIGHTSTROKECOLORS']) {
                     var strokeHighlightColor = obj['HIGHLIGHTSTROKECOLORS'][name];

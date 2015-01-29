@@ -64,7 +64,6 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
     // The collection of palettes.
     this.dict = {};
     this.buttons = {}; // The toolbar button for each palette.
-    this.bitmaps = {};
     this.highlightBitmaps = {};
 
     this.visible = true;
@@ -139,47 +138,36 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
                 this.buttons[name].x = this.x;
                 this.buttons[name].y = this.y + this.scrollDiff;
                 this.y += this.cellSize;
+                var me = this;
 
-                function processButton(me, name, bitmap, extras) {
-                    me.bitmaps[name] = bitmap;
-                    me.buttons[name].addChild(me.bitmaps[name]);
-                    if (me.cellSize != me.originalSize) {
-                        bitmap.scaleX = me.cellSize / me.originalSize;
-                        bitmap.scaleY = me.cellSize / me.originalSize;
-                    }
+                function processHighlightButton(me, name, bitmap, extras) {
+                    me.highlightBitmaps[name] = bitmap;
+                    me.buttons[name].addChild(me.highlightBitmaps[name]);
+                    me.highlightBitmaps[name].visible = false;
 
-                    function processHighlightButton(me, name, bitmap, extras) {
-                        me.highlightBitmaps[name] = bitmap;
-                        me.buttons[name].addChild(me.highlightBitmaps[name]);
-                        me.highlightBitmaps[name].visible = false;
-
-                        function processButtonIcon(me, name, bitmap, extras) {
-                            me.buttons[name].addChild(bitmap);
-                            if (me.cellSize != me.originalSize) {
-                                bitmap.scaleX = me.cellSize / me.originalSize;
-                                bitmap.scaleY = me.cellSize / me.originalSize;
-                            }
-
-                            var hitArea = new createjs.Shape();
-                            hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
-                            hitArea.x = me.halfCellSize;
-                            hitArea.y = me.halfCellSize;
-                            me.buttons[name].hitArea = hitArea;
-                            me.buttons[name].visible = false;
-
-                            me.dict[name].makeMenu();
-                            me.dict[name].moveMenu(me.cellSize, me.cellSize);
-                            me.dict[name].updateMenu(false);
-
-                            loadPaletteButtonHandler(me, name);
+                    function processButtonIcon(me, name, bitmap, extras) {
+                        me.buttons[name].addChild(bitmap);
+                        if (me.cellSize != me.originalSize) {
+                            bitmap.scaleX = me.cellSize / me.originalSize;
+                            bitmap.scaleY = me.cellSize / me.originalSize;
                         }
-                        makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
+
+                        var hitArea = new createjs.Shape();
+                        hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
+                        hitArea.x = me.halfCellSize;
+                        hitArea.y = me.halfCellSize;
+                        me.buttons[name].hitArea = hitArea;
+                        me.buttons[name].visible = false;
+
+                        me.dict[name].makeMenu();
+                        me.dict[name].moveMenu(me.cellSize, me.cellSize);
+                        me.dict[name].updateMenu(false);
+
+                        loadPaletteButtonHandler(me, name);
                     }
-
-                    makePaletteBitmap(me, PALETTEBUTTON.replace('fill_color', '#4d4d4d'), name, processHighlightButton, null);
+                    makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
                 }
-
-                makePaletteBitmap(this, PALETTEBUTTON.replace('fill_color', '#96d3f3'), name, processButton, null);
+                makePaletteBitmap(me, PALETTEBUTTON.replace('fill_color', '#4d4d4d'), name, processHighlightButton, null);
 
             }
         }
@@ -311,21 +299,18 @@ function loadPaletteButtonHandler(palettes, name) {
     // A palette button opens or closes a palette.
     palettes.buttons[name].on('mouseover', function(event) {
         palettes.setDraggingFlag(true);
-        palettes.bitmaps[name].visible = false;
         palettes.highlightBitmaps[name].visible = true;
         palettes.refreshCanvas();
     });
 
     palettes.buttons[name].on('pressup', function(event) {
         palettes.setDraggingFlag(false);
-        palettes.bitmaps[name].visible = true;
         palettes.highlightBitmaps[name].visible = false;
         palettes.refreshCanvas();
     });
 
     palettes.buttons[name].on('mouseout', function(event) {
         palettes.setDraggingFlag(false);
-        palettes.bitmaps[name].visible = true;
         palettes.highlightBitmaps[name].visible = false;
         palettes.refreshCanvas();
     });

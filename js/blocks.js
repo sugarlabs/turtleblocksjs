@@ -368,7 +368,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
     // We keep a dictionary for the proto blocks,
     this.protoBlockDict = {}
-        // and a list of the blocks we create.
+    // and a list of the blocks we create.
     this.blockList = [];
 
     // Track the time with mouse down.
@@ -1012,8 +1012,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
                 // Look for available connections.
                 if (this.testConnectionType(
-                        blkType,
-                        this.blockList[b].docks[i][2])) {
+                    blkType,
+                    this.blockList[b].docks[i][2])) {
                     x2 = this.blockList[b].container.x + this.blockList[b].docks[i][0];
                     y2 = this.blockList[b].container.y + this.blockList[b].docks[i][1];
                     dist = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
@@ -1254,11 +1254,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
         if (myBlock.name == 'loadFile') {
-            try { var label = myBlock.value[0].toString(); }
-            catch (e) { var label = _('open file'); }
+            try {
+                var label = myBlock.value[0].toString();
+            } catch (e) {
+                var label = _('open file');
+            }
             maxLength = 10;
-        }
-        else {
+        } else {
             var label = myBlock.value.toString();
         }
         if (label.length > maxLength) {
@@ -1836,8 +1838,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         for (var blk = 0; blk < this.blockList.length; blk++) {
             var myBlk = this.blockList[blk];
             var blkParent = this.blockList[myBlk.connections[0]];
-            if (blkParent == null) { continue; }
-            if (['do', 'action'].indexOf(blkParent.name) == -1) { continue; }
+            if (blkParent == null) {
+                continue;
+            }
+            if (['do', 'action'].indexOf(blkParent.name) == -1) {
+                continue;
+            }
             var blockValue = myBlk.value;
             if (blockValue == oldName) {
                 myBlk.value = newName;
@@ -2088,36 +2094,36 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 var name = blkData[1][0];
             }
 
-            switch(name) {
-            case 'text':
-                var key = blkData[1][1];
-                if (stringValues[key] == undefined) {
-                    stringValues[key] = [];
-                }
-                stringValues[key].push(b);
-                break;
-            case 'action':
-                if (blkData[4][1] != null) {
-                    actionNames[b] = blkData[4][1];
-                }
-            case 'hat':
-                if (blkData[4][1] != null) {
-                    actionNames[b] = blkData[4][1];
-                }
-                break;
-            case 'storein':
-                if (blkData[4][1] != null) {
-                    storeinNames[b] = blkData[4][1];
-                }
-                break;
-            case 'do':
-            case 'stack':
-                if (blkData[4][1] != null) {
-                    doNames[b] = blkData[4][1];
-                }
-                break;
-            default:
-                break;
+            switch (name) {
+                case 'text':
+                    var key = blkData[1][1];
+                    if (stringValues[key] == undefined) {
+                        stringValues[key] = [];
+                    }
+                    stringValues[key].push(b);
+                    break;
+                case 'action':
+                    if (blkData[4][1] != null) {
+                        actionNames[b] = blkData[4][1];
+                    }
+                case 'hat':
+                    if (blkData[4][1] != null) {
+                        actionNames[b] = blkData[4][1];
+                    }
+                    break;
+                case 'storein':
+                    if (blkData[4][1] != null) {
+                        storeinNames[b] = blkData[4][1];
+                    }
+                    break;
+                case 'do':
+                case 'stack':
+                    if (blkData[4][1] != null) {
+                        doNames[b] = blkData[4][1];
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -2164,7 +2170,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
             // Change the name of the action...
             console.log('action ' + oldName + ' is being renamed ' + name);
-            blkData[1][1] = {'value': name};
+            blkData[1][1] = {
+                'value': name
+            };
             // add a new do block to the palette...
             this.newDoBlock(name);
             updatePalettes = true;
@@ -2177,7 +2185,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     }
                 } else {
                     if (doBlkData[1][1]['value'] == oldName) {
-                        doBlkData[1][1] = {'value': name};
+                        doBlkData[1][1] = {
+                            'value': name
+                        };
                     }
                 }
             }
@@ -2198,17 +2208,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
             if (typeof(blkData[1]) == 'object') {
                 if (typeof(blkData[1][1]) == 'number' | typeof(blkData[1][1]) == 'string') {
-                    blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
+                    blkInfo = [blkData[1][0], {
+                        'value': blkData[1][1]
+                    }];
                     if (['start', 'action', 'hat'].indexOf != -1) {
                         blkInfo[1]['collapsed'] = false;
                     }
-                }
-                else {
+                } else {
                     blkInfo = blkData[1];
                 }
-            }
-            else {
-                blkInfo = [blkData[1], {'value': null}];
+            } else {
+                blkInfo = [blkData[1], {
+                    'value': null
+                }];
                 if (['start', 'action', 'hat'].indexOf != -1) {
                     blkInfo[1]['collapsed'] = false;
                 }
@@ -2398,18 +2410,18 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         n = blkData[4].length;
                         console.log(n + ': substituting nop block for ' + name);
                         switch (n) {
-                        case 1:
-                            name = 'nopValueBlock';
-                            break;
-                        case 2:
-                            name = 'nopZeroArgBlock';
-                            break;
-                        case 3:
-                            name = 'nopOneArgBlock';
-                            break;
-                        default:
-                            name = 'nopTwoArgBlock';
-                            break;
+                            case 1:
+                                name = 'nopValueBlock';
+                                break;
+                            case 2:
+                                name = 'nopZeroArgBlock';
+                                break;
+                            case 3:
+                                name = 'nopOneArgBlock';
+                                break;
+                            default:
+                                name = 'nopTwoArgBlock';
+                                break;
                         }
                     }
                     this.makeNewBlockWithConnections(name, blockOffset, blkData[4], null);
@@ -2975,7 +2987,7 @@ function Block(protoblock, blocks) {
                 me.collapseText.visible = false;
 
                 me.collapseContainer = new createjs.Container();
-        me.collapseContainer.snapToPixelEnabled = true;
+                me.collapseContainer.snapToPixelEnabled = true;
 
                 var image = new Image();
                 image.onload = function() {
@@ -3216,6 +3228,7 @@ function doOpenMedia(blocks, thisBlock) {
     fileChooser.focus();
     fileChooser.click();
 }
+
 
 function doOpenFile(blocks, thisBlock) {
     var fileChooser = docById('myOpenAll');
@@ -3467,7 +3480,7 @@ function loadEventHandlers(blocks, myBlock) {
                 blocks.selectingStack = false;
             } else if (myBlock.name == 'media') {
                 doOpenMedia(blocks, thisBlock);
-            } else if(myBlock.name == 'loadFile') {
+            } else if (myBlock.name == 'loadFile') {
                 doOpenFile(blocks, thisBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
                 var x = myBlock.container.x
@@ -3701,18 +3714,22 @@ function sendStackToTrash(blocks, myBlock) {
         }
     }
 
-    if (myBlock.name == 'action'){
+    if (myBlock.name == 'action') {
         var actionArg = blocks.blockList[myBlock.connections[1]];
         var actionName = actionArg.value;
         for (var blockId = 0; blockId < blocks.blockList.length; blockId++) {
             var myBlk = blocks.blockList[blockId];
             var blkParent = blocks.blockList[myBlk.connections[0]];
-            if (blkParent == null) { continue; }
+            if (blkParent == null) {
+                continue;
+            }
             if (['do', 'action'].indexOf(blkParent.name) != -1) {
                 continue;
             }
             var blockValue = myBlk.value;
-            if (blockValue == _('action')) { continue; }
+            if (blockValue == _('action')) {
+                continue;
+            }
             if (blockValue == actionName) {
                 blkParent.hide();
                 myBlk.hide();
@@ -3761,6 +3778,7 @@ function makeBitmap(data, name, callback, args) {
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
 }
+
 
 function regeneratePalette(palette) {
     palette.visible = false;

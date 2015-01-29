@@ -78,6 +78,7 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
     }
 
     this.stage.addChild(this.container);
+    this.stage.setChildIndex(this.container, 0);
     this.resizeEvent(1);
     makeTrash(this);
 

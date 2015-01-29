@@ -41,7 +41,16 @@ Getting Started Documentation
 -----------------------------
 
 Google Code-in participant Jasmine Park has created some guides to
-using Turtle Blocks: [Turtle Blocks: An Introductory Manual](http://people.sugarlabs.org/walter/TurtleBlocksIntroductoryManual.pdf) and [Turtle Blocks: A Manual for Advanced Blocks](http://people.sugarlabs.org/walter/TurtleBlocksAdvancedBlocksManual.pdf)
+using Turtle Blocks: [Turtle Blocks: An Introductory
+Manual](http://people.sugarlabs.org/walter/TurtleBlocksIntroductoryManual.pdf)
+and [Turtle Blocks: A Manual for Advanced
+Blocks](http://people.sugarlabs.org/walter/TurtleBlocksAdvancedBlocksManual.pdf)
+
+
+Reporting Bugs
+--------------
+
+Bugs can be reported in the [Sugar Labs bug tracker](http://bugs.sugarlabs.org) or in the [issues section](https://github.com/walterbender/turtleblocksjs/issues) of this repository.
 
 
 Advanced Features
@@ -49,10 +58,11 @@ Advanced Features
 
 Turtle Blocks has a plugin mechanism that is used to add new
 blocks. You can learn more about how to use plugins (and how to write
-them) from the [Plugins Guide](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/README.md).
+them) from the [Plugins
+Guide](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/README.md).
 
 
-List of plugins
+List of Plugins
 ---------------
 
 * [Mindstorms](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorms robotics kit

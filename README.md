@@ -50,7 +50,11 @@ Blocks](http://people.sugarlabs.org/walter/TurtleBlocksAdvancedBlocksManual.pdf)
 Reporting Bugs
 --------------
 
-Bugs can be reported in the [Sugar Labs bug tracker](http://bugs.sugarlabs.org) or in the [issues section](https://github.com/walterbender/turtleblocksjs/issues) of this repository.
+Bugs can be reported in the [Sugar Labs bug
+tracker](https://bugs.sugarlabs.org/newticket?component=Turtleart) or
+in the [issues
+section](https://github.com/walterbender/turtleblocksjs/issues) of
+this repository.
 
 
 Advanced Features

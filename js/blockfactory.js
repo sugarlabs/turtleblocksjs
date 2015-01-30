@@ -449,8 +449,7 @@ function SVG() {
     this._startBoolean = function (xoffset, yoffset) {
         var svg = this.newPath(xoffset, yoffset);
         this._radius -= this._strokeWidth;
-        this.docks.append([this._x * this._scale,
-                           this._y * this._scale]);
+        this.docks.push([this._x * this._scale, this._y * this._scale]);
         svg += this._rarcTo(1, -1, 90, 0, 1);
         this._radius += this._strokeWidth;
         svg += this._rLineTo(this._strokeWidth, 0);
@@ -480,7 +479,7 @@ function SVG() {
         svg += this._closePath();
         this.calculateWH(true);
         svg += this.style();
-        return svg + this.footer();
+        return svg;
     }
 
     this.header = function (center) {
@@ -666,6 +665,13 @@ function SVG() {
         this.margins[1] = this._strokeWidth * this._scale;
         this.margins[2] = this._strokeWidth * this._scale;
         this.margins[3] = this._strokeWidth * this._scale;
+
+	// Add a block label
+	var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+	var ty = this._height / 2 + this._fontSize / 2;
+	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
+
+        svg += this.footer();
         return this.header(false) + svg;
     }
 
@@ -720,11 +726,18 @@ function SVG() {
         }
         this.margins[1] = this._strokeWidth * this._scale;
         this.margins[3] = this._strokeWidth * this._scale;
+
+	// Add a block label
+	var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+	var ty = this._height / 2 + this._fontSize / 2;
+	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
+
+        svg += this.footer();
         return this.header(false) + svg;
     }
 
     this.booleanCompare = function () {
-        // Booleans are in a class of their own
+        // Booleans are in a class of their own (greater than, less than, etc)
         this.resetMinMax();
         var yoffset = this._radius * 2 + 2 * this._innieY2 + this._innieSpacer + this._strokeWidth / 2.0 + this._expandY;
         var svg = this._startBoolean(this._strokeWidth / 2.0, yoffset);
@@ -752,6 +765,13 @@ function SVG() {
         this.margins[0] = (this._radius + this._strokeWidth) * this._scale;
         this.margins[1] = this._strokeWidth * this._scale;
         this.margins[2] = this._strokeWidth * this._scale;
+
+	// Add a block label
+	var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+	var ty = this._height / 2 + this._fontSize / 2;
+	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
+
+        svg += this.footer();
         return this.header(false) + svg;
     }
 

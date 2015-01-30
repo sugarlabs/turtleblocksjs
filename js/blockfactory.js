@@ -111,7 +111,7 @@ function SVG() {
     }
 
     this.setExpand = function (w, h, w2, h2) {
-	// TODO: make this an array
+        // TODO: make this an array
         this._expandX = w;
         this._expandY = h;
         this._expandX2 = w2;
@@ -137,7 +137,7 @@ function SVG() {
     }
 
     this.setInnies = function (innieArray) {
-	for (var i = 0; i < innieArray.length; i++) {
+        for (var i = 0; i < innieArray.length; i++) {
             this._innie.push(innieArray[i]);
         }
     }
@@ -270,31 +270,31 @@ function SVG() {
         this._y = y - fontSize;
         this._checkMinMax();
 
-	// writing-mode:lr';
+        // writing-mode:lr';
         switch (alignment) {
-	case 'left':
-	case 'start':
-	    var align = 'start';
+        case 'left':
+        case 'start':
+            var align = 'start';
             break;
-	case 'middle':
-	case 'center':
-	    var align = 'middle';
+        case 'middle':
+        case 'center':
+            var align = 'middle';
             break;
-	case 'right':
-	case 'end':
-	    var align = 'end';
+        case 'right':
+        case 'end':
+            var align = 'end';
             break;
-	}
-
-	var yy = y;
-	var tspans = string.split('\n');
-	var text = '<text style="font-size:' + fontSize + 'px;fill:#000000;font-family:Sans;text-anchor:' + align + '">';
-	for (var i = 0; i < tspans.length; i++) {
-	    text += '<tspan x="' + x + '" y="' + yy + '">' + tspans[i] + '</tspan>';
-	    yy += fontSize;
         }
-	text += '</text>';
-	return text;
+
+        var yy = y;
+        var tspans = string.split('\n');
+        var text = '<text style="font-size:' + fontSize + 'px;fill:#000000;font-family:Sans;text-anchor:' + align + '">';
+        for (var i = 0; i < tspans.length; i++) {
+            text += '<tspan x="' + x + '" y="' + yy + '">' + tspans[i] + '</tspan>';
+            yy += fontSize;
+        }
+        text += '</text>';
+        return text;
     }
 
     this.lineTo = function (x, y) {
@@ -382,7 +382,7 @@ function SVG() {
             if (signX * signY == -1) {
                 svg_str += this._rLineTo(0, signY * (r2 - this._strokeWidth));
             } else {
-		svg_str += this._rLineTo(signX * (r2 - this._strokeWidth), 0);
+                svg_str += this._rLineTo(signX * (r2 - this._strokeWidth), 0);
             }
         }
         return svg_str;
@@ -410,7 +410,7 @@ function SVG() {
 
     this._doSlot = function () {
         if (this._slot) {
-	    var x = this._x + this._slotX / 2.0;
+            var x = this._x + this._slotX / 2.0;
             this.docks.push([(x * this._scale),
                              (this._y * this._scale)]);
             return this._rLineTo(0, this._slotY) + this._rLineTo(this._slotX, 0) + this._rLineTo(0, -this._slotY);
@@ -432,7 +432,7 @@ function SVG() {
     }
 
     this._doTab = function () {
-	var x = this._x - this._slotX / 2.0;
+        var x = this._x - this._slotX / 2.0;
         this.docks.push([x * this._scale,
                          (this._y + this._strokeWidth) * this._scale]);
         return this._rLineTo(-this._strokeWidth, 0) + this._rLineTo(0, this._slotY) + this._rLineTo(-this._slotX + 2 * this._strokeWidth, 0) + this._rLineTo(0, -this._slotY) + this._rLineTo(-this._strokeWidth, 0);
@@ -459,7 +459,7 @@ function SVG() {
 
     this._doBoolean = function () {
         this.docks.push([(this._x - this._radius + this._strokeWidth) * this._scale,
-			 (this._y + this._radius) * this._scale]);
+                         (this._y + this._radius) * this._scale]);
         this.margins[2] = (this._x - this._radius - this._strokeWidth) * this._scale;
         var svg = this._rarcTo(-1, 1, 90, 0, 0) + this._rarcTo(1, 1, 90, 0, 0);
         return svg;
@@ -533,8 +533,8 @@ function SVG() {
         this.resetMinMax();
 
         var obj = this._calculateXY();
-	var x = obj[0];
-	var y = obj[1];
+        var x = obj[0];
+        var y = obj[1];
 
         this.margins[2] = 0;
         this.margins[3] = 0;
@@ -579,26 +579,26 @@ function SVG() {
         svg += this._closePath();
         svg += this.style();
 
-	// Add a block label
-	var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
-	var ty = this._height / 2 + this._fontSize / 2;
-	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
+        // Add a block label
+        var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+        var ty = this._height / 2 + this._fontSize / 2;
+        svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
 
-	// Add a label for each innie
+        // Add a label for each innie
         if (this._slot) {
             var di = 1;  // Skip the first dock since it is a slot.
         } else {
             var di = 0;
         }
-	var count = 0;
-	for (var i = 0; i < this._innie.length; i++) {
-	    if (this._innie[i]) {
-		ty = this.docks[di][1] - this._fontSize / 4;
-		svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_' + count);
-		count += 1;
-		di += 1;
-	    }
-	}
+        var count = 0;
+        for (var i = 0; i < this._innie.length; i++) {
+            if (this._innie[i]) {
+                ty = this.docks[di][1] - this._fontSize / 4;
+                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_' + count);
+                count += 1;
+                di += 1;
+            }
+        }
 
         svg += this.footer();
         return this.header(false) + svg;
@@ -624,10 +624,10 @@ function SVG() {
         this.calculateWH(true);
         svg += this.style();
 
-	// Add a block label
-	var tx = 2 * (this._innieX1 + this._innieX2) + 4 * this._strokeWidth;
-	var ty = this._height / 2 + this._fontSize / 2;
-	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'left', 'block_label');
+        // Add a block label
+        var tx = 2 * (this._innieX1 + this._innieX2) + 4 * this._strokeWidth;
+        var ty = this._height / 2 + this._fontSize / 2;
+        svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'left', 'block_label');
 
         svg += this.footer();
         return this.header(false) + svg;
@@ -666,10 +666,10 @@ function SVG() {
         this.margins[2] = this._strokeWidth * this._scale;
         this.margins[3] = this._strokeWidth * this._scale;
 
-	// Add a block label
-	var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
-	var ty = this._height / 2 + this._fontSize / 2;
-	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
+        // Add a block label
+        var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+        var ty = this._height / 2 + this._fontSize / 2;
+        svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
 
         svg += this.footer();
         return this.header(false) + svg;
@@ -727,10 +727,10 @@ function SVG() {
         this.margins[1] = this._strokeWidth * this._scale;
         this.margins[3] = this._strokeWidth * this._scale;
 
-	// Add a block label
-	var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
-	var ty = this._height / 2 + this._fontSize / 2;
-	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
+        // Add a block label
+        var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+        var ty = this._height / 2 + this._fontSize / 2;
+        svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
 
         svg += this.footer();
         return this.header(false) + svg;
@@ -766,10 +766,10 @@ function SVG() {
         this.margins[1] = this._strokeWidth * this._scale;
         this.margins[2] = this._strokeWidth * this._scale;
 
-	// Add a block label
-	var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
-	var ty = this._height / 2 + this._fontSize / 2;
-	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
+        // Add a block label
+        var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+        var ty = this._height / 2 + this._fontSize / 2;
+        svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
 
         svg += this.footer();
         return this.header(false) + svg;
@@ -819,7 +819,7 @@ function SVG() {
         svg += this._rLineTo(0, this._expandY);
         svg += this._iCorner(1, 1, 90, 0, 0, true, true);
         svg += this._doSlot();
-	this.docks.pop();  // We don't need this dock.
+        this.docks.pop();  // We don't need this dock.
         var xx = this._x;
         svg += this._rLineTo(this._radius, 0);
         if (this._secondClamp) {
@@ -830,7 +830,7 @@ function SVG() {
             svg += this._rLineTo(0, this._expandY2);
             svg += this._iCorner(1, 1, 90, 0, 0, true, true);
             svg += this._doSlot();
-	    this.docks.pop();  // We don't need this dock.
+            this.docks.pop();  // We don't need this dock.
             svg += this._rLineTo(this._radius, 0);
         }
         svg += this._rLineTo(0, this._innieY1 * 2);
@@ -851,28 +851,28 @@ function SVG() {
         this.calculateWH(true);
         svg += this.style();
 
-	// Add a block label
-	var tx = 4 * this._strokeWidth;
+        // Add a block label
+        var tx = 4 * this._strokeWidth;
         if (this._cap) {
             var ty = this._strokeWidth / 2.0 + this._radius + this._slotY * 3.0;
         } else {
             var ty = this._strokeWidth / 2.0 + this._radius;
         }
-	ty += 3.5 + this._fontSize * 2;
+        ty += 3.5 + this._fontSize * 2;
         if (this._bool) {
-	    ty += this._fontSize / 2;
+            ty += this._fontSize / 2;
         }
 
-	svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'left', 'block_label');
+        svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'left', 'block_label');
 
-	// Booleans get an extra label.
+        // Booleans get an extra label.
         if (this._bool) {
-	    var tx = this._width - this._radius;
-	    ty = this.docks[2][1] - this._fontSize + 3 * this._strokeWidth;
-	    svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_0');
+            var tx = this._width - this._radius;
+            ty = this.docks[2][1] - this._fontSize + 3 * this._strokeWidth;
+            svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_0');
             if (this._secondClamp) {
-		ty = this.docks[3][1] - this._fontSize + 3 * this._strokeWidth;
-		svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_1');
+                ty = this.docks[3][1] - this._fontSize + 3 * this._strokeWidth;
+                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_1');
             }
         }
 
@@ -880,7 +880,7 @@ function SVG() {
         return this.header(false) + svg;
     }
 
-    this.clampUntil = function () {
+    this.untilClamp = function () {
         // Until block is like clamp but docks are flipped
         this.resetMinMax();
         var x = this._strokeWidth / 2.0;
@@ -896,6 +896,7 @@ function SVG() {
         svg += this._rLineTo(this._expandX, 0);
         var xx = this._x;
         svg += this._corner(1, 1, 90, 0, 1, true, true, true);
+        svg += this._rLineTo(0, 2 * this._innieY1);
         svg += this._corner(-1, 1, 90, 0, 1, true, true, true);
         svg += this.lineTo(xx, this._y);
         svg += this._rLineTo(-this._expandX, 0);
@@ -904,6 +905,7 @@ function SVG() {
         svg += this._rLineTo(0, this._expandY);
         svg += this._iCorner(1, 1, 90, 0, 0, true, true);
         svg += this._doSlot();
+        this.docks.pop();  // We don't need this dock.
         svg += this._rLineTo(this._radius, 0);
         if (this._innie[0]) {
             svg += this._doInnie();
@@ -921,6 +923,31 @@ function SVG() {
         svg += this._closePath();
         this.calculateWH(true);
         svg += this.style();
+
+        // Add a block label
+        var tx = 4 * this._strokeWidth;
+        var ty = this.docks[2][1];
+
+        svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'left', 'block_label');
+
+        if (this._bool) {
+            // Booleans get an extra label.
+            var tx = this._width - this._radius;
+            ty = this.docks[1][1] - this._fontSize;
+            svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_0');
+        }
+
+        if (this._bool) {
+            // Swap bool and tab args so that the docking behaves like the
+            // while block.
+            var tx = this.docks[1][0];
+            var ty = this.docks[1][1];
+            this.docks[1][0] = this.docks[2][0];
+            this.docks[1][1] = this.docks[2][1];
+            this.docks[2][0] = tx;
+            this.docks[2][1] = ty;
+        }
+
         svg += this.footer();
         return this.header(false) + svg;
     }

@@ -609,7 +609,7 @@ define(function(require) {
             if (event.altKey) {
                 switch (event.keyCode) {
                     case 69: // 'E'
-                        logo.allClear();
+                        allClear();
                         break;
                     case 82: // 'R'
                         doFastButton();

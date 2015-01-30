@@ -465,61 +465,6 @@ define(function(require) {
             document.addEventListener('mousewheel', scrollEvent, false);
             document.addEventListener('DOMMouseScroll', scrollEvent, false);
 
-            // Set up event handler for stage mouse events
-            stage.on('stagemousedown', function(event) {
-                stageMouseDown = true;
-                stageX = event.stageX - 600;
-                stageY = 450 - event.stageY;
-
-                var x = event.stageX;
-                var y = event.stageY;
-
-                // Make sure scroll position is in sync with actual window scroll.
-                scrollX = window.pageXOffset;
-                scrollY = window.pageYOffset;
-
-                stage.on('stagemousemove', function(event) {
-                    stageX = event.stageX - 600;
-                    stageY = 450 - event.stageY;
-                    if (x < 55 || y < 55 || x > 1145 || y > 845) {
-                        // console.log('no dragging from the edges');
-                    } else if (stageMouseDown && !draggingContainer) {
-                        var dx = 0; // event.stageX - x;
-                        var dy = event.stageY - y;
-                        x = event.stageX;
-                        y = event.stageY;
-                        if (dx > 10) {
-                            dx = 10;
-                        } else if (dx < -10) {
-                            dx = -10;
-                        }
-                        if (dy > 10) {
-                            dy = 10;
-                        } else if (dy < -10) {
-                            dy = -10;
-                        }
-                        if (scrollX + dx < 0) {
-                            dx = 0;
-                        } else if (scrollX + dx > 1200) {
-                            dx = 0;
-                        }
-                        if (scrollY + dy < 0) {
-                            dy = 0;
-                        } else if (scrollY + dy > 900) {
-                            dy = 0;
-                        }
-                        // Let browser handle scrolling???
-                        // window.scrollBy(dx, dy);
-                        update = true;
-                    }
-                });
-            });
-
-            stage.on('stagemouseup', function(event) {
-                stageMouseDown = false;
-                // console.log('mouseUp (' + event.stageX + ', ' + event.stageY + ')');
-            });
-
             this.document.onkeydown = keyPressed;
         }
 
@@ -664,7 +609,7 @@ define(function(require) {
             if (event.altKey) {
                 switch (event.keyCode) {
                     case 69: // 'E'
-                        logo.allClear();
+                        allClear();
                         break;
                     case 82: // 'R'
                         doFastButton();

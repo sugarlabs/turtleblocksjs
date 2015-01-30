@@ -70,6 +70,7 @@ function SVG() {
         this._fill = "#00FF00";
         this._stroke = "#00A000";
         this.margins = [0, 0, 0, 0];
+        this.fontsize = 10;
     }
 
     // Attribute methods
@@ -246,6 +247,8 @@ function SVG() {
         }
     }
 
+    // SVG-related helper methods
+
     this.newPath = function (x, y) {
         this._x = x;
         this._y = y;
@@ -254,6 +257,40 @@ function SVG() {
 
     this._closePath = function () {
         return 'z" ';
+    }
+
+    this.text = function (x, y, fontsize, width, alignment, string) {
+        this._x = x;
+        this._y = y;
+        this._checkMinMax();
+        this._x = x + width;
+        this._y = y - fontsize;
+        this._checkMinMax();
+
+        switch (alignment) {
+	case 'left':
+	case 'start':
+	    var align = 'start;writing-mode:lr';
+            break;
+	case 'middle':
+	case 'center':
+	    var align = 'middle';
+            break;
+	case 'right':
+	case 'end':
+	    var align = 'end';
+            break;
+	}
+
+	var yy = y;
+	var tspans = string.split('\n');
+	var text = '<text style="font-size:' + fontsize + 'px;fill:#000000;font-family:Sans;text-anchor:' + align + '">';
+	for (var i = 0; i < tspans.length; i++) {
+	    text += '<tspan x="' + x + '" y="' + yy + '">' + tspans[i] + '</tspan>';
+	    yy += fontsize;
+        }
+	text += '</text>';
+	return text;
     }
 
     this.lineTo = function (x, y) {
@@ -369,7 +406,6 @@ function SVG() {
     this._doSlot = function () {
         if (this._slot) {
 	    var x = this._x + this._slotX / 2.0;
-	    console.log('slot ' + x);
             this.docks.push([(x * this._scale),
                              (this._y * this._scale)]);
             return this._rLineTo(0, this._slotY) + this._rLineTo(this._slotX, 0) + this._rLineTo(0, -this._slotY);
@@ -392,7 +428,6 @@ function SVG() {
 
     this._doTab = function () {
 	var x = this._x - this._slotX / 2.0;
-	console.log('tab ' + x);
         this.docks.push([x * this._scale,
                          (this._y + this.strokeWidth) * this._scale]);
         return this._rLineTo(-this.strokeWidth, 0) + this._rLineTo(0, this._slotY) + this._rLineTo(-this._slotX + 2 * this.strokeWidth, 0) + this._rLineTo(0, -this._slotY) + this._rLineTo(-this.strokeWidth, 0);
@@ -531,9 +566,32 @@ function SVG() {
             svg += this.lineTo(x, this._radius + this._innieY2 + this.strokeWidth / 2.0);
             svg += this._doOutie();
         }
+
         this.calculateWH(true);
         svg += this._closePath();
         svg += this.style();
+
+	// Add a block label
+	var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this.strokeWidth;
+	var ty = this._height / 2 + this.fontsize / 2;
+	svg += this.text(tx / this._scale, ty / this._scale, this.fontsize, this._width, 'right', 'block_label');
+
+	// Add a label for each innie
+        if (this._slot) {
+            var di = 1;  // Skip the first dock since it is a slot.
+        } else {
+            var di = 0;
+        }
+	var count = 0;
+	for (var i = 0; i < this._innie.length; i++) {
+	    if (this._innie[i]) {
+		ty = this.docks[di][1] - this.fontsize / 4;
+		svg += this.text(tx / this._scale, ty / this._scale, this.fontsize / 2, this._width, 'right', 'arg_label_' + count);
+		count += 1;
+		di += 1;
+	    }
+	}
+
         svg += this.footer();
         return this.header(false) + svg;
     }
@@ -900,17 +958,6 @@ function SVG() {
     /*
     // SVG helper methods
 
-    this.text = function (x, y, size, width, string) {        this._x = x
-        this._y = y
-        this._checkMinMax()
-        this._x = x + width
-        this._y = y - size
-        this._checkMinMax()
-        return "        %s%.1f%s%s%s%.1f%s%.1f%s%.1f%s%s%s%s%s" % (
-               "<text style=\"font-size:", size, "px;fill:", this._stroke,
-               ";font-family:Sans\">\n           <tspan x=\"", x, "\" y=\"", y,
-               "\" style=\"font-size:", size, "px;fill:", this._stroke, "\">",
-               string, "</tspan>\n        </text>\n")
 
     this._circle = function (r, cx, cy) {        return "%s%s%s%s%s%f%s%f%s%f%s" % \
             ("<circle style=\"fill:", this._fill, ";stroke:", this._stroke,

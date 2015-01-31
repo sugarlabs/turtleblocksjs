@@ -49,6 +49,7 @@ function SVG() {
         this._innieX2 = (9 - this._strokeWidth) / 2;
         this._innieY2 = (9 - this._strokeWidth) / 2;
         this._innieSpacer = 9;
+	this._padding = this._innieY1 + this._strokeWidth;
         this._slot = true;
         this._cap = false;
         this._tab = true;
@@ -442,7 +443,7 @@ function SVG() {
         if (flag) {
             return this._rLineTo(0, this._porchY + this._innieY1) + this._rLineTo(this._porchX - this._radius, 0) + this._corner(1, 1, 90, 0, 1, true, true, false);
         } else {
-            return this._rLineTo(0, this._porchY - this._innieY1 + this._strokeWidth) + this._rLineTo(this._porchX - this._radius, 0) + this._corner(1, 1, 90, 0, 1, true, true, false);
+            return this._rLineTo(0, this._porchY - this._padding) + this._rLineTo(this._porchX - this._radius, 0) + this._corner(1, 1, 90, 0, 1, true, true, false);
         }
     }
 
@@ -547,7 +548,7 @@ function SVG() {
         svg += this._corner(1, 1 , 90, 0, 1, true, true, false);
         if (this._innie.length == 0) {
 	    // To maintain standard block height
-            svg += this._rLineTo(0, this._innieY1 + this._strokeWidth);
+            svg += this._rLineTo(0, this._padding);
         } else {
             for (var i = 0; i < this._innie.length; i++) {
                 if (this._innie[i]) {
@@ -811,18 +812,21 @@ function SVG() {
         if (this._innie[0]) {
             svg += this._doInnie();
         } else if (this._bool) {
-            svg += this._rLineTo(0, 2 * this._innieY1 + 3 * this._strokeWidth);
+            svg += this._rLineTo(0, 2 * this._padding + this._strokeWidth);
             svg += this._doBoolean();
             this.margins[2] = (this._x - this._strokeWidth + 0.5) * this._scale;        } else {
-            svg += this._rLineTo(0, this._innieY1 + this._strokeWidth);
+            svg += this._rLineTo(0, this._padding);
             this.margins[2] = (this._x - this._strokeWidth + 0.5) * this._scale;
         }
 	for (var clamp = 0; clamp < this._clampCount; clamp++) {
+	    if (clamp > 0) {
+                svg += this._rLineTo(0, 3 * this._padding);
+            }
             svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
             svg += this.lineTo(xx, this._y);
             svg += this._doTab();
             svg += this._iCorner(-1, 1, 90, 0, 0, true, true);
-            svg += this._rLineTo(0, this._innieY1 + this._strokeWidth);
+            svg += this._rLineTo(0, this._padding);
             svg += this._rLineTo(0, this._expandY2);
             svg += this._iCorner(1, 1, 90, 0, 0, true, true);
             svg += this._doSlot();
@@ -869,11 +873,9 @@ function SVG() {
         // Booleans get an extra label.
         if (this._bool) {
             var tx = this._width - this._radius;
-            ty = this.docks[2][1] - this._fontSize + 3 * this._strokeWidth;
-            svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_0');
-            if (this._secondClamp) {
-                ty = this.docks[3][1] - this._fontSize + 3 * this._strokeWidth;
-                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_1');
+	    for (var clamp = 0; clamp < this._clampCount; clamp++) {
+                ty = this.docks[clamp + 2][1] - this._fontSize + 3 * this._strokeWidth;
+                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_' + clamp);
             }
         }
 

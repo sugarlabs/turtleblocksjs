@@ -3180,17 +3180,13 @@ function loadThumbnail(blocks, thisBlock, imagePath) {
         // FIXME: Determine these values computationally based on the size
         // of the media block.
         if (image.width > image.height) {
-            bitmap.scaleX = 108 / image.width;
-            bitmap.scaleY = 108 / image.width;
-            bitmap.scale = 108 / image.width;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
         } else {
-            bitmap.scaleX = 80 / image.height;
-            bitmap.scaleY = 80 / image.height;
-            bitmap.scale = 80 / image.height;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
         }
         blocks.blockList[thisBlock].container.addChild(bitmap);
-        bitmap.x = 18;
-        bitmap.y = 2;
+        bitmap.x = MEDIASAFEAREA[0];
+        bitmap.y = MEDIADAFEAREA[1];
 
         blocks.blockList[thisBlock].container.updateCache();
         blocks.refreshCanvas();

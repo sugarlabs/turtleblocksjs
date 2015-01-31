@@ -96,6 +96,8 @@ var VALUETEXTY = 26;
 // media block (fill_color, stroke_color, block_label)
 var MEDIABLOCK = '<svg xmlns="http://www.w3.org/2000/svg" width="152" height="84">' + '<path d="m 17,1 134,0 0,82 -134,0 0,-58 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="135" y="26" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
 
+var MEDIASAFEAREA = [40, 4, 108, 80];
+
 var MEDIABLOCKDOCKS = [
     [0, 20, 'mediaout']
 ];

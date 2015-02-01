@@ -70,8 +70,8 @@ function SVG() {
         this._arm = true;
         this._else = false;
         this._draw_inniess = true;
-        this._fill = "#00FF00";
-        this._stroke = "#00A000";
+        this._fill = 'fill_color';
+        this._stroke = 'stroke_color';
         this.margins = [0, 0, 0, 0];
         this._fontSize = 10;
     }
@@ -619,7 +619,7 @@ function SVG() {
         } else {
             var di = 0;
         }
-        var count = 0;
+        var count = 1;
         for (var i = 0; i < this._innies.length; i++) {
             if (this._innies[i]) {
                 ty = this.docks[di][1] - this._fontSize / 4;
@@ -668,10 +668,6 @@ function SVG() {
         var svg = this._startBoolean(this._strokeWidth / 2.0, this._radius * 5.5 + this._strokeWidth / 2.0 + this._innieY2 + this._inniesSpacer + this._expandY);
         svg += this._rLineTo(0, -this._radius * 3.5 - this._innieY2 - this._inniesSpacer - this._strokeWidth);
 
-        this._hide_x = this._x + this._radius + this._strokeWidth;
-        this._hide_y = this._y;
-        this._show_x = this._x + this._radius + this._strokeWidth;
-
         svg += this._rarcTo(1, -1, 90, 0, 1);
         svg += this._rLineTo(this._radius / 2.0 + this._expandX, 0);
         var xx = this._x;
@@ -679,13 +675,10 @@ function SVG() {
         svg += this._doBoolean();
         svg += this._rLineTo(0, this._radius * 1.5 + this._innieY2 + this._inniesSpacer);
 
-        svg += this._rLineTo(0, this._expandY);
+	svg += this._rLineTo(0, this._expandY);
 
         svg += this._doBoolean();
         svg += this._rLineTo(0, this._radius / 2.0);
-
-        this._show_y = this._y;
-        this._show_y -= (this._innieY1 + this._innieY2 + this._strokeWidth);
 
         svg += this.lineTo(xx, this._y);
         svg += this._rLineTo(-this._expandX, 0);
@@ -737,6 +730,12 @@ function SVG() {
         }
 
         svg += this.lineTo(xx, this._y);
+
+	// FIXME: Is this in the correct place?
+	if (this._expandY2 > 0) {
+	    svg += this._rLineTo(0, this._expandY2);
+	}
+
         if (this._innies[0]) {
             svg += this._rLineTo(-this._radius / 2.0 - this._expandX, 0);
             svg += this._rLineTo(0, -this._radius / 4.0);
@@ -745,6 +744,11 @@ function SVG() {
         } else {
             svg += this._rLineTo(-this._radius / 2.0 - this._expandX, 0);
         }
+
+	// FIXME: Is this in the correct place?
+	if (this._expandY2 > 0) {
+	    svg += this._rLineTo(0, -this._expandY2);
+	}
         svg += this._endBoolean(notnot);
         if (notnot) {
             this.margins[0] = (this._radius + this._strokeWidth + 0.5) * this._scale;
@@ -898,10 +902,12 @@ function SVG() {
 
         // Booleans get an extra label.
         if (this._bool) {
+	    var count = 1;
             var tx = this._width - this._radius;
 	    for (var clamp = 0; clamp < this._clampCount; clamp++) {
                 ty = this.docks[clamp + 2][1] - this._fontSize + 3 * this._strokeWidth;
-                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_' + clamp);
+                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_' + count);
+		count += 1;
             }
         }
 
@@ -963,7 +969,7 @@ function SVG() {
             // Booleans get an extra label.
             var tx = this._width - this._radius;
             ty = this.docks[1][1] - this._fontSize;
-            svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_0');
+            svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_1');
         }
 
         if (this._bool) {

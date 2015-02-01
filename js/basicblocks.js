@@ -567,7 +567,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     getColorPixel.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['getcolorpixel'] = getColorPixel;
     getColorPixel.parameterBlock();
-    getColorPixel.staticLabels.push('get pixel color');
+    getColorPixel.staticLabels.push('pixel color');
 
     // NOP blocks (used as placeholders when loaded blocks not found)
     var nopValueBlock = new ProtoBlock('nopValue');

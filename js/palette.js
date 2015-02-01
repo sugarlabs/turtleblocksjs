@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014,15 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -591,7 +591,7 @@ function Palette(palettes, name, color, bgcolor) {
                             block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
                             break;
                         default:
-                            var artwork = myBlock.artwork[0];
+                            var artwork = myBlock.artwork;
                             if (myBlock.staticLabels.length > 1) {
                                 top_label = _(myBlock.staticLabels[1]);
                             }
@@ -643,61 +643,21 @@ function Palette(palettes, name, color, bgcolor) {
                                 calculateBounds(palette, blk, modname);
                             }
                             image.src = myBlock.image;
-                        } else if (!palette.protoList[blk].expandable) {
-                            calculateBounds(palette, blk, modname);
-                        } else if (['if', 'while', 'until', 'ifthenelse'].indexOf(modname) != -1) {
-                            calculateBounds(palette, blk, modname);
                         } else {
-                            if (myBlock.style == 'doubleclamp') {
-                                middleExpandable(palette, modname, myBlock, blk)
-                            } else {
-                                finishExpandable(palette, modname, myBlock, blk);
-                            }
+                            calculateBounds(palette, blk, modname);
                         }
                     }
 
-                    makePaletteBitmap(palette, artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBitmap, [myBlock, blk]);
+		    artwork = artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize);
 
-                    function middleExpandable(palette, modname, myBlock, blk) {
-                        if (palette.protoList[blk].expandable) {
-                            middleArtwork = myBlock.artwork[1];
+		    if (myBlock.staticLabels.length == 1) {
+			myBlock.staticLabels.push('');
+		    }
+		    for (var i = 1; i < myBlock.staticLabels.length; i++) {
+			artwork = artwork.replace('arg_label_' + i, _(myBlock.staticLabels[i]));
+		    }
 
-                            function processMiddleBitmap(palette, modname, bitmap, middleOffset) {
-                                palette.protoContainers[modname].addChild(bitmap);
-                                bitmap.x = PALETTELEFTMARGIN;
-                                bitmap.y = middleOffset;
-                                bitmap.scaleX = PROTOBLOCKSCALE;
-                                bitmap.scaleY = PROTOBLOCKSCALE;
-                                bitmap.scale = PROTOBLOCKSCALE;
-
-                                finishExpandable(palette, modname, myBlock, blk)
-                            }
-
-                            var middleOffset = Math.floor(palette.protoList[blk].artworkOffset[1] * PROTOBLOCKSCALE);
-                            makePaletteBitmap(palette, middleArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('mid_label', mid_label).replace('font_size', myBlock.fontsize), modname, processMiddleBitmap, middleOffset);
-                        }
-                    }
-
-                    function finishExpandable(palette, modname, myBlock, blk) {
-                        if (palette.protoList[blk].expandable) {
-                            bottomArtwork = last(myBlock.artwork);
-
-                            function processBottomBitmap(palette, modname, bitmap, artworkOffset) {
-                                palette.protoContainers[modname].addChild(bitmap);
-                                bitmap.x = PALETTELEFTMARGIN;
-                                var middleOffset = Math.floor(palette.protoList[blk].artworkOffset[1] * PROTOBLOCKSCALE);
-                                bitmap.y = artworkOffset;
-                                bitmap.scaleX = PROTOBLOCKSCALE;
-                                bitmap.scaleY = PROTOBLOCKSCALE;
-                                bitmap.scale = PROTOBLOCKSCALE;
-
-                                calculateBounds(palette, blk, modname);
-                            }
-
-                            var artworkOffset = Math.floor(palette.protoList[blk].artworkOffset[2] * PROTOBLOCKSCALE);
-                            makePaletteBitmap(palette, bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize), modname, processBottomBitmap, artworkOffset);
-                        }
-                    }
+                    makePaletteBitmap(palette, artwork, modname, processBitmap, [myBlock, blk]);
                 }
 
                 makePaletteBitmap(this, PALETTEFILLER.replace(/filler_height/g, height.toString()), modname, processFiller, [blkname, blk]);

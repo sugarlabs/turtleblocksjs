@@ -214,6 +214,10 @@ TODO:
   * three-arg arg blocks
   * write SVG generator
   * user defined blocks (block/plugin factory)
+    - proper updating of labels
+    - proper resizing
+    - proper calculation of hit area
+    - artwork beautification?
   * try to detect difference between unknown flow and arg blocks
 
 KNOWN BUGS:

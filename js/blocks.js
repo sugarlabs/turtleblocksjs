@@ -95,28 +95,53 @@ function ProtoBlock(name) {
     // E.g., penup, pendown
     this.zeroArgBlock = function() {
         this.args = 0;
-        this.artwork.push(BASICBLOCK);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+	svg.setSlot(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBlock());
         this.artwork.push(null);
         this.artwork.push(null);
-        this.copyDock(BASICBLOCKDOCKS);
+	svg.docks[0].push('out');
+	svg.docks[1].push('in');
+        this.copyDock(svg.docks);
     }
 
     // E.g., break
     this.basicBlockNoFlow = function() {
         this.args = 0;
-        this.artwork.push(BASICBLOCKNOFLOW);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+	svg.setTail(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBlock());
         this.artwork.push(null);
         this.artwork.push(null);
-        this.copyDock(BASICBLOCKNOFLOWDOCKS);
+	svg.docks[0].push('out');
+        this.copyDock(svg.docks);
     }
 
     // E.g., forward, right
     this.oneArgBlock = function() {
         this.args = 1;
-        this.artwork.push(BASICBLOCK1ARG);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+	svg.setInnies([true]);
+	svg.setSlot(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBlock());
         this.artwork.push(null);
         this.artwork.push(null);
-        this.copyDock(BASICBLOCK1ARGDOCKS);
+	svg.docks[0].push('out');
+	svg.docks[1].push('numberin');
+	svg.docks[2].push('in');
+        this.copyDock(svg.docks);
     }
 
     // E.g., wait for
@@ -136,10 +161,21 @@ function ProtoBlock(name) {
         this.style = 'twoarg';
         this.size = 2;
         this.args = 2;
-        this.artwork.push(BASICBLOCK2ARG);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+	svg.setInnies([true, true]);
+	svg.setSlot(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBlock());
         this.artwork.push(null);
-        this.artwork.push(BASICBLOCK2ARGBOTTOM);
-        this.copyDock(BASICBLOCK2ARGDOCKS);
+        this.artwork.push(null);
+	svg.docks[0].push('out');
+	svg.docks[1].push('numberin');
+	svg.docks[2].push('numberin');
+	svg.docks[3].push('in');
+        this.copyDock(svg.docks);
     }
 
     // E.g., sqrt
@@ -147,10 +183,20 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
-        this.artwork.push(ARG1BLOCK);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setSlot(false);
+	svg.setInnies([true]);
+	svg.setOutie(true);
+	svg.setTab(false);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBlock());
         this.artwork.push(null);
         this.artwork.push(null);
-        this.copyDock(ARG1BLOCKDOCKS);
+	svg.docks[0].push('numberout');
+	svg.docks[1].push('numberin');
+        this.copyDock(svg.docks);
     }
 
     // E.g., box
@@ -158,10 +204,20 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
-        this.artwork.push(ARG1LABELBLOCK);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setSlot(false);
+	svg.setInnies([true]);
+	svg.setOutie(true);
+	svg.setTab(false);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBlock());
         this.artwork.push(null);
         this.artwork.push(null);
-        this.copyDock(ARG1BLOCKDOCKS);
+	svg.docks[0].push('numberout');
+	svg.docks[0].push('numberin');
+        this.copyDock(svg.docks);
     }
 
     // E.g., plus, minus, multiply, divide. These are also expandable.
@@ -171,10 +227,21 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 2;
-        this.artwork.push(ARG2BLOCK);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setSlot(false);
+	svg.setInnies([true, true]);
+	svg.setOutie(true);
+	svg.setTab(false);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBlock());
         this.artwork.push(null);
-        this.artwork.push(ARG2BLOCKBOTTOM);
-        this.copyDock(ARG2BLOCKDOCKS);
+        this.artwork.push(null);
+	svg.docks[0].push('numberout');
+	svg.docks[1].push('numberin');
+	svg.docks[2].push('numberin');
+        this.copyDock(svg.docks);
     }
 
     // E.g., number, string. Value blocks get DOM textareas associated
@@ -183,10 +250,17 @@ function ProtoBlock(name) {
         this.style = 'value';
         this.size = 1;
         this.args = 0;
-        this.artwork.push(VALUEBLOCK);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setExpand(60, 0, 0, 0);
+	svg.setOutie(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBox());
         this.artwork.push(null);
         this.artwork.push(null);
-        this.copyDock(VALUEBLOCKDOCKS);
+	svg.docks[0].push('numberout');
+        this.copyDock(svg.docks);
     }
 
     // E.g., media. Media blocks invoke a chooser and a thumbnail
@@ -196,24 +270,40 @@ function ProtoBlock(name) {
         this.style = 'value';
         this.size = 1;
         this.args = 0;
-        this.artwork.push(MEDIABLOCK);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setExpand(60, 23, 0, 0);
+	svg.setOutie(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBox());
         this.artwork.push(null);
         this.artwork.push(null);
-        this.copyDock(MEDIABLOCKDOCKS);
+	svg.docks[0].push('mediaout');
+        this.copyDock(svg.docks);
     }
 
     // E.g., start. A "child" flow is docked in an expandable clamp.
     // There are no additional arguments and no flow above or below.
-    this.flowClampZeroArgBlock = function() {
+    this.blockClampZeroArgBlock = function() {
         this.style = 'clamp';
         this.artworkOffset = [0, 0, 74];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-        this.artwork.push(FLOWCLAMP0ARG);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setCap(true);
+	svg.setTail(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicClamp());
         this.artwork.push(null);
-        this.artwork.push(FLOWCLAMPBOTTOM);
-        this.copyDock(FLOWCLAMP0ARGDOCKS);
+        this.artwork.push(null);
+	svg.docks[0].push('unavailable');
+	svg.docks[1].push('in');
+	svg.docks[2].push('unavailable');
+        this.copyDock(svg.docks);
     }
 
     // E.g., repeat. Unlike action, there is a flow above and below.
@@ -223,10 +313,21 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 2;
         this.args = 2;
-        this.artwork.push(FLOWCLAMP1ARG);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+	svg.setSlot(true);
+	svg.setInnies([true]);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicClamp());
         this.artwork.push(null);
-        this.artwork.push(FLOWCLAMPBOTTOM);
-        this.copyDock(FLOWCLAMP1ARGDOCKS);
+        this.artwork.push(null);
+	svg.docks[0].push('in');
+	svg.docks[1].push('numberin');
+	svg.docks[2].push('in');
+	svg.docks[3].push('out');
+        this.copyDock(svg.docks);
     }
 
     // E.g., if.  A "child" flow is docked in an expandable clamp. The
@@ -237,10 +338,21 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 3;
         this.args = 2;
-        this.artwork.push(FLOWCLAMPBOOLEANARG);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+        svg.setBoolean(true);
+	svg.setSlot(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicClamp());
         this.artwork.push(null);
-        this.artwork.push(FLOWCLAMPBOTTOM);
-        this.copyDock(FLOWCLAMPBOOLEANDOCKS);
+        this.artwork.push(null);
+	svg.docks[0].push('in');
+	svg.docks[1].push('booleanin');
+	svg.docks[2].push('in');
+	svg.docks[3].push('out');
+        this.copyDock(svg.docks);
     }
 
     // E.g., if then else.  Two "child" flows are docked in expandable
@@ -252,23 +364,45 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 4;
         this.args = 3;
-        this.artwork.push(FLOWCLAMPBOOLEANARG);
-        this.artwork.push(FLOWCLAMPMIDDLE);
-        this.artwork.push(FLOWCLAMPBOTTOM);
-        this.copyDock(DOUBLEFLOWCLAMPBOOLEANDOCKS);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+	svg.setSlot(true);
+        svg.setBoolean(true);
+	svg.setClampCount(2);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicClamp());
+        this.artwork.push(null);
+        this.artwork.push(null);
+	svg.docks[0].push('in');
+	svg.docks[1].push('booleanin');
+	svg.docks[2].push('in');
+	svg.docks[3].push('in');
+	svg.docks[4].push('out');
+        this.copyDock(svg.docks);
     }
 
     // E.g., forever. Unlike start, there is flow above and below.
-    this.blockClampZeroArgBlock = function() {
+    this.flowClampZeroArgBlock = function() {
         this.style = 'clamp';
         this.artworkOffset = [0, 0, 86];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-        this.artwork.push(ACTIONCLAMP0ARG);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+	svg.setSlot(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicClamp());
         this.artwork.push(null);
-        this.artwork.push(ACTIONCLAMPBOTTOM);
-        this.copyDock(ACTIONCLAMP0ARGDOCKS);
+        this.artwork.push(null);
+	svg.docks[0].push('in');
+	svg.docks[1].push('in');
+	svg.docks[2].push('out');
+        this.copyDock(svg.docks);
     }
 
     // E.g., action. A "child" flow is docked in an expandable clamp.
@@ -279,10 +413,21 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-        this.artwork.push(ACTIONCLAMP1ARG);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setCap(true);
+	svg.setTail(true);
+	svg.setInnies([true]);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicClamp());
         this.artwork.push(null);
-        this.artwork.push(ACTIONCLAMPBOTTOM);
-        this.copyDock(ACTIONCLAMP1ARGDOCKS);
+        this.artwork.push(null);
+	svg.docks[0].push('unavailable');
+	svg.docks[1].push('anyin');
+	svg.docks[2].push('in');
+	svg.docks[3].push('unavailable');
+        this.copyDock(svg.docks);
     }
 
     // E.g., mouse button.
@@ -2627,6 +2772,9 @@ function Block(protoblock, blocks) {
     this.removeFiller = function(clamp) {
         // When we remove filler, we cache it in case it is added back
         // in later.
+	// FIXME
+        return;
+
         var thisBlock = this.blocks.blockList.indexOf(this);
         var fillerBitmap = this.fillerBitmaps[clamp].pop();
 
@@ -2653,6 +2801,9 @@ function Block(protoblock, blocks) {
 
     this.addFiller = function(clamp, c) {
         // Add filler to an expandable block.
+	// FIXME
+        return;
+
         var thisBlock = this.blocks.blockList.indexOf(this);
         var offset = this.protoblock.artworkOffset[clamp] + c * this.protoblock.fillerOffset;
         if (clamp == BOT) {
@@ -2797,12 +2948,15 @@ function Block(protoblock, blocks) {
             me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
             loadEventHandlers(blocks, me);
             me.blocks.refreshCanvas();
+	    me.finishImageLoad();
+
+	    /* 
             if (doubleExpandable.indexOf(me.name) != -1) {
                 me.middleImageLoad();
             } else {
                 me.finishImageLoad();
             }
-
+            */
         }
 
         makeBitmap(this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
@@ -2905,8 +3059,12 @@ function Block(protoblock, blocks) {
             this.container.updateCache();
         }
 
+	/* 
         if (this.isExpandableBlock()) {
             // Expandable blocks also have some extra parts.
+	    // FIXME
+            return;
+
             bottomArtwork = this.protoblock.artwork[BOT];
             var artworkOffset = this.protoblock.artworkOffset[BOT];
 
@@ -2943,13 +3101,16 @@ function Block(protoblock, blocks) {
 
             makeBitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, this);
         } else {
+            */
             this.loadComplete = true;
             if (this.postProcess != null) {
                 this.postProcess(this.postProcessArg);
             }
             this.blocks.refreshCanvas();
             this.blocks.cleanupAfterLoad();
+	/*
         }
+        */
 
         // Start blocks and Action blocks can collapse, so add an
         // event handler

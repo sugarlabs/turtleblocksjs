@@ -18,6 +18,7 @@ var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
     'media', 'sensors', 'extras', 'myblocks'
 ];
 
+
 function maxPaletteHeight(menuSize) {
     // Palettes don't start at the top of the screen and the last
     // block in a palette cannot start at the bottom of the screen,
@@ -490,8 +491,8 @@ function Palette(palettes, name, color, bgcolor) {
             function calculateHeight(palette, blkname) {
                 // We use a filler for the menu background
                 var height = STANDARDBLOCKHEIGHT * Math.ceil((last(palette.protoList[blk].docks)[1] - 1) / STANDARDBLOCKHEIGHT);
-		// Need to identify multiple arg blocks.
-		if (palette.protoList[blk].docks.length > 2 && last(palette.protoList[blk].docks)[2] != 'in' && palette.protoList[blk].docks[0][2] != 'booleanout') {
+                // Need to identify multiple arg blocks.
+                if (palette.protoList[blk].docks.length > 2 && last(palette.protoList[blk].docks)[2] != 'in' && palette.protoList[blk].docks[0][2] != 'booleanout') {
                     height += STANDARDBLOCKHEIGHT;
                 } else if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
                     // Some blocks are not shown full-size on the palette.
@@ -544,7 +545,6 @@ function Palette(palettes, name, color, bgcolor) {
                         case 'greater':
                         case 'equal':
                             block_label = _(myBlock.staticLabels[0]);
-			    console.log(block_label);
                             break;
                         default:
                             if (blkname != modname) {
@@ -572,33 +572,33 @@ function Palette(palettes, name, color, bgcolor) {
                     switch (myBlock.name) {
                         case 'box':
                             // so the label will fit
-			    var svg = new SVG();
-   			    svg.init();
-			    svg.setScale(2);
-			    svg.setExpand(60, 0, 0, 0);
-			    svg.setOutie(true);
-			    var artwork = svg.basicBox();
+                            var svg = new SVG();
+                            svg.init();
+                            svg.setScale(2);
+                            svg.setExpand(60, 0, 0, 0);
+                            svg.setOutie(true);
+                            var artwork = svg.basicBox();
                             break;
                         case 'if':
                         case 'until':
                         case 'while':
                         case 'waitFor':
                             // so the block will fit
-			var svg = new SVG();
-			svg.init();
-			svg.setScale(2);
-			svg.setTab(true);
-			svg.setSlot(true);
-			var artwork = svg.basicBlock();
+                            var svg = new SVG();
+                            svg.init();
+                            svg.setScale(2);
+                            svg.setTab(true);
+                            svg.setSlot(true);
+                            var artwork = svg.basicBlock();
                             break;
                         case 'ifthenelse':
                             // so the block will fit
-			var svg = new SVG();
-			svg.init();
-			svg.setScale(2);
-			svg.setTab(true);
-			svg.setSlot(true);
-			var artwork = svg.basicBlock();
+                            var svg = new SVG();
+                            svg.init();
+                            svg.setScale(2);
+                            svg.setTab(true);
+                            svg.setSlot(true);
+                            var artwork = svg.basicBlock();
                             block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
                             break;
                         default:
@@ -648,14 +648,14 @@ function Palette(palettes, name, color, bgcolor) {
                         }
                     }
 
-		    artwork = artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label);
+                    artwork = artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label);
 
-		    if (myBlock.staticLabels.length == 1) {
-			myBlock.staticLabels.push('');
-		    }
-		    for (var i = 1; i < myBlock.staticLabels.length; i++) {
-			artwork = artwork.replace('arg_label_' + i, _(myBlock.staticLabels[i]));
-		    }
+                    if (myBlock.staticLabels.length == 1) {
+                        myBlock.staticLabels.push('');
+                    }
+                    for (var i = 1; i < myBlock.staticLabels.length; i++) {
+                        artwork = artwork.replace('arg_label_' + i, _(myBlock.staticLabels[i]));
+                    }
 
                     makePaletteBitmap(palette, artwork, modname, processBitmap, [myBlock, blk]);
                 }

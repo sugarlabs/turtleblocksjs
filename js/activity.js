@@ -35,6 +35,7 @@ define(function(require) {
     require('activity/samplesviewer');
     require('activity/samples');
     require('activity/basicblocks');
+    require('activity/blockfactory');
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {

@@ -27,8 +27,6 @@ var LONGPRESSTIME = 2000;
 
 // Block bitmaps
 var TOP = 0;
-var MID = 1;
-var BOT = 2;
 
 // There are three "classes" defined in this file: ProtoBlocks,
 // Blocks, and Block. Protoblocks are the prototypes from which Blocks
@@ -102,8 +100,6 @@ function ProtoBlock(name) {
 	svg.setSlot(true);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBlock());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('out');
 	svg.docks[1].push('in');
         this.copyDock(svg.docks);
@@ -119,8 +115,6 @@ function ProtoBlock(name) {
 	svg.setTail(true);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBlock());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('out');
         this.copyDock(svg.docks);
     }
@@ -136,8 +130,6 @@ function ProtoBlock(name) {
 	svg.setSlot(true);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBlock());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('out');
 	svg.docks[1].push('numberin');
 	svg.docks[2].push('in');
@@ -148,9 +140,21 @@ function ProtoBlock(name) {
     this.oneBooleanArgBlock = function() {
         this.args = 1;
         this.size = 3;
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setTab(true);
+	svg.setSlot(true);
+        svg.setBoolean(true);
+	svg.setClampCount(0);
+	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(0, 0, 0, 0);
+	this.artwork.push(svg.basicClamp());
+	svg.docks[0].push('in');
+	svg.docks[1].push('booleanin');
+	svg.docks[2].push('out');
+        this.copyDock(svg.docks);
         this.artwork.push(BASICBLOCK1BOOLEANARG);
-        this.artwork.push(null);
-        this.artwork.push(null);
         this.copyDock(BASICBLOCK1BOOLEANARGDOCKS);
     }
 
@@ -169,8 +173,6 @@ function ProtoBlock(name) {
 	svg.setSlot(true);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBlock());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('out');
 	svg.docks[1].push('numberin');
 	svg.docks[2].push('numberin');
@@ -192,8 +194,6 @@ function ProtoBlock(name) {
 	svg.setTab(false);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBlock());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('numberout');
 	svg.docks[1].push('numberin');
         this.copyDock(svg.docks);
@@ -213,8 +213,6 @@ function ProtoBlock(name) {
 	svg.setTab(false);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBlock());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('numberout');
 	svg.docks[0].push('numberin');
         this.copyDock(svg.docks);
@@ -236,8 +234,6 @@ function ProtoBlock(name) {
 	svg.setTab(false);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBlock());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('numberout');
 	svg.docks[1].push('numberin');
 	svg.docks[2].push('numberin');
@@ -257,8 +253,6 @@ function ProtoBlock(name) {
 	svg.setOutie(true);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBox());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('numberout');
         this.copyDock(svg.docks);
     }
@@ -277,8 +271,6 @@ function ProtoBlock(name) {
 	svg.setOutie(true);
 	svg.setColors(['fill_color', 'stroke_color']);
 	this.artwork.push(svg.basicBox());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('mediaout');
         this.copyDock(svg.docks);
     }
@@ -297,9 +289,8 @@ function ProtoBlock(name) {
 	svg.setCap(true);
 	svg.setTail(true);
 	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(20, 0, 0, 0);
 	this.artwork.push(svg.basicClamp());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('unavailable');
 	svg.docks[1].push('in');
 	svg.docks[2].push('unavailable');
@@ -320,9 +311,8 @@ function ProtoBlock(name) {
 	svg.setSlot(true);
 	svg.setInnies([true]);
 	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(20, 0, 0, 0);
 	this.artwork.push(svg.basicClamp());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('in');
 	svg.docks[1].push('numberin');
 	svg.docks[2].push('in');
@@ -345,9 +335,8 @@ function ProtoBlock(name) {
         svg.setBoolean(true);
 	svg.setSlot(true);
 	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(0, 0, 0, 0);
 	this.artwork.push(svg.basicClamp());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('in');
 	svg.docks[1].push('booleanin');
 	svg.docks[2].push('in');
@@ -372,9 +361,8 @@ function ProtoBlock(name) {
         svg.setBoolean(true);
 	svg.setClampCount(2);
 	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(0, 0, 0, 0);
 	this.artwork.push(svg.basicClamp());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('in');
 	svg.docks[1].push('booleanin');
 	svg.docks[2].push('in');
@@ -396,9 +384,8 @@ function ProtoBlock(name) {
 	svg.setTab(true);
 	svg.setSlot(true);
 	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(10, 0, 0, 0);
 	this.artwork.push(svg.basicClamp());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('in');
 	svg.docks[1].push('in');
 	svg.docks[2].push('out');
@@ -420,9 +407,8 @@ function ProtoBlock(name) {
 	svg.setTail(true);
 	svg.setInnies([true]);
 	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(10, 0, 0, 0);
 	this.artwork.push(svg.basicClamp());
-        this.artwork.push(null);
-        this.artwork.push(null);
 	svg.docks[0].push('unavailable');
 	svg.docks[1].push('anyin');
 	svg.docks[2].push('in');
@@ -435,10 +421,14 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 0;
-        this.artwork.push(BOOLEAN0ARG);
-        this.artwork.push(null);
-        this.artwork.push(null);
-        this.copyDock(BOOLEAN0ARGDOCKS);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(0, 0, 0, 0);
+	this.artwork.push(svg.booleanNot(true));
+	svg.docks[0].push('booleanout');
+        this.copyDock(svg.docks);
     }
 
     // E.g., not
@@ -446,10 +436,15 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 1;
-        this.artwork.push(BOOLEAN1BOOLEANARG);
-        this.artwork.push(null);
-        this.artwork.push(null);
-        this.copyDock(BOOLEAN1BOOLEANARGDOCKS);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(20, 0, 0, 0);
+	this.artwork.push(svg.booleanNot(false));
+	svg.docks[0].push('booleanout');
+	svg.docks[1].push('booleanin');
+        this.copyDock(svg.docks);
     }
 
     // E.g., and
@@ -457,10 +452,16 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 3;
         this.args = 2;
-        this.artwork.push(BOOLEAN2BOOLEANARGS);
-        this.artwork.push(null);
-        this.artwork.push(null);
-        this.copyDock(BOOLEAN2BOOLEANARGSDOCKS);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(20, 0, 0, 0);
+	this.artwork.push(svg.booleanAndOr());
+	svg.docks[0].push('booleanout');
+	svg.docks[1].push('booleanin');
+	svg.docks[2].push('booleanin');
+        this.copyDock(svg.docks);
     }
 
     this.booleanOneArgBlock = function() {
@@ -468,8 +469,6 @@ function ProtoBlock(name) {
         this.size = 1;
         this.args = 1;
         this.artwork.push(BOOLEAN1ARG);
-        this.artwork.push(null);
-        this.artwork.push(null);
         this.copyDock(BOOLEAN1ARGDOCKS);
     }
 
@@ -480,10 +479,16 @@ function ProtoBlock(name) {
         this.size = 2;
         this.args = 2;
         this.expandable = true;
-        this.artwork.push(BOOLEAN2ARG);
-        this.artwork.push(null);
-        this.artwork.push(BOOLEAN2ARGBOTTOM);
-        this.copyDock(BOOLEAN2ARGDOCKS);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setColors(['fill_color', 'stroke_color']);
+	svg.setExpand(10, 0, 0, 0);
+	this.artwork.push(svg.booleanCompare());
+	svg.docks[0].push('booleanout');
+	svg.docks[1].push('numberin');
+	svg.docks[2].push('numberin');
+        this.copyDock(svg.docks);
     }
 
     // E.g., color, shade, pensize, ...
@@ -492,10 +497,15 @@ function ProtoBlock(name) {
         this.parameter = true;
         this.size = 1;
         this.args = 0;
-        this.artwork.push(VALUEBLOCK);
-        this.artwork.push(null);
-        this.artwork.push(null);
-        this.copyDock(VALUEBLOCKDOCKS);
+	var svg = new SVG();
+	svg.init();
+	svg.setScale(2);
+	svg.setExpand(70, 0, 0, 0);
+	svg.setOutie(true);
+	svg.setColors(['fill_color', 'stroke_color']);
+	this.artwork.push(svg.basicBox());
+	svg.docks[0].push('numberout');
+        this.copyDock(svg.docks);
     }
 }
 
@@ -733,6 +743,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
 
             function adjustFillerAndDocks(myBlock, clamp, delta) {
+		// FIXME
+		return;
                 myBlock.fillerCount[clamp] += delta;
                 var offset = delta * myBlock.protoblock.fillerOffset;
                 if (clamp == BOT) {
@@ -740,12 +752,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 } else { // MID
                     myBlock.docks[3][1] += offset;
                     myBlock.docks[4][1] += offset;
-                    for (var filler in myBlock.fillerBitmaps[BOT]) {
-                        myBlock.fillerBitmaps[BOT][filler].y += offset;
-                    }
-                    for (var filler in myBlock.highlightFillerBitmaps[BOT]) {
-                        myBlock.highlightFillerBitmaps[BOT][filler].y += offset;
-                    }
                 }
             }
 
@@ -769,12 +775,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         var docksChanged = false;
+	// FIXME
+	/* 
         if (myBlock.isDoubleClampBlock()) {
             docksChanged = clampAdjuster(this, blk, myBlock, MID);
         }
         if (clampAdjuster(this, blk, myBlock, BOT)) {
             docksChanged = true;
         }
+        */
 
         // Finally, since the block size has changed and consequently
         // the dock positions have changed, we need to make sure that
@@ -797,6 +806,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // function.
     this.adjustExpandableTwoArgBlock = function(blk) {
         var myBlock = this.blockList[blk];
+	// FIXME
+	return;
 
         // First we determine the size of the first argument.
         var c = myBlock.connections[1];
@@ -2696,22 +2707,6 @@ function Block(protoblock, blocks) {
             this.bitmap[TOP].visible = false;
             this.highlightBitmap[TOP].visible = true;
             if (this.isExpandableBlock()) {
-                for (var i = 0; i < this.fillerBitmaps[MID].length; i++) {
-                    this.fillerBitmaps[MID][i].visible = false;
-                    this.highlightFillerBitmaps[MID][i].visible = true;
-                }
-                for (var i = 0; i < this.fillerBitmaps[BOT].length; i++) {
-                    this.fillerBitmaps[BOT][i].visible = false;
-                    this.highlightFillerBitmaps[BOT][i].visible = true;
-                }
-                if (this.bitmap[MID] != null) {
-                    this.bitmap[MID].visible = false;
-                    this.highlightBitmap[MID].visible = true;
-                }
-                if (this.bitmap[BOT] != null) {
-                    this.bitmap[BOT].visible = false;
-                    this.highlightBitmap[BOT].visible = true;
-                }
                 if (['start', 'action'].indexOf(this.name) != -1) {
                     // There could be a race condition when making a
                     // new action block.
@@ -2742,22 +2737,6 @@ function Block(protoblock, blocks) {
             this.bitmap[TOP].visible = true;
             this.highlightBitmap[TOP].visible = false;
             if (this.isExpandableBlock()) {
-                for (var i = 0; i < this.fillerBitmaps[MID].length; i++) {
-                    this.fillerBitmaps[MID][i].visible = true;
-                    this.highlightFillerBitmaps[MID][i].visible = false;
-                }
-                for (var i = 0; i < this.fillerBitmaps[BOT].length; i++) {
-                    this.fillerBitmaps[BOT][i].visible = true;
-                    this.highlightFillerBitmaps[BOT][i].visible = false;
-                }
-                if (this.bitmap[MID] != null) {
-                    this.bitmap[MID].visible = true;
-                    this.highlightBitmap[MID].visible = false;
-                }
-                if (this.bitmap[BOT] != null) {
-                    this.bitmap[BOT].visible = true;
-                    this.highlightBitmap[BOT].visible = false;
-                }
                 if (['start', 'action'].indexOf(this.name) != -1) {
                     this.highlightCollapseBlockBitmap.visible = false;
                     this.collapseBlockBitmap.visible = false;
@@ -2770,24 +2749,10 @@ function Block(protoblock, blocks) {
     }
 
     this.removeFiller = function(clamp) {
-        // When we remove filler, we cache it in case it is added back
-        // in later.
 	// FIXME
         return;
 
         var thisBlock = this.blocks.blockList.indexOf(this);
-        var fillerBitmap = this.fillerBitmaps[clamp].pop();
-
-        this.container.removeChild(fillerBitmap);
-        this.bitmapCache[fillerBitmap.name] = fillerBitmap;
-
-        if (clamp == MID) {
-            this.bitmap[MID].y -= this.protoblock.fillerOffset;
-            this.highlightBitmap[MID].y = this.bitmap[MID].y;
-        }
-        this.bitmap[BOT].y -= this.protoblock.fillerOffset;
-        this.highlightBitmap[BOT].y = this.bitmap[BOT].y;
-
         try {
             // FIXME: There is a potential race conditon such that the
             // container cache is not yet ready.
@@ -2805,10 +2770,6 @@ function Block(protoblock, blocks) {
         return;
 
         var thisBlock = this.blocks.blockList.indexOf(this);
-        var offset = this.protoblock.artworkOffset[clamp] + c * this.protoblock.fillerOffset;
-        if (clamp == BOT) {
-            offset += this.fillerCount[MID] * this.protoblock.fillerOffset;
-        }
 
         function processBitmap(name, bitmap, args) {
             me = args[0];
@@ -2851,14 +2812,6 @@ function Block(protoblock, blocks) {
 
             // Hide highlight to start.
             bitmap.visible = false;
-
-            // Move the block parts.
-            if (clamp == MID) {
-                me.bitmap[MID].y += me.protoblock.fillerOffset;
-                me.highlightBitmap[MID].y = me.bitmap[MID].y;
-            }
-            me.bitmap[BOT].y += me.protoblock.fillerOffset;
-            me.highlightBitmap[BOT].y = me.bitmap[BOT].y;
 
             try {
                 // There is a potential race conditon such that the
@@ -2949,59 +2902,9 @@ function Block(protoblock, blocks) {
             loadEventHandlers(blocks, me);
             me.blocks.refreshCanvas();
 	    me.finishImageLoad();
-
-	    /* 
-            if (doubleExpandable.indexOf(me.name) != -1) {
-                me.middleImageLoad();
-            } else {
-                me.finishImageLoad();
-            }
-            */
         }
 
         makeBitmap(this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
-    }
-
-    this.middleImageLoad = function() {
-        // Load a block image and create any extra parts. Image
-        // components are loaded asynchronously so most the work
-        // happens in callbacks.
-
-        var thisBlock = this.blocks.blockList.indexOf(this);
-
-        // We need a label for most blocks.
-        // TODO: use Text exclusively for all block labels.
-        this.text = new createjs.Text('', '20px Arial', '#000000');
-
-        // Get the block labels from the protoblock
-        var block_label = this.protoblock.staticLabels[2];
-
-        var middleOffset = this.protoblock.artworkOffset[MID];
-
-        // Create the bitmap for the block.
-        function processBitmap(name, bitmap, me) {
-            me.bitmap[MID] = bitmap;
-            me.container.addChild(me.bitmap[MID]);
-            me.bitmap[MID].x = me.bitmap[TOP].x;
-            me.bitmap[MID].y = me.bitmap[TOP].y + middleOffset;
-            me.bitmap[MID].name = 'bmp_middle_' + thisBlock;
-            me.blocks.refreshCanvas();
-        }
-
-        makeBitmap(this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), this.name, processBitmap, this);
-
-        // Create the highlight bitmap for the block.
-        function processHighlightBitmap(name, bitmap, me) {
-            me.highlightBitmap[MID] = bitmap;
-            me.container.addChild(me.highlightBitmap[MID]);
-            me.highlightBitmap[MID].x = me.bitmap[TOP].x;
-            me.highlightBitmap[MID].y = me.bitmap[TOP].y + middleOffset;
-            me.highlightBitmap[MID].name = 'bmp_middle_highlight_' + thisBlock;
-            me.highlightBitmap[MID].visible = false;
-            me.finishImageLoad();
-        }
-
-        makeBitmap(this.protoblock.artwork[MID].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('mid_label', block_label).replace('top_label', '').replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
     }
 
     this.finishImageLoad = function() {
@@ -3059,58 +2962,12 @@ function Block(protoblock, blocks) {
             this.container.updateCache();
         }
 
-	/* 
-        if (this.isExpandableBlock()) {
-            // Expandable blocks also have some extra parts.
-	    // FIXME
-            return;
-
-            bottomArtwork = this.protoblock.artwork[BOT];
-            var artworkOffset = this.protoblock.artworkOffset[BOT];
-
-            function processBottomBitmap(name, bitmap, me) {
-                me.bitmap[BOT] = bitmap;
-                me.container.addChild(me.bitmap[BOT]);
-                me.bitmap[BOT].x = me.bitmap[TOP].x;
-                me.bitmap[BOT].y = me.bitmap[TOP].y + artworkOffset;
-                me.bitmap[BOT].name = 'bmp_' + thisBlock + '_bottom';
-                me.blocks.refreshCanvas();
-            }
-
-            makeBitmap(bottomArtwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processBottomBitmap, this);
-
-            function processHighlightBottomBitmap(name, bitmap, me) {
-                me.highlightBitmap[BOT] = bitmap;
-                me.container.addChild(me.highlightBitmap[BOT]);
-                me.highlightBitmap[BOT].x = me.bitmap[TOP].x;
-                me.highlightBitmap[BOT].y = me.bitmap[TOP].y + artworkOffset;
-                me.highlightBitmap[BOT].name = 'bmp_' + thisBlock + '_highlight_bottom';
-                me.highlightBitmap[BOT].visible = false;
-
-                // We added a bottom block, so we need to recache.
-                me.container.uncache();
-                me.bounds = me.container.getBounds();
-                me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
-                me.loadComplete = true;
-                if (me.postProcess != null) {
-                    me.postProcess(me.postProcessArg);
-                }
-                me.blocks.refreshCanvas();
-                me.blocks.cleanupAfterLoad();
-            }
-
-            makeBitmap(bottomArtwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('bottom_label', bottom_label), '', processHighlightBottomBitmap, this);
-        } else {
-            */
-            this.loadComplete = true;
-            if (this.postProcess != null) {
-                this.postProcess(this.postProcessArg);
-            }
-            this.blocks.refreshCanvas();
-            this.blocks.cleanupAfterLoad();
-	/*
+        this.loadComplete = true;
+        if (this.postProcess != null) {
+            this.postProcess(this.postProcessArg);
         }
-        */
+        this.blocks.refreshCanvas();
+        this.blocks.cleanupAfterLoad();
 
         // Start blocks and Action blocks can collapse, so add an
         // event handler
@@ -3538,16 +3395,6 @@ function collapseToggle(blocks, myBlock) {
             if (myBlock.highlightBitmap[b] != null) {
                 myBlock.highlightBitmap[b].visible = collapse;
             }
-        }
-
-        for (var i = 0; i < myBlock.fillerBitmaps[MID].length; i++) {
-            myBlock.fillerBitmaps[MID][i].visible = false;
-            myBlock.highlightFillerBitmaps[MID][i].visible = collapse;
-        }
-
-        for (var i = 0; i < myBlock.fillerBitmaps[BOT].length; i++) {
-            myBlock.fillerBitmaps[BOT][i].visible = false;
-            myBlock.highlightFillerBitmaps[BOT][i].visible = collapse;
         }
 
         if (myBlock.name != 'start') {

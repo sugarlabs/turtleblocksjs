@@ -13,7 +13,7 @@ require(['activity/utils']);
 
 var paletteBlocks = null;
 var PROTOBLOCKSCALE = 1.0;
-var PALETTELEFTMARGIN = 20;
+var PALETTELEFTMARGIN = 10;
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
     'media', 'sensors', 'extras', 'myblocks'
 ];
@@ -489,12 +489,13 @@ function Palette(palettes, name, color, bgcolor) {
 
             function calculateHeight(palette, blkname) {
                 // We use a filler for the menu background
-                var height = STANDARDBLOCKHEIGHT * Math.ceil(last(palette.protoList[blk].docks)[1] / STANDARDBLOCKHEIGHT);
-                // Some blocks are not shown full-size on the palette.
-                if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
+                var height = STANDARDBLOCKHEIGHT * Math.ceil((last(palette.protoList[blk].docks)[1] - 1) / STANDARDBLOCKHEIGHT);
+		// Need to identify multiple arg blocks.
+		if (palette.protoList[blk].docks.length > 2 && last(palette.protoList[blk].docks)[2] != 'in') {
+                    height += STANDARDBLOCKHEIGHT;
+                } else if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
+                    // Some blocks are not shown full-size on the palette.
                     height = STANDARDBLOCKHEIGHT;
-                } else if (['action', 'start'].indexOf(blkname) != -1) {
-                    height += 2 * STANDARDBLOCKHEIGHT;
                 } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
                     height += STANDARDBLOCKHEIGHT;
                 } else if (palette.protoList[blk].image) {
@@ -531,9 +532,6 @@ function Palette(palettes, name, color, bgcolor) {
                     }
 
                     var block_label = '';
-                    var top_label = '';
-                    var mid_label = '';
-                    var bottom_label = '';
 
                     switch (myBlock.name) {
                         case 'text':
@@ -567,42 +565,43 @@ function Palette(palettes, name, color, bgcolor) {
 
                     // Don't display the label on image blocks.
                     if (myBlock.image) {
-                        mid_label = '';
                         block_label = '';
-                        top_label = '';
-                        bottom_label = '';
                     }
 
                     switch (myBlock.name) {
                         case 'box':
                             // so the label will fit
-                            var artwork = VALUEBLOCK;
+			    var svg = new SVG();
+   			    svg.init();
+			    svg.setScale(2);
+			    svg.setExpand(60, 0, 0, 0);
+			    svg.setOutie(true);
+			    var artwork = svg.basicBox();
                             break;
                         case 'if':
                         case 'until':
                         case 'while':
                         case 'waitFor':
                             // so the block will fit
-                            var artwork = BASICBLOCK;
+			var svg = new SVG();
+			svg.init();
+			svg.setScale(2);
+			svg.setTab(true);
+			svg.setSlot(true);
+			var artwork = svg.basicBlock();
                             break;
                         case 'ifthenelse':
                             // so the block will fit
-                            var artwork = BASICBLOCK;
+			var svg = new SVG();
+			svg.init();
+			svg.setScale(2);
+			svg.setTab(true);
+			svg.setSlot(true);
+			var artwork = svg.basicBlock();
                             block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
                             break;
                         default:
                             var artwork = myBlock.artwork;
-                            if (myBlock.staticLabels.length > 1) {
-                                top_label = _(myBlock.staticLabels[1]);
-                            }
-                            if (myBlock.staticLabels.length > 2) {
-                                bottom_label = _(myBlock.staticLabels[2]);
-                            }
-                            if (myBlock.staticLabels.length == 3 && myBlock.style == 'doubleclamp') {
-                                mid_label = _(myBlock.staticLabels[2]);
-                                top_label = _(myBlock.staticLabels[1]);
-                                block_label = _(myBlock.staticLabels[0]);
-                            }
                             break;
                     }
 
@@ -648,7 +647,7 @@ function Palette(palettes, name, color, bgcolor) {
                         }
                     }
 
-		    artwork = artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('bottom_label', bottom_label).replace('font_size', myBlock.fontsize);
+		    artwork = artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label);
 
 		    if (myBlock.staticLabels.length == 1) {
 			myBlock.staticLabels.push('');

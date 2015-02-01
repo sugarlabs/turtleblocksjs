@@ -93,10 +93,6 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
         this.macroDict = obj;
     }
 
-    this.setDragging = function(setDraggingFlag) {
-        this.setDraggingFlag = setDraggingFlag;
-    }
-
     this.menuScrollEvent = function(direction, scrollSpeed) {
         var keys = Object.keys(this.buttons);
 
@@ -300,19 +296,17 @@ function loadPaletteButtonHandler(palettes, name) {
 
     // A palette button opens or closes a palette.
     palettes.buttons[name].on('mouseover', function(event) {
-        palettes.setDraggingFlag(true);
         palettes.highlightBitmaps[name].visible = true;
         palettes.refreshCanvas();
     });
 
     palettes.buttons[name].on('pressup', function(event) {
-        palettes.setDraggingFlag(false);
         palettes.highlightBitmaps[name].visible = false;
         palettes.refreshCanvas();
     });
 
     palettes.buttons[name].on('mouseout', function(event) {
-        palettes.setDraggingFlag(false);
+
         palettes.highlightBitmaps[name].visible = false;
         palettes.refreshCanvas();
     });
@@ -911,7 +905,6 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
         palette.protoContainers[blkname].on('pressmove', function(event) {
             if (mode === MODEDRAG) {
                 moved = true;
-                palette.palettes.setDraggingFlag(true);
                 palette.draggingProtoBlock = true;
                 palette.protoContainers[blkname].x = Math.round(event.stageX / palette.palettes.scale) - PALETTELEFTMARGIN;
                 palette.protoContainers[blkname].y = Math.round(event.stageY / palette.palettes.scale);
@@ -939,7 +932,6 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
         if (moved) {
             moved = false;
             palette.draggingProtoBlock = false;
-            palette.palettes.setDraggingFlag(false);
             if (palette.name == 'myblocks') {
                 // If we are on the myblocks palette, it is a macro.
                 var macroName = blkname.replace('macro_', '');
@@ -981,10 +973,6 @@ function loadPaletteMenuHandler(palette) {
     var trashcan = palette.palettes.trashcan;
     var paletteWidth = MENUWIDTH + (palette.columns * 160);
 
-    palette.menuContainer.on('mouseover', function(event) {
-        palette.palettes.setDraggingFlag(true);
-    });
-
     palette.menuContainer.on('click', function(event) {
         if (Math.round(event.stageX / palette.palettes.scale) > palette.menuContainer.x + paletteWidth - STANDARDBLOCKHEIGHT) {
             palette.hide();
@@ -1017,7 +1005,6 @@ function loadPaletteMenuHandler(palette) {
 
     palette.menuContainer.on('mousedown', function(event) {
         trashcan.show();
-        palette.palettes.setDraggingFlag(true);
         // Move them all?
         var offset = {
             x: palette.menuContainer.x - Math.round(event.stageX / palette.palettes.scale),
@@ -1025,7 +1012,6 @@ function loadPaletteMenuHandler(palette) {
         };
 
         palette.menuContainer.on('pressup', function(event) {
-            palette.palettes.setDraggingFlag(false);
             if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
                 palette.hide();
                 palette.palettes.refreshCanvas();
@@ -1040,7 +1026,6 @@ function loadPaletteMenuHandler(palette) {
         });
 
         palette.menuContainer.on('mouseout', function(event) {
-            palette.palettes.setDraggingFlag(false);
             if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
                 palette.hide();
                 palette.palettes.refreshCanvas();
@@ -1071,7 +1056,6 @@ function loadPaletteMenuHandler(palette) {
     });
 
     palette.menuContainer.on('mouseout', function(event) {
-        palette.palettes.setDraggingFlag(false);
     });
 }
 

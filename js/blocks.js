@@ -703,6 +703,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // repeat, forever, if, etc.
     this.adjustExpandableClampBlock = function(blk) {
         var myBlock = this.blockList[blk];
+	console.log('adjustExpandableClampBlock: ' + myBlock.name);
 
         // Make sure it is the proper type of expandable block.
         if (myBlock.isArgBlock() || myBlock.isTwoArgBlock()) {
@@ -710,62 +711,50 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         function clampAdjuster(me, blk, myBlock, clamp) {
+	    console.log('clampAdjuster: ' + myBlock.name + ' clamp: ' + clamp);
             // First we need to count up the number of (and size of) the
             // blocks inside the clamp; The child flow is the
             // second-to-last argument.
-            if (clamp == BOT) {
+            if (clamp == 0) {
                 var c = myBlock.connections.length - 2;
-            } else { // MID
+            } else {   // e.g., Bottom clamp in if-then-else
                 var c = myBlock.connections.length - 3;
             }
+	    console.log(c);
             me.sizeCounter = 0;
             var childFlowSize = 1;
             if (c > 0 && myBlock.connections[c] != null) {
                 childFlowSize = Math.max(me.getStackSize(myBlock.connections[c]), 1);
             }
 
-            function adjustFillerAndDocks(myBlock, clamp, delta) {
-                // FIXME
-                return;
-                myBlock.fillerCount[clamp] += delta;
-                var offset = delta * myBlock.protoblock.fillerOffset;
-                if (clamp == BOT) {
-                    last(myBlock.docks)[1] += offset;
-                } else { // MID
-                    myBlock.docks[3][1] += offset;
-                    myBlock.docks[4][1] += offset;
-                }
-            }
-
-            // Next, we adjust the clamp size to match the size of the
-            // child flow.
+	    console.log('childFlowSize: ' + childFlowSize + ' ' + myBlock.clampCount[clamp]);
+            // Adjust the clamp size to match the size of the child
+            // flow.
             var docksChanged = false;
-            while (childFlowSize < myBlock.fillerCount[clamp] + 1) {
+            /*
+            while (childFlowSize < myBlock.clampCount[clamp] + 1) {
                 // Remove filler.
-                adjustFillerAndDocks(myBlock, clamp, -1);
-                myBlock.removeFiller(clamp);
+                myBlock.removeSlot(clamp);
                 docksChanged = true;
             }
-            while (childFlowSize > myBlock.fillerCount[clamp] + 1) {
+            */
+            while (childFlowSize > myBlock.clampCount[clamp] + 1) {
                 // Add filler.
-                var c = myBlock.fillerCount[clamp];
-                adjustFillerAndDocks(myBlock, clamp, 1);
-                myBlock.addFiller(clamp, c);
+		console.log(childFlowSize + ' > ' + myBlock.clampCount[clamp]);
+		console.log('calling addSlot ' + clamp);
+                myBlock.addSlot(clamp);
                 docksChanged = true;
             }
             return docksChanged;
         }
 
         var docksChanged = false;
-        // FIXME
-        /* 
         if (myBlock.isDoubleClampBlock()) {
-            docksChanged = clampAdjuster(this, blk, myBlock, MID);
+            docksChanged = clampAdjuster(this, blk, myBlock, 1);
         }
-        if (clampAdjuster(this, blk, myBlock, BOT)) {
+        if (clampAdjuster(this, blk, myBlock, 0)) {
             docksChanged = true;
         }
-        */
 
         // Finally, since the block size has changed and consequently
         // the dock positions have changed, we need to make sure that
@@ -2642,6 +2631,8 @@ function Block(protoblock, blocks) {
     this.size = 1; // Proto size is copied here.
     this.docks = []; // Proto dock is copied here.
     this.connections = []; // Blocks that cannot be run on their own.
+    // Keep track of clamp count for blocks with clamps
+    this.clampCount = [1, 1];
 
     // Some blocks have some post process after they are first loaded.
     this.postProcess = null;
@@ -2714,7 +2705,7 @@ function Block(protoblock, blocks) {
         this.blocks.refreshCanvas();
     }
 
-    this.removeFiller = function(clamp) {
+    this.removeSlot = function(clamp) {
         // FIXME
         return;
 
@@ -2730,83 +2721,66 @@ function Block(protoblock, blocks) {
         }
     }
 
-    this.addFiller = function(clamp, c) {
+    this.addSlot = function(clamp) {
         // Add filler to an expandable block.
-        // FIXME
-        return;
-
+	console.log('adding slot');
         var thisBlock = this.blocks.blockList.indexOf(this);
 
-        function processBitmap(name, bitmap, args) {
-            me = args[0];
-            offset = args[1];
-            clamp = args[2];
-            me.fillerBitmaps[clamp].push(bitmap);
+        function processBitmap(name, bitmap, arg) {
+            me = arg;
             me.container.addChild(bitmap);
-            bitmap.x = me.bitmap.x;
-            bitmap.y = me.bitmap.y + offset;
-            bitmap.name = name;
+            me.container.uncache();
+            me.bounds = me.container.getBounds();
+            me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
             me.blocks.refreshCanvas();
+	    // FIXME: process highlight
         }
 
-        // We generate a unique name to use as the key in the cache.
-        var name = 'bmp_' + thisBlock + '_filler_' + clamp + '_' + c;
-        if (!(name in this.bitmapCache)) {
-            if (['less', 'greater', 'equal'].indexOf(this.name) != -1) {
-                var artwork = BOOLEAN2ARGFILLER;
-            } else if (this.isArgBlock()) {
-                var artwork = ARG2BLOCKFILLER;
+	console.log(this.name + ' ' + clamp + ' ' + this.clampCount[clamp]);
+	this.clampCount[clamp] += 1;
+	switch (this.name) {
+        case 'start':
+	    this.protoblock.blockClampZeroArgBlock(this.clampCount[clamp]);
+	    this.protoblock.staticLabels.push('start');
+            break;
+        case 'repeat':
+	    this.protoblock.flowClampOneArgBlock(this.clampCount[clamp]);
+	    this.protoblock.staticLabels.push('repeat');
+            break;
+        case 'action':
+            break;
+        case 'forever':
+            break;
+        case 'if':
+        case 'while':
+        case 'until':
+            break;
+        case 'ifelse':
+            break;
+        case 'less':
+        case 'greater':
+        case 'equal':
+	    break;
+        default:
+            if (this.isArgBlock()) {
+                // var artwork = ARG2BLOCKFILLER;
             } else if (this.isTwoArgBlock()) {
-                var artwork = BASICBLOCK2ARGFILLER;
-            } else {
-                var artwork = CLAMPFILLER;
+                // var artwork = BASICBLOCK2ARGFILLER;
             }
-            makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]), name, processBitmap, [this, offset, clamp]);
-        } else {
-            processBitmap(name, this.bitmapCache[name], [this, offset, clamp]);
+            break;
         }
 
-        function processHighlightBitmap(name, bitmap, args) {
-            me = args[0];
-            offset = args[1];
-            clamp = args[2];
-            me.highlightFillerBitmaps[clamp].push(bitmap);
-            me.container.addChild(bitmap);
-            bitmap.x = me.bitmap.x;
-            bitmap.y = me.bitmap.y + offset;
-            bitmap.name = name;
-
-            // Hide highlight to start.
-            bitmap.visible = false;
-
-            try {
-                // There is a potential race conditon such that the
-                // container cache is not yet ready.
-                me.container.uncache();
-                me.bounds = me.container.getBounds();
-                me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
-            } catch (e) {
-                console.log(e);
-            }
-            me.blocks.refreshCanvas();
+        // Get the block labels from the protoblock
+        var block_label = '';
+        if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
+            block_label = _(this.protoblock.staticLabels[0]);
         }
-
-        // And the same for the highlight blocks
-        var name = 'bmp_' + thisBlock + '_highlight_filler_' + clamp + '_' + c;
-        if (this.bitmapCache[name] == undefined) {
-            if (['less', 'greater', 'equal'].indexOf(this.name) != -1) {
-                var artwork = BOOLEAN2ARGFILLER;
-            } else if (this.isArgBlock()) {
-                var artwork = ARG2BLOCKFILLER;
-            } else if (this.isTwoArgBlock()) {
-                var artwork = BASICBLOCK2ARGFILLER;
-            } else {
-                var artwork = CLAMPFILLER;
-            }
-            makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]), name, processHighlightBitmap, [this, offset, clamp]);
-        } else {
-            processHighlightBitmap(name, this.bitmapCache[name], [this, offset, clamp]);
+        while (this.protoblock.staticLabels.length < this.protoblock.args + 1) {
+            this.protoblock.staticLabels.push('');
         }
+        var artwork = this.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label);
+
+        makeBitmap(artwork, name, processBitmap, this);
     }
 
     this.imageLoad = function() {

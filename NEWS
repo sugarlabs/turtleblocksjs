@@ -200,6 +200,8 @@
   * change color of stroke when highlighting blocks
   * added image, and palette-stroke-highlight args to rtps files.
   * combine various run modes (switch between fast, slow, and step on the fly)
+  * fix size of palette highlight (Sam Parkinson)
+  * fix value box label in DOM (Sam Parkinson)
 
 TODO:
   * save errors

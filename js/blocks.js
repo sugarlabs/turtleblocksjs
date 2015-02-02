@@ -3446,7 +3446,7 @@ function loadEventHandlers(blocks, myBlock) {
                 if (myBlock.name == 'text') {
                     labelElem.innerHTML = '<textarea id="' + 'textLabel' +
                         '" style="position: absolute; ' +
-                        '-webkit-user-select: text;" ' +
+                        '-webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" ' +
                         'class="text", ' +
                         'onkeypress="if(event.keyCode==13){return false;}"' +
                         'cols="8", rows="1", maxlength="256">' +
@@ -3457,13 +3457,14 @@ function loadEventHandlers(blocks, myBlock) {
                         function() {
                             labelChanged(myBlock);
                         });
-                    myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
-                    myBlock.label.style.top = Math.round(y * blocks.scale + canvasTop) + 'px';
+                    myBlock.label.style.left = Math.round((x + blocks.stage.x) * blocks.scale + canvasLeft) + 'px';
+                    myBlock.label.style.top = Math.round((y + blocks.stage.y) * blocks.scale + canvasTop) + 'px';
                     myBlock.label.style.display = '';
+                    myBlock.label.focus();
                 } else {
                     labelElem.innerHTML = '<textarea id="' + 'numberLabel' +
                         '" style="position: absolute; ' +
-                        '-webkit-user-select: text;" ' +
+                        '-webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" ' +
                         'class="number", ' +
                         'onkeypress="if(event.keyCode==13){return false;}"' +
                         'cols="8", rows="1", maxlength="8">' +
@@ -3474,9 +3475,10 @@ function loadEventHandlers(blocks, myBlock) {
                         function() {
                             labelChanged(myBlock);
                         });
-                    myBlock.label.style.left = Math.round(x * blocks.scale + canvasLeft) + 'px';
-                    myBlock.label.style.top = Math.round(y * blocks.scale + canvasTop) + 'px';
+                    myBlock.label.style.left = Math.round((x + blocks.stage.x) * blocks.scale + canvasLeft) + 'px';
+                    myBlock.label.style.top = Math.round((y + blocks.stage.y) * blocks.scale + canvasTop) + 'px';
                     myBlock.label.style.display = '';
+                    myBlock.label.focus();
                 }
             } else {
                 if (!blocks.inLongPress) {

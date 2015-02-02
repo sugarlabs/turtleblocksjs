@@ -139,6 +139,10 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
                 var me = this;
 
                 function processHighlightButton(me, name, bitmap, extras) {
+                    if (me.cellSize != me.originalSize) {
+                        bitmap.scaleX = me.cellSize / me.originalSize;
+                        bitmap.scaleY = me.cellSize / me.originalSize;
+                    }
                     me.highlightBitmaps[name] = bitmap;
                     me.buttons[name].addChild(me.highlightBitmaps[name]);
                     me.highlightBitmaps[name].visible = false;

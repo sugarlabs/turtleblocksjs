@@ -256,7 +256,7 @@ function ProtoBlock(name) {
 
     // E.g., start. A "child" flow is docked in an expandable clamp.
     // There are no additional arguments and no flow above or below.
-    this.blockClampZeroArgBlock = function() {
+    this.blockClampZeroArgBlock = function(slots) {
         this.style = 'clamp';
         this.expandable = true;
         this.size = 2;
@@ -267,6 +267,11 @@ function ProtoBlock(name) {
         svg.setCap(true);
         svg.setTail(true);
         svg.setExpand(20, 0, 0, 0);
+	if (slots) {
+	    svg.setClampSlots(0, slots);
+	} else {
+	    svg.setClampSlots(0, 1);
+	}
         this.artwork = svg.basicClamp();
         svg.docks[0].push('unavailable');
         svg.docks[1].push('in');
@@ -275,7 +280,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., repeat. Unlike action, there is a flow above and below.
-    this.flowClampOneArgBlock = function() {
+    this.flowClampOneArgBlock = function(slots) {
         this.style = 'clamp';
         this.expandable = true;
         this.size = 2;
@@ -287,6 +292,11 @@ function ProtoBlock(name) {
         svg.setSlot(true);
         svg.setInnies([true]);
         svg.setExpand(20, 0, 0, 0);
+	if (slots) {
+	    svg.setClampSlots(0, slots);
+	} else {
+	    svg.setClampSlots(0, 1);
+	}
         this.artwork = svg.basicClamp();
         svg.docks[0].push('in');
         svg.docks[1].push('numberin');
@@ -297,7 +307,7 @@ function ProtoBlock(name) {
 
     // E.g., if.  A "child" flow is docked in an expandable clamp. The
     // additional argument is a boolean. There is flow above and below.
-    this.flowClampBooleanArgBlock = function() {
+    this.flowClampBooleanArgBlock = function(slots) {
         this.style = 'clamp';
         this.expandable = true;
         this.size = 3;
@@ -309,6 +319,11 @@ function ProtoBlock(name) {
         svg.setBoolean(true);
         svg.setSlot(true);
         svg.setExpand(0, 0, 0, 0);
+	if (slots) {
+	    svg.setClampSlots(0, slots);
+	} else {
+	    svg.setClampSlots(0, 1);
+	}
         this.artwork = svg.basicClamp();
         svg.docks[0].push('in');
         svg.docks[1].push('booleanin');
@@ -320,7 +335,7 @@ function ProtoBlock(name) {
     // E.g., if then else.  Two "child" flows are docked in expandable
     // clamps. The additional argument is a boolean. There is flow
     // above and below.
-    this.doubleFlowClampBooleanArgBlock = function() {
+    this.doubleFlowClampBooleanArgBlock = function(topSlots, bottomSlots) {
         this.style = 'doubleclamp';
         this.expandable = true;
         this.size = 4;
@@ -332,6 +347,16 @@ function ProtoBlock(name) {
         svg.setSlot(true);
         svg.setBoolean(true);
         svg.setClampCount(2);
+	if (topSlots) {
+	    svg.setClampSlots(0, topSlots);
+	} else {
+	    svg.setClampSlots(0, 1);
+	}
+	if (bottomSlots) {
+	    svg.setClampSlots(1, bottomSlots);
+	} else {
+	    svg.setClampSlots(1, 1);
+	}
         svg.setExpand(0, 0, 0, 0);
         this.artwork = svg.basicClamp();
         svg.docks[0].push('in');
@@ -343,7 +368,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., forever. Unlike start, there is flow above and below.
-    this.flowClampZeroArgBlock = function() {
+    this.flowClampZeroArgBlock = function(slots) {
         this.style = 'clamp';
         this.expandable = true;
         this.size = 2;
@@ -354,6 +379,11 @@ function ProtoBlock(name) {
         svg.setTab(true);
         svg.setSlot(true);
         svg.setExpand(10, 0, 0, 0);
+	if (slots) {
+	    svg.setClampSlots(0, slots);
+	} else {
+	    svg.setClampSlots(0, 1);
+	}
         this.artwork = svg.basicClamp();
         svg.docks[0].push('in');
         svg.docks[1].push('in');
@@ -363,7 +393,7 @@ function ProtoBlock(name) {
 
     // E.g., action. A "child" flow is docked in an expandable clamp.
     // The additional argument is a name. Again, no flow above or below.
-    this.blockClampOneArgBlock = function() {
+    this.blockClampOneArgBlock = function(slots) {
         this.style = 'clamp';
         this.expandable = true;
         this.size = 2;
@@ -375,6 +405,11 @@ function ProtoBlock(name) {
         svg.setTail(true);
         svg.setInnies([true]);
         svg.setExpand(10, 0, 0, 0);
+	if (slots) {
+	    svg.setClampSlots(0, slots);
+	} else {
+	    svg.setClampSlots(0, 1);
+	}
         this.artwork = svg.basicClamp();
         svg.docks[0].push('unavailable');
         svg.docks[1].push('anyin');
@@ -2782,7 +2817,7 @@ function Block(protoblock, blocks) {
 
         // We need a label for most blocks.
         // TODO: use Text exclusively for all block labels.
-        this.text = new createjs.Text('', '20px Arial', '#000000');
+        this.text = new createjs.Text('', '20px Sans', '#000000');
         var doubleExpandable = this.blocks.doubleExpandable;
 
         // Get the block labels from the protoblock
@@ -2914,7 +2949,7 @@ function Block(protoblock, blocks) {
                 me.blocks.refreshCanvas();
             }
 
-            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', _(block_label)).replace('font_size', this.protoblock.fontsize), '', processCollapseBitmap, this);
+            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', _(block_label)), '', processCollapseBitmap, this);
 
             function processHighlightCollapseBitmap(name, bitmap, me) {
                 me.highlightCollapseBlockBitmap = bitmap;
@@ -2923,12 +2958,12 @@ function Block(protoblock, blocks) {
                 me.blocks.refreshCanvas();
 
                 if (me.name == 'action') {
-                    me.collapseText = new createjs.Text('action', '20px Arial', '#000000');
+                    me.collapseText = new createjs.Text('action', '20px Sans', '#000000');
                     me.collapseText.x = ACTIONTEXTX;
                     me.collapseText.y = ACTIONTEXTY;
                     me.collapseText.textAlign = 'right';
                 } else {
-                    me.collapseText = new createjs.Text('start', '20px Arial', '#000000');
+                    me.collapseText = new createjs.Text('start', '20px Sans', '#000000');
                     me.collapseText.x = STARTTEXTX;
                     me.collapseText.y = ACTIONTEXTY;
                     me.collapseText.textAlign = 'left';
@@ -2966,7 +3001,7 @@ function Block(protoblock, blocks) {
                 }
             }
 
-            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processHighlightCollapseBitmap, this);
+            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label), '', processHighlightCollapseBitmap, this);
         }
     }
 

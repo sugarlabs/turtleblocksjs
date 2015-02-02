@@ -644,7 +644,7 @@ function Palette(palettes, name, color, bgcolor) {
 
                     artwork = artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label);
 
-                    if (myBlock.staticLabels.length == 1) {
+                    while (myBlock.staticLabels.length < myBlock.args + 1) {
                         myBlock.staticLabels.push('');
                     }
                     for (var i = 1; i < myBlock.staticLabels.length; i++) {

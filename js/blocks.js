@@ -2790,8 +2790,7 @@ function Block(protoblock, blocks) {
         if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
             block_label = _(this.protoblock.staticLabels[0]);
         }
-        if (this.protoblock.staticLabels.length == 1) {
-            // Add a blank arg label.
+        while (this.protoblock.staticLabels.length < this.protoblock.args + 1) {
             this.protoblock.staticLabels.push('');
         }
 

@@ -25,9 +25,6 @@ var VIDEOVALUE = '##__VIDEO__##';
 // Length of a long touch
 var LONGPRESSTIME = 2000;
 
-// Block bitmaps
-var TOP = 0;
-
 // There are three "classes" defined in this file: ProtoBlocks,
 // Blocks, and Block. Protoblocks are the prototypes from which Blocks
 // are created; Blocks is the list of all blocks; and Block is a block
@@ -45,10 +42,6 @@ function ProtoBlock(name) {
     // Does the block expand (or collapse) when other blocks are
     // attached? e.g., start, repeat...
     this.expandable = false;
-    // When a block is expandable, its artwork is drawn with a separate
-    // SVGs. artworkOffset is the y position of the SVGs relative to
-    // the top of the block.
-    this.artworkOffset = [];
     // When a block is expanded, filler blocks are inserted. Filler
     // offset is the height of the filler blocks.
     this.fillerOffset = STANDARDBLOCKHEIGHT;
@@ -69,7 +62,7 @@ function ProtoBlock(name) {
     // Default fontsize used for static labels.
     this.fontsize = '18px';
     // The SVG template used to generate the block graphic.
-    this.artwork = [];
+    this.artwork = null;
     // Docks define where blocks connect and which connections are
     // valid.
     this.docks = [];
@@ -93,46 +86,43 @@ function ProtoBlock(name) {
     // E.g., penup, pendown
     this.zeroArgBlock = function() {
         this.args = 0;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
-	svg.setSlot(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBlock());
-	svg.docks[0].push('out');
-	svg.docks[1].push('in');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
+        svg.setSlot(true);
+        this.artwork = svg.basicBlock();
+        svg.docks[0].push('out');
+        svg.docks[1].push('in');
         this.copyDock(svg.docks);
     }
 
     // E.g., break
     this.basicBlockNoFlow = function() {
         this.args = 0;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
-	svg.setTail(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBlock());
-	svg.docks[0].push('out');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
+        svg.setTail(true);
+        this.artwork = svg.basicBlock();
+        svg.docks[0].push('out');
         this.copyDock(svg.docks);
     }
 
     // E.g., forward, right
     this.oneArgBlock = function() {
         this.args = 1;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
-	svg.setInnies([true]);
-	svg.setSlot(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBlock());
-	svg.docks[0].push('out');
-	svg.docks[1].push('numberin');
-	svg.docks[2].push('in');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
+        svg.setInnies([true]);
+        svg.setSlot(true);
+        this.artwork = svg.basicBlock();
+        svg.docks[0].push('out');
+        svg.docks[1].push('numberin');
+        svg.docks[2].push('in');
         this.copyDock(svg.docks);
     }
 
@@ -140,43 +130,38 @@ function ProtoBlock(name) {
     this.oneBooleanArgBlock = function() {
         this.args = 1;
         this.size = 3;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
-	svg.setSlot(true);
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
+        svg.setSlot(true);
         svg.setBoolean(true);
-	svg.setClampCount(0);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(0, 0, 0, 0);
-	this.artwork.push(svg.basicClamp());
-	svg.docks[0].push('in');
-	svg.docks[1].push('booleanin');
-	svg.docks[2].push('out');
+        svg.setClampCount(0);
+        svg.setExpand(0, 0, 0, 0);
+        this.artwork = svg.basicClamp();
+        svg.docks[0].push('in');
+        svg.docks[1].push('booleanin');
+        svg.docks[2].push('out');
         this.copyDock(svg.docks);
-        this.artwork.push(BASICBLOCK1BOOLEANARG);
-        this.copyDock(BASICBLOCK1BOOLEANARGDOCKS);
     }
 
     // E.g., setxy. These are expandable.
     this.twoArgBlock = function() {
-        this.artworkOffset = [0, 0, 49];
         this.expandable = true;
         this.style = 'twoarg';
         this.size = 2;
         this.args = 2;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
-	svg.setInnies([true, true]);
-	svg.setSlot(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBlock());
-	svg.docks[0].push('out');
-	svg.docks[1].push('numberin');
-	svg.docks[2].push('numberin');
-	svg.docks[3].push('in');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
+        svg.setInnies([true, true]);
+        svg.setSlot(true);
+        this.artwork = svg.basicBlock();
+        svg.docks[0].push('out');
+        svg.docks[1].push('numberin');
+        svg.docks[2].push('numberin');
+        svg.docks[3].push('in');
         this.copyDock(svg.docks);
     }
 
@@ -185,17 +170,16 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setSlot(false);
-	svg.setInnies([true]);
-	svg.setOutie(true);
-	svg.setTab(false);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBlock());
-	svg.docks[0].push('numberout');
-	svg.docks[1].push('numberin');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setSlot(false);
+        svg.setInnies([true]);
+        svg.setOutie(true);
+        svg.setTab(false);
+        this.artwork = svg.basicBlock();
+        svg.docks[0].push('numberout');
+        svg.docks[1].push('numberin');
         this.copyDock(svg.docks);
     }
 
@@ -204,39 +188,36 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setSlot(false);
-	svg.setInnies([true]);
-	svg.setOutie(true);
-	svg.setTab(false);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBlock());
-	svg.docks[0].push('numberout');
-	svg.docks[0].push('numberin');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setSlot(false);
+        svg.setInnies([true]);
+        svg.setOutie(true);
+        svg.setTab(false);
+        this.artwork = svg.basicBlock();
+        svg.docks[0].push('numberout');
+        svg.docks[0].push('numberin');
         this.copyDock(svg.docks);
     }
 
     // E.g., plus, minus, multiply, divide. These are also expandable.
     this.twoArgMathBlock = function() {
-        this.artworkOffset = [0, 0, 49];
         this.expandable = true;
         this.style = 'arg';
         this.size = 2;
         this.args = 2;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setSlot(false);
-	svg.setInnies([true, true]);
-	svg.setOutie(true);
-	svg.setTab(false);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBlock());
-	svg.docks[0].push('numberout');
-	svg.docks[1].push('numberin');
-	svg.docks[2].push('numberin');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setSlot(false);
+        svg.setInnies([true, true]);
+        svg.setOutie(true);
+        svg.setTab(false);
+        this.artwork = svg.basicBlock();
+        svg.docks[0].push('numberout');
+        svg.docks[1].push('numberin');
+        svg.docks[2].push('numberin');
         this.copyDock(svg.docks);
     }
 
@@ -246,14 +227,13 @@ function ProtoBlock(name) {
         this.style = 'value';
         this.size = 1;
         this.args = 0;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setExpand(60, 0, 0, 0);
-	svg.setOutie(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBox());
-	svg.docks[0].push('numberout');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setExpand(60, 0, 0, 0);
+        svg.setOutie(true);
+        this.artwork = svg.basicBox();
+        svg.docks[0].push('numberout');
         this.copyDock(svg.docks);
     }
 
@@ -264,14 +244,13 @@ function ProtoBlock(name) {
         this.style = 'value';
         this.size = 1;
         this.args = 0;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setExpand(60, 23, 0, 0);
-	svg.setOutie(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBox());
-	svg.docks[0].push('mediaout');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setExpand(60, 23, 0, 0);
+        svg.setOutie(true);
+        this.artwork = svg.basicBox();
+        svg.docks[0].push('mediaout');
         this.copyDock(svg.docks);
     }
 
@@ -279,44 +258,40 @@ function ProtoBlock(name) {
     // There are no additional arguments and no flow above or below.
     this.blockClampZeroArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [0, 0, 74];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setCap(true);
-	svg.setTail(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(20, 0, 0, 0);
-	this.artwork.push(svg.basicClamp());
-	svg.docks[0].push('unavailable');
-	svg.docks[1].push('in');
-	svg.docks[2].push('unavailable');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setCap(true);
+        svg.setTail(true);
+        svg.setExpand(20, 0, 0, 0);
+        this.artwork = svg.basicClamp();
+        svg.docks[0].push('unavailable');
+        svg.docks[1].push('in');
+        svg.docks[2].push('unavailable');
         this.copyDock(svg.docks);
     }
 
     // E.g., repeat. Unlike action, there is a flow above and below.
     this.flowClampOneArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [0, 0, 74];
         this.expandable = true;
         this.size = 2;
         this.args = 2;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
-	svg.setSlot(true);
-	svg.setInnies([true]);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(20, 0, 0, 0);
-	this.artwork.push(svg.basicClamp());
-	svg.docks[0].push('in');
-	svg.docks[1].push('numberin');
-	svg.docks[2].push('in');
-	svg.docks[3].push('out');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
+        svg.setSlot(true);
+        svg.setInnies([true]);
+        svg.setExpand(20, 0, 0, 0);
+        this.artwork = svg.basicClamp();
+        svg.docks[0].push('in');
+        svg.docks[1].push('numberin');
+        svg.docks[2].push('in');
+        svg.docks[3].push('out');
         this.copyDock(svg.docks);
     }
 
@@ -324,23 +299,21 @@ function ProtoBlock(name) {
     // additional argument is a boolean. There is flow above and below.
     this.flowClampBooleanArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [0, 0, 116];
         this.expandable = true;
         this.size = 3;
         this.args = 2;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
         svg.setBoolean(true);
-	svg.setSlot(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(0, 0, 0, 0);
-	this.artwork.push(svg.basicClamp());
-	svg.docks[0].push('in');
-	svg.docks[1].push('booleanin');
-	svg.docks[2].push('in');
-	svg.docks[3].push('out');
+        svg.setSlot(true);
+        svg.setExpand(0, 0, 0, 0);
+        this.artwork = svg.basicClamp();
+        svg.docks[0].push('in');
+        svg.docks[1].push('booleanin');
+        svg.docks[2].push('in');
+        svg.docks[3].push('out');
         this.copyDock(svg.docks);
     }
 
@@ -349,46 +322,42 @@ function ProtoBlock(name) {
     // above and below.
     this.doubleFlowClampBooleanArgBlock = function() {
         this.style = 'doubleclamp';
-        this.artworkOffset = [0, 116, 200];
         this.expandable = true;
         this.size = 4;
         this.args = 3;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
-	svg.setSlot(true);
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
+        svg.setSlot(true);
         svg.setBoolean(true);
-	svg.setClampCount(2);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(0, 0, 0, 0);
-	this.artwork.push(svg.basicClamp());
-	svg.docks[0].push('in');
-	svg.docks[1].push('booleanin');
-	svg.docks[2].push('in');
-	svg.docks[3].push('in');
-	svg.docks[4].push('out');
+        svg.setClampCount(2);
+        svg.setExpand(0, 0, 0, 0);
+        this.artwork = svg.basicClamp();
+        svg.docks[0].push('in');
+        svg.docks[1].push('booleanin');
+        svg.docks[2].push('in');
+        svg.docks[3].push('in');
+        svg.docks[4].push('out');
         this.copyDock(svg.docks);
     }
 
     // E.g., forever. Unlike start, there is flow above and below.
     this.flowClampZeroArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [0, 0, 86];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setTab(true);
-	svg.setSlot(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(10, 0, 0, 0);
-	this.artwork.push(svg.basicClamp());
-	svg.docks[0].push('in');
-	svg.docks[1].push('in');
-	svg.docks[2].push('out');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setTab(true);
+        svg.setSlot(true);
+        svg.setExpand(10, 0, 0, 0);
+        this.artwork = svg.basicClamp();
+        svg.docks[0].push('in');
+        svg.docks[1].push('in');
+        svg.docks[2].push('out');
         this.copyDock(svg.docks);
     }
 
@@ -396,23 +365,21 @@ function ProtoBlock(name) {
     // The additional argument is a name. Again, no flow above or below.
     this.blockClampOneArgBlock = function() {
         this.style = 'clamp';
-        this.artworkOffset = [0, 0, 86];
         this.expandable = true;
         this.size = 2;
         this.args = 1;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setCap(true);
-	svg.setTail(true);
-	svg.setInnies([true]);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(10, 0, 0, 0);
-	this.artwork.push(svg.basicClamp());
-	svg.docks[0].push('unavailable');
-	svg.docks[1].push('anyin');
-	svg.docks[2].push('in');
-	svg.docks[3].push('unavailable');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setCap(true);
+        svg.setTail(true);
+        svg.setInnies([true]);
+        svg.setExpand(10, 0, 0, 0);
+        this.artwork = svg.basicClamp();
+        svg.docks[0].push('unavailable');
+        svg.docks[1].push('anyin');
+        svg.docks[2].push('in');
+        svg.docks[3].push('unavailable');
         this.copyDock(svg.docks);
     }
 
@@ -421,13 +388,12 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 1;
         this.args = 0;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(0, 0, 0, 0);
-	this.artwork.push(svg.booleanNot(true));
-	svg.docks[0].push('booleanout');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setExpand(70, 0, 0, 4);
+        this.artwork = svg.booleanNot(true);
+        svg.docks[0].push('booleanout');
         this.copyDock(svg.docks);
     }
 
@@ -436,14 +402,13 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 1;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(20, 0, 0, 0);
-	this.artwork.push(svg.booleanNot(false));
-	svg.docks[0].push('booleanout');
-	svg.docks[1].push('booleanin');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setExpand(20, 0, 0, 0);
+        this.artwork = svg.booleanNot(false);
+        svg.docks[0].push('booleanout');
+        svg.docks[1].push('booleanin');
         this.copyDock(svg.docks);
     }
 
@@ -452,42 +417,31 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 3;
         this.args = 2;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(20, 0, 0, 0);
-	this.artwork.push(svg.booleanAndOr());
-	svg.docks[0].push('booleanout');
-	svg.docks[1].push('booleanin');
-	svg.docks[2].push('booleanin');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setExpand(20, 0, 0, 0);
+        this.artwork = svg.booleanAndOr();
+        svg.docks[0].push('booleanout');
+        svg.docks[1].push('booleanin');
+        svg.docks[2].push('booleanin');
         this.copyDock(svg.docks);
-    }
-
-    this.booleanOneArgBlock = function() {
-        this.style = 'arg';
-        this.size = 1;
-        this.args = 1;
-        this.artwork.push(BOOLEAN1ARG);
-        this.copyDock(BOOLEAN1ARGDOCKS);
     }
 
     // E.g., greater, less, equal
     this.booleanTwoArgBlock = function() {
         this.style = 'arg';
-        this.artworkOffset = [0, 0, 42];
         this.size = 2;
         this.args = 2;
         this.expandable = true;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setColors(['fill_color', 'stroke_color']);
-	svg.setExpand(10, 0, 0, 0);
-	this.artwork.push(svg.booleanCompare());
-	svg.docks[0].push('booleanout');
-	svg.docks[1].push('numberin');
-	svg.docks[2].push('numberin');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setExpand(10, 0, 0, 0);
+        this.artwork = svg.booleanCompare();
+        svg.docks[0].push('booleanout');
+        svg.docks[1].push('numberin');
+        svg.docks[2].push('numberin');
         this.copyDock(svg.docks);
     }
 
@@ -497,14 +451,13 @@ function ProtoBlock(name) {
         this.parameter = true;
         this.size = 1;
         this.args = 0;
-	var svg = new SVG();
-	svg.init();
-	svg.setScale(2);
-	svg.setExpand(70, 0, 0, 0);
-	svg.setOutie(true);
-	svg.setColors(['fill_color', 'stroke_color']);
-	this.artwork.push(svg.basicBox());
-	svg.docks[0].push('numberout');
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(2);
+        svg.setExpand(70, 0, 0, 0);
+        svg.setOutie(true);
+        this.artwork = svg.basicBox();
+        svg.docks[0].push('numberout');
         this.copyDock(svg.docks);
     }
 }
@@ -612,12 +565,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // The scale of the graphics is determined by screen size.
     this.setScale = function(scale) {
         this.scale = scale;
-    }
-
-    // We need to tell the activity if we are dragging so it won't
-    // scroll the canvas
-    this.setDragging = function(setDraggingFlag) {
-        this.setDraggingFlag = setDraggingFlag;
     }
 
     // Toggle state of collapsible blocks.
@@ -743,8 +690,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             }
 
             function adjustFillerAndDocks(myBlock, clamp, delta) {
-		// FIXME
-		return;
+                // FIXME
+                return;
                 myBlock.fillerCount[clamp] += delta;
                 var offset = delta * myBlock.protoblock.fillerOffset;
                 if (clamp == BOT) {
@@ -775,8 +722,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         }
 
         var docksChanged = false;
-	// FIXME
-	/* 
+        // FIXME
+        /* 
         if (myBlock.isDoubleClampBlock()) {
             docksChanged = clampAdjuster(this, blk, myBlock, MID);
         }
@@ -806,8 +753,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // function.
     this.adjustExpandableTwoArgBlock = function(blk) {
         var myBlock = this.blockList[blk];
-	// FIXME
-	return;
+        // FIXME
+        return;
 
         // First we determine the size of the first argument.
         var c = myBlock.connections[1];
@@ -1073,7 +1020,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // Move the connected block.
             var dx = bdock[0] - cdock[0];
             var dy = bdock[1] - cdock[1];
-            if (this.blockList[blk].bitmap[0] == null) {
+            if (this.blockList[blk].bitmap == null) {
                 var nx = this.blockList[blk].x + dx;
                 var ny = this.blockList[blk].y + dy;
             } else {
@@ -2645,24 +2592,8 @@ function Block(protoblock, blocks) {
     // All blocks have at a container and least one bitmap.
     this.container = null;
     this.bounds = null;
-    this.bitmap = [null, null, null];
-    this.highlightBitmap = [null, null, null];
-
-    // Expandable block features.
-    this.fillerCount = [0, 0, 0];
-    this.fillerBitmaps = [
-        [],
-        [],
-        []
-    ];
-    this.highlightFillerBitmaps = [
-        [],
-        [],
-        []
-    ];
-    // Cached filler bitmaps that have been removed from expandable
-    // blocks. We can reuse them.
-    this.bitmapCache = {};
+    this.bitmap = null;
+    this.highlightBitmap = null;
 
     // Start and Action blocks has a collapse button (in a separate
     // container).
@@ -2704,8 +2635,8 @@ function Block(protoblock, blocks) {
                 this.collapseText.visible = true;
             }
         } else {
-            this.bitmap[TOP].visible = false;
-            this.highlightBitmap[TOP].visible = true;
+            this.bitmap.visible = false;
+            this.highlightBitmap.visible = true;
             if (this.isExpandableBlock()) {
                 if (['start', 'action'].indexOf(this.name) != -1) {
                     // There could be a race condition when making a
@@ -2734,8 +2665,8 @@ function Block(protoblock, blocks) {
                 this.collapseText.visible = true;
             }
         } else {
-            this.bitmap[TOP].visible = true;
-            this.highlightBitmap[TOP].visible = false;
+            this.bitmap.visible = true;
+            this.highlightBitmap.visible = false;
             if (this.isExpandableBlock()) {
                 if (['start', 'action'].indexOf(this.name) != -1) {
                     this.highlightCollapseBlockBitmap.visible = false;
@@ -2749,7 +2680,7 @@ function Block(protoblock, blocks) {
     }
 
     this.removeFiller = function(clamp) {
-	// FIXME
+        // FIXME
         return;
 
         var thisBlock = this.blocks.blockList.indexOf(this);
@@ -2766,7 +2697,7 @@ function Block(protoblock, blocks) {
 
     this.addFiller = function(clamp, c) {
         // Add filler to an expandable block.
-	// FIXME
+        // FIXME
         return;
 
         var thisBlock = this.blocks.blockList.indexOf(this);
@@ -2777,8 +2708,8 @@ function Block(protoblock, blocks) {
             clamp = args[2];
             me.fillerBitmaps[clamp].push(bitmap);
             me.container.addChild(bitmap);
-            bitmap.x = me.bitmap[TOP].x;
-            bitmap.y = me.bitmap[TOP].y + offset;
+            bitmap.x = me.bitmap.x;
+            bitmap.y = me.bitmap.y + offset;
             bitmap.name = name;
             me.blocks.refreshCanvas();
         }
@@ -2806,8 +2737,8 @@ function Block(protoblock, blocks) {
             clamp = args[2];
             me.highlightFillerBitmaps[clamp].push(bitmap);
             me.container.addChild(bitmap);
-            bitmap.x = me.bitmap[TOP].x;
-            bitmap.y = me.bitmap[TOP].y + offset;
+            bitmap.x = me.bitmap.x;
+            bitmap.y = me.bitmap.y + offset;
             bitmap.name = name;
 
             // Hide highlight to start.
@@ -2847,76 +2778,79 @@ function Block(protoblock, blocks) {
         // Load any artwork associated with the block and create any
         // extra parts. Image components are loaded asynchronously so
         // most the work happens in callbacks.
-
         var thisBlock = this.blocks.blockList.indexOf(this);
 
         // We need a label for most blocks.
         // TODO: use Text exclusively for all block labels.
         this.text = new createjs.Text('', '20px Arial', '#000000');
-        doubleExpandable = this.blocks.doubleExpandable;
+        var doubleExpandable = this.blocks.doubleExpandable;
 
         // Get the block labels from the protoblock
         var block_label = '';
         if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
             block_label = _(this.protoblock.staticLabels[0]);
         }
+        if (this.protoblock.staticLabels.length == 1) {
+            // Add a blank arg label.
+            this.protoblock.staticLabels.push('');
+        }
 
-        var top_label = '';
+        // Create the bitmap for the block.
+        function processBitmap(name, bitmap, me) {
+            me.bitmap = bitmap;
+            me.container.addChild(me.bitmap);
+            me.bitmap.x = 0;
+            me.bitmap.y = 0;
+            me.bitmap.name = 'bmp_' + thisBlock;
+            me.bitmap.cursor = 'pointer';
+            me.blocks.refreshCanvas();
+
+            // Create the highlight bitmap for the block.
+            function processHighlightBitmap(name, bitmap, me) {
+                me.highlightBitmap = bitmap;
+                me.container.addChild(me.highlightBitmap);
+                me.highlightBitmap.x = 0;
+                me.highlightBitmap.y = 0;
+                me.highlightBitmap.name = 'bmp_highlight_' + thisBlock;
+                me.highlightBitmap.cursor = 'pointer';
+                // Hide it to start
+                me.highlightBitmap.visible = false;
+
+                if (me.text != null) {
+                    // Make sure text is on top.
+                    z = me.container.getNumChildren() - 1;
+                    me.container.setChildIndex(me.text, z);
+                }
+
+                // At me point, it should be safe to calculate the
+                // bounds of the container and cache its contents.
+                me.bounds = me.container.getBounds();
+                me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
+                loadEventHandlers(blocks, me);
+                me.blocks.refreshCanvas();
+                me.finishImageLoad();
+            }
+
+            var artwork = me.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[me.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[me.protoblock.palette.name]).replace('block_label', block_label);
+
+            for (var i = 1; i < me.protoblock.staticLabels.length; i++) {
+                artwork = artwork.replace('arg_label_' + i, _(me.protoblock.staticLabels[i]));
+            }
+            makeBitmap(artwork, me.name, processHighlightBitmap, me);
+        }
+
+        var artwork = this.protoblock.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label);
+
         if (this.protoblock.staticLabels.length > 1 && !this.protoblock.image) {
             top_label = _(this.protoblock.staticLabels[1]);
         }
-        // Create the bitmap for the block.
-        function processBitmap(name, bitmap, me) {
-            me.bitmap[TOP] = bitmap;
-            me.container.addChild(me.bitmap[TOP]);
-            me.bitmap[TOP].x = 0;
-            me.bitmap[TOP].y = 0;
-            me.bitmap[TOP].name = 'bmp_' + thisBlock;
-            me.bitmap[TOP].cursor = 'pointer';
-            me.blocks.refreshCanvas();
+        for (var i = 1; i < this.protoblock.staticLabels.length; i++) {
+            artwork = artwork.replace('arg_label_' + i, _(this.protoblock.staticLabels[i]));
         }
-
-        makeBitmap(this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), this.name, processBitmap, this);
-
-        // Create the highlight bitmap for the block.
-        function processHighlightBitmap(name, bitmap, me) {
-            me.highlightBitmap[TOP] = bitmap;
-            me.container.addChild(me.highlightBitmap[TOP]);
-            me.highlightBitmap[TOP].x = 0;
-            me.highlightBitmap[TOP].y = 0;
-            me.highlightBitmap[TOP].name = 'bmp_highlight_' + thisBlock;
-            me.highlightBitmap[TOP].cursor = 'pointer';
-            // Hide it to start
-            me.highlightBitmap[TOP].visible = false;
-
-            if (me.text != null) {
-                // Make sure text is on top.
-                z = me.container.getNumChildren() - 1;
-                me.container.setChildIndex(me.text, z);
-            }
-
-            // At me point, it should be safe to calculate the
-            // bounds of the container and cache its contents.
-            me.bounds = me.container.getBounds();
-            me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
-            loadEventHandlers(blocks, me);
-            me.blocks.refreshCanvas();
-	    me.finishImageLoad();
-        }
-
-        makeBitmap(this.protoblock.artwork[TOP].replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('top_label', top_label).replace('font_size', this.protoblock.fontsize), '', processHighlightBitmap, this);
+        makeBitmap(artwork, this.name, processBitmap, this);
     }
 
     this.finishImageLoad = function() {
-
-        var thisBlock = this.blocks.blockList.indexOf(this);
-
-        var bottom_label = '';
-        if (this.protoblock.staticLabels.length > 2 && !this.protoblock.image) {
-            bottom_label = _(this.protoblock.staticLabels[2]);
-        } else if (['less', 'greater', 'equal'].indexOf(this.name) != -1) {
-            bottom_label = _(this.protoblock.staticLabels[0]);
-        }
 
         // Value blocks get a modifiable text label
         if (this.name == 'text' || this.name == 'number') {
@@ -3009,6 +2943,7 @@ function Block(protoblock, blocks) {
 
                 var image = new Image();
                 image.onload = function() {
+                    console.log('creating collapse bitmap');
                     me.collapseBitmap = new createjs.Bitmap(image);
                     me.collapseContainer.addChild(me.collapseBitmap);
                     finishCollapseButton(me);
@@ -3023,14 +2958,13 @@ function Block(protoblock, blocks) {
                         me.expandBitmap.visible = false;
                         var bounds = me.collapseContainer.getBounds();
                         me.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                        me.blocks.stage.addChild(me.collapseContainer);
+                        me.collapseContainer.x = me.container.x + COLLAPSEBUTTONXOFF;
+                        me.collapseContainer.y = me.container.y + COLLAPSEBUTTONYOFF;
                         loadCollapsibleEventHandlers(me.blocks, me);
                     }
                     image.src = 'images/expand.svg';
                 }
-
-                me.blocks.stage.addChild(me.collapseContainer);
-                me.collapseContainer.x = me.container.x + COLLAPSEBUTTONXOFF;
-                me.collapseContainer.y = me.container.y + COLLAPSEBUTTONYOFF;
             }
 
             makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label).replace('font_size', this.protoblock.fontsize), '', processHighlightCollapseBitmap, this);
@@ -3277,7 +3211,6 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
     myBlock.collapseContainer.hitArea = hitArea;
 
     myBlock.collapseContainer.on('mouseover', function(event) {
-        blocks.setDraggingFlag(true);
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
@@ -3301,7 +3234,6 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 
     myBlock.collapseContainer.on('mousedown', function(event) {
         hideDOMLabel();
-        blocks.setDraggingFlag(true);
         // Always show the trash when there is a block selected.
         trashcan.show();
         moved = false;
@@ -3369,7 +3301,6 @@ function loadCollapsibleEventHandlers(blocks, myBlock) {
 function collapseToggle(blocks, myBlock) {
     if (['start', 'action'].indexOf(myBlock.name) == -1) {
         // Should not happen, but just in case.
-        // console.log('Do not collapse ' + myBlock.name);
         return;
     }
 
@@ -3378,6 +3309,10 @@ function collapseToggle(blocks, myBlock) {
     blocks.findDragGroup(thisBlock)
 
     function toggle(collapse) {
+        if (myBlock.collapseBitmap == null) {
+            console.log('collapse bitmap not ready');
+            return;
+        }
         myBlock.collapsed = !collapse;
         myBlock.collapseBitmap.visible = collapse;
         myBlock.expandBitmap.visible = !collapse;
@@ -3385,16 +3320,12 @@ function collapseToggle(blocks, myBlock) {
         myBlock.highlightCollapseBlockBitmap.visible = false;
         myBlock.collapseText.visible = !collapse;
 
-        for (var b in myBlock.bitmap) {
-            if (myBlock.bitmap[b] != null) {
-                myBlock.bitmap[b].visible = false;
-            }
+        if (myBlock.bitmap != null) {
+            myBlock.bitmap.visible = false;
         }
 
-        for (var b in myBlock.highlightBitmap) {
-            if (myBlock.highlightBitmap[b] != null) {
-                myBlock.highlightBitmap[b].visible = collapse;
-            }
+        if (myBlock.highlightBitmap != null) {
+            myBlock.highlightBitmap.visible = collapse;
         }
 
         if (myBlock.name != 'start') {
@@ -3428,7 +3359,6 @@ function collapseToggle(blocks, myBlock) {
 
 
 function collapseOut(blocks, myBlock, thisBlock, moved, event) {
-    blocks.setDraggingFlag(false);
     // Always hide the trash when there is no block selected.
     trashcan.hide();
     blocks.unhighlight(thisBlock);
@@ -3460,7 +3390,6 @@ function loadEventHandlers(blocks, myBlock) {
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {
-        blocks.setDraggingFlag(true);
         blocks.highlight(thisBlock, true);
         blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
@@ -3539,7 +3468,6 @@ function loadEventHandlers(blocks, myBlock) {
 
     myBlock.container.on('mousedown', function(event) {
         hideDOMLabel();
-        blocks.setDraggingFlag(true);
 
         // Track time for detecting long pause...
         // but only for top block in stack
@@ -3567,7 +3495,6 @@ function loadEventHandlers(blocks, myBlock) {
         };
 
         myBlock.container.on('mouseout', function(event) {
-            blocks.setDraggingFlag(false);
             if (!blocks.inLongPress) {
                 mouseoutCallback(blocks, myBlock, event, moved);
             }
@@ -3575,7 +3502,6 @@ function loadEventHandlers(blocks, myBlock) {
         });
 
         myBlock.container.on('pressup', function(event) {
-            blocks.setDraggingFlag(false);
             if (!blocks.inLongPress) {
                 mouseoutCallback(blocks, myBlock, event, moved);
             }
@@ -3635,7 +3561,6 @@ function loadEventHandlers(blocks, myBlock) {
     });
 
     myBlock.container.on('mouseout', function(event) {
-        blocks.setDraggingFlag(false);
         if (!blocks.inLongPress) {
             mouseoutCallback(blocks, myBlock, event, moved);
         }

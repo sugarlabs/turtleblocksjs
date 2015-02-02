@@ -163,8 +163,6 @@ define(function(require) {
 
         pluginsImages = {};
 
-        var draggingContainer = false;
-
         function allClear() {
             logo.boxes = {};
             logo.time = 0;
@@ -300,12 +298,9 @@ define(function(require) {
             palettes = initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, blocks);
 
             palettes.setBlocks(blocks);
-            palettes.setDragging(setDraggingContainer);
             turtles.setBlocks(blocks);
-            turtles.setDragging(setDraggingContainer);
             blocks.setTurtles(turtles);
             blocks.setErrorMsg(errorMsg);
-            blocks.setDragging(setDraggingContainer);
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             // TODO: clean up this mess.
@@ -524,10 +519,6 @@ define(function(require) {
 
         function setCameraID(id) {
             cameraID = id;
-        }
-
-        function setDraggingContainer(flag) {
-            draggingContainer = flag;
         }
 
         function createGrid(imagePath) {

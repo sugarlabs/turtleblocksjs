@@ -348,6 +348,7 @@ function Turtle (name, turtles) {
                 me.startBlock.container.removeChild(me.decorationBitmap);
                 me.decorationBitmap = new createjs.Bitmap(myImage);
                 me.startBlock.container.addChild(me.decorationBitmap);
+		me.decorationBitmap.name = 'decoration';
                 me.decorationBitmap.x = 80;
                 me.decorationBitmap.y = 20;
                 me.decorationBitmap.scaleX = 27.5 / image.width;

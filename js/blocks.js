@@ -731,15 +731,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // Adjust the clamp size to match the size of the child
             // flow.
             var docksChanged = false;
-            /*
+
             while (childFlowSize < myBlock.clampCount[clamp] + 1) {
-                // Remove filler.
+		console.log(childFlowSize + ' > ' + myBlock.clampCount[clamp]);
+		console.log('calling removeSlot ' + clamp);
                 myBlock.removeSlot(clamp);
                 docksChanged = true;
             }
-            */
             while (childFlowSize > myBlock.clampCount[clamp] + 1) {
-                // Add filler.
 		console.log(childFlowSize + ' > ' + myBlock.clampCount[clamp]);
 		console.log('calling addSlot ' + clamp);
                 myBlock.addSlot(clamp);
@@ -2705,39 +2704,52 @@ function Block(protoblock, blocks) {
         this.blocks.refreshCanvas();
     }
 
-    this.removeSlot = function(clamp) {
-        // FIXME
-        return;
-
-        var thisBlock = this.blocks.blockList.indexOf(this);
-        try {
-            // FIXME: There is a potential race conditon such that the
-            // container cache is not yet ready.
-            this.container.uncache();
-            this.bounds = this.container.getBounds();
-            this.container.cache(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
-        } catch (e) {
-            console.log(e);
-        }
+    this.addSlot = function(clamp) {
+	this.updateSlots(clamp, 1);
     }
 
-    this.addSlot = function(clamp) {
-        // Add filler to an expandable block.
-	console.log('adding slot');
+    this.removeSlot = function(clamp) {
+	this.updateSlots(clamp, -1);
+    }
+
+    this.updateSlots = function(clamp, plusMinus) {
+        // Resize an expandable block.
+	console.log('updating slots: ' + plusMinus);
         var thisBlock = this.blocks.blockList.indexOf(this);
+
+	// First, remove the children
+	console.log(this.container.children);
+	for (child = 0; child < this.container.getNumChildren(); child++) {
+	    if (this.container.children[child].name == 'bmp_highlight_0') {
+		console.log('removing child ' + this.container.children[child]);
+		this.container.removeChild(this.container.children[child]);
+		this.container.uncache();
+		var bounds = this.container.getBounds();
+		this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+	    } else if (this.container.children[child].name == 'bmp_0') {
+		console.log('removing child ' + this.container.children[child]);
+		this.container.removeChild(this.container.children[child]);
+		this.container.uncache();
+		var bounds = this.container.getBounds();
+		this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+	    }
+        }
 
         function processBitmap(name, bitmap, arg) {
             me = arg;
+	    me.bitmap = bitmap;
+            me.bitmap.name = 'bmp_0';
             me.container.addChild(bitmap);
             me.container.uncache();
             me.bounds = me.container.getBounds();
             me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
             me.blocks.refreshCanvas();
 	    // FIXME: process highlight
+	    // FIXME: move decoration to top of container
         }
 
 	console.log(this.name + ' ' + clamp + ' ' + this.clampCount[clamp]);
-	this.clampCount[clamp] += 1;
+	this.clampCount[clamp] += plusMinus;
 	switch (this.name) {
         case 'start':
 	    this.protoblock.blockClampZeroArgBlock(this.clampCount[clamp]);
@@ -2918,6 +2930,7 @@ function Block(protoblock, blocks) {
 
             function processCollapseBitmap(name, bitmap, me) {
                 me.collapseBlockBitmap = bitmap;
+		me.collapseBlockBitmap = 'collapse';
                 me.container.addChild(me.collapseBlockBitmap);
                 me.collapseBlockBitmap.visible = false;
                 me.blocks.refreshCanvas();
@@ -2927,6 +2940,7 @@ function Block(protoblock, blocks) {
 
             function processHighlightCollapseBitmap(name, bitmap, me) {
                 me.highlightCollapseBlockBitmap = bitmap;
+		me.highlightCollapseBlockBitmap = 'collapse';
                 me.container.addChild(me.highlightCollapseBlockBitmap);
                 me.highlightCollapseBlockBitmap.visible = false;
                 me.blocks.refreshCanvas();

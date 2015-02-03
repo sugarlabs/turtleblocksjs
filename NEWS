@@ -202,6 +202,10 @@
   * combine various run modes (switch between fast, slow, and step on the fly)
   * fix size of palette highlight (Sam Parkinson)
   * fix value box label in DOM (Sam Parkinson)
+  * factory-branch fixes
+    - proper updating of labels
+    - proper resizing
+    - proper calculation of hit area
 
 TODO:
   * save errors
@@ -216,9 +220,6 @@ TODO:
   * three-arg arg blocks
   * write SVG generator
   * user defined blocks (block/plugin factory)
-    - proper updating of labels
-    - proper resizing
-    - proper calculation of hit area
     - artwork beautification?
   * try to detect difference between unknown flow and arg blocks
 

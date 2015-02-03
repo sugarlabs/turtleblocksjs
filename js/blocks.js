@@ -42,9 +42,6 @@ function ProtoBlock(name) {
     // Does the block expand (or collapse) when other blocks are
     // attached? e.g., start, repeat...
     this.expandable = false;
-    // When a block is expanded, filler blocks are inserted. Filler
-    // offset is the height of the filler blocks.
-    this.fillerOffset = STANDARDBLOCKHEIGHT;
     // Is this block a parameter? Parameters have their labels
     // overwritten with their current value.
     this.parameter = false;
@@ -146,7 +143,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., setxy. These are expandable.
-    this.twoArgBlock = function() {
+    this.twoArgBlock = function(expandY) {
         this.expandable = true;
         this.style = 'twoarg';
         this.size = 2;
@@ -157,6 +154,9 @@ function ProtoBlock(name) {
         svg.setTab(true);
         svg.setInnies([true, true]);
         svg.setSlot(true);
+        if (expandY) {
+            svg.setExpand(30, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('out');
         svg.docks[1].push('numberin');
@@ -202,7 +202,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., plus, minus, multiply, divide. These are also expandable.
-    this.twoArgMathBlock = function() {
+    this.twoArgMathBlock = function(expandY) {
         this.expandable = true;
         this.style = 'arg';
         this.size = 2;
@@ -214,6 +214,9 @@ function ProtoBlock(name) {
         svg.setInnies([true, true]);
         svg.setOutie(true);
         svg.setTab(false);
+        if (expandY) {
+            svg.setExpand(30, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('numberout');
         svg.docks[1].push('numberin');
@@ -302,7 +305,6 @@ function ProtoBlock(name) {
         svg.docks[1].push('numberin');
         svg.docks[2].push('in');
         svg.docks[3].push('in');
-	console.log(svg.docks);
         this.copyDock(svg.docks);
     }
 
@@ -738,17 +740,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
             // Adjust the clamp size to match the size of the child
             // flow.
-            var docksChanged = false;
-
 	    var plusMinus = childFlowSize - myBlock.clampCount[clamp];
 	    if (plusMinus != 0) {
 		console.log('childFlowSize: ' + childFlowSize + ' ' + myBlock.clampCount[clamp]);
 		if (!(childFlowSize == 0 && myBlock.clampCount[clamp] == 1)) {
 		    myBlock.updateSlots(clamp, plusMinus, blocksToCheck);
-                    docksChanged = true;
 		}
             }
-            return docksChanged;
         }
 
         if (myBlock.isDoubleClampBlock()) {
@@ -768,8 +766,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // function.
     this.adjustExpandableTwoArgBlock = function(blk) {
         var myBlock = this.blockList[blk];
-        // FIXME
-        return;
 
         // First we determine the size of the first argument.
         var c = myBlock.connections[1];
@@ -778,41 +774,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             firstArgumentSize = Math.max(this.getBlockSize(c), 1);
         }
 
-        // Next, adjust the block size to match.
-        var docksChanged = false;
-        while (firstArgumentSize < myBlock.fillerCount[BOT] + 1) {
-            // Remove filler.
-            myBlock.removeFiller(BOT);
-            myBlock.fillerCount[BOT] -= 1;
-            myBlock.docks[2][1] -= myBlock.protoblock.fillerOffset;
-            docksChanged = true;
-            if (['less', 'greater', 'equal'].indexOf(myBlock.name) != -1) {
-                // Booleans have to shift down when removing filler
-                myBlock.docks[0][1] -= myBlock.protoblock.fillerOffset;
-            } else if (!myBlock.isArgBlock()) {
-                // Blocks with "out flow", e.g., setxy, have
-                // another dock position to adjust.
-                myBlock.docks[3][1] -= myBlock.protoblock.fillerOffset;
-            }
-            myBlock.size -= 1;
-        }
-        while (firstArgumentSize > myBlock.fillerCount[BOT] + 1) {
-            // Add filler.
-            myBlock.addFiller(BOT, myBlock.fillerCount[BOT]);
-            myBlock.fillerCount[BOT] += 1;
-            myBlock.docks[2][1] += myBlock.protoblock.fillerOffset;
-            docksChanged = true;
-            if (['less', 'greater', 'equal'].indexOf(myBlock.name) != -1) {
-                // Booleans have to shift up when adding filler
-                myBlock.docks[0][1] += myBlock.protoblock.fillerOffset;
-            } else if (!myBlock.isArgBlock()) {
-                // Blocks with "out flow", e.g., setxy, have
-                // another dock position to adjust.
-                myBlock.docks[3][1] += myBlock.protoblock.fillerOffset;
-            }
-            myBlock.size += 1;
-        }
+	// FIXME: track docks to adjust
+	var plusMinus = firstArgumentSize - myBlock.clampCount[0];
+	if (plusMinus != 0) {
+	    console.log('firstArgumentSize: ' + firstArgumentSize + ' ' + myBlock.clampCount[0]);
+	    if (!(firstArgumentSize == 0 && myBlock.clampCount[0] == 1)) {
+		myBlock.updateSlots(0, plusMinus, []);
+	    }
+	}
 
+	/*
         // Finally, since the block size has changed and consequently
         // the dock positions have changed, we need to make sure that
         // any argument flows from this block are positioned properly.
@@ -841,6 +812,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 }
             }
         }
+        */
     }
 
     this.addRemoveVspaceBlock = function(blk) {
@@ -901,7 +873,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.getStackSize = function(blk) {
-        // How many block units (fillerOffest) in this stack?
+        // How many block units in this stack?
         var size = 0;
         this.sizeCounter += 1;
         if (this.sizeCounter > this.blockList.length * 2) {
@@ -2043,7 +2015,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         myActionBlock.stackClampOneArgBlock();
         myActionBlock.palette = this.palettes.dict['blocks'];
         myActionBlock.artworkOffset = [0, 0, 86];
-        myActionBlock.fillerOffset = 42;
         myActionBlock.defaults.push(name);
         myActionBlock.staticLabels.push(_('action'));
         myActionBlock.expandable = true;
@@ -2628,6 +2599,9 @@ function Block(protoblock, blocks) {
 
     this.size = 1; // Proto size is copied here.
     this.docks = []; // Proto dock is copied here.
+    // We save a copy of the dock types because we need to restore
+    // them after docks change when blocks resize.
+    this.dockTypes = [];
     this.connections = []; // Blocks that cannot be run on their own.
     // Keep track of clamp count for blocks with clamps
     this.clampCount = [1, 1];
@@ -2701,10 +2675,10 @@ function Block(protoblock, blocks) {
 
     this.updateSlots = function(clamp, plusMinus, blocksToCheck) {
         // Resize an expandable block.
-	console.log('updating slots: ' + plusMinus);
+	console.log('updating slots: ' + this.name + ' ' + plusMinus);
         var thisBlock = this.blocks.blockList.indexOf(this);
 
-	// First, remove the children
+	// First, remove the old artwork.
 	var targets = ['bmp_highlight_' + thisBlock, 'bmp_' + thisBlock];
 	var deleteQueue = [];
 	for (var child = 0; child < this.container.getNumChildren(); child++) {
@@ -2716,8 +2690,12 @@ function Block(protoblock, blocks) {
 	    this.container.removeChild(deleteQueue[child]);
 	}
 
-	// And clear the docks as they will be regenerated.
-	console.log('clearing docks for ' + this.name);
+	// Save the dock types so we can restore them...
+	this.dockTypes = [];
+	for (i = 0; i < this.docks.length; i++) {
+	    this.dockTypes.push(this.docks[i][2]);
+	}
+	// before clearing the docks (they will be regenerated).
 	this.docks = [];
 
 	this.clampCount[clamp] += plusMinus;
@@ -2749,9 +2727,9 @@ function Block(protoblock, blocks) {
 	    break;
         default:
             if (this.isArgBlock()) {
-                // var artwork = ARG2BLOCKFILLER;
+		this.protoblock.twoArgMathBlock(this.clampCount[0]);
             } else if (this.isTwoArgBlock()) {
-                // var artwork = BASICBLOCK2ARGFILLER;
+		this.protoblock.twoArgBlock(this.clampCount[0]);
             }
             break;
         }
@@ -2823,8 +2801,12 @@ function Block(protoblock, blocks) {
                     me.finishImageLoad();
 		} else {
 		    me.copyDocks();
+		    // Restore the dock types.
+		    for (i = 0; i < me.docks.length; i++) {
+			me.docks[i][2] = me.dockTypes[i];
+		    }
 		    me.blocks.loopCounter = 0;
-		    me.blocks.adjustDocks(thisBlock);  // callback(thisBlock);
+		    me.blocks.adjustDocks(thisBlock);
 		    if (blocksToCheck.length > 0) {
 			me.blocks.adjustExpandableClampBlock(blocksToCheck);
 		    }

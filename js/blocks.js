@@ -71,7 +71,7 @@ function ProtoBlock(name) {
     // We need a copy of the dock, since it is modified by individual
     // blocks as they are expanded or contracted.
     this.copyDock = function(dockStyle) {
-	this.docks = [];
+        this.docks = [];
         for (var i = 0; i < dockStyle.length; i++) {
             var dock = [dockStyle[i][0], dockStyle[i][1], dockStyle[i][2]];
             this.docks.push(dock);
@@ -271,11 +271,11 @@ function ProtoBlock(name) {
         svg.setCap(true);
         svg.setTail(true);
         svg.setExpand(20, 0, 0, 0);
-	if (slots) {
-	    svg.setClampSlots(0, slots);
-	} else {
-	    svg.setClampSlots(0, 1);
-	}
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('unavailable');
         svg.docks[1].push('in');
@@ -296,11 +296,11 @@ function ProtoBlock(name) {
         svg.setSlot(true);
         svg.setInnies([true]);
         svg.setExpand(20, 0, 0, 0);
-	if (slots) {
-	    svg.setClampSlots(0, slots);
-	} else {
-	    svg.setClampSlots(0, 1);
-	}
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('out');
         svg.docks[1].push('numberin');
@@ -323,11 +323,11 @@ function ProtoBlock(name) {
         svg.setBoolean(true);
         svg.setSlot(true);
         svg.setExpand(0, 0, 0, 0);
-	if (slots) {
-	    svg.setClampSlots(0, slots);
-	} else {
-	    svg.setClampSlots(0, 1);
-	}
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('out');
         svg.docks[1].push('booleanin');
@@ -339,7 +339,7 @@ function ProtoBlock(name) {
     // E.g., if then else.  Two "child" flows are docked in expandable
     // clamps. The additional argument is a boolean. There is flow
     // above and below.
-    this.doubleFlowClampBooleanArgBlock = function(topSlots, bottomSlots) {
+    this.doubleFlowClampBooleanArgBlock = function(bottomSlots, topSlots) {
         this.style = 'doubleclamp';
         this.expandable = true;
         this.size = 4;
@@ -351,16 +351,16 @@ function ProtoBlock(name) {
         svg.setSlot(true);
         svg.setBoolean(true);
         svg.setClampCount(2);
-	if (topSlots) {
-	    svg.setClampSlots(0, topSlots);
-	} else {
-	    svg.setClampSlots(0, 1);
-	}
-	if (bottomSlots) {
-	    svg.setClampSlots(1, bottomSlots);
-	} else {
-	    svg.setClampSlots(1, 1);
-	}
+        if (topSlots) {
+            svg.setClampSlots(0, topSlots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
+        if (bottomSlots) {
+            svg.setClampSlots(1, bottomSlots);
+        } else {
+            svg.setClampSlots(1, 1);
+        }
         svg.setExpand(0, 0, 0, 0);
         this.artwork = svg.basicClamp();
         svg.docks[0].push('out');
@@ -383,11 +383,11 @@ function ProtoBlock(name) {
         svg.setTab(true);
         svg.setSlot(true);
         svg.setExpand(10, 0, 0, 0);
-	if (slots) {
-	    svg.setClampSlots(0, slots);
-	} else {
-	    svg.setClampSlots(0, 1);
-	}
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('out');
         svg.docks[1].push('in');
@@ -409,11 +409,11 @@ function ProtoBlock(name) {
         svg.setTail(true);
         svg.setInnies([true]);
         svg.setExpand(10, 0, 0, 0);
-	if (slots) {
-	    svg.setClampSlots(0, slots);
-	} else {
-	    svg.setClampSlots(0, 1);
-	}
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('unavailable');
         svg.docks[1].push('anyin');
@@ -480,7 +480,7 @@ function ProtoBlock(name) {
             svg.setExpand(10, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
         } else {
             svg.setExpand(10, 0, 0, 0);
-	}
+        }
         this.artwork = svg.booleanCompare();
         svg.docks[0].push('booleanout');
         svg.docks[1].push('numberin');
@@ -710,24 +710,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // common operation for start and action blocks, but also for
     // repeat, forever, if, etc.
     this.adjustExpandableClampBlock = function(blocksToCheck) {
-	console.log(blocksToCheck);
-	if (blocksToCheck.length == 0) {
-	    // Should not happen
-	    console.log('null clamp block to check');
-	    return;
-	}
-	var blk = blocksToCheck.pop();
+        console.log(blocksToCheck);
+        if (blocksToCheck.length == 0) {
+            // Should not happen
+            return;
+        }
+        var blk = blocksToCheck.pop();
 
         var myBlock = this.blockList[blk];
-	console.log('adjustExpandableClampBlock: ' + myBlock.name);
-
         // Make sure it is the proper type of expandable block.
         if (myBlock.isArgBlock() || myBlock.isTwoArgBlock()) {
             return;
         }
 
         function clampAdjuster(me, blk, myBlock, clamp, blocksToCheck) {
-	    console.log('clampAdjuster: ' + myBlock.name + ' clamp: ' + clamp);
             // First we need to count up the number of (and size of) the
             // blocks inside the clamp; The child flow is usually the
             // second-to-last argument.
@@ -736,7 +732,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             } else {   // e.g., Bottom clamp in if-then-else
                 var c = myBlock.connections.length - 3;
             }
-	    console.log(c);
             me.sizeCounter = 0;
             var childFlowSize = 1;
             if (c > 0 && myBlock.connections[c] != null) {
@@ -745,12 +740,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
             // Adjust the clamp size to match the size of the child
             // flow.
-	    var plusMinus = childFlowSize - myBlock.clampCount[clamp];
-	    if (plusMinus != 0) {
-		console.log('childFlowSize: ' + childFlowSize + ' ' + myBlock.clampCount[clamp]);
-		if (!(childFlowSize == 0 && myBlock.clampCount[clamp] == 1)) {
-		    myBlock.updateSlots(clamp, plusMinus, blocksToCheck);
-		}
+            var plusMinus = childFlowSize - myBlock.clampCount[clamp];
+            if (plusMinus != 0) {
+                if (!(childFlowSize == 0 && myBlock.clampCount[clamp] == 1)) {
+                    myBlock.updateSlots(clamp, plusMinus, blocksToCheck);
+                }
             }
         }
 
@@ -770,62 +764,28 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // we adjust clamps, but enough different that it is in its own
     // function.
     this.adjustExpandableTwoArgBlock = function(blocksToCheck) {
-	console.log(blocksToCheck);
-	if (blocksToCheck.length == 0) {
-	    // Should not happen
-	    console.log('null clamp block to check');
-	    return;
-	}
-	var blk = blocksToCheck.pop();
+        console.log('adjustExpandableTwoArgBlocks: ' + blocksToCheck);
+        if (blocksToCheck.length == 0) {
+            // Should not happen
+            return;
+        }
+        var blk = blocksToCheck.pop();
 
         var myBlock = this.blockList[blk];
 
-        // First we determine the size of the first argument.
+        // Determine the size of the first argument.
         var c = myBlock.connections[1];
         var firstArgumentSize = 1; // Minimum size
         if (c != null) {
             firstArgumentSize = Math.max(this.getBlockSize(c), 1);
         }
 
-	// FIXME: track docks to adjust
-	var plusMinus = firstArgumentSize - myBlock.clampCount[0];
-	if (plusMinus != 0) {
-	    console.log('firstArgumentSize: ' + firstArgumentSize + ' ' + myBlock.clampCount[0]);
-	    if (!(firstArgumentSize == 0 && myBlock.clampCount[0] == 1)) {
-		myBlock.updateSlots(0, plusMinus, blocksToCheck);
-	    }
-	}
-
-	/*
-        // Finally, since the block size has changed and consequently
-        // the dock positions have changed, we need to make sure that
-        // any argument flows from this block are positioned properly.
-        if (docksChanged) {
-            if (['less', 'greater', 'equal'].indexOf(myBlock.name) != -1) {
-                if (myBlock.connections[0] != null) {
-                    this.loopCounter = 0;
-                    this.adjustDocks(myBlock.connections[0]);
-                }
-            } else if (myBlock.isArgBlock()) {
-                // Arg blocks such as plus, minus, etc.
-                if (myBlock.connections[2] != null) {
-                    this.loopCounter = 0;
-                    this.adjustDocks(blk);
-                }
-            } else {
-                // In the case of flow blocks, e.g., setxy
-                if (myBlock.connections[2] != null) {
-                    // The position of the second argument has changed.
-                    this.loopCounter = 0;
-                    this.adjustDocks(blk);
-                } else if (myBlock.connections[3] != null) {
-                    // The "out flow" needs to be moved
-                    this.loopCounter = 0;
-                    this.adjustDocks(blk);
-                }
+        var plusMinus = firstArgumentSize - myBlock.clampCount[0];
+        if (plusMinus != 0) {
+            if (!(firstArgumentSize == 0 && myBlock.clampCount[0] == 1)) {
+                myBlock.updateSlots(0, plusMinus, blocksToCheck);
             }
         }
-        */
     }
 
     this.addRemoveVspaceBlock = function(blk) {
@@ -890,7 +850,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         var size = 0;
         this.sizeCounter += 1;
         if (this.sizeCounter > this.blockList.length * 2) {
-            console.log('infinite loop detecting size of expandable block? ' + blk);
+            console.log('Infinite loop encountered detecting size of expandable block? ' + blk);
             return size;
         }
 
@@ -900,7 +860,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         var myBlock = this.blockList[blk];
         if (myBlock == null) {
-            console.log('SOMETHING VERY BROKEN');
+            console.log('Something very broken in getStackSize.');
         }
 
         if (myBlock.isClampBlock()) {
@@ -1050,7 +1010,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         while (blk != null) {
             expandableLoopCounter += 1;
             if (expandableLoopCounter > 2 * this.blockList.length) {
-                console.log('inifinite loop checking for expandables?');
+                console.log('Inifinite loop encountered checking for expandables?');
                 break;
             }
             checkExpandableBlocks.push(blk);
@@ -1191,11 +1151,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // adjust it.
         if (checkTwoArgBlocks.length > 0) {
             this.adjustExpandableTwoArgBlock(checkTwoArgBlocks);
-	/*
-            for (var i = 0; i < checkTwoArgBlocks.length; i++) {
-                this.adjustExpandableTwoArgBlock(checkTwoArgBlocks[i]);
-            }
-        */
         }
 
         var blocks = this;
@@ -1230,16 +1185,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         setTimeout(function() {
             // If we changed the contents of an expandable block, we need
             // to adjust its clamp.
-	    console.log('in timeout: ' + checkExpandableBlocks);
-	    blocks.adjustExpandableClampBlock(checkExpandableBlocks);
-	    /*
-            if (checkExpandableBlocks.length > 0) {
-                for (var i = 0; i < checkExpandableBlocks.length; i++) {
-                    blocks.adjustExpandableClampBlock(checkExpandableBlocks[i]);
-                }
-            }
-            blocks.refreshCanvas();
-            */
+            blocks.adjustExpandableClampBlock(checkExpandableBlocks);
         }, 1000);
     }
 
@@ -1502,11 +1448,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Expand expandable 2-arg blocks as needed.
         this.findTwoArgs();
         this.adjustExpandableTwoArgBlock(this.expandablesList);
-	/* 
-        for (var i = 0; i < this.expandablesList.length; i++) {
-            this.adjustExpandableTwoArgBlock(this.expandablesList[i]);
-        }
-        */
         this.refreshCanvas();
     }
 
@@ -1514,11 +1455,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // Expand expandable clamp blocks as needed.
         this.findClamps();
         this.adjustExpandableClampBlock(this.expandablesList);
-	/* 
-        for (var i = 0; i < this.expandablesList.length; i++) {
-            this.adjustExpandableClampBlock(this.expandablesList[i]);
-        }
-        */
         this.refreshCanvas();
     }
 
@@ -2694,67 +2630,66 @@ function Block(protoblock, blocks) {
 
     this.updateSlots = function(clamp, plusMinus, blocksToCheck) {
         // Resize an expandable block.
-	console.log('updating slots: ' + this.name + ' ' + plusMinus);
         var thisBlock = this.blocks.blockList.indexOf(this);
 
-	// First, remove the old artwork.
-	var targets = ['bmp_highlight_' + thisBlock, 'bmp_' + thisBlock];
-	var deleteQueue = [];
-	for (var child = 0; child < this.container.getNumChildren(); child++) {
-	    if (targets.indexOf(this.container.children[child].name) != -1) {
-		deleteQueue.push(this.container.children[child]);
+        // First, remove the old artwork.
+        var targets = ['bmp_highlight_' + thisBlock, 'bmp_' + thisBlock];
+        var deleteQueue = [];
+        for (var child = 0; child < this.container.getNumChildren(); child++) {
+            if (targets.indexOf(this.container.children[child].name) != -1) {
+                deleteQueue.push(this.container.children[child]);
             }
         }
-	for (var child in deleteQueue) {
-	    this.container.removeChild(deleteQueue[child]);
-	}
+        for (var child in deleteQueue) {
+            this.container.removeChild(deleteQueue[child]);
+        }
 
-	// Save the dock types so we can restore them...
-	this.dockTypes = [];
-	for (i = 0; i < this.docks.length; i++) {
-	    this.dockTypes.push(this.docks[i][2]);
-	}
-	// before clearing the docks (they will be regenerated).
-	this.docks = [];
+        // Save the dock types so we can restore them...
+        this.dockTypes = [];
+        for (i = 0; i < this.docks.length; i++) {
+            this.dockTypes.push(this.docks[i][2]);
+        }
+        // before clearing the docks (they will be regenerated).
+        this.docks = [];
 
-	this.clampCount[clamp] += plusMinus;
+        this.clampCount[clamp] += plusMinus;
 
-	switch (this.name) {
+        switch (this.name) {
         case 'start':
-	    this.protoblock.stackClampZeroArgBlock(this.clampCount[clamp]);
+            this.protoblock.stackClampZeroArgBlock(this.clampCount[clamp]);
             break;
         case 'action':
-	    this.protoblock.stackClampOneArgBlock(this.clampCount[clamp]);
+            this.protoblock.stackClampOneArgBlock(this.clampCount[clamp]);
             break;
         case 'repeat':
-	    this.protoblock.flowClampOneArgBlock(this.clampCount[clamp]);
+            this.protoblock.flowClampOneArgBlock(this.clampCount[clamp]);
             break;
         case 'forever':
-	    this.protoblock.flowClampZeroArgBlock(this.clampCount[clamp]);
+            this.protoblock.flowClampZeroArgBlock(this.clampCount[clamp]);
             break;
         case 'if':
         case 'while':
         case 'until':
-	    this.protoblock.flowClampBooleanArgBlock(this.clampCount[clamp]);
+            this.protoblock.flowClampBooleanArgBlock(this.clampCount[clamp]);
             break;
-        case 'ifelse':
-	    this.protoblock.doubleFlowClampBooleanArgBlock(this.clampCount[0], this.clampCount[1]);
+        case 'ifthenelse':
+            this.protoblock.doubleFlowClampBooleanArgBlock(this.clampCount[0], this.clampCount[1]);
             break;
         case 'less':
         case 'greater':
         case 'equal':
-	    this.protoblock.booleanTwoArgBlock(this.clampCount[0]);
-	    break;
+            this.protoblock.booleanTwoArgBlock(this.clampCount[0]);
+            break;
         default:
             if (this.isArgBlock()) {
-		this.protoblock.twoArgMathBlock(this.clampCount[0]);
+                this.protoblock.twoArgMathBlock(this.clampCount[0]);
             } else if (this.isTwoArgBlock()) {
-		this.protoblock.twoArgBlock(this.clampCount[0]);
+                this.protoblock.twoArgBlock(this.clampCount[0]);
             }
             break;
         }
 
-	this.generateArtwork(false, blocksToCheck);
+        this.generateArtwork(false, blocksToCheck);
     }
 
     this.imageLoad = function() {
@@ -2767,7 +2702,7 @@ function Block(protoblock, blocks) {
         this.text = new createjs.Text('', '20px Sans', '#000000');
         var doubleExpandable = this.blocks.doubleExpandable;
 
-	this.generateArtwork(true, []);
+        this.generateArtwork(true, []);
     }
 
     this.generateArtwork = function(firstTime, blocksToCheck) {
@@ -2810,32 +2745,31 @@ function Block(protoblock, blocks) {
 
                 // At me point, it should be safe to calculate the
                 // bounds of the container and cache its contents.
-		if (!firstTime) {
-		    me.container.uncache();
-		}
+                if (!firstTime) {
+                    me.container.uncache();
+                }
                 me.bounds = me.container.getBounds();
                 me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
                 me.blocks.refreshCanvas();
-		if (firstTime) {
+                if (firstTime) {
                     loadEventHandlers(blocks, me);
                     me.finishImageLoad();
-		} else {
-		    me.copyDocks();
-		    // Restore the dock types.
-		    for (i = 0; i < me.docks.length; i++) {
-			me.docks[i][2] = me.dockTypes[i];
-		    }
-		    console.log(me.docks);
-		    me.blocks.loopCounter = 0;
-		    me.blocks.adjustDocks(thisBlock);
-		    if (blocksToCheck.length > 0) {
-			if (this.isArgBlock() || this.isTwoArgBlock()) {
-			    me.blocks.adjustExpandableTwoArgBlock(blocksToCheck);
+                } else {
+                    me.copyDocks();
+                    // Restore the dock types.
+                    for (i = 0; i < me.docks.length; i++) {
+                        me.docks[i][2] = me.dockTypes[i];
+                    }
+                    me.blocks.loopCounter = 0;
+                    me.blocks.adjustDocks(thisBlock);
+                    if (blocksToCheck.length > 0) {
+                        if (me.isArgBlock() || me.isTwoArgBlock()) {
+                            me.blocks.adjustExpandableTwoArgBlock(blocksToCheck);
                         } else {
-			    me.blocks.adjustExpandableClampBlock(blocksToCheck);
+                            me.blocks.adjustExpandableClampBlock(blocksToCheck);
                         }
-		    }
-		}
+                    }
+                }
             }
 
             var artwork = me.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[me.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[me.protoblock.palette.name]).replace('block_label', block_label);
@@ -2918,7 +2852,7 @@ function Block(protoblock, blocks) {
 
             function processCollapseBitmap(name, bitmap, me) {
                 me.collapseBlockBitmap = bitmap;
-		me.collapseBlockBitmap.name = 'collapse_' + thisBlock;
+                me.collapseBlockBitmap.name = 'collapse_' + thisBlock;
                 me.container.addChild(me.collapseBlockBitmap);
                 me.collapseBlockBitmap.visible = false;
                 me.blocks.refreshCanvas();
@@ -2928,7 +2862,7 @@ function Block(protoblock, blocks) {
 
             function processHighlightCollapseBitmap(name, bitmap, me) {
                 me.highlightCollapseBlockBitmap = bitmap;
-		me.highlightCollapseBlockBitmap.name = 'highlight_collapse_' + thisBlock;
+                me.highlightCollapseBlockBitmap.name = 'highlight_collapse_' + thisBlock;
                 me.container.addChild(me.highlightCollapseBlockBitmap);
                 me.highlightCollapseBlockBitmap.visible = false;
                 me.blocks.refreshCanvas();
@@ -2953,7 +2887,6 @@ function Block(protoblock, blocks) {
 
                 var image = new Image();
                 image.onload = function() {
-                    console.log('creating collapse bitmap');
                     me.collapseBitmap = new createjs.Bitmap(image);
                     me.collapseContainer.addChild(me.collapseBitmap);
                     finishCollapseButton(me);

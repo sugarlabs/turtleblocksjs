@@ -346,7 +346,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;
-    actionBlock.blockClampOneArgBlock();
+    actionBlock.stackClampOneArgBlock();
     actionBlock.defaults.push(_('action'));
     actionBlock.staticLabels.push('action');
 
@@ -361,7 +361,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['start'] = startBlock;
-    startBlock.blockClampZeroArgBlock();
+    startBlock.stackClampZeroArgBlock();
     startBlock.staticLabels.push('start');
 
     var incrementOneBlock = new ProtoBlock('incrementOne');

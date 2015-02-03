@@ -71,6 +71,7 @@ function ProtoBlock(name) {
     // We need a copy of the dock, since it is modified by individual
     // blocks as they are expanded or contracted.
     this.copyDock = function(dockStyle) {
+	this.docks = [];
         for (var i = 0; i < dockStyle.length; i++) {
             var dock = [dockStyle[i][0], dockStyle[i][1], dockStyle[i][2]];
             this.docks.push(dock);
@@ -2819,6 +2820,7 @@ function Block(protoblock, blocks) {
 		    for (i = 0; i < me.docks.length; i++) {
 			me.docks[i][2] = me.dockTypes[i];
 		    }
+		    console.log(me.docks);
 		    me.blocks.loopCounter = 0;
 		    me.blocks.adjustDocks(thisBlock);
 		    if (blocksToCheck.length > 0) {

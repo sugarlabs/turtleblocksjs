@@ -468,7 +468,7 @@ function ProtoBlock(name) {
     }
 
     // E.g., greater, less, equal
-    this.booleanTwoArgBlock = function() {
+    this.booleanTwoArgBlock = function(expandY) {
         this.style = 'arg';
         this.size = 2;
         this.args = 2;
@@ -476,7 +476,11 @@ function ProtoBlock(name) {
         var svg = new SVG();
         svg.init();
         svg.setScale(2);
-        svg.setExpand(10, 0, 0, 0);
+        if (expandY) {
+            svg.setExpand(10, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        } else {
+            svg.setExpand(10, 0, 0, 0);
+	}
         this.artwork = svg.booleanCompare();
         svg.docks[0].push('booleanout');
         svg.docks[1].push('numberin');
@@ -2739,6 +2743,7 @@ function Block(protoblock, blocks) {
         case 'less':
         case 'greater':
         case 'equal':
+	    this.protoblock.booleanTwoArgBlock(this.clampCount[0]);
 	    break;
         default:
             if (this.isArgBlock()) {

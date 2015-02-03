@@ -490,11 +490,11 @@ function Palette(palettes, name, color, bgcolor) {
                 // We use a filler for the menu background
                 var height = STANDARDBLOCKHEIGHT * Math.ceil((last(palette.protoList[blk].docks)[1] - 1) / STANDARDBLOCKHEIGHT);
                 // Need to identify multiple arg blocks.
-                if (palette.protoList[blk].docks.length > 2 && last(palette.protoList[blk].docks)[2] != 'in' && palette.protoList[blk].docks[0][2] != 'booleanout') {
-                    height += STANDARDBLOCKHEIGHT;
-                } else if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
+                if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
                     // Some blocks are not shown full-size on the palette.
                     height = STANDARDBLOCKHEIGHT;
+                } else if (palette.protoList[blk].docks.length > 2 && last(palette.protoList[blk].docks)[2] != 'in' && palette.protoList[blk].docks[0][2] != 'booleanout') {
+                    height += STANDARDBLOCKHEIGHT;
                 } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
                     height += STANDARDBLOCKHEIGHT;
                 } else if (palette.protoList[blk].image) {

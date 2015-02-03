@@ -257,6 +257,7 @@ function ProtoBlock(name) {
     // E.g., start. A "child" flow is docked in an expandable clamp.
     // There are no additional arguments and no flow above or below.
     this.blockClampZeroArgBlock = function(slots) {
+	console.log('blockClampZeroArgBlock');
         this.style = 'clamp';
         this.expandable = true;
         this.size = 2;
@@ -276,6 +277,7 @@ function ProtoBlock(name) {
         svg.docks[0].push('unavailable');
         svg.docks[1].push('in');
         svg.docks[2].push('unavailable');
+	console.log('calling copyDocks');
         this.copyDock(svg.docks);
     }
 
@@ -701,7 +703,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // are inserted into (or removed from) the child flow. This is a
     // common operation for start and action blocks, but also for
     // repeat, forever, if, etc.
-    this.adjustExpandableClampBlock = function(blk) {
+    this.adjustExpandableClampBlock = function(blocksToCheck) {
+	console.log(blocksToCheck);
+	if (blocksToCheck.length == 0) {
+	    // Should not happen
+	    console.log('null clamp block to check');
+	    return;
+	}
+	var blk = blocksToCheck.pop();
+
         var myBlock = this.blockList[blk];
 	console.log('adjustExpandableClampBlock: ' + myBlock.name);
 
@@ -710,7 +720,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return;
         }
 
-        function clampAdjuster(me, blk, myBlock, clamp) {
+        function clampAdjuster(me, blk, myBlock, clamp, blocksToCheck) {
 	    console.log('clampAdjuster: ' + myBlock.name + ' clamp: ' + clamp);
             // First we need to count up the number of (and size of) the
             // blocks inside the clamp; The child flow is usually the
@@ -735,7 +745,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 	    if (plusMinus != 0) {
 		console.log('childFlowSize: ' + childFlowSize + ' ' + myBlock.clampCount[clamp]);
 		if (!(childFlowSize == 0 && myBlock.clampCount[clamp] == 1)) {
-		    myBlock.updateSlots(clamp, plusMinus);
+		    myBlock.updateSlots(clamp, plusMinus, blocksToCheck);
                     docksChanged = true;
 		}
             }
@@ -744,12 +754,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         var docksChanged = false;
         if (myBlock.isDoubleClampBlock()) {
-            docksChanged = clampAdjuster(this, blk, myBlock, 1);
+            docksChanged = clampAdjuster(this, blk, myBlock, 1, blocksToCheck);
         }
-        if (clampAdjuster(this, blk, myBlock, 0)) {
+        if (clampAdjuster(this, blk, myBlock, 0, blocksToCheck)) {
             docksChanged = true;
         }
 
+	/*
         // Finally, since the block size has changed and consequently
         // the dock positions have changed, we need to make sure that
         // any flow that continues from this block is positioned
@@ -758,6 +769,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             this.loopCounter = 0;
             this.adjustDocks(blk);
         }
+        */
     }
 
     // Returns the block size. (TODO recurse on first argument in
@@ -967,6 +979,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.adjustDocks = function(blk, resetLoopCounter) {
+	console.log('adjustDocks: ' + this.blockList[blk].name);
         // Give a block, adjust the dock positions
         // of all of the blocks connected to it
 
@@ -1245,12 +1258,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         setTimeout(function() {
             // If we changed the contents of an expandable block, we need
             // to adjust its clamp.
+	    console.log('in timeout: ' + checkExpandableBlocks);
+	    blocks.adjustExpandableClampBlock(checkExpandableBlocks);
+	    /*
             if (checkExpandableBlocks.length > 0) {
                 for (var i = 0; i < checkExpandableBlocks.length; i++) {
                     blocks.adjustExpandableClampBlock(checkExpandableBlocks[i]);
                 }
             }
             blocks.refreshCanvas();
+            */
         }, 1000);
     }
 
@@ -1521,9 +1538,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.expandClamps = function() {
         // Expand expandable clamp blocks as needed.
         this.findClamps();
+        this.adjustExpandableClampBlock(this.expandablesList);
+	/* 
         for (var i = 0; i < this.expandablesList.length; i++) {
             this.adjustExpandableClampBlock(this.expandablesList[i]);
         }
+        */
         this.refreshCanvas();
     }
 
@@ -2637,6 +2657,7 @@ function Block(protoblock, blocks) {
     }
 
     this.copyDocks = function() {
+	console.log('copying docks for ' + this.name);
         for (var i in this.protoblock.docks) {
             var dock = [this.protoblock.docks[i][0], this.protoblock.docks[i][1], this.protoblock.docks[i][2]];
             this.docks.push(dock);
@@ -2655,7 +2676,6 @@ function Block(protoblock, blocks) {
                 this.collapseText.visible = true;
             }
         } else {
-	    console.log('highlight');
             this.bitmap.visible = false;
             this.highlightBitmap.visible = true;
             if (['start', 'action'].indexOf(this.name) != -1) {
@@ -2684,7 +2704,6 @@ function Block(protoblock, blocks) {
                 this.collapseText.visible = true;
             }
         } else {
-	    console.log('unhighlight');
             this.bitmap.visible = true;
             this.highlightBitmap.visible = false;
             if (['start', 'action'].indexOf(this.name) != -1) {
@@ -2697,14 +2716,13 @@ function Block(protoblock, blocks) {
         this.blocks.refreshCanvas();
     }
 
-    this.updateSlots = function(clamp, plusMinus) {
+    this.updateSlots = function(clamp, plusMinus, blocksToCheck) {
         // Resize an expandable block.
 	console.log('updating slots: ' + plusMinus);
         var thisBlock = this.blocks.blockList.indexOf(this);
 
 	// First, remove the children
 	var targets = ['bmp_highlight_' + thisBlock, 'bmp_' + thisBlock];
-	console.log(this.container.children + ' ' + this.container.getNumChildren());
 	var deleteQueue = [];
 	for (var child = 0; child < this.container.getNumChildren(); child++) {
 	    if (targets.indexOf(this.container.children[child].name) != -1) {
@@ -2712,11 +2730,11 @@ function Block(protoblock, blocks) {
             }
         }
 	for (var child in deleteQueue) {
-	    console.log('removing child ' + deleteQueue[child]);
 	    this.container.removeChild(deleteQueue[child]);
 	}
 
 	// And clear the docks as they will be regenerated.
+	console.log('clearing docks for ' + this.name);
 	this.docks = [];
 
 	this.clampCount[clamp] += plusMinus;
@@ -2753,7 +2771,7 @@ function Block(protoblock, blocks) {
             break;
         }
 
-	this.generateArtwork(false);
+	this.generateArtwork(false, blocksToCheck);
     }
 
     this.imageLoad = function() {
@@ -2766,10 +2784,10 @@ function Block(protoblock, blocks) {
         this.text = new createjs.Text('', '20px Sans', '#000000');
         var doubleExpandable = this.blocks.doubleExpandable;
 
-	this.generateArtwork(true);
+	this.generateArtwork(true, []);
     }
 
-    this.generateArtwork = function(firstTime) {
+    this.generateArtwork = function(firstTime, blocksToCheck) {
         // Get the block labels from the protoblock
         var thisBlock = this.blocks.blockList.indexOf(this);
         var block_label = '';
@@ -2818,6 +2836,13 @@ function Block(protoblock, blocks) {
 		if (firstTime) {
                     loadEventHandlers(blocks, me);
                     me.finishImageLoad();
+		} else {
+		    me.copyDocks();
+		    me.blocks.loopCounter = 0;
+		    me.blocks.adjustDocks(thisBlock);  // callback(thisBlock);
+		    if (blocksToCheck.length > 0) {
+			me.blocks.adjustExpandableClampBlock(blocksToCheck);
+		    }
 		}
             }
 
@@ -2826,7 +2851,6 @@ function Block(protoblock, blocks) {
             for (var i = 1; i < me.protoblock.staticLabels.length; i++) {
                 artwork = artwork.replace('arg_label_' + i, _(me.protoblock.staticLabels[i]));
             }
-	    console.log(artwork);
             makeBitmap(artwork, me.name, processHighlightBitmap, me);
         }
 
@@ -2838,11 +2862,11 @@ function Block(protoblock, blocks) {
         for (var i = 1; i < this.protoblock.staticLabels.length; i++) {
             artwork = artwork.replace('arg_label_' + i, _(this.protoblock.staticLabels[i]));
         }
-	console.log(artwork);
         makeBitmap(artwork, this.name, processBitmap, this);
     }
 
     this.finishImageLoad = function() {
+        var thisBlock = this.blocks.blockList.indexOf(this);
 
         // Value blocks get a modifiable text label
         if (this.name == 'text' || this.name == 'number') {
@@ -2902,7 +2926,7 @@ function Block(protoblock, blocks) {
 
             function processCollapseBitmap(name, bitmap, me) {
                 me.collapseBlockBitmap = bitmap;
-		me.collapseBlockBitmap = 'collapse';
+		me.collapseBlockBitmap.name = 'collapse_' + thisBlock;
                 me.container.addChild(me.collapseBlockBitmap);
                 me.collapseBlockBitmap.visible = false;
                 me.blocks.refreshCanvas();
@@ -2912,7 +2936,7 @@ function Block(protoblock, blocks) {
 
             function processHighlightCollapseBitmap(name, bitmap, me) {
                 me.highlightCollapseBlockBitmap = bitmap;
-		me.highlightCollapseBlockBitmap = 'collapse';
+		me.highlightCollapseBlockBitmap.name = 'highlight_collapse_' + thisBlock;
                 me.container.addChild(me.highlightCollapseBlockBitmap);
                 me.highlightCollapseBlockBitmap.visible = false;
                 me.blocks.refreshCanvas();

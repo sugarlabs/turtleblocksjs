@@ -298,10 +298,11 @@ function ProtoBlock(name) {
 	    svg.setClampSlots(0, 1);
 	}
         this.artwork = svg.basicClamp();
-        svg.docks[0].push('in');
+        svg.docks[0].push('out');
         svg.docks[1].push('numberin');
         svg.docks[2].push('in');
-        svg.docks[3].push('out');
+        svg.docks[3].push('in');
+	console.log(svg.docks);
         this.copyDock(svg.docks);
     }
 
@@ -325,10 +326,10 @@ function ProtoBlock(name) {
 	    svg.setClampSlots(0, 1);
 	}
         this.artwork = svg.basicClamp();
-        svg.docks[0].push('in');
+        svg.docks[0].push('out');
         svg.docks[1].push('booleanin');
         svg.docks[2].push('in');
-        svg.docks[3].push('out');
+        svg.docks[3].push('in');
         this.copyDock(svg.docks);
     }
 
@@ -359,11 +360,11 @@ function ProtoBlock(name) {
 	}
         svg.setExpand(0, 0, 0, 0);
         this.artwork = svg.basicClamp();
-        svg.docks[0].push('in');
+        svg.docks[0].push('out');
         svg.docks[1].push('booleanin');
         svg.docks[2].push('in');
         svg.docks[3].push('in');
-        svg.docks[4].push('out');
+        svg.docks[4].push('in');
         this.copyDock(svg.docks);
     }
 
@@ -385,9 +386,9 @@ function ProtoBlock(name) {
 	    svg.setClampSlots(0, 1);
 	}
         this.artwork = svg.basicClamp();
-        svg.docks[0].push('in');
+        svg.docks[0].push('out');
         svg.docks[1].push('in');
-        svg.docks[2].push('out');
+        svg.docks[2].push('in');
         this.copyDock(svg.docks);
     }
 

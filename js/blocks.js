@@ -727,22 +727,17 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 childFlowSize = Math.max(me.getStackSize(myBlock.connections[c]), 1);
             }
 
-	    console.log('childFlowSize: ' + childFlowSize + ' ' + myBlock.clampCount[clamp]);
             // Adjust the clamp size to match the size of the child
             // flow.
             var docksChanged = false;
 
-            while (childFlowSize < myBlock.clampCount[clamp] + 1) {
-		console.log(childFlowSize + ' > ' + myBlock.clampCount[clamp]);
-		console.log('calling removeSlot ' + clamp);
-                myBlock.removeSlot(clamp);
-                docksChanged = true;
-            }
-            while (childFlowSize > myBlock.clampCount[clamp] + 1) {
-		console.log(childFlowSize + ' > ' + myBlock.clampCount[clamp]);
-		console.log('calling addSlot ' + clamp);
-                myBlock.addSlot(clamp);
-                docksChanged = true;
+	    var plusMinus = childFlowSize - myBlock.clampCount[clamp];
+	    if (plusMinus != 0) {
+		console.log('childFlowSize: ' + childFlowSize + ' ' + myBlock.clampCount[clamp]);
+		if (!(childFlowSize == 0 && myBlock.clampCount[clamp] == 1)) {
+		    myBlock.updateSlots(clamp, plusMinus);
+                    docksChanged = true;
+		}
             }
             return docksChanged;
         }
@@ -2704,52 +2699,27 @@ function Block(protoblock, blocks) {
         this.blocks.refreshCanvas();
     }
 
-    this.addSlot = function(clamp) {
-	this.updateSlots(clamp, 1);
-    }
-
-    this.removeSlot = function(clamp) {
-	this.updateSlots(clamp, -1);
-    }
-
     this.updateSlots = function(clamp, plusMinus) {
         // Resize an expandable block.
 	console.log('updating slots: ' + plusMinus);
         var thisBlock = this.blocks.blockList.indexOf(this);
 
 	// First, remove the children
-	console.log(this.container.children);
-	for (child = 0; child < this.container.getNumChildren(); child++) {
-	    if (this.container.children[child].name == 'bmp_highlight_0') {
-		console.log('removing child ' + this.container.children[child]);
-		this.container.removeChild(this.container.children[child]);
-		this.container.uncache();
-		var bounds = this.container.getBounds();
-		this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-	    } else if (this.container.children[child].name == 'bmp_0') {
-		console.log('removing child ' + this.container.children[child]);
-		this.container.removeChild(this.container.children[child]);
-		this.container.uncache();
-		var bounds = this.container.getBounds();
-		this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-	    }
+	var targets = ['bmp_highlight_' + thisBlock, 'bmp_' + thisBlock];
+	console.log(this.container.children + ' ' + this.container.getNumChildren());
+	var deleteQueue = [];
+	for (var child = 0; child < this.container.getNumChildren(); child++) {
+	    if (targets.indexOf(this.container.children[child].name) != -1) {
+		deleteQueue.push(this.container.children[child]);
+            }
         }
+	for (var child in deleteQueue) {
+	    console.log('removing child ' + deleteQueue[child]);
+	    this.container.removeChild(deleteQueue[child]);
+	}
 
-        function processBitmap(name, bitmap, arg) {
-            me = arg;
-	    me.bitmap = bitmap;
-            me.bitmap.name = 'bmp_0';
-            me.container.addChild(bitmap);
-            me.container.uncache();
-            me.bounds = me.container.getBounds();
-            me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
-            me.blocks.refreshCanvas();
-	    // FIXME: process highlight
-	    // FIXME: move decoration to top of container
-        }
-
-	console.log(this.name + ' ' + clamp + ' ' + this.clampCount[clamp]);
 	this.clampCount[clamp] += plusMinus;
+
 	switch (this.name) {
         case 'start':
 	    this.protoblock.blockClampZeroArgBlock(this.clampCount[clamp]);
@@ -2782,31 +2752,25 @@ function Block(protoblock, blocks) {
             break;
         }
 
-        // Get the block labels from the protoblock
-        var block_label = '';
-        if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
-            block_label = _(this.protoblock.staticLabels[0]);
-        }
-        while (this.protoblock.staticLabels.length < this.protoblock.args + 1) {
-            this.protoblock.staticLabels.push('');
-        }
-        var artwork = this.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label);
-
-        makeBitmap(artwork, name, processBitmap, this);
+	this.generateArtwork(false);
     }
 
     this.imageLoad = function() {
         // Load any artwork associated with the block and create any
         // extra parts. Image components are loaded asynchronously so
         // most the work happens in callbacks.
-        var thisBlock = this.blocks.blockList.indexOf(this);
 
         // We need a label for most blocks.
         // TODO: use Text exclusively for all block labels.
         this.text = new createjs.Text('', '20px Sans', '#000000');
         var doubleExpandable = this.blocks.doubleExpandable;
 
+	this.generateArtwork(true);
+    }
+
+    this.generateArtwork = function(firstTime) {
         // Get the block labels from the protoblock
+        var thisBlock = this.blocks.blockList.indexOf(this);
         var block_label = '';
         if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
             block_label = _(this.protoblock.staticLabels[0]);
@@ -2844,11 +2808,18 @@ function Block(protoblock, blocks) {
 
                 // At me point, it should be safe to calculate the
                 // bounds of the container and cache its contents.
+		if (!firstTime) {
+		    console.log('uncache');
+		    me.container.uncache();
+		}
                 me.bounds = me.container.getBounds();
                 me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
-                loadEventHandlers(blocks, me);
+		console.log('cache');
                 me.blocks.refreshCanvas();
-                me.finishImageLoad();
+		if (firstTime) {
+                    loadEventHandlers(blocks, me);
+                    me.finishImageLoad();
+		}
             }
 
             var artwork = me.protoblock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[me.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[me.protoblock.palette.name]).replace('block_label', block_label);
@@ -3397,6 +3368,7 @@ function collapseOut(blocks, myBlock, thisBlock, moved, event) {
     if (blocks.activeBlock != myBlock) {
         return;
     }
+
     blocks.unhighlight(null);
     blocks.activeBlock = null;
     blocks.refreshCanvas();
@@ -3408,7 +3380,8 @@ function loadEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
     var hitArea = new createjs.Shape();
     var bounds = myBlock.container.getBounds()
-    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
+    // Only detect hits on top section of block.
+    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT);
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {

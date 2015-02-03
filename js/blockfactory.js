@@ -421,7 +421,8 @@ function SVG() {
         if (!this._outie) {
             return this._rLineTo(0, -this._innieY2);
         }
-        this.docks.push([(this._x * this._scale),
+	// Outie needs to be the first dock element.
+        this.docks.unshift([(this._x * this._scale),
                            (this._y * this._scale)]);
         return this._rLineTo(0, -this._strokeWidth) + this._rLineTo(-this._innieX1 - 2 * this._strokeWidth, 0) + this._rLineTo(0, this._innieY1) + this._rLineTo(-this._innieX2 + 2 * this._strokeWidth, 0) + this._rLineTo(0, -this._innieY2 - 2 * this._innieY1 + 2 * this._strokeWidth) + this._rLineTo(this._innieX2 - 2 * this._strokeWidth, 0) + this._rLineTo(0, this._innieY1) + this._rLineTo(this._innieX1 + 2 * this._strokeWidth, 0) + this._rLineTo(0, -this._strokeWidth);
     }
@@ -614,7 +615,7 @@ function SVG() {
         svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
 
         // Add a label for each innies
-        if (this._slot) {
+        if (this._slot || this._outie) {
             var di = 1;  // Skip the first dock since it is a slot.
         } else {
             var di = 0;

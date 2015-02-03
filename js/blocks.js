@@ -764,7 +764,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // We also adjust the size of twoarg blocks. It is similar to how
     // we adjust clamps, but enough different that it is in its own
     // function.
-    this.adjustExpandableTwoArgBlock = function(blk) {
+    this.adjustExpandableTwoArgBlock = function(blocksToCheck) {
+	console.log(blocksToCheck);
+	if (blocksToCheck.length == 0) {
+	    // Should not happen
+	    console.log('null clamp block to check');
+	    return;
+	}
+	var blk = blocksToCheck.pop();
+
         var myBlock = this.blockList[blk];
 
         // First we determine the size of the first argument.
@@ -779,7 +787,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 	if (plusMinus != 0) {
 	    console.log('firstArgumentSize: ' + firstArgumentSize + ' ' + myBlock.clampCount[0]);
 	    if (!(firstArgumentSize == 0 && myBlock.clampCount[0] == 1)) {
-		myBlock.updateSlots(0, plusMinus, []);
+		myBlock.updateSlots(0, plusMinus, blocksToCheck);
 	    }
 	}
 
@@ -1177,9 +1185,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         // If we changed the contents of a two-arg block, we need to
         // adjust it.
         if (checkTwoArgBlocks.length > 0) {
+            this.adjustExpandableTwoArgBlock(checkTwoArgBlocks);
+	/*
             for (var i = 0; i < checkTwoArgBlocks.length; i++) {
                 this.adjustExpandableTwoArgBlock(checkTwoArgBlocks[i]);
             }
+        */
         }
 
         var blocks = this;
@@ -1485,9 +1496,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.expandTwoArgs = function() {
         // Expand expandable 2-arg blocks as needed.
         this.findTwoArgs();
+        this.adjustExpandableTwoArgBlock(this.expandablesList);
+	/* 
         for (var i = 0; i < this.expandablesList.length; i++) {
             this.adjustExpandableTwoArgBlock(this.expandablesList[i]);
         }
+        */
         this.refreshCanvas();
     }
 
@@ -2808,7 +2822,11 @@ function Block(protoblock, blocks) {
 		    me.blocks.loopCounter = 0;
 		    me.blocks.adjustDocks(thisBlock);
 		    if (blocksToCheck.length > 0) {
-			me.blocks.adjustExpandableClampBlock(blocksToCheck);
+			if (this.isArgBlock() || this.isTwoArgBlock()) {
+			    me.blocks.adjustExpandableTwoArgBlock(blocksToCheck);
+                        } else {
+			    me.blocks.adjustExpandableClampBlock(blocksToCheck);
+                        }
 		    }
 		}
             }

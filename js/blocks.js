@@ -256,8 +256,7 @@ function ProtoBlock(name) {
 
     // E.g., start. A "child" flow is docked in an expandable clamp.
     // There are no additional arguments and no flow above or below.
-    this.blockClampZeroArgBlock = function(slots) {
-	console.log('blockClampZeroArgBlock');
+    this.stackClampZeroArgBlock = function(slots) {
         this.style = 'clamp';
         this.expandable = true;
         this.size = 2;
@@ -277,7 +276,6 @@ function ProtoBlock(name) {
         svg.docks[0].push('unavailable');
         svg.docks[1].push('in');
         svg.docks[2].push('unavailable');
-	console.log('calling copyDocks');
         this.copyDock(svg.docks);
     }
 
@@ -395,7 +393,7 @@ function ProtoBlock(name) {
 
     // E.g., action. A "child" flow is docked in an expandable clamp.
     // The additional argument is a name. Again, no flow above or below.
-    this.blockClampOneArgBlock = function(slots) {
+    this.stackClampOneArgBlock = function(slots) {
         this.style = 'clamp';
         this.expandable = true;
         this.size = 2;
@@ -752,24 +750,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             return docksChanged;
         }
 
-        var docksChanged = false;
         if (myBlock.isDoubleClampBlock()) {
-            docksChanged = clampAdjuster(this, blk, myBlock, 1, blocksToCheck);
+            clampAdjuster(this, blk, myBlock, 1, blocksToCheck);
         }
-        if (clampAdjuster(this, blk, myBlock, 0, blocksToCheck)) {
-            docksChanged = true;
-        }
-
-	/*
-        // Finally, since the block size has changed and consequently
-        // the dock positions have changed, we need to make sure that
-        // any flow that continues from this block is positioned
-        // properly.
-        if (docksChanged) {
-            this.loopCounter = 0;
-            this.adjustDocks(blk);
-        }
-        */
+        clampAdjuster(this, blk, myBlock, 0, blocksToCheck);
     }
 
     // Returns the block size. (TODO recurse on first argument in
@@ -979,7 +963,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.adjustDocks = function(blk, resetLoopCounter) {
-	console.log('adjustDocks: ' + this.blockList[blk].name);
         // Give a block, adjust the dock positions
         // of all of the blocks connected to it
 
@@ -2056,7 +2039,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.newActionBlock = function(name) {
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction_' + name] = myActionBlock;
-        myActionBlock.blockClampOneArgBlock();
+        myActionBlock.stackClampOneArgBlock();
         myActionBlock.palette = this.palettes.dict['blocks'];
         myActionBlock.artworkOffset = [0, 0, 86];
         myActionBlock.fillerOffset = 42;
@@ -2657,7 +2640,6 @@ function Block(protoblock, blocks) {
     }
 
     this.copyDocks = function() {
-	console.log('copying docks for ' + this.name);
         for (var i in this.protoblock.docks) {
             var dock = [this.protoblock.docks[i][0], this.protoblock.docks[i][1], this.protoblock.docks[i][2]];
             this.docks.push(dock);
@@ -2741,22 +2723,24 @@ function Block(protoblock, blocks) {
 
 	switch (this.name) {
         case 'start':
-	    this.protoblock.blockClampZeroArgBlock(this.clampCount[clamp]);
-	    this.protoblock.staticLabels.push('start');
+	    this.protoblock.stackClampZeroArgBlock(this.clampCount[clamp]);
+            break;
+        case 'action':
+	    this.protoblock.stackClampOneArgBlock(this.clampCount[clamp]);
             break;
         case 'repeat':
 	    this.protoblock.flowClampOneArgBlock(this.clampCount[clamp]);
-	    this.protoblock.staticLabels.push('repeat');
-            break;
-        case 'action':
             break;
         case 'forever':
+	    this.protoblock.flowClampZeroArgBlock(this.clampCount[clamp]);
             break;
         case 'if':
         case 'while':
         case 'until':
+	    this.protoblock.flowClampBooleanArgBlock(this.clampCount[clamp]);
             break;
         case 'ifelse':
+	    this.protoblock.doubleFlowClampBooleanArgBlock(this.clampCount[0], this.clampCount[1]);
             break;
         case 'less':
         case 'greater':

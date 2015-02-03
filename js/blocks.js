@@ -710,7 +710,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // common operation for start and action blocks, but also for
     // repeat, forever, if, etc.
     this.adjustExpandableClampBlock = function(blocksToCheck) {
-        console.log(blocksToCheck);
         if (blocksToCheck.length == 0) {
             // Should not happen
             return;
@@ -764,7 +763,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     // we adjust clamps, but enough different that it is in its own
     // function.
     this.adjustExpandableTwoArgBlock = function(blocksToCheck) {
-        console.log('adjustExpandableTwoArgBlocks: ' + blocksToCheck);
         if (blocksToCheck.length == 0) {
             // Should not happen
             return;
@@ -2692,6 +2690,45 @@ function Block(protoblock, blocks) {
         this.generateArtwork(false, blocksToCheck);
     }
 
+    this.resetProtoArtwork = function() {
+        // We may have modified the protoblock artwork. We need to
+        // reset it.
+        switch (this.name) {
+        case 'start':
+            this.protoblock.stackClampZeroArgBlock();
+            break;
+        case 'action':
+            this.protoblock.stackClampOneArgBlock();
+            break;
+        case 'repeat':
+            this.protoblock.flowClampOneArgBlock();
+            break;
+        case 'forever':
+            this.protoblock.flowClampZeroArgBlock();
+            break;
+        case 'if':
+        case 'while':
+        case 'until':
+            this.protoblock.flowClampBooleanArgBlock();
+            break;
+        case 'ifthenelse':
+            this.protoblock.doubleFlowClampBooleanArgBlock();
+            break;
+        case 'less':
+        case 'greater':
+        case 'equal':
+            this.protoblock.booleanTwoArgBlock();
+            break;
+        default:
+            if (this.isArgBlock()) {
+                this.protoblock.twoArgMathBlock();
+            } else if (this.isTwoArgBlock()) {
+                this.protoblock.twoArgBlock();
+            }
+            break;
+        }
+    }
+
     this.imageLoad = function() {
         // Load any artwork associated with the block and create any
         // extra parts. Image components are loaded asynchronously so
@@ -2760,6 +2797,11 @@ function Block(protoblock, blocks) {
                     for (i = 0; i < me.docks.length; i++) {
                         me.docks[i][2] = me.dockTypes[i];
                     }
+
+                    // Restore protoblock artwork to its original state.
+                    me.resetProtoArtwork();
+
+                    // Adjust the docks.
                     me.blocks.loopCounter = 0;
                     me.blocks.adjustDocks(thisBlock);
                     if (blocksToCheck.length > 0) {

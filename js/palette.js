@@ -597,7 +597,7 @@ function Palette(palettes, name, color, bgcolor) {
                             svg.setTab(true);
                             svg.setSlot(true);
                             var artwork = svg.basicBlock();
-                            block_label = _(myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[1] + ' ' + myBlock.staticLabels[2]);
+                            block_label = _(myBlock.staticLabels[0]) + ' ' + _(myBlock.staticLabels[2]);
                             break;
                         default:
                             var artwork = myBlock.artwork;

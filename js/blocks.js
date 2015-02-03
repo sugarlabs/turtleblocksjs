@@ -713,7 +713,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         function clampAdjuster(me, blk, myBlock, clamp) {
 	    console.log('clampAdjuster: ' + myBlock.name + ' clamp: ' + clamp);
             // First we need to count up the number of (and size of) the
-            // blocks inside the clamp; The child flow is the
+            // blocks inside the clamp; The child flow is usually the
             // second-to-last argument.
             if (clamp == 0) {
                 var c = myBlock.connections.length - 2;
@@ -2655,21 +2655,20 @@ function Block(protoblock, blocks) {
                 this.collapseText.visible = true;
             }
         } else {
+	    console.log('highlight');
             this.bitmap.visible = false;
             this.highlightBitmap.visible = true;
-            if (this.isExpandableBlock()) {
-                if (['start', 'action'].indexOf(this.name) != -1) {
-                    // There could be a race condition when making a
-                    // new action block.
-                    if (this.collapseText != null) {
-                        this.collapseText.visible = false;
-                    }
-                    if (this.collapseBlockBitmap.visible != null) {
-                        this.collapseBlockBitmap.visible = false;
-                    }
-                    if (this.highlightCollapseBlockBitmap.visible != null) {
-                        this.highlightCollapseBlockBitmap.visible = false;
-                    }
+            if (['start', 'action'].indexOf(this.name) != -1) {
+                // There could be a race condition when making a
+                // new action block.
+                if (this.collapseText != null) {
+                    this.collapseText.visible = false;
+                }
+                if (this.collapseBlockBitmap.visible != null) {
+                    this.collapseBlockBitmap.visible = false;
+                }
+                if (this.highlightCollapseBlockBitmap.visible != null) {
+                    this.highlightCollapseBlockBitmap.visible = false;
                 }
             }
         }
@@ -2685,14 +2684,13 @@ function Block(protoblock, blocks) {
                 this.collapseText.visible = true;
             }
         } else {
+	    console.log('unhighlight');
             this.bitmap.visible = true;
             this.highlightBitmap.visible = false;
-            if (this.isExpandableBlock()) {
-                if (['start', 'action'].indexOf(this.name) != -1) {
-                    this.highlightCollapseBlockBitmap.visible = false;
-                    this.collapseBlockBitmap.visible = false;
-                    this.collapseText.visible = false;
-                }
+            if (['start', 'action'].indexOf(this.name) != -1) {
+                this.highlightCollapseBlockBitmap.visible = false;
+                this.collapseBlockBitmap.visible = false;
+                this.collapseText.visible = false;
             }
         }
         this.container.updateCache();
@@ -2717,6 +2715,9 @@ function Block(protoblock, blocks) {
 	    console.log('removing child ' + deleteQueue[child]);
 	    this.container.removeChild(deleteQueue[child]);
 	}
+
+	// And clear the docks as they will be regenerated.
+	this.docks = [];
 
 	this.clampCount[clamp] += plusMinus;
 
@@ -2809,12 +2810,10 @@ function Block(protoblock, blocks) {
                 // At me point, it should be safe to calculate the
                 // bounds of the container and cache its contents.
 		if (!firstTime) {
-		    console.log('uncache');
 		    me.container.uncache();
 		}
                 me.bounds = me.container.getBounds();
                 me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
-		console.log('cache');
                 me.blocks.refreshCanvas();
 		if (firstTime) {
                     loadEventHandlers(blocks, me);
@@ -2827,6 +2826,7 @@ function Block(protoblock, blocks) {
             for (var i = 1; i < me.protoblock.staticLabels.length; i++) {
                 artwork = artwork.replace('arg_label_' + i, _(me.protoblock.staticLabels[i]));
             }
+	    console.log(artwork);
             makeBitmap(artwork, me.name, processHighlightBitmap, me);
         }
 
@@ -2838,6 +2838,7 @@ function Block(protoblock, blocks) {
         for (var i = 1; i < this.protoblock.staticLabels.length; i++) {
             artwork = artwork.replace('arg_label_' + i, _(this.protoblock.staticLabels[i]));
         }
+	console.log(artwork);
         makeBitmap(artwork, this.name, processBitmap, this);
     }
 

@@ -3499,7 +3499,11 @@ function loadEventHandlers(blocks, myBlock) {
     var bounds = myBlock.container.getBounds()
 
     // Only detect hits on top section of block.
-    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT);
+    if (myBlock.isClampBlock()) {
+	hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT);
+    } else {
+	hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
+    }
     myBlock.container.hitArea = hitArea;
 
     myBlock.container.on('mouseover', function(event) {

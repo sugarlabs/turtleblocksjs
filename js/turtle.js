@@ -547,6 +547,7 @@ function Turtles(canvas, stage, refreshCanvas) {
                 console.log('adding decoration to ' + startBlock.name);
                 myTurtle.decorationBitmap = myTurtle.bitmap.clone();
                 startBlock.container.addChild(myTurtle.decorationBitmap);
+		myTurtle.decorationBitmap.name = 'decoration';
                 myTurtle.decorationBitmap.x = 90;
                 myTurtle.decorationBitmap.y = 35;
                 myTurtle.decorationBitmap.scaleX = 0.5;

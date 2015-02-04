@@ -2792,6 +2792,16 @@ function Block(protoblock, blocks) {
                     loadEventHandlers(blocks, me);
                     me.finishImageLoad();
                 } else {
+		    if (me.name == 'start') {
+			// Find the turtle decoration and move it to the top.
+                        for (var child = 0; child < me.container.getNumChildren(); child++) {
+                            if (me.container.children[child].name == 'decoration') {
+			        me.container.setChildIndex(me.container.children[child], me.container.getNumChildren() - 1);
+                                break;
+                            }
+                        }
+                    }
+
                     me.copyDocks();
                     // Restore the dock types.
                     for (i = 0; i < me.docks.length; i++) {

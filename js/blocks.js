@@ -57,7 +57,11 @@ function ProtoBlock(name) {
     // Static labels are generated as part of the inline SVG.
     this.staticLabels = [];
     // Default fontsize used for static labels.
-    this.fontsize = '18px';
+    this.fontsize = null;
+    // Extra block width for long labels
+    this.extraWidth = 0;
+    // Block scale
+    this.scale = 2;
     // The SVG template used to generate the block graphic.
     this.artwork = null;
     // Docks define where blocks connect and which connections are
@@ -86,9 +90,15 @@ function ProtoBlock(name) {
         this.args = 0;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setTab(true);
         svg.setSlot(true);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('out');
         svg.docks[1].push('in');
@@ -100,11 +110,38 @@ function ProtoBlock(name) {
         this.args = 0;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
-        svg.setTab(true);
+        svg.setScale(this.scale);
+        svg.setSlot(true);
         svg.setTail(true);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('out');
+        svg.docks[1].push('unavailable');
+        this.copyDock(svg.docks);
+    }
+
+    // E.g., collapsed
+    this.basicBlockCollapsed = function() {
+        this.args = 0;
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setCap(true);
+        svg.setTail(true);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
+        this.artwork = svg.basicBlock();
+        svg.docks[0].push('unavailable');
+        svg.docks[1].push('unavailable');
         this.copyDock(svg.docks);
     }
 
@@ -113,10 +150,16 @@ function ProtoBlock(name) {
         this.args = 1;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setTab(true);
         svg.setInnies([true]);
         svg.setSlot(true);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('out');
         svg.docks[1].push('numberin');
@@ -130,12 +173,18 @@ function ProtoBlock(name) {
         this.size = 3;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setTab(true);
         svg.setSlot(true);
         svg.setBoolean(true);
         svg.setClampCount(0);
         svg.setExpand(0, 0, 0, 0);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('in');
         svg.docks[1].push('booleanin');
@@ -151,12 +200,17 @@ function ProtoBlock(name) {
         this.args = 2;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setTab(true);
         svg.setInnies([true, true]);
         svg.setSlot(true);
         if (expandY) {
-            svg.setExpand(30, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+            svg.setExpand(30 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        } else if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
         }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('out');
@@ -173,11 +227,17 @@ function ProtoBlock(name) {
         this.args = 1;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setSlot(false);
         svg.setInnies([true]);
         svg.setOutie(true);
         svg.setTab(false);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('numberout');
         svg.docks[1].push('numberin');
@@ -191,11 +251,17 @@ function ProtoBlock(name) {
         this.args = 1;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setSlot(false);
         svg.setInnies([true]);
         svg.setOutie(true);
         svg.setTab(false);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('numberout');
         svg.docks[0].push('numberin');
@@ -210,13 +276,18 @@ function ProtoBlock(name) {
         this.args = 2;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setSlot(false);
         svg.setInnies([true, true]);
         svg.setOutie(true);
         svg.setTab(false);
         if (expandY) {
-            svg.setExpand(30, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+            svg.setExpand(30 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        } else if (this.extraWidth != 0) {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
         }
         this.artwork = svg.basicBlock();
         svg.docks[0].push('numberout');
@@ -233,9 +304,12 @@ function ProtoBlock(name) {
         this.args = 0;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
-        svg.setExpand(60, 0, 0, 0);
+        svg.setScale(this.scale);
+        svg.setExpand(60 + this.extraWidth, 0, 0, 0);
         svg.setOutie(true);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
         this.artwork = svg.basicBox();
         svg.docks[0].push('numberout');
         this.copyDock(svg.docks);
@@ -250,9 +324,12 @@ function ProtoBlock(name) {
         this.args = 0;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
-        svg.setExpand(60, 23, 0, 0);
+        svg.setScale(this.scale);
+        svg.setExpand(60 + this.extraWidth, 23, 0, 0);
         svg.setOutie(true);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
         this.artwork = svg.basicBox();
         svg.docks[0].push('mediaout');
         this.copyDock(svg.docks);
@@ -267,14 +344,17 @@ function ProtoBlock(name) {
         this.args = 1;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setCap(true);
         svg.setTail(true);
-        svg.setExpand(20, 0, 0, 0);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
             svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
         }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('unavailable');
@@ -291,15 +371,18 @@ function ProtoBlock(name) {
         this.args = 2;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setTab(true);
         svg.setSlot(true);
         svg.setInnies([true]);
-        svg.setExpand(20, 0, 0, 0);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
             svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
         }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('out');
@@ -318,15 +401,18 @@ function ProtoBlock(name) {
         this.args = 2;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setTab(true);
         svg.setBoolean(true);
         svg.setSlot(true);
-        svg.setExpand(0, 0, 0, 0);
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
             svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
         }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('out');
@@ -346,11 +432,11 @@ function ProtoBlock(name) {
         this.args = 3;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setTab(true);
         svg.setSlot(true);
         svg.setBoolean(true);
-        svg.setClampCount(2);
+        svg.setClampCount(this.scale);
         if (topSlots) {
             svg.setClampSlots(0, topSlots);
         } else {
@@ -361,7 +447,10 @@ function ProtoBlock(name) {
         } else {
             svg.setClampSlots(1, 1);
         }
-        svg.setExpand(0, 0, 0, 0);
+        svg.setExpand(this.extraWidth, 0, 0, 0);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('out');
         svg.docks[1].push('booleanin');
@@ -379,14 +468,17 @@ function ProtoBlock(name) {
         this.args = 1;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setTab(true);
         svg.setSlot(true);
-        svg.setExpand(10, 0, 0, 0);
+        svg.setExpand(10 + this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
             svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
         }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('out');
@@ -404,15 +496,18 @@ function ProtoBlock(name) {
         this.args = 1;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         svg.setCap(true);
         svg.setTail(true);
         svg.setInnies([true]);
-        svg.setExpand(10, 0, 0, 0);
+        svg.setExpand(10 + this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
             svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
         }
         this.artwork = svg.basicClamp();
         svg.docks[0].push('unavailable');
@@ -429,8 +524,11 @@ function ProtoBlock(name) {
         this.args = 0;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
-        svg.setExpand(70, 0, 0, 4);
+        svg.setScale(this.scale);
+        svg.setExpand(60 + this.extraWidth, 0, 0, 4);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
         this.artwork = svg.booleanNot(true);
         svg.docks[0].push('booleanout');
         this.copyDock(svg.docks);
@@ -443,8 +541,11 @@ function ProtoBlock(name) {
         this.args = 1;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
-        svg.setExpand(20, 0, 0, 0);
+        svg.setScale(this.scale);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
         this.artwork = svg.booleanNot(false);
         svg.docks[0].push('booleanout');
         svg.docks[1].push('booleanin');
@@ -458,8 +559,11 @@ function ProtoBlock(name) {
         this.args = 2;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
-        svg.setExpand(20, 0, 0, 0);
+        svg.setScale(this.scale);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
         this.artwork = svg.booleanAndOr();
         svg.docks[0].push('booleanout');
         svg.docks[1].push('booleanin');
@@ -475,11 +579,14 @@ function ProtoBlock(name) {
         this.expandable = true;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
+        svg.setScale(this.scale);
         if (expandY) {
-            svg.setExpand(10, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+            svg.setExpand(10 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
         } else {
-            svg.setExpand(10, 0, 0, 0);
+            svg.setExpand(10 + this.extraWidth, 0, 0, 0);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
         }
         this.artwork = svg.booleanCompare();
         svg.docks[0].push('booleanout');
@@ -496,9 +603,12 @@ function ProtoBlock(name) {
         this.args = 0;
         var svg = new SVG();
         svg.init();
-        svg.setScale(2);
-        svg.setExpand(70, 0, 0, 0);
+        svg.setScale(this.scale);
+        svg.setExpand(70 + this.extraWidth, 0, 0, 0);
         svg.setOutie(true);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
         this.artwork = svg.basicBox();
         svg.docks[0].push('numberout');
         this.copyDock(svg.docks);
@@ -1615,7 +1725,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             postProcessArg = [thisBlock, null];
         } else if (name == 'camera') {
             postProcess = function(args) {
-		console.log('post process camera ' + args[1]);
+                console.log('post process camera ' + args[1]);
                 var thisBlock = args[0];
                 var value = args[1];
                 me.blockList[thisBlock].value = CAMERAVALUE;
@@ -2707,14 +2817,14 @@ function Block(protoblock, blocks) {
 
     this.addImage = function() {
         var image = new Image();
-	var me = this;
+        var me = this;
         image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
-	    bitmap.name = 'media';
+            bitmap.name = 'media';
             if (image.width > image.height) {
-		bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
+                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
             } else {
-		bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
+                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
             }
             me.container.addChild(bitmap);
             bitmap.x = MEDIASAFEAREA[0];
@@ -2774,16 +2884,16 @@ function Block(protoblock, blocks) {
                 me.blocks.refreshCanvas();
                 if (firstTime) {
                     loadEventHandlers(blocks, me);
-		    if (me.image != null) {
-			me.addImage();
-		    }
+                    if (me.image != null) {
+                        me.addImage();
+                    }
                     me.finishImageLoad();
                 } else {
-		    if (me.name == 'start') {
-			// Find the turtle decoration and move it to the top.
+                    if (me.name == 'start') {
+                        // Find the turtle decoration and move it to the top.
                         for (var child = 0; child < me.container.getNumChildren(); child++) {
                             if (me.container.children[child].name == 'decoration') {
-			        me.container.setChildIndex(me.container.children[child], me.container.getNumChildren() - 1);
+                                me.container.setChildIndex(me.container.children[child], me.container.getNumChildren() - 1);
                                 break;
                             }
                         }
@@ -2897,7 +3007,10 @@ function Block(protoblock, blocks) {
                 me.blocks.refreshCanvas();
             }
 
-            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', _(block_label)), '', processCollapseBitmap, this);
+            var proto = new ProtoBlock('collapse');
+            proto.basicBlockCollapsed();
+            var artwork = proto.artwork;
+            makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', _(block_label)), '', processCollapseBitmap, this);
 
             function processHighlightCollapseBitmap(name, bitmap, me) {
                 me.highlightCollapseBlockBitmap = bitmap;
@@ -2949,7 +3062,8 @@ function Block(protoblock, blocks) {
                 }
             }
 
-            makeBitmap(ACTIONCLAMPCOLLAPSED.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label), '', processHighlightCollapseBitmap, this);
+            var artwork = proto.artwork;
+            makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label), '', processHighlightCollapseBitmap, this);
         }
     }
 
@@ -3103,7 +3217,7 @@ function labelChanged(myBlock) {
 function removeChildBitmap(myBlock, name) {
     for (var child = 0; child < myBlock.container.getNumChildren(); child++) {
         if (myBlock.container.children[child].name == name) {
-	    myBlock.container.removeChild(myBlock.container.children[child]);
+            myBlock.container.removeChild(myBlock.container.children[child]);
             break;
         }
     }
@@ -3119,13 +3233,13 @@ function loadThumbnail(blocks, thisBlock, imagePath) {
     var image = new Image();
 
     image.onload = function() {
-	var myBlock = blocks.blockList[thisBlock];
+        var myBlock = blocks.blockList[thisBlock];
 
-	// Before adding new artwork, remove any old artwork.
-	removeChildBitmap(myBlock, 'media');
+        // Before adding new artwork, remove any old artwork.
+        removeChildBitmap(myBlock, 'media');
 
         var bitmap = new createjs.Bitmap(image);
-	bitmap.name = 'media';
+        bitmap.name = 'media';
 
         if (image.width > image.height) {
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;

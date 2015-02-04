@@ -45,8 +45,6 @@ var ACTIONTEXTY = 40;
 // Artwork position in Media Block
 var MEDIASAFEAREA = [40, 4, 108, 80];
 
-var ACTIONCLAMPCOLLAPSED = '<svg xmlns="http://www.w3.org/2000/svg" width="114" height="68">' + '<g transform="matrix(2,0,0,2,0,10)">' + '<path d="m 0.5,14.5 0,-9 c 0,-2.0943951 1.9681383,-3.4920346 4,-4 l 4,0 5,-6 5,6 30,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,9 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -30,0 -5,6 -5,-6 -4,0 c -2.0943951,0 -4,-1.905605 -4,-4 z" style="fill:fill_color;fill-opacity:1;stroke:stroke_color;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />' + '</g>' + '<text style="font-size:16px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">' + '<tspan x="20" y="43" style="font-size:font_size">block_label</tspan>' + '</text>' + '</svg>';
-
 // Palette-related artwork
 
 var MENUWIDTH = 200;

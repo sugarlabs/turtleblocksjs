@@ -82,10 +82,6 @@ function SVG() {
         this._fontSize = fontSize;
     }
 
-    this.setTail = function (flag) {
-        this._tail = flag;
-    }
-
     this.setDrawInniess = function (flag) {
         this._draw_inniess = flag;
     }
@@ -166,20 +162,30 @@ function SVG() {
 
     this.setSlot = function (flag) {
         this._slot = flag;
-        if (this._slot) {
+        if (flag) {
             this._cap = false;
         }
     }
 
     this.setCap = function (flag) {
         this._cap = flag;
-        if (this._cap) {
+        if (flag) {
             this._slot = false;
         }
     }
 
     this.setTab = function (flag) {
         this._tab = flag;
+        if (flag) {
+            this._tail = false;
+        }
+    }
+
+    this.setTail = function (flag) {
+        this._tail = flag;
+        if (flag) {
+            this._tab = false;
+        }
     }
 
     this.setPorch = function (flag) {

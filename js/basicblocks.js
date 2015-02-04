@@ -232,7 +232,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     randomBlock.twoArgMathBlock();
     randomBlock.defaults.push(0);
     randomBlock.defaults.push(100);
-    randomBlock.fontsize = '14px'; // FIX ME: label doesn't fix
     randomBlock.staticLabels.push('random');
     randomBlock.staticLabels.push('min');
     randomBlock.staticLabels.push('max');
@@ -240,33 +239,33 @@ function initBasicProtoBlocks(palettes, blocks) {
     var plusBlock = new ProtoBlock('plus');
     plusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['plus'] = plusBlock;
+    plusBlock.fontsize = 14;
     plusBlock.twoArgMathBlock();
     plusBlock.docks[0][2] = 'anyout';
     plusBlock.docks[1][2] = 'anyin';
     plusBlock.docks[2][2] = 'anyin';
     plusBlock.staticLabels.push('+');
-    plusBlock.fontsize = '24px';
 
     var minusBlock = new ProtoBlock('minus');
     minusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['minus'] = minusBlock;
+    minusBlock.fontsize = 14;
     minusBlock.twoArgMathBlock();
     minusBlock.staticLabels.push('–');
-    minusBlock.fontsize = '24px';
 
     var multiplyBlock = new ProtoBlock('multiply');
     multiplyBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['multiply'] = multiplyBlock;
+    multiplyBlock.fontsize = 14;
     multiplyBlock.twoArgMathBlock();
     multiplyBlock.staticLabels.push('×');
-    multiplyBlock.fontsize = '24px';
 
     var divideBlock = new ProtoBlock('divide');
     divideBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['divide'] = divideBlock;
+    divideBlock.fontsize = 14;
     divideBlock.twoArgMathBlock();
     divideBlock.staticLabels.push('/');
-    divideBlock.fontsize = '24px';
 
     var sqrtBlock = new ProtoBlock('sqrt');
     sqrtBlock.palette = palettes.dict['number'];
@@ -283,23 +282,23 @@ function initBasicProtoBlocks(palettes, blocks) {
     var greaterBlock = new ProtoBlock('greater');
     greaterBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['greater'] = greaterBlock;
+    greaterBlock.fontsize = 14;
     greaterBlock.booleanTwoArgBlock();
     greaterBlock.staticLabels.push('&gt;');
-    greaterBlock.fontsize = '24px';
 
     var lessBlock = new ProtoBlock('less');
     lessBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['less'] = lessBlock;
+    lessBlock.fontsize = 14;
     lessBlock.booleanTwoArgBlock();
     lessBlock.staticLabels.push('&lt;');
-    lessBlock.fontsize = '24px';
 
     var equalBlock = new ProtoBlock('equal');
     equalBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['equal'] = equalBlock;
+    equalBlock.fontsize = 14;
     equalBlock.booleanTwoArgBlock();
     equalBlock.staticLabels.push('=');
-    equalBlock.fontsize = '24px';
 
     var andBlock = new ProtoBlock('and');
     andBlock.palette = palettes.dict['boolean'];
@@ -554,6 +553,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var mousebuttonBlock = new ProtoBlock('mousebutton');
     mousebuttonBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
+    mousebuttonBlock.extraWidth = 15;
     mousebuttonBlock.booleanZeroArgBlock();
     mousebuttonBlock.staticLabels.push('mouse button');
 

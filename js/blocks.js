@@ -2827,7 +2827,7 @@ function Block(protoblock, blocks) {
                 bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
             }
             me.container.addChild(bitmap);
-            bitmap.x = MEDIASAFEAREA[0];
+            bitmap.x = MEDIASAFEAREA[0] - 10;
             bitmap.y = MEDIASAFEAREA[1];
             me.container.updateCache();
             me.blocks.refreshCanvas();
@@ -3248,7 +3248,7 @@ function loadThumbnail(blocks, thisBlock, imagePath) {
         }
 
         myBlock.container.addChild(bitmap);
-        bitmap.x = MEDIASAFEAREA[0];
+        bitmap.x = MEDIASAFEAREA[0] - 10;
         bitmap.y = MEDIASAFEAREA[1];
 
         myBlock.container.updateCache();

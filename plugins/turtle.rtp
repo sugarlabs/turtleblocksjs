@@ -57,26 +57,27 @@ getyTurtleBlock.defaults.push('0');
 var startTurtleBlock = new ProtoBlock('startTurtle');
 startTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
+startTurtleBlock.extraWidth(20);
 startTurtleBlock.oneArgBlock();
 startTurtleBlock.docks[1][2] = 'anyin';
 startTurtleBlock.defaults.push('0');
 startTurtleBlock.staticLabels.push('start turtle');
-startTurtleBlock.fontsize = '16px';
 
 //* block:stopTurtle *//
 var stopTurtleBlock = new ProtoBlock('stopTurtle');
 stopTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
+stopTurtleBlock.extraWidth(20);
 stopTurtleBlock.oneArgBlock();
 stopTurtleBlock.docks[1][2] = 'anyin';
 stopTurtleBlock.defaults.push('0');
 stopTurtleBlock.staticLabels.push('stop turtle');
-stopTurtleBlock.fontsize = '16px';
 
 //* block:setturtlename *//
 var setTurtleName = new ProtoBlock('setturtlename');
 setTurtleName.palette = palettes.dict['extras'];
 blocks.protoBlockDict['setturtlename'] = setTurtleName;
+setTurtleBlock.extraWidth(20);
 setTurtleName.twoArgBlock();
 setTurtleName.docks[1][2] = 'anyin';
 setTurtleName.docks[2][2] = 'anyin';
@@ -85,4 +86,3 @@ setTurtleName.defaults.push('Yertle');
 setTurtleName.staticLabels.push('turtle name');
 setTurtleName.staticLabels.push('source');
 setTurtleName.staticLabels.push('target');
-setTurtleName.fontsize = '16px';

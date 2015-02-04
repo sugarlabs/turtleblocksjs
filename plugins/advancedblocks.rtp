@@ -105,15 +105,15 @@ var audioBlock = new ProtoBlock('playback');
 audioBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['playback'] = audioBlock;
 audioBlock.defaults.push(null);
+audioBlock.extraWidth(20);
 audioBlock.oneArgBlock();
 audioBlock.docks[1][2] = 'mediain';
 audioBlock.staticLabels.push('play back');
-audioBlock.fontsize = '16px';
 
 //* block:stopplayback *//
 var audioStopBlock = new ProtoBlock('stopplayback');
 audioStopBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['stopplayback'] = audioStopBlock;
 audioStopBlock.zeroArgBlock();
+audioStopBlock.extraWidth(20);
 audioStopBlock.staticLabels.push('stop play');
-audioStopBlock.fontsize = '16px';

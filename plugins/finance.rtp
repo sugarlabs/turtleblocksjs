@@ -24,12 +24,12 @@ var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
 var currencyRate = new ProtoBlock('currencyrate');
 currencyRate.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['currencyrate'] = currencyRate;
+currencyRate.extraWidth(20);
 currencyRate.twoArgMathBlock();
 currencyRate.docks[1][2] = 'anyin';
 currencyRate.docks[2][2] = 'anyin';
 currencyRate.defaults.push('AUD', 'USD');
 currencyRate.staticLabels.push('currency', 'from', 'to');
-currencyRate.fontsize = '14px';
 
 //* arg:currencyrate *//
 

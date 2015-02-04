@@ -1566,6 +1566,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // and we need to load the images into the container.
         myBlock.imageLoad();
+        /* 
         // FIXME: Works correctly with mediaBlocks, not with others.
         if (myBlock.image) {
             var image = new Image();
@@ -1598,6 +1599,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                 image.src = myBlock.image;
             }
         }
+        */
         return myBlock;
     }
 
@@ -2742,6 +2744,27 @@ function Block(protoblock, blocks) {
         this.generateArtwork(true, []);
     }
 
+    this.addImage = function() {
+        var image = new Image();
+	var me = this;
+        image.onload = function() {
+            var bitmap = new createjs.Bitmap(image);
+            if (image.width > image.height) {
+                bitmap.scaleX = 108 / image.width;
+                bitmap.scaleY = 108 / image.width;
+                bitmap.scale = 108 / image.width;
+            } else {
+                bitmap.scaleX = 80 / image.height;
+                bitmap.scaleY = 80 / image.height;
+                bitmap.scale = 80 / image.height;
+            }
+            me.container.addChild(bitmap);
+            bitmap.x = 40;
+            bitmap.y = 2;
+        }
+        image.src = this.image;
+    }
+
     this.generateArtwork = function(firstTime, blocksToCheck) {
         // Get the block labels from the protoblock
         var thisBlock = this.blocks.blockList.indexOf(this);
@@ -2784,7 +2807,10 @@ function Block(protoblock, blocks) {
                 // bounds of the container and cache its contents.
                 if (!firstTime) {
                     me.container.uncache();
-                }
+                } else if (me.image != null) {
+                    me.addImage();
+		}
+
                 me.bounds = me.container.getBounds();
                 me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
                 me.blocks.refreshCanvas();
@@ -3124,8 +3150,6 @@ function loadThumbnail(blocks, thisBlock, imagePath) {
 
     image.onload = function() {
         var bitmap = new createjs.Bitmap(image);
-        // FIXME: Determine these values computationally based on the size
-        // of the media block.
         if (image.width > image.height) {
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
         } else {
@@ -3133,7 +3157,7 @@ function loadThumbnail(blocks, thisBlock, imagePath) {
         }
         blocks.blockList[thisBlock].container.addChild(bitmap);
         bitmap.x = MEDIASAFEAREA[0];
-        bitmap.y = MEDIADAFEAREA[1];
+        bitmap.y = MEDIASAFEAREA[1];
 
         blocks.blockList[thisBlock].container.updateCache();
         blocks.refreshCanvas();

@@ -56,15 +56,15 @@ var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
 //* block-globals *//
-var get_eatme = function (name, label, fontSize) {
+var get_eatme = function (name, label, extraWidth) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['eatme'];
     blocks.protoBlockDict[name] = block;
+    if (extraWidth) {
+        block.extraWidth = extraWidth;
+    }
     block.oneArgMathBlock();
     block.staticLabels.push(label);
-    if (typeof(fontSize) == 'number') {
-        block.fontsize = fontSize + 'px'
-    }
     block.docks[1][2] = 'mediain';
 };
 var show_value = function (name, label) {
@@ -82,10 +82,13 @@ var eat = function (name, label) {
     block.staticLabels.push(label);
     block.docks[1][2] = 'mediain';
 };
-var action = function (name, label) {
+var action = function (name, label, extraWidth) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['eatme'];
     blocks.protoBlockDict[name] = block;
+    if (extraWidth) {
+        block.extraWidth = extraWidth;
+    }
     block.zeroArgBlock();
     block.staticLabels.push(label);
 };
@@ -99,22 +102,22 @@ var food_block = function (blkname, name) {
 };
 
 //* block:get_calories *//
-get_eatme('get_calories', 'get calories');
+get_eatme('get_calories', 'get calories', 20);
 
 //* block:get_protein *//
-get_eatme('get_protein', 'get protein');
+get_eatme('get_protein', 'get protein', 20);
 
 //* block:get_carbohydrates *//
-get_eatme('get_carbohydrates', 'get carbs');
+get_eatme('get_carbohydrates', 'get carbs', 20);
 
 //* block:get_fiber *//
-get_eatme('get_fiber', 'get fiber');
+get_eatme('get_fiber', 'get fiber', 20);
 
 //* block:get_fat *//
-get_eatme('get_fat', 'get fat');
+get_eatme('get_fat', 'get fat', 20);
 
 //* block:get_name *//
-get_eatme('get_name', 'get name');
+get_eatme('get_name', 'get name', 20);
 
 //* block:calories *//
 show_value('calories', 'calories');
@@ -150,7 +153,7 @@ value = fat;
 eat('eat', 'eat');
 
 //* block:digest *//
-action('digest', 'digest meal');
+action('digest', 'digest meal', 20);
 
 //* block:apple *//
 food_block('apple', 'apple');

@@ -1566,40 +1566,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
 
         // and we need to load the images into the container.
         myBlock.imageLoad();
-        /* 
-        // FIXME: Works correctly with mediaBlocks, not with others.
-        if (myBlock.image) {
-            var image = new Image();
-            if (postProcessArg != null && postProcessArg.length > 1) {
-                var arg = postProcessArg[1];
-            } else {
-                var arg = null;
-            }
-            // Don't load a graphic if there is an image, as it is
-            // added later.
-            if ([null, CAMERAVALUE, VIDEOVALUE].indexOf(arg) != -1) {
-                image.onload = function() {
-                    var bitmap = new createjs.Bitmap(image);
-                    // FIXME: Determine these values computationally based on the size
-                    // of the media block.
-                    if (image.width > image.height) {
-                        bitmap.scaleX = 108 / image.width;
-                        bitmap.scaleY = 108 / image.width;
-                        bitmap.scale = 108 / image.width;
-                    } else {
-                        bitmap.scaleX = 80 / image.height;
-                        bitmap.scaleY = 80 / image.height;
-                        bitmap.scale = 80 / image.height;
-                    }
-                    myBlock.container.addChild(bitmap);
-                    bitmap.x = 40;
-                    bitmap.y = 2;
-                    myBlock.container.updateCache();
-                }
-                image.src = myBlock.image;
-            }
-        }
-        */
         return myBlock;
     }
 
@@ -1649,6 +1615,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             postProcessArg = [thisBlock, null];
         } else if (name == 'camera') {
             postProcess = function(args) {
+		console.log('post process camera ' + args[1]);
                 var thisBlock = args[0];
                 var value = args[1];
                 me.blockList[thisBlock].value = CAMERAVALUE;
@@ -1681,12 +1648,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
         for (var proto in this.protoBlockDict) {
             if (this.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
-                    // console.log('creating ' + name + ' block with no args');
+                    console.log('creating ' + name + ' block with no args');
                     this.makeNewBlock(proto, postProcess, postProcessArg);
                     break;
                 } else {
                     if (this.protoBlockDict[proto].defaults[0] == arg) {
-                        // console.log('creating ' + name + ' block with default arg ' + arg);
+                        console.log('creating ' + name + ' block with default arg ' + arg);
                         this.makeNewBlock(proto, postProcess, postProcessArg);
                         break;
                     }
@@ -2282,7 +2249,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             var collapsed = false;
             if (['start', 'action', 'hat'].indexOf(name) != -1) {
                 collapsed = blkInfo[1]['collapsed'];
-                console.log(blkInfo[0] + ' has collapsed flag set to ' + collapsed);
             }
 
             var value = blkInfo[1]['value'];
@@ -2341,7 +2307,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                         me.blockList[thisBlock].value = value;
                         if (value != null) {
                             // Load artwork onto media block.
-                            console.log('loadNewBlocks: load media block');
                             loadThumbnail(me, thisBlock, null);
                         }
                     }
@@ -2581,12 +2546,10 @@ function Block(protoblock, blocks) {
     }
 
     this.highlight = function() {
-        if (this.collapsed) {
-            if (['start', 'action'].indexOf(this.name) != -1) {
-                this.highlightCollapseBlockBitmap.visible = true;
-                this.collapseBlockBitmap.visible = false;
-                this.collapseText.visible = true;
-            }
+        if (this.collapsed && ['start', 'action'].indexOf(this.name) != -1) {
+            this.highlightCollapseBlockBitmap.visible = true;
+            this.collapseBlockBitmap.visible = false;
+            this.collapseText.visible = true;
         } else {
             this.bitmap.visible = false;
             this.highlightBitmap.visible = true;
@@ -2609,12 +2572,10 @@ function Block(protoblock, blocks) {
     }
 
     this.unhighlight = function() {
-        if (this.collapsed) {
-            if (['start', 'action'].indexOf(this.name) != -1) {
-                this.highlightCollapseBlockBitmap.visible = false;
-                this.collapseBlockBitmap.visible = true;
-                this.collapseText.visible = true;
-            }
+        if (this.collapsed && ['start', 'action'].indexOf(this.name) != -1) {
+            this.highlightCollapseBlockBitmap.visible = false;
+            this.collapseBlockBitmap.visible = true;
+            this.collapseText.visible = true;
         } else {
             this.bitmap.visible = true;
             this.highlightBitmap.visible = false;
@@ -2749,18 +2710,17 @@ function Block(protoblock, blocks) {
 	var me = this;
         image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
+	    bitmap.name = 'media';
             if (image.width > image.height) {
-                bitmap.scaleX = 108 / image.width;
-                bitmap.scaleY = 108 / image.width;
-                bitmap.scale = 108 / image.width;
+		bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
             } else {
-                bitmap.scaleX = 80 / image.height;
-                bitmap.scaleY = 80 / image.height;
-                bitmap.scale = 80 / image.height;
+		bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
             }
             me.container.addChild(bitmap);
-            bitmap.x = 40;
-            bitmap.y = 2;
+            bitmap.x = MEDIASAFEAREA[0];
+            bitmap.y = MEDIASAFEAREA[1];
+            me.container.updateCache();
+            me.blocks.refreshCanvas();
         }
         image.src = this.image;
     }
@@ -2807,15 +2767,16 @@ function Block(protoblock, blocks) {
                 // bounds of the container and cache its contents.
                 if (!firstTime) {
                     me.container.uncache();
-                } else if (me.image != null) {
-                    me.addImage();
-		}
+                }
 
                 me.bounds = me.container.getBounds();
                 me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
                 me.blocks.refreshCanvas();
                 if (firstTime) {
                     loadEventHandlers(blocks, me);
+		    if (me.image != null) {
+			me.addImage();
+		    }
                     me.finishImageLoad();
                 } else {
 		    if (me.name == 'start') {
@@ -3073,7 +3034,6 @@ function labelChanged(myBlock) {
         return;
     }
 
-    console.log('label changed on ' + myBlock.name);
     var oldValue = myBlock.value;
     var newValue = myBlock.label.value;
 
@@ -3140,6 +3100,16 @@ function labelChanged(myBlock) {
 }
 
 
+function removeChildBitmap(myBlock, name) {
+    for (var child = 0; child < myBlock.container.getNumChildren(); child++) {
+        if (myBlock.container.children[child].name == name) {
+	    myBlock.container.removeChild(myBlock.container.children[child]);
+            break;
+        }
+    }
+}
+
+
 // Load an image thumbnail onto block.
 function loadThumbnail(blocks, thisBlock, imagePath) {
     if (blocks.blockList[thisBlock].value == null && imagePath == null) {
@@ -3149,17 +3119,25 @@ function loadThumbnail(blocks, thisBlock, imagePath) {
     var image = new Image();
 
     image.onload = function() {
+	var myBlock = blocks.blockList[thisBlock];
+
+	// Before adding new artwork, remove any old artwork.
+	removeChildBitmap(myBlock, 'media');
+
         var bitmap = new createjs.Bitmap(image);
+	bitmap.name = 'media';
+
         if (image.width > image.height) {
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
         } else {
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
         }
-        blocks.blockList[thisBlock].container.addChild(bitmap);
+
+        myBlock.container.addChild(bitmap);
         bitmap.x = MEDIASAFEAREA[0];
         bitmap.y = MEDIASAFEAREA[1];
 
-        blocks.blockList[thisBlock].container.updateCache();
+        myBlock.container.updateCache();
         blocks.refreshCanvas();
     }
 
@@ -3185,7 +3163,6 @@ function doOpenMedia(blocks, thisBlock) {
                 }
                 thisBlock.image = null;
                 blocks.refreshCanvas();
-                console.log('doOpenMedia: load media block');
                 loadThumbnail(blocks, thisBlock, null);
             }
         });
@@ -3406,6 +3383,7 @@ function loadEventHandlers(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
     var hitArea = new createjs.Shape();
     var bounds = myBlock.container.getBounds()
+
     // Only detect hits on top section of block.
     hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT);
     myBlock.container.hitArea = hitArea;

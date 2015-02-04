@@ -373,16 +373,15 @@ function Palette(palettes, name, color, bgcolor) {
             palette.menuContainer.addChild(bitmap);
 
             function processButtonIcon(palette, name, bitmap, extras) {
-                bitmap.scaleX = 0.8;
-                bitmap.scaleY = 0.8;
+                bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.8;
                 palette.menuContainer.addChild(bitmap);
                 palette.palettes.container.addChild(palette.menuContainer);
 
                 function processCloseIcon(palette, name, bitmap, extras) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                     palette.menuContainer.addChild(bitmap);
-                    bitmap.scaleX = 0.7;
-                    bitmap.scaleY = 0.7;
                     bitmap.x = paletteWidth - STANDARDBLOCKHEIGHT;
+		    bitmap.y = 0;
 
                     var hitArea = new createjs.Shape();
                     hitArea.graphics.beginFill('#FFF').drawEllipse(-paletteWidth / 2, -STANDARDBLOCKHEIGHT / 2, paletteWidth, STANDARDBLOCKHEIGHT);
@@ -393,7 +392,7 @@ function Palette(palettes, name, color, bgcolor) {
                     if (!palette.mouseHandled) {
                         loadPaletteMenuHandler(palette);
                         palette.mouseHandled = true;
-                    };
+                    }
                 }
                 makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
             }

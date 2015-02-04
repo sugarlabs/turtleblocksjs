@@ -493,7 +493,9 @@ function Palette(palettes, name, color, bgcolor) {
                 if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
                     // Some blocks are not shown full-size on the palette.
                     height = STANDARDBLOCKHEIGHT;
-                } else if (palette.protoList[blk].docks.length > 2 && last(palette.protoList[blk].docks)[2] != 'in' && palette.protoList[blk].docks[0][2] != 'booleanout') {
+                } else if (['start', 'action'].indexOf(blkname) != -1) {
+                    height -= STANDARDBLOCKHEIGHT;
+                } else if (palette.protoList[blk].docks.length > 2 && last(palette.protoList[blk].docks)[2] != 'in' && ['anyout', 'numberout', 'booleanout'].indexOf(palette.protoList[blk].docks[0][2]) == -1) {
                     height += STANDARDBLOCKHEIGHT;
                 } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
                     height += STANDARDBLOCKHEIGHT;

@@ -630,7 +630,7 @@ function SVG() {
         for (var i = 0; i < this._innies.length; i++) {
             if (this._innies[i]) {
                 ty = this.docks[di][1] - this._fontSize / 4;
-                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_' + count);
+                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 1.5, this._width, 'right', 'arg_label_' + count);
                 count += 1;
                 di += 1;
             }
@@ -913,7 +913,7 @@ function SVG() {
             var tx = this._width - this._radius;
 	    for (var clamp = 0; clamp < this._clampCount; clamp++) {
                 ty = this.docks[clamp + 2][1] - this._fontSize + 3 * this._strokeWidth;
-                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_' + count);
+                svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 1.5, this._width, 'right', 'arg_label_' + count);
 		count += 1;
             }
         }
@@ -976,7 +976,7 @@ function SVG() {
             // Booleans get an extra label.
             var tx = this._width - this._radius;
             ty = this.docks[1][1] - this._fontSize;
-            svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 2, this._width, 'right', 'arg_label_1');
+            svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 1.5, this._width, 'right', 'arg_label_1');
         }
 
         if (this._bool) {

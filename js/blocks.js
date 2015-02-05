@@ -3139,11 +3139,8 @@ function $() {
 }
 
 
-// Update the block values as they change in the DOM label
 function labelChanged(myBlock) {
-    // For some reason, arg passing from the DOM is not working
-    // properly, so we need to find the label that changed.
-
+    // Update the block values as they change in the DOM label.
     if (myBlock == null) {
         return;
     }
@@ -3153,13 +3150,12 @@ function labelChanged(myBlock) {
 
     // Update the block value and block text.
     if (myBlock.name == 'number') {
-        try {
-            myBlock.value = Number(newValue);
-            console.log('assigned ' + myBlock.value + ' to number block (' + typeof(myBlock.value) + ')');
-        } catch (e) {
-            console.log(e);
-            // FIXME: Expose errorMsg to blocks
-            // errorMsg('Not a number.');
+        myBlock.value = Number(newValue);
+        if (isNaN(myBlock.value)) {
+            var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
+            myBlock.blocks.errorMsg(newValue + ': Not a number', thisBlock);
+	    myBlock.blocks.refreshCanvas();
+            myBlock.value = oldValue;
         }
     } else {
         myBlock.value = newValue;

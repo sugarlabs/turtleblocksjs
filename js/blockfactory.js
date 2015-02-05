@@ -514,7 +514,9 @@ function SVG() {
     }
 
     this.header = function (center) {
-        return '<svg xmlns="http://www.w3.org/2000/svg" width="' + this._width + '" height="' + this._height + '">' + this._transform(center);
+	// FIXME: Why is width wrong?
+	var width = this._width + 2;
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + this._height + '">' + this._transform(center);
     }
 
     this._transform = function (center) {

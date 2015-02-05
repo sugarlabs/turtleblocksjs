@@ -152,8 +152,7 @@ function getCookie(cname) {
 }
 
 
-// Enable me for generate new data for localization.ini
-// var translated = "";
+// Needed to generate new data for localization.ini
 function _(text) {
     replaced = text;
     replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×"];
@@ -161,12 +160,6 @@ function _(text) {
         replaced = replaced.replace(replace[p], "");
     }
     replaced = replaced.replace(/ /g, '-');
-    // Enable me for generate new data for localization.ini
-    // txt = "\n" + replaced + " = " + text;
-    // if (translated.lastIndexOf(txt) == -1) {
-    //     translated = translated + txt;
-    //  }
-    // You can log translated in console.
     try {
         translation = document.webL10n.get(replaced);
         if (translation == '') {
@@ -201,8 +194,8 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
     try {
         var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict);
     } catch (e) {
-       var obj = null;
-       errorMsg('Error loading plugin: ' + e);
+        var obj = null;
+        errorMsg('Error loading plugin: ' + e);
     }
     return obj;
 }

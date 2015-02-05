@@ -816,7 +816,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
             // second-to-last argument.
             if (clamp == 0) {
                 var c = myBlock.connections.length - 2;
-            } else {   // e.g., Bottom clamp in if-then-else
+            } else { // e.g., Bottom clamp in if-then-else
                 var c = myBlock.connections.length - 3;
             }
             me.sizeCounter = 0;
@@ -2704,38 +2704,38 @@ function Block(protoblock, blocks) {
         this.clampCount[clamp] += plusMinus;
 
         switch (this.name) {
-        case 'start':
-            this.protoblock.stackClampZeroArgBlock(this.clampCount[clamp]);
-            break;
-        case 'action':
-            this.protoblock.stackClampOneArgBlock(this.clampCount[clamp]);
-            break;
-        case 'repeat':
-            this.protoblock.flowClampOneArgBlock(this.clampCount[clamp]);
-            break;
-        case 'forever':
-            this.protoblock.flowClampZeroArgBlock(this.clampCount[clamp]);
-            break;
-        case 'if':
-        case 'while':
-        case 'until':
-            this.protoblock.flowClampBooleanArgBlock(this.clampCount[clamp]);
-            break;
-        case 'ifthenelse':
-            this.protoblock.doubleFlowClampBooleanArgBlock(this.clampCount[0], this.clampCount[1]);
-            break;
-        case 'less':
-        case 'greater':
-        case 'equal':
-            this.protoblock.booleanTwoArgBlock(this.clampCount[0]);
-            break;
-        default:
-            if (this.isArgBlock()) {
-                this.protoblock.twoArgMathBlock(this.clampCount[0]);
-            } else if (this.isTwoArgBlock()) {
-                this.protoblock.twoArgBlock(this.clampCount[0]);
-            }
-            break;
+            case 'start':
+                this.protoblock.stackClampZeroArgBlock(this.clampCount[clamp]);
+                break;
+            case 'action':
+                this.protoblock.stackClampOneArgBlock(this.clampCount[clamp]);
+                break;
+            case 'repeat':
+                this.protoblock.flowClampOneArgBlock(this.clampCount[clamp]);
+                break;
+            case 'forever':
+                this.protoblock.flowClampZeroArgBlock(this.clampCount[clamp]);
+                break;
+            case 'if':
+            case 'while':
+            case 'until':
+                this.protoblock.flowClampBooleanArgBlock(this.clampCount[clamp]);
+                break;
+            case 'ifthenelse':
+                this.protoblock.doubleFlowClampBooleanArgBlock(this.clampCount[0], this.clampCount[1]);
+                break;
+            case 'less':
+            case 'greater':
+            case 'equal':
+                this.protoblock.booleanTwoArgBlock(this.clampCount[0]);
+                break;
+            default:
+                if (this.isArgBlock()) {
+                    this.protoblock.twoArgMathBlock(this.clampCount[0]);
+                } else if (this.isTwoArgBlock()) {
+                    this.protoblock.twoArgBlock(this.clampCount[0]);
+                }
+                break;
         }
 
         this.generateArtwork(false, blocksToCheck);
@@ -2745,38 +2745,38 @@ function Block(protoblock, blocks) {
         // We may have modified the protoblock artwork. We need to
         // reset it.
         switch (this.name) {
-        case 'start':
-            this.protoblock.stackClampZeroArgBlock();
-            break;
-        case 'action':
-            this.protoblock.stackClampOneArgBlock();
-            break;
-        case 'repeat':
-            this.protoblock.flowClampOneArgBlock();
-            break;
-        case 'forever':
-            this.protoblock.flowClampZeroArgBlock();
-            break;
-        case 'if':
-        case 'while':
-        case 'until':
-            this.protoblock.flowClampBooleanArgBlock();
-            break;
-        case 'ifthenelse':
-            this.protoblock.doubleFlowClampBooleanArgBlock();
-            break;
-        case 'less':
-        case 'greater':
-        case 'equal':
-            this.protoblock.booleanTwoArgBlock();
-            break;
-        default:
-            if (this.isArgBlock()) {
-                this.protoblock.twoArgMathBlock();
-            } else if (this.isTwoArgBlock()) {
-                this.protoblock.twoArgBlock();
-            }
-            break;
+            case 'start':
+                this.protoblock.stackClampZeroArgBlock();
+                break;
+            case 'action':
+                this.protoblock.stackClampOneArgBlock();
+                break;
+            case 'repeat':
+                this.protoblock.flowClampOneArgBlock();
+                break;
+            case 'forever':
+                this.protoblock.flowClampZeroArgBlock();
+                break;
+            case 'if':
+            case 'while':
+            case 'until':
+                this.protoblock.flowClampBooleanArgBlock();
+                break;
+            case 'ifthenelse':
+                this.protoblock.doubleFlowClampBooleanArgBlock();
+                break;
+            case 'less':
+            case 'greater':
+            case 'equal':
+                this.protoblock.booleanTwoArgBlock();
+                break;
+            default:
+                if (this.isArgBlock()) {
+                    this.protoblock.twoArgMathBlock();
+                } else if (this.isTwoArgBlock()) {
+                    this.protoblock.twoArgBlock();
+                }
+                break;
         }
     }
 
@@ -2859,8 +2859,9 @@ function Block(protoblock, blocks) {
                 }
 
                 me.bounds = me.container.getBounds();
-                me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
+		me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
                 me.blocks.refreshCanvas();
+
                 if (firstTime) {
                     loadEventHandlers(blocks, me);
                     if (me.image != null) {
@@ -2989,65 +2990,72 @@ function Block(protoblock, blocks) {
                 me.container.addChild(me.collapseBlockBitmap);
                 me.collapseBlockBitmap.visible = false;
                 me.blocks.refreshCanvas();
+
+                function processHighlightCollapseBitmap(name, bitmap, me) {
+                    me.highlightCollapseBlockBitmap = bitmap;
+                    me.highlightCollapseBlockBitmap.name = 'highlight_collapse_' + thisBlock;
+                    me.container.addChild(me.highlightCollapseBlockBitmap);
+                    me.highlightCollapseBlockBitmap.visible = false;
+
+                    me.container.uncache();
+                    me.bounds = me.container.getBounds();
+                    me.container.cache(me.bounds.x, me.bounds.y, me.bounds.width, me.bounds.height);
+                    me.blocks.refreshCanvas();
+
+                    if (me.name == 'action') {
+                        me.collapseText = new createjs.Text('action', '20px Sans', '#000000');
+                        me.collapseText.x = ACTIONTEXTX;
+                        me.collapseText.y = ACTIONTEXTY;
+                        me.collapseText.textAlign = 'right';
+                    } else {
+                        me.collapseText = new createjs.Text('start', '20px Sans', '#000000');
+                        me.collapseText.x = STARTTEXTX;
+                        me.collapseText.y = ACTIONTEXTY;
+                        me.collapseText.textAlign = 'left';
+                    }
+                    me.collapseText.textBaseline = 'alphabetic';
+                    me.container.addChild(me.collapseText);
+                    me.collapseText.visible = false;
+
+                    me.collapseContainer = new createjs.Container();
+                    me.collapseContainer.snapToPixelEnabled = true;
+
+                    var image = new Image();
+                    image.onload = function() {
+                        me.collapseBitmap = new createjs.Bitmap(image);
+                        me.collapseContainer.addChild(me.collapseBitmap);
+                        finishCollapseButton(me);
+                    }
+                    image.src = 'images/collapse.svg';
+
+                    finishCollapseButton = function(me) {
+                        var image = new Image();
+                        image.onload = function() {
+                            me.expandBitmap = new createjs.Bitmap(image);
+                            me.collapseContainer.addChild(me.expandBitmap);
+                            me.expandBitmap.visible = false;
+
+                            var bounds = me.collapseContainer.getBounds();
+                            me.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                            me.blocks.stage.addChild(me.collapseContainer);
+                            me.collapseContainer.x = me.container.x + COLLAPSEBUTTONXOFF;
+                            me.collapseContainer.y = me.container.y + COLLAPSEBUTTONYOFF;
+                            loadCollapsibleEventHandlers(me.blocks, me);
+                        }
+                        image.src = 'images/expand.svg';
+                    }
+                }
+
+                var artwork = proto.artwork;
+                makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[me.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[me.protoblock.palette.name]).replace('block_label', block_label), '', processHighlightCollapseBitmap, me);
             }
 
             var proto = new ProtoBlock('collapse');
             proto.basicBlockCollapsed();
             var artwork = proto.artwork;
+
             makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', _(block_label)), '', processCollapseBitmap, this);
 
-            function processHighlightCollapseBitmap(name, bitmap, me) {
-                me.highlightCollapseBlockBitmap = bitmap;
-                me.highlightCollapseBlockBitmap.name = 'highlight_collapse_' + thisBlock;
-                me.container.addChild(me.highlightCollapseBlockBitmap);
-                me.highlightCollapseBlockBitmap.visible = false;
-                me.blocks.refreshCanvas();
-
-                if (me.name == 'action') {
-                    me.collapseText = new createjs.Text('action', '20px Sans', '#000000');
-                    me.collapseText.x = ACTIONTEXTX;
-                    me.collapseText.y = ACTIONTEXTY;
-                    me.collapseText.textAlign = 'right';
-                } else {
-                    me.collapseText = new createjs.Text('start', '20px Sans', '#000000');
-                    me.collapseText.x = STARTTEXTX;
-                    me.collapseText.y = ACTIONTEXTY;
-                    me.collapseText.textAlign = 'left';
-                }
-                me.collapseText.textBaseline = 'alphabetic';
-                me.container.addChild(me.collapseText);
-                me.collapseText.visible = false;
-
-                me.collapseContainer = new createjs.Container();
-                me.collapseContainer.snapToPixelEnabled = true;
-
-                var image = new Image();
-                image.onload = function() {
-                    me.collapseBitmap = new createjs.Bitmap(image);
-                    me.collapseContainer.addChild(me.collapseBitmap);
-                    finishCollapseButton(me);
-                }
-                image.src = 'images/collapse.svg';
-
-                finishCollapseButton = function(me) {
-                    var image = new Image();
-                    image.onload = function() {
-                        me.expandBitmap = new createjs.Bitmap(image);
-                        me.collapseContainer.addChild(me.expandBitmap);
-                        me.expandBitmap.visible = false;
-                        var bounds = me.collapseContainer.getBounds();
-                        me.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                        me.blocks.stage.addChild(me.collapseContainer);
-                        me.collapseContainer.x = me.container.x + COLLAPSEBUTTONXOFF;
-                        me.collapseContainer.y = me.container.y + COLLAPSEBUTTONYOFF;
-                        loadCollapsibleEventHandlers(me.blocks, me);
-                    }
-                    image.src = 'images/expand.svg';
-                }
-            }
-
-            var artwork = proto.artwork;
-            makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label), '', processHighlightCollapseBitmap, this);
         }
     }
 

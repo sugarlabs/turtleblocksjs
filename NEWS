@@ -212,6 +212,7 @@
   * add value display to math blocks
   * add default args to math blocks (Ignacio)
   * fine tune value display positioning 
+  * fix problem with action block collapsed bounds
 
 TODO:
   * add value to boolean blocks

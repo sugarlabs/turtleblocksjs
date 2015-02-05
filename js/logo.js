@@ -71,17 +71,17 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.step = function() {
         // Take one step for each turtle in excuting Logo commands.
-	for (turtle in this.stepQueue) {
-	    if (this.stepQueue[turtle].length > 0) {
-		if (turtle in this.unhighlightStepQueue && this.unhighlightStepQueue[turtle] != null) {
-		    this.blocks.unhighlight(this.unhighlightStepQueue[turtle]);
-		    this.unhighlightStepQueue[turtle] = null;
-		}
-		var blk = this.stepQueue[turtle].pop();
-		if (blk != null) {
-		    this.runFromBlockNow(this, turtle, blk);
-		}
-	    }
+        for (turtle in this.stepQueue) {
+            if (this.stepQueue[turtle].length > 0) {
+                if (turtle in this.unhighlightStepQueue && this.unhighlightStepQueue[turtle] != null) {
+                    this.blocks.unhighlight(this.unhighlightStepQueue[turtle]);
+                    this.unhighlightStepQueue[turtle] = null;
+                }
+                var blk = this.stepQueue[turtle].pop();
+                if (blk != null) {
+                    this.runFromBlockNow(this, turtle, blk);
+                }
+            }
         }
     }
 
@@ -89,7 +89,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // The stop button was pressed. Stop the turtle and clean up a
         // few odds and ends.
         this.stopTurtle = true;
-	this.turtles.markAsStopped();
+        this.turtles.markAsStopped();
 
         for (var sound in this.sounds) {
             this.sounds[sound].stop();
@@ -123,6 +123,12 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             var name = this.blocks.blockList[blk].name;
             var value = 0;
             switch (name) {
+                case 'plus':
+                case 'minus':
+                case 'multiply':
+                case 'divide':
+                    value = this.blocks.blockList[blk].value;
+                    break;
                 case 'box':
                     var cblk = this.blocks.blockList[blk].connections[1];
                     var boxname = this.parseArg(logo, turtle, cblk, blk);
@@ -176,6 +182,9 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     break;
             }
             if (typeof(value) == 'string') {
+                if (value.length > 4) {
+                    value = value.substr(0, 3) + '...';
+		}
                 this.blocks.blockList[blk].text.text = value;
             } else {
                 this.blocks.blockList[blk].text.text = Math.round(value).toString();
@@ -355,9 +364,9 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         if (!logo.stopTurtle) {
             if (logo.turtleDelay == TURTLESTEP) {
                 // Step mode
-		if (!(turtle in logo.stepQueue)) {
-		    logo.stepQueue[turtle] = [];
-		}
+                if (!(turtle in logo.stepQueue)) {
+                    logo.stepQueue[turtle] = [];
+                }
                 logo.stepQueue[turtle].push(blk);
             } else {
                 setTimeout(function() {

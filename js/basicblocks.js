@@ -546,12 +546,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     var mousexBlock = new ProtoBlock('mousex');
     mousexBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousex'] = mousexBlock;
+    mousexBlock.extraWidth = 15;
     mousexBlock.parameterBlock();
     mousexBlock.staticLabels.push('mouse x');
 
     var mouseyBlock = new ProtoBlock('mousey');
     mouseyBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousey'] = mouseyBlock;
+    mouseyBlock.extraWidth = 15;
     mouseyBlock.parameterBlock();
     mouseyBlock.staticLabels.push('mouse y');
 

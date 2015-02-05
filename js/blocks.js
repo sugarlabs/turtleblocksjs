@@ -274,6 +274,7 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 2;
+        this.parameter = true;
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
@@ -2973,15 +2974,20 @@ function Block(protoblock, blocks) {
             // Parameter blocks get a text label to show their current value
             this.text.textBaseline = 'alphabetic';
             this.container.addChild(this.text);
-	    var bounds = this.container.getBounds();
-            if (this.name == 'box') {
-		this.text.textAlign = 'left';
+            var bounds = this.container.getBounds();
+            if (this.isArgBlock() && this.protoblock.args == 2) {
+                this.text.textAlign = 'left';
                 this.text.x = BOXTEXTX;
+                this.text.y = VALUETEXTY + STANDARDBLOCKHEIGHT / 2;
+            } else if (this.name == 'box') {
+                this.text.textAlign = 'left';
+                this.text.x = BOXTEXTX;
+                this.text.y = VALUETEXTY;
             } else {
-		this.text.textAlign = 'right';
+                this.text.textAlign = 'right';
                 this.text.x = bounds.width - 10;
+                this.text.y = VALUETEXTY;
             }
-            this.text.y = VALUETEXTY;
 
             z = this.container.getNumChildren() - 1;
             this.container.setChildIndex(this.text, z);
@@ -3155,7 +3161,7 @@ function labelChanged(myBlock) {
         if (isNaN(myBlock.value)) {
             var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
             myBlock.blocks.errorMsg(newValue + ': Not a number', thisBlock);
-	    myBlock.blocks.refreshCanvas();
+            myBlock.blocks.refreshCanvas();
             myBlock.value = oldValue;
         }
     } else {
@@ -3497,9 +3503,9 @@ function loadEventHandlers(blocks, myBlock) {
 
     // Only detect hits on top section of block.
     if (myBlock.isClampBlock()) {
-	hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT);
+        hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT);
     } else {
-	hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
+        hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
     }
     myBlock.container.hitArea = hitArea;
 

@@ -220,11 +220,12 @@ function ProtoBlock(name) {
         this.copyDock(svg.docks);
     }
 
-    // E.g., sqrt
+    // E.g., sqrt, box
     this.oneArgMathBlock = function() {
         this.style = 'arg';
         this.size = 1;
         this.args = 1;
+        this.parameter = true;
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
@@ -241,30 +242,6 @@ function ProtoBlock(name) {
         this.artwork = svg.basicBlock();
         svg.docks[0].push('numberout');
         svg.docks[1].push('numberin');
-        this.copyDock(svg.docks);
-    }
-
-    // E.g., box
-    this.oneArgMathWithLabelBlock = function() {
-        this.style = 'arg';
-        this.size = 1;
-        this.args = 1;
-        var svg = new SVG();
-        svg.init();
-        svg.setScale(this.scale);
-        svg.setSlot(false);
-        svg.setInnies([true]);
-        svg.setOutie(true);
-        svg.setTab(false);
-        if (this.fontsize) {
-            svg.setFontSize(this.fontsize);
-        }
-        if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
-        }
-        this.artwork = svg.basicBlock();
-        svg.docks[0].push('numberout');
-        svg.docks[0].push('numberin');
         this.copyDock(svg.docks);
     }
 
@@ -2017,7 +1994,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     this.newBoxBlock = function(name) {
         var myBoxBlock = new ProtoBlock('box');
         this.protoBlockDict['myBox_' + name] = myBoxBlock;
-        myBoxBlock.oneArgMathWithLabelBlock();
+        myBoxBlock.oneArgMathBlock();
         myBoxBlock.palette = this.palettes.dict['blocks'];
         myBoxBlock.defaults.push(name);
         myBoxBlock.staticLabels.push(_('box'));
@@ -2975,18 +2952,18 @@ function Block(protoblock, blocks) {
             this.text.textBaseline = 'alphabetic';
             this.container.addChild(this.text);
             var bounds = this.container.getBounds();
-            if (this.isArgBlock() && this.protoblock.args == 2) {
-                this.text.textAlign = 'left';
-                this.text.x = BOXTEXTX;
-                this.text.y = VALUETEXTY + STANDARDBLOCKHEIGHT / 2;
-            } else if (this.name == 'box') {
-                this.text.textAlign = 'left';
-                this.text.x = BOXTEXTX;
-                this.text.y = VALUETEXTY;
-            } else {
+            if (this.protoblock.args == 0) {
                 this.text.textAlign = 'right';
                 this.text.x = bounds.width - 10;
                 this.text.y = VALUETEXTY;
+            } else if (this.isArgBlock()) {
+                this.text.textAlign = 'left';
+                this.text.x = BOXTEXTX;
+                if (this.protoblock.args == 2) {
+                    this.text.y = VALUETEXTY + STANDARDBLOCKHEIGHT / 2;
+                } else {
+                    this.text.y = VALUETEXTY;
+                }
             }
 
             z = this.container.getNumChildren() - 1;

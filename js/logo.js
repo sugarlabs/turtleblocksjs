@@ -123,6 +123,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             var name = this.blocks.blockList[blk].name;
             var value = 0;
             switch (name) {
+                case 'sqrt':
                 case 'plus':
                 case 'minus':
                 case 'multiply':
@@ -182,8 +183,8 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     break;
             }
             if (typeof(value) == 'string') {
-                if (value.length > 4) {
-                    value = value.substr(0, 3) + '...';
+                if (value.length > 6) {
+                    value = value.substr(0, 5) + '...';
 		}
                 this.blocks.blockList[blk].text.text = value;
             } else {

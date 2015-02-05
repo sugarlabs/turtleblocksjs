@@ -209,9 +209,12 @@
   * fixed mouse button code & don't move stage when running code (Ignacio)
   * Don't allow text in number blocks
   * expand blocks horizontally (for long labels)
+  * add value display to math blocks
+  * add default args to math blocks (Ignacio)
+  * fine tune value display positioning 
 
 TODO:
-  * add value to all value blocks, e.g., plus, minus...
+  * add value to boolean blocks
   * save errors
   * display rubrics
   * more efficient until and while?

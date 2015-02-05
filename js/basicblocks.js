@@ -265,7 +265,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     multiplyBlock.fontsize = 14;
     multiplyBlock.twoArgMathBlock();
     multiplyBlock.staticLabels.push('×');
-    multiplyBlock.defaults.push(100, 10)
+    multiplyBlock.defaults.push(10, 10)
 
     var divideBlock = new ProtoBlock('divide');
     divideBlock.palette = palettes.dict['number'];
@@ -273,11 +273,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     divideBlock.fontsize = 14;
     divideBlock.twoArgMathBlock();
     divideBlock.staticLabels.push('/');
-    divideBlock.defaults.push(1, 1)
+    divideBlock.defaults.push(100, 10)
 
     var sqrtBlock = new ProtoBlock('sqrt');
     sqrtBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['sqrt'] = sqrtBlock;
+    sqrtBlock.extraWidth = 10;
     sqrtBlock.oneArgMathBlock();
     sqrtBlock.staticLabels.push('sqrt');
     sqrtBlock.defaults.push(100)
@@ -344,7 +345,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     var boxBlock = new ProtoBlock('box');
     boxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['box'] = boxBlock;
-    boxBlock.oneArgMathWithLabelBlock();
+    boxBlock.extraWidth = 10;
+    boxBlock.oneArgMathBlock();
     boxBlock.defaults.push(_('box'));
     boxBlock.staticLabels.push('box');
     boxBlock.docks[0][2] = 'anyout';

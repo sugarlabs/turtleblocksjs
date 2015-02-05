@@ -97,8 +97,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     var setheadingBlock = new ProtoBlock('setheading');
     setheadingBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['setheading'] = setheadingBlock;
+    setheadingBlock.extraWidth = 24;
     setheadingBlock.oneArgBlock();
-    setheadingBlock.staticLabels.push('seth');
+    setheadingBlock.staticLabels.push('set heading');
     setheadingBlock.defaults.push(0);
 
     var headingBlock = new ProtoBlock('heading');
@@ -154,6 +155,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var setshadeBlock = new ProtoBlock('setshade');
     setshadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setshade'] = setshadeBlock;
+    setshadeBlock.extraWidth = 10;
     setshadeBlock.oneArgBlock();
     setshadeBlock.defaults.push(50);
     setshadeBlock.staticLabels.push('set shade');
@@ -199,6 +201,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var pendownBlock = new ProtoBlock('pendown');
     pendownBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['pendown'] = pendownBlock;
+    pendownBlock.extraWidth = 10;
     pendownBlock.zeroArgBlock();
     pendownBlock.staticLabels.push('pen down');
 
@@ -217,6 +220,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var backgroundBlock = new ProtoBlock('fillscreen');
     backgroundBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['fillscreen'] = backgroundBlock;
+    backgroundBlock.extraWidth = 20;
     backgroundBlock.zeroArgBlock();
     backgroundBlock.staticLabels.push('background');
 
@@ -446,8 +450,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     var stopVideoCamBlock = new ProtoBlock('stopvideocam');
     stopVideoCamBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;
+    stopVideoCamBlock.extraWidth = 20;
     stopVideoCamBlock.zeroArgBlock();
-    stopVideoCamBlock.staticLabels.push('stop');
+    stopVideoCamBlock.staticLabels.push('stop media');
 
     // Flow palette
     var repeatBlock = new ProtoBlock('repeat');

@@ -208,6 +208,7 @@
     - proper calculation of hit area
 
 TODO:
+  * add value to all value blocks, e.g., plus, minus...
   * save errors
   * display rubrics
   * more efficient until and while?
@@ -219,8 +220,7 @@ TODO:
   * three-arg flow blocks
   * three-arg arg blocks
   * write SVG generator
-  * user defined blocks (block/plugin factory)
-    - artwork beautification?
+  * artwork beautification?
   * try to detect difference between unknown flow and arg blocks
 
 KNOWN BUGS:
@@ -232,3 +232,6 @@ KNOWN BUGS:
   * fix race conditions
   * not all blocks highlight when using step-by-step mode
   * collapse bug manifests itself when loading custom stacks
+  * don't allow text in number blocks
+  * don't move stage when running code
+  * fix mouse button code

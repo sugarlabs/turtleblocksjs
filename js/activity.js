@@ -467,7 +467,20 @@ define(function(require) {
         function setupBlocksContainerEvents() {
             var moving = false;
             stage.on('stagemousedown', function (event) {
-                if (stage.getObjectUnderPoint() !== null) {
+                stageMouseDown = true;
+            });
+
+            stage.on('stagemouseup', function (event) {
+                stageMouseDown = false;
+            });
+
+            stage.on('stagemousemove', function (event) {
+                stageX = event.stageX;
+                stageY = event.stageY;
+            });
+
+            stage.on('stagemousedown', function (event) {
+                if (stage.getObjectUnderPoint() !== null | turtles.running()) {
                     return;
                 }
 
@@ -475,9 +488,6 @@ define(function(require) {
                 lastCords = {x: event.stageX, y: event.stageY};
 
                 stage.on('stagemousemove', function (event) {
-                    stageX = event.stageX;
-                    stageY = event.stageY;
-
                     if (!moving) {
                         return;
                     }

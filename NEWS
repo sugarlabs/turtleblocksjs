@@ -206,6 +206,7 @@
     - proper updating of labels
     - proper resizing
     - proper calculation of hit area
+  * fixed mouse button code & don't move stage when running code (Ignacio)
 
 TODO:
   * add value to all value blocks, e.g., plus, minus...
@@ -233,5 +234,3 @@ KNOWN BUGS:
   * not all blocks highlight when using step-by-step mode
   * collapse bug manifests itself when loading custom stacks
   * don't allow text in number blocks
-  * don't move stage when running code
-  * fix mouse button code

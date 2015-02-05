@@ -2807,8 +2807,9 @@ function Block(protoblock, blocks) {
         // extra parts. Image components are loaded asynchronously so
         // most the work happens in callbacks.
 
-        // We need a label for most blocks.
-        // TODO: use Text exclusively for all block labels.
+        // We need a text label for some blocks. For number and text
+        // blocks, this is the primary label; for parameter blocks,
+        // this is used to display the current block value.
         this.text = new createjs.Text('', '20px Sans', '#000000');
         var doubleExpandable = this.blocks.doubleExpandable;
 
@@ -2968,17 +2969,17 @@ function Block(protoblock, blocks) {
             z = this.container.getNumChildren() - 1;
             this.container.setChildIndex(this.text, z);
             this.container.updateCache();
-        }
-
-        if (this.protoblock.parameter) {
+        } else if (this.protoblock.parameter) {
             // Parameter blocks get a text label to show their current value
-            this.text.textAlign = 'right';
             this.text.textBaseline = 'alphabetic';
             this.container.addChild(this.text);
+	    var bounds = this.container.getBounds();
             if (this.name == 'box') {
+		this.text.textAlign = 'left';
                 this.text.x = BOXTEXTX;
             } else {
-                this.text.x = PARAMETERTEXTX;
+		this.text.textAlign = 'right';
+                this.text.x = bounds.width - 10;
             }
             this.text.y = VALUETEXTY;
 

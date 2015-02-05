@@ -394,7 +394,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'box':
                 var cblk = this.blocks.blockList[blk].connections[1];
-                var name = this.parseArg(logo, turtle, cblk, blk);
+                var name = this.parseArg(this, turtle, cblk, blk);
                 if (name in this.boxes) {
                     this.boxes[name] = value;
                 } else {

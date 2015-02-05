@@ -3434,7 +3434,11 @@ function collapseToggle(blocks, myBlock) {
         if (myBlock.name != 'start') {
             // Label the collapsed block with the action label
             if (myBlock.connections[1] != null) {
-                myBlock.collapseText.text = blocks.blockList[myBlock.connections[1]].value;
+		var text = blocks.blockList[myBlock.connections[1]].value;
+		if (text.length > 8) {
+		    text = text.substr(0, 7) + '...';
+                }
+                myBlock.collapseText.text = text;
             } else {
                 myBlock.collapseText.text = '';
             }

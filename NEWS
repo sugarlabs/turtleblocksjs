@@ -208,6 +208,7 @@
     - proper calculation of hit area
   * fixed mouse button code & don't move stage when running code (Ignacio)
   * Don't allow text in number blocks
+  * expand blocks horizontally (for long labels)
 
 TODO:
   * add value to all value blocks, e.g., plus, minus...
@@ -218,12 +219,17 @@ TODO:
   * RTL support
   * zoom and scroll?
   * use graphical error messages
-  * expand blocks horizontally
-  * three-arg flow blocks
-  * three-arg arg blocks
+  * make expand an array, one element for each arg or slot
+  * user defined block types (trivial with factory)
+  * three-arg flow blocks (trivial with factory)
+  * three-arg arg blocks (trivial with factory)
   * write SVG generator
   * artwork beautification?
   * try to detect difference between unknown flow and arg blocks
+  * button block (a stack that is run when you click on a button)
+    - two args: artwork for the button; action name to take
+  * maybe we want to add local variables?
+  * auto-guestimate block width (need to set label name before creating artwork)
 
 KNOWN BUGS:
   * show blocks should put blocks on top of everything else

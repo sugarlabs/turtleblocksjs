@@ -3009,15 +3009,12 @@ function Block(protoblock, blocks) {
 
                     if (me.name == 'action') {
                         me.collapseText = new createjs.Text('action', '20px Sans', '#000000');
-                        me.collapseText.x = ACTIONTEXTX;
-                        me.collapseText.y = ACTIONTEXTY;
-                        me.collapseText.textAlign = 'right';
                     } else {
                         me.collapseText = new createjs.Text('start', '20px Sans', '#000000');
-                        me.collapseText.x = STARTTEXTX;
-                        me.collapseText.y = ACTIONTEXTY;
-                        me.collapseText.textAlign = 'left';
                     }
+                    me.collapseText.x = STARTTEXTX;
+                    me.collapseText.y = ACTIONTEXTY;
+                    me.collapseText.textAlign = 'left';
                     me.collapseText.textBaseline = 'alphabetic';
                     me.container.addChild(me.collapseText);
                     me.collapseText.visible = false;

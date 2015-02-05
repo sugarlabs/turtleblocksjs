@@ -833,6 +833,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
                     myBlock.updateSlots(clamp, plusMinus, blocksToCheck);
                 }
             }
+
+	    // Recurse through the list.
+	    if (blocksToCheck.length > 0) {
+                me.adjustExpandableClampBlock(blocksToCheck);
+            }
         }
 
         if (myBlock.isDoubleClampBlock()) {

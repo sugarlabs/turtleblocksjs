@@ -249,6 +249,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     plusBlock.docks[1][2] = 'anyin';
     plusBlock.docks[2][2] = 'anyin';
     plusBlock.staticLabels.push('+');
+    plusBlock.defaults.push(100, 100)
 
     var minusBlock = new ProtoBlock('minus');
     minusBlock.palette = palettes.dict['number'];
@@ -256,6 +257,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     minusBlock.fontsize = 14;
     minusBlock.twoArgMathBlock();
     minusBlock.staticLabels.push('–');
+    minusBlock.defaults.push(100, 50)
 
     var multiplyBlock = new ProtoBlock('multiply');
     multiplyBlock.palette = palettes.dict['number'];
@@ -263,6 +265,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     multiplyBlock.fontsize = 14;
     multiplyBlock.twoArgMathBlock();
     multiplyBlock.staticLabels.push('×');
+    multiplyBlock.defaults.push(100, 10)
 
     var divideBlock = new ProtoBlock('divide');
     divideBlock.palette = palettes.dict['number'];
@@ -270,18 +273,21 @@ function initBasicProtoBlocks(palettes, blocks) {
     divideBlock.fontsize = 14;
     divideBlock.twoArgMathBlock();
     divideBlock.staticLabels.push('/');
+    divideBlock.defaults.push(1, 1)
 
     var sqrtBlock = new ProtoBlock('sqrt');
     sqrtBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['sqrt'] = sqrtBlock;
     sqrtBlock.oneArgMathBlock();
     sqrtBlock.staticLabels.push('sqrt');
+    sqrtBlock.defaults.push(100)
 
     var modBlock = new ProtoBlock('mod');
     modBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['mod'] = modBlock;
     modBlock.twoArgMathBlock();
     modBlock.staticLabels.push('mod');
+    modBlock.defaults.push(100, 10)
 
     var greaterBlock = new ProtoBlock('greater');
     greaterBlock.palette = palettes.dict['boolean'];

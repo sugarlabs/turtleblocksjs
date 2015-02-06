@@ -813,6 +813,7 @@ function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, b) {
     add('media', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').
     add('extras', 'white', '#ff0066');
+    palettes.makeMenu();
     blocks = b;
 
     // Give the palettes time to load.

@@ -517,6 +517,7 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 1;
+        this.parameter = true;
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
@@ -530,11 +531,12 @@ function ProtoBlock(name) {
         this.copyDock(svg.docks);
     }
 
-    // E.g., and
+    // E.g., and, or
     this.booleanTwoBooleanArgBlock = function() {
         this.style = 'arg';
         this.size = 3;
         this.args = 2;
+        this.parameter = true;
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
@@ -554,6 +556,7 @@ function ProtoBlock(name) {
         this.style = 'arg';
         this.size = 2;
         this.args = 2;
+        this.parameter = true;
         this.expandable = true;
         var svg = new SVG();
         svg.init();
@@ -2965,7 +2968,11 @@ function Block(protoblock, blocks) {
             } else if (this.isArgBlock()) {
                 this.text.textAlign = 'left';
                 this.text.x = BOXTEXTX;
-                this.text.y = VALUETEXTY;
+		if (this.docks[0][2] == 'booleanout') {
+                    this.text.y = bounds.height - 15;
+                } else {
+                    this.text.y = VALUETEXTY;
+                }
             }
 
             z = this.container.getNumChildren() - 1;

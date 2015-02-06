@@ -123,6 +123,18 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             var name = this.blocks.blockList[blk].name;
             var value = 0;
             switch (name) {
+                case 'and':
+                case 'or':
+                case 'not':
+                case 'less':
+                case 'greater':
+                case 'equal':
+                    if (this.blocks.blockList[blk].value) {
+                        value = _('true');
+                    } else {
+                        value = _('false');
+                    }
+                    break;
                 case 'sqrt':
                 case 'plus':
                 case 'minus':

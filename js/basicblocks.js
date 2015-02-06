@@ -294,6 +294,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     greaterBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['greater'] = greaterBlock;
     greaterBlock.fontsize = 14;
+    greaterBlock.extraWidth = 20;
     greaterBlock.booleanTwoArgBlock();
     greaterBlock.staticLabels.push('&gt;');
 
@@ -301,6 +302,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     lessBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['less'] = lessBlock;
     lessBlock.fontsize = 14;
+    lessBlock.extraWidth = 20;
     lessBlock.booleanTwoArgBlock();
     lessBlock.staticLabels.push('&lt;');
 
@@ -308,24 +310,28 @@ function initBasicProtoBlocks(palettes, blocks) {
     equalBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['equal'] = equalBlock;
     equalBlock.fontsize = 14;
+    equalBlock.extraWidth = 20;
     equalBlock.booleanTwoArgBlock();
     equalBlock.staticLabels.push('=');
 
     var andBlock = new ProtoBlock('and');
     andBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['and'] = andBlock;
+    andBlock.extraWidth = 10;
     andBlock.booleanTwoBooleanArgBlock();
     andBlock.staticLabels.push('and');
 
     var orBlock = new ProtoBlock('or');
     orBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['or'] = orBlock;
+    orBlock.extraWidth = 10;
     orBlock.booleanTwoBooleanArgBlock();
     orBlock.staticLabels.push('or');
 
     var notBlock = new ProtoBlock('not');
     notBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['not'] = notBlock;
+    notBlock.extraWidth = 30;
     notBlock.booleanOneBooleanArgBlock();
     notBlock.staticLabels.push('not');
 

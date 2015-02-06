@@ -37,10 +37,9 @@ var PARAMETERTEXTX = 140;
 var VALUETEXTX = 70;
 var VALUETEXTY = 26;
 
-// Text label positions
-var STARTTEXTX = 20;
-var ACTIONTEXTX = 100;
-var ACTIONTEXTY = 40;
+// Collapse text label positions
+var COLLAPSETEXTX = 10;
+var COLLAPSETEXTY = 40;
 
 // Artwork position in Media Block
 var MEDIASAFEAREA = [40, 4, 108, 80];

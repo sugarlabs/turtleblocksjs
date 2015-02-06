@@ -514,8 +514,8 @@ function SVG() {
     }
 
     this.header = function (center) {
-	// FIXME: Why is width wrong?
-	var width = this._width + 2;
+	// FIXME: Why are our calculations off by 2 x strokeWidth?
+	var width = this._width + 2 * this._strokeWidth;
         return '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + this._height + '">' + this._transform(center);
     }
 
@@ -896,7 +896,7 @@ function SVG() {
         svg += this.style();
 
         // Add a block label
-        var tx = 4 * this._strokeWidth;
+        var tx = 8 * this._strokeWidth;
         if (this._cap) {
             var ty = this._strokeWidth / 2.0 + this._radius + this._slotY * 3.0;
         } else {

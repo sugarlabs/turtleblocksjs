@@ -2965,11 +2965,7 @@ function Block(protoblock, blocks) {
             } else if (this.isArgBlock()) {
                 this.text.textAlign = 'left';
                 this.text.x = BOXTEXTX;
-                if (this.protoblock.args == 2) {
-                    this.text.y = VALUETEXTY + STANDARDBLOCKHEIGHT / 2;
-                } else {
-                    this.text.y = VALUETEXTY;
-                }
+                this.text.y = VALUETEXTY;
             }
 
             z = this.container.getNumChildren() - 1;
@@ -3012,8 +3008,8 @@ function Block(protoblock, blocks) {
                     } else {
                         me.collapseText = new createjs.Text('start', '20px Sans', '#000000');
                     }
-                    me.collapseText.x = STARTTEXTX;
-                    me.collapseText.y = ACTIONTEXTY;
+                    me.collapseText.x = COLLAPSETEXTX;
+                    me.collapseText.y = COLLAPSETEXTY;
                     me.collapseText.textAlign = 'left';
                     me.collapseText.textBaseline = 'alphabetic';
                     me.container.addChild(me.collapseText);

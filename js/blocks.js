@@ -1553,7 +1553,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan) {
     }
 
     this.unhighlightAll = function() {
-        for (blk in this.blockList) {
+        for (var blk in this.blockList) {
             this.unhighlight(blk);
         }
     }
@@ -2703,7 +2703,7 @@ function Block(protoblock, blocks) {
 
         // Save the dock types so we can restore them...
         this.dockTypes = [];
-        for (i = 0; i < this.docks.length; i++) {
+        for (var i = 0; i < this.docks.length; i++) {
             this.dockTypes.push(this.docks[i][2]);
         }
         // before clearing the docks (they will be regenerated).
@@ -2889,7 +2889,7 @@ function Block(protoblock, blocks) {
 
                     me.copyDocks();
                     // Restore the dock types.
-                    for (i = 0; i < me.docks.length; i++) {
+                    for (var i = 0; i < me.docks.length; i++) {
                         me.docks[i][2] = me.dockTypes[i];
                     }
 

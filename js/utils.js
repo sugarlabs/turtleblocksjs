@@ -259,7 +259,11 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     }
 
     if (newPalette) {
-        palettes.makeMenu();
+        try {
+            palettes.makeMenu();
+        } catch (e) {
+            console.log('makeMenu: ' + e);
+        }
     }
 
     // Define the image blocks
@@ -298,7 +302,11 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     if ('BLOCKPLUGINS' in obj) {
         for (var block in obj['BLOCKPLUGINS']) {
             console.log('adding plugin block ' + block);
-            eval(obj['BLOCKPLUGINS'][block]);
+	    try {
+                eval(obj['BLOCKPLUGINS'][block]);
+            } catch (e) {
+                console.log('Failed to load plugin for ' + block + ': ' + e);
+            }
         }
     }
 
@@ -503,4 +511,26 @@ function doStopVideoCam(cameraID, setCameraID) {
     }
     setCameraID(null);
     document.querySelector('#camVideo').pause();
+}
+
+
+function hideDOMLabel() {
+    var textLabel = docById('textLabel');
+    if (textLabel != null) {
+        textLabel.style.display = 'none';
+    }
+    var numberLabel = docById('numberLabel');
+    if (numberLabel != null) {
+        numberLabel.style.display = 'none';
+    }
+}
+
+
+function displayMsg(blocks, text) {
+    return;
+    var msgContainer = blocks.msgText.parent;
+    msgContainer.visible = true;
+    blocks.msgText.text = text;
+    msgContainer.updateCache();
+    blocks.stage.setChildIndex(msgContainer, blocks.stage.getNumChildren() - 1);
 }

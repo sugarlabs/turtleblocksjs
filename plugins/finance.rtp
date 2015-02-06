@@ -24,10 +24,10 @@ var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
 var currencyRate = new ProtoBlock('currencyrate');
 currencyRate.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['currencyrate'] = currencyRate;
-currencyRate.extraWidth(20);
+currencyRate.extraWidth = 20;
 currencyRate.twoArgMathBlock();
-currencyRate.docks[1][2] = 'anyin';
-currencyRate.docks[2][2] = 'anyin';
+currencyRate.dockTypes[1] = 'anyin';
+currencyRate.dockTypes[2] = 'anyin';
 currencyRate.defaults.push('AUD', 'USD');
 currencyRate.staticLabels.push('currency', 'from', 'to');
 
@@ -65,7 +65,7 @@ var stockprice = new ProtoBlock('stockprice');
 stockprice.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['stockprice'] = stockprice;
 stockprice.oneArgMathBlock();
-stockprice.docks[1][2] = 'anyin';
+stockprice.dockTypes[1] = 'anyin';
 stockprice.defaults.push('GOOG');
 stockprice.staticLabels.push('stock price');
 

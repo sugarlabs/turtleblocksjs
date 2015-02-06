@@ -1,4 +1,5 @@
-1 New project: a Javascript version of Turtle Blocks
+0.1
+  * New project: a Javascript version of Turtle Blocks
   * basic block manipluation
   * basic block execution
   * expandable blocks working
@@ -99,6 +100,8 @@
   * fixed crash due to uncaching something that hasn't been cached
     (2arg adjustable blocks)
   * hide stop button when running from server
+
+0.2
   * major overhaul of SVG generation: async
     (Works with Firefox, Safari, Chrome)
   * added paging to samples downloads
@@ -214,6 +217,8 @@
   * add default args to math blocks (Ignacio)
   * fine tune value display positioning 
   * fix problem with action block collapsed bounds
+0.3
+  * major refactoring of block handling to better compartmentalize the code
 
 TODO:
   * save errors

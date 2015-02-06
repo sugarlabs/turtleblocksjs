@@ -23,7 +23,7 @@ var dictionaryBlk = new ProtoBlock('dictionary');
 dictionaryBlk.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['dictionary'] = dictionaryBlk;
 dictionaryBlk.oneArgMathBlock();
-dictionaryBlk.docks[1][2] = 'anyin';
+dictionaryBlk.dockTypes[1] = 'anyin';
 dictionaryBlk.staticLabels.push('define');
 dictionaryBlk.defaults.push('turtle');
 

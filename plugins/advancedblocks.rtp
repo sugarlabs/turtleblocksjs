@@ -63,7 +63,7 @@ blocks.protoBlockDict['publish'] = pubBlock;
 pubBlock.oneArgBlock();
 pubBlock.defaults.push('comment');
 pubBlock.staticLabels.push('publish');
-pubBlock.docks[1][2] = 'textin';
+pubBlock.dockTypes[1] = 'textin';
 
 //* block:savesvg *//
 var svgBlock = new ProtoBlock('savesvg');
@@ -72,7 +72,7 @@ blocks.protoBlockDict['savesvg'] = svgBlock;
 svgBlock.oneArgBlock();
 svgBlock.defaults.push(_('title') + '.svg');
 svgBlock.staticLabels.push('save svg');
-svgBlock.docks[1][2] = 'textin';
+svgBlock.dockTypes[1] = 'textin';
 
 //* block:showblocks *//
 var showBlocks = new ProtoBlock('showblocks');
@@ -93,7 +93,7 @@ var evalBlock = new ProtoBlock('eval');
 evalBlock.palette = palettes.dict['number'];
 blocks.protoBlockDict['eval'] = evalBlock;
 evalBlock.twoArgMathBlock();
-evalBlock.docks[1][2] = 'textin';
+evalBlock.dockTypes[1] = 'textin';
 evalBlock.defaults.push('x');
 evalBlock.defaults.push(100);
 evalBlock.staticLabels.push('eval');
@@ -105,9 +105,9 @@ var audioBlock = new ProtoBlock('playback');
 audioBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['playback'] = audioBlock;
 audioBlock.defaults.push(null);
-audioBlock.extraWidth(20);
+audioBlock.extraWidth = 20;
 audioBlock.oneArgBlock();
-audioBlock.docks[1][2] = 'mediain';
+audioBlock.dockTypes[1] = 'mediain';
 audioBlock.staticLabels.push('play back');
 
 //* block:stopplayback *//
@@ -115,5 +115,5 @@ var audioStopBlock = new ProtoBlock('stopplayback');
 audioStopBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['stopplayback'] = audioStopBlock;
 audioStopBlock.zeroArgBlock();
-audioStopBlock.extraWidth(20);
+audioStopBlock.extraWidth = 20;
 audioStopBlock.staticLabels.push('stop play');

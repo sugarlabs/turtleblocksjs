@@ -87,7 +87,7 @@ var pushBlk = new ProtoBlock('push');
 pushBlk.palette = palettes.dict['extras'];
 blocks.protoBlockDict['push'] = pushBlk;
 pushBlk.oneArgBlock();
-pushBlk.docks[1][2] = 'anyin';
+pushBlk.dockTypes[1] = 'anyin';
 pushBlk.staticLabels.push('push');
 
 //* block:pop *//
@@ -101,7 +101,7 @@ popBlk.staticLabels.push('pop');
 var showHeap = new ProtoBlock('showHeap');
 showHeap.palette = palettes.dict['extras'];
 blocks.protoBlockDict['showHeap'] = showHeap;
-showHeap.extraWidth(20);
+showHeap.extraWidth = 20;
 showHeap.zeroArgBlock();
 showHeap.staticLabels.push('show heap');
 
@@ -109,7 +109,7 @@ showHeap.staticLabels.push('show heap');
 var emptyHeap = new ProtoBlock('emptyHeap');
 emptyHeap.palette = palettes.dict['extras'];
 blocks.protoBlockDict['emptyHeap'] = emptyHeap;
-emptyHeap.extraWidth(20);
+emptyHeap.extraWidth = 20;
 emptyHeap.zeroArgBlock();
 emptyHeap.staticLabels.push('empty heap');
 
@@ -117,18 +117,18 @@ emptyHeap.staticLabels.push('empty heap');
 var saveHeap = new ProtoBlock('saveHeap');
 saveHeap.palette = palettes.dict['extras'];
 blocks.protoBlockDict['saveHeap'] = saveHeap;
-saveHeap.extraWidth(20);
+saveHeap.extraWidth = 20;
 saveHeap.oneArgBlock();
 saveHeap.defaults.push('heap.json');
-saveHeap.docks[1][2] = 'textin';
+saveHeap.dockTypes[1] = 'textin';
 saveHeap.staticLabels.push('save heap');
 
 //* block:loadHeap *//
 var loadHeap = new ProtoBlock('loadHeap');
 loadHeap.palette = palettes.dict['extras'];
 blocks.protoBlockDict['loadHeap'] = loadHeap;
-loadHeap.extraWidth(20);
+loadHeap.extraWidth = 20;
 loadHeap.oneArgBlock();
 loadHeap.staticLabels.push('load heap');
-loadHeap.docks[1][2] = 'filein';
+loadHeap.dockTypes[1] = 'filein';
 loadHeap.defaults = [[null, null]];

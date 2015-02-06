@@ -381,7 +381,7 @@ function Palette(palettes, name, color, bgcolor) {
                     bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                     palette.menuContainer.addChild(bitmap);
                     bitmap.x = paletteWidth - STANDARDBLOCKHEIGHT;
-		    bitmap.y = 0;
+                    bitmap.y = 0;
 
                     var hitArea = new createjs.Shape();
                     hitArea.graphics.beginFill('#FFF').drawEllipse(-paletteWidth / 2, -STANDARDBLOCKHEIGHT / 2, paletteWidth, STANDARDBLOCKHEIGHT);
@@ -486,22 +486,19 @@ function Palette(palettes, name, color, bgcolor) {
             }
 
             function calculateHeight(palette, blkname) {
-                // We use a filler for the menu background
-                var height = STANDARDBLOCKHEIGHT * Math.ceil((last(palette.protoList[blk].docks)[1] - 1) / STANDARDBLOCKHEIGHT);
-                // Need to identify multiple arg blocks.
+                var size = palette.protoList[blk].size;
                 if (['if', 'while', 'until', 'ifthenelse', 'waitFor'].indexOf(modname) != -1) {
                     // Some blocks are not shown full-size on the palette.
-                    height = STANDARDBLOCKHEIGHT;
-                } else if (['start', 'action'].indexOf(blkname) != -1) {
-                    height -= STANDARDBLOCKHEIGHT;
-                } else if (palette.protoList[blk].docks.length > 2 && last(palette.protoList[blk].docks)[2] != 'in' && ['anyout', 'numberout', 'booleanout'].indexOf(palette.protoList[blk].docks[0][2]) == -1) {
-                    height += STANDARDBLOCKHEIGHT;
+                    size = 1;
+                } else if (['repeat', 'forever'].indexOf(blkname) != -1) {
+                    size += 1;
                 } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
-                    height += STANDARDBLOCKHEIGHT;
+                    size += 1;
                 } else if (palette.protoList[blk].image) {
-                    height += STANDARDBLOCKHEIGHT;
+                    size += 1;
                 }
-                return height
+                var height = STANDARDBLOCKHEIGHT * size;
+                return height;
             }
 
             if (!this.protoContainers[modname]) {
@@ -577,6 +574,7 @@ function Palette(palettes, name, color, bgcolor) {
                             svg.setExpand(60, 0, 0, 0);
                             svg.setOutie(true);
                             var artwork = svg.basicBox();
+                            var docks = svg.docks;
                             break;
                         case 'if':
                         case 'until':
@@ -589,6 +587,7 @@ function Palette(palettes, name, color, bgcolor) {
                             svg.setTab(true);
                             svg.setSlot(true);
                             var artwork = svg.basicBlock();
+                            var docks = svg.docks;
                             break;
                         case 'ifthenelse':
                             // so the block will fit
@@ -598,10 +597,13 @@ function Palette(palettes, name, color, bgcolor) {
                             svg.setTab(true);
                             svg.setSlot(true);
                             var artwork = svg.basicBlock();
+                            var docks = svg.docks;
                             block_label = _(myBlock.staticLabels[0]) + ' ' + _(myBlock.staticLabels[2]);
                             break;
                         default:
-                            var artwork = myBlock.artwork;
+                            var obj = myBlock.generator();
+                            var artwork = obj[0];
+                            var docks = obj[1];
                             break;
                     }
 
@@ -1118,4 +1120,14 @@ function makePaletteBitmap(palette, data, name, callback, extras) {
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
+}
+
+
+function regeneratePalette(palette) {
+    palette.visible = false;
+    palette.hideMenuItems();
+    palette.protoContainers = {};
+    palette.protoBackgrounds = {};
+
+    palette.palettes.updatePalettes();
 }

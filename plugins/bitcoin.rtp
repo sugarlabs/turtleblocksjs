@@ -25,8 +25,8 @@ var bitcoinRate = new ProtoBlock('bitcoinrate');
 bitcoinRate.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['bitcoinrate'] = bitcoinRate;
 bitcoinRate.twoArgMathBlock();
-bitcoinRate.docks[1][2] = 'anyin';
-bitcoinRate.docks[2][2] = 'numberin';
+bitcoinRate.dockTypes[1] = 'anyin';
+bitcoinRate.dockTypes[2] = 'numberin';
 bitcoinRate.defaults.push('USD', 100);
 bitcoinRate.staticLabels.push('bitcoin', 'from', 'value');
 

@@ -28,7 +28,9 @@ define(function(require) {
     require('activity/trash');
     require('activity/turtle');
     require('activity/palette');
+    require('activity/protoblocks');
     require('activity/blocks');
+    require('activity/block');
     require('activity/logo');
     require('activity/savebox');
     require('activity/clearbox');

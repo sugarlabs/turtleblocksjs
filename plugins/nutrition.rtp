@@ -65,7 +65,7 @@ var get_eatme = function (name, label, extraWidth) {
     }
     block.oneArgMathBlock();
     block.staticLabels.push(label);
-    block.docks[1][2] = 'mediain';
+    block.dockTypes[1] = 'mediain';
 };
 var show_value = function (name, label) {
     var block = new ProtoBlock(name);
@@ -80,7 +80,7 @@ var eat = function (name, label) {
     blocks.protoBlockDict[name] = block;
     block.oneArgBlock();
     block.staticLabels.push(label);
-    block.docks[1][2] = 'mediain';
+    block.dockTypes[1] = 'mediain';
 };
 var action = function (name, label, extraWidth) {
     var block = new ProtoBlock(name);

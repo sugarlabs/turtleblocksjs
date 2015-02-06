@@ -92,7 +92,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     arcBlock.staticLabels.push('arc');
     arcBlock.staticLabels.push('angle');
     arcBlock.staticLabels.push('radius');
-    arcBlock.docks[1][2] = 'numberin'; // override default
+    arcBlock.dockTypes[1] = 'numberin'; // override default
 
     var setheadingBlock = new ProtoBlock('setheading');
     setheadingBlock.palette = palettes.dict['turtle'];
@@ -117,7 +117,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     setxyBlock.staticLabels.push('set xy');
     setxyBlock.staticLabels.push('x');
     setxyBlock.staticLabels.push('y');
-    setxyBlock.docks[1][2] = 'numberin'; // override default
+    setxyBlock.dockTypes[1] = 'numberin'; // override default
 
     var xBlock = new ProtoBlock('x');
     xBlock.palette = palettes.dict['turtle'];
@@ -245,9 +245,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['plus'] = plusBlock;
     plusBlock.fontsize = 14;
     plusBlock.twoArgMathBlock();
-    plusBlock.docks[0][2] = 'anyout';
-    plusBlock.docks[1][2] = 'anyin';
-    plusBlock.docks[2][2] = 'anyin';
+    plusBlock.dockTypes[0] = 'anyout';
+    plusBlock.dockTypes[1] = 'anyin';
+    plusBlock.dockTypes[2] = 'anyin';
     plusBlock.staticLabels.push('+');
     plusBlock.defaults.push(100, 100)
 
@@ -342,8 +342,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     storeinBlock.twoArgBlock();
     storeinBlock.defaults.push(_('box'));
     storeinBlock.defaults.push(100);
-    storeinBlock.docks[1][2] = 'anyin';
-    storeinBlock.docks[2][2] = 'anyin';
+    storeinBlock.dockTypes[1] = 'anyin';
+    storeinBlock.dockTypes[2] = 'anyin';
     storeinBlock.staticLabels.push('store in');
     storeinBlock.staticLabels.push('name');
     storeinBlock.staticLabels.push('value');
@@ -355,8 +355,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.oneArgMathBlock();
     boxBlock.defaults.push(_('box'));
     boxBlock.staticLabels.push('box');
-    boxBlock.docks[0][2] = 'anyout';
-    boxBlock.docks[1][2] = 'anyin';
+    boxBlock.dockTypes[0] = 'anyout';
+    boxBlock.dockTypes[1] = 'anyin';
     // Show the value in the box as if it were a parameter.
     boxBlock.parameter = true;
 
@@ -374,7 +374,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     doBlock.oneArgBlock();
     doBlock.defaults.push(_('action'));
     doBlock.staticLabels.push('do');
-    doBlock.docks[1][2] = 'anyin';
+    doBlock.dockTypes[1] = 'anyin';
 
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['blocks'];
@@ -387,15 +387,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     incrementOneBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['incrementOne'] = incrementOneBlock;
     incrementOneBlock.oneArgBlock();
-    boxBlock.docks[1][2] = 'anyin';
+    boxBlock.dockTypes[1] = 'anyin';
     incrementOneBlock.staticLabels.push('add 1 to');
 
     var incrementBlock = new ProtoBlock('increment');
     incrementBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['increment'] = incrementBlock;
     incrementBlock.twoArgBlock();
-    incrementBlock.docks[1][2] = 'anyin';
-    incrementBlock.docks[2][2] = 'anyin';
+    incrementBlock.dockTypes[1] = 'anyin';
+    incrementBlock.dockTypes[2] = 'anyin';
     incrementBlock.staticLabels.push('add', 'to', 'value');
 
     // Media palette
@@ -405,7 +405,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     speakBlock.oneArgBlock();
     speakBlock.staticLabels.push('speak');
     speakBlock.defaults.push('hello');
-    speakBlock.docks[1][2] = 'textin';
+    speakBlock.dockTypes[1] = 'textin';
 
     var showBlock = new ProtoBlock('show');
     showBlock.palette = palettes.dict['media'];
@@ -416,8 +416,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     showBlock.staticLabels.push('show');
     showBlock.staticLabels.push('size');
     showBlock.staticLabels.push('obj');
-    showBlock.docks[1][2] = 'numberin'; // override default
-    showBlock.docks[2][2] = 'anyin'; // override default
+    showBlock.dockTypes[1] = 'numberin'; // override default
+    showBlock.dockTypes[2] = 'anyin'; // override default
 
     var shellBlock = new ProtoBlock('turtleshell');
     shellBlock.palette = palettes.dict['media'];
@@ -428,21 +428,21 @@ function initBasicProtoBlocks(palettes, blocks) {
     shellBlock.staticLabels.push('shell');
     shellBlock.staticLabels.push('size');
     shellBlock.staticLabels.push('image');
-    shellBlock.docks[1][2] = 'numberin'; // override default
-    shellBlock.docks[2][2] = 'mediain'; // override default
+    shellBlock.dockTypes[1] = 'numberin'; // override default
+    shellBlock.dockTypes[2] = 'mediain'; // override default
 
     var textBlock = new ProtoBlock('text');
     textBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['text'] = textBlock;
     textBlock.valueBlock();
-    textBlock.docks[0][2] = 'textout';
+    textBlock.dockTypes[0] = 'textout';
 
     var mediaBlock = new ProtoBlock('media');
     mediaBlock.palette = palettes.dict['media'];
     mediaBlock.image = 'images/load-media.svg'
     blocks.protoBlockDict['media'] = mediaBlock;
     mediaBlock.mediaBlock();
-    mediaBlock.docks[0][2] = 'mediaout';
+    mediaBlock.dockTypes[0] = 'mediaout';
 
     var cameraBlock = new ProtoBlock('camera');
     cameraBlock.palette = palettes.dict['media'];
@@ -460,7 +460,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     loadFile.palette = palettes.dict['media'];
     blocks.protoBlockDict['loadFile'] = loadFile;
     loadFile.parameterBlock();
-    loadFile.docks[0][2] = 'fileout';
+    loadFile.dockTypes[0] = 'fileout';
     loadFile.staticLabels.push('');
 
     var stopVideoCamBlock = new ProtoBlock('stopvideocam');
@@ -535,8 +535,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     hspaceBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['hspace'] = hspaceBlock;
     hspaceBlock.oneArgMathBlock();
-    hspaceBlock.docks[0][2] = 'anyout';
-    hspaceBlock.docks[1][2] = 'anyin';
+    hspaceBlock.dockTypes[0] = 'anyout';
+    hspaceBlock.dockTypes[1] = 'anyin';
 
     var waitBlock = new ProtoBlock('wait');
     waitBlock.palette = palettes.dict['extras'];
@@ -550,7 +550,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['print'] = printBlock;
     printBlock.oneArgBlock();
     printBlock.staticLabels.push('print');
-    printBlock.docks[1][2] = 'anyin';
+    printBlock.dockTypes[1] = 'anyin';
 
     // Sensors palette
     var timeBlock = new ProtoBlock('time');
@@ -599,7 +599,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     nopValueBlock.palette = palettes.dict['extras'];
     nopValueBlock.valueBlock();
     nopValueBlock.staticLabels.push(_('unknown'));
-    nopValueBlock.docks[0][2] = 'anyout';
+    nopValueBlock.dockTypes[0] = 'anyout';
 
     /*
     var nopOneArgMathBlock = new ProtoBlock('nopOneArgMathBlock');
@@ -608,8 +608,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     nopOneArgMathBlock.palette = palettes.dict['extras'];
     nopOneArgMathBlock.oneArgMathBlock();
     nopOneArgMathBlock.staticLabels.push(_('unknown'));
-    nopOneArgMathBlock.docks[0][2] = 'anyout';
-    nopOneArgMathBlock.docks[1][2] = 'anyin';
+    nopOneArgMathBlock.dockTypes[0] = 'anyout';
+    nopOneArgMathBlock.dockTypes[1] = 'anyin';
 
     var nopTwoArgMathBlock = new ProtoBlock('nopTwoArgMathBlock');
     blocks.protoBlockDict['nopTwoArgMathBlock'] = nopTwoArgMathBlock;
@@ -617,9 +617,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     nopTwoArgMathBlock.hidden = true;
     nopTwoArgMathBlock.palette = palettes.dict['extras'];
     nopTwoArgMathBlock.staticLabels.push(_('unknown'));
-    nopTwoArgMathBlock.docks[0][2] = 'anyout';
-    nopTwoArgMathBlock.docks[1][2] = 'anyin';
-    nopTwoArgMathBlock.docks[2][2] = 'anyin';
+    nopTwoArgMathBlock.dockTypes[0] = 'anyout';
+    nopTwoArgMathBlock.dockTypes[1] = 'anyin';
+    nopTwoArgMathBlock.dockTypes[2] = 'anyin';
     */
 
     var nopZeroArgBlock = new ProtoBlock('nopZeroArgBlock');
@@ -635,7 +635,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     nopOneArgBlock.palette = palettes.dict['extras'];
     nopOneArgBlock.oneArgBlock();
     nopOneArgBlock.staticLabels.push(_('unknown'));
-    nopOneArgBlock.docks[1][2] = 'anyin';
+    nopOneArgBlock.dockTypes[1] = 'anyin';
 
     var nopTwoArgBlock = new ProtoBlock('nopTwoArgBlock');
     blocks.protoBlockDict['nopTwoArgBlock'] = nopTwoArgBlock;
@@ -643,8 +643,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     nopTwoArgBlock.palette = palettes.dict['extras'];
     nopTwoArgBlock.twoArgBlock();
     nopTwoArgBlock.staticLabels.push(_('unknown'));
-    nopTwoArgBlock.docks[1][2] = 'anyin';
-    nopTwoArgBlock.docks[2][2] = 'anyin';
+    nopTwoArgBlock.dockTypes[1] = 'anyin';
+    nopTwoArgBlock.dockTypes[2] = 'anyin';
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

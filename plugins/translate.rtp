@@ -71,8 +71,8 @@ var TranslateBlock = new ProtoBlock('translate');
 TranslateBlock.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['translate'] = TranslateBlock;
 TranslateBlock.oneArgMathBlock();
-TranslateBlock.docks[0][2] = 'textout';
-TranslateBlock.docks[1][2] = 'textin';
+TranslateBlock.dockTypes[0] = 'textout';
+TranslateBlock.dockTypes[1] = 'textin';
 TranslateBlock.defaults.push('Hello');
 TranslateBlock.staticLabels.push('translate');
 
@@ -81,8 +81,8 @@ var DetectLangBlock = new ProtoBlock('detectlang');
 DetectLangBlock.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['detectlang'] = DetectLangBlock;
 DetectLangBlock.oneArgMathBlock();
-DetectLangBlock.docks[0][2] = 'textout';
-DetectLangBlock.docks[1][2] = 'anyin';
+DetectLangBlock.dockTypes[0] = 'textout';
+DetectLangBlock.dockTypes[1] = 'anyin';
 DetectLangBlock.defaults.push('Hello');
 DetectLangBlock.staticLabels.push('detect lang');
 
@@ -91,8 +91,8 @@ var SetLangBlock = new ProtoBlock('setlang');
 SetLangBlock.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['setlang'] = SetLangBlock;
 SetLangBlock.twoArgBlock();
-SetLangBlock.docks[1][2] = 'anyin';
-SetLangBlock.docks[2][2] = 'anyin';
+SetLangBlock.dockTypes[1] = 'anyin';
+SetLangBlock.dockTypes[2] = 'anyin';
 SetLangBlock.defaults.push('English', 'Spanish');
 SetLangBlock.staticLabels.push('set lang', 'source', 'target');
 

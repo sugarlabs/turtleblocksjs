@@ -3455,12 +3455,12 @@ function collapseToggle(blocks, myBlock) {
                 }
             }
         }
+	myBlock.collapseContainer.updateCache();
+	myBlock.container.updateCache();
+	blocks.refreshCanvas();
     }
 
     toggle(myBlock.collapsed);
-    myBlock.collapseContainer.updateCache();
-    myBlock.container.updateCache();
-    blocks.refreshCanvas();
     return;
 }
 

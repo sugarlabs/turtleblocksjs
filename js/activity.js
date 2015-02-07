@@ -50,17 +50,9 @@ define(function(require) {
         }
 
         // Initialize the activity.
-        activity.setup();
         setTimeout(function() {
             showHelp(true)
         }, 1000);
-
-        // Colorize the activity icon.
-        var activityButton = docById('activity-button');
-        var colors; // I should be getting the XO colors here?
-        activity.getXOColor(function(error, colors) {
-            icon.colorize(activityButton, colors);
-        });
 
         //
         var canvas = docById('myCanvas');
@@ -146,8 +138,6 @@ define(function(require) {
         var stageMouseDown = false;
         var stageX = 0;
         var stageY = 0;
-
-        var stopButton = docById('stop-button');
 
         var onAndroid = /Android/i.test(navigator.userAgent);
         console.log('on Android? ' + onAndroid);
@@ -242,12 +232,6 @@ define(function(require) {
                 polarVisible = true;
             }
         }
-
-        // Make the activity stop with the stop button.
-        var stopButton = docById('stop-button');
-        stopButton.addEventListener('click', function(e) {
-            activity.close();
-        });
 
         // Do we need to update the stage?
         var update = true;
@@ -464,6 +448,8 @@ define(function(require) {
             document.addEventListener('DOMMouseScroll', scrollEvent, false);
 
             this.document.onkeydown = keyPressed;
+
+            docById('loding-image-container').style.display = 'none';
         }
 
         function setupBlocksContainerEvents() {

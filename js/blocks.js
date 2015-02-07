@@ -23,13 +23,14 @@ var VIDEOVALUE = '##__VIDEO__##';
 // Blocks holds the list of blocks and most of the block-associated
 // methods, since most block manipulations are inter-block.
 
-function Blocks(canvas, stage, refreshCanvas, trashcan) {
+function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     // Things we need from outside include access to the canvas, the
     // stage, and the trashcan.
     this.canvas = canvas;
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
     this.trashcan = trashcan;
+    this.updateStage = updateStage;
 
     // We keep a dictionary for the proto blocks,
     this.protoBlockDict = {}

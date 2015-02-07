@@ -9,9 +9,6 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
-// A place in the DOM to put modifiable labels (textareas).
-var labelElem = docById('labelDiv');
-
 // Length of a long touch
 var LONGPRESSTIME = 2000;
 
@@ -771,6 +768,12 @@ function collapseOut(blocks, myBlock, thisBlock, moved, event) {
 }
 
 
+var hasMouse = false;
+// Mousemove is not emulated for touch
+document.addEventListener('mousemove', function (e) {
+    hasMouse = true;
+});
+
 // These are the event handlers for block containers.
 function loadEventHandlers(myBlock) {
     var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
@@ -794,6 +797,7 @@ function loadEventHandlers(myBlock) {
 
     var moved = false;
     var locked = false;
+    var getInput = hasMouse;
     myBlock.container.on('click', function(event) {
         if (locked) {
             return;
@@ -803,7 +807,7 @@ function loadEventHandlers(myBlock) {
             locked = false;
         }, 500);
         hideDOMLabel();
-        if (!moved) {
+        if ((!hasMouse && getInput) || (hasMouse && !moved)) {
             if (blocks.selectingStack) {
                 var topBlock = blocks.findTopBlock(thisBlock);
                 blocks.selectedStack = topBlock;
@@ -818,43 +822,76 @@ function loadEventHandlers(myBlock) {
                 var canvasLeft = blocks.canvas.offsetLeft + 28;
                 var canvasTop = blocks.canvas.offsetTop + 6;
 
-                if (myBlock.name == 'text') {
-                    labelElem.innerHTML = '<textarea id="' + 'textLabel' +
-                        '" style="position: absolute; ' +
-                        '-webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" ' +
-                        'class="text", ' +
-                        'onkeypress="if(event.keyCode==13){return false;}"' +
-                        'cols="8", rows="1", maxlength="256">' +
-                        myBlock.value + '</textarea>';
-                    myBlock.label = docById('textLabel');
-                    myBlock.label.addEventListener(
-                        'change',
-                        function() {
-                            labelChanged(myBlock);
-                        });
-                    myBlock.label.style.left = Math.round((x + blocks.stage.x) * blocks.scale + canvasLeft) + 'px';
-                    myBlock.label.style.top = Math.round((y + blocks.stage.y) * blocks.scale + canvasTop) + 'px';
-                    myBlock.label.style.display = '';
-                    myBlock.label.focus();
-                } else {
-                    labelElem.innerHTML = '<textarea id="' + 'numberLabel' +
-                        '" style="position: absolute; ' +
-                        '-webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" ' +
-                        'class="number", ' +
-                        'onkeypress="if(event.keyCode==13){return false;}"' +
-                        'cols="8", rows="1", maxlength="8">' +
-                        myBlock.value + '</textarea>';
-                    myBlock.label = docById('numberLabel');
-                    myBlock.label.addEventListener(
-                        'change',
-                        function() {
-                            labelChanged(myBlock);
-                        });
-                    myBlock.label.style.left = Math.round((x + blocks.stage.x) * blocks.scale + canvasLeft) + 'px';
-                    myBlock.label.style.top = Math.round((y + blocks.stage.y) * blocks.scale + canvasTop) + 'px';
-                    myBlock.label.style.display = '';
-                    myBlock.label.focus();
+                var movedStage = false;
+                if (!hasMouse && blocks.stage.y + y > 75) {
+                    movedStage = true;
+                    var fromY = blocks.stage.y;
+                    blocks.stage.y = -y + 75;
                 }
+
+                if (myBlock.name == 'text') {
+                    var type = 'text';
+                } else {
+                    var type = 'number';
+                }
+
+                // A place in the DOM to put modifiable labels (textareas).
+                var labelElem = docById('labelDiv');
+                labelElem.innerHTML = '<input id="' + type + 'Label" \
+                    style="position: absolute; \
+                    -webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" \
+                    class="' + type + '" type="' + type + '" \
+                    value="' + myBlock.value + '" />';
+                labelElem.classList.add('hasKeyboard');
+
+                myBlock.label = docById(type + 'Label');
+
+                var focused = false;
+                var blur = function (event) {
+                    if (!focused) {
+                        return;
+                    }
+
+                    labelChanged(myBlock);
+                    event.preventDefault();
+
+                    labelElem.classList.remove('hasKeyboard');
+                    window.scroll(0, 0);
+                    myBlock.label.style.display = 'none';
+                    myBlock.label.removeEventListener('keypress', keypress);
+
+                    if (movedStage) {
+                         blocks.stage.y = fromY;
+                         blocks.updateStage();
+                    }
+                };
+                myBlock.label.addEventListener('blur', blur);
+
+                var keypress = function (event) {
+                    console.log('KeyPress:', event.keyCode);
+                    if ([13, 10, 9].indexOf(event.keyCode) !== -1) {
+                        blur(event);
+                    }
+                };
+                myBlock.label.addEventListener('keypress', keypress);
+
+                myBlock.label.addEventListener('change', function() {
+                    labelChanged(myBlock);
+                });
+
+                myBlock.label.style.left = Math.round((x + blocks.stage.x) * blocks.scale + canvasLeft) + 'px';
+                myBlock.label.style.top = Math.round((y + blocks.stage.y) * blocks.scale + canvasTop) + 'px';
+                myBlock.label.style.width = Math.round(100 * blocks.scale) + 'px';
+                myBlock.label.style.fontSize = Math.round(24 * blocks.scale) + 'px';
+                myBlock.label.style.display = '';
+                myBlock.label.focus();
+
+                // Firefox fix
+                setTimeout(function () {
+                    myBlock.label.style.display = '';
+                    myBlock.label.focus();
+                    focused = true;
+                }, 100);
             } else {
                 if (!blocks.inLongPress) {
                     var topBlock = blocks.findTopBlock(thisBlock);
@@ -907,6 +944,7 @@ function loadEventHandlers(myBlock) {
             moved = false;
         });
 
+        var original = {x: event.stageX, y: event.stageY};
         myBlock.container.on('pressmove', function(event) {
             // FIXME: More voodoo
             event.nativeEvent.preventDefault();
@@ -919,7 +957,17 @@ function loadEventHandlers(myBlock) {
             if (!moved && myBlock.label != null) {
                 myBlock.label.style.display = 'none';
             }
-            moved = true;
+
+            if (hasMouse) {
+                moved = true;
+            } else {
+                // Make it eaiser to select text on mobile
+                setTimeout(function () {
+                    moved = Math.abs(event.stageX - original.x) + Math.abs(event.stageY - original.y) > 20 && !hasMouse;
+                    getInput = !moved;
+                }, 200);
+            }
+
             var oldX = myBlock.container.x;
             var oldY = myBlock.container.y;
             myBlock.container.x = Math.round(event.stageX / blocks.scale) + offset.x;

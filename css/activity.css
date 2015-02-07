@@ -1,5 +1,7 @@
 body {
     background-color: #99CCFF;
+    padding: 0;
+    margin: 0;
 }
 
 #main-toolbar #activity-button {
@@ -49,24 +51,24 @@ input.savename {
    font-size: 150% !important;
 }
 
-textarea.text {
+input.text {
    background-color: #ffc000;
    text-align: center;
-   font-size: 150% !important;
    font-weight: bold !important;
    resize: none !important;
    padding: 0 !important;
    border: 0 !important;
+   width: 100px;
 }
 
-textarea.number {
-   background-color: #ff00ff;
+input.number {
+   background-color: #ff00ff !important;
    text-align: center;
-   font-size: 150% !important;
    font-weight: bold !important;
    resize: none !important;
    padding: 0 !important;
    border: 0 !important;
+   width: 100px;
 }
 
 #canvas {

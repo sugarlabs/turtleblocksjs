@@ -1639,9 +1639,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     stringValues[key].push(b);
                     break;
                 case 'action':
-                    if (blkData[4][1] != null) {
-                        actionNames[b] = blkData[4][1];
-                    }
                 case 'hat':
                     if (blkData[4][1] != null) {
                         actionNames[b] = blkData[4][1];
@@ -1681,7 +1678,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         }
 
-        console.log(actionNames);
         // Make sure action names are unique.
         for (var b in actionNames) {
             // Is there a proto do block with this name? If so, find a
@@ -1694,13 +1690,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 var name = blkData[1][1]['value'];
             }
             var oldName = name;
-            var i = 0;
+            var i = 1;
             while (currentActionNames.indexOf(name) != -1) {
-                name = blkData[1][1] + i.toString();
+                name = oldName + i.toString();
                 i += 1;
                 // Should never happen... but just in case.
                 if (i > this.blockList.length) {
-                    console.log('could not generate unique action name');
+                    console.log('Could not generate unique action name.');
                     break;
                 }
             }

@@ -943,13 +943,42 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             if (palette.name == 'myblocks') {
                 // If we are on the myblocks palette, it is a macro.
                 var macroName = blkname.replace('macro_', '');
-                var obj = palette.palettes.macroDict[macroName];
+
+                // We need to copy the macro data so it is not overwritten.
+                var obj = [];
+                for (var b = 0; b < palette.palettes.macroDict[macroName].length; b++) {
+                    var valueEntry = palette.palettes.macroDict[macroName][b][1];
+                    var newValue = [];
+                    if (typeof(valueEntry) == 'string') {
+                        newValue = valueEntry;
+                    } else if (typeof(valueEntry[1]) == 'string') {
+                        if (valueEntry[0] == 'number') {
+                            newValue = [valueEntry[0], Number(valueEntry[1])];
+                        } else {
+                            newValue = [valueEntry[0], valueEntry[1]];
+                        }
+                    } else {
+                        if (valueEntry[0] == 'number') {
+                            newValue = [valueEntry[0], Number(valueEntry[1]['value'])];
+                        } else {
+                            newValue = [valueEntry[0], {'value': valueEntry[1]['value']}];
+                        }
+                    }
+                    var newBlock = [palette.palettes.macroDict[macroName][b][0],
+                                    newValue,
+                                    palette.palettes.macroDict[macroName][b][2],
+                                    palette.palettes.macroDict[macroName][b][3],
+                                    palette.palettes.macroDict[macroName][b][4]];
+                    obj.push(newBlock);
+                }
+
                 // Set the position of the top block in the stack
                 // before loading.
                 obj[0][2] = palette.protoContainers[blkname].x;
                 obj[0][3] = palette.protoContainers[blkname].y;
                 console.log('loading macro ' + macroName);
                 paletteBlocks.loadNewBlocks(obj);
+
                 // Ensure collapse state of new stack is set properly.
                 var thisBlock = paletteBlocks.blockList.length - 1;
                 var topBlk = paletteBlocks.findTopBlock(thisBlock);
@@ -959,6 +988,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             } else {
                 // Create the block.
                 var newBlock = makeBlockFromPalette(blk, blkname, palette);
+
                 // Move the drag group under the cursor.
                 paletteBlocks.findDragGroup(newBlock);
                 for (i in paletteBlocks.dragGroup) {
@@ -967,6 +997,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 // Dock with other blocks if needed
                 blocks.blockMoved(newBlock);
             }
+
             // Return protoblock we've been dragging back to the palette.
             palette.protoContainers[blkname].x = saveX;
             palette.protoContainers[blkname].y = saveY + palette.scrollDiff;

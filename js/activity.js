@@ -296,7 +296,7 @@ define(function(require) {
 
             trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
             turtles = new Turtles(canvas, stage, refreshCanvas);
-            blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan);
+            blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan, stage.update);
             palettes = initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, blocks);
 
             palettes.setBlocks(blocks);
@@ -497,6 +497,7 @@ define(function(require) {
                     blocksContainer.x += event.stageX - lastCords.x;
                     blocksContainer.y += event.stageY - lastCords.y;
                     lastCords = {x: event.stageX, y: event.stageY};
+                    stage.update();
                 });
 
                 stage.on('stagemouseup', function (event) {
@@ -598,6 +599,10 @@ define(function(require) {
         };
 
         function keyPressed(event) {
+            if (docById('labelDiv').classList.contains('hasKeyboard')) {
+                return;
+            }
+
             var ESC = 27;
             var ALT = 18;
             var CTRL = 17;
@@ -653,6 +658,10 @@ define(function(require) {
         }
 
         function onResize() {
+            if (docById('labelDiv').classList.contains('hasKeyboard')) {
+                return;
+            }
+
             if (!onAndroid) {
                 var w = window.innerWidth;
                 var h = window.innerHeight;

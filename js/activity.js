@@ -14,8 +14,6 @@
 // scratch. -- Walter Bender, October 2014.
 
 define(function(require) {
-    var activity = require('sugar-web/activity/activity');
-    var icon = require('sugar-web/graphics/icon');
     require('easeljs');
     require('preloadjs');
     require('howler');

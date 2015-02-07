@@ -446,8 +446,6 @@ define(function(require) {
             document.addEventListener('DOMMouseScroll', scrollEvent, false);
 
             this.document.onkeydown = keyPressed;
-
-            docById('loding-image-container').style.display = 'none';
         }
 
         function setupBlocksContainerEvents() {
@@ -870,6 +868,8 @@ define(function(require) {
                 console.log('calling toggleCollapsibles after timeout');
                 blocks.toggleCollapsibles();
             }, 3000);
+
+            docById('loding-image-container').style.display = 'none';
         }
 
         function saveProject(projectName) {
@@ -944,6 +944,8 @@ define(function(require) {
                 blocks.toggleCollapsibles();
             }, 3000);
             update = true;
+
+            docById('loding-image-container').style.display = 'none';
         }
 
         function hideMsgs() {

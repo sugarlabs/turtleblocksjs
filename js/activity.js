@@ -1073,6 +1073,7 @@ define(function(require) {
                     continue;
                 }
                 if (blocks.blockList[blk].isValueBlock() || blocks.blockList[blk].name == 'loadFile') {
+                    // FIX ME: scale image if it exceeds a maximum size.
                     var args = {'value': myBlock.value};
                 } else  if (myBlock.name == 'start') {
                     // It's a turtle.

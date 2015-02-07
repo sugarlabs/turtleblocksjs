@@ -221,8 +221,11 @@
   * major refactoring of block handling to better compartmentalize the code
   * blocks in a stack being dragged should be on top of everything else
   * refactoring of input for Android (Sam Parkinson)
+0.4
+  * fixed collapse bug which manifests itself when loading custom stacks
 
 TODO:
+  * music blocks plugin
   * save errors
   * display rubrics
   * more efficient until and while?
@@ -231,7 +234,7 @@ TODO:
   * zoom and scroll?
   * use graphical error messages
   * make expand an array, one element for each arg or slot
-  * user defined block types (trivial with factory)
+  * user-defined block types (trivial with factory)
   * three-arg flow blocks (trivial with factory)
   * three-arg arg blocks (trivial with factory)
   * write SVG generator
@@ -239,7 +242,8 @@ TODO:
   * try to detect difference between unknown flow and arg blocks
   * button block (a stack that is run when you click on a button)
     - two args: artwork for the button; action name to take
-  * maybe we want to add local variables?
+  * maybe we want to add local variables? (e.g., boxes only defined inside an action)
+  * pass argments to actions? (and arg blocks to reference them)?
   * auto-guestimate block width (need to set label name before creating artwork)
 
 KNOWN BUGS:
@@ -248,4 +252,3 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * fix race conditions
   * not all blocks highlight when using step-by-step mode
-  * collapse bug manifests itself when loading custom stacks

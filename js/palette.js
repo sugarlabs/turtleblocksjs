@@ -950,7 +950,12 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 obj[0][3] = palette.protoContainers[blkname].y;
                 console.log('loading macro ' + macroName);
                 paletteBlocks.loadNewBlocks(obj);
-                // FIXME: collapse is wrong.
+                // Ensure collapse state of new stack is set properly.
+                var thisBlock = paletteBlocks.blockList.length - 1;
+                var topBlk = paletteBlocks.findTopBlock(thisBlock);
+                setTimeout(function() {
+                    paletteBlocks.blockList[topBlk].collapseToggle();
+                }, 500);
             } else {
                 // Create the block.
                 var newBlock = makeBlockFromPalette(blk, blkname, palette);

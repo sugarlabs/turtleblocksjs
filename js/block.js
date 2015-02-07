@@ -70,9 +70,12 @@ function Block(protoblock, blocks) {
 
     this.highlight = function() {
         if (this.collapsed && ['start', 'action'].indexOf(this.name) != -1) {
-            this.highlightCollapseBlockBitmap.visible = true;
-            this.collapseBlockBitmap.visible = false;
-            this.collapseText.visible = true;
+            // We may have a race condition.
+            if (this.highlightCollapseBlockBitmap.visible) {
+                this.highlightCollapseBlockBitmap.visible = true;
+                this.collapseBlockBitmap.visible = false;
+                this.collapseText.visible = true;
+            }
         } else {
             this.bitmap.visible = false;
             this.highlightBitmap.visible = true;

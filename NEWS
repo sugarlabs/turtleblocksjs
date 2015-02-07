@@ -219,6 +219,8 @@
   * fix problem with action block collapsed bounds
 0.3
   * major refactoring of block handling to better compartmentalize the code
+  * blocks in a stack being dragged should be on top of everything else
+  * refactoring of input for Android (Sam Parkinson)
 
 TODO:
   * save errors
@@ -241,8 +243,6 @@ TODO:
   * auto-guestimate block width (need to set label name before creating artwork)
 
 KNOWN BUGS:
-  * show blocks should put blocks on top of everything else
-  * blocks in a stack being dragged should be on top of everything else
   * sample projects cannot be shown on Android
   * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas

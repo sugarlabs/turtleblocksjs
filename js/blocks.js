@@ -1996,18 +1996,22 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }, 2000);
     }
 
+    this.raiseStackToTop = function (blk) {
+	// Move the stack associated with blk to the top.
+	var topBlk = this.findTopBlock(blk);
+        this.findDragGroup(topBlk);
+
+        var n = this.stage.getNumChildren() - 1;
+        for (var b = 0; b < this.dragGroup.length; b++) {
+            this.stage.setChildIndex(this.blockList[this.dragGroup[b]].container, n);
+            n -= 1;
+        }
+
+        this.refreshCanvas;
+    }
+
     blockBlocks = this;
     return this;
-}
-
-
-function removeChildBitmap(myBlock, name) {
-    for (var child = 0; child < myBlock.container.getNumChildren(); child++) {
-        if (myBlock.container.children[child].name == name) {
-            myBlock.container.removeChild(myBlock.container.children[child]);
-            break;
-        }
-    }
 }
 
 

@@ -302,7 +302,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     if ('BLOCKPLUGINS' in obj) {
         for (var block in obj['BLOCKPLUGINS']) {
             console.log('adding plugin block ' + block);
-	    try {
+            try {
                 eval(obj['BLOCKPLUGINS'][block]);
             } catch (e) {
                 console.log('Failed to load plugin for ' + block + ': ' + e);

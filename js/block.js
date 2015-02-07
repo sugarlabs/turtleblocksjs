@@ -918,8 +918,10 @@ function loadEventHandlers(myBlock) {
         // Always show the trash when there is a block selected.
         trashcan.show();
 
-        // Bump the bitmap in front of its siblings.
-        blocks.stage.setChildIndex(myBlock.container, blocks.stage.getNumChildren() - 1);
+        // Raise entire stack to the top.
+        blocks.raiseStackToTop(thisBlock);
+
+        // And possibly the collapse button.
         if (myBlock.collapseContainer != null) {
             blocks.stage.setChildIndex(myBlock.collapseContainer, blocks.stage.getNumChildren() - 1);
         }

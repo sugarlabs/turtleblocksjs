@@ -225,7 +225,8 @@
   * add splash-screen animation (Sam Parkinson)
   * fixed collapse bug which manifests itself when loading custom stacks
   * use ellipsis on action and do labels (including do blocks in palette)
-  * fix layout problem in boxes palette
+  * fixed layout problem in boxes palette
+  * fixed regression in loading macros (NaN)
 
 TODO:
   * music blocks plugin
@@ -255,4 +256,3 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * fix race conditions
   * not all blocks highlight when using step-by-step mode
-  * fix regression in loading macros (NaN)

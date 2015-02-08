@@ -972,6 +972,12 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                         } else {
                             newValue = [valueEntry[0], valueEntry[1]];
                         }
+                    } else if (typeof(valueEntry[1]) == 'number') {
+                        if (valueEntry[0] == 'number') {
+                            newValue = [valueEntry[0], valueEntry[1]];
+                        } else {
+                            newValue = [valueEntry[0], valueEntry[1].toString()];
+                        }
                     } else {
                         if (valueEntry[0] == 'number') {
                             newValue = [valueEntry[0], Number(valueEntry[1]['value'])];

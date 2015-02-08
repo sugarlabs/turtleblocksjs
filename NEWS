@@ -222,8 +222,10 @@
   * blocks in a stack being dragged should be on top of everything else
   * refactoring of input for Android (Sam Parkinson)
 0.4
+  * add splash-screen animation (Sam Parkinson)
   * fixed collapse bug which manifests itself when loading custom stacks
   * use ellipsis on action and do labels (including do blocks in palette)
+  * fix layout problem in boxes palette
 
 TODO:
   * music blocks plugin
@@ -254,4 +256,3 @@ KNOWN BUGS:
   * fix race conditions
   * not all blocks highlight when using step-by-step mode
   * fix regression in loading macros (NaN)
-  * fix layout problem in boxes palette

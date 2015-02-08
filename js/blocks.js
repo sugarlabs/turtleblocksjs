@@ -1356,6 +1356,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.renameBoxes = function(oldName, newName) {
+        if (oldName == newName) {
+            // Nothing to do.
+            return;
+        }
         for (var blk = 0; blk < this.blockList.length; blk++) {
             if (this.blockList[blk].name == 'text') {
                 var c = this.blockList[blk].connections[0];
@@ -1423,6 +1427,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newStoreinBlock = function(name) {
+        if ('myStorein_' + name in this.protoBlockDict) {
+            // Nothing to do.
+            return;
+        }
         var myStoreinBlock = new ProtoBlock('storein');
         this.protoBlockDict['myStorein_' + name] = myStoreinBlock;
         myStoreinBlock.palette = this.palettes.dict['blocks'];
@@ -1439,6 +1447,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newBoxBlock = function(name) {
+        if ('myBox_' + name in this.protoBlockDict) {
+            // Nothing to do.
+            return;
+        }
         var myBoxBlock = new ProtoBlock('box');
         this.protoBlockDict['myBox_' + name] = myBoxBlock;
         myBoxBlock.oneArgMathBlock();
@@ -1453,6 +1465,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newDoBlock = function(name) {
+        if ('myDo_' + name in this.protoBlockDict) {
+            // Nothing to do.
+            return;
+        }
         var myDoBlock = new ProtoBlock('do');
         this.protoBlockDict['myDo_' + name] = myDoBlock;
         myDoBlock.oneArgBlock();
@@ -1467,6 +1483,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newActionBlock = function(name) {
+        if ('myAction_' + name in this.protoBlockDict) {
+            // Nothing to do.
+            return;
+        }
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction_' + name] = myActionBlock;
         myActionBlock.stackClampOneArgBlock();

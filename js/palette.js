@@ -29,7 +29,7 @@ function maxPaletteHeight(menuSize) {
 
 
 function paletteBlockButtonPush(name, arg) {
-    // console.log('paletteBlockButtonPush' + name + ' ' + arg);
+    console.log('paletteBlockButtonPush: ' + name + ' ' + arg);
     blk = paletteBlocks.makeBlock(name, arg);
     return blk;
 }
@@ -649,6 +649,12 @@ function Palette(palettes, name, color, bgcolor) {
                         }
                     }
 
+                    if (myBlock.name == 'do') {
+                        if (block_label.length > 8) {
+                            block_label = block_label.substr(0, 7) + '...';
+                        }
+                    }
+
                     artwork = artwork.replace(/fill_color/g, PALETTEFILLCOLORS[myBlock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[myBlock.palette.name]).replace('block_label', block_label);
 
                     while (myBlock.staticLabels.length < myBlock.args + 1) {
@@ -866,6 +872,14 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
     var bgScrolling = false;
 
     function makeBlockFromPalette(blk, blkname, palette) {
+        if (locked) {
+            return;
+        }
+        locked = true;
+        setTimeout(function() {
+            locked = false;
+        }, 500);
+
         var arg = '__NOARG__';
         switch (palette.protoList[blk].name) {
             case 'do':

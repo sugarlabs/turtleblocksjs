@@ -1106,7 +1106,7 @@ function labelChanged(myBlock) {
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {
         var cblock = myBlock.blocks.blockList[c];
-        console.log('label changed' + ' ' + myBlock.name);
+        console.log('Label changed to: ' + myBlock.name);
         switch (cblock.name) {
             case 'action':
                 // If the label was the name of an action, update the
@@ -1114,7 +1114,6 @@ function labelChanged(myBlock) {
                 if (myBlock.value != _('action')) {
                     myBlock.blocks.newDoBlock(myBlock.value);
                 }
-                console.log('rename action: ' + myBlock.value);
                 myBlock.blocks.renameDos(oldValue, newValue);
                 myBlock.blocks.palettes.updatePalettes();
                 break;

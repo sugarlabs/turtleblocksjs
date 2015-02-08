@@ -1092,6 +1092,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Make a new block from a proto block.
         // Called from palettes.
 
+        console.log('makeBlock ' + name + ' ' + arg);
         var postProcess = null;
         var postProcessArg = null;
         var me = this;
@@ -1164,20 +1165,24 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             postProcessArg = [thisBlock, null];
         }
 
-        for (var proto in this.protoBlockDict) {
-            if (this.protoBlockDict[proto].name == name) {
+        var protoFound = false;
+        for (var proto in me.protoBlockDict) {
+            if (me.protoBlockDict[proto].name == name) {
                 if (arg == '__NOARG__') {
                     console.log('creating ' + name + ' block with no args');
-                    this.makeNewBlock(proto, postProcess, postProcessArg);
+                    me.makeNewBlock(proto, postProcess, postProcessArg);
+                    protoFound = true;
                     break;
-                } else {
-                    if (this.protoBlockDict[proto].defaults[0] == arg) {
-                        console.log('creating ' + name + ' block with default arg ' + arg);
-                        this.makeNewBlock(proto, postProcess, postProcessArg);
-                        break;
-                    }
-                }
+                } else if (me.protoBlockDict[proto].defaults[0] == arg) {
+                    console.log('creating ' + name + ' block with default arg ' + arg);
+                    me.makeNewBlock(proto, postProcess, postProcessArg);
+                    protoFound = true;
+                    break;
+		 }
             }
+        }
+        if (!protoFound) {
+            console.log(name + ' not found!!');
         }
 
         var blk = this.blockList.length - 1;
@@ -1370,23 +1375,31 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.renameDos = function(oldName, newName) {
+        if (oldName == newName) {
+            // Nothing to do.
+            return;
+        }
         var blockPalette = this.palettes.dict['blocks'];
         var nameChanged = false;
         // Update the blocks, do->oldName should be do->newName
         for (var blk = 0; blk < this.blockList.length; blk++) {
-            var myBlk = this.blockList[blk];
-            var blkParent = this.blockList[myBlk.connections[0]];
+            var myBlock = this.blockList[blk];
+            var blkParent = this.blockList[myBlock.connections[0]];
             if (blkParent == null) {
                 continue;
             }
             if (['do', 'action'].indexOf(blkParent.name) == -1) {
                 continue;
             }
-            var blockValue = myBlk.value;
+            var blockValue = myBlock.value;
             if (blockValue == oldName) {
-                myBlk.value = newName;
-                myBlk.text.text = newName;
-                myBlk.container.updateCache();
+                myBlock.value = newName;
+		var label = myBlock.value;
+		if (label.length > 8) {
+		    label = label.substr(0, 7) + '...';
+		}
+		myBlock.text.text = label;
+                myBlock.container.updateCache();
             }
         }
 
@@ -1394,9 +1407,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
             var block = blockPalette.protoList[blockId];
             if (block.name == 'do' && block.defaults[0] != _('action') && block.defaults[0] == oldName) {
+                block.defaults[0] = newName;
+                /*
                 blockPalette.protoList.splice(blockPalette.protoList.indexOf(block), 1);
                 delete this.protoBlockDict['myDo_' + oldName];
                 blockPalette.y = 0;
+                */
                 nameChanged = true;
             }
         }
@@ -1518,12 +1534,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
         var blockObjs = this.copyBlocksToObj();
+        // The first block is an action block. Its first connection is
+        // the block containing its label.
         var nameBlk = blockObjs[0][4][1];
         if (nameBlk == null) {
             console.log('action not named... skipping');
         } else {
             console.log(blockObjs[nameBlk][1][1]);
-            var name = blockObjs[nameBlk][1][1];
+            if (typeof(blockObjs[nameBlk][1][1]) == 'string') {
+                var name = blockObjs[nameBlk][1][1];
+            } else if (typeof(blockObjs[nameBlk][1][1]) == 'number') {
+                var name = blockObjs[nameBlk][1][1].toString();
+            } else {
+                var name = blockObjs[nameBlk][1][1]['value'];
+            }
             localStorage.setItem('macros', prepareMacroExports(name, blockObjs, this.macroDict));
             this.addToMyPalette(name, blockObjs);
             this.palettes.makeMenu();
@@ -1665,13 +1689,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         for (var b in storeinNames) {
             var blkData = blockObjs[storeinNames[b]];
             if (currentStoreinNames.indexOf(blkData[1][1]) == -1) {
-                console.log('adding new palette entries for ' + blkData[1][1]);
                 if (typeof(blkData[1][1]) == 'string') {
                     var name = blkData[1][1];
                 } else {
                     var name = blkData[1][1]['value'];
                 }
-                console.log(name);
+		console.log('Adding new palette entries for store-in ' + name);
                 this.newStoreinBlock(name);
                 this.newBoxBlock(name);
                 updatePalettes = true;
@@ -1700,11 +1723,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     break;
                 }
             }
-            // Change the name of the action...
-            console.log('action ' + oldName + ' is being renamed ' + name);
-            blkData[1][1] = {
-                'value': name
-            };
+
+            if (oldName != name) {
+                // Change the name of the action...
+                console.log('action ' + oldName + ' is being renamed ' + name);
+                blkData[1][1] = {'value': name};
+            }
+
             // add a new do block to the palette...
             this.newDoBlock(name);
             updatePalettes = true;
@@ -1714,12 +1739,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 if (typeof(doBlkData[1][1]) == 'string') {
                     if (doBlkData[1][1] == oldName) {
                         doBlkData[1][1] = name;
-                    }
+                     }
                 } else {
                     if (doBlkData[1][1]['value'] == oldName) {
-                        doBlkData[1][1] = {
-                            'value': name
-                        };
+                        doBlkData[1][1] = {'value': name};
                     }
                 }
             }
@@ -2038,42 +2061,44 @@ function sendStackToTrash(blocks, myBlock) {
 
     if (myBlock.name == 'action') {
         var actionArg = blocks.blockList[myBlock.connections[1]];
-        var actionName = actionArg.value;
-        for (var blockId = 0; blockId < blocks.blockList.length; blockId++) {
-            var myBlk = blocks.blockList[blockId];
-            var blkParent = blocks.blockList[myBlk.connections[0]];
-            if (blkParent == null) {
-                continue;
+        if (actionArg) {
+            var actionName = actionArg.value;
+            for (var blockId = 0; blockId < blocks.blockList.length; blockId++) {
+                var myBlock = blocks.blockList[blockId];
+                var blkParent = blocks.blockList[myBlock.connections[0]];
+                if (blkParent == null) {
+                    continue;
+                }
+                if (['do', 'action'].indexOf(blkParent.name) != -1) {
+                    continue;
+                }
+                var blockValue = myBlock.value;
+                if (blockValue == _('action')) {
+                    continue;
+                }
+                if (blockValue == actionName) {
+                    blkParent.hide();
+                    myBlock.hide();
+                    myBlock.trash = true;
+                    blkParent.trash = true;
+                }
             }
-            if (['do', 'action'].indexOf(blkParent.name) != -1) {
-                continue;
-            }
-            var blockValue = myBlk.value;
-            if (blockValue == _('action')) {
-                continue;
-            }
-            if (blockValue == actionName) {
-                blkParent.hide();
-                myBlk.hide();
-                myBlk.trash = true;
-                blkParent.trash = true;
-            }
-        }
 
-        var blockPalette = blocks.palettes.dict['blocks'];
-        var blockRemoved = false;
-        for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
-            var block = blockPalette.protoList[blockId];
-            if (block.name == 'do' && block.defaults[0] != _('action') && block.defaults[0] == actionName) {
-                blockPalette.protoList.splice(blockPalette.protoList.indexOf(block), 1);
-                delete blocks.protoBlockDict['myDo_' + actionName];
-                blockPalette.y = 0;
-                blockRemoved = true;
+            var blockPalette = blocks.palettes.dict['blocks'];
+            var blockRemoved = false;
+            for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
+                var block = blockPalette.protoList[blockId];
+                if (block.name == 'do' && block.defaults[0] != _('action') && block.defaults[0] == actionName) {
+                    blockPalette.protoList.splice(blockPalette.protoList.indexOf(block), 1);
+                    delete blocks.protoBlockDict['myDo_' + actionName];
+                    blockPalette.y = 0;
+                    blockRemoved = true;
+                }
             }
-        }
-        // Force an update if a block was removed.
-        if (blockRemoved) {
-            regeneratePalette(blockPalette);
+            // Force an update if a block was removed.
+            if (blockRemoved) {
+                regeneratePalette(blockPalette);
+            }
         }
     }
 

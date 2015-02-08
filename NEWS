@@ -223,6 +223,7 @@
   * refactoring of input for Android (Sam Parkinson)
 0.4
   * fixed collapse bug which manifests itself when loading custom stacks
+  * use ellipsis on action and do labels (including do blocks in palette)
 
 TODO:
   * music blocks plugin
@@ -252,4 +253,5 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * fix race conditions
   * not all blocks highlight when using step-by-step mode
-  * use ellipsis on action and do labels (including do blocks in palette)
+  * fix regression in loading macros (NaN)
+  * fix layout problem in boxes palette

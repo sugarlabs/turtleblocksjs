@@ -1,0 +1,51 @@
+//* comment *//
+
+Copyright (C) 2015 Yash Khandelwal
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+//* globals *//
+
+//* block:gmap *//
+var gmapBlk = new ProtoBlock('gmap');
+gmapBlk.palette = palettes.dict['gmap'];
+blocks.protoBlockDict['gmap'] = gmapBlk;
+gmapBlk.twoArgMathBlock();
+gmapBlk.dockTypes[1] = 'anyin';
+gmapBlk.dockTypes[2] = 'anyin';
+gmapBlk.staticLabels.push('Gmaps','latitude','longitude');
+gmapBlk.defaults.push('50','50');
+
+//* arg:gmap *//
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
+var latitude    = logo.parseArg(logo, turtle, conns[1]);
+var longitude   = logo.parseArg(logo, turtle, conns[2]);
+gmapURL = 'http://maps.googleapis.com/maps/api/staticmap?center=' + latitude + ',' + longitude + '&size=800x800&zoom=14&sensor=false';
+
+block.value = gmapURL;
+//* palette-icon:gmap *//
+<svg xmlns="http://www.w3.org/2000/svg" height="55" width="50" >
+  <g fill="none" stroke="white" stroke-width="4">
+    <path stroke-dasharray="5,5" d="M5 20 l215 0" />
+    <path stroke-dasharray="10,10" d="M5 40 l215 0" />
+    <path stroke-dasharray="20,10,5,5,5,10" d="M5 60 l215 0" />
+  </g>
+</svg>
+//* palette-fill:gmap *// #c0c0c0
+//* palette-stroke:gmap *// #ef003e
+//* palette-highlight:gmap *// #ffb1b3
+//* palette-stroke-highlight:gmap *// #000000
+
+	

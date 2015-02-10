@@ -55,6 +55,17 @@ function ProtoBlock(name) {
     // Hidden: don't show on any palette
     this.hidden = false;
 
+    this.adjustWidthToLabel = function() {
+        if (this.staticLabels.length == 0) {
+            return;
+        }
+        var labelLength = this.staticLabels[0].length;
+        if ((labelLength - 8) > 0) {
+            // TODO: better estimation of label size
+            this.extraWidth += (labelLength - 8) * 3;
+        }
+    }
+
     // What follows are the initializations for different block
     // styles.
 

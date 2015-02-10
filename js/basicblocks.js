@@ -576,9 +576,11 @@ function initBasicProtoBlocks(palettes, blocks) {
     var mousebuttonBlock = new ProtoBlock('mousebutton');
     mousebuttonBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
+    mousebuttonBlock.staticLabels.push('mouse button');
+    // mousebuttonBlock.extraWidth = 15;
+    mousebuttonBlock.adjustWidthToLabel();
     mousebuttonBlock.extraWidth = 15;
     mousebuttonBlock.booleanZeroArgBlock();
-    mousebuttonBlock.staticLabels.push('mouse button');
 
     var keyboardBlock = new ProtoBlock('keyboard');
     keyboardBlock.palette = palettes.dict['sensors'];

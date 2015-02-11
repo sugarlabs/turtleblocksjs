@@ -87,7 +87,7 @@ function ProtoBlock(name) {
             svg.setFontSize(this.fontsize);
         }
         if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+            svg.setExpand(10 + this.extraWidth, 0, 0, 0);
         }
         var artwork = svg.basicBlock();
 	return [artwork, svg.docks];

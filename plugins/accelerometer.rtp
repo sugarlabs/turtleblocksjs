@@ -45,19 +45,23 @@ block.value = accelerometer['z'];
 var accelerometerXBlk = new ProtoBlock('accelerometerx');
 accelerometerXBlk.palette = palettes.dict['sensors'];
 blocks.protoBlockDict['accelerometerx'] = accelerometerXBlk;
+accelerometerXBlk.staticLabels.push(_('motion x'));
+accelerometerXBlk.adjustWidthToLabel();
 accelerometerXBlk.parameterBlock();
-accelerometerXBlk.staticLabels.push('motion x');
 
 //* block:accelerometery *//
 var accelerometerYBlk = new ProtoBlock('accelerometery');
 accelerometerYBlk.palette = palettes.dict['sensors'];
 blocks.protoBlockDict['accelerometery'] = accelerometerYBlk;
+accelerometerYBlk.staticLabels.push(_('motion y'));
+accelerometerYBlk.adjustWidthToLabel();
 accelerometerYBlk.parameterBlock();
-accelerometerYBlk.staticLabels.push('motion y');
 
 //* block:accelerometerz *//
 var accelerometerZBlk = new ProtoBlock('accelerometerz');
 accelerometerZBlk.palette = palettes.dict['sensors'];
 blocks.protoBlockDict['accelerometerz'] = accelerometerZBlk;
+accelerometerZBlk.staticLabels.push(_('motion z'));
+accelerometerZBlk.adjustWidthToLabel();
 accelerometerZBlk.parameterBlock();
-accelerometerZBlk.staticLabels.push('motion z');
+

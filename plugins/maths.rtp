@@ -25,26 +25,28 @@ var simpleOneArgBlock = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['maths'];
     blocks.protoBlockDict[name] = block;
+    block.staticLabels.push(label);
+    block.adjustWidthToLabel();
     block.oneArgMathBlock();
     block.defaults.push(1);
-    block.staticLabels.push(label);
 };
 
 var staticBlock = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['maths'];
     blocks.protoBlockDict[name] = block;
-    block.parameterBlock();
     block.staticLabels.push(label);
+    block.adjustWidthToLabel();
+    block.parameterBlock();
 };
 
 //* block:power *//
 var block = new ProtoBlock('power');
 block.palette = palettes.dict['maths'];
 blocks.protoBlockDict['power'] = block;
+block.staticLabels.push(_('power'), _('base'), _('exp'));
 block.twoArgMathBlock();
 block.defaults.push(10, 2);
-block.staticLabels.push('power', 'base', 'exp.');
 //* arg:power *//
 var base = logo.parseArg(logo, turtle, conns[1]);
 var exp  = logo.parseArg(logo, turtle, conns[2]);
@@ -64,14 +66,14 @@ block.value = Math.pow(base, exp);
 //* block:atan *// simpleOneArgBlock('atan');
 //* arg:atan *// block.value = Math.atan(logo.parseArg(logo, turtle, conns[1]));
 
-//* block:floor *// simpleOneArgBlock('floor');
+//* block:floor *// simpleOneArgBlock(_('floor'));
 //* arg:floor *// block.value = Math.floor(logo.parseArg(logo, turtle, conns[1]));
-//* block:ceiling *// simpleOneArgBlock('ceiling');
+//* block:ceiling *// simpleOneArgBlock(_('ceiling'));
 //* arg:ceiling *// block.value = Math.ceil(logo.parseArg(logo, turtle, conns[1]));
 
-//* block:degrees *// simpleOneArgBlock('degrees', 'to degrees');
+//* block:degrees *// simpleOneArgBlock(_('degrees'), _('to degrees'));
 //* arg:degrees *// block.value = logo.parseArg(logo, turtle, conns[1]) * (180/Math.PI);
-//* block:radians *// simpleOneArgBlock('radians', 'to radians');
+//* block:radians *// simpleOneArgBlock(_('radians'), _('to radians'));
 //* arg:radians *// block.value = logo.parseArg(logo, turtle, conns[1]) * (Math.PI/180);
 
 //* block:pi *// staticBlock('pi', 'π');

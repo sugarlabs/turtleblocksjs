@@ -39,50 +39,52 @@ if (!foundTurtle) {
 var getxTurtleBlock = new ProtoBlock('xturtle');
 getxTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
+getxTurtleBlock.staticLabels.push(_('turtle x'));
+getxTurtleBlock.adjustWidthToLabel();
 getxTurtleBlock.oneArgBlock();
 getxTurtleBlock.dockTypes[1] = 'anyin';
-getxTurtleBlock.staticLabels.push('turtle x');
 getxTurtleBlock.defaults.push('0');
 
 //* block:yturtle *//
 var getyTurtleBlock = new ProtoBlock('yturtle');
 getyTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
+getyTurtleBlock.staticLabels.push(_('turtle y'));
+getyTurtleBlock.adjustWidthToLabel();
 getyTurtleBlock.oneArgBlock();
 getyTurtleBlock.dockTypes[1] = 'anyin';
-getyTurtleBlock.staticLabels.push('turtle y');
 getyTurtleBlock.defaults.push('0');
 
 //* block:startTurtle *//
 var startTurtleBlock = new ProtoBlock('startTurtle');
 startTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
-startTurtleBlock.extraWidth = 20;
+startTurtleBlock.staticLabels.push(_('start turtle'));
+startTurtleBlock.adjustWidthToLabel();
 startTurtleBlock.oneArgBlock();
 startTurtleBlock.dockTypes[1] = 'anyin';
 startTurtleBlock.defaults.push('0');
-startTurtleBlock.staticLabels.push('start turtle');
 
 //* block:stopTurtle *//
 var stopTurtleBlock = new ProtoBlock('stopTurtle');
 stopTurtleBlock.palette = palettes.dict['extras'];
 blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
-stopTurtleBlock.extraWidth = 20;
+stopTurtleBlock.staticLabels.push(_('stop turtle'));
+stopTurtleBlock.adjustWidthToLabel();
 stopTurtleBlock.oneArgBlock();
 stopTurtleBlock.dockTypes[1] = 'anyin';
 stopTurtleBlock.defaults.push('0');
-stopTurtleBlock.staticLabels.push('stop turtle');
 
 //* block:setturtlename *//
 var setTurtleName = new ProtoBlock('setturtlename');
 setTurtleName.palette = palettes.dict['extras'];
 blocks.protoBlockDict['setturtlename'] = setTurtleName;
-setTurtleBlock.extraWidth = 20;
+setTurtleName.staticLabels.push(_('turtle name'));
+setTurtleName.staticLabels.push(_('source'));
+setTurtleName.staticLabels.push(_('target'));
+setTurtleName.adjustWidthToLabel();
 setTurtleName.twoArgBlock();
 setTurtleName.dockTypes[1] = 'anyin';
 setTurtleName.dockTypes[2] = 'anyin';
 setTurtleName.defaults.push('0');
 setTurtleName.defaults.push('Yertle');
-setTurtleName.staticLabels.push('turtle name');
-setTurtleName.staticLabels.push('source');
-setTurtleName.staticLabels.push('target');

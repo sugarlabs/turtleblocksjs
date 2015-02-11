@@ -25,11 +25,13 @@ var currencyRate = new ProtoBlock('currencyrate');
 currencyRate.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['currencyrate'] = currencyRate;
 currencyRate.extraWidth = 20;
+currencyRate.staticLabels.push(_('currency'), _('from'), _('to'));
+currencyRate.adjustWidthToLabel();
 currencyRate.twoArgMathBlock();
 currencyRate.dockTypes[1] = 'anyin';
 currencyRate.dockTypes[2] = 'anyin';
 currencyRate.defaults.push('AUD', 'USD');
-currencyRate.staticLabels.push('currency', 'from', 'to');
+
 
 //* arg:currencyrate *//
 
@@ -64,10 +66,11 @@ block.value = parseFloat(response);
 var stockprice = new ProtoBlock('stockprice');
 stockprice.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['stockprice'] = stockprice;
+stockprice.staticLabels.push(_('stock price'));
+stockprice.adjustWidthToLabel();
 stockprice.oneArgMathBlock();
 stockprice.dockTypes[1] = 'anyin';
 stockprice.defaults.push('GOOG');
-stockprice.staticLabels.push('stock price');
 
 //* arg:stockprice *//
 

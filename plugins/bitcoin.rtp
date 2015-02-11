@@ -24,11 +24,12 @@ var mashapeKey = 'PCwj8N1ftxmsh4WCJmQoJqiNhRCbp1DTsnTjsnkmyDCNwB94sm';
 var bitcoinRate = new ProtoBlock('bitcoinrate');
 bitcoinRate.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['bitcoinrate'] = bitcoinRate;
+bitcoinRate.staticLabels.push(_('bitcoin'), _('from'), _('value'));
+bitcoinRate.adjustWidthToLabel();
 bitcoinRate.twoArgMathBlock();
 bitcoinRate.dockTypes[1] = 'anyin';
 bitcoinRate.dockTypes[2] = 'numberin';
 bitcoinRate.defaults.push('USD', 100);
-bitcoinRate.staticLabels.push('bitcoin', 'from', 'value');
 
 //* arg:bitcoinrate *//
 

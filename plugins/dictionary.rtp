@@ -22,9 +22,10 @@ var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
 var dictionaryBlk = new ProtoBlock('dictionary');
 dictionaryBlk.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['dictionary'] = dictionaryBlk;
+dictionaryBlk.staticLabels.push(_('define'));
+dictionaryBlk.adjustWidthToLabel();
 dictionaryBlk.oneArgMathBlock();
 dictionaryBlk.dockTypes[1] = 'anyin';
-dictionaryBlk.staticLabels.push('define');
 dictionaryBlk.defaults.push('turtle');
 
 //* arg:dictionary *//

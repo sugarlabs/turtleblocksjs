@@ -52,14 +52,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     var clearBlock = new ProtoBlock('clear');
     clearBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['clear'] = clearBlock;
-    clearBlock.staticLabels.push('clear');
+    clearBlock.staticLabels.push(_('clear'));
     clearBlock.adjustWidthToLabel();
     clearBlock.zeroArgBlock();
 
     var forwardBlock = new ProtoBlock('forward');
     forwardBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['forward'] = forwardBlock;
-    forwardBlock.staticLabels.push('forward');
+    forwardBlock.staticLabels.push(_('forward'));
     forwardBlock.adjustWidthToLabel();
     forwardBlock.oneArgBlock();
     forwardBlock.defaults.push(100);
@@ -67,7 +67,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var rightBlock = new ProtoBlock('right');
     rightBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['right'] = rightBlock;
-    rightBlock.staticLabels.push('right');
+    rightBlock.staticLabels.push(_('right'));
     rightBlock.adjustWidthToLabel();
     rightBlock.oneArgBlock();
     rightBlock.defaults.push(90);
@@ -75,7 +75,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var backBlock = new ProtoBlock('back');
     backBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['back'] = backBlock;
-    backBlock.staticLabels.push('back');
+    backBlock.staticLabels.push(_('back'));
     backBlock.adjustWidthToLabel();
     backBlock.oneArgBlock();
     backBlock.defaults.push(100);
@@ -83,7 +83,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var leftBlock = new ProtoBlock('left');
     leftBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['left'] = leftBlock;
-    leftBlock.staticLabels.push('left');
+    leftBlock.staticLabels.push(_('left'));
     leftBlock.adjustWidthToLabel();
     leftBlock.oneArgBlock();
     leftBlock.defaults.push(90);
@@ -91,20 +91,17 @@ function initBasicProtoBlocks(palettes, blocks) {
     var arcBlock = new ProtoBlock('arc');
     arcBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['arc'] = arcBlock;
-    arcBlock.staticLabels.push('arc');
-    arcBlock.staticLabels.push('angle');
-    arcBlock.staticLabels.push('radius');
+    arcBlock.staticLabels.push(_('arc'), _('angle'), _('radius'));
     arcBlock.adjustWidthToLabel();
     arcBlock.twoArgBlock();
     arcBlock.defaults.push(90);
     arcBlock.defaults.push(100);
-    arcBlock.dockTypes[1] = 'numberin'; // override default
+    arcBlock.dockTypes[1] = 'numberin';
 
     var setheadingBlock = new ProtoBlock('setheading');
     setheadingBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['setheading'] = setheadingBlock;
-    setheadingBlock.staticLabels.push('set heading');
-    // setheadingBlock.extraWidth = 24;
+    setheadingBlock.staticLabels.push(_('set heading'));
     setheadingBlock.adjustWidthToLabel();
     setheadingBlock.oneArgBlock();
     setheadingBlock.defaults.push(0);
@@ -112,33 +109,31 @@ function initBasicProtoBlocks(palettes, blocks) {
     var headingBlock = new ProtoBlock('heading');
     headingBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['heading'] = headingBlock;
-    headingBlock.staticLabels.push('heading');
+    headingBlock.staticLabels.push(_('heading'));
     headingBlock.adjustWidthToLabel();
     headingBlock.parameterBlock();
 
     var setxyBlock = new ProtoBlock('setxy');
     setxyBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['setxy'] = setxyBlock;
-    setxyBlock.staticLabels.push('set xy');
-    setxyBlock.staticLabels.push('x');
-    setxyBlock.staticLabels.push('y');
+    setxyBlock.staticLabels.push(_('set xy'), _('x'), _('y'));
     setxyBlock.adjustWidthToLabel();
     setxyBlock.twoArgBlock();
     setxyBlock.defaults.push(0);
     setxyBlock.defaults.push(0);
-    setxyBlock.dockTypes[1] = 'numberin'; // override default
+    setxyBlock.dockTypes[1] = 'numberin';
 
     var xBlock = new ProtoBlock('x');
     xBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['x'] = xBlock;
-    xBlock.staticLabels.push('x');
+    xBlock.staticLabels.push(_('x'));
     xBlock.adjustWidthToLabel();
     xBlock.parameterBlock();
 
     var yBlock = new ProtoBlock('y');
     yBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['y'] = yBlock;
-    yBlock.staticLabels.push('y');
+    yBlock.staticLabels.push(_('y'));
     yBlock.adjustWidthToLabel();
     yBlock.parameterBlock();
 
@@ -146,7 +141,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var setcolorBlock = new ProtoBlock('setcolor');
     setcolorBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setcolor'] = setcolorBlock;
-    setcolorBlock.staticLabels.push('set color');
+    setcolorBlock.staticLabels.push(_('set color'));
     setcolorBlock.adjustWidthToLabel();
     setcolorBlock.oneArgBlock();
     setcolorBlock.defaults.push(0);
@@ -154,14 +149,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     var colorBlock = new ProtoBlock('color');
     colorBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['color'] = colorBlock;
-    colorBlock.staticLabels.push('color');
+    colorBlock.staticLabels.push(_('color'));
     colorBlock.adjustWidthToLabel();
     colorBlock.parameterBlock();
 
     var sethueBlock = new ProtoBlock('sethue');
     sethueBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['sethue'] = sethueBlock;
-    sethueBlock.staticLabels.push('set hue');
+    sethueBlock.staticLabels.push(_('set hue'));
     sethueBlock.adjustWidthToLabel();
     sethueBlock.oneArgBlock();
     sethueBlock.defaults.push(0);
@@ -169,7 +164,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var setshadeBlock = new ProtoBlock('setshade');
     setshadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setshade'] = setshadeBlock;
-    setshadeBlock.staticLabels.push('set shade');
+    setshadeBlock.staticLabels.push(_('set shade'));
     setshadeBlock.extraWidth = 10;
     setshadeBlock.adjustWidthToLabel();
     setshadeBlock.oneArgBlock();
@@ -178,14 +173,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     var shadeBlock = new ProtoBlock('shade');
     shadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['shade'] = shadeBlock;
-    shadeBlock.staticLabels.push('shade');
+    shadeBlock.staticLabels.push(_('shade'));
     shadeBlock.adjustWidthToLabel();
     shadeBlock.parameterBlock();
 
     var setchromaBlock = new ProtoBlock('setgrey');
     setchromaBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setgrey'] = setchromaBlock;
-    setchromaBlock.staticLabels.push('set grey');
+    setchromaBlock.staticLabels.push(_('set grey'));
     setchromaBlock.adjustWidthToLabel();
     setchromaBlock.oneArgBlock();
     setchromaBlock.defaults.push(100);
@@ -193,14 +188,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     var chromaBlock = new ProtoBlock('grey');
     chromaBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['grey'] = chromaBlock;
-    chromaBlock.staticLabels.push('grey');
+    chromaBlock.staticLabels.push(_('grey'));
     chromaBlock.adjustWidthToLabel();
     chromaBlock.parameterBlock();
 
     var setpensizeBlock = new ProtoBlock('setpensize');
     setpensizeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setpensize'] = setpensizeBlock;
-    setpensizeBlock.staticLabels.push('set pen');
+    setpensizeBlock.staticLabels.push(_('set pen'));
     setpensizeBlock.adjustWidthToLabel();
     setpensizeBlock.oneArgBlock();
     setpensizeBlock.defaults.push(5);
@@ -208,44 +203,42 @@ function initBasicProtoBlocks(palettes, blocks) {
     var pensizeBlock = new ProtoBlock('pensize');
     pensizeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['pensize'] = pensizeBlock;
-    pensizeBlock.staticLabels.push('pen size');
+    pensizeBlock.staticLabels.push(_('pen size'));
     pensizeBlock.adjustWidthToLabel();
     pensizeBlock.parameterBlock();
 
     var penupBlock = new ProtoBlock('penup');
     penupBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['penup'] = penupBlock;
-    penupBlock.staticLabels.push('pen up');
+    penupBlock.staticLabels.push(_('pen up'));
     penupBlock.adjustWidthToLabel();
     penupBlock.zeroArgBlock();
 
     var pendownBlock = new ProtoBlock('pendown');
     pendownBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['pendown'] = pendownBlock;
-    pendownBlock.staticLabels.push('pen down');
-    // pendownBlock.extraWidth = 10;
+    pendownBlock.staticLabels.push(_('pen down'));
     pendownBlock.adjustWidthToLabel();
     pendownBlock.zeroArgBlock();
 
     var startfillBlock = new ProtoBlock('beginfill');
     startfillBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['beginfill'] = startfillBlock;
-    startfillBlock.staticLabels.push('begin fill');
+    startfillBlock.staticLabels.push(_('begin fill'));
     startfillBlock.adjustWidthToLabel();
     startfillBlock.zeroArgBlock();
 
     var endfillBlock = new ProtoBlock('endfill');
     endfillBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['endfill'] = endfillBlock;
-    endfillBlock.staticLabels.push('end fill');
+    endfillBlock.staticLabels.push(_('end fill'));
     endfillBlock.adjustWidthToLabel();
     endfillBlock.zeroArgBlock();
 
     var backgroundBlock = new ProtoBlock('fillscreen');
     backgroundBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['fillscreen'] = backgroundBlock;
-    backgroundBlock.staticLabels.push('background');
-    // backgroundBlock.extraWidth = 20;
+    backgroundBlock.staticLabels.push(_('background'));
     backgroundBlock.adjustWidthToLabel();
     backgroundBlock.zeroArgBlock();
 
@@ -258,9 +251,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var randomBlock = new ProtoBlock('random');
     randomBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['random'] = randomBlock;
-    randomBlock.staticLabels.push('random');
-    randomBlock.staticLabels.push('min');
-    randomBlock.staticLabels.push('max');
+    randomBlock.staticLabels.push(_('random'), _('min'), _('max'));
     randomBlock.adjustWidthToLabel();
     randomBlock.twoArgMathBlock();
     randomBlock.defaults.push(0);
@@ -304,7 +295,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var sqrtBlock = new ProtoBlock('sqrt');
     sqrtBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['sqrt'] = sqrtBlock;
-    sqrtBlock.staticLabels.push('sqrt');
+    sqrtBlock.staticLabels.push(_('sqrt'));
     sqrtBlock.extraWidth = 10;
     sqrtBlock.adjustWidthToLabel();
     sqrtBlock.oneArgMathBlock();
@@ -313,7 +304,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var modBlock = new ProtoBlock('mod');
     modBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['mod'] = modBlock;
-    modBlock.staticLabels.push('mod');
+    modBlock.staticLabels.push(_('mod'));
     modBlock.adjustWidthToLabel();
     modBlock.twoArgMathBlock();
     modBlock.defaults.push(100, 10)
@@ -346,30 +337,28 @@ function initBasicProtoBlocks(palettes, blocks) {
     andBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['and'] = andBlock;
     andBlock.extraWidth = 10;
-    andBlock.staticLabels.push('and');
+    andBlock.staticLabels.push(_('and'));
     andBlock.booleanTwoBooleanArgBlock();
 
     var orBlock = new ProtoBlock('or');
     orBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['or'] = orBlock;
     orBlock.extraWidth = 10;
-    orBlock.staticLabels.push('or');
+    orBlock.staticLabels.push(_('or'));
     orBlock.booleanTwoBooleanArgBlock();
 
     var notBlock = new ProtoBlock('not');
     notBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['not'] = notBlock;
     notBlock.extraWidth = 30;
-    notBlock.staticLabels.push('not');
+    notBlock.staticLabels.push(_('not'));
     notBlock.booleanOneBooleanArgBlock();
 
     // Blocks palette
     var storeinBlock = new ProtoBlock('storein');
     storeinBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['storein'] = storeinBlock;
-    storeinBlock.staticLabels.push('store in');
-    storeinBlock.staticLabels.push('name');
-    storeinBlock.staticLabels.push('value');
+    storeinBlock.staticLabels.push(_('store in'), _('name'), _('value'));
     storeinBlock.adjustWidthToLabel();
     storeinBlock.twoArgBlock();
     storeinBlock.defaults.push(_('box'));
@@ -381,7 +370,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['box'] = boxBlock;
     boxBlock.extraWidth = 10;
-    boxBlock.staticLabels.push('box');
+    boxBlock.staticLabels.push(_('box'));
     boxBlock.adjustWidthToLabel();
     boxBlock.oneArgMathBlock();
     boxBlock.defaults.push(_('box'));
@@ -393,7 +382,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;
-    actionBlock.staticLabels.push('action');
+    actionBlock.staticLabels.push(_('action'));
     actionBlock.extraWidth = 12;
     actionBlock.adjustWidthToLabel();
     actionBlock.stackClampOneArgBlock();
@@ -402,7 +391,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var doBlock = new ProtoBlock('do');
     doBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['do'] = doBlock;
-    doBlock.staticLabels.push('do');
+    doBlock.staticLabels.push(_('do'));
     doBlock.adjustWidthToLabel();
     doBlock.oneArgBlock();
     doBlock.defaults.push(_('action'));
@@ -411,7 +400,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['start'] = startBlock;
-    startBlock.staticLabels.push('start');
+    startBlock.staticLabels.push(_('start'));
     startBlock.extraWidth = 2;
     startBlock.adjustWidthToLabel();
     startBlock.stackClampZeroArgBlock();
@@ -419,7 +408,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var incrementOneBlock = new ProtoBlock('incrementOne');
     incrementOneBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['incrementOne'] = incrementOneBlock;
-    incrementOneBlock.staticLabels.push('add 1 to');
+    incrementOneBlock.staticLabels.push(_('add 1 to'));
     incrementOneBlock.adjustWidthToLabel();
     incrementOneBlock.oneArgBlock();
     boxBlock.dockTypes[1] = 'anyin';
@@ -427,7 +416,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var incrementBlock = new ProtoBlock('increment');
     incrementBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['increment'] = incrementBlock;
-    incrementBlock.staticLabels.push('add', 'to', 'value');
+    incrementBlock.staticLabels.push(_('add'), _('to'), _('value'));
     incrementBlock.adjustWidthToLabel();
     incrementBlock.twoArgBlock();
     incrementBlock.dockTypes[1] = 'anyin';
@@ -437,7 +426,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var speakBlock = new ProtoBlock('speak');
     speakBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['speak'] = speakBlock;
-    speakBlock.staticLabels.push('speak');
+    speakBlock.staticLabels.push(_('speak'));
     speakBlock.adjustWidthToLabel();
     speakBlock.oneArgBlock();
     speakBlock.defaults.push('hello');
@@ -446,28 +435,24 @@ function initBasicProtoBlocks(palettes, blocks) {
     var showBlock = new ProtoBlock('show');
     showBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['show'] = showBlock;
-    showBlock.staticLabels.push('show');
-    showBlock.staticLabels.push('size');
-    showBlock.staticLabels.push('obj');
+    showBlock.staticLabels.push(_('show'), _('size'), _('obj'));
     showBlock.adjustWidthToLabel();
     showBlock.twoArgBlock();
     showBlock.defaults.push(24);
-    showBlock.defaults.push('text');
-    showBlock.dockTypes[1] = 'numberin'; // override default
-    showBlock.dockTypes[2] = 'anyin'; // override default
+    showBlock.defaults.push(_('text'));
+    showBlock.dockTypes[1] = 'numberin';
+    showBlock.dockTypes[2] = 'anyin';
 
     var shellBlock = new ProtoBlock('turtleshell');
     shellBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['turtleshell'] = shellBlock;
-    shellBlock.staticLabels.push('shell');
-    shellBlock.staticLabels.push('size');
-    shellBlock.staticLabels.push('image');
+    shellBlock.staticLabels.push(_('shell'), _('size'), _('image'));
     shellBlock.adjustWidthToLabel();
     shellBlock.twoArgBlock();
     shellBlock.defaults.push(55);
     shellBlock.defaults.push(null);
-    shellBlock.dockTypes[1] = 'numberin'; // override default
-    shellBlock.dockTypes[2] = 'mediain'; // override default
+    shellBlock.dockTypes[1] = 'numberin';
+    shellBlock.dockTypes[2] = 'mediain';
 
     var textBlock = new ProtoBlock('text');
     textBlock.palette = palettes.dict['media'];
@@ -504,16 +489,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     var stopVideoCamBlock = new ProtoBlock('stopvideocam');
     stopVideoCamBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;
-    // stopVideoCamBlock.extraWidth = 20;
     stopVideoCamBlock.adjustWidthToLabel();
-    stopVideoCamBlock.staticLabels.push('stop media');
+    stopVideoCamBlock.staticLabels.push(_('stop media'));
     stopVideoCamBlock.zeroArgBlock();
 
     // Flow palette
     var repeatBlock = new ProtoBlock('repeat');
     repeatBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['repeat'] = repeatBlock;
-    repeatBlock.staticLabels.push('repeat');
+    repeatBlock.staticLabels.push(_('repeat'));
     repeatBlock.adjustWidthToLabel();
     repeatBlock.flowClampOneArgBlock();
     repeatBlock.defaults.push(4);
@@ -521,54 +505,49 @@ function initBasicProtoBlocks(palettes, blocks) {
     var foreverBlock = new ProtoBlock('forever');
     foreverBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['forever'] = foreverBlock;
-    foreverBlock.staticLabels.push('forever');
+    foreverBlock.staticLabels.push(_('forever'));
     foreverBlock.adjustWidthToLabel();
     foreverBlock.flowClampZeroArgBlock();
 
     var breakBlock = new ProtoBlock('break');
     breakBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['break'] = breakBlock;
-    breakBlock.staticLabels.push('stop');
+    breakBlock.staticLabels.push(_('stop'));
     breakBlock.adjustWidthToLabel();
     breakBlock.basicBlockNoFlow();
 
     var ifBlock = new ProtoBlock('if');
     ifBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['if'] = ifBlock;
-    ifBlock.staticLabels.push('if');
-    ifBlock.staticLabels.push('then');
+    ifBlock.staticLabels.push(_('if'), _('then'));
     ifBlock.adjustWidthToLabel();
     ifBlock.flowClampBooleanArgBlock();
 
     var untilBlock = new ProtoBlock('until');
     untilBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['until'] = untilBlock;
-    untilBlock.staticLabels.push('until');
-    untilBlock.staticLabels.push('do');
+    untilBlock.staticLabels.push(_('until'), _('do'));
     untilBlock.adjustWidthToLabel();
     untilBlock.flowClampBooleanArgBlock();
 
     var waitForBlock = new ProtoBlock('waitFor');
     waitForBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['waitFor'] = waitForBlock;
-    waitForBlock.staticLabels.push('wait for');
+    waitForBlock.staticLabels.push(_('wait for'));
     waitForBlock.adjustWidthToLabel();
     waitForBlock.oneBooleanArgBlock();
 
     var whileBlock = new ProtoBlock('while');
     whileBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['while'] = whileBlock;
-    whileBlock.staticLabels.push('while');
-    whileBlock.staticLabels.push('do');
+    whileBlock.staticLabels.push(_('while'), _('do'));
     whileBlock.adjustWidthToLabel();
     whileBlock.flowClampBooleanArgBlock();
 
     var ifthenelseBlock = new ProtoBlock('ifthenelse');
     ifthenelseBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['ifthenelse'] = ifthenelseBlock;
-    ifthenelseBlock.staticLabels.push('if');
-    ifthenelseBlock.staticLabels.push('then');
-    ifthenelseBlock.staticLabels.push('else');
+    ifthenelseBlock.staticLabels.push(_('if'), _('then'), _('else'));
     ifthenelseBlock.adjustWidthToLabel();
     ifthenelseBlock.doubleFlowClampBooleanArgBlock();
 
@@ -588,7 +567,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var waitBlock = new ProtoBlock('wait');
     waitBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['wait'] = waitBlock;
-    waitBlock.staticLabels.push('wait');
+    waitBlock.staticLabels.push(_('wait'));
     waitBlock.adjustWidthToLabel();
     waitBlock.oneArgBlock();
     waitBlock.defaults.push(1);
@@ -596,7 +575,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var printBlock = new ProtoBlock('print');
     printBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['print'] = printBlock;
-    printBlock.staticLabels.push('print');
+    printBlock.staticLabels.push(_('print'));
     printBlock.adjustWidthToLabel();
     printBlock.oneArgBlock();
     printBlock.dockTypes[1] = 'anyin';
@@ -605,14 +584,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['time'] = timeBlock;
-    timeBlock.staticLabels.push('time');
+    timeBlock.staticLabels.push(_('time'));
     timeBlock.adjustWidthToLabel();
     timeBlock.parameterBlock();
 
     var mousexBlock = new ProtoBlock('mousex');
     mousexBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousex'] = mousexBlock;
-    mousexBlock.staticLabels.push('mouse x');
+    mousexBlock.staticLabels.push(_('mouse x'));
     mousexBlock.extraWidth = 15;
     mousexBlock.adjustWidthToLabel();
     mousexBlock.parameterBlock();
@@ -620,7 +599,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var mouseyBlock = new ProtoBlock('mousey');
     mouseyBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousey'] = mouseyBlock;
-    mouseyBlock.staticLabels.push('mouse y');
+    mouseyBlock.staticLabels.push(_('mouse y'));
     mouseyBlock.extraWidth = 15;
     mouseyBlock.adjustWidthToLabel();
     mouseyBlock.parameterBlock();
@@ -628,22 +607,21 @@ function initBasicProtoBlocks(palettes, blocks) {
     var mousebuttonBlock = new ProtoBlock('mousebutton');
     mousebuttonBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousebutton'] = mousebuttonBlock;
-    mousebuttonBlock.staticLabels.push('mouse button');
-    // mousebuttonBlock.extraWidth = 15;
+    mousebuttonBlock.staticLabels.push(_('mouse button'));
     mousebuttonBlock.adjustWidthToLabel();
     mousebuttonBlock.booleanZeroArgBlock();
 
     var keyboardBlock = new ProtoBlock('keyboard');
     keyboardBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['keyboard'] = keyboardBlock;
-    keyboardBlock.staticLabels.push('keyboard');
+    keyboardBlock.staticLabels.push(_('keyboard'));
     keyboardBlock.adjustWidthToLabel();
     keyboardBlock.parameterBlock();
 
     var getColorPixel = new ProtoBlock('getcolorpixel');
     getColorPixel.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['getcolorpixel'] = getColorPixel;
-    getColorPixel.staticLabels.push('pixel color');
+    getColorPixel.staticLabels.push(_('pixel color'));
     getColorPixel.adjustWidthToLabel();
     getColorPixel.parameterBlock();
 

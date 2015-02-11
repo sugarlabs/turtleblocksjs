@@ -28,19 +28,21 @@ var LogicTwoArgBlock = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['logic'];
     blocks.protoBlockDict[name] = block;
+    block.staticLabels.push(label);
+    block.adjustWidthToLabel();
     block.twoArgMathBlock();
     block.defaults.push(1);
     block.defaults.push(1);
-    block.staticLabels.push(label);
 };
 
 var LogicArgBlock = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['logic'];
     blocks.protoBlockDict[name] = block;
+    block.staticLabels.push(label);
+    block.adjustWidthToLabel();
     block.oneArgMathBlock();
     block.defaults.push(0);
-    block.staticLabels.push(label);
 };
 
 //* block:myxor *// LogicTwoArgBlock('myxor', 'XOR');

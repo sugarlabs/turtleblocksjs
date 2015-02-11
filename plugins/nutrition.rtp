@@ -56,158 +56,157 @@ var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
 //* block-globals *//
-var get_eatme = function (name, label, extraWidth) {
+var get_eatme = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['eatme'];
     blocks.protoBlockDict[name] = block;
-    if (extraWidth) {
-        block.extraWidth = extraWidth;
-    }
-    block.oneArgMathBlock();
     block.staticLabels.push(label);
+    block.adjustWidthToLabel();
+    block.oneArgMathBlock();
     block.dockTypes[1] = 'mediain';
 };
 var show_value = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['eatme'];
     blocks.protoBlockDict[name] = block;
-    block.parameterBlock();
     block.staticLabels.push(label);
+    block.adjustWidthToLabel();
+    block.parameterBlock();
 };
 var eat = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['eatme'];
     blocks.protoBlockDict[name] = block;
-    block.oneArgBlock();
     block.staticLabels.push(label);
+    block.adjustWidthToLabel();
+    block.oneArgBlock();
     block.dockTypes[1] = 'mediain';
 };
-var action = function (name, label, extraWidth) {
+var action = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['eatme'];
     blocks.protoBlockDict[name] = block;
-    if (extraWidth) {
-        block.extraWidth = extraWidth;
-    }
-    block.zeroArgBlock();
     block.staticLabels.push(label);
+    block.adjustWidthToLabel();
+    block.zeroArgBlock();
 };
 var food_block = function (blkname, name) {
     var block = new ProtoBlock(blkname);
     block.palette = palettes.dict['food'];
     block.image = pluginsImages[blkname];
+    block.staticLabels.push(name);
+    block.adjustWidthToLabel();
     block.mediaBlock();
     blocks.protoBlockDict[blkname] = block;
-    block.staticLabels.push(name);
 };
 
 //* block:get_calories *//
-get_eatme('get_calories', 'get calories', 20);
+get_eatme('get_calories', _('get calories'));
 
 //* block:get_protein *//
-get_eatme('get_protein', 'get protein', 20);
+get_eatme('get_protein', _('get protein'));
 
 //* block:get_carbohydrates *//
-get_eatme('get_carbohydrates', 'get carbs', 20);
+get_eatme('get_carbohydrates', _('get carbs'));
 
 //* block:get_fiber *//
-get_eatme('get_fiber', 'get fiber', 20);
+get_eatme('get_fiber', _('get fiber'));
 
 //* block:get_fat *//
-get_eatme('get_fat', 'get fat', 20);
+get_eatme('get_fat', _('get fat'));
 
 //* block:get_name *//
-get_eatme('get_name', 'get name', 20);
+get_eatme('get_name', _('get name'));
 
 //* block:calories *//
-show_value('calories', 'calories');
+show_value('calories', _('calories'));
 
-//* parameter:calories *//
+//* parameter:calories )*//
 value = calories;
 
 //* block:protein *//
-show_value('protein', 'protein');
+show_value('protein', _('protein'));
 
 //* parameter:protein *//
 value = protein;
 
 //* block:carbohydrates *//
-show_value('carbohydrates', 'carbs');
+show_value('carbohydrates', _('carbs'));
 
 //* parameter:carbohydrates *//
 value = carbohydrates;
 
 //* block:fiber *//
-show_value('fiber', 'fiber');
+show_value('fiber', _('fiber'));
 
 //* parameter:fiber *//
 value = fiber;
 
 //* block:fat *//
-show_value('fat', 'fat');
+show_value('fat', _('fat'));
 
 //* parameter:fat *//
 value = fat;
 
 //* block:eat *//
-eat('eat', 'eat');
+eat('eat', _('eat'));
 
 //* block:digest *//
-action('digest', 'digest meal', 20);
+action('digest', _('digest meal'), 20);
 
 //* block:apple *//
-food_block('apple', 'apple');
+food_block('apple', _('apple'));
 
 //* block:banana *//
-food_block('banana', 'banana');
+food_block('banana', _('banana'));
 
 //* block:orange *//
-food_block('orange', 'orange');
+food_block('orange', _('orange'));
 
 //* block:bread *//
-food_block('bread', 'wheat bread');
+food_block('bread', _('wheat bread'));
 
 //* block:corn *//
-food_block('corn', 'corn');
+food_block('corn', _('corn'));
 
 //* block:potato *//
-food_block('potato', 'potato');
+food_block('potato', _('potato'));
 
 //* block:sweetpotato *//
-food_block('sweetpotato', 'sweet potato');
+food_block('sweetpotato', _('sweet potato'));
 
 //* block:tomato *//
-food_block('tomato', 'tomato');
+food_block('tomato', _('tomato'));
 
 //* block:broccoli *//
-food_block('broccoli', 'broccoli');
+food_block('broccoli', _('broccoli'));
 
 //* block:riceandbeans *//
-food_block('riceandbeans', 'rice and beans');
+food_block('riceandbeans', _('rice and beans'));
 
 //* block:tamale *//
-food_block('tamale', 'tamale');
+food_block('tamale', _('tamale'));
 
 //* block:cheese *//
-food_block('cheese', 'cheese');
+food_block('cheese', _('cheese'));
 
 //* block:chicken *//
-food_block('chicken', 'chicken');
+food_block('chicken', _('chicken'));
 
 //* block:fish *//
-food_block('fish', 'fish');
+food_block('fish', _('fish'));
 
 //* block:beef *//
-food_block('beef', 'beef');
+food_block('beef', _('beef'));
 
 //* block:cake *//
-food_block('cake', 'cake');
+food_block('cake', _('cake'));
 
 //* block:cookie *//
-food_block('cookie', 'cookie');
+food_block('cookie', _('cookie'));
 
 //* block:water *//
-food_block('water', 'water');
+food_block('water', _('water'));
 
 //* flow:apple *//
 block.value = foodData[block.name];

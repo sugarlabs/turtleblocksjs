@@ -27,8 +27,9 @@ var sensorsCacheExpires = 0;
 var rodiBlink = new ProtoBlock('rodiblink');
 rodiBlink.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodiblink'] = rodiBlink;
+rodiBlink.staticLabels.push(_('blink (ms)'));
+rodiBlink.adjustWidthToLabel();
 rodiBlink.oneArgBlock();
-rodiBlink.staticLabels.push('blink (ms)');
 rodiBlink.defaults.push(1000);
 
 //* flow:rodiblink *//
@@ -53,14 +54,15 @@ try {
 var rodiMove = new ProtoBlock('rodimove');
 rodiMove.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodimove'] = rodiMove;
+rodiMove.staticLabels.push(_('move'));
+rodiMove.staticLabels.push(_('left'));
+rodiMove.staticLabels.push(_('right'));
+rodiMove.adjustWidthToLabel();
 rodiMove.twoArgBlock();
 rodiMove.dockTypes[1] = 'numberin';
 rodiMove.dockTypes[2] = 'numberin';
 rodiMove.defaults.push(99);
 rodiMove.defaults.push(99);
-rodiMove.staticLabels.push('move');
-rodiMove.staticLabels.push('left');
-rodiMove.staticLabels.push('right');
 
 //* flow:rodimove *//
 
@@ -86,8 +88,9 @@ try {
 var rodiSenseLeft = new ProtoBlock('rodisenseleft');
 rodiSenseLeft.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodisenseleft'] = rodiSenseLeft;
+rodiSenseLeft.staticLabels.push(_('sense left'));
+rodiSenseLeft.adjustWidthToLabel();
 rodiSenseLeft.parameterBlock();
-rodiSenseLeft.staticLabels.push('sense left');
 
 //* arg:rodisenseleft *//
 var sensor = -1;
@@ -123,8 +126,9 @@ block.value = sensor;
 var rodiSenseRight = new ProtoBlock('rodisenseright');
 rodiSenseRight.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodisenseright'] = rodiSenseRight;
+rodiSenseRight.staticLabels.push(_('sense right'));
+rodiSenseRight.adjustWidthToLabel();
 rodiSenseRight.parameterBlock();
-rodiSenseRight.staticLabels.push('sense right');
 
 //* arg:rodisenseright *//
 var sensor = -1;
@@ -160,14 +164,15 @@ block.value = sensor;
 var rodiSing = new ProtoBlock('rodising');
 rodiSing.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodising'] = rodiSing;
+rodiSing.staticLabels.push(_('sing'));
+rodiSing.staticLabels.push(_('note'));
+rodiSing.staticLabels.push(_('duration'));
+rodiSing.adjustWidthToLabel();
 rodiSing.twoArgBlock();
 rodiSing.dockTypes[1] = 'numberin';
 rodiSing.dockTypes[2] = 'numberin';
 rodiSing.defaults.push(31);
 rodiSing.defaults.push(250);
-rodiSing.staticLabels.push('sing');
-rodiSing.staticLabels.push('note');
-rodiSing.staticLabels.push('duration');
 
 //* flow:rodising *//
 
@@ -193,8 +198,9 @@ try {
 var rodiSee = new ProtoBlock('rodisee');
 rodiSee.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodisee'] = rodiSee;
+rodiSee.staticLabels.push(_('see distance'));
+rodiSee.adjustWidthToLabel();
 rodiSee.parameterBlock();
-rodiSee.staticLabels.push('see distance');
 
 //* arg:rodisee *//
 

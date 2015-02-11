@@ -222,6 +222,8 @@
   * blocks in a stack being dragged should be on top of everything else
   * refactoring of input for Android (Sam Parkinson)
 0.4
+  * write SVG generator
+  * auto-guestimate block width (need to set label name before creating artwork)
   * add splash-screen animation (Sam Parkinson)
   * fixed collapse bug which manifests itself when loading custom stacks
   * use ellipsis on action and do labels (including do blocks in palette)
@@ -241,14 +243,12 @@ TODO:
   * user-defined block types (trivial with factory)
   * three-arg flow blocks (trivial with factory)
   * three-arg arg blocks (trivial with factory)
-  * write SVG generator
   * artwork beautification?
   * try to detect difference between unknown flow and arg blocks
   * button block (a stack that is run when you click on a button)
     - two args: artwork for the button; action name to take
   * maybe we want to add local variables? (e.g., boxes only defined inside an action)
   * pass argments to actions? (and arg blocks to reference them)?
-  * auto-guestimate block width (need to set label name before creating artwork)
 
 KNOWN BUGS:
   * sample projects cannot be shown on Android

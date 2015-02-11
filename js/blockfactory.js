@@ -850,10 +850,12 @@ function SVG() {
         } else if (this._bool) {
             svg += this._rLineTo(0, 2 * this._padding + this._strokeWidth);
             svg += this._doBoolean();
-            this.margins[2] = (this._x - this._strokeWidth + 0.5) * this._scale;        } else {
+            this.margins[2] = (this._x - this._strokeWidth + 0.5) * this._scale;
+        } else {
             svg += this._rLineTo(0, this._padding);
             this.margins[2] = (this._x - this._strokeWidth + 0.5) * this._scale;
         }
+
 	for (var clamp = 0; clamp < this._clampCount; clamp++) {
 	    if (clamp > 0) {
                 svg += this._rLineTo(0, 3 * this._padding);
@@ -881,6 +883,11 @@ function SVG() {
         svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
 
         svg += this._rLineTo(-this._radius - this._strokeWidth, 0);
+
+        if (this._clampCount == 0) {
+            svg += this.lineTo(xx, this._y);
+        }
+
         if (this._tail) {
             svg += this._doTail();
         } else {

@@ -52,177 +52,202 @@ function initBasicProtoBlocks(palettes, blocks) {
     var clearBlock = new ProtoBlock('clear');
     clearBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['clear'] = clearBlock;
-    clearBlock.zeroArgBlock();
     clearBlock.staticLabels.push('clear');
+    clearBlock.adjustWidthToLabel();
+    clearBlock.zeroArgBlock();
 
     var forwardBlock = new ProtoBlock('forward');
     forwardBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['forward'] = forwardBlock;
-    forwardBlock.oneArgBlock();
     forwardBlock.staticLabels.push('forward');
+    forwardBlock.adjustWidthToLabel();
+    forwardBlock.oneArgBlock();
     forwardBlock.defaults.push(100);
 
     var rightBlock = new ProtoBlock('right');
     rightBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['right'] = rightBlock;
-    rightBlock.oneArgBlock();
     rightBlock.staticLabels.push('right');
+    rightBlock.adjustWidthToLabel();
+    rightBlock.oneArgBlock();
     rightBlock.defaults.push(90);
 
     var backBlock = new ProtoBlock('back');
     backBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['back'] = backBlock;
-    backBlock.oneArgBlock();
     backBlock.staticLabels.push('back');
+    backBlock.adjustWidthToLabel();
+    backBlock.oneArgBlock();
     backBlock.defaults.push(100);
 
     var leftBlock = new ProtoBlock('left');
     leftBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['left'] = leftBlock;
-    leftBlock.oneArgBlock();
     leftBlock.staticLabels.push('left');
+    leftBlock.adjustWidthToLabel();
+    leftBlock.oneArgBlock();
     leftBlock.defaults.push(90);
 
     var arcBlock = new ProtoBlock('arc');
     arcBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['arc'] = arcBlock;
-    arcBlock.twoArgBlock();
-    arcBlock.defaults.push(90);
-    arcBlock.defaults.push(100);
     arcBlock.staticLabels.push('arc');
     arcBlock.staticLabels.push('angle');
     arcBlock.staticLabels.push('radius');
+    arcBlock.adjustWidthToLabel();
+    arcBlock.twoArgBlock();
+    arcBlock.defaults.push(90);
+    arcBlock.defaults.push(100);
     arcBlock.dockTypes[1] = 'numberin'; // override default
 
     var setheadingBlock = new ProtoBlock('setheading');
     setheadingBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['setheading'] = setheadingBlock;
-    setheadingBlock.extraWidth = 24;
-    setheadingBlock.oneArgBlock();
     setheadingBlock.staticLabels.push('set heading');
+    // setheadingBlock.extraWidth = 24;
+    setheadingBlock.adjustWidthToLabel();
+    setheadingBlock.oneArgBlock();
     setheadingBlock.defaults.push(0);
 
     var headingBlock = new ProtoBlock('heading');
     headingBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['heading'] = headingBlock;
-    headingBlock.parameterBlock();
     headingBlock.staticLabels.push('heading');
+    headingBlock.adjustWidthToLabel();
+    headingBlock.parameterBlock();
 
     var setxyBlock = new ProtoBlock('setxy');
     setxyBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['setxy'] = setxyBlock;
-    setxyBlock.twoArgBlock();
-    setxyBlock.defaults.push(0);
-    setxyBlock.defaults.push(0);
     setxyBlock.staticLabels.push('set xy');
     setxyBlock.staticLabels.push('x');
     setxyBlock.staticLabels.push('y');
+    setxyBlock.adjustWidthToLabel();
+    setxyBlock.twoArgBlock();
+    setxyBlock.defaults.push(0);
+    setxyBlock.defaults.push(0);
     setxyBlock.dockTypes[1] = 'numberin'; // override default
 
     var xBlock = new ProtoBlock('x');
     xBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['x'] = xBlock;
-    xBlock.parameterBlock();
     xBlock.staticLabels.push('x');
+    xBlock.adjustWidthToLabel();
+    xBlock.parameterBlock();
 
     var yBlock = new ProtoBlock('y');
     yBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['y'] = yBlock;
-    yBlock.parameterBlock();
     yBlock.staticLabels.push('y');
+    yBlock.adjustWidthToLabel();
+    yBlock.parameterBlock();
 
     // Pen palette
     var setcolorBlock = new ProtoBlock('setcolor');
     setcolorBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setcolor'] = setcolorBlock;
+    setcolorBlock.staticLabels.push('set color');
+    setcolorBlock.adjustWidthToLabel();
     setcolorBlock.oneArgBlock();
     setcolorBlock.defaults.push(0);
-    setcolorBlock.staticLabels.push('set color');
 
     var colorBlock = new ProtoBlock('color');
     colorBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['color'] = colorBlock;
-    colorBlock.parameterBlock();
     colorBlock.staticLabels.push('color');
+    colorBlock.adjustWidthToLabel();
+    colorBlock.parameterBlock();
 
     var sethueBlock = new ProtoBlock('sethue');
     sethueBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['sethue'] = sethueBlock;
+    sethueBlock.staticLabels.push('set hue');
+    sethueBlock.adjustWidthToLabel();
     sethueBlock.oneArgBlock();
     sethueBlock.defaults.push(0);
-    sethueBlock.staticLabels.push('set hue');
 
     var setshadeBlock = new ProtoBlock('setshade');
     setshadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setshade'] = setshadeBlock;
+    setshadeBlock.staticLabels.push('set shade');
     setshadeBlock.extraWidth = 10;
+    setshadeBlock.adjustWidthToLabel();
     setshadeBlock.oneArgBlock();
     setshadeBlock.defaults.push(50);
-    setshadeBlock.staticLabels.push('set shade');
 
     var shadeBlock = new ProtoBlock('shade');
     shadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['shade'] = shadeBlock;
-    shadeBlock.parameterBlock();
     shadeBlock.staticLabels.push('shade');
+    shadeBlock.adjustWidthToLabel();
+    shadeBlock.parameterBlock();
 
     var setchromaBlock = new ProtoBlock('setgrey');
     setchromaBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setgrey'] = setchromaBlock;
+    setchromaBlock.staticLabels.push('set grey');
+    setchromaBlock.adjustWidthToLabel();
     setchromaBlock.oneArgBlock();
     setchromaBlock.defaults.push(100);
-    setchromaBlock.staticLabels.push('set grey');
 
     var chromaBlock = new ProtoBlock('grey');
     chromaBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['grey'] = chromaBlock;
-    chromaBlock.parameterBlock();
     chromaBlock.staticLabels.push('grey');
+    chromaBlock.adjustWidthToLabel();
+    chromaBlock.parameterBlock();
 
     var setpensizeBlock = new ProtoBlock('setpensize');
     setpensizeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setpensize'] = setpensizeBlock;
+    setpensizeBlock.staticLabels.push('set pen');
+    setpensizeBlock.adjustWidthToLabel();
     setpensizeBlock.oneArgBlock();
     setpensizeBlock.defaults.push(5);
-    setpensizeBlock.staticLabels.push('set pen');
 
     var pensizeBlock = new ProtoBlock('pensize');
     pensizeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['pensize'] = pensizeBlock;
-    pensizeBlock.parameterBlock();
     pensizeBlock.staticLabels.push('pen size');
+    pensizeBlock.adjustWidthToLabel();
+    pensizeBlock.parameterBlock();
 
     var penupBlock = new ProtoBlock('penup');
     penupBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['penup'] = penupBlock;
-    penupBlock.zeroArgBlock();
     penupBlock.staticLabels.push('pen up');
+    penupBlock.adjustWidthToLabel();
+    penupBlock.zeroArgBlock();
 
     var pendownBlock = new ProtoBlock('pendown');
     pendownBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['pendown'] = pendownBlock;
-    pendownBlock.extraWidth = 10;
-    pendownBlock.zeroArgBlock();
     pendownBlock.staticLabels.push('pen down');
+    // pendownBlock.extraWidth = 10;
+    pendownBlock.adjustWidthToLabel();
+    pendownBlock.zeroArgBlock();
 
     var startfillBlock = new ProtoBlock('beginfill');
     startfillBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['beginfill'] = startfillBlock;
-    startfillBlock.zeroArgBlock();
     startfillBlock.staticLabels.push('begin fill');
+    startfillBlock.adjustWidthToLabel();
+    startfillBlock.zeroArgBlock();
 
     var endfillBlock = new ProtoBlock('endfill');
     endfillBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['endfill'] = endfillBlock;
-    endfillBlock.zeroArgBlock();
     endfillBlock.staticLabels.push('end fill');
+    endfillBlock.adjustWidthToLabel();
+    endfillBlock.zeroArgBlock();
 
     var backgroundBlock = new ProtoBlock('fillscreen');
     backgroundBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['fillscreen'] = backgroundBlock;
-    backgroundBlock.extraWidth = 20;
-    backgroundBlock.zeroArgBlock();
     backgroundBlock.staticLabels.push('background');
+    // backgroundBlock.extraWidth = 20;
+    backgroundBlock.adjustWidthToLabel();
+    backgroundBlock.zeroArgBlock();
 
     // Numbers palette
     var numberBlock = new ProtoBlock('number');
@@ -233,128 +258,133 @@ function initBasicProtoBlocks(palettes, blocks) {
     var randomBlock = new ProtoBlock('random');
     randomBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['random'] = randomBlock;
-    randomBlock.twoArgMathBlock();
-    randomBlock.defaults.push(0);
-    randomBlock.defaults.push(100);
     randomBlock.staticLabels.push('random');
     randomBlock.staticLabels.push('min');
     randomBlock.staticLabels.push('max');
+    randomBlock.adjustWidthToLabel();
+    randomBlock.twoArgMathBlock();
+    randomBlock.defaults.push(0);
+    randomBlock.defaults.push(100);
 
     var plusBlock = new ProtoBlock('plus');
     plusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['plus'] = plusBlock;
     plusBlock.fontsize = 14;
+    plusBlock.staticLabels.push('+');
     plusBlock.twoArgMathBlock();
     plusBlock.dockTypes[0] = 'anyout';
     plusBlock.dockTypes[1] = 'anyin';
     plusBlock.dockTypes[2] = 'anyin';
-    plusBlock.staticLabels.push('+');
     plusBlock.defaults.push(100, 100)
 
     var minusBlock = new ProtoBlock('minus');
     minusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['minus'] = minusBlock;
     minusBlock.fontsize = 14;
-    minusBlock.twoArgMathBlock();
     minusBlock.staticLabels.push('–');
+    minusBlock.twoArgMathBlock();
     minusBlock.defaults.push(100, 50)
 
     var multiplyBlock = new ProtoBlock('multiply');
     multiplyBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['multiply'] = multiplyBlock;
     multiplyBlock.fontsize = 14;
-    multiplyBlock.twoArgMathBlock();
     multiplyBlock.staticLabels.push('×');
+    multiplyBlock.twoArgMathBlock();
     multiplyBlock.defaults.push(10, 10)
 
     var divideBlock = new ProtoBlock('divide');
     divideBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['divide'] = divideBlock;
     divideBlock.fontsize = 14;
-    divideBlock.twoArgMathBlock();
     divideBlock.staticLabels.push('/');
+    divideBlock.twoArgMathBlock();
     divideBlock.defaults.push(100, 10)
 
     var sqrtBlock = new ProtoBlock('sqrt');
     sqrtBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['sqrt'] = sqrtBlock;
-    sqrtBlock.extraWidth = 10;
-    sqrtBlock.oneArgMathBlock();
     sqrtBlock.staticLabels.push('sqrt');
+    sqrtBlock.extraWidth = 10;
+    sqrtBlock.adjustWidthToLabel();
+    sqrtBlock.oneArgMathBlock();
     sqrtBlock.defaults.push(100)
 
     var modBlock = new ProtoBlock('mod');
     modBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['mod'] = modBlock;
-    modBlock.twoArgMathBlock();
     modBlock.staticLabels.push('mod');
+    modBlock.adjustWidthToLabel();
+    modBlock.twoArgMathBlock();
     modBlock.defaults.push(100, 10)
 
     var greaterBlock = new ProtoBlock('greater');
     greaterBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['greater'] = greaterBlock;
     greaterBlock.fontsize = 14;
+    greaterBlock.staticLabels.push('&gt;');
     greaterBlock.extraWidth = 20;
     greaterBlock.booleanTwoArgBlock();
-    greaterBlock.staticLabels.push('&gt;');
 
     var lessBlock = new ProtoBlock('less');
     lessBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['less'] = lessBlock;
     lessBlock.fontsize = 14;
     lessBlock.extraWidth = 20;
-    lessBlock.booleanTwoArgBlock();
     lessBlock.staticLabels.push('&lt;');
+    lessBlock.booleanTwoArgBlock();
 
     var equalBlock = new ProtoBlock('equal');
     equalBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['equal'] = equalBlock;
     equalBlock.fontsize = 14;
     equalBlock.extraWidth = 20;
-    equalBlock.booleanTwoArgBlock();
     equalBlock.staticLabels.push('=');
+    equalBlock.booleanTwoArgBlock();
 
     var andBlock = new ProtoBlock('and');
     andBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['and'] = andBlock;
     andBlock.extraWidth = 10;
-    andBlock.booleanTwoBooleanArgBlock();
     andBlock.staticLabels.push('and');
+    andBlock.booleanTwoBooleanArgBlock();
 
     var orBlock = new ProtoBlock('or');
     orBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['or'] = orBlock;
     orBlock.extraWidth = 10;
-    orBlock.booleanTwoBooleanArgBlock();
     orBlock.staticLabels.push('or');
+    orBlock.booleanTwoBooleanArgBlock();
 
     var notBlock = new ProtoBlock('not');
     notBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['not'] = notBlock;
     notBlock.extraWidth = 30;
-    notBlock.booleanOneBooleanArgBlock();
     notBlock.staticLabels.push('not');
+    notBlock.booleanOneBooleanArgBlock();
 
     // Blocks palette
     var storeinBlock = new ProtoBlock('storein');
     storeinBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['storein'] = storeinBlock;
+    storeinBlock.staticLabels.push('store in');
+    storeinBlock.staticLabels.push('name');
+    storeinBlock.staticLabels.push('value');
+    storeinBlock.adjustWidthToLabel();
     storeinBlock.twoArgBlock();
     storeinBlock.defaults.push(_('box'));
     storeinBlock.defaults.push(100);
     storeinBlock.dockTypes[1] = 'anyin';
     storeinBlock.dockTypes[2] = 'anyin';
-    storeinBlock.staticLabels.push('store in');
-    storeinBlock.staticLabels.push('name');
-    storeinBlock.staticLabels.push('value');
 
     var boxBlock = new ProtoBlock('box');
     boxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['box'] = boxBlock;
     boxBlock.extraWidth = 10;
+    boxBlock.staticLabels.push('box');
+    boxBlock.adjustWidthToLabel();
     boxBlock.oneArgMathBlock();
     boxBlock.defaults.push(_('box'));
-    boxBlock.staticLabels.push('box');
     boxBlock.dockTypes[0] = 'anyout';
     boxBlock.dockTypes[1] = 'anyin';
     // Show the value in the box as if it were a parameter.
@@ -363,71 +393,79 @@ function initBasicProtoBlocks(palettes, blocks) {
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;
+    actionBlock.staticLabels.push('action');
     actionBlock.extraWidth = 12;
+    actionBlock.adjustWidthToLabel();
     actionBlock.stackClampOneArgBlock();
     actionBlock.defaults.push(_('action'));
-    actionBlock.staticLabels.push('action');
 
     var doBlock = new ProtoBlock('do');
     doBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['do'] = doBlock;
+    doBlock.staticLabels.push('do');
+    doBlock.adjustWidthToLabel();
     doBlock.oneArgBlock();
     doBlock.defaults.push(_('action'));
-    doBlock.staticLabels.push('do');
     doBlock.dockTypes[1] = 'anyin';
 
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['start'] = startBlock;
-    startBlock.extraWidth = 2;
-    startBlock.stackClampZeroArgBlock();
     startBlock.staticLabels.push('start');
+    startBlock.extraWidth = 2;
+    startBlock.adjustWidthToLabel();
+    startBlock.stackClampZeroArgBlock();
 
     var incrementOneBlock = new ProtoBlock('incrementOne');
     incrementOneBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['incrementOne'] = incrementOneBlock;
+    incrementOneBlock.staticLabels.push('add 1 to');
+    incrementOneBlock.adjustWidthToLabel();
     incrementOneBlock.oneArgBlock();
     boxBlock.dockTypes[1] = 'anyin';
-    incrementOneBlock.staticLabels.push('add 1 to');
 
     var incrementBlock = new ProtoBlock('increment');
     incrementBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['increment'] = incrementBlock;
+    incrementBlock.staticLabels.push('add', 'to', 'value');
+    incrementBlock.adjustWidthToLabel();
     incrementBlock.twoArgBlock();
     incrementBlock.dockTypes[1] = 'anyin';
     incrementBlock.dockTypes[2] = 'anyin';
-    incrementBlock.staticLabels.push('add', 'to', 'value');
 
     // Media palette
     var speakBlock = new ProtoBlock('speak');
     speakBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['speak'] = speakBlock;
-    speakBlock.oneArgBlock();
     speakBlock.staticLabels.push('speak');
+    speakBlock.adjustWidthToLabel();
+    speakBlock.oneArgBlock();
     speakBlock.defaults.push('hello');
     speakBlock.dockTypes[1] = 'textin';
 
     var showBlock = new ProtoBlock('show');
     showBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['show'] = showBlock;
-    showBlock.twoArgBlock();
-    showBlock.defaults.push(24);
-    showBlock.defaults.push('text');
     showBlock.staticLabels.push('show');
     showBlock.staticLabels.push('size');
     showBlock.staticLabels.push('obj');
+    showBlock.adjustWidthToLabel();
+    showBlock.twoArgBlock();
+    showBlock.defaults.push(24);
+    showBlock.defaults.push('text');
     showBlock.dockTypes[1] = 'numberin'; // override default
     showBlock.dockTypes[2] = 'anyin'; // override default
 
     var shellBlock = new ProtoBlock('turtleshell');
     shellBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['turtleshell'] = shellBlock;
-    shellBlock.twoArgBlock();
-    shellBlock.defaults.push(55);
-    shellBlock.defaults.push(null);
     shellBlock.staticLabels.push('shell');
     shellBlock.staticLabels.push('size');
     shellBlock.staticLabels.push('image');
+    shellBlock.adjustWidthToLabel();
+    shellBlock.twoArgBlock();
+    shellBlock.defaults.push(55);
+    shellBlock.defaults.push(null);
     shellBlock.dockTypes[1] = 'numberin'; // override default
     shellBlock.dockTypes[2] = 'mediain'; // override default
 
@@ -459,71 +497,80 @@ function initBasicProtoBlocks(palettes, blocks) {
     var loadFile = new ProtoBlock('loadFile');
     loadFile.palette = palettes.dict['media'];
     blocks.protoBlockDict['loadFile'] = loadFile;
+    loadFile.staticLabels.push('');
     loadFile.parameterBlock();
     loadFile.dockTypes[0] = 'fileout';
-    loadFile.staticLabels.push('');
 
     var stopVideoCamBlock = new ProtoBlock('stopvideocam');
     stopVideoCamBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;
-    stopVideoCamBlock.extraWidth = 20;
-    stopVideoCamBlock.zeroArgBlock();
+    // stopVideoCamBlock.extraWidth = 20;
+    stopVideoCamBlock.adjustWidthToLabel();
     stopVideoCamBlock.staticLabels.push('stop media');
+    stopVideoCamBlock.zeroArgBlock();
 
     // Flow palette
     var repeatBlock = new ProtoBlock('repeat');
     repeatBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['repeat'] = repeatBlock;
-    repeatBlock.flowClampOneArgBlock();
     repeatBlock.staticLabels.push('repeat');
+    repeatBlock.adjustWidthToLabel();
+    repeatBlock.flowClampOneArgBlock();
     repeatBlock.defaults.push(4);
 
     var foreverBlock = new ProtoBlock('forever');
     foreverBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['forever'] = foreverBlock;
-    foreverBlock.flowClampZeroArgBlock();
     foreverBlock.staticLabels.push('forever');
+    foreverBlock.adjustWidthToLabel();
+    foreverBlock.flowClampZeroArgBlock();
 
     var breakBlock = new ProtoBlock('break');
     breakBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['break'] = breakBlock;
-    breakBlock.basicBlockNoFlow();
     breakBlock.staticLabels.push('stop');
+    breakBlock.adjustWidthToLabel();
+    breakBlock.basicBlockNoFlow();
 
     var ifBlock = new ProtoBlock('if');
     ifBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['if'] = ifBlock;
-    ifBlock.flowClampBooleanArgBlock();
     ifBlock.staticLabels.push('if');
     ifBlock.staticLabels.push('then');
+    ifBlock.adjustWidthToLabel();
+    ifBlock.flowClampBooleanArgBlock();
 
     var untilBlock = new ProtoBlock('until');
     untilBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['until'] = untilBlock;
-    untilBlock.flowClampBooleanArgBlock();
     untilBlock.staticLabels.push('until');
     untilBlock.staticLabels.push('do');
+    untilBlock.adjustWidthToLabel();
+    untilBlock.flowClampBooleanArgBlock();
 
     var waitForBlock = new ProtoBlock('waitFor');
     waitForBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['waitFor'] = waitForBlock;
-    waitForBlock.oneBooleanArgBlock();
     waitForBlock.staticLabels.push('wait for');
+    waitForBlock.adjustWidthToLabel();
+    waitForBlock.oneBooleanArgBlock();
 
     var whileBlock = new ProtoBlock('while');
     whileBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['while'] = whileBlock;
-    whileBlock.flowClampBooleanArgBlock();
     whileBlock.staticLabels.push('while');
     whileBlock.staticLabels.push('do');
+    whileBlock.adjustWidthToLabel();
+    whileBlock.flowClampBooleanArgBlock();
 
     var ifthenelseBlock = new ProtoBlock('ifthenelse');
     ifthenelseBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['ifthenelse'] = ifthenelseBlock;
-    ifthenelseBlock.doubleFlowClampBooleanArgBlock();
     ifthenelseBlock.staticLabels.push('if');
     ifthenelseBlock.staticLabels.push('then');
     ifthenelseBlock.staticLabels.push('else');
+    ifthenelseBlock.adjustWidthToLabel();
+    ifthenelseBlock.doubleFlowClampBooleanArgBlock();
 
     // Extras palette
     var vspaceBlock = new ProtoBlock('vspace');
@@ -541,37 +588,42 @@ function initBasicProtoBlocks(palettes, blocks) {
     var waitBlock = new ProtoBlock('wait');
     waitBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['wait'] = waitBlock;
-    waitBlock.oneArgBlock();
     waitBlock.staticLabels.push('wait');
+    waitBlock.adjustWidthToLabel();
+    waitBlock.oneArgBlock();
     waitBlock.defaults.push(1);
 
     var printBlock = new ProtoBlock('print');
     printBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['print'] = printBlock;
-    printBlock.oneArgBlock();
     printBlock.staticLabels.push('print');
+    printBlock.adjustWidthToLabel();
+    printBlock.oneArgBlock();
     printBlock.dockTypes[1] = 'anyin';
 
     // Sensors palette
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['time'] = timeBlock;
-    timeBlock.parameterBlock();
     timeBlock.staticLabels.push('time');
+    timeBlock.adjustWidthToLabel();
+    timeBlock.parameterBlock();
 
     var mousexBlock = new ProtoBlock('mousex');
     mousexBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousex'] = mousexBlock;
-    mousexBlock.extraWidth = 15;
-    mousexBlock.parameterBlock();
     mousexBlock.staticLabels.push('mouse x');
+    mousexBlock.extraWidth = 15;
+    mousexBlock.adjustWidthToLabel();
+    mousexBlock.parameterBlock();
 
     var mouseyBlock = new ProtoBlock('mousey');
     mouseyBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['mousey'] = mouseyBlock;
-    mouseyBlock.extraWidth = 15;
-    mouseyBlock.parameterBlock();
     mouseyBlock.staticLabels.push('mouse y');
+    mouseyBlock.extraWidth = 15;
+    mouseyBlock.adjustWidthToLabel();
+    mouseyBlock.parameterBlock();
 
     var mousebuttonBlock = new ProtoBlock('mousebutton');
     mousebuttonBlock.palette = palettes.dict['sensors'];
@@ -579,28 +631,30 @@ function initBasicProtoBlocks(palettes, blocks) {
     mousebuttonBlock.staticLabels.push('mouse button');
     // mousebuttonBlock.extraWidth = 15;
     mousebuttonBlock.adjustWidthToLabel();
-    mousebuttonBlock.extraWidth = 15;
     mousebuttonBlock.booleanZeroArgBlock();
 
     var keyboardBlock = new ProtoBlock('keyboard');
     keyboardBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['keyboard'] = keyboardBlock;
-    keyboardBlock.parameterBlock();
     keyboardBlock.staticLabels.push('keyboard');
+    keyboardBlock.adjustWidthToLabel();
+    keyboardBlock.parameterBlock();
 
     var getColorPixel = new ProtoBlock('getcolorpixel');
     getColorPixel.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['getcolorpixel'] = getColorPixel;
-    getColorPixel.parameterBlock();
     getColorPixel.staticLabels.push('pixel color');
+    getColorPixel.adjustWidthToLabel();
+    getColorPixel.parameterBlock();
 
     // NOP blocks (used as placeholders when loaded blocks not found)
     var nopValueBlock = new ProtoBlock('nopValue');
     blocks.protoBlockDict['nopValue'] = nopValueBlock;
     nopValueBlock.hidden = true;
     nopValueBlock.palette = palettes.dict['extras'];
-    nopValueBlock.valueBlock();
     nopValueBlock.staticLabels.push(_('unknown'));
+    nopValueBlock.adjustWidthToLabel();
+    nopValueBlock.valueBlock();
     nopValueBlock.dockTypes[0] = 'anyout';
 
     /*
@@ -628,23 +682,26 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['nopZeroArgBlock'] = nopZeroArgBlock;
     nopZeroArgBlock.hidden = true;
     nopZeroArgBlock.palette = palettes.dict['extras'];
-    nopZeroArgBlock.zeroArgBlock();
     nopZeroArgBlock.staticLabels.push(_('unknown'));
+    nopZeroArgBlock.adjustWidthToLabel();
+    nopZeroArgBlock.zeroArgBlock();
 
     var nopOneArgBlock = new ProtoBlock('nopOneArgBlock');
     blocks.protoBlockDict['nopOneArgBlock'] = nopOneArgBlock;
     nopOneArgBlock.hidden = true;
     nopOneArgBlock.palette = palettes.dict['extras'];
-    nopOneArgBlock.oneArgBlock();
     nopOneArgBlock.staticLabels.push(_('unknown'));
+    nopOneArgBlock.adjustWidthToLabel();
+    nopOneArgBlock.oneArgBlock();
     nopOneArgBlock.dockTypes[1] = 'anyin';
 
     var nopTwoArgBlock = new ProtoBlock('nopTwoArgBlock');
     blocks.protoBlockDict['nopTwoArgBlock'] = nopTwoArgBlock;
     nopTwoArgBlock.hidden = true;
     nopTwoArgBlock.palette = palettes.dict['extras'];
-    nopTwoArgBlock.twoArgBlock();
     nopTwoArgBlock.staticLabels.push(_('unknown'));
+    nopTwoArgBlock.adjustWidthToLabel();
+    nopTwoArgBlock.twoArgBlock();
     nopTwoArgBlock.dockTypes[1] = 'anyin';
     nopTwoArgBlock.dockTypes[2] = 'anyin';
 

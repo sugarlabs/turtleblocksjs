@@ -882,11 +882,11 @@ function SVG() {
 
         svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
 
-        svg += this._rLineTo(-this._radius - this._strokeWidth, 0);
-
         if (this._clampCount == 0) {
             svg += this.lineTo(xx, this._y);
         }
+
+        svg += this._rLineTo(-this._radius - this._strokeWidth, 0);
 
         if (this._tail) {
             svg += this._doTail();

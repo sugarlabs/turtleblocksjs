@@ -13,6 +13,12 @@
 // (https://github.com/walterbender/turtleart), but implemented from
 // scratch. -- Walter Bender, October 2014.
 
+var lang = document.webL10n.getLanguage();
+if (lang.indexOf("-") != -1) {
+    lang = lang.slice(0, lang.indexOf("-"));
+    document.webL10n.setLanguage(lang);
+}
+
 define(function(require) {
     require('easeljs');
     require('preloadjs');

@@ -17,25 +17,83 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
 
+
+
 //* block:gmap *//
 var gmapBlk = new ProtoBlock('gmap');
-gmapBlk.palette = palettes.dict['gmap'];
+gmapBlk.palette = palettes.dict['GMAP'];
 blocks.protoBlockDict['gmap'] = gmapBlk;
 gmapBlk.twoArgMathBlock();
-gmapBlk.dockTypes[1] = 'anyin';
-gmapBlk.dockTypes[2] = 'anyin';
-gmapBlk.staticLabels.push('Gmaps','latitude','longitude');
-gmapBlk.defaults.push('50','50');
+gmapBlk.staticLabels.push('Gmaps','coordinates','zoomFactor');
 
 //* arg:gmap *//
 var block = logo.blocks.blockList[blk];
 var conns = block.connections;
+var url    = logo.parseArg(logo, turtle, conns[1]);
+var zoom_factor   = logo.parseArg(logo, turtle, conns[2]);
+if(!url)
+{
+	url = 'http://maps.googleapis.com/maps/api/staticmap?center=42.357279,-71.065740';
+}
+if(!zoom_factor)
+{
+	zoom_factor = 10;
+}
+if(zoom_factor == 0)
+{
+	zoom_factor = 0;
+}
+
+gmapURL = url + '&size=800x800&zoom=' + zoom_factor +'&sensor=false';
+block.value = gmapURL;
+
+
+//* block:zoom *//
+var zoomBlk = new ProtoBlock('zoom');
+zoomBlk.palette = palettes.dict['GMAP'];
+blocks.protoBlockDict['zoom'] = zoomBlk;
+zoomBlk.oneArgMathBlock();
+zoomBlk.dockTypes[1] = 'anyin';
+zoomBlk.staticLabels.push('Zoom');
+zoomBlk.defaults.push('10');
+
+//* arg:zoom *//
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
+var zoomFactor    = logo.parseArg(logo, turtle, conns[1]);
+block.value = zoomFactor;
+
+//* block:coord *//
+var coordBlk = new ProtoBlock('coord');
+coordBlk.palette = palettes.dict['GMAP'];
+blocks.protoBlockDict['coord'] = coordBlk;
+coordBlk.twoArgMathBlock();
+coordBlk.dockTypes[1] = 'anyin';
+coordBlk.dockTypes[2] = 'anyin';
+coordBlk.staticLabels.push('Coord.','latitude','longitude');
+coordBlk.defaults.push('50','50');
+
+//* arg:coord *//
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
 var latitude    = logo.parseArg(logo, turtle, conns[1]);
 var longitude   = logo.parseArg(logo, turtle, conns[2]);
-gmapURL = 'http://maps.googleapis.com/maps/api/staticmap?center=' + latitude + ',' + longitude + '&size=800x800&zoom=14&sensor=false';
 
+latitude = eval(latitude);
+longitude = eval(longitude);
+
+if(!latitude || !longitude)
+{
+		latitude = 42.357279;
+		longitude = -71.065740;
+}
+gmapURL = 'http://maps.googleapis.com/maps/api/staticmap?center=' + latitude + ',' + longitude;
+	
 block.value = gmapURL;
-//* palette-icon:gmap *//
+
+
+
+//* palette-icon:GMAP *//
 <svg xmlns="http://www.w3.org/2000/svg" height="55" width="50" >
   <g fill="none" stroke="white" stroke-width="4">
     <path stroke-dasharray="5,5" d="M5 20 l215 0" />
@@ -43,9 +101,9 @@ block.value = gmapURL;
     <path stroke-dasharray="20,10,5,5,5,10" d="M5 60 l215 0" />
   </g>
 </svg>
-//* palette-fill:gmap *// #c0c0c0
-//* palette-stroke:gmap *// #ef003e
-//* palette-highlight:gmap *// #ffb1b3
-//* palette-stroke-highlight:gmap *// #000000
+//* palette-fill:GMAP *// #c0c0c0
+//* palette-stroke:GMAP *// #ef003e
+//* palette-highlight:GMAP *// #ffb1b3
+//* palette-stroke-highlight:GMAP *// #000000
 
 	

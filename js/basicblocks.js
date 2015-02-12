@@ -165,7 +165,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     setshadeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setshade'] = setshadeBlock;
     setshadeBlock.staticLabels.push(_('set shade'));
-    setshadeBlock.extraWidth = 10;
     setshadeBlock.adjustWidthToLabel();
     setshadeBlock.oneArgBlock();
     setshadeBlock.defaults.push(50);
@@ -296,7 +295,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     sqrtBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['sqrt'] = sqrtBlock;
     sqrtBlock.staticLabels.push(_('sqrt'));
-    sqrtBlock.extraWidth = 10;
     sqrtBlock.adjustWidthToLabel();
     sqrtBlock.oneArgMathBlock();
     sqrtBlock.defaults.push(100)
@@ -369,8 +367,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     var boxBlock = new ProtoBlock('box');
     boxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['box'] = boxBlock;
-    boxBlock.extraWidth = 10;
     boxBlock.staticLabels.push(_('box'));
+    boxBlock.extraWidth = 10;
     boxBlock.adjustWidthToLabel();
     boxBlock.oneArgMathBlock();
     boxBlock.defaults.push(_('box'));
@@ -489,8 +487,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     var stopVideoCamBlock = new ProtoBlock('stopvideocam');
     stopVideoCamBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['stopvideocam'] = stopVideoCamBlock;
-    stopVideoCamBlock.adjustWidthToLabel();
     stopVideoCamBlock.staticLabels.push(_('stop media'));
+    stopVideoCamBlock.adjustWidthToLabel();
     stopVideoCamBlock.zeroArgBlock();
 
     // Flow palette

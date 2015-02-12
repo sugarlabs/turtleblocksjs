@@ -156,7 +156,7 @@ function getCookie(cname) {
 // var translated = "";
 function _(text) {
     replaced = text;
-    replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×"];
+    replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×", "!", "¡"];
     for (p = 0; p < replace.length; p++) {
         replaced = replaced.replace(replace[p], "");
     }

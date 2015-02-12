@@ -541,14 +541,15 @@ function Palette(palettes, name, color, bgcolor) {
                         case 'less':
                         case 'greater':
                         case 'equal':
-                            block_label = _(myBlock.staticLabels[0]);
+                            // Label should be inside _() when defined.
+                            block_label = myBlock.staticLabels[0];
                             break;
                         default:
                             if (blkname != modname) {
                                 // Override label for do, storein, and box
                                 block_label = palette.protoList[blk].defaults[0];
                             } else if (myBlock.staticLabels.length > 0) {
-                                block_label = _(myBlock.staticLabels[0]);
+                                block_label = myBlock.staticLabels[0];
                                 if (block_label == '') {
                                     if (blkname == 'loadFile') {
                                         block_label = _('open file')
@@ -599,7 +600,7 @@ function Palette(palettes, name, color, bgcolor) {
                             svg.setSlot(true);
                             var artwork = svg.basicBlock();
                             var docks = svg.docks;
-                            block_label = _(myBlock.staticLabels[0]) + ' ' + _(myBlock.staticLabels[2]);
+                            block_label = myBlock.staticLabels[0] + ' ' + myBlock.staticLabels[2];
                             break;
                         default:
                             var obj = myBlock.generator();
@@ -662,7 +663,7 @@ function Palette(palettes, name, color, bgcolor) {
                         myBlock.staticLabels.push('');
                     }
                     for (var i = 1; i < myBlock.staticLabels.length; i++) {
-                        artwork = artwork.replace('arg_label_' + i, _(myBlock.staticLabels[i]));
+                        artwork = artwork.replace('arg_label_' + i, myBlock.staticLabels[i]);
                     }
 
                     makePaletteBitmap(palette, artwork, modname, processBitmap, [myBlock, blk]);

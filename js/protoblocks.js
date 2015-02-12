@@ -86,9 +86,8 @@ function ProtoBlock(name) {
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
-        if (this.extraWidth != 0) {
-            svg.setExpand(this.extraWidth, 0, 0, 0);
-        }
+        this.extraWidth += 30;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         var artwork = svg.basicBlock();
 	return [artwork, svg.docks];
     }
@@ -110,9 +109,8 @@ function ProtoBlock(name) {
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
-        if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
-        }
+        this.extraWidth += 30;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         var artwork = svg.basicBlock();
 	return [artwork, svg.docks];
     }
@@ -134,9 +132,8 @@ function ProtoBlock(name) {
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
-        if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
-        }
+        this.extraWidth += 30;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         var artwork = svg.basicBlock();
 	return [artwork, svg.docks];
     }
@@ -160,9 +157,8 @@ function ProtoBlock(name) {
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
-        if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
-        }
+        this.extraWidth += 30;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         var artwork = svg.basicBlock();
 	return [artwork, svg.docks];
     }
@@ -189,9 +185,8 @@ function ProtoBlock(name) {
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
-        if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
-        }
+        this.extraWidth += 30;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         var artwork = svg.basicClamp();
 	return [artwork, svg.docks];
     }
@@ -216,10 +211,11 @@ function ProtoBlock(name) {
         svg.setTab(true);
         svg.setInnies([true, true]);
         svg.setSlot(true);
+        this.extraWidth += 30;
         if (expandY) {
-            svg.setExpand(30 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
-        } else if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+            svg.setExpand(this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        } else {
+            svg.setExpand(this.extraWidth, 0, 0, 0);
         }
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
@@ -250,9 +246,8 @@ function ProtoBlock(name) {
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
-        if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
-        }
+        this.extraWidth += 30;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         var artwork = svg.basicBlock();
 	return [artwork, svg.docks];
     }
@@ -278,10 +273,11 @@ function ProtoBlock(name) {
         svg.setInnies([true, true]);
         svg.setOutie(true);
         svg.setTab(false);
+        this.extraWidth += 30;
         if (expandY) {
-            svg.setExpand(30 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
-        } else if (this.extraWidth != 0) {
-            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+            svg.setExpand(this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        } else {
+            svg.setExpand(this.extraWidth, 0, 0, 0);
         }
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
@@ -304,7 +300,9 @@ function ProtoBlock(name) {
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
-        svg.setExpand(60 + this.extraWidth, 0, 0, 0);
+        // Extra room for parameter label
+        this.extraWidth += 60;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         svg.setOutie(true);
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
@@ -328,7 +326,9 @@ function ProtoBlock(name) {
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
-        svg.setExpand(60 + this.extraWidth, 23, 0, 0);
+        // Extra room for graphics
+        this.extraWidth += 60;
+        svg.setExpand(this.extraWidth, 23, 0, 0);
         svg.setOutie(true);
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
@@ -356,7 +356,8 @@ function ProtoBlock(name) {
         svg.setScale(this.scale);
         svg.setCap(true);
         svg.setTail(true);
-        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        this.extraWidth += 20;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
@@ -389,7 +390,8 @@ function ProtoBlock(name) {
         svg.setTab(true);
         svg.setSlot(true);
         svg.setInnies([true]);
-        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        this.extraWidth += 20;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
@@ -496,7 +498,8 @@ function ProtoBlock(name) {
         svg.setScale(this.scale);
         svg.setTab(true);
         svg.setSlot(true);
-        svg.setExpand(10 + this.extraWidth, 0, 0, 0);
+        this.extraWidth += 10;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
@@ -530,7 +533,8 @@ function ProtoBlock(name) {
         svg.setCap(true);
         svg.setTail(true);
         svg.setInnies([true]);
-        svg.setExpand(10 + this.extraWidth, 0, 0, 0);
+        this.extraWidth += 10;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
@@ -556,7 +560,8 @@ function ProtoBlock(name) {
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
-        svg.setExpand(60 + this.extraWidth, 0, 0, 4);
+        this.extraWidth += 60;
+        svg.setExpand(this.extraWidth, 0, 0, 4);
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
@@ -579,7 +584,8 @@ function ProtoBlock(name) {
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
-        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        this.extraWidth += 20;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
@@ -603,7 +609,8 @@ function ProtoBlock(name) {
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
-        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        this.extraWidth += 20;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
         }
@@ -628,10 +635,11 @@ function ProtoBlock(name) {
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
+        this.extraWidth += 10;
         if (expandY) {
-            svg.setExpand(10 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+            svg.setExpand(this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
         } else {
-            svg.setExpand(10 + this.extraWidth, 0, 0, 0);
+            svg.setExpand(this.extraWidth, 0, 0, 0);
         }
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
@@ -654,7 +662,9 @@ function ProtoBlock(name) {
         var svg = new SVG();
         svg.init();
         svg.setScale(this.scale);
-        svg.setExpand(70 + this.extraWidth, 0, 0, 0);
+        // Extra room for parameter label
+        this.extraWidth += 70;
+        svg.setExpand(this.extraWidth, 0, 0, 0);
         svg.setOutie(true);
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);

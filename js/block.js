@@ -210,7 +210,8 @@ function Block(protoblock, blocks) {
         var thisBlock = this.blocks.blockList.indexOf(this);
         var block_label = '';
         if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
-            block_label = _(this.protoblock.staticLabels[0]);
+            // Label should be defined inside _().
+            block_label = this.protoblock.staticLabels[0];
         }
         while (this.protoblock.staticLabels.length < this.protoblock.args + 1) {
             this.protoblock.staticLabels.push('');
@@ -286,7 +287,7 @@ function Block(protoblock, blocks) {
             var artwork = myBlock.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label);
 
             for (var i = 1; i < myBlock.protoblock.staticLabels.length; i++) {
-                artwork = artwork.replace('arg_label_' + i, _(myBlock.protoblock.staticLabels[i]));
+                artwork = artwork.replace('arg_label_' + i, myBlock.protoblock.staticLabels[i]);
             }
             makeBitmap(artwork, myBlock.name, processHighlightBitmap, myBlock);
         }
@@ -302,11 +303,8 @@ function Block(protoblock, blocks) {
 
         var artwork = this.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label);
 
-        if (this.protoblock.staticLabels.length > 1 && !this.protoblock.image) {
-            top_label = _(this.protoblock.staticLabels[1]);
-        }
         for (var i = 1; i < this.protoblock.staticLabels.length; i++) {
-            artwork = artwork.replace('arg_label_' + i, _(this.protoblock.staticLabels[i]));
+            artwork = artwork.replace('arg_label_' + i, this.protoblock.staticLabels[i]);
         }
         makeBitmap(artwork, this.name, processBitmap, this);
     }
@@ -445,7 +443,7 @@ function Block(protoblock, blocks) {
             var obj = proto.generator();
             var artwork = obj[0];
 
-            makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', _(block_label)), '', processCollapseBitmap, this);
+            makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label), '', processCollapseBitmap, this);
 
         }
     }

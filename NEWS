@@ -256,3 +256,4 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * fix race conditions
   * not all blocks highlight when using step-by-step mode
+  * when you change the image of a media block, all media blocks change the image

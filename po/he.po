@@ -138,16 +138,16 @@ msgid "action"
 msgstr "פעולה"
 
 msgid "do"
-msgstr ""
+msgstr "לבצע"
 
 msgid "start"
 msgstr "התחל"
 
 msgid "add 1 to"
-msgstr ""
+msgstr "להוסיף 1 ל"
 
 msgid "add"
-msgstr ""
+msgstr "להוסיף"
 
 msgid "speak"
 msgstr "דבר"
@@ -189,7 +189,7 @@ msgid "until"
 msgstr "עד_ש"
 
 msgid "wait for"
-msgstr ""
+msgstr "לחכות ל"
 
 msgid "while"
 msgstr "כל-עוד"
@@ -213,7 +213,7 @@ msgid "keyboard"
 msgstr "קלט מקלדת"
 
 msgid "unknown"
-msgstr ""
+msgstr "לא ידוע"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -336,7 +336,7 @@ msgid "Remove all content on the canvas, including the blocks."
 msgstr ""
 
 msgid "Undo"
-msgstr ""
+msgstr "לבטל"
 
 msgid "Restore blocks from the trash."
 msgstr ""
@@ -402,7 +402,7 @@ msgid "media"
 msgstr ""
 
 msgid "sensors"
-msgstr ""
+msgstr "חיישנים"
 
 msgid "extras"
 msgstr ""
@@ -423,7 +423,7 @@ msgid "bitcoin"
 msgstr ""
 
 msgid "from"
-msgstr ""
+msgstr "מ"
 
 msgid "mashape"
 msgstr ""
@@ -441,19 +441,19 @@ msgid "Google map"
 msgstr "Mapa de Google"
 
 msgid "coordinates"
-msgstr ""
+msgstr "קואורדינטות"
 
 msgid "zoom factor"
-msgstr ""
+msgstr "גורם זום"
 
 msgid "zoom"
-msgstr ""
+msgstr "זום"
 
 msgid "latitude"
-msgstr ""
+msgstr "קו רוחב"
 
 msgid "longitude"
-msgstr ""
+msgstr "קו אורך"
 
 msgid "show heap"
 msgstr "הצג מחסנית FILO"
@@ -507,16 +507,16 @@ msgid "maths"
 msgstr ""
 
 msgid "cheese"
-msgstr ""
+msgstr "גבינה"
 
 msgid "apple"
-msgstr ""
+msgstr "תפוח"
 
 msgid "get fat"
 msgstr ""
 
 msgid "fish"
-msgstr ""
+msgstr "דג"
 
 msgid "get calories"
 msgstr ""
@@ -525,10 +525,10 @@ msgid "protein"
 msgstr ""
 
 msgid "chicken"
-msgstr ""
+msgstr "עוף"
 
 msgid "digest meal"
-msgstr ""
+msgstr "לעכל"
 
 msgid "get fiber"
 msgstr ""
@@ -537,16 +537,16 @@ msgid "carbs"
 msgstr ""
 
 msgid "eat"
-msgstr ""
+msgstr "לאכול"
 
 msgid "rice and beans"
-msgstr ""
+msgstr "אורז ושעועית"
 
 msgid "orange"
-msgstr ""
+msgstr "תפוז"
 
 msgid "banana"
-msgstr ""
+msgstr "בננה"
 
 msgid "tamale"
 msgstr ""
@@ -555,7 +555,7 @@ msgid "fiber"
 msgstr ""
 
 msgid "corn"
-msgstr ""
+msgstr "תירס"
 
 msgid "fat"
 msgstr ""
@@ -564,28 +564,28 @@ msgid "get carbs"
 msgstr ""
 
 msgid "water"
-msgstr ""
+msgstr "מים"
 
 msgid "cookie"
-msgstr ""
+msgstr "עוגייה"
 
 msgid "sweet potato"
-msgstr ""
+msgstr "בַּטָטָה"
 
 msgid "broccoli"
-msgstr ""
+msgstr "ברוקולי"
 
 msgid "wheat bread"
-msgstr ""
+msgstr "לחם"
 
 msgid "tomato"
-msgstr ""
+msgstr "עגבניות"
 
 msgid "beef"
-msgstr ""
+msgstr "בשר בקר"
 
 msgid "potato"
-msgstr ""
+msgstr "תַפּוּד"
 
 msgid "calories"
 msgstr ""
@@ -594,16 +594,16 @@ msgid "get name"
 msgstr ""
 
 msgid "cake"
-msgstr ""
+msgstr "עוגה"
 
 msgid "get protein"
 msgstr ""
 
 msgid "food"
-msgstr ""
+msgstr "מזון"
 
 msgid "eatme"
-msgstr ""
+msgstr "לאכול"
 
 msgid "sense left"
 msgstr ""
@@ -615,7 +615,7 @@ msgid "sense right"
 msgstr ""
 
 msgid "sing"
-msgstr ""
+msgstr "לשיר"
 
 msgid "note"
 msgstr ""

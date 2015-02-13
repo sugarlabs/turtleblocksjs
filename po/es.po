@@ -41,7 +41,7 @@ msgstr "radio"
 msgid "set heading"
 msgstr "fijar rumbo"
 
-msgid "set heading"
+msgid "heading"
 msgstr "rumbo"
 
 msgid "set xy"
@@ -56,20 +56,20 @@ msgstr "y"
 msgid "set color"
 msgstr "fijar color"
 
+msgid "color"
+msgstr "color"
+
 msgid "set hue"
 msgstr "fijar matiz"
 
 msgid "set shade"
 msgstr "fijar sombra"
 
-msgid "set grey"
-msgstr "fijar gris"
-
-msgid "color"
-msgstr "color"
-
 msgid "shade"
 msgstr "sombra"
+
+msgid "set grey"
+msgstr "fijar gris"
 
 msgid "grey"
 msgstr "gris"
@@ -88,6 +88,9 @@ msgstr "bajar pluma"
 
 msgid "begin fill"
 msgstr "iniciar relleno"
+
+msgid "end fill"
+msgstr ""
 
 msgid "background"
 msgstr "fondo"
@@ -149,6 +152,9 @@ msgstr "hablar"
 msgid "show"
 msgstr "mostrar"
 
+msgid "size"
+msgstr ""
+
 msgid "obj"
 msgstr "objeto"
 
@@ -200,71 +206,41 @@ msgstr "imprimir"
 msgid "time"
 msgstr "tiempo"
 
+msgid "mouse x"
+msgstr "cursor x"
+
+msgid "mouse y"
+msgstr "cursor y"
+
 msgid "mouse button"
 msgstr "botón del ratón"
 
 msgid "keyboard"
 msgstr "teclado"
 
+msgid "pixel color"
+msgstr ""
+
 msgid "unknown"
 msgstr "desconocido"
-
-msgid "turtle"
-msgstr "tortuga"
-
-msgid "number"
-msgstr "número"
-
-msgid "boolean"
-msgstr "booleano"
-
-msgid "flow"
-msgstr "flujo"
-
-msgid "blocks"
-msgstr "bloques"
-
-msgid "sensors"
-msgstr "sensores"
-
-msgid "extras"
-msgstr "extras"
-
-msgid "title"
-msgstr "título"
-
-msgid "mashape"
-msgstr "mashape"
-
-msgid "GMAP"
-msgstr "Mapa de Google"
-
-msgid "logic"
-msgstr "lógica"
-
-msgid "maths"
-msgstr "matemáticas"
-
-msgid "food"
-msgstr "alimentos"
-
-msgid "eatme"
-msgstr "cómeme"
-
-msgid "rodi"
-msgstr "RoDi"
-
-msgid "open file"
-msgstr "abrir archivo"
 
 msgid "Welcome to Turtle Blocks"
 msgstr "Bienvenidos a TortuBloques"
 
+msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
+msgstr ""
+
 msgid "Palette buttons"
-msgstr "Botones de paleta"
+msgstr ""
+
+msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgstr ""
 
 msgid "Expand/collapse toolbar"
 msgstr "Expandir o colapsar barra"
+
+msgid "This button opens and closes the primary toolbar."
+msgstr ""
 
 msgid "Run fast"
 msgstr "Ejecutar rápidamente"
@@ -275,8 +251,14 @@ msgstr "Haga clic para ejecutar el proyecto en modo rápido."
 msgid "Run slow"
 msgstr "Ejecutar lentamente"
 
+msgid "Click to run the project in slow mode."
+msgstr ""
+
 msgid "Run step by step"
 msgstr "Ejecutar paso a paso"
+
+msgid "Click to run the project step by step."
+msgstr ""
 
 msgid "Stop"
 msgstr "Detener"
@@ -293,11 +275,32 @@ msgstr "Borrar la pantalla y volver a las tortugas a sus posiciones iniciales."
 msgid "Show/hide palettes"
 msgstr "Mostrar u ocultar paletas"
 
+msgid "Hide or show the block palettes."
+msgstr ""
+
+msgid "Show/hide blocks"
+msgstr ""
+
+msgid "Hide or show the blocks and the palettes."
+msgstr ""
+
+msgid "Expand/collapse collapsable blocks"
+msgstr ""
+
+msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
+msgstr ""
+
 msgid "Help"
 msgstr "Ayuda"
 
 msgid "Show these messages."
 msgstr "Mostrar esos mensajes."
+
+msgid "Expand/collapse option toolbar"
+msgstr ""
+
+msgid "Click this button to expand or collapse the auxillary toolbar."
+msgstr ""
 
 msgid "Paste"
 msgstr "Pegar"
@@ -316,17 +319,32 @@ msgstr "Mostrar u ocultar cuadrícula en coordenadas cartesianas."
 msgid "Polar"
 msgstr "Polar"
 
+msgid "Show or hide a polar-coordinate grid."
+msgstr ""
+
 msgid "Load samples from server"
 msgstr "Cargar ejemplos desde el servidor"
 
 msgid "This button opens a viewer for loading example projects."
 msgstr "Este botón abre la pantalla de carga de proyectos de ejemplo."
 
+msgid "Load project from file"
+msgstr ""
+
 msgid "You can also load projects from the file system."
 msgstr "También puede cargar proyectos desde el sistema de archivos."
 
+msgid "Load plugin from file"
+msgstr ""
+
+msgid "You can load new blocks from the file system."
+msgstr ""
+
 msgid "Delete all"
 msgstr "Borrar todo"
+
+msgid "Remove all content on the canvas, including the blocks."
+msgstr ""
 
 msgid "Undo"
 msgstr "Deshacer"
@@ -334,5 +352,341 @@ msgstr "Deshacer"
 msgid "Restore blocks from the trash."
 msgstr "Restaurar bloques de la papelera."
 
+msgid "Save project"
+msgstr ""
+
+msgid "Save your project to a server."
+msgstr ""
+
 msgid "Congratulations."
 msgstr "Felicitaciones."
+
+msgid "You have finished the tour. Please enjoy Turtle Blocks!"
+msgstr ""
+
+msgid "hide blocks"
+msgstr ""
+
+msgid "publish"
+msgstr ""
+
+msgid "comment"
+msgstr ""
+
+msgid "play back"
+msgstr ""
+
+msgid "save svg"
+msgstr ""
+
+msgid "title"
+msgstr "título"
+
+msgid "eval"
+msgstr ""
+
+msgid "show blocks"
+msgstr ""
+
+msgid "stop play"
+msgstr ""
+
+msgid "turtle"
+msgstr "tortuga"
+
+msgid "pen"
+msgstr ""
+
+msgid "number"
+msgstr "número"
+
+msgid "boolean"
+msgstr "booleano"
+
+msgid "flow"
+msgstr "flujo"
+
+msgid "blocks"
+msgstr "bloques"
+
+msgid "media"
+msgstr ""
+
+msgid "sensors"
+msgstr "sensores"
+
+msgid "extras"
+msgstr "extras"
+
+msgid "open file"
+msgstr "abrir archivo"
+
+msgid "motion z"
+msgstr ""
+
+msgid "motion y"
+msgstr ""
+
+msgid "motion x"
+msgstr ""
+
+msgid "bitcoin"
+msgstr ""
+
+msgid "from"
+msgstr ""
+
+msgid "mashape"
+msgstr "mashape"
+
+msgid "define"
+msgstr ""
+
+msgid "stock price"
+msgstr ""
+
+msgid "currency"
+msgstr ""
+
+msgid "Google map"
+msgstr "Mapa de Google"
+
+msgid "coordinates"
+msgstr ""
+
+msgid "zoom factor"
+msgstr ""
+
+msgid "zoom"
+msgstr ""
+
+msgid "latitude"
+msgstr ""
+
+msgid "longitude"
+msgstr ""
+
+msgid "show heap"
+msgstr "mostrar pila"
+
+msgid "pop"
+msgstr "sacar"
+
+msgid "empty heap"
+msgstr "vaciar pila"
+
+msgid "save heap"
+msgstr "guardar pila"
+
+msgid "load heap"
+msgstr "cargar pila"
+
+msgid "push"
+msgstr "apilar"
+
+msgid "logic"
+msgstr "lógica"
+
+msgid "power"
+msgstr ""
+
+msgid "base"
+msgstr ""
+
+msgid "exp"
+msgstr ""
+
+msgid "floor"
+msgstr ""
+
+msgid "ceiling"
+msgstr ""
+
+msgid "degrees"
+msgstr ""
+
+msgid "to degrees"
+msgstr ""
+
+msgid "radians"
+msgstr ""
+
+msgid "to radians"
+msgstr ""
+
+msgid "maths"
+msgstr "matemáticas"
+
+msgid "cheese"
+msgstr ""
+
+msgid "apple"
+msgstr ""
+
+msgid "get fat"
+msgstr ""
+
+msgid "fish"
+msgstr ""
+
+msgid "get calories"
+msgstr ""
+
+msgid "protein"
+msgstr ""
+
+msgid "chicken"
+msgstr ""
+
+msgid "digest meal"
+msgstr ""
+
+msgid "get fiber"
+msgstr ""
+
+msgid "carbs"
+msgstr ""
+
+msgid "eat"
+msgstr ""
+
+msgid "rice and beans"
+msgstr ""
+
+msgid "orange"
+msgstr ""
+
+msgid "banana"
+msgstr ""
+
+msgid "tamale"
+msgstr ""
+
+msgid "fiber"
+msgstr ""
+
+msgid "corn"
+msgstr ""
+
+msgid "fat"
+msgstr ""
+
+msgid "get carbs"
+msgstr ""
+
+msgid "water"
+msgstr ""
+
+msgid "cookie"
+msgstr ""
+
+msgid "sweet potato"
+msgstr ""
+
+msgid "broccoli"
+msgstr ""
+
+msgid "wheat bread"
+msgstr ""
+
+msgid "tomato"
+msgstr ""
+
+msgid "beef"
+msgstr ""
+
+msgid "potato"
+msgstr ""
+
+msgid "calories"
+msgstr ""
+
+msgid "get name"
+msgstr ""
+
+msgid "cake"
+msgstr ""
+
+msgid "get protein"
+msgstr ""
+
+msgid "food"
+msgstr "alimentos"
+
+msgid "eatme"
+msgstr "cómeme"
+
+msgid "sense left"
+msgstr ""
+
+msgid "see distance"
+msgstr ""
+
+msgid "sense right"
+msgstr ""
+
+msgid "sing"
+msgstr "cantar"
+
+msgid "note"
+msgstr ""
+
+msgid "duration"
+msgstr "duración"
+
+msgid "move"
+msgstr ""
+
+msgid "blink (ms)"
+msgstr ""
+
+msgid "rodi"
+msgstr "RoDi"
+
+msgid "set lang"
+msgstr ""
+
+msgid "source"
+msgstr ""
+
+msgid "target"
+msgstr ""
+
+msgid "translate"
+msgstr ""
+
+msgid "hello"
+msgstr "hola"
+
+msgid "detect lang"
+msgstr ""
+
+msgid "turtle x"
+msgstr "tortuga x"
+
+msgid "turtle y"
+msgstr "tortuga y"
+
+msgid "stop turtle"
+msgstr ""
+
+msgid "turtle name"
+msgstr ""
+
+msgid "start turtle"
+msgstr ""
+
+msgid "forecast"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "day"
+msgstr ""
+
+msgid "low"
+msgstr ""
+
+msgid "high"
+msgstr ""

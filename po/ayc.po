@@ -483,6 +483,21 @@ msgstr ""
 msgid "Google map"
 msgstr ""
 
+msgid "coordinates"
+msgstr ""
+
+msgid "zoom factor"
+msgstr ""
+
+msgid "zoom"
+msgstr ""
+
+msgid "latitude"
+msgstr ""
+
+msgid "longitude"
+msgstr ""
+
 msgid "show heap"
 msgstr "siqi wakichata uñachayma"
 

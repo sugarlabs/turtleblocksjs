@@ -41,6 +41,9 @@ msgstr "radio"
 msgid "set heading"
 msgstr "fijar rumbo"
 
+msgid "set heading"
+msgstr "rumbo"
+
 msgid "set xy"
 msgstr "fijar xy"
 
@@ -62,7 +65,16 @@ msgstr "fijar sombra"
 msgid "set grey"
 msgstr "fijar gris"
 
-msgid "set pen"
+msgid "color"
+msgstr "color"
+
+msgid "shade"
+msgstr "sombra"
+
+msgid "grey"
+msgstr "gris"
+
+msgid "set pen size"
 msgstr "fijar pluma"
 
 msgid "pen size"

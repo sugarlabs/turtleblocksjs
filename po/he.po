@@ -438,7 +438,7 @@ msgid "currency"
 msgstr ""
 
 msgid "Google map"
-msgstr "Mapa de Google"
+msgstr ""
 
 msgid "coordinates"
 msgstr "קואורדינטות"

@@ -11,6 +11,9 @@ msgstr ""
 "Language: en\n"
 "X-Generator: ini-to-pot script\n"
 
+msgid "turtle"
+msgstr ""
+
 msgid "clear"
 msgstr ""
 
@@ -47,7 +50,13 @@ msgstr ""
 msgid "y"
 msgstr ""
 
+msgid "pen"
+msgstr ""
+
 msgid "set color"
+msgstr ""
+
+msgid "color"
 msgstr ""
 
 msgid "set hue"
@@ -56,10 +65,16 @@ msgstr ""
 msgid "set shade"
 msgstr ""
 
+msgid "shade"
+msgstr ""
+
 msgid "set grey"
 msgstr ""
 
-msgid "set pen"
+msgid "grey"
+msgstr ""
+
+msgid "set pen size"
 msgstr ""
 
 msgid "pen size"
@@ -77,6 +92,9 @@ msgstr ""
 msgid "background"
 msgstr ""
 
+msgid "number"
+msgstr ""
+
 msgid "random"
 msgstr ""
 
@@ -92,6 +110,9 @@ msgstr ""
 msgid "mod"
 msgstr ""
 
+msgid "boolean"
+msgstr ""
+
 msgid "and"
 msgstr ""
 
@@ -99,6 +120,9 @@ msgid "or"
 msgstr ""
 
 msgid "not"
+msgstr ""
+
+msgid "boxes"
 msgstr ""
 
 msgid "store in"
@@ -128,6 +152,9 @@ msgstr ""
 msgid "add"
 msgstr ""
 
+msgid "media"
+msgsr ""
+
 msgid "speak"
 msgstr ""
 
@@ -147,6 +174,9 @@ msgid "image"
 msgstr ""
 
 msgid "stop media"
+msgstr ""
+
+msgid "flow"
 msgstr ""
 
 msgid "repeat"
@@ -176,10 +206,16 @@ msgstr ""
 msgid "else"
 msgstr ""
 
+msgid "extras"
+msgstr ""
+
 msgid "wait"
 msgstr ""
 
 msgid "print"
+msgstr ""
+
+msgid "sensors"
 msgstr ""
 
 msgid "time"
@@ -192,27 +228,6 @@ msgid "keyboard"
 msgstr ""
 
 msgid "unknown"
-msgstr ""
-
-msgid "turtle"
-msgstr ""
-
-msgid "number"
-msgstr ""
-
-msgid "boolean"
-msgstr ""
-
-msgid "flow"
-msgstr ""
-
-msgid "blocks"
-msgstr ""
-
-msgid "sensors"
-msgstr ""
-
-msgid "extras"
 msgstr ""
 
 msgid "title"
@@ -319,4 +334,3 @@ msgstr ""
 
 msgid "Congratulations."
 msgstr ""
-

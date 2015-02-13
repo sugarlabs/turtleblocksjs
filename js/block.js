@@ -138,6 +138,7 @@ function Block(protoblock, blocks) {
         }
 
         this.clampCount[clamp] += plusMinus;
+        this.size += plusMinus;
 
         switch (this.name) {
             case 'start':
@@ -161,7 +162,7 @@ function Block(protoblock, blocks) {
                 if (this.isArgBlock()) {
                     var obj = this.protoblock.generator(this.clampCount[0]);
                 } else if (this.isTwoArgBlock()) {
-                var obj = this.protoblock.generator(this.clampCount[0]);
+                    var obj = this.protoblock.generator(this.clampCount[0]);
                 }
                 break;
         }

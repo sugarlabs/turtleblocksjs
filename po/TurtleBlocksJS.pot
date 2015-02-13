@@ -11,9 +11,6 @@ msgstr ""
 "Language: en\n"
 "X-Generator: ini-to-pot script\n"
 
-msgid "turtle"
-msgstr ""
-
 msgid "clear"
 msgstr ""
 
@@ -50,13 +47,7 @@ msgstr ""
 msgid "y"
 msgstr ""
 
-msgid "pen"
-msgstr ""
-
 msgid "set color"
-msgstr ""
-
-msgid "color"
 msgstr ""
 
 msgid "set hue"
@@ -65,19 +56,10 @@ msgstr ""
 msgid "set shade"
 msgstr ""
 
-msgid "shade"
-msgstr ""
-
 msgid "set grey"
 msgstr ""
 
-msgid "grey"
-msgstr ""
-
 msgid "set pen size"
-msgstr ""
-
-msgid "pen size"
 msgstr ""
 
 msgid "pen up"
@@ -90,9 +72,6 @@ msgid "begin fill"
 msgstr ""
 
 msgid "background"
-msgstr ""
-
-msgid "number"
 msgstr ""
 
 msgid "random"
@@ -110,9 +89,6 @@ msgstr ""
 msgid "mod"
 msgstr ""
 
-msgid "boolean"
-msgstr ""
-
 msgid "and"
 msgstr ""
 
@@ -120,9 +96,6 @@ msgid "or"
 msgstr ""
 
 msgid "not"
-msgstr ""
-
-msgid "boxes"
 msgstr ""
 
 msgid "store in"
@@ -152,9 +125,6 @@ msgstr ""
 msgid "add"
 msgstr ""
 
-msgid "media"
-msgsr ""
-
 msgid "speak"
 msgstr ""
 
@@ -174,9 +144,6 @@ msgid "image"
 msgstr ""
 
 msgid "stop media"
-msgstr ""
-
-msgid "flow"
 msgstr ""
 
 msgid "repeat"
@@ -206,16 +173,10 @@ msgstr ""
 msgid "else"
 msgstr ""
 
-msgid "extras"
-msgstr ""
-
 msgid "wait"
 msgstr ""
 
 msgid "print"
-msgstr ""
-
-msgid "sensors"
 msgstr ""
 
 msgid "time"
@@ -230,34 +191,10 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-msgid "title"
-msgstr ""
-
-msgid "mashape"
-msgstr ""
-
-msgid "GMAP"
-msgstr ""
-
-msgid "logic"
-msgstr ""
-
-msgid "maths"
-msgstr ""
-
-msgid "food"
-msgstr ""
-
-msgid "eatme"
-msgstr ""
-
-msgid "rodi"
-msgstr ""
-
-msgid "open file"
-msgstr ""
-
 msgid "Welcome to Turtle Blocks"
+msgstr ""
+
+msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
 msgstr ""
 
 msgid "Palette buttons"
@@ -317,7 +254,10 @@ msgstr ""
 msgid "Load samples from server"
 msgstr ""
 
-msgid "This button open a viewer for loading example projects."
+msgid "This button opens a viewer for loading example projects."
+msgstr ""
+
+msgid "Load project from file"
 msgstr ""
 
 msgid "You can also load projects from the file system."
@@ -334,3 +274,232 @@ msgstr ""
 
 msgid "Congratulations."
 msgstr ""
+
+msgid "publish"
+msgstr ""
+
+msgid "comment"
+msgstr ""
+
+msgid "save svg"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "eval"
+msgstr ""
+
+msgid "stop play"
+msgstr ""
+
+msgid "turtle"
+msgstr ""
+
+msgid "pen"
+msgstr ""
+
+msgid "number"
+msgstr ""
+
+msgid "boolean"
+msgstr ""
+
+msgid "flow"
+msgstr ""
+
+msgid "sensors"
+msgstr ""
+
+msgid "extras"
+msgstr ""
+
+msgid "motion z"
+msgstr ""
+
+msgid "bitcoin"
+msgstr ""
+
+msgid "from"
+msgstr ""
+
+msgid "mashape"
+msgstr ""
+
+msgid "define"
+msgstr ""
+
+msgid "stock price"
+msgstr ""
+
+msgid "currency"
+msgstr ""
+
+msgid "GMAP"
+msgstr ""
+
+msgid "show heap"
+msgstr ""
+
+msgid "pop"
+msgstr ""
+
+msgid "push"
+msgstr ""
+
+msgid "logic"
+msgstr ""
+
+msgid "power"
+msgstr ""
+
+msgid "base"
+msgstr ""
+
+msgid "exp"
+msgstr ""
+
+msgid "floor"
+msgstr ""
+
+msgid "ceiling"
+msgstr ""
+
+msgid "degrees"
+msgstr ""
+
+msgid "radians"
+msgstr ""
+
+msgid "maths"
+msgstr ""
+
+msgid "cheese"
+msgstr ""
+
+msgid "apple"
+msgstr ""
+
+msgid "get fat"
+msgstr ""
+
+msgid "fish"
+msgstr ""
+
+msgid "get calories"
+msgstr ""
+
+msgid "protein"
+msgstr ""
+
+msgid "chicken"
+msgstr ""
+
+msgid "digest meal"
+msgstr ""
+
+msgid "get fiber"
+msgstr ""
+
+msgid "carbs"
+msgstr ""
+
+msgid "eat"
+msgstr ""
+
+msgid "rice and beans"
+msgstr ""
+
+msgid "orange"
+msgstr ""
+
+msgid "banana"
+msgstr ""
+
+msgid "tamale"
+msgstr ""
+
+msgid "corn"
+msgstr ""
+
+msgid "water"
+msgstr ""
+
+msgid "cookie"
+msgstr ""
+
+msgid "sweet potato"
+msgstr ""
+
+msgid "broccoli"
+msgstr ""
+
+msgid "wheat bread"
+msgstr ""
+
+msgid "tomato"
+msgstr ""
+
+msgid "beef"
+msgstr ""
+
+msgid "cake"
+msgstr ""
+
+msgid "food"
+msgstr ""
+
+msgid "eatme"
+msgstr ""
+
+msgid "see distance"
+msgstr ""
+
+msgid "sing"
+msgstr ""
+
+msgid "note"
+msgstr ""
+
+msgid "duration"
+msgstr ""
+
+msgid "move"
+msgstr ""
+
+msgid "blink (ms)"
+msgstr ""
+
+msgid "rodi"
+msgstr ""
+
+msgid "set lang"
+msgstr ""
+
+msgid "source"
+msgstr ""
+
+msgid "target"
+msgstr ""
+
+msgid "translate"
+msgstr ""
+
+msgid "hello"
+msgstr ""
+
+msgid "forecast"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "day"
+msgstr ""
+
+msgid "low"
+msgstr ""
+
+msgid "high"
+msgstr ""
+

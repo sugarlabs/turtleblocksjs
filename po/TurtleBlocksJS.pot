@@ -38,6 +38,9 @@ msgstr ""
 msgid "set heading"
 msgstr ""
 
+msgid "heading"
+msgstr ""
+
 msgid "set xy"
 msgstr ""
 
@@ -50,16 +53,28 @@ msgstr ""
 msgid "set color"
 msgstr ""
 
+msgid "color"
+msgstr ""
+
 msgid "set hue"
 msgstr ""
 
 msgid "set shade"
 msgstr ""
 
+msgid "shade"
+msgstr ""
+
 msgid "set grey"
 msgstr ""
 
+msgid "grey"
+msgstr ""
+
 msgid "set pen size"
+msgstr ""
+
+msgid "pen size"
 msgstr ""
 
 msgid "pen up"
@@ -69,6 +84,9 @@ msgid "pen down"
 msgstr ""
 
 msgid "begin fill"
+msgstr ""
+
+msgid "end fill"
 msgstr ""
 
 msgid "background"
@@ -125,10 +143,16 @@ msgstr ""
 msgid "add"
 msgstr ""
 
+msgid "to"
+msgstr ""
+
 msgid "speak"
 msgstr ""
 
 msgid "show"
+msgstr ""
+
+msgid "size"
 msgstr ""
 
 msgid "obj"
@@ -182,10 +206,19 @@ msgstr ""
 msgid "time"
 msgstr ""
 
+msgid "mouse x"
+msgstr ""
+
+msgid "mouse y"
+msgstr ""
+
 msgid "mouse button"
 msgstr ""
 
 msgid "keyboard"
+msgstr ""
+
+msgid "pixel color"
 msgstr ""
 
 msgid "unknown"
@@ -200,7 +233,13 @@ msgstr ""
 msgid "Palette buttons"
 msgstr ""
 
+msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgstr ""
+
 msgid "Expand/collapse toolbar"
+msgstr ""
+
+msgid "This button opens and closes the primary toolbar."
 msgstr ""
 
 msgid "Run fast"
@@ -212,7 +251,13 @@ msgstr ""
 msgid "Run slow"
 msgstr ""
 
+msgid "Click to run the project in slow mode."
+msgstr ""
+
 msgid "Run step by step"
+msgstr ""
+
+msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "Stop"
@@ -230,10 +275,31 @@ msgstr ""
 msgid "Show/hide palettes"
 msgstr ""
 
+msgid "Hide or show the block palettes."
+msgstr ""
+
+msgid "Show/hide blocks"
+msgstr ""
+
+msgid "Hide or show the blocks and the palettes."
+msgstr ""
+
+msgid "Expand/collapse collapsable blocks"
+msgstr ""
+
+msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
+msgstr ""
+
 msgid "Help"
 msgstr ""
 
 msgid "Show these messages."
+msgstr ""
+
+msgid "Expand/collapse option toolbar"
+msgstr ""
+
+msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr ""
 
 msgid "Paste"
@@ -251,6 +317,9 @@ msgstr ""
 msgid "Polar"
 msgstr ""
 
+msgid "Show or hide a polar-coordinate grid."
+msgstr ""
+
 msgid "Load samples from server"
 msgstr ""
 
@@ -263,7 +332,16 @@ msgstr ""
 msgid "You can also load projects from the file system."
 msgstr ""
 
+msgid "Load plugin from file"
+msgstr ""
+
+msgid "You can load new blocks from the file system."
+msgstr ""
+
 msgid "Delete all"
+msgstr ""
+
+msgid "Remove all content on the canvas, including the blocks."
 msgstr ""
 
 msgid "Undo"
@@ -272,13 +350,28 @@ msgstr ""
 msgid "Restore blocks from the trash."
 msgstr ""
 
+msgid "Save project"
+msgstr ""
+
+msgid "Save your project to a server."
+msgstr ""
+
 msgid "Congratulations."
+msgstr ""
+
+msgid "You have finished the tour. Please enjoy Turtle Blocks!"
+msgstr ""
+
+msgid "hide blocks"
 msgstr ""
 
 msgid "publish"
 msgstr ""
 
 msgid "comment"
+msgstr ""
+
+msgid "play back"
 msgstr ""
 
 msgid "save svg"
@@ -288,6 +381,9 @@ msgid "title"
 msgstr ""
 
 msgid "eval"
+msgstr ""
+
+msgid "show blocks"
 msgstr ""
 
 msgid "stop play"
@@ -308,13 +404,28 @@ msgstr ""
 msgid "flow"
 msgstr ""
 
+msgid "blocks"
+msgstr ""
+
+msgid "media"
+msgstr ""
+
 msgid "sensors"
 msgstr ""
 
 msgid "extras"
 msgstr ""
 
+msgid "open file"
+msgstr ""
+
 msgid "motion z"
+msgstr ""
+
+msgid "motion y"
+msgstr ""
+
+msgid "motion x"
 msgstr ""
 
 msgid "bitcoin"
@@ -344,6 +455,15 @@ msgstr ""
 msgid "pop"
 msgstr ""
 
+msgid "empty heap"
+msgstr ""
+
+msgid "save heap"
+msgstr ""
+
+msgid "load heap"
+msgstr ""
+
 msgid "push"
 msgstr ""
 
@@ -368,7 +488,13 @@ msgstr ""
 msgid "degrees"
 msgstr ""
 
+msgid "to degrees"
+msgstr ""
+
 msgid "radians"
+msgstr ""
+
+msgid "to radians"
 msgstr ""
 
 msgid "maths"
@@ -419,7 +545,16 @@ msgstr ""
 msgid "tamale"
 msgstr ""
 
+msgid "fiber"
+msgstr ""
+
 msgid "corn"
+msgstr ""
+
+msgid "fat"
+msgstr ""
+
+msgid "get carbs"
 msgstr ""
 
 msgid "water"
@@ -443,7 +578,19 @@ msgstr ""
 msgid "beef"
 msgstr ""
 
+msgid "potato"
+msgstr ""
+
+msgid "calories"
+msgstr ""
+
+msgid "get name"
+msgstr ""
+
 msgid "cake"
+msgstr ""
+
+msgid "get protein"
 msgstr ""
 
 msgid "food"
@@ -452,7 +599,13 @@ msgstr ""
 msgid "eatme"
 msgstr ""
 
+msgid "sense left"
+msgstr ""
+
 msgid "see distance"
+msgstr ""
+
+msgid "sense right"
 msgstr ""
 
 msgid "sing"
@@ -486,6 +639,24 @@ msgid "translate"
 msgstr ""
 
 msgid "hello"
+msgstr ""
+
+msgid "detect lang"
+msgstr ""
+
+msgid "turtle x"
+msgstr ""
+
+msgid "turtle y"
+msgstr ""
+
+msgid "stop turtle"
+msgstr ""
+
+msgid "turtle name"
+msgstr ""
+
+msgid "start turtle"
 msgstr ""
 
 msgid "forecast"

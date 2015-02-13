@@ -516,7 +516,17 @@ function SVG() {
     this.header = function (center) {
 	// FIXME: Why are our calculations off by 2 x strokeWidth?
 	var width = this._width + 2 * this._strokeWidth;
-        return '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + this._height + '">' + this._transform(center);
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="' + width * 1.1 + '" height="' + this._height * 1.3 + '">' + this._transform(center) + '<filter id="dropshadow" height="130%"> \
+  <feGaussianBlur in="SourceAlpha" stdDeviation="3"/> \
+  <feOffset dx="2" dy="2" result="offsetblur"/> \
+  <feComponentTransfer xmlns="http://www.w3.org/2000/svg"> \
+    <feFuncA type="linear" slope="0.2"/> \
+  </feComponentTransfer> \
+  <feMerge> \
+    <feMergeNode/> \
+    <feMergeNode in="SourceGraphic"/> \
+  </feMerge> \
+</filter>';
     }
 
     this._transform = function (center) {
@@ -545,7 +555,7 @@ function SVG() {
     }
 
     this.style = function () {
-        return 'style="fill:' + this._fill + ';fill-opacity:1;stroke:' + this._stroke + ';stroke-width:' + this._strokeWidth + ';stroke-linecap:round;stroke-opacity:1;" />';
+        return 'style="fill:' + this._fill + ';fill-opacity:1;stroke:' + this._stroke + ';stroke-width:' + this._strokeWidth + ';stroke-linecap:round;stroke-opacity:1;filter:url(#dropshadow);" />';
     }
 
     /* 

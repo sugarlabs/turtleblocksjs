@@ -82,14 +82,16 @@ function Block(protoblock, blocks) {
             if (['start', 'action'].indexOf(this.name) != -1) {
                 // There could be a race condition when making a
                 // new action block.
-                if (this.collapseText != null) {
-                    this.collapseText.visible = false;
-                }
-                if (this.collapseBlockBitmap.visible != null) {
-                    this.collapseBlockBitmap.visible = false;
-                }
-                if (this.highlightCollapseBlockBitmap.visible != null) {
-                    this.highlightCollapseBlockBitmap.visible = false;
+                if (this.highlightCollapseBlockBitmap) {
+                    if (this.collapseText != null) {
+                        this.collapseText.visible = false;
+                    }
+                    if (this.collapseBlockBitmap.visible != null) {
+                        this.collapseBlockBitmap.visible = false;
+                    }
+                    if (this.highlightCollapseBlockBitmap.visible != null) {
+                        this.highlightCollapseBlockBitmap.visible = false;
+                    }
                 }
             }
         }
@@ -99,16 +101,20 @@ function Block(protoblock, blocks) {
 
     this.unhighlight = function() {
         if (this.collapsed && ['start', 'action'].indexOf(this.name) != -1) {
-            this.highlightCollapseBlockBitmap.visible = false;
-            this.collapseBlockBitmap.visible = true;
-            this.collapseText.visible = true;
+            if (this.highlightCollapseBlockBitmap) {
+                this.highlightCollapseBlockBitmap.visible = false;
+                this.collapseBlockBitmap.visible = true;
+                this.collapseText.visible = true;
+            }
         } else {
             this.bitmap.visible = true;
             this.highlightBitmap.visible = false;
             if (['start', 'action'].indexOf(this.name) != -1) {
-                this.highlightCollapseBlockBitmap.visible = false;
-                this.collapseBlockBitmap.visible = false;
-                this.collapseText.visible = false;
+                if (this.highlightCollapseBlockBitmap) {
+                    this.highlightCollapseBlockBitmap.visible = false;
+                    this.collapseBlockBitmap.visible = false;
+                    this.collapseText.visible = false;
+                }
             }
         }
         this.container.updateCache();

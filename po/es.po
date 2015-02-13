@@ -3,320 +3,324 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2015-02-13 15:37+0000\n"
+"Last-Translator: Martin <tch@sugarlabs.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: ini-to-pot script\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1423841876.000000\n"
 
 msgid "clear"
-msgstr ""
+msgstr "limpiar"
 
 msgid "forward"
-msgstr ""
+msgstr "adelante"
 
 msgid "right"
-msgstr ""
+msgstr "derecha"
 
 msgid "back"
-msgstr ""
+msgstr "atrás"
 
 msgid "left"
-msgstr ""
+msgstr "izquierda"
 
 msgid "arc"
-msgstr ""
+msgstr "arco"
 
 msgid "angle"
-msgstr ""
+msgstr "ángulo"
 
 msgid "radius"
-msgstr ""
+msgstr "radio"
 
 msgid "set heading"
-msgstr ""
+msgstr "fijar rumbo"
 
 msgid "set xy"
-msgstr ""
+msgstr "fijar xy"
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "set color"
-msgstr ""
+msgstr "fijar color"
 
 msgid "set hue"
-msgstr ""
+msgstr "fijar matiz"
 
 msgid "set shade"
-msgstr ""
+msgstr "fijar sombra"
 
 msgid "set grey"
-msgstr ""
+msgstr "fijar gris"
 
 msgid "set pen"
-msgstr ""
+msgstr "fijar pluma"
 
 msgid "pen size"
-msgstr ""
+msgstr "tamaño de la pluma"
 
 msgid "pen up"
-msgstr ""
+msgstr "subir pluma"
 
 msgid "pen down"
-msgstr ""
+msgstr "bajar pluma"
 
 msgid "begin fill"
-msgstr ""
+msgstr "iniciar relleno"
 
 msgid "background"
-msgstr ""
+msgstr "fondo"
 
 msgid "random"
-msgstr ""
+msgstr "aleatorio"
 
 msgid "min"
-msgstr ""
+msgstr "min"
 
 msgid "max"
-msgstr ""
+msgstr "max"
 
 msgid "sqrt"
-msgstr ""
+msgstr "raíz"
 
 msgid "mod"
-msgstr ""
+msgstr "módulo"
 
 msgid "and"
-msgstr ""
+msgstr "y"
 
 msgid "or"
-msgstr ""
+msgstr "o"
 
 msgid "not"
-msgstr ""
+msgstr "no"
 
 msgid "store in"
-msgstr ""
+msgstr "guardar en"
 
 msgid "name"
-msgstr ""
+msgstr "nombre"
 
 msgid "value"
-msgstr ""
+msgstr "valor"
 
 msgid "box"
-msgstr ""
+msgstr "caja"
 
 msgid "action"
-msgstr ""
+msgstr "acción"
 
 msgid "do"
-msgstr ""
+msgstr "hacer"
 
 msgid "start"
-msgstr ""
+msgstr "iniciar"
 
 msgid "add 1 to"
-msgstr ""
+msgstr "sumar 1 a"
 
 msgid "add"
-msgstr ""
+msgstr "sumar"
 
 msgid "speak"
-msgstr ""
+msgstr "hablar"
 
 msgid "show"
-msgstr ""
+msgstr "mostrar"
 
 msgid "obj"
-msgstr ""
+msgstr "objeto"
 
 msgid "text"
-msgstr ""
+msgstr "texto"
 
 msgid "shell"
-msgstr ""
+msgstr "caparazón"
 
 msgid "image"
-msgstr ""
+msgstr "imagen"
 
 msgid "stop media"
-msgstr ""
+msgstr "detener medios"
 
 msgid "repeat"
-msgstr ""
+msgstr "repetir"
 
 msgid "forever"
-msgstr ""
+msgstr "por siempre"
 
 msgid "stop"
-msgstr ""
+msgstr "detener"
 
 msgid "if"
-msgstr ""
+msgstr "si"
 
 msgid "then"
-msgstr ""
+msgstr "entonces"
 
 msgid "until"
-msgstr ""
+msgstr "hasta"
 
 msgid "wait for"
-msgstr ""
+msgstr "esperar hasta"
 
 msgid "while"
-msgstr ""
+msgstr "mientras"
 
 msgid "else"
-msgstr ""
+msgstr "sino"
 
 msgid "wait"
-msgstr ""
+msgstr "esperar"
 
 msgid "print"
-msgstr ""
+msgstr "imprimir"
 
 msgid "time"
-msgstr ""
+msgstr "tiempo"
 
 msgid "mouse button"
-msgstr ""
+msgstr "botón del ratón"
 
 msgid "keyboard"
-msgstr ""
+msgstr "teclado"
 
 msgid "unknown"
-msgstr ""
+msgstr "desconocido"
 
 msgid "turtle"
-msgstr ""
+msgstr "tortuga"
 
 msgid "number"
-msgstr ""
+msgstr "número"
 
 msgid "boolean"
-msgstr ""
+msgstr "booleano"
 
 msgid "flow"
-msgstr ""
+msgstr "flujo"
 
 msgid "blocks"
-msgstr ""
+msgstr "bloques"
 
 msgid "sensors"
-msgstr ""
+msgstr "sensores"
 
 msgid "extras"
-msgstr ""
+msgstr "extras"
 
 msgid "title"
-msgstr ""
+msgstr "título"
 
 msgid "mashape"
-msgstr ""
+msgstr "mashape"
 
 msgid "GMAP"
-msgstr ""
+msgstr "Mapa de Google"
 
 msgid "logic"
-msgstr ""
+msgstr "lógica"
 
 msgid "maths"
-msgstr ""
+msgstr "matemáticas"
 
 msgid "food"
-msgstr ""
+msgstr "alimentos"
 
 msgid "eatme"
-msgstr ""
+msgstr "cómeme"
 
 msgid "rodi"
-msgstr ""
+msgstr "RoDi"
 
 msgid "open file"
-msgstr ""
+msgstr "abrir archivo"
 
 msgid "Welcome to Turtle Blocks"
-msgstr ""
+msgstr "Bienvenidos a TortuBloques"
 
 msgid "Palette buttons"
-msgstr ""
+msgstr "Botones de paleta"
 
 msgid "Expand/collapse toolbar"
-msgstr ""
+msgstr "Expandir o colapsar barra"
 
 msgid "Run fast"
-msgstr ""
+msgstr "Ejecutar rápidamente"
 
 msgid "Click to run the project in fast mode."
-msgstr ""
+msgstr "Haga clic para ejecutar el proyecto en modo rápido."
 
 msgid "Run slow"
-msgstr ""
+msgstr "Ejecutar lentamente"
 
 msgid "Run step by step"
-msgstr ""
+msgstr "Ejecutar paso a paso"
 
 msgid "Stop"
-msgstr ""
+msgstr "Detener"
 
 msgid "Stop the current project."
-msgstr ""
+msgstr "Detener el proyecto actual"
 
 msgid "Clean"
-msgstr ""
+msgstr "Limpiar"
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr ""
+msgstr "Borrar la pantalla y volver a las tortugas a sus posiciones iniciales."
 
 msgid "Show/hide palettes"
-msgstr ""
+msgstr "Mostrar u ocultar paletas"
 
 msgid "Help"
-msgstr ""
+msgstr "Ayuda"
 
 msgid "Show these messages."
-msgstr ""
+msgstr "Mostrar esos mensajes."
 
 msgid "Paste"
-msgstr ""
+msgstr "Pegar"
 
 msgid "The paste button is enabled then there are blocks copied onto the clipboard."
 msgstr ""
+"El botón de pegar está activo, por lo tanto hay bloques copiados en el "
+"portapapeles."
 
 msgid "Cartesian"
-msgstr ""
+msgstr "Cartesiano"
 
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr ""
+msgstr "Mostrar u ocultar cuadrícula en coordenadas cartesianas."
 
 msgid "Polar"
-msgstr ""
+msgstr "Polar"
 
 msgid "Load samples from server"
-msgstr ""
+msgstr "Cargar ejemplos desde el servidor"
 
 msgid "This button open a viewer for loading example projects."
-msgstr ""
+msgstr "Este botón abre la pantalla de carga de proyectos de ejemplo."
 
 msgid "You can also load projects from the file system."
-msgstr ""
+msgstr "También puede cargar proyectos desde el sistema de archivos."
 
 msgid "Delete all"
-msgstr ""
+msgstr "Borrar todo"
 
 msgid "Undo"
-msgstr ""
+msgstr "Deshacer"
 
 msgid "Restore blocks from the trash."
-msgstr ""
+msgstr "Restaurar bloques de la papelera."
 
 msgid "Congratulations."
-msgstr ""
+msgstr "Felicitaciones."

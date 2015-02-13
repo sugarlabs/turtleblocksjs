@@ -381,7 +381,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;
     actionBlock.staticLabels.push(_('action'));
-    actionBlock.extraWidth = 12;
+    actionBlock.extraWidth = 25;
     actionBlock.adjustWidthToLabel();
     actionBlock.stackClampOneArgBlock();
     actionBlock.defaults.push(_('action'));
@@ -399,7 +399,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     startBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['start'] = startBlock;
     startBlock.staticLabels.push(_('start'));
-    startBlock.extraWidth = 2;
+    startBlock.extraWidth = 10;
     startBlock.adjustWidthToLabel();
     startBlock.stackClampZeroArgBlock();
 

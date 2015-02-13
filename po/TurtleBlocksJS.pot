@@ -446,7 +446,22 @@ msgstr ""
 msgid "currency"
 msgstr ""
 
-msgid "GMAP"
+msgid "Google map"
+msgstr "Mapa de Google"
+
+msgid "coordinates"
+msgstr ""
+
+msgid "zoom factor"
+msgstr ""
+
+msgid "zoom"
+msgstr ""
+
+msgid "latitude"
+msgstr ""
+
+msgid "longitude"
 msgstr ""
 
 msgid "show heap"

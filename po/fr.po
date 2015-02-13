@@ -15,34 +15,34 @@ msgstr ""
 "X-POOTLE-MTIME: 1423841876.000000\n"
 
 msgid "clear"
-msgstr "limpiar"
+msgstr "efface"
 
 msgid "forward"
-msgstr "adelante"
+msgstr "avance"
 
 msgid "right"
-msgstr "derecha"
+msgstr "droite"
 
 msgid "back"
-msgstr "atrás"
+msgstr "recule"
 
 msgid "left"
-msgstr "izquierda"
+msgstr "gauche"
 
 msgid "arc"
-msgstr "arco"
+msgstr "arc"
 
 msgid "angle"
-msgstr "ángulo"
+msgstr "angle"
 
 msgid "radius"
-msgstr "radio"
+msgstr "rayon"
 
 msgid "set heading"
-msgstr "fijar rumbo"
+msgstr "fixe le cap"
 
 msgid "set xy"
-msgstr "fijar xy"
+msgstr "fixe xy"
 
 msgid "x"
 msgstr "x"
@@ -51,37 +51,52 @@ msgid "y"
 msgstr "y"
 
 msgid "set color"
-msgstr "fijar color"
+msgstr "fixe la couleur"
 
 msgid "set hue"
-msgstr "fijar matiz"
+msgstr "fixe la teinte"
 
 msgid "set shade"
-msgstr "fijar sombra"
+msgstr "fixe l'ombre"
 
 msgid "set grey"
-msgstr "fijar gris"
+msgstr "fixe gris"
 
-msgid "set pen"
-msgstr "fijar pluma"
+msgid "set color"
+msgstr "la couleur"
+
+msgid "set hue"
+msgstr "la teinte"
+
+msgid "set shade"
+msgstr "l'ombre"
+
+msgid "set grey"
+msgstr "gris"
+
+msgid "set pen size"
+msgstr "fixe l'épaisseur"
 
 msgid "pen size"
-msgstr "tamaño de la pluma"
+msgstr "épaisseur du trait"
 
 msgid "pen up"
-msgstr "subir pluma"
+msgstr "crayon levé"
 
 msgid "pen down"
-msgstr "bajar pluma"
+msgstr  "crayon abaissé"
 
 msgid "begin fill"
-msgstr "iniciar relleno"
+msgstr "commence le remplissage"
+
+msgid "end fill"
+msgstr "arrête le remplissage"
 
 msgid "background"
-msgstr "fondo"
+msgstr "le fond"
 
 msgid "random"
-msgstr "aleatorio"
+msgstr "aléatoire"
 
 msgid "min"
 msgstr "min"
@@ -90,130 +105,130 @@ msgid "max"
 msgstr "max"
 
 msgid "sqrt"
-msgstr "raíz"
+msgstr "racine carré"
 
 msgid "mod"
-msgstr "módulo"
+msgstr "mod"
 
 msgid "and"
-msgstr "y"
+msgstr "et"
 
 msgid "or"
-msgstr "o"
+msgstr "ou"
 
 msgid "not"
-msgstr "no"
+msgstr "non"
 
 msgid "store in"
-msgstr "guardar en"
+msgstr "range dans"
 
 msgid "name"
-msgstr "nombre"
+msgstr "nom"
 
 msgid "value"
 msgstr "valor"
 
 msgid "box"
-msgstr "caja"
+msgstr "boîte"
 
 msgid "action"
-msgstr "acción"
+msgstr "action"
 
 msgid "do"
-msgstr "hacer"
+msgstr "faire"
 
 msgid "start"
-msgstr "iniciar"
+msgstr "commence"
 
 msgid "add 1 to"
-msgstr "sumar 1 a"
+msgstr "ajouter 1 à"
 
 msgid "add"
-msgstr "sumar"
+msgstr "ajouter"
 
 msgid "speak"
-msgstr "hablar"
+msgstr "parler"
 
 msgid "show"
-msgstr "mostrar"
+msgstr "montre"
 
 msgid "obj"
-msgstr "objeto"
+msgstr "objet"
 
 msgid "text"
-msgstr "texto"
+msgstr "texte"
 
 msgid "shell"
-msgstr "caparazón"
+msgstr "carapace"
 
 msgid "image"
-msgstr "imagen"
+msgstr "image"
 
 msgid "stop media"
-msgstr "detener medios"
+msgstr "arrêt média"
 
 msgid "repeat"
-msgstr "repetir"
+msgstr "répète"
 
 msgid "forever"
-msgstr "por siempre"
+msgstr "toujours"
 
 msgid "stop"
-msgstr "detener"
+msgstr "arrêt"
 
 msgid "if"
 msgstr "si"
 
 msgid "then"
-msgstr "entonces"
+msgstr "alors"
 
 msgid "until"
-msgstr "hasta"
+msgstr "jusqu'à"
 
 msgid "wait for"
-msgstr "esperar hasta"
+msgstr "attendre"
 
 msgid "while"
-msgstr "mientras"
+msgstr "tant que"
 
 msgid "else"
-msgstr "sino"
+msgstr "sinon"
 
 msgid "wait"
-msgstr "esperar"
+msgstr "attend"
 
 msgid "print"
-msgstr "imprimir"
+msgstr "montre"
 
 msgid "time"
-msgstr "tiempo"
+msgstr "temps"
 
 msgid "mouse button"
-msgstr "botón del ratón"
+msgstr "bouton de la souris"
 
 msgid "keyboard"
-msgstr "teclado"
+msgstr "clavier"
 
 msgid "unknown"
-msgstr "desconocido"
+msgstr "ignoré"
 
 msgid "turtle"
-msgstr "tortuga"
+msgstr "tortue"
 
 msgid "number"
-msgstr "número"
+msgstr "nombre"
 
 msgid "boolean"
-msgstr "booleano"
+msgstr "boolean"
 
 msgid "flow"
-msgstr "flujo"
+msgstr "flux"
 
 msgid "blocks"
-msgstr "bloques"
+msgstr "blocs"
 
 msgid "sensors"
-msgstr "sensores"
+msgstr "capteur"
 
 msgid "extras"
 msgstr "extras"
@@ -225,102 +240,101 @@ msgid "mashape"
 msgstr "mashape"
 
 msgid "GMAP"
-msgstr "Mapa de Google"
+msgstr "Carte de Google"
 
 msgid "logic"
-msgstr "lógica"
+msgstr "logique"
 
 msgid "maths"
-msgstr "matemáticas"
+msgstr "math"
 
 msgid "food"
-msgstr "alimentos"
+msgstr "nourriture"
 
 msgid "eatme"
-msgstr "cómeme"
+msgstr "manger"
 
 msgid "rodi"
 msgstr "RoDi"
 
 msgid "open file"
-msgstr "abrir archivo"
+msgstr "fichier ouvert"
 
 msgid "Welcome to Turtle Blocks"
-msgstr "Bienvenidos a TortuBloques"
+msgstr "Bienvenue Tortues Blocs"
 
 msgid "Palette buttons"
-msgstr "Botones de paleta"
+msgstr "Les boutons de la palette"
 
 msgid "Expand/collapse toolbar"
-msgstr "Expandir o colapsar barra"
+msgstr "Développer ou barre d'outils de l'effondrement"
 
 msgid "Run fast"
-msgstr "Ejecutar rápidamente"
+msgstr "Exécuter vite"
 
 msgid "Click to run the project in fast mode."
-msgstr "Haga clic para ejecutar el proyecto en modo rápido."
+msgstr "Cliquer pour exécuter vite."
 
 msgid "Run slow"
-msgstr "Ejecutar lentamente"
+msgstr "Exécuter lentement"
 
 msgid "Run step by step"
-msgstr "Ejecutar paso a paso"
+msgstr "Exécuter pas à pas"
 
 msgid "Stop"
-msgstr "Detener"
+msgstr "Arrêter"
 
 msgid "Stop the current project."
 msgstr "Detener el proyecto actual"
 
 msgid "Clean"
-msgstr "Limpiar"
+msgstr "Efface"
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr "Borrar la pantalla y volver a las tortugas a sus posiciones iniciales."
+msgstr "Effacer l'écran et retourner les tortues à leurs positions initiales."
 
 msgid "Show/hide palettes"
-msgstr "Mostrar u ocultar paletas"
+msgstr "palettes afficher ou masquer"
 
 msgid "Help"
-msgstr "Ayuda"
+msgstr "Aide"
 
 msgid "Show these messages."
-msgstr "Mostrar esos mensajes."
+msgstr "Montrer ces messages."
 
 msgid "Paste"
-msgstr "Pegar"
+msgstr "Coller"
 
 msgid "The paste button is enabled then there are blocks copied onto the clipboard."
 msgstr ""
-"El botón de pegar está activo, por lo tanto hay bloques copiados en el "
-"portapapeles."
+"Le bouton de coller est activée, il ya blocs copiés dans le presse papier."
 
 msgid "Cartesian"
-msgstr "Cartesiano"
+msgstr "Coordonnées cartésiennes"
 
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr "Mostrar u ocultar cuadrícula en coordenadas cartesianas."
+msgstr "Afficher ou masquer une grille cartésienne coordonnée."
 
 msgid "Polar"
-msgstr "Polar"
+msgstr "Coordonnées polaires"
 
 msgid "Load samples from server"
-msgstr "Cargar ejemplos desde el servidor"
+msgstr "Charger des exemples depuis un serveur"
 
 msgid "This button opens a viewer for loading example projects."
-msgstr "Este botón abre la pantalla de carga de proyectos de ejemplo."
+msgstr "Ce bouton ouvre une visionneuse pour charger des exemples de projets."
 
 msgid "You can also load projects from the file system."
-msgstr "También puede cargar proyectos desde el sistema de archivos."
+msgstr "Vous pouvez également charger des projets à partir du système de fichiers."
 
 msgid "Delete all"
-msgstr "Borrar todo"
+msgstr "Effacer tous"
 
 msgid "Undo"
-msgstr "Deshacer"
+msgstr "Annuler"
 
 msgid "Restore blocks from the trash."
-msgstr "Restaurar bloques de la papelera."
+msgstr "Restaurer blocs de la poubelle."
 
 msgid "Congratulations."
-msgstr "Felicitaciones."
+msgstr "Félicitations."

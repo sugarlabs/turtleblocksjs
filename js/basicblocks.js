@@ -194,7 +194,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var setpensizeBlock = new ProtoBlock('setpensize');
     setpensizeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setpensize'] = setpensizeBlock;
-    setpensizeBlock.staticLabels.push(_('set pen'));
+    setpensizeBlock.staticLabels.push(_('set pen size'));
     setpensizeBlock.adjustWidthToLabel();
     setpensizeBlock.oneArgBlock();
     setpensizeBlock.defaults.push(5);

@@ -559,11 +559,23 @@ function Block(protoblock, blocks) {
             var reader = new FileReader();
             reader.onloadend = (function() {
                 if (reader.result) {
+                    if (myBlock.name == 'media') {
+                        myBlock.value = reader.result;
+                        myBlock.loadThumbnail(null);
+                        return;
+                    }
                     myBlock.value = [fileChooser.files[0].name, reader.result];
                     myBlock.blocks.updateBlockText(thisBlock);
                 }
             });
-            reader.readAsText(fileChooser.files[0]);
+
+            if (myBlock.name == 'media') {
+                reader.readAsDataURL(fileChooser.files[0]);
+            }
+            else {
+                reader.readAsText(fileChooser.files[0]);
+            }
+
         }, false);
 
         fileChooser.focus();
@@ -817,7 +829,7 @@ function loadEventHandlers(myBlock) {
             } else if (myBlock.name == 'media') {
                 myBlock.doOpenMedia(myBlock);
             } else if (myBlock.name == 'loadFile') {
-                myBlock.doOpenFile(myBlock);
+                myBlock.doOpenMedia(myBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
                 var x = myBlock.container.x
                 var y = myBlock.container.y

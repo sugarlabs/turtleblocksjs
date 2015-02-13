@@ -924,7 +924,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             locked = false;
         }, 500);
 
-        var mode = MODEUNSURE;
+        var mode = window.hasMouse ? MODEDRAG : MODEUNSURE;
 
         palette.protoContainers[blkname].on('pressmove', function(event) {
             if (mode === MODEDRAG) {

@@ -538,6 +538,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var checkTwoArgBlocks = [];
         var checkArgBlocks = [];
         var myBlock = this.blockList[thisBlock];
+        if (myBlock == null) {
+            console.log('null block found in blockMoved method: ' + thisBlock);
+            return;
+        }
         var c = myBlock.connections[0];
         if (c != null) {
             var cBlock = this.blockList[c];
@@ -1503,7 +1507,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.insideExpandableBlock = function(blk) {
         // Returns a containing expandable block or null
-        if (this.blockList[blk].connections[0] == null) {
+        if (this.blockList[blk] == null) {
+            // race condition?
+            console.log('null block in blockList? ' + blk);
+            return null;
+        } else if (this.blockList[blk].connections[0] == null) {
             return null;
         } else {
             var cblk = this.blockList[blk].connections[0];

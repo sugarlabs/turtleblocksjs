@@ -392,9 +392,9 @@ function Block(protoblock, blocks) {
                     myBlock.blocks.refreshCanvas();
 
                     if (myBlock.name == 'action') {
-                        myBlock.collapseText = new createjs.Text('action', '20px Sans', '#000000');
+                        myBlock.collapseText = new createjs.Text(_('action'), '20px Sans', '#000000');
                     } else {
-                        myBlock.collapseText = new createjs.Text('start', '20px Sans', '#000000');
+                        myBlock.collapseText = new createjs.Text(_('start'), '20px Sans', '#000000');
                     }
                     myBlock.collapseText.x = COLLAPSETEXTX;
                     myBlock.collapseText.y = COLLAPSETEXTY;
@@ -439,6 +439,7 @@ function Block(protoblock, blocks) {
             }
 
             var proto = new ProtoBlock('collapse');
+            proto.extraWidth = 10;
             proto.basicBlockCollapsed();
             var obj = proto.generator();
             var artwork = obj[0];

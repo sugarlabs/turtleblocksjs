@@ -57,10 +57,10 @@ msgid "y"
 msgstr "y wakichata"
 
 msgid "set color"
-msgstr "sami"
+msgstr "sami wakichaña"
 
 msgid "color"
-msgstr "sami wakichaña"
+msgstr "sami"
 
 msgid "set hue"
 msgstr "sami wakichaña"
@@ -166,6 +166,7 @@ msgstr "uñachayaña"
 msgid "size"
 msgstr ""
 
+#. TRANS: objeto
 msgid "obj"
 msgstr ""
 
@@ -237,6 +238,7 @@ msgstr "pixel wakichata ullaña"
 msgid "unknown"
 msgstr ""
 
+#. TRANS: Bienvenidos a TortuBloques
 msgid "Welcome to Turtle Blocks"
 msgstr ""
 
@@ -249,42 +251,50 @@ msgstr ""
 msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
 
+#. TRANS: Expandir o colapsar barra
 msgid "Expand/collapse toolbar"
 msgstr ""
 
 msgid "This button opens and closes the primary toolbar."
 msgstr ""
 
+#. TRANS: Ejecutar rápidamente
 msgid "Run fast"
 msgstr ""
 
 msgid "Click to run the project in fast mode."
 msgstr ""
 
+#. TRANS: Ejecutar lentamente
 msgid "Run slow"
 msgstr ""
 
 msgid "Click to run the project in slow mode."
 msgstr ""
 
+#. TRANS: Ejecutar paso a paso
 msgid "Run step by step"
 msgstr ""
 
 msgid "Click to run the project step by step."
 msgstr ""
 
+#. TRANS: Detener
 msgid "Stop"
 msgstr ""
 
+#. TRANS: Detener el proyecto actual
 msgid "Stop the current project."
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "Mayampi qalltañataki wakichaña"
 
+#. TRANS: Borrar la pantalla y volver a las tortugas a sus posiciones iniciales.
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
 
+#. TRANS: Mostrar u ocultar paletas
 msgid "Show/hide palettes"
 msgstr ""
 
@@ -303,9 +313,11 @@ msgstr ""
 msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
 msgstr ""
 
+#. TRANS: Ayuda
 msgid "Help"
 msgstr ""
 
+#. TRANS: Mostrar esos mensajes.
 msgid "Show these messages."
 msgstr ""
 
@@ -315,9 +327,11 @@ msgstr ""
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr ""
 
+#. TRANS: Pegar
 msgid "Paste"
 msgstr ""
 
+#. TRANS: "El botón de pegar está activo, por lo tanto hay bloques copiados en el portapapeles."
 msgid "The paste button is enabled then there are blocks copied onto the clipboard."
 msgstr ""
 
@@ -333,9 +347,11 @@ msgstr ""
 msgid "Show or hide a polar-coordinate grid."
 msgstr ""
 
+#. TRANS: Cargar ejemplos desde el servidor
 msgid "Load samples from server"
 msgstr ""
 
+#. TRANS: Este botón abre la pantalla de carga de proyectos de ejemplo.
 msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
@@ -351,15 +367,18 @@ msgstr ""
 msgid "You can load new blocks from the file system."
 msgstr ""
 
+#. TRANS: Borrar todo
 msgid "Delete all"
 msgstr ""
 
 msgid "Remove all content on the canvas, including the blocks."
 msgstr ""
 
+#. TRANS: Deshacer
 msgid "Undo"
 msgstr ""
 
+#. TRANS: Restaurar bloques de la papelera
 msgid "Restore blocks from the trash."
 msgstr ""
 
@@ -369,6 +388,7 @@ msgstr ""
 msgid "Save your project to a server."
 msgstr ""
 
+#. TRANS: Felicitaciones
 msgid "Congratulations."
 msgstr ""
 
@@ -376,59 +396,60 @@ msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "siqichata wakichatanaka imantaña"
 
 msgid "publish"
 msgstr ""
 
 msgid "comment"
-msgstr ""
+msgstr "amuyt'aña"
 
 msgid "play back"
 msgstr ""
 
 msgid "save svg"
-msgstr ""
+msgstr "Sutini imaña SVG"
 
 msgid "title"
-msgstr ""
+msgstr "p'iqinchiri suti"
 
 msgid "eval"
 msgstr ""
 
 msgid "show blocks"
-msgstr ""
+msgstr "siqichata wakichatana uñachayaña"
 
 msgid "stop play"
 msgstr ""
 
 msgid "turtle"
-msgstr ""
+msgstr "tortuga wakichata"
 
 msgid "pen"
-msgstr ""
+msgstr "phuyu"
 
 msgid "number"
-msgstr ""
+msgstr "jakhunaka"
 
 msgid "boolean"
 msgstr ""
 
 msgid "flow"
-msgstr ""
+msgstr "siqi"
 
 msgid "blocks"
-msgstr ""
+msgstr "t'aqanaka"
 
 msgid "media"
-msgstr ""
+msgstr "wakisirinaka"
 
 msgid "sensors"
-msgstr ""
+msgstr "katjiri"
 
 msgid "extras"
-msgstr ""
+msgstr "yaqhanaka"
 
+#. TRANS: abrir archivo
 msgid "open file"
 msgstr ""
 
@@ -463,22 +484,22 @@ msgid "Google map"
 msgstr ""
 
 msgid "show heap"
-msgstr ""
+msgstr "siqi wakichata uñachayma"
 
 msgid "pop"
-msgstr ""
+msgstr "apsuña"
 
 msgid "empty heap"
-msgstr ""
+msgstr "ch'usa siqi?"
 
 msgid "save heap"
-msgstr ""
+msgstr "wakichata siqi imaña"
 
 msgid "load heap"
-msgstr ""
+msgstr "imata wakichata siqi apxataña"
 
 msgid "push"
-msgstr ""
+msgstr "nukht'aña"
 
 msgid "logic"
 msgstr ""
@@ -606,9 +627,11 @@ msgstr ""
 msgid "get protein"
 msgstr ""
 
+#. TRANS: alimentos
 msgid "food"
 msgstr ""
 
+#. TRANS: cómeme
 msgid "eatme"
 msgstr ""
 
@@ -621,6 +644,7 @@ msgstr ""
 msgid "sense right"
 msgstr ""
 
+#. TRANS: cantar
 msgid "sing"
 msgstr ""
 
@@ -651,6 +675,7 @@ msgstr ""
 msgid "translate"
 msgstr ""
 
+#. TRANS: hola
 msgid "hello"
 msgstr ""
 

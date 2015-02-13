@@ -90,10 +90,10 @@ msgid "begin fill"
 msgstr "iniciar relleno"
 
 msgid "end fill"
-msgstr ""
+msgstr "finalizar relleno"
 
 msgid "background"
-msgstr "fondo"
+msgstr "rellenar pantalla"
 
 msgid "random"
 msgstr "aleatorio"
@@ -365,19 +365,19 @@ msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "ocultar bloques"
 
 msgid "publish"
 msgstr ""
 
 msgid "comment"
-msgstr ""
+msgstr "comentar"
 
 msgid "play back"
 msgstr ""
 
 msgid "save svg"
-msgstr ""
+msgstr "guardar como SVG"
 
 msgid "title"
 msgstr "título"
@@ -386,7 +386,7 @@ msgid "eval"
 msgstr ""
 
 msgid "show blocks"
-msgstr ""
+msgstr "mostrar bloques"
 
 msgid "stop play"
 msgstr ""
@@ -395,7 +395,7 @@ msgid "turtle"
 msgstr "tortuga"
 
 msgid "pen"
-msgstr ""
+msgstr "pluma"
 
 msgid "number"
 msgstr "número"

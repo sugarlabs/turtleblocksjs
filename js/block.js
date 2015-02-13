@@ -789,10 +789,10 @@ function collapseOut(blocks, myBlock, thisBlock, moved, event) {
 }
 
 
-var hasMouse = false;
+window.hasMouse = false;
 // Mousemove is not emulated for touch
 document.addEventListener('mousemove', function (e) {
-    hasMouse = true;
+    window.hasMouse = true;
 });
 
 // These are the event handlers for block containers.
@@ -818,7 +818,7 @@ function loadEventHandlers(myBlock) {
 
     var moved = false;
     var locked = false;
-    var getInput = hasMouse;
+    var getInput = window.hasMouse;
     myBlock.container.on('click', function(event) {
         if (locked) {
             return;
@@ -828,7 +828,7 @@ function loadEventHandlers(myBlock) {
             locked = false;
         }, 500);
         hideDOMLabel();
-        if ((!hasMouse && getInput) || (hasMouse && !moved)) {
+        if ((!window.hasMouse && getInput) || (window.hasMouse && !moved)) {
             if (blocks.selectingStack) {
                 var topBlock = blocks.findTopBlock(thisBlock);
                 blocks.selectedStack = topBlock;
@@ -844,7 +844,7 @@ function loadEventHandlers(myBlock) {
                 var canvasTop = blocks.canvas.offsetTop + 6;
 
                 var movedStage = false;
-                if (!hasMouse && blocks.stage.y + y > 75) {
+                if (!window.hasMouse && blocks.stage.y + y > 75) {
                     movedStage = true;
                     var fromY = blocks.stage.y;
                     blocks.stage.y = -y + 75;
@@ -981,12 +981,12 @@ function loadEventHandlers(myBlock) {
                 myBlock.label.style.display = 'none';
             }
 
-            if (hasMouse) {
+            if (window.hasMouse) {
                 moved = true;
             } else {
                 // Make it eaiser to select text on mobile
                 setTimeout(function () {
-                    moved = Math.abs(event.stageX - original.x) + Math.abs(event.stageY - original.y) > 20 && !hasMouse;
+                    moved = Math.abs(event.stageX - original.x) + Math.abs(event.stageY - original.y) > 20 && !window.hasMouse;
                     getInput = !moved;
                 }, 200);
             }

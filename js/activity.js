@@ -262,10 +262,6 @@ define(function(require) {
             stage = new createjs.Stage(canvas);
             createjs.Touch.enable(stage);
 
-            blocksContainer = new createjs.Container();
-            stage.addChild(blocksContainer);
-            setupBlocksContainerEvents();
-
             createjs.Ticker.addEventListener('tick', tick);
 
             createMsgContainer('#ffffff', '#7a7a7a', function(text) {
@@ -276,10 +272,26 @@ define(function(require) {
                 errorMsgText = text;
             });
 
-            trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
-            turtles = new Turtles(canvas, stage, refreshCanvas);
+            /* Z-Order (top to bottom):
+             *   menus
+             *   palettes
+             *   blocks
+             *   trash
+             *   turtles
+             *   logo (drawing)
+             */
+            palettesContainer = new createjs.Container();
+            blocksContainer = new createjs.Container();
+            trashContainer = new createjs.Container();
+            turtleContainer = new createjs.Container();
+            stage.addChild(turtleContainer, trashContainer, blocksContainer,
+                           palettesContainer);
+            setupBlocksContainerEvents();
+
+            trashcan = new Trashcan(canvas, trashContainer, cellSize, refreshCanvas);
+            turtles = new Turtles(canvas, turtleContainer, refreshCanvas);
             blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan, stage.update);
-            palettes = initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, blocks);
+            palettes = initPalettes(canvas, refreshCanvas, palettesContainer, cellSize, refreshCanvas, trashcan, blocks);
 
             palettes.setBlocks(blocks);
             turtles.setBlocks(blocks);
@@ -288,9 +300,9 @@ define(function(require) {
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             // TODO: clean up this mess.
-            logo = new Logo(blocks, turtles, stage, refreshCanvas, textMsg,
-                            errorMsg, hideMsgs, onStopTurtle, onRunTurtle,
-                            prepareExport, getStageX, getStageY,
+            logo = new Logo(blocks, turtles, turtleContainer, refreshCanvas,
+                            textMsg, errorMsg, hideMsgs, onStopTurtle,
+                            onRunTurtle, prepareExport, getStageX, getStageY,
                             getStageMouseDown, getCurrentKeyCode,
                             clearCurrentKeyCode, meSpeak);
             blocks.setLogo(logo);
@@ -481,7 +493,7 @@ define(function(require) {
                     blocksContainer.x += event.stageX - lastCords.x;
                     blocksContainer.y += event.stageY - lastCords.y;
                     lastCords = {x: event.stageX, y: event.stageY};
-                    stage.update();
+                    refreshCanvas();
                 });
 
                 stage.on('stagemouseup', function (event) {

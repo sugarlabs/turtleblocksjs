@@ -351,7 +351,7 @@ function Block(protoblock, blocks) {
             var bounds = this.container.getBounds();
             if (this.protoblock.args == 0) {
                 this.text.textAlign = 'right';
-                this.text.x = bounds.width - 10;
+                this.text.x = bounds.width - 25;
                 this.text.y = VALUETEXTY;
             } else if (this.isArgBlock()) {
                 this.text.textAlign = 'left';

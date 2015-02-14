@@ -229,6 +229,7 @@
   * use ellipsis on action and do labels (including do blocks in palette)
   * fixed layout problem in boxes palette
   * fixed regression in loading macros (NaN)
+  * set proper z-order for palettes, blocks, turtles, and canvas (Sam Parkinson)
 
 TODO:
   * music blocks plugin

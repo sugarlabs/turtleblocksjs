@@ -775,6 +775,7 @@ function collapseOut(blocks, myBlock, thisBlock, moved, event) {
             sendStackToTrash(blocks, myBlock);
         } else {
             // Otherwise, process move.
+            console.log('collapsed out block moved ' + thisBlock);
             blocks.blockMoved(thisBlock);
         }
     }
@@ -1054,6 +1055,7 @@ function mouseoutCallback(myBlock, event, moved) {
             sendStackToTrash(blocks, myBlock);
         } else {
             // Otherwise, process move.
+            console.log('mouseout block moved ' + thisBlock);
             myBlock.blocks.blockMoved(thisBlock);
         }
     }

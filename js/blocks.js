@@ -523,6 +523,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // Find any containing expandable blocks.
         var checkExpandableBlocks = [];
+	if (thisBlock == null) {
+            console.log('block moved called with null block.');
+            return;
+	}
         var blk = this.insideExpandableBlock(thisBlock);
         var expandableLoopCounter = 0;
         while (blk != null) {
@@ -2029,18 +2033,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         for (var blk = 0; blk < this.adjustTheseDocks.length; blk++) {
             this.loopCounter = 0;
             this.adjustDocks(this.adjustTheseDocks[blk]);
+            blockBlocks.expandTwoArgs();
+            blockBlocks.expandClamps();
         }
 
         this.refreshCanvas();
-
-        // FIXME: Make these callbacks so there is no race condition.
-        // We need to wait for the blocks to load before expanding them.
-        setTimeout(function() {
-            blockBlocks.expandTwoArgs();
-        }, 1000);
-        setTimeout(function() {
-            blockBlocks.expandClamps();
-        }, 2000);
     }
 
     this.raiseStackToTop = function (blk) {

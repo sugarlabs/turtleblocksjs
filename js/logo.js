@@ -135,6 +135,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         value = _('false');
                     }
                     break;
+                case 'random':
                 case 'sqrt':
                 case 'plus':
                 case 'minus':

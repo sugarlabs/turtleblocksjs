@@ -53,8 +53,9 @@ function paletteBlockButtonPush(name, arg) {
 // loadPaletteMenuItemHandler
 
 
-function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
+function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan) {
     this.canvas = canvas;
+    this.refreshCanvas = refreshCanvas;
     this.stage = stage;
     this.cellSize = cellSize;
     this.halfCellSize = Math.floor(cellSize / 2);
@@ -111,7 +112,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
             this.buttons[name].visible = true;
         }
         this.updateButtonMasks();
-        this.stage.update();
+        this.refreshCanvas();
     }
 
     this.updateButtonMasks = function() {
@@ -787,7 +788,7 @@ function Palette(palettes, name, color, bgcolor) {
 
         var stage = this.palettes.stage;
         stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
-        this.palettes.stage.update();
+        this.palettes.refreshCanvas();
     }
 
     this.getInfo = function() {
@@ -811,9 +812,9 @@ function Palette(palettes, name, color, bgcolor) {
 
 var blocks = undefined;
 
-function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, b) {
+function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan, b) {
     // Instantiate the palettes object on first load.
-    var palettes = new Palettes(canvas, stage, cellSize, refreshCanvas, trashcan).
+    var palettes = new Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan).
     add('turtle', 'black', '#00b700').
     add('pen', 'black', '#00c0e7').
     add('number', 'black', '#ff00ff').

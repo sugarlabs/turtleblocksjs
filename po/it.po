@@ -25,7 +25,7 @@ msgid = "Delete all"
 msgstr = ""
 
 msgid = "show"
-msgstr = "mostra"
+msgstr = "mostrare"
 
 msgid = "text"
 msgstr = "testo"
@@ -34,52 +34,52 @@ msgid = "random"
 msgstr = "casuale"
 
 msgid = "Expand or collapse stacks of blocks, e.g, start and action stacks."
-msgstr = ""
+msgstr = "Espandere o collassare un cumulo di blocchi, per esempio, i cumuli d'inizio e di azione"
 
 msgid = "rice and beans"
-msgstr = ""
+msgstr = "riso e fagioli"
 
 msgid = "mashape"
-msgstr = ""
+msgstr = "mashape"
 
 msgid = "target"
-msgstr = ""
+msgstr = "obiettivo"
 
 msgid = "keyboard"
 msgstr = "tastiera"
 
 msgid = "You can also load projects from the file system."
-msgstr = ""
+msgstr = "Anche tu puoi aprire progetti dal filesystem."
 
 msgid = "chicken"
-msgstr = ""
+msgstr = "pollo"
 
 msgid = "apple"
-msgstr = ""
+msgstr = "mela"
 
 msgid = "title"
-msgstr = ""
+msgstr = "titolo"
 
 msgid = "radians"
-msgstr = ""
+msgstr = "radianti"
 
 msgid = "Undo"
-msgstr = ""
+msgstr = "disfare"
 
 msgid = "to"
 msgstr = ""
 
 msgid = "add"
-msgstr = ""
+msgstr = "aggiungere"
 
 msgid = "set pen size"
-msgstr = "seleziona dimensione penna"
+msgstr = "selezionare dimensione della penna"
 
 msgid = "start turtle"
-msgstr = ""
+msgstr = "iniziare tartaruga"
 
 msgid = "latitude"
-msgstr = ""
+msgstr = "latitudine"
 
 msgid = "mouse x"
 msgstr = "mouse x"
@@ -88,88 +88,88 @@ msgid = "mouse y"
 msgstr = "mouse y"
 
 msgid = "Show/hide blocks"
-msgstr = "Mostra/Nascondi blocchi"
+msgstr = "Mostrare/Nascondire blocchi"
 
 msgid = "then"
 msgstr = "allora"
 
 msgid = "move"
-msgstr = ""
+msgstr = "muovere"
 
 msgid = "Stop the current project."
-msgstr = ""
+msgstr = "Fermare il progetto attuale."
 
 msgid = "stop turtle"
-msgstr = ""
+msgstr = "fermare tartaruga"
 
 msgid = "food"
-msgstr = ""
+msgstr = "cibo"
 
 msgid = "Click to run the project in slow mode."
-msgstr = ""
+msgstr = "Click per correre il progetto in modalità lenta"
 
 msgid = "stop"
-msgstr = "arresta"
+msgstr = "fermare"
 
 msgid = "fat"
-msgstr = ""
+msgstr = "grassi"
 
 msgid = "background"
 msgstr = ""
 
 msgid = "not"
-msgstr = "not"
+msgstr = "non"
 
 msgid = "Google map"
-msgstr = "Mapa de Google"
+msgstr = "Carte geografiche di Google"
 
 msgid = "day"
-msgstr = ""
+msgstr = "giorno"
 
 msgid = "mod"
-msgstr = "mod"
+msgstr = "modulo"
 
 msgid = "Save project"
-msgstr = ""
+msgstr = "Salvare il progetto"
 
 msgid = "get fiber"
-msgstr = ""
+msgstr = "ottenere fibre"
 
 msgid = "name"
-msgstr = ""
+msgstr = "nome"
 
-msgid = "turtle x"
-msgstr = "turtle x"
+msgid = "tartaruga x"
+msgstr = "tartaruga x"
 
-msgid = "turtle y"
-msgstr = "turtle y"
+msgid = "tartaruga y"
+msgstr = "tartarugfa y"
 
 msgid = "Expand/collapse toolbar"
-msgstr = ""
+msgstr = "Espandere/collassare la barra degli strumenti"
 
 msgid = "zoom"
-msgstr = ""
+msgstr = "zoom"
 
 msgid = "Hide or show the blocks and the palettes."
-msgstr = ""
+msgstr = "Nascondere o mostrare i blocchi e le tavolozze"
 
 msgid = "to degrees"
-msgstr = ""
+msgstr = "a gradi"
 
 msgid = "Restore blocks from the trash."
-msgstr = ""
+msgstr = "Restaurare blocchi dalla spazzatura."
 
 msgid = "get calories"
-msgstr = ""
+msgstr = "ottenere calorie"
 
 msgid = "Load plugin from file"
-msgstr = ""
+msgstr = "Aprire plugin da un file"
 
 msgid = "x"
 msgstr = "x"
 
 msgid = "show blocks"
-msgstr = "mostra blocchi"
+msgstr = "mostrare blocchi"
 
 msgid = "heading"
 msgstr = "direzione"
@@ -184,22 +184,22 @@ msgid = "right"
 msgstr = "destra"
 
 msgid = "Load samples from server"
-msgstr = ""
+msgstr = "Aprire esempi dal server"
 
 msgid = "hide blocks"
-msgstr = "nascondi blocchi"
+msgstr = "nascondire blocchi"
 
 msgid = "Hide or show the block palettes."
-msgstr = ""
+msgstr = "Nascondire o mostrare i tavolozzi di blocchi."
 
 msgid = "This button opens a viewer for loading example projects."
-msgstr = ""
+msgstr = "Questo pulsante apre uno spettatore per aprire progetti di esempi."
 
 msgid = "back"
 msgstr = "indietro"
 
 msgid = "grey"
-msgstr = ""
+msgstr = "grigio"
 
 msgid = "arc"
 msgstr = "arco"
@@ -208,151 +208,151 @@ msgid = "radius"
 msgstr = "raggio"
 
 msgid = "longitude"
-msgstr = ""
+msgstr = "longitudine"
 
 msgid = "duration"
 msgstr = "durata"
 
 msgid = "set shade"
-msgstr = "seleziona ombreggiatura"
+msgstr = "selezionare ombreggiatura"
 
 msgid = "pixel color"
-msgstr = ""
+msgstr = "colore dal pixel"
 
 msgid = "eatme"
-msgstr = ""
+msgstr = "mangiame"
 
 msgid = "This button opens and closes the primary toolbar."
-msgstr = ""
+msgstr = "Questo pulsante apre e chiude la barra di strumenti principali."
 
 msgid = "Show these messages."
-msgstr = ""
+msgstr = "Mostrare questi messagi."
 
 msgid = "show heap"
-msgstr = "mostra pila"
+msgstr = "mostrare pila"
 
 msgid = "Show or hide a Cartesian-coordinate grid."
-msgstr = ""
+msgstr = "Mostrare o nascondire una griglia di coordinate Cartesiane."
 
 msgid = "publish"
-msgstr = ""
+msgstr = "pubblicare"
 
 msgid = "forecast"
-msgstr = ""
+msgstr = "tempo"
 
 msgid = "pen"
 msgstr = "penna"
 
 msgid = "fish"
-msgstr = ""
+msgstr = "pesce"
 
 msgid = "The paste button is enabled then there are blocks copied onto the clipboard."
-msgstr = ""
+msgstr = "Il pulsante d'incollare è abilitato e poi sono blocchi copiati negli appunti."
 
 msgid = "print"
-msgstr = "stampa"
+msgstr = "stampare"
 
 msgid = "size"
-msgstr = ""
+msgstr = "dimensione"
 
 msgid = "Expand/collapse option toolbar"
-msgstr = ""
+msgstr = "Espandire/collassare barra degli strumenti di opzioni"
 
 msgid = "save heap"
-msgstr = ""
+msgstr = "Salvare pila"
 
 msgid = "fiber"
-msgstr = ""
+msgstr = "fibra"
 
 msgid = "You can load new blocks from the file system."
-msgstr = ""
+msgstr = "Tu puoi aprire nuovi blocchi dal filesystem."
 
 msgid = "power"
-msgstr = ""
+msgstr = "energia"
 
 msgid = "corn"
-msgstr = ""
+msgstr = "granturco"
 
 msgid = "Remove all content on the canvas, including the blocks."
-msgstr = ""
+msgstr = "Rimuovere tutti il contenuto del canovaccio, compreso i blocchi."
 
 msgid = "to radians"
-msgstr = ""
+msgstr = "a radianti"
 
 msgid = "water"
-msgstr = ""
+msgstr = "acqua"
 
 msgid = "base"
-msgstr = ""
+msgstr = "base"
 
 msgid = "cookie"
-msgstr = ""
+msgstr = "biscotti"
 
 msgid = "Show or hide a polar-coordinate grid."
-msgstr = ""
+msgstr = "Mostrare o nascondire una grigia di coordinate polari."
 
 msgid = "sweet potato"
-msgstr = ""
+msgstr = "patata dolce"
 
 msgid = "maths"
-msgstr = ""
+msgstr = "matematica"
 
 msgid = "from"
-msgstr = ""
+msgstr = "da"
 
 msgid = "sensors"
-msgstr = ""
+msgstr = "sensori"
 
 msgid = "pen down"
-msgstr = "penna giù"
+msgstr = "scendere penna"
 
 msgid = "get name"
-msgstr = ""
+msgstr = "ottenere nome"
 
 msgid = "wait"
-msgstr = "aspetta"
+msgstr = "aspettare"
 
 msgid = "box"
 msgstr = "scatola"
 
 msgid = "obj"
-msgstr = ""
+msgstr = "obj"
 
 msgid = "store in"
-msgstr = "memorizza in"
+msgstr = "memorizzare in"
 
 msgid = "digest meal"
-msgstr = ""
+msgstr = "digerire cibo"
 
 msgid = "calories"
-msgstr = ""
+msgstr = "calorie"
 
 msgid = "zoom factor"
-msgstr = ""
+msgstr = "fattore di zoom"
 
 msgid = "action"
 msgstr = "azione"
 
 msgid = "get protein"
-msgstr = ""
+msgstr = "ottenere proteina"
 
 msgid = "or"
-msgstr = "or"
+msgstr = "o"
 
 msgid = "sense left"
-msgstr = ""
+msgstr = "sensare siniestra"
 
 msgid = "comment"
-msgstr = "commento"
+msgstr = "comentare"
 
 msgid = "cheese"
-msgstr = ""
+msgstr = "formaggio"
 
 msgid = "Cartesian"
 msgstr = "Cartesiano"
 
 msgid = "eval"
-msgstr = ""
+msgstr = "valutare"
 
 msgid = "color"
 msgstr = "colore"
@@ -361,7 +361,7 @@ msgid = "image"
 msgstr = "immagine"
 
 msgid = "Welcome to Turtle Blocks"
-msgstr = ""
+msgstr = "Benvenuto a Turtle Blocks"
 
 msgid = "number"
 msgstr = "numero"
@@ -370,202 +370,202 @@ msgid = "pop"
 msgstr = "pop"
 
 msgid = "bitcoin"
-msgstr = ""
+msgstr = "bitcoin"
 
 msgid = "pen size"
-msgstr = "dimensione penna"
+msgstr = "dimensione della penna"
 
 msgid = "Clear the screen and return the turtles to their initial positions."
-msgstr = ""
+msgstr = "Pulire lo schermo e retornare le tartaruge per i suoi posizioni iniziali."
 
 msgid = "boolean"
-msgstr = ""
+msgstr = "booleano"
 
 msgid = "coordinates"
-msgstr = ""
+msgstr = "coordinati"
 
 msgid = "sing"
-msgstr = ""
+msgstr = "cantare"
 
 msgid = "Congratulations."
-msgstr = ""
+msgstr = "Felicitazioni."
 
 msgid = "Run slow"
-msgstr = ""
+msgstr = "Correre lento"
 
 msgid = "mouse button"
-msgstr = ""
+msgstr = "pulsante del mouse"
 
 msgid = "speak"
-msgstr = "parla"
+msgstr = "parlare"
 
 msgid = "city"
-msgstr = ""
+msgstr = "città"
 
 msgid = "get carbs"
-msgstr = ""
+msgstr = "ottenere carboidrati"
 
 msgid = "Click to run the project in fast mode."
-msgstr = ""
+msgstr = "Click per correre il progetto in modalità veloce."
 
 msgid = "beef"
-msgstr = ""
+msgstr = "manzo"
 
 msgid = "source"
-msgstr = ""
+msgstr = "source"
 
 msgid = "unknown"
-msgstr = ""
+msgstr = "sconosciuto"
 
 msgid = "wait for"
-msgstr = ""
+msgstr = "aspettare per"
 
 msgid = "pen up"
-msgstr = "penna su"
+msgstr = "caricare penna"
 
 msgid = "start"
-msgstr = "avvia"
+msgstr = "inizio"
 
 msgid = "stock price"
-msgstr = ""
+msgstr = "prezzo di stock"
 
 msgid = "motion z"
-msgstr = ""
+msgstr = "movimento in z"
 
 msgid = "low"
-msgstr = ""
+msgstr = "basso"
 
 msgid = "motion x"
-msgstr = ""
+msgstr = "movimento in x"
 
 msgid = "motion y"
-msgstr = ""
+msgstr = "movimento in y"
 
 msgid = "forward"
 msgstr = "avanti"
 
 msgid = "degrees"
-msgstr = ""
+msgstr = "gradi"
 
 msgid = "translate"
-msgstr = ""
+msgstr = "tradurre"
 
 msgid = "until"
-msgstr = "finoa"
+msgstr = "fino a"
 
 msgid = "define"
-msgstr = ""
+msgstr = "definere"
 
 msgid = "ceiling"
-msgstr = ""
+msgstr = "soffitto"
 
 msgid = "shell"
-msgstr = ""
+msgstr = "console"
 
 msgid = "blink (ms)"
-msgstr = ""
+msgstr = "lampeggiare (ms)"
 
 msgid = "set lang"
-msgstr = ""
+msgstr = "selezionare lingua"
 
 msgid = "turtle name"
-msgstr = ""
+msgstr = "nome della tartaruga"
 
 msgid = "carbs"
-msgstr = ""
+msgstr = "carboidrati"
 
 msgid = "else"
-msgstr = "altrimenti"
+msgstr = "oppure"
 
 msgid = "orange"
 msgstr = "arancio"
 
 msgid = "begin fill"
-msgstr = ""
+msgstr = "iniziare riempire"
 
 msgid = "sense right"
-msgstr = ""
+msgstr = "sensare destra"
 
 msgid = "eat"
-msgstr = ""
+msgstr = "mangiare"
 
 msgid = "Expand/collapse collapsable blocks"
-msgstr = ""
+msgstr = "Espandire/collassare blocchi collassabili"
 
 msgid = "high"
-msgstr = ""
+msgstr = "alto"
 
 msgid = "set hue"
-msgstr = ""
+msgstr = "selezionare tonalità"
 
 msgid = "currency"
-msgstr = ""
+msgstr = "moneta"
 
 msgid = "potato"
-msgstr = ""
+msgstr = "patata"
 
 msgid = "Click to run the project step by step."
-msgstr = ""
+msgstr = "Click per correre il progetto passo per passi"
 
 msgid = "value"
 msgstr = "valore"
 
 msgid = "banana"
-msgstr = ""
+msgstr = "banana"
 
 msgid = "wheat bread"
-msgstr = ""
+msgstr = "pane di grano"
 
 msgid = "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr = ""
+msgstr = "Turtle Blocks e una tartaruga ispirata da Logo che disegna immagine coloriti con blocchi collegabile che permette programmare di una forma visuale."
 
 msgid = "while"
-msgstr = "while"
+msgstr = "mentre"
 
 msgid = "open file"
-msgstr = ""
+msgstr = "aprire file"
 
 msgid = "detect lang"
-msgstr = ""
+msgstr = "riconoscere lingua"
 
 msgid = "cake"
-msgstr = ""
+msgstr = "torta"
 
 msgid = "exp"
-msgstr = ""
+msgstr = "exp"
 
 msgid = "load heap"
-msgstr = ""
+msgstr = "aprire pila"
 
 msgid = "see distance"
-msgstr = ""
+msgstr = "guardare distancia"
 
 msgid = "and"
-msgstr = "and"
+msgstr = "e"
 
 msgid = "set grey"
-msgstr = ""
+msgstr = "selezionare grigio"
 
 msgid = "do"
-msgstr = ""
+msgstr = "fare"
 
 msgid = "Run step by step"
-msgstr = ""
+msgstr = "Correre paso per paso"
 
 msgid = "Show/hide palettes"
-msgstr = ""
+msgstr = "Mostrare/nascondire tavolozze"
 
 msgid = "set heading"
-msgstr = "seleziona direzione"
+msgstr = "selezionare direzione"
 
 msgid = "add 1 to"
-msgstr = ""
+msgstr = "agiungere 1 a"
 
 msgid = "stop play"
-msgstr = ""
+msgstr = "interrompere riproduzione"
 
 msgid = "protein"
-msgstr = ""
+msgstr = "proteine"
 
 msgid = "play back"
 msgstr = ""
@@ -574,115 +574,115 @@ msgid = "if"
 msgstr = "se"
 
 msgid = "Save your project to a server."
-msgstr = ""
+msgstr = "Salvare tuo progetto nel server."
 
 msgid = "Polar"
-msgstr = ""
+msgstr = "Polare"
 
 msgid = "angle"
 msgstr = "angolo"
 
 msgid = "get fat"
-msgstr = ""
+msgstr = "ottenere grassi"
 
 msgid = "min"
 msgstr = "min"
 
 msgid = "media"
-msgstr = "supporto"
+msgstr = "mezzi"
 
 msgid = "Stop"
-msgstr = "Stop"
+msgstr = "Interrompere"
 
 msgid = "sqrt"
-msgstr = ""
+msgstr = "sqrt"
 
 msgid = "note"
-msgstr = ""
+msgstr = "nota"
 
 msgid = "Palette buttons"
-msgstr = ""
+msgstr = "Pulsanti della tavolozza"
 
 msgid = "set xy"
-msgstr = "seleziona xy"
+msgstr = "selezionare xy"
 
 msgid = "end fill"
-msgstr = "termina riempimento"
+msgstr = "terminare riempimento"
 
 msgid = "Paste"
-msgstr = "Incolla"
+msgstr = "Incollare"
 
 msgid = "tamale"
-msgstr = ""
+msgstr = "tamale"
 
 msgid = "repeat"
-msgstr = "ripeti"
+msgstr = "ripetere"
 
 msgid = "blocks"
 msgstr = "blocchi"
 
 msgid = "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
-msgstr = ""
+msgstr = "Questa barra degli strumenti contiene i pulsanti della tavolozza: click per mostrare o nascondire la tavollazza di blocchi (Tartatuga, Penna, Numeri, Booleani, Flusso, Blocchi, Mezzi, Sensori ed Extras). Una volta aperto puoi tirare blocchi dalla tavollozza sul canvas per usargli."
 
 msgid = "save svg"
-msgstr = ""
+msgstr = "salvare svg"
 
 msgid = "max"
 msgstr = "max"
 
 msgid = "logic"
-msgstr = ""
+msgstr = "logica"
 
 msgid = "empty heap"
-msgstr = "vuota pila"
+msgstr = "vuotare pila"
 
 msgid = "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr = ""
+msgstr = "Tu hai finito il tour. Per favore godi Turtle Blocks!"
 
 msgid = "push"
-msgstr = "spingi"
+msgstr = "spingire"
 
 msgid = "rodi"
-msgstr = ""
+msgstr = "rodi"
 
 msgid = "Clean"
-msgstr = "Pulisci"
+msgstr = "Pulire"
 
 msgid = "set color"
-msgstr = "seleziona colore"
+msgstr = "selezionare colore"
 
 msgid = "Run fast"
-msgstr = ""
+msgstr = "Correre veloce"
 
 msgid = "broccoli"
-msgstr = ""
+msgstr = "broccoli"
 
 msgid = "stop media"
-msgstr = ""
+msgstr = "interrompere mezzi"
 
 msgid = "tomato"
-msgstr = ""
+msgstr = "pomodoro"
 
 msgid = "forever"
-msgstr = "persempre"
+msgstr = "per sempre"
 
 msgid = "Load project from file"
-msgstr = ""
+msgstr = "Aprire progetto da file"
 
 msgid = "clear"
-msgstr = ""
+msgstr = "pulire"
 
 msgid = "floor"
-msgstr = ""
+msgstr = "piano"
 
 msgid = "flow"
 msgstr = "flusso"
 
 msgid = "Click this button to expand or collapse the auxillary toolbar."
-msgstr = ""
+msgstr = "Click questo pulsante per espandire o collassare la barra degli strumenti assistente,"
 
 msgid = "extras"
-msgstr = "extra"
+msgstr = "extras"
 
 msgid = "shade"
 msgstr = "ombreggiatura"

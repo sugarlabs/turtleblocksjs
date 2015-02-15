@@ -228,13 +228,13 @@ msgid "Welcome to Turtle Blocks"
 msgstr "Bienvenidos a TortuBloques"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr ""
+msgstr "Turtle Blocks es una tortuga basada en Logo que dibuja imágenes coloridas con que permiten programar de una forma visual encastrándolos."
 
 msgid "Palette buttons"
 msgstr "Botones de paleta"
 
 msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
-msgstr ""
+msgstr "Esta barra de herramientas contiene los botones de la paleta: haz click para mostrar u ocultar la paleta de bloques (Tortuga, Lapicera, Números, Booleanos, Medios, Sensores y Extrasa). Una vez abierto, puedes arrastrar bloques de la paleta al lienzo para usarlos."
 
 msgid "Expand/collapse toolbar"
 msgstr "Expandir o colapsar barra"
@@ -381,7 +381,7 @@ msgid "title"
 msgstr "título"
 
 msgid "eval"
-msgstr ""
+msgstr "evaluar"
 
 msgid "show blocks"
 msgstr "mostrar bloques"
@@ -486,25 +486,25 @@ msgid "logic"
 msgstr "lógica"
 
 msgid "power"
-msgstr ""
+msgstr "poder"
 
 msgid "base"
-msgstr ""
+msgstr "base"
 
 msgid "exp"
-msgstr ""
+msgstr "exp"
 
 msgid "floor"
-msgstr ""
+msgstr "piso"
 
 msgid "ceiling"
-msgstr ""
+msgstr "techo"
 
 msgid "degrees"
-msgstr ""
+msgstr "grados"
 
 msgid "to degrees"
-msgstr ""
+msgstr "a grados"
 
 msgid "radians"
 msgstr "radianes"
@@ -522,7 +522,7 @@ msgid "apple"
 msgstr "manzana"
 
 msgid "get fat"
-msgstr "obtener grasa"
+msgstr "obtener grasas"
 
 msgid "fish"
 msgstr "pescado"
@@ -558,7 +558,7 @@ msgid "banana"
 msgstr "banana"
 
 msgid "tamale"
-msgstr ""
+msgstr "tamal"
 
 msgid "fiber"
 msgstr "fibra"
@@ -579,7 +579,7 @@ msgid "cookie"
 msgstr "galleta"
 
 msgid "sweet potato"
-msgstr ""
+msgstr "boñato"
 
 msgid "broccoli"
 msgstr "brócoli"

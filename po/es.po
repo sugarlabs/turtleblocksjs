@@ -522,13 +522,13 @@ msgid "apple"
 msgstr "manzana"
 
 msgid "get fat"
-msgstr ""
+msgstr "obtener grasa"
 
 msgid "fish"
-msgstr ""
+msgstr "pescado"
 
 msgid "get calories"
-msgstr ""
+msgstr "obtener calorías"
 
 msgid "protein"
 msgstr "proteína"
@@ -540,7 +540,7 @@ msgid "digest meal"
 msgstr "digerir"
 
 msgid "get fiber"
-msgstr ""
+msgstr "obtener fibra"
 
 msgid "carbs"
 msgstr "carbohidratos"
@@ -549,7 +549,7 @@ msgid "eat"
 msgstr "comer"
 
 msgid "rice and beans"
-msgstr ""
+msgstr "arroz y frijoles"
 
 msgid "orange"
 msgstr "naranja"
@@ -561,13 +561,13 @@ msgid "tamale"
 msgstr ""
 
 msgid "fiber"
-msgstr ""
+msgstr "fibra"
 
 msgid "corn"
 msgstr "maíz"
 
 msgid "fat"
-msgstr ""
+msgstr "grasa"
 
 msgid "get carbs"
 msgstr "obtener carbohidratos"
@@ -582,16 +582,16 @@ msgid "sweet potato"
 msgstr ""
 
 msgid "broccoli"
-msgstr ""
+msgstr "brócoli"
 
 msgid "wheat bread"
-msgstr ""
+msgstr "pan"
 
 msgid "tomato"
 msgstr "tomate"
 
 msgid "beef"
-msgstr ""
+msgstr "carne de res"
 
 msgid "potato"
 msgstr "papa"
@@ -615,13 +615,13 @@ msgid "eatme"
 msgstr "cómeme"
 
 msgid "sense left"
-msgstr ""
+msgstr "sentido izquierda"
 
 msgid "see distance"
-msgstr ""
+msgstr "sentido distancia"
 
 msgid "sense right"
-msgstr ""
+msgstr "sentido derecha"
 
 msgid "sing"
 msgstr "cantar"
@@ -636,7 +636,7 @@ msgid "move"
 msgstr "mover"
 
 msgid "blink (ms)"
-msgstr ""
+msgstr "destellar (ms)"
 
 msgid "rodi"
 msgstr "RoDi"
@@ -684,7 +684,7 @@ msgid "day"
 msgstr "día"
 
 msgid "low"
-msgstr ""
+msgstr "baja"
 
 msgid "high"
-msgstr ""
+msgstr "alta"

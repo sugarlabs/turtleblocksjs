@@ -53,7 +53,7 @@ logo.setTurtleDelay(0);
 var loudnessBlock = new ProtoBlock('loudness');
 loudnessBlock.palette = palettes.dict['sensors'];
 blocks.protoBlockDict['loudness'] = loudnessBlock;
-loudnessBlock.staticLabels.push('loudness');
+loudnessBlock.staticLabels.push(_('loudness'));
 loudnessBlock.adjustWidthToLabel();
 loudnessBlock.parameterBlock();
 

@@ -228,7 +228,7 @@ msgid "Welcome to Turtle Blocks"
 msgstr "Bienvenidos a TortuBloques"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr "Turtle Blocks es una tortuga basada en Logo que dibuja imágenes coloridas con que permiten programar de una forma visual encastrándolos."
+msgstr "Turtle Blocks es una tortuga basada en Logo que dibuja imágenes coloridas programable de una forma visual con bloques encastrables."
 
 msgid "Palette buttons"
 msgstr "Botones de paleta"
@@ -273,13 +273,13 @@ msgid "Clear the screen and return the turtles to their initial positions."
 msgstr "Borrar la pantalla y volver a las tortugas a sus posiciones iniciales."
 
 msgid "Show/hide palettes"
-msgstr "Mostrar o ocultar las paletas"
+msgstr "Mostrar u ocultar las paletas"
 
 msgid "Hide or show the block palettes."
 msgstr "Ocultar o mostrar las paletas de bloques."
 
 msgid "Show/hide blocks"
-msgstr "Mostrar o ocultar los bloques."
+msgstr "Mostrar u ocultar los bloques."
 
 msgid "Hide or show the blocks and the palettes."
 msgstr "Ocultar o mostrar los bloques y las paletas."
@@ -318,7 +318,7 @@ msgid "Polar"
 msgstr "Polar"
 
 msgid "Show or hide a polar-coordinate grid."
-msgstr "Mostrar o ocultar la rejilla de coordenadas polares."
+msgstr "Mostrar u ocultar la rejilla de coordenadas polares."
 
 msgid "Load samples from server"
 msgstr "Cargar ejemplos desde el servidor"

@@ -255,6 +255,6 @@ KNOWN BUGS:
   * sample projects cannot be shown on Android
   * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
-  * fix race conditions
+  * fix race condition with collapsibles
   * not all blocks highlight when using step-by-step mode
   * when you change the image of a media block, all media blocks change the image

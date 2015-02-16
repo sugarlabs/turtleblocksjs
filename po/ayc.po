@@ -421,6 +421,9 @@ msgstr ""
 msgid "hide blocks"
 msgstr "siqichata wakichatanaka imantaña"
 
+msgid "loudness"
+msgstr "ist'asiñapa jithxatayaña"
+
 msgid "publish"
 msgstr ""
 

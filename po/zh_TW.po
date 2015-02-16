@@ -226,6 +226,9 @@ msgstr "顯示堆疊"
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
 
+msgid "loudness"
+msgstr "音量"
+
 msgid "publish"
 msgstr ""
 

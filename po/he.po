@@ -356,6 +356,9 @@ msgstr ""
 msgid "hide blocks"
 msgstr "הסתר בלוקים"
 
+msgid "loudness"
+msgstr "עוצמת קול"
+
 msgid "publish"
 msgstr ""
 

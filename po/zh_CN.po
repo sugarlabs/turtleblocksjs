@@ -367,6 +367,9 @@ msgstr ""
 msgid "hide blocks"
 msgstr "隐藏积木块"
 
+msgid "loudness"
+msgstr "音量"
+
 msgid "publish"
 msgstr "发布"
 
@@ -690,4 +693,3 @@ msgstr ""
 
 msgid "high"
 msgstr ""
-

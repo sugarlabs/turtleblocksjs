@@ -234,6 +234,9 @@ msgstr "mostrare pila"
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr "Mostrare o nascondire una griglia di coordinate Cartesiane."
 
+msgid "loudness"
+msgstr "rumorosità"
+
 msgid "publish"
 msgstr "pubblicare"
 

@@ -365,6 +365,9 @@ msgstr "Has terminado el tour. Esperamos que disfrutes TortuBloques"
 msgid "hide blocks"
 msgstr "ocultar bloques"
 
+msgid "loudness"
+msgstr "volumen"
+
 msgid "publish"
 msgstr "publicar"
 

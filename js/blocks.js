@@ -681,38 +681,30 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         var blocks = this;
 
-        // FIXME: Make these callbacks so there is no race condition.
-        setTimeout(function() {
-            // First, adjust the docks for any blocks that may have
-            // had a vspace added.
-            for (var i = 0; i < checkArgBlocks.length; i++) {
-                blocks.adjustDocks(checkArgBlocks[i]);
+        // First, adjust the docks for any blocks that may have
+        // had a vspace added.
+        for (var i = 0; i < checkArgBlocks.length; i++) {
+            blocks.adjustDocks(checkArgBlocks[i]);
+        }
+        // Next, recheck if the connection is inside of a
+        // expandable block.
+        var blk = blocks.insideExpandableBlock(thisBlock);
+        var expandableLoopCounter = 0;
+        while (blk != null) {
+            // Extra check for malformed data.
+            expandableLoopCounter += 1;
+            if (expandableLoopCounter > 2 * blocks.blockList.length) {
+                console.log('Infinite loop checking for expandables?');
+                console.log(blocks.blockList);
+                break;
             }
-            // Next, recheck if the connection is inside of a
-            // expandable block.
-            var blk = blocks.insideExpandableBlock(thisBlock);
-            var expandableLoopCounter = 0;
-            while (blk != null) {
-                // Extra check for malformed data.
-                expandableLoopCounter += 1;
-                if (expandableLoopCounter > 2 * blocks.blockList.length) {
-                    console.log('Infinite loop checking for expandables?');
-                    console.log(blocks.blockList);
-                    break;
-                }
-                if (checkExpandableBlocks.indexOf(blk) == -1) {
-                    checkExpandableBlocks.push(blk);
-                }
-                blk = blocks.insideExpandableBlock(blk);
+            if (checkExpandableBlocks.indexOf(blk) == -1) {
+                checkExpandableBlocks.push(blk);
             }
-            blocks.refreshCanvas();
-        }, 500);
-
-        setTimeout(function() {
-            // If we changed the contents of an expandable block, we need
-            // to adjust its clamp.
-            blocks.adjustExpandableClampBlock(checkExpandableBlocks);
-        }, 1000);
+            blk = blocks.insideExpandableBlock(blk);
+        }
+        blocks.adjustExpandableClampBlock(checkExpandableBlocks);
+        blocks.refreshCanvas();
     }
 
     this.testConnectionType = function(type1, type2) {
@@ -1203,6 +1195,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var cblk = blk + 1;
         for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
             var value = myBlock.protoblock.defaults[i];
+
+            if (myBlock.name == 'action') {
+                // Make sure we don't make two actions with the same name.
+                console.log('calling findUniqueActionName');
+                value = this.findUniqueActionName(_('action'));
+                console.log('renaming action block to ' + value);
+                if (value != _('action')) {
+                    console.log('calling newDoBlock with value ' + value);
+                    this.newDoBlock(value);
+                    this.palettes.updatePalettes();
+                }
+            }
+
             var me = this;
             var thisBlock = this.blockList.length;
             if (myBlock.docks[i + 1][2] == 'anyin') {
@@ -1269,24 +1274,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             var myConnectionBlock = this.blockList[cblk + i];
             myConnectionBlock.connections = [blk];
-            if (myBlock.name == 'action') {
-                // Make sure we don't make two actions with the same name.
-                console.log('calling findUniqueActionName');
-                value = this.findUniqueActionName(_('action'));
-                console.log('renaming action block to ' + value);
-                if (value != _('action')) {
-                    // There is a race condition with creation of new
-                    // text block, hence the timeout.
-                    setTimeout(function() {
-                        myConnectionBlock.text.text = value;
-                        myConnectionBlock.value = value;
-                        myConnectionBlock.container.updateCache();
-                    }, 1000);
-                    console.log('calling newDoBlock with value ' + value);
-                    this.newDoBlock(value);
-                    this.palettes.updatePalettes();
-                }
-            }
             myConnectionBlock.value = value;
             myBlock.connections[i + 1] = cblk + i;
         }

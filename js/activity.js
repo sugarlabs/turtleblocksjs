@@ -1207,6 +1207,7 @@ define(function(require) {
                 ['Cartesian', doCartesian],
                 ['polar', doPolar],
                 ['plugin', doOpenPlugin],
+                ['restore-trash', restoreTrash]
             ];
 
             var btnSize = cellSize;

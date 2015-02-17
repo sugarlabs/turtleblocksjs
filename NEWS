@@ -258,3 +258,4 @@ KNOWN BUGS:
   * fix race condition with collapsibles
   * not all blocks highlight when using step-by-step mode
   * when you change the image of a media block, all media blocks change the image
+  * sometimes start block turtle decoration is not positioned correctly

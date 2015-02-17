@@ -389,8 +389,8 @@ function prepareMacroExports(name, stack, macroDict) {
 }
 
 
-function doSaveSVG(canvas, turtles, desc) {
-    var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0);
+function doSaveSVG(canvas, logo, desc) {
+    var svg = doSVG(canvas, logo, logo.turtles, canvas.width, canvas.height, 1.0);
     download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
 }
 

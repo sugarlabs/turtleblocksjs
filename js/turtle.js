@@ -74,9 +74,13 @@ function Turtle (name, turtles) {
             this.drawingCanvas.graphics.lineTo(nx, ny);
             if (!this.svgPath) {
                 this.svgPath = true;
-                this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
+                var oxScaled = ox * this.turtles.scale;
+                var oyScaled = oy * this.turtles.scale;
+                this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
             }
-            this.svgOutput += nx + ',' + ny + ' ';
+            var nxScaled = nx * this.turtles.scale;
+            var nyScaled = ny * this.turtles.scale;
+            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }
@@ -118,14 +122,19 @@ function Turtle (name, turtles) {
             this.drawingCanvas.graphics.arc(cx, cy, radius, sa, ea, anticlockwise);
             if (!this.svgPath) {
                 this.svgPath = true;
-                this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
+                var oxScaled = ox * this.turtles.scale;
+                var oyScaled = oy * this.turtles.scale;
+                this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
             }
             if (anticlockwise) {
                 var sweep = 0;
             } else {
                 var sweep = 1;
             }
-            this.svgOutput += 'A ' + radius + ',' + radius + ' 0 0 ' + sweep + ' ' + nx + ',' + ny + ' ';
+            var nxScaled = nx * this.turtles.scale;
+            var nyScaled = ny * this.turtles.scale;
+            var radiusScaled = radius * this.turtles.scale;
+            this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 ' + sweep + ' ' + nxScaled + ',' + nyScaled + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }
@@ -459,7 +468,8 @@ function Turtle (name, turtles) {
                 this.svgOutput += 'none;';
             }
             this.svgOutput += 'stroke:' + this.canvasColor + ';';
-            this.svgOutput += 'stroke-width:' + this.stroke + 'pt;" />';
+            var strokeScaled = this.stroke * this.turtles.scale;
+            this.svgOutput += 'stroke-width:' + strokeScaled + 'pt;" />';
             this.svgPath = false;
         }
     }

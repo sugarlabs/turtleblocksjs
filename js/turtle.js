@@ -72,8 +72,6 @@ function Turtle (name, turtles) {
         // Draw a line if the pen is down.
         if (this.penState) {
             this.drawingCanvas.graphics.lineTo(nx, ny);
-            // var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + '" stroke-linecap="round" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
-            // this.svgOutput += svg;
             if (!this.svgPath) {
                 this.svgPath = true;
                 this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
@@ -394,45 +392,45 @@ function Turtle (name, turtles) {
 
     this.doSetColor = function(color) {
         // Color sets hue but also selects maximum chroma.
+        this.closeSVG();
         this.color = Number(color);
         var results = getcolor(this.color);
         this.canvasValue = results[0];
         this.canvasChroma = results[1];
         this.canvasColor = results[2];
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-        this.closeSVG();
     }
 
     this.doSetHue = function(hue) {
+        this.closeSVG();
         this.color = Number(hue);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-        this.closeSVG();
     }
 
     this.doSetValue = function(shade) {
+        this.closeSVG();
         this.value = Number(shade);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-        this.closeSVG();
     }
 
     this.doSetChroma = function(chroma) {
+        this.closeSVG();
         this.chroma = Number(chroma);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-        this.closeSVG();
     }
 
     this.doSetPensize = function(size) {
+        this.closeSVG();
         this.stroke = size;
         this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
-        this.closeSVG();
     }
 
     this.doPenUp = function() {
-        this.penState = false;
         this.closeSVG();
+        this.penState = false;
     }
 
     this.doPenDown = function() {

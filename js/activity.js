@@ -1126,8 +1126,8 @@ define(function(require) {
             // FIXME: show input form and then save after name has been entered
 
             // Save file to turtle.sugarlabs.org
-            var titleElem = docById('title');
-            if (titleElem.value.length == 0) {
+            // var titleElem = docById('title');
+            // if (titleElem.value.length == 0) {
                 var saveName = docById('mySaveName');
                 if (saveName.value.length == 0) {
                     console.log('saving to unknown.tb');
@@ -1136,10 +1136,10 @@ define(function(require) {
                     console.log('saving to ' + saveName.value);
                     return saveProject(saveName.value);
                 }
-            } else {
-                console.log('saving to ' + titleElem.value + '.tb');
-                return saveProject(titleElem.value + '.tb');
-            }
+            // } else {
+            //    console.log('saving to ' + titleElem.value + '.tb');
+            //     return saveProject(titleElem.value + '.tb');
+            // }
         }
 
         function saveToFile() {

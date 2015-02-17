@@ -318,21 +318,6 @@ define(function(require) {
 
             initBasicProtoBlocks(palettes, blocks);
 
-            // Advanced blocks are stored in a locally stored
-            // JSON-encoded plugin.
-            new HttpRequest('plugins/advancedblocks.json', function () {
-                var req = this.request;
-                if (req.readyState == 4) {
-                    if (this.localmode || req.status == 200) {
-                        var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
-                    }
-                    else {
-                        if (self.console) console.log('Failed to load advanced blocks: Received status ' + req.status + '.');
-                    }
-                    this.request = this.handler = this.userCallback = null;
-                }
-            }, null);
-
             // Load any macros saved in local storage.
             var macroData = localStorage.getItem('macros');
             if (macroData != null) {

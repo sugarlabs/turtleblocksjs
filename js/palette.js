@@ -15,7 +15,7 @@ var paletteBlocks = null;
 var PROTOBLOCKSCALE = 1.0;
 var PALETTELEFTMARGIN = 10;
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
-    'media', 'sensors', 'extras', 'myblocks'
+    'media', 'sensors', 'myblocks', // 'extras'
 ];
 
 
@@ -458,7 +458,7 @@ function Palette(palettes, name, color, bgcolor) {
         for (var blk in this.protoList) {
             // Don't show hidden blocks on the menus
             if (this.protoList[blk].hidden) {
-		console.log('skipping ' + this.protoList[blk].name);
+                console.log('skipping ' + this.protoList[blk].name);
                 continue;
             }
 
@@ -1023,7 +1023,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                     paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale) - paletteBlocks.stage.x, Math.round(event.stageY / palette.palettes.scale) - paletteBlocks.stage.y);
                 }
                 // Dock with other blocks if needed
-		console.log('new block moved ' + newBlock);
+                console.log('new block moved ' + newBlock);
                 blocks.blockMoved(newBlock);
                 }
 

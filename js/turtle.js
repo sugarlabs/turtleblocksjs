@@ -355,7 +355,7 @@ function Turtle (name, turtles) {
                 me.startBlock.container.removeChild(me.decorationBitmap);
                 me.decorationBitmap = new createjs.Bitmap(myImage);
                 me.startBlock.container.addChild(me.decorationBitmap);
-		me.decorationBitmap.name = 'decoration';
+                me.decorationBitmap.name = 'decoration';
                 var bounds = me.startBlock.container.getBounds();
                 me.decorationBitmap.x = bounds.width - 30;
                 me.decorationBitmap.y = 20;
@@ -556,7 +556,7 @@ function Turtles(canvas, stage, refreshCanvas) {
                 console.log('adding decoration to ' + startBlock.name);
                 myTurtle.decorationBitmap = myTurtle.bitmap.clone();
                 startBlock.container.addChild(myTurtle.decorationBitmap);
-		myTurtle.decorationBitmap.name = 'decoration';
+                myTurtle.decorationBitmap.name = 'decoration';
                 var bounds = startBlock.container.getBounds();
                 myTurtle.decorationBitmap.x = bounds.width - 30;
                 myTurtle.decorationBitmap.y = 35;

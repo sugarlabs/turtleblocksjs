@@ -523,10 +523,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // Find any containing expandable blocks.
         var checkExpandableBlocks = [];
-	if (thisBlock == null) {
+        if (thisBlock == null) {
             console.log('block moved called with null block.');
             return;
-	}
+        }
         var blk = this.insideExpandableBlock(thisBlock);
         var expandableLoopCounter = 0;
         while (blk != null) {
@@ -1178,7 +1178,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     me.makeNewBlock(proto, postProcess, postProcessArg);
                     protoFound = true;
                     break;
-		 }
+                 }
             }
         }
         if (!protoFound) {
@@ -1393,11 +1393,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             var blockValue = myBlock.value;
             if (blockValue == oldName) {
                 myBlock.value = newName;
-		var label = myBlock.value;
-		if (label.length > 8) {
-		    label = label.substr(0, 7) + '...';
-		}
-		myBlock.text.text = label;
+                var label = myBlock.value;
+                if (label.length > 8) {
+                    label = label.substr(0, 7) + '...';
+                }
+                myBlock.text.text = label;
                 myBlock.container.updateCache();
             }
         }
@@ -1713,7 +1713,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 } else {
                     var name = blkData[1][1]['value'];
                 }
-		console.log('Adding new palette entries for store-in ' + name);
+                console.log('Adding new palette entries for store-in ' + name);
                 this.newStoreinBlock(name);
                 this.newBoxBlock(name);
                 updatePalettes = true;
@@ -2028,8 +2028,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.raiseStackToTop = function (blk) {
-	// Move the stack associated with blk to the top.
-	var topBlk = this.findTopBlock(blk);
+        // Move the stack associated with blk to the top.
+        var topBlk = this.findTopBlock(blk);
         this.findDragGroup(topBlk);
 
         var n = this.stage.getNumChildren() - 1;

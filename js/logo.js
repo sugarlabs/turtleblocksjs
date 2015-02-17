@@ -189,7 +189,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'keyboard':
                     value = this.lastKeyCode;
                     break;
-                case 'value':
+                case 'loudness':
                     if (logo.mic == null) {
                         logo.errorMsg('The microphone is not available.');
                         value = 0;

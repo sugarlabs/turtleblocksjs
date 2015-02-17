@@ -38,7 +38,7 @@ if (args.length == 1) {
 
 //* flow:savesvg *//
 if (args.length == 1) {
-    doSaveSVG(canvas, logo, args[0])
+    doSaveSVG(logo, args[0])
 };
 
 //* flow:showblocks *//

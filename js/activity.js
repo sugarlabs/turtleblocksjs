@@ -300,7 +300,8 @@ define(function(require) {
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             // TODO: clean up this mess.
-            logo = new Logo(blocks, turtles, turtleContainer, refreshCanvas,
+            logo = new Logo(canvas, blocks, turtles, turtleContainer,
+                            refreshCanvas,
                             textMsg, errorMsg, hideMsgs, onStopTurtle,
                             onRunTurtle, prepareExport, getStageX, getStageY,
                             getStageMouseDown, getCurrentKeyCode,

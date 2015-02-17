@@ -14,11 +14,12 @@ var DEFAULTDELAY = 500; // milleseconds
 var TURTLESTEP = -1;  // Run in step-by-step mode
 
 
-function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
+function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
               getStageY, getStageMouseDown, getCurrentKeyCode,
               clearCurrentKeyCode, meSpeak) {
 
+    this.canvas = canvas;
     this.blocks = blocks;
     this.turtles = turtles;
     this.stage = stage;
@@ -56,7 +57,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.stepQueue = {};
     this.unhighlightStepQueue = {};
 
-    this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+    this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
 
     try {
         this.mic = new p5.AudioIn()
@@ -275,7 +276,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
         }
 
-        this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+        this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
 
         this.parentFlowQueue = {};
         this.unhightlightQueue = {};
@@ -1214,7 +1215,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var x = logo.turtles.turtleList[turtle].container.x;
                     var y = logo.turtles.turtleList[turtle].container.y;
                     logo.refreshCanvas();
-                    var ctx = canvas.getContext("2d");
+                    var ctx = this.canvas.getContext("2d");
                     var imgData = ctx.getImageData(x, y, 1, 1).data;
                     var color = searchColors(imgData[0], imgData[1], imgData[2]);
                     if (imgData[3] == 0) {
@@ -1334,7 +1335,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         } else {
             body.style.background = this.turtles.turtleList[turtle].canvasColor;
         }
-        this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+        this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
     }
 
     this.setCameraID = function(id) {

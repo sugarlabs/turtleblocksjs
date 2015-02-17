@@ -125,7 +125,7 @@ function Turtle (name, turtles) {
             } else {
                 var sweep = 1;
             }
-            this.svgOutput += 'A ' + radius + ',' + radius + ' 0 1 ' + sweep + ' ' + nx + ',' + ny + ' ';
+            this.svgOutput += 'A ' + radius + ',' + radius + ' 0 0 ' + sweep + ' ' + nx + ',' + ny + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }

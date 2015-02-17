@@ -136,6 +136,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     }
                     break;
                 case 'random':
+                case 'mod':
                 case 'sqrt':
                 case 'plus':
                 case 'minus':

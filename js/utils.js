@@ -34,10 +34,10 @@ function httpGet(projectName) {
     xmlHttp = new XMLHttpRequest();
 
     if (projectName == null) {
-        xmlHttp.open("GET", window.location.origin + '/server/', false);
+        xmlHttp.open("GET", window.server, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     } else {
-        xmlHttp.open("GET", window.location.origin + '/server/' + projectName, false);
+        xmlHttp.open("GET", window.server + projectName, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     }
     xmlHttp.send();
@@ -51,7 +51,7 @@ function httpGet(projectName) {
 function httpPost(projectName, data) {
     var xmlHttp = null;
     xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", window.location.origin + '/server/' + projectName, false);
+    xmlHttp.open("POST", window.server + projectName, false);
     xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     xmlHttp.send(data);
     // return xmlHttp.responseText;

@@ -17,7 +17,7 @@ var TURTLESTEP = -1;  // Run in step-by-step mode
 function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
               getStageY, getStageMouseDown, getCurrentKeyCode,
-              clearCurrentKeyCode, meSpeak) {
+              clearCurrentKeyCode, meSpeak, saveLocally) {
 
     this.blocks = blocks;
     this.turtles = turtles;
@@ -34,6 +34,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.getStageMouseDown = getStageMouseDown;
     this.clearCurrentKeyCode = clearCurrentKeyCode;
     this.meSpeak = meSpeak;
+    this.saveLocally = saveLocally;
 
     this.evalFlowDict = {};
     this.evalArgDict = {};
@@ -209,12 +210,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.runLogoCommands = function(startHere) {
         // Save the state before running.
-        // FIXME: Where is Storage defined?
-        if (typeof(Storage) !== 'undefined') {
-            localStorage.setItem('sessiondata', this.prepareExport());
-        } else {
-            // Sorry! No Web Storage support.
-        }
+        this.saveLocally();
 
         this.stopTurtle = false;
         this.blocks.unhighlightAll();

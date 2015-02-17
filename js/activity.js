@@ -36,7 +36,6 @@ define(function(require) {
     require('activity/blocks');
     require('activity/block');
     require('activity/logo');
-    require('activity/savebox');
     require('activity/clearbox');
     require('activity/samplesviewer');
     require('activity/samples');
@@ -45,6 +44,7 @@ define(function(require) {
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
+        window.scroll(0, 0);
 
         try {
             meSpeak.loadConfig('lib/mespeak_config.json');
@@ -80,10 +80,8 @@ define(function(require) {
         var palettes;
         var blocks;
         var logo;
-        var saveBox;
         var clearBox;
         var thumbnails;
-        var thumbnailsVisible = false;
         var buttonsVisible = true;
         var toolbarButtonsVisible = true;
         var openContainer = null;
@@ -292,16 +290,15 @@ define(function(require) {
                             errorMsg, hideMsgs, onStopTurtle, onRunTurtle,
                             prepareExport, getStageX, getStageY,
                             getStageMouseDown, getCurrentKeyCode,
-                            clearCurrentKeyCode, meSpeak);
+                            clearCurrentKeyCode, meSpeak, saveLocally);
             blocks.setLogo(logo);
 
             // Set the default background color...
             logo.setBackgroundColor(-1);
 
-            saveBox = new SaveBox(canvas, stage, refreshCanvas, doSave);
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
 
-            thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
+            thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
 
             initBasicProtoBlocks(palettes, blocks);
 
@@ -424,11 +421,6 @@ define(function(require) {
 
             // Scale the canvas relative to the screen size.
             onResize();
-
-            var saveName = docById('mySaveName');
-            saveName.style.visibility = 'hidden';
-
-            thumbnails.setServer(server);
 
             if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
@@ -716,7 +708,7 @@ define(function(require) {
         }
 
         // FIXME: confirm???
-        function sendAllToTrash(addStartBlock) {
+        function sendAllToTrash(addStartBlock, doNotSave) {
             var dx = 2000;
             var dy = cellSize;
             for (var blk in blocks.blockList) {
@@ -742,13 +734,10 @@ define(function(require) {
                 last(blocks.blockList).value = turtles.turtleList.length - 1;
                 blocks.updateBlockPositions();
             }
-            // Overwrite session data too.
-            console.log('overwriting session data');
-            if (typeof(Storage) !== 'undefined') {
-                localStorage.setItem('sessiondata', prepareExport());
-                // console.log(localStorage.getItem('sessiondata'));
-            } else {
-                // Sorry! No Web Storage support..
+
+            if (!doNotSave) {
+                // Overwrite session data too.
+                saveLocally();
             }
 
             update = true;
@@ -811,28 +800,31 @@ define(function(require) {
             }
         }
 
-        function doCloseSamples() {
-            console.log('hiding thumbnails');
-            thumbnails.hide();
-            thumbnailsVisible = false;
-            logo.showBlocks();
+        function doOpenSamples() {
+            saveLocally();
+            thumbnails.show()
         }
 
-        function doOpenSamples() {
-            if (thumbnailsVisible) {
-                doCloseSamples();
-            } else {
-                console.log('showing thumbnails');
-                if (!thumbnails.show(scale)) {
-                    console.log('thumbnails not available');
-                } else if (!thumbnails.locked) {
-                    stage.setChildIndex(thumbnails.container, stage.getNumChildren() - 1);
-                    thumbnailsVisible = true;
-                    logo.hideBlocks();
-                } else {
-                    console.log('thumbnails locked');
-                }
+        function saveLocally() {
+            console.log('overwriting session data');
+
+            if (localStorage.currentProject === undefined) {
+                localStorage.currentProject = 'My Project';
+                localStorage.allProjects = JSON.stringify(['My Project'])
             }
+            var p = localStorage.currentProject;
+            localStorage['SESSION' + p] = prepareExport();
+
+            var img = new Image();
+            var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
+            img.onload = function() {
+                var bitmap = new createjs.Bitmap(img);
+                var bounds = bitmap.getBounds();
+                bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                localStorage['SESSIONIMAGE' + p] = bitmap.getCacheDataURL();
+            }
+            img.src = 'data:image/svg+xml;base64,' +
+                      window.btoa(unescape(encodeURIComponent(svgData)));
         }
 
         function loadProject(projectName) {
@@ -859,6 +851,7 @@ define(function(require) {
                     }
                     var obj = JSON.parse(cleanData);
                     blocks.loadNewBlocks(obj);
+                    saveLocally();
                 } catch (e) {
                     loadStart();
                 }
@@ -872,6 +865,16 @@ define(function(require) {
             }, 3000);
 
             docById('loding-image-container').style.display = 'none';
+        }
+
+        function loadRawProject(data) {
+            document.body.style.cursor = 'wait';
+            allClear();
+            var obj = JSON.parse(data);
+            blocks.loadNewBlocks(obj);
+
+            docById('loding-image-container').style.display = 'none';
+            document.body.style.cursor = 'default';
         }
 
         function saveProject(projectName) {
@@ -920,7 +923,8 @@ define(function(require) {
             // Try restarting where we were when we hit save.
             if (typeof(Storage) !== 'undefined') {
                 // localStorage is how we'll save the session (and metadata)
-                sessionData = localStorage.getItem('sessiondata');
+                var currentProject = localStorage.currentProject;
+                sessionData = localStorage['SESSION' + currentProject];
             }
             if (sessionData != null) {
                 try {
@@ -1094,40 +1098,10 @@ define(function(require) {
             return JSON.stringify(data);
         }
 
-        function doOpen() {
-            // Click on the file open chooser in the DOM (.ta, .tb).
-            fileChooser.focus();
-            fileChooser.click();
-        }
-
         function doOpenPlugin() {
             // Click on the plugin open chooser in the DOM (.json).
             pluginChooser.focus();
             pluginChooser.click();
-        }
-
-        function doSaveBox() {
-            saveBox.show(scale);
-        }
-
-        function doSave() {
-            // FIXME: show input form and then save after name has been entered
-
-            // Save file to turtle.sugarlabs.org
-            var titleElem = docById('title');
-            if (titleElem.value.length == 0) {
-                var saveName = docById('mySaveName');
-                if (saveName.value.length == 0) {
-                    console.log('saving to unknown.tb');
-                    return saveProject('unknown.tb');
-                } else {
-                    console.log('saving to ' + saveName.value);
-                    return saveProject(saveName.value);
-                }
-            } else {
-                console.log('saving to ' + titleElem.value + '.tb');
-                return saveProject(titleElem.value + '.tb');
-            }
         }
 
         function saveToFile() {
@@ -1181,6 +1155,7 @@ define(function(require) {
                 ['step', doStepButton],
                 ['stop-turtle', doStopButton],
                 ['clear', allClear],
+                ['planet', doOpenSamples],
                 ['palette', changePaletteVisibility],
                 ['hide-blocks', changeBlockVisibility],
                 ['collapse-blocks', toggleCollapsibleStacks],
@@ -1231,16 +1206,8 @@ define(function(require) {
                 ['paste-disabled', pasteStack],
                 ['Cartesian', doCartesian],
                 ['polar', doPolar],
-                ['samples', doOpenSamples],
-                ['open', doOpen],
                 ['plugin', doOpenPlugin],
-                ['empty-trash', deleteBlocksBox],
-                ['restore-trash', restoreTrash],
-                ['save-to-file', saveToFile]
             ];
-            if (server) {
-                menuNames.push(['save', doSaveBox]);
-            }
 
             var btnSize = cellSize;
             var x = Math.floor(canvas.width / scale) - btnSize / 2;
@@ -1266,10 +1233,6 @@ define(function(require) {
             if (menuButtonsVisible) {
                 for (button in onscreenMenu) {
                     onscreenMenu[button].visible = true;
-                }
-                if (server) {
-                    var saveName = docById('mySaveName');
-                    saveName.style.visibility = 'visible';
                 }
             }
         }
@@ -1344,22 +1307,15 @@ define(function(require) {
                     doMenuAnimation(count + 1);
                 }, 50);
             } else {
-                var saveName = docById('mySaveName');
                 if (menuButtonsVisible) {
                     menuButtonsVisible = false;
                     for (button in onscreenMenu) {
                         onscreenMenu[button].visible = false;
                     }
-                    if (server) {
-                        saveName.style.visibility = 'hidden';
-                    }
                 } else {
                     menuButtonsVisible = true;
                     for (button in onscreenMenu) {
                         onscreenMenu[button].visible = true;
-                    }
-                    if (server) {
-                        saveName.style.visibility = 'visible';
                     }
                 }
                 update = true;

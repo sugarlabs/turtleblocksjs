@@ -38,7 +38,7 @@ var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
 var rate = logo.parseArg(logo, turtle, conns[1]);
-var apiURL = RODI_BASE_URL + '/blink/' + rate + '/';
+var apiURL = RODI_BASE_URL + '/1/' + rate + '/';
 console.log(apiURL);
 
 try {
@@ -71,7 +71,7 @@ var conns = block.connections;
 
 var left = logo.parseArg(logo, turtle, conns[1]);
 var right = logo.parseArg(logo, turtle, conns[2]);
-var apiURL = RODI_BASE_URL + '/move/' + left + '/' + right + '/';
+var apiURL = RODI_BASE_URL + '/3/' + left + '/' + right + '/';
 
 console.log(apiURL);
 
@@ -93,22 +93,23 @@ rodiSenseLeft.adjustWidthToLabel();
 rodiSenseLeft.parameterBlock();
 
 //* arg:rodisenseleft *//
+
 var sensor = -1;
+var sensors = [-1, -1];
 
 if (Date.now() > sensorsCacheExpires) {
 
-    var apiURL = RODI_BASE_URL + '/sense/';
+    var apiURL = RODI_BASE_URL + '/2/';
     console.log(apiURL);
 
     var request = new XMLHttpRequest();
     try {
         request.open('GET', apiURL, false);
         request.send(null);
+        sensors = JSON.parse(request.responseText);
     } catch (e) {
         console.log(e);
     }
-
-    var sensors = JSON.parse(request.responseText);
 
     sensorsCacheExpires = Date.now() + sensorsValidFor;
     sensorsCache = sensors;
@@ -131,22 +132,23 @@ rodiSenseRight.adjustWidthToLabel();
 rodiSenseRight.parameterBlock();
 
 //* arg:rodisenseright *//
+
 var sensor = -1;
+var sensors = [-1, -1];
 
 if (Date.now() > sensorsCacheExpires) {
 
-    var apiURL = RODI_BASE_URL + '/sense/';
+    var apiURL = RODI_BASE_URL + '/2/';
     console.log(apiURL);
 
     var request = new XMLHttpRequest();
     try {
         request.open('GET', apiURL, false);
         request.send(null);
+        sensors = JSON.parse(request.responseText);
     } catch (e) {
         console.log(e);
     }
-
-    var sensors = JSON.parse(request.responseText);
 
     sensorsCacheExpires = Date.now() + sensorsValidFor;
     sensorsCache = sensors;
@@ -181,7 +183,7 @@ var conns = block.connections;
 
 var note = logo.parseArg(logo, turtle, conns[1]);
 var duration = logo.parseArg(logo, turtle, conns[2]);
-var apiURL = RODI_BASE_URL + '/sing/' + note + '/' + duration + '/';
+var apiURL = RODI_BASE_URL + '/4/' + note + '/' + duration + '/';
 
 console.log(apiURL);
 
@@ -204,7 +206,7 @@ rodiSee.parameterBlock();
 
 //* arg:rodisee *//
 
-var apiURL = RODI_BASE_URL + '/see/';
+var apiURL = RODI_BASE_URL + '/5/';
 console.log(apiURL);
 
 var distance = 100;

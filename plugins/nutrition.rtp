@@ -24,34 +24,38 @@ var carbohydrate = 0;
 var fiber = 0;
 var fat = 0;
 
+apiKey = "wsKEYiHKI5drrjzG8kDObkbGnOUovEqsDkZCmQpF";	
+
 var Food = {'sugar' : '19436', 'apple' : '09005', 'banana' : '09040', 'orange' : '09200', 'bread' : '18019', 'corn' : '20014', 'potato' : '11352', 'sweetpotato' : '11505', 'tomato' : '11529', 'broccoli' : '11090', 'riceandbeans' : '36405', 'tamale' : '36056', 'cheese' : '01005', 'chicken' : '05000', 'fish' : '15027', 'beef' : '13821', 'cake' : '18127', 'cookie' : '18171', 'water' : '14411', 'noodles' : '10001', 'noodle' : '10001', 'butter' : '10002', 'yoghurt' : '01116', 'milk' : '08510', 'snacks' : '19002', 'popcorn' : '19040'};
 
 var get_response = function(name){
-		name = name.toLowerCase();
-		if(Food[name])
-		{
-			apiURL = 'http://api.data.gov/usda/ndb/nutrients/?format=json&api_key=wsKEYiHKI5drrjzG8kDObkbGnOUovEqsDkZCmQpF&nutrients=205&nutrients=204&nutrients=208&nutrients=203&nutrients=291&ndbno='+ Food[name]   ;	
-		}
-		else
-		{
-			return 0;
-		}
-		if (block.cacheFor === apiURL && block.cache !== undefined) {
+    name = name.toLowerCase();
+    if(Food[name])
+    {
+        apiURL = 'https://api.data.gov/usda/ndb/nutrients/?format=json&api_key=' + apiKey + '&nutrients=205&nutrients=204&nutrients=208&nutrients=203&nutrients=291&ndbno='+ Food[name]   ;	
+    }
+    else
+    {
+        return 0;
+    }
+    if (block.cacheFor === apiURL && block.cache !== undefined) {
 	    var response = block.cache;
-	} else {
-	    try {
+	}
+	else {
+        try {
 	        var request = new XMLHttpRequest();
 	        request.open('GET', apiURL, false);
 	        request.send(null);
 	        
 	        var response = request.responseText;
 	        response = JSON.parse(response);
-	    } catch (e) {
+	        }
+	    catch (e) {
 	        logo.errorMsg('Could not connect to  API', blk);
 	    }
 	}
 	
-	return response;
+    return response;
 };
 
 
@@ -64,14 +68,20 @@ var conns = block.connections;
 var block = logo.blocks.blockList[blk]; 
 var conns = block.connections;
 
+var checkFloat = function(value) {
+	if (value == '--')
+		return '0';
+	else return value;
+};
+
 //* block-globals *//
 var get_eatme = function (name, label) {
     var block = new ProtoBlock(name);
     block.palette = palettes.dict['nutrition'];
     blocks.protoBlockDict[name] = block;
     block.staticLabels.push(label);
-    block.adjustWidthToLabel();
     block.oneArgMathBlock();
+    block.adjustWidthToLabel();
     block.dockTypes[1] = 'anyin';
     block.defaults.push('Sugar');
 };
@@ -88,8 +98,8 @@ var eat = function (name, label) {
     block.palette = palettes.dict['eatme'];
     blocks.protoBlockDict[name] = block;
     block.staticLabels.push(label);
-    block.adjustWidthToLabel();
     block.oneArgBlock();
+    block.adjustWidthToLabel();
     block.dockTypes[1] = 'anyin';
     block.defaults.push('Sugar');
 };
@@ -121,54 +131,55 @@ get_eatme('get_fat', _('get fat'));
 res = get_response(logo.parseArg(logo, turtle, conns[1]));
 if(res != 0)
 {
-	block.value = res['report']['foods'][0]['nutrients'][3]['value'];
+    block.value = res['report']['foods'][0]['nutrients'][3]['value'];
 }
 else
 {
-	block.value ="Sorry! no information about this food";
+    block.value ="Sorry! no information about this food";
 }
+
 //* arg:get_protein *//
 response = get_response(logo.parseArg(logo, turtle, conns[1]));
 if(response != 0)
 {
-	block.value = response['report']['foods'][0]['nutrients'][0]['value'];
+    block.value = response['report']['foods'][0]['nutrients'][0]['value'];
 }
 else
 {
-	block.value ="Sorry! no information about this food";
+    block.value ="Sorry! no information about this food";
 }
 
 //* arg:get_carbohydrates *//
 response = get_response(logo.parseArg(logo, turtle, conns[1]));
 if(response != 0)
 {
-	block.value = response['report']['foods'][0]['nutrients'][2]['value'];
+    block.value = response['report']['foods'][0]['nutrients'][2]['value'];
 }
 else
 {
-	block.value ="Sorry! no information about this food";
+    block.value ="Sorry! no information about this food";
 }
 
 //* arg:get_fiber *//
 response = get_response(logo.parseArg(logo, turtle, conns[1]));
 if(response != 0)
 {
-	block.value = response['report']['foods'][0]['nutrients'][4]['value'];
+    block.value = response['report']['foods'][0]['nutrients'][4]['value'];
 }
 else
 {
-	block.value ="Sorry! no information about this food";
+    block.value ="Sorry! no information about this food";
 }
 
 //* arg:get_fat *//
 response = get_response(logo.parseArg(logo, turtle, conns[1]));
 if(response != 0)
 {
-	block.value = response['report']['foods'][0]['nutrients'][1]['value'];
+    block.value = response['report']['foods'][0]['nutrients'][1]['value'];
 }
 else
 {
-	block.value ="Sorry! no information about this food";
+    block.value ="Sorry! no information about this food";
 }
 
 //* block:calories *//
@@ -213,21 +224,26 @@ var input = logo.parseArg(logo, turtle, conns[1]);
 input = input.toLowerCase();
 if(Food[input])
 {
-	var blockFoodData = get_response(input);
-	var i = blockFoodData['report']['foods'][0]['nutrients'][0]['value'];
-	protein +=  parseFloat(i);
-	var i = blockFoodData['report']['foods'][0]['nutrients'][3]['value'];
-	calories += parseFloat(i);
-	i = blockFoodData['report']['foods'][0]['nutrients'][2]['value'];
-	carbohydrate += parseFloat(i);
-	i = blockFoodData['report']['foods'][0]['nutrients'][4]['value'];
-	fiber += parseFloat(i);
-	i = blockFoodData['report']['foods'][0]['nutrients'][1]['value'];
-	fat += parseFloat(i);
+    var blockFoodData = get_response(input);
+    var i = blockFoodData['report']['foods'][0]['nutrients'][0]['value'];
+    i = checkFloat(i);
+    protein +=  parseFloat(i);
+    i = blockFoodData['report']['foods'][0]['nutrients'][3]['value'];
+    i = checkFloat(i);
+    calories += parseFloat(i);
+    i = blockFoodData['report']['foods'][0]['nutrients'][2]['value'];
+    i = checkFloat(i);
+    carbohydrate += parseFloat(i);
+    i = blockFoodData['report']['foods'][0]['nutrients'][4]['value'];
+    i = checkFloat(i);
+    fiber += parseFloat(i);
+    i = blockFoodData['report']['foods'][0]['nutrients'][1]['value'];
+    i = checkFloat(i);
+    fat += parseFloat(i);
 }
 else
 {
-	logo.textMsg(JSON.stringify("Sorry! no information about this food"));
+    logo.textMsg(JSON.stringify("Sorry! no information about this food"));
 }
 
 //* flow:digest *// 

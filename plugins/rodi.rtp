@@ -93,7 +93,9 @@ rodiSenseLeft.adjustWidthToLabel();
 rodiSenseLeft.parameterBlock();
 
 //* arg:rodisenseleft *//
+
 var sensor = -1;
+var sensors = [-1, -1];
 
 if (Date.now() > sensorsCacheExpires) {
 
@@ -104,11 +106,10 @@ if (Date.now() > sensorsCacheExpires) {
     try {
         request.open('GET', apiURL, false);
         request.send(null);
+        sensors = JSON.parse(request.responseText);
     } catch (e) {
         console.log(e);
     }
-
-    var sensors = JSON.parse(request.responseText);
 
     sensorsCacheExpires = Date.now() + sensorsValidFor;
     sensorsCache = sensors;
@@ -131,7 +132,9 @@ rodiSenseRight.adjustWidthToLabel();
 rodiSenseRight.parameterBlock();
 
 //* arg:rodisenseright *//
+
 var sensor = -1;
+var sensors = [-1, -1];
 
 if (Date.now() > sensorsCacheExpires) {
 
@@ -142,11 +145,10 @@ if (Date.now() > sensorsCacheExpires) {
     try {
         request.open('GET', apiURL, false);
         request.send(null);
+        sensors = JSON.parse(request.responseText);
     } catch (e) {
         console.log(e);
     }
-
-    var sensors = JSON.parse(request.responseText);
 
     sensorsCacheExpires = Date.now() + sensorsValidFor;
     sensorsCache = sensors;

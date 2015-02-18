@@ -196,6 +196,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     } else {
                         value = Math.round(logo.mic.getLevel() * 1000);
                     }
+                    break;
                 default:
                     if (name in this.evalParameterDict) {
                         eval(this.evalParameterDict[name]);

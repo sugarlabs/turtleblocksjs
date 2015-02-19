@@ -505,16 +505,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             var cdock = this.blockList[cblk].docks[b];
 
-            // Move the connected block.
             if (c > 0) {
+                // Move the connected block...
                 var dx = bdock[0] - cdock[0];
                 var dy = bdock[1] - cdock[1];
-            } else {
-                // We move the boolean block, not its parent.
-                var dx = cdock[0] - bdock[0];
-                var dy = cdock[1] - bdock[1];
-            }
-            if (c > 0) {
                 if (myBlock.bitmap == null) {
                     console.log('Does this ever happen any more?')
                     var nx = myBlock.x + dx;
@@ -525,6 +519,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
                 this.moveBlock(cblk, nx, ny);
             } else {
+                // or it's parent.
+                var dx = cdock[0] - bdock[0];
+                var dy = cdock[1] - bdock[1];
                 var nx = this.blockList[cblk].container.x + dx;
                 var ny = this.blockList[cblk].container.y + dy;
                 this.moveBlock(blk, nx, ny);

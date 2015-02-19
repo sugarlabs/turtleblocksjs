@@ -250,6 +250,7 @@ TODO:
     - two args: artwork for the button; action name to take
   * maybe we want to add local variables? (e.g., boxes only defined inside an action)
   * pass argments to actions? (and arg blocks to reference them)?
+  * event blocks?
 
 KNOWN BUGS:
   * sample projects cannot be shown on Android

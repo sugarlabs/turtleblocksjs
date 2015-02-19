@@ -75,8 +75,8 @@ function Block(protoblock, blocks) {
                 this.highlightCollapseBlockBitmap.visible = true;
                 this.collapseBlockBitmap.visible = false;
                 this.collapseText.visible = true;
-		this.bitmap.visible = false;
-		this.highlightBitmap.visible = false;
+                this.bitmap.visible = false;
+                this.highlightBitmap.visible = false;
             }
         } else {
             this.bitmap.visible = false;
@@ -107,8 +107,8 @@ function Block(protoblock, blocks) {
                 this.highlightCollapseBlockBitmap.visible = false;
                 this.collapseBlockBitmap.visible = true;
                 this.collapseText.visible = true;
-		this.bitmap.visible = false;
-		this.highlightBitmap.visible = false;
+                this.bitmap.visible = false;
+                this.highlightBitmap.visible = false;
             }
         } else {
             this.bitmap.visible = true;
@@ -292,16 +292,16 @@ function Block(protoblock, blocks) {
                             myBlock.blocks.adjustExpandableClampBlock(blocksToCheck);
                         }
                     }
-		    if (['start', 'action'].indexOf(myBlock.name) != -1) {
-		    if (myBlock.collapsed) {
-			myBlock.bitmap.visible = false;
-			myBlock.highlightBitmap.visible = false;
-		    } else {
-			myBlock.bitmap.visible = true;
-			myBlock.highlightBitmap.visible = false;
+                    if (['start', 'action'].indexOf(myBlock.name) != -1) {
+                    if (myBlock.collapsed) {
+                        myBlock.bitmap.visible = false;
+                        myBlock.highlightBitmap.visible = false;
+                    } else {
+                        myBlock.bitmap.visible = true;
+                        myBlock.highlightBitmap.visible = false;
                     }
-		    myBlock.container.updateCache();
-		    myBlock.blocks.refreshCanvas();
+                    myBlock.container.updateCache();
+                    myBlock.blocks.refreshCanvas();
                     }
                 }
             }
@@ -321,7 +321,7 @@ function Block(protoblock, blocks) {
             for (var i = 0; i < obj[1].length; i++) {
                 this.docks.push([obj[1][i][0], obj[1][i][1], this.protoblock.dockTypes[i]]);
             }
-	}
+        }
 
         var artwork = this.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label);
 
@@ -386,7 +386,7 @@ function Block(protoblock, blocks) {
         if (['start', 'action'].indexOf(this.name) == -1) {
             this.loadComplete = true;
             if (this.postProcess != null) {
-		this.postProcess(this.postProcessArg);
+                this.postProcess(this.postProcessArg);
             }
             this.blocks.refreshCanvas();
             this.blocks.cleanupAfterLoad();
@@ -452,12 +452,12 @@ function Block(protoblock, blocks) {
                             myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
                             loadCollapsibleEventHandlers(myBlock);
 
-			    myBlock.loadComplete = true;
-			    if (myBlock.postProcess != null) {
-				myBlock.postProcess(myBlock.postProcessArg);
-			    }
-			    myBlock.blocks.refreshCanvas();
-			    myBlock.blocks.cleanupAfterLoad();
+                            myBlock.loadComplete = true;
+                            if (myBlock.postProcess != null) {
+                                myBlock.postProcess(myBlock.postProcessArg);
+                            }
+                            myBlock.blocks.refreshCanvas();
+                            myBlock.blocks.cleanupAfterLoad();
                         }
                         image.src = 'images/expand.svg';
                     }
@@ -634,18 +634,18 @@ function Block(protoblock, blocks) {
             myBlock.collapseBitmap.visible = collapse;
             myBlock.expandBitmap.visible = !collapse;
 
-	    // These are the collpase-state bitmaps.
+            // These are the collpase-state bitmaps.
             myBlock.collapseBlockBitmap.visible = !collapse;
             myBlock.highlightCollapseBlockBitmap.visible = false;
             myBlock.collapseText.visible = !collapse;
 
             if (collapse) {
-		myBlock.bitmap.visible = true;
+                myBlock.bitmap.visible = true;
             } else {
-		myBlock.bitmap.visible = false;
-		myBlock.container.updateCache();
-	    }
-	    myBlock.highlightBitmap.visible = false;
+                myBlock.bitmap.visible = false;
+                myBlock.container.updateCache();
+            }
+            myBlock.highlightBitmap.visible = false;
 
             if (myBlock.name == 'action') {
                 // Label the collapsed block with the action label
@@ -660,7 +660,7 @@ function Block(protoblock, blocks) {
                 }
             }
 
-	    // Make sure the text is on top.
+            // Make sure the text is on top.
             var z = myBlock.container.getNumChildren() - 1;
             myBlock.container.setChildIndex(myBlock.collapseText, z);
 

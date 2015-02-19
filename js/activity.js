@@ -740,21 +740,21 @@ define(function(require) {
                     turtles.add(last(blocks.blockList));
                     last(blocks.blockList).value = turtles.turtleList.length - 1;
                     blocks.updateBlockPositions();
-		    if (typeof(Storage) !== 'undefined') {
-			localStorage.setItem('sessiondata', prepareExport());
+                    if (typeof(Storage) !== 'undefined') {
+                        localStorage.setItem('sessiondata', prepareExport());
                     }
                 }
 
                 blocks.makeNewBlock('start', postprocess);
             } else {
-		// Overwrite session data too.
-		console.log('overwriting session data');
-		if (typeof(Storage) !== 'undefined') {
+                // Overwrite session data too.
+                console.log('overwriting session data');
+                if (typeof(Storage) !== 'undefined') {
                     localStorage.setItem('sessiondata', prepareExport());
-		} else {
+                } else {
                     // Sorry! No Web Storage support..
-		}
-	    }
+                }
+            }
 
             update = true;
         }

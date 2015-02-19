@@ -458,7 +458,6 @@ function Palette(palettes, name, color, bgcolor) {
         for (var blk in this.protoList) {
             // Don't show hidden blocks on the menus
             if (this.protoList[blk].hidden) {
-                console.log('skipping ' + this.protoList[blk].name);
                 continue;
             }
 

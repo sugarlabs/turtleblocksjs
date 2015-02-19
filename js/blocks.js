@@ -1727,16 +1727,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 default:
                     break;
             }
+
             switch (name) {
                 case 'action':
                 case 'start':
-                    console.log(blkData[1]);
-                    if (typeof(blkData[1]) == 'object' && blkData[1].length > 1)  {
-                        if (typeof(blkData[1][1]) == 'object' && 'collapsed' in blkData[1][1]) {
-                            if (blkData[1][1]['collapsed']) {
-                                console.log(name + ' ' + blkData[1][1]['collapsed']);
-                                this.blocksToCollapse.push(this.blockList.length + b);
-                            }
+                    if (typeof(blkData[1]) == 'object' && blkData[1].length > 1 && typeof(blkData[1][1]) == 'object' && 'collapsed' in blkData[1][1]) {
+                        if (blkData[1][1]['collapsed']) {
+                            this.blocksToCollapse.push(this.blockList.length + b);
                         }
                     }
                     break;
@@ -2058,7 +2055,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
 
-        console.log('cleanup after load');
         this.updateBlockPositions();
         for (var blk = 0; blk < this.adjustTheseDocks.length; blk++) {
             this.loopCounter = 0;
@@ -2066,10 +2062,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             blockBlocks.expandTwoArgs();
             blockBlocks.expandClamps();
         }
+
         for (var i = 0; i < this.blocksToCollapse.length; i++) {
             console.log('collapse ' + this.blockList[this.blocksToCollapse[i]].name);
             this.blockList[this.blocksToCollapse[i]].collapseToggle();
-	}
+        }
         this.blocksToCollapse = [];
 
         this.refreshCanvas();

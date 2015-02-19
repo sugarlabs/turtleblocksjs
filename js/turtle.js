@@ -553,7 +553,6 @@ function Turtles(canvas, stage, refreshCanvas) {
 
             myTurtle.startBlock = startBlock;
             if (startBlock != null) {
-                console.log('adding decoration to ' + startBlock.name);
                 myTurtle.decorationBitmap = myTurtle.bitmap.clone();
                 startBlock.container.addChild(myTurtle.decorationBitmap);
                 myTurtle.decorationBitmap.name = 'decoration';

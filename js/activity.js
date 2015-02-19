@@ -732,22 +732,29 @@ define(function(require) {
                 }
             }
             if (addStartBlock) {
-                blocks.makeNewBlock('start');
-                last(blocks.blockList).x = 250;
-                last(blocks.blockList).y = 250;
-                last(blocks.blockList).connections = [null, null, null];
-                turtles.add(last(blocks.blockList));
-                last(blocks.blockList).value = turtles.turtleList.length - 1;
-                blocks.updateBlockPositions();
-            }
-            // Overwrite session data too.
-            console.log('overwriting session data');
-            if (typeof(Storage) !== 'undefined') {
-                localStorage.setItem('sessiondata', prepareExport());
-                // console.log(localStorage.getItem('sessiondata'));
+
+                function postprocess() {
+                    last(blocks.blockList).x = 250;
+                    last(blocks.blockList).y = 250;
+                    last(blocks.blockList).connections = [null, null, null];
+                    turtles.add(last(blocks.blockList));
+                    last(blocks.blockList).value = turtles.turtleList.length - 1;
+                    blocks.updateBlockPositions();
+		    if (typeof(Storage) !== 'undefined') {
+			localStorage.setItem('sessiondata', prepareExport());
+                    }
+                }
+
+                blocks.makeNewBlock('start', postprocess);
             } else {
-                // Sorry! No Web Storage support..
-            }
+		// Overwrite session data too.
+		console.log('overwriting session data');
+		if (typeof(Storage) !== 'undefined') {
+                    localStorage.setItem('sessiondata', prepareExport());
+		} else {
+                    // Sorry! No Web Storage support..
+		}
+	    }
 
             update = true;
         }

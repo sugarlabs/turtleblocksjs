@@ -231,6 +231,8 @@
   * fixed regression in loading macros (NaN)
   * set proper z-order for palettes, blocks, turtles, and canvas (Sam Parkinson)
   * fixed problem with expanding booleans not docking to parents
+  * fixed race condition with collapsibles
+  * fixed problem with start block turtle decoration positioning
 
 TODO:
   * music blocks plugin
@@ -257,7 +259,5 @@ KNOWN BUGS:
   * sample projects cannot be shown on Android
   * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
-  * fix race condition with collapsibles
   * not all blocks highlight when using step-by-step mode
   * when you change the image of a media block, all media blocks change the image
-  * sometimes start block turtle decoration is not positioned correctly

@@ -1058,7 +1058,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
 
-        myBlock.collapsed = !collapsed;
+        // myBlock.collapsed = !collapsed;
         for (var c = 0; c < connections.length; c++) {
             if (c == myBlock.docks.length) {
                 break;
@@ -1684,8 +1684,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var storeinNames = {}; // storein block: label block
         var doNames = {}; // do block: label block
 
+        // action and start blocks that need to be collapsed.
+        this.blocksToCollapse = [];
+
         // Scan for any new action and storein blocks to identify
-        // duplicates.
+        // duplicates. We also need to track start and action blocks
+        // that may need to be collapsed.
         for (var b = 0; b < blockObjs.length; b++) {
             var blkData = blockObjs[b];
             // blkData[1] could be a string or an object.
@@ -1718,6 +1722,22 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 case 'stack':
                     if (blkData[4][1] != null) {
                         doNames[b] = blkData[4][1];
+                    }
+                    break;
+                default:
+                    break;
+            }
+            switch (name) {
+                case 'action':
+                case 'start':
+                    console.log(blkData[1]);
+                    if (typeof(blkData[1]) == 'object' && blkData[1].length > 1)  {
+                        if (typeof(blkData[1][1]) == 'object' && 'collapsed' in blkData[1][1]) {
+                            if (blkData[1][1]['collapsed']) {
+                                console.log(name + ' ' + blkData[1][1]['collapsed']);
+                                this.blocksToCollapse.push(this.blockList.length + b);
+                            }
+                        }
                     }
                     break;
                 default:
@@ -1825,7 +1845,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             var name = blkInfo[0];
 
             var collapsed = false;
-            if (['start', 'action', 'hat'].indexOf(name) != -1) {
+            if (['start', 'action'].indexOf(name) != -1) {
                 collapsed = blkInfo[1]['collapsed'];
             }
 
@@ -2038,6 +2058,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
 
+        console.log('cleanup after load');
         this.updateBlockPositions();
         for (var blk = 0; blk < this.adjustTheseDocks.length; blk++) {
             this.loopCounter = 0;
@@ -2045,6 +2066,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             blockBlocks.expandTwoArgs();
             blockBlocks.expandClamps();
         }
+        for (var i = 0; i < this.blocksToCollapse.length; i++) {
+            console.log('collapse ' + this.blockList[this.blocksToCollapse[i]].name);
+            this.blockList[this.blocksToCollapse[i]].collapseToggle();
+	}
+        this.blocksToCollapse = [];
 
         this.refreshCanvas();
     }

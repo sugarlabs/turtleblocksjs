@@ -650,13 +650,13 @@ function Turtles(canvas, stage, refreshCanvas) {
 
         document.getElementById('loader').className = '';
         setTimeout(function() {
-                if (blkInfoAvailable) {
-                  myTurtle.doSetHeading(infoDict['heading']);
-                  myTurtle.doSetPensize(infoDict['pensize']);
-                  myTurtle.doSetChroma(infoDict['grey']);
-                  myTurtle.doSetValue(infoDict['shade']);
-                  myTurtle.doSetColor(infoDict['color']);
-                }
+            if (blkInfoAvailable) {
+                myTurtle.doSetHeading(infoDict['heading']);
+                myTurtle.doSetPensize(infoDict['pensize']);
+                myTurtle.doSetChroma(infoDict['grey']);
+                myTurtle.doSetValue(infoDict['shade']);
+                myTurtle.doSetColor(infoDict['color']);
+            }
         }, 1000);
         this.refreshCanvas();
     }

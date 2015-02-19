@@ -858,16 +858,12 @@ define(function(require) {
                     var obj = JSON.parse(cleanData);
                     blocks.loadNewBlocks(obj);
                 } catch (e) {
-                    loadStart();
+                   loadStart();
                 }
                 // Restore default cursor
                 document.body.style.cursor = 'default';
                 update = true;
             }, 200);
-            setTimeout(function() {
-                console.log('calling toggleCollapsibles after timeout');
-                blocks.toggleCollapsibles();
-            }, 3000);
 
             docById('loding-image-container').style.display = 'none';
         }
@@ -939,10 +935,6 @@ define(function(require) {
                 }
                 blocks.makeNewBlock('start', postProcess, null);
             }
-            setTimeout(function() {
-                console.log('calling toggleCollapsibles after timeout');
-                blocks.toggleCollapsibles();
-            }, 3000);
             update = true;
 
             docById('loding-image-container').style.display = 'none';

@@ -33,6 +33,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.getStageX = getStageX;
     this.getStageY = getStageY;
     this.getStageMouseDown = getStageMouseDown;
+    this.getCurrentKeyCode = getCurrentKeyCode;
     this.clearCurrentKeyCode = clearCurrentKeyCode;
     this.meSpeak = meSpeak;
 

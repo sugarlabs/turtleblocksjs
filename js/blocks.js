@@ -430,6 +430,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Give a block, adjust the dock positions
         // of all of the blocks connected to it
 
+        var myBlock = this.blockList[blk];
+
         // For when we come in from makeBlock
         if (resetLoopCounter != null) {
             this.loopCounter = 0;
@@ -437,21 +439,21 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // These checks are to test for malformed data. All blocks
         // should have connections.
-        if (this.blockList[blk] == null) {
+        if (myBlock == null) {
             console.log('Saw a null block: ' + blk);
             return;
         }
-        if (this.blockList[blk].connections == null) {
+        if (myBlock.connections == null) {
             console.log('Saw a block with null connections: ' + blk);
             return;
         }
-        if (this.blockList[blk].connections.length == 0) {
+        if (myBlock.connections.length == 0) {
             console.log('Saw a block with [] connections: ' + blk);
             return;
         }
 
         // Value blocks only have one dock.
-        if (this.blockList[blk].docks.length == 1) {
+        if (myBlock.docks.length == 1) {
             return;
         }
 
@@ -461,13 +463,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
 
-        // Walk through each connection except the parent block.
-        for (var c = 1; c < this.blockList[blk].connections.length; c++) {
+        // Walk through each connection except the parent block; the
+        // exception being the parent block of boolean 2arg blocks,
+        // since the dock[0] position can change.
+        if (myBlock.isTwoArgBooleanBlock()) {
+            var start = 0;
+        } else {
+            var start = 1;
+        }
+        for (var c = start; c < myBlock.connections.length; c++) {
             // Get the dock position for this connection.
-            var bdock = this.blockList[blk].docks[c];
+            var bdock = myBlock.docks[c];
 
             // Find the connecting block.
-            var cblk = this.blockList[blk].connections[c];
+            var cblk = myBlock.connections[c];
             // Nothing connected here so continue to the next connection.
             if (cblk == null) {
                 continue;
@@ -490,25 +499,41 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             // Yet another database integrety check.
             if (!foundMatch) {
-                console.log('Did not find match for ' + this.blockList[blk].name + ' and ' + this.blockList[cblk].name);
+                console.log('Did not find match for ' + myBlock.name + ' and ' + this.blockList[cblk].name);
                 break;
             }
+
             var cdock = this.blockList[cblk].docks[b];
 
             // Move the connected block.
-            var dx = bdock[0] - cdock[0];
-            var dy = bdock[1] - cdock[1];
-            if (this.blockList[blk].bitmap == null) {
-                var nx = this.blockList[blk].x + dx;
-                var ny = this.blockList[blk].y + dy;
+            if (c > 0) {
+                var dx = bdock[0] - cdock[0];
+                var dy = bdock[1] - cdock[1];
             } else {
-                var nx = this.blockList[blk].container.x + dx;
-                var ny = this.blockList[blk].container.y + dy;
+                // We move the boolean block, not its parent.
+                var dx = cdock[0] - bdock[0];
+                var dy = cdock[1] - bdock[1];
             }
-            this.moveBlock(cblk, nx, ny);
+            if (c > 0) {
+                if (myBlock.bitmap == null) {
+                    console.log('Does this ever happen any more?')
+                    var nx = myBlock.x + dx;
+                    var ny = myBlock.y + dy;
+                } else {
+                    var nx = myBlock.container.x + dx;
+                    var ny = myBlock.container.y + dy;
+                }
+                this.moveBlock(cblk, nx, ny);
+            } else {
+                var nx = this.blockList[cblk].container.x + dx;
+                var ny = this.blockList[cblk].container.y + dy;
+                this.moveBlock(blk, nx, ny);
+            }
 
-            // Recurse on connected blocks.
-            this.adjustDocks(cblk);
+            if (c > 0) {
+                // Recurse on connected blocks.
+                this.adjustDocks(cblk);
+            }
         }
     }
 

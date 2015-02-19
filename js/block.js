@@ -490,6 +490,10 @@ function Block(protoblock, blocks) {
         return this.protoblock.style == 'twoarg';
     }
 
+    this.isTwoArgBooleanBlock = function() {
+        return ['equal', 'greater', 'less'].indexOf(this.name) != -1;
+    }
+
     this.isClampBlock = function() {
         return this.protoblock.style == 'clamp' || this.isDoubleClampBlock();
     }

@@ -190,7 +190,6 @@ function Block(protoblock, blocks) {
         // blocks, this is the primary label; for parameter blocks,
         // this is used to display the current block value.
         this.text = new createjs.Text('', '20px Sans', '#000000');
-        var doubleExpandable = this.blocks.doubleExpandable;
 
         this.generateArtwork(true, []);
     }
@@ -552,7 +551,7 @@ function Block(protoblock, blocks) {
     this.loadThumbnail = function (imagePath) {
         // Load an image thumbnail onto block.
         var thisBlock = this.blocks.blockList.indexOf(this);
-        var myBlock = this.blocks.blockList[thisBlock];
+        var myBlock = this;
         if (this.blocks.blockList[thisBlock].value == null && imagePath == null) {
             console.log('loadThumbnail: no image to load?');
             return;
@@ -590,7 +589,8 @@ function Block(protoblock, blocks) {
     this.doOpenMedia = function (myBlock) {
         var fileChooser = docById('myOpenAll');
         var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
-        fileChooser.addEventListener('change', function(event) {
+
+        readerAction = function (event) {
             var reader = new FileReader();
             reader.onloadend = (function() {
                 if (reader.result) {
@@ -603,16 +603,16 @@ function Block(protoblock, blocks) {
                     myBlock.blocks.updateBlockText(thisBlock);
                 }
             });
-
             if (myBlock.name == 'media') {
                 reader.readAsDataURL(fileChooser.files[0]);
             }
             else {
                 reader.readAsText(fileChooser.files[0]);
             }
+            fileChooser.removeEventListener('change', readerAction);
+	}
 
-        }, false);
-
+        fileChooser.addEventListener('change', readerAction, false);
         fileChooser.focus();
         fileChooser.click();
     }

@@ -1155,7 +1155,6 @@ define(function(require) {
                 ['step', doStepButton],
                 ['stop-turtle', doStopButton],
                 ['clear', allClear],
-                ['planet', doOpenSamples],
                 ['palette', changePaletteVisibility],
                 ['hide-blocks', changeBlockVisibility],
                 ['collapse-blocks', toggleCollapsibleStacks],
@@ -1203,10 +1202,12 @@ define(function(require) {
 
             // Misc. other buttons
             var menuNames = [
+                ['planet', doOpenSamples],
                 ['paste-disabled', pasteStack],
                 ['Cartesian', doCartesian],
                 ['polar', doPolar],
                 ['plugin', doOpenPlugin],
+                ['empty-trash', deleteBlocksBox],
                 ['restore-trash', restoreTrash]
             ];
 

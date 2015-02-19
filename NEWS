@@ -233,6 +233,8 @@
   * fixed problem with expanding booleans not docking to parents
   * fixed race condition with collapsibles
   * fixed problem with start block turtle decoration positioning
+  * removed event handler after load so that when you change the image
+    associted a media block, other media blocks don't also change
 
 TODO:
   * music blocks plugin
@@ -260,4 +262,3 @@ KNOWN BUGS:
   * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
   * not all blocks highlight when using step-by-step mode
-  * when you change the image of a media block, all media blocks change the image

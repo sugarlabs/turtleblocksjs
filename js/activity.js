@@ -815,6 +815,10 @@ define(function(require) {
             var p = localStorage.currentProject;
             localStorage['SESSION' + p] = prepareExport();
 
+            if (isSVGEmpty(turtles)) {
+                return;
+            }
+
             var img = new Image();
             var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
             img.onload = function() {

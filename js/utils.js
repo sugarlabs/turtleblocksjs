@@ -113,6 +113,16 @@ function doSVG(canvas, logo, turtles, width, height, scale) {
     return svg;
 }
 
+function isSVGEmpty(turtles) {
+    for (var turtle in turtles.turtleList) {
+        turtles.turtleList[turtle].closeSVG();
+        if (turtles.turtleList[turtle].svgOutput !== '') {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 function fileExt(file) {
     var parts = file.split('.');

@@ -16,6 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 APIKEY = '3tgTzMXbbw6xEKX7';
+EMPTYIMAGE = 'data:image/svg+xml;base64,' + btoa('<svg \
+              xmlns="http://www.w3.org/2000/svg" width="320" height="240" \
+              viewBox="0 0 320 240"></svg>')
 
 window.server = '/server/';
 jQuery.ajax('/server/').error(function () {
@@ -100,12 +103,18 @@ function PlanetModel(controller) {
         this.localProjects = [];
         var l = JSON.parse(localStorage.allProjects);
         l.forEach(function (p, i) {
+            var img = localStorage['SESSIONIMAGE' + p];
+            if (img === 'undefined') {
+                img = EMPTYIMAGE;
+            }
+
             var e = {
                 title: p,
-                img: localStorage['SESSIONIMAGE' + p],
+                img: img,
                 data: localStorage['SESSION' + p],
                 current: p === localStorage.currentProject
             }
+
             if (e.current) {
                 me.localProjects.unshift(e);
             } else {

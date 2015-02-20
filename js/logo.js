@@ -51,6 +51,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.cameraID = null;
     this.stopTurtle = false;
     this.lastKeyCode = null;
+    this.saveTimeout = 0;
 
     // When running in step-by-step mode, the next command to run is
     // queued here.
@@ -966,6 +967,13 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             logo.stage.setChildIndex(logo.turtles.turtleList[turtle].container, i);
             logo.refreshCanvas();
         }
+
+        clearTimeout(this.saveTimeout);
+        var me = this;
+        this.saveTimeout = setTimeout(function () {
+            // Save at the end to save an image
+            me.saveLocally();
+        }, DEFAULTDELAY * 1.5)
     }
 
     this.getTargetTurtle = function(args) {

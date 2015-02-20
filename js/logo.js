@@ -17,7 +17,7 @@ var TURTLESTEP = -1;  // Run in step-by-step mode
 function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
               getStageY, getStageMouseDown, getCurrentKeyCode,
-              clearCurrentKeyCode, meSpeak) {
+              clearCurrentKeyCode, meSpeak, saveLocally) {
 
     this.canvas = canvas;
     this.blocks = blocks;
@@ -36,6 +36,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.getCurrentKeyCode = getCurrentKeyCode;
     this.clearCurrentKeyCode = clearCurrentKeyCode;
     this.meSpeak = meSpeak;
+    this.saveLocally = saveLocally;
 
     this.evalFlowDict = {};
     this.evalArgDict = {};
@@ -52,6 +53,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.cameraID = null;
     this.stopTurtle = false;
     this.lastKeyCode = null;
+    this.saveTimeout = 0;
 
     // When running in step-by-step mode, the next command to run is
     // queued here.
@@ -221,16 +223,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.runLogoCommands = function(startHere) {
         // Save the state before running.
-        // FIXME: Where is Storage defined?
-        if (typeof(Storage) !== 'undefined') {
-            try {
-                localStorage.setItem('sessiondata', this.prepareExport());
-            } catch (e) {
-                console.log(e);
-            }
-        } else {
-            console.log('Sorry! No Web storage support.')
-        }
+        this.saveLocally();
 
         this.stopTurtle = false;
         this.blocks.unhighlightAll();
@@ -999,6 +992,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             logo.stage.setChildIndex(logo.turtles.turtleList[turtle].container, i);
             logo.refreshCanvas();
         }
+
+        clearTimeout(this.saveTimeout);
+        var me = this;
+        this.saveTimeout = setTimeout(function () {
+            // Save at the end to save an image
+            me.saveLocally();
+        }, DEFAULTDELAY * 1.5)
     }
 
     this.getTargetTurtle = function(args) {
@@ -1365,10 +1365,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         /// Change body background in DOM to current color.
         var body = document.body;
         if (turtle == -1) {
-            body.style.background = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
+            var c = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
         } else {
-            body.style.background = this.turtles.turtleList[turtle].canvasColor;
+            var c = this.turtles.turtleList[turtle].canvasColor;
         }
+
+        body.style.background = c;
+        document.querySelector('.canvasHolder').style.background = c;
         this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
     }
 

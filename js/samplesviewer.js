@@ -1,315 +1,379 @@
-// Copyright (c) 2014, 2015 Walter Bender
-//
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 3 of the License, or
-// (at your option) any later version.
-//
-// You should have received a copy of the GNU General Public License
-// along with this library; if not, write to the Free Software
-// Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
+/*
+Copyright (C) 2015 Sam Parkinson
 
-// FIXME: Use busy cursor
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+APIKEY = '3tgTzMXbbw6xEKX7';
+EMPTYIMAGE = 'data:image/svg+xml;base64,' + btoa('<svg \
+              xmlns="http://www.w3.org/2000/svg" width="320" height="240" \
+              viewBox="0 0 320 240"></svg>')
+
+window.server = '/server/';
+jQuery.ajax('/server/').error(function () {
+    // TODO: Fix cors on t.sl.o
+    server = 'https://cors-anywhere.herokuapp.com/turtle.sugarlabs.org/server/';
+});
+
+function PlanetModel(controller) {
+    this.controller = controller;
+    this.localProjects = [];
+    this.globalProjects = [];
+    this.localChanged = false;
+    this.globalImagesCache = {};
+    this.updated = function () {};
+    this.stop = false;
+    var me = this;
+
+    this.start = function (cb) {
+        me.updated = cb;
+        me.stop = false;
+
+        this.redoLocalStorageData();
+        me.updated();
+
+        this.downloadWorldWideProjects();
+    }
+
+    this.downloadWorldWideProjects = function () {
+        jQuery.ajax({
+            url: server,
+            headers: {
+                'x-api-key' : APIKEY
+            }
+        }).done(function (l) {
+            me.globalProjects = [];
+            me.stop = false;
+
+            var todo = [];
+            l.forEach(function (name, i) {
+                if (name.indexOf('.b64') !== -1) 	{
+                    todo.push(name);
+                }
+            });
+
+            me.getImages(todo);
+        });
+    }
+
+    this.getImages = function (todo) {
+        if (me.stop === true) {
+            return;
+        }
+
+        var image = todo.pop();
+        if (image === undefined) {
+            return;
+        }
+        var name = image.replace('.b64', '');
+
+        if (me.globalImagesCache[image] !== undefined) {
+            me.globalProjects.push({title: name,
+                                    img: me.globalImagesCache[image]});
+            me.updated();
+            me.getImages(todo);
+        } else {
+            jQuery.ajax({
+  	            url: server + image,
+                headers: {
+                    'x-api-key' : '3tgTzMXbbw6xEKX7'
+                },
+                dataType: 'text'
+            }).done(function (d) {
+                me.globalImagesCache[image] = d;
+                me.globalProjects.push({title: name, img: d, url: image});
+                me.updated();
+                me.getImages(todo);
+            });
+      }
+    }
+
+    this.redoLocalStorageData = function () {
+        this.localProjects = [];
+        var l = JSON.parse(localStorage.allProjects);
+        l.forEach(function (p, i) {
+            var img = localStorage['SESSIONIMAGE' + p];
+            if (img === 'undefined') {
+                img = EMPTYIMAGE;
+            }
+
+            var e = {
+                title: p,
+                img: img,
+                data: localStorage['SESSION' + p],
+                current: p === localStorage.currentProject
+            }
+
+            if (e.current) {
+                me.localProjects.unshift(e);
+            } else {
+                me.localProjects.push(e);
+            }
+        });
+        this.localChanged = true;
+    }
+
+    this.uniqueName = function (base) {
+        var l = JSON.parse(localStorage.allProjects);
+        if (l.indexOf(base) === -1) {
+            return base;
+        }
+
+        var i = 1;
+        while (true) {
+            var name = base + ' '  + i;
+            if (l.indexOf(name) === -1) {
+                return name;
+            }
+            i++;
+        }
+    }
+
+    this.newProject = function () {
+        var name = this.uniqueName('My Project');
+        me.prepLoadingProject(name);
+        this.controller.sendAllToTrash(true, true);
+        me.stop = true;
+    }
+
+    this.renameProject = function (oldName, newName, current) {
+        if (current) {
+            localStorage.currentProject = newName;
+        }
+
+        var l = JSON.parse(localStorage.allProjects);
+        l[l.indexOf(oldName)] = newName;
+        localStorage.allProjects = JSON.stringify(l);
+
+        localStorage['SESSIONIMAGE' + newName] =
+            localStorage['SESSIONIMAGE' + oldName];
+        localStorage['SESSION' + newName] = localStorage['SESSION' + oldName];
+
+        localStorage['SESSIONIMAGE' + oldName] = undefined;
+        localStorage['SESSION' + oldName] = undefined;
+
+        me.redoLocalStorageData();
+    }
+
+    this.delete = function (name) {
+        var l = JSON.parse(localStorage.allProjects);
+        l.splice(l.indexOf(name), 1);
+        localStorage.allProjects = JSON.stringify(l);
+
+        localStorage['SESSIONIMAGE' + name] = undefined;
+        localStorage['SESSION' + name] = undefined;
+
+        me.redoLocalStorageData();
+        me.updated();
+    }
+
+    this.open = function (name, data) {
+        localStorage.currentProject = name;
+        me.controller.sendAllToTrash(false, true);
+        me.controller.loadRawProject(data);
+        me.stop = true;
+    }
+
+    this.prepLoadingProject = function (name) {
+        localStorage.currentProject = name;
+
+        var l = JSON.parse(localStorage.allProjects);
+        l.push(name);
+        localStorage.allProjects = JSON.stringify(l);
+    }
+
+    this.load = function (url, name) {
+        me.prepLoadingProject(name);
+        me.controller.sendAllToTrash(false, false);
+
+        jQuery.ajax({
+            url: server + url,
+            headers: {
+                'x-api-key' : '3tgTzMXbbw6xEKX7'
+            },
+            dataType: 'text'
+        }).done(function (d) {
+            me.controller.loadRawProject(d);
+            me.stop = true;
+        });
+    }
+
+    this.publish = function (name, data, image) {
+        name = name.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g,
+                            '').replace(/ /g, '_');
+        httpPost(name + '.tb', data);
+        httpPost(name + '.b64', image);
+        me.downloadWorldWideProjects();
+    }
+}
+
+function PlanetView(model, controller) {
+    this.model = model;
+    this.controller = controller;
+    var me = this;  // for future reference
+
+    document.querySelector('.planet .new')
+            .addEventListener('click', function () {
+        me.model.newProject();
+        me.controller.hide();
+    });
+
+    document.querySelector('#myOpenFile')
+            .addEventListener('change', function(event) {
+        me.controller.hide();
+    });
+    document.querySelector('.planet .open')
+            .addEventListener('click', function () {
+        document.querySelector('#myOpenFile').focus();
+        document.querySelector('#myOpenFile').click();
+        window.scroll(0, 0);
+    });
+
+    this.update = function () {
+        // This is werid
+        var model = this;
+
+        if (model.localChanged) {
+            html = '';
+            model.localProjects.forEach(function (project, i) {
+                // TODO: Use template strings when they are supported
+                html = html + '<li data=\'' + project.data + '\' title="' + project.title + '" current="' + project.current + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><input type="text" value="' + project.title + '"/><br/><img class="open icon" title="Open" alt="Open" src="icons/edit.svg" /><img class="delete icon" title="Delete" alt="Delete" src="icons/delete.svg" /><img class="publish icon" title="Publish" alt="Publish" src="icons/publish.svg" /><img class="download icon" title="Download" alt="Download" src="icons/download.svg" /></li>';
+            });
+            document.querySelector('.planet .content.l').innerHTML = html;
+
+            var eles = document.querySelectorAll('.planet .content.l li');
+            Array.prototype.forEach.call(eles, function (ele, i) {
+                ele.querySelector('.open')
+                    .addEventListener('click', me.open(ele));
+                ele.querySelector('.publish')
+                    .addEventListener('click', me.publish(ele));
+                ele.querySelector('.download')
+                   .addEventListener('click', me.download(ele));
+                ele.querySelector('.delete')
+                   .addEventListener('click', me.delete(ele));
+                ele.querySelector('input')
+                   .addEventListener('change', me.input(ele));
+            });
+            model.localChanged = false;
+        }
+
+        html = '';
+        model.globalProjects.forEach(function (project, i) {
+            html += '<li url="' + project.url + '" title="' + project.title + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><span>' + project.title + '</span><br/><img class="download icon" title="Download" alt="Download" src="icons/download.svg" /></div></li>';
+        });
+        document.querySelector('.planet .content.w').innerHTML = html;
+
+        var eles = document.querySelectorAll('.planet .content.w li');
+        Array.prototype.forEach.call(eles, function (ele, i) {
+            ele.addEventListener('click', me.load(ele))
+        });
+    }
+
+    this.load = function (ele) {
+        return function () {
+            document.querySelector('#loding-image-container')
+                    .style.display = '';
+            var url = ele.attributes.url.value.replace('.b64', '.tb');
+            me.model.load(url, ele.attributes.title.value);
+            me.controller.hide();
+        }
+    }
+
+    this.publish = function (ele) {
+        return function () {
+            document.querySelector('#loding-image-container')
+                    .style.display = '';
+            me.model.publish(ele.attributes.title.value,
+                             ele.attributes.data.value,
+                             ele.querySelector('img').src);
+            document.querySelector('#loding-image-container')
+                    .style.display = 'none';
+        }
+    }
+
+    this.download = function (ele) {
+        return function () {
+            download(ele.attributes.title.value + '.tb',
+                'data:text/plain;charset=utf-8,' + ele.attributes.data.value);
+        }
+    }
+
+    this.open = function (ele) {
+        return function () {
+            if (ele.attributes.current.value === 'true') {
+                me.controller.hide();
+                return;
+            }
+            
+            me.model.open(ele.attributes.title.value,
+                          ele.attributes.data.value);
+            me.controller.hide();
+        }
+    }
+
+    this.delete = function (ele) {
+        return function () {
+            var title = ele.attributes.title.value;
+            me.model.delete(title);
+        }
+    }
+
+    this.input = function (ele) {
+        return function () {
+            var newName = ele.querySelector('input').value;
+            var oldName = ele.attributes.title.value;
+            var current = ele.attributes.current.value === 'true';
+            me.model.renameProject(oldName, newName, current);
+            ele.attributes.title.value = newName;
+        }
+    }
+}
 
 // A viewer for sample projects
-function SamplesViewer(canvas, stage, refreshCanvas, close, load, trash) {
-    this.canvas = canvas;
+function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash) {
     this.stage = stage;
-    this.refreshCanvas = refreshCanvas;
-    this.closeViewer = close;
     this.sendAllToTrash = trash;
     this.loadProject = load;
-    this.dict = {};
-    this.projectFiles = [];
-    this.container = null;
-    this.prev = null;
-    this.next = null;
-    this.page = 0; // 4x4 image matrix per page
-    this.server = true;
+    this.loadRawProject = loadRawProject;
+    var me = this;  // for future reference
+
+    this.model = new PlanetModel(this);
+    this.view = new PlanetView(this.model, this);
 
     this.setServer = function(server) {
         this.server = server;
     }
 
     this.hide = function() {
-        if (this.container != null) {
-            this.container.visible = false;
-            this.refreshCanvas();
-        }
+        document.querySelector('.planet').style.display = 'none';
+        document.querySelector('body').classList.remove('samples-shown');
+        document.querySelector('.canvasHolder').classList.remove('hide');
+        me.stage.enableDOMEvents(true);
+        window.scroll(0, 0);
     }
 
-    this.show = function(scale) {
-        this.scale = scale;
-        if (this.server) {
-            try {
-                var rawData = httpGet();
-                var obj = JSON.parse(rawData);
-                // console.log('json parse: ' + obj);
-                // Look for base64-encoded png
-                for (var file in obj) {
-                    if (fileExt(obj[file]) == 'b64') {
-                        var name = fileBasename(obj[file]);
-                        if (this.projectFiles.indexOf(name) == -1) {
-                            this.projectFiles.push(name);
-                        }
-                    }
-                }
-                // and corresponding .tb files
-                for (var file in this.projectFiles) {
-                    var tbfile = this.projectFiles[file] + '.tb';
-                    if (!tbfile in obj) {
-                        this.projectFiles.remove(this.projectFiles[file]);
-                    }
-                }
-            } catch (e) {
-                console.log(e);
-                return false;
-            }
-        } else {
-            // FIXME: grab files from a local server?
-            this.projectFiles = SAMPLES;
-        }
-        console.log('found these projects: ' + this.projectFiles.sort());
+    this.show = function() {
+        document.querySelector('.planet').style.display = '';
+        document.querySelector('body').classList.add('samples-shown');
+        document.querySelector('.canvasHolder').classList.add('hide');
+        setTimeout(function () {
+            // Time to release the mouse
+            me.stage.enableDOMEvents(false);
+        }, 250);
+        window.scroll(0, 0);
 
-        if (this.container == null) {
-            this.container = new createjs.Container();
-            this.stage.addChild(this.container);
-            this.container.x = Math.floor(((this.canvas.width / scale) - 650) / 2);
-            this.container.y = 27;
-
-            function processBackground(viewer, name, bitmap, extras) {
-                viewer.container.addChild(bitmap);
-
-                function processPrev(viewer, name, bitmap, extras) {
-                    viewer.prev = bitmap;
-                    viewer.container.addChild(viewer.prev);
-                    viewer.prev.x = 270;
-                    viewer.prev.y = 535;
-
-                    function processNext(viewer, name, bitmap, scale) {
-                        viewer.next = bitmap;
-                        viewer.container.addChild(viewer.next);
-                        viewer.next.x = 325;
-                        viewer.next.y = 535;
-                        viewer.container.visible = true;
-                        viewer.refreshCanvas();
-                        viewer.completeInit();
-                        loadThumbnailContainerHandler(viewer);
-                        return true;
-                    }
-                    makeViewerBitmap(viewer, NEXTBUTTON, 'viewer', processNext, null);
-                }
-                makeViewerBitmap(viewer, PREVBUTTON, 'viewer', processPrev, null);
-            }
-            makeViewerBitmap(this, BACKGROUND, 'viewer', processBackground, null);
-        } else {
-            this.container.visible = true;
-            this.refreshCanvas();
-            this.completeInit();
-            return true;
-        }
+        this.model.start(this.view.update);
+        return true;
     }
-
-    this.downloadImage = function(p, prepareNextImage) {
-        if (this.server) {
-            var header = ''; // 'data:image/png;base64,';
-            var name = this.projectFiles[p] + '.b64';
-            // console.log('getting ' + name + ' from server');
-            var data = header + httpGet(name);
-        } else {
-            var header = 'data:image/svg+xml;utf8,';
-            var name = this.projectFiles[p] + '.svg';
-            // console.log('getting ' + name + ' from samples');
-            var data = header + SAMPLESSVG[name];
-        }
-        var image = new Image();
-        var viewer = this;
-
-        image.onload = function() {
-            bitmap = new createjs.Bitmap(data);
-            bitmap.scaleX = 0.5;
-            bitmap.scaleY = 0.5;
-            viewer.container.addChild(bitmap);
-            lastChild = last(viewer.container.children);
-            viewer.container.swapChildren(bitmap, lastChild);
-
-            viewer.dict[viewer.projectFiles[p]] = bitmap;
-            x = 5 + (p % 4) * 160;
-            y = 55 + Math.floor((p % 16) / 4) * 120;
-            viewer.dict[viewer.projectFiles[p]].x = x;
-            viewer.dict[viewer.projectFiles[p]].y = y;
-            viewer.dict[viewer.projectFiles[p]].visible = true;
-            viewer.refreshCanvas();
-            if (prepareNextImage != null) {
-                prepareNextImage(viewer, p + 1);
-            }
-        }
-        image.src = data;
-    }
-
-    this.completeInit = function() {
-        var p = 0;
-        this.prepareNextImage(this, p);
-    }
-
-    this.prepareNextImage = function(viewer, p) {
-        // TODO: this.projectFiles.sort()
-        // Only download the images on the first page.
-        if (p < viewer.projectFiles.length && p < (viewer.page * 16 + 16)) {
-            if (viewer.projectFiles[p] in viewer.dict) {
-                x = 5 + (p % 4) * 160;
-                y = 55 + Math.floor((p % 16) / 4) * 120;
-                viewer.dict[viewer.projectFiles[p]].x = x;
-                viewer.dict[viewer.projectFiles[p]].y = y;
-                viewer.dict[viewer.projectFiles[p]].visible = true;
-                viewer.prepareNextImage(viewer, p + 1)
-            } else {
-                viewer.downloadImage(p, viewer.prepareNextImage);
-            }
-        } else {
-            if (viewer.page == 0) {
-                viewer.prev.visible = false;
-            }
-            if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
-                viewer.next.visible = true;
-            }
-            viewer.refreshCanvas();
-        }
-    }
-}
-
-
-function hideCurrentPage(viewer) {
-    var min = viewer.page * 16;
-    var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
-    // Hide the current page.
-    for (var p = min; p < max; p++) {
-        viewer.dict[viewer.projectFiles[p]].visible = false;
-    }
-    // Go back to previous page.
-    viewer.page -= 1;
-    if (viewer.page == 0) {
-        viewer.prev.visible = false;
-    }
-    if ((viewer.page + 1) * 16 < viewer.projectFiles.length) {
-        viewer.next.visible = true;
-    }
-    // Show the current page.
-    var min = viewer.page * 16;
-    var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
-    for (var p = min; p < max; p++) {
-        viewer.dict[viewer.projectFiles[p]].visible = true;
-    }
-    viewer.refreshCanvas();
-}
-
-
-function showNextPage(viewer) {
-    var min = viewer.page * 16;
-    var max = Math.min(viewer.projectFiles.length, (viewer.page + 1) * 16);
-    // Hide the current page.
-    for (var p = min; p < max; p++) {
-        viewer.dict[viewer.projectFiles[p]].visible = false;
-    }
-    // Advance to next page.
-    viewer.page += 1;
-    viewer.prev.visible = true;
-    if ((viewer.page + 1) * 16 + 1 > viewer.projectFiles.length) {
-        viewer.next.visible = false;
-    }
-    viewer.prepareNextImage(viewer, max);
-    viewer.refreshCanvas();
-}
-
-
-function viewerClicked(viewer, event) {
-    var x = (event.stageX / viewer.scale) - viewer.container.x;
-    var y = (event.stageY / viewer.scale) - viewer.container.y;
-    if (x > 600 && y < 55) {
-        console.log('closing viewer');
-        viewer.hide();
-        viewer.closeViewer();
-    } else if (y > 535) {
-        if (viewer.prev.visible && x < 325) {
-            hideCurrentPage(viewer);
-        } else if (viewer.next.visible && x > 325) {
-            showNextPage(viewer)
-        }
-    } else {
-        // Select an entry
-        var col = Math.floor((x - 5) / 160);
-        var row = Math.floor((y - 55) / 120);
-        var p = row * 4 + col + 16 * viewer.page;
-        if (p < viewer.projectFiles.length) {
-            viewer.hide();
-            viewer.closeViewer();
-            viewer.sendAllToTrash(false);
-            viewer.loadProject(viewer.projectFiles[p] + '.tb');
-        }
-    }
-}
-
-
-function loadThumbnailContainerHandler(viewer) {
-    var hitArea = new createjs.Shape();
-    var w = 650;
-    var h = 590;
-    var startX, startY, endX, endY;
-    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, w, h);
-    hitArea.x = 0;
-    hitArea.y = 0;
-    viewer.container.hitArea = hitArea;
-
-    var locked = false;
-
-    viewer.container.on('click', function(event) {
-        // We need a lock to "debouce" the click.
-        if (locked) {
-            console.log('debouncing click');
-            return;
-        }
-        locked = true;
-        setTimeout(function() {
-            locked = false;
-        }, 500);
-        viewerClicked(viewer, event)
-    });
-
-    viewer.container.on('mousedown', function(event) {
-        startX = event.stageX;
-        startY = event.stageY;
-        locked = true;
-    });
-
-    viewer.container.on('pressup', function(event) {
-        endX = event.stageX;
-        endY = event.stageY;
-        if (endY > startY + 30 || endX > startX + 30) {
-            // Down or right
-            if (viewer.next.visible) {
-                showNextPage(viewer);
-            }
-        } else if (endY < startY - 30 || endX < startX - 30) {
-            // Up or left
-            if (viewer.prev.visible) {
-                hideCurrentPage(viewer);
-            }
-        } else {
-            locked = false;
-            viewerClicked(viewer, event)
-        }
-    });
-}
-
-
-function makeViewerBitmap(viewer, data, name, callback, extras) {
-    // Async creation of bitmap from SVG data
-    // Works with Chrome, Safari, Firefox (untested on IE)
-    var img = new Image();
-    img.onload = function() {
-        bitmap = new createjs.Bitmap(img);
-        callback(viewer, name, bitmap, extras);
-    }
-    img.src = 'data:image/svg+xml;base64,' + window.btoa(
-        unescape(encodeURIComponent(data)));
 }

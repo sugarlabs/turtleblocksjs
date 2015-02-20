@@ -18,14 +18,6 @@
     <link rel="prefetch" type="application/l10n" href="./localization.ini" />
     <link rel=" stylesheet" type="text/css" href="css/joyride-2.1.css">
     <script data-main="js/loader" src="lib/require.js"> </script>
-    <style>
-    .helpDiv {
-          float: right;
-          position: absolute;
-          margin-top: 57px;
-          z-index: -1;
-    }
-    </style>
 
     <link rel="manifest" href="android_chrome_manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -33,7 +25,7 @@
     <meta name="theme-color" content="#96D3F3">
 </head>
 
-<body id="body" style="overflow: hidden; background: #96D3F3;">
+<body id="body" style="background: #96D3F3;">
 
     <script>
       window.fbAsyncInit = function() {
@@ -72,6 +64,28 @@
         <!-- <h1>Make stacks of blocks; click on the rabbit to run them.</h1> -->
     </div>
 
+    <div class="planet" style="display: none;">
+      <nav>
+        <div class="nav-container">
+          <img src="icons/planet-button.svg" class="logo" />
+          <h1>Planet</h1>
+          <ul>
+            <li class="new"><img src="icons/add.svg" /></li>
+            <li class="open"><img src="icons/folder-open.svg" /></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="nav-spacer"></div>
+      <div class="planet-content">
+        <h2>On my device</h2>
+        <ul class="content l"></ul>
+
+        <h2>Worldwide</h2>
+        <ul class="content w"></ul>
+      </div>
+    </div>
+
     <div class="canvasHolder">
         <!-- Help buttons! -->
         <div class='helpDiv' id="paletteInfo" style="margin-left: 55px"></div>
@@ -107,11 +121,10 @@
           <input class="file" type="file" id="myOpenFile" accept=".ta, .tb"/>
           <input class="file" type="file" id="myOpenPlugin" accept=".json"/>
           <input class="file" type="file" id="myOpenAll" />
-          <input class="savename" type="text" id="mySaveName" />
   <!-- <input class="file" type="file" id="mySaveFile" accept=".ta, .tb" nwsaveas="turtle-project.tb" /> -->
         </div>
         <div id="audio"></div>
-        <div id='tourData'></div>
+        <div id="tourData"></div>
     </div>
 
 </body>

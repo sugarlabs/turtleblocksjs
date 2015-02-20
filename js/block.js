@@ -610,6 +610,8 @@ function Block(protoblock, blocks) {
         var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
 
         readerAction = function (event) {
+            window.scroll(0, 0)
+
             var reader = new FileReader();
             reader.onloadend = (function() {
                 if (reader.result) {
@@ -634,6 +636,7 @@ function Block(protoblock, blocks) {
         fileChooser.addEventListener('change', readerAction, false);
         fileChooser.focus();
         fileChooser.click();
+        window.scroll(0, 0)
     }
 
     this.collapseToggle = function () {

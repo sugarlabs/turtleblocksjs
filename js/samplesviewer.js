@@ -23,7 +23,7 @@ EMPTYIMAGE = 'data:image/svg+xml;base64,' + btoa('<svg \
 window.server = '/server/';
 jQuery.ajax('/server/').error(function () {
     // TODO: Fix cors on t.sl.o
-    server = 'https://cors-anywhere.herokuapp.com/turtle.sugarlabs.org/server/';
+    server = 'https://turtle.sugarlabs.org/server/';
 });
 
 function PlanetModel(controller) {

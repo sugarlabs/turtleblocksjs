@@ -1211,7 +1211,6 @@ define(function(require) {
                 ['Cartesian', doCartesian],
                 ['polar', doPolar],
                 ['plugin', doOpenPlugin],
-                ['empty-trash', deleteBlocksBox],
                 ['restore-trash', restoreTrash]
             ];
 

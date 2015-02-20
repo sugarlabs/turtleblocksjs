@@ -83,9 +83,8 @@ define(function(require) {
         var clearBox;
         var thumbnails;
         var buttonsVisible = true;
+        var headerContainer = null;
         var toolbarButtonsVisible = true;
-        var openContainer = null;
-        var closeContainer = null;
         var menuButtonsVisible = false;
         var menuContainer = null;
         var currentKey = '';
@@ -650,7 +649,11 @@ define(function(require) {
 
             var smallSide = Math.min(w, h);
             if (smallSide < cellSize * 10) {
-                scale = smallSide / (cellSize * 10);
+                if (w < cellSize * 10) {
+                    scale = smallSide / (cellSize * 10);
+                } else {
+                    scale = Math.max(smallSide / (cellSize * 10), 0.75);
+                }
             } else {
                 if (w > h) {
                     scale = w / 1200;
@@ -673,7 +676,7 @@ define(function(require) {
             blocks.setScale(scale);
             palettes.setScale(scale);
             trashcan.resizeEvent(scale);
-            setupRightMenu(scale);
+            setupAndroidToolbar();
 
             // Reposition coordinate grids.
             cartesianBitmap.x = (canvas.width / (2 * scale)) - (600);
@@ -782,7 +785,7 @@ define(function(require) {
 
         function onStopTurtle() {
             // TODO: plugin support
-            if (buttonsVisible && !toolbarButtonsVisible) {
+            if (!buttonsVisible) {
                 hideStopButton();
             }
         }
@@ -790,7 +793,7 @@ define(function(require) {
         function onRunTurtle() {
             // TODO: plugin support
             // If the stop button is hidden, show it.
-            if (buttonsVisible && !toolbarButtonsVisible) {
+            if (!buttonsVisible) {
                 showStopButton();
             }
         }
@@ -1133,8 +1136,8 @@ define(function(require) {
         }
 
         function showStopButton() {
-            stopTurtleContainer.x = openContainer.x;
-            stopTurtleContainer.y = openContainer.y;
+            stopTurtleContainer.x = onscreenButtons[0].x;
+            stopTurtleContainer.y = onscreenButtons[0].y;
             stopTurtleContainer.visible = true;
         }
 
@@ -1159,8 +1162,18 @@ define(function(require) {
         }
 
         function setupAndroidToolbar() {
-            var toolbar = docById('main-toolbar');
-            toolbar.style.display = 'none';
+            if (headerContainer !== undefined) {
+                stage.removeChild(headerContainer);
+                for (i in onscreenButtons) {
+                    stage.removeChild(onscreenButtons[i]);
+                }
+            }
+
+            headerContainer = new createjs.Shape();
+            headerContainer.graphics.f('#2196f3').r(0, 0,
+                screen.width / scale, cellSize);
+            headerContainer.shadow = new createjs.Shadow('#777', 0, 2, 2);
+            stage.addChild(headerContainer);
 
             // Buttons used when running turtle programs
             var buttonNames = [
@@ -1181,16 +1194,7 @@ define(function(require) {
             var dx = btnSize;
             var dy = 0;
 
-            closeContainer = makeButton('close-toolbar-button', x, y, btnSize);
-            loadButtonDragHandler(closeContainer, x, y, doCloseToolbarButton);
-
-            openContainer = makeButton('open-toolbar-button', x, y, btnSize);
-            loadButtonDragHandler(openContainer, x, y, doOpenToolbarButton);
-            openContainer.visible = false;
-
             for (name in buttonNames) {
-                x += dx;
-                y += dy;
                 var container = makeButton(buttonNames[name][0] + '-button',
                     x, y, btnSize);
                 loadButtonDragHandler(container, x, y, buttonNames[name][1]);
@@ -1201,6 +1205,9 @@ define(function(require) {
                     stopTurtleContainerX = x;
                     stopTurtleContainerY = y;
                 }
+
+                x += dx;
+                y += dy;
             }
 
             setupRightMenu(scale);
@@ -1337,82 +1344,15 @@ define(function(require) {
             }
         }
 
-        function doOpenToolbarButton() {
-            doOpenAnimation(0);
-        }
-
-        function doOpenAnimation(count) {
-            if (count < 10) {
-                var bitmap = last(openContainer.children);
-                bitmap.rotation = (count * 10) % 360;
-                bitmap.updateCache();
-                update = true;
-                setTimeout(function() {
-                    doOpenAnimation(count + 1);
-                }, 50);
-            } else {
-                openContainer.visible = false;
-                closeContainer.visible = true;
-                toolbarButtonsVisible = true;
-                // Make sure stop-turtle button is in the right place.
-                stopTurtleContainer.x = stopTurtleContainerX;
-                stopTurtleContainer.y = stopTurtleContainerY;
-                for (button in onscreenButtons) {
-                    onscreenButtons[button].visible = true;
-                }
-                update = true;
-            }
-        }
-
-        function doCloseToolbarButton() {
-            openContainer.visible = true;
-            closeContainer.visible = false;
-            toolbarButtonsVisible = false;
-            stopTurtleContainer.x = closeContainer.x;
-            stopTurtleContainer.y = closeContainer.y;
-            for (button in onscreenButtons) {
-                onscreenButtons[button].visible = false;
-            }
-            update = true;
-        }
-
         function toggleToolbar() {
-            if (buttonsVisible) {
-                buttonsVisible = false;
-                if (onAndroid || !onXO) {
-                    closeContainer.visible = false;
-                    openContainer.visible = false;
-                    menuContainer.visible = false;
-                    for (button in onscreenButtons) {
-                        onscreenButtons[button].visible = false;
-                    }
-                    for (button in onscreenMenu) {
-                        onscreenMenu[button].visible = false;
-                    }
-                } else {
-                    var toolbar = docById('main-toolbar');
-                    toolbar.style.display = 'none';
-                }
-            } else {
-                buttonsVisible = true;
-                if (onAndroid || !onXO) {
-                    if (toolbarButtonsVisible) {
-                        closeContainer.visible = true;
-                        for (button in onscreenButtons) {
-                            onscreenButtons[button].visible = true;
-                        }
-                    }
-                    if (menuButtonsVisible) {
-                        for (button in onscreenMenu) {
-                            onscreenMenu[button].visible = true;
-                        }
-                    }
-                    openContainer.visible = true;
-                    menuContainer.visible = true;
-                } else {
-                    var toolbar = docById('main-toolbar');
-                    toolbar.style.display = 'inline';
-                }
+            buttonsVisible = !buttonsVisible;
+            menuContainer.visible = buttonsVisible;
+            headerContainer.visible = buttonsVisible;
+            for (button in onscreenButtons) {
+                onscreenButtons[button].visible = buttonsVisible;
+            }
+            for (button in onscreenMenu) {
+                onscreenMenu[button].visible = buttonsVisible;
             }
             update = true;
         }

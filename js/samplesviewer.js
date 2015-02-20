@@ -359,6 +359,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
         document.querySelector('.planet').style.display = 'none';
         document.querySelector('body').classList.remove('samples-shown');
         document.querySelector('.canvasHolder').classList.remove('hide');
+        document.querySelector('#theme-color').content = '#2196F3';
         me.stage.enableDOMEvents(true);
         window.scroll(0, 0);
     }
@@ -367,6 +368,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
         document.querySelector('.planet').style.display = '';
         document.querySelector('body').classList.add('samples-shown');
         document.querySelector('.canvasHolder').classList.add('hide');
+        document.querySelector('#theme-color').content = '#8bc34a';
         setTimeout(function () {
             // Time to release the mouse
             me.stage.enableDOMEvents(false);

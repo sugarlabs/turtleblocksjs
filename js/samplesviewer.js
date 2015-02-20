@@ -30,10 +30,12 @@ function PlanetModel(controller) {
     this.localChanged = false;
     this.globalImagesCache = {};
     this.updated = function () {};
+    this.stop = false;
     var me = this;
 
     this.start = function (cb) {
         me.updated = cb;
+        me.stop = false;
 
         this.redoLocalStorageData();
         me.updated();
@@ -49,6 +51,7 @@ function PlanetModel(controller) {
             }
         }).done(function (l) {
             me.globalProjects = [];
+            me.stop = false;
 
             var todo = [];
             l.forEach(function (name, i) {
@@ -62,7 +65,14 @@ function PlanetModel(controller) {
     }
 
     this.getImages = function (todo) {
+        if (me.stop === true) {
+            return;
+        }
+
         var image = todo.pop();
+        if (image === undefined) {
+            return;
+        }
         var name = image.replace('.b64', '');
 
         if (me.globalImagesCache[image] !== undefined) {
@@ -73,16 +83,16 @@ function PlanetModel(controller) {
         } else {
             jQuery.ajax({
   	            url: server + image,
-            headers: {
-                'x-api-key' : '3tgTzMXbbw6xEKX7'
-            },
-            dataType: 'text'
-        }).done(function (d) {
-            me.globalImagesCache[image] = d;
-            me.globalProjects.push({title: name, img: d, url: image});
-            me.updated();
-            me.getImages(todo);
-        });
+                headers: {
+                    'x-api-key' : '3tgTzMXbbw6xEKX7'
+                },
+                dataType: 'text'
+            }).done(function (d) {
+                me.globalImagesCache[image] = d;
+                me.globalProjects.push({title: name, img: d, url: image});
+                me.updated();
+                me.getImages(todo);
+            });
       }
     }
 
@@ -125,6 +135,7 @@ function PlanetModel(controller) {
         var name = this.uniqueName('My Project');
         me.prepLoadingProject(name);
         this.controller.sendAllToTrash(true, true);
+        me.stop = true;
     }
 
     this.renameProject = function (oldName, newName, current) {
@@ -162,6 +173,7 @@ function PlanetModel(controller) {
         localStorage.currentProject = name;
         me.controller.sendAllToTrash(false, true);
         me.controller.loadRawProject(data);
+        me.stop = true;
     }
 
     this.prepLoadingProject = function (name) {
@@ -184,6 +196,7 @@ function PlanetModel(controller) {
             dataType: 'text'
         }).done(function (d) {
             me.controller.loadRawProject(d);
+            me.stop = true;
         });
     }
 
@@ -261,7 +274,7 @@ function PlanetView(model, controller) {
     this.load = function (ele) {
         return function () {
             document.querySelector('#loding-image-container')
-                    .style.display = 'bock';
+                    .style.display = '';
             var url = ele.attributes.url.value.replace('.b64', '.tb');
             me.model.load(url, ele.attributes.title.value);
             me.controller.hide();
@@ -270,9 +283,13 @@ function PlanetView(model, controller) {
 
     this.publish = function (ele) {
         return function () {
+            document.querySelector('#loding-image-container')
+                    .style.display = '';
             me.model.publish(ele.attributes.title.value,
                              ele.attributes.data.value,
                              ele.querySelector('img').src);
+            document.querySelector('#loding-image-container')
+                    .style.display = 'none';
         }
     }
 

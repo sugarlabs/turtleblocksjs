@@ -29,7 +29,7 @@ body {
 
 body.samples-shown {
   overflow-y: scroll;
-  background: white;
+  background: white !important;
 }
 
 input.text {
@@ -80,12 +80,15 @@ input.number {
 .canvasHolder.hide {
   transform: scale(0.24);
 
-  top: 140px;
+  top: 117px;
   left: 1%;
 
-  height: 100%;
+  width: 100vw;
+  height: 75vw;
   overflow: hidden;
   z-index: 10;
+
+  background: #99CCFF;
 }
 
 .canvasHolder.hide canvas {
@@ -201,6 +204,7 @@ nav ul li  {
 }
 
 .content li img {
+  background: #96D3F3;
   width: 100%;
   padding: 0;
 }

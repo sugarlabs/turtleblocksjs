@@ -1365,10 +1365,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         /// Change body background in DOM to current color.
         var body = document.body;
         if (turtle == -1) {
-            body.style.background = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
+            var c = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
         } else {
-            body.style.background = this.turtles.turtleList[turtle].canvasColor;
+            var c = this.turtles.turtleList[turtle].canvasColor;
         }
+
+        body.style.background = c;
+        document.querySelector('.canvasHolder').style.background = c;
         this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
     }
 

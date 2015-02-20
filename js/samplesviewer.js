@@ -239,7 +239,7 @@ function PlanetView(model, controller) {
             html = '';
             model.localProjects.forEach(function (project, i) {
                 // TODO: Use template strings when they are supported
-                html = html + '<li data=\'' + project.data + '\' title="' + project.title + '" current="' + project.current + '"><img src="' + project.img + '" /><div class="options"><input type="text" value="' + project.title + '"/><br/><button class="open">Open</button><button class="delete">Delete</button><button class="publish">Publish</button><button class="download">Download</button></div></li>';
+                html = html + '<li data=\'' + project.data + '\' title="' + project.title + '" current="' + project.current + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><input type="text" value="' + project.title + '"/><br/><img class="open icon" title="Open" alt="Open" src="icons/edit.svg" /><img class="delete icon" title="Delete" alt="Delete" src="icons/delete.svg" /><img class="publish icon" title="Publish" alt="Publish" src="icons/publish.svg" /><img class="download icon" title="Download" alt="Download" src="icons/download.svg" /></li>';
             });
             document.querySelector('.planet .content.l').innerHTML = html;
 
@@ -261,7 +261,7 @@ function PlanetView(model, controller) {
 
         html = '';
         model.globalProjects.forEach(function (project, i) {
-            html += '<li url="' + project.url + '" title="' + project.title + '"><img src="' + project.img + '" /><div class="options"><span>' + project.title + '</span><br/><button>Download</button></div></li>';
+            html += '<li url="' + project.url + '" title="' + project.title + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><span>' + project.title + '</span><br/><img class="download icon" title="Download" alt="Download" src="icons/download.svg" /></div></li>';
         });
         document.querySelector('.planet .content.w').innerHTML = html;
 

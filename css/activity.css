@@ -173,7 +173,7 @@ nav ul li  {
   padding-left: 1%;
 }
 
-.content li[current=true] img {
+.content li[current=true] img.thumbnail {
     opacity: 0;
 }
 
@@ -203,7 +203,7 @@ nav ul li  {
   }
 }
 
-.content li img {
+.content li img.thumbnail {
   background: #96D3F3;
   width: 100%;
   padding: 0;
@@ -222,11 +222,15 @@ nav ul li  {
   clear: both;
 }
 
-.planet-content button {
-  background: #8bc34a;
-  color: white;
+img.icon {
+  border-radius: 100%;
+  width: 30px;
+}
 
-  border: none;
-  margin: 2px;
-  border-radius: 7px;
+img.icon:hover {
+  background-color: rgba(139, 195, 74, 0.3);
+}
+
+img.icon:hover {
+  background-color: rgba(139, 195, 74, 0.8);
 }

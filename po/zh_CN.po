@@ -1,235 +1,230 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 00:30-0500\n"
-"PO-Revision-Date: 2011-01-24 00:35+0200\n"
-"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"POT-Creation-Date: 2013-12-05 00:30-0500\n"
+"PO-Revision-Date: 2013-12-10 17:42+0200\n"
+"Last-Translator: lite <litekok@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: ini-to-pot script\n"
 
 msgid "clear"
-msgstr "نظف"
+msgstr "清屏"
 
 msgid "forward"
-msgstr "للأمام"
+msgstr "前进"
 
 msgid "right"
-msgstr "يمين"
+msgstr "右边"
 
 msgid "back"
-msgstr "السابق:: للخلف"
+msgstr "后退"
 
 msgid "left"
-msgstr "يسار"
+msgstr "左边"
 
 msgid "arc"
-msgstr "قوس"
+msgstr "走弧形"
 
 msgid "angle"
-msgstr "زاوية"
+msgstr "角度"
 
 msgid "radius"
-msgstr "نصف القطر"
+msgstr "半径"
 
 msgid "set heading"
-msgstr "حدد العنوان"
+msgstr "设置朝向"
 
 msgid "heading"
-msgstr "عنوان"
+msgstr "朝向"
 
 msgid "set xy"
-msgstr "حدد س ص"
+msgstr "设置 坐标"
 
 msgid "x"
-msgstr "س"
+msgstr "横"
 
 msgid "y"
-msgstr "ص"
+msgstr "纵"
 
 msgid "set color"
-msgstr "حدد اللون"
+msgstr "设置颜色"
 
 msgid "color"
-msgstr "لون"
+msgstr "颜色"
 
 msgid "set hue"
-msgstr "حدد اللون"
+msgstr ""
 
 msgid "set shade"
-msgstr "حدد التظليل"
+msgstr "设置深度"
 
 msgid "shade"
-msgstr ""
+msgstr "深度"
 
 msgid "set grey"
-msgstr ""
+msgstr "设置灰度"
 
 msgid "grey"
-msgstr ""
+msgstr "灰度"
 
 msgid "set pen size"
-msgstr "حدد حجم القلم"
+msgstr "设置笔的粗细"
 
 msgid "pen size"
-msgstr "حجم القلم"
+msgstr "笔的粗细"
 
 msgid "pen up"
-msgstr "ارفع القلم"
+msgstr "抬笔"
 
 msgid "pen down"
-msgstr "ضع القلم"
+msgstr "落笔"
 
 msgid "begin fill"
-msgstr ""
+msgstr "开始填充"
 
 msgid "end fill"
-msgstr ""
+msgstr "完成填充"
 
 msgid "background"
-msgstr "ملء الشاشه"
+msgstr "涂满全屏"
 
 msgid "random"
-msgstr "عشوائي"
+msgstr "随机值"
 
 msgid "min"
-msgstr "أقل"
+msgstr "最小值"
 
 msgid "max"
-msgstr "أاكثر"
+msgstr "最大值"
 
 msgid "sqrt"
-msgstr ""
+msgstr "平方根"
 
 msgid "mod"
-msgstr ""
+msgstr "同余"
 
 msgid "and"
-msgstr "و"
+msgstr "与"
 
 msgid "or"
-msgstr "أو"
+msgstr "或"
 
 msgid "not"
-msgstr "ليس"
+msgstr "非"
 
 msgid "store in"
-msgstr "احفظ في"
+msgstr "放入"
 
 msgid "name"
-msgstr ""
+msgstr "名"
 
 msgid "value"
-msgstr ""
+msgstr "值"
 
 msgid "box"
-msgstr "الصندوق"
+msgstr "盒子"
 
 msgid "action"
-msgstr ""
+msgstr "动作"
 
 msgid "do"
-msgstr ""
+msgstr "办"
 
 msgid "start"
-msgstr ""
+msgstr "开始"
 
 msgid "add 1 to"
-msgstr ""
+msgstr "加1"
 
 msgid "add"
-msgstr ""
+msgstr "加"
 
 msgid "to"
-msgstr ""
+msgstr "于"
 
 msgid "speak"
-msgstr ""
+msgstr "朗读"
 
 msgid "show"
-msgstr ""
+msgstr "显示"
 
 msgid "size"
-msgstr ""
+msgstr "尺寸"
 
 msgid "obj"
-msgstr ""
+msgstr "对象"
 
 msgid "text"
-msgstr ""
+msgstr "文本"
 
 msgid "shell"
-msgstr ""
+msgstr "海龟外壳"
 
 msgid "image"
-msgstr ""
+msgstr "图片"
 
 msgid "stop media"
-msgstr ""
+msgstr "停止媒体"
 
 msgid "repeat"
-msgstr "كرر"
+msgstr "重复"
 
 msgid "forever"
-msgstr "للأبد"
+msgstr "永远执行"
 
 msgid "stop"
-msgstr ""
+msgstr "停止动作"
 
 msgid "if"
-msgstr "إذا"
+msgstr "如果"
 
 msgid "then"
-msgstr "عندها"
+msgstr "那么"
 
 msgid "until"
-msgstr ""
+msgstr "直到"
 
 msgid "wait for"
-msgstr ""
+msgstr "等待"
 
 msgid "while"
-msgstr ""
+msgstr "当"
 
 msgid "else"
-msgstr "وإلا"
+msgstr "否则"
 
 msgid "wait"
-msgstr "انتظر"
+msgstr "等待"
 
 msgid "print"
-msgstr "اطبع"
+msgstr "打印"
 
 msgid "time"
-msgstr ""
+msgstr "时间"
 
 msgid "mouse x"
-msgstr ""
+msgstr "鼠标X坐标"
 
 msgid "mouse y"
-msgstr ""
+msgstr "鼠标Y坐标"
 
 msgid "mouse button"
-msgstr ""
+msgstr "鼠标按下"
 
 msgid "keyboard"
-msgstr ""
+msgstr  "查询键盘"
 
 msgid "pixel color"
-msgstr ""
+msgstr "读取像素"
 
 msgid "unknown"
-msgstr ""
+msgstr "未知"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -370,61 +365,61 @@ msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "隐藏积木块"
 
 msgid "loudness"
-msgstr ""
+msgstr "音量"
 
 msgid "publish"
-msgstr ""
+msgstr "发布"
 
 msgid "comment"
-msgstr ""
+msgstr "注释"
 
 msgid "play back"
-msgstr ""
+msgstr "发挥媒体"
 
 msgid "save svg"
-msgstr ""
+msgstr "保存SVG"
 
 msgid "title"
-msgstr ""
+msgstr "标题"
 
 msgid "eval"
 msgstr ""
 
 msgid "show blocks"
-msgstr ""
+msgstr "显示积木块"
 
 msgid "stop play"
-msgstr ""
+msgstr "停止媒体"
 
 msgid "turtle"
-msgstr ""
+msgstr "海龟"
 
 msgid "pen"
-msgstr ""
+msgstr "钢笔"
 
 msgid "number"
-msgstr ""
+msgstr "数字"
 
 msgid "boolean"
-msgstr ""
+msgstr "布尔"
 
 msgid "flow"
-msgstr ""
+msgstr "流程"
 
 msgid "blocks"
-msgstr ""
+msgstr "拼块"
 
 msgid "media"
-msgstr ""
+msgstr "多媒体"
 
 msgid "sensors"
-msgstr ""
+msgstr "传感器"
 
 msgid "extras"
-msgstr ""
+msgstr "额外的"
 
 msgid "open file"
 msgstr ""
@@ -456,7 +451,22 @@ msgstr ""
 msgid "currency"
 msgstr ""
 
-msgid "GMAP"
+msgid "Google map"
+msgstr "Mapa de Google"
+
+msgid "coordinates"
+msgstr ""
+
+msgid "zoom factor"
+msgstr ""
+
+msgid "zoom"
+msgstr ""
+
+msgid "latitude"
+msgstr ""
+
+msgid "longitude"
 msgstr ""
 
 msgid "show heap"
@@ -649,7 +659,7 @@ msgid "translate"
 msgstr ""
 
 msgid "hello"
-msgstr ""
+msgstr "你好"
 
 msgid "detect lang"
 msgstr ""
@@ -683,4 +693,3 @@ msgstr ""
 
 msgid "high"
 msgstr ""
-

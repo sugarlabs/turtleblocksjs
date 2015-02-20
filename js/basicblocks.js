@@ -681,6 +681,64 @@ function initBasicProtoBlocks(palettes, blocks) {
     nopTwoArgBlock.dockTypes[1] = 'anyin';
     nopTwoArgBlock.dockTypes[2] = 'anyin';
 
+    var loudnessBlock = new ProtoBlock('loudness');
+    loudnessBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['loudness'] = loudnessBlock;
+    loudnessBlock.staticLabels.push(_('loudness'));
+    loudnessBlock.adjustWidthToLabel();
+    loudnessBlock.parameterBlock();
+
+    var svgBlock = new ProtoBlock('savesvg');
+    svgBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['savesvg'] = svgBlock;
+    svgBlock.staticLabels.push(_('save svg'));
+    svgBlock.adjustWidthToLabel();
+    svgBlock.oneArgBlock();
+    svgBlock.defaults.push(_('title') + '.svg');
+    svgBlock.dockTypes[1] = 'textin';
+
+    var showBlocks = new ProtoBlock('showblocks');
+    showBlocks.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['showblocks'] = showBlocks;
+    showBlocks.staticLabels.push(_('show blocks'));
+    showBlocks.adjustWidthToLabel();
+    showBlocks.zeroArgBlock();
+
+    var hideBlocks = new ProtoBlock('hideblocks');
+    hideBlocks.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['hideblocks'] = hideBlocks;
+    hideBlocks.staticLabels.push(_('hide blocks'));
+    hideBlocks.adjustWidthToLabel();
+    hideBlocks.zeroArgBlock();
+
+    var evalBlock = new ProtoBlock('eval');
+    evalBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['eval'] = evalBlock;
+    evalBlock.staticLabels.push(_('eval'));
+    evalBlock.staticLabels.push('f(x)');
+    evalBlock.staticLabels.push('x');
+    evalBlock.adjustWidthToLabel();
+    evalBlock.twoArgMathBlock();
+    evalBlock.dockTypes[1] = 'textin';
+    evalBlock.defaults.push('x');
+    evalBlock.defaults.push(100);
+
+    var audioBlock = new ProtoBlock('playback');
+    audioBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['playback'] = audioBlock;
+    audioBlock.defaults.push(null);
+    audioBlock.staticLabels.push(_('play back'));
+    audioBlock.adjustWidthToLabel();
+    audioBlock.oneArgBlock();
+    audioBlock.dockTypes[1] = 'mediain';
+
+    var audioStopBlock = new ProtoBlock('stopplayback');
+    audioStopBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['stopplayback'] = audioStopBlock;
+    audioStopBlock.staticLabels.push(_('stop play'));
+    audioStopBlock.adjustWidthToLabel();
+    audioStopBlock.zeroArgBlock();
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         if (blocks.protoBlockDict[protoblock].palette != null) {

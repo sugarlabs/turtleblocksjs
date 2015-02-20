@@ -15,7 +15,7 @@ var paletteBlocks = null;
 var PROTOBLOCKSCALE = 1.0;
 var PALETTELEFTMARGIN = 10;
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
-    'media', 'sensors', 'extras', 'myblocks'
+    'media', 'sensors', 'myblocks', // 'extras'
 ];
 
 
@@ -53,8 +53,9 @@ function paletteBlockButtonPush(name, arg) {
 // loadPaletteMenuItemHandler
 
 
-function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
+function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan) {
     this.canvas = canvas;
+    this.refreshCanvas = refreshCanvas;
     this.stage = stage;
     this.cellSize = cellSize;
     this.halfCellSize = Math.floor(cellSize / 2);
@@ -111,7 +112,7 @@ function Palettes(canvas, stage, cellSize, refreshCanvas, trashcan) {
             this.buttons[name].visible = true;
         }
         this.updateButtonMasks();
-        this.stage.update();
+        this.refreshCanvas();
     }
 
     this.updateButtonMasks = function() {
@@ -457,7 +458,6 @@ function Palette(palettes, name, color, bgcolor) {
         for (var blk in this.protoList) {
             // Don't show hidden blocks on the menus
             if (this.protoList[blk].hidden) {
-		console.log('skipping ' + this.protoList[blk].name);
                 continue;
             }
 
@@ -496,6 +496,10 @@ function Palette(palettes, name, color, bgcolor) {
                 } else if (['media', 'camera', 'video'].indexOf(blkname) != -1) {
                     size += 1;
                 } else if (palette.protoList[blk].image) {
+                    size += 1;
+                } else if (['action', 'start'].indexOf(blkname) != -1) {
+                    size += 1;
+                } else if (['and', 'or'].indexOf(blkname) != -1) {
                     size += 1;
                 }
                 var height = STANDARDBLOCKHEIGHT * size;
@@ -787,7 +791,7 @@ function Palette(palettes, name, color, bgcolor) {
 
         var stage = this.palettes.stage;
         stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
-        this.palettes.stage.update();
+        this.palettes.refreshCanvas();
     }
 
     this.getInfo = function() {
@@ -811,9 +815,9 @@ function Palette(palettes, name, color, bgcolor) {
 
 var blocks = undefined;
 
-function initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, b) {
+function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan, b) {
     // Instantiate the palettes object on first load.
-    var palettes = new Palettes(canvas, stage, cellSize, refreshCanvas, trashcan).
+    var palettes = new Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan).
     add('turtle', 'black', '#00b700').
     add('pen', 'black', '#00c0e7').
     add('number', 'black', '#ff00ff').
@@ -873,7 +877,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
     var saveY = palette.protoContainers[blkname].y;
     var bgScrolling = false;
 
-    function makeBlockFromPalette(blk, blkname, palette) {
+    function makeBlockFromPalette(blk, blkname, palette, callback) {
         if (locked) {
             return;
         }
@@ -899,7 +903,9 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 var arg = palette.protoList[blk].defaults[0];
                 break;
         }
-        return paletteBlockButtonPush(palette.protoList[blk].name, arg);
+        var newBlock = paletteBlockButtonPush(palette.protoList[blk].name, arg);
+        console.log('calling callback with ' + newBlock);
+        callback(newBlock);
     }
 
     palette.protoContainers[blkname].on('mousedown', function(event) {
@@ -1009,15 +1015,18 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 }, 500);
             } else {
                 // Create the block.
-                var newBlock = makeBlockFromPalette(blk, blkname, palette);
-
+                function callback (newBlock) {
                 // Move the drag group under the cursor.
                 paletteBlocks.findDragGroup(newBlock);
                 for (i in paletteBlocks.dragGroup) {
                     paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale) - paletteBlocks.stage.x, Math.round(event.stageY / palette.palettes.scale) - paletteBlocks.stage.y);
                 }
                 // Dock with other blocks if needed
+                console.log('new block moved ' + newBlock);
                 blocks.blockMoved(newBlock);
+                }
+
+                var newBlock = makeBlockFromPalette(blk, blkname, palette, callback);
             }
 
             // Return protoblock we've been dragging back to the palette.

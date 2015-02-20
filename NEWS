@@ -229,6 +229,13 @@
   * use ellipsis on action and do labels (including do blocks in palette)
   * fixed layout problem in boxes palette
   * fixed regression in loading macros (NaN)
+  * set proper z-order for palettes, blocks, turtles, and canvas (Sam Parkinson)
+  * fixed problem with expanding booleans not docking to parents
+  * fixed race condition with collapsibles
+  * fixed problem with start block turtle decoration positioning
+  * removed event handler after load so that when you change the image
+    associted a media block, other media blocks don't also change
+  * Scale imported bitmaps to maximum of 1200x900
 
 TODO:
   * music blocks plugin
@@ -249,11 +256,10 @@ TODO:
     - two args: artwork for the button; action name to take
   * maybe we want to add local variables? (e.g., boxes only defined inside an action)
   * pass argments to actions? (and arg blocks to reference them)?
+  * event blocks?
 
 KNOWN BUGS:
   * sample projects cannot be shown on Android
-  * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
-  * fix race conditions
   * not all blocks highlight when using step-by-step mode
-  * when you change the image of a media block, all media blocks change the image
+  * joyride doesn't work on Android

@@ -14,11 +14,12 @@ var DEFAULTDELAY = 500; // milleseconds
 var TURTLESTEP = -1;  // Run in step-by-step mode
 
 
-function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
+function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
               getStageY, getStageMouseDown, getCurrentKeyCode,
               clearCurrentKeyCode, meSpeak, saveLocally) {
 
+    this.canvas = canvas;
     this.blocks = blocks;
     this.turtles = turtles;
     this.stage = stage;
@@ -32,6 +33,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.getStageX = getStageX;
     this.getStageY = getStageY;
     this.getStageMouseDown = getStageMouseDown;
+    this.getCurrentKeyCode = getCurrentKeyCode;
     this.clearCurrentKeyCode = clearCurrentKeyCode;
     this.meSpeak = meSpeak;
     this.saveLocally = saveLocally;
@@ -58,7 +60,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.stepQueue = {};
     this.unhighlightStepQueue = {};
 
-    this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+    this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
 
     try {
         this.mic = new p5.AudioIn()
@@ -137,6 +139,8 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         value = _('false');
                     }
                     break;
+                case 'random':
+                case 'mod':
                 case 'sqrt':
                 case 'plus':
                 case 'minus':
@@ -188,6 +192,14 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'keyboard':
                     value = this.lastKeyCode;
                     break;
+                case 'loudness':
+                    if (logo.mic == null) {
+                        logo.errorMsg('The microphone is not available.');
+                        value = 0;
+                    } else {
+                        value = Math.round(logo.mic.getLevel() * 1000);
+                    }
+                    break;
                 default:
                     if (name in this.evalParameterDict) {
                         eval(this.evalParameterDict[name]);
@@ -199,7 +211,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             if (typeof(value) == 'string') {
                 if (value.length > 6) {
                     value = value.substr(0, 5) + '...';
-		}
+                }
                 this.blocks.blockList[blk].text.text = value;
             } else {
                 this.blocks.blockList[blk].text.text = Math.round(value).toString();
@@ -270,7 +282,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
         }
 
-        this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+        this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
 
         this.parentFlowQueue = {};
         this.unhightlightQueue = {};
@@ -853,6 +865,19 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.parameterQueue[targetTurtle] = [];
                 doBreak(targetTurtle);
                 break;
+            case 'showblocks':
+                logo.showBlocks();
+                logo.setTurtleDelay(DEFAULTDELAY);
+                break;
+            case 'hideblocks':
+                logo.hideBlocks();
+                logo.setTurtleDelay(0);
+                break;
+            case 'savesvg':
+                if (args.length == 1) {
+                    doSaveSVG(logo, args[0])
+                }
+                break;
             default:
                 if (logo.blocks.blockList[blk].name in logo.evalFlowDict) {
                     eval(logo.evalFlowDict[logo.blocks.blockList[blk].name]);
@@ -1034,6 +1059,14 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             return logo.blocks.blockList[blk].value;
         } else if (logo.blocks.blockList[blk].isArgBlock()) {
             switch (logo.blocks.blockList[blk].name) {
+                case 'loudness':
+                    if (!logo.mic.enabled) {
+                        logo.mic.start();
+                        logo.blocks.blockList[blk].value = 0;
+                    } else {
+                        logo.blocks.blockList[blk].value = Math.round(logo.mic.getLevel() * 1000);
+                    }
+                    break;
                 case 'eval':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
@@ -1216,7 +1249,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var x = logo.turtles.turtleList[turtle].container.x;
                     var y = logo.turtles.turtleList[turtle].container.y;
                     logo.refreshCanvas();
-                    var ctx = canvas.getContext("2d");
+                    var ctx = this.canvas.getContext("2d");
                     var imgData = ctx.getImageData(x, y, 1, 1).data;
                     var color = searchColors(imgData[0], imgData[1], imgData[2]);
                     if (imgData[3] == 0) {
@@ -1336,7 +1369,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         } else {
             body.style.background = this.turtles.turtleList[turtle].canvasColor;
         }
-        this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+        this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
     }
 
     this.setCameraID = function(id) {

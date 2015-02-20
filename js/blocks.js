@@ -430,6 +430,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Give a block, adjust the dock positions
         // of all of the blocks connected to it
 
+        var myBlock = this.blockList[blk];
+
         // For when we come in from makeBlock
         if (resetLoopCounter != null) {
             this.loopCounter = 0;
@@ -437,21 +439,21 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // These checks are to test for malformed data. All blocks
         // should have connections.
-        if (this.blockList[blk] == null) {
+        if (myBlock == null) {
             console.log('Saw a null block: ' + blk);
             return;
         }
-        if (this.blockList[blk].connections == null) {
+        if (myBlock.connections == null) {
             console.log('Saw a block with null connections: ' + blk);
             return;
         }
-        if (this.blockList[blk].connections.length == 0) {
+        if (myBlock.connections.length == 0) {
             console.log('Saw a block with [] connections: ' + blk);
             return;
         }
 
         // Value blocks only have one dock.
-        if (this.blockList[blk].docks.length == 1) {
+        if (myBlock.docks.length == 1) {
             return;
         }
 
@@ -461,13 +463,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
 
-        // Walk through each connection except the parent block.
-        for (var c = 1; c < this.blockList[blk].connections.length; c++) {
+        // Walk through each connection except the parent block; the
+        // exception being the parent block of boolean 2arg blocks,
+        // since the dock[0] position can change.
+        if (myBlock.isTwoArgBooleanBlock()) {
+            var start = 0;
+        } else {
+            var start = 1;
+        }
+        for (var c = start; c < myBlock.connections.length; c++) {
             // Get the dock position for this connection.
-            var bdock = this.blockList[blk].docks[c];
+            var bdock = myBlock.docks[c];
 
             // Find the connecting block.
-            var cblk = this.blockList[blk].connections[c];
+            var cblk = myBlock.connections[c];
             // Nothing connected here so continue to the next connection.
             if (cblk == null) {
                 continue;
@@ -490,25 +499,38 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             // Yet another database integrety check.
             if (!foundMatch) {
-                console.log('Did not find match for ' + this.blockList[blk].name + ' and ' + this.blockList[cblk].name);
+                console.log('Did not find match for ' + myBlock.name + ' and ' + this.blockList[cblk].name);
                 break;
             }
+
             var cdock = this.blockList[cblk].docks[b];
 
-            // Move the connected block.
-            var dx = bdock[0] - cdock[0];
-            var dy = bdock[1] - cdock[1];
-            if (this.blockList[blk].bitmap == null) {
-                var nx = this.blockList[blk].x + dx;
-                var ny = this.blockList[blk].y + dy;
+            if (c > 0) {
+                // Move the connected block...
+                var dx = bdock[0] - cdock[0];
+                var dy = bdock[1] - cdock[1];
+                if (myBlock.bitmap == null) {
+                    console.log('Does this ever happen any more?')
+                    var nx = myBlock.x + dx;
+                    var ny = myBlock.y + dy;
+                } else {
+                    var nx = myBlock.container.x + dx;
+                    var ny = myBlock.container.y + dy;
+                }
+                this.moveBlock(cblk, nx, ny);
             } else {
-                var nx = this.blockList[blk].container.x + dx;
-                var ny = this.blockList[blk].container.y + dy;
+                // or it's parent.
+                var dx = cdock[0] - bdock[0];
+                var dy = cdock[1] - bdock[1];
+                var nx = this.blockList[cblk].container.x + dx;
+                var ny = this.blockList[cblk].container.y + dy;
+                this.moveBlock(blk, nx, ny);
             }
-            this.moveBlock(cblk, nx, ny);
 
-            // Recurse on connected blocks.
-            this.adjustDocks(cblk);
+            if (c > 0) {
+                // Recurse on connected blocks.
+                this.adjustDocks(cblk);
+            }
         }
     }
 
@@ -523,6 +545,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // Find any containing expandable blocks.
         var checkExpandableBlocks = [];
+        if (thisBlock == null) {
+            console.log('block moved called with null block.');
+            return;
+        }
         var blk = this.insideExpandableBlock(thisBlock);
         var expandableLoopCounter = 0;
         while (blk != null) {
@@ -677,38 +703,30 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         var blocks = this;
 
-        // FIXME: Make these callbacks so there is no race condition.
-        setTimeout(function() {
-            // First, adjust the docks for any blocks that may have
-            // had a vspace added.
-            for (var i = 0; i < checkArgBlocks.length; i++) {
-                blocks.adjustDocks(checkArgBlocks[i]);
+        // First, adjust the docks for any blocks that may have
+        // had a vspace added.
+        for (var i = 0; i < checkArgBlocks.length; i++) {
+            blocks.adjustDocks(checkArgBlocks[i]);
+        }
+        // Next, recheck if the connection is inside of a
+        // expandable block.
+        var blk = blocks.insideExpandableBlock(thisBlock);
+        var expandableLoopCounter = 0;
+        while (blk != null) {
+            // Extra check for malformed data.
+            expandableLoopCounter += 1;
+            if (expandableLoopCounter > 2 * blocks.blockList.length) {
+                console.log('Infinite loop checking for expandables?');
+                console.log(blocks.blockList);
+                break;
             }
-            // Next, recheck if the connection is inside of a
-            // expandable block.
-            var blk = blocks.insideExpandableBlock(thisBlock);
-            var expandableLoopCounter = 0;
-            while (blk != null) {
-                // Extra check for malformed data.
-                expandableLoopCounter += 1;
-                if (expandableLoopCounter > 2 * blocks.blockList.length) {
-                    console.log('Infinite loop checking for expandables?');
-                    console.log(blocks.blockList);
-                    break;
-                }
-                if (checkExpandableBlocks.indexOf(blk) == -1) {
-                    checkExpandableBlocks.push(blk);
-                }
-                blk = blocks.insideExpandableBlock(blk);
+            if (checkExpandableBlocks.indexOf(blk) == -1) {
+                checkExpandableBlocks.push(blk);
             }
-            blocks.refreshCanvas();
-        }, 500);
-
-        setTimeout(function() {
-            // If we changed the contents of an expandable block, we need
-            // to adjust its clamp.
-            blocks.adjustExpandableClampBlock(checkExpandableBlocks);
-        }, 1000);
+            blk = blocks.insideExpandableBlock(blk);
+        }
+        blocks.adjustExpandableClampBlock(checkExpandableBlocks);
+        blocks.refreshCanvas();
     }
 
     this.testConnectionType = function(type1, type2) {
@@ -1040,7 +1058,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
 
-        myBlock.collapsed = !collapsed;
+        // myBlock.collapsed = !collapsed;
         for (var c = 0; c < connections.length; c++) {
             if (c == myBlock.docks.length) {
                 break;
@@ -1182,7 +1200,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     me.makeNewBlock(proto, postProcess, postProcessArg);
                     protoFound = true;
                     break;
-		 }
+                 }
             }
         }
         if (!protoFound) {
@@ -1199,6 +1217,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var cblk = blk + 1;
         for (var i = 0; i < myBlock.protoblock.defaults.length; i++) {
             var value = myBlock.protoblock.defaults[i];
+
+            if (myBlock.name == 'action') {
+                // Make sure we don't make two actions with the same name.
+                console.log('calling findUniqueActionName');
+                value = this.findUniqueActionName(_('action'));
+                console.log('renaming action block to ' + value);
+                if (value != _('action')) {
+                    console.log('calling newDoBlock with value ' + value);
+                    this.newDoBlock(value);
+                    this.palettes.updatePalettes();
+                }
+            }
+
             var me = this;
             var thisBlock = this.blockList.length;
             if (myBlock.docks[i + 1][2] == 'anyin') {
@@ -1265,24 +1296,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             var myConnectionBlock = this.blockList[cblk + i];
             myConnectionBlock.connections = [blk];
-            if (myBlock.name == 'action') {
-                // Make sure we don't make two actions with the same name.
-                console.log('calling findUniqueActionName');
-                value = this.findUniqueActionName(_('action'));
-                console.log('renaming action block to ' + value);
-                if (value != _('action')) {
-                    // There is a race condition with creation of new
-                    // text block, hence the timeout.
-                    setTimeout(function() {
-                        myConnectionBlock.text.text = value;
-                        myConnectionBlock.value = value;
-                        myConnectionBlock.container.updateCache();
-                    }, 1000);
-                    console.log('calling newDoBlock with value ' + value);
-                    this.newDoBlock(value);
-                    this.palettes.updatePalettes();
-                }
-            }
             myConnectionBlock.value = value;
             myBlock.connections[i + 1] = cblk + i;
         }
@@ -1402,11 +1415,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             var blockValue = myBlock.value;
             if (blockValue == oldName) {
                 myBlock.value = newName;
-		var label = myBlock.value;
-		if (label.length > 8) {
-		    label = label.substr(0, 7) + '...';
-		}
-		myBlock.text.text = label;
+                var label = myBlock.value;
+                if (label.length > 8) {
+                    label = label.substr(0, 7) + '...';
+                }
+                myBlock.text.text = label;
                 myBlock.container.updateCache();
             }
         }
@@ -1671,8 +1684,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var storeinNames = {}; // storein block: label block
         var doNames = {}; // do block: label block
 
+        // action and start blocks that need to be collapsed.
+        this.blocksToCollapse = [];
+
         // Scan for any new action and storein blocks to identify
-        // duplicates.
+        // duplicates. We also need to track start and action blocks
+        // that may need to be collapsed.
         for (var b = 0; b < blockObjs.length; b++) {
             var blkData = blockObjs[b];
             // blkData[1] could be a string or an object.
@@ -1710,6 +1727,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 default:
                     break;
             }
+
+            switch (name) {
+                case 'action':
+                case 'start':
+                    if (typeof(blkData[1]) == 'object' && blkData[1].length > 1 && typeof(blkData[1][1]) == 'object' && 'collapsed' in blkData[1][1]) {
+                        if (blkData[1][1]['collapsed']) {
+                            this.blocksToCollapse.push(this.blockList.length + b);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         var updatePalettes = false;
@@ -1722,7 +1752,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 } else {
                     var name = blkData[1][1]['value'];
                 }
-		console.log('Adding new palette entries for store-in ' + name);
+                console.log('Adding new palette entries for store-in ' + name);
                 this.newStoreinBlock(name);
                 this.newBoxBlock(name);
                 updatePalettes = true;
@@ -1790,10 +1820,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             var blkData = blockObjs[b];
 
             if (typeof(blkData[1]) == 'object') {
-                if (typeof(blkData[1][1]) == 'number' | typeof(blkData[1][1]) == 'string') {
-                    blkInfo = [blkData[1][0], {
-                        'value': blkData[1][1]
-                    }];
+                if (blkData[1].length == 1) {
+                    blkInfo = [blkData[1][0], {'value': null}];
+                } else if (['number', 'string'].indexOf(typeof(blkData[1][1])) != -1) {
+                    blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
                     if (['start', 'action', 'hat'].indexOf != -1) {
                         blkInfo[1]['collapsed'] = false;
                     }
@@ -1801,9 +1831,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     blkInfo = blkData[1];
                 }
             } else {
-                blkInfo = [blkData[1], {
-                    'value': null
-                }];
+                blkInfo = [blkData[1], {'value': null}];
                 if (['start', 'action', 'hat'].indexOf != -1) {
                     blkInfo[1]['collapsed'] = false;
                 }
@@ -1812,7 +1840,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             var name = blkInfo[0];
 
             var collapsed = false;
-            if (['start', 'action', 'hat'].indexOf(name) != -1) {
+            if (['start', 'action'].indexOf(name) != -1) {
                 collapsed = blkInfo[1]['collapsed'];
             }
 
@@ -2029,23 +2057,22 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         for (var blk = 0; blk < this.adjustTheseDocks.length; blk++) {
             this.loopCounter = 0;
             this.adjustDocks(this.adjustTheseDocks[blk]);
+            blockBlocks.expandTwoArgs();
+            blockBlocks.expandClamps();
         }
 
-        this.refreshCanvas();
+        for (var i = 0; i < this.blocksToCollapse.length; i++) {
+            console.log('collapse ' + this.blockList[this.blocksToCollapse[i]].name);
+            this.blockList[this.blocksToCollapse[i]].collapseToggle();
+        }
+        this.blocksToCollapse = [];
 
-        // FIXME: Make these callbacks so there is no race condition.
-        // We need to wait for the blocks to load before expanding them.
-        setTimeout(function() {
-            blockBlocks.expandTwoArgs();
-        }, 1000);
-        setTimeout(function() {
-            blockBlocks.expandClamps();
-        }, 2000);
+        this.refreshCanvas();
     }
 
     this.raiseStackToTop = function (blk) {
-	// Move the stack associated with blk to the top.
-	var topBlk = this.findTopBlock(blk);
+        // Move the stack associated with blk to the top.
+        var topBlk = this.findTopBlock(blk);
         this.findDragGroup(topBlk);
 
         var n = this.stage.getNumChildren() - 1;

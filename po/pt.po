@@ -337,3 +337,6 @@ msgstr ""
 
 msgid "Congratulations."
 msgstr "Parabéns"
+
+msgid "loudness"
+msgstr "volume"

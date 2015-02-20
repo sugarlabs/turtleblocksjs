@@ -260,10 +260,6 @@ define(function(require) {
             stage = new createjs.Stage(canvas);
             createjs.Touch.enable(stage);
 
-            blocksContainer = new createjs.Container();
-            stage.addChild(blocksContainer);
-            setupBlocksContainerEvents();
-
             createjs.Ticker.addEventListener('tick', tick);
 
             createMsgContainer('#ffffff', '#7a7a7a', function(text) {
@@ -274,10 +270,26 @@ define(function(require) {
                 errorMsgText = text;
             });
 
-            trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
-            turtles = new Turtles(canvas, stage, refreshCanvas);
+            /* Z-Order (top to bottom):
+             *   menus
+             *   palettes
+             *   blocks
+             *   trash
+             *   turtles
+             *   logo (drawing)
+             */
+            palettesContainer = new createjs.Container();
+            blocksContainer = new createjs.Container();
+            trashContainer = new createjs.Container();
+            turtleContainer = new createjs.Container();
+            stage.addChild(turtleContainer, trashContainer, blocksContainer,
+                           palettesContainer);
+            setupBlocksContainerEvents();
+
+            trashcan = new Trashcan(canvas, trashContainer, cellSize, refreshCanvas);
+            turtles = new Turtles(canvas, turtleContainer, refreshCanvas);
             blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan, stage.update);
-            palettes = initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, blocks);
+            palettes = initPalettes(canvas, refreshCanvas, palettesContainer, cellSize, refreshCanvas, trashcan, blocks);
 
             palettes.setBlocks(blocks);
             turtles.setBlocks(blocks);
@@ -286,9 +298,10 @@ define(function(require) {
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             // TODO: clean up this mess.
-            logo = new Logo(blocks, turtles, stage, refreshCanvas, textMsg,
-                            errorMsg, hideMsgs, onStopTurtle, onRunTurtle,
-                            prepareExport, getStageX, getStageY,
+            logo = new Logo(canvas, blocks, turtles, turtleContainer,
+                            refreshCanvas,
+                            textMsg, errorMsg, hideMsgs, onStopTurtle,
+                            onRunTurtle, prepareExport, getStageX, getStageY,
                             getStageMouseDown, getCurrentKeyCode,
                             clearCurrentKeyCode, meSpeak, saveLocally);
             blocks.setLogo(logo);
@@ -301,21 +314,6 @@ define(function(require) {
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
 
             initBasicProtoBlocks(palettes, blocks);
-
-            // Advanced blocks are stored in a locally stored
-            // JSON-encoded plugin.
-            new HttpRequest('plugins/advancedblocks.json', function () {
-                var req = this.request;
-                if (req.readyState == 4) {
-                    if (this.localmode || req.status == 200) {
-                        var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
-                    }
-                    else {
-                        if (self.console) console.log('Failed to load advanced blocks: Received status ' + req.status + '.');
-                    }
-                    this.request = this.handler = this.userCallback = null;
-                }
-            }, null);
 
             // Load any macros saved in local storage.
             var macroData = localStorage.getItem('macros');
@@ -473,7 +471,7 @@ define(function(require) {
                     blocksContainer.x += event.stageX - lastCords.x;
                     blocksContainer.y += event.stageY - lastCords.y;
                     lastCords = {x: event.stageX, y: event.stageY};
-                    stage.update();
+                    refreshCanvas();
                 });
 
                 stage.on('stagemouseup', function (event) {
@@ -726,13 +724,19 @@ define(function(require) {
                 }
             }
             if (addStartBlock) {
-                blocks.makeNewBlock('start');
-                last(blocks.blockList).x = 250;
-                last(blocks.blockList).y = 250;
-                last(blocks.blockList).connections = [null, null, null];
-                turtles.add(last(blocks.blockList));
-                last(blocks.blockList).value = turtles.turtleList.length - 1;
-                blocks.updateBlockPositions();
+                function postprocess() {
+                    last(blocks.blockList).x = 250;
+                    last(blocks.blockList).y = 250;
+                    last(blocks.blockList).connections = [null, null, null];
+                    turtles.add(last(blocks.blockList));
+                    last(blocks.blockList).value = turtles.turtleList.length - 1;
+                    blocks.updateBlockPositions();
+                    if (!doNotSave) {
+                        saveLocally();
+                    }
+                }
+
+                blocks.makeNewBlock('start', postprocess);
             }
 
             if (!doNotSave) {
@@ -809,11 +813,19 @@ define(function(require) {
             console.log('overwriting session data');
 
             if (localStorage.currentProject === undefined) {
-                localStorage.currentProject = 'My Project';
-                localStorage.allProjects = JSON.stringify(['My Project'])
+                try {
+                    localStorage.currentProject = 'My Project';
+                    localStorage.allProjects = JSON.stringify(['My Project'])
+                } catch (e) {
+                    // Edge case, eg. Firefox localSorage DB corrupted
+                    console.log(e);
+                }
             }
-            var p = localStorage.currentProject;
-            localStorage['SESSION' + p] = prepareExport();
+
+            try {
+                var p = localStorage.currentProject;
+                localStorage['SESSION' + p] = prepareExport();
+            } catch (e) { console.log(e); }
 
             if (isSVGEmpty(turtles)) {
                 return;
@@ -825,7 +837,9 @@ define(function(require) {
                 var bitmap = new createjs.Bitmap(img);
                 var bounds = bitmap.getBounds();
                 bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                localStorage['SESSIONIMAGE' + p] = bitmap.getCacheDataURL();
+                try {
+                    localStorage['SESSIONIMAGE' + p] = bitmap.getCacheDataURL();
+                } catch (e) { console.log(e); }
             }
             img.src = 'data:image/svg+xml;base64,' +
                       window.btoa(unescape(encodeURIComponent(svgData)));
@@ -857,16 +871,12 @@ define(function(require) {
                     blocks.loadNewBlocks(obj);
                     saveLocally();
                 } catch (e) {
-                    loadStart();
+                   loadStart();
                 }
                 // Restore default cursor
                 document.body.style.cursor = 'default';
                 update = true;
             }, 200);
-            setTimeout(function() {
-                console.log('calling toggleCollapsibles after timeout');
-                blocks.toggleCollapsibles();
-            }, 3000);
 
             docById('loding-image-container').style.display = 'none';
         }
@@ -949,10 +959,6 @@ define(function(require) {
                 }
                 blocks.makeNewBlock('start', postProcess, null);
             }
-            setTimeout(function() {
-                console.log('calling toggleCollapsibles after timeout');
-                blocks.toggleCollapsibles();
-            }, 3000);
             update = true;
 
             docById('loding-image-container').style.display = 'none';
@@ -1277,7 +1283,7 @@ define(function(require) {
                     doMenuAnimation(1);
                 }
 
-                content = '<ol style="visibility:hidden; font-size:0px" id="tour"><li data-text="Take a tour"><h2>' + _('Welcome to Turtle Blocks') + '</h2><p>' + _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.') + '</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>' + _('Palette buttons') + '</h2><p>' + _('This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.') + '</p></li><li data-id="helpHButton-0" data-button="Next"><h2>' + _('Expand/collapse toolbar') + '</h2><p>' + _('This button opens and closes the primary toolbar.') + '</p></li><li data-id="helpHButton-1" data-button="Next"><h2>' + _('Run fast') + '</h2><p>' + _('Click to run the project in fast mode.') + '</p></li><li data-id="helpHButton-2" data-button="Next"><h2>' + _('Run slow') + '</h2><p>' + _('Click to run the project in slow mode.') + '</p></li><li data-id="helpHButton-3" data-button="Next"><h2>' + _('Run step by step') + '</h2><p>' + _('Click to run the project step by step.') + '</p></li><li data-id="helpHButton-4" data-button="Next"><h2>' + _('Stop') + '</h2><p>' + _('Stop the current project.') + '</p></li><li data-id="helpHButton-5" data-button="Next"><h2>' + _('Clean') + '</h2><p>' + _('Clear the screen and return the turtles to their initial positions.') + '</p></li><li data-id="helpHButton-6" data-button="Next"><h2>' + _('Show/hide palettes') + '</h2><p>' + _('Hide or show the block palettes.') + '</p></li><li data-id="helpHButton-7" data-button="Next"><h2>' + _('Show/hide blocks') + '</h2><p>' + _('Hide or show the blocks and the palettes.') + '</p></li><li data-id="helpHButton-8" data-button="Next"><h2>' + _('Expand/collapse collapsable blocks') + '</h2><p>' + _('Expand or collapse stacks of blocks, e.g, start and action stacks.') + '</p></li><li data-id="helpHButton-9" data-button="Next"><h2>' + _('Help') + '</h2><p>' + _('Show these messages.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Expand/collapse option toolbar') + '</h2><p>' + _('Click this button to expand or collapse the auxillary toolbar.') + '</p></li><li data-id="helpVButton-1" data-button="Next" data-options="tipLocation:right"><h2>' + _('Paste') + '</h2><p>' + _('The paste button is enabled then there are blocks copied onto the clipboard.') + '</p></li><li data-id="helpVButton-2" data-button="Next" data-options="tipLocation:right"><h2>' + _('Cartesian') + '</h2><p>' + _('Show or hide a Cartesian-coordinate grid.') + '</p></li><li data-id="helpVButton-3" data-button="Next" data-options="tipLocation:right"><h2>' + _('Polar') + '</h2><p>' + _('Show or hide a polar-coordinate grid.') + '</p></li><li data-id="helpVButton-4" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load samples from server') + '</h2><p>' + _('This button opens a viewer for loading example projects.') + '</p></li><li data-id="helpVButton-5" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load project from file') + '</h2><p>' + _('You can also load projects from the file system.') + '</p></li><li data-id="helpVButton-6" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load plugin from file') + '</h2><p>' + _('You can load new blocks from the file system.') + '</p></li><li data-id="helpVButton-7" data-button="Next" data-options="tipLocation: right"><h2>' + _('Delete all') + '</h2><p>' + _('Remove all content on the canvas, including the blocks.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-opt  ions="tipLocation:right"><h2>' + _('Undo') + '</h2><p>' + _('Restore blocks from the trash.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Save project') + '</h2><p>' + _('Save your project to a server.') + '</p></li><li data-id="helpEnd" data-button="Close"><h2>' + _('Congratulations.') + '</h2><p>' + _('You have finished the tour. Please enjoy Turtle Blocks!') + '</p></li></ol>';
+                content = '<ol style="visibility:hidden; font-size:0px" id="tour"><li data-text="Take a tour"><h2>' + _('Welcome to Turtle Blocks') + '</h2><p>' + _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.') + '</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>' + _('Palette buttons') + '</h2><p>' + _('This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.') + '</p></li><li data-id="helpHButton-0" data-button="Next"><h2>' + _('Expand/collapse toolbar') + '</h2><p>' + _('This button opens and closes the primary toolbar.') + '</p></li><li data-id="helpHButton-1" data-button="Next"><h2>' + _('Run fast') + '</h2><p>' + _('Click to run the project in fast mode.') + '</p></li><li data-id="helpHButton-2" data-button="Next"><h2>' + _('Run slow') + '</h2><p>' + _('Click to run the project in slow mode.') + '</p></li><li data-id="helpHButton-3" data-button="Next"><h2>' + _('Run step by step') + '</h2><p>' + _('Click to run the project step by step.') + '</p></li><li data-id="helpHButton-4" data-button="Next"><h2>' + _('Stop') + '</h2><p>' + _('Stop the current project.') + '</p></li><li data-id="helpHButton-5" data-button="Next"><h2>' + _('Clean') + '</h2><p>' + _('Clear the screen and return the turtles to their initial positions.') + '</p></li><li data-id="helpHButton-6" data-button="Next"><h2>' + _('Show/hide palettes') + '</h2><p>' + _('Hide or show the block palettes.') + '</p></li><li data-id="helpHButton-7" data-button="Next"><h2>' + _('Show/hide blocks') + '</h2><p>' + _('Hide or show the blocks and the palettes.') + '</p></li><li data-id="helpHButton-8" data-button="Next"><h2>' + _('Expand/collapse collapsable blocks') + '</h2><p>' + _('Expand or collapse stacks of blocks, e.g, start and action stacks.') + '</p></li><li data-id="helpHButton-9" data-button="Next"><h2>' + _('Help') + '</h2><p>' + _('Show these messages.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Expand/collapse option toolbar') + '</h2><p>' + _('Click this button to expand or collapse the auxillary toolbar.') + '</p></li><li data-id="helpVButton-1" data-button="Next" data-options="tipLocation:right"><h2>' + _('Paste') + '</h2><p>' + _('The paste button is enabled then there are blocks copied onto the clipboard.') + '</p></li><li data-id="helpVButton-2" data-button="Next" data-options="tipLocation:right"><h2>' + _('Cartesian') + '</h2><p>' + _('Show or hide a Cartesian-coordinate grid.') + '</p></li><li data-id="helpVButton-3" data-button="Next" data-options="tipLocation:right"><h2>' + _('Polar') + '</h2><p>' + _('Show or hide a polar-coordinate grid.') + '</p></li><li data-id="helpVButton-4" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load samples from server') + '</h2><p>' + _('This button opens a viewer for loading example projects.') + '</p></li><li data-id="helpVButton-5" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load project from file') + '</h2><p>' + _('You can also load projects from the file system.') + '</p></li><li data-id="helpVButton-6" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load plugin from file') + '</h2><p>' + _('You can load new blocks from the file system.') + '</p></li><li data-id="helpVButton-7" data-button="Next" data-options="tipLocation: right"><h2>' + _('Delete all') + '</h2><p>' + _('Remove all content on the canvas, including the blocks.') + '</p></li><li data-id="helpVButton-8" data-button="Next" data-options="tipLocation:right"><h2>' + _('Undo') + '</h2><p>' + _('Restore blocks from the trash.') + '</p></li><li data-id="helpVButton-9" data-button="Next" data-options="tipLocation:right"><h2>' + _('Save project') + '</h2><p>' + _('Save your project to a server.') + '</p></li><li data-id="helpEnd" data-button="Close"><h2>' + _('Congratulations.') + '</h2><p>' + _('You have finished the tour. Please enjoy Turtle Blocks!') + '</p></li></ol>';
             }
             docById('tourData').innerHTML = content;
             settings = {

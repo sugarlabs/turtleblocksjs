@@ -72,13 +72,15 @@ function Turtle (name, turtles) {
         // Draw a line if the pen is down.
         if (this.penState) {
             this.drawingCanvas.graphics.lineTo(nx, ny);
-            // var svg = '<line x1="' + ox + '" y1="' + oy + '" x2="' + nx + '" y2="' + ny + '" stroke-linecap="round" stroke-width="' + this.stroke + '" stroke="' + this.canvasColor + '"/>\n';
-            // this.svgOutput += svg;
             if (!this.svgPath) {
                 this.svgPath = true;
-                this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
+                var oxScaled = ox * this.turtles.scale;
+                var oyScaled = oy * this.turtles.scale;
+                this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
             }
-            this.svgOutput += nx + ',' + ny + ' ';
+            var nxScaled = nx * this.turtles.scale;
+            var nyScaled = ny * this.turtles.scale;
+            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }
@@ -120,14 +122,19 @@ function Turtle (name, turtles) {
             this.drawingCanvas.graphics.arc(cx, cy, radius, sa, ea, anticlockwise);
             if (!this.svgPath) {
                 this.svgPath = true;
-                this.svgOutput += '<path d="M ' + ox + ',' + oy + ' ';
+                var oxScaled = ox * this.turtles.scale;
+                var oyScaled = oy * this.turtles.scale;
+                this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
             }
             if (anticlockwise) {
                 var sweep = 0;
             } else {
                 var sweep = 1;
             }
-            this.svgOutput += 'A ' + radius + ',' + radius + ' 0 1 ' + sweep + ' ' + nx + ',' + ny + ' ';
+            var nxScaled = nx * this.turtles.scale;
+            var nyScaled = ny * this.turtles.scale;
+            var radiusScaled = radius * this.turtles.scale;
+            this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 ' + sweep + ' ' + nxScaled + ',' + nyScaled + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }
@@ -348,7 +355,7 @@ function Turtle (name, turtles) {
                 me.startBlock.container.removeChild(me.decorationBitmap);
                 me.decorationBitmap = new createjs.Bitmap(myImage);
                 me.startBlock.container.addChild(me.decorationBitmap);
-		me.decorationBitmap.name = 'decoration';
+                me.decorationBitmap.name = 'decoration';
                 var bounds = me.startBlock.container.getBounds();
                 me.decorationBitmap.x = bounds.width - 30;
                 me.decorationBitmap.y = 20;
@@ -394,45 +401,45 @@ function Turtle (name, turtles) {
 
     this.doSetColor = function(color) {
         // Color sets hue but also selects maximum chroma.
+        this.closeSVG();
         this.color = Number(color);
         var results = getcolor(this.color);
         this.canvasValue = results[0];
         this.canvasChroma = results[1];
         this.canvasColor = results[2];
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-        this.closeSVG();
     }
 
     this.doSetHue = function(hue) {
+        this.closeSVG();
         this.color = Number(hue);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-        this.closeSVG();
     }
 
     this.doSetValue = function(shade) {
+        this.closeSVG();
         this.value = Number(shade);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-        this.closeSVG();
     }
 
     this.doSetChroma = function(chroma) {
+        this.closeSVG();
         this.chroma = Number(chroma);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.beginStroke(this.canvasColor);
-        this.closeSVG();
     }
 
     this.doSetPensize = function(size) {
+        this.closeSVG();
         this.stroke = size;
         this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
-        this.closeSVG();
     }
 
     this.doPenUp = function() {
-        this.penState = false;
         this.closeSVG();
+        this.penState = false;
     }
 
     this.doPenDown = function() {
@@ -461,7 +468,8 @@ function Turtle (name, turtles) {
                 this.svgOutput += 'none;';
             }
             this.svgOutput += 'stroke:' + this.canvasColor + ';';
-            this.svgOutput += 'stroke-width:' + this.stroke + 'pt;" />';
+            var strokeScaled = this.stroke * this.turtles.scale;
+            this.svgOutput += 'stroke-width:' + strokeScaled + 'pt;" />';
             this.svgPath = false;
         }
     }
@@ -545,10 +553,9 @@ function Turtles(canvas, stage, refreshCanvas) {
 
             myTurtle.startBlock = startBlock;
             if (startBlock != null) {
-                console.log('adding decoration to ' + startBlock.name);
                 myTurtle.decorationBitmap = myTurtle.bitmap.clone();
                 startBlock.container.addChild(myTurtle.decorationBitmap);
-		myTurtle.decorationBitmap.name = 'decoration';
+                myTurtle.decorationBitmap.name = 'decoration';
                 var bounds = startBlock.container.getBounds();
                 myTurtle.decorationBitmap.x = bounds.width - 30;
                 myTurtle.decorationBitmap.y = 35;
@@ -642,13 +649,13 @@ function Turtles(canvas, stage, refreshCanvas) {
 
         document.getElementById('loader').className = '';
         setTimeout(function() {
-                if (blkInfoAvailable) {
-                  myTurtle.doSetHeading(infoDict['heading']);
-                  myTurtle.doSetPensize(infoDict['pensize']);
-                  myTurtle.doSetChroma(infoDict['grey']);
-                  myTurtle.doSetValue(infoDict['shade']);
-                  myTurtle.doSetColor(infoDict['color']);
-                }
+            if (blkInfoAvailable) {
+                myTurtle.doSetHeading(infoDict['heading']);
+                myTurtle.doSetPensize(infoDict['pensize']);
+                myTurtle.doSetChroma(infoDict['grey']);
+                myTurtle.doSetValue(infoDict['shade']);
+                myTurtle.doSetColor(infoDict['color']);
+            }
         }, 1000);
         this.refreshCanvas();
     }

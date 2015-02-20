@@ -75,6 +75,8 @@ function Block(protoblock, blocks) {
                 this.highlightCollapseBlockBitmap.visible = true;
                 this.collapseBlockBitmap.visible = false;
                 this.collapseText.visible = true;
+                this.bitmap.visible = false;
+                this.highlightBitmap.visible = false;
             }
         } else {
             this.bitmap.visible = false;
@@ -105,6 +107,8 @@ function Block(protoblock, blocks) {
                 this.highlightCollapseBlockBitmap.visible = false;
                 this.collapseBlockBitmap.visible = true;
                 this.collapseText.visible = true;
+                this.bitmap.visible = false;
+                this.highlightBitmap.visible = false;
             }
         } else {
             this.bitmap.visible = true;
@@ -138,7 +142,6 @@ function Block(protoblock, blocks) {
         }
 
         this.clampCount[clamp] += plusMinus;
-        this.size += plusMinus;
 
         switch (this.name) {
             case 'start':
@@ -164,6 +167,7 @@ function Block(protoblock, blocks) {
                 } else if (this.isTwoArgBlock()) {
                     var obj = this.protoblock.generator(this.clampCount[0]);
                 }
+                this.size += plusMinus;
                 break;
         }
 
@@ -186,7 +190,6 @@ function Block(protoblock, blocks) {
         // blocks, this is the primary label; for parameter blocks,
         // this is used to display the current block value.
         this.text = new createjs.Text('', '20px Sans', '#000000');
-        var doubleExpandable = this.blocks.doubleExpandable;
 
         this.generateArtwork(true, []);
     }
@@ -288,6 +291,17 @@ function Block(protoblock, blocks) {
                             myBlock.blocks.adjustExpandableClampBlock(blocksToCheck);
                         }
                     }
+                    if (['start', 'action'].indexOf(myBlock.name) != -1) {
+                    if (myBlock.collapsed) {
+                        myBlock.bitmap.visible = false;
+                        myBlock.highlightBitmap.visible = false;
+                    } else {
+                        myBlock.bitmap.visible = true;
+                        myBlock.highlightBitmap.visible = false;
+                    }
+                    myBlock.container.updateCache();
+                    myBlock.blocks.refreshCanvas();
+                    }
                 }
             }
 
@@ -351,7 +365,7 @@ function Block(protoblock, blocks) {
             var bounds = this.container.getBounds();
             if (this.protoblock.args == 0) {
                 this.text.textAlign = 'right';
-                this.text.x = bounds.width - 10;
+                this.text.x = bounds.width - 25;
                 this.text.y = VALUETEXTY;
             } else if (this.isArgBlock()) {
                 this.text.textAlign = 'left';
@@ -368,16 +382,18 @@ function Block(protoblock, blocks) {
             this.container.updateCache();
         }
 
-        this.loadComplete = true;
-        if (this.postProcess != null) {
-            this.postProcess(this.postProcessArg);
-        }
-        this.blocks.refreshCanvas();
-        this.blocks.cleanupAfterLoad();
+        if (['start', 'action'].indexOf(this.name) == -1) {
+            this.loadComplete = true;
+            if (this.postProcess != null) {
+                this.postProcess(this.postProcessArg);
+            }
+            this.blocks.refreshCanvas();
+            this.blocks.cleanupAfterLoad();
+        } else {
 
         // Start blocks and Action blocks can collapse, so add an
         // event handler
-        if (['start', 'action'].indexOf(this.name) != -1) {
+        // if (['start', 'action'].indexOf(this.name) != -1) {
             block_label = ''; // We use a Text element for the label
 
             function processCollapseBitmap(name, bitmap, myBlock) {
@@ -434,6 +450,13 @@ function Block(protoblock, blocks) {
                             myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
                             myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
                             loadCollapsibleEventHandlers(myBlock);
+
+                            myBlock.loadComplete = true;
+                            if (myBlock.postProcess != null) {
+                                myBlock.postProcess(myBlock.postProcessArg);
+                            }
+                            myBlock.blocks.refreshCanvas();
+                            myBlock.blocks.cleanupAfterLoad();
                         }
                         image.src = 'images/expand.svg';
                     }
@@ -490,6 +513,10 @@ function Block(protoblock, blocks) {
         return this.protoblock.style == 'twoarg';
     }
 
+    this.isTwoArgBooleanBlock = function() {
+        return ['equal', 'greater', 'less'].indexOf(this.name) != -1;
+    }
+
     this.isClampBlock = function() {
         return this.protoblock.style == 'clamp' || this.isDoubleClampBlock();
     }
@@ -524,7 +551,7 @@ function Block(protoblock, blocks) {
     this.loadThumbnail = function (imagePath) {
         // Load an image thumbnail onto block.
         var thisBlock = this.blocks.blockList.indexOf(this);
-        var myBlock = this.blocks.blockList[thisBlock];
+        var myBlock = this;
         if (this.blocks.blockList[thisBlock].value == null && imagePath == null) {
             console.log('loadThumbnail: no image to load?');
             return;
@@ -538,6 +565,25 @@ function Block(protoblock, blocks) {
             var bitmap = new createjs.Bitmap(image);
             bitmap.name = 'media';
 
+
+            var myContainer = new createjs.Container();
+            myContainer.addChild(bitmap);
+
+            // Resize the image to a reasonable maximum.
+            if (image.width > image.height) {
+                if (image.width > 1200) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1200 / image.width;
+                }
+            } else {
+                if (image.height > 900) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 900 / image.height;
+                }
+            }
+            var bounds = myContainer.getBounds();
+            myContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+            myBlock.value = myContainer.getCacheDataURL();
+
+            // Next, scale the bitmap for the thumbnail.
             if (image.width > image.height) {
                 bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
             } else {
@@ -562,7 +608,8 @@ function Block(protoblock, blocks) {
     this.doOpenMedia = function (myBlock) {
         var fileChooser = docById('myOpenAll');
         var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
-        fileChooser.addEventListener('change', function(event) {
+
+        readerAction = function (event) {
             var reader = new FileReader();
             reader.onloadend = (function() {
                 if (reader.result) {
@@ -575,16 +622,16 @@ function Block(protoblock, blocks) {
                     myBlock.blocks.updateBlockText(thisBlock);
                 }
             });
-
             if (myBlock.name == 'media') {
                 reader.readAsDataURL(fileChooser.files[0]);
             }
             else {
                 reader.readAsText(fileChooser.files[0]);
             }
+            fileChooser.removeEventListener('change', readerAction);
+        }
 
-        }, false);
-
+        fileChooser.addEventListener('change', readerAction, false);
         fileChooser.focus();
         fileChooser.click();
     }
@@ -601,21 +648,25 @@ function Block(protoblock, blocks) {
                 return;
             }
             myBlock.collapsed = !collapse;
+
+            // These are the buttons to collapse/expand the stack.
             myBlock.collapseBitmap.visible = collapse;
             myBlock.expandBitmap.visible = !collapse;
+
+            // These are the collpase-state bitmaps.
             myBlock.collapseBlockBitmap.visible = !collapse;
             myBlock.highlightCollapseBlockBitmap.visible = false;
             myBlock.collapseText.visible = !collapse;
 
-            if (myBlock.bitmap != null) {
+            if (collapse) {
+                myBlock.bitmap.visible = true;
+            } else {
                 myBlock.bitmap.visible = false;
+                myBlock.container.updateCache();
             }
+            myBlock.highlightBitmap.visible = false;
 
-            if (myBlock.highlightBitmap != null) {
-                myBlock.highlightBitmap.visible = collapse;
-            }
-
-            if (myBlock.name != 'start') {
+            if (myBlock.name == 'action') {
                 // Label the collapsed block with the action label
                 if (myBlock.connections[1] != null) {
                     var text = myBlock.blocks.blockList[myBlock.connections[1]].value;
@@ -627,18 +678,20 @@ function Block(protoblock, blocks) {
                     myBlock.collapseText.text = '';
                 }
             }
+
+            // Make sure the text is on top.
             var z = myBlock.container.getNumChildren() - 1;
             myBlock.container.setChildIndex(myBlock.collapseText, z);
 
+            // Set collapsed state of blocks in drag group.
             if (myBlock.blocks.dragGroup.length > 0) {
-                for (var b = 0; b < myBlock.blocks.dragGroup.length; b++) {
+                for (var b = 1; b < myBlock.blocks.dragGroup.length; b++) {
                     var blk = myBlock.blocks.dragGroup[b];
-                    if (b != 0) {
-                        myBlock.blocks.blockList[blk].collapsed = !collapse;
-                        myBlock.blocks.blockList[blk].container.visible = collapse;
-                    }
+                    myBlock.blocks.blockList[blk].collapsed = !collapse;
+                    myBlock.blocks.blockList[blk].container.visible = collapse;
                 }
             }
+
             myBlock.collapseContainer.updateCache();
             myBlock.container.updateCache();
             myBlock.blocks.refreshCanvas();
@@ -775,6 +828,7 @@ function collapseOut(blocks, myBlock, thisBlock, moved, event) {
             sendStackToTrash(blocks, myBlock);
         } else {
             // Otherwise, process move.
+            console.log('collapsed out block moved ' + thisBlock);
             blocks.blockMoved(thisBlock);
         }
     }
@@ -1054,6 +1108,7 @@ function mouseoutCallback(myBlock, event, moved) {
             sendStackToTrash(blocks, myBlock);
         } else {
             // Otherwise, process move.
+            console.log('mouseout block moved ' + thisBlock);
             myBlock.blocks.blockMoved(thisBlock);
         }
     }

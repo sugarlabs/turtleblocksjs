@@ -565,6 +565,25 @@ function Block(protoblock, blocks) {
             var bitmap = new createjs.Bitmap(image);
             bitmap.name = 'media';
 
+
+            var myContainer = new createjs.Container();
+            myContainer.addChild(bitmap);
+
+            // Resize the image to a reasonable maximum.
+            if (image.width > image.height) {
+                if (image.width > 1200) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1200 / image.width;
+                }
+            } else {
+                if (image.height > 900) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 900 / image.height;
+                }
+            }
+            var bounds = myContainer.getBounds();
+            myContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+	    myBlock.value = myContainer.getCacheDataURL();
+
+            // Next, scale the bitmap for the thumbnail.
             if (image.width > image.height) {
                 bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
             } else {

@@ -235,6 +235,7 @@
   * fixed problem with start block turtle decoration positioning
   * removed event handler after load so that when you change the image
     associted a media block, other media blocks don't also change
+  * Scale imported bitmaps to maximum of 1200x900
 
 TODO:
   * music blocks plugin
@@ -259,6 +260,6 @@ TODO:
 
 KNOWN BUGS:
   * sample projects cannot be shown on Android
-  * don't save full-sized bitmap to session
   * find a scalable approach to drawing on the canvas
   * not all blocks highlight when using step-by-step mode
+  * joyride doesn't work on Android

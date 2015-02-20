@@ -356,8 +356,12 @@ define(function(require) {
 
             allFilesChooser.addEventListener('click', function(event) { this.value = null; });
 
-            pluginChooser.addEventListener('click', function(event) { this.value = null; });
+            pluginChooser.addEventListener('click', function(event) {
+                window.scroll(0, 0);
+                this.value = null;
+            });
             pluginChooser.addEventListener('change', function(event) {
+                window.scroll(0, 0)
 
                 // Read file here.
                 var reader = new FileReader();

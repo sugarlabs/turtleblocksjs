@@ -223,9 +223,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // Save the state before running.
         // FIXME: Where is Storage defined?
         if (typeof(Storage) !== 'undefined') {
-            localStorage.setItem('sessiondata', this.prepareExport());
+            try {
+                localStorage.setItem('sessiondata', this.prepareExport());
+            } catch (e) {
+                console.log(e);
+            }
         } else {
-            // Sorry! No Web Storage support.
+            console.log('Sorry! No Web storage support.')
         }
 
         this.stopTurtle = false;

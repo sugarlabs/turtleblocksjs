@@ -581,7 +581,7 @@ function Block(protoblock, blocks) {
             }
             var bounds = myContainer.getBounds();
             myContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-	    myBlock.value = myContainer.getCacheDataURL();
+            myBlock.value = myContainer.getCacheDataURL();
 
             // Next, scale the bitmap for the thumbnail.
             if (image.width > image.height) {
@@ -629,7 +629,7 @@ function Block(protoblock, blocks) {
                 reader.readAsText(fileChooser.files[0]);
             }
             fileChooser.removeEventListener('change', readerAction);
-	}
+        }
 
         fileChooser.addEventListener('change', readerAction, false);
         fileChooser.focus();

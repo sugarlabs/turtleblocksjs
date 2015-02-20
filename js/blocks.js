@@ -1820,10 +1820,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             var blkData = blockObjs[b];
 
             if (typeof(blkData[1]) == 'object') {
-                if (typeof(blkData[1][1]) == 'number' | typeof(blkData[1][1]) == 'string') {
-                    blkInfo = [blkData[1][0], {
-                        'value': blkData[1][1]
-                    }];
+                if (blkData[1].length == 1) {
+                    blkInfo = [blkData[1][0], {'value': null}];
+                } else if (['number', 'string'].indexOf(typeof(blkData[1][1])) != -1) {
+                    blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
                     if (['start', 'action', 'hat'].indexOf != -1) {
                         blkInfo[1]['collapsed'] = false;
                     }
@@ -1831,9 +1831,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     blkInfo = blkData[1];
                 }
             } else {
-                blkInfo = [blkData[1], {
-                    'value': null
-                }];
+                blkInfo = [blkData[1], {'value': null}];
                 if (['start', 'action', 'hat'].indexOf != -1) {
                     blkInfo[1]['collapsed'] = false;
                 }

@@ -138,19 +138,19 @@ msgid "do"
 msgstr "eme"
 
 msgid "start"
-msgstr ""
+msgstr "bido"
 
 msgid "add 1 to"
-msgstr ""
+msgstr "tinye 1"
 
 msgid "add"
-msgstr ""
+msgstr "tinye"
 
 msgid "speak"
-msgstr ""
+msgstr "kwo"
 
 msgid "show"
-msgstr ""
+msgstr "show"
 
 msgid "size"
 msgstr ""

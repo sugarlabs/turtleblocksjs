@@ -885,7 +885,7 @@ define(function(require) {
                 update = true;
             }, 200);
 
-            docById('loding-image-container').style.display = 'none';
+            docById('loading-image-container').style.display = 'none';
         }
 
         function loadRawProject(data) {
@@ -894,7 +894,7 @@ define(function(require) {
             var obj = JSON.parse(data);
             blocks.loadNewBlocks(obj);
 
-            docById('loding-image-container').style.display = 'none';
+            docById('loading-image-container').style.display = 'none';
             document.body.style.cursor = 'default';
         }
 
@@ -968,7 +968,7 @@ define(function(require) {
             }
             update = true;
 
-            docById('loding-image-container').style.display = 'none';
+            docById('loading-image-container').style.display = 'none';
         }
 
         function hideMsgs() {
@@ -1277,8 +1277,8 @@ define(function(require) {
                 docById('helpVButton-' + i).style.marginTop = scaled + 'px';
                 current += cellSize;
               }
-              docById('helpEnd').style.marginLeft = 256;
-              docById('helpEnd').style.marginTop = 128;
+              docById('helpEnd').style.marginLeft = 256 + 'px';
+              docById('helpEnd').style.marginTop = 128 + 'px';
             }
 
             if (firstTime && doneTour) {

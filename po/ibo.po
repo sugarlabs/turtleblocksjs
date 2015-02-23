@@ -153,538 +153,538 @@ msgid "show"
 msgstr "show"
 
 msgid "size"
-msgstr ""
+msgstr "size"
 
 msgid "obj"
-msgstr ""
+msgstr "obj"
 
 msgid "text"
-msgstr ""
+msgstr "ederede"
 
 msgid "shell"
-msgstr ""
+msgstr "shei"
 
 msgid "image"
-msgstr ""
+msgstr "oyiyi"
 
 msgid "stop media"
-msgstr ""
+msgstr "kwụsị egwu"
 
 msgid "repeat"
-msgstr ""
+msgstr "imekwa"
 
 msgid "forever"
-msgstr ""
+msgstr "ruo mgbe ebighị ebi"
 
 msgid "stop"
-msgstr ""
+msgstr "kwụsị"
 
 msgid "if"
-msgstr ""
+msgstr "o buru na"
 
 msgid "then"
-msgstr ""
+msgstr "mgbe ahụ"
 
 msgid "until"
-msgstr ""
+msgstr "ruo mgbe"
 
 msgid "wait for"
-msgstr ""
+msgstr "na-eche maka"
 
 msgid "while"
-msgstr ""
+msgstr "mgbe"
 
 msgid "else"
-msgstr ""
+msgstr "ọzọ"
 
 msgid "wait"
-msgstr ""
+msgstr "na-eche"
 
 msgid "print"
-msgstr ""
+msgstr "ebipụta"
 
 msgid "time"
-msgstr ""
+msgstr "oge"
 
 msgid "mouse x"
-msgstr ""
+msgstr "oke x"
 
 msgid "mouse y"
-msgstr ""
+msgstr "oke y"
 
 msgid "mouse button"
-msgstr ""
+msgstr "òké bọtịnụ"
 
 msgid "keyboard"
-msgstr ""
+msgstr "keyboard"
 
 msgid "pixel color"
-msgstr ""
+msgstr "pixel agba"
 
 msgid "unknown"
-msgstr ""
+msgstr "amaghị"
 
 msgid "Welcome to Turtle Blocks"
-msgstr ""
+msgstr "Mmadụ Bịa mbe nkanka"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr ""
+msgstr "Mbe nkanka bụ a Logo-sitere n'ike mmụọ nsọ mbe na-adọta yi foto na snap-na-visual-Mmemme blocks"
 
 msgid "Palette buttons"
-msgstr ""
+msgstr "palette buttons"
 
 msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
-msgstr ""
+msgstr "Nke a toolbar e dere ihe palette buttons: pịa na-egosi ma ọ bụ zoo palettes nke blocks (mbe, Pen, Ọnụ Ọgụgụ, Boolean, Igba, nkanka, Media, sensọ, na Mkponyeaka). Ozugbo oghe, ị nwere ike ịdọrọ blocks si palettes n'elu kwaaji-eji ha."
 
 msgid "Expand/collapse toolbar"
-msgstr ""
+msgstr "Ịmụbawanye / ida toolbar"
 
 msgid "This button opens and closes the primary toolbar."
-msgstr ""
+msgstr "Nke a button emepekwa na-emechi isi toolbar."
 
 msgid "Run fast"
-msgstr ""
+msgstr "Gbaa ngwa ngwa"
 
 msgid "Click to run the project in fast mode."
-msgstr ""
+msgstr "Pịa-agba ọsọ ahụ oru ngo na ngwa ngwa mode"
 
 msgid "Run slow"
-msgstr ""
+msgstr "Gbaa Obere Obere"
 
 msgid "Click to run the project in slow mode."
-msgstr ""
+msgstr "Pịa-agba ọsọ ahụ oru ngo na-adịghị ngwa mode"
 
 msgid "Run step by step"
-msgstr ""
+msgstr "Gbaa nzọụkwụ site nzọụkwụ"
 
 msgid "Click to run the project step by step."
-msgstr ""
+msgstr "Pịa na-agba ọsọ ngo nzọụkwụ site nzọụkwụ"
 
 msgid "Stop"
-msgstr ""
+msgstr "kwụsị"
 
 msgid "Stop the current project."
-msgstr ""
+msgstr "Kwụsị ugbu a oru ngo"
 
 msgid "Clean"
-msgstr ""
+msgstr "ọcha"
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr ""
+msgstr "Clear the screen and return the turtles to their initial positions"
 
 msgid "Show/hide palettes"
-msgstr ""
+msgstr "Gosi / hide palettes"
 
 msgid "Hide or show the block palettes."
-msgstr ""
+msgstr "Zoo ma ọ bụ na-egosi na ngọngọ palettes"
 
 msgid "Show/hide blocks"
-msgstr ""
+msgstr "Gosi / hide blocks"
 
 msgid "Hide or show the blocks and the palettes."
-msgstr ""
+msgstr "Zoo ma ọ bụ na-egosi na blocks na palettes"
 
 msgid "Expand/collapse collapsable blocks"
-msgstr ""
+msgstr "Ịmụbawanye / daa collapsable blocks"
 
 msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
-msgstr ""
+msgstr "Ịmụbawanye ma ọ bụ daa stacks nke blocks, dịka, na-amalite na edinam stack"
 
 msgid "Help"
-msgstr ""
+msgstr "Help"
 
 msgid "Show these messages."
-msgstr ""
+msgstr "Gosi ndị a ozi"
 
 msgid "Expand/collapse option toolbar"
-msgstr ""
+msgstr "Ịmụbawanye / daa nhọrọ toolbar"
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
-msgstr ""
+msgstr "Pịa a button mụbaa ma ọ bụ daa na auxillary toolbar"
 
 msgid "Paste"
-msgstr ""
+msgstr "tapawa"
 
 msgid "The paste button is enabled then there are blocks copied onto the clipboard."
-msgstr ""
+msgstr "The tapawa button na-nyeere e nwere blocks depụtaghachiri n'elu clipboard"
 
 msgid "Cartesian"
-msgstr ""
+msgstr "Cartesian"
 
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr ""
+msgstr "Egosi ma ọ bụ zoo a Cartesian-ahazi okporo"
 
 msgid "Polar"
-msgstr ""
+msgstr "pola"
 
 msgid "Show or hide a polar-coordinate grid."
-msgstr ""
+msgstr "Egosi ma ọ bụ zoo a polar-ahazi okporo"
 
 msgid "Load samples from server"
-msgstr ""
+msgstr "Ibu Ibu n'omume site na ihe nkesa"
 
 msgid "This button opens a viewer for loading example projects."
-msgstr ""
+msgstr "Nke a ga-emepe button a na-ekiri maka loading atụ oru ngo"
 
 msgid "Load project from file"
-msgstr ""
+msgstr "Ibu Ibu oru ngo si faịlụ"
 
 msgid "You can also load projects from the file system."
-msgstr ""
+msgstr "giwa nwekwara ike mara oru ngo si faịlụ usoro"
 
 msgid "Load plugin from file"
-msgstr ""
+msgstr "Ibu Ibu plugin si faịlụ"
 
 msgid "You can load new blocks from the file system."
-msgstr ""
+msgstr "I nwere ike mara ọhụrụ blocks si faịlụ usoro"
 
 msgid "Delete all"
-msgstr ""
+msgstr "hichapụ niile"
 
 msgid "Remove all content on the canvas, including the blocks."
-msgstr ""
+msgstr "Wepụ niile ọdịnaya na kwaaji, gụnyere blocks"
 
 msgid "Undo"
-msgstr ""
+msgstr "Wepu"
 
 msgid "Restore blocks from the trash."
-msgstr ""
+msgstr "Weghachi blocks si ahịhịa"
 
 msgid "Save project"
-msgstr ""
+msgstr "Save oru ngo"
 
 msgid "Save your project to a server."
-msgstr ""
+msgstr "Zọpụta ndị gị oru ngo na-a nkesa"
 
 msgid "Congratulations."
-msgstr ""
+msgstr "ekele"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr ""
+msgstr "ị okokụre njegharị. Biko enwe mbe nkanka!"
 
 msgid "hide blocks"
-msgstr ""
+msgstr "hide blocks"
 
 msgid "publish"
-msgstr ""
+msgstr "ebipụta"
 
 msgid "comment"
-msgstr ""
+msgstr "ikwu"
 
 msgid "play back"
-msgstr ""
+msgstr "egwu azụ"
 
 msgid "save svg"
-msgstr ""
+msgstr "save svg"
 
 msgid "title"
-msgstr ""
+msgstr "aha"
 
 msgid "eval"
-msgstr ""
+msgstr "eval"
 
 msgid "show blocks"
-msgstr ""
+msgstr "show blocks"
 
 msgid "stop play"
-msgstr ""
+msgstr "kwụsị play"
 
 msgid "turtle"
-msgstr ""
+msgstr "mbe"
 
 msgid "pen"
-msgstr ""
+msgstr "pen"
 
 msgid "number"
-msgstr ""
+msgstr "nọmba"
 
-msgid "boolean"
-msgstr ""
+msgid "Boolean"
+msgstr "Boolean"
 
 msgid "flow"
-msgstr ""
+msgstr "igba"
 
 msgid "blocks"
-msgstr ""
+msgstr "blocks"
 
 msgid "media"
-msgstr ""
+msgstr "media"
 
 msgid "sensors"
-msgstr ""
+msgstr "sensọ"
 
 msgid "extras"
-msgstr ""
+msgstr "yana mgbakwunye"
 
 msgid "open file"
-msgstr ""
+msgstr "emeghe faịlụ"
 
 msgid "motion z"
-msgstr ""
+msgstr "ngagharị z"
 
 msgid "motion y"
-msgstr ""
+msgstr "ngagharị y"
 
 msgid "motion x"
-msgstr ""
+msgstr "ngagharị x"
 
 msgid "bitcoin"
-msgstr ""
+msgstr "Bitcoin"
 
 msgid "from"
-msgstr ""
+msgstr "site"
 
 msgid "mashape"
-msgstr ""
+msgstr "ọdịdị"
 
 msgid "define"
-msgstr ""
+msgstr "kọwaa"
 
 msgid "stock price"
-msgstr ""
+msgstr "ngwaahịa price"
 
 msgid "currency"
-msgstr ""
+msgstr "ego"
 
 msgid "Google map"
-msgstr ""
+msgstr "Google map"
 
 msgid "coordinates"
-msgstr ""
+msgstr "na-achịkọta"
 
 msgid "zoom factor"
-msgstr ""
+msgstr "mbugharị na-akpata"
 
 msgid "zoom"
-msgstr ""
+msgstr "mbugharị"
 
 msgid "latitude"
-msgstr ""
+msgstr "ohere"
 
-msgid "longitude"
-msgstr ""
+msgid "longtitude"
+msgstr "lonjituudu"
 
 msgid "show heap"
-msgstr ""
+msgstr "show kpokọtara"
 
 msgid "pop"
-msgstr ""
+msgstr "pop"
 
 msgid "empty heap"
-msgstr ""
+msgstr "efu kpokọtara"
 
 msgid "save heap"
-msgstr ""
+msgstr "ịzọpụta kpokọtara"
 
 msgid "load heap"
-msgstr ""
+msgstr "ibu kpokọtara"
 
 msgid "push"
-msgstr ""
+msgstr "kwaa"
 
 msgid "logic"
-msgstr ""
+msgstr "mgbagha"
 
 msgid "power"
-msgstr ""
+msgstr "ike"
 
 msgid "base"
-msgstr ""
+msgstr "isi"
 
 msgid "exp"
-msgstr ""
+msgstr "exp"
 
 msgid "floor"
-msgstr ""
+msgstr "ahla"
 
 msgid "ceiling"
-msgstr ""
+msgstr "n'uko"
 
 msgid "degrees"
-msgstr ""
+msgstr "degrees"
 
 msgid "to degrees"
-msgstr ""
+msgstr " to degrees"
 
 msgid "radians"
-msgstr ""
+msgstr "radians"
 
 msgid "to radians"
-msgstr ""
+msgstr "to oradians"
 
 msgid "maths"
-msgstr ""
+msgstr "maths"
 
 msgid "cheese"
-msgstr ""
+msgstr "cheese"
 
 msgid "apple"
-msgstr ""
+msgstr "apụl"
 
 msgid "get fat"
-msgstr ""
+msgstr "ga-esi abụba"
 
 msgid "fish"
-msgstr ""
+msgstr "azụ"
 
 msgid "get calories"
-msgstr ""
+msgstr "ga-esi calories"
 
 msgid "protein"
-msgstr ""
+msgstr "protein"
 
 msgid "chicken"
-msgstr ""
+msgstr "okuko"
 
 msgid "digest meal"
-msgstr ""
+msgstr "iyochapu nri"
 
 msgid "get fiber"
-msgstr ""
+msgstr "na-eriri"
 
 msgid "carbs"
-msgstr ""
+msgstr "carbs"
 
 msgid "eat"
-msgstr ""
+msgstr "eri"
 
 msgid "rice and beans"
-msgstr ""
+msgstr "osikapa na agwa"
 
 msgid "orange"
-msgstr ""
+msgstr "oroma"
 
 msgid "banana"
-msgstr ""
+msgstr "unere"
 
 msgid "tamale"
-msgstr ""
+msgstr "tamale"
 
 msgid "fiber"
-msgstr ""
+msgstr "eriri"
 
 msgid "corn"
-msgstr ""
+msgstr "ọka"
 
 msgid "fat"
-msgstr ""
+msgstr "ibu"
 
 msgid "get carbs"
-msgstr ""
+msgstr "wete carbs"
 
 msgid "water"
-msgstr ""
+msgstr "imiri"
 
 msgid "cookie"
-msgstr ""
+msgstr "kuki"
 
 msgid "sweet potato"
-msgstr ""
+msgstr "ụtọ nduku"
 
 msgid "broccoli"
-msgstr ""
+msgstr "brọkọlị"
 
 msgid "wheat bread"
-msgstr ""
+msgstr "wheat achịcha"
 
 msgid "tomato"
-msgstr ""
+msgstr "tomato"
 
 msgid "beef"
-msgstr ""
+msgstr "beef"
 
 msgid "potato"
-msgstr ""
+msgstr "potato"
 
 msgid "calories"
-msgstr ""
+msgstr "calories"
 
 msgid "get name"
-msgstr ""
+msgstr "na-aha"
 
 msgid "cake"
-msgstr ""
+msgstr "achicha"
 
 msgid "get protein"
-msgstr ""
+msgstr "ga-esi protein"
 
 msgid "food"
-msgstr ""
+msgstr "nri"
 
 msgid "eatme"
-msgstr ""
+msgstr "rea-mu"
 
 msgid "sense left"
-msgstr ""
+msgstr "uche hapụrụ"
 
 msgid "see distance"
-msgstr ""
+msgstr "ịhụ anya"
 
 msgid "sense right"
-msgstr ""
+msgstr "uche ziri ezi"
 
 msgid "sing"
-msgstr ""
+msgstr "na-abụ abụ"
 
 msgid "note"
-msgstr ""
+msgstr "dee"
 
 msgid "duration"
-msgstr ""
+msgstr "oge"
 
 msgid "move"
-msgstr ""
+msgstr "ije"
 
 msgid "blink (ms)"
-msgstr ""
+msgstr "itabi (MS)"
 
 msgid "rodi"
-msgstr ""
+msgstr "Rhodes"
 
 msgid "set lang"
-msgstr ""
+msgstr "dị nnọọ ka"
 
 msgid "source"
-msgstr ""
+msgstr "isi iyi"
 
 msgid "target"
-msgstr ""
+msgstr "lekwasịrị"
 
 msgid "translate"
-msgstr ""
+msgstr "ịsụgharị"
 
 msgid "hello"
-msgstr ""
+msgstr "hallo"
 
 msgid "detect lang"
-msgstr ""
+msgstr "chọpụta naanị"
 
 msgid "turtle x"
-msgstr ""
+msgstr "mbe x"
 
 msgid "turtle y"
-msgstr ""
+msgstr "mbe y"
 
 msgid "stop turtle"
-msgstr ""
+msgstr "kwusi mbe "
 
 msgid "turtle name"
-msgstr ""
+msgstr "mbe aha "
 
 msgid "start turtle"
-msgstr ""
+msgstr "mbe bido"
 
 msgid "forecast"
-msgstr ""
+msgstr "amụma"
 
 msgid "city"
-msgstr ""
+msgstr "obodo"
 
 msgid "day"
-msgstr ""
+msgstr "ụbọchị"
 
 msgid "low"
-msgstr ""
+msgstr "ala"
 
 msgid "high"
-msgstr ""
+msgstr "elu"

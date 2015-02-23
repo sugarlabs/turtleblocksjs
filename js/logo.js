@@ -1383,9 +1383,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             // Hide all the blocks.
             this.blocks.hide();
             // And hide some other things.
-            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
-                this.turtles.turtleList[turtle].container.visible = false;
-            }
+            // for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+                // this.turtles.turtleList[turtle].container.visible = false;
+            // }
             //trashcan.hide();
             //palettes.hide();
             this.refreshCanvas();
@@ -1396,9 +1396,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             this.blocks.show();
             this.blocks.bringToTop();
             // And show some other things.
-            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
-                this.turtles.turtleList[turtle].container.visible = true;
-            }
+            // for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+                // this.turtles.turtleList[turtle].container.visible = true;
+            // }
             // trashcan.show();
             this.refreshCanvas();
         }

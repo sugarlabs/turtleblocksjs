@@ -1288,44 +1288,48 @@ define(function(require) {
             helpIdx = 0;
 
             if (firstTime) {
-                helpContainer = new createjs.Container();
-                stage.addChild(helpContainer);
-                helpContainer.x = 65;
-                helpContainer.y = 65;
-                var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 600, 800);
-                hitArea.x = 0;
-                hitArea.y = 0;
-                helpContainer.hitArea = hitArea;
+                if (helpContainer == null) {
+                    helpContainer = new createjs.Container();
+                    stage.addChild(helpContainer);
+                    helpContainer.x = 65;
+                    helpContainer.y = 65;
+                    var hitArea = new createjs.Shape();
+                    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 600, 800);
+                    hitArea.x = 0;
+                    hitArea.y = 0;
+                    helpContainer.hitArea = hitArea;
 
-                helpContainer.on('click', function(event) {
-                    if (event.stageX * scale > 100 && event.stageY * scale < 150) {
-                        helpContainer.visible = false;
-                        docById('helpElem').style.visibility = 'hidden';
-                    } else if (event.stageX * scale > 100 && event.stageY * scale > 150) {
-                        helpIdx += 1;
-                        if (helpIdx >= HELPCONTENT.length) {
-                            helpIdx = 0;
+                    helpContainer.on('click', function(event) {
+                        if (event.stageX * scale > 100 && event.stageY * scale < 150) {
+                            helpContainer.visible = false;
+                            docById('helpElem').style.visibility = 'hidden';
+                        } else if (event.stageX * scale > 100 && event.stageY * scale > 150) {
+                            helpIdx += 1;
+                            if (helpIdx >= HELPCONTENT.length) {
+                                helpIdx = 0;
+                            }
+                            var imageScale = 55 * scale; 
+                            helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
                         }
-                        var imageScale = 55 * scale; 
-                        helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
-                    }
-                    update = true;
-                });
+                        update = true;
+                    });
 
-                var img = new Image();
-                img.onload = function() {
-                    console.log(scale);
-                    bitmap = new createjs.Bitmap(img);
-                    helpContainer.addChild(bitmap)
-                    if (scale > 1) {
-                        bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                    var img = new Image();
+                    img.onload = function() {
+                        console.log(scale);
+                        bitmap = new createjs.Bitmap(img);
+                        helpContainer.addChild(bitmap)
+                        if (scale > 1) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                        }
+                        docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                        if (!doneTour) {
+                            docById('helpElem').style.visibility = 'visible';
+                        }
+                        update = true;
                     }
-                    docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
-                    if (!doneTour) {
-                        docById('helpElem').style.visibility = 'visible';
-                    }
-                    update = true;
+
+                    img.src = 'images/help-container.svg';
                 }
 
                 var helpElem = docById('helpElem');
@@ -1344,32 +1348,14 @@ define(function(require) {
                 helpElem.style.width = w + 'px';
                 helpElem.style.height = h + 'px';
 
-                img.src = 'images/help-container.svg';
+                if (scale > 1) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                }
             }
 
             var doneTour = localStorage.doneTour === 'true';
 
-            if (false) { // firstTime) {
-              var scaled = 0;
-              var current = 0;
-              for (var i = 1; i < 10; i++) {
-                scaled = current * scale;
-                docById('helpHButton-' + i).style.marginLeft = scaled + 'px';
-                current += cellSize;
-              }
-              current = 0
-              for (i = 0; i < 7; i++) {
-                scaled = current * scale;
-                docById('helpVButton-' + i).style.marginLeft = window.innerWidth - (scale * cellSize) + 'px';
-                docById('helpVButton-' + i).style.marginTop = scaled + 'px';
-                current += cellSize;
-              }
-              docById('helpEnd').style.marginLeft = 256 + 'px';
-              docById('helpEnd').style.marginTop = 128 + 'px';
-            }
-
             if (firstTime && doneTour) {
-                // content = '<ol id="tour"></ol>'
                 docById('helpElem').style.visibility = 'hidden';
                 helpContainer.visible = false;
             } else {

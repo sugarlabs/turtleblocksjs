@@ -237,6 +237,9 @@
     associted a media block, other media blocks don't also change
   * Scale imported bitmaps to maximum of 1200x900
 
+0.5
+  * Eliminate joyride since it doesn't work on Android
+
 TODO:
   * music blocks plugin
   * save errors
@@ -259,7 +262,5 @@ TODO:
   * event blocks?
 
 KNOWN BUGS:
-  * sample projects cannot be shown on Android
   * find a scalable approach to drawing on the canvas
   * not all blocks highlight when using step-by-step mode
-  * joyride doesn't work on Android

@@ -148,6 +148,28 @@ define(function(require) {
         var onscreenButtons = [];
         var onscreenMenu = [];
 
+        var helpContainer = null;
+        var helpIdx = 0;
+        var HELPCONTENT = [[_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
+                           [_('Palette buttons'), _('This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
+                           [_('Run fast'), _('Click to run the project in fast mode.'), 'icons/fast-button.svg'],
+                           [_('Run slow'), _('Click to run the project in slow mode.'), 'icons/slow-button.svg'],
+                           [_('Run step by step'), _('Click to run the project step by step.'), 'icons/step-button.svg'],
+                           [_('Stop'), _('Stop the current project.'), 'icons/stop-turtle-button.svg'],
+                           [_('Clean'), _('Clear the screen and return the turtles to their initial positions.'), 'icons/clear-button.svg'],
+                           [_('Show/hide palettes'), _('Hide or show the block palettes.'), 'icons/palette-button.svg'],
+                           [_('Show/hide blocks'), _('Hide or show the blocks and the palettes.'), 'icons/hide-blocks-button.svg'],
+                           [_('Expand/collapse collapsable blocks'), _('Expand or collapse stacks of blocks, e.g, start and action stacks.'), 'icons/collapse-blocks-button.svg'],
+                           [_('Help'), _('Show these messages.'), 'icons/help-button.svg'],
+                           [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxillary toolbar.'), 'icons/menu-button.svg'],
+                           [_('Load samples from server'), _('This button opens a viewer for loading example projects.'), 'icons/planet-button.svg'],
+                           [_('Paste'), _('The paste button is enabled then there are blocks copied onto the clipboard.'), 'icons/paste-disabled-button.svg'],
+                           [_('Cartesian'), _('Show or hide a Cartesian-coordinate grid.'), 'icons/Cartesian-button.svg'],
+                           [_('Polar'), _('Show or hide a polar-coordinate grid.'), 'icons/polar-button.svg'],
+                           [_('Load plugin from file'), _('You can load new blocks from the file system.'), 'icons/plugin-button.svg'],
+                           [_('Undo'), _('Restore blocks from the trash.'), 'icons/restore-trash-button.svg'],
+                           [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']]
+
         pluginsImages = {};
 
         function allClear() {
@@ -684,6 +706,9 @@ define(function(require) {
             polarBitmap.x = (canvas.width / (2 * scale)) - (600);
             polarBitmap.y = (canvas.height / (2 * scale)) - (450);
             update = true;
+
+            // Resize help
+            showHelp(true);
         }
 
         window.onresize = function() {
@@ -1260,9 +1285,71 @@ define(function(require) {
         }
 
         function showHelp(firstTime) {
-            var doneTour = localStorage.doneTour === 'true';
+            helpIdx = 0;
 
             if (firstTime) {
+                helpContainer = new createjs.Container();
+                stage.addChild(helpContainer);
+                helpContainer.x = 65;
+                helpContainer.y = 65;
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 600, 800);
+                hitArea.x = 0;
+                hitArea.y = 0;
+                helpContainer.hitArea = hitArea;
+
+                helpContainer.on('click', function(event) {
+                    if (event.stageX * scale > 100 && event.stageY * scale < 150) {
+                        helpContainer.visible = false;
+                        docById('helpElem').style.visibility = 'hidden';
+                    } else if (event.stageX * scale > 100 && event.stageY * scale > 150) {
+                        helpIdx += 1;
+                        if (helpIdx >= HELPCONTENT.length) {
+                            helpIdx = 0;
+                        }
+                        var imageScale = 55 * scale; 
+                        helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                    }
+                    update = true;
+                });
+
+                var img = new Image();
+                img.onload = function() {
+                    console.log(scale);
+                    bitmap = new createjs.Bitmap(img);
+                    helpContainer.addChild(bitmap)
+                    if (scale > 1) {
+                        bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                    }
+                    docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                    if (!doneTour) {
+                        docById('helpElem').style.visibility = 'visible';
+                    }
+                    update = true;
+                }
+
+                var helpElem = docById('helpElem');
+                helpElem.style.position= 'absolute';
+                helpElem.style.display = 'block';
+                helpElem.style.paddingLeft = 20 * scale + 'px';
+                helpElem.style.paddingRight = 20 * scale + 'px';
+                helpElem.style.paddingTop = '0px';
+                helpElem.style.paddingBottom = 20 * scale + 'px';
+                helpElem.style.fontSize = 20 * scale + 'px';
+                helpElem.style.color = '#ffffff';
+                helpElem.style.left = 65 * scale + 'px';
+                helpElem.style.top = 105 * scale + 'px';
+                var w = Math.min(300, 300 * scale);
+                var h = Math.min(300, 300 * scale);
+                helpElem.style.width = w + 'px';
+                helpElem.style.height = h + 'px';
+
+                img.src = 'images/help-container.svg';
+            }
+
+            var doneTour = localStorage.doneTour === 'true';
+
+            if (false) { // firstTime) {
               var scaled = 0;
               var current = 0;
               for (var i = 1; i < 10; i++) {
@@ -1282,28 +1369,21 @@ define(function(require) {
             }
 
             if (firstTime && doneTour) {
-                content = '<ol id="tour"></ol>'
+                // content = '<ol id="tour"></ol>'
+                docById('helpElem').style.visibility = 'hidden';
+                helpContainer.visible = false;
             } else {
                 localStorage.doneTour = 'true';
-
-                // Needed for the tour to run!
-                document.cookie = 'turtlejstour=ready; expires=Fri, 31 Dec 2037 23:59:59 GMT'
+                docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                docById('helpElem').style.visibility = 'visible';
+                helpContainer.visible = true;
+                update = true;
 
                 palettes.show();
                 if (!menuButtonsVisible) {
                     doMenuAnimation(1);
                 }
-
-                content = '<ol style="visibility:hidden; font-size:0px" id="tour"><li data-text="Take a tour"><h2>' + _('Welcome to Turtle Blocks') + '</h2><p>' + _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.') + '</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>' + _('Palette buttons') + '</h2><p>' + _('This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.') + '</p></li><li data-id="helpHButton-1" data-button="Next"><h2>' + _('Run fast') + '</h2><p>' + _('Click to run the project in fast mode.') + '</p></li><li data-id="helpHButton-2" data-button="Next"><h2>' + _('Run slow') + '</h2><p>' + _('Click to run the project in slow mode.') + '</p></li><li data-id="helpHButton-3" data-button="Next"><h2>' + _('Run step by step') + '</h2><p>' + _('Click to run the project step by step.') + '</p></li><li data-id="helpHButton-4" data-button="Next"><h2>' + _('Stop') + '</h2><p>' + _('Stop the current project.') + '</p></li><li data-id="helpHButton-5" data-button="Next"><h2>' + _('Clean') + '</h2><p>' + _('Clear the screen and return the turtles to their initial positions.') + '</p></li><li data-id="helpHButton-6" data-button="Next"><h2>' + _('Show/hide palettes') + '</h2><p>' + _('Hide or show the block palettes.') + '</p></li><li data-id="helpHButton-7" data-button="Next"><h2>' + _('Show/hide blocks') + '</h2><p>' + _('Hide or show the blocks and the palettes.') + '</p></li><li data-id="helpHButton-8" data-button="Next"><h2>' + _('Expand/collapse collapsable blocks') + '</h2><p>' + _('Expand or collapse stacks of blocks, e.g, start and action stacks.') + '</p></li><li data-id="helpHButton-9" data-button="Next"><h2>' + _('Help') + '</h2><p>' + _('Show these messages.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Expand/collapse option toolbar') + '</h2><p>' + _('Click this button to expand or collapse the auxillary toolbar.') + '</p></li><li data-id="helpVButton-1" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load samples from server') + '</h2><p>' + _('This button opens a viewer for loading example projects.') + '</p></li><li data-id="helpVButton-2" data-button="Next" data-options="tipLocation:right"><h2>' + _('Paste') + '</h2><p>' + _('The paste button is enabled then there are blocks copied onto the clipboard.') + '</p></li><li data-id="helpVButton-3" data-button="Next" data-options="tipLocation:right"><h2>' + _('Cartesian') + '</h2><p>' + _('Show or hide a Cartesian-coordinate grid.') + '</p></li><li data-id="helpVButton-4" data-button="Next" data-options="tipLocation:right"><h2>' + _('Polar') + '</h2><p>' + _('Show or hide a polar-coordinate grid.') + '</p></li><li data-id="helpVButton-5" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load plugin from file') + '</h2><p>' + _('You can load new blocks from the file system.') + '</p></li><li data-id="helpVButton-6" data-button="Next" data-options="tipLocation:right"><h2>' + _('Undo') + '</h2><p>' + _('Restore blocks from the trash.') + '</p></li><li data-id="helpEnd" data-button="Close"><h2>' + _('Congratulations.') + '</h2><p>' + _('You have finished the tour. Please enjoy Turtle Blocks!') + '</p></li></ol>';
             }
-            docById('tourData').innerHTML = content;
-            settings = {
-                autoStart: true,
-                modal: true,
-                expose: false
-            }
-            jQuery('#tour').joyride('destroy');
-            jQuery('#tour').joyride(settings);
         }
 
         function doMenuButton() {

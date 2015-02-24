@@ -282,7 +282,7 @@ function PlanetView(model, controller) {
 
     this.load = function (ele) {
         return function () {
-            document.querySelector('#loding-image-container')
+            document.querySelector('#loading-image-container')
                     .style.display = '';
             var url = ele.attributes.url.value.replace('.b64', '.tb');
             me.model.load(url, ele.attributes.title.value);
@@ -292,12 +292,12 @@ function PlanetView(model, controller) {
 
     this.publish = function (ele) {
         return function () {
-            document.querySelector('#loding-image-container')
+            document.querySelector('#loading-image-container')
                     .style.display = '';
             me.model.publish(ele.attributes.title.value,
                              ele.attributes.data.value,
                              ele.querySelector('img').src);
-            document.querySelector('#loding-image-container')
+            document.querySelector('#loading-image-container')
                     .style.display = 'none';
         }
     }

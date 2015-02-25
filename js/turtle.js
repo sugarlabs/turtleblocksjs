@@ -43,6 +43,9 @@ function Turtle (name, turtles) {
     // Queue of blocks this turtle is executing.
     this.runQueue = [];
 
+    // Listeners
+    this.listeners = {};
+
     // Things used for what the turtle draws.
     this.drawingCanvas = null;
     this.svgOutput = '';

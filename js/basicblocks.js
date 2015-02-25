@@ -739,6 +739,26 @@ function initBasicProtoBlocks(palettes, blocks) {
     audioStopBlock.adjustWidthToLabel();
     audioStopBlock.zeroArgBlock();
 
+    var listenBlock = new ProtoBlock('listen');
+    listenBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['listen'] = listenBlock;
+    listenBlock.staticLabels.push(_('on'), _('event'), _('do'));
+    listenBlock.adjustWidthToLabel();
+    listenBlock.twoArgBlock();
+    listenBlock.defaults.push(_('event'));
+    listenBlock.defaults.push(_('action'));
+    listenBlock.dockTypes[1] = 'textin';
+    listenBlock.dockTypes[2] = 'textin';
+
+    var dispatchBlock = new ProtoBlock('dispatch');
+    dispatchBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['dispatch'] = dispatchBlock;
+    dispatchBlock.staticLabels.push(_('broadcast'));
+    dispatchBlock.adjustWidthToLabel();
+    dispatchBlock.oneArgBlock();
+    dispatchBlock.defaults.push(_('event'));
+    dispatchBlock.dockTypes[1] = 'textin';
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         if (blocks.protoBlockDict[protoblock].palette != null) {

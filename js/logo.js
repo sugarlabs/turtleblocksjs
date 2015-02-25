@@ -42,6 +42,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.evalArgDict = {};
     this.evalParameterDict = {};
     this.evalSetterDict = {};
+    this.eventList = {};
 
     this.boxes = {};
     this.actions = {};
@@ -238,6 +239,15 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // Each turtle needs to keep its own wait time.
         for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
             this.waitTimes[turtle] = 0;
+        }
+
+        // Remove any listeners that might be still active
+        for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+            for (var listener in this.turtles.turtleList[turtle].listeners) {
+                console.log('removing listener ' + listener);
+                this.stage.removeEventListener(listener, this.turtles.turtleList[turtle].listeners[listener], false);
+            }
+            this.turtles.turtleList[turtle].listeners = {};
         }
 
         // First we need to reconcile the values in all the value
@@ -473,6 +483,42 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
 
         switch (logo.blocks.blockList[blk].name) {
+            case 'dispatch':
+                // Dispatch an event.
+                if (args.length == 1) {
+                    // If the event is not in the event list, add it.
+                    if (!(args[0] in logo.eventList)) {
+                        var event = new Event(args[0]);
+                        logo.eventList[args[0]] = event;
+                    }
+                    logo.stage.dispatchEvent(args[0]);
+                }
+                break;
+            case 'listen':
+                if (args.length == 2) {
+                    if (!(args[1] in logo.actions)) {
+                        logo.errorMsg('Cannot find action ' + args[1] + '.', blk);
+                        logo.stopTurtle = true;
+                    } else {
+                        // TODO: save function in listener list so we
+                        // can removeEventListener on Clear.
+                        var listener = function (event) {
+			    var queueBlock = new Queue(logo.actions[args[1]], 1, blk);
+			    logo.parentFlowQueue[turtle].push(blk);
+			    logo.turtles.turtleList[turtle].queue.push(queueBlock);
+                        }
+                        // If there is already a listener, remove it
+                        // before adding the new one.
+                        if (args[0] in logo.turtles.turtleList[turtle].listeners) {
+                            console.log('removing listener ' + args[0]);
+                            logo.stage.removeEventListener(args[0], logo.turtles.turtleList[turtle].listeners[args[0]], false);
+                        }
+                        console.log('adding listener ' + args[0]);
+                        logo.turtles.turtleList[turtle].listeners[args[0]] = listener;
+                        logo.stage.addEventListener(args[0], listener, false);
+                    }
+                }
+                break;
             case 'start':
                 if (args.length == 1) {
                     childFlow = args[0];

@@ -240,6 +240,7 @@
 0.5
   * Eliminate joyride since it doesn't work on Android
   * Fix problem with help container scaling
+  * Added broadcast and on event blocks
 
 TODO:
   * music blocks plugin
@@ -260,7 +261,6 @@ TODO:
     - two args: artwork for the button; action name to take
   * maybe we want to add local variables? (e.g., boxes only defined inside an action)
   * pass argments to actions? (and arg blocks to reference them)?
-  * event blocks?
 
 KNOWN BUGS:
   * find a scalable approach to drawing on the canvas

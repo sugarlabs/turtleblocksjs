@@ -266,3 +266,4 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * not all blocks highlight when using step-by-step mode
   * camera doesn't work on Android
+  * events don't trigger if turtle stopped running.

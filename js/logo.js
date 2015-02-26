@@ -500,20 +500,23 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         logo.errorMsg('Cannot find action ' + args[1] + '.', blk);
                         logo.stopTurtle = true;
                     } else {
-                        // TODO: save function in listener list so we
-                        // can removeEventListener on Clear.
                         var listener = function (event) {
-			    var queueBlock = new Queue(logo.actions[args[1]], 1, blk);
-			    logo.parentFlowQueue[turtle].push(blk);
-			    logo.turtles.turtleList[turtle].queue.push(queueBlock);
+                            if (logo.turtles.turtleList[turtle].running) {
+                                var queueBlock = new Queue(logo.actions[args[1]], 1, blk);
+			        logo.parentFlowQueue[turtle].push(blk);
+			        logo.turtles.turtleList[turtle].queue.push(queueBlock);
+                            } else {
+                                // Since the turtle has stopped
+                                // running, we need to run the stack
+                                // from here.
+                                logo.runFromBlock(logo, turtle, logo.actions[args[1]]);
+                            }
                         }
                         // If there is already a listener, remove it
                         // before adding the new one.
                         if (args[0] in logo.turtles.turtleList[turtle].listeners) {
-                            console.log('removing listener ' + args[0]);
                             logo.stage.removeEventListener(args[0], logo.turtles.turtleList[turtle].listeners[args[0]], false);
                         }
-                        console.log('adding listener ' + args[0]);
                         logo.turtles.turtleList[turtle].listeners[args[0]] = listener;
                         logo.stage.addEventListener(args[0], listener, false);
                     }

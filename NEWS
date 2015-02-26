@@ -241,6 +241,7 @@
   * Eliminate joyride since it doesn't work on Android
   * Fix problem with help container scaling
   * Added broadcast and on event blocks
+  * Fixed problem with events not triggering if turtle has stopped.
 
 TODO:
   * music blocks plugin
@@ -266,4 +267,4 @@ KNOWN BUGS:
   * find a scalable approach to drawing on the canvas
   * not all blocks highlight when using step-by-step mode
   * camera doesn't work on Android
-  * events don't trigger if turtle stopped running.
+

@@ -262,6 +262,8 @@ TODO:
   * Try to detect difference between unknown flow and arg blocks
   * Button block (a stack that is run when you click on a button)
     - two args: artwork for the button; action name to take
+  * What palette/block features from the Python version do we need to port?
+  * Do we need to add support for plugins init, quit, etc.?
 
 FEATURE IDEAS:
   * Local variables? (e.g., boxes only defined inside an action?)
@@ -272,3 +274,4 @@ KNOWN BUGS:
   * Find a scalable approach to drawing on the canvas
   * Not all blocks highlight when using step-by-step mode
   * Camera doesn't work on Android
+  * Reopen palettes after palette updates

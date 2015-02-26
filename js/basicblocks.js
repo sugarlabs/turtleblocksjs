@@ -234,9 +234,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     endfillBlock.adjustWidthToLabel();
     endfillBlock.zeroArgBlock();
 
-    var backgroundBlock = new ProtoBlock('fillscreen');
+    var backgroundBlock = new ProtoBlock('background');
     backgroundBlock.palette = palettes.dict['pen'];
-    blocks.protoBlockDict['fillscreen'] = backgroundBlock;
+    blocks.protoBlockDict['background'] = backgroundBlock;
     backgroundBlock.staticLabels.push(_('background'));
     backgroundBlock.adjustWidthToLabel();
     backgroundBlock.zeroArgBlock();

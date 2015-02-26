@@ -857,7 +857,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'endfill':
                 logo.turtles.turtleList[turtle].doEndFill();
                 break;
-            case 'fillscreen':
+            case 'background':
                 logo.setBackgroundColor(turtle);
                 break;
             case 'penup':

@@ -681,6 +681,17 @@ function initBasicProtoBlocks(palettes, blocks) {
     nopTwoArgBlock.dockTypes[1] = 'anyin';
     nopTwoArgBlock.dockTypes[2] = 'anyin';
 
+    var nopThreeArgBlock = new ProtoBlock('nopThreeArgBlock');
+    blocks.protoBlockDict['nopThreeArgBlock'] = nopThreeArgBlock;
+    nopThreeArgBlock.hidden = true;
+    nopThreeArgBlock.palette = palettes.dict['extras'];
+    nopThreeArgBlock.staticLabels.push(_('unknown'));
+    nopThreeArgBlock.adjustWidthToLabel();
+    nopThreeArgBlock.threeArgBlock();
+    nopThreeArgBlock.dockTypes[1] = 'anyin';
+    nopThreeArgBlock.dockTypes[2] = 'anyin';
+    nopThreeArgBlock.dockTypes[3] = 'anyin';
+
     var loudnessBlock = new ProtoBlock('loudness');
     loudnessBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['loudness'] = loudnessBlock;

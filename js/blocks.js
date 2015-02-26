@@ -2028,8 +2028,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                             case 3:
                                 name = 'nopOneArgBlock';
                                 break;
-                            default:
+                            case 4:
                                 name = 'nopTwoArgBlock';
+                                break;
+                            case 5:
+                            default:
+                                name = 'nopThreeArgBlock';
                                 break;
                         }
                     }

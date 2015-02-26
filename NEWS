@@ -6,8 +6,8 @@
   * Cascading of expandable blocks
   * Added arithmetic functions (arg parsing)
   * Rotate turtle using easeljs rotation
-  * Implement actions (stacks)
-  * Implement boxes
+  * Implemented actions (stacks)
+  * Implemented boxes
   * Added booleans
   * Added slowmo playback
   * Only one stack
@@ -22,7 +22,7 @@
   * Fixed palette updates from block palette
   * Added penup/down
   * Added fill
-  * Load blocks
+  * Implemented Load blocks
   * Added click on block to run
   * Added arc
   * Added setxy
@@ -123,7 +123,7 @@
   * Label box values during debug mode
   * Fixed some race conditions
   * Fill broken in save to SVG
-  * Fix race condition in palettes load
+  * Fixed race condition in palettes load
   * Hover to invoke copy stack
   * While block (GCI - drakosvlad)
   * Not block (GCI - Daksh Shah)
@@ -153,7 +153,7 @@
   * Smoother hand-off between palette and canvas when dragging blocks
   * Work-around for number/string conversion error
   * Adjust docks for vspace added outside of stacks
-  * Add mashape palette
+  * Added mashape palette
   * Translation blocks (w/Ignacio Rodriguez)
   * Color forces max chroma; hue just sets hue.
   * Preserve collapse state between save/load (w/Ignacio Rodriguez)
@@ -167,10 +167,10 @@
   * Rotate turtles with gesture (w/Sam Parkinson)
   * Use busy cursor where approporate (w/Ignacio Rodriguez)
   * Can open same file twice in a row (w/Ignacio Rodriguez)
-  * Fix palettes on Firefox (w/Ignacio Rodriguez)
-  * Add plugins to parameter update table
+  * Fixed palettes on Firefox (w/Ignacio Rodriguez)
+  * Added plugins to parameter update table
   * Number block values are being set to string (Sam Parkinson)
-  * Fix problems with layering (Sam Parkinson)
+  * Fixed problems with layering (Sam Parkinson)
   * More sensors (accelerometer w/Ignacio Rodriguez)
   * Read pixels (w/Ignacio Rodriguez)
   * Find an approach to cameras and microphone that work on Android
@@ -180,9 +180,9 @@
   * Clean up palette buttons layout after removing a plugin
     (w/Ignacio Rodriguez)
   * Use snap to pixels
-  * Add images to blocks (w/Ignacio Rodriguez)
+  * Added images to blocks (w/Ignacio Rodriguez)
   * Reorganize palettes and plugins
-  * Fix positioning problem with palettes due to multiple copies of the
+  * Fixed positioning problem with palettes due to multiple copies of the
     protoblocks being added to the protoList
   * Expand boolean blocks
   * Save stacks to personal palette
@@ -193,7 +193,7 @@
   * Only show copy/save menu from top block
   * Plugin for RoDi (w/Martin Abente)
   * Fixed problem with reloading camera or media block getting double image
-  * Fix coordinate grids offset due to scaling
+  * Fixed coordinate grids offset due to scaling
   * Step-by-step playback mode
   * Sometimes scrolling menus does not work (Sam Parkinson)
   * Update plugins to new logo "class"
@@ -203,8 +203,8 @@
   * Change color of stroke when highlighting blocks
   * Added image, and palette-stroke-highlight args to rtps files.
   * Combine various run modes (switch between fast, slow, and step on the fly)
-  * Fix size of palette highlight (Sam Parkinson)
-  * Fix value box label in DOM (Sam Parkinson)
+  * Fixed size of palette highlight (Sam Parkinson)
+  * Fixed value box label in DOM (Sam Parkinson)
   * Factory-branch fixes
     - proper updating of labels
     - proper resizing
@@ -212,11 +212,11 @@
   * Fixed mouse button code & don't move stage when running code (Ignacio)
   * Don't allow text in number blocks
   * Expand blocks horizontally (for long labels)
-  * Add value display to math blocks
-  * Add value to boolean blocks
-  * Add default args to math blocks (Ignacio)
+  * Added value display to math blocks
+  * Added value to boolean blocks
+  * Added default args to math blocks (Ignacio)
   * Fine tune value display positioning 
-  * Fix problem with action block collapsed bounds
+  * Fixed problem with action block collapsed bounds
 
 0.3
   * Major refactoring of block handling to better compartmentalize the code
@@ -226,7 +226,7 @@
 0.4
   * Write SVG generator
   * Auto-guestimate block width (need to set label name before creating artwork)
-  * Add splash-screen animation (Sam Parkinson)
+  * Added splash-screen animation (Sam Parkinson)
   * Fixed collapse bug which manifests itself when loading custom stacks
   * Use ellipsis on action and do labels (including do blocks in palette)
   * Fixed layout problem in boxes palette
@@ -241,9 +241,10 @@
 
 0.5
   * Eliminate joyride since it doesn't work on Android
-  * Fix problem with help container scaling
-  * Added broadcast and on event blocks
+  * Fixed problem with help container scaling.
+  * Added broadcast and on event blocks.
   * Fixed problem with events not triggering if turtle has stopped.
+  * Added three-arg flow blocks.
 
 TODO:
   * Music blocks plugin
@@ -256,7 +257,6 @@ TODO:
   * Use graphical error messages
   * Make expand an array, one element for each arg or slot
   * User-defined block types (trivial with factory)
-  * Three-arg flow blocks (trivial with factory)
   * Three-arg arg blocks (trivial with factory)
   * Artwork beautification?
   * Try to detect difference between unknown flow and arg blocks

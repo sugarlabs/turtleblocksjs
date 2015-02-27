@@ -377,6 +377,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     // Show the value in the box as if it were a parameter.
     boxBlock.parameter = true;
 
+    var namedboxBlock = new ProtoBlock('namedbox');
+    namedboxBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['namedbox'] = namedboxBlock;
+    namedboxBlock.staticLabels.push(_('box'));
+    namedboxBlock.extraWidth = 10;
+    namedboxBlock.adjustWidthToLabel();
+    namedboxBlock.parameterBlock();
+    namedboxBlock.dockTypes[0] = 'anyout';
+
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['action'] = actionBlock;

@@ -245,6 +245,7 @@
   * Added broadcast and on event blocks.
   * Fixed problem with events not triggering if turtle has stopped.
   * Added three-arg flow blocks.
+  * Added named boxes.
 
 TODO:
   * Music blocks plugin

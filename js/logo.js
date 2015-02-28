@@ -149,6 +149,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'divide':
                     value = this.blocks.blockList[blk].value;
                     break;
+                case 'namedbox':
+                    var name = this.blocks.blockList[blk].privateData;
+                    if (name in this.boxes) {
+                        value = this.boxes[name];
+                    } else {
+                        this.errorMsg('Cannot find box ' + name + '.', blk);
+                    }
+                    break;
                 case 'box':
                     var cblk = this.blocks.blockList[blk].connections[1];
                     var boxname = this.parseArg(logo, turtle, cblk, blk);
@@ -432,6 +440,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'pensize':
                 turtle.doSetPensize(value);
+                break;
+            case 'namedbox':
+                var name = this.blocks.blockList[blk].privateData;
+                if (name in this.boxes) {
+                    this.boxes[name] = value;
+                } else {
+                    this.errorMsg('Cannot find box ' + name + '.', blk);
+                }
                 break;
             case 'box':
                 var cblk = this.blocks.blockList[blk].connections[1];
@@ -1136,7 +1152,6 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     break;
                 case 'namedbox':
                     var name = logo.blocks.blockList[blk].privateData;
-                    console.log('private data is ' + name);
                     if (name in logo.boxes) {
                         logo.blocks.blockList[blk].value = logo.boxes[name];
                     } else {

@@ -481,7 +481,6 @@ function Palette(palettes, name, color, bgcolor) {
                     var arg = this.protoList[blk].defaults[0];
                     break;
                 case 'namedbox':
-                    console.log(this.protoList[blk].defaults[0]);
                     if (this.protoList[blk].defaults[0] == undefined) {
                         modname = 'namedbox';
                         var arg = _('box');
@@ -584,7 +583,6 @@ function Palette(palettes, name, color, bgcolor) {
                     switch (myBlock.name) {
                         // case 'box':
                         case 'namedbox':
-                            console.log('namedbox');
                             // so the label will fit
                             var svg = new SVG();
                             svg.init();
@@ -925,9 +923,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 }
                 break;
         }
-        console.log(palette.protoList[blk].name + ' ' + arg);
         var newBlock = paletteBlockButtonPush(palette.protoList[blk].name, arg);
-        console.log('calling callback with ' + newBlock);
         callback(newBlock);
     }
 

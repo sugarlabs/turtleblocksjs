@@ -1193,12 +1193,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             postProcessArg = [thisBlock, null];
         } else if (name == 'namedbox') {
             postProcess = function(args) {
-                console.log(args);
-                console.log('setting private data for block ' + me.blockList[thisBlock].name + ' ' + args[1]);
                 me.blockList[thisBlock].value = null;
                 me.blockList[thisBlock].privateData = args[1];
             }
-            console.log('really makeBlock ' + name + ' ' + arg);
             postProcessArg = [thisBlock, arg];
         }
 
@@ -1217,7 +1214,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     break;
                 } else if (name == 'namedbox') {
                     if (me.protoBlockDict[proto].defaults[0] == undefined) {
-			console.log('creating ' + name + ' block with default arg ' + arg);
 			me.makeNewBlock(proto, postProcess, postProcessArg);
 			protoFound = true;
                         break;
@@ -1797,7 +1793,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
                 console.log('Adding new palette entries for store-in ' + name);
                 // this.newBoxBlock(name);
-                console.log('creating new namedbox ' + name);
                 this.newNamedboxBlock(name);
                 updatePalettes = true;
             }
@@ -1922,7 +1917,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     postProcess = function(args) {
                         var thisBlock = args[0];
                         var value = args[1];
-			console.log('setting private data for block ' + me.blockList[thisBlock].name + ' ' + value);
                         me.blockList[thisBlock].privateData = value;
                         me.blockList[thisBlock].value = null;
                     }

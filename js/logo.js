@@ -1134,6 +1134,17 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         logo.blocks.blockList[blk].value = null;
                     }
                     break;
+                case 'namedbox':
+                    var name = logo.blocks.blockList[blk].privateData;
+                    console.log('private data is ' + name);
+                    if (name in logo.boxes) {
+                        logo.blocks.blockList[blk].value = logo.boxes[name];
+                    } else {
+                        logo.errorMsg('Cannot find box ' + name + '.', blk);
+                        logo.stopTurtle = true;
+                        logo.blocks.blockList[blk].value = null;
+                    }
+                    break;
                 case 'sqrt':
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var a = logo.parseArg(logo, turtle, cblk, blk);

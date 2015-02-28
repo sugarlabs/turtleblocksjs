@@ -480,6 +480,16 @@ function Palette(palettes, name, color, bgcolor) {
                     modname = this.protoList[blk].defaults[0];
                     var arg = this.protoList[blk].defaults[0];
                     break;
+                case 'namedbox':
+                    console.log(this.protoList[blk].defaults[0]);
+                    if (this.protoList[blk].defaults[0] == undefined) {
+                        modname = 'namedbox';
+                        var arg = _('box');
+                    } else {
+                        modname = this.protoList[blk].defaults[0];
+                        var arg = this.protoList[blk].defaults[0];
+                    }
+                    break;
             }
 
             function calculateContainerXY(palette) {
@@ -572,7 +582,9 @@ function Palette(palettes, name, color, bgcolor) {
                     }
 
                     switch (myBlock.name) {
-                        case 'box':
+                        // case 'box':
+                        case 'namedbox':
+                            console.log('namedbox');
                             // so the label will fit
                             var svg = new SVG();
                             svg.init();
@@ -902,7 +914,18 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 blkname = palette.protoList[blk].defaults[0];
                 var arg = palette.protoList[blk].defaults[0];
                 break;
+            case 'namedbox':
+                // Use the name of the box in the label
+                if (palette.protoList[blk].defaults[0] == undefined) {
+                    blkname = 'namedbox';
+                    var arg = _('box');
+                } else {
+                    blkname = palette.protoList[blk].defaults[0];
+                    var arg = palette.protoList[blk].defaults[0];
+                }
+                break;
         }
+        console.log(palette.protoList[blk].name + ' ' + arg);
         var newBlock = paletteBlockButtonPush(palette.protoList[blk].name, arg);
         console.log('calling callback with ' + newBlock);
         callback(newBlock);
@@ -1015,18 +1038,18 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 }, 500);
             } else {
                 // Create the block.
-                function callback (newBlock) {
-                // Move the drag group under the cursor.
-                paletteBlocks.findDragGroup(newBlock);
-                for (i in paletteBlocks.dragGroup) {
-                    paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale) - paletteBlocks.stage.x, Math.round(event.stageY / palette.palettes.scale) - paletteBlocks.stage.y);
-                }
-                // Dock with other blocks if needed
-                console.log('new block moved ' + newBlock);
-                blocks.blockMoved(newBlock);
+                function myCallback (newBlock) {
+                    // Move the drag group under the cursor.
+                    paletteBlocks.findDragGroup(newBlock);
+                    for (var i in paletteBlocks.dragGroup) {
+                        paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale) - paletteBlocks.stage.x, Math.round(event.stageY / palette.palettes.scale) - paletteBlocks.stage.y);
+                    }
+                    // Dock with other blocks if needed
+                    console.log('new block moved ' + newBlock);
+                    blocks.blockMoved(newBlock);
                 }
 
-                var newBlock = makeBlockFromPalette(blk, blkname, palette, callback);
+                var newBlock = makeBlockFromPalette(blk, blkname, palette, myCallback);
             }
 
             // Return protoblock we've been dragging back to the palette.

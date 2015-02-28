@@ -14,7 +14,7 @@ var LONGPRESSTIME = 2000;
 
 
 // Define block instance objects and any methods that are intra-block.
-function Block(protoblock, blocks) {
+function Block(protoblock, blocks, overrideName) {
     if (protoblock == null) {
         console.log('null protoblock sent to Block');
         return;
@@ -30,6 +30,9 @@ function Block(protoblock, blocks) {
     this.label = null; // Editable textview in DOM.
     this.text = null; // A dynamically generated text label on block itself.
     this.value = null; // Value for number, text, and media blocks.
+    this.privateData = null; // A block may have some private data,
+			     // e.g., nameboxes use this field to store
+			     // the box name associated with the block.
     this.image = protoblock.image; // The file path of the image.
 
     // All blocks have at a container and least one bitmap.
@@ -219,7 +222,9 @@ function Block(protoblock, blocks) {
         // Get the block labels from the protoblock
         var thisBlock = this.blocks.blockList.indexOf(this);
         var block_label = '';
-        if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
+        if (overrideName) {
+            block_label = overrideName;
+        } else if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
             // Label should be defined inside _().
             block_label = this.protoblock.staticLabels[0];
         }
@@ -1198,7 +1203,8 @@ function labelChanged(myBlock) {
                 //associated box myBlock.blocks and the palette buttons
                 if (myBlock.value != 'box') {
                     myBlock.blocks.newStoreinBlock(myBlock.value);
-                    myBlock.blocks.newBoxBlock(myBlock.value);
+                    // myBlock.blocks.newBoxBlock(myBlock.value);
+                    myBlock.blocks.newNamedboxBlock(myBlock.value);
                 }
                 myBlock.blocks.renameBoxes(oldValue, newValue);
                 myBlock.blocks.palettes.updatePalettes();

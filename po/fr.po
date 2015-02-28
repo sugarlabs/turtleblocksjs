@@ -338,3 +338,6 @@ msgstr "Restaurer blocs de la poubelle."
 
 msgid "Congratulations."
 msgstr "Félicitations."
+
+msgid "loudness"
+msgstr "volume"

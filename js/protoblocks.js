@@ -218,6 +218,39 @@ function ProtoBlock(name) {
 	return [artwork, svg.docks];
     }
 
+    // E.g., ??? These are expandable.
+    this.threeArgBlock = function() {
+        this.expandable = true;
+        this.style = 'twoarg';
+        this.size = 3;
+        this.args = 3;
+        this.dockTypes.push('out');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('in');
+        this.generator = this.threeArgBlockGenerator;
+    }
+
+    this.threeArgBlockGenerator = function(expandY) {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setTab(true);
+        svg.setInnies([true, true, true]);
+        svg.setSlot(true);
+        if (expandY) {
+            svg.setExpand(30 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        } else {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        var artwork = svg.basicBlock();
+	return [artwork, svg.docks];
+    }
+
     // E.g., sqrt, box
     this.oneArgMathBlock = function() {
         this.style = 'arg';

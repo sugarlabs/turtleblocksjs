@@ -36,7 +36,6 @@ define(function(require) {
     require('activity/blocks');
     require('activity/block');
     require('activity/logo');
-    require('activity/savebox');
     require('activity/clearbox');
     require('activity/samplesviewer');
     require('activity/samples');
@@ -45,6 +44,7 @@ define(function(require) {
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
+        window.scroll(0, 0);
 
         try {
             meSpeak.loadConfig('lib/mespeak_config.json');
@@ -80,14 +80,11 @@ define(function(require) {
         var palettes;
         var blocks;
         var logo;
-        var saveBox;
         var clearBox;
         var thumbnails;
-        var thumbnailsVisible = false;
         var buttonsVisible = true;
+        var headerContainer = null;
         var toolbarButtonsVisible = true;
-        var openContainer = null;
-        var closeContainer = null;
         var menuButtonsVisible = false;
         var menuContainer = null;
         var currentKey = '';
@@ -150,6 +147,28 @@ define(function(require) {
 
         var onscreenButtons = [];
         var onscreenMenu = [];
+
+        var helpContainer = null;
+        var helpIdx = 0;
+        var HELPCONTENT = [[_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
+                           [_('Palette buttons'), _('This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
+                           [_('Run fast'), _('Click to run the project in fast mode.'), 'icons/fast-button.svg'],
+                           [_('Run slow'), _('Click to run the project in slow mode.'), 'icons/slow-button.svg'],
+                           [_('Run step by step'), _('Click to run the project step by step.'), 'icons/step-button.svg'],
+                           [_('Stop'), _('Stop the current project.'), 'icons/stop-turtle-button.svg'],
+                           [_('Clean'), _('Clear the screen and return the turtles to their initial positions.'), 'icons/clear-button.svg'],
+                           [_('Show/hide palettes'), _('Hide or show the block palettes.'), 'icons/palette-button.svg'],
+                           [_('Show/hide blocks'), _('Hide or show the blocks and the palettes.'), 'icons/hide-blocks-button.svg'],
+                           [_('Expand/collapse collapsable blocks'), _('Expand or collapse stacks of blocks, e.g, start and action stacks.'), 'icons/collapse-blocks-button.svg'],
+                           [_('Help'), _('Show these messages.'), 'icons/help-button.svg'],
+                           [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxillary toolbar.'), 'icons/menu-button.svg'],
+                           [_('Load samples from server'), _('This button opens a viewer for loading example projects.'), 'icons/planet-button.svg'],
+                           [_('Paste'), _('The paste button is enabled then there are blocks copied onto the clipboard.'), 'icons/paste-disabled-button.svg'],
+                           [_('Cartesian'), _('Show or hide a Cartesian-coordinate grid.'), 'icons/Cartesian-button.svg'],
+                           [_('Polar'), _('Show or hide a polar-coordinate grid.'), 'icons/polar-button.svg'],
+                           [_('Load plugin from file'), _('You can load new blocks from the file system.'), 'icons/plugin-button.svg'],
+                           [_('Undo'), _('Restore blocks from the trash.'), 'icons/restore-trash-button.svg'],
+                           [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']]
 
         pluginsImages = {};
 
@@ -262,10 +281,6 @@ define(function(require) {
             stage = new createjs.Stage(canvas);
             createjs.Touch.enable(stage);
 
-            blocksContainer = new createjs.Container();
-            stage.addChild(blocksContainer);
-            setupBlocksContainerEvents();
-
             createjs.Ticker.addEventListener('tick', tick);
 
             createMsgContainer('#ffffff', '#7a7a7a', function(text) {
@@ -276,10 +291,26 @@ define(function(require) {
                 errorMsgText = text;
             });
 
-            trashcan = new Trashcan(canvas, stage, cellSize, refreshCanvas);
-            turtles = new Turtles(canvas, stage, refreshCanvas);
+            /* Z-Order (top to bottom):
+             *   menus
+             *   palettes
+             *   blocks
+             *   trash
+             *   turtles
+             *   logo (drawing)
+             */
+            palettesContainer = new createjs.Container();
+            blocksContainer = new createjs.Container();
+            trashContainer = new createjs.Container();
+            turtleContainer = new createjs.Container();
+            stage.addChild(turtleContainer, trashContainer, blocksContainer,
+                           palettesContainer);
+            setupBlocksContainerEvents();
+
+            trashcan = new Trashcan(canvas, trashContainer, cellSize, refreshCanvas);
+            turtles = new Turtles(canvas, turtleContainer, refreshCanvas);
             blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan, stage.update);
-            palettes = initPalettes(canvas, stage, cellSize, refreshCanvas, trashcan, blocks);
+            palettes = initPalettes(canvas, refreshCanvas, palettesContainer, cellSize, refreshCanvas, trashcan, blocks);
 
             palettes.setBlocks(blocks);
             turtles.setBlocks(blocks);
@@ -288,37 +319,22 @@ define(function(require) {
             blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
 
             // TODO: clean up this mess.
-            logo = new Logo(blocks, turtles, stage, refreshCanvas, textMsg,
-                            errorMsg, hideMsgs, onStopTurtle, onRunTurtle,
-                            prepareExport, getStageX, getStageY,
+            logo = new Logo(canvas, blocks, turtles, turtleContainer,
+                            refreshCanvas,
+                            textMsg, errorMsg, hideMsgs, onStopTurtle,
+                            onRunTurtle, prepareExport, getStageX, getStageY,
                             getStageMouseDown, getCurrentKeyCode,
-                            clearCurrentKeyCode, meSpeak);
+                            clearCurrentKeyCode, meSpeak, saveLocally);
             blocks.setLogo(logo);
 
             // Set the default background color...
             logo.setBackgroundColor(-1);
 
-            saveBox = new SaveBox(canvas, stage, refreshCanvas, doSave);
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
 
-            thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, doCloseSamples, loadProject, sendAllToTrash);
+            thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
 
             initBasicProtoBlocks(palettes, blocks);
-
-            // Advanced blocks are stored in a locally stored
-            // JSON-encoded plugin.
-            new HttpRequest('plugins/advancedblocks.json', function () {
-                var req = this.request;
-                if (req.readyState == 4) {
-                    if (this.localmode || req.status == 200) {
-                        var obj = processRawPluginData(req.responseText, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
-                    }
-                    else {
-                        if (self.console) console.log('Failed to load advanced blocks: Received status ' + req.status + '.');
-                    }
-                    this.request = this.handler = this.userCallback = null;
-                }
-            }, null);
 
             // Load any macros saved in local storage.
             var macroData = localStorage.getItem('macros');
@@ -361,8 +377,12 @@ define(function(require) {
 
             allFilesChooser.addEventListener('click', function(event) { this.value = null; });
 
-            pluginChooser.addEventListener('click', function(event) { this.value = null; });
+            pluginChooser.addEventListener('click', function(event) {
+                window.scroll(0, 0);
+                this.value = null;
+            });
             pluginChooser.addEventListener('change', function(event) {
+                window.scroll(0, 0)
 
                 // Read file here.
                 var reader = new FileReader();
@@ -425,11 +445,6 @@ define(function(require) {
             // Scale the canvas relative to the screen size.
             onResize();
 
-            var saveName = docById('mySaveName');
-            saveName.style.visibility = 'hidden';
-
-            thumbnails.setServer(server);
-
             if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
                 if (urlParts[1].indexOf('=') > 0) {
@@ -481,7 +496,7 @@ define(function(require) {
                     blocksContainer.x += event.stageX - lastCords.x;
                     blocksContainer.y += event.stageY - lastCords.y;
                     lastCords = {x: event.stageX, y: event.stageY};
-                    stage.update();
+                    refreshCanvas();
                 });
 
                 stage.on('stagemouseup', function (event) {
@@ -656,7 +671,11 @@ define(function(require) {
 
             var smallSide = Math.min(w, h);
             if (smallSide < cellSize * 10) {
-                scale = smallSide / (cellSize * 10);
+                if (w < cellSize * 10) {
+                    scale = smallSide / (cellSize * 10);
+                } else {
+                    scale = Math.max(smallSide / (cellSize * 10), 0.75);
+                }
             } else {
                 if (w > h) {
                     scale = w / 1200;
@@ -679,7 +698,7 @@ define(function(require) {
             blocks.setScale(scale);
             palettes.setScale(scale);
             trashcan.resizeEvent(scale);
-            setupRightMenu(scale);
+            setupAndroidToolbar();
 
             // Reposition coordinate grids.
             cartesianBitmap.x = (canvas.width / (2 * scale)) - (600);
@@ -687,6 +706,9 @@ define(function(require) {
             polarBitmap.x = (canvas.width / (2 * scale)) - (600);
             polarBitmap.y = (canvas.height / (2 * scale)) - (450);
             update = true;
+
+            // Resize help
+            showHelp(true);
         }
 
         window.onresize = function() {
@@ -716,7 +738,7 @@ define(function(require) {
         }
 
         // FIXME: confirm???
-        function sendAllToTrash(addStartBlock) {
+        function sendAllToTrash(addStartBlock, doNotSave) {
             var dx = 2000;
             var dy = cellSize;
             for (var blk in blocks.blockList) {
@@ -734,21 +756,24 @@ define(function(require) {
                 }
             }
             if (addStartBlock) {
-                blocks.makeNewBlock('start');
-                last(blocks.blockList).x = 250;
-                last(blocks.blockList).y = 250;
-                last(blocks.blockList).connections = [null, null, null];
-                turtles.add(last(blocks.blockList));
-                last(blocks.blockList).value = turtles.turtleList.length - 1;
-                blocks.updateBlockPositions();
+                function postprocess() {
+                    last(blocks.blockList).x = 250;
+                    last(blocks.blockList).y = 250;
+                    last(blocks.blockList).connections = [null, null, null];
+                    turtles.add(last(blocks.blockList));
+                    last(blocks.blockList).value = turtles.turtleList.length - 1;
+                    blocks.updateBlockPositions();
+                    if (!doNotSave) {
+                        saveLocally();
+                    }
+                }
+
+                blocks.makeNewBlock('start', postprocess);
             }
-            // Overwrite session data too.
-            console.log('overwriting session data');
-            if (typeof(Storage) !== 'undefined') {
-                localStorage.setItem('sessiondata', prepareExport());
-                // console.log(localStorage.getItem('sessiondata'));
-            } else {
-                // Sorry! No Web Storage support..
+
+            if (!doNotSave) {
+                // Overwrite session data too.
+                saveLocally();
             }
 
             update = true;
@@ -785,7 +810,7 @@ define(function(require) {
 
         function onStopTurtle() {
             // TODO: plugin support
-            if (buttonsVisible && !toolbarButtonsVisible) {
+            if (!buttonsVisible) {
                 hideStopButton();
             }
         }
@@ -793,7 +818,7 @@ define(function(require) {
         function onRunTurtle() {
             // TODO: plugin support
             // If the stop button is hidden, show it.
-            if (buttonsVisible && !toolbarButtonsVisible) {
+            if (!buttonsVisible) {
                 showStopButton();
             }
         }
@@ -811,28 +836,45 @@ define(function(require) {
             }
         }
 
-        function doCloseSamples() {
-            console.log('hiding thumbnails');
-            thumbnails.hide();
-            thumbnailsVisible = false;
-            logo.showBlocks();
+        function doOpenSamples() {
+            saveLocally();
+            thumbnails.show()
         }
 
-        function doOpenSamples() {
-            if (thumbnailsVisible) {
-                doCloseSamples();
-            } else {
-                console.log('showing thumbnails');
-                if (!thumbnails.show(scale)) {
-                    console.log('thumbnails not available');
-                } else if (!thumbnails.locked) {
-                    stage.setChildIndex(thumbnails.container, stage.getNumChildren() - 1);
-                    thumbnailsVisible = true;
-                    logo.hideBlocks();
-                } else {
-                    console.log('thumbnails locked');
+        function saveLocally() {
+            console.log('overwriting session data');
+
+            if (localStorage.currentProject === undefined) {
+                try {
+                    localStorage.currentProject = 'My Project';
+                    localStorage.allProjects = JSON.stringify(['My Project'])
+                } catch (e) {
+                    // Edge case, eg. Firefox localSorage DB corrupted
+                    console.log(e);
                 }
             }
+
+            try {
+                var p = localStorage.currentProject;
+                localStorage['SESSION' + p] = prepareExport();
+            } catch (e) { console.log(e); }
+
+            if (isSVGEmpty(turtles)) {
+                return;
+            }
+
+            var img = new Image();
+            var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
+            img.onload = function() {
+                var bitmap = new createjs.Bitmap(img);
+                var bounds = bitmap.getBounds();
+                bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                try {
+                    localStorage['SESSIONIMAGE' + p] = bitmap.getCacheDataURL();
+                } catch (e) { console.log(e); }
+            }
+            img.src = 'data:image/svg+xml;base64,' +
+                      window.btoa(unescape(encodeURIComponent(svgData)));
         }
 
         function loadProject(projectName) {
@@ -859,19 +901,26 @@ define(function(require) {
                     }
                     var obj = JSON.parse(cleanData);
                     blocks.loadNewBlocks(obj);
+                    saveLocally();
                 } catch (e) {
-                    loadStart();
+                   loadStart();
                 }
                 // Restore default cursor
                 document.body.style.cursor = 'default';
                 update = true;
             }, 200);
-            setTimeout(function() {
-                console.log('calling toggleCollapsibles after timeout');
-                blocks.toggleCollapsibles();
-            }, 3000);
 
-            docById('loding-image-container').style.display = 'none';
+            docById('loading-image-container').style.display = 'none';
+        }
+
+        function loadRawProject(data) {
+            document.body.style.cursor = 'wait';
+            allClear();
+            var obj = JSON.parse(data);
+            blocks.loadNewBlocks(obj);
+
+            docById('loading-image-container').style.display = 'none';
+            document.body.style.cursor = 'default';
         }
 
         function saveProject(projectName) {
@@ -920,7 +969,8 @@ define(function(require) {
             // Try restarting where we were when we hit save.
             if (typeof(Storage) !== 'undefined') {
                 // localStorage is how we'll save the session (and metadata)
-                sessionData = localStorage.getItem('sessiondata');
+                var currentProject = localStorage.currentProject;
+                sessionData = localStorage['SESSION' + currentProject];
             }
             if (sessionData != null) {
                 try {
@@ -941,13 +991,9 @@ define(function(require) {
                 }
                 blocks.makeNewBlock('start', postProcess, null);
             }
-            setTimeout(function() {
-                console.log('calling toggleCollapsibles after timeout');
-                blocks.toggleCollapsibles();
-            }, 3000);
             update = true;
 
-            docById('loding-image-container').style.display = 'none';
+            docById('loading-image-container').style.display = 'none';
         }
 
         function hideMsgs() {
@@ -1094,40 +1140,10 @@ define(function(require) {
             return JSON.stringify(data);
         }
 
-        function doOpen() {
-            // Click on the file open chooser in the DOM (.ta, .tb).
-            fileChooser.focus();
-            fileChooser.click();
-        }
-
         function doOpenPlugin() {
             // Click on the plugin open chooser in the DOM (.json).
             pluginChooser.focus();
             pluginChooser.click();
-        }
-
-        function doSaveBox() {
-            saveBox.show(scale);
-        }
-
-        function doSave() {
-            // FIXME: show input form and then save after name has been entered
-
-            // Save file to turtle.sugarlabs.org
-            var titleElem = docById('title');
-            if (titleElem.value.length == 0) {
-                var saveName = docById('mySaveName');
-                if (saveName.value.length == 0) {
-                    console.log('saving to unknown.tb');
-                    return saveProject('unknown.tb');
-                } else {
-                    console.log('saving to ' + saveName.value);
-                    return saveProject(saveName.value);
-                }
-            } else {
-                console.log('saving to ' + titleElem.value + '.tb');
-                return saveProject(titleElem.value + '.tb');
-            }
         }
 
         function saveToFile() {
@@ -1145,8 +1161,8 @@ define(function(require) {
         }
 
         function showStopButton() {
-            stopTurtleContainer.x = openContainer.x;
-            stopTurtleContainer.y = openContainer.y;
+            stopTurtleContainer.x = onscreenButtons[0].x;
+            stopTurtleContainer.y = onscreenButtons[0].y;
             stopTurtleContainer.visible = true;
         }
 
@@ -1171,8 +1187,18 @@ define(function(require) {
         }
 
         function setupAndroidToolbar() {
-            var toolbar = docById('main-toolbar');
-            toolbar.style.display = 'none';
+            if (headerContainer !== undefined) {
+                stage.removeChild(headerContainer);
+                for (i in onscreenButtons) {
+                    stage.removeChild(onscreenButtons[i]);
+                }
+            }
+
+            headerContainer = new createjs.Shape();
+            headerContainer.graphics.f('#2196f3').r(0, 0,
+                screen.width / scale, cellSize);
+            headerContainer.shadow = new createjs.Shadow('#777', 0, 2, 2);
+            stage.addChild(headerContainer);
 
             // Buttons used when running turtle programs
             var buttonNames = [
@@ -1193,16 +1219,7 @@ define(function(require) {
             var dx = btnSize;
             var dy = 0;
 
-            closeContainer = makeButton('close-toolbar-button', x, y, btnSize);
-            loadButtonDragHandler(closeContainer, x, y, doCloseToolbarButton);
-
-            openContainer = makeButton('open-toolbar-button', x, y, btnSize);
-            loadButtonDragHandler(openContainer, x, y, doOpenToolbarButton);
-            openContainer.visible = false;
-
             for (name in buttonNames) {
-                x += dx;
-                y += dy;
                 var container = makeButton(buttonNames[name][0] + '-button',
                     x, y, btnSize);
                 loadButtonDragHandler(container, x, y, buttonNames[name][1]);
@@ -1213,6 +1230,9 @@ define(function(require) {
                     stopTurtleContainerX = x;
                     stopTurtleContainerY = y;
                 }
+
+                x += dx;
+                y += dy;
             }
 
             setupRightMenu(scale);
@@ -1228,19 +1248,13 @@ define(function(require) {
 
             // Misc. other buttons
             var menuNames = [
+                ['planet', doOpenSamples],
                 ['paste-disabled', pasteStack],
                 ['Cartesian', doCartesian],
                 ['polar', doPolar],
-                ['samples', doOpenSamples],
-                ['open', doOpen],
                 ['plugin', doOpenPlugin],
-                ['empty-trash', deleteBlocksBox],
-                ['restore-trash', restoreTrash],
-                ['save-to-file', saveToFile]
+                ['restore-trash', restoreTrash]
             ];
-            if (server) {
-                menuNames.push(['save', doSaveBox]);
-            }
 
             var btnSize = cellSize;
             var x = Math.floor(canvas.width / scale) - btnSize / 2;
@@ -1267,58 +1281,95 @@ define(function(require) {
                 for (button in onscreenMenu) {
                     onscreenMenu[button].visible = true;
                 }
-                if (server) {
-                    var saveName = docById('mySaveName');
-                    saveName.style.visibility = 'visible';
-                }
             }
         }
 
         function showHelp(firstTime) {
-            var doneTour = localStorage.doneTour === 'true';
+            helpIdx = 0;
 
             if (firstTime) {
-              var scaled = 0;
-              var current = 0;
-              for (var i = 0; i < 10; i++) {
-                scaled = current * scale;
-                docById('helpHButton-' + i).style.marginLeft = scaled + 'px';
-                current += cellSize;
-              }
-              current = 0
-              for (i = 0; i < 10; i++) {
-                scaled = current * scale;
-                docById('helpVButton-' + i).style.marginLeft = window.innerWidth - (2 * (scale * cellSize)) + 'px';
-                docById('helpVButton-' + i).style.marginTop = scaled + 'px';
-                current += cellSize;
-              }
-              docById('helpEnd').style.marginLeft = 256;
-              docById('helpEnd').style.marginTop = 128;
+                if (helpContainer == null) {
+                    helpContainer = new createjs.Container();
+                    stage.addChild(helpContainer);
+                    helpContainer.x = 65;
+                    helpContainer.y = 65;
+                    var hitArea = new createjs.Shape();
+                    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 600, 800);
+                    hitArea.x = 0;
+                    hitArea.y = 0;
+                    helpContainer.hitArea = hitArea;
+
+                    helpContainer.on('click', function(event) {
+                        if (event.stageX * scale > 100 && event.stageY * scale < 150) {
+                            helpContainer.visible = false;
+                            docById('helpElem').style.visibility = 'hidden';
+                        } else if (event.stageX * scale > 100 && event.stageY * scale > 150) {
+                            helpIdx += 1;
+                            if (helpIdx >= HELPCONTENT.length) {
+                                helpIdx = 0;
+                            }
+                            var imageScale = 55 * scale; 
+                            helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                        }
+                        update = true;
+                    });
+
+                    var img = new Image();
+                    img.onload = function() {
+                        console.log(scale);
+                        bitmap = new createjs.Bitmap(img);
+                        helpContainer.addChild(bitmap)
+                        if (scale > 1) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                        }
+                        docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                        if (!doneTour) {
+                            docById('helpElem').style.visibility = 'visible';
+                        }
+                        update = true;
+                    }
+
+                    img.src = 'images/help-container.svg';
+                }
+
+                var helpElem = docById('helpElem');
+                helpElem.style.position= 'absolute';
+                helpElem.style.display = 'block';
+                helpElem.style.paddingLeft = 20 * scale + 'px';
+                helpElem.style.paddingRight = 20 * scale + 'px';
+                helpElem.style.paddingTop = '0px';
+                helpElem.style.paddingBottom = 20 * scale + 'px';
+                helpElem.style.fontSize = 20 * scale + 'px';
+                helpElem.style.color = '#ffffff';
+                helpElem.style.left = 65 * scale + 'px';
+                helpElem.style.top = 105 * scale + 'px';
+                var w = Math.min(300, 300 * scale);
+                var h = Math.min(300, 300 * scale);
+                helpElem.style.width = w + 'px';
+                helpElem.style.height = h + 'px';
+
+                if (scale > 1) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                }
             }
 
+            var doneTour = localStorage.doneTour === 'true';
+
             if (firstTime && doneTour) {
-                content = '<ol id="tour"></ol>'
+                docById('helpElem').style.visibility = 'hidden';
+                helpContainer.visible = false;
             } else {
                 localStorage.doneTour = 'true';
-
-                // Needed for the tour to run!
-                document.cookie = 'turtlejstour=ready; expires=Fri, 31 Dec 2037 23:59:59 GMT'
+                docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                docById('helpElem').style.visibility = 'visible';
+                helpContainer.visible = true;
+                update = true;
 
                 palettes.show();
                 if (!menuButtonsVisible) {
                     doMenuAnimation(1);
                 }
-
-                content = '<ol style="visibility:hidden; font-size:0px" id="tour"><li data-text="Take a tour"><h2>' + _('Welcome to Turtle Blocks') + '</h2><p>' + _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.') + '</p></li><li data-id="paletteInfo" data-options="tipLocation:left"><h2>' + _('Palette buttons') + '</h2><p>' + _('This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them.') + '</p></li><li data-id="helpHButton-0" data-button="Next"><h2>' + _('Expand/collapse toolbar') + '</h2><p>' + _('This button opens and closes the primary toolbar.') + '</p></li><li data-id="helpHButton-1" data-button="Next"><h2>' + _('Run fast') + '</h2><p>' + _('Click to run the project in fast mode.') + '</p></li><li data-id="helpHButton-2" data-button="Next"><h2>' + _('Run slow') + '</h2><p>' + _('Click to run the project in slow mode.') + '</p></li><li data-id="helpHButton-3" data-button="Next"><h2>' + _('Run step by step') + '</h2><p>' + _('Click to run the project step by step.') + '</p></li><li data-id="helpHButton-4" data-button="Next"><h2>' + _('Stop') + '</h2><p>' + _('Stop the current project.') + '</p></li><li data-id="helpHButton-5" data-button="Next"><h2>' + _('Clean') + '</h2><p>' + _('Clear the screen and return the turtles to their initial positions.') + '</p></li><li data-id="helpHButton-6" data-button="Next"><h2>' + _('Show/hide palettes') + '</h2><p>' + _('Hide or show the block palettes.') + '</p></li><li data-id="helpHButton-7" data-button="Next"><h2>' + _('Show/hide blocks') + '</h2><p>' + _('Hide or show the blocks and the palettes.') + '</p></li><li data-id="helpHButton-8" data-button="Next"><h2>' + _('Expand/collapse collapsable blocks') + '</h2><p>' + _('Expand or collapse stacks of blocks, e.g, start and action stacks.') + '</p></li><li data-id="helpHButton-9" data-button="Next"><h2>' + _('Help') + '</h2><p>' + _('Show these messages.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Expand/collapse option toolbar') + '</h2><p>' + _('Click this button to expand or collapse the auxillary toolbar.') + '</p></li><li data-id="helpVButton-1" data-button="Next" data-options="tipLocation:right"><h2>' + _('Paste') + '</h2><p>' + _('The paste button is enabled then there are blocks copied onto the clipboard.') + '</p></li><li data-id="helpVButton-2" data-button="Next" data-options="tipLocation:right"><h2>' + _('Cartesian') + '</h2><p>' + _('Show or hide a Cartesian-coordinate grid.') + '</p></li><li data-id="helpVButton-3" data-button="Next" data-options="tipLocation:right"><h2>' + _('Polar') + '</h2><p>' + _('Show or hide a polar-coordinate grid.') + '</p></li><li data-id="helpVButton-4" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load samples from server') + '</h2><p>' + _('This button opens a viewer for loading example projects.') + '</p></li><li data-id="helpVButton-5" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load project from file') + '</h2><p>' + _('You can also load projects from the file system.') + '</p></li><li data-id="helpVButton-6" data-button="Next" data-options="tipLocation:right"><h2>' + _('Load plugin from file') + '</h2><p>' + _('You can load new blocks from the file system.') + '</p></li><li data-id="helpVButton-7" data-button="Next" data-options="tipLocation: right"><h2>' + _('Delete all') + '</h2><p>' + _('Remove all content on the canvas, including the blocks.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-opt  ions="tipLocation:right"><h2>' + _('Undo') + '</h2><p>' + _('Restore blocks from the trash.') + '</p></li><li data-id="helpVButton-0" data-button="Next" data-options="tipLocation:right"><h2>' + _('Save project') + '</h2><p>' + _('Save your project to a server.') + '</p></li><li data-id="helpEnd" data-button="Close"><h2>' + _('Congratulations.') + '</h2><p>' + _('You have finished the tour. Please enjoy Turtle Blocks!') + '</p></li></ol>';
             }
-            docById('tourData').innerHTML = content;
-            settings = {
-                autoStart: true,
-                modal: true,
-                expose: false
-            }
-            jQuery('#tour').joyride('destroy');
-            jQuery('#tour').joyride(settings);
         }
 
         function doMenuButton() {
@@ -1344,104 +1395,30 @@ define(function(require) {
                     doMenuAnimation(count + 1);
                 }, 50);
             } else {
-                var saveName = docById('mySaveName');
                 if (menuButtonsVisible) {
                     menuButtonsVisible = false;
                     for (button in onscreenMenu) {
                         onscreenMenu[button].visible = false;
-                    }
-                    if (server) {
-                        saveName.style.visibility = 'hidden';
                     }
                 } else {
                     menuButtonsVisible = true;
                     for (button in onscreenMenu) {
                         onscreenMenu[button].visible = true;
                     }
-                    if (server) {
-                        saveName.style.visibility = 'visible';
-                    }
                 }
                 update = true;
             }
-        }
-
-        function doOpenToolbarButton() {
-            doOpenAnimation(0);
-        }
-
-        function doOpenAnimation(count) {
-            if (count < 10) {
-                var bitmap = last(openContainer.children);
-                bitmap.rotation = (count * 10) % 360;
-                bitmap.updateCache();
-                update = true;
-                setTimeout(function() {
-                    doOpenAnimation(count + 1);
-                }, 50);
-            } else {
-                openContainer.visible = false;
-                closeContainer.visible = true;
-                toolbarButtonsVisible = true;
-                // Make sure stop-turtle button is in the right place.
-                stopTurtleContainer.x = stopTurtleContainerX;
-                stopTurtleContainer.y = stopTurtleContainerY;
-                for (button in onscreenButtons) {
-                    onscreenButtons[button].visible = true;
-                }
-                update = true;
-            }
-        }
-
-        function doCloseToolbarButton() {
-            openContainer.visible = true;
-            closeContainer.visible = false;
-            toolbarButtonsVisible = false;
-            stopTurtleContainer.x = closeContainer.x;
-            stopTurtleContainer.y = closeContainer.y;
-            for (button in onscreenButtons) {
-                onscreenButtons[button].visible = false;
-            }
-            update = true;
         }
 
         function toggleToolbar() {
-            if (buttonsVisible) {
-                buttonsVisible = false;
-                if (onAndroid || !onXO) {
-                    closeContainer.visible = false;
-                    openContainer.visible = false;
-                    menuContainer.visible = false;
-                    for (button in onscreenButtons) {
-                        onscreenButtons[button].visible = false;
-                    }
-                    for (button in onscreenMenu) {
-                        onscreenMenu[button].visible = false;
-                    }
-                } else {
-                    var toolbar = docById('main-toolbar');
-                    toolbar.style.display = 'none';
-                }
-            } else {
-                buttonsVisible = true;
-                if (onAndroid || !onXO) {
-                    if (toolbarButtonsVisible) {
-                        closeContainer.visible = true;
-                        for (button in onscreenButtons) {
-                            onscreenButtons[button].visible = true;
-                        }
-                    }
-                    if (menuButtonsVisible) {
-                        for (button in onscreenMenu) {
-                            onscreenMenu[button].visible = true;
-                        }
-                    }
-                    openContainer.visible = true;
-                    menuContainer.visible = true;
-                } else {
-                    var toolbar = docById('main-toolbar');
-                    toolbar.style.display = 'inline';
-                }
+            buttonsVisible = !buttonsVisible;
+            menuContainer.visible = buttonsVisible;
+            headerContainer.visible = buttonsVisible;
+            for (button in onscreenButtons) {
+                onscreenButtons[button].visible = buttonsVisible;
+            }
+            for (button in onscreenMenu) {
+                onscreenMenu[button].visible = buttonsVisible;
             }
             update = true;
         }

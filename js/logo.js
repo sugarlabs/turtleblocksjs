@@ -14,11 +14,12 @@ var DEFAULTDELAY = 500; // milleseconds
 var TURTLESTEP = -1;  // Run in step-by-step mode
 
 
-function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
+function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
               getStageY, getStageMouseDown, getCurrentKeyCode,
-              clearCurrentKeyCode, meSpeak) {
+              clearCurrentKeyCode, meSpeak, saveLocally) {
 
+    this.canvas = canvas;
     this.blocks = blocks;
     this.turtles = turtles;
     this.stage = stage;
@@ -32,13 +33,16 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.getStageX = getStageX;
     this.getStageY = getStageY;
     this.getStageMouseDown = getStageMouseDown;
+    this.getCurrentKeyCode = getCurrentKeyCode;
     this.clearCurrentKeyCode = clearCurrentKeyCode;
     this.meSpeak = meSpeak;
+    this.saveLocally = saveLocally;
 
     this.evalFlowDict = {};
     this.evalArgDict = {};
     this.evalParameterDict = {};
     this.evalSetterDict = {};
+    this.eventList = {};
 
     this.boxes = {};
     this.actions = {};
@@ -50,13 +54,14 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.cameraID = null;
     this.stopTurtle = false;
     this.lastKeyCode = null;
+    this.saveTimeout = 0;
 
     // When running in step-by-step mode, the next command to run is
     // queued here.
     this.stepQueue = {};
     this.unhighlightStepQueue = {};
 
-    this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+    this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
 
     try {
         this.mic = new p5.AudioIn()
@@ -135,6 +140,8 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         value = _('false');
                     }
                     break;
+                case 'random':
+                case 'mod':
                 case 'sqrt':
                 case 'plus':
                 case 'minus':
@@ -186,6 +193,14 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'keyboard':
                     value = this.lastKeyCode;
                     break;
+                case 'loudness':
+                    if (logo.mic == null) {
+                        logo.errorMsg('The microphone is not available.');
+                        value = 0;
+                    } else {
+                        value = Math.round(logo.mic.getLevel() * 1000);
+                    }
+                    break;
                 default:
                     if (name in this.evalParameterDict) {
                         eval(this.evalParameterDict[name]);
@@ -197,7 +212,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             if (typeof(value) == 'string') {
                 if (value.length > 6) {
                     value = value.substr(0, 5) + '...';
-		}
+                }
                 this.blocks.blockList[blk].text.text = value;
             } else {
                 this.blocks.blockList[blk].text.text = Math.round(value).toString();
@@ -209,12 +224,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.runLogoCommands = function(startHere) {
         // Save the state before running.
-        // FIXME: Where is Storage defined?
-        if (typeof(Storage) !== 'undefined') {
-            localStorage.setItem('sessiondata', this.prepareExport());
-        } else {
-            // Sorry! No Web Storage support.
-        }
+        this.saveLocally();
 
         this.stopTurtle = false;
         this.blocks.unhighlightAll();
@@ -229,6 +239,15 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // Each turtle needs to keep its own wait time.
         for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
             this.waitTimes[turtle] = 0;
+        }
+
+        // Remove any listeners that might be still active
+        for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+            for (var listener in this.turtles.turtleList[turtle].listeners) {
+                console.log('removing listener ' + listener);
+                this.stage.removeEventListener(listener, this.turtles.turtleList[turtle].listeners[listener], false);
+            }
+            this.turtles.turtleList[turtle].listeners = {};
         }
 
         // First we need to reconcile the values in all the value
@@ -273,7 +292,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
         }
 
-        this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+        this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
 
         this.parentFlowQueue = {};
         this.unhightlightQueue = {};
@@ -464,6 +483,45 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
 
         switch (logo.blocks.blockList[blk].name) {
+            case 'dispatch':
+                // Dispatch an event.
+                if (args.length == 1) {
+                    // If the event is not in the event list, add it.
+                    if (!(args[0] in logo.eventList)) {
+                        var event = new Event(args[0]);
+                        logo.eventList[args[0]] = event;
+                    }
+                    logo.stage.dispatchEvent(args[0]);
+                }
+                break;
+            case 'listen':
+                if (args.length == 2) {
+                    if (!(args[1] in logo.actions)) {
+                        logo.errorMsg('Cannot find action ' + args[1] + '.', blk);
+                        logo.stopTurtle = true;
+                    } else {
+                        var listener = function (event) {
+                            if (logo.turtles.turtleList[turtle].running) {
+                                var queueBlock = new Queue(logo.actions[args[1]], 1, blk);
+			        logo.parentFlowQueue[turtle].push(blk);
+			        logo.turtles.turtleList[turtle].queue.push(queueBlock);
+                            } else {
+                                // Since the turtle has stopped
+                                // running, we need to run the stack
+                                // from here.
+                                logo.runFromBlock(logo, turtle, logo.actions[args[1]]);
+                            }
+                        }
+                        // If there is already a listener, remove it
+                        // before adding the new one.
+                        if (args[0] in logo.turtles.turtleList[turtle].listeners) {
+                            logo.stage.removeEventListener(args[0], logo.turtles.turtleList[turtle].listeners[args[0]], false);
+                        }
+                        logo.turtles.turtleList[turtle].listeners[args[0]] = listener;
+                        logo.stage.addEventListener(args[0], listener, false);
+                    }
+                }
+                break;
             case 'start':
                 if (args.length == 1) {
                     childFlow = args[0];
@@ -799,7 +857,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'endfill':
                 logo.turtles.turtleList[turtle].doEndFill();
                 break;
-            case 'fillscreen':
+            case 'background':
                 logo.setBackgroundColor(turtle);
                 break;
             case 'penup':
@@ -855,6 +913,19 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.unhightlightQueue[targetTurtle] = [];
                 logo.parameterQueue[targetTurtle] = [];
                 doBreak(targetTurtle);
+                break;
+            case 'showblocks':
+                logo.showBlocks();
+                logo.setTurtleDelay(DEFAULTDELAY);
+                break;
+            case 'hideblocks':
+                logo.hideBlocks();
+                logo.setTurtleDelay(0);
+                break;
+            case 'savesvg':
+                if (args.length == 1) {
+                    doSaveSVG(logo, args[0])
+                }
                 break;
             default:
                 if (logo.blocks.blockList[blk].name in logo.evalFlowDict) {
@@ -970,6 +1041,13 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             logo.stage.setChildIndex(logo.turtles.turtleList[turtle].container, i);
             logo.refreshCanvas();
         }
+
+        clearTimeout(this.saveTimeout);
+        var me = this;
+        this.saveTimeout = setTimeout(function () {
+            // Save at the end to save an image
+            me.saveLocally();
+        }, DEFAULTDELAY * 1.5)
     }
 
     this.getTargetTurtle = function(args) {
@@ -1030,6 +1108,14 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             return logo.blocks.blockList[blk].value;
         } else if (logo.blocks.blockList[blk].isArgBlock()) {
             switch (logo.blocks.blockList[blk].name) {
+                case 'loudness':
+                    if (!logo.mic.enabled) {
+                        logo.mic.start();
+                        logo.blocks.blockList[blk].value = 0;
+                    } else {
+                        logo.blocks.blockList[blk].value = Math.round(logo.mic.getLevel() * 1000);
+                    }
+                    break;
                 case 'eval':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
@@ -1212,7 +1298,7 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var x = logo.turtles.turtleList[turtle].container.x;
                     var y = logo.turtles.turtleList[turtle].container.y;
                     logo.refreshCanvas();
-                    var ctx = canvas.getContext("2d");
+                    var ctx = this.canvas.getContext("2d");
                     var imgData = ctx.getImageData(x, y, 1, 1).data;
                     var color = searchColors(imgData[0], imgData[1], imgData[2]);
                     if (imgData[3] == 0) {
@@ -1328,11 +1414,14 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         /// Change body background in DOM to current color.
         var body = document.body;
         if (turtle == -1) {
-            body.style.background = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
+            var c = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
         } else {
-            body.style.background = this.turtles.turtleList[turtle].canvasColor;
+            var c = this.turtles.turtleList[turtle].canvasColor;
         }
-        this.svgOutput = '<rect x="0" y="0" height="' + canvas.height + '" width="' + canvas.width + '" fill="' + body.style.background + '"/>\n';
+
+        body.style.background = c;
+        document.querySelector('.canvasHolder').style.background = c;
+        this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
     }
 
     this.setCameraID = function(id) {
@@ -1343,9 +1432,9 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             // Hide all the blocks.
             this.blocks.hide();
             // And hide some other things.
-            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
-                this.turtles.turtleList[turtle].container.visible = false;
-            }
+            // for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+                // this.turtles.turtleList[turtle].container.visible = false;
+            // }
             //trashcan.hide();
             //palettes.hide();
             this.refreshCanvas();
@@ -1356,9 +1445,9 @@ function Logo(blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             this.blocks.show();
             this.blocks.bringToTop();
             // And show some other things.
-            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
-                this.turtles.turtleList[turtle].container.visible = true;
-            }
+            // for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+                // this.turtles.turtleList[turtle].container.visible = true;
+            // }
             // trashcan.show();
             this.refreshCanvas();
         }

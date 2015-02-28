@@ -234,9 +234,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     endfillBlock.adjustWidthToLabel();
     endfillBlock.zeroArgBlock();
 
-    var backgroundBlock = new ProtoBlock('fillscreen');
+    var backgroundBlock = new ProtoBlock('background');
     backgroundBlock.palette = palettes.dict['pen'];
-    blocks.protoBlockDict['fillscreen'] = backgroundBlock;
+    blocks.protoBlockDict['background'] = backgroundBlock;
     backgroundBlock.staticLabels.push(_('background'));
     backgroundBlock.adjustWidthToLabel();
     backgroundBlock.zeroArgBlock();
@@ -376,6 +376,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.dockTypes[1] = 'anyin';
     // Show the value in the box as if it were a parameter.
     boxBlock.parameter = true;
+
+    var namedboxBlock = new ProtoBlock('namedbox');
+    namedboxBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['namedbox'] = namedboxBlock;
+    namedboxBlock.staticLabels.push(_('box'));
+    namedboxBlock.extraWidth = 10;
+    namedboxBlock.adjustWidthToLabel();
+    namedboxBlock.parameterBlock();
+    namedboxBlock.dockTypes[0] = 'anyout';
 
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['blocks'];
@@ -680,6 +689,95 @@ function initBasicProtoBlocks(palettes, blocks) {
     nopTwoArgBlock.twoArgBlock();
     nopTwoArgBlock.dockTypes[1] = 'anyin';
     nopTwoArgBlock.dockTypes[2] = 'anyin';
+
+    var nopThreeArgBlock = new ProtoBlock('nopThreeArgBlock');
+    blocks.protoBlockDict['nopThreeArgBlock'] = nopThreeArgBlock;
+    nopThreeArgBlock.hidden = true;
+    nopThreeArgBlock.palette = palettes.dict['extras'];
+    nopThreeArgBlock.staticLabels.push(_('unknown'));
+    nopThreeArgBlock.adjustWidthToLabel();
+    nopThreeArgBlock.threeArgBlock();
+    nopThreeArgBlock.dockTypes[1] = 'anyin';
+    nopThreeArgBlock.dockTypes[2] = 'anyin';
+    nopThreeArgBlock.dockTypes[3] = 'anyin';
+
+    var loudnessBlock = new ProtoBlock('loudness');
+    loudnessBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['loudness'] = loudnessBlock;
+    loudnessBlock.staticLabels.push(_('loudness'));
+    loudnessBlock.adjustWidthToLabel();
+    loudnessBlock.parameterBlock();
+
+    var svgBlock = new ProtoBlock('savesvg');
+    svgBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['savesvg'] = svgBlock;
+    svgBlock.staticLabels.push(_('save svg'));
+    svgBlock.adjustWidthToLabel();
+    svgBlock.oneArgBlock();
+    svgBlock.defaults.push(_('title') + '.svg');
+    svgBlock.dockTypes[1] = 'textin';
+
+    var showBlocks = new ProtoBlock('showblocks');
+    showBlocks.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['showblocks'] = showBlocks;
+    showBlocks.staticLabels.push(_('show blocks'));
+    showBlocks.adjustWidthToLabel();
+    showBlocks.zeroArgBlock();
+
+    var hideBlocks = new ProtoBlock('hideblocks');
+    hideBlocks.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['hideblocks'] = hideBlocks;
+    hideBlocks.staticLabels.push(_('hide blocks'));
+    hideBlocks.adjustWidthToLabel();
+    hideBlocks.zeroArgBlock();
+
+    var evalBlock = new ProtoBlock('eval');
+    evalBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['eval'] = evalBlock;
+    evalBlock.staticLabels.push(_('eval'));
+    evalBlock.staticLabels.push('f(x)');
+    evalBlock.staticLabels.push('x');
+    evalBlock.adjustWidthToLabel();
+    evalBlock.twoArgMathBlock();
+    evalBlock.dockTypes[1] = 'textin';
+    evalBlock.defaults.push('x');
+    evalBlock.defaults.push(100);
+
+    var audioBlock = new ProtoBlock('playback');
+    audioBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['playback'] = audioBlock;
+    audioBlock.defaults.push(null);
+    audioBlock.staticLabels.push(_('play back'));
+    audioBlock.adjustWidthToLabel();
+    audioBlock.oneArgBlock();
+    audioBlock.dockTypes[1] = 'mediain';
+
+    var audioStopBlock = new ProtoBlock('stopplayback');
+    audioStopBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['stopplayback'] = audioStopBlock;
+    audioStopBlock.staticLabels.push(_('stop play'));
+    audioStopBlock.adjustWidthToLabel();
+    audioStopBlock.zeroArgBlock();
+
+    var listenBlock = new ProtoBlock('listen');
+    listenBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['listen'] = listenBlock;
+    listenBlock.staticLabels.push(_('on'), _('event'), _('do'));
+    listenBlock.adjustWidthToLabel();
+    listenBlock.twoArgBlock();
+    listenBlock.defaults.push(_('event'));
+    listenBlock.defaults.push(_('action'));
+    listenBlock.dockTypes[1] = 'textin';
+    listenBlock.dockTypes[2] = 'textin';
+
+    var dispatchBlock = new ProtoBlock('dispatch');
+    dispatchBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['dispatch'] = dispatchBlock;
+    dispatchBlock.staticLabels.push(_('broadcast'));
+    dispatchBlock.adjustWidthToLabel();
+    dispatchBlock.oneArgBlock();
+    dispatchBlock.defaults.push(_('event'));
+    dispatchBlock.dockTypes[1] = 'textin';
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

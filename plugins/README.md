@@ -179,4 +179,4 @@ References
 Example plugins
 ---------------
 
-[advancedblocks.json](https://github.com/walterbender/turtleblocksjs/blob/master/advancedblocks.json), [translate.json](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json), [weather.json](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/weather.json), [maths.rtp](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/maths.rtp)
+[translate.json](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json), [weather.json](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/weather.json), [maths.rtp](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/maths.rtp)

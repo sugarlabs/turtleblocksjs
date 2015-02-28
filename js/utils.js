@@ -34,10 +34,10 @@ function httpGet(projectName) {
     xmlHttp = new XMLHttpRequest();
 
     if (projectName == null) {
-        xmlHttp.open("GET", window.location.origin + '/server/', false);
+        xmlHttp.open("GET", window.server, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     } else {
-        xmlHttp.open("GET", window.location.origin + '/server/' + projectName, false);
+        xmlHttp.open("GET", window.server + projectName, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     }
     xmlHttp.send();
@@ -51,7 +51,7 @@ function httpGet(projectName) {
 function httpPost(projectName, data) {
     var xmlHttp = null;
     xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", window.location.origin + '/server/' + projectName, false);
+    xmlHttp.open("POST", window.server + projectName, false);
     xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     xmlHttp.send(data);
     // return xmlHttp.responseText;
@@ -111,6 +111,16 @@ function doSVG(canvas, logo, turtles, width, height, scale) {
     svg += '</g>';
     svg += '</svg>';
     return svg;
+}
+
+function isSVGEmpty(turtles) {
+    for (var turtle in turtles.turtleList) {
+        turtles.turtleList[turtle].closeSVG();
+        if (turtles.turtleList[turtle].svgOutput !== '') {
+            return false;
+        }
+    }
+    return true;
 }
 
 
@@ -389,9 +399,9 @@ function prepareMacroExports(name, stack, macroDict) {
 }
 
 
-function doSaveSVG(canvas, turtles, desc) {
-    var svg = doSVG(canvas, turtles, canvas.width, canvas.height, 1.0);
-    download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + canvas.width + ', height=' + canvas.height + '"');
+function doSaveSVG(logo, desc) {
+    var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
+    download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
 }
 
 function download(filename, data) {

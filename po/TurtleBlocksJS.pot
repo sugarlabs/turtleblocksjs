@@ -365,6 +365,9 @@ msgstr ""
 msgid "hide blocks"
 msgstr ""
 
+msgid "loudness"
+msgstr ""
+
 msgid "publish"
 msgstr ""
 
@@ -447,7 +450,7 @@ msgid "currency"
 msgstr ""
 
 msgid "Google map"
-msgstr "Mapa de Google"
+msgstr ""
 
 msgid "coordinates"
 msgstr ""

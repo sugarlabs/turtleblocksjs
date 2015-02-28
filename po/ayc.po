@@ -163,8 +163,9 @@ msgstr "arsuña"
 msgid "show"
 msgstr "uñachayaña"
 
+#. TRANS: 
 msgid "size"
-msgstr ""
+msgstr "tamaño"
 
 #. TRANS: objeto
 msgid "obj"
@@ -245,6 +246,7 @@ msgstr ""
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
 msgstr ""
 
+#. TRANS: Botones de paleta
 msgid "Palette buttons"
 msgstr ""
 
@@ -255,6 +257,7 @@ msgstr ""
 msgid "Expand/collapse toolbar"
 msgstr ""
 
+#. TRANS: Este botón abre y cierra la barra de herramientas principal.
 msgid "This button opens and closes the primary toolbar."
 msgstr ""
 
@@ -262,6 +265,7 @@ msgstr ""
 msgid "Run fast"
 msgstr ""
 
+#. TRANS: Haga clic para ejecutar el proyecto en modo rápido.
 msgid "Click to run the project in fast mode."
 msgstr ""
 
@@ -269,6 +273,7 @@ msgstr ""
 msgid "Run slow"
 msgstr ""
 
+#. TRANS: Haz click para ejecutar el proyecto en modo lento.
 msgid "Click to run the project in slow mode."
 msgstr ""
 
@@ -276,6 +281,7 @@ msgstr ""
 msgid "Run step by step"
 msgstr ""
 
+#. TRANS: Haz click para ejecutar el proyecto en modo paso a paso.
 msgid "Click to run the project step by step."
 msgstr ""
 
@@ -298,18 +304,23 @@ msgstr ""
 msgid "Show/hide palettes"
 msgstr ""
 
+#. TRANS: Ocultar o mostrar las paletas de bloques.
 msgid "Hide or show the block palettes."
 msgstr ""
 
+#. TRANS: Mostrar o ocultar los bloques.
 msgid "Show/hide blocks"
 msgstr ""
 
+#. TRANS: Ocultar o mostrar los bloques y las paletas.
 msgid "Hide or show the blocks and the palettes."
 msgstr ""
 
+#. TRANS: Expandir o colapsar los bloques colapsables
 msgid "Expand/collapse collapsable blocks"
 msgstr ""
 
+#. TRANS: Expandir o colapsar los bloques colapsables, cómo por ejemplo los bloques de empezar y los de acción.
 msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
 msgstr ""
 
@@ -321,9 +332,11 @@ msgstr ""
 msgid "Show these messages."
 msgstr ""
 
+#. TRANS: Expandir/colapsar la barra de opciones.
 msgid "Expand/collapse option toolbar"
 msgstr ""
 
+#. TRANS: Haz click en este botón para expandir o colapsar la barra de herramientas auxiliar.
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr ""
 
@@ -335,15 +348,18 @@ msgstr ""
 msgid "The paste button is enabled then there are blocks copied onto the clipboard."
 msgstr ""
 
+#. TRANS: Cartesiano
 msgid "Cartesian"
 msgstr ""
 
+#. TRANS: Mostrar u ocultar cuadrícula en coordenadas cartesianas.
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
 
 msgid "Polar"
 msgstr ""
 
+#. TRANS: Mostrar o ocultar la rejilla de coordenadas polares.
 msgid "Show or hide a polar-coordinate grid."
 msgstr ""
 
@@ -355,15 +371,19 @@ msgstr ""
 msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
+#. TRANS: Cargar proyecto desde archivo
 msgid "Load project from file"
 msgstr ""
 
+#. TRANS: También puede cargar proyectos desde el sistema de archivos.
 msgid "You can also load projects from the file system."
 msgstr ""
 
+#. TRANS: Cargar plugin desde archivo
 msgid "Load plugin from file"
 msgstr ""
 
+#. TRANS: Tu puedes cargar nuevos bloques desde un archivo. 
 msgid "You can load new blocks from the file system."
 msgstr ""
 
@@ -371,6 +391,7 @@ msgstr ""
 msgid "Delete all"
 msgstr ""
 
+#. TRANS: Eliminar todo el contenido del canvas, incluyendo los bloques.
 msgid "Remove all content on the canvas, including the blocks."
 msgstr ""
 
@@ -382,6 +403,7 @@ msgstr ""
 msgid "Restore blocks from the trash."
 msgstr ""
 
+#. TRANS: Guardar proyecto
 msgid "Save project"
 msgstr ""
 
@@ -392,11 +414,15 @@ msgstr ""
 msgid "Congratulations."
 msgstr ""
 
+#. TRANS: Guarde proyecto en el servidor.
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "hide blocks"
 msgstr "siqichata wakichatanaka imantaña"
+
+msgid "loudness"
+msgstr "ist'asiñapa jithxatayaña"
 
 msgid "publish"
 msgstr ""
@@ -404,6 +430,7 @@ msgstr ""
 msgid "comment"
 msgstr "amuyt'aña"
 
+#. TRANS: reproducir
 msgid "play back"
 msgstr ""
 
@@ -419,6 +446,7 @@ msgstr ""
 msgid "show blocks"
 msgstr "siqichata wakichatana uñachayaña"
 
+#. TRANS: detener
 msgid "stop play"
 msgstr ""
 
@@ -431,6 +459,7 @@ msgstr "phuyu"
 msgid "number"
 msgstr "jakhunaka"
 
+#. TRANS: booleano
 msgid "boolean"
 msgstr ""
 
@@ -453,48 +482,61 @@ msgstr "yaqhanaka"
 msgid "open file"
 msgstr ""
 
+#. TRANS: z del acelerómetro
 msgid "motion z"
 msgstr ""
 
+#. TRANS: y del acelerómetro
 msgid "motion y"
 msgstr ""
 
+#. TRANS: x del acelerómetro
 msgid "motion x"
 msgstr ""
 
 msgid "bitcoin"
-msgstr ""
+msgstr "bitcoin"
 
+#. TRANS: desde
 msgid "from"
 msgstr ""
 
 msgid "mashape"
-msgstr ""
+msgstr "mashape"
 
+#. TRANS: definir
 msgid "define"
 msgstr ""
 
+#. TRANS: stock price
 msgid "stock price"
 msgstr ""
 
+#. TRANS: moneda
 msgid "currency"
 msgstr ""
 
+#. TRANS: Mapa de Google
 msgid "Google map"
 msgstr ""
 
+#. TRANS: coordenadas
 msgid "coordinates"
 msgstr ""
 
+#. TRANS: factor de zoom
 msgid "zoom factor"
 msgstr ""
 
+#. TRANS: zoom
 msgid "zoom"
 msgstr ""
 
+#. TRANS: latitud
 msgid "latitude"
 msgstr ""
 
+#. TRANS: longitud
 msgid "longitude"
 msgstr ""
 
@@ -516,6 +558,7 @@ msgstr "imata wakichata siqi apxataña"
 msgid "push"
 msgstr "nukht'aña"
 
+#. TRANS: lógica
 msgid "logic"
 msgstr ""
 
@@ -540,18 +583,23 @@ msgstr ""
 msgid "to degrees"
 msgstr ""
 
+#. TRANS: radianes
 msgid "radians"
 msgstr ""
 
+#. TRANS: a radianes
 msgid "to radians"
 msgstr ""
 
+#. TRANS: matemáticas
 msgid "maths"
 msgstr ""
 
+#. TRANS: queso
 msgid "cheese"
 msgstr ""
 
+#. TRANS: manzana
 msgid "apple"
 msgstr ""
 
@@ -564,27 +612,33 @@ msgstr ""
 msgid "get calories"
 msgstr ""
 
+#. TRANS: proteína
 msgid "protein"
 msgstr ""
 
+#. TRANS: pollo
 msgid "chicken"
 msgstr ""
 
+#. TRANS: digerir
 msgid "digest meal"
 msgstr ""
 
 msgid "get fiber"
 msgstr ""
 
+#. TRANS: carbohidratos
 msgid "carbs"
 msgstr ""
 
+#. TRANS: comer
 msgid "eat"
 msgstr ""
 
 msgid "rice and beans"
 msgstr ""
 
+#. TRANS: naranja
 msgid "orange"
 msgstr ""
 
@@ -597,18 +651,22 @@ msgstr ""
 msgid "fiber"
 msgstr ""
 
+#. TRANS: maíz
 msgid "corn"
 msgstr ""
 
 msgid "fat"
 msgstr ""
 
+#. TRANS: obtener carbohidratos
 msgid "get carbs"
 msgstr ""
 
+#. TRANS: agua
 msgid "water"
 msgstr ""
 
+#. TRANS: galleta
 msgid "cookie"
 msgstr ""
 
@@ -621,24 +679,30 @@ msgstr ""
 msgid "wheat bread"
 msgstr ""
 
+#. TRANS: tomate
 msgid "tomato"
 msgstr ""
 
 msgid "beef"
 msgstr ""
 
+#. TRANS: papa
 msgid "potato"
 msgstr ""
 
+#. TRANS: calorías
 msgid "calories"
 msgstr ""
 
+#. TRANS: obtener nombre
 msgid "get name"
 msgstr ""
 
+#. TRANS: pastel
 msgid "cake"
 msgstr ""
 
+#. TRANS: obtener proteínas
 msgid "get protein"
 msgstr ""
 
@@ -663,12 +727,15 @@ msgstr ""
 msgid "sing"
 msgstr ""
 
+#. TRANS: nota
 msgid "note"
 msgstr ""
 
+#. TRANS: duración
 msgid "duration"
 msgstr ""
 
+#. TRANS: mover
 msgid "move"
 msgstr ""
 
@@ -676,17 +743,21 @@ msgid "blink (ms)"
 msgstr ""
 
 msgid "rodi"
-msgstr ""
+msgstr "Rodi"
 
+#. TRANS: combiar idioma
 msgid "set lang"
 msgstr ""
 
+#. TRANS: origen
 msgid "source"
 msgstr ""
 
+#. TRANS: destino
 msgid "target"
 msgstr ""
 
+#. TRANS: traducir
 msgid "translate"
 msgstr ""
 
@@ -694,30 +765,39 @@ msgstr ""
 msgid "hello"
 msgstr ""
 
+#. TRANS: detecar idioma
 msgid "detect lang"
 msgstr ""
 
+#. TRANS: tortuga x
 msgid "turtle x"
 msgstr ""
 
+#. TRANS: tortuga y
 msgid "turtle y"
 msgstr ""
 
+#. TRANS: detener tortuga
 msgid "stop turtle"
 msgstr ""
 
+#. TRANS: renombrar tortuga
 msgid "turtle name"
 msgstr ""
 
+#. TRANS: iniciar tortuga
 msgid "start turtle"
 msgstr ""
 
+#. TRANS: pronóstico
 msgid "forecast"
 msgstr ""
 
+#. TRANS: ciudad
 msgid "city"
 msgstr ""
 
+#. TRANS: día
 msgid "day"
 msgstr ""
 

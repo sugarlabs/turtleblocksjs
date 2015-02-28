@@ -1,235 +1,230 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: turtleart-activity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 00:30-0500\n"
-"PO-Revision-Date: 2011-01-24 00:35+0200\n"
-"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2013-12-05 00:30-0500\n"
+"PO-Revision-Date: 2013-12-09 21:51+0200\n"
+"Last-Translator: Markus <m.slg@gmx.de>\n"
+"Language-Team: Deutsche OLPC-Lokalisierung\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: ini-to-pot script\n"
 
 msgid "clear"
-msgstr "نظف"
+msgstr "lösche alles"
 
 msgid "forward"
-msgstr "للأمام"
+msgstr "vorwärts"
 
 msgid "right"
-msgstr "يمين"
+msgstr "rechtsherum"
 
 msgid "back"
-msgstr "السابق:: للخلف"
+msgstr "rückwärts"
 
 msgid "left"
-msgstr "يسار"
+msgstr "linksherum"
 
 msgid "arc"
-msgstr "قوس"
+msgstr "Kreisbogen"
 
 msgid "angle"
-msgstr "زاوية"
+msgstr "Winkel"
 
 msgid "radius"
-msgstr "نصف القطر"
+msgstr "Radius"
 
 msgid "set heading"
-msgstr "حدد العنوان"
+msgstr "setze Richtung"
 
 msgid "heading"
-msgstr "عنوان"
+msgstr "Richtung"
 
 msgid "set xy"
-msgstr "حدد س ص"
+msgstr "setze xy"
 
 msgid "x"
-msgstr "س"
+msgstr "x"
 
 msgid "y"
-msgstr "ص"
+msgstr "y"
 
 msgid "set color"
-msgstr "حدد اللون"
+msgstr "setze Farbe"
 
 msgid "color"
-msgstr "لون"
+msgstr "Farbe"
 
 msgid "set hue"
-msgstr "حدد اللون"
+msgstr "setze Couleur"
 
 msgid "set shade"
-msgstr "حدد التظليل"
+msgstr "setze Schattierung"
 
 msgid "shade"
-msgstr ""
+msgstr "Schattierung"
 
 msgid "set grey"
-msgstr ""
+msgstr "setze Grau"
 
 msgid "grey"
-msgstr ""
+msgstr "Grauton"
 
 msgid "set pen size"
-msgstr "حدد حجم القلم"
+msgstr "setze Stiftdicke"
 
 msgid "pen size"
-msgstr "حجم القلم"
+msgstr "Stiftdicke"
 
 msgid "pen up"
-msgstr "ارفع القلم"
+msgstr "Stift aus"
 
 msgid "pen down"
-msgstr "ضع القلم"
+msgstr "Stift an"
 
 msgid "begin fill"
-msgstr ""
+msgstr "beginne Füllung"
 
 msgid "end fill"
-msgstr ""
+msgstr "beende Füllung"
 
 msgid "background"
-msgstr "ملء الشاشه"
+msgstr "fülle Bildschirm"
 
 msgid "random"
-msgstr "عشوائي"
+msgstr "Zufallszahl"
 
 msgid "min"
-msgstr "أقل"
+msgstr "min"
 
 msgid "max"
-msgstr "أاكثر"
+msgstr "max"
 
 msgid "sqrt"
-msgstr ""
+msgstr "Quadratwurzel"
 
 msgid "mod"
-msgstr ""
+msgstr "mod"
 
 msgid "and"
-msgstr "و"
+msgstr "und"
 
 msgid "or"
-msgstr "أو"
+msgstr "oder"
 
 msgid "not"
-msgstr "ليس"
+msgstr "nicht"
 
 msgid "store in"
-msgstr "احفظ في"
+msgstr "speichere in"
 
 msgid "name"
-msgstr ""
+msgstr "Name"
 
 msgid "value"
-msgstr ""
+msgstr "Wert"
 
 msgid "box"
-msgstr "الصندوق"
+msgstr "Box"
 
 msgid "action"
-msgstr ""
+msgstr "Aktion"
 
 msgid "do"
-msgstr ""
+msgstr "tun"
 
 msgid "start"
-msgstr ""
+msgstr "starte"
 
 msgid "add 1 to"
-msgstr ""
+msgstr "addieren 1"
 
 msgid "add"
-msgstr ""
+msgstr "addieren"
 
 msgid "to"
 msgstr ""
 
 msgid "speak"
-msgstr ""
+msgstr ""sage
 
 msgid "show"
-msgstr ""
+msgstr "zeige"
 
 msgid "size"
-msgstr ""
+msgstr "Größe""
 
 msgid "obj"
-msgstr ""
+msgstr "Objekt"
 
 msgid "text"
-msgstr ""
+msgstr "Text"
 
 msgid "shell"
-msgstr ""
+msgstr "Schildkrötenpanzer"
 
 msgid "image"
-msgstr ""
+msgstr "Bild"
 
 msgid "stop media"
-msgstr ""
+msgstr "Medien anhalten"
 
 msgid "repeat"
-msgstr "كرر"
+msgstr "wiederhole"
 
 msgid "forever"
-msgstr "للأبد"
+msgstr "fortlaufend"
 
 msgid "stop"
-msgstr ""
+msgstr "anhalten"
 
 msgid "if"
-msgstr "إذا"
+msgstr "wenn"
 
 msgid "then"
-msgstr "عندها"
+msgstr "dann"
 
 msgid "until"
-msgstr ""
+msgstr "bis"
 
 msgid "wait for"
-msgstr ""
+msgstr "warten"
 
 msgid "while"
-msgstr ""
+msgstr "solange"
 
 msgid "else"
-msgstr "وإلا"
+msgstr "sonst"
 
 msgid "wait"
-msgstr "انتظر"
+msgstr "warte"
 
 msgid "print"
-msgstr "اطبع"
+msgstr "gib aus"
 
 msgid "time"
-msgstr ""
+msgstr "Zeit"
 
 msgid "mouse x"
-msgstr ""
+msgstr "Maus-x"
 
 msgid "mouse y"
-msgstr ""
+msgstr "Maus-y"
 
 msgid "mouse button"
-msgstr ""
+msgstr "Maustaste"
 
 msgid "keyboard"
-msgstr ""
+msgstr "Tastatureingabe"
 
 msgid "pixel color"
-msgstr ""
+msgstr "lies Pixel"
 
 msgid "unknown"
-msgstr ""
+msgstr "unbekannt"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -370,61 +365,58 @@ msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
-
-msgid "loudness"
-msgstr ""
+msgstr "Blöcke verbergen"
 
 msgid "publish"
 msgstr ""
 
 msgid "comment"
-msgstr ""
+msgstr "Anmerkung"
 
 msgid "play back"
-msgstr ""
+msgstr "abspielen"
 
 msgid "save svg"
-msgstr ""
+msgstr "Als SVG speichern"
 
 msgid "title"
-msgstr ""
+msgstr "Titel"
 
 msgid "eval"
 msgstr ""
 
 msgid "show blocks"
-msgstr ""
+msgstr "Blöcke anzeigen"
 
 msgid "stop play"
-msgstr ""
+msgstr "Medien anhalten"
 
 msgid "turtle"
-msgstr ""
+msgstr "Schildkröte"
 
 msgid "pen"
-msgstr ""
+msgstr "Stift"
 
 msgid "number"
-msgstr ""
+msgstr "Zahlen"
 
 msgid "boolean"
 msgstr ""
 
 msgid "flow"
-msgstr ""
+msgstr "Programmfluss"
 
 msgid "blocks"
-msgstr ""
+msgstr "Blöcke"
 
 msgid "media"
-msgstr ""
+msgstr "Medien"
 
 msgid "sensors"
-msgstr ""
+msgstr "Sensor"
 
 msgid "extras"
-msgstr ""
+msgstr "Extras"
 
 msgid "open file"
 msgstr ""
@@ -456,7 +448,22 @@ msgstr ""
 msgid "currency"
 msgstr ""
 
-msgid "GMAP"
+msgid "Google map"
+msgstr "Mapa de Google"
+
+msgid "coordinates"
+msgstr ""
+
+msgid "zoom factor"
+msgstr ""
+
+msgid "zoom"
+msgstr ""
+
+msgid "latitude"
+msgstr ""
+
+msgid "longitude"
 msgstr ""
 
 msgid "show heap"
@@ -649,7 +656,7 @@ msgid "translate"
 msgstr ""
 
 msgid "hello"
-msgstr ""
+msgstr "Hallo"
 
 msgid "detect lang"
 msgstr ""

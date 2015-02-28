@@ -1,73 +1,70 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 00:30-0500\n"
-"PO-Revision-Date: 2011-01-24 00:35+0200\n"
-"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2015-02-15 18:19+0100\n"
+"Last-Translator: Samson Goddy <samsongoddy@hotmail.com>"
+"Language Team: Yoruba\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: ini-to-pot script\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-POOTLE-MTIME: 1423841876.000000\n"
+"Language-Team: \n"
 
 msgid "clear"
-msgstr "نظف"
+msgstr ""
 
 msgid "forward"
-msgstr "للأمام"
+msgstr ""
 
 msgid "right"
-msgstr "يمين"
+msgstr ""
 
 msgid "back"
-msgstr "السابق:: للخلف"
+msgstr ""
 
 msgid "left"
-msgstr "يسار"
+msgstr ""
 
 msgid "arc"
-msgstr "قوس"
+msgstr ""
 
 msgid "angle"
-msgstr "زاوية"
+msgstr ""
 
 msgid "radius"
-msgstr "نصف القطر"
+msgstr ""
 
 msgid "set heading"
-msgstr "حدد العنوان"
+msgstr ""
 
 msgid "heading"
-msgstr "عنوان"
+msgstr ""
 
 msgid "set xy"
-msgstr "حدد س ص"
+msgstr ""
 
 msgid "x"
-msgstr "س"
+msgstr ""
 
 msgid "y"
-msgstr "ص"
+msgstr ""
 
 msgid "set color"
-msgstr "حدد اللون"
+msgstr ""
 
 msgid "color"
-msgstr "لون"
+msgstr ""
 
 msgid "set hue"
-msgstr "حدد اللون"
+msgstr ""
 
 msgid "set shade"
-msgstr "حدد التظليل"
+msgstr ""
 
 msgid "shade"
 msgstr ""
@@ -79,16 +76,16 @@ msgid "grey"
 msgstr ""
 
 msgid "set pen size"
-msgstr "حدد حجم القلم"
+msgstr ""
 
 msgid "pen size"
-msgstr "حجم القلم"
+msgstr ""
 
 msgid "pen up"
-msgstr "ارفع القلم"
+msgstr ""
 
 msgid "pen down"
-msgstr "ضع القلم"
+msgstr ""
 
 msgid "begin fill"
 msgstr ""
@@ -97,16 +94,16 @@ msgid "end fill"
 msgstr ""
 
 msgid "background"
-msgstr "ملء الشاشه"
+msgstr ""
 
 msgid "random"
-msgstr "عشوائي"
+msgstr ""
 
 msgid "min"
-msgstr "أقل"
+msgstr ""
 
 msgid "max"
-msgstr "أاكثر"
+msgstr ""
 
 msgid "sqrt"
 msgstr ""
@@ -115,16 +112,16 @@ msgid "mod"
 msgstr ""
 
 msgid "and"
-msgstr "و"
+msgstr ""
 
 msgid "or"
-msgstr "أو"
+msgstr ""
 
 msgid "not"
-msgstr "ليس"
+msgstr ""
 
 msgid "store in"
-msgstr "احفظ في"
+msgstr ""
 
 msgid "name"
 msgstr ""
@@ -133,7 +130,7 @@ msgid "value"
 msgstr ""
 
 msgid "box"
-msgstr "الصندوق"
+msgstr ""
 
 msgid "action"
 msgstr ""
@@ -148,9 +145,6 @@ msgid "add 1 to"
 msgstr ""
 
 msgid "add"
-msgstr ""
-
-msgid "to"
 msgstr ""
 
 msgid "speak"
@@ -178,19 +172,19 @@ msgid "stop media"
 msgstr ""
 
 msgid "repeat"
-msgstr "كرر"
+msgstr ""
 
 msgid "forever"
-msgstr "للأبد"
+msgstr ""
 
 msgid "stop"
 msgstr ""
 
 msgid "if"
-msgstr "إذا"
+msgstr ""
 
 msgid "then"
-msgstr "عندها"
+msgstr ""
 
 msgid "until"
 msgstr ""
@@ -202,13 +196,13 @@ msgid "while"
 msgstr ""
 
 msgid "else"
-msgstr "وإلا"
+msgstr ""
 
 msgid "wait"
-msgstr "انتظر"
+msgstr ""
 
 msgid "print"
-msgstr "اطبع"
+msgstr ""
 
 msgid "time"
 msgstr ""
@@ -372,9 +366,6 @@ msgstr ""
 msgid "hide blocks"
 msgstr ""
 
-msgid "loudness"
-msgstr ""
-
 msgid "publish"
 msgstr ""
 
@@ -408,7 +399,7 @@ msgstr ""
 msgid "number"
 msgstr ""
 
-msgid "boolean"
+msgid "Boolean"
 msgstr ""
 
 msgid "flow"
@@ -456,7 +447,22 @@ msgstr ""
 msgid "currency"
 msgstr ""
 
-msgid "GMAP"
+msgid "Google map"
+msgstr ""
+
+msgid "coordinates"
+msgstr ""
+
+msgid "zoom factor"
+msgstr ""
+
+msgid "zoom"
+msgstr ""
+
+msgid "latitude"
+msgstr ""
+
+msgid "longtitude"
 msgstr ""
 
 msgid "show heap"
@@ -683,4 +689,3 @@ msgstr ""
 
 msgid "high"
 msgstr ""
-

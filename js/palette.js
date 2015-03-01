@@ -105,7 +105,6 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
             return;
         }
 
-
         this.scrollDiff += diff;
         for (var name in this.buttons) {
             this.buttons[name].y += diff;
@@ -628,7 +627,10 @@ function Palette(palettes, name, color, bgcolor) {
                         palette.protoContainers[modname].cache(bounds.x, bounds.y, Math.ceil(bounds.width), Math.ceil(bounds.height));
 
                         var hitArea = new createjs.Shape();
-                        hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height));
+                        // Trim the hitArea height slightly to make
+                        // it easier to select single-height blocks
+                        // below double-height blocks.
+                        hitArea.graphics.beginFill('#FFF').drawRect(0, 0, Math.ceil(bounds.width), Math.ceil(bounds.height * 0.75));
                         palette.protoContainers[modname].hitArea = hitArea;
 
                         loadPaletteMenuItemHandler(palette, blk, modname);

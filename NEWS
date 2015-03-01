@@ -276,3 +276,11 @@ KNOWN BUGS:
   * Not all blocks highlight when using step-by-step mode
   * Camera doesn't work on Android
   * Reopen palettes after palette updates
+
+FEEDBACK:
+ 1. The block palettes were hard to scroll through at times. if you
+ did click and drag it was okay. If you tried scrolling with the mouse
+ or up/down arrows, it was painfully slow.
+ 2. At times, selecting blocks from the blocks palettes was sometimes
+ buggy. In the box palette, for example, we were trying to select the
+ do action brick. Frequently, we ended up dragging the define...

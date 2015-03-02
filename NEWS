@@ -246,6 +246,8 @@
   * Fixed problem with events not triggering if turtle has stopped.
   * Added three-arg flow blocks.
   * Added named boxes.
+  * Fixed problem selecting blocks from the blocks palettes.
+  * Made separate heaps for each turtle.
 
 TODO:
   * Music blocks plugin
@@ -261,12 +263,12 @@ TODO:
   * Three-arg arg blocks (trivial with factory)
   * Artwork beautification?
   * Try to detect difference between unknown flow and arg blocks
-  * Button block (a stack that is run when you click on a button)
-    - two args: artwork for the button; action name to take
   * What palette/block features from the Python version do we need to port?
   * Do we need to add support for plugins init, quit, etc.?
 
 FEATURE IDEAS:
+  * Button block (a stack that is run when you click on a button)
+    - two args: artwork for the button; action name to take
   * Local variables? (e.g., boxes only defined inside an action?)
   * Pass argments to actions? (and arg blocks to reference them)?
   * Arrays
@@ -278,9 +280,6 @@ KNOWN BUGS:
   * Reopen palettes after palette updates
 
 FEEDBACK:
- 1. The block palettes were hard to scroll through at times. if you
- did click and drag it was okay. If you tried scrolling with the mouse
- or up/down arrows, it was painfully slow.
- 2. At times, selecting blocks from the blocks palettes was sometimes
- buggy. In the box palette, for example, we were trying to select the
- do action brick. Frequently, we ended up dragging the define...
+  * The block palettes were hard to scroll through at times. if you did
+    click and drag it was okay. If you tried scrolling with the mouse or
+    up/down arrows, it was painfully slow.

@@ -363,13 +363,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
             }
 
-            if (turtle == null) {
+            if (turtle == null || this.turtles.turtleList.length + 1 > turtle) {
                 console.log('could not find a turtle');
                 turtle = this.turtles.turtleList.length;
                 this.turtles.add(null);
             }
 
             console.log('running with turtle ' + turtle);
+
             this.turtles.turtleList[turtle].queue = [];
             this.parentFlowQueue[turtle] = [];
             this.unhightlightQueue[turtle] = [];

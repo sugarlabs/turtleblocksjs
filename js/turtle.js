@@ -41,7 +41,7 @@ function Turtle (name, turtles) {
     this.decorationBitmap = null;  // Start block decoration.
 
     // Queue of blocks this turtle is executing.
-    this.runQueue = [];
+    this.queue = [];
 
     // Listeners
     this.listeners = {};

@@ -1196,7 +1196,7 @@ function labelChanged(myBlock) {
                     myBlock.blocks.newDoBlock(myBlock.value);
                 }
                 myBlock.blocks.renameDos(oldValue, newValue);
-                myBlock.blocks.palettes.updatePalettes();
+                myBlock.blocks.palettes.updatePalettes('blocks');
                 break;
             case 'storein':
                 // If the label was the name of a storein, update the
@@ -1207,7 +1207,7 @@ function labelChanged(myBlock) {
                     myBlock.blocks.newNamedboxBlock(myBlock.value);
                 }
                 myBlock.blocks.renameBoxes(oldValue, newValue);
-                myBlock.blocks.palettes.updatePalettes();
+                myBlock.blocks.palettes.updatePalettes('blocks');
                 break;
         }
     }

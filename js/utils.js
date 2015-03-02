@@ -261,9 +261,9 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     if (newPalette) {
         try {
-            palettes.makeMenu();
+            palettes.makePalettes();
         } catch (e) {
-            console.log('makeMenu: ' + e);
+            console.log('makePalettes: ' + e);
         }
     }
 
@@ -386,7 +386,7 @@ function processMacroData(macroData, palettes, blocks, macroDict) {
             macroDict[name] = obj[name];
             blocks.addToMyPalette(name, macroDict[name]);
         }
-        palettes.makeMenu();
+        palettes.makePalettes();
     }
 }
 

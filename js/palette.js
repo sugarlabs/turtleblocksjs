@@ -42,7 +42,7 @@ function paletteBlockButtonPush(name, arg) {
 // with them: a bitmap and a highlighted bitmap that is shown when the
 // mouse is over the button.
 //
-// loadPaletteButtonHandler is the event handler for pelette buttons.
+// loadPaletteButtonHandler is the event handler for palette buttons.
 //
 // (2) A menu (in the Palettes.dict dictionary) is the palette
 // itself. It consists of a title bar (with an icon, label, and close
@@ -124,7 +124,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         }
     }
 
-    this.makeMenu = function() {
+    this.makePalettes = function() {
         // First, an icon/button for each palette
         for (var name in this.dict) {
             if (name in this.buttons) {
@@ -161,10 +161,9 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
                         me.buttons[name].hitArea = hitArea;
                         me.buttons[name].visible = false;
 
-                        me.dict[name].makeMenu();
+                        me.dict[name].makeMenu(false);
                         me.dict[name].moveMenu(me.cellSize, me.cellSize);
                         me.dict[name].updateMenu(false);
-
                         loadPaletteButtonHandler(me, name);
                     }
                     makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
@@ -203,9 +202,18 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         }
     }
 
-    this.updatePalettes = function() {
-        this.makeMenu(); // the easel menus
-        this.refreshCanvas();
+    this.updatePalettes = function(showPalette) {
+        this.makePalettes();
+        if (showPalette) {
+            var myPalettes = this;
+            setTimeout(function() {
+                myPalettes.dict[showPalette].showMenu();
+                myPalettes.dict[showPalette].showMenuItems();
+                myPalettes.refreshCanvas();
+            }, 250);
+        } else {
+            this.refreshCanvas();
+        }
     }
 
     this.hide = function() {
@@ -240,7 +248,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         delete this.buttons[name];
         delete this.dict[name];
         this.y -= this.cellSize;
-        this.makeMenu();
+        this.makePalettes();
     }
 
     this.bringToTop = function() {
@@ -839,7 +847,7 @@ function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, tra
     add('media', 'black', '#ffc000').
     add('sensors', 'white', '#ff0066').
     add('extras', 'white', '#ff0066');
-    palettes.makeMenu();
+    palettes.makePalettes();
     blocks = b;
 
     // Give the palettes time to load.

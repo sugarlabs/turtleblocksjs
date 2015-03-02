@@ -1630,7 +1630,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
             localStorage.setItem('macros', prepareMacroExports(name, blockObjs, this.macroDict));
             this.addToMyPalette(name, blockObjs);
-            this.palettes.makeMenu();
+            this.palettes.makePalettes();
         }
     }
 

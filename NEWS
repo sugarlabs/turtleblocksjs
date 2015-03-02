@@ -248,6 +248,8 @@
   * Added named boxes.
   * Fixed problem selecting blocks from the blocks palettes.
   * Made separate heaps for each turtle.
+  * Reopen palettes after palette updates
+  * Fixed problem running with no start block
 
 TODO:
   * Music blocks plugin
@@ -277,7 +279,8 @@ KNOWN BUGS:
   * Find a scalable approach to drawing on the canvas
   * Not all blocks highlight when using step-by-step mode
   * Camera doesn't work on Android
-  * Reopen palettes after palette updates
+  * Cannot open plugins loader on Android
+  * Sometimes returning to backgrounded project results in empty project
 
 FEEDBACK:
   * The block palettes were hard to scroll through at times. if you did

@@ -511,7 +511,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 // Move the connected block...
                 var dx = bdock[0] - cdock[0];
                 var dy = bdock[1] - cdock[1];
-                if (myBlock.bitmap == null) {
+                if (myBlock.container == null) {
                     console.log('Does this ever happen any more?')
                     var nx = myBlock.x + dx;
                     var ny = myBlock.y + dy;

@@ -177,7 +177,7 @@ def pluginify(data):
     if IMAGES:
         outp['IMAGES'] = IMAGES;
 
-    return json.dumps(outp)
+    return json.dumps(outp, indent=4)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:

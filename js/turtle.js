@@ -612,7 +612,7 @@ function Turtles(canvas, stage, refreshCanvas) {
             var fromX, fromY;
 
             // If turtles listen for clicks then they can be used as buttons.
-            turtles.stage.dispatchEvent('click');
+            turtles.stage.dispatchEvent('click' + myTurtle.name);
 
             myTurtle.container.on('mousedown', function(event) {
                 turtles.rotating = true;

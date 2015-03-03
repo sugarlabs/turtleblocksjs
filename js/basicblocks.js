@@ -587,6 +587,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     printBlock.oneArgBlock();
     printBlock.dockTypes[1] = 'anyin';
 
+    var turtleNameBlock = new ProtoBlock('turtlename');
+    turtleNameBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtlename'] = turtleNameBlock;
+    turtleNameBlock.staticLabels.push(_('turtle name'));
+    turtleNameBlock.adjustWidthToLabel();
+    turtleNameBlock.parameterBlock();
+    turtleNameBlock.dockTypes[0] = 'textout';
+
     // Sensors palette
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];

@@ -1151,6 +1151,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         logo.blocks.blockList[blk].value = null;
                     }
                     break;
+                case 'turtlename':
+                    logo.blocks.blockList[blk].value = logo.turtles.turtleList[turtle].name;
+                    break;
                 case 'namedbox':
                     var name = logo.blocks.blockList[blk].privateData;
                     if (name in logo.boxes) {

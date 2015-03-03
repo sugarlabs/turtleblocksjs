@@ -240,7 +240,7 @@
   * Scale imported bitmaps to maximum of 1200x900
 
 0.5
-  * Eliminate joyride since it doesn't work on Android
+  * Eliminated joyride since it doesn't work on Android.
   * Fixed problem with help container scaling.
   * Added broadcast and on event blocks.
   * Fixed problem with events not triggering if turtle has stopped.
@@ -248,8 +248,10 @@
   * Added named boxes.
   * Fixed problem selecting blocks from the blocks palettes.
   * Made separate heaps for each turtle.
-  * Reopen palettes after palette updates
-  * Fixed problem running with no start block
+  * Reopen palettes after palette updates.
+  * Fixed problem running with no start block.
+  * Fixed some regressions in macro block palette.
+  * Eliminated deprecated code in palettes.
 
 TODO:
   * Music blocks plugin

@@ -253,7 +253,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
                 console.log('palette ' + name + ' already exists');
             } else {
                 console.log('adding palette ' + name);
-                palettes.add(name, 'white', '#ff0066');
+                palettes.add(name);
                 newPalette = true;
             }
         }

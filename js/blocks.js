@@ -1630,7 +1630,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
             localStorage.setItem('macros', prepareMacroExports(name, blockObjs, this.macroDict));
             this.addToMyPalette(name, blockObjs);
-            this.palettes.makePalettes();
+            this.palettes.updatePalettes();
         }
     }
 
@@ -1679,10 +1679,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     this.addToMyPalette = function(name, obj) {
         // On the palette we store the macro as a basic block.
         var myBlock = new ProtoBlock('macro_' + name);
-        this.protoBlockDict['macro_' + name] = myBlock;
+        var blkName = 'macro_' + name;
+        this.protoBlockDict[blkName] = myBlock;
+        if (!('myblocks' in this.palettes.dict)) {
+            this.palettes.add('myblocks');
+        }
         myBlock.palette = this.palettes.dict['myblocks'];
         myBlock.zeroArgBlock();
         myBlock.staticLabels.push(_(name));
+        this.protoBlockDict[blkName].palette.add(this.protoBlockDict[blkName]);
     }
 
     this.loadNewBlocks = function(blockObjs) {

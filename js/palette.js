@@ -230,8 +230,8 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         paletteBlocks = blocks;
     }
 
-    this.add = function(name, color, bgcolor) {
-        this.dict[name] = new Palette(this, name, color, bgcolor);
+    this.add = function(name) {
+        this.dict[name] = new Palette(this, name);
         return this;
     }
 
@@ -348,11 +348,9 @@ function loadPaletteButtonHandler(palettes, name) {
 
 
 // Define objects for individual palettes.
-function Palette(palettes, name, color, bgcolor) {
+function Palette(palettes, name) {
     this.palettes = palettes;
     this.name = name;
-    this.color = color;
-    this.backgroundColor = bgcolor;
     this.visible = false;
     this.menuContainer = null;
     this.protoList = [];
@@ -838,15 +836,15 @@ var blocks = undefined;
 function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan, b) {
     // Instantiate the palettes object on first load.
     var palettes = new Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan).
-    add('turtle', 'black', '#00b700').
-    add('pen', 'black', '#00c0e7').
-    add('number', 'black', '#ff00ff').
-    add('boolean', 'black', '#ff00ff').
-    add('flow', 'black', '#fd6600').
-    add('blocks', 'black', '#ffc000').
-    add('media', 'black', '#ffc000').
-    add('sensors', 'white', '#ff0066').
-    add('extras', 'white', '#ff0066');
+    add('turtle').
+    add('pen').
+    add('number').
+    add('boolean').
+    add('flow').
+    add('blocks').
+    add('media').
+    add('sensors').
+    add('extras');
     palettes.makePalettes();
     blocks = b;
 

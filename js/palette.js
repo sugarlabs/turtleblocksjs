@@ -413,9 +413,9 @@ function Palette(palettes, name) {
                         bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;
 
                         var hitArea = new createjs.Shape();
-                        hitArea.graphics.beginFill('#FFF').drawEllipse(-STANDARDBLOCKHEIGHT / 2, -STANDARDBLOCKHEIGHT / 2, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
-                        hitArea.x = STANDARDBLOCKHEIGHT / 2;
-                        hitArea.y = STANDARDBLOCKHEIGHT / 2;
+                        hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
+                        hitArea.x = 0;
+                        hitArea.y = 0;
                         bitmap.hitArea = hitArea;
                         bitmap.visible = false;
                         palette.upButton = bitmap;
@@ -427,12 +427,12 @@ function Palette(palettes, name) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
 			    palette.palettes.stage.addChild(bitmap);
                             bitmap.x = palette.menuContainer.x + paletteWidth;
-                            bitmap.y = palette.menuContainer.y + Math.min(maxPaletteHeight(palette.palettes.cellSize), palette.y);
+                            bitmap.y = palette.menuContainer.y + Math.min(maxPaletteHeight(palette.palettes.cellSize), palette.y) - STANDARDBLOCKHEIGHT / 2;
 
                             var hitArea = new createjs.Shape();
-                            hitArea.graphics.beginFill('#FFF').drawEllipse(-STANDARDBLOCKHEIGHT / 2, -STANDARDBLOCKHEIGHT / 2, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
-                            hitArea.x = STANDARDBLOCKHEIGHT / 2;
-                            hitArea.y = STANDARDBLOCKHEIGHT / 2;
+                            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
+                            hitArea.x = 0;
+                            hitArea.y = 0;
                             bitmap.hitArea = hitArea;
                             bitmap.visible = false;
                             palette.downButton = bitmap;

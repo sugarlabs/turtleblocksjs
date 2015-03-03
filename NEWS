@@ -253,6 +253,7 @@
   * Fixed some regressions in macro block palette.
   * Eliminated deprecated code in palettes.
   * Added buttons to palettes for scrolling.
+  * Turtles dispatch a click event so that they can be used as buttons.
 
 TODO:
   * Music blocks plugin
@@ -270,10 +271,10 @@ TODO:
   * Try to detect difference between unknown flow and arg blocks
   * What palette/block features from the Python version do we need to port?
   * Do we need to add support for plugins init, quit, etc.?
+  * Better interoperability with Python version
+  * Sugar datastore/toolbar support
 
 FEATURE IDEAS:
-  * Button block (a stack that is run when you click on a button)
-    - two args: artwork for the button; action name to take
   * Local variables? (e.g., boxes only defined inside an action?)
   * Pass argments to actions? (and arg blocks to reference them)?
   * Arrays

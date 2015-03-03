@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Walter Bender
+// Copyright (c) 2014, 2015 Walter Bender
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -610,6 +610,9 @@ function Turtles(canvas, stage, refreshCanvas) {
 
         myTurtle.container.on('click', function(event) {
             var fromX, fromY;
+
+            // If turtles listen for clicks then they can be used as buttons.
+            turtles.stage.dispatchEvent('click');
 
             myTurtle.container.on('mousedown', function(event) {
                 turtles.rotating = true;

@@ -14,8 +14,11 @@ require(['activity/utils']);
 var paletteBlocks = null;
 var PROTOBLOCKSCALE = 1.0;
 var PALETTELEFTMARGIN = 10;
+
+// We don't include 'extras' since we want to be able to delete
+// plugins from the extras palette.
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
-    'media', 'sensors', 'myblocks', // 'extras'
+    'media', 'sensors', 'myblocks',
 ];
 
 
@@ -362,6 +365,8 @@ function Palette(palettes, name) {
     this.columns = 0;
     this.draggingProtoBlock = false;
     this.mouseHandled = false;
+    this.upButton = null;
+    this.downButton = null;
 
     this.makeMenu = function(createHeader) {
         if (this.menuContainer == null) {
@@ -395,10 +400,49 @@ function Palette(palettes, name) {
                     hitArea.y = STANDARDBLOCKHEIGHT / 2;
                     palette.menuContainer.hitArea = hitArea;
                     palette.menuContainer.visible = false;
+
                     if (!palette.mouseHandled) {
                         loadPaletteMenuHandler(palette);
                         palette.mouseHandled = true;
                     }
+
+                    function processUpIcon(palette, name, bitmap, extras) {
+                        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
+			palette.palettes.stage.addChild(bitmap);
+                        bitmap.x = palette.menuContainer.x + paletteWidth;
+                        bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;
+
+                        var hitArea = new createjs.Shape();
+                        hitArea.graphics.beginFill('#FFF').drawEllipse(-STANDARDBLOCKHEIGHT / 2, -STANDARDBLOCKHEIGHT / 2, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
+                        hitArea.x = STANDARDBLOCKHEIGHT / 2;
+                        hitArea.y = STANDARDBLOCKHEIGHT / 2;
+                        bitmap.hitArea = hitArea;
+                        bitmap.visible = false;
+                        palette.upButton = bitmap;
+                        palette.upButton.on('click', function(event) {
+                            palette.scrollEvent(STANDARDBLOCKHEIGHT, 1);
+                        });
+
+                        function processDownIcon(palette, name, bitmap, extras) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
+			    palette.palettes.stage.addChild(bitmap);
+                            bitmap.x = palette.menuContainer.x + paletteWidth;
+                            bitmap.y = palette.menuContainer.y + Math.min(maxPaletteHeight(palette.palettes.cellSize), palette.y);
+
+                            var hitArea = new createjs.Shape();
+                            hitArea.graphics.beginFill('#FFF').drawEllipse(-STANDARDBLOCKHEIGHT / 2, -STANDARDBLOCKHEIGHT / 2, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
+                            hitArea.x = STANDARDBLOCKHEIGHT / 2;
+                            hitArea.y = STANDARDBLOCKHEIGHT / 2;
+                            bitmap.hitArea = hitArea;
+                            bitmap.visible = false;
+                            palette.downButton = bitmap;
+                            palette.downButton.on('click', function(event) {
+                                palette.scrollEvent(-STANDARDBLOCKHEIGHT, 1);
+                            });
+                        } 
+                        makePaletteBitmap(palette, DOWNICON, name, processDownIcon, null);
+                    } 
+                    makePaletteBitmap(palette, UPICON, name, processUpIcon, null);
                 }
                 makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
             }
@@ -734,6 +778,10 @@ function Palette(palettes, name) {
     this.hideMenu = function() {
         if (this.menuContainer != null) {
             this.menuContainer.visible = false;
+            if (this.upButton != null) {
+                this.upButton.visible = false;
+                this.downButton.visible = false;
+            }
             this.hideMenuItems(true);
         }
         this.moveMenu(this.palettes.cellSize, this.palettes.cellSize);
@@ -741,6 +789,9 @@ function Palette(palettes, name) {
 
     this.showMenu = function() {
         this.menuContainer.visible = true;
+	this.scrollEvent(0, 1);
+        // this.upButton.visible = true;
+        // this.downButton.visible = true;
     }
 
     this.hideMenuItems = function(init) {
@@ -784,6 +835,12 @@ function Palette(palettes, name) {
             this.background.x += dx;
             this.background.y += dy;
         }
+        if (this.upButton !== null) {
+            this.upButton.x += dx;
+            this.upButton.y += dy;
+            this.downButton.x += dx;
+            this.downButton.y += dy;
+        }
     }
 
     this.scrollEvent = function(direction, scrollSpeed) {
@@ -791,14 +848,23 @@ function Palette(palettes, name) {
         var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
 
         if (this.y < maxPaletteHeight(this.palettes.cellSize)) {
+            this.upButton.visible = false;
+            this.downButton.visible = false;
             return;
         }
         if (this.scrollDiff + diff > 0 && direction > 0) {
+            this.upButton.visible = false;
+            this.downButton.visible = true;
             return;
         }
         if (this.y + this.scrollDiff < h && direction < 0) {
+            this.upButton.visible = true;
+            this.downButton.visible = false;
             return;
         }
+
+        this.upButton.visible = true;
+        this.downButton.visible = true;
 
         this.scrollDiff += diff;
         for (var i in this.protoContainers) {

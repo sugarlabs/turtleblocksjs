@@ -252,6 +252,7 @@
   * Fixed problem running with no start block.
   * Fixed some regressions in macro block palette.
   * Eliminated deprecated code in palettes.
+  * Added buttons to palettes for scrolling.
 
 TODO:
   * Music blocks plugin
@@ -283,8 +284,3 @@ KNOWN BUGS:
   * Camera doesn't work on Android
   * Cannot open plugins loader on Android
   * Sometimes returning to backgrounded project results in empty project
-
-FEEDBACK:
-  * The block palettes were hard to scroll through at times. if you did
-    click and drag it was okay. If you tried scrolling with the mouse or
-    up/down arrows, it was painfully slow.

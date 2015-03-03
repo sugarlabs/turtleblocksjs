@@ -778,10 +778,6 @@ function Palette(palettes, name) {
     this.hideMenu = function() {
         if (this.menuContainer != null) {
             this.menuContainer.visible = false;
-            if (this.upButton != null) {
-                this.upButton.visible = false;
-                this.downButton.visible = false;
-            }
             this.hideMenuItems(true);
         }
         this.moveMenu(this.palettes.cellSize, this.palettes.cellSize);
@@ -789,9 +785,6 @@ function Palette(palettes, name) {
 
     this.showMenu = function() {
         this.menuContainer.visible = true;
-	this.scrollEvent(0, 1);
-        // this.upButton.visible = true;
-        // this.downButton.visible = true;
     }
 
     this.hideMenuItems = function(init) {
@@ -800,6 +793,10 @@ function Palette(palettes, name) {
         }
         if (this.background !== null) {
             this.background.visible = false;
+        }
+        if (this.upButton != null) {
+            this.upButton.visible = false;
+            this.downButton.visible = false;
         }
         this.visible = false;
     }
@@ -812,6 +809,8 @@ function Palette(palettes, name) {
         if (this.background !== null) {
             this.background.visible = true;
         }
+        // Use scroll position to determine visibility
+	this.scrollEvent(0, 1);
         this.visible = true;
     }
 

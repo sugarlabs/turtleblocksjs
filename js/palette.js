@@ -1199,10 +1199,9 @@ function promptMacrosDelete(palette) {
     for (var i = 0; i < palette.protoList.length; i++) {
         var name = palette.protoList[i].name;
         delete palette.protoContainers[name];
-        delete palette.protoBackgrounds[name];
         palette.protoList.splice(i, 1);
     }
-    palette.palettes.updatePalettes();
+    palette.palettes.updatePalettes('myblocks');
     localStorage.macros = prepareMacroExports(null, null, {});
 }
 
@@ -1224,7 +1223,6 @@ function regeneratePalette(palette) {
     palette.visible = false;
     palette.hideMenuItems();
     palette.protoContainers = {};
-    palette.protoBackgrounds = {};
 
     palette.palettes.updatePalettes();
 }

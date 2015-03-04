@@ -253,7 +253,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
                 console.log('palette ' + name + ' already exists');
             } else {
                 console.log('adding palette ' + name);
-                palettes.add(name, 'white', '#ff0066');
+                palettes.add(name);
                 newPalette = true;
             }
         }
@@ -261,9 +261,9 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     if (newPalette) {
         try {
-            palettes.makeMenu();
+            palettes.makePalettes();
         } catch (e) {
-            console.log('makeMenu: ' + e);
+            console.log('makePalettes: ' + e);
         }
     }
 
@@ -386,7 +386,7 @@ function processMacroData(macroData, palettes, blocks, macroDict) {
             macroDict[name] = obj[name];
             blocks.addToMyPalette(name, macroDict[name]);
         }
-        palettes.makeMenu();
+        palettes.makePalettes();
     }
 }
 

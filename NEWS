@@ -240,11 +240,20 @@
   * Scale imported bitmaps to maximum of 1200x900
 
 0.5
-  * Eliminate joyride since it doesn't work on Android
+  * Eliminated joyride since it doesn't work on Android.
   * Fixed problem with help container scaling.
   * Added broadcast and on event blocks.
   * Fixed problem with events not triggering if turtle has stopped.
   * Added three-arg flow blocks.
+  * Added named boxes.
+  * Fixed problem selecting blocks from the blocks palettes.
+  * Made separate heaps for each turtle.
+  * Reopen palettes after palette updates.
+  * Fixed problem running with no start block.
+  * Fixed some regressions in macro block palette.
+  * Eliminated deprecated code in palettes.
+  * Added buttons to palettes for scrolling.
+  * Turtles dispatch a click event so that they can be used as buttons.
 
 TODO:
   * Music blocks plugin
@@ -260,10 +269,10 @@ TODO:
   * Three-arg arg blocks (trivial with factory)
   * Artwork beautification?
   * Try to detect difference between unknown flow and arg blocks
-  * Button block (a stack that is run when you click on a button)
-    - two args: artwork for the button; action name to take
   * What palette/block features from the Python version do we need to port?
   * Do we need to add support for plugins init, quit, etc.?
+  * Better interoperability with Python version
+  * Sugar datastore/toolbar support
 
 FEATURE IDEAS:
   * Local variables? (e.g., boxes only defined inside an action?)
@@ -274,4 +283,5 @@ KNOWN BUGS:
   * Find a scalable approach to drawing on the canvas
   * Not all blocks highlight when using step-by-step mode
   * Camera doesn't work on Android
-  * Reopen palettes after palette updates
+  * Cannot open plugins loader on Android
+  * Sometimes returning to backgrounded project results in empty project

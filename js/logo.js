@@ -149,6 +149,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'divide':
                     value = this.blocks.blockList[blk].value;
                     break;
+                case 'namedbox':
+                    var name = this.blocks.blockList[blk].privateData;
+                    if (name in this.boxes) {
+                        value = this.boxes[name];
+                    } else {
+                        this.errorMsg('Cannot find box ' + name + '.', blk);
+                    }
+                    break;
                 case 'box':
                     var cblk = this.blocks.blockList[blk].connections[1];
                     var boxname = this.parseArg(logo, turtle, cblk, blk);
@@ -355,13 +363,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
             }
 
-            if (turtle == null) {
+            if (turtle == null || this.turtles.turtleList.length + 1 > turtle) {
                 console.log('could not find a turtle');
                 turtle = this.turtles.turtleList.length;
                 this.turtles.add(null);
             }
 
             console.log('running with turtle ' + turtle);
+
             this.turtles.turtleList[turtle].queue = [];
             this.parentFlowQueue[turtle] = [];
             this.unhightlightQueue[turtle] = [];
@@ -432,6 +441,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'pensize':
                 turtle.doSetPensize(value);
+                break;
+            case 'namedbox':
+                var name = this.blocks.blockList[blk].privateData;
+                if (name in this.boxes) {
+                    this.boxes[name] = value;
+                } else {
+                    this.errorMsg('Cannot find box ' + name + '.', blk);
+                }
                 break;
             case 'box':
                 var cblk = this.blocks.blockList[blk].connections[1];
@@ -1126,6 +1143,19 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'box':
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var name = logo.parseArg(logo, turtle, cblk, blk);
+                    if (name in logo.boxes) {
+                        logo.blocks.blockList[blk].value = logo.boxes[name];
+                    } else {
+                        logo.errorMsg('Cannot find box ' + name + '.', blk);
+                        logo.stopTurtle = true;
+                        logo.blocks.blockList[blk].value = null;
+                    }
+                    break;
+                case 'turtlename':
+                    logo.blocks.blockList[blk].value = logo.turtles.turtleList[turtle].name;
+                    break;
+                case 'namedbox':
+                    var name = logo.blocks.blockList[blk].privateData;
                     if (name in logo.boxes) {
                         logo.blocks.blockList[blk].value = logo.boxes[name];
                     } else {

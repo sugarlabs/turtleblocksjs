@@ -72,6 +72,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     // Stacks of blocks that need adjusting as blocks are repositioned
     // due to expanding and contracting or insertion into the flow.
     this.adjustTheseDocks = [];
+    // Blocks that need collapsing after load.
+    this.blocksToCollapse = [];
 
     // We need to keep track of certain classes of blocks that exhibit
     // different types of behavior.
@@ -509,7 +511,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 // Move the connected block...
                 var dx = bdock[0] - cdock[0];
                 var dy = bdock[1] - cdock[1];
-                if (myBlock.bitmap == null) {
+                if (myBlock.container == null) {
                     console.log('Does this ever happen any more?')
                     var nx = myBlock.x + dx;
                     var ny = myBlock.y + dy;
@@ -1083,7 +1085,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
-        this.blockList.push(new Block(this.protoBlockDict[name], this));
+        if (name == 'namedbox') {
+            this.blockList.push(new Block(this.protoBlockDict[name], this, postProcessArg[1]));
+        } else {
+            this.blockList.push(new Block(this.protoBlockDict[name], this));
+        }
         if (last(this.blockList) == null) {
             // Should never happen
             console.log('failed to make protoblock for ' + name);
@@ -1185,6 +1191,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 me.updateBlockText(args[0]);
             }
             postProcessArg = [thisBlock, null];
+        } else if (name == 'namedbox') {
+            postProcess = function(args) {
+                me.blockList[thisBlock].value = null;
+                me.blockList[thisBlock].privateData = args[1];
+            }
+            postProcessArg = [thisBlock, arg];
         }
 
         var protoFound = false;
@@ -1200,7 +1212,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     me.makeNewBlock(proto, postProcess, postProcessArg);
                     protoFound = true;
                     break;
-                 }
+                } else if (name == 'namedbox') {
+                    if (me.protoBlockDict[proto].defaults[0] == undefined) {
+			me.makeNewBlock(proto, postProcess, postProcessArg);
+			protoFound = true;
+                        break;
+                    }
+                }
             }
         }
         if (!protoFound) {
@@ -1444,6 +1462,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newStoreinBlock = function(name) {
+        console.log('new storein block ' + name);
         if ('myStorein_' + name in this.protoBlockDict) {
             // Nothing to do.
             return;
@@ -1451,18 +1470,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var myStoreinBlock = new ProtoBlock('storein');
         this.protoBlockDict['myStorein_' + name] = myStoreinBlock;
         myStoreinBlock.palette = this.palettes.dict['blocks'];
-        myStoreinBlock.twoArgBlock();
         myStoreinBlock.defaults.push(name);
         myStoreinBlock.defaults.push(100);
-        myStoreinBlock.staticLabels.push(_('store in'));
-        myStoreinBlock.staticLabels.push(_('name'));
-        myStoreinBlock.staticLabels.push(_('value'));
+        myStoreinBlock.staticLabels.push(_('store in'), _('name'), _('value'));
+	myStoreinBlock.adjustWidthToLabel();
+        myStoreinBlock.twoArgBlock();
+	myStoreinBlock.dockTypes[1] = 'anyin';
+	myStoreinBlock.dockTypes[2] = 'anyin';
         if (name == 'box') {
             return;
         }
         myStoreinBlock.palette.add(myStoreinBlock);
     }
 
+    /*
     this.newBoxBlock = function(name) {
         if ('myBox_' + name in this.protoBlockDict) {
             // Nothing to do.
@@ -1475,6 +1496,24 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         myBoxBlock.defaults.push(name);
         myBoxBlock.staticLabels.push(_('box'));
         myBoxBlock.style = 'arg';
+        if (name == 'box') {
+            return;
+        }
+        myBoxBlock.palette.add(myBoxBlock);
+    }
+    */
+
+    this.newNamedboxBlock = function(name) {
+        if ('myBox_' + name in this.protoBlockDict) {
+            // Nothing to do.
+            return;
+        }
+        var myBoxBlock = new ProtoBlock('namedbox');
+        this.protoBlockDict['myBox_' + name] = myBoxBlock;
+        myBoxBlock.parameterBlock();
+        myBoxBlock.palette = this.palettes.dict['blocks'];
+        myBoxBlock.defaults.push(name);
+        myBoxBlock.staticLabels.push(name);
         if (name == 'box') {
             return;
         }
@@ -1591,7 +1630,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
             localStorage.setItem('macros', prepareMacroExports(name, blockObjs, this.macroDict));
             this.addToMyPalette(name, blockObjs);
-            this.palettes.makeMenu();
+            this.palettes.updatePalettes();
         }
     }
 
@@ -1640,10 +1679,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     this.addToMyPalette = function(name, obj) {
         // On the palette we store the macro as a basic block.
         var myBlock = new ProtoBlock('macro_' + name);
-        this.protoBlockDict['macro_' + name] = myBlock;
+        var blkName = 'macro_' + name;
+        this.protoBlockDict[blkName] = myBlock;
+        if (!('myblocks' in this.palettes.dict)) {
+            this.palettes.add('myblocks');
+        }
         myBlock.palette = this.palettes.dict['myblocks'];
         myBlock.zeroArgBlock();
         myBlock.staticLabels.push(_(name));
+        this.protoBlockDict[blkName].palette.add(this.protoBlockDict[blkName]);
     }
 
     this.loadNewBlocks = function(blockObjs) {
@@ -1753,8 +1797,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     var name = blkData[1][1]['value'];
                 }
                 console.log('Adding new palette entries for store-in ' + name);
-                this.newStoreinBlock(name);
-                this.newBoxBlock(name);
+                // this.newBoxBlock(name);
+                this.newNamedboxBlock(name);
                 updatePalettes = true;
             }
         }
@@ -1824,7 +1868,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     blkInfo = [blkData[1][0], {'value': null}];
                 } else if (['number', 'string'].indexOf(typeof(blkData[1][1])) != -1) {
                     blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
-                    if (['start', 'action', 'hat'].indexOf != -1) {
+                    if (['start', 'action', 'hat'].indexOf(blkData[1][0]) != -1) {
                         blkInfo[1]['collapsed'] = false;
                     }
                 } else {
@@ -1832,7 +1876,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
             } else {
                 blkInfo = [blkData[1], {'value': null}];
-                if (['start', 'action', 'hat'].indexOf != -1) {
+                if (['start', 'action', 'hat'].indexOf(blkData[1]) != -1) {
                     blkInfo[1]['collapsed'] = false;
                 }
             }
@@ -1871,6 +1915,17 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     blkData[4][0] = null;
                     blkData[4][3] = null;
                     this.makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null, collapsed);
+                    break;
+
+                    // Named boxes need private data set.
+                case 'namedbox':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].privateData = value;
+                        me.blockList[thisBlock].value = null;
+                    }
+                    this.makeNewBlockWithConnections('namedbox', blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
 
                     // Value blocks need a default value set.

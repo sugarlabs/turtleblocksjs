@@ -16,24 +16,33 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
-localHeap = [];
+turtleHeaps = {};
 
 //* flow:showHeap *//
 var block = logo.blocks.blockList[blk];
-logo.textMsg(JSON.stringify(localHeap));
+logo.textMsg(JSON.stringify(turtleHeaps[turtle]));
 
 //* flow:emptyHeap *//
-localHeap = [];
+turtleHeaps[turtle] = [];
 
 //* flow:push *//
 var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 var arg = logo.parseArg(logo, turtle, conns[1]);
-localHeap.push(arg);
+if (!(turtle in turtleHeaps)) {
+    turtleHeaps[turtle] = [];
+}
+turtleHeaps[turtle].push(arg);
 
 //* arg:pop *//
 var block = logo.blocks.blockList[blk];
-block.value = localHeap.pop();
+if (turtle in turtleHeaps && turtleHeaps[turtle].length > 0) {
+    block.value = turtleHeaps[turtle].pop();
+} else {
+    logo.errorMsg(_('empty heap'));
+    block.value = null;
+}
+
 
 //* flow:saveHeap *//
 function downloadFile(filename, mimetype, content) {
@@ -47,15 +56,19 @@ function downloadFile(filename, mimetype, content) {
 var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 var arg = logo.parseArg(logo, turtle, conns[1]);
-if (arg) {
-    downloadFile(arg, 'text/json', JSON.stringify(localHeap));
+if (arg && turtle in turtleHeaps) {
+    downloadFile(arg, 'text/json', JSON.stringify(turtleHeaps[turtle]));
 };
 
 //* flow:loadHeap *//
 var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 var arg = logo.parseArg(logo, turtle, conns[1]);
-var oldHeap = localHeap;
+if (turtle in turtleHeaps) {
+    var oldHeap = turtleHeaps[turtle];
+} else {
+    var oldHeap = [];
+}
 if (blocks.blockList[conns[1]].name == 'loadFile') {
     if (!arg) {
         logo.errorMsg(_('You need to select a file.'));
@@ -66,13 +79,13 @@ if (blocks.blockList[conns[1]].name == 'loadFile') {
         }
         else {
             try {
-                localHeap = JSON.parse(arg[1]);
-                if (!Array.isArray(localHeap)) {
+                turtleHeaps[turtle] = JSON.parse(arg[1]);
+                if (!Array.isArray(turtleHeaps[turtle])) {
                     throw 'is not array';
                 }
             }
             catch (e) {
-                localHeap = oldHeap;
+                turtleHeaps[turtle] = oldHeap;
                 logo.errorMsg(_('The file you selected does not contain a valid heap.'));
             }
         }

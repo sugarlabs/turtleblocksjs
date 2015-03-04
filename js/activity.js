@@ -1122,6 +1122,8 @@ define(function(require) {
                                 'grey': turtle.chroma};
                 } else if (myBlock.name == 'action') {
                     var args = {'collapsed': myBlock.collapsed}
+                } else if (myBlock.name == 'namedbox') {
+                    var args = {'value': myBlock.privateData}
                 } else {
                     var args = {};
                 }

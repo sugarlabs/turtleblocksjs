@@ -499,6 +499,26 @@ function initBasicProtoBlocks(palettes, blocks) {
     stopVideoCamBlock.staticLabels.push(_('stop media'));
     stopVideoCamBlock.adjustWidthToLabel();
     stopVideoCamBlock.zeroArgBlock();
+    
+    var toneBlock = new ProtoBlock('tone');
+    toneBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['tone'] = toneBlock;
+    toneBlock.staticLabels.push(_('tone'),  _('frequency'), _('duration (ms)'));
+    toneBlock.adjustWidthToLabel();
+    // A4, 200ms.
+    toneBlock.defaults.push(440, 200);
+    toneBlock.twoArgBlock();
+    toneBlock.dockTypes[1] = 'numberin';
+    toneBlock.dockTypes[2] = 'numberin';
+    
+    var toFrequencyBlock = new ProtoBlock('tofrequency');
+    toFrequencyBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['tofrequency'] = toFrequencyBlock;
+    toFrequencyBlock.staticLabels.push(_('note to frequency'));
+    toFrequencyBlock.adjustWidthToLabel();
+    toFrequencyBlock.defaults.push("C1");
+    toFrequencyBlock.oneArgMathBlock();
+    toFrequencyBlock.dockTypes[1] = 'anyin';
 
     // Flow palette
     var repeatBlock = new ProtoBlock('repeat');

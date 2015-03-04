@@ -1,0 +1,322 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: ini-to-pot script\n"
+
+msgid "clear"
+msgstr ""
+
+msgid "forward"
+msgstr ""
+
+msgid "right"
+msgstr ""
+
+msgid "back"
+msgstr ""
+
+msgid "left"
+msgstr ""
+
+msgid "arc"
+msgstr ""
+
+msgid "angle"
+msgstr ""
+
+msgid "radius"
+msgstr ""
+
+msgid "set heading"
+msgstr ""
+
+msgid "set xy"
+msgstr ""
+
+msgid "x"
+msgstr ""
+
+msgid "y"
+msgstr ""
+
+msgid "set color"
+msgstr ""
+
+msgid "set hue"
+msgstr ""
+
+msgid "set shade"
+msgstr ""
+
+msgid "set grey"
+msgstr ""
+
+msgid "set pen"
+msgstr ""
+
+msgid "pen size"
+msgstr ""
+
+msgid "pen up"
+msgstr ""
+
+msgid "pen down"
+msgstr ""
+
+msgid "begin fill"
+msgstr ""
+
+msgid "background"
+msgstr ""
+
+msgid "random"
+msgstr ""
+
+msgid "min"
+msgstr ""
+
+msgid "max"
+msgstr ""
+
+msgid "sqrt"
+msgstr ""
+
+msgid "mod"
+msgstr ""
+
+msgid "and"
+msgstr ""
+
+msgid "or"
+msgstr ""
+
+msgid "not"
+msgstr ""
+
+msgid "store in"
+msgstr ""
+
+msgid "name"
+msgstr ""
+
+msgid "value"
+msgstr ""
+
+msgid "box"
+msgstr ""
+
+msgid "action"
+msgstr ""
+
+msgid "do"
+msgstr ""
+
+msgid "start"
+msgstr ""
+
+msgid "add 1 to"
+msgstr ""
+
+msgid "add"
+msgstr ""
+
+msgid "speak"
+msgstr ""
+
+msgid "show"
+msgstr ""
+
+msgid "obj"
+msgstr ""
+
+msgid "text"
+msgstr ""
+
+msgid "shell"
+msgstr ""
+
+msgid "image"
+msgstr ""
+
+msgid "stop media"
+msgstr ""
+
+msgid "repeat"
+msgstr ""
+
+msgid "forever"
+msgstr ""
+
+msgid "stop"
+msgstr ""
+
+msgid "if"
+msgstr ""
+
+msgid "then"
+msgstr ""
+
+msgid "until"
+msgstr ""
+
+msgid "wait for"
+msgstr ""
+
+msgid "while"
+msgstr ""
+
+msgid "else"
+msgstr ""
+
+msgid "wait"
+msgstr ""
+
+msgid "print"
+msgstr ""
+
+msgid "time"
+msgstr ""
+
+msgid "mouse button"
+msgstr ""
+
+msgid "keyboard"
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "turtle"
+msgstr ""
+
+msgid "number"
+msgstr ""
+
+msgid "boolean"
+msgstr ""
+
+msgid "flow"
+msgstr ""
+
+msgid "blocks"
+msgstr ""
+
+msgid "sensors"
+msgstr ""
+
+msgid "extras"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "mashape"
+msgstr ""
+
+msgid "GMAP"
+msgstr ""
+
+msgid "logic"
+msgstr ""
+
+msgid "maths"
+msgstr ""
+
+msgid "food"
+msgstr ""
+
+msgid "eatme"
+msgstr ""
+
+msgid "rodi"
+msgstr ""
+
+msgid "open file"
+msgstr ""
+
+msgid "Welcome to Turtle Blocks"
+msgstr ""
+
+msgid "Palette buttons"
+msgstr ""
+
+msgid "Expand/collapse toolbar"
+msgstr ""
+
+msgid "Run fast"
+msgstr ""
+
+msgid "Click to run the project in fast mode."
+msgstr ""
+
+msgid "Run slow"
+msgstr ""
+
+msgid "Run step by step"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "Stop the current project."
+msgstr ""
+
+msgid "Clean"
+msgstr ""
+
+msgid "Clear the screen and return the turtles to their initial positions."
+msgstr ""
+
+msgid "Show/hide palettes"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Show these messages."
+msgstr ""
+
+msgid "Paste"
+msgstr ""
+
+msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgstr ""
+
+msgid "Cartesian"
+msgstr ""
+
+msgid "Show or hide a Cartesian-coordinate grid."
+msgstr ""
+
+msgid "Polar"
+msgstr ""
+
+msgid "Load samples from server"
+msgstr ""
+
+msgid "This button open a viewer for loading example projects."
+msgstr ""
+
+msgid "You can also load projects from the file system."
+msgstr ""
+
+msgid "Delete all"
+msgstr ""
+
+msgid "Undo"
+msgstr ""
+
+msgid "Restore blocks from the trash."
+msgstr ""
+
+msgid "Congratulations."
+msgstr ""

@@ -630,6 +630,14 @@ function SVG() {
         // Add a block label
         var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
         var ty = this._height / 2 + this._fontSize / 2;
+
+        // If we have an odd number of innie slots, we need to avoid a
+        // collision between the block label and the slot label.
+        var nInnies = this._innies.length;
+        if (nInnies > 2 && Math.round(nInnies / 2) * 2 != nInnies) {
+            ty -= 2 * this._fontSize;
+        }
+
         svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
 
         // Add a label for each innies

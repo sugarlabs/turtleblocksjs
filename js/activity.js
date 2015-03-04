@@ -461,8 +461,6 @@ define(function(require) {
             document.addEventListener('DOMMouseScroll', scrollEvent, false);
 
             this.document.onkeydown = keyPressed;
-
-            showHelp(true);
         }
 
         function setupBlocksContainerEvents() {
@@ -707,7 +705,7 @@ define(function(require) {
             polarBitmap.y = (canvas.height / (2 * scale)) - (450);
             update = true;
 
-            // Resize help
+            // Setup help now that we have calculated scale.
             showHelp(true);
         }
 
@@ -1323,7 +1321,9 @@ define(function(require) {
                         helpContainer.addChild(bitmap)
                         if (scale > 1) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
-                        }
+                        } else {
+                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.125;
+                       }
                         docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
                         if (!doneTour) {
                             docById('helpElem').style.visibility = 'visible';
@@ -1367,6 +1367,8 @@ define(function(require) {
                 helpContainer.visible = true;
                 update = true;
 
+                // Make sure the palettes and the secondary menus are
+                // visible while help is shown.
                 palettes.show();
                 if (!menuButtonsVisible) {
                     doMenuAnimation(1);
@@ -1375,11 +1377,7 @@ define(function(require) {
         }
 
         function doMenuButton() {
-            if (menuButtonsVisible) {
-                doMenuAnimation(1);
-            } else {
-                doMenuAnimation(1);
-            }
+            doMenuAnimation(1);
         }
 
         function doMenuAnimation(count) {

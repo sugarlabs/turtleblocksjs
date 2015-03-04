@@ -69,6 +69,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         console.log('The microphone is not available.');
         this.mic = null;
     }
+    
+    this.turtleOscs = {};
 
     this.setTurtleDelay = function(turtleDelay) {
         this.turtleDelay = turtleDelay;
@@ -944,6 +946,24 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     doSaveSVG(logo, args[0])
                 }
                 break;
+            case 'tone':
+                if (typeof(this.turtleOscs[turtle]) == "undefined") {
+                    this.turtleOscs[turtle] = new p5.TriOsc();
+                }
+
+                osc = this.turtleOscs[turtle];
+                osc.stop();
+                osc.start();
+                osc.amp(0);
+
+                osc.freq(args[0]);
+                osc.fade(0.5, 0.2);
+
+                setTimeout(function(osc) {
+                    osc.fade(0, 0.2);
+                }, args[1], osc);
+
+                break;
             default:
                 if (logo.blocks.blockList[blk].name in logo.evalFlowDict) {
                     eval(logo.evalFlowDict[logo.blocks.blockList[blk].name]);
@@ -1342,6 +1362,25 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     break;
                 case 'loadFile':
                     // No need to do anything here.
+                    break;
+                case 'tofrequency':
+                    var block = logo.blocks.blockList[blk];
+                    var cblk = block.connections[1];
+                    var v = logo.parseArg(logo, turtle, cblk, blk).toUpperCase();
+                    // copied from measure activity code.
+                    NOTES = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭']
+
+                    note = NOTES.indexOf(v[0]);
+                    octave = v[1]
+                    if (note == -1) {
+                        // ¿Probably a midi note?
+                        block.value = 440 * Math.pow(2, (v - 69) / 12);
+                    }
+                    else {
+                        i = octave * 12 + note
+                        freq = 27.5 * Math.pow(1.05946309435929, i)
+                        block.value = freq;
+                    }
                     break;
                 default:
                     if (logo.blocks.blockList[blk].name in logo.evalArgDict) {

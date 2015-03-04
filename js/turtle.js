@@ -622,7 +622,8 @@ function Turtles(canvas, stage, refreshCanvas) {
             turtles.stage.dispatchEvent('click' + myTurtle.name);
 
             myTurtle.container.on('mousedown', function(event) {
-                turtles.rotating = true;
+                // Rotation interferes with button click events.
+                // turtles.rotating = true;
                 fromX = event.stageX;
                 fromY = event.stageY;
             }, null, true);  // once = true

@@ -367,7 +367,8 @@ function Turtle (name, turtles) {
                 me.startBlock.container.addChild(me.decorationBitmap);
                 me.decorationBitmap.name = 'decoration';
                 var bounds = me.startBlock.container.getBounds();
-                me.decorationBitmap.x = bounds.width - 30;
+                // FIXME: Why is the position off? Does it need a scale factor?
+                me.decorationBitmap.x = bounds.width - 50;
                 me.decorationBitmap.y = 20;
                 me.decorationBitmap.scaleX = 27.5 / image.width;
                 me.decorationBitmap.scaleY = 27.5 / image.height;

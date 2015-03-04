@@ -285,3 +285,5 @@ KNOWN BUGS:
   * Camera doesn't work on Android
   * Cannot open plugins loader on Android
   * Sometimes returning to backgrounded project results in empty project
+  * Sometimes you cannot load projects from the server (usually works the
+    first time).

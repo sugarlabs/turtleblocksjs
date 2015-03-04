@@ -1366,20 +1366,23 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'tofrequency':
                     var block = logo.blocks.blockList[blk];
                     var cblk = block.connections[1];
-                    var v = logo.parseArg(logo, turtle, cblk, blk).toUpperCase();
-                    // copied from measure activity code.
-                    NOTES = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭']
-
-                    note = NOTES.indexOf(v[0]);
-                    octave = v[1]
-                    if (note == -1) {
-                        // ¿Probably a midi note?
-                        block.value = 440 * Math.pow(2, (v - 69) / 12);
-                    }
-                    else {
-                        i = octave * 12 + note
-                        freq = 27.5 * Math.pow(1.05946309435929, i)
-                        block.value = freq;
+                    var v = logo.parseArg(logo, turtle, cblk, blk);
+                    try {
+			if (typeof(v) == 'string') {
+                            v = v.toUpperCase();
+                            var note = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭'].indexOf(v[0]);
+                            var octave = v[1];
+                            if (note > 2) {
+                                octave -= 1;  // New octave starts on C
+                            }
+			    var i = octave * 12 + note;
+			    block.value = 27.5 * Math.pow(1.05946309435929, i);
+			} else {
+                            block.value = 440 * Math.pow(2, (v - 69) / 12);
+			}
+                    } catch (e) {
+			this.errorMsg(v + ' is not a note.');
+                        block.value = 440;
                     }
                     break;
                 default:

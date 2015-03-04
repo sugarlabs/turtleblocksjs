@@ -256,9 +256,9 @@
   * Turtles dispatch a click event so that they can be used as buttons.
   * Fixed problem with tour background (on first load and on small displays).
   * Resize Turtle hit area when updating turtle shell.
+  * Added Music block plugin (Ignacio Rodriguez)
 
 TODO:
-  * Music blocks plugin
   * Save errors
   * Display rubrics
   * More efficient until and while?

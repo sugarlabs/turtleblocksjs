@@ -264,8 +264,8 @@ function PlanetView(model, controller) {
                    .addEventListener('click', me.delete(ele));
                 ele.querySelector('input')
                    .addEventListener('change', me.input(ele));
-                ele.querySelector('.thumbnail')
-                   .addEventListener('click', me.open(ele));
+                // ele.querySelector('.thumbnail')
+                //    .addEventListener('click', me.open(ele));
             });
             model.localChanged = false;
         }

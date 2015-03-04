@@ -1888,7 +1888,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 collapsed = blkInfo[1]['collapsed'];
             }
 
-            var value = blkInfo[1]['value'];
+            if (blkInfo[1] == null) {
+                var value = null;
+            } else {
+                var value = blkInfo[1]['value'];
+            }
 
             if (name in NAMEDICT) {
                 name = NAMEDICT[name];

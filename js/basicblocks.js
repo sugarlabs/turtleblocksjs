@@ -516,7 +516,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['tofrequency'] = toFrequencyBlock;
     toFrequencyBlock.staticLabels.push(_('note to frequency'));
     toFrequencyBlock.adjustWidthToLabel();
-    toFrequencyBlock.defaults.push("C1");
+    toFrequencyBlock.defaults.push("A4");
     toFrequencyBlock.oneArgMathBlock();
     toFrequencyBlock.dockTypes[1] = 'anyin';
 
@@ -661,8 +661,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     getColorPixel.parameterBlock();
 
     // NOP blocks (used as placeholders when loaded blocks not found)
-    var nopValueBlock = new ProtoBlock('nopValue');
-    blocks.protoBlockDict['nopValue'] = nopValueBlock;
+    var nopValueBlock = new ProtoBlock('nopValueBlock');
+    blocks.protoBlockDict['nopValueBlock'] = nopValueBlock;
     nopValueBlock.hidden = true;
     nopValueBlock.palette = palettes.dict['extras'];
     nopValueBlock.staticLabels.push(_('unknown'));

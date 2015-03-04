@@ -354,6 +354,13 @@ function Turtle (name, turtles) {
             var bounds = me.container.getBounds();
             me.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 
+            // Recalculate the hit area as well.
+            var hitArea = new createjs.Shape();
+            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
+            hitArea.x = -image.width / 2;
+            hitArea.y = -image.height / 2;
+            me.container.hitArea = hitArea;
+
             if (me.startBlock != null) {
                 me.startBlock.container.removeChild(me.decorationBitmap);
                 me.decorationBitmap = new createjs.Bitmap(myImage);

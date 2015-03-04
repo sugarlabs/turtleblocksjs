@@ -255,6 +255,7 @@
   * Added buttons to palettes for scrolling.
   * Turtles dispatch a click event so that they can be used as buttons.
   * Fixed problem with tour background (on first load and on small displays).
+  * Resize Turtle hit area when updating turtle shell.
 
 TODO:
   * Music blocks plugin
@@ -288,4 +289,3 @@ KNOWN BUGS:
   * Sometimes returning to backgrounded project results in empty project
   * Sometimes you cannot load projects from the server (usually works the
     first time).
-  * Turtle hitarray doesn't scale with turtle shell.

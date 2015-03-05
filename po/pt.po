@@ -1,0 +1,342 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-17 00:31-0400\n"
+"PO-Revision-Date: 2011-09-28 19:30+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+msgid "clear"
+msgstr "limpe"
+
+msgid "forward"
+msgstr "para frente"
+
+msgid "right"
+msgstr "para direita"
+
+msgid "back"
+msgstr "para trás"
+
+msgid "left"
+msgstr "para esquerda"
+
+msgid "arc"
+msgstr "arco"
+
+msgid "angle"
+msgstr "ângulo"
+
+msgid "radius"
+msgstr "raio"
+
+msgid "set heading"
+msgstr "defina cabeçalho"
+
+msgid "set heading"
+msgstr "cabeçalho"
+
+msgid "set xy"
+msgstr "defina xy"
+
+msgid "x"
+msgstr "x"
+
+msgid "y"
+msgstr "y"
+
+msgid "set color"
+msgstr "defina cor"
+
+msgid "set hue"
+msgstr "defina cor"
+
+msgid "set shade"
+msgstr "defina tom"
+
+msgid "set grey"
+msgstr "defina cinza"
+
+msgid "color"
+msgstr "cor"
+
+msgid "shade"
+msgstr "tom"
+
+msgid "grey"
+msgstr "cinza"
+
+msgid "set pen size"
+msgstr "define largura da caneta"
+
+msgid "pen size"
+msgstr "largura da caneta"
+
+msgid "pen up"
+msgstr "levante caneta"
+
+msgid "pen down"
+msgstr "baixe caneta"
+
+msgid "begin fill"
+msgstr "finalize preenchimento"
+
+msgid "background"
+msgstr "preencha a tela"
+
+msgid "random"
+msgstr "aleatório"
+
+msgid "min"
+msgstr "mín"
+
+msgid "max"
+msgstr "máx"
+
+msgid "sqrt"
+msgstr "raiz quadrada"
+
+msgid "mod"
+msgstr "módulo"
+
+msgid "and"
+msgstr "e"
+
+msgid "or"
+msgstr "ou"
+
+msgid "not"
+msgstr "não"
+
+msgid "store in"
+msgstr "armazene em"
+
+msgid "name"
+msgstr "nome"
+
+msgid "value"
+msgstr "valor"
+
+msgid "box"
+msgstr "caixa"
+
+msgid "action"
+msgstr "ação"
+
+msgid "do"
+msgstr ""
+
+msgid "start"
+msgstr "iniciar"
+
+msgid "add 1 to"
+msgstr ""
+
+msgid "add"
+msgstr ""
+
+msgid "speak"
+msgstr "fale"
+
+msgid "show"
+msgstr "mostre"
+
+msgid "obj"
+msgstr ""
+
+msgid "text"
+msgstr "texto"
+
+msgid "shell"
+msgstr "roupa da tartaruga"
+
+msgid "image"
+msgstr "imagem"
+
+msgid "stop media"
+msgstr "para mídia"
+
+msgid "repeat"
+msgstr "repita"
+
+msgid "forever"
+msgstr "para sempre"
+
+msgid "stop"
+msgstr "parar"
+
+msgid "if"
+msgstr "se"
+
+msgid "then"
+msgstr "então"
+
+msgid "until"
+msgstr "até que"
+
+msgid "wait for"
+msgstr ""
+
+msgid "while"
+msgstr "enquanto"
+
+msgid "else"
+msgstr "senão"
+
+msgid "wait"
+msgstr "espere"
+
+msgid "print"
+msgstr "imprimir"
+
+msgid "time"
+msgstr "tempo"
+
+msgid "mouse button"
+msgstr "botão do mouse"
+
+msgid "keyboard"
+msgstr "teclado"
+
+msgid "unknown"
+msgstr ""
+
+msgid "turtle"
+msgstr "tartaruga"
+
+msgid "number"
+msgstr "número"
+
+msgid "boolean"
+msgstr "booleano"
+
+msgid "flow"
+msgstr "fluxo"
+
+msgid "blocks"
+msgstr "blocos"
+
+msgid "sensors"
+msgstr "sensores"
+
+msgid "extras"
+msgstr "extras"
+
+msgid "title"
+msgstr "título"
+
+msgid "mashape"
+msgstr "mashape"
+
+msgid "Google Map"
+msgstr ""
+
+msgid "logic"
+msgstr "lógica"
+
+msgid "maths"
+msgstr "matemática"
+
+msgid "food"
+msgstr ""
+
+msgid "eatme"
+msgstr ""
+
+msgid "rodi"
+msgstr "RoDi"
+
+msgid "open file"
+msgstr ""
+
+msgid "Welcome to Turtle Blocks"
+msgstr ""
+
+msgid "Palette buttons"
+msgstr ""
+
+msgid "Expand/collapse toolbar"
+msgstr ""
+
+msgid "Run fast"
+msgstr ""
+
+msgid "Click to run the project in fast mode."
+msgstr ""
+
+msgid "Run slow"
+msgstr ""
+
+msgid "Run step by step"
+msgstr ""
+
+msgid "Stop"
+msgstr "Pare"
+
+msgid "Stop the current project."
+msgstr ""
+
+msgid "Clean"
+msgstr "Limpe"
+
+msgid "Clear the screen and return the turtles to their initial positions."
+msgstr ""
+
+msgid "Show/hide palettes"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Show these messages."
+msgstr ""
+
+msgid "Paste"
+msgstr ""
+
+msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgstr ""
+
+msgid "Cartesian"
+msgstr "Cartesian"
+
+msgid "Show or hide a Cartesian-coordinate grid."
+msgstr ""
+
+msgid "Polar"
+msgstr "Polar"
+
+msgid "Load samples from server"
+msgstr ""
+
+msgid "This button opens a viewer for loading example projects."
+msgstr ""
+
+msgid "You can also load projects from the file system."
+msgstr ""
+
+msgid "Delete all"
+msgstr ""
+
+msgid "Undo"
+msgstr ""
+
+msgid "Restore blocks from the trash."
+msgstr ""
+
+msgid "Congratulations."
+msgstr "Parabéns"
+
+msgid "loudness"
+msgstr "volume"

@@ -1,0 +1,343 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2015-02-13 15:37+0000\n"
+"Last-Translator: Martin <tch@sugarlabs.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1423841876.000000\n"
+
+msgid "clear"
+msgstr "efface"
+
+msgid "forward"
+msgstr "avance"
+
+msgid "right"
+msgstr "droite"
+
+msgid "back"
+msgstr "recule"
+
+msgid "left"
+msgstr "gauche"
+
+msgid "arc"
+msgstr "arc"
+
+msgid "angle"
+msgstr "angle"
+
+msgid "radius"
+msgstr "rayon"
+
+msgid "set heading"
+msgstr "fixe le cap"
+
+msgid "heading"
+msgstr "le cap"
+
+msgid "set xy"
+msgstr "fixe xy"
+
+msgid "x"
+msgstr "x"
+
+msgid "y"
+msgstr "y"
+
+msgid "set color"
+msgstr "fixe la couleur"
+
+msgid "set hue"
+msgstr "fixe la teinte"
+
+msgid "set shade"
+msgstr "fixe l'ombre"
+
+msgid "set grey"
+msgstr "fixe gris"
+
+msgid "color"
+msgstr "la couleur"
+
+msgid "shade"
+msgstr "l'ombre"
+
+msgid "grey"
+msgstr "gris"
+
+msgid "set pen size"
+msgstr "fixe l'épaisseur"
+
+msgid "pen size"
+msgstr "épaisseur du trait"
+
+msgid "pen up"
+msgstr "crayon levé"
+
+msgid "pen down"
+msgstr  "crayon abaissé"
+
+msgid "begin fill"
+msgstr "commence le remplissage"
+
+msgid "end fill"
+msgstr "arrête le remplissage"
+
+msgid "background"
+msgstr "le fond"
+
+msgid "random"
+msgstr "aléatoire"
+
+msgid "min"
+msgstr "min"
+
+msgid "max"
+msgstr "max"
+
+msgid "sqrt"
+msgstr "racine carré"
+
+msgid "mod"
+msgstr "mod"
+
+msgid "and"
+msgstr "et"
+
+msgid "or"
+msgstr "ou"
+
+msgid "not"
+msgstr "non"
+
+msgid "store in"
+msgstr "range dans"
+
+msgid "name"
+msgstr "nom"
+
+msgid "value"
+msgstr "valor"
+
+msgid "box"
+msgstr "boîte"
+
+msgid "action"
+msgstr "action"
+
+msgid "do"
+msgstr "faire"
+
+msgid "start"
+msgstr "commence"
+
+msgid "add 1 to"
+msgstr "ajouter 1 à"
+
+msgid "add"
+msgstr "ajouter"
+
+msgid "speak"
+msgstr "parler"
+
+msgid "show"
+msgstr "montre"
+
+msgid "obj"
+msgstr "objet"
+
+msgid "text"
+msgstr "texte"
+
+msgid "shell"
+msgstr "carapace"
+
+msgid "image"
+msgstr "image"
+
+msgid "stop media"
+msgstr "arrêt média"
+
+msgid "repeat"
+msgstr "répète"
+
+msgid "forever"
+msgstr "toujours"
+
+msgid "stop"
+msgstr "arrêt"
+
+msgid "if"
+msgstr "si"
+
+msgid "then"
+msgstr "alors"
+
+msgid "until"
+msgstr "jusqu'à"
+
+msgid "wait for"
+msgstr "attendre"
+
+msgid "while"
+msgstr "tant que"
+
+msgid "else"
+msgstr "sinon"
+
+msgid "wait"
+msgstr "attend"
+
+msgid "print"
+msgstr "montre"
+
+msgid "time"
+msgstr "temps"
+
+msgid "mouse button"
+msgstr "bouton de la souris"
+
+msgid "keyboard"
+msgstr "clavier"
+
+msgid "unknown"
+msgstr "ignoré"
+
+msgid "turtle"
+msgstr "tortue"
+
+msgid "number"
+msgstr "nombre"
+
+msgid "boolean"
+msgstr "boolean"
+
+msgid "flow"
+msgstr "flux"
+
+msgid "blocks"
+msgstr "blocs"
+
+msgid "sensors"
+msgstr "capteur"
+
+msgid "extras"
+msgstr "extras"
+
+msgid "title"
+msgstr "título"
+
+msgid "mashape"
+msgstr "mashape"
+
+msgid "GMAP"
+msgstr "Carte de Google"
+
+msgid "logic"
+msgstr "logique"
+
+msgid "maths"
+msgstr "math"
+
+msgid "food"
+msgstr "nourriture"
+
+msgid "eatme"
+msgstr "manger"
+
+msgid "rodi"
+msgstr "RoDi"
+
+msgid "open file"
+msgstr "fichier ouvert"
+
+msgid "Welcome to Turtle Blocks"
+msgstr "Bienvenue Tortues Blocs"
+
+msgid "Palette buttons"
+msgstr "Les boutons de la palette"
+
+msgid "Expand/collapse toolbar"
+msgstr "Développer ou barre d'outils de l'effondrement"
+
+msgid "Run fast"
+msgstr "Exécuter vite"
+
+msgid "Click to run the project in fast mode."
+msgstr "Cliquer pour exécuter vite."
+
+msgid "Run slow"
+msgstr "Exécuter lentement"
+
+msgid "Run step by step"
+msgstr "Exécuter pas à pas"
+
+msgid "Stop"
+msgstr "Arrêter"
+
+msgid "Stop the current project."
+msgstr "Detener el proyecto actual"
+
+msgid "Clean"
+msgstr "Efface"
+
+msgid "Clear the screen and return the turtles to their initial positions."
+msgstr "Effacer l'écran et retourner les tortues à leurs positions initiales."
+
+msgid "Show/hide palettes"
+msgstr "palettes afficher ou masquer"
+
+msgid "Help"
+msgstr "Aide"
+
+msgid "Show these messages."
+msgstr "Montrer ces messages."
+
+msgid "Paste"
+msgstr "Coller"
+
+msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgstr ""
+"Le bouton de coller est activée, il ya blocs copiés dans le presse papier."
+
+msgid "Cartesian"
+msgstr "Coordonnées cartésiennes"
+
+msgid "Show or hide a Cartesian-coordinate grid."
+msgstr "Afficher ou masquer une grille cartésienne coordonnée."
+
+msgid "Polar"
+msgstr "Coordonnées polaires"
+
+msgid "Load samples from server"
+msgstr "Charger des exemples depuis un serveur"
+
+msgid "This button opens a viewer for loading example projects."
+msgstr "Ce bouton ouvre une visionneuse pour charger des exemples de projets."
+
+msgid "You can also load projects from the file system."
+msgstr "Vous pouvez également charger des projets à partir du système de fichiers."
+
+msgid "Delete all"
+msgstr "Effacer tous"
+
+msgid "Undo"
+msgstr "Annuler"
+
+msgid "Restore blocks from the trash."
+msgstr "Restaurer blocs de la poubelle."
+
+msgid "Congratulations."
+msgstr "Félicitations."
+
+msgid "loudness"
+msgstr "volume"

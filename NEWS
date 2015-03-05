@@ -289,3 +289,4 @@ KNOWN BUGS:
   * Sometimes returning to backgrounded project results in empty project
   * Text don't always appear in exported SVG.
   * Bad/missing thumbnails break the Planet.
+  * Two-arg blocks don't expand on load.

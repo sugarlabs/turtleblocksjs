@@ -259,6 +259,7 @@
   * Added Music block plugin (Ignacio Rodriguez)
 
 TODO:
+  * Make standalone do blocks (similar to standalone boxes)
   * Save errors
   * Display rubrics
   * More efficient until and while?
@@ -293,3 +294,4 @@ KNOWN BUGS:
   * Plugins are not always being saved properly: second plugin seems to be
     saved but not first, for example.
   * Loading macros there is a funny collapsed state sometimes.
+  * do block should be labeled do on palette

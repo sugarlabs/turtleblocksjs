@@ -1293,17 +1293,13 @@ define(function(require) {
                     stage.addChild(helpContainer);
                     helpContainer.x = 65;
                     helpContainer.y = 65;
-                    var hitArea = new createjs.Shape();
-                    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 600, 800);
-                    hitArea.x = 0;
-                    hitArea.y = 0;
-                    helpContainer.hitArea = hitArea;
 
                     helpContainer.on('click', function(event) {
-                        if (event.stageX * scale > 100 && event.stageY * scale < 150) {
+                        var bounds = helpContainer.getBounds();
+                        if (event.stageY < helpContainer.y + bounds.height / 2) {
                             helpContainer.visible = false;
                             docById('helpElem').style.visibility = 'hidden';
-                        } else if (event.stageX * scale > 100 && event.stageY * scale > 150) {
+                        } else {
                             helpIdx += 1;
                             if (helpIdx >= HELPCONTENT.length) {
                                 helpIdx = 0;
@@ -1316,14 +1312,22 @@ define(function(require) {
 
                     var img = new Image();
                     img.onload = function() {
-                        console.log(scale);
+                        // console.log(scale);
                         bitmap = new createjs.Bitmap(img);
-                        helpContainer.addChild(bitmap)
                         if (scale > 1) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
                         } else {
-                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.125;
-                       }
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.125;
+                        }
+
+                        helpContainer.addChild(bitmap)
+                        var bounds = helpContainer.getBounds();
+			var hitArea = new createjs.Shape();
+			hitArea.graphics.beginFill('#FFF').drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+			hitArea.x = 0;
+			hitArea.y = 0;
+			helpContainer.hitArea = hitArea;
+
                         docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
                         if (!doneTour) {
                             docById('helpElem').style.visibility = 'visible';

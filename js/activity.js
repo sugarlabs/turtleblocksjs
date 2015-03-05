@@ -38,7 +38,6 @@ define(function(require) {
     require('activity/logo');
     require('activity/clearbox');
     require('activity/samplesviewer');
-    require('activity/samples');
     require('activity/basicblocks');
     require('activity/blockfactory');
 

@@ -390,6 +390,7 @@ function Turtle (name, turtles) {
         text.x = this.container.x;
         text.y = this.container.y;
         text.rotation = this.orientation;
+        this.svgOutput += '<text x="'+ this.container.x +'" y = "'+ this.container.y +'" fill="'+ this.canvasColor +'" font-style = "Courier" font-size = "'+size+'">'+myText+'</text>';
         this.turtles.refreshCanvas();
     }
 

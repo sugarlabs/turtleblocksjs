@@ -290,3 +290,6 @@ KNOWN BUGS:
   * Text don't always appear in exported SVG.
   * Bad/missing thumbnails break the Planet.
   * Two-arg blocks don't expand on load.
+  * Plugins are not always being saved properly: second plugin seems to be
+    saved but not first, for example.
+  * Loading macros there is a funny collapsed state sometimes.

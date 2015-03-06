@@ -59,6 +59,7 @@ function Turtle (name, turtles) {
     this.orientation = 0;
     this.fillState = false;
     this.penState = true;
+    this.font = 'Sans';
     this.media = [];  // Media (text, images) we need to remove on clear.
 
     this.move = function(ox, oy, x, y, invert) {
@@ -381,7 +382,8 @@ function Turtle (name, turtles) {
 
     this.doShowText = function(size, myText) {
         // Add a text or image object to the canvas
-        var textSize = size.toString() + 'px Courier';
+
+        var textSize = size.toString() + 'px ' + this.font;
         var text = new createjs.Text(myText.toString(), textSize, this.canvasColor);
         text.textAlign = 'left';
         text.textBaseline = 'alphabetic';
@@ -410,6 +412,13 @@ function Turtle (name, turtles) {
         this.turtles.refreshCanvas();
         this.container.updateCache();
     }
+
+    this.doSetFont = function(font) {
+        this.font = font;
+        this.turtles.refreshCanvas();
+        this.container.updateCache();
+    }
+
 
     this.doSetColor = function(color) {
         // Color sets hue but also selects maximum chroma.

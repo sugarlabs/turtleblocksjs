@@ -266,6 +266,8 @@
   * Properly position and scale text exported to SVG.
   * Restored delete all button to secondary menu (yes, you can do the
     same thing from the planet, but that is often inconvenient).
+  * Fixed problem with bad URL in planet (Ignacio Rodriguez).
+  * Restored image click in planet.
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)
@@ -298,7 +300,7 @@ KNOWN BUGS:
   * Camera doesn't work on Android
   * Cannot open plugins loader on Android
   * Sometimes returning to backgrounded project results in empty project
-  * Bad/missing thumbnails break the Planet.
   * Two-arg blocks don't expand on load.
+  * Bad/missing thumbnails break the Planet.
   * Loading macros there is a funny collapsed state sometimes.
   * i18n for planet

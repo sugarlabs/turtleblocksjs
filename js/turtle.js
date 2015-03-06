@@ -390,7 +390,10 @@ function Turtle (name, turtles) {
         text.x = this.container.x;
         text.y = this.container.y;
         text.rotation = this.orientation;
-        this.svgOutput += '<text x="'+ this.container.x +'" y = "'+ this.container.y +'" fill="'+ this.canvasColor +'" font-family = "Sans" font-size = "'+size+'">'+myText+'</text>';
+        var xScaled = text.x * this.turtles.scale;
+        var yScaled = text.y * this.turtles.scale;
+        var sizeScaled = size * this.turtles.scale;
+        this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "Sans" font-size = "' + sizeScaled + '">' + myText + '</text>';
         this.turtles.refreshCanvas();
     }
 

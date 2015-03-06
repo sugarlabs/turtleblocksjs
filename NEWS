@@ -271,6 +271,8 @@
 
 0.6
   * i18n for planet (Ignacio)
+  * setfont block (Abhinav Anurag)
+  * Set default font to 'sans-serif' (w/Sam Parkinson).
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)
@@ -301,6 +303,7 @@ KNOWN BUGS:
   * Find a scalable approach to drawing on the canvas
   * Not all blocks highlight when using step-by-step mode
   * Camera doesn't work on Android
+  * Music block doesn't work on Android
   * Cannot open plugins loader on Android
   * Sometimes returning to backgrounded project results in empty project
   * Two-arg blocks don't expand on load.

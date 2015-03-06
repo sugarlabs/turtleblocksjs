@@ -166,6 +166,7 @@ define(function(require) {
                            [_('Cartesian'), _('Show or hide a Cartesian-coordinate grid.'), 'icons/Cartesian-button.svg'],
                            [_('Polar'), _('Show or hide a polar-coordinate grid.'), 'icons/polar-button.svg'],
                            [_('Load plugin from file'), _('You can load new blocks from the file system.'), 'icons/plugin-button.svg'],
+                           [_('Delete all'), _('Remove all content on the canvas, including the blocks.'), 'icons/empty-trash-button.svg'],
                            [_('Undo'), _('Restore blocks from the trash.'), 'icons/restore-trash-button.svg'],
                            [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']]
 
@@ -1264,6 +1265,7 @@ define(function(require) {
                 ['Cartesian', doCartesian],
                 ['polar', doPolar],
                 ['plugin', doOpenPlugin],
+                ['empty-trash', deleteBlocksBox],
                 ['restore-trash', restoreTrash]
             ];
 

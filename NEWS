@@ -264,6 +264,8 @@
   * Added Named Do Blocks.
   * Fixed regression in restoring plugins from local storage.
   * Properly position and scale text exported to SVG.
+  * Restored delete all button to secondary menu (yes, you can do the
+    same thing from the planet, but that is often inconvenient).
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)
@@ -299,3 +301,4 @@ KNOWN BUGS:
   * Bad/missing thumbnails break the Planet.
   * Two-arg blocks don't expand on load.
   * Loading macros there is a funny collapsed state sometimes.
+  * i18n for planet

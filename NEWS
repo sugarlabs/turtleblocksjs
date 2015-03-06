@@ -262,6 +262,7 @@
   * Update label of named boxes when box name changes.
   * Update label of named boxes on palette when name changes.
   * Added Named Do Blocks.
+  * Fixed regression in restoring plugins from local storage.
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)
@@ -296,6 +297,4 @@ KNOWN BUGS:
   * Sometimes returning to backgrounded project results in empty project
   * Bad/missing thumbnails break the Planet.
   * Two-arg blocks don't expand on load.
-  * Plugins are not always being saved properly: second plugin seems to be
-    saved but not first, for example.
   * Loading macros there is a funny collapsed state sometimes.

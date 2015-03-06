@@ -347,7 +347,8 @@ define(function(require) {
             // Load any plugins saved in local storage.
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
-                processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
+                var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
+		updatePluginObj(obj);
             }
 
             fileChooser.addEventListener('click', function(event) { this.value = null; });
@@ -393,7 +394,9 @@ define(function(require) {
                         obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
                         // Save plugins to local storage.
                         if (obj != null) {
-                            localStorage.setItem('plugins', preparePluginExports(obj));
+                            var foo = preparePluginExports(obj);
+                            console.log(foo);
+                            localStorage.setItem('plugins', foo); // preparePluginExports(obj));
                         }
 
                         // Refresh the palettes.

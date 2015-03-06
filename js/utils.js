@@ -212,12 +212,11 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     if ('PALETTEPLUGINS' in obj) {
         for (var name in obj['PALETTEPLUGINS']) {
             PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
-
             var fillColor = '#ff0066';
             if ('PALETTEFILLCOLORS' in obj) {
                 if (name in obj['PALETTEFILLCOLORS']) {
                     var fillColor = obj['PALETTEFILLCOLORS'][name];
-                    console.log(fillColor);
+                    // console.log(fillColor);
                 }
             }
             PALETTEFILLCOLORS[name] = fillColor;
@@ -226,7 +225,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
             if ('PALETTESTROKECOLORS' in obj) {
                 if (name in obj['PALETTESTROKECOLORS']) {
                     var strokeColor = obj['PALETTESTROKECOLORS'][name];
-                    console.log(strokeColor);
+                    // console.log(strokeColor);
                 }
             }
             PALETTESTROKECOLORS[name] = strokeColor;
@@ -235,7 +234,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
             if ('PALETTEHIGHLIGHTCOLORS' in obj) {
                 if (name in obj['PALETTEHIGHLIGHTCOLORS']) {
                     var highlightColor = obj['PALETTEHIGHLIGHTCOLORS'][name];
-                    console.log(highlightColor);
+                    // console.log(highlightColor);
                 }
             }
             PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
@@ -244,7 +243,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
             if ('HIGHLIGHTSTROKECOLORS' in obj) {
                 if (name in obj['HIGHLIGHTSTROKECOLORS']) {
                     var strokeHighlightColor = obj['HIGHLIGHTSTROKECOLORS'][name];
-                    console.log(highlightColor);
+                    // console.log(highlightColor);
                 }
             }
             HIGHLIGHTSTROKECOLORS[name] = strokeHighlightColor;
@@ -313,7 +312,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     // Create the globals.
     if ('GLOBALS' in obj) {
-      eval(obj['GLOBALS']);
+        eval(obj['GLOBALS']);
     }
 
     if ('PARAMETERPLUGINS' in obj) {
@@ -341,8 +340,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 }
 
 
-function preparePluginExports(obj) {
-    // add obj to plugin dictionary and return as JSON encoded text
+function updatePluginObj(obj) {
     for (var name in obj['PALETTEPLUGINS']) {
         pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
     }
@@ -370,6 +368,12 @@ function preparePluginExports(obj) {
     if ('IMAGES' in obj) {
         pluginObjs['IMAGES'] = obj['IMAGES'];
     }
+}
+
+
+function preparePluginExports(obj) {
+    // add obj to plugin dictionary and return as JSON encoded text
+    updatePluginObj(obj);
 
     return JSON.stringify(pluginObjs);
 }

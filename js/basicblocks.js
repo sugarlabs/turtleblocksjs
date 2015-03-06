@@ -146,15 +146,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     setcolorBlock.oneArgBlock();
     setcolorBlock.defaults.push(0);
 
-    var setfontBlock = new ProtoBlock('setfont');
-    setfontBlock.palette = palettes.dict['pen'];
-    blocks.protoBlockDict['setfont'] = setfontBlock;
-    setfontBlock.staticLabels.push(_('set font'));
-    setfontBlock.adjustWidthToLabel();
-    setfontBlock.oneArgBlock();
-    setfontBlock.defaults.push('Sans');
-    setfontBlock.dockTypes[1] = 'textin';
-
     var colorBlock = new ProtoBlock('color');
     colorBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['color'] = colorBlock;
@@ -243,6 +234,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     endfillBlock.adjustWidthToLabel();
     endfillBlock.zeroArgBlock();
 
+    var setfontBlock = new ProtoBlock('setfont');
+    setfontBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['setfont'] = setfontBlock;
+    setfontBlock.staticLabels.push(_('set font'));
+    setfontBlock.adjustWidthToLabel();
+    setfontBlock.oneArgBlock();
+    setfontBlock.defaults.push(DEFAULTFONT);
+    setfontBlock.dockTypes[1] = 'textin';
+
     var backgroundBlock = new ProtoBlock('background');
     backgroundBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['background'] = backgroundBlock;
@@ -262,8 +262,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     randomBlock.staticLabels.push(_('random'), _('min'), _('max'));
     randomBlock.adjustWidthToLabel();
     randomBlock.twoArgMathBlock();
-    randomBlock.defaults.push(0);
-    randomBlock.defaults.push(100);
+    randomBlock.defaults.push(0, 100);
 
     var plusBlock = new ProtoBlock('plus');
     plusBlock.palette = palettes.dict['number'];

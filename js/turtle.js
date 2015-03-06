@@ -14,6 +14,7 @@ var DEFAULTCOLOR = 0;
 var DEFAULTVALUE = 50;
 var DEFAULTCHROMA = 100;
 var DEFAULTSTROKE = 5;
+var DEFAULTFONT = 'sans-serif';
 
 // Turtle sprite
 var turtlePath = 'images/turtle.svg';
@@ -59,7 +60,7 @@ function Turtle (name, turtles) {
     this.orientation = 0;
     this.fillState = false;
     this.penState = true;
-    this.font = 'Sans';
+    this.font = DEFAULTFONT;
     this.media = [];  // Media (text, images) we need to remove on clear.
 
     this.move = function(ox, oy, x, y, invert) {
@@ -165,6 +166,7 @@ function Turtle (name, turtles) {
         this.value = DEFAULTVALUE;
         this.chroma = DEFAULTCHROMA;
         this.stroke = DEFAULTSTROKE;
+	this.font = DEFAULTFONT;
         this.container.x = this.turtles.turtleX2screenX(this.x);
         this.container.y = this.turtles.turtleY2screenY(this.y);
 
@@ -395,7 +397,7 @@ function Turtle (name, turtles) {
         var xScaled = text.x * this.turtles.scale;
         var yScaled = text.y * this.turtles.scale;
         var sizeScaled = size * this.turtles.scale;
-        this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "Sans" font-size = "' + sizeScaled + '">' + myText + '</text>';
+        this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "' + this.font + '" font-size = "' + sizeScaled + '">' + myText + '</text>';
         this.turtles.refreshCanvas();
     }
 

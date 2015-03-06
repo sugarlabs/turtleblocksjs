@@ -248,7 +248,7 @@ function PlanetView(model, controller) {
             html = '';
             model.localProjects.forEach(function (project, i) {
                 // TODO: Use template strings when they are supported
-                html = html + '<li data=\'' + project.data + '\' title="' + project.title + '" current="' + project.current + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><input type="text" value="' + project.title + '"/><br/><img class="open icon" title="Open" alt="Open" src="icons/edit.svg" /><img class="delete icon" title="Delete" alt="Delete" src="icons/delete.svg" /><img class="publish icon" title="Publish" alt="Publish" src="icons/publish.svg" /><img class="download icon" title="Download" alt="Download" src="icons/download.svg" /></li>';
+                html = html + '<li data=\'' + project.data + '\' title="' + project.title + '" current="' + project.current + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><input type="text" value="' + project.title + '"/><br/><img class="open icon" title="' + _("Open") + '" alt="' + _("Open") + '" src="icons/edit.svg" /><img class="delete icon" title="' + _("Delete") + '" alt="' + _("Delete") + '" src="icons/delete.svg" /><img class="publish icon" title="' + _("Publish") + '" alt="' + _("Publish") + '" src="icons/publish.svg" /><img class="download icon" title="' + _("Download") + '" alt="' + _("Download") + '" src="icons/download.svg" /></div></li>';
             });
             document.querySelector('.planet .content.l').innerHTML = html;
 
@@ -272,7 +272,7 @@ function PlanetView(model, controller) {
 
         html = '';
         model.globalProjects.forEach(function (project, i) {
-            html += '<li url="' + project.url + '" title="' + project.title + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><span>' + project.title + '</span><br/><img class="download icon" title="Download" alt="Download" src="icons/download.svg" /></div></li>';
+            html += '<li url="' + project.url + '" title="' + project.title + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><span>' + project.title + '</span><br/><img class="download icon" title="' + _("Download") + '" alt="' + _("Download") + '" src="icons/download.svg" /></div></li>';
         });
         document.querySelector('.planet .content.w').innerHTML = html;
 
@@ -349,6 +349,10 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
     this.loadProject = load;
     this.loadRawProject = loadRawProject;
     var me = this;  // for future reference
+
+    // i18n for section titles
+    document.querySelector("#planetMyDevice").innerHTML = _("On my device");
+    document.querySelector("#planetWorldwide").innerHTML = _("Worldwide");
 
     this.model = new PlanetModel(this);
     this.view = new PlanetView(this.model, this);

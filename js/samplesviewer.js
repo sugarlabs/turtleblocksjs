@@ -193,12 +193,12 @@ function PlanetModel(controller) {
         localStorage.allProjects = JSON.stringify(l);
     }
 
-    this.load = function (url, name) {
+    this.load = function (name) {
         me.prepLoadingProject(name);
         me.controller.sendAllToTrash(false, false);
 
         jQuery.ajax({
-            url: server + url,
+            url: server + name + ".tb",
             headers: {
                 'x-api-key' : '3tgTzMXbbw6xEKX7'
             },
@@ -286,8 +286,8 @@ function PlanetView(model, controller) {
         return function () {
             document.querySelector('#loading-image-container')
                     .style.display = '';
-            var url = ele.attributes.url.value.replace('.b64', '.tb');
-            me.model.load(url, ele.attributes.title.value);
+
+            me.model.load(ele.attributes.title.value);
             me.controller.hide();
         }
     }

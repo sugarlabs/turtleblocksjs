@@ -120,21 +120,30 @@ Example:
 //* palette-highlight:food *// #D5D5D5
 '''
 
-NAMES = {'flow': 'FLOWPLUGINS', 'arg': 'ARGPLUGINS', 'block': 'BLOCKPLUGINS',
-         'parameter': 'PARAMETERPLUGINS', 'setter': 'SETTERPLUGINS',
-         'palette-icon': 'PALETTEPLUGINS', 'palette-fill': 'PALETTEFILLCOLORS',
-         'palette-stroke': 'PALETTESTROKECOLORS',
-         'palette-highlight': 'PALETTEHIGHLIGHTCOLORS',
-         'palette-stroke-highlight': 'HIGHLIGHTSTROKECOLORS'}
-JS_TYPES = ('flow', 'arg', 'block', 'parameter', 'setter')
-# 'blkName': 'imageData',
-IMAGES= {}
+
+def clear():
+    global NAMES, JS_TYPES, IMAGES
+    NAMES = {
+        'flow': 'FLOWPLUGINS',
+        'arg': 'ARGPLUGINS',
+        'block': 'BLOCKPLUGINS',
+        'parameter': 'PARAMETERPLUGINS',
+        'setter': 'SETTERPLUGINS',
+        'palette-icon': 'PALETTEPLUGINS',
+        'palette-fill': 'PALETTEFILLCOLORS',
+        'palette-stroke': 'PALETTESTROKECOLORS',
+        'palette-highlight': 'PALETTEHIGHLIGHTCOLORS',
+        'palette-stroke-highlight': 'HIGHLIGHTSTROKECOLORS'}
+    JS_TYPES = ('flow', 'arg', 'block', 'parameter', 'setter')
+    # 'blkName': 'imageData',
+    IMAGES = {}
 
 
 def pluginify(data):
+    clear()
     sections_list = data.split('//*')
     sections_pairs = []
-    specific_globals = {x:'' for x in JS_TYPES}
+    specific_globals = {x: '' for x in JS_TYPES}
     globals_ = None
     for section in sections_list:
         match = re.match('(.*)\*\/\/([^\0]*)', section.strip())
@@ -172,10 +181,10 @@ def pluginify(data):
 
         if type_ == 'image':
             # TODO: Detect if its png
-            IMAGES[name] = 'data:image/svg+xml;utf8,' + value;
+            IMAGES[name] = 'data:image/svg+xml;utf8,' + value
 
     if IMAGES:
-        outp['IMAGES'] = IMAGES;
+        outp['IMAGES'] = IMAGES
 
     return json.dumps(outp, indent=4)
 

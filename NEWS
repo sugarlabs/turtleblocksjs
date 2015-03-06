@@ -269,6 +269,9 @@
   * Fixed problem with bad URL in planet (Ignacio Rodriguez).
   * Restored image click in planet.
 
+0.6
+  * i18n for planet (Ignacio)
+
 TODO:
   * Make standalone do blocks (similar to standalone boxes)
   * Save errors
@@ -303,4 +306,3 @@ KNOWN BUGS:
   * Two-arg blocks don't expand on load.
   * Bad/missing thumbnails break the Planet.
   * Loading macros there is a funny collapsed state sometimes.
-  * i18n for planet

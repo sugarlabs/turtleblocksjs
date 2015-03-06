@@ -579,7 +579,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'speak':
                 if (args.length == 1) {
-                    logo.meSpeak.speak(args[0])
+                    logo.meSpeak.speak(args[0]);
                 }
                 break;
             case 'repeat':
@@ -943,7 +943,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'savesvg':
                 if (args.length == 1) {
-                    doSaveSVG(logo, args[0])
+                    doSaveSVG(logo, args[0]);
                 }
                 break;
             case 'tone':

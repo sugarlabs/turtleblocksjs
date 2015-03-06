@@ -146,6 +146,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     setcolorBlock.oneArgBlock();
     setcolorBlock.defaults.push(0);
 
+    var setfontBlock = new ProtoBlock('setfont');
+    setfontBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['setfont'] = setfontBlock;
+    setfontBlock.staticLabels.push(_('set font'));
+    setfontBlock.adjustWidthToLabel();
+    setfontBlock.oneArgBlock();
+    setfontBlock.defaults.push('Sans');
+    setfontBlock.dockTypes[1] = 'textin';
+
     var colorBlock = new ProtoBlock('color');
     colorBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['color'] = colorBlock;

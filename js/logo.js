@@ -842,6 +842,17 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     }
                 }
                 break;
+
+            case 'setfont' :
+                if (args.length == 1) {
+                    if (typeof(args[0]) == 'string') {
+                        logo.turtles.turtleList[turtle].doSetFont(args[0]);                        
+                    } else {
+                        logo.errorMsg('Not a string.', blk);
+                        logo.stopTurtle = true;
+                    }
+                }
+                break;                
             case 'sethue':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {

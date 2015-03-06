@@ -692,6 +692,9 @@ msgstr ""
 msgid "high"
 msgstr ""
 
+msgid = "Planet"
+msgstr ""
+
 msgid "On my device"
 msgstr ""
 

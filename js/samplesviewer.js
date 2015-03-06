@@ -351,6 +351,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
     var me = this;  // for future reference
 
     // i18n for section titles
+    document.querySelector("#planetTitle").innerHTML = _("Planet");
     document.querySelector("#planetMyDevice").innerHTML = _("On my device");
     document.querySelector("#planetWorldwide").innerHTML = _("Worldwide");
 

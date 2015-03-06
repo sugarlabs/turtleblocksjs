@@ -692,3 +692,20 @@ msgstr ""
 msgid "high"
 msgstr ""
 
+msgid "On my device"
+msgstr ""
+
+msgid "Worldwide"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "Download"
+msgstr ""

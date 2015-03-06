@@ -408,7 +408,7 @@ function Palette(palettes, name) {
 
                     function processUpIcon(palette, name, bitmap, extras) {
                         bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
-			palette.palettes.stage.addChild(bitmap);
+                        palette.palettes.stage.addChild(bitmap);
                         bitmap.x = palette.menuContainer.x + paletteWidth;
                         bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;
 
@@ -425,7 +425,7 @@ function Palette(palettes, name) {
 
                         function processDownIcon(palette, name, bitmap, extras) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
-			    palette.palettes.stage.addChild(bitmap);
+                            palette.palettes.stage.addChild(bitmap);
                             bitmap.x = palette.menuContainer.x + paletteWidth;
                             bitmap.y = palette.menuContainer.y + Math.min(maxPaletteHeight(palette.palettes.cellSize), palette.y) - STANDARDBLOCKHEIGHT / 2;
 
@@ -516,11 +516,6 @@ function Palette(palettes, name) {
 
             switch (blkname) {
                 // Use the name of the action in the label
-                case 'do':
-                    modname = 'do ' + this.protoList[blk].defaults[0];
-                    // Call makeBlock with the name of the action
-                    var arg = this.protoList[blk].defaults[0];
-                    break;
                 case 'storein':
                     modname = 'store in ' + this.protoList[blk].defaults[0];
                     var arg = this.protoList[blk].defaults[0];
@@ -533,6 +528,15 @@ function Palette(palettes, name) {
                     if (this.protoList[blk].defaults[0] == undefined) {
                         modname = 'namedbox';
                         var arg = _('box');
+                    } else {
+                        modname = this.protoList[blk].defaults[0];
+                        var arg = this.protoList[blk].defaults[0];
+                    }
+                    break;
+                case 'nameddo':
+                    if (this.protoList[blk].defaults[0] == undefined) {
+                        modname = 'nameddo';
+                        var arg = _('action');
                     } else {
                         modname = this.protoList[blk].defaults[0];
                         var arg = this.protoList[blk].defaults[0];
@@ -639,6 +643,15 @@ function Palette(palettes, name) {
                             svg.setExpand(60, 0, 0, 0);
                             svg.setOutie(true);
                             var artwork = svg.basicBox();
+                            var docks = svg.docks;
+                            break;
+                        case 'nameddo':
+                            // so the label will fit
+                            var svg = new SVG();
+                            svg.init();
+                            svg.setScale(2);
+                            svg.setExpand(30, 0, 0, 0);
+                            var artwork = svg.basicBlock();
                             var docks = svg.docks;
                             break;
                         case 'if':
@@ -810,7 +823,7 @@ function Palette(palettes, name) {
             this.background.visible = true;
         }
         // Use scroll position to determine visibility
-	this.scrollEvent(0, 1);
+        this.scrollEvent(0, 1);
         this.visible = true;
     }
 
@@ -990,6 +1003,16 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                 if (palette.protoList[blk].defaults[0] == undefined) {
                     blkname = 'namedbox';
                     var arg = _('box');
+                } else {
+                    blkname = palette.protoList[blk].defaults[0];
+                    var arg = palette.protoList[blk].defaults[0];
+                }
+                break;
+            case 'nameddo':
+                // Use the name of the action in the label
+                if (palette.protoList[blk].defaults[0] == undefined) {
+                    blkname = 'nameddo';
+                    var arg = _('action');
                 } else {
                     blkname = palette.protoList[blk].defaults[0];
                     var arg = palette.protoList[blk].defaults[0];

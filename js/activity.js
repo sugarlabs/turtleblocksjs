@@ -1121,6 +1121,8 @@ define(function(require) {
                     var args = {'collapsed': myBlock.collapsed}
                 } else if (myBlock.name == 'namedbox') {
                     var args = {'value': myBlock.privateData}
+                } else if (myBlock.name == 'nameddo') {
+                    var args = {'value': myBlock.privateData}
                 } else {
                     var args = {};
                 }
@@ -1321,11 +1323,11 @@ define(function(require) {
 
                         helpContainer.addChild(bitmap)
                         var bounds = helpContainer.getBounds();
-			var hitArea = new createjs.Shape();
-			hitArea.graphics.beginFill('#FFF').drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-			hitArea.x = 0;
-			hitArea.y = 0;
-			helpContainer.hitArea = hitArea;
+                        var hitArea = new createjs.Shape();
+                        hitArea.graphics.beginFill('#FFF').drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+                        hitArea.x = 0;
+                        hitArea.y = 0;
+                        helpContainer.hitArea = hitArea;
 
                         docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
                         if (!doneTour) {

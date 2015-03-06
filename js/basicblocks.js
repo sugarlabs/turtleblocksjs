@@ -364,19 +364,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     storeinBlock.dockTypes[1] = 'anyin';
     storeinBlock.dockTypes[2] = 'anyin';
 
-    var boxBlock = new ProtoBlock('box');
-    boxBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['box'] = boxBlock;
-    boxBlock.staticLabels.push(_('box'));
-    boxBlock.extraWidth = 10;
-    boxBlock.adjustWidthToLabel();
-    boxBlock.oneArgMathBlock();
-    boxBlock.defaults.push(_('box'));
-    boxBlock.dockTypes[0] = 'anyout';
-    boxBlock.dockTypes[1] = 'anyin';
-    // Show the value in the box as if it were a parameter.
-    boxBlock.parameter = true;
-
     var namedboxBlock = new ProtoBlock('namedbox');
     namedboxBlock.palette = palettes.dict['blocks'];
     blocks.protoBlockDict['namedbox'] = namedboxBlock;
@@ -395,14 +382,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     actionBlock.stackClampOneArgBlock();
     actionBlock.defaults.push(_('action'));
 
-    var doBlock = new ProtoBlock('do');
-    doBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['do'] = doBlock;
-    doBlock.staticLabels.push(_('do'));
-    doBlock.adjustWidthToLabel();
-    doBlock.oneArgBlock();
-    doBlock.defaults.push(_('action'));
-    doBlock.dockTypes[1] = 'anyin';
+    var nameddoBlock = new ProtoBlock('nameddo');
+    nameddoBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['nameddo'] = nameddoBlock;
+    nameddoBlock.staticLabels.push(_('action'));
+    nameddoBlock.extraWidth = 10;
+    nameddoBlock.adjustWidthToLabel();
+    nameddoBlock.zeroArgBlock();
 
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['blocks'];
@@ -418,7 +404,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     incrementOneBlock.staticLabels.push(_('add 1 to'));
     incrementOneBlock.adjustWidthToLabel();
     incrementOneBlock.oneArgBlock();
-    boxBlock.dockTypes[1] = 'anyin';
 
     var incrementBlock = new ProtoBlock('increment');
     incrementBlock.palette = palettes.dict['blocks'];
@@ -428,6 +413,29 @@ function initBasicProtoBlocks(palettes, blocks) {
     incrementBlock.twoArgBlock();
     incrementBlock.dockTypes[1] = 'anyin';
     incrementBlock.dockTypes[2] = 'anyin';
+
+    var boxBlock = new ProtoBlock('box');
+    boxBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['box'] = boxBlock;
+    boxBlock.staticLabels.push(_('box'));
+    boxBlock.extraWidth = 10;
+    boxBlock.adjustWidthToLabel();
+    boxBlock.oneArgMathBlock();
+    boxBlock.defaults.push(_('box'));
+    boxBlock.dockTypes[0] = 'anyout';
+    boxBlock.dockTypes[1] = 'anyin';
+    // Show the value in the box as if it were a parameter.
+    boxBlock.parameter = true;
+    boxBlock.dockTypes[1] = 'anyin';
+
+    var doBlock = new ProtoBlock('do');
+    doBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['do'] = doBlock;
+    doBlock.staticLabels.push(_('do'));
+    doBlock.adjustWidthToLabel();
+    doBlock.oneArgBlock();
+    doBlock.defaults.push(_('action'));
+    doBlock.dockTypes[1] = 'anyin';
 
     // Media palette
     var speakBlock = new ProtoBlock('speak');

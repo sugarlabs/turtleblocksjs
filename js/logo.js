@@ -522,8 +522,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         var listener = function (event) {
                             if (logo.turtles.turtleList[turtle].running) {
                                 var queueBlock = new Queue(logo.actions[args[1]], 1, blk);
-			        logo.parentFlowQueue[turtle].push(blk);
-			        logo.turtles.turtleList[turtle].queue.push(queueBlock);
+                                logo.parentFlowQueue[turtle].push(blk);
+                                logo.turtles.turtleList[turtle].queue.push(queueBlock);
                             } else {
                                 // Since the turtle has stopped
                                 // running, we need to run the stack
@@ -545,6 +545,16 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (args.length == 1) {
                     childFlow = args[0];
                     childFlowCount = 1;
+                }
+                break;
+            case 'nameddo':
+                var name = logo.blocks.blockList[blk].privateData;
+                if (name in logo.actions) {
+                    childFlow = logo.actions[name];
+                    childFlowCount = 1;
+                } else {
+                    logo.errorMsg('Cannot find action ' + name + '.', blk);
+                    logo.stopTurtle = true;
                 }
                 break;
             case 'do':
@@ -579,7 +589,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'speak':
                 if (args.length == 1) {
-                    logo.meSpeak.speak(args[0]);
+                    if (logo.meSpeak) {
+                        logo.meSpeak.speak(args[0]);
+                    }
                 }
                 break;
             case 'repeat':
@@ -1368,20 +1380,20 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var cblk = block.connections[1];
                     var v = logo.parseArg(logo, turtle, cblk, blk);
                     try {
-			if (typeof(v) == 'string') {
+                        if (typeof(v) == 'string') {
                             v = v.toUpperCase();
                             var note = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭'].indexOf(v[0]);
                             var octave = v[1];
                             if (note > 2) {
                                 octave -= 1;  // New octave starts on C
                             }
-			    var i = octave * 12 + note;
-			    block.value = 27.5 * Math.pow(1.05946309435929, i);
-			} else {
+                            var i = octave * 12 + note;
+                            block.value = 27.5 * Math.pow(1.05946309435929, i);
+                        } else {
                             block.value = 440 * Math.pow(2, (v - 69) / 12);
-			}
+                        }
                     } catch (e) {
-			this.errorMsg(v + ' is not a note.');
+                        this.errorMsg(v + ' is not a note.');
                         block.value = 440;
                     }
                     break;

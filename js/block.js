@@ -21,6 +21,7 @@ function Block(protoblock, blocks, overrideName) {
     }
     this.protoblock = protoblock;
     this.name = protoblock.name;
+    this.overrideName = overrideName;
     this.blocks = blocks;
     this.x = 0;
     this.y = 0;
@@ -31,8 +32,8 @@ function Block(protoblock, blocks, overrideName) {
     this.text = null; // A dynamically generated text label on block itself.
     this.value = null; // Value for number, text, and media blocks.
     this.privateData = null; // A block may have some private data,
-			     // e.g., nameboxes use this field to store
-			     // the box name associated with the block.
+                             // e.g., nameboxes use this field to store
+                             // the box name associated with the block.
     this.image = protoblock.image; // The file path of the image.
 
     // All blocks have at a container and least one bitmap.
@@ -218,12 +219,22 @@ function Block(protoblock, blocks, overrideName) {
         image.src = this.image;
     }
 
+    this.regenerateArtwork = function() {
+        // Sometimes (in the case of namedboxes and nameddos) we need
+        // to regenerate the artwork associated with a block.
+        // First we need to remove the old artwork.
+        this.container.removeChild(this.bitmap);
+        this.container.removeChild(this.highlightBitmap);
+        // Then we generate new artwork.
+        this.generateArtwork(false, []);
+    }
+
     this.generateArtwork = function(firstTime, blocksToCheck) {
         // Get the block labels from the protoblock
         var thisBlock = this.blocks.blockList.indexOf(this);
         var block_label = '';
-        if (overrideName) {
-            block_label = overrideName;
+        if (this.overrideName) {
+            block_label = this.overrideName;
         } else if (this.protoblock.staticLabels.length > 0 && !this.protoblock.image) {
             // Label should be defined inside _().
             block_label = this.protoblock.staticLabels[0];
@@ -1193,9 +1204,12 @@ function labelChanged(myBlock) {
                 // If the label was the name of an action, update the
                 // associated run myBlock.blocks and the palette buttons
                 if (myBlock.value != _('action')) {
-                    myBlock.blocks.newDoBlock(myBlock.value);
+                    // myBlock.blocks.newDoBlock(myBlock.value);
+                    myBlock.blocks.newNameddoBlock(myBlock.value);
                 }
+                // Rename both do <- name and nameddo blocks.
                 myBlock.blocks.renameDos(oldValue, newValue);
+                myBlock.blocks.renameNameddos(oldValue, newValue);
                 myBlock.blocks.palettes.updatePalettes('blocks');
                 break;
             case 'storein':
@@ -1206,7 +1220,9 @@ function labelChanged(myBlock) {
                     // myBlock.blocks.newBoxBlock(myBlock.value);
                     myBlock.blocks.newNamedboxBlock(myBlock.value);
                 }
+                // Rename both box <- name and namedbox blocks.
                 myBlock.blocks.renameBoxes(oldValue, newValue);
+                myBlock.blocks.renameNamedboxes(oldValue, newValue);
                 myBlock.blocks.palettes.updatePalettes('blocks');
                 break;
         }

@@ -365,7 +365,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
             }
 
-            if (turtle == null || this.turtles.turtleList.length + 1 > turtle) {
+            if (turtle == null || this.turtles.turtleList.length > turtle + 1) {
                 console.log('could not find a turtle');
                 turtle = this.turtles.turtleList.length;
                 this.turtles.add(null);

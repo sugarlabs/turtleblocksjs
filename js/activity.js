@@ -362,9 +362,9 @@ define(function(require) {
                     setTimeout(function() {
                         var rawData = reader.result;
                         var cleanData = rawData.replace('\n', ' ');
-            console.log(cleanData);
+                        console.log(cleanData);
                         var obj = JSON.parse(cleanData);
-            console.log(obj)
+                        console.log(obj)
                         blocks.loadNewBlocks(obj);
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
@@ -761,6 +761,7 @@ define(function(require) {
                     last(blocks.blockList).value = turtles.turtleList.length - 1;
                     blocks.updateBlockPositions();
                     if (!doNotSave) {
+                        console.log('save locally');
                         saveLocally();
                     }
                 }
@@ -770,6 +771,7 @@ define(function(require) {
 
             if (!doNotSave) {
                 // Overwrite session data too.
+                console.log('save locally');
                 saveLocally();
             }
 
@@ -834,6 +836,7 @@ define(function(require) {
         }
 
         function doOpenSamples() {
+            console.log('save locally');
             saveLocally();
             thumbnails.show()
         }
@@ -887,19 +890,13 @@ define(function(require) {
                         var rawData = httpGet(projectName);
                         console.log('receiving ' + rawData);
                         var cleanData = rawData.replace('\n', '');
-                    } else {
-                        // FIXME: Workaround until we have a local server
-                        if (projectName in SAMPLESTB) {
-                            var cleanData = SAMPLESTB[projectName];
-                        } else {
-                            var cleanData = SAMPLESTB['card-01.tb'];
-                        }
-                        console.log(cleanData);
                     }
                     var obj = JSON.parse(cleanData);
                     blocks.loadNewBlocks(obj);
+                    console.log('save locally');
                     saveLocally();
                 } catch (e) {
+                   console.log(e);
                    loadStart();
                 }
                 // Restore default cursor
@@ -911,6 +908,7 @@ define(function(require) {
         }
 
         function loadRawProject(data) {
+            console.log('loadRawProject ' + data);
             document.body.style.cursor = 'wait';
             allClear();
             var obj = JSON.parse(data);
@@ -962,6 +960,20 @@ define(function(require) {
             // where to put this?
             // palettes.updatePalettes();
 
+            justLoadStart = function() {
+                console.log('loading start');
+                postProcess = function(thisBlock) {
+                    blocks.blockList[0].x = 250;
+                    blocks.blockList[0].y = 250;
+                    blocks.blockList[0].connections = [null, null, null];
+                    blocks.blockList[0].value = turtles.turtleList.length;
+                    blocks.blockList[0].collapsed = false;
+                    turtles.add(blocks.blockList[0]);
+                    blocks.updateBlockPositions();
+                }
+                blocks.makeNewBlock('start', postProcess, null);
+            }
+
             sessionData = null;
             // Try restarting where we were when we hit save.
             if (typeof(Storage) !== 'undefined') {
@@ -972,21 +984,16 @@ define(function(require) {
             if (sessionData != null) {
                 try {
                     console.log('restoring session: ' + sessionData);
-                    var obj = JSON.parse(sessionData);
-                    blocks.loadNewBlocks(obj);
-                } catch (e) {}
-            } else {
-                console.log('loading start');
-                postProcess = function(thisBlock) {
-                    blocks.blockList[0].x = 250;
-                    blocks.blockList[0].y = 250;
-                    blocks.blockList[0].connections = [null, null, null];
-                    blocks.blockList[0].value = turtles.turtleList.length;
-                    blocks.blockList[0].collapsed = true;
-                    turtles.add(blocks.blockList[0]);
-                    blocks.updateBlockPositions();
+                    if (sessionData != '[]') {
+                        blocks.loadNewBlocks(JSON.parse(sessionData));
+                    } else {
+                        justLoadStart();
+                    }
+                } catch (e) {
+                    console.log(e);
                 }
-                blocks.makeNewBlock('start', postProcess, null);
+            } else {
+                justLoadStart();
             }
             update = true;
 

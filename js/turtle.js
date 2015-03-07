@@ -360,8 +360,8 @@ function Turtle (name, turtles) {
             // Recalculate the hit area as well.
             var hitArea = new createjs.Shape();
             hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
-            hitArea.x = -image.width / 2;
-            hitArea.y = -image.height / 2;
+            hitArea.x = -bounds.width / 2;
+            hitArea.y = -bounds.height / 2;
             me.container.hitArea = hitArea;
 
             if (me.startBlock != null) {

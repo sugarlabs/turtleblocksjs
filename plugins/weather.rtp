@@ -114,7 +114,7 @@ weatherBlock.dockTypes[1] = 'anyin';
 weatherBlock.defaults.push('Canberra');
 weatherBlock.defaults.push(1);
 
-//* block:weatherincityhight *//
+//* block:weatherincityhigh *//
 var weatherHighBlock = new ProtoBlock('weatherincityhigh');
 weatherHighBlock.palette = palettes.dict['mashape'];
 blocks.protoBlockDict['weatherincityhigh'] = weatherHighBlock;

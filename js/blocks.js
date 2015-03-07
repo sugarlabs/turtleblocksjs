@@ -651,8 +651,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             if (connection != null) {
                 if (myBlock.isArgBlock()) {
                     this.blockList[connection].connections[0] = null;
-                    // Fixme: could be more than one block.
-                    this.moveBlockRelative(connection, 40, 40);
+                    this.findDragGroup(connection);                    
+                    for (var c = 0; c < this.dragGroup.length; c++) {
+                        this.moveBlockRelative(this.dragGroup[c], 40, 40);
+                    }
                 } else {
                     var bottom = this.findBottomBlock(thisBlock);
                     this.blockList[connection].connections[0] = bottom;

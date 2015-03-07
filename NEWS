@@ -273,6 +273,7 @@
   * i18n for planet (Ignacio)
   * setfont block (Abhinav Anurag)
   * Set default font to 'sans-serif' (w/Sam Parkinson).
+  * Move entire drag group when bouncing blocks out of a connection.
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)

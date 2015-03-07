@@ -330,6 +330,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     this.blockList[nextBlockIndex].connections[0] = blk;
                 }
                 vspaceBlock.connections = [null, null];
+                vspaceBlock.trash = true;
                 vspaceBlock.hide();
             }
         } else if (secondArgumentSize > vSpaceCount + 1) {

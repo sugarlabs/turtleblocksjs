@@ -274,6 +274,7 @@
   * setfont block (Abhinav Anurag)
   * Set default font to 'sans-serif' (w/Sam Parkinson).
   * Move entire drag group when bouncing blocks out of a connection.
+  * Put vspace blocks in trash after removing them.
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)

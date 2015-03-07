@@ -91,6 +91,13 @@ function PlanetModel(controller) {
                 },
                 dataType: 'text'
             }).done(function (d) {
+                if(d === '' || d === undefined){
+                    d = EMPTYIMAGE;
+                }
+                
+                if(d.indexOf('undefined') !== -1){
+                    d = EMPTYIMAGE;
+                }
                 me.globalImagesCache[image] = d;
                 me.globalProjects.push({title: name, img: d, url: image});
                 me.updated();
@@ -272,7 +279,11 @@ function PlanetView(model, controller) {
 
         html = '';
         model.globalProjects.forEach(function (project, i) {
-            html += '<li url="' + project.url + '" title="' + project.title + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><span>' + project.title + '</span><br/><img class="download icon" title="Download" alt="Download" src="icons/download.svg" /></div></li>';
+            var temp_img = project.img;
+            if(temp_img === '' || temp_img === undefined){
+                temp_img = EMPTYIMAGE;
+            }
+            html += '<li url="' + project.url + '" title="' + project.title + '"><img class="thumbnail" src="' + temp_img + '" /><div class="options"><span>' + project.title + '</span><br/><img class="download icon" title="Download" alt="Download" src="icons/download.svg" /></div></li>';
         });
         document.querySelector('.planet .content.w').innerHTML = html;
 

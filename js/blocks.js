@@ -617,8 +617,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 continue;
             }
             for (var i = 1; i < this.blockList[b].connections.length; i++) {
-                // When converting from Python to JS, sometimes extra
-                // null connections are added. We need to ignore them.
+                // When converting from Python projects to JS format,
+                // sometimes extra null connections are added. We need
+                // to ignore them.
                 if (i == this.blockList[b].docks.length) {
                     break;
                 }
@@ -690,45 +691,51 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
             }
         }
-        // If we changed the contents of a arg block, we may need a vspace.
-        if (checkArgBlocks.length > 0) {
-            for (var i = 0; i < checkArgBlocks.length; i++) {
-                this.addRemoveVspaceBlock(checkArgBlocks[i]);
-            }
-        }
 
-        // If we changed the contents of a two-arg block, we need to
-        // adjust it.
-        if (checkTwoArgBlocks.length > 0) {
-            this.adjustExpandableTwoArgBlock(checkTwoArgBlocks);
-        }
-
+        // Put block adjustments inside a slight delay to make the
+        // addition/substraction of vspace and changes of block shape
+        // appear less abrupt (and it can be a little racy).
         var blocks = this;
+        setTimeout(function () {
+            // If we changed the contents of a arg block, we may need a vspace.
+            if (checkArgBlocks.length > 0) {
+                for (var i = 0; i < checkArgBlocks.length; i++) {
+                    blocks.addRemoveVspaceBlock(checkArgBlocks[i]);
+                }
+            }
 
-        // First, adjust the docks for any blocks that may have
-        // had a vspace added.
-        for (var i = 0; i < checkArgBlocks.length; i++) {
-            blocks.adjustDocks(checkArgBlocks[i]);
-        }
-        // Next, recheck if the connection is inside of a
-        // expandable block.
-        var blk = blocks.insideExpandableBlock(thisBlock);
-        var expandableLoopCounter = 0;
-        while (blk != null) {
-            // Extra check for malformed data.
-            expandableLoopCounter += 1;
-            if (expandableLoopCounter > 2 * blocks.blockList.length) {
-                console.log('Infinite loop checking for expandables?');
-                console.log(blocks.blockList);
-                break;
+            // If we changed the contents of a two-arg block, we need to
+            // adjust it.
+            if (checkTwoArgBlocks.length > 0) {
+                blocks.adjustExpandableTwoArgBlock(checkTwoArgBlocks);
             }
-            if (checkExpandableBlocks.indexOf(blk) == -1) {
-                checkExpandableBlocks.push(blk);
+
+            // First, adjust the docks for any blocks that may have
+            // had a vspace added.
+            for (var i = 0; i < checkArgBlocks.length; i++) {
+                blocks.adjustDocks(checkArgBlocks[i]);
             }
-            blk = blocks.insideExpandableBlock(blk);
-        }
-        blocks.adjustExpandableClampBlock(checkExpandableBlocks);
-        blocks.refreshCanvas();
+
+            // Next, recheck if the connection is inside of a
+            // expandable block.
+            var blk = blocks.insideExpandableBlock(thisBlock);
+            var expandableLoopCounter = 0;
+            while (blk != null) {
+                // Extra check for malformed data.
+                expandableLoopCounter += 1;
+                if (expandableLoopCounter > 2 * blocks.blockList.length) {
+                    console.log('Infinite loop checking for expandables?');
+                    console.log(blocks.blockList);
+                    break;
+                }
+                if (checkExpandableBlocks.indexOf(blk) == -1) {
+                    checkExpandableBlocks.push(blk);
+                }
+                blk = blocks.insideExpandableBlock(blk);
+            }
+            blocks.adjustExpandableClampBlock(checkExpandableBlocks);
+            blocks.refreshCanvas();
+        }, 250);
     }
 
     this.testConnectionType = function(type1, type2) {

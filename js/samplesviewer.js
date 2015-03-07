@@ -22,9 +22,48 @@ EMPTYIMAGE = 'data:image/svg+xml;base64,' + btoa('<svg \
 
 window.server = '/server/';
 jQuery.ajax('/server/').error(function () {
-    // TODO: Fix cors on t.sl.o
     server = 'https://turtle.sugarlabs.org/server/';
 });
+
+var LOCAL_PROJECT_TEMPLATE = '\
+<li data=\'{data}\' title="{title}" current="{current}"> \
+    <img class="thumbnail" src="{img}" /> \
+    <div class="options"> \
+        <input type="text" value="{title}"/><br/> \
+        <img class="open icon" title="{_("Open")}" alt="{_Open}" src="icons/edit.svg" /> \
+        <img class="delete icon" title="{_Delete}" alt="{_Delete}" src="icons/delete.svg" /> \
+        <img class="publish icon" title="{_Publish}" alt="{_Publish}" src="icons/publish.svg" /> \
+        <img class="download icon" title="{_Download}" alt="{_Download}" src="icons/download.svg" /> \
+    </div> \
+</li>'
+
+var GLOBAL_PROJECT_TEMPLATE = '\
+<li url="{url}" title="{title}"> \
+    <img class="thumbnail" src="{img}" /> \
+    <div class="options"> \
+        <span>{title}</span><br/> \
+        <img class="download icon" title="{_Download}" alt="{_Download}" src="icons/download.svg" /> \
+    </div> \
+</li>';
+
+function format(str, data) {
+  str = str.replace(/{([a-zA-Z.]*)}/g,
+                     function (match, name) {
+    x = data;
+    name.split('.').forEach(function (v) {
+      if (x === undefined) {
+        console.log('Undefined value in template string', str, name, x, v);
+      }
+      x = x[v];
+    });
+    return x;
+  });
+  return str.replace(/{_([a-zA-Z0-9]+)}/g,
+                     function (match, item) {
+    return _(item);
+  });
+}
+
 
 function PlanetModel(controller) {
     this.controller = controller;
@@ -247,8 +286,7 @@ function PlanetView(model, controller) {
         if (model.localChanged) {
             html = '';
             model.localProjects.forEach(function (project, i) {
-                // TODO: Use template strings when they are supported
-                html = html + '<li data=\'' + project.data + '\' title="' + project.title + '" current="' + project.current + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><input type="text" value="' + project.title + '"/><br/><img class="open icon" title="' + _("Open") + '" alt="' + _("Open") + '" src="icons/edit.svg" /><img class="delete icon" title="' + _("Delete") + '" alt="' + _("Delete") + '" src="icons/delete.svg" /><img class="publish icon" title="' + _("Publish") + '" alt="' + _("Publish") + '" src="icons/publish.svg" /><img class="download icon" title="' + _("Download") + '" alt="' + _("Download") + '" src="icons/download.svg" /></div></li>';
+                html = html + format(LOCAL_PROJECT_TEMPLATE, project);
             });
             document.querySelector('.planet .content.l').innerHTML = html;
 
@@ -272,7 +310,7 @@ function PlanetView(model, controller) {
 
         html = '';
         model.globalProjects.forEach(function (project, i) {
-            html += '<li url="' + project.url + '" title="' + project.title + '"><img class="thumbnail" src="' + project.img + '" /><div class="options"><span>' + project.title + '</span><br/><img class="download icon" title="' + _("Download") + '" alt="' + _("Download") + '" src="icons/download.svg" /></div></li>';
+            html += format(GLOBAL_PROJECT_TEMPLATE, project);
         });
         document.querySelector('.planet .content.w').innerHTML = html;
 

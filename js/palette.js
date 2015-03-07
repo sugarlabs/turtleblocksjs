@@ -22,12 +22,12 @@ var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
 ];
 
 
-function maxPaletteHeight(menuSize) {
+function maxPaletteHeight(menuSize, scale) {
     // Palettes don't start at the top of the screen and the last
     // block in a palette cannot start at the bottom of the screen,
-    // hence - 3 * menuSize.
-    var h = windowHeight() * canvasPixelRatio() - (3 * menuSize);
-    return h - (h % STANDARDBLOCKHEIGHT) + STANDARDBLOCKHEIGHT / 2;
+    // hence - 2 * menuSize.
+    var h = (windowHeight() * canvasPixelRatio()) / scale - (2 * menuSize);
+    return h - (h % STANDARDBLOCKHEIGHT) + (STANDARDBLOCKHEIGHT / 2);
 }
 
 
@@ -271,7 +271,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         for (var name in this.dict) {
             var px = this.dict[name].menuContainer.x;
             var py = this.dict[name].menuContainer.y;
-            var height = Math.min(maxPaletteHeight(this.cellSize), this.dict[name].y);
+            var height = Math.min(maxPaletteHeight(this.cellSize, this.scale), this.dict[name].y);
             if (this.dict[name].menuContainer.visible && px < x &&
                 x < px + MENUWIDTH && py < y && y < py + height) {
                 return this.dict[name];
@@ -427,7 +427,7 @@ function Palette(palettes, name) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                             palette.palettes.stage.addChild(bitmap);
                             bitmap.x = palette.menuContainer.x + paletteWidth;
-                            bitmap.y = palette.menuContainer.y + Math.min(maxPaletteHeight(palette.palettes.cellSize), palette.y) - STANDARDBLOCKHEIGHT / 2;
+                            bitmap.y = palette.getDownButtonY();
 
                             var hitArea = new createjs.Shape();
                             hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
@@ -452,13 +452,26 @@ function Palette(palettes, name) {
         makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)).replace(/header_width/g, paletteWidth), this.name, processHeader, null);
     }
 
+    this.getDownButtonY = function () {
+        var h = this.y;
+        var max = maxPaletteHeight(this.palettes.cellSize, this.palettes.scale);
+        if (this.y > max) {
+            h = max;
+        }
+        return this.menuContainer.y + h - STANDARDBLOCKHEIGHT / 2;
+    }
+
     this.resizeEvent = function() {
         this.updateBackground();
         this.updateBlockMasks();
+
+        if (this.downButton !== null) {
+            this.downButton.y = this.getDownButtonY();
+        }
     }
 
     this.updateBlockMasks = function() {
-        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
+        var h = Math.min(maxPaletteHeight(this.palettes.cellSize, this.palettes.scale), this.y);
         for (var i in this.protoContainers) {
             var s = new createjs.Shape();
             s.graphics.r(0, 0, MENUWIDTH, h);
@@ -483,7 +496,7 @@ function Palette(palettes, name) {
             setupBackgroundEvents(this);
         }
 
-        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
+        var h = Math.min(maxPaletteHeight(this.palettes.cellSize, this.palettes.scale), this.y);
         var shape = new createjs.Shape();
         shape.graphics.f('#b3b3b3').r(0, 0, MENUWIDTH, h).ef();
         shape.width = MENUWIDTH;
@@ -857,9 +870,9 @@ function Palette(palettes, name) {
 
     this.scrollEvent = function(direction, scrollSpeed) {
         var diff = direction * scrollSpeed;
-        var h = Math.min(maxPaletteHeight(this.palettes.cellSize), this.y);
+        var h = Math.min(maxPaletteHeight(this.palettes.cellSize, this.palettes.scale), this.y);
 
-        if (this.y < maxPaletteHeight(this.palettes.cellSize)) {
+        if (this.y < maxPaletteHeight(this.palettes.cellSize, this.palettes.scale)) {
             this.upButton.visible = false;
             this.downButton.visible = false;
             return;

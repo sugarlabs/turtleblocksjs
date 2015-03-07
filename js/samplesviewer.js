@@ -95,7 +95,7 @@ function PlanetModel(controller) {
                     d = EMPTYIMAGE;
                 }
                 
-                if(d.indexOf('undefined') !== -1){
+                if(validateImageData(d) == 0){
                     d = EMPTYIMAGE;
                 }
                 me.globalImagesCache[image] = d;
@@ -391,4 +391,17 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
         this.model.start(this.view.update);
         return true;
     }
+}
+
+function validateImageData(d) {
+    if(d.indexOf('data:image') !== 0){
+        return 0;
+    }
+    else {
+        var data = d.split(",");
+        if(data[1].length == 0){
+            return 0;
+        }
+    }
+    return 1;
 }

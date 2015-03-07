@@ -130,6 +130,9 @@ function PlanetModel(controller) {
                 },
                 dataType: 'text'
             }).done(function (d) {
+                if(!validateImageData(d)){
+                    d = EMPTYIMAGE;
+                }
                 me.globalImagesCache[image] = d;
                 me.globalProjects.push({title: name, img: d, url: image});
                 me.updated();
@@ -423,4 +426,20 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
         this.model.start(this.view.update);
         return true;
     }
+}
+function validateImageData(d) {
+    if(d === undefined) {
+        return false;
+    }
+    
+    if(d.indexOf('data:image') !== 0){
+        return false;
+    }
+    else {
+        var data = d.split(",");
+        if(data[1].length == 0){
+            return false;
+        }
+    }
+    return true;
 }

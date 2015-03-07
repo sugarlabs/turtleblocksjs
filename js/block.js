@@ -1127,7 +1127,6 @@ function mouseoutCallback(myBlock, event, moved) {
             sendStackToTrash(blocks, myBlock);
         } else {
             // Otherwise, process move.
-            console.log('mouseout block moved ' + thisBlock);
             myBlock.blocks.blockMoved(thisBlock);
         }
     }

@@ -202,6 +202,12 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
 }
 
 
+function sourceMap(code) {
+    return code + '\n/* END OF CODE */'
+           + '\n//# sourceURL=data:application/javascript,'
+           + window.encodeURIComponent(code);
+}
+
 function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict) {
     // Plugins are JSON-encoded dictionaries.
     // console.log(pluginData);
@@ -278,7 +284,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     // eval'd by this block.
     if ('FLOWPLUGINS' in obj) {
         for (var flow in obj['FLOWPLUGINS']) {
-            evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
+            evalFlowDict[flow] = sourceMap(obj['FLOWPLUGINS'][flow]);
         }
     }
 
@@ -286,7 +292,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     // eval'd by this block.
     if ('ARGPLUGINS' in obj) {
         for (var arg in obj['ARGPLUGINS']) {
-            evalArgDict[arg] = obj['ARGPLUGINS'][arg];
+            evalArgDict[arg] = sourceMap(obj['ARGPLUGINS'][arg]);
         }
     }
 
@@ -294,7 +300,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     // used to set a value block.
     if ('SETTERPLUGINS' in obj) {
         for (var setter in obj['SETTERPLUGINS']) {
-            evalSetterDict[setter] = obj['SETTERPLUGINS'][setter];
+            evalSetterDict[setter] = sourceMap(obj['SETTERPLUGINS'][setter]);
         }
     }
 
@@ -303,7 +309,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
         for (var block in obj['BLOCKPLUGINS']) {
             console.log('adding plugin block ' + block);
             try {
-                eval(obj['BLOCKPLUGINS'][block]);
+                eval(sourceMap(obj['BLOCKPLUGINS'][block]));
             } catch (e) {
                 console.log('Failed to load plugin for ' + block + ': ' + e);
             }
@@ -312,7 +318,11 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     // Create the globals.
     if ('GLOBALS' in obj) {
-        eval(obj['GLOBALS']);
+        try {
+            eval(sourceMap(obj['GLOBALS']));
+        } catch (e) {
+            console.log('Failed to load globals for plugin: ', e);
+        }
     }
 
     if ('PARAMETERPLUGINS' in obj) {

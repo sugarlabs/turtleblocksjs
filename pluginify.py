@@ -141,10 +141,12 @@ def clear():
 
 def pluginify(data):
     clear()
+
     sections_list = data.split('//*')
     sections_pairs = []
     specific_globals = {x: '' for x in JS_TYPES}
     globals_ = None
+
     for section in sections_list:
         match = re.match('(.*)\*\/\/([^\0]*)', section.strip())
         if match:
@@ -160,9 +162,10 @@ def pluginify(data):
                 sections_pairs.append((match.group(1).strip(),
                                        match.group(2).strip()))
 
+
     outp = {}
     if globals_ is not None:
-        outp['GLOBALS'] = globals_.replace('\n', '').replace('var ', '')
+        outp['GLOBALS'] = globals_.replace('var ', '')
 
     for key, value in sections_pairs:
         if len(key.split(':')) != 2:
@@ -171,7 +174,6 @@ def pluginify(data):
 
         if type_ in JS_TYPES:
             value = specific_globals[type_] + value
-        value = value.replace('\n', '')
 
         if type_ in NAMES:
             type_ = NAMES[type_]

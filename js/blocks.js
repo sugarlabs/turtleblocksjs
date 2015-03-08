@@ -1525,7 +1525,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         // Update the palette
-        var blockPalette = this.palettes.dict['blocks'];
+        var blockPalette = this.palettes.dict['actions'];
         var nameChanged = false;
         for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
             var block = blockPalette.protoList[blockId];
@@ -1591,7 +1591,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var myDoBlock = new ProtoBlock('nameddo');
         this.protoBlockDict['myDo_' + name] = myDoBlock;
         myDoBlock.zeroArgBlock();
-        myDoBlock.palette = this.palettes.dict['blocks'];
+        myDoBlock.palette = this.palettes.dict['actions'];
         myDoBlock.defaults.push(name);
         myDoBlock.staticLabels.push(name);
         if (name == 'action') {
@@ -1608,7 +1608,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction_' + name] = myActionBlock;
         myActionBlock.stackClampOneArgBlock();
-        myActionBlock.palette = this.palettes.dict['blocks'];
+        myActionBlock.palette = this.palettes.dict['actions'];
         myActionBlock.defaults.push(name);
         myActionBlock.staticLabels.push(_('action'));
         myActionBlock.expandable = true;
@@ -2310,7 +2310,7 @@ function sendStackToTrash(blocks, myBlock) {
                 }
             }
 
-            var blockPalette = blocks.palettes.dict['blocks'];
+            var blockPalette = blocks.palettes.dict['actions'];
             var blockRemoved = false;
             for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
                 var block = blockPalette.protoList[blockId];

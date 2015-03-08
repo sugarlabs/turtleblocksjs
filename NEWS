@@ -280,6 +280,9 @@
   * More eye-candy by Sam Parkinson
   * Bad/missing thumbnails no longer break the Planet (Abhinav Anurag).
   * Restored booleanOneArg protoblocks.
+  * Now adding store in blocks when needed on loading new projects.
+  * Fixed one more corner case in auto-block expansion when loading new
+    projects.
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)

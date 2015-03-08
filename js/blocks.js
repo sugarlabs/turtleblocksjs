@@ -1833,9 +1833,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         storeinNames[b] = blkData[4][1];
                     }
                     break;
-                case 'nameddo':
-                    console.log('saw a nameddo block... what to do?');
-                    console.log(blkData[1][1]);
+                case 'nameddo': 
                     doNames[b] = blkData[1][1]['value'];
                     break;
                 case 'do':
@@ -1873,7 +1871,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     var name = blkData[1][1]['value'];
                 }
                 console.log('Adding new palette entries for store-in ' + name);
-                // this.newBoxBlock(name);
+		this.newStoreinBlock(name);
                 this.newNamedboxBlock(name);
                 updatePalettes = true;
             }
@@ -2210,8 +2208,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         }
 	if (checkTwoArgBlocks.length > 0) {
-            for (b = 0; b < checkTwoArgBlocks.length; b++) {
-                this.adjustExpandableTwoArgBlock([checkTwoArgBlocks[b]]);
+            // We make multiple passes because we need to account for nesting.
+            for (i = 0; i < checkTwoArgBlocks.length; i++) {
+                for (b = 0; b < checkTwoArgBlocks.length; b++) {
+                    this.adjustExpandableTwoArgBlock([checkTwoArgBlocks[b]]);
+                }
             }
 	}
     }

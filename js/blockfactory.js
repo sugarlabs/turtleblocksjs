@@ -810,6 +810,7 @@ function SVG() {
         var xx = this._x;
         svg += this._doInnie();
         svg += this._rLineTo(0, this._expandY);
+
         if (this._porch) {
             svg += this._doPorch(false);
         } else {

@@ -587,6 +587,30 @@ function ProtoBlock(name) {
         return [artwork, svg.docks];
     }
 
+    // E.g., named sensor blocks
+    this.booleanOneArgBlock = function() {
+        this.style = 'arg';
+        this.size = 2;
+        this.args = 1;
+        this.parameter = true;
+        this.dockTypes.push('booleanout');
+        this.dockTypes.push('textin');
+        this.generator = this.booleanOneArgBlockGenerator;
+    }
+
+    this.booleanOneArgBlockGenerator = function() {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        svg.setInnies([true]);
+        var artwork = svg.booleanNot(true);  // OneArg
+        return [artwork, svg.docks];
+    }
+
     // E.g., not
     this.booleanOneBooleanArgBlock = function() {
         this.style = 'arg';

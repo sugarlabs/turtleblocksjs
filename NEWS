@@ -277,6 +277,8 @@
   * Move entire drag group when bouncing blocks out of a connection.
   * Put vspace blocks in trash after removing them.
   * Expand two-arg blocks on load.
+  * More eye-candy by Sam Parkinson
+  * Restored booleanOneArg protoblocks.
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)

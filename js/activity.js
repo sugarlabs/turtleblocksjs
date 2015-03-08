@@ -1495,7 +1495,11 @@ define(function(require) {
                     y: container.y - Math.round(event.stageY / blocks.scale)
                 };
 
+                var circles = showMaterialHighlight(ox, oy, cellSize / 2,
+                                                    event, scale, stage);
                 container.on('pressup', function(event) {
+                    hideMaterialHighlight(circles, stage);
+
                     container.x = ox;
                     container.y = oy;
                     if (action != null && moved && !locked) {
@@ -1506,13 +1510,6 @@ define(function(require) {
                         action();
                     }
                     moved = false;
-                });
-
-                container.on('pressmove', function(event) {
-                    moved = true;
-                    container.x = Math.round(event.stageX / blocks.scale) + offset.x;
-                    container.y = Math.round(event.stageY / blocks.scale) + offset.y;
-                    update = true;
                 });
             });
         }

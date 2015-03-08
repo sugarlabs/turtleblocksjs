@@ -83,13 +83,15 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
     makeTrash(this);
 
     this.hide = function() {
-        this.container.visible = false;
-        this.refreshCanvas();
+        createjs.Tween.get(this.container)
+            .to({alpha: 0}, 200)
+            .set({visible: false});
     }
 
     this.show = function() {
-        this.container.visible = true;
-        this.refreshCanvas();
+        createjs.Tween.get(this.container)
+            .to({alpha: 0.0, visible: true})
+            .to({alpha: 1.0}, 200);
     }
 
     this.highlight = function() {

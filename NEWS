@@ -276,6 +276,7 @@
   * Set default font to 'sans-serif' (w/Sam Parkinson).
   * Move entire drag group when bouncing blocks out of a connection.
   * Put vspace blocks in trash after removing them.
+  * Expand two-arg blocks on load.
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)
@@ -309,6 +310,5 @@ KNOWN BUGS:
   * Music block doesn't work on Android
   * Cannot open plugins loader on Android
   * Sometimes returning to backgrounded project results in empty project
-  * Two-arg blocks don't expand on load.
   * Bad/missing thumbnails break the Planet.
   * Loading macros there is a funny collapsed state sometimes.

@@ -275,10 +275,21 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         clampAdjuster(this, blk, myBlock, 0, blocksToCheck);
     }
 
-    // Returns the block size. (TODO recurse on first argument in
-    // twoarg blocks.)
+    // Returns the block size.
     this.getBlockSize = function(blk) {
-        return this.blockList[blk].size;
+        var myBlock = this.blockList[blk];
+        return myBlock.size;
+        // FIXME? No need to recurse since cascaded value is stored in
+        // myBlock.size. But is it robust? Maybe we should recurse
+        // and not store the cascaded size?
+        /* 
+        var size = myBlock.size;
+        if ((myBlock.isArgBlock() || myBlock.isTwoArgBlock()) && this.blockList[i].isExpandableBlock() && myBlock.connections[1] != null) {
+            return size + this.getBlockSize(myBlock.connections[1]) - 1;
+        } else {
+            return size;
+        }
+        */
     }
 
     // We also adjust the size of twoarg blocks. It is similar to how
@@ -290,16 +301,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
         var blk = blocksToCheck.pop();
-
         var myBlock = this.blockList[blk];
-
         // Determine the size of the first argument.
         var c = myBlock.connections[1];
         var firstArgumentSize = 1; // Minimum size
         if (c != null) {
             firstArgumentSize = Math.max(this.getBlockSize(c), 1);
         }
-
         var plusMinus = firstArgumentSize - myBlock.clampCount[0];
         if (plusMinus != 0) {
             if (!(firstArgumentSize == 0 && myBlock.clampCount[0] == 1)) {
@@ -1774,6 +1782,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         }
 
+        // We need to track two-arg blocks incase they need expanding. 
+        var checkTwoArgBlocks = [];
+
         // Don't make duplicate action names.
         // Add a palette entry for any new storein blocks.
         var stringNames = [];
@@ -1795,6 +1806,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 var name = blkData[1];
             } else {
                 var name = blkData[1][0];
+            }
+
+            if (['arg', 'twoarg'].indexOf(this.protoBlockDict[name].style) != -1) {
+                if (this.protoBlockDict[name].expandable) {
+                    checkTwoArgBlocks.push(this.blockList.length + b);
+                }
             }
 
             switch (name) {
@@ -1892,12 +1909,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
 
             // add a new nameddo block to the palette...
-            console.log('adding a new nameddo block to the palette');
             this.newNameddoBlock(name);
-            // this.newDoBlock(name);
             updatePalettes = true;
             // and any do blocks
-            console.log(doNames);
             for (var d in doNames) {
                 var thisBlkData = blockObjs[d];
                 if (typeof(thisBlkData[1]) == 'string') {
@@ -1906,22 +1920,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     var blkName = thisBlkData[1][0];
                 }
                 if (blkName == 'nameddo') {
-                    console.log(blkName);
                     if (thisBlkData[1][1]['value'] == oldName) {
-                        console.log('renaming to ' + name);
+                        console.log('renaming ' + oldName + ' to ' + name);
                         thisBlkData[1][1] = {'value': name};
                     }
                 } else {
-                    console.log(blkName);
                     var doBlkData = blockObjs[doNames[d]];
                     if (typeof(doBlkData[1][1]) == 'string') {
                         if (doBlkData[1][1] == oldName) {
-                            console.log('renaming to ' + name);
+                            console.log('renaming ' + oldName + ' to ' + name);
                             doBlkData[1][1] = name;
                         }
                     } else {
                         if (doBlkData[1][1]['value'] == oldName) {
-                            console.log('renaming to ' + name);
+                            console.log('renaming ' + oldName + ' to ' + name);
                             doBlkData[1][1] = {'value': name};
                         }
                     }
@@ -1936,8 +1948,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Append to the current set of blocks.
         this.adjustTheseDocks = [];
         this.loadCounter = blockObjs.length;
-        console.log(this.loadCounter + ' blocks to load');
+        // We add new blocks to the end of the block list.
         var blockOffset = this.blockList.length;
+
+        console.log(this.loadCounter + ' blocks to load');
         for (var b = 0; b < this.loadCounter; b++) {
             var thisBlock = blockOffset + b;
             var blkData = blockObjs[b];
@@ -2195,6 +2209,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
             }
         }
+	if (checkTwoArgBlocks.length > 0) {
+            for (b = 0; b < checkTwoArgBlocks.length; b++) {
+                this.adjustExpandableTwoArgBlock([checkTwoArgBlocks[b]]);
+            }
+	}
     }
 
     this.cleanupAfterLoad = function() {

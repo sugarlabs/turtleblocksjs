@@ -382,7 +382,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     namedboxBlock.dockTypes[0] = 'anyout';
 
     var actionBlock = new ProtoBlock('action');
-    actionBlock.palette = palettes.dict['blocks'];
+    actionBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['action'] = actionBlock;
     actionBlock.staticLabels.push(_('action'));
     actionBlock.extraWidth = 25;
@@ -391,7 +391,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     actionBlock.defaults.push(_('action'));
 
     var nameddoBlock = new ProtoBlock('nameddo');
-    nameddoBlock.palette = palettes.dict['blocks'];
+    nameddoBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['nameddo'] = nameddoBlock;
     nameddoBlock.staticLabels.push(_('action'));
     nameddoBlock.extraWidth = 10;
@@ -399,7 +399,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     nameddoBlock.zeroArgBlock();
 
     var startBlock = new ProtoBlock('start');
-    startBlock.palette = palettes.dict['blocks'];
+    startBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['start'] = startBlock;
     startBlock.staticLabels.push(_('start'));
     startBlock.extraWidth = 10;
@@ -437,7 +437,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.dockTypes[1] = 'anyin';
 
     var doBlock = new ProtoBlock('do');
-    doBlock.palette = palettes.dict['blocks'];
+    doBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['do'] = doBlock;
     doBlock.staticLabels.push(_('do'));
     doBlock.adjustWidthToLabel();
@@ -804,7 +804,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     audioStopBlock.zeroArgBlock();
 
     var listenBlock = new ProtoBlock('listen');
-    listenBlock.palette = palettes.dict['blocks'];
+    listenBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['listen'] = listenBlock;
     listenBlock.staticLabels.push(_('on'), _('event'), _('do'));
     listenBlock.adjustWidthToLabel();
@@ -815,7 +815,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     listenBlock.dockTypes[2] = 'textin';
 
     var dispatchBlock = new ProtoBlock('dispatch');
-    dispatchBlock.palette = palettes.dict['blocks'];
+    dispatchBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['dispatch'] = dispatchBlock;
     dispatchBlock.staticLabels.push(_('broadcast'));
     dispatchBlock.adjustWidthToLabel();

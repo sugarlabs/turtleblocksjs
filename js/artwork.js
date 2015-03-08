@@ -110,6 +110,7 @@ var PALETTEFILLCOLORS = {
     'turtle': '#00b700',
     'pen': '#00c0e7',
     'blocks': '#ffc000',
+    'actions': '#ffc000',
     'media': '#987aff',
     'number': '#ff00ff',
     'boolean': '#ff00ff',
@@ -123,6 +124,7 @@ var PALETTESTROKECOLORS = {
     'turtle': '#007b00',
     'pen': '#0081a9',
     'blocks': '#c48d00',
+    'actions': '#c48d00',
     'media': '#8000fe',
     'number': '#c700d3',
     'boolean': '#c700d3',
@@ -136,6 +138,7 @@ var PALETTEHIGHLIGHTCOLORS = {
     'turtle': '#00f200',
     'pen': '#00f2ff',
     'blocks': '#ffdc00',
+    'actions': '#ffdc00',
     'media': '#c8c0ff',
     'number': '#ff9fff',
     'boolean': '#ff9fff',
@@ -149,6 +152,7 @@ var HIGHLIGHTSTROKECOLORS = {
     'turtle': '#004300',
     'pen': '#004463',
     'blocks': '#472d00',
+    'actions': '#472d00',
     'media': '#7100dd',
     'number': '#9300a3',
     'boolean': '#9300a3',
@@ -176,6 +180,8 @@ var FLOWPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height
 
 var BLOCKSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <path d="m 15.719636,31.331478 0.114372,5.261133 11.437247,6.290486 L 27.5,29.387146" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="m 27.728744,29.501519 0.05719,13.381578 11.723178,-7.548583 0,-4.689272 -5.947368,3.545548" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="m 10.001012,27.328441 5.604251,-5.146761 -5.832996,-2.973684 12.123482,-7.091093 5.718623,3.316801 5.489879,-3.088056 12.123482,7.319838 -5.832996,2.401822 5.489878,5.032388 -11.322874,7.205466 -5.947369,-5.261134 -6.290485,5.261134 -11.322875,-6.976721 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="M 16.40587,21.952935 27.156883,15.204959 38.937247,22.067308 27.614372,28.815283 16.40587,21.952935 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> </svg>';
 
+var ACTIONSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <path d="m 5.8333331,25.833333 0,-6.666667 A 6.6666667,6.6666667 0 0 1 12.5,12.5 l 6.666667,0 0,3.333333 16.666666,0 0,-3.333333 6.666667,0 a 6.6666667,6.6666667 0 0 1 6.666667,6.666666 l 0,6.666667 0,6.666667 A 6.6666667,6.6666667 0 0 1 42.5,39.166666 l -6.666667,0 -1.666666,0 0,3.333334 -13.333334,0 0,-3.333334 -1.666666,0 -6.666667,0 A 6.6666667,6.6666667 0 0 1 5.8333331,32.5 l 0,-6.666667 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> </svg>';
+
 var MEDIAPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <g transform="matrix(0.67,0,0,0.67,9.075,9.075)"> <path d="m 46.7405,44.669 c 0,2.511 -1.528,4.331 -4.332,4.331 l -29.457,0 0,-43 29.458,0 c 2.15,0 4.332,2.154 4.332,4.33 l -0.001,34.339 0,0 z" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <line style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" x1="22.2155" x2="22.2155" y1="6.1209998" y2="48.881001" /> <path d="m 8.2585,14.464 c 0,0 2.084,0.695 4.17,0.695 2.086,0 4.173,-0.695 4.173,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <path d="m 8.2585,28.021 c 0,0 1.912,0.695 4.345,0.695 2.433,0 3.999,-0.695 3.999,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <path d="m 8.2585,41.232 c 0,0 1.736,0.695 4.518,0.695 2.781,0 3.825,-0.695 3.825,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> </g> </svg> ';
 
 var SENSORSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"> <g transform="matrix(0.87078705,0,0,0.87078705,3.2821055,2.9298726)" style="display:block"> <line y2="23.993" y1="32.438999" x2="16.966999" x1="16.966999" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round" /> <line y2="28.215" y1="28.215" x2="34.938" x1="29.636999" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round" /> <rect width="9.7939997" height="7.599" x="42.157001" y="24.312" style="fill:#ffffff;stroke:#ffffff;stroke-width:2.25;stroke-linecap:round" /> <path d="m 16.967,23.993 c 0,-2.334 -1.892,-4.224 -4.224,-4.224 -2.332,0 -4.223,1.889 -4.223,4.224" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 25.413,32.439 c 0,2.334 -1.891,4.224 -4.224,4.224 -2.332,0 -4.223,-1.89 -4.223,-4.224" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 25.413,32.439 c 0,-2.332 1.893,-4.226 4.224,-4.226" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <path d="m 8.52,23.993 c 0,2.332 -1.892,4.222 -4.223,4.222" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> <rect width="14.477" height="11.35" x="31.945" y="22.438" style="fill:#ffffff;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" /> </g></svg> ';
@@ -191,6 +197,7 @@ var PALETTEICONS = {
     'boolean': BOOLEANPALETTEICON,
     'flow': FLOWPALETTEICON,
     'blocks': BLOCKSPALETTEICON,
+    'actions': ACTIONSPALETTEICON,
     'media': MEDIAPALETTEICON,
     'sensors': SENSORSPALETTEICON,
     'extras': EXTRASPALETTEICON,

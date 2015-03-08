@@ -283,6 +283,7 @@
   * Now adding store in blocks when needed on loading new projects.
   * Fixed one more corner case in auto-block expansion when loading new
     projects.
+  * Split ever expanding boxes palette into boxes and actions palettes.
 
 TODO:
   * Make standalone do blocks (similar to standalone boxes)

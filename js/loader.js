@@ -8,6 +8,7 @@ requirejs.config({
     paths: {
         activity: "../js",
         easel: "../lib/easeljs",
+        twewn: "../lib/tweenjs",
     }
 });
 

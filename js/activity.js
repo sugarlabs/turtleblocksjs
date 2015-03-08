@@ -21,6 +21,7 @@ if (lang.indexOf("-") != -1) {
 
 define(function(require) {
     require('easeljs');
+    require('tweenjs');
     require('preloadjs');
     require('howler');
     require('p5.sound');
@@ -281,6 +282,9 @@ define(function(require) {
             stage = new createjs.Stage(canvas);
             createjs.Touch.enable(stage);
 
+            createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
+		    createjs.Ticker.setFPS(30);
+            createjs.Ticker.addEventListener('tick', stage);
             createjs.Ticker.addEventListener('tick', tick);
 
             createMsgContainer('#ffffff', '#7a7a7a', function(text) {
@@ -1397,21 +1401,18 @@ define(function(require) {
             doMenuAnimation(1);
         }
 
-        function doMenuAnimation(count) {
-            if (count < 10) {
-                var bitmap = last(menuContainer.children);
-                if (bitmap !== null) {
-                    bitmap.rotation += 10;
-                    bitmap.updateCache();
-                    update = true;
-                } else {
-                    // Race conditions during load
-                    count = 0;
-                }
-                setTimeout(function() {
-                    doMenuAnimation(count + 1);
-                }, 50);
+        function doMenuAnimation() {
+            var bitmap = last(menuContainer.children);
+            if (bitmap !== null) {
+                var r = bitmap.rotation;
+                createjs.Tween.get(bitmap)
+                    .to({rotation: r})
+                    .to({rotation: r + 90}, 500);
             } else {
+                // Race conditions during load
+                setTimeout(doMenuAnimation, 50);
+            }
+            setTimeout(function() {
                 if (menuButtonsVisible) {
                     menuButtonsVisible = false;
                     for (button in onscreenMenu) {
@@ -1424,7 +1425,7 @@ define(function(require) {
                     }
                 }
                 update = true;
-            }
+            }, 500);
         }
 
         function toggleToolbar() {
@@ -1494,7 +1495,11 @@ define(function(require) {
                     y: container.y - Math.round(event.stageY / blocks.scale)
                 };
 
+                var circles = showMaterialHighlight(ox, oy, cellSize / 2,
+                                                    event, scale, stage);
                 container.on('pressup', function(event) {
+                    hideMaterialHighlight(circles, stage);
+
                     container.x = ox;
                     container.y = oy;
                     if (action != null && moved && !locked) {
@@ -1505,13 +1510,6 @@ define(function(require) {
                         action();
                     }
                     moved = false;
-                });
-
-                container.on('pressmove', function(event) {
-                    moved = true;
-                    container.x = Math.round(event.stageX / blocks.scale) + offset.x;
-                    container.y = Math.round(event.stageY / blocks.scale) + offset.y;
-                    update = true;
                 });
             });
         }

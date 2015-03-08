@@ -70,7 +70,6 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     // The collection of palettes.
     this.dict = {};
     this.buttons = {}; // The toolbar button for each palette.
-    this.highlightBitmaps = {};
 
     this.visible = true;
     this.scale = 1.0;
@@ -141,38 +140,26 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
                 this.y += this.cellSize;
                 var me = this;
 
-                function processHighlightButton(me, name, bitmap, extras) {
+                function processButtonIcon(me, name, bitmap, extras) {
+                    me.buttons[name].addChild(bitmap);
                     if (me.cellSize != me.originalSize) {
                         bitmap.scaleX = me.cellSize / me.originalSize;
                         bitmap.scaleY = me.cellSize / me.originalSize;
                     }
-                    me.highlightBitmaps[name] = bitmap;
-                    me.buttons[name].addChild(me.highlightBitmaps[name]);
-                    me.highlightBitmaps[name].visible = false;
 
-                    function processButtonIcon(me, name, bitmap, extras) {
-                        me.buttons[name].addChild(bitmap);
-                        if (me.cellSize != me.originalSize) {
-                            bitmap.scaleX = me.cellSize / me.originalSize;
-                            bitmap.scaleY = me.cellSize / me.originalSize;
-                        }
+                    var hitArea = new createjs.Shape();
+                    hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
+                    hitArea.x = me.halfCellSize;
+                    hitArea.y = me.halfCellSize;
+                    me.buttons[name].hitArea = hitArea;
+                    me.buttons[name].visible = false;
 
-                        var hitArea = new createjs.Shape();
-                        hitArea.graphics.beginFill('#FFF').drawEllipse(-me.halfCellSize, -me.halfCellSize, me.cellSize, me.cellSize);
-                        hitArea.x = me.halfCellSize;
-                        hitArea.y = me.halfCellSize;
-                        me.buttons[name].hitArea = hitArea;
-                        me.buttons[name].visible = false;
-
-                        me.dict[name].makeMenu(false);
-                        me.dict[name].moveMenu(me.cellSize, me.cellSize);
-                        me.dict[name].updateMenu(false);
-                        loadPaletteButtonHandler(me, name);
-                    }
-                    makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
+                    me.dict[name].makeMenu(false);
+                    me.dict[name].moveMenu(me.cellSize, me.cellSize);
+                    me.dict[name].updateMenu(false);
+                    loadPaletteButtonHandler(me, name);
                 }
-                makePaletteBitmap(me, PALETTEBUTTON.replace('fill_color', '#4d4d4d'), name, processHighlightButton, null);
-
+                makePaletteBitmap(me, PALETTEICONS[name], name, processButtonIcon, null);
             }
         }
     }
@@ -310,20 +297,20 @@ function loadPaletteButtonHandler(palettes, name) {
 
 
     // A palette button opens or closes a palette.
+    var circles = {};
     palettes.buttons[name].on('mouseover', function(event) {
-        palettes.highlightBitmaps[name].visible = true;
-        palettes.refreshCanvas();
+        var r = palettes.cellSize / 2;
+        circles = showMaterialHighlight(
+            palettes.buttons[name].x + r, palettes.buttons[name].y + r, r,
+            event, palettes.scale, palettes.stage);
     });
 
     palettes.buttons[name].on('pressup', function(event) {
-        palettes.highlightBitmaps[name].visible = false;
-        palettes.refreshCanvas();
+        hideMaterialHighlight(circles, palettes.stage);
     });
 
     palettes.buttons[name].on('mouseout', function(event) {
-
-        palettes.highlightBitmaps[name].visible = false;
-        palettes.refreshCanvas();
+        hideMaterialHighlight(circles, palettes.stage);
     });
 
     palettes.buttons[name].on('click', function(event) {

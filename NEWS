@@ -278,6 +278,7 @@
   * Put vspace blocks in trash after removing them.
   * Expand two-arg blocks on load.
   * More eye-candy by Sam Parkinson
+  * Bad/missing thumbnails no longer break the Planet (Abhinav Anurag).
   * Restored booleanOneArg protoblocks.
 
 TODO:
@@ -312,5 +313,5 @@ KNOWN BUGS:
   * Music block doesn't work on Android
   * Cannot open plugins loader on Android
   * Sometimes returning to backgrounded project results in empty project
-  * Bad/missing thumbnails break the Planet.
   * Loading macros there is a funny collapsed state sometimes.
+  * Sometimes the protoblock doesn't return to the palette after dragging.

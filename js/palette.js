@@ -286,7 +286,7 @@ function loadPaletteButtonHandler(palettes, name) {
             }
 
             diff = event.stageY - lastY;
-            palettes.menuScrollEvent(diff, 1);
+            palettes.menuScrollEvent(diff, 10);
             lastY = event.stageY;
         });
 
@@ -363,6 +363,7 @@ function Palette(palettes, name) {
         if (!createHeader) {
             return;
         };
+        
         var paletteWidth = MENUWIDTH + (this.columns * 160);
         this.menuContainer.removeAllChildren();
 
@@ -397,7 +398,7 @@ function Palette(palettes, name) {
                         bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                         palette.palettes.stage.addChild(bitmap);
                         bitmap.x = palette.menuContainer.x + paletteWidth;
-                        bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;
+                        bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;;    
 
                         var hitArea = new createjs.Shape();
                         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
@@ -407,14 +408,14 @@ function Palette(palettes, name) {
                         bitmap.visible = false;
                         palette.upButton = bitmap;
                         palette.upButton.on('click', function(event) {
-                            palette.scrollEvent(STANDARDBLOCKHEIGHT, 1);
+                        palette.scrollEvent(STANDARDBLOCKHEIGHT, 10);
                         });
 
                         function processDownIcon(palette, name, bitmap, extras) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                             palette.palettes.stage.addChild(bitmap);
-                            bitmap.x = palette.menuContainer.x + paletteWidth;
-                            bitmap.y = palette.getDownButtonY();
+                            bitmap.x = palette.menuContainer.x + paletteWidth + 50;
+                            bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;;    
 
                             var hitArea = new createjs.Shape();
                             hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
@@ -424,12 +425,12 @@ function Palette(palettes, name) {
                             bitmap.visible = false;
                             palette.downButton = bitmap;
                             palette.downButton.on('click', function(event) {
-                                palette.scrollEvent(-STANDARDBLOCKHEIGHT, 1);
+                                palette.scrollEvent(-STANDARDBLOCKHEIGHT, 10);
                             });
                         } 
-                        makePaletteBitmap(palette, DOWNICON, name, processDownIcon, null);
+                        makePaletteBitmap(palette, FORWARDICON, name, processDownIcon, null);
                     } 
-                    makePaletteBitmap(palette, UPICON, name, processUpIcon, null);
+                    makePaletteBitmap(palette, BACKWARDICON, name, processUpIcon, null);
                 }
                 makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
             }
@@ -451,10 +452,6 @@ function Palette(palettes, name) {
     this.resizeEvent = function() {
         this.updateBackground();
         this.updateBlockMasks();
-
-        if (this.downButton !== null) {
-            this.downButton.y = this.getDownButtonY();
-        }
     }
 
     this.updateBlockMasks = function() {
@@ -575,7 +572,7 @@ function Palette(palettes, name) {
 
                 calculateContainerXY(this)
 
-                this.protoContainers[modname].x = this.menuContainer.x;
+                this.protoContainers[modname].x = this.menuContainer.x + STANDARDBLOCKHEIGHT;
                 this.protoContainers[modname].y = this.menuContainer.y + this.y + this.scrollDiff + STANDARDBLOCKHEIGHT;
                 this.palettes.stage.addChild(this.protoContainers[modname]);
                 this.protoContainers[modname].visible = false;
@@ -823,7 +820,7 @@ function Palette(palettes, name) {
             this.background.visible = true;
         }
         // Use scroll position to determine visibility
-        this.scrollEvent(0, 1);
+        this.scrollEvent(0, 10);
         this.visible = true;
     }
 
@@ -865,23 +862,47 @@ function Palette(palettes, name) {
             return;
         }
         if (this.scrollDiff + diff > 0 && direction > 0) {
-            this.upButton.visible = false;
-            this.downButton.visible = true;
-            return;
+            var x =  - this.scrollDiff;
+            if(x == 0)
+            {
+                this.downButton.visible = true;
+                this.upButton.visible = false;
+                return;
+            }
+            this.scrollDiff += x;
+            for (var i in this.protoContainers) {
+            this.protoContainers[i].y += x;
+            this.protoContainers[i].visible = true;
+        
+            }
         }
-        if (this.y + this.scrollDiff < h && direction < 0) {
+        else if (this.y + this.scrollDiff +diff < h && direction < 0) {
+            var x = -this.y + h - this.scrollDiff;
+            if(x == 0)
+            {
+                this.upButton.visible = true;
+                this.downButton.visible = false;
+                return;
+            }
+            this.scrollDiff += -this.y + h - this.scrollDiff;
+
+            for (var i in this.protoContainers) {
+                this.protoContainers[i].y += x;
+                this.protoContainers[i].visible = true;
+            }
+        }
+
+        else
+        {
+            this.scrollDiff += diff;
+            
             this.upButton.visible = true;
-            this.downButton.visible = false;
-            return;
-        }
+            this.downButton.visible = true;
 
-        this.upButton.visible = true;
-        this.downButton.visible = true;
-
-        this.scrollDiff += diff;
         for (var i in this.protoContainers) {
             this.protoContainers[i].y += diff;
             this.protoContainers[i].visible = true;
+            }
         }
         this.updateBlockMasks();
 
@@ -954,7 +975,7 @@ function setupBackgroundEvents(palette) {
             }
 
             var diff = event.stageY - lastY;
-            palette.scrollEvent(diff, 1);
+            palette.scrollEvent(diff, 10);
             lastY = event.stageY;
         });
 
@@ -1060,7 +1081,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
 
             if (mode === MODESCROLL) {
                 var diff = event.stageY - lastY;
-                palette.scrollEvent(diff, 1);
+                palette.scrollEvent(diff, 10);
                 lastY = event.stageY;
                 return;
             }

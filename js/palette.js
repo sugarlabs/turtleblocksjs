@@ -398,7 +398,7 @@ function Palette(palettes, name) {
                         bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                         palette.palettes.stage.addChild(bitmap);
                         bitmap.x = palette.menuContainer.x + paletteWidth;
-                        bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;;    
+                        bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;    
 
                         var hitArea = new createjs.Shape();
                         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
@@ -415,7 +415,7 @@ function Palette(palettes, name) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                             palette.palettes.stage.addChild(bitmap);
                             bitmap.x = palette.menuContainer.x + paletteWidth + 50;
-                            bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;;    
+                            bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;    
 
                             var hitArea = new createjs.Shape();
                             hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
@@ -572,7 +572,7 @@ function Palette(palettes, name) {
 
                 calculateContainerXY(this)
 
-                this.protoContainers[modname].x = this.menuContainer.x + STANDARDBLOCKHEIGHT;
+                this.protoContainers[modname].x = this.menuContainer.x;
                 this.protoContainers[modname].y = this.menuContainer.y + this.y + this.scrollDiff + STANDARDBLOCKHEIGHT;
                 this.palettes.stage.addChild(this.protoContainers[modname]);
                 this.protoContainers[modname].visible = false;
@@ -909,7 +909,7 @@ function Palette(palettes, name) {
         var stage = this.palettes.stage;
         stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
         this.palettes.refreshCanvas();
-    }
+    } 
 
     this.getInfo = function() {
         var returnString = this.name + ' palette:';

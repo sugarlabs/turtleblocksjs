@@ -320,3 +320,5 @@ KNOWN BUGS:
   * Sometimes returning to backgrounded project results in empty project
   * Loading macros there is a funny collapsed state sometimes.
   * Sometimes the protoblock doesn't return to the palette after dragging.
+  * Does not open in Safari.
+  * Crashes the Browse activity on the XO.

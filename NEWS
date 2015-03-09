@@ -284,9 +284,9 @@
   * Fixed one more corner case in auto-block expansion when loading new
     projects.
   * Split ever expanding boxes palette into boxes and actions palettes.
+  * Added Named do blocks (similar to named boxes).
 
 TODO:
-  * Make standalone do blocks (similar to standalone boxes)
   * Save errors
   * Display rubrics
   * More efficient until and while?
@@ -303,6 +303,7 @@ TODO:
   * Do we need to add support for plugins init, quit, etc.?
   * Better interoperability with Python version
   * Sugar datastore/toolbar support
+  * Add city to long/city to lat block to gmap plugin.
 
 FEATURE IDEAS:
   * Local variables? (e.g., boxes only defined inside an action?) Note that

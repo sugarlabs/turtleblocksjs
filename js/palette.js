@@ -354,6 +354,8 @@ function Palette(palettes, name) {
     this.mouseHandled = false;
     this.upButton = null;
     this.downButton = null;
+    this.FadedUpButton = null;
+    this.FadedDownButton = null;
 
     this.makeMenu = function(createHeader) {
         if (this.menuContainer == null) {
@@ -363,7 +365,6 @@ function Palette(palettes, name) {
         if (!createHeader) {
             return;
         };
-        
         var paletteWidth = MENUWIDTH + (this.columns * 160);
         this.menuContainer.removeAllChildren();
 
@@ -398,7 +399,7 @@ function Palette(palettes, name) {
                         bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                         palette.palettes.stage.addChild(bitmap);
                         bitmap.x = palette.menuContainer.x + paletteWidth;
-                        bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;    
+                        bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;
 
                         var hitArea = new createjs.Shape();
                         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
@@ -408,14 +409,14 @@ function Palette(palettes, name) {
                         bitmap.visible = false;
                         palette.upButton = bitmap;
                         palette.upButton.on('click', function(event) {
-                        palette.scrollEvent(STANDARDBLOCKHEIGHT, 10);
+                            palette.scrollEvent(STANDARDBLOCKHEIGHT, 10);
                         });
 
                         function processDownIcon(palette, name, bitmap, extras) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                             palette.palettes.stage.addChild(bitmap);
-                            bitmap.x = palette.menuContainer.x + paletteWidth + 50;
-                            bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;    
+                            bitmap.x = palette.menuContainer.x + paletteWidth;
+                            bitmap.y = palette.getDownButtonY();
 
                             var hitArea = new createjs.Shape();
                             hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
@@ -428,9 +429,41 @@ function Palette(palettes, name) {
                                 palette.scrollEvent(-STANDARDBLOCKHEIGHT, 10);
                             });
                         } 
-                        makePaletteBitmap(palette, FORWARDICON, name, processDownIcon, null);
+                        makePaletteBitmap(palette, DOWNICON, name, processDownIcon, null);
+                    function makeFadedDownIcon(palette, name, bitmap, extras) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
+                            palette.palettes.stage.addChild(bitmap);
+                            bitmap.x = palette.menuContainer.x + paletteWidth;
+                            bitmap.y = palette.getDownButtonY();
+                           
+                            var hitArea = new createjs.Shape();
+                            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
+                            hitArea.x = 0;
+                            hitArea.y = 0;
+                            bitmap.hitArea = hitArea;
+                            bitmap.visible = false;
+                            palette.FadedDownButton = bitmap;
+                            
+                        } 
+                        makePaletteBitmap(palette, FADEDDOWNICON, name, makeFadedDownIcon, null);
+
+                        function makeFadedUpIcon(palette, name, bitmap, extras) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
+                            palette.palettes.stage.addChild(bitmap);
+                            bitmap.x = palette.menuContainer.x + paletteWidth;
+                            bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;   
+
+                            var hitArea = new createjs.Shape();
+                            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
+                            hitArea.x = 0;
+                            hitArea.y = 0;
+                            bitmap.hitArea = hitArea;
+                            bitmap.visible = false;
+                            palette.FadedUpButton = bitmap;
+                        } 
+                        makePaletteBitmap(palette, FADEDUPICON, name, makeFadedUpIcon, null);
                     } 
-                    makePaletteBitmap(palette, BACKWARDICON, name, processUpIcon, null);
+                    makePaletteBitmap(palette, UPICON, name, processUpIcon, null);
                 }
                 makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
             }
@@ -452,6 +485,10 @@ function Palette(palettes, name) {
     this.resizeEvent = function() {
         this.updateBackground();
         this.updateBlockMasks();
+
+        if (this.downButton !== null) {
+            this.downButton.y = this.getDownButtonY();
+        }
     }
 
     this.updateBlockMasks = function() {
@@ -727,7 +764,7 @@ function Palette(palettes, name) {
                         }
                     }
 
-                    if (myBlock.name == 'do') {
+                    if (['do', 'nameddo', 'namedbox'].indexOf(myBlock.name) != -1) {
                         if (block_label.length > 8) {
                             block_label = block_label.substr(0, 7) + '...';
                         }
@@ -807,6 +844,8 @@ function Palette(palettes, name) {
         if (this.upButton != null) {
             this.upButton.visible = false;
             this.downButton.visible = false;
+            this.FadedUpButton.visible = false;
+            this.FadedDownButton.visible = false;
         }
         this.visible = false;
     }
@@ -849,10 +888,13 @@ function Palette(palettes, name) {
             this.upButton.y += dy;
             this.downButton.x += dx;
             this.downButton.y += dy;
+            this.FadedUpButton.x += dx;
+            this.FadedUpButton.y += dy;
+            this.FadedDownButton.x += dx;
+            this.FadedDownButton.y += dy;
         }
     }
-
-    this.scrollEvent = function(direction, scrollSpeed) {
+this.scrollEvent = function(direction, scrollSpeed) {
         var diff = direction * scrollSpeed;
         var h = Math.min(maxPaletteHeight(this.palettes.cellSize, this.palettes.scale), this.y);
 
@@ -863,17 +905,33 @@ function Palette(palettes, name) {
         }
         if (this.scrollDiff + diff > 0 && direction > 0) {
             var x =  - this.scrollDiff;
+
             if(x == 0)
             {
                 this.downButton.visible = true;
                 this.upButton.visible = false;
+                this.FadedUpButton.visible = true;
+                this.FadedDownButton.visible = false;
+                
                 return;
             }
+            
             this.scrollDiff += x;
+            this.FadedDownButton.visible = false;
+            this.downButton.visible = true;
+            
             for (var i in this.protoContainers) {
             this.protoContainers[i].y += x;
             this.protoContainers[i].visible = true;
         
+            if(this.scrollDiff == 0)
+            {
+                this.downButton.visible = true;
+                this.upButton.visible = false;
+                this.FadedUpButton.visible = true;
+                this.FadedDownButton.visible = false;
+                
+            }
             }
         }
         else if (this.y + this.scrollDiff +diff < h && direction < 0) {
@@ -882,20 +940,36 @@ function Palette(palettes, name) {
             {
                 this.upButton.visible = true;
                 this.downButton.visible = false;
+                this.FadedDownButton.visible = true;
+                this.FadedUpButton.visible = false;
+                
                 return;
             }
             this.scrollDiff += -this.y + h - this.scrollDiff;
-
+            this.FadedUpButton.visible = false;
+            this.upButton.visible = true;
+            
             for (var i in this.protoContainers) {
                 this.protoContainers[i].y += x;
                 this.protoContainers[i].visible = true;
             }
+
+            if(-this.y + h - this.scrollDiff == 0)
+            {
+                this.upButton.visible   = true;
+                this.downButton.visible = false;
+                this.FadedDownButton.visible = true;
+                this.FadedUpButton.visible = false;
+                
+            }
+
         }
 
         else
         {
             this.scrollDiff += diff;
-            
+            this.FadedUpButton.visible = false;
+            this.FadedDownButton.visible = false;
             this.upButton.visible = true;
             this.downButton.visible = true;
 
@@ -910,6 +984,7 @@ function Palette(palettes, name) {
         stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
         this.palettes.refreshCanvas();
     } 
+
 
     this.getInfo = function() {
         var returnString = this.name + ' palette:';

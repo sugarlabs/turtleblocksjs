@@ -289,11 +289,11 @@ define(function(require) {
 
             createMsgContainer('#ffffff', '#7a7a7a', function(text) {
                 msgText = text;
-            });
+            }, 55);
 
             createMsgContainer('#ffcbc4', '#ff0031', function(text) {
                 errorMsgText = text;
-            });
+            }, 110);
 
             /* Z-Order (top to bottom):
              *   menus
@@ -559,11 +559,11 @@ define(function(require) {
             return bitmap;
         };
 
-        function createMsgContainer(fillColor, strokeColor, callback) {
+        function createMsgContainer(fillColor, strokeColor, callback, y) {
             var container = new createjs.Container();
             stage.addChild(container);
             container.x = (canvas.width - 1000) / 2;
-            container.y = 110;
+            container.y = y;
             container.visible = false;
             var img = new Image();
             var svgData = MSGBLOCK.replace('fill_color', fillColor).replace(

@@ -356,6 +356,7 @@ function Palette(palettes, name) {
     this.downButton = null;
     this.FadedUpButton = null;
     this.FadedDownButton = null;
+    this.count = 0;
 
     this.makeMenu = function(createHeader) {
         if (this.menuContainer == null) {
@@ -851,6 +852,8 @@ function Palette(palettes, name) {
     }
 
     this.showMenuItems = function(init) {
+        if(this.scrollDiff == 0)
+            this.count = 0;
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = true;
         }
@@ -901,6 +904,8 @@ this.scrollEvent = function(direction, scrollSpeed) {
         if (this.y < maxPaletteHeight(this.palettes.cellSize, this.palettes.scale)) {
             this.upButton.visible = false;
             this.downButton.visible = false;
+            this.FadedUpButton.visible = false;
+            this.FadedDownButton.visible = false;
             return;
         }
         if (this.scrollDiff + diff > 0 && direction > 0) {
@@ -964,7 +969,12 @@ this.scrollEvent = function(direction, scrollSpeed) {
             }
 
         }
-
+        else if(this.count == 0){
+            this.FadedUpButton.visible = true;
+            this.FadedDownButton.visible = false;
+            this.upButton.visible = false;
+            this.downButton.visible = true;
+        }
         else
         {
             this.scrollDiff += diff;
@@ -983,6 +993,7 @@ this.scrollEvent = function(direction, scrollSpeed) {
         var stage = this.palettes.stage;
         stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
         this.palettes.refreshCanvas();
+        this.count += 1;
     } 
 
 

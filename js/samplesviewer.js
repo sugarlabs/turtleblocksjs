@@ -70,7 +70,6 @@ function PlanetModel(controller) {
     this.localProjects = [];
     this.globalProjects = [];
     this.localChanged = false;
-    this.globalImagesCache = {};
     this.updated = function () {};
     this.stop = false;
     var me = this;
@@ -96,49 +95,18 @@ function PlanetModel(controller) {
             me.stop = false;
 
             var todo = [];
-            l.forEach(function (name, i) {
-                if (name.indexOf('.b64') !== -1) 	{
-                    todo.push(name);
+            l.forEach(function (file) {
+                if (file.indexOf('.b64') !== -1) 	{
+                    var name = file.replace('.b64', '');
+                    me.globalProjects.push({
+                        title: name,
+                        img: server + file
+                    });
                 }
             });
 
-            me.getImages(todo);
-        });
-    }
-
-    this.getImages = function (todo) {
-        if (me.stop === true) {
-            return;
-        }
-
-        var image = todo.pop();
-        if (image === undefined) {
-            return;
-        }
-        var name = image.replace('.b64', '');
-
-        if (me.globalImagesCache[image] !== undefined) {
-            me.globalProjects.push({title: name,
-                                    img: me.globalImagesCache[image]});
             me.updated();
-            me.getImages(todo);
-        } else {
-            jQuery.ajax({
-  	            url: server + image,
-                headers: {
-                    'x-api-key' : '3tgTzMXbbw6xEKX7'
-                },
-                dataType: 'text'
-            }).done(function (d) {
-                if(!validateImageData(d)){
-                    d = EMPTYIMAGE;
-                }
-                me.globalImagesCache[image] = d;
-                me.globalProjects.push({title: name, img: d, url: image});
-                me.updated();
-                me.getImages(todo);
-            });
-      }
+        });
     }
 
     this.redoLocalStorageData = function () {

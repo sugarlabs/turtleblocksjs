@@ -730,7 +730,7 @@ function Palette(palettes, name) {
                         }
                     }
 
-                    if (myBlock.name == 'do') {
+                    if (['do', 'nameddo', 'namedbox'].indexOf(myBlock.name) != -1) {
                         if (block_label.length > 8) {
                             block_label = block_label.substr(0, 7) + '...';
                         }

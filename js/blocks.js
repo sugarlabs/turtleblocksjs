@@ -90,7 +90,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     // Two-arg blocks with two arguments (expandable).
     this.twoArgBlocks = [];
     // Blocks that don't run when clicked.
-    this.noRunBlocks = ['action'];
+    this.noRunBlocks = [];
 
     // We need to know if we are processing a copy or save stack command.
     this.inLongPress = false;

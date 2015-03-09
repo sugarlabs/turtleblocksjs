@@ -285,6 +285,7 @@
     projects.
   * Split ever expanding boxes palette into boxes and actions palettes.
   * Added Named do blocks (similar to named boxes).
+  * Allow for clicking on Action Blocks.
 
 TODO:
   * Save errors

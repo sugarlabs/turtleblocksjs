@@ -557,6 +557,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     logo.stopTurtle = true;
                 }
                 break;
+            // if we clicked on an action block, treat it like a do block.
+            case 'action':
             case 'do':
                 if (args.length == 1) {
                     if (args[0] in logo.actions) {

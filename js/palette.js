@@ -286,7 +286,7 @@ function loadPaletteButtonHandler(palettes, name) {
             }
 
             diff = event.stageY - lastY;
-            palettes.menuScrollEvent(diff, 1);
+            palettes.menuScrollEvent(diff, 10);
             lastY = event.stageY;
         });
 
@@ -354,6 +354,9 @@ function Palette(palettes, name) {
     this.mouseHandled = false;
     this.upButton = null;
     this.downButton = null;
+    this.FadedUpButton = null;
+    this.FadedDownButton = null;
+    this.count = 0;
 
     this.makeMenu = function(createHeader) {
         if (this.menuContainer == null) {
@@ -407,7 +410,7 @@ function Palette(palettes, name) {
                         bitmap.visible = false;
                         palette.upButton = bitmap;
                         palette.upButton.on('click', function(event) {
-                            palette.scrollEvent(STANDARDBLOCKHEIGHT, 1);
+                            palette.scrollEvent(STANDARDBLOCKHEIGHT, 10);
                         });
 
                         function processDownIcon(palette, name, bitmap, extras) {
@@ -424,10 +427,42 @@ function Palette(palettes, name) {
                             bitmap.visible = false;
                             palette.downButton = bitmap;
                             palette.downButton.on('click', function(event) {
-                                palette.scrollEvent(-STANDARDBLOCKHEIGHT, 1);
+                                palette.scrollEvent(-STANDARDBLOCKHEIGHT, 10);
                             });
                         } 
                         makePaletteBitmap(palette, DOWNICON, name, processDownIcon, null);
+                    function makeFadedDownIcon(palette, name, bitmap, extras) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
+                            palette.palettes.stage.addChild(bitmap);
+                            bitmap.x = palette.menuContainer.x + paletteWidth;
+                            bitmap.y = palette.getDownButtonY();
+                           
+                            var hitArea = new createjs.Shape();
+                            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
+                            hitArea.x = 0;
+                            hitArea.y = 0;
+                            bitmap.hitArea = hitArea;
+                            bitmap.visible = false;
+                            palette.FadedDownButton = bitmap;
+                            
+                        } 
+                        makePaletteBitmap(palette, FADEDDOWNICON, name, makeFadedDownIcon, null);
+
+                        function makeFadedUpIcon(palette, name, bitmap, extras) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
+                            palette.palettes.stage.addChild(bitmap);
+                            bitmap.x = palette.menuContainer.x + paletteWidth;
+                            bitmap.y = palette.menuContainer.y + STANDARDBLOCKHEIGHT;   
+
+                            var hitArea = new createjs.Shape();
+                            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, STANDARDBLOCKHEIGHT, STANDARDBLOCKHEIGHT);
+                            hitArea.x = 0;
+                            hitArea.y = 0;
+                            bitmap.hitArea = hitArea;
+                            bitmap.visible = false;
+                            palette.FadedUpButton = bitmap;
+                        } 
+                        makePaletteBitmap(palette, FADEDUPICON, name, makeFadedUpIcon, null);
                     } 
                     makePaletteBitmap(palette, UPICON, name, processUpIcon, null);
                 }
@@ -810,11 +845,15 @@ function Palette(palettes, name) {
         if (this.upButton != null) {
             this.upButton.visible = false;
             this.downButton.visible = false;
+            this.FadedUpButton.visible = false;
+            this.FadedDownButton.visible = false;
         }
         this.visible = false;
     }
 
     this.showMenuItems = function(init) {
+        if(this.scrollDiff == 0)
+            this.count = 0;
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = true;
         }
@@ -823,7 +862,7 @@ function Palette(palettes, name) {
             this.background.visible = true;
         }
         // Use scroll position to determine visibility
-        this.scrollEvent(0, 1);
+        this.scrollEvent(0, 10);
         this.visible = true;
     }
 
@@ -852,43 +891,111 @@ function Palette(palettes, name) {
             this.upButton.y += dy;
             this.downButton.x += dx;
             this.downButton.y += dy;
+            this.FadedUpButton.x += dx;
+            this.FadedUpButton.y += dy;
+            this.FadedDownButton.x += dx;
+            this.FadedDownButton.y += dy;
         }
     }
-
-    this.scrollEvent = function(direction, scrollSpeed) {
+this.scrollEvent = function(direction, scrollSpeed) {
         var diff = direction * scrollSpeed;
         var h = Math.min(maxPaletteHeight(this.palettes.cellSize, this.palettes.scale), this.y);
 
         if (this.y < maxPaletteHeight(this.palettes.cellSize, this.palettes.scale)) {
             this.upButton.visible = false;
             this.downButton.visible = false;
+            this.FadedUpButton.visible = false;
+            this.FadedDownButton.visible = false;
             return;
         }
         if (this.scrollDiff + diff > 0 && direction > 0) {
+            var x =  - this.scrollDiff;
+
+            if(x == 0)
+            {
+                this.downButton.visible = true;
+                this.upButton.visible = false;
+                this.FadedUpButton.visible = true;
+                this.FadedDownButton.visible = false;
+                
+                return;
+            }
+            
+            this.scrollDiff += x;
+            this.FadedDownButton.visible = false;
+            this.downButton.visible = true;
+            
+            for (var i in this.protoContainers) {
+            this.protoContainers[i].y += x;
+            this.protoContainers[i].visible = true;
+        
+            if(this.scrollDiff == 0)
+            {
+                this.downButton.visible = true;
+                this.upButton.visible = false;
+                this.FadedUpButton.visible = true;
+                this.FadedDownButton.visible = false;
+                
+            }
+            }
+        }
+        else if (this.y + this.scrollDiff +diff < h && direction < 0) {
+            var x = -this.y + h - this.scrollDiff;
+            if(x == 0)
+            {
+                this.upButton.visible = true;
+                this.downButton.visible = false;
+                this.FadedDownButton.visible = true;
+                this.FadedUpButton.visible = false;
+                
+                return;
+            }
+            this.scrollDiff += -this.y + h - this.scrollDiff;
+            this.FadedUpButton.visible = false;
+            this.upButton.visible = true;
+            
+            for (var i in this.protoContainers) {
+                this.protoContainers[i].y += x;
+                this.protoContainers[i].visible = true;
+            }
+
+            if(-this.y + h - this.scrollDiff == 0)
+            {
+                this.upButton.visible   = true;
+                this.downButton.visible = false;
+                this.FadedDownButton.visible = true;
+                this.FadedUpButton.visible = false;
+                
+            }
+
+        }
+        else if(this.count == 0){
+            this.FadedUpButton.visible = true;
+            this.FadedDownButton.visible = false;
             this.upButton.visible = false;
             this.downButton.visible = true;
-            return;
         }
-        if (this.y + this.scrollDiff < h && direction < 0) {
+        else
+        {
+            this.scrollDiff += diff;
+            this.FadedUpButton.visible = false;
+            this.FadedDownButton.visible = false;
             this.upButton.visible = true;
-            this.downButton.visible = false;
-            return;
-        }
+            this.downButton.visible = true;
 
-        this.upButton.visible = true;
-        this.downButton.visible = true;
-
-        this.scrollDiff += diff;
         for (var i in this.protoContainers) {
             this.protoContainers[i].y += diff;
             this.protoContainers[i].visible = true;
+            }
         }
         this.updateBlockMasks();
 
         var stage = this.palettes.stage;
         stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
         this.palettes.refreshCanvas();
-    }
+        this.count += 1;
+    } 
+
 
     this.getInfo = function() {
         var returnString = this.name + ' palette:';
@@ -954,7 +1061,7 @@ function setupBackgroundEvents(palette) {
             }
 
             var diff = event.stageY - lastY;
-            palette.scrollEvent(diff, 1);
+            palette.scrollEvent(diff, 10);
             lastY = event.stageY;
         });
 
@@ -1060,7 +1167,7 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
 
             if (mode === MODESCROLL) {
                 var diff = event.stageY - lastY;
-                palette.scrollEvent(diff, 1);
+                palette.scrollEvent(diff, 10);
                 lastY = event.stageY;
                 return;
             }

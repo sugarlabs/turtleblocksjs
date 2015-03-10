@@ -272,6 +272,8 @@ define(function(require) {
         // ErrorMsg block
         var errorMsgText = null;
         var errorMsgArrow = null;
+        var errorArtwork = {};
+        var ERRORARTWORK = ['emptybox', 'emptyheap', 'negroot', 'noinput', 'zerodivide', 'notanumber', 'nostack'];
 
         // Get things started
         init();
@@ -283,7 +285,7 @@ define(function(require) {
             createjs.Touch.enable(stage);
 
             createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
-		    createjs.Ticker.setFPS(30);
+                    createjs.Ticker.setFPS(30);
             createjs.Ticker.addEventListener('tick', stage);
             createjs.Ticker.addEventListener('tick', tick);
 
@@ -294,6 +296,8 @@ define(function(require) {
             createMsgContainer('#ffcbc4', '#ff0031', function(text) {
                 errorMsgText = text;
             }, 110);
+
+            createErrorContainers();
 
             /* Z-Order (top to bottom):
              *   menus
@@ -353,7 +357,7 @@ define(function(require) {
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
                 var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
-		updatePluginObj(obj);
+                updatePluginObj(obj);
             }
 
             fileChooser.addEventListener('click', function(event) { this.value = null; });
@@ -565,6 +569,7 @@ define(function(require) {
             container.x = (canvas.width - 1000) / 2;
             container.y = y;
             container.visible = false;
+
             var img = new Image();
             var svgData = MSGBLOCK.replace('fill_color', fillColor).replace(
                 'stroke_color', strokeColor);
@@ -578,8 +583,10 @@ define(function(require) {
                 text.textBaseline = 'alphabetic';
                 text.x = 500;
                 text.y = 30;
+
                 var bounds = container.getBounds();
                 container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+
                 var hitArea = new createjs.Shape();
                 hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 1000, 42);
                 hitArea.x = 0;
@@ -601,6 +608,51 @@ define(function(require) {
             img.src = 'data:image/svg+xml;base64,' + window.btoa(
                 unescape(encodeURIComponent(svgData)));
         };
+
+        function createErrorContainers() {
+            // Some error messages have special artwork.
+            for (var i = 0; i < ERRORARTWORK.length; i++) {
+                var name = ERRORARTWORK[i];
+                makeErrorArtwork(name);
+            }
+        }
+
+        function makeErrorArtwork(name) {
+                var container = new createjs.Container();
+                stage.addChild(container);
+                container.x = (canvas.width - 1000) / 2;
+                container.y = 110;
+                errorArtwork[name] = container;
+                errorArtwork[name].name = name;
+                errorArtwork[name].visible = false;
+
+                var img = new Image();
+                img.onload = function() {
+                    console.log('creating error message artwork for ' + img.src);
+                    var artwork = new createjs.Bitmap(img);
+                    container.addChild(artwork);
+
+                    var bounds = container.getBounds();
+                    container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+
+                    var hitArea = new createjs.Shape();
+                    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
+                    hitArea.x = 0;
+                    hitArea.y = 0;
+                    container.hitArea = hitArea;
+
+                    container.on('click', function(event) {
+                        container.visible = false;
+                        // On the possibility that there was an error
+                        // arrow associated with this container
+                        if (errorMsgArrow !== null) {
+                            errorMsgArrow.removeAllChildren(); // Hide the error arrow.
+                        }
+                        update = true;
+                    });
+                }
+                img.src = 'images/' + name + '.svg';
+        }
 
         function keyPressed(event) {
             if (docById('labelDiv').classList.contains('hasKeyboard')) {
@@ -1015,6 +1067,9 @@ define(function(require) {
                 refreshCanvas();
             }
             msgText.parent.visible = false;
+            for(var i in errorArtwork) {
+                errorArtwork[i].visible = false;
+            }
         }
 
         function textMsg(msg) {
@@ -1034,10 +1089,6 @@ define(function(require) {
                 // The container may not be ready yet... so do nothing
                 return;
             }
-            var errorMsgContainer = errorMsgText.parent;
-            errorMsgContainer.visible = true;
-            errorMsgText.text = msg;
-            stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
 
             if (blk !== undefined && blk !== null
                 && !blocks.blockList[blk].collapsed) {
@@ -1055,7 +1106,6 @@ define(function(require) {
                 errorMsgArrow.addChild(line);
                 line.graphics.setStrokeStyle(4).beginStroke('#ff0031').moveTo(fromX, fromY).lineTo(toX, toY);
                 stage.setChildIndex(errorMsgArrow, stage.getNumChildren() - 1);
-                update = true;
 
                 var angle = Math.atan2(toX - fromX, fromY - toY) / Math.PI * 180;
                 var head = new createjs.Shape();
@@ -1066,8 +1116,45 @@ define(function(require) {
                 head.rotation = angle;
             }
 
-            stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
-            errorMsgContainer.updateCache();
+            switch (msg) {
+                case 'empty heap.':
+                    errorArtwork['emptyheap'].visible = true;
+                    stage.setChildIndex(errorArtwork['emptyheap'], stage.getNumChildren() - 1);
+                    break;
+                case 'Cannot take square root of negative number.':
+                    errorArtwork['negroot'].visible = true;
+                    stage.setChildIndex(errorArtwork['negroot'], stage.getNumChildren() - 1);
+                    break;
+		case 'Cannot find action.':
+                    errorArtwork['nostack'].visible = true;
+                    stage.setChildIndex(errorArtwork['nostack'], stage.getNumChildren() - 1);
+                    break;
+		case 'Cannot find box.':
+                    errorArtwork['emptybox'].visible = true;
+                    stage.setChildIndex(errorArtwork['emptybox'], stage.getNumChildren() - 1);
+                    break;
+                case 'Cannot divide by zero.':
+                    errorArtwork['zerodivide'].visible = true;
+                    stage.setChildIndex(errorArtwork['zerodivide'], stage.getNumChildren() - 1);
+                    break;
+                case 'Not a number.':
+                    errorArtwork['notanumber'].visible = true;
+                    stage.setChildIndex(errorArtwork['notanumber'], stage.getNumChildren() - 1);
+                    break;
+                case 'Missing argument.':
+                    errorArtwork['noinput'].visible = true;
+                    stage.setChildIndex(errorArtwork['noinput'], stage.getNumChildren() - 1);
+                    break;
+                default:
+                    var errorMsgContainer = errorMsgText.parent;
+                    errorMsgContainer.visible = true;
+                    errorMsgText.text = msg;
+                    stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
+                    errorMsgContainer.updateCache();
+                    break;
+            }
+
+            update = true;
         }
 
         function hideCartesian() {
@@ -1235,7 +1322,7 @@ define(function(require) {
             var dx = btnSize;
             var dy = 0;
 
-            for (name in buttonNames) {
+            for (var name in buttonNames) {
                 var container = makeButton(buttonNames[name][0] + '-button',
                     x, y, btnSize);
                 loadButtonDragHandler(container, x, y, buttonNames[name][1]);
@@ -1284,7 +1371,7 @@ define(function(require) {
                                        menuButtonsVisible? 90 : undefined);
             loadButtonDragHandler(menuContainer, x, y, doMenuButton);
 
-            for (name in menuNames) {
+            for (var name in menuNames) {
                 x += dx;
                 y += dy;
                 var container = makeButton(menuNames[name][0] + '-button',

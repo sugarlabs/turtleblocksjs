@@ -691,3 +691,24 @@ msgstr "baja"
 
 msgid "high"
 msgstr "alta"
+
+msgid = "Planet"
+msgstr "Planeta"
+
+msgid "On my device"
+msgstr "En mi dispositivo"
+
+msgid "Worldwide"
+msgstr "En todo el mundo"
+
+msgid "Open"
+msgstr "Abrir"
+
+msgid "Delete"
+msgstr "Borrar"
+
+msgid "Publish"
+msgstr "Publicar"
+
+msgid "Download"
+msgstr "Descargar"

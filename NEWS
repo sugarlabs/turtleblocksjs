@@ -286,6 +286,7 @@
   * Split ever expanding boxes palette into boxes and actions palettes.
   * Added Named do blocks (similar to named boxes).
   * Allow for clicking on Action Blocks.
+  * Use graphical error messages.
 
 TODO:
   * Save errors
@@ -294,7 +295,6 @@ TODO:
   * Save to javascript
   * Rtl support
   * Zoom and scroll?
-  * Use graphical error messages
   * Make expand an array, one element for each arg or slot
   * User-defined block types (trivial with factory)
   * Three-arg arg blocks (trivial with factory)

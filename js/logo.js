@@ -343,7 +343,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         } else if (startBlocks.length > 0) {
             // If there are start blocks, run them all.
             for (var b = 0; b < startBlocks.length; b++) {
-                turtle = this.blocks.blockList[startBlocks[b]].value;
+                var turtle = this.blocks.blockList[startBlocks[b]].value;
                 this.turtles.turtleList[turtle].queue = [];
                 this.parentFlowQueue[turtle] = [];
                 this.unhightlightQueue[turtle] = [];
@@ -357,18 +357,24 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         } else {
             // Or run from the top of each stack.
             // Find a turtle.
-            turtle = null;
-            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+            var turtle = null;
+            for (var t = 0; turtle < this.turtles.turtleList.length; t++) {
                 if (!this.turtles.turtleList[turtle].trash) {
-                    console.log('found turtle ' + turtle);
+                    console.log('found turtle ' + t);
+                    turtle = t;
                     break;
                 }
             }
 
-            if (turtle == null || this.turtles.turtleList.length > turtle + 1) {
+            if (turtle == null) {
                 console.log('could not find a turtle');
                 turtle = this.turtles.turtleList.length;
                 this.turtles.add(null);
+            }
+
+            // Make sure the turtle we "found" exisits.
+	    if(this.turtles.turtleList.length < turtle + 1) {
+                turtle = 0;
             }
 
             console.log('running with turtle ' + turtle);

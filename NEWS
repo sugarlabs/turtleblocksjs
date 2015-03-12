@@ -286,8 +286,9 @@
   * Split ever expanding boxes palette into boxes and actions palettes.
   * Added Named do blocks (similar to named boxes).
   * Allow for clicking on Action Blocks.
-  * Use graphical error messages.
+  * Added graphical error messages.
   * Fixed logic error when searching for turtles to run.
+  * Added Block-size scaling.
 
 TODO:
   * Save errors
@@ -306,6 +307,8 @@ TODO:
   * Better interoperability with Python version
   * Sugar datastore/toolbar support
   * Add city to long/city to lat block to gmap plugin.
+  * Use spanner to open preferences panel for adding plugins and setting
+    block size.
 
 FEATURE IDEAS:
   * Local variables? (e.g., boxes only defined inside an action?) Note that
@@ -322,5 +325,6 @@ KNOWN BUGS:
   * Sometimes returning to backgrounded project results in empty project
   * Loading macros there is a funny collapsed state sometimes.
   * Sometimes the protoblock doesn't return to the palette after dragging.
-  * Does not open in Safari.
   * Crashes the Browse activity on the XO.
+  * Collapse button doesn't work after block-size is scaled.
+  * box and action error messages should include name.

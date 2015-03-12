@@ -193,7 +193,8 @@ function Block(protoblock, blocks, overrideName) {
         // We need a text label for some blocks. For number and text
         // blocks, this is the primary label; for parameter blocks,
         // this is used to display the current block value.
-        this.text = new createjs.Text('', '20px Sans', '#000000');
+        var fontSize = 10 * this.protoblock.scale;
+        this.text = new createjs.Text('', fontSize + 'px Sans', '#000000');
 
         this.generateArtwork(true, []);
     }
@@ -206,13 +207,13 @@ function Block(protoblock, blocks, overrideName) {
             var bitmap = new createjs.Bitmap(image);
             bitmap.name = 'media';
             if (image.width > image.height) {
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
+                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width * (myBlock.protoblock.scale / 2);
             } else {
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
+                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height * (myBlock.protoblock.scale / 2);
             }
             myBlock.container.addChild(bitmap);
-            bitmap.x = MEDIASAFEAREA[0] - 10;
-            bitmap.y = MEDIASAFEAREA[1];
+            bitmap.x = (MEDIASAFEAREA[0] - 10) * (myBlock.protoblock.scale / 2);
+            bitmap.y = MEDIASAFEAREA[1] * (myBlock.protoblock.scale / 2);
             myBlock.container.updateCache();
             myBlock.blocks.refreshCanvas();
         }
@@ -367,8 +368,8 @@ function Block(protoblock, blocks, overrideName) {
             this.text.textAlign = 'center';
             this.text.textBaseline = 'alphabetic';
             this.container.addChild(this.text);
-            this.text.x = VALUETEXTX;
-            this.text.y = VALUETEXTY;
+            this.text.x = VALUETEXTX * this.protoblock.scale / 2.;
+            this.text.y = VALUETEXTY * this.protoblock.scale / 2.;
 
             // Make sure text is on top.
             z = this.container.getNumChildren() - 1;
@@ -382,14 +383,14 @@ function Block(protoblock, blocks, overrideName) {
             if (this.protoblock.args == 0) {
                 this.text.textAlign = 'right';
                 this.text.x = bounds.width - 25;
-                this.text.y = VALUETEXTY;
+                this.text.y = VALUETEXTY * this.protoblock.scale / 2.;
             } else if (this.isArgBlock()) {
                 this.text.textAlign = 'left';
                 this.text.x = BOXTEXTX;
                 if (this.docks[0][2] == 'booleanout') {
                     this.text.y = bounds.height - 15;
                 } else {
-                    this.text.y = VALUETEXTY;
+                    this.text.y = VALUETEXTY * this.protoblock.scale / 2.;
                 }
             }
 
@@ -430,13 +431,14 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
                     myBlock.blocks.refreshCanvas();
 
+                    var fontSize = 10 * myBlock.protoblock.scale;
                     if (myBlock.name == 'action') {
-                        myBlock.collapseText = new createjs.Text(_('action'), '20px Sans', '#000000');
+                        myBlock.collapseText = new createjs.Text(_('action'), fontSize + 'px Sans', '#000000');
                     } else {
-                        myBlock.collapseText = new createjs.Text(_('start'), '20px Sans', '#000000');
+                        myBlock.collapseText = new createjs.Text(_('start'), fontSize + 'px Sans', '#000000');
                     }
-                    myBlock.collapseText.x = COLLAPSETEXTX;
-                    myBlock.collapseText.y = COLLAPSETEXTY;
+                    myBlock.collapseText.x = COLLAPSETEXTX * (myBlock.protoblock.scale / 2);
+                    myBlock.collapseText.y = COLLAPSETEXTY * (myBlock.protoblock.scale / 2);
                     myBlock.collapseText.textAlign = 'left';
                     myBlock.collapseText.textBaseline = 'alphabetic';
                     myBlock.container.addChild(myBlock.collapseText);
@@ -448,6 +450,7 @@ function Block(protoblock, blocks, overrideName) {
                     var image = new Image();
                     image.onload = function() {
                         myBlock.collapseBitmap = new createjs.Bitmap(image);
+                        myBlock.collapseBitmap.scaleX = myBlock.collapseBitmap.scaleY = myBlock.collapseBitmap.scale = myBlock.protoblock.scale / 2;
                         myBlock.collapseContainer.addChild(myBlock.collapseBitmap);
                         finishCollapseButton(myBlock);
                     }
@@ -457,14 +460,13 @@ function Block(protoblock, blocks, overrideName) {
                         var image = new Image();
                         image.onload = function() {
                             myBlock.expandBitmap = new createjs.Bitmap(image);
+                            myBlock.expandBitmap.scaleX = myBlock.expandBitmap.scaleY = myBlock.expandBitmap.scale = myBlock.protoblock.scale / 2;
                             myBlock.collapseContainer.addChild(myBlock.expandBitmap);
                             myBlock.expandBitmap.visible = false;
 
                             var bounds = myBlock.collapseContainer.getBounds();
                             myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                             myBlock.blocks.stage.addChild(myBlock.collapseContainer);
-                            myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
-                            myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
                             loadCollapsibleEventHandlers(myBlock);
 
                             myBlock.loadComplete = true;
@@ -601,14 +603,14 @@ function Block(protoblock, blocks, overrideName) {
 
             // Next, scale the bitmap for the thumbnail.
             if (image.width > image.height) {
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
+                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width * (myBlock.protoblock.scale / 2);
             } else {
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
+                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height * (myBlock.protoblock.scale / 2);
             }
 
             myBlock.container.addChild(bitmap);
-            bitmap.x = MEDIASAFEAREA[0] - 10;
-            bitmap.y = MEDIASAFEAREA[1];
+            bitmap.x = (MEDIASAFEAREA[0] - 10) * (myBlock.protoblock.scale / 2);
+            bitmap.y = MEDIASAFEAREA[1] * (myBlock.protoblock.scale / 2);
 
             myBlock.container.updateCache();
             myBlock.blocks.refreshCanvas();
@@ -1085,8 +1087,8 @@ function loadEventHandlers(myBlock) {
                 var z = myBlock.container.getNumChildren() - 1;
                 myBlock.container.setChildIndex(myBlock.text, z);
             } else if (myBlock.collapseContainer != null) {
-                myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF;
-                myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF;
+                myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF * (myBlock.protoblock.scale / 2);
+                myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF * (myBlock.protoblock.scale / 2);
             }
 
             // Move any connected blocks.

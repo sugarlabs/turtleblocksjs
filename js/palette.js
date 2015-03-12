@@ -599,7 +599,7 @@ function Palette(palettes, name) {
                 } else if (['and', 'or'].indexOf(blkname) != -1) {
                     size += 1;
                 }
-                var height = STANDARDBLOCKHEIGHT * size;
+                var height = STANDARDBLOCKHEIGHT * size * palette.protoList[blk].scale / 2.0;
                 return height;
             }
 
@@ -674,7 +674,7 @@ function Palette(palettes, name) {
                             // so the label will fit
                             var svg = new SVG();
                             svg.init();
-                            svg.setScale(2);
+                            svg.setScale(myBlock.scale);
                             svg.setExpand(60, 0, 0, 0);
                             svg.setOutie(true);
                             var artwork = svg.basicBox();
@@ -684,7 +684,7 @@ function Palette(palettes, name) {
                             // so the label will fit
                             var svg = new SVG();
                             svg.init();
-                            svg.setScale(2);
+                            svg.setScale(myBlock.scale);
                             svg.setExpand(30, 0, 0, 0);
                             var artwork = svg.basicBlock();
                             var docks = svg.docks;
@@ -696,7 +696,7 @@ function Palette(palettes, name) {
                             // so the block will fit
                             var svg = new SVG();
                             svg.init();
-                            svg.setScale(2);
+                            svg.setScale(myBlock.scale);
                             svg.setTab(true);
                             svg.setSlot(true);
                             var artwork = svg.basicBlock();
@@ -706,7 +706,7 @@ function Palette(palettes, name) {
                             // so the block will fit
                             var svg = new SVG();
                             svg.init();
-                            svg.setScale(2);
+                            svg.setScale(myBlock.scale);
                             svg.setTab(true);
                             svg.setSlot(true);
                             var artwork = svg.basicBlock();
@@ -750,13 +750,13 @@ function Palette(palettes, name) {
                             image.onload = function() {
                                 var bitmap = new createjs.Bitmap(image);
                                 if (image.width > image.height) {
-                                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width;
+                                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width * (myBlock.scale / 2);
                                 } else {
-                                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height;
+                                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height * (myBlock.scale / 2);
                                 }
                                 palette.protoContainers[modname].addChild(bitmap);
-                                bitmap.x = MEDIASAFEAREA[0];
-                                bitmap.y = MEDIASAFEAREA[1];
+                                bitmap.x = MEDIASAFEAREA[0] * (myBlock.scale / 2);
+                                bitmap.y = MEDIASAFEAREA[1] * (myBlock.scale / 2);
                                 calculateBounds(palette, blk, modname);
                             }
                             image.src = myBlock.image;

@@ -1996,7 +1996,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 case 'start':
                     blkData[4][0] = null;
                     blkData[4][2] = null;
-
                     postProcess = function(args) {
                         var thisBlock = args[0];
                         var blkInfo = args[1];
@@ -2201,6 +2200,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
             if (thisBlock == this.blockList.length - 1) {
                 if (this.blockList[thisBlock].connections[0] == null) {
+console.log('no touch');
                     this.blockList[thisBlock].x = blkData[2];
                     this.blockList[thisBlock].y = blkData[3];
                     this.adjustTheseDocks.push(thisBlock);
@@ -2238,6 +2238,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         this.blocksToCollapse = [];
 
+        for (var blk = 0; blk < this.blockList.length; blk++) {
+            if(this.blockList[blk].collapseContainer != null) {
+                this.blockList[blk].collapseContainer.x = this.blockList[blk].container.x + COLLAPSEBUTTONXOFF * (this.blockList[blk].protoblock.scale / 2);
+                this.blockList[blk].collapseContainer.y = this.blockList[blk].container.y + COLLAPSEBUTTONYOFF * (this.blockList[blk].protoblock.scale / 2);
+	    }
+        }
         this.refreshCanvas();
     }
 

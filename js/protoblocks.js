@@ -39,7 +39,7 @@ function ProtoBlock(name) {
     // Default values for block parameters, e.g., forward 100 or right 90.
     this.defaults = [];
     // What is the size of the block prior to any expansion?
-    this.size = 1;
+    this.size = 1.0;
     // Dock types are a list of the types associated with the docking points.
     this.dockTypes = [];
     // Static labels are generated as part of the inline SVG.
@@ -49,7 +49,7 @@ function ProtoBlock(name) {
     // Extra block width for long labels
     this.extraWidth = 0;
     // Block scale
-    this.scale = 2;
+    this.scale = DEFAULTBLOCKSCALE;
     // The filepath of the image.
     this.image = null;
     // Hidden: don't show on any palette

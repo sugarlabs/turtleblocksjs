@@ -371,11 +371,11 @@ function Turtle (name, turtles) {
                 me.decorationBitmap.name = 'decoration';
                 var bounds = me.startBlock.container.getBounds();
                 // FIXME: Why is the position off? Does it need a scale factor?
-                me.decorationBitmap.x = bounds.width - 50;
-                me.decorationBitmap.y = 20;
-                me.decorationBitmap.scaleX = 27.5 / image.width;
-                me.decorationBitmap.scaleY = 27.5 / image.height;
-                me.decorationBitmap.scale = 27.5 / image.width;
+                me.decorationBitmap.x = bounds.width - 50 * me.startBlock.protoblock.scale / 2;
+                me.decorationBitmap.y = 20 * me.startBlock.protoblock.scale / 2;
+                me.decorationBitmap.scaleX = (27.5 / image.width) * me.startBlock.protoblock.scale / 2;
+                me.decorationBitmap.scaleY = (27.5 / image.height) * me.startBlock.protoblock.scale / 2;
+                me.decorationBitmap.scale = (27.5 / image.width) * me.startBlock.protoblock.scale / 2;
                 me.startBlock.container.updateCache();
             }
             me.turtles.refreshCanvas();
@@ -583,11 +583,9 @@ function Turtles(canvas, stage, refreshCanvas) {
                 startBlock.container.addChild(myTurtle.decorationBitmap);
                 myTurtle.decorationBitmap.name = 'decoration';
                 var bounds = startBlock.container.getBounds();
-                myTurtle.decorationBitmap.x = bounds.width - 30;
-                myTurtle.decorationBitmap.y = 35;
-                myTurtle.decorationBitmap.scaleX = 0.5;
-                myTurtle.decorationBitmap.scaleY = 0.5;
-                myTurtle.decorationBitmap.scale = 0.5;
+                myTurtle.decorationBitmap.x = bounds.width - 30 * startBlock.protoblock.scale / 2;
+                myTurtle.decorationBitmap.y = 35 * startBlock.protoblock.scale / 2;
+                myTurtle.decorationBitmap.scaleX = myTurtle.decorationBitmap.scaleY = myTurtle.decorationBitmap.scale = 0.5 * startBlock.protoblock.scale / 2
                 startBlock.container.updateCache();
             }
 

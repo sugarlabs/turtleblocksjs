@@ -628,8 +628,8 @@ function SVG() {
         svg += this.style();
 
         // Add a block label
-        var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
-        var ty = this._height / 2 + this._fontSize / 2;
+        var tx = this._width - this._scale * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+        var ty = this._height / 2 + this._fontSize / (4 / this._scale);
 
         // If we have an odd number of innie slots, we need to avoid a
         // collision between the block label and the slot label.
@@ -649,7 +649,7 @@ function SVG() {
         var count = 1;
         for (var i = 0; i < this._innies.length; i++) {
             if (this._innies[i]) {
-                ty = this.docks[di][1] - this._fontSize / 4;
+                ty = this.docks[di][1] - (this._fontSize / (8 / this._scale));
                 svg += this.text(tx / this._scale, ty / this._scale, this._fontSize / 1.5, this._width, 'right', 'arg_label_' + count);
                 count += 1;
                 di += 1;
@@ -716,7 +716,7 @@ function SVG() {
         this.margins[3] = this._strokeWidth * this._scale;
 
         // Add a block label
-        var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
+        var tx = this._width - this._scale * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
         var ty = this._height / 2 + this._fontSize / 2;
         svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
 
@@ -924,11 +924,11 @@ function SVG() {
         // Add a block label
         var tx = 8 * this._strokeWidth;
         if (this._cap) {
-            var ty = this._strokeWidth / 2.0 + this._radius + this._slotY * 3.0;
+            var ty = (this._strokeWidth / 2.0 + this._radius + this._slotY) * this._scale;
         } else {
-            var ty = this._strokeWidth / 2.0 + this._radius;
+            var ty = (this._strokeWidth / 2.0 + this._radius) * this._scale / 2;
         }
-        ty += 3.5 + this._fontSize * 2;
+	ty += (this._fontSize + 1) * this._scale;
         if (this._bool) {
             ty += this._fontSize / 2;
         }

@@ -92,8 +92,38 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     // Blocks that don't run when clicked.
     this.noRunBlocks = [];
 
+    this.blockScale = DEFAULTBLOCKSCALE;
+
     // We need to know if we are processing a copy or save stack command.
     this.inLongPress = false;
+
+    // Change the scale of the blocks (and the protoblocks on the palette).
+    this.setBlockScale = function(scale) {
+        console.log('new block scale is ' + scale);
+        this.blockScale = scale;
+
+        // Regenerate all of the artwork at the new scale.
+        for (blk = 0; blk < this.blockList.length; blk++) {
+            this.blockList[blk].resize(scale);
+        }
+        this.findStacks();
+        for (stack = 0; stack < this.stackList.length; stack++) {
+            // Just in case the block list is corrupted, count iterations.
+            this.loopCounter = 0;
+            this.adjustDocks(this.stackList[stack]);
+        }
+        // Rescale the decoration on the start blocks.
+        for (turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+            this.turtles.turtleList[turtle].resizeDecoration(scale);
+        }
+        // We reset the protoblock scale on the palettes, but don't
+        // modify the palettes themselves.
+        for (palette in this.palettes.dict) {
+            for (blk = 0; blk < this.palettes.dict[palette].protoList.length; blk++) {
+                this.palettes.dict[palette].protoList[blk].scale = scale;
+            }
+        }
+    }
 
     // We need access to the msg block...
     this.setMsgText = function(msgText) {
@@ -832,8 +862,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myBlock.x = x
             myBlock.y = y
             if (myBlock.collapseContainer != null) {
-                myBlock.collapseContainer.x = x + COLLAPSEBUTTONXOFF;
-                myBlock.collapseContainer.y = y + COLLAPSEBUTTONYOFF;
+                myBlock.collapseContainer.x = x + COLLAPSEBUTTONXOFF * (this.blockList[blk].protoblock.scale / 2);
+                myBlock.collapseContainer.y = y + COLLAPSEBUTTONYOFF * (this.blockList[blk].protoblock.scale / 2);
             }
         } else {
             console.log('no container yet');
@@ -2200,7 +2230,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
             if (thisBlock == this.blockList.length - 1) {
                 if (this.blockList[thisBlock].connections[0] == null) {
-console.log('no touch');
                     this.blockList[thisBlock].x = blkData[2];
                     this.blockList[thisBlock].y = blkData[3];
                     this.adjustTheseDocks.push(thisBlock);

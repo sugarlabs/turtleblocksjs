@@ -44,6 +44,7 @@ function Block(protoblock, blocks, overrideName) {
 
     // The svg from which the bitmaps are generated
     this.artwork = null;
+    this.collapseArtwork = null;
 
     // Start and Action blocks has a collapse button (in a separate
     // container).
@@ -147,15 +148,63 @@ function Block(protoblock, blocks, overrideName) {
 
         this.clampCount[clamp] += plusMinus;
 
+        this.newArtwork(plusMinus);
+
+        this.generateArtwork(false, blocksToCheck);
+    }
+
+    this.resize = function(scale) {
+        // FIXME: resize hit areas
+        this.protoblock.scale = scale;
+        this.newArtwork(0);
+        this.regenerateArtwork();
+        this.loadThumbnail(null);
+        // FIXME: camera and media blocks need to be rescaled.
+        // FIXME: start decoration needs to be rescaled.
+        if (this.text != null) {
+            var fontSize = 10 * scale;
+            this.text.font = fontSize + 'px Sans';
+            this.text.x = VALUETEXTX * scale / 2.;
+            this.text.y = VALUETEXTY * scale / 2.;
+        }
+        if (this.collapseContainer != null) {
+            this.collapseContainer.uncache();
+            var postProcess = function(myBlock) {
+		myBlock.collapseBitmap.scaleX = myBlock.collapseBitmap.scaleY = myBlock.collapseBitmap.scale = scale / 2;
+		myBlock.expandBitmap.scaleX = myBlock.expandBitmap.scaleY = myBlock.expandBitmap.scale = scale / 2;
+		var bounds = myBlock.collapseContainer.getBounds();
+		myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+		myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF * (myBlock.protoblock.scale / 2);
+		myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF * (myBlock.protoblock.scale / 2);
+            }
+
+            this.generateCollapseArtwork(postProcess);
+            var fontSize = 10 * scale;
+            this.collapseText.font = fontSize + 'px Sans';
+            this.collapseText.x = COLLAPSETEXTX * scale / 2;
+            this.collapseText.y = COLLAPSETEXTY * scale / 2;
+        }
+    }
+
+    this.newArtwork = function(plusMinus) {
         switch (this.name) {
             case 'start':
             case 'action':
+                var proto = new ProtoBlock('collapse');
+                proto.scale = this.protoblock.scale;
+                proto.extraWidth = 10;
+                proto.basicBlockCollapsed();
+                var obj = proto.generator();
+                this.collapseArtwork = obj[0];
+
+                var obj = this.protoblock.generator(this.clampCount[0]);
+                break;
             case 'repeat':
             case 'forever':
             case 'if':
             case 'while':
             case 'until':
-                var obj = this.protoblock.generator(this.clampCount[clamp]);
+                var obj = this.protoblock.generator(this.clampCount[0]);
                 break;
             case 'less':
             case 'greater':
@@ -170,6 +219,8 @@ function Block(protoblock, blocks, overrideName) {
                     var obj = this.protoblock.generator(this.clampCount[0]);
                 } else if (this.isTwoArgBlock()) {
                     var obj = this.protoblock.generator(this.clampCount[0]);
+                } else {
+                    var obj = this.protoblock.generator();
                 }
                 this.size += plusMinus;
                 break;
@@ -181,8 +232,6 @@ function Block(protoblock, blocks, overrideName) {
             this.docks[i][0] = obj[1][i][0];
             this.docks[i][1] = obj[1][i][1];
         }
-
-        this.generateArtwork(false, blocksToCheck);
     }
 
     this.imageLoad = function() {
@@ -226,6 +275,12 @@ function Block(protoblock, blocks, overrideName) {
         // First we need to remove the old artwork.
         this.container.removeChild(this.bitmap);
         this.container.removeChild(this.highlightBitmap);
+        if (this.collapseBitmap != null) {
+            this.collapseContainer.removeChild(this.collapseBitmap);
+            this.collapseContainer.removeChild(this.expandBitmap);
+            this.container.removeChild(this.collapseBlockBitmap);
+            this.container.removeChild(this.highlightCollapseBlockBitmap);
+        }
         // Then we generate new artwork.
         this.generateArtwork(false, []);
     }
@@ -286,7 +341,7 @@ function Block(protoblock, blocks, overrideName) {
                     if (myBlock.image != null) {
                         myBlock.addImage();
                     }
-                    myBlock.finishImageLoad();
+                    myBlock.finishImageLoad(firstTime);
                 } else {
                     if (myBlock.name == 'start') {
                         // Find the turtle decoration and move it to the top.
@@ -309,15 +364,15 @@ function Block(protoblock, blocks, overrideName) {
                         }
                     }
                     if (['start', 'action'].indexOf(myBlock.name) != -1) {
-                    if (myBlock.collapsed) {
-                        myBlock.bitmap.visible = false;
-                        myBlock.highlightBitmap.visible = false;
-                    } else {
-                        myBlock.bitmap.visible = true;
-                        myBlock.highlightBitmap.visible = false;
-                    }
-                    myBlock.container.updateCache();
-                    myBlock.blocks.refreshCanvas();
+                        if (myBlock.collapsed) {
+                            myBlock.bitmap.visible = false;
+                            myBlock.highlightBitmap.visible = false;
+                        } else {
+                            myBlock.bitmap.visible = true;
+                            myBlock.highlightBitmap.visible = false;
+                        }
+                        myBlock.container.updateCache();
+                        myBlock.blocks.refreshCanvas();
                     }
                 }
             }
@@ -347,7 +402,7 @@ function Block(protoblock, blocks, overrideName) {
         makeBitmap(artwork, this.name, processBitmap, this);
     }
 
-    this.finishImageLoad = function() {
+    this.finishImageLoad = function(firstTime) {
         var thisBlock = this.blocks.blockList.indexOf(this);
 
         // Value blocks get a modifiable text label
@@ -407,11 +462,32 @@ function Block(protoblock, blocks, overrideName) {
             this.blocks.refreshCanvas();
             this.blocks.cleanupAfterLoad();
         } else {
+            // Start blocks and Action blocks can collapse, so add an
+            // event handler
+            if (firstTime) {
+                var proto = new ProtoBlock('collapse');
+                proto.scale = this.protoblock.scale;
+                proto.extraWidth = 10;
+                proto.basicBlockCollapsed();
+                var obj = proto.generator();
+                this.collapseArtwork = obj[0];
+                var postProcess = function(myBlock) {
+                    loadCollapsibleEventHandlers(myBlock);
+                    myBlock.loadComplete = true;
+		    
+                    if (myBlock.postProcess != null) {
+                        myBlock.postProcess(myBlock.postProcessArg);
+                    }
+		}
+            } else {
+                var postProcess = null;
+            }
+            this.generateCollapseArtwork(postProcess);
+        }
+    }
 
-        // Start blocks and Action blocks can collapse, so add an
-        // event handler
-        // if (['start', 'action'].indexOf(this.name) != -1) {
-            block_label = ''; // We use a Text element for the label
+    this.generateCollapseArtwork = function(postProcess) {
+        var thisBlock = this.blocks.blockList.indexOf(this);
 
             function processCollapseBitmap(name, bitmap, myBlock) {
                 myBlock.collapseBlockBitmap = bitmap;
@@ -467,11 +543,8 @@ function Block(protoblock, blocks, overrideName) {
                             var bounds = myBlock.collapseContainer.getBounds();
                             myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                             myBlock.blocks.stage.addChild(myBlock.collapseContainer);
-                            loadCollapsibleEventHandlers(myBlock);
-
-                            myBlock.loadComplete = true;
-                            if (myBlock.postProcess != null) {
-                                myBlock.postProcess(myBlock.postProcessArg);
+                            if (postProcess != null) {
+                                postProcess(myBlock);
                             }
                             myBlock.blocks.refreshCanvas();
                             myBlock.blocks.cleanupAfterLoad();
@@ -480,21 +553,12 @@ function Block(protoblock, blocks, overrideName) {
                     }
                 }
 
-                var obj = proto.generator();
-                var artwork = obj[0];
-
-                makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', block_label), '', processHighlightCollapseBitmap, myBlock);
+                var artwork = myBlock.collapseArtwork;
+                makeBitmap(artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[myBlock.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[myBlock.protoblock.palette.name]).replace('block_label', ''), '', processHighlightCollapseBitmap, myBlock);
             }
 
-            var proto = new ProtoBlock('collapse');
-            proto.extraWidth = 10;
-            proto.basicBlockCollapsed();
-            var obj = proto.generator();
-            var artwork = obj[0];
-
-            makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label), '', processCollapseBitmap, this);
-
-        }
+            var artwork = this.collapseArtwork;
+            makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', ''), '', processCollapseBitmap, this);
     }
 
     this.hide = function() {
@@ -571,7 +635,7 @@ function Block(protoblock, blocks, overrideName) {
         var thisBlock = this.blocks.blockList.indexOf(this);
         var myBlock = this;
         if (this.blocks.blockList[thisBlock].value == null && imagePath == null) {
-            console.log('loadThumbnail: no image to load?');
+            // console.log('loadThumbnail: no image to load?');
             return;
         }
         var image = new Image();

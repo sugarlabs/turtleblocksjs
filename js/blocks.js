@@ -112,10 +112,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             this.loopCounter = 0;
             this.adjustDocks(this.stackList[stack]);
         }
-        // Rescale the decoration on the start blocks.
-        for (turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
-            this.turtles.turtleList[turtle].resizeDecoration(scale);
-        }
         // We reset the protoblock scale on the palettes, but don't
         // modify the palettes themselves.
         for (palette in this.palettes.dict) {

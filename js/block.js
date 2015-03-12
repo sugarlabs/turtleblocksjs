@@ -35,6 +35,7 @@ function Block(protoblock, blocks, overrideName) {
                              // e.g., nameboxes use this field to store
                              // the box name associated with the block.
     this.image = protoblock.image; // The file path of the image.
+    this.imageBitmap = null;
 
     // All blocks have at a container and least one bitmap.
     this.container = null;
@@ -147,20 +148,51 @@ function Block(protoblock, blocks, overrideName) {
         }
 
         this.clampCount[clamp] += plusMinus;
-
         this.newArtwork(plusMinus);
-
         this.generateArtwork(false, blocksToCheck);
     }
 
     this.resize = function(scale) {
-        // FIXME: resize hit areas
+        // If the block scale changes, we need to regenerate the
+        // artwork and recalculate the hitarea.
+        this.postProcess = function(myBlock) {
+            if (myBlock.imageBitmap != null) {
+                if (myBlock.imageBitmap.image.width > myBlock.imageBitmap.image.height) {
+                    myBlock.imageBitmap.scaleX = myBlock.imageBitmap.scaleY = myBlock.imageBitmap.scale = MEDIASAFEAREA[2] / myBlock.imageBitmap.image.width * scale / 2;
+                } else {
+                    myBlock.imageBitmap.scaleX = myBlock.imageBitmap.scaleY = myBlock.imageBitmap.scale = MEDIASAFEAREA[3] / myBlock.imageBitmap.image.height * scale / 2;
+                }
+		myBlock.imageBitmap.x = (MEDIASAFEAREA[0] - 10) * scale / 2;
+                myBlock.imageBitmap.y = MEDIASAFEAREA[1] * scale / 2;
+                z = myBlock.container.getNumChildren() - 1;
+                myBlock.container.setChildIndex(myBlock.imageBitmap, z);
+            }
+            if (myBlock.name == 'start') {
+                // Rescale the decoration on the start blocks.
+                for (turtle = 0; turtle < myBlock.blocks.turtles.turtleList.length; turtle++) {
+                    if (myBlock.blocks.turtles.turtleList[turtle].startBlock == myBlock) {
+                        myBlock.blocks.turtles.turtleList[turtle].resizeDecoration(scale, myBlock.bitmap.image.width);
+                        break;
+                    }
+                }
+            }
+            myBlock.container.updateCache();
+            var hitArea = new createjs.Shape();
+            var bounds = myBlock.container.getBounds()
+            // Only detect hits on top section of block.
+            if (myBlock.isClampBlock()) {
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT * scale / 2.);
+            } else {
+                // Shrinking the height makes it easier to grab blocks
+                // below in the stack.
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height * 0.75);
+            }
+            myBlock.container.hitArea = hitArea;
+        }
         this.protoblock.scale = scale;
         this.newArtwork(0);
         this.regenerateArtwork();
-        this.loadThumbnail(null);
-        // FIXME: camera and media blocks need to be rescaled.
-        // FIXME: start decoration needs to be rescaled.
+
         if (this.text != null) {
             var fontSize = 10 * scale;
             this.text.font = fontSize + 'px Sans';
@@ -170,12 +202,20 @@ function Block(protoblock, blocks, overrideName) {
         if (this.collapseContainer != null) {
             this.collapseContainer.uncache();
             var postProcess = function(myBlock) {
-		myBlock.collapseBitmap.scaleX = myBlock.collapseBitmap.scaleY = myBlock.collapseBitmap.scale = scale / 2;
-		myBlock.expandBitmap.scaleX = myBlock.expandBitmap.scaleY = myBlock.expandBitmap.scale = scale / 2;
-		var bounds = myBlock.collapseContainer.getBounds();
-		myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-		myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF * (myBlock.protoblock.scale / 2);
-		myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF * (myBlock.protoblock.scale / 2);
+                myBlock.collapseBitmap.scaleX = myBlock.collapseBitmap.scaleY = myBlock.collapseBitmap.scale = scale / 2;
+                myBlock.expandBitmap.scaleX = myBlock.expandBitmap.scaleY = myBlock.expandBitmap.scale = scale / 2;
+                var bounds = myBlock.collapseContainer.getBounds();
+                myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF * (myBlock.protoblock.scale / 2);
+                myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF * (myBlock.protoblock.scale / 2);
+
+                var hitArea = new createjs.Shape();
+                var w2 = bounds.width;
+                var h2 = bounds.height;
+                hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
+                hitArea.x = w2 / 2;
+                hitArea.y = h2 / 2;
+                myBlock.collapseContainer.hitArea = hitArea;
             }
 
             this.generateCollapseArtwork(postProcess);
@@ -261,6 +301,7 @@ function Block(protoblock, blocks, overrideName) {
                 bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height * (myBlock.protoblock.scale / 2);
             }
             myBlock.container.addChild(bitmap);
+            myBlock.imageBitmap = bitmap;
             bitmap.x = (MEDIASAFEAREA[0] - 10) * (myBlock.protoblock.scale / 2);
             bitmap.y = MEDIASAFEAREA[1] * (myBlock.protoblock.scale / 2);
             myBlock.container.updateCache();
@@ -374,6 +415,10 @@ function Block(protoblock, blocks, overrideName) {
                         myBlock.container.updateCache();
                         myBlock.blocks.refreshCanvas();
                     }
+                    if (myBlock.postProcess != null) {
+                        myBlock.postProcess(myBlock);
+                        myBlock.postProcess = null;
+                    }
                 }
             }
 
@@ -458,6 +503,7 @@ function Block(protoblock, blocks, overrideName) {
             this.loadComplete = true;
             if (this.postProcess != null) {
                 this.postProcess(this.postProcessArg);
+                this.postProcess = null;
             }
             this.blocks.refreshCanvas();
             this.blocks.cleanupAfterLoad();
@@ -474,11 +520,12 @@ function Block(protoblock, blocks, overrideName) {
                 var postProcess = function(myBlock) {
                     loadCollapsibleEventHandlers(myBlock);
                     myBlock.loadComplete = true;
-		    
+                    
                     if (myBlock.postProcess != null) {
                         myBlock.postProcess(myBlock.postProcessArg);
+                        myBlock.postProcess = null;
                     }
-		}
+                }
             } else {
                 var postProcess = null;
             }
@@ -664,6 +711,7 @@ function Block(protoblock, blocks, overrideName) {
             var bounds = myContainer.getBounds();
             myContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
             myBlock.value = myContainer.getCacheDataURL();
+            myBlock.imageBitmap = bitmap;
 
             // Next, scale the bitmap for the thumbnail.
             if (image.width > image.height) {
@@ -824,6 +872,7 @@ function loadCollapsibleEventHandlers(myBlock) {
     var moved = false;
     var locked = false;
     myBlock.collapseContainer.on('click', function(event) {
+        console.log('collapsed click');
         if (locked) {
             return;
         }
@@ -913,7 +962,6 @@ function collapseOut(blocks, myBlock, thisBlock, moved, event) {
             sendStackToTrash(blocks, myBlock);
         } else {
             // Otherwise, process move.
-            console.log('collapsed out block moved ' + thisBlock);
             blocks.blockMoved(thisBlock);
         }
     }

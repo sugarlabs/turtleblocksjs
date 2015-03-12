@@ -1897,7 +1897,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     var name = blkData[1][1]['value'];
                 }
                 console.log('Adding new palette entries for store-in ' + name);
-		this.newStoreinBlock(name);
+                this.newStoreinBlock(name);
                 this.newNamedboxBlock(name);
                 updatePalettes = true;
             }
@@ -2232,14 +2232,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
             }
         }
-	if (checkTwoArgBlocks.length > 0) {
+        if (checkTwoArgBlocks.length > 0) {
             // We make multiple passes because we need to account for nesting.
             for (i = 0; i < checkTwoArgBlocks.length; i++) {
                 for (b = 0; b < checkTwoArgBlocks.length; b++) {
                     this.adjustExpandableTwoArgBlock([checkTwoArgBlocks[b]]);
                 }
             }
-	}
+        }
     }
 
     this.cleanupAfterLoad = function() {
@@ -2267,7 +2267,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             if(this.blockList[blk].collapseContainer != null) {
                 this.blockList[blk].collapseContainer.x = this.blockList[blk].container.x + COLLAPSEBUTTONXOFF * (this.blockList[blk].protoblock.scale / 2);
                 this.blockList[blk].collapseContainer.y = this.blockList[blk].container.y + COLLAPSEBUTTONYOFF * (this.blockList[blk].protoblock.scale / 2);
-	    }
+            }
         }
         this.refreshCanvas();
     }

@@ -162,7 +162,7 @@ function Block(protoblock, blocks, overrideName) {
                 } else {
                     myBlock.imageBitmap.scaleX = myBlock.imageBitmap.scaleY = myBlock.imageBitmap.scale = MEDIASAFEAREA[3] / myBlock.imageBitmap.image.height * scale / 2;
                 }
-		myBlock.imageBitmap.x = (MEDIASAFEAREA[0] - 10) * scale / 2;
+                myBlock.imageBitmap.x = (MEDIASAFEAREA[0] - 10) * scale / 2;
                 myBlock.imageBitmap.y = MEDIASAFEAREA[1] * scale / 2;
                 z = myBlock.container.getNumChildren() - 1;
                 myBlock.container.setChildIndex(myBlock.imageBitmap, z);

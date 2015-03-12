@@ -123,6 +123,9 @@ define(function(require) {
         var DEFAULTDELAY = 500;  // milleseconds
         var TURTLESTEP = -1;  // Run in step-by-step mode
 
+        var blockscale = 2;
+        var blockscales = [1, 1.5, 2, 3, 4];
+
         // Time when we hit run
         var time = 0;
 
@@ -248,6 +251,20 @@ define(function(require) {
             } else {
                 showPolar();
                 polarVisible = true;
+            }
+        }
+
+        function doBiggerFont() {
+            if (blockscale < blockscales.length - 1) {
+                blockscale += 1;
+                blocks.setBlockScale(blockscales[blockscale]);
+            }
+        }
+
+        function doSmallerFont() {
+            if (blockscale > 0) {
+                blockscale -= 1;
+                blocks.setBlockScale(blockscales[blockscale]);
             }
         }
 
@@ -1355,6 +1372,8 @@ define(function(require) {
                 ['paste-disabled', pasteStack],
                 ['Cartesian', doCartesian],
                 ['polar', doPolar],
+                ['bigger', doBiggerFont],
+                ['smaller', doSmallerFont],
                 ['plugin', doOpenPlugin],
                 ['empty-trash', deleteBlocksBox],
                 ['restore-trash', restoreTrash]

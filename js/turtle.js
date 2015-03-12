@@ -166,7 +166,7 @@ function Turtle (name, turtles) {
         this.value = DEFAULTVALUE;
         this.chroma = DEFAULTCHROMA;
         this.stroke = DEFAULTSTROKE;
-	this.font = DEFAULTFONT;
+        this.font = DEFAULTFONT;
         this.container.x = this.turtles.turtleX2screenX(this.x);
         this.container.y = this.turtles.turtleY2screenY(this.y);
 

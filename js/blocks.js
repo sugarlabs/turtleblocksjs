@@ -1834,6 +1834,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 var name = blkData[1][0];
             }
 
+            if (!(name in this.protoBlockDict)) {
+                continue;
+            }
             if (['arg', 'twoarg'].indexOf(this.protoBlockDict[name].style) != -1) {
                 if (this.protoBlockDict[name].expandable) {
                     checkTwoArgBlocks.push(this.blockList.length + b);

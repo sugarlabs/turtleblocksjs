@@ -1392,10 +1392,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // As before, does these ever happen?
         if (myBlock.connections == null) {
+            this.dragGroup = [blk];
             return;
         }
 
+        // Some malformed blocks might have no connections.
         if (myBlock.connections.length == 0) {
+            this.dragGroup = [blk];
             return;
         }
 

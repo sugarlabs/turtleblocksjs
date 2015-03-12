@@ -327,4 +327,5 @@ KNOWN BUGS:
   * Sometimes the protoblock doesn't return to the palette after dragging.
   * Crashes the Browse activity on the XO.
   * Collapse button doesn't work after block-size is scaled.
+  * Resize font in DOM for number and text blocks when resizing blocks.
   * box and action error messages should include name.

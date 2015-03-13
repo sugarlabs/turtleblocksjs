@@ -1089,8 +1089,8 @@ function loadEventHandlers(myBlock) {
 
                 myBlock.label.style.left = Math.round((x + blocks.stage.x) * blocks.scale + canvasLeft) + 'px';
                 myBlock.label.style.top = Math.round((y + blocks.stage.y) * blocks.scale + canvasTop) + 'px';
-                myBlock.label.style.width = Math.round(100 * blocks.scale) + 'px';
-                myBlock.label.style.fontSize = Math.round(24 * blocks.scale) + 'px';
+                myBlock.label.style.width = Math.round(100 * blocks.scale) * myBlock.protoblock.scale / 2 + 'px';
+                myBlock.label.style.fontSize = Math.round(20 * blocks.scale * myBlock.protoblock.scale / 2) + 'px';
                 myBlock.label.style.display = '';
                 myBlock.label.focus();
 

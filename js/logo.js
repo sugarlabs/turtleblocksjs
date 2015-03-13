@@ -156,7 +156,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (name in this.boxes) {
                         value = this.boxes[name];
                     } else {
-                        this.errorMsg('Cannot find box.', blk); // 'Cannot find box ' + name + '.', blk);
+                        this.errorMsg('Cannot find box.', blk, name);
                     }
                     break;
                 case 'box':
@@ -165,7 +165,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (boxname in this.boxes) {
                         value = this.boxes[boxname];
                     } else {
-                        this.errorMsg('Cannot find box.', blk); // 'Cannot find box ' + boxname + '.');
+                        this.errorMsg('Cannot find box.', blk, boxname);
                     }
                     break;
                 case 'x':
@@ -455,7 +455,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (name in this.boxes) {
                     this.boxes[name] = value;
                 } else {
-                    this.errorMsg('Cannot find box.', blk); // 'Cannot find box ' + name + '.');
+                    this.errorMsg('Cannot find box.', blk, name);
                 }
                 break;
             case 'box':
@@ -464,7 +464,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (name in this.boxes) {
                     this.boxes[name] = value;
                 } else {
-                    this.errorMsg('Cannot find box.', blk); // 'Cannot find box ' + name + '.');
+                    this.errorMsg('Cannot find box.', blk, name);
                 }
                 break;
             default:
@@ -522,7 +522,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'listen':
                 if (args.length == 2) {
                     if (!(args[1] in logo.actions)) {
-                        logo.errorMsg('Cannot find action.', blk); // + args[1] + '.', blk);
+                        logo.errorMsg('Cannot find action.', blk, args[1]);
                         logo.stopTurtle = true;
                     } else {
                         var listener = function (event) {
@@ -559,7 +559,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     childFlow = logo.actions[name];
                     childFlowCount = 1;
                 } else {
-                    logo.errorMsg('Cannot find action.', blk); // + name + '.', blk);
+                    logo.errorMsg('Cannot find action.', blk, name);
                     logo.stopTurtle = true;
                 }
                 break;
@@ -571,7 +571,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         childFlow = logo.actions[args[0]];
                         childFlowCount = 1;
                     } else {
-                        logo.errorMsg('Cannot find action.', blk); // + args[0] + '.', blk);
+                        logo.errorMsg('Cannot find action.', blk, args[0]);
                         logo.stopTurtle = true;
                     }
                 }
@@ -1197,7 +1197,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (name in logo.boxes) {
                         logo.blocks.blockList[blk].value = logo.boxes[name];
                     } else {
-                        logo.errorMsg('Cannot find box.', blk);
+                        logo.errorMsg('Cannot find box.', blk, name);
                         logo.stopTurtle = true;
                         logo.blocks.blockList[blk].value = null;
                     }
@@ -1210,7 +1210,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (name in logo.boxes) {
                         logo.blocks.blockList[blk].value = logo.boxes[name];
                     } else {
-                        logo.errorMsg('Cannot find box.', blk);
+                        logo.errorMsg('Cannot find box.', blk, name);
                         logo.stopTurtle = true;
                         logo.blocks.blockList[blk].value = null;
                     }

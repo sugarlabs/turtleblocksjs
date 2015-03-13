@@ -320,17 +320,17 @@
        style="font-size:24px">!</tspan>
   </text>
   <text
-     x="95.277344"
+     x="247.27734"
      y="31"
      id="text2618"
      xml:space="preserve"
      style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"><tspan
-       x="95.277344"
+       x="247.27734"
        y="31"
        id="tspan2620"
        style="font-size:24px;fill:#ff0000;fill-opacity:1">???</tspan></text>
   <path
-     d="m 150.75,13.5 3.75,0 0,3 5.25,0 0,-5 68.625,0 0,19 -68.625,0 0,-5 -5.25,0 0,3 -3.75,0 z"
+     d="m 54.75,13.5 3.75,0 0,3 5.25,0 0,-9 138.625,0 0,27 -138.625,0 0,-9 -5.25,0 0,3 -3.75,0 z"
      id="path2541"
      style="fill:#ffc000;fill-opacity:1;stroke:#c48d00;stroke-width:1.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
 </svg>

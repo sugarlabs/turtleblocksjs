@@ -648,6 +648,10 @@ define(function(require) {
                     console.log('creating error message artwork for ' + img.src);
                     var artwork = new createjs.Bitmap(img);
                     container.addChild(artwork);
+		    var text = new createjs.Text('', '20px Sans', '#000000');
+                    container.addChild(text);
+                    text.x = 70;
+                    text.y = 10;
 
                     var bounds = container.getBounds();
                     container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -1101,7 +1105,7 @@ define(function(require) {
             stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
         }
 
-        function errorMsg(msg, blk) {
+        function errorMsg(msg, blk, text) {
             if (errorMsgText == null) {
                 // The container may not be ready yet... so do nothing
                 return;
@@ -1143,11 +1147,21 @@ define(function(require) {
                     stage.setChildIndex(errorArtwork['negroot'], stage.getNumChildren() - 1);
                     break;
 		case 'Cannot find action.':
+                    if (text == null) {
+                        text = 'foo';
+                    }
+                    errorArtwork['nostack'].children[1].text = text;
                     errorArtwork['nostack'].visible = true;
+                    errorArtwork['nostack'].updateCache();
                     stage.setChildIndex(errorArtwork['nostack'], stage.getNumChildren() - 1);
                     break;
 		case 'Cannot find box.':
+                    if (text == null) {
+                        text = 'foo';
+                    }
+                    errorArtwork['emptybox'].children[1].text = text;
                     errorArtwork['emptybox'].visible = true;
+                    errorArtwork['emptybox'].updateCache();
                     stage.setChildIndex(errorArtwork['emptybox'], stage.getNumChildren() - 1);
                     break;
                 case 'Cannot divide by zero.':

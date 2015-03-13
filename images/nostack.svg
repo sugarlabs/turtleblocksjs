@@ -602,12 +602,12 @@
        style="font-size:24px">!</tspan>
   </text>
   <text
-     x="187.27734"
+     x="239.27734"
      y="31"
      id="text2618"
      xml:space="preserve"
      style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"><tspan
-       x="187.27734"
+       x="239.27734"
        y="31"
        id="tspan2620"
        style="font-size:24px;fill:#ff0000;fill-opacity:1">???</tspan></text>
@@ -616,7 +616,7 @@
      id="g4701"
      style="fill:#ffc000;fill-opacity:1;stroke:#c48d00;stroke-opacity:1">
     <path
-       d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 5,-6.9444444 5,6.9444444 30,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,12 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -30,0 -5,7.111111 -5,-7.111111 -4,0 c -2.0943951,0 -4,-1.905605 -4,-4 l 0,-4 z"
+       d="m -53.005846,8.5 0,-4 c 0,-2.0943951 1.905605,-4 4,-4 l 4,0 5,-6.9444444 5,6.9444444 124.096488,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,12 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -124.096488,0 -5,7.111111 -5,-7.111111 -4,0 c -2.094395,0 -4,-1.905605 -4,-4 l 0,-4 z"
        id="path4703"
        style="fill:#ffc000;fill-opacity:1;stroke:#c48d00;stroke-width:1;stroke-linecap:round;stroke-opacity:1" />
   </g>

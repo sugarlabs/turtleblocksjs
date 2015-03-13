@@ -290,6 +290,7 @@
   * Fixed logic error when searching for turtles to run.
   * Added Block-size scaling.
   * Resized font in DOM for number and text blocks when resizing blocks.
+  * Box and action error messages include name.
 
 TODO:
   * Save errors
@@ -328,4 +329,3 @@ KNOWN BUGS:
   * Sometimes the protoblock doesn't return to the palette after dragging.
   * Crashes the Browse activity on the XO.
   * Collapse button doesn't work after block-size is scaled.
-  * box and action error messages should include name.

@@ -172,23 +172,13 @@ function Block(protoblock, blocks, overrideName) {
                 for (turtle = 0; turtle < myBlock.blocks.turtles.turtleList.length; turtle++) {
                     if (myBlock.blocks.turtles.turtleList[turtle].startBlock == myBlock) {
                         myBlock.blocks.turtles.turtleList[turtle].resizeDecoration(scale, myBlock.bitmap.image.width);
-			ensureDecorationOnTop(myBlock);
+                        ensureDecorationOnTop(myBlock);
                         break;
                     }
                 }
             }
             myBlock.container.updateCache();
-            var hitArea = new createjs.Shape();
-            var bounds = myBlock.container.getBounds()
-            // Only detect hits on top section of block.
-            if (myBlock.isClampBlock()) {
-                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT * scale / 2.);
-            } else {
-                // Shrinking the height makes it easier to grab blocks
-                // below in the stack.
-                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height * 0.75);
-            }
-            myBlock.container.hitArea = hitArea;
+            calculateBlockHitArea(myBlock);
         }
         this.protoblock.scale = scale;
         this.newArtwork(0);
@@ -210,13 +200,7 @@ function Block(protoblock, blocks, overrideName) {
                 myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF * (myBlock.protoblock.scale / 2);
                 myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF * (myBlock.protoblock.scale / 2);
 
-                var hitArea = new createjs.Shape();
-                var w2 = bounds.width;
-                var h2 = bounds.height;
-                hitArea.graphics.beginFill('#FFF').drawEllipse(-w2 / 2, -h2 / 2, w2, h2);
-                hitArea.x = w2 / 2;
-                hitArea.y = h2 / 2;
-                myBlock.collapseContainer.hitArea = hitArea;
+                calculateCollapseHitArea(myBlock);
             }
 
             this.generateCollapseArtwork(postProcess);
@@ -388,7 +372,7 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.finishImageLoad(firstTime);
                 } else {
                     if (myBlock.name == 'start') {
-			ensureDecorationOnTop(myBlock);
+                        ensureDecorationOnTop(myBlock);
                     }
 
                     // Adjust the docks.
@@ -554,7 +538,7 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.container.addChild(myBlock.collapseText);
                     myBlock.collapseText.visible = myBlock.collapsed;
 
-		    ensureDecorationOnTop(myBlock);
+                    ensureDecorationOnTop(myBlock);
 
                     myBlock.container.updateCache();
                     myBlock.blocks.refreshCanvas();
@@ -842,10 +826,7 @@ function $() {
 }
 
 
-// TODO: Consolidate into loadEventHandlers
-// These are the event handlers for collapsible blocks.
-function loadCollapsibleEventHandlers(myBlock) {
-    var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
+function calculateCollapseHitArea(myBlock) {
     var bounds = myBlock.collapseContainer.getBounds();
     var hitArea = new createjs.Shape();
     var w2 = bounds.width;
@@ -854,6 +835,13 @@ function loadCollapsibleEventHandlers(myBlock) {
     hitArea.x = w2 / 2;
     hitArea.y = h2 / 2;
     myBlock.collapseContainer.hitArea = hitArea;
+}
+
+
+// These are the event handlers for collapsible blocks.
+function loadCollapsibleEventHandlers(myBlock) {
+    var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
+    calculateCollapseHitArea(myBlock);
 
     myBlock.collapseContainer.on('mouseover', function(event) {
         myBlock.blocks.highlight(thisBlock, true);
@@ -863,8 +851,7 @@ function loadCollapsibleEventHandlers(myBlock) {
 
     var moved = false;
     var locked = false;
-    myBlock.collapseContainer.on('click', function(event) {
-        console.log('collapsed click');
+    function handleClick () {
         if (locked) {
             return;
         }
@@ -876,6 +863,10 @@ function loadCollapsibleEventHandlers(myBlock) {
         if (!moved) {
             myBlock.collapseToggle();
         }
+    }
+
+    myBlock.collapseContainer.on('click', function(event) {
+        handleClick();
     });
 
     myBlock.collapseContainer.on('mousedown', function(event) {
@@ -889,13 +880,19 @@ function loadCollapsibleEventHandlers(myBlock) {
         };
 
         myBlock.collapseContainer.on('pressup', function(event) {
-            collapseOut(blocks, myBlock, thisBlock, moved, event);
-            moved = false;
+            if (moved) {
+                collapseOut(blocks, myBlock, thisBlock, moved, event);
+                moved = false;
+            } else {
+		handleClick();
+            }
         });
 
         myBlock.collapseContainer.on('mouseout', function(event) {
-            collapseOut(blocks, myBlock, thisBlock, moved, event);
-            moved = false;
+            if (moved) {
+                collapseOut(blocks, myBlock, thisBlock, moved, event);
+                moved = false;
+            }
         });
 
         myBlock.collapseContainer.on('pressmove', function(event) {
@@ -974,10 +971,8 @@ document.addEventListener('mousemove', function (e) {
     window.hasMouse = true;
 });
 
-// These are the event handlers for block containers.
-function loadEventHandlers(myBlock) {
-    var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
-    var blocks = myBlock.blocks;
+
+function calculateBlockHitArea(myBlock) {
     var hitArea = new createjs.Shape();
     var bounds = myBlock.container.getBounds()
 
@@ -988,6 +983,15 @@ function loadEventHandlers(myBlock) {
         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height * 0.75); // Shrinking the height makes it easier to grab blocks below in the stack.
     }
     myBlock.container.hitArea = hitArea;
+}
+
+
+// These are the event handlers for block containers.
+function loadEventHandlers(myBlock) {
+    var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
+    var blocks = myBlock.blocks;
+
+    calculateBlockHitArea(myBlock);
 
     myBlock.container.on('mouseover', function(event) {
         blocks.highlight(thisBlock, true);
@@ -1068,7 +1072,6 @@ function loadEventHandlers(myBlock) {
                 myBlock.label.addEventListener('blur', blur);
 
                 var keypress = function (event) {
-                    console.log('KeyPress:', event.keyCode);
                     if ([13, 10, 9].indexOf(event.keyCode) !== -1) {
                         blur(event);
                     }

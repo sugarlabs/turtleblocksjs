@@ -292,6 +292,7 @@
   * Resized font in DOM for number and text blocks when resizing blocks.
   * Box and action error messages include name.
   * Collapsable blocks are rendered properly after block resize.
+  * Collapse button now works after block-size is scaled.
 
 TODO:
   * Save errors
@@ -329,7 +330,6 @@ KNOWN BUGS:
   * Loading macros there is a funny collapsed state sometimes.
   * Sometimes the protoblock doesn't return to the palette after dragging.
   * Crashes the Browse activity on the XO.
-  * Collapse button doesn't work after block-size is scaled.
   * if-then-else block rendered double after resize
   * Boolean (eg =) block renders doubled after resize
   * Somehow we end up in a browser resize loop??? (2842 console messages are

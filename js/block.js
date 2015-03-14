@@ -240,6 +240,7 @@ function Block(protoblock, blocks, overrideName) {
                 var obj = this.protoblock.generator(this.clampCount[0]);
                 break;
             case 'repeat':
+            case 'clamp':
             case 'forever':
             case 'if':
             case 'while':

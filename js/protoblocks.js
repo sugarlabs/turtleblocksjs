@@ -392,6 +392,37 @@ function ProtoBlock(name) {
 	return [artwork, svg.docks];
     }
 
+    // E.g., emptyclamp. Unlike start, there is a flow above and below.
+    this.flowClampBlock = function() {
+        this.style = 'clamp';
+        this.expandable = true;
+        this.size = 2;
+        this.args = 1;
+        this.dockTypes.push('out');
+        this.dockTypes.push('in');
+        this.dockTypes.push('in');
+        this.generator = this.flowClampBlockGenerator;
+    }
+
+    this.flowClampBlockGenerator = function(slots) {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setTab(true);
+        svg.setSlot(true);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        var artwork = svg.basicClamp();
+	return [artwork, svg.docks];
+    }
+
     // E.g., repeat. Unlike action, there is a flow above and below.
     this.flowClampOneArgBlock = function() {
         this.style = 'clamp';

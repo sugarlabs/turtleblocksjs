@@ -145,6 +145,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'random':
                 case 'mod':
                 case 'sqrt':
+                case 'int':
                 case 'plus':
                 case 'minus':
                 case 'multiply':
@@ -611,6 +612,12 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         childFlow = args[1];
                         childFlowCount = Math.floor(args[0]);
                     }
+                }
+                break;
+            case 'clamp':
+                if (args.length == 2) {
+                    childFlow = args[0];
+                    childFlowCount = 1;
                 }
                 break;
             case 'until':
@@ -1224,6 +1231,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         a = -a;
                     }
                     logo.blocks.blockList[blk].value = logo.doSqrt(a);
+                    break;
+                case 'int':
+                    var cblk = logo.blocks.blockList[blk].connections[1];
+                    var a = logo.parseArg(logo, turtle, cblk, blk);
+                    logo.blocks.blockList[blk].value = Math.floor(a);
                     break;
                 case 'mod':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];

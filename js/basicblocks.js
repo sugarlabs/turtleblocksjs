@@ -14,15 +14,21 @@
 // Some names changed between the Python verison and the
 // JS version so look up name in the conversion dictionary.
 var NAMEDICT = {
+    'fullscreen': 'vspace',
+    'comment': 'print',
+    'sandwichclampcollapsed': 'clamp',
+    'ifelse': 'ifthenelse',
     'xcor': 'x',
     'ycor': 'y',
     'seth': 'setheading',
+    'remainder2': 'mod',
     'plus2': 'plus',
     'product2': 'multiply',
     'division2': 'divide',
     'minus2': 'minus',
     'stack': 'do',
     'hat': 'action',
+    'stopstack': 'break',
     'clean': 'clear',
     'setxy2': 'setxy',
     'greater2': 'greater',
@@ -306,6 +312,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     sqrtBlock.adjustWidthToLabel();
     sqrtBlock.oneArgMathBlock();
     sqrtBlock.defaults.push(100)
+
+    var intBlock = new ProtoBlock('int');
+    intBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['int'] = intBlock;
+    intBlock.staticLabels.push(_('int'));
+    intBlock.adjustWidthToLabel();
+    intBlock.oneArgMathBlock();
+    intBlock.defaults.push(100)
 
     var modBlock = new ProtoBlock('mod');
     modBlock.palette = palettes.dict['number'];
@@ -593,6 +607,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifthenelseBlock.staticLabels.push(_('if'), _('then'), _('else'));
     ifthenelseBlock.adjustWidthToLabel();
     ifthenelseBlock.doubleFlowClampBooleanArgBlock();
+
+    var clampBlock = new ProtoBlock('clamp');
+    clampBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['clamp'] = clampBlock;
+    clampBlock.hidden = true;
+    clampBlock.flowClampBlock();
 
     // Extras palette
     var vspaceBlock = new ProtoBlock('vspace');

@@ -329,3 +329,10 @@ KNOWN BUGS:
   * Sometimes the protoblock doesn't return to the palette after dragging.
   * Crashes the Browse activity on the XO.
   * Collapse button doesn't work after block-size is scaled.
+  * Collapse block not rendered properly after font resize
+  * Bottom clamp of if then else block not rendered properly after font resize
+  * Somehow we end up in a browser resize loop??? (2842 console messages are
+    not shown js/activity.js:770)
+  * Python show block not compatible with JS show block
+  * Python fillscreen block not implemented
+

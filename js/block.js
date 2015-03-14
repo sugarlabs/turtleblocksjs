@@ -172,6 +172,7 @@ function Block(protoblock, blocks, overrideName) {
                 for (turtle = 0; turtle < myBlock.blocks.turtles.turtleList.length; turtle++) {
                     if (myBlock.blocks.turtles.turtleList[turtle].startBlock == myBlock) {
                         myBlock.blocks.turtles.turtleList[turtle].resizeDecoration(scale, myBlock.bitmap.image.width);
+			ensureDecorationOnTop(myBlock);
                         break;
                     }
                 }
@@ -314,6 +315,7 @@ function Block(protoblock, blocks, overrideName) {
     this.regenerateArtwork = function() {
         // Sometimes (in the case of namedboxes and nameddos) we need
         // to regenerate the artwork associated with a block.
+
         // First we need to remove the old artwork.
         this.container.removeChild(this.bitmap);
         this.container.removeChild(this.highlightBitmap);
@@ -386,13 +388,7 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.finishImageLoad(firstTime);
                 } else {
                     if (myBlock.name == 'start') {
-                        // Find the turtle decoration and move it to the top.
-                        for (var child = 0; child < myBlock.container.getNumChildren(); child++) {
-                            if (myBlock.container.children[child].name == 'decoration') {
-                                myBlock.container.setChildIndex(myBlock.container.children[child], myBlock.container.getNumChildren() - 1);
-                                break;
-                            }
-                        }
+			ensureDecorationOnTop(myBlock);
                     }
 
                     // Adjust the docks.
@@ -406,13 +402,8 @@ function Block(protoblock, blocks, overrideName) {
                         }
                     }
                     if (['start', 'action'].indexOf(myBlock.name) != -1) {
-                        if (myBlock.collapsed) {
-                            myBlock.bitmap.visible = false;
-                            myBlock.highlightBitmap.visible = false;
-                        } else {
-                            myBlock.bitmap.visible = true;
-                            myBlock.highlightBitmap.visible = false;
-                        }
+                        myBlock.bitmap.visible = !myBlock.collapsed;
+                        myBlock.highlightBitmap.visible = false;
                         myBlock.container.updateCache();
                         myBlock.blocks.refreshCanvas();
                     }
@@ -541,7 +532,7 @@ function Block(protoblock, blocks, overrideName) {
                 myBlock.collapseBlockBitmap = bitmap;
                 myBlock.collapseBlockBitmap.name = 'collapse_' + thisBlock;
                 myBlock.container.addChild(myBlock.collapseBlockBitmap);
-                myBlock.collapseBlockBitmap.visible = false;
+                myBlock.collapseBlockBitmap.visible = myBlock.collapsed;
                 myBlock.blocks.refreshCanvas();
 
                 function processHighlightCollapseBitmap(name, bitmap, myBlock) {
@@ -549,11 +540,6 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.highlightCollapseBlockBitmap.name = 'highlight_collapse_' + thisBlock;
                     myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
                     myBlock.highlightCollapseBlockBitmap.visible = false;
-
-                    myBlock.container.uncache();
-                    myBlock.bounds = myBlock.container.getBounds();
-                    myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
-                    myBlock.blocks.refreshCanvas();
 
                     var fontSize = 10 * myBlock.protoblock.scale;
                     if (myBlock.name == 'action') {
@@ -566,7 +552,12 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.collapseText.textAlign = 'left';
                     myBlock.collapseText.textBaseline = 'alphabetic';
                     myBlock.container.addChild(myBlock.collapseText);
-                    myBlock.collapseText.visible = false;
+                    myBlock.collapseText.visible = myBlock.collapsed;
+
+		    ensureDecorationOnTop(myBlock);
+
+                    myBlock.container.updateCache();
+                    myBlock.blocks.refreshCanvas();
 
                     myBlock.collapseContainer = new createjs.Container();
                     myBlock.collapseContainer.snapToPixelEnabled = true;
@@ -1251,6 +1242,17 @@ function mouseoutCallback(myBlock, event, moved) {
         myBlock.blocks.unhighlight(null);
         myBlock.blocks.activeBlock = null;
         myBlock.blocks.refreshCanvas();
+    }
+}
+
+
+function ensureDecorationOnTop(myBlock) {
+    // Find the turtle decoration and move it to the top.
+    for (var child = 0; child < myBlock.container.getNumChildren(); child++) {
+        if (myBlock.container.children[child].name == 'decoration') {
+            myBlock.container.setChildIndex(myBlock.container.children[child], myBlock.container.getNumChildren() - 1);
+            break;
+        }
     }
 }
 

@@ -260,15 +260,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var blk = blocksToCheck.pop();
 
         var myBlock = this.blockList[blk];
-        if (myBlock.name == 'clamp') {
-            console.log('CLAMP');
-        }
+
         // Make sure it is the proper type of expandable block.
         if (myBlock.isArgBlock() || myBlock.isTwoArgBlock()) {
             return;
-        }
-        if (myBlock.name == 'clamp') {
-            console.log('adjusting');
         }
 
         function clampAdjuster(me, blk, myBlock, clamp, blocksToCheck) {

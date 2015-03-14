@@ -291,6 +291,7 @@
   * Added Block-size scaling.
   * Resized font in DOM for number and text blocks when resizing blocks.
   * Box and action error messages include name.
+  * Collapsable blocks are rendered properly after block resize.
 
 TODO:
   * Save errors
@@ -329,10 +330,10 @@ KNOWN BUGS:
   * Sometimes the protoblock doesn't return to the palette after dragging.
   * Crashes the Browse activity on the XO.
   * Collapse button doesn't work after block-size is scaled.
-  * Collapse block not rendered properly after font resize
-  * Bottom clamp of if then else block not rendered properly after font resize
+  * if-then-else block rendered double after resize
+  * Boolean (eg =) block renders doubled after resize
   * Somehow we end up in a browser resize loop??? (2842 console messages are
     not shown js/activity.js:770)
   * Python show block not compatible with JS show block
   * Python fillscreen block not implemented
-
+  * Break in loop doesn't continue flow after loop (tested on while).

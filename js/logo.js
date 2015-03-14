@@ -374,7 +374,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
 
             // Make sure the turtle we "found" exisits.
-	    if(this.turtles.turtleList.length < turtle + 1) {
+            if(this.turtles.turtleList.length < turtle + 1) {
                 turtle = 0;
             }
 
@@ -615,7 +615,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'clamp':
-                if (args.length == 2) {
+                if (args.length == 1) {
                     childFlow = args[0];
                     childFlowCount = 1;
                 }

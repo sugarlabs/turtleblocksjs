@@ -1062,13 +1062,14 @@ define(function(require) {
                 var currentProject = localStorage.currentProject;
                 sessionData = localStorage['SESSION' + currentProject];
             }
-            if (sessionData != null) {
+            if (sessionData) {
                 try {
-                    console.log('restoring session: ' + sessionData);
-                    if (sessionData != '[]') {
-                        blocks.loadNewBlocks(JSON.parse(sessionData));
-                    } else {
+                    if (sessionData == 'undefined' || sessionData == '[]') {
+                        console.log('empty session found: loading start');
                         justLoadStart();
+                    } else {
+                        console.log('restoring session: ' + sessionData);
+                        blocks.loadNewBlocks(JSON.parse(sessionData));
                     }
                 } catch (e) {
                     console.log(e);

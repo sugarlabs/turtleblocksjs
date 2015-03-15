@@ -77,6 +77,11 @@ function showMaterialHighlight(x, y, r, event, scale, stage) {
 }
 
 function hideMaterialHighlight(circles, stage) {
+    // Un-real circles!
+    if (circles.active === undefined) {
+        return;
+    }
+
     createjs.Tween.get(circles.active).to({alpha: 0}, 400);
     createjs.Tween.get(circles.highlight).to({alpha: 0}, 400);
     setTimeout(function() {

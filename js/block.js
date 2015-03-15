@@ -135,21 +135,9 @@ function Block(protoblock, blocks, overrideName) {
         // Resize an expandable block.
         var thisBlock = this.blocks.blockList.indexOf(this);
 
-        // First, remove the old artwork.
-        var targets = ['bmp_highlight_' + thisBlock, 'bmp_' + thisBlock];
-        var deleteQueue = [];
-        for (var child = 0; child < this.container.getNumChildren(); child++) {
-            if (targets.indexOf(this.container.children[child].name) != -1) {
-                deleteQueue.push(this.container.children[child]);
-            }
-        }
-        for (var child in deleteQueue) {
-            this.container.removeChild(deleteQueue[child]);
-        }
-
         this.clampCount[clamp] += plusMinus;
         this.newArtwork(plusMinus);
-        this.generateArtwork(false, blocksToCheck);
+        this.regenerateArtwork(false); // , blocksToCheck);
     }
 
     this.resize = function(scale) {
@@ -182,7 +170,7 @@ function Block(protoblock, blocks, overrideName) {
         }
         this.protoblock.scale = scale;
         this.newArtwork(0);
-        this.regenerateArtwork();
+        this.regenerateArtwork(true);
 
         if (this.text != null) {
             var fontSize = 10 * scale;
@@ -296,14 +284,14 @@ function Block(protoblock, blocks, overrideName) {
         image.src = this.image;
     }
 
-    this.regenerateArtwork = function() {
+    this.regenerateArtwork = function(collapse) {
         // Sometimes (in the case of namedboxes and nameddos) we need
         // to regenerate the artwork associated with a block.
 
         // First we need to remove the old artwork.
         this.container.removeChild(this.bitmap);
         this.container.removeChild(this.highlightBitmap);
-        if (this.collapseBitmap != null) {
+        if (collapse && this.collapseBitmap != null) {
             this.collapseContainer.removeChild(this.collapseBitmap);
             this.collapseContainer.removeChild(this.expandBitmap);
             this.container.removeChild(this.collapseBlockBitmap);

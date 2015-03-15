@@ -359,8 +359,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             // Or run from the top of each stack.
             // Find a turtle.
             var turtle = null;
-            for (var t = 0; turtle < this.turtles.turtleList.length; t++) {
-                if (!this.turtles.turtleList[turtle].trash) {
+            for (var t = 0; t < this.turtles.turtleList.length; t++) {
+                if (!this.turtles.turtleList[t].trash) {
                     console.log('found turtle ' + t);
                     turtle = t;
                     break;

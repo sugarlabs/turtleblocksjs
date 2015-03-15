@@ -74,6 +74,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     this.adjustTheseDocks = [];
     // Blocks that need collapsing after load.
     this.blocksToCollapse = [];
+    // Blocks that need expanding after load.
+    this.checkTwoArgBlocks = [];
 
     // We need to keep track of certain classes of blocks that exhibit
     // different types of behavior.
@@ -257,7 +259,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             // Should not happen
             return;
         }
-        var blk = blocksToCheck.pop();
+        var obj = blocksToCheck.pop();
+        var blk = obj[0];
+        var clamp = obj[1];
 
         var myBlock = this.blockList[blk];
 
@@ -266,7 +270,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
 
-        function clampAdjuster(me, blk, myBlock, clamp, blocksToCheck) {
+        function clampAdjuster(blocks, blk, myBlock, clamp, blocksToCheck) {
             // First we need to count up the number of (and size of) the
             // blocks inside the clamp; The child flow is usually the
             // second-to-last argument.
@@ -275,10 +279,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             } else { // e.g., Bottom clamp in if-then-else
                 var c = myBlock.connections.length - 3;
             }
-            me.sizeCounter = 0;
+            blocks.sizeCounter = 0;
             var childFlowSize = 1;
             if (c > 0 && myBlock.connections[c] != null) {
-                childFlowSize = Math.max(me.getStackSize(myBlock.connections[c]), 1);
+                childFlowSize = Math.max(blocks.getStackSize(myBlock.connections[c]), 1);
             }
 
             // Adjust the clamp size to match the size of the child
@@ -292,14 +296,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             // Recurse through the list.
             if (blocksToCheck.length > 0) {
-                me.adjustExpandableClampBlock(blocksToCheck);
+                setTimeout(function() {
+                    blocks.adjustExpandableClampBlock(blocksToCheck);
+                }, 250);
             }
         }
 
-        if (myBlock.isDoubleClampBlock()) {
-            clampAdjuster(this, blk, myBlock, 1, blocksToCheck);
-        }
-        clampAdjuster(this, blk, myBlock, 0, blocksToCheck);
+        clampAdjuster(this, blk, myBlock, clamp, blocksToCheck);
     }
 
     // Returns the block size.
@@ -337,7 +340,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         var plusMinus = firstArgumentSize - myBlock.clampCount[0];
         if (plusMinus != 0) {
-            if (!(firstArgumentSize == 0 && myBlock.clampCount[0] == 1)) {
+            if (!(firstArgumentSize == 0)) {
                 myBlock.updateSlots(0, plusMinus, blocksToCheck);
             }
         }
@@ -595,11 +598,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 console.log('Inifinite loop encountered checking for expandables?');
                 break;
             }
-            checkExpandableBlocks.push(blk);
+            checkExpandableBlocks.push([blk, 0]);
             blk = this.insideExpandableBlock(blk);
         }
 
-        var checkTwoArgBlocks = [];
+        this.checkTwoArgBlocks = [];
         var checkArgBlocks = [];
         var myBlock = this.blockList[thisBlock];
         if (myBlock == null) {
@@ -616,11 +619,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             // connections to the first arg;
             if (this.blockList[c].isTwoArgBlock()) {
                 if (cBlock.connections[1] == thisBlock) {
-                    checkTwoArgBlocks.push(c);
+                    this.checkTwoArgBlocks.push(c);
                 }
             } else if (this.blockList[c].isArgBlock() && this.blockList[c].isExpandableBlock()) {
                 if (cBlock.connections[1] == thisBlock) {
-                    checkTwoArgBlocks.push(c);
+                    this.checkTwoArgBlocks.push(c);
                 }
             }
         }
@@ -709,14 +712,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             // first arg;
             if (this.blockList[newBlock].isTwoArgBlock()) {
                 if (this.blockList[newBlock].connections[1] == thisBlock) {
-                    if (checkTwoArgBlocks.indexOf(newBlock) == -1) {
-                        checkTwoArgBlocks.push(newBlock);
+                    if (this.checkTwoArgBlocks.indexOf(newBlock) == -1) {
+                        this.checkTwoArgBlocks.push(newBlock);
                     }
                 }
             } else if (this.blockList[newBlock].isArgBlock() && this.blockList[newBlock].isExpandableBlock()) {
                 if (this.blockList[newBlock].connections[1] == thisBlock) {
-                    if (checkTwoArgBlocks.indexOf(newBlock) == -1) {
-                        checkTwoArgBlocks.push(newBlock);
+                    if (this.checkTwoArgBlocks.indexOf(newBlock) == -1) {
+                        this.checkTwoArgBlocks.push(newBlock);
                     }
                 }
             }
@@ -744,8 +747,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             // If we changed the contents of a two-arg block, we need to
             // adjust it.
-            if (checkTwoArgBlocks.length > 0) {
-                blocks.adjustExpandableTwoArgBlock(checkTwoArgBlocks);
+            if (blocks.checkTwoArgBlocks.length > 0) {
+                blocks.adjustExpandableTwoArgBlock(blocks.checkTwoArgBlocks);
             }
 
             // First, adjust the docks for any blocks that may have
@@ -766,8 +769,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     console.log(blocks.blockList);
                     break;
                 }
-                if (checkExpandableBlocks.indexOf(blk) == -1) {
-                    checkExpandableBlocks.push(blk);
+                if (blocks.blockList[blk].name == 'ifthenelse') {
+		    checkExpandableBlocks.push([blk, 0]);
+                    checkExpandableBlocks.push([blk, 1]);
+		} else {
+		    checkExpandableBlocks.push([blk, 0]);
                 }
                 blk = blocks.insideExpandableBlock(blk);
             }
@@ -1038,10 +1044,29 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         this.refreshCanvas();
     }
 
+    this.findDoubleClamps = function() {
+        // Find any if-then-else blocks.
+        this.expandablesList = [];
+        for (var i = 0; i < this.blockList.length; i++) {
+            if (this.blockList[i].name == 'ifthenelse') {
+                this.expandablesList.push(i);
+            }
+        }
+    }
+
     this.expandClamps = function() {
         // Expand expandable clamp blocks as needed.
         this.findClamps();
-        this.adjustExpandableClampBlock(this.expandablesList);
+        var blocksToCheck = [];
+        for(i = 0; i < this.expandablesList.length; i++) {
+            if (this.blockList[this.expandablesList[i]].name == 'ifthenelse') {
+		blocksToCheck.push([this.expandablesList[i], 0]);
+		blocksToCheck.push([this.expandablesList[i], 1]);
+            } else {
+		blocksToCheck.push([this.expandablesList[i], 0]);
+            }
+        }
+        this.adjustExpandableClampBlock(blocksToCheck);
         this.refreshCanvas();
     }
 
@@ -1813,7 +1838,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         // We need to track two-arg blocks incase they need expanding. 
-        var checkTwoArgBlocks = [];
+        this.checkTwoArgBlocks = [];
 
         // Don't make duplicate action names.
         // Add a palette entry for any new storein blocks.
@@ -1843,7 +1868,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
             if (['arg', 'twoarg'].indexOf(this.protoBlockDict[name].style) != -1) {
                 if (this.protoBlockDict[name].expandable) {
-                    checkTwoArgBlocks.push(this.blockList.length + b);
+                    this.checkTwoArgBlocks.push(this.blockList.length + b);
                 }
             }
 
@@ -2239,14 +2264,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
             }
         }
-        if (checkTwoArgBlocks.length > 0) {
-            // We make multiple passes because we need to account for nesting.
-            for (i = 0; i < checkTwoArgBlocks.length; i++) {
-                for (b = 0; b < checkTwoArgBlocks.length; b++) {
-                    this.adjustExpandableTwoArgBlock([checkTwoArgBlocks[b]]);
-                }
-            }
-        }
     }
 
     this.cleanupAfterLoad = function() {
@@ -2257,10 +2274,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         this.updateBlockPositions();
+        if (this.checkTwoArgBlocks.length > 0) {
+            // We make multiple passes because we need to account for nesting.
+            for (i = 0; i < this.checkTwoArgBlocks.length; i++) {
+                for (b = 0; b < this.checkTwoArgBlocks.length; b++) {
+                    this.adjustExpandableTwoArgBlock([this.checkTwoArgBlocks[b]]);
+                }
+            }
+        }
+
         for (var blk = 0; blk < this.adjustTheseDocks.length; blk++) {
             this.loopCounter = 0;
             this.adjustDocks(this.adjustTheseDocks[blk]);
-            blockBlocks.expandTwoArgs();
+            // blockBlocks.expandTwoArgs();
             blockBlocks.expandClamps();
         }
 

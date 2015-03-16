@@ -1314,7 +1314,7 @@ function labelChanged(myBlock) {
                 // Rename both do <- name and nameddo blocks.
                 myBlock.blocks.renameDos(oldValue, newValue);
                 myBlock.blocks.renameNameddos(oldValue, newValue);
-                myBlock.blocks.palettes.updatePalettes('blocks');
+                myBlock.blocks.palettes.updatePalettes('actions');
                 break;
             case 'storein':
                 // If the label was the name of a storein, update the

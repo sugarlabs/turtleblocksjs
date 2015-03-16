@@ -1460,7 +1460,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.renameBoxes = function(oldName, newName) {
         if (oldName == newName) {
-            // Nothing to do.
             return;
         }
         for (var blk = 0; blk < this.blockList.length; blk++) {
@@ -1483,7 +1482,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.renameNamedboxes = function(oldName, newName) {
         if (oldName == newName) {
-            // console.log('Nothing to do.');
             return;
         }
 
@@ -1522,7 +1520,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.renameDos = function(oldName, newName) {
         if (oldName == newName) {
-            console.log('Nothing to do.');
             return;
         }
         // Update the blocks, do->oldName should be do->newName
@@ -1550,7 +1547,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.renameNameddos = function(oldName, newName) {
         if (oldName == newName) {
-            console.log('Nothing to do.');
             return;
         }
 
@@ -1575,9 +1571,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var nameChanged = false;
         for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
             var block = blockPalette.protoList[blockId];
-            if (block.name == 'nameddo') {
-                console.log(block);
-            }
             if (block.name == 'nameddo' && block.defaults[0] != _('action') && block.defaults[0] == oldName) {
                 console.log('renaming ' + block.defaults[0] + ' to ' + newName);
                 block.defaults[0] = newName;
@@ -1592,7 +1585,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.newStoreinBlock = function(name) {
         if ('myStorein_' + name in this.protoBlockDict) {
-            // console.log('Nothing to do.');
             return;
         }
         console.log('new storein block ' + name);
@@ -1614,7 +1606,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.newNamedboxBlock = function(name) {
         if ('myBox_' + name in this.protoBlockDict) {
-            // console.log('Nothing to do.');
             return;
         }
         var myBoxBlock = new ProtoBlock('namedbox');
@@ -1631,7 +1622,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.newNameddoBlock = function(name) {
         if ('myDo_' + name in this.protoBlockDict) {
-            // console.log('Nothing to do.');
             return;
         }
         var myDoBlock = new ProtoBlock('nameddo');
@@ -1648,7 +1638,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.newActionBlock = function(name) {
         if ('myAction_' + name in this.protoBlockDict) {
-            // console.log('Nothing to do.');
             return;
         }
         var myActionBlock = new ProtoBlock('action');

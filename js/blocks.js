@@ -1600,11 +1600,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newStoreinBlock = function(name) {
-        console.log('new storein block ' + name);
         if ('myStorein_' + name in this.protoBlockDict) {
             // console.log('Nothing to do.');
             return;
         }
+        console.log('new storein block ' + name);
         var myStoreinBlock = new ProtoBlock('storein');
         this.protoBlockDict['myStorein_' + name] = myStoreinBlock;
         myStoreinBlock.palette = this.palettes.dict['blocks'];
@@ -1928,7 +1928,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 } else {
                     var name = blkData[1][1]['value'];
                 }
-                console.log('Adding new palette entries for store-in ' + name);
+                // console.log('Adding new palette entries for store-in ' + name);
                 this.newStoreinBlock(name);
                 this.newNamedboxBlock(name);
                 updatePalettes = true;
@@ -1977,19 +1977,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
                 if (blkName == 'nameddo') {
                     if (thisBlkData[1][1]['value'] == oldName) {
-                        console.log('renaming ' + oldName + ' to ' + name);
+                        // console.log('renaming ' + oldName + ' to ' + name);
                         thisBlkData[1][1] = {'value': name};
                     }
                 } else {
                     var doBlkData = blockObjs[doNames[d]];
                     if (typeof(doBlkData[1][1]) == 'string') {
                         if (doBlkData[1][1] == oldName) {
-                            console.log('renaming ' + oldName + ' to ' + name);
+                            // console.log('renaming ' + oldName + ' to ' + name);
                             doBlkData[1][1] = name;
                         }
                     } else {
                         if (doBlkData[1][1]['value'] == oldName) {
-                            console.log('renaming ' + oldName + ' to ' + name);
+                            // console.log('renaming ' + oldName + ' to ' + name);
                             doBlkData[1][1] = {'value': name};
                         }
                     }
@@ -2141,9 +2141,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     // Define some constants for legacy blocks for
                     // backward compatibility with Python projects.
                 case 'red':
-                case 'white':
+                case 'black':
                     postProcess = function(thisBlock) {
                         me.blockList[thisBlock].value = 0;
+                        me.updateBlockText(thisBlock);
+                    }
+                    this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
+                    break;
+                case 'white':
+                    postProcess = function(thisBlock) {
+                        me.blockList[thisBlock].value = 100;
                         me.updateBlockText(thisBlock);
                     }
                     this.makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);

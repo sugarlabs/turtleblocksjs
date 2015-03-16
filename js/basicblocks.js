@@ -15,6 +15,7 @@
 // JS version so look up name in the conversion dictionary.
 var NAMEDICT = {
     'fullscreen': 'vspace',
+    'fillscreen2': 'fillscreen',
     'comment': 'print',
     'sandwichclampcollapsed': 'clamp',
     'ifelse': 'ifthenelse',
@@ -255,6 +256,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     backgroundBlock.staticLabels.push(_('background'));
     backgroundBlock.adjustWidthToLabel();
     backgroundBlock.zeroArgBlock();
+
+    var fillscreenBlock = new ProtoBlock('fillscreen');
+    fillscreenBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['fillscreen'] = fillscreenBlock;
+    fillscreenBlock.hidden = true;
+    fillscreenBlock.staticLabels.push(_('background'));
+    fillscreenBlock.adjustWidthToLabel();
+    fillscreenBlock.threeArgBlock();
 
     // Numbers palette
     var numberBlock = new ProtoBlock('number');

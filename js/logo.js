@@ -914,6 +914,20 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'endfill':
                 logo.turtles.turtleList[turtle].doEndFill();
                 break;
+            case 'fillscreen':
+                if (args.length == 3) {
+                    var hue = logo.turtles.turtleList[turtle].color;
+                    var value = logo.turtles.turtleList[turtle].value;
+                    var chroma = logo.turtles.turtleList[turtle].chroma;
+                    logo.turtles.turtleList[turtle].doSetHue(args[0]);
+                    logo.turtles.turtleList[turtle].doSetValue(args[1]);
+                    logo.turtles.turtleList[turtle].doSetChroma(args[2]);
+                    logo.setBackgroundColor(turtle);
+                    logo.turtles.turtleList[turtle].doSetHue(hue);
+                    logo.turtles.turtleList[turtle].doSetValue(value);
+                    logo.turtles.turtleList[turtle].doSetChroma(chroma);
+                }
+                break;
             case 'background':
                 logo.setBackgroundColor(turtle);
                 break;

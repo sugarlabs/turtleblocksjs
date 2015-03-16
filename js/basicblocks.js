@@ -361,6 +361,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     equalBlock.extraWidth = 20;
     equalBlock.staticLabels.push('=');
     equalBlock.booleanTwoArgBlock();
+    equalBlock.dockTypes[0] = 'booleanout';
+    equalBlock.dockTypes[1] = 'anyin';
+    equalBlock.dockTypes[2] = 'anyin';
 
     var andBlock = new ProtoBlock('and');
     andBlock.palette = palettes.dict['boolean'];

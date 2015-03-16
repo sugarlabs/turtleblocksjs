@@ -318,12 +318,6 @@ function Block(protoblock, blocks, overrideName) {
                 // Hide it to start
                 myBlock.highlightBitmap.visible = false;
 
-                if (myBlock.text != null) {
-                    // Make sure text is on top.
-                    z = myBlock.container.getNumChildren() - 1;
-                    myBlock.container.setChildIndex(myBlock.text, z);
-                }
-
                 // At me point, it should be safe to calculate the
                 // bounds of the container and cache its contents.
                 if (!firstTime) {
@@ -339,7 +333,7 @@ function Block(protoblock, blocks, overrideName) {
                     if (myBlock.image != null) {
                         myBlock.addImage();
                     }
-                    myBlock.finishImageLoad(firstTime);
+                    myBlock.finishImageLoad();
                 } else {
                     if (myBlock.name == 'start') {
                         ensureDecorationOnTop(myBlock);
@@ -397,7 +391,7 @@ function Block(protoblock, blocks, overrideName) {
         makeBitmap(artwork, this.name, processBitmap, this);
     }
 
-    this.finishImageLoad = function(firstTime) {
+    this.finishImageLoad = function() {
         var thisBlock = this.blocks.blockList.indexOf(this);
 
         // Value blocks get a modifiable text label
@@ -433,24 +427,20 @@ function Block(protoblock, blocks, overrideName) {
         } else {
             // Start blocks and Action blocks can collapse, so add an
             // event handler
-            if (firstTime) {
-                var proto = new ProtoBlock('collapse');
-                proto.scale = this.protoblock.scale;
-                proto.extraWidth = 10;
-                proto.basicBlockCollapsed();
-                var obj = proto.generator();
-                this.collapseArtwork = obj[0];
-                var postProcess = function(myBlock) {
-                    loadCollapsibleEventHandlers(myBlock);
-                    myBlock.loadComplete = true;
+            var proto = new ProtoBlock('collapse');
+            proto.scale = this.protoblock.scale;
+            proto.extraWidth = 10;
+            proto.basicBlockCollapsed();
+            var obj = proto.generator();
+            this.collapseArtwork = obj[0];
+            var postProcess = function(myBlock) {
+                loadCollapsibleEventHandlers(myBlock);
+                myBlock.loadComplete = true;
                     
-                    if (myBlock.postProcess != null) {
-                        myBlock.postProcess(myBlock.postProcessArg);
-                        myBlock.postProcess = null;
-                    }
+                if (myBlock.postProcess != null) {
+                    myBlock.postProcess(myBlock.postProcessArg);
+                    myBlock.postProcess = null;
                 }
-            } else {
-                var postProcess = null;
             }
             this.generateCollapseArtwork(postProcess);
         }
@@ -472,16 +462,18 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.container.addChild(myBlock.highlightCollapseBlockBitmap);
                     myBlock.highlightCollapseBlockBitmap.visible = false;
 
-                    var fontSize = 10 * myBlock.protoblock.scale;
-                    if (myBlock.name == 'action') {
-                        myBlock.collapseText = new createjs.Text(_('action'), fontSize + 'px Sans', '#000000');
-                    } else {
-                        myBlock.collapseText = new createjs.Text(_('start'), fontSize + 'px Sans', '#000000');
+                    if (myBlock.collapseText == null) {
+                        var fontSize = 10 * myBlock.protoblock.scale;
+                        if (myBlock.name == 'action') {
+                            myBlock.collapseText = new createjs.Text(_('action'), fontSize + 'px Sans', '#000000');
+                        } else {
+                            myBlock.collapseText = new createjs.Text(_('start'), fontSize + 'px Sans', '#000000');
+                        }
+                        myBlock.collapseText.textAlign = 'left';
+                        myBlock.collapseText.textBaseline = 'alphabetic';
+                        myBlock.container.addChild(myBlock.collapseText);
                     }
                     positionCollapseLabel(myBlock, myBlock.protoblock.scale);
-                    myBlock.collapseText.textAlign = 'left';
-                    myBlock.collapseText.textBaseline = 'alphabetic';
-                    myBlock.container.addChild(myBlock.collapseText);
                     myBlock.collapseText.visible = myBlock.collapsed;
 
                     ensureDecorationOnTop(myBlock);
@@ -819,6 +811,10 @@ function calculateCollapseHitArea(myBlock) {
 function positionCollapseLabel(myBlock, scale) {
     myBlock.collapseText.x = COLLAPSETEXTX * scale / 2;
     myBlock.collapseText.y = COLLAPSETEXTY * scale / 2;
+
+    // Ensure text is on top.
+    z = myBlock.container.getNumChildren() - 1;
+    myBlock.container.setChildIndex(myBlock.collapseText, z);
 }
 
 

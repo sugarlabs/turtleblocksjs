@@ -145,13 +145,7 @@ function Block(protoblock, blocks, overrideName) {
         // artwork and recalculate the hitarea.
         this.postProcess = function(myBlock) {
             if (myBlock.imageBitmap != null) {
-                if (myBlock.imageBitmap.image.width > myBlock.imageBitmap.image.height) {
-                    myBlock.imageBitmap.scaleX = myBlock.imageBitmap.scaleY = myBlock.imageBitmap.scale = MEDIASAFEAREA[2] / myBlock.imageBitmap.image.width * scale / 2;
-                } else {
-                    myBlock.imageBitmap.scaleX = myBlock.imageBitmap.scaleY = myBlock.imageBitmap.scale = MEDIASAFEAREA[3] / myBlock.imageBitmap.image.height * scale / 2;
-                }
-                myBlock.imageBitmap.x = (MEDIASAFEAREA[0] - 10) * scale / 2;
-                myBlock.imageBitmap.y = MEDIASAFEAREA[1] * scale / 2;
+                positionMedia(myBlock.imageBitmap, myBlock, myBlock.imageBitmap.image.width, myBlock.imageBitmap.image.height, scale);
                 z = myBlock.container.getNumChildren() - 1;
                 myBlock.container.setChildIndex(myBlock.imageBitmap, z);
             }
@@ -185,17 +179,14 @@ function Block(protoblock, blocks, overrideName) {
                 myBlock.expandBitmap.scaleX = myBlock.expandBitmap.scaleY = myBlock.expandBitmap.scale = scale / 2;
                 var bounds = myBlock.collapseContainer.getBounds();
                 myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF * (myBlock.protoblock.scale / 2);
-                myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF * (myBlock.protoblock.scale / 2);
-
+                positionCollapseContainer(myBlock, myBlock.protoblock.scale);
                 calculateCollapseHitArea(myBlock);
             }
 
             this.generateCollapseArtwork(postProcess);
             var fontSize = 10 * scale;
             this.collapseText.font = fontSize + 'px Sans';
-            this.collapseText.x = COLLAPSETEXTX * scale / 2;
-            this.collapseText.y = COLLAPSETEXTY * scale / 2;
+            positionCollapseLabel(this, scale);
         }
     }
 
@@ -269,15 +260,9 @@ function Block(protoblock, blocks, overrideName) {
         image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
             bitmap.name = 'media';
-            if (image.width > image.height) {
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width * (myBlock.protoblock.scale / 2);
-            } else {
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height * (myBlock.protoblock.scale / 2);
-            }
             myBlock.container.addChild(bitmap);
+            positionMedia(bitmap, myBlock, image.width, image.height, myBlock.protoblock.scale);
             myBlock.imageBitmap = bitmap;
-            bitmap.x = (MEDIASAFEAREA[0] - 10) * (myBlock.protoblock.scale / 2);
-            bitmap.y = MEDIASAFEAREA[1] * (myBlock.protoblock.scale / 2);
             myBlock.container.updateCache();
             myBlock.blocks.refreshCanvas();
         }
@@ -518,8 +503,7 @@ function Block(protoblock, blocks, overrideName) {
                     } else {
                         myBlock.collapseText = new createjs.Text(_('start'), fontSize + 'px Sans', '#000000');
                     }
-                    myBlock.collapseText.x = COLLAPSETEXTX * (myBlock.protoblock.scale / 2);
-                    myBlock.collapseText.y = COLLAPSETEXTY * (myBlock.protoblock.scale / 2);
+                    positionCollapseLabel(myBlock, myBlock.protoblock.scale);
                     myBlock.collapseText.textAlign = 'left';
                     myBlock.collapseText.textBaseline = 'alphabetic';
                     myBlock.container.addChild(myBlock.collapseText);
@@ -677,16 +661,8 @@ function Block(protoblock, blocks, overrideName) {
             myBlock.imageBitmap = bitmap;
 
             // Next, scale the bitmap for the thumbnail.
-            if (image.width > image.height) {
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / image.width * (myBlock.protoblock.scale / 2);
-            } else {
-                bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / image.height * (myBlock.protoblock.scale / 2);
-            }
-
+            positionMedia(bitmap, myBlock, bitmap.image.width, bitmap.image.height, myBlock.protoblock.scale);
             myBlock.container.addChild(bitmap);
-            bitmap.x = (MEDIASAFEAREA[0] - 10) * (myBlock.protoblock.scale / 2);
-            bitmap.y = MEDIASAFEAREA[1] * (myBlock.protoblock.scale / 2);
-
             myBlock.container.updateCache();
             myBlock.blocks.refreshCanvas();
         }
@@ -813,6 +789,17 @@ function $() {
 }
 
 
+function positionMedia(bitmap, myBlock, width, height, scale) {
+    if (width > height) {
+        bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[2] / width * scale / 2;
+    } else {
+        bitmap.scaleX = bitmap.scaleY = bitmap.scale = MEDIASAFEAREA[3] / height * scale / 2;
+    }
+    bitmap.x = (MEDIASAFEAREA[0] - 10) * scale / 2;
+    bitmap.y = MEDIASAFEAREA[1] * scale / 2;
+}
+
+
 function calculateCollapseHitArea(myBlock) {
     var bounds = myBlock.collapseContainer.getBounds();
     var hitArea = new createjs.Shape();
@@ -822,6 +809,18 @@ function calculateCollapseHitArea(myBlock) {
     hitArea.x = w2 / 2;
     hitArea.y = h2 / 2;
     myBlock.collapseContainer.hitArea = hitArea;
+}
+
+
+function positionCollapseLabel(myBlock, scale) {
+    myBlock.collapseText.x = COLLAPSETEXTX * scale / 2;
+    myBlock.collapseText.y = COLLAPSETEXTY * scale / 2;
+}
+
+
+function positionCollapseContainer(myBlock, scale) {
+    myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF * scale / 2;
+    myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF * scale / 2;
 }
 
 
@@ -871,7 +870,7 @@ function loadCollapsibleEventHandlers(myBlock) {
                 collapseOut(blocks, myBlock, thisBlock, moved, event);
                 moved = false;
             } else {
-		handleClick();
+                handleClick();
             }
         });
 
@@ -1181,8 +1180,7 @@ function loadEventHandlers(myBlock) {
                 var z = myBlock.container.getNumChildren() - 1;
                 myBlock.container.setChildIndex(myBlock.text, z);
             } else if (myBlock.collapseContainer != null) {
-                myBlock.collapseContainer.x = myBlock.container.x + COLLAPSEBUTTONXOFF * (myBlock.protoblock.scale / 2);
-                myBlock.collapseContainer.y = myBlock.container.y + COLLAPSEBUTTONYOFF * (myBlock.protoblock.scale / 2);
+                positionCollapseContainer(myBlock, myBlock.protoblock.scale);
             }
 
             // Move any connected blocks.

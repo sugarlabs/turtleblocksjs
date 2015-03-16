@@ -295,6 +295,7 @@
   * Collapse button now works after block-size is scaled.
   * Fixed problem with expandable blocks rendered double after resize.
   * Fillscreen block implemented.
+  * Fixed problem with break block continuing flow after loop.
 
 TODO:
   * Save errors
@@ -336,4 +337,3 @@ KNOWN BUGS:
   * Somehow we end up in a browser resize loop??? (2842 console messages are
     not shown js/activity.js:770)
   * Python show block not compatible with JS show block
-  * Break in loop doesn't continue flow after loop (tested on while).

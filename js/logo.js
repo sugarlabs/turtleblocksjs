@@ -585,6 +585,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'break':
                 logo.doBreak(turtle);
+                // Since we pop the queue, we need to unhighlight our parent.
+                var parentBlk = logo.blocks.blockList[blk].connections[0];
+                if (parentBlk != null) {
+                    logo.unhightlightQueue[turtle].push(parentBlk);
+                }
                 break;
             case 'wait':
                 if (args.length == 1) {
@@ -636,7 +641,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         // Since an until block was requeued each
                         // time, we need to flush the queue of all but
                         // the last one, otherwise the child of the
-                        // while block is executed multiple times.
+                        // until block is executed multiple times.
                         var queueLength = logo.turtles.turtleList[turtle].queue.length;
                         for (var i = queueLength - 1; i > 0; i--) {
                             if (logo.turtles.turtleList[turtle].queue[i].parentBlk == blk) {
@@ -983,7 +988,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.parentFlowQueue[targetTurtle] = [];
                 logo.unhightlightQueue[targetTurtle] = [];
                 logo.parameterQueue[targetTurtle] = [];
-                doBreak(targetTurtle);
+                logo.doBreak(targetTurtle);
                 break;
             case 'showblocks':
                 logo.showBlocks();
@@ -1161,13 +1166,32 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         return startHere;
     }
 
+    this.loopBlock = function(name) {
+        return ['forever', 'repeat', 'while', 'until'].indexOf(name) != -1;
+    }
+
     this.doBreak = function(turtle) {
-        for (var i = 0; i < this.turtles.turtleList[turtle].queue.length; i++) {
-            var j = this.turtles.turtleList[turtle].queue.length - i - 1;
-            // FIXME: have a method for identifying these parents
-            if (['forever', 'repeat', 'while', 'until'].indexOf(this.blocks.blockList[this.turtles.turtleList[turtle].queue[j].parentBlk].name) != -1) {
-                this.turtles.turtleList[turtle].queue[j].count = 1;
+        // Look for a parent loopBlock in queue and set its count to 1.
+
+        // First, find the parent loopBlock
+        var parentBlk = null;
+        for (var i = this.turtles.turtleList[turtle].queue.length - 1; i > -1; i--) {
+            if (this.loopBlock(this.blocks.blockList[this.turtles.turtleList[turtle].queue[i].parentBlk].name)) {
+                parentBlk = this.turtles.turtleList[turtle].queue[i].parentBlk;
                 break;
+            }
+        }
+        if (parentBlk == null) {
+            return;
+        }
+
+        // Finally, flush the parent from the queue.
+        var queueLength = this.turtles.turtleList[turtle].queue.length;
+        for (var i = queueLength - 1; i > 0; i--) {
+            // console.log(this.turtles.turtleList[turtle].queue[i].parentBlk + ' == ' + parentBlk);
+            if (this.turtles.turtleList[turtle].queue[i].parentBlk == parentBlk) {
+                // console.log('POP');
+                this.turtles.turtleList[turtle].queue.pop();
             }
         }
     }

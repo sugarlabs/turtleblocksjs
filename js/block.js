@@ -489,6 +489,7 @@ function Block(protoblock, blocks, overrideName) {
                         myBlock.collapseBitmap = new createjs.Bitmap(image);
                         myBlock.collapseBitmap.scaleX = myBlock.collapseBitmap.scaleY = myBlock.collapseBitmap.scale = myBlock.protoblock.scale / 2;
                         myBlock.collapseContainer.addChild(myBlock.collapseBitmap);
+                        myBlock.collapseBitmap.visible = !myBlock.collapsed;
                         finishCollapseButton(myBlock);
                     }
                     image.src = 'images/collapse.svg';
@@ -499,7 +500,7 @@ function Block(protoblock, blocks, overrideName) {
                             myBlock.expandBitmap = new createjs.Bitmap(image);
                             myBlock.expandBitmap.scaleX = myBlock.expandBitmap.scaleY = myBlock.expandBitmap.scale = myBlock.protoblock.scale / 2;
                             myBlock.collapseContainer.addChild(myBlock.expandBitmap);
-                            myBlock.expandBitmap.visible = false;
+                            myBlock.expandBitmap.visible = myBlock.collapsed;
 
                             var bounds = myBlock.collapseContainer.getBounds();
                             myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);

@@ -294,6 +294,7 @@
   * Collapsable blocks are rendered properly after block resize.
   * Collapse button now works after block-size is scaled.
   * Fixed problem with expandable blocks rendered double after resize.
+  * Fillscreen block implemented.
 
 TODO:
   * Save errors
@@ -314,6 +315,7 @@ TODO:
   * Add city to long/city to lat block to gmap plugin.
   * Use spanner to open preferences panel for adding plugins and setting
     block size.
+  * Unit tests
 
 FEATURE IDEAS:
   * Local variables? (e.g., boxes only defined inside an action?) Note that
@@ -334,5 +336,4 @@ KNOWN BUGS:
   * Somehow we end up in a browser resize loop??? (2842 console messages are
     not shown js/activity.js:770)
   * Python show block not compatible with JS show block
-  * Python fillscreen block not implemented
   * Break in loop doesn't continue flow after loop (tested on while).

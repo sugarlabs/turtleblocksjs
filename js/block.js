@@ -354,7 +354,9 @@ function Block(protoblock, blocks, overrideName) {
 
                     // Are there clamp blocks that need expanding?
                     if (myBlock.blocks.clampBlocksToCheck.length > 0) {
-                        myBlock.blocks.adjustExpandableClampBlock();
+                        setTimeout(function () {
+                            myBlock.blocks.adjustExpandableClampBlock();
+                        }, 250);
                     }
 
                     if (['start', 'action'].indexOf(myBlock.name) != -1) {

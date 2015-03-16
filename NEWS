@@ -337,3 +337,5 @@ KNOWN BUGS:
   * Somehow we end up in a browser resize loop??? (2842 console messages are
     not shown js/activity.js:770)
   * Python show block not compatible with JS show block
+  * Not serious, but there is still a race condition when creating
+    if-then-else blocks (so there is a work-around in place).

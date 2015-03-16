@@ -296,6 +296,7 @@
   * Fixed problem with expandable blocks rendered double after resize.
   * Fillscreen block implemented.
   * Fixed problem with break block continuing flow after loop.
+  * Properly position text labels on all parameter blocks (after resize).
 
 TODO:
   * Save errors

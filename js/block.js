@@ -167,10 +167,7 @@ function Block(protoblock, blocks, overrideName) {
         this.regenerateArtwork(true, []);
 
         if (this.text != null) {
-            var fontSize = 10 * scale;
-            this.text.font = fontSize + 'px Sans';
-            this.text.x = VALUETEXTX * scale / 2.;
-            this.text.y = VALUETEXTY * scale / 2.;
+            positionText(this, scale);
         }
         if (this.collapseContainer != null) {
             this.collapseContainer.uncache();
@@ -352,6 +349,9 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.blocks.loopCounter = 0;
                     myBlock.blocks.adjustDocks(thisBlock);
 
+                    // Adjust the text position.
+		    positionText(myBlock, myBlock.protoblock.scale);
+
                     // Are there clamp blocks that need expanding?
                     if (myBlock.blocks.clampBlocksToCheck.length > 0) {
                         setTimeout(function () {
@@ -409,44 +409,17 @@ function Block(protoblock, blocks, overrideName) {
                     this.value = 100;
                 }
             }
-
             var label = this.value.toString();
             if (label.length > 8) {
                 label = label.substr(0, 7) + '...';
             }
             this.text.text = label;
-            this.text.textAlign = 'center';
-            this.text.textBaseline = 'alphabetic';
             this.container.addChild(this.text);
-            this.text.x = VALUETEXTX * this.protoblock.scale / 2.;
-            this.text.y = VALUETEXTY * this.protoblock.scale / 2.;
-
-            // Make sure text is on top.
-            z = this.container.getNumChildren() - 1;
-            this.container.setChildIndex(this.text, z);
-            this.container.updateCache();
+            positionText(this, this.protoblock.scale);
         } else if (this.protoblock.parameter) {
             // Parameter blocks get a text label to show their current value
-            this.text.textBaseline = 'alphabetic';
             this.container.addChild(this.text);
-            var bounds = this.container.getBounds();
-            if (this.protoblock.args == 0) {
-                this.text.textAlign = 'right';
-                this.text.x = bounds.width - 25;
-                this.text.y = VALUETEXTY * this.protoblock.scale / 2.;
-            } else if (this.isArgBlock()) {
-                this.text.textAlign = 'left';
-                this.text.x = BOXTEXTX;
-                if (this.docks[0][2] == 'booleanout') {
-                    this.text.y = bounds.height - 15;
-                } else {
-                    this.text.y = VALUETEXTY * this.protoblock.scale / 2.;
-                }
-            }
-
-            z = this.container.getNumChildren() - 1;
-            this.container.setChildIndex(this.text, z);
-            this.container.updateCache();
+            positionText(this, this.protoblock.scale);
         }
 
         if (['start', 'action'].indexOf(this.name) == -1) {
@@ -788,6 +761,35 @@ function $() {
         elements.push(element);
     }
     return elements;
+}
+
+
+function positionText(myBlock, scale) {
+    myBlock.text.textBaseline = 'alphabetic';
+    myBlock.text.textAlign = 'right';
+    var fontSize = 10 * scale;
+    myBlock.text.font = fontSize + 'px Sans';
+    myBlock.text.x = TEXTX * scale / 2.;
+    myBlock.text.y = TEXTY * scale / 2.;
+
+    // Some special cases
+    if (myBlock.name == 'text' || myBlock.name == 'number') {
+        myBlock.text.textAlign = 'center';
+        myBlock.text.x = VALUETEXTX * scale / 2.;
+    } else if (myBlock.protoblock.args == 0) {
+        var bounds = myBlock.container.getBounds();
+        myBlock.text.x = bounds.width - 25;
+    } else {
+        myBlock.text.textAlign = 'left';
+        if (myBlock.docks[0][2] == 'booleanout') {
+             myBlock.text.y = myBlock.docks[0][1];
+        }
+    }
+
+    // Ensure text is on top.
+    z = myBlock.container.getNumChildren() - 1;
+    myBlock.container.setChildIndex(myBlock.text, z);
+    myBlock.container.updateCache();
 }
 
 

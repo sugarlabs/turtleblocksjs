@@ -131,13 +131,13 @@ function Block(protoblock, blocks, overrideName) {
         this.blocks.refreshCanvas();
     }
 
-    this.updateSlots = function(clamp, plusMinus, blocksToCheck) {
+    this.updateSlots = function(clamp, plusMinus) {
         // Resize an expandable block.
         var thisBlock = this.blocks.blockList.indexOf(this);
 
         this.clampCount[clamp] += plusMinus;
         this.newArtwork(plusMinus);
-        this.regenerateArtwork(false); // , blocksToCheck);
+        this.regenerateArtwork(false);
     }
 
     this.resize = function(scale) {
@@ -170,7 +170,7 @@ function Block(protoblock, blocks, overrideName) {
         }
         this.protoblock.scale = scale;
         this.newArtwork(0);
-        this.regenerateArtwork(true);
+        this.regenerateArtwork(true, []);
 
         if (this.text != null) {
             var fontSize = 10 * scale;
@@ -298,10 +298,10 @@ function Block(protoblock, blocks, overrideName) {
             this.container.removeChild(this.highlightCollapseBlockBitmap);
         }
         // Then we generate new artwork.
-        this.generateArtwork(false, []);
+        this.generateArtwork(false);
     }
 
-    this.generateArtwork = function(firstTime, blocksToCheck) {
+    this.generateArtwork = function(firstTime) {
         // Get the block labels from the protoblock
         var thisBlock = this.blocks.blockList.indexOf(this);
         var block_label = '';
@@ -366,13 +366,12 @@ function Block(protoblock, blocks, overrideName) {
                     // Adjust the docks.
                     myBlock.blocks.loopCounter = 0;
                     myBlock.blocks.adjustDocks(thisBlock);
-                    if (blocksToCheck.length > 0) {
-                        if (myBlock.isArgBlock() || myBlock.isTwoArgBlock()) {
-                            myBlock.blocks.adjustExpandableTwoArgBlock(blocksToCheck);
-                        } else {
-                            myBlock.blocks.adjustExpandableClampBlock(blocksToCheck);
-                        }
+
+                    // Are there clamp blocks that need expanding?
+                    if (myBlock.blocks.clampBlocksToCheck.length > 0) {
+                        myBlock.blocks.adjustExpandableClampBlock();
                     }
+
                     if (['start', 'action'].indexOf(myBlock.name) != -1) {
                         myBlock.bitmap.visible = !myBlock.collapsed;
                         myBlock.highlightBitmap.visible = false;

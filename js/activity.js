@@ -271,12 +271,9 @@ define(function(require) {
             var scores = analyzeProject(blocks);
             console.log(scores);
             var data = scoreToChartData(scores);
-            console.log(data);
 
             var callback = function() {
-                console.log(myRadarChart);
                 var imageData = myRadarChart.toBase64Image();
-                console.log(imageData);
                 var img = new Image();
                 img.onload = function () {
                     chartBitmap = new createjs.Bitmap(img);
@@ -291,8 +288,6 @@ define(function(require) {
             }
 
             var options = getChartOptions(callback);
-
-            console.log(options);
             console.log('creating new chart');
             myRadarChart = new Chart(ctx).Radar(data, options);
         }

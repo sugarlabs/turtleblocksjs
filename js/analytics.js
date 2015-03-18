@@ -13,15 +13,15 @@
 
 // TODO: CLEAN UP THIS LIST
 
-TACAT = {'clean': 'forward', 'forward': 'forward', 'back': 'forward',
+TACAT = {'clear': 'forward', 'forward': 'forward', 'back': 'forward',
          'left': 'forward', 'right': 'forward', 'arc': 'arc',
-         'xcor': 'coord', 'ycor': 'coord', 'heading': 'coord',
+         'x': 'coord', 'y': 'coord', 'heading': 'coord',
          'setxy': 'setxy', 'seth': 'setxy', 'penup': 'pen',
          'setpensize': 'pen', 'setcolor': 'pen', 'pensize': 'pen',
          'color': 'pen', 'setshade': 'pen', 'setgray': 'pen',
          'gray': 'pen', 'fillscreen': 'pen', 'startfill': 'fill',
          'stopfill': 'fill', 'plus': 'number', 'minus': 'number',
-         'product': 'number', 'divide': 'number',
+         'multiply': 'number', 'divide': 'number',
          'pendown': 'pen', 'shade': 'pen', 'mod': 'number',
          'sqrt': 'number', 'identity': 'number', 'and': 'boolean',
          'or': 'boolean', 'not': 'boolean', 'greater': 'boolean',
@@ -31,7 +31,7 @@ TACAT = {'clean': 'forward', 'forward': 'forward', 'back': 'forward',
          'action': 'action', 'do': 'action', 'nameddo': 'action',
          'storein': 'box', 'namedbox': 'box', 'incrementOne': 'box',
          'luminance': 'sensor', 'mousex': 'sensor', 'mousey': 'sensor',
-         'mousebutton': 'sensor', 'keyboard': 'sensor',
+         'start': 'action', 'mousebutton': 'sensor', 'keyboard': 'sensor',
          'readpixel': 'sensor', 'see': 'sensor', 'time': 'sensor',
          'sound': 'sensor', 'volume': 'sensor', 'pitch': 'sensor',
          'resistance': 'sensor', 'voltage': 'sensor', 'video': 'media',
@@ -43,8 +43,8 @@ TACAT = {'clean': 'forward', 'forward': 'forward', 'back': 'forward',
          'push': 'extras', 'pop': 'extras', 'printheap': 'extras',
          'clearheap': 'extras', 'isheapempty': 'extras', 'chr': 'extras',
          'int': 'extras', 'myfunction': 'python', 'userdefined': 'python',
-          'box': 'box', 'kbinput': 'sensor', 'showHeap': 'extras',
-          'loadblock': 'python', 'loadpalette': 'python'};
+         'box': 'box', 'kbinput': 'sensor', 'showHeap': 'extras',
+         'loadblock': 'python', 'loadpalette': 'python'};
 
 TAPAL = {'forward': 'turtlep', 'arc': 'turtlep', 'coord': 'turtlep',
          'setxy': 'turtlep', 'pen': 'penp', 'fill': 'penp',

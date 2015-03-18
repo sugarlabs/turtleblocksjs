@@ -74,9 +74,9 @@ function analyzeProject(blocks) {
         blockList.push(blocks.blockList[blk].name);
     }
 
-    score = [];
+    scores = [];
     for (i = 0; i < PALS.length; i++) {
-        score.push(0);
+        scores.push(0);
     }
     cats = [];
     pals = [];
@@ -86,7 +86,7 @@ function analyzeProject(blocks) {
             if (!(TACAT[blockList[b]] in cats)) {
                 cats.push(TACAT[blockList[b]]);
             }
-	} else {
+        } else {
            console.log(blockList[b] + ' not in catelog');
         }
     }
@@ -95,48 +95,51 @@ function analyzeProject(blocks) {
             if (!(TAPAL[cats[c]] in pals)) {
                 pals.push(TAPAL[cats[c]]);
             }
-	}
+        }
     }
 
     for (c = 0; c < cats.length; c++) {
         if (cats[c] in TASCORE) {
-            score[PALS.indexOf(TAPAL[cats[c]])] += TASCORE[cats[c]];
-	}
+            scores[PALS.indexOf(TAPAL[cats[c]])] += TASCORE[cats[c]];
+        }
     }
 
     for (p = 0; p < pals.length; p++) {
         if (pals[p] in TASCORE) {
-            score[PALS.indexOf(pals[p])] += TASCORE[pals[p]];
-	}
+            scores[PALS.indexOf(pals[p])] += TASCORE[pals[p]];
+        }
     }
 
-    return score;
+    return scores;
 }
 
 
-function scoreToChartData(score) {
+function scoreToChartData(scores) {
     var data = {
-	labels: [_('turtle'), _('pen'), _('number'), _('flow'), _('box'), _('sensors'), _('media'), _('extras')],
-	datasets: [
+        labels: [_('turtle'), _('pen'), _('number'), _('flow'), _('box'), _('sensors'), _('media'), _('extras')],
+        datasets: [
             {
-		label: "My First dataset",
-		fillColor: "rgba(220,220,220,0.2)",
-		strokeColor: "rgba(220,220,220,1)",
-		pointColor: "rgba(220,220,220,1)",
-		pointStrokeColor: "#fff",
-		pointHighlightFill: "#fff",
-		pointHighlightStroke: "rgba(220,220,220,1)",
-		data: score,
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: scores,
             },
-	]
+        ]
     };
 
     return data;
 }
 
 
-function getChartOptions() {
+function getChartOptions(callback) {
     return {
+    // Callback for rendering chart into a bitmap
+    onAnimationComplete: callback,
+
     //Boolean - Whether to show lines for each scale point
     scaleShowLine : true,
 
@@ -153,7 +156,7 @@ function getChartOptions() {
     angleLineColor : "rgba(0,0,0,.1)",
 
     //Number - Pixel width of the angle line
-    angleLineWidth : 1,
+    angleLineWidth : 10,
 
     //String - Point label font declaration
     pointLabelFontFamily : "'Arial'",
@@ -162,7 +165,7 @@ function getChartOptions() {
     pointLabelFontStyle : "normal",
 
     //Number - Point label font size in pixels
-    pointLabelFontSize : 10,
+    pointLabelFontSize : 30,
 
     //String - Point label font colour
     pointLabelFontColor : "#666",
@@ -171,10 +174,10 @@ function getChartOptions() {
     pointDot : true,
 
     //Number - Radius of each point dot in pixels
-    pointDotRadius : 3,
+    pointDotRadius : 18,
 
     //Number - Pixel width of point dot stroke
-    pointDotStrokeWidth : 1,
+    pointDotStrokeWidth : 6,
 
     //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
     pointHitDetectionRadius : 20,
@@ -183,7 +186,7 @@ function getChartOptions() {
     datasetStroke : true,
 
     //Number - Pixel width of dataset stroke
-    datasetStrokeWidth : 2,
+    datasetStrokeWidth : 12,
 
     //Boolean - Whether to fill the dataset with a colour
     datasetFill : true,

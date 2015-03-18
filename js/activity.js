@@ -95,6 +95,7 @@ define(function(require) {
         var currentKeyCode = 0;
         var lastKeyCode = 0;
         var pasteContainer = null;
+        var chartBitmap = null;
 
         pluginObjs = {
             'PALETTEPLUGINS': {},
@@ -181,6 +182,10 @@ define(function(require) {
         pluginsImages = {};
 
         function allClear() {
+            if (chartBitmap != null) {
+                stage.removeChild(chartBitmap);
+                chartBitmap = null;
+            }
             logo.boxes = {};
             logo.time = 0;
             hideMsgs();
@@ -259,24 +264,40 @@ define(function(require) {
         }
 
         function doAnalytics() {
-	    var scores = analyzeProject(blocks);
+            // Show busy cursor.
+            document.body.style.cursor = 'wait';
+            var myChart = docById('myChart');
+            var ctx = myChart.getContext('2d');
+            var myRadarChart = null;
+            var scores = analyzeProject(blocks);
             console.log(scores);
             var data = scoreToChartData(scores);
-            var options = getChartOptions();
-            var ctx = docById('myChart').getContext('2d');
+            console.log(data);
+
+            var callback = function() {
+                console.log(myRadarChart);
+                var imageData = myRadarChart.toBase64Image();
+                console.log(imageData);
+                var img = new Image();
+                img.onload = function () {
+                    chartBitmap = new createjs.Bitmap(img);
+                    stage.addChild(chartBitmap);
+                    chartBitmap.x = 200;
+                    chartBitmap.y = 100;
+                    logo.hideBlocks();
+                    update = true;
+                    // Show busy cursor.
+                    document.body.style.cursor = 'default';
+                };
+                img.src = imageData;
+            }
+
+            var options = getChartOptions(callback);
+
+            console.log(options);
             console.log('creating new chart');
-            var myRadarChart = new Chart(ctx).Radar(data, options);
-            var imageData = myRadarChart.toBase64Image();
-            console.log(imageData);
-	    var img = new Image();
-	    img.onload = function () {
-		bitmap = new createjs.Bitmap(img);
-		stage.addChild(bitmap);
-                bitmap.x = bitmap.y = 200;
-                update = true;
-	    };
-	    img.src = imageData;
-	}
+            myRadarChart = new Chart(ctx).Radar(data, options);
+        }
 
         function doBiggerFont() {
             if (blockscale < blockscales.length - 1) {
@@ -674,7 +695,7 @@ define(function(require) {
                     console.log('creating error message artwork for ' + img.src);
                     var artwork = new createjs.Bitmap(img);
                     container.addChild(artwork);
-		    var text = new createjs.Text('', '20px Sans', '#000000');
+                    var text = new createjs.Text('', '20px Sans', '#000000');
                     container.addChild(text);
                     text.x = 70;
                     text.y = 10;
@@ -1177,7 +1198,7 @@ define(function(require) {
                     errorArtwork['negroot'].visible = true;
                     stage.setChildIndex(errorArtwork['negroot'], stage.getNumChildren() - 1);
                     break;
-		case 'Cannot find action.':
+                case 'Cannot find action.':
                     if (text == null) {
                         text = 'foo';
                     }
@@ -1186,7 +1207,7 @@ define(function(require) {
                     errorArtwork['nostack'].updateCache();
                     stage.setChildIndex(errorArtwork['nostack'], stage.getNumChildren() - 1);
                     break;
-		case 'Cannot find box.':
+                case 'Cannot find box.':
                     if (text == null) {
                         text = 'foo';
                     }

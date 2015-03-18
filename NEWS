@@ -299,10 +299,10 @@
   * Properly position text labels on all parameter blocks (after resize).
   * Use spanner to open preferences panel for adding plugins and setting
     block size.
+  * Display rubrics
 
 TODO:
   * Save errors
-  * Display rubrics
   * More efficient until and while?
   * Save to javascript
   * Rtl support

@@ -19,8 +19,8 @@ TACAT = {'clear': 'forward', 'forward': 'forward', 'back': 'forward',
          'setxy': 'setxy', 'seth': 'setxy', 'penup': 'pen',
          'setpensize': 'pen', 'setcolor': 'pen', 'pensize': 'pen',
          'color': 'pen', 'setshade': 'pen', 'setgray': 'pen',
-         'gray': 'pen', 'fillscreen': 'pen', 'startfill': 'fill',
-         'stopfill': 'fill', 'plus': 'number', 'minus': 'number',
+         'gray': 'pen', 'fillscreen': 'pen', 'beginfill': 'fill',
+         'endfill': 'fill', 'plus': 'number', 'minus': 'number',
          'multiply': 'number', 'divide': 'number',
          'pendown': 'pen', 'shade': 'pen', 'mod': 'number',
          'sqrt': 'number', 'identity': 'number', 'and': 'boolean',
@@ -42,16 +42,18 @@ TACAT = {'clear': 'forward', 'forward': 'forward', 'back': 'forward',
          'speak': 'media', 'sinewave': 'media', 'description': 'media',
          'push': 'extras', 'pop': 'extras', 'printheap': 'extras',
          'clearheap': 'extras', 'isheapempty': 'extras', 'chr': 'extras',
-         'int': 'extras', 'myfunction': 'python', 'userdefined': 'python',
+         'int': 'number', 'myfunction': 'python', 'userdefined': 'python',
          'box': 'box', 'kbinput': 'sensor', 'showHeap': 'extras',
-         'loadblock': 'python', 'loadpalette': 'python'};
+         'emptyHeap': 'extras',
+         'loadblock': 'python', 'loadpalette': 'python',
+         'text': 'ignore', 'number': 'ignore', 'vspace': 'ignore'};
 
 TAPAL = {'forward': 'turtlep', 'arc': 'turtlep', 'coord': 'turtlep',
          'setxy': 'turtlep', 'pen': 'penp', 'fill': 'penp',
          'random': 'numberp', 'boolean': 'numberp', 'repeat': 'flowp',
          'ifthen': 'flowp', 'action': 'boxp', 'box': 'boxp',
          'sensor': 'sensorp', 'media': 'mediap', 'extras': 'extrasp',
-         'number': 'numberp', 'python': 'extrasp'};
+         'number': 'numberp', 'python': 'extrasp', 'ignore': 'numberp'};
 
 TASCORE = {'forward': 3, 'arc': 3, 'setxy': 2.5, 'coord': 4, 'turtlep': 5,
            'pen': 2.5, 'fill': 2.5, 'penp': 5,
@@ -59,7 +61,7 @@ TASCORE = {'forward': 3, 'arc': 3, 'setxy': 2.5, 'coord': 4, 'turtlep': 5,
            'repeat': 2.5, 'ifthen': 7.5, 'flowp': 10,
            'box': 7.5, 'action': 7.5, 'boxp': 0,
            'media': 5, 'mediap': 0,
-           'python': 5, 'extras': 5, 'extrasp': 0,
+           'python': 5, 'extras': 5, 'extrasp': 0, 'ignore': 0,
            'sensor': 5, 'sensorp': 0};
 
 PALS = ['turtlep', 'penp', 'numberp', 'flowp', 'boxp', 'sensorp', 'mediap',

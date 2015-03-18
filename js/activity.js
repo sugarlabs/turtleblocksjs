@@ -27,6 +27,7 @@ define(function(require) {
     require('p5.sound');
     require('p5.dom');
     require('mespeak');
+    require('Chart');
     require('activity/utils');
     require('activity/artwork');
     require('activity/munsell');
@@ -42,6 +43,7 @@ define(function(require) {
     require('activity/samplesviewer');
     require('activity/basicblocks');
     require('activity/blockfactory');
+    require('activity/analytics');
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
@@ -256,6 +258,26 @@ define(function(require) {
             }
         }
 
+        function doAnalytics() {
+	    var scores = analyzeProject(blocks);
+            console.log(scores);
+            var data = scoreToChartData(scores);
+            var options = getChartOptions();
+            var ctx = docById('myChart').getContext('2d');
+            console.log('creating new chart');
+            var myRadarChart = new Chart(ctx).Radar(data, options);
+            var imageData = myRadarChart.toBase64Image();
+            console.log(imageData);
+	    var img = new Image();
+	    img.onload = function () {
+		bitmap = new createjs.Bitmap(img);
+		stage.addChild(bitmap);
+                bitmap.x = bitmap.y = 200;
+                update = true;
+	    };
+	    img.src = imageData;
+	}
+
         function doBiggerFont() {
             if (blockscale < blockscales.length - 1) {
                 blockscale += 1;
@@ -359,7 +381,7 @@ define(function(require) {
 
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
 
-            utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, null);
+            utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, doAnalytics);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
 

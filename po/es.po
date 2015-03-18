@@ -712,3 +712,6 @@ msgstr "Publicar"
 
 msgid "Download"
 msgstr "Descargar"
+
+msgid "confirm"
+msgstr "confirmar"

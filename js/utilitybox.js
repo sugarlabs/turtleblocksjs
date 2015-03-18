@@ -80,14 +80,15 @@ function loadUtilityContainerHandler(box) {
 
         var x = (event.stageX / box.scale) - box.container.x;
         var y = (event.stageY / box.scale) - box.container.y;
+        console.log(x + ' ' + y);
         if (y < 55) {
             console.log('closing box');
             box.hide();
-        } else if (x > 75) {
-	    box.doBigger();
-        } else if (x > 150) {
+        } else if (x < 75) {
 	    box.doSmaller();
-        } else if (x > 225) {
+        } else if (x < 150) {
+	    box.doBigger();
+        } else if (x < 225) {
             box.doStats();
             box.hide();
         } else {

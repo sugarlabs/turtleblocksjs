@@ -297,6 +297,8 @@
   * Fillscreen block implemented.
   * Fixed problem with break block continuing flow after loop.
   * Properly position text labels on all parameter blocks (after resize).
+  * Use spanner to open preferences panel for adding plugins and setting
+    block size.
 
 TODO:
   * Save errors
@@ -315,9 +317,8 @@ TODO:
   * Better interoperability with Python version
   * Sugar datastore/toolbar support
   * Add city to long/city to lat block to gmap plugin.
-  * Use spanner to open preferences panel for adding plugins and setting
-    block size.
   * Unit tests
+  * Update help to include spanner.
 
 FEATURE IDEAS:
   * Local variables? (e.g., boxes only defined inside an action?) Note that

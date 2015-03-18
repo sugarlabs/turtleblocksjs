@@ -38,6 +38,7 @@ define(function(require) {
     require('activity/block');
     require('activity/logo');
     require('activity/clearbox');
+    require('activity/utilitybox');
     require('activity/samplesviewer');
     require('activity/basicblocks');
     require('activity/blockfactory');
@@ -81,6 +82,7 @@ define(function(require) {
         var blocks;
         var logo;
         var clearBox;
+        var utilityBox;
         var thumbnails;
         var buttonsVisible = true;
         var headerContainer = null;
@@ -356,6 +358,8 @@ define(function(require) {
             logo.setBackgroundColor(-1);
 
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
+
+            utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, null);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
 
@@ -813,6 +817,10 @@ define(function(require) {
 
         function deleteBlocksBox() {
             clearBox.show(scale);
+        }
+
+        function doUtilityBox() {
+            utilityBox.show(scale);
         }
 
         // FIXME: confirm???
@@ -1387,9 +1395,10 @@ define(function(require) {
                 ['paste-disabled', pasteStack],
                 ['Cartesian', doCartesian],
                 ['polar', doPolar],
-                ['bigger', doBiggerFont],
-                ['smaller', doSmallerFont],
-                ['plugin', doOpenPlugin],
+                // ['bigger', doBiggerFont],
+                // ['smaller', doSmallerFont],
+                // ['plugin', doOpenPlugin],
+                ['utility', doUtilityBox],
                 ['empty-trash', deleteBlocksBox],
                 ['restore-trash', restoreTrash]
             ];

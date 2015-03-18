@@ -264,7 +264,6 @@ define(function(require) {
         }
 
         function doAnalytics() {
-            // Show busy cursor.
             document.body.style.cursor = 'wait';
             var myChart = docById('myChart');
             var ctx = myChart.getContext('2d');
@@ -282,11 +281,10 @@ define(function(require) {
                 img.onload = function () {
                     chartBitmap = new createjs.Bitmap(img);
                     stage.addChild(chartBitmap);
-                    chartBitmap.x = 200;
-                    chartBitmap.y = 100;
+                    chartBitmap.x = (canvas.width / (2 * scale)) - (400);
+                    chartBitmap.y = 0;
                     logo.hideBlocks();
                     update = true;
-                    // Show busy cursor.
                     document.body.style.cursor = 'default';
                 };
                 img.src = imageData;

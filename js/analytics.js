@@ -116,6 +116,25 @@ function analyzeProject(blocks) {
 }
 
 
+function normalizeScores(scores) {
+    // Based on wikipedia's article of Linear Normalization
+    // http://en.wikipedia.org/wiki/Normalization_%28image_processing%29
+
+    var newMax = 5;
+    var newMin = 1;
+    var max = Math.max.apply(Math, scores);
+    var min = Math.min.apply(Math, scores);
+    var normalizedScores = [];
+
+   for (var i = 0; i < scores.length; i++) {
+      var normalizedValue = (scores[i] - min) * ((newMax - newMin) / (max - min)) + newMin;
+      normalizedScores.push(normalizedValue)
+   }
+
+   return normalizedScores;
+}
+
+
 function scoreToChartData(scores) {
     var data = {
         labels: [_('turtle'), _('pen'), _('number'), _('flow'), _('box'), _('sensors'), _('media'), _('extras')],
@@ -128,7 +147,7 @@ function scoreToChartData(scores) {
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
-                data: scores,
+                data: normalizeScores(scores),
             },
         ]
     };

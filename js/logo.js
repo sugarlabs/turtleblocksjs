@@ -13,12 +13,15 @@ var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
 var DEFAULTDELAY = 500; // milleseconds
 var TURTLESTEP = -1;  // Run in step-by-step mode
 
+var NOMICERRORMSG = 'The microphone is not available.';
 var NANERRORMSG = 'Not a number.';
+var NOSTRINGERRORMSG = 'Not a string.';
 var NOBOXERRORMSG = 'Cannot find box';
 var NOACTIONERRORMSG = 'Cannot find action.';
 var NOINPUTERRORMSG = 'Missing argument.';
 var NOSQRTERRORMSG = 'Cannot take square root of negative number.';
 var ZERODIVIDEERRORMSG = 'Cannot divide by zero.';
+var EMPTYHEAPERRORMSG = 'empty heap.';
 
 function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
@@ -72,7 +75,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     try {
         this.mic = new p5.AudioIn()
     } catch (e) {
-        console.log('The microphone is not available.');
+        console.log(NOMICERRORMSG);
         this.mic = null;
     }
     
@@ -212,7 +215,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     break;
                 case 'loudness':
                     if (logo.mic == null) {
-                        logo.errorMsg('The microphone is not available.');
+                        logo.errorMsg(NOMICERRORMSG);
                         value = 0;
                     } else {
                         value = Math.round(logo.mic.getLevel() * 1000);
@@ -874,7 +877,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (typeof(args[0]) == 'string') {
                         logo.turtles.turtleList[turtle].doSetFont(args[0]);                        
                     } else {
-                        logo.errorMsg('Not a string.', blk);
+                        logo.errorMsg(NOSTRINGERRORMSG, blk);
                         logo.stopTurtle = true;
                     }
                 }

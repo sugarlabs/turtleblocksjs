@@ -328,7 +328,7 @@ define(function(require) {
         var errorMsgText = null;
         var errorMsgArrow = null;
         var errorArtwork = {};
-        var ERRORARTWORK = ['emptybox', 'emptyheap', 'negroot', 'noinput', 'zerodivide', 'notanumber', 'nostack'];
+        var ERRORARTWORK = ['emptybox', 'emptyheap', 'negroot', 'noinput', 'zerodivide', 'notanumber', 'nostack', 'notastring', 'nomicrophone'];
 
         // Get things started
         init();
@@ -1183,6 +1183,14 @@ define(function(require) {
             }
 
             switch (msg) {
+                case NOMICERRORMSG:
+                    errorArtwork['nomicrophone'].visible = true;
+                    stage.setChildIndex(errorArtwork['nomicrophone'], stage.getNumChildren() - 1);
+                    break;
+                case NOSTRINGERRORMSG:
+                    errorArtwork['notastring'].visible = true;
+                    stage.setChildIndex(errorArtwork['notastring'], stage.getNumChildren() - 1);
+                    break;
                 case EMPTYHEAPERRORMSG:
                     errorArtwork['emptyheap'].visible = true;
                     stage.setChildIndex(errorArtwork['emptyheap'], stage.getNumChildren() - 1);

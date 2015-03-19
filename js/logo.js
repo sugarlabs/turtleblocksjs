@@ -13,6 +13,12 @@ var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
 var DEFAULTDELAY = 500; // milleseconds
 var TURTLESTEP = -1;  // Run in step-by-step mode
 
+var NANERRORMSG = 'Not a number.';
+var NOBOXERRORMSG = 'Cannot find box';
+var NOACTIONERRORMSG = 'Cannot find action.';
+var NOINPUTERRORMSG = 'Missing argument.';
+var NOSQRTERRORMSG = 'Cannot take square root of negative number.';
+var ZERODIVIDEERRORMSG = 'Cannot divide by zero.';
 
 function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
@@ -157,7 +163,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (name in this.boxes) {
                         value = this.boxes[name];
                     } else {
-                        this.errorMsg('Cannot find box.', blk, name);
+                        this.errorMsg(NOBOXERRORMSG, blk, name);
                     }
                     break;
                 case 'box':
@@ -166,7 +172,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (boxname in this.boxes) {
                         value = this.boxes[boxname];
                     } else {
-                        this.errorMsg('Cannot find box.', blk, boxname);
+                        this.errorMsg(NOBOXERRORMSG, blk, boxname);
                     }
                     break;
                 case 'x':
@@ -456,7 +462,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (name in this.boxes) {
                     this.boxes[name] = value;
                 } else {
-                    this.errorMsg('Cannot find box.', blk, name);
+                    this.errorMsg(NOBOXERRORMSG, blk, name);
                 }
                 break;
             case 'box':
@@ -465,7 +471,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (name in this.boxes) {
                     this.boxes[name] = value;
                 } else {
-                    this.errorMsg('Cannot find box.', blk, name);
+                    this.errorMsg(NOBOXERRORMSG, blk, name);
                 }
                 break;
             default:
@@ -523,7 +529,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'listen':
                 if (args.length == 2) {
                     if (!(args[1] in logo.actions)) {
-                        logo.errorMsg('Cannot find action.', blk, args[1]);
+                        logo.errorMsg(NOACTIONERRORMSG, blk, args[1]);
                         logo.stopTurtle = true;
                     } else {
                         var listener = function (event) {
@@ -560,7 +566,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     childFlow = logo.actions[name];
                     childFlowCount = 1;
                 } else {
-                    logo.errorMsg('Cannot find action.', blk, name);
+                    logo.errorMsg(NOACTIONERRORMSG, blk, name);
                     logo.stopTurtle = true;
                 }
                 break;
@@ -572,7 +578,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         childFlow = logo.actions[args[0]];
                         childFlowCount = 1;
                     } else {
-                        logo.errorMsg('Cannot find action.', blk, args[0]);
+                        logo.errorMsg(NOACTIONERRORMSG, blk, args[0]);
                         logo.stopTurtle = true;
                     }
                 }
@@ -611,7 +617,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'repeat':
                 if (args.length == 2) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         childFlow = args[1];
@@ -745,7 +751,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'setxy':
                 if (args.length == 2) {
                     if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doSetXY(args[0], args[1]);
@@ -755,7 +761,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'arc':
                 if (args.length == 2) {
                     if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doArc(args[0], args[1]);
@@ -765,7 +771,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'forward':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doForward(args[0]);
@@ -775,7 +781,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'back':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doForward(-args[0]);
@@ -785,7 +791,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'right':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doRight(args[0]);
@@ -795,7 +801,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'left':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doRight(-args[0]);
@@ -805,7 +811,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'setheading':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doSetHeading(args[0]);
@@ -845,7 +851,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'turtleshell':
                 if (args.length == 2) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doTurtleShell(args[0], args[1]);
@@ -855,7 +861,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'setcolor':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doSetColor(args[0]);
@@ -876,7 +882,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'sethue':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doSetHue(args[0]);
@@ -886,7 +892,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'setshade':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doSetValue(args[0]);
@@ -896,7 +902,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'setgrey':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doSetChroma(args[0]);
@@ -906,7 +912,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'setpensize':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
-                        logo.errorMsg('Not a number.', blk);
+                        logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
                         logo.turtles.turtleList[turtle].doSetPensize(args[0]);
@@ -1242,7 +1248,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (name in logo.boxes) {
                         logo.blocks.blockList[blk].value = logo.boxes[name];
                     } else {
-                        logo.errorMsg('Cannot find box.', blk, name);
+                        logo.errorMsg(NOBOXERRORMSG, blk, name);
                         logo.stopTurtle = true;
                         logo.blocks.blockList[blk].value = null;
                     }
@@ -1255,7 +1261,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     if (name in logo.boxes) {
                         logo.blocks.blockList[blk].value = logo.boxes[name];
                     } else {
-                        logo.errorMsg('Cannot find box.', blk, name);
+                        logo.errorMsg(NOBOXERRORMSG, blk, name);
                         logo.stopTurtle = true;
                         logo.blocks.blockList[blk].value = null;
                     }
@@ -1264,7 +1270,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var a = logo.parseArg(logo, turtle, cblk, blk);
                     if (a < 0) {
-                        logo.errorMsg('Cannot take square root of negative number.', blk);
+                        logo.errorMsg(NOSQRTERRORMSG, blk);
                         logo.stopTurtle = true;
                         a = -a;
                     }
@@ -1487,7 +1493,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     // Math functions
     this.doRandom = function(a, b) {
         if (typeof(a) == 'string' || typeof(b) == 'string') {
-            this.errorMsg('Not a number.');
+            this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
         }
@@ -1496,7 +1502,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.doMod = function(a, b) {
         if (typeof(a) == 'string' || typeof(b) == 'string') {
-            this.errorMsg('Not a number.');
+            this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
         }
@@ -1505,7 +1511,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.doSqrt = function(a) {
         if (typeof(a) == 'string') {
-            this.errorMsg('Not a number.');
+            this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
         }
@@ -1532,7 +1538,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.doMinus = function(a, b) {
         if (typeof(a) == 'string' || typeof(b) == 'string') {
-            this.errorMsg('Not a number.');
+            this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
         }
@@ -1541,7 +1547,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.doMultiply = function(a, b) {
         if (typeof(a) == 'string' || typeof(b) == 'string') {
-            this.errorMsg('Not a number.');
+            this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
         }
@@ -1550,12 +1556,12 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.doDivide = function(a, b) {
         if (typeof(a) == 'string' || typeof(b) == 'string') {
-            this.errorMsg('Not a number.');
+            this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
         }
         if (Number(b) == 0) {
-            this.errorMsg('Cannot divide by zero.');
+            this.errorMsg(ZERODIVIDEERRORMSG);
             this.stopTurtle = true;
             return 0;
         } else {

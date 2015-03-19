@@ -1183,15 +1183,15 @@ define(function(require) {
             }
 
             switch (msg) {
-                case 'empty heap.':
+                case EMPTYHEAPERRORMSG:
                     errorArtwork['emptyheap'].visible = true;
                     stage.setChildIndex(errorArtwork['emptyheap'], stage.getNumChildren() - 1);
                     break;
-                case 'Cannot take square root of negative number.':
+                case NOSQRTERRORMSG:
                     errorArtwork['negroot'].visible = true;
                     stage.setChildIndex(errorArtwork['negroot'], stage.getNumChildren() - 1);
                     break;
-                case 'Cannot find action.':
+                case NOACTIONERRORMSG:
                     if (text == null) {
                         text = 'foo';
                     }
@@ -1200,7 +1200,7 @@ define(function(require) {
                     errorArtwork['nostack'].updateCache();
                     stage.setChildIndex(errorArtwork['nostack'], stage.getNumChildren() - 1);
                     break;
-                case 'Cannot find box.':
+                case NOBOXERRORMSG:
                     if (text == null) {
                         text = 'foo';
                     }
@@ -1209,15 +1209,15 @@ define(function(require) {
                     errorArtwork['emptybox'].updateCache();
                     stage.setChildIndex(errorArtwork['emptybox'], stage.getNumChildren() - 1);
                     break;
-                case 'Cannot divide by zero.':
+                case ZERODIVIDEERRORMSG:
                     errorArtwork['zerodivide'].visible = true;
                     stage.setChildIndex(errorArtwork['zerodivide'], stage.getNumChildren() - 1);
                     break;
-                case 'Not a number.':
+                case NANERRORMSG:
                     errorArtwork['notanumber'].visible = true;
                     stage.setChildIndex(errorArtwork['notanumber'], stage.getNumChildren() - 1);
                     break;
-                case 'Missing argument.':
+                case NOINPUTERRORMSG:
                     errorArtwork['noinput'].visible = true;
                     stage.setChildIndex(errorArtwork['noinput'], stage.getNumChildren() - 1);
                     break;

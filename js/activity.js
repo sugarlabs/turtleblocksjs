@@ -280,6 +280,7 @@ define(function(require) {
                     stage.addChild(chartBitmap);
                     chartBitmap.x = (canvas.width / (2 * scale)) - (300);
                     chartBitmap.y = 0;
+                    chartBitmap.scaleX = chartBitmap.scaleY = chartBitmap.scale = 600 / chartBitmap.image.width;
                     logo.hideBlocks();
                     update = true;
                     document.body.style.cursor = 'default';

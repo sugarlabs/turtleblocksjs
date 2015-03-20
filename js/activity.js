@@ -278,7 +278,7 @@ define(function(require) {
                 img.onload = function () {
                     chartBitmap = new createjs.Bitmap(img);
                     stage.addChild(chartBitmap);
-                    chartBitmap.x = (canvas.width / (2 * scale)) - (400);
+                    chartBitmap.x = (canvas.width / (2 * scale)) - (300);
                     chartBitmap.y = 0;
                     logo.hideBlocks();
                     update = true;

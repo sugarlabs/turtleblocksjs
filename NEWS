@@ -299,7 +299,8 @@
   * Properly position text labels on all parameter blocks (after resize).
   * Use spanner to open preferences panel for adding plugins and setting
     block size.
-  * Display rubrics
+  * Display rubrics.
+  * Added more error message artwork.
 
 TODO:
   * Save errors
@@ -319,6 +320,7 @@ TODO:
   * Add city to long/city to lat block to gmap plugin.
   * Unit tests
   * Update help to include spanner.
+  * Make error messages extendable with plugins.
 
 FEATURE IDEAS:
   * Local variables? (e.g., boxes only defined inside an action?) Note that
@@ -335,9 +337,11 @@ KNOWN BUGS:
   * Sometimes returning to backgrounded project results in empty project
   * Loading macros there is a funny collapsed state sometimes.
   * Sometimes the protoblock doesn't return to the palette after dragging.
-  * Crashes the Browse activity on the XO.
+  * Crashes the Browse activity on the XO: a multitude of cross-source
+    violations that eventually crash the app.
+  * No access to camera or microphone on XO.
   * Somehow we end up in a browser resize loop??? (2842 console messages are
     not shown js/activity.js:770)
-  * Python show block not compatible with JS show block
+  * Python show block not compatible with JS show block.
   * Not serious, but there is still a race condition when creating
     if-then-else blocks (so there is a work-around in place).

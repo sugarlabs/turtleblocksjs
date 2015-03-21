@@ -301,6 +301,7 @@
     block size.
   * Display rubrics.
   * Added more error message artwork.
+  * Updated help to include spanner, copy, save stack.
 
 TODO:
   * Save errors
@@ -319,7 +320,6 @@ TODO:
   * Sugar datastore/toolbar support
   * Add city to long/city to lat block to gmap plugin.
   * Unit tests
-  * Update help to include spanner.
   * Make error messages extendable with plugins.
 
 FEATURE IDEAS:

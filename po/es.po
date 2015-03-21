@@ -309,12 +309,12 @@ msgid "The paste button is enabled when there are blocks copied onto the clipboa
 msgstr "El botón de pegar está activo, por lo tanto hay bloques copiados en el portapapeles."
 
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
 
 msgid "Save stack"
-msgstr ""
+msgstr "Guardar pila"
 
 msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
 
@@ -337,10 +337,10 @@ msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "Display statistics"
-msgstr ""
+msgstr "Analizar"
 
 msgid "Display statistics about your Turtle project."
-msgstr ""
+msgstr "Analizar los tipos de bloques usados."
 
 msgid "Cartesian"
 msgstr "Cartesiano"

@@ -241,7 +241,41 @@ msgstr ""
 msgid "fish"
 msgstr ""
 
-msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgid "The paste button is enabled when there are blocks copied onto the clipboard."
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+
+msgid "Save stack"
+msgstr ""
+
+msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+
+msgid "Settings"
+msgstr ""
+
+msgid "Open a panel for configuring Turtle Blocks."
+msgstr ""
+
+msgid "Decrease block size"
+msgstr ""
+
+msgid "Decrease the size of the blocks."
+msgstr ""
+
+msgid "Increase block size"
+msgstr ""
+
+msgid "Increase the size of the blocks."
+msgstr ""
+
+msgid "Display statistics"
+msgstr ""
+
+msgid "Display statistics about your Turtle project."
 msgstr ""
 
 msgid "print"

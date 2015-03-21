@@ -239,7 +239,7 @@ msgstr ""
 msgid "Palette buttons"
 msgstr ""
 
-msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
 
 msgid "Expand/collapse toolbar"
@@ -311,7 +311,41 @@ msgstr ""
 msgid "Paste"
 msgstr ""
 
-msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgid "The paste button is enabled when there are blocks copied onto the clipboard."
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+
+msgid "Save stack"
+msgstr ""
+
+msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+
+msgid "Settings"
+msgstr ""
+
+msgid "Open a panel for configuring Turtle Blocks."
+msgstr ""
+
+msgid "Decrease block size"
+msgstr ""
+
+msgid "Decrease the size of the blocks."
+msgstr ""
+
+msgid "Increase block size"
+msgstr ""
+
+msgid "Increase the size of the blocks."
+msgstr ""
+
+msgid "Display statistics"
+msgstr ""
+
+msgid "Display statistics about your Turtle project."
 msgstr ""
 
 msgid "Cartesian"

@@ -234,7 +234,7 @@ msgstr "Mbe nkanka bụ a Logo-sitere n'ike mmụọ nsọ mbe na-adọta yi fot
 msgid "Palette buttons"
 msgstr "palette buttons"
 
-msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr "Nke a toolbar e dere ihe palette buttons: pịa na-egosi ma ọ bụ zoo palettes nke blocks (mbe, Pen, Ọnụ Ọgụgụ, Boolean, Igba, nkanka, Media, sensọ, na Mkponyeaka). Ozugbo oghe, ị nwere ike ịdọrọ blocks si palettes n'elu kwaaji-eji ha."
 
 msgid "Expand/collapse toolbar"
@@ -306,8 +306,42 @@ msgstr "Pịa a button mụbaa ma ọ bụ daa na auxillary toolbar"
 msgid "Paste"
 msgstr "tapawa"
 
-msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr "The tapawa button na-nyeere e nwere blocks depụtaghachiri n'elu clipboard"
+
+msgid "Copy"
+msgstr ""
+
+msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+
+msgid "Save stack"
+msgstr ""
+
+msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+
+msgid "Settings"
+msgstr ""
+
+msgid "Open a panel for configuring Turtle Blocks."
+msgstr ""
+
+msgid "Decrease block size"
+msgstr ""
+
+msgid "Decrease the size of the blocks."
+msgstr ""
+
+msgid "Increase block size"
+msgstr ""
+
+msgid "Increase the size of the blocks."
+msgstr ""
+
+msgid "Display statistics"
+msgstr ""
+
+msgid "Display statistics about your Turtle project."
+msgstr ""
 
 msgid "Cartesian"
 msgstr "Cartesian"

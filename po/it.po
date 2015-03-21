@@ -615,6 +615,40 @@ msgstr "terminare riempimento"
 msgid "Paste"
 msgstr "Incollare"
 
+msgid "Copy"
+msgstr ""
+
+msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+
+msgid "Save stack"
+msgstr ""
+
+msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+
+msgid "Settings"
+msgstr ""
+
+msgid "Open a panel for configuring Turtle Blocks."
+msgstr ""
+
+msgid "Decrease block size"
+msgstr ""
+
+msgid "Decrease the size of the blocks."
+msgstr ""
+
+msgid "Increase block size"
+msgstr ""
+
+msgid "Increase the size of the blocks."
+msgstr ""
+
+msgid "Display statistics"
+msgstr ""
+
+msgid "Display statistics about your Turtle project."
+msgstr ""
+
 msgid "tamale"
 msgstr "tamale"
 
@@ -624,7 +658,7 @@ msgstr "ripetere"
 msgid "blocks"
 msgstr "blocchi"
 
-msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr "Questa barra degli strumenti contiene i pulsanti della tavolozza: click per mostrare o nascondire la tavollazza di blocchi (Tartatuga, Penna, Numeri, Booleani, Flusso, Blocchi, Mezzi, Sensori ed Extras). Una volta aperto puoi tirare blocchi dalla tavollozza sul canvas per usargli."
 
 msgid "save svg"

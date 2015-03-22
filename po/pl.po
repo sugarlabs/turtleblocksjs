@@ -1,27 +1,34 @@
-"Project-Id-Version: turtleart-activity\n"
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 00:30-0500\n"
-"PO-Revision-Date: 2013-12-09 21:51+0200\n"
-"Last-Translator: Markus <m.slg@gmx.de>\n"
-"Language-Team: Deutsche OLPC-Lokalisierung\n"
-"Language: de\n"
+"POT-Creation-Date: 2013-05-17 00:31-0400\n"
+"PO-Revision-Date: 2012-11-14 05:39+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.0.5\n"
 
 msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr "zeige"
+msgstr "pokaż"
 
 msgid "text"
-msgstr "Text"
+msgstr "tekst"
 
 msgid "random"
-msgstr "Zufallszahl"
+msgstr "losowy"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +46,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr "Tastatur"
+msgstr "klawiatura"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -48,7 +55,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr "setze Farbe"
+msgstr "ustaw kolor"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +76,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr "setze Stiftdicke"
+msgstr "zmień rozmiar pisaka"
 
 msgid "start turtle"
 msgstr ""
@@ -78,16 +85,16 @@ msgid "latitude"
 msgstr ""
 
 msgid "mouse x"
-msgstr "Maus-x"
+msgstr "myszka x"
 
 msgid "mouse y"
-msgstr "Maus-y"
+msgstr "myszka y"
 
 msgid "Show/hide blocks"
-msgstr "Blöcke zeigen/verbergen"
+msgstr "Pokaż/schowaj schemat"
 
 msgid "then"
-msgstr "dann"
+msgstr "wtedy"
 
 msgid "move"
 msgstr ""
@@ -105,19 +112,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr "anhalten"
+msgstr "zatrzymaj"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr "Zahl"
+msgstr "liczba"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr "nicht"
+msgstr "nie"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +133,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr "mod"
+msgstr "modulo"
 
 msgid "Save project"
 msgstr ""
@@ -141,10 +148,10 @@ msgid "name"
 msgstr ""
 
 msgid "turtle x"
-msgstr "Schildkröten-x"
+msgstr ""
 
 msgid "turtle y"
-msgstr "Schildkröten-y"
+msgstr ""
 
 msgid "Download"
 msgstr ""
@@ -177,25 +184,25 @@ msgid "x"
 msgstr "x"
 
 msgid "show blocks"
-msgstr "Blöcke anzeigen"
+msgstr "pokaż schemat"
 
 msgid "heading"
-msgstr "Richtung"
+msgstr "kierunek"
 
 msgid "Help"
-msgstr "Hilfe"
+msgstr "Pomoc"
 
 msgid "turtle"
-msgstr "Schildkröte"
+msgstr "żółw"
 
 msgid "right"
-msgstr "rechtsherum"
+msgstr "w prawo"
 
 msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr "Blöcke verbergen"
+msgstr "schowaj schemat"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -204,7 +211,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr "rückwärts"
+msgstr "cofaj"
 
 msgid "Publish"
 msgstr ""
@@ -213,22 +220,22 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr "Kreisbogen"
+msgstr "łuk"
 
 msgid "radius"
-msgstr "Radius"
+msgstr "promień"
 
 msgid "longitude"
 msgstr ""
 
 msgid "duration"
-msgstr "Dauer"
+msgstr "czas trwania"
 
 msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr "setze Schattierung"
+msgstr "ustaw cień"
 
 msgid "pixel color"
 msgstr ""
@@ -243,7 +250,7 @@ msgid "Show these messages."
 msgstr ""
 
 msgid "show heap"
-msgstr "zeige Stapel"
+msgstr "pokaż stos"
 
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
@@ -255,13 +262,13 @@ msgid "forecast"
 msgstr ""
 
 msgid "pen"
-msgstr "Stift"
+msgstr ""
 
 msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr "gib aus"
+msgstr "pisz"
 
 msgid "size"
 msgstr ""
@@ -285,7 +292,7 @@ msgid "Settings"
 msgstr ""
 
 msgid "Save stack"
-msgstr "Stapel speichern"
+msgstr ""
 
 msgid "corn"
 msgstr ""
@@ -324,22 +331,22 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr "Stift an"
+msgstr "opuść pisak"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr "warte"
+msgstr "czekaj"
 
 msgid "box"
-msgstr "Box"
+msgstr "pudło"
 
 msgid "obj"
 msgstr ""
 
 msgid "store in"
-msgstr "speichere in"
+msgstr "przechowaj w"
 
 msgid "digest meal"
 msgstr ""
@@ -351,37 +358,37 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr "Aktion"
+msgstr "akcje"
 
 msgid "loudness"
-msgstr "Lautstärke"
+msgstr "głośność"
 
 msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr "oder"
+msgstr "lub"
 
 msgid "sense left"
 msgstr ""
 
 msgid "comment"
-msgstr "Anmerkung"
+msgstr "komentarz"
 
 msgid "cheese"
 msgstr ""
 
 msgid "Cartesian"
-msgstr "Kartesisch"
+msgstr "Kartezjańskie"
 
 msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr "Farbe"
+msgstr "kolor"
 
 msgid "image"
-msgstr "Bild"
+msgstr "obraz"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -390,13 +397,13 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr "nimm auf"
+msgstr "ze stosu"
 
 msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr "Stiftdicke"
+msgstr "rozmiar pisaka"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -420,7 +427,7 @@ msgid "mouse button"
 msgstr ""
 
 msgid "speak"
-msgstr "sage"
+msgstr "mówić"
 
 msgid "city"
 msgstr ""
@@ -444,13 +451,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr "Stift aus"
+msgstr "podnieś pisak"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr "starte"
+msgstr "start"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +475,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr "vorwärts"
+msgstr "idź"
 
 msgid "degrees"
 msgstr ""
@@ -477,7 +484,7 @@ msgid "translate"
 msgstr ""
 
 msgid "until"
-msgstr "bis"
+msgstr "dopóki"
 
 msgid "define"
 msgstr ""
@@ -507,10 +514,10 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr "sonst"
+msgstr "pozostałe"
 
 msgid "orange"
-msgstr "Orange"
+msgstr "pomarańczowy"
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +547,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr "Wert"
+msgstr "wartość"
 
 msgid "banana"
 msgstr ""
@@ -552,7 +559,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr "solange"
+msgstr "podczas gdy"
 
 msgid "open file"
 msgstr ""
@@ -570,13 +577,13 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr "Öffnen"
+msgstr "Otwórz"
 
 msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr "und"
+msgstr "i"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +598,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "setze Richtung"
+msgstr "ustaw kierunek"
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +613,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr "wenn"
+msgstr "jeżeli"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,7 +622,7 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr "Winkel"
+msgstr "kąt"
 
 msgid "get fat"
 msgstr ""
@@ -624,10 +631,10 @@ msgid "min"
 msgstr "min"
 
 msgid "media"
-msgstr "Medien"
+msgstr ""
 
 msgid "Stop"
-msgstr "Anhalten"
+msgstr "Stop"
 
 msgid "sqrt"
 msgstr ""
@@ -639,16 +646,16 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr "setze xy"
+msgstr "ustaw xy"
 
 msgid "end fill"
-msgstr "beende Füllung"
+msgstr "koniec wypełniania"
 
 msgid "Copy"
-msgstr "Kopieren"
+msgstr "Kopiuj"
 
 msgid "Paste"
-msgstr "Einfügen"
+msgstr "Wklej"
 
 msgid "Delete"
 msgstr ""
@@ -660,10 +667,10 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr "wiederhole"
+msgstr "powtarzaj"
 
 msgid "blocks"
-msgstr "Blöcke"
+msgstr ""
 
 msgid "Display statistics about your Turtle project."
 msgstr ""
@@ -672,25 +679,25 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr "max"
+msgstr "maks"
 
 msgid "logic"
 msgstr ""
 
 msgid "empty heap"
-msgstr "leere Stapel"
+msgstr "opróżnij stos"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "push"
-msgstr "lege ab"
+msgstr "na stos"
 
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr "Alles löschen"
+msgstr "Wyczyść"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +715,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr "fortlaufend"
+msgstr "ciągle"
 
 msgid "Load project from file"
 msgstr ""
@@ -723,26 +730,26 @@ msgid "floor"
 msgstr ""
 
 msgid "flow"
-msgstr "Programmfluss"
+msgstr ""
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr ""
 
 msgid "extras"
-msgstr "Extras"
+msgstr ""
 
 msgid "shade"
-msgstr "Schattierung"
+msgstr "cień"
 
 msgid "time"
-msgstr "Zeit"
+msgstr "czas"
 
 msgid "y"
 msgstr "y"
 
 msgid "hello"
-msgstr "Hallo"
+msgstr "cześć"
 
 msgid "left"
-msgstr "linksherum"
+msgstr "w lewo"
 

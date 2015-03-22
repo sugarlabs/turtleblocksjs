@@ -1,27 +1,33 @@
-"Project-Id-Version: turtleart-activity\n"
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 00:30-0500\n"
-"PO-Revision-Date: 2013-12-09 21:51+0200\n"
-"Last-Translator: Markus <m.slg@gmx.de>\n"
-"Language-Team: Deutsche OLPC-Lokalisierung\n"
-"Language: de\n"
+"POT-Creation-Date: 2013-05-17 00:31-0400\n"
+"PO-Revision-Date: 2009-08-28 20:50+0000\n"
+"Last-Translator: Nasir Khan Saikat <nasir8891@gmail.com>\n"
+"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.5\n"
+"X-Generator: Pootle 1.2.1\n"
 
 msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr "zeige"
+msgstr ""
 
 msgid "text"
-msgstr "Text"
+msgstr "টেক্সট"
 
 msgid "random"
-msgstr "Zufallszahl"
+msgstr "র‍্যান্ডম"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +45,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr "Tastatur"
+msgstr "কী-বোর্ড"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -48,7 +54,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr "setze Farbe"
+msgstr "রং নির্ধারণ করো"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +75,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr "setze Stiftdicke"
+msgstr "কলমের আকার নির্ধারণ করো"
 
 msgid "start turtle"
 msgstr ""
@@ -78,16 +84,16 @@ msgid "latitude"
 msgstr ""
 
 msgid "mouse x"
-msgstr "Maus-x"
+msgstr ""
 
 msgid "mouse y"
-msgstr "Maus-y"
+msgstr ""
 
 msgid "Show/hide blocks"
-msgstr "Blöcke zeigen/verbergen"
+msgstr ""
 
 msgid "then"
-msgstr "dann"
+msgstr "then"
 
 msgid "move"
 msgstr ""
@@ -105,19 +111,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr "anhalten"
+msgstr "ধাপ"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr "Zahl"
+msgstr "সংখ্যা"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr "nicht"
+msgstr "NOT"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +132,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr "mod"
+msgstr "মোড"
 
 msgid "Save project"
 msgstr ""
@@ -141,10 +147,10 @@ msgid "name"
 msgstr ""
 
 msgid "turtle x"
-msgstr "Schildkröten-x"
+msgstr ""
 
 msgid "turtle y"
-msgstr "Schildkröten-y"
+msgstr ""
 
 msgid "Download"
 msgstr ""
@@ -177,25 +183,25 @@ msgid "x"
 msgstr "x"
 
 msgid "show blocks"
-msgstr "Blöcke anzeigen"
+msgstr "ব্লক দেখাও"
 
 msgid "heading"
-msgstr "Richtung"
+msgstr "শিরোনাম"
 
 msgid "Help"
-msgstr "Hilfe"
+msgstr ""
 
 msgid "turtle"
-msgstr "Schildkröte"
+msgstr "টার্টেল"
 
 msgid "right"
-msgstr "rechtsherum"
+msgstr "ডানে যাও"
 
 msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr "Blöcke verbergen"
+msgstr "ব্লক লুকিয়ে রাখো"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -204,7 +210,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr "rückwärts"
+msgstr "পেছনে"
 
 msgid "Publish"
 msgstr ""
@@ -213,22 +219,22 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr "Kreisbogen"
+msgstr "চাপ"
 
 msgid "radius"
-msgstr "Radius"
+msgstr "ব্যাসার্ধ"
 
 msgid "longitude"
 msgstr ""
 
 msgid "duration"
-msgstr "Dauer"
+msgstr ""
 
 msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr "setze Schattierung"
+msgstr "ছায়া নির্ধারণ করো"
 
 msgid "pixel color"
 msgstr ""
@@ -243,7 +249,7 @@ msgid "Show these messages."
 msgstr ""
 
 msgid "show heap"
-msgstr "zeige Stapel"
+msgstr "heap দেখাও"
 
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
@@ -255,13 +261,13 @@ msgid "forecast"
 msgstr ""
 
 msgid "pen"
-msgstr "Stift"
+msgstr ""
 
 msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr "gib aus"
+msgstr "মুদ্রণ করো"
 
 msgid "size"
 msgstr ""
@@ -285,7 +291,7 @@ msgid "Settings"
 msgstr ""
 
 msgid "Save stack"
-msgstr "Stapel speichern"
+msgstr ""
 
 msgid "corn"
 msgstr ""
@@ -324,22 +330,22 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr "Stift an"
+msgstr "কলম নামাও"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr "warte"
+msgstr "অপেক্ষা করো"
 
 msgid "box"
-msgstr "Box"
+msgstr "বাক্স"
 
 msgid "obj"
 msgstr ""
 
 msgid "store in"
-msgstr "speichere in"
+msgstr ""
 
 msgid "digest meal"
 msgstr ""
@@ -351,37 +357,37 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr "Aktion"
+msgstr ""
 
 msgid "loudness"
-msgstr "Lautstärke"
+msgstr ""
 
 msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr "oder"
+msgstr "OR"
 
 msgid "sense left"
 msgstr ""
 
 msgid "comment"
-msgstr "Anmerkung"
+msgstr ""
 
 msgid "cheese"
 msgstr ""
 
 msgid "Cartesian"
-msgstr "Kartesisch"
+msgstr ""
 
 msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr "Farbe"
+msgstr "রং"
 
 msgid "image"
-msgstr "Bild"
+msgstr ""
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -390,13 +396,13 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr "nimm auf"
+msgstr "বের করো"
 
 msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr "Stiftdicke"
+msgstr "কলমের আকার"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -420,7 +426,7 @@ msgid "mouse button"
 msgstr ""
 
 msgid "speak"
-msgstr "sage"
+msgstr ""
 
 msgid "city"
 msgstr ""
@@ -444,13 +450,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr "Stift aus"
+msgstr "কলম ওঠাও"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr "starte"
+msgstr "শুরু করো"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +474,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr "vorwärts"
+msgstr "সামনে যাও"
 
 msgid "degrees"
 msgstr ""
@@ -477,7 +483,7 @@ msgid "translate"
 msgstr ""
 
 msgid "until"
-msgstr "bis"
+msgstr ""
 
 msgid "define"
 msgstr ""
@@ -507,10 +513,10 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr "sonst"
+msgstr "else"
 
 msgid "orange"
-msgstr "Orange"
+msgstr ""
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +546,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr "Wert"
+msgstr ""
 
 msgid "banana"
 msgstr ""
@@ -552,7 +558,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr "solange"
+msgstr ""
 
 msgid "open file"
 msgstr ""
@@ -570,13 +576,13 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr "Öffnen"
+msgstr ""
 
 msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr "und"
+msgstr "AND"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +597,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "setze Richtung"
+msgstr "শিরনাম নির্ধারণ"
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +612,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr "wenn"
+msgstr "if"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,19 +621,19 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr "Winkel"
+msgstr "কোণ"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr "min"
+msgstr "নূন্যতম"
 
 msgid "media"
-msgstr "Medien"
+msgstr ""
 
 msgid "Stop"
-msgstr "Anhalten"
+msgstr "ধাপ"
 
 msgid "sqrt"
 msgstr ""
@@ -639,16 +645,16 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr "setze xy"
+msgstr "xy নির্ধারণ করো"
 
 msgid "end fill"
-msgstr "beende Füllung"
+msgstr ""
 
 msgid "Copy"
-msgstr "Kopieren"
+msgstr ""
 
 msgid "Paste"
-msgstr "Einfügen"
+msgstr ""
 
 msgid "Delete"
 msgstr ""
@@ -660,10 +666,10 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr "wiederhole"
+msgstr "পুনরায় করো"
 
 msgid "blocks"
-msgstr "Blöcke"
+msgstr ""
 
 msgid "Display statistics about your Turtle project."
 msgstr ""
@@ -672,25 +678,25 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr "max"
+msgstr "সর্বোচ্চ"
 
 msgid "logic"
 msgstr ""
 
 msgid "empty heap"
-msgstr "leere Stapel"
+msgstr "খালি heap"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "push"
-msgstr "lege ab"
+msgstr "প্রবেশ করাও"
 
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr "Alles löschen"
+msgstr "পরিষ্কার করো"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +714,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr "fortlaufend"
+msgstr "চিরদিন"
 
 msgid "Load project from file"
 msgstr ""
@@ -723,26 +729,26 @@ msgid "floor"
 msgstr ""
 
 msgid "flow"
-msgstr "Programmfluss"
+msgstr ""
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr ""
 
 msgid "extras"
-msgstr "Extras"
+msgstr ""
 
 msgid "shade"
-msgstr "Schattierung"
+msgstr "ছায়া"
 
 msgid "time"
-msgstr "Zeit"
+msgstr ""
 
 msgid "y"
 msgstr "y"
 
 msgid "hello"
-msgstr "Hallo"
+msgstr ""
 
 msgid "left"
-msgstr "linksherum"
+msgstr "বামে যাও"
 

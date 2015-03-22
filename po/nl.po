@@ -1,10 +1,10 @@
-"Project-Id-Version: turtleart-activity\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 00:30-0500\n"
-"PO-Revision-Date: 2013-12-09 21:51+0200\n"
-"Last-Translator: Markus <m.slg@gmx.de>\n"
-"Language-Team: Deutsche OLPC-Lokalisierung\n"
-"Language: de\n"
+"POT-Creation-Date: 2014-01-07 00:30-0500\n"
+"PO-Revision-Date: 2014-01-10 21:27+0200\n"
+"Last-Translator: whe <heppew@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,13 +15,13 @@ msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr "zeige"
+msgstr "toon"
 
 msgid "text"
-msgstr "Text"
+msgstr "tekst"
 
 msgid "random"
-msgstr "Zufallszahl"
+msgstr "willekeurig"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +39,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr "Tastatur"
+msgstr "toetsenbord"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -48,7 +48,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr "setze Farbe"
+msgstr "zet kleur"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +69,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr "setze Stiftdicke"
+msgstr "zet pen dikte"
 
 msgid "start turtle"
 msgstr ""
@@ -78,16 +78,16 @@ msgid "latitude"
 msgstr ""
 
 msgid "mouse x"
-msgstr "Maus-x"
+msgstr "muis x"
 
 msgid "mouse y"
-msgstr "Maus-y"
+msgstr "muis y"
 
 msgid "Show/hide blocks"
-msgstr "Blöcke zeigen/verbergen"
+msgstr "Toon/verberg blokken"
 
 msgid "then"
-msgstr "dann"
+msgstr "dan"
 
 msgid "move"
 msgstr ""
@@ -105,19 +105,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr "anhalten"
+msgstr "stop"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr "Zahl"
+msgstr "nummer"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr "nicht"
+msgstr "niet"
 
 msgid "Google map"
 msgstr ""
@@ -141,10 +141,10 @@ msgid "name"
 msgstr ""
 
 msgid "turtle x"
-msgstr "Schildkröten-x"
+msgstr "schildpad x"
 
 msgid "turtle y"
-msgstr "Schildkröten-y"
+msgstr "schildpad y"
 
 msgid "Download"
 msgstr ""
@@ -177,25 +177,25 @@ msgid "x"
 msgstr "x"
 
 msgid "show blocks"
-msgstr "Blöcke anzeigen"
+msgstr "blokken weergeven"
 
 msgid "heading"
-msgstr "Richtung"
+msgstr "richting"
 
 msgid "Help"
-msgstr "Hilfe"
+msgstr "Help"
 
 msgid "turtle"
-msgstr "Schildkröte"
+msgstr "schildpad"
 
 msgid "right"
-msgstr "rechtsherum"
+msgstr "rechts"
 
 msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr "Blöcke verbergen"
+msgstr "blokken verbergen"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr "rückwärts"
+msgstr "terug"
 
 msgid "Publish"
 msgstr ""
@@ -213,22 +213,22 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr "Kreisbogen"
+msgstr "boog"
 
 msgid "radius"
-msgstr "Radius"
+msgstr "straal"
 
 msgid "longitude"
 msgstr ""
 
 msgid "duration"
-msgstr "Dauer"
+msgstr "duur"
 
 msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr "setze Schattierung"
+msgstr "zet schaduw"
 
 msgid "pixel color"
 msgstr ""
@@ -243,7 +243,7 @@ msgid "Show these messages."
 msgstr ""
 
 msgid "show heap"
-msgstr "zeige Stapel"
+msgstr "stapel weergeven"
 
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
@@ -255,13 +255,13 @@ msgid "forecast"
 msgstr ""
 
 msgid "pen"
-msgstr "Stift"
+msgstr "pen"
 
 msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr "gib aus"
+msgstr "druk af"
 
 msgid "size"
 msgstr ""
@@ -285,7 +285,7 @@ msgid "Settings"
 msgstr ""
 
 msgid "Save stack"
-msgstr "Stapel speichern"
+msgstr "Opslaan stapel"
 
 msgid "corn"
 msgstr ""
@@ -324,22 +324,22 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr "Stift an"
+msgstr "pen omlaag"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr "warte"
+msgstr "wacht"
 
 msgid "box"
-msgstr "Box"
+msgstr "doos"
 
 msgid "obj"
 msgstr ""
 
 msgid "store in"
-msgstr "speichere in"
+msgstr "sla op in"
 
 msgid "digest meal"
 msgstr ""
@@ -351,37 +351,37 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr "Aktion"
+msgstr "actie"
 
 msgid "loudness"
-msgstr "Lautstärke"
+msgstr "luidheid"
 
 msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr "oder"
+msgstr "of"
 
 msgid "sense left"
 msgstr ""
 
 msgid "comment"
-msgstr "Anmerkung"
+msgstr "commentaar"
 
 msgid "cheese"
 msgstr ""
 
 msgid "Cartesian"
-msgstr "Kartesisch"
+msgstr "Cartesisch"
 
 msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr "Farbe"
+msgstr "kleur"
 
 msgid "image"
-msgstr "Bild"
+msgstr "afbeelding"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -390,13 +390,13 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr "nimm auf"
+msgstr "afnemen"
 
 msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr "Stiftdicke"
+msgstr "pen dikte"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -420,7 +420,7 @@ msgid "mouse button"
 msgstr ""
 
 msgid "speak"
-msgstr "sage"
+msgstr "spreek"
 
 msgid "city"
 msgstr ""
@@ -444,13 +444,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr "Stift aus"
+msgstr "pen omhoog"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr "starte"
+msgstr "begin"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +468,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr "vorwärts"
+msgstr "vooruit"
 
 msgid "degrees"
 msgstr ""
@@ -477,7 +477,7 @@ msgid "translate"
 msgstr ""
 
 msgid "until"
-msgstr "bis"
+msgstr "totdat"
 
 msgid "define"
 msgstr ""
@@ -507,10 +507,10 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr "sonst"
+msgstr "anders"
 
 msgid "orange"
-msgstr "Orange"
+msgstr "oranje"
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +540,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr "Wert"
+msgstr "waarde"
 
 msgid "banana"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr "solange"
+msgstr "zolang"
 
 msgid "open file"
 msgstr ""
@@ -570,13 +570,13 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr "Öffnen"
+msgstr "Open"
 
 msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr "und"
+msgstr "en"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +591,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "setze Richtung"
+msgstr "richting instellen"
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr "wenn"
+msgstr "als"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,7 +615,7 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr "Winkel"
+msgstr "hoek"
 
 msgid "get fat"
 msgstr ""
@@ -624,10 +624,10 @@ msgid "min"
 msgstr "min"
 
 msgid "media"
-msgstr "Medien"
+msgstr "media"
 
 msgid "Stop"
-msgstr "Anhalten"
+msgstr "Stop"
 
 msgid "sqrt"
 msgstr ""
@@ -639,16 +639,16 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr "setze xy"
+msgstr "zet xy"
 
 msgid "end fill"
-msgstr "beende Füllung"
+msgstr "stop met vullen"
 
 msgid "Copy"
-msgstr "Kopieren"
+msgstr "Kopieer"
 
 msgid "Paste"
-msgstr "Einfügen"
+msgstr "Plak"
 
 msgid "Delete"
 msgstr ""
@@ -660,10 +660,10 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr "wiederhole"
+msgstr "herhaal"
 
 msgid "blocks"
-msgstr "Blöcke"
+msgstr "blokken"
 
 msgid "Display statistics about your Turtle project."
 msgstr ""
@@ -678,19 +678,19 @@ msgid "logic"
 msgstr ""
 
 msgid "empty heap"
-msgstr "leere Stapel"
+msgstr "stapel wissen"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "push"
-msgstr "lege ab"
+msgstr "neerleggen"
 
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr "Alles löschen"
+msgstr "Wissen"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +708,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr "fortlaufend"
+msgstr "altijd"
 
 msgid "Load project from file"
 msgstr ""
@@ -723,26 +723,26 @@ msgid "floor"
 msgstr ""
 
 msgid "flow"
-msgstr "Programmfluss"
+msgstr "vloeien"
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr ""
 
 msgid "extras"
-msgstr "Extras"
+msgstr "extra's"
 
 msgid "shade"
-msgstr "Schattierung"
+msgstr "schaduw"
 
 msgid "time"
-msgstr "Zeit"
+msgstr "tijd"
 
 msgid "y"
 msgstr "y"
 
 msgid "hello"
-msgstr "Hallo"
+msgstr "hallo"
 
 msgid "left"
-msgstr "linksherum"
+msgstr "links"
 

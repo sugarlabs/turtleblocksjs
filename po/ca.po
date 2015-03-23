@@ -1,15 +1,15 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"PO-Revision-Date: 2009-08-24 12:11-0400\n"
+"Last-Translator: Camille Robert <camille.robert@gmail.com>\n"
 "Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 1.2.1\n"
 
 msgid "Delete all"
 msgstr ""
@@ -18,10 +18,10 @@ msgid "show"
 msgstr ""
 
 msgid "text"
-msgstr ""
+msgstr "text"
 
 msgid "random"
-msgstr ""
+msgstr "aleatori"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +39,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr ""
+msgstr "teclat"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -111,13 +111,13 @@ msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "nombre"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "no"
 
 msgid "Google map"
 msgstr ""
@@ -174,7 +174,7 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "show blocks"
 msgstr ""
@@ -186,10 +186,10 @@ msgid "Help"
 msgstr ""
 
 msgid "turtle"
-msgstr ""
+msgstr "Tortuga"
 
 msgid "right"
-msgstr ""
+msgstr "dreta"
 
 msgid "Load samples from server"
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "enrere"
 
 msgid "Publish"
 msgstr ""
@@ -213,7 +213,7 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "arc"
 
 msgid "radius"
 msgstr ""
@@ -243,7 +243,7 @@ msgid "Show these messages."
 msgstr ""
 
 msgid "show heap"
-msgstr ""
+msgstr "mostrar la pila"
 
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
@@ -261,7 +261,7 @@ msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr ""
+msgstr "imprimir"
 
 msgid "size"
 msgstr ""
@@ -330,10 +330,10 @@ msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "esperar"
 
 msgid "box"
-msgstr ""
+msgstr "caixa"
 
 msgid "obj"
 msgstr ""
@@ -360,7 +360,7 @@ msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "o"
 
 msgid "sense left"
 msgstr ""
@@ -378,7 +378,7 @@ msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "color"
 
 msgid "image"
 msgstr ""
@@ -390,7 +390,7 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr ""
+msgstr "treure"
 
 msgid "bitcoin"
 msgstr ""
@@ -450,7 +450,7 @@ msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "començar"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +468,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "endavant"
 
 msgid "degrees"
 msgstr ""
@@ -507,7 +507,7 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr ""
+msgstr "sinó"
 
 msgid "orange"
 msgstr ""
@@ -576,7 +576,7 @@ msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "i"
 
 msgid "set grey"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "si"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,13 +615,13 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "angle"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr ""
+msgstr "mínim"
 
 msgid "media"
 msgstr ""
@@ -660,7 +660,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr "repetir"
 
 msgid "blocks"
 msgstr ""
@@ -672,13 +672,13 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr ""
+msgstr "màxim"
 
 msgid "logic"
 msgstr ""
 
 msgid "empty heap"
-msgstr ""
+msgstr "buidar la pila"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
@@ -690,7 +690,7 @@ msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "netejar"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +708,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "per sempre"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,7 +732,7 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "tonalitat"
 
 msgid "time"
 msgstr ""
@@ -744,5 +744,5 @@ msgid "hello"
 msgstr ""
 
 msgid "left"
-msgstr ""
+msgstr "esquerra"
 

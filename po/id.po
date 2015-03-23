@@ -1,15 +1,15 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
-"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2013-04-06 09:28+0200\n"
+"Last-Translator: andika <andika@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"X-Generator: Pootle 2.0.5\n"
 
 msgid "Delete all"
 msgstr ""
@@ -18,10 +18,10 @@ msgid "show"
 msgstr ""
 
 msgid "text"
-msgstr ""
+msgstr "teks"
 
 msgid "random"
-msgstr ""
+msgstr "acak"
 
 msgid "confirm"
 msgstr ""
@@ -48,7 +48,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr ""
+msgstr "atur warna"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +69,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr ""
+msgstr "atur ukuran pena"
 
 msgid "start turtle"
 msgstr ""
@@ -87,7 +87,7 @@ msgid "Show/hide blocks"
 msgstr ""
 
 msgid "then"
-msgstr ""
+msgstr "maka"
 
 msgid "move"
 msgstr ""
@@ -111,13 +111,13 @@ msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "nomor"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "bukan"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +126,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr ""
+msgstr "mod"
 
 msgid "Save project"
 msgstr ""
@@ -174,13 +174,13 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "show blocks"
 msgstr ""
 
 msgid "heading"
-msgstr ""
+msgstr "arah"
 
 msgid "Help"
 msgstr ""
@@ -189,7 +189,7 @@ msgid "turtle"
 msgstr ""
 
 msgid "right"
-msgstr ""
+msgstr "kanan"
 
 msgid "Load samples from server"
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "mundur"
 
 msgid "Publish"
 msgstr ""
@@ -213,10 +213,10 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "lengkung"
 
 msgid "radius"
-msgstr ""
+msgstr "jari-jari"
 
 msgid "longitude"
 msgstr ""
@@ -228,7 +228,7 @@ msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr ""
+msgstr "atur gradasi"
 
 msgid "pixel color"
 msgstr ""
@@ -324,22 +324,22 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr ""
+msgstr "pena nyala"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "tunggu"
 
 msgid "box"
-msgstr ""
+msgstr "kotak"
 
 msgid "obj"
 msgstr ""
 
 msgid "store in"
-msgstr ""
+msgstr "simpan di"
 
 msgid "digest meal"
 msgstr ""
@@ -351,7 +351,7 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr ""
+msgstr "aksi"
 
 msgid "loudness"
 msgstr ""
@@ -360,7 +360,7 @@ msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "atau"
 
 msgid "sense left"
 msgstr ""
@@ -378,10 +378,10 @@ msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "warna"
 
 msgid "image"
-msgstr ""
+msgstr "citra"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -396,7 +396,7 @@ msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr ""
+msgstr "ukuran pena"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -444,13 +444,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr ""
+msgstr "pena mati"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "mulai"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +468,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "maju"
 
 msgid "degrees"
 msgstr ""
@@ -510,7 +510,7 @@ msgid "else"
 msgstr ""
 
 msgid "orange"
-msgstr ""
+msgstr "oranye"
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +540,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr ""
+msgstr "nilai"
 
 msgid "banana"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr ""
+msgstr "putih"
 
 msgid "open file"
 msgstr ""
@@ -576,7 +576,7 @@ msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "dan"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +591,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "seth"
+msgstr "atur arah"
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "jika"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,13 +615,13 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "sudut"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr ""
+msgstr "min"
 
 msgid "media"
 msgstr ""
@@ -639,13 +639,13 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr ""
+msgstr "atur xy"
 
 msgid "end fill"
-msgstr ""
+msgstr "akhir memenuhi"
 
 msgid "Copy"
-msgstr ""
+msgstr "Salin"
 
 msgid "Paste"
 msgstr ""
@@ -660,7 +660,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr "ulangi"
 
 msgid "blocks"
 msgstr ""
@@ -672,7 +672,7 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr ""
+msgstr "maks"
 
 msgid "logic"
 msgstr ""
@@ -690,7 +690,7 @@ msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "bersihkan"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +708,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "selamanya"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,17 +732,17 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "gradasi"
 
 msgid "time"
 msgstr ""
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
 msgstr ""
 
 msgid "left"
-msgstr ""
+msgstr "kiri"
 

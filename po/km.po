@@ -1,7 +1,7 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
+"PO-Revision-Date: 2011-04-28 14:35+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
 "Language: \n"
@@ -15,13 +15,13 @@ msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr ""
+msgstr "បង្ហាញ"
 
 msgid "text"
-msgstr ""
+msgstr "អត្ថបទ"
 
 msgid "random"
-msgstr ""
+msgstr "ព្រាវ"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +39,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr ""
+msgstr "ក្ដារ​ចុច"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -48,7 +48,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr ""
+msgstr "កំណត់​ពណ៌"
 
 msgid "apple"
 msgstr ""
@@ -87,7 +87,7 @@ msgid "Show/hide blocks"
 msgstr ""
 
 msgid "then"
-msgstr ""
+msgstr "នោះ"
 
 msgid "move"
 msgstr ""
@@ -105,19 +105,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr ""
+msgstr "បញ្ឈប់"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "លេខ"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "មិន"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +126,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr ""
+msgstr "ផ្លាស់ទី"
 
 msgid "Save project"
 msgstr ""
@@ -174,22 +174,22 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "show blocks"
 msgstr ""
 
 msgid "heading"
-msgstr ""
+msgstr "ការអាន​ "
 
 msgid "Help"
-msgstr ""
+msgstr "ជំនួយ"
 
 msgid "turtle"
-msgstr ""
+msgstr "អណ្ដើក"
 
 msgid "right"
-msgstr ""
+msgstr "ស្តាំ"
 
 msgid "Load samples from server"
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "ថយ​ក្រោយ"
 
 msgid "Publish"
 msgstr ""
@@ -213,10 +213,10 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "ធ្នូ"
 
 msgid "radius"
-msgstr ""
+msgstr "កាំ"
 
 msgid "longitude"
 msgstr ""
@@ -243,7 +243,7 @@ msgid "Show these messages."
 msgstr ""
 
 msgid "show heap"
-msgstr ""
+msgstr "បង្ហាញ​ជំនួយ"
 
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
@@ -261,7 +261,7 @@ msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr ""
+msgstr "បោះពុម្ព"
 
 msgid "size"
 msgstr ""
@@ -330,10 +330,10 @@ msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "រង់​ចាំ"
 
 msgid "box"
-msgstr ""
+msgstr "ប្រអប់​"
 
 msgid "obj"
 msgstr ""
@@ -351,22 +351,22 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr ""
+msgstr "សកម្មភាព"
 
 msgid "loudness"
-msgstr ""
+msgstr "ភាពឮ"
 
 msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "ឬ"
 
 msgid "sense left"
 msgstr ""
 
 msgid "comment"
-msgstr ""
+msgstr "មតិ​យោបល់"
 
 msgid "cheese"
 msgstr ""
@@ -378,10 +378,10 @@ msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "ពណ៌"
 
 msgid "image"
-msgstr ""
+msgstr "រូប​ភាព"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -390,7 +390,7 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr ""
+msgstr "លេច​ឡើង"
 
 msgid "bitcoin"
 msgstr ""
@@ -450,7 +450,7 @@ msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "ចាប់ផ្ដើម"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +468,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "បញ្ជូនបន្ត"
 
 msgid "degrees"
 msgstr ""
@@ -510,7 +510,7 @@ msgid "else"
 msgstr ""
 
 msgid "orange"
-msgstr ""
+msgstr "ពណ៌​ទឹក​ក្រូច​"
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +540,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr ""
+msgstr "តម្លៃ​"
 
 msgid "banana"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr ""
+msgstr "ស"
 
 msgid "open file"
 msgstr ""
@@ -570,7 +570,7 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr ""
+msgstr "បើក"
 
 msgid "see distance"
 msgstr ""
@@ -591,7 +591,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "seth"
+msgstr ""
 
 msgid "add 1 to"
 msgstr ""
@@ -615,19 +615,19 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "មុំ"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr ""
+msgstr "នាទី"
 
 msgid "media"
 msgstr ""
 
 msgid "Stop"
-msgstr ""
+msgstr "ឈប់"
 
 msgid "sqrt"
 msgstr ""
@@ -645,10 +645,10 @@ msgid "end fill"
 msgstr ""
 
 msgid "Copy"
-msgstr ""
+msgstr "ចំលង"
 
 msgid "Paste"
-msgstr ""
+msgstr "បិទភ្ជាប់​"
 
 msgid "Delete"
 msgstr ""
@@ -660,7 +660,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr "ធ្វើម្តង​ទៀត​"
 
 msgid "blocks"
 msgstr ""
@@ -672,7 +672,7 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr ""
+msgstr "អតិ"
 
 msgid "logic"
 msgstr ""
@@ -684,13 +684,13 @@ msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "push"
-msgstr ""
+msgstr "ចុច"
 
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "ស្អាត"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +708,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "ជារៀង​រហូត"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,17 +732,17 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "ស្រមោល​"
 
 msgid "time"
-msgstr ""
+msgstr "ពេល​វេលា"
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
 msgstr ""
 
 msgid "left"
-msgstr ""
+msgstr "ឆ្វេង"
 

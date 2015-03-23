@@ -1,24 +1,24 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"PO-Revision-Date: 2011-09-11 12:18+0200\n"
+"Last-Translator: <ganeshgajre@gmail.com>\n"
 "Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.1\n"
 
 msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr ""
+msgstr "दाखवा"
 
 msgid "text"
-msgstr ""
+msgstr "मजकूर"
 
 msgid "random"
 msgstr ""
@@ -39,7 +39,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr ""
+msgstr "किबोर्ड"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -84,7 +84,7 @@ msgid "mouse y"
 msgstr ""
 
 msgid "Show/hide blocks"
-msgstr ""
+msgstr "ब्लॉक दाखवा/लपवा"
 
 msgid "then"
 msgstr ""
@@ -105,7 +105,7 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr ""
+msgstr "थांबा"
 
 msgid "fat"
 msgstr ""
@@ -177,16 +177,16 @@ msgid "x"
 msgstr ""
 
 msgid "show blocks"
-msgstr ""
+msgstr "ब्लॉक्स दाखवा"
 
 msgid "heading"
-msgstr ""
+msgstr "शिर्षक"
 
 msgid "Help"
-msgstr ""
+msgstr "मदत"
 
 msgid "turtle"
-msgstr ""
+msgstr "कासव"
 
 msgid "right"
 msgstr ""
@@ -195,7 +195,7 @@ msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "ब्लॉक्स लपवा"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -228,7 +228,7 @@ msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr ""
+msgstr "रंगाचा दर्जा निश्चीत करा"
 
 msgid "pixel color"
 msgstr ""
@@ -450,7 +450,7 @@ msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "सुरूवात"
 
 msgid "stock price"
 msgstr ""
@@ -477,7 +477,7 @@ msgid "translate"
 msgstr ""
 
 msgid "until"
-msgstr ""
+msgstr "जोपर्यंत"
 
 msgid "define"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr ""
+msgstr "ज्यावेळी"
 
 msgid "open file"
 msgstr ""
@@ -570,7 +570,7 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr ""
+msgstr "उघडा"
 
 msgid "see distance"
 msgstr ""
@@ -627,7 +627,7 @@ msgid "media"
 msgstr ""
 
 msgid "Stop"
-msgstr ""
+msgstr "थांबा"
 
 msgid "sqrt"
 msgstr ""
@@ -645,10 +645,10 @@ msgid "end fill"
 msgstr ""
 
 msgid "Copy"
-msgstr ""
+msgstr "कॉपी"
 
 msgid "Paste"
-msgstr ""
+msgstr "पेस्ट"
 
 msgid "Delete"
 msgstr ""
@@ -690,7 +690,7 @@ msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "साफ"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""

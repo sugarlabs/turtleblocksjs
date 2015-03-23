@@ -1,27 +1,27 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
-"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2011-10-27 08:14+0200\n"
+"Last-Translator: Thangamani <thangam.arunx@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
 
 msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr ""
+msgstr "காட்டு"
 
 msgid "text"
-msgstr ""
+msgstr "உரை"
 
 msgid "random"
-msgstr ""
+msgstr "எழுமாறாக"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +39,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr ""
+msgstr "விசைப்பலகை"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -48,7 +48,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr ""
+msgstr "நிறத்தை  ஒழுங்கு படுத்து"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +69,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr ""
+msgstr "பேனையின் அளவினை ஒழுங்குபடுத்து"
 
 msgid "start turtle"
 msgstr ""
@@ -84,10 +84,10 @@ msgid "mouse y"
 msgstr ""
 
 msgid "Show/hide blocks"
-msgstr ""
+msgstr "பிரிவுகளை காட்டு/மறை"
 
 msgid "then"
-msgstr ""
+msgstr "அதன்பின்"
 
 msgid "move"
 msgstr ""
@@ -105,19 +105,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr ""
+msgstr "நிறுத்து"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "எண்"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "இல்லை"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +126,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr ""
+msgstr "புதுப்பி"
 
 msgid "Save project"
 msgstr ""
@@ -174,28 +174,28 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "எக்ஸ்"
 
 msgid "show blocks"
-msgstr ""
+msgstr "தொகுதியைக்காட்டு"
 
 msgid "heading"
-msgstr ""
+msgstr "தலைப்பு"
 
 msgid "Help"
-msgstr ""
+msgstr "உதவி"
 
 msgid "turtle"
-msgstr ""
+msgstr "ஆமை"
 
 msgid "right"
-msgstr ""
+msgstr "வலது"
 
 msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "மறைந்துள்ள தொகுதி"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "பின்னால்"
 
 msgid "Publish"
 msgstr ""
@@ -213,10 +213,10 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "வில்"
 
 msgid "radius"
-msgstr ""
+msgstr "குறை"
 
 msgid "longitude"
 msgstr ""
@@ -228,7 +228,7 @@ msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr ""
+msgstr "நிழலை ஒழுங்கு படுத்து"
 
 msgid "pixel color"
 msgstr ""
@@ -243,7 +243,7 @@ msgid "Show these messages."
 msgstr ""
 
 msgid "show heap"
-msgstr ""
+msgstr "குவியலைக்காட்டு"
 
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
@@ -261,7 +261,7 @@ msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr ""
+msgstr "அச்சு"
 
 msgid "size"
 msgstr ""
@@ -324,22 +324,22 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr ""
+msgstr "பேனை கீழே"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "பொறு"
 
 msgid "box"
-msgstr ""
+msgstr "பெட்டி"
 
 msgid "obj"
 msgstr ""
 
 msgid "store in"
-msgstr ""
+msgstr "சேமிப்புக்கலனில்"
 
 msgid "digest meal"
 msgstr ""
@@ -351,37 +351,37 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr ""
+msgstr "செயற்படு"
 
 msgid "loudness"
-msgstr ""
+msgstr "சத்தமான.."
 
 msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "அல்லது"
 
 msgid "sense left"
 msgstr ""
 
 msgid "comment"
-msgstr ""
+msgstr "கருத்து தெறிவி"
 
 msgid "cheese"
 msgstr ""
 
 msgid "Cartesian"
-msgstr ""
+msgstr "கார்டீஷியன்"
 
 msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "நிறம்"
 
 msgid "image"
-msgstr ""
+msgstr "படம்"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -390,13 +390,13 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr ""
+msgstr "வரல்"
 
 msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr ""
+msgstr "பேனை அளவு"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -444,13 +444,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr ""
+msgstr "பேனை மேலே"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "ஆரம்பி"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +468,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "முன்னோக்கி அனுப்பு"
 
 msgid "degrees"
 msgstr ""
@@ -477,7 +477,7 @@ msgid "translate"
 msgstr ""
 
 msgid "until"
-msgstr ""
+msgstr "இதுவரை"
 
 msgid "define"
 msgstr ""
@@ -507,10 +507,10 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr ""
+msgstr "வேறு"
 
 msgid "orange"
-msgstr ""
+msgstr "ஆரஞ்சு"
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +540,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr ""
+msgstr "மதிப்பு"
 
 msgid "banana"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr ""
+msgstr "நிகழும்போது"
 
 msgid "open file"
 msgstr ""
@@ -570,13 +570,13 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr ""
+msgstr "திற"
 
 msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "உடன்"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +591,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "seth"
+msgstr "தலைப்பை ஒழுங்கு செய்"
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "எனின்"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,19 +615,19 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "கோணம்"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr ""
+msgstr "மிகக்குறைய"
 
 msgid "media"
 msgstr ""
 
 msgid "Stop"
-msgstr ""
+msgstr "நிறுத்து"
 
 msgid "sqrt"
 msgstr ""
@@ -639,16 +639,16 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr ""
+msgstr "ஒழுங்கு  படுத்துக"
 
 msgid "end fill"
-msgstr ""
+msgstr "கடைசி நிரப்பல்"
 
 msgid "Copy"
-msgstr ""
+msgstr "பிரதி செய்"
 
 msgid "Paste"
-msgstr ""
+msgstr "ஒட்டு"
 
 msgid "Delete"
 msgstr ""
@@ -660,7 +660,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr ", திருப்பிச்செய்"
 
 msgid "blocks"
 msgstr ""
@@ -672,25 +672,25 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr ""
+msgstr "மிகக்கூடிய"
 
 msgid "logic"
 msgstr ""
 
 msgid "empty heap"
-msgstr ""
+msgstr "வெற்றுக்குவியல்"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "push"
-msgstr ""
+msgstr "தள்ளு"
 
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "சுத்தமக்கு"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +708,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "எப்போதும்"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,17 +732,17 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "நிழல்"
 
 msgid "time"
-msgstr ""
+msgstr "நேரம்"
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
 msgstr ""
 
 msgid "left"
-msgstr ""
+msgstr "இடது"
 

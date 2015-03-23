@@ -1,14 +1,14 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
+"PO-Revision-Date: 2011-04-13 03:41+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
-"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Pootle 2.0.1\n"
 
 msgid "Delete all"
@@ -18,7 +18,7 @@ msgid "show"
 msgstr ""
 
 msgid "text"
-msgstr ""
+msgstr "ጽሑፍ"
 
 msgid "random"
 msgstr ""
@@ -105,19 +105,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr ""
+msgstr "ላይኛ"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "ቁጥር"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "እንጂ"
 
 msgid "Google map"
 msgstr ""
@@ -189,7 +189,7 @@ msgid "turtle"
 msgstr ""
 
 msgid "right"
-msgstr ""
+msgstr "ቀኝ"
 
 msgid "Load samples from server"
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "ኋላ"
 
 msgid "Publish"
 msgstr ""
@@ -261,7 +261,7 @@ msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr ""
+msgstr "አትም"
 
 msgid "size"
 msgstr ""
@@ -378,7 +378,7 @@ msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "ቀለም"
 
 msgid "image"
 msgstr ""
@@ -450,7 +450,7 @@ msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "ጀምር"
 
 msgid "stock price"
 msgstr ""
@@ -570,7 +570,7 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr ""
+msgstr "ክፈት"
 
 msgid "see distance"
 msgstr ""
@@ -591,7 +591,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "seth"
+msgstr ""
 
 msgid "add 1 to"
 msgstr ""
@@ -627,7 +627,7 @@ msgid "media"
 msgstr ""
 
 msgid "Stop"
-msgstr ""
+msgstr "ቁም ቁሚ አቁም አቁሚ"
 
 msgid "sqrt"
 msgstr ""
@@ -744,5 +744,5 @@ msgid "hello"
 msgstr ""
 
 msgid "left"
-msgstr ""
+msgstr "ግራ"
 

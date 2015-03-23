@@ -1,15 +1,14 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"PO-Revision-Date: 2009-09-02 01:50-0400\n"
+"Last-Translator: Chris Leonard <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"X-Generator: Pootle 1.2.1\n"
 
 msgid "Delete all"
 msgstr ""
@@ -18,10 +17,10 @@ msgid "show"
 msgstr ""
 
 msgid "text"
-msgstr ""
+msgstr "tekst"
 
 msgid "random"
-msgstr ""
+msgstr "tilfeldig"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +38,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr ""
+msgstr "tastatur"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -48,7 +47,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr ""
+msgstr "sett farge"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +68,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr ""
+msgstr "sett størrelse"
 
 msgid "start turtle"
 msgstr ""
@@ -87,7 +86,7 @@ msgid "Show/hide blocks"
 msgstr ""
 
 msgid "then"
-msgstr ""
+msgstr "så"
 
 msgid "move"
 msgstr ""
@@ -117,7 +116,7 @@ msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "ikke"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +125,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr ""
+msgstr "modulo"
 
 msgid "Save project"
 msgstr ""
@@ -174,28 +173,28 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "show blocks"
-msgstr ""
+msgstr "vis blokker"
 
 msgid "heading"
-msgstr ""
+msgstr "retning"
 
 msgid "Help"
 msgstr ""
 
 msgid "turtle"
-msgstr ""
+msgstr "Skilpadde"
 
 msgid "right"
-msgstr ""
+msgstr "høyre"
 
 msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "skjul blokker"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -213,10 +212,10 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "kurve"
 
 msgid "radius"
-msgstr ""
+msgstr "radius"
 
 msgid "longitude"
 msgstr ""
@@ -228,7 +227,7 @@ msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr ""
+msgstr "sett tone"
 
 msgid "pixel color"
 msgstr ""
@@ -324,16 +323,16 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr ""
+msgstr "trykk ned penn"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "vent"
 
 msgid "box"
-msgstr ""
+msgstr "boks"
 
 msgid "obj"
 msgstr ""
@@ -360,7 +359,7 @@ msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "eller"
 
 msgid "sense left"
 msgstr ""
@@ -378,7 +377,7 @@ msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "farge"
 
 msgid "image"
 msgstr ""
@@ -390,13 +389,13 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr ""
+msgstr "ta av"
 
 msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr ""
+msgstr "størrelse"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -444,13 +443,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr ""
+msgstr "løft penn"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "start"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +467,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "fremover"
 
 msgid "degrees"
 msgstr ""
@@ -507,7 +506,7 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr ""
+msgstr "ellers"
 
 msgid "orange"
 msgstr ""
@@ -576,7 +575,7 @@ msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "og"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +590,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "seth"
+msgstr ""
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +605,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "hvis"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,13 +614,13 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "vinkel"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr ""
+msgstr "min"
 
 msgid "media"
 msgstr ""
@@ -639,7 +638,7 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr ""
+msgstr "sett xy"
 
 msgid "end fill"
 msgstr ""
@@ -660,7 +659,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr "gjenta"
 
 msgid "blocks"
 msgstr ""
@@ -672,7 +671,7 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr ""
+msgstr "maks"
 
 msgid "logic"
 msgstr ""
@@ -708,7 +707,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "for evig"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,17 +731,17 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "tone"
 
 msgid "time"
 msgstr ""
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
 msgstr ""
 
 msgid "left"
-msgstr ""
+msgstr "venstre"
 

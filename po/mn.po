@@ -1,27 +1,27 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
-"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2013-05-30 09:24+0200\n"
+"Last-Translator: Cris Anderson <anderson861@gmail.com>\n"
+"Language-Team: Mongolian\n"
+"Language: mn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
 
 msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr ""
+msgstr "үзүүлэх"
 
 msgid "text"
-msgstr ""
+msgstr "бичвэр"
 
 msgid "random"
-msgstr ""
+msgstr "санаандгүй"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +39,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr ""
+msgstr "гар"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -48,7 +48,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr ""
+msgstr "өнгө"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +69,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr ""
+msgstr "үзэгний хэмжээ өг"
 
 msgid "start turtle"
 msgstr ""
@@ -87,7 +87,7 @@ msgid "Show/hide blocks"
 msgstr ""
 
 msgid "then"
-msgstr ""
+msgstr "бол"
 
 msgid "move"
 msgstr ""
@@ -105,19 +105,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr ""
+msgstr "зогсоох"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "тоо"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "үгүйсгэ"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +126,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr ""
+msgstr "үлдэгдэл"
 
 msgid "Save project"
 msgstr ""
@@ -174,28 +174,28 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "show blocks"
-msgstr ""
+msgstr "Блокыг харуул"
 
 msgid "heading"
-msgstr ""
+msgstr "чиг"
 
 msgid "Help"
-msgstr ""
+msgstr "Тусламж"
 
 msgid "turtle"
-msgstr ""
+msgstr "яст мэлхий"
 
 msgid "right"
-msgstr ""
+msgstr "баруун"
 
 msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "Блок нуу"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "ухар"
 
 msgid "Publish"
 msgstr ""
@@ -213,10 +213,10 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "нум"
 
 msgid "radius"
-msgstr ""
+msgstr "радиус"
 
 msgid "longitude"
 msgstr ""
@@ -228,7 +228,7 @@ msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr ""
+msgstr "сүүдэр"
 
 msgid "pixel color"
 msgstr ""
@@ -261,7 +261,7 @@ msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr ""
+msgstr "үзүүл"
 
 msgid "size"
 msgstr ""
@@ -324,16 +324,16 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr ""
+msgstr "зур"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "хүлээ"
 
 msgid "box"
-msgstr ""
+msgstr "богц"
 
 msgid "obj"
 msgstr ""
@@ -351,7 +351,7 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr ""
+msgstr "үйлдэл"
 
 msgid "loudness"
 msgstr ""
@@ -360,13 +360,13 @@ msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "эсвэл"
 
 msgid "sense left"
 msgstr ""
 
 msgid "comment"
-msgstr ""
+msgstr "тайлбар"
 
 msgid "cheese"
 msgstr ""
@@ -378,10 +378,10 @@ msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "ѳнгѳ"
 
 msgid "image"
-msgstr ""
+msgstr "дүрслэл"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -390,13 +390,13 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr ""
+msgstr "ав"
 
 msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr ""
+msgstr "үзэг хэмжээ"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -444,13 +444,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr ""
+msgstr "бүү зур"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "эхэл"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +468,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "урагшаа"
 
 msgid "degrees"
 msgstr ""
@@ -507,10 +507,10 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr ""
+msgstr "эсвэл"
 
 msgid "orange"
-msgstr ""
+msgstr "улбар шар"
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +540,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr ""
+msgstr "утга"
 
 msgid "banana"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr ""
+msgstr "цагаан"
 
 msgid "open file"
 msgstr ""
@@ -570,13 +570,13 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr ""
+msgstr "Нээх"
 
 msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "ба"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +591,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "seth"
+msgstr "чиглэл"
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "xэpэв"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,19 +615,19 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "ѳнцѳг"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr ""
+msgstr "МИН"
 
 msgid "media"
 msgstr ""
 
 msgid "Stop"
-msgstr ""
+msgstr "Зогсоох"
 
 msgid "sqrt"
 msgstr ""
@@ -639,16 +639,16 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr ""
+msgstr "тэнхлэг ХУ"
 
 msgid "end fill"
 msgstr ""
 
 msgid "Copy"
-msgstr ""
+msgstr "Хуулах"
 
 msgid "Paste"
-msgstr ""
+msgstr "Тавих"
 
 msgid "Delete"
 msgstr ""
@@ -660,7 +660,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr "дaвтax"
 
 msgid "blocks"
 msgstr ""
@@ -672,7 +672,7 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr ""
+msgstr "МАКС"
 
 msgid "logic"
 msgstr ""
@@ -684,13 +684,13 @@ msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "push"
-msgstr ""
+msgstr "өг"
 
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "Арилга"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +708,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "үүрд"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,17 +732,17 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "сүүдэр"
 
 msgid "time"
-msgstr ""
+msgstr "цаг"
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
 msgstr ""
 
 msgid "left"
-msgstr ""
+msgstr "зүүн"
 

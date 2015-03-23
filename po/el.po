@@ -1,27 +1,27 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
-"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2012-09-08 10:54+0200\n"
+"Last-Translator: Yannis <kiolalis@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
 
 msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr ""
+msgstr "εμφάνιση"
 
 msgid "text"
-msgstr ""
+msgstr "κείμενο"
 
 msgid "random"
-msgstr ""
+msgstr "τυχαίο"
 
 msgid "confirm"
 msgstr ""
@@ -39,7 +39,7 @@ msgid "target"
 msgstr ""
 
 msgid "keyboard"
-msgstr ""
+msgstr "πληκτρολόγιο"
 
 msgid "You can also load projects from the file system."
 msgstr ""
@@ -48,7 +48,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr ""
+msgstr "ορισμός χρώματος"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +69,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr ""
+msgstr "ορισμός μεγέθους στιλό"
 
 msgid "start turtle"
 msgstr ""
@@ -78,16 +78,16 @@ msgid "latitude"
 msgstr ""
 
 msgid "mouse x"
-msgstr ""
+msgstr "συντεταγμένη x του ποντικιού"
 
 msgid "mouse y"
-msgstr ""
+msgstr "συντεταγμένη y του ποντικιού"
 
 msgid "Show/hide blocks"
-msgstr ""
+msgstr "Εμφάνιση/Απόκρυση εντολών"
 
 msgid "then"
-msgstr ""
+msgstr "τότε"
 
 msgid "move"
 msgstr ""
@@ -105,19 +105,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr ""
+msgstr "διακοπή"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "αριθμός"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "όχι"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +126,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr ""
+msgstr "υπόλοιπο"
 
 msgid "Save project"
 msgstr ""
@@ -174,28 +174,28 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "χ"
 
 msgid "show blocks"
-msgstr ""
+msgstr "εμφάνιση εντολών"
 
 msgid "heading"
-msgstr ""
+msgstr "επικεφαλίδα"
 
 msgid "Help"
-msgstr ""
+msgstr "Βοήθεια"
 
 msgid "turtle"
-msgstr ""
+msgstr "χελώνα"
 
 msgid "right"
-msgstr ""
+msgstr "δεξιά"
 
 msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "απόκρυψη εντολών"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "πίσω"
 
 msgid "Publish"
 msgstr ""
@@ -213,22 +213,22 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "τόξο"
 
 msgid "radius"
-msgstr ""
+msgstr "ακτίνα"
 
 msgid "longitude"
 msgstr ""
 
 msgid "duration"
-msgstr ""
+msgstr "διάρκεια"
 
 msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr ""
+msgstr "ορισμός σκιάς"
 
 msgid "pixel color"
 msgstr ""
@@ -243,7 +243,7 @@ msgid "Show these messages."
 msgstr ""
 
 msgid "show heap"
-msgstr ""
+msgstr "εμφάνιση στοίβας"
 
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr ""
@@ -261,7 +261,7 @@ msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr ""
+msgstr "εκτύπωση"
 
 msgid "size"
 msgstr ""
@@ -324,22 +324,22 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr ""
+msgstr "στιλό κάτω"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "αναμονή"
 
 msgid "box"
-msgstr ""
+msgstr "πλαίσιο"
 
 msgid "obj"
 msgstr ""
 
 msgid "store in"
-msgstr ""
+msgstr "αποθήκευση στο"
 
 msgid "digest meal"
 msgstr ""
@@ -351,37 +351,37 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr ""
+msgstr "ενέργεια"
 
 msgid "loudness"
-msgstr ""
+msgstr "ηχηρότητα"
 
 msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "ή"
 
 msgid "sense left"
 msgstr ""
 
 msgid "comment"
-msgstr ""
+msgstr "σχόλιο"
 
 msgid "cheese"
 msgstr ""
 
 msgid "Cartesian"
-msgstr ""
+msgstr "Καρτεσιανό"
 
 msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "χρώμα"
 
 msgid "image"
-msgstr ""
+msgstr "εικόνα"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -390,13 +390,13 @@ msgid "Increase block size"
 msgstr ""
 
 msgid "pop"
-msgstr ""
+msgstr "απώθηση"
 
 msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr ""
+msgstr "μέγεθος στιλό"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -420,7 +420,7 @@ msgid "mouse button"
 msgstr ""
 
 msgid "speak"
-msgstr ""
+msgstr "ομιλία"
 
 msgid "city"
 msgstr ""
@@ -444,13 +444,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr ""
+msgstr "στιλό πάνω"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "έναρξη"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +468,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "μπροστά"
 
 msgid "degrees"
 msgstr ""
@@ -477,7 +477,7 @@ msgid "translate"
 msgstr ""
 
 msgid "until"
-msgstr ""
+msgstr "μέχρι"
 
 msgid "define"
 msgstr ""
@@ -507,10 +507,10 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr ""
+msgstr "αλλιώς"
 
 msgid "orange"
-msgstr ""
+msgstr "πορτοκαλί"
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +540,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr ""
+msgstr "τιμή"
 
 msgid "banana"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr ""
+msgstr "λευκό"
 
 msgid "open file"
 msgstr ""
@@ -570,13 +570,13 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr ""
+msgstr "Άνοιγμα"
 
 msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "και"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +591,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "seth"
+msgstr "ορισμός επικεφαλίδας"
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "εάν"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,19 +615,19 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "γωνία"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr ""
+msgstr "ελάχιστο"
 
 msgid "media"
 msgstr ""
 
 msgid "Stop"
-msgstr ""
+msgstr "Διακοπή"
 
 msgid "sqrt"
 msgstr ""
@@ -639,16 +639,16 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr ""
+msgstr "ορισμός χy"
 
 msgid "end fill"
-msgstr ""
+msgstr "τέλος γεμίσματος"
 
 msgid "Copy"
-msgstr ""
+msgstr "Αντιγραφή"
 
 msgid "Paste"
-msgstr ""
+msgstr "Επικόλληση"
 
 msgid "Delete"
 msgstr ""
@@ -660,7 +660,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr "επανάληψη"
 
 msgid "blocks"
 msgstr ""
@@ -672,25 +672,25 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr ""
+msgstr "μέγιστο"
 
 msgid "logic"
 msgstr ""
 
 msgid "empty heap"
-msgstr ""
+msgstr "κενός σωρός"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "push"
-msgstr ""
+msgstr "ώθηση"
 
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "Καθαρισμός"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +708,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "για πάντα"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,17 +732,17 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "σκιά"
 
 msgid "time"
-msgstr ""
+msgstr "χρόνος"
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
-msgstr ""
+msgstr "γεια"
 
 msgid "left"
-msgstr ""
+msgstr "αριστερά"
 

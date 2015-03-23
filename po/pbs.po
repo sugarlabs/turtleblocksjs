@@ -1,27 +1,27 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
-"Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2013-04-16 21:38+0200\n"
+"Last-Translator: usuariopame05 <proyecto.olpc@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pbs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
 
 msgid "Delete all"
 msgstr ""
 
 msgid "show"
-msgstr ""
+msgstr "nda'u'up"
 
 msgid "text"
-msgstr ""
+msgstr "kily'e keich'"
 
 msgid "random"
-msgstr ""
+msgstr "kensemakeje'"
 
 msgid "confirm"
 msgstr ""
@@ -48,7 +48,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr ""
+msgstr "makeje' xikjia'"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +69,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr ""
+msgstr "makeje' ngutue'p"
 
 msgid "start turtle"
 msgstr ""
@@ -87,7 +87,7 @@ msgid "Show/hide blocks"
 msgstr ""
 
 msgid "then"
-msgstr ""
+msgstr "xi'iap"
 
 msgid "move"
 msgstr ""
@@ -105,19 +105,19 @@ msgid "Click to run the project in slow mode."
 msgstr ""
 
 msgid "stop"
-msgstr ""
+msgstr "ndama'ai"
 
 msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "rabe'en"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "mut"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +126,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr ""
+msgstr "mod"
 
 msgid "Save project"
 msgstr ""
@@ -174,28 +174,28 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "show blocks"
-msgstr ""
+msgstr "Ma'u'up re se vud-ua me'ets"
 
 msgid "heading"
-msgstr ""
+msgstr "peuk manamaa"
 
 msgid "Help"
-msgstr ""
+msgstr "Nabaik"
 
 msgid "turtle"
 msgstr ""
 
 msgid "right"
-msgstr ""
+msgstr "majaap"
 
 msgid "Load samples from server"
 msgstr ""
 
 msgid "hide blocks"
-msgstr ""
+msgstr "Ma'aung me'ets kily'e"
 
 msgid "Hide or show the block palettes."
 msgstr ""
@@ -204,7 +204,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "ma ngupeix"
 
 msgid "Publish"
 msgstr ""
@@ -213,22 +213,22 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "ngulja'"
 
 msgid "radius"
-msgstr ""
+msgstr "ngube'ei"
 
 msgid "longitude"
 msgstr ""
 
 msgid "duration"
-msgstr ""
+msgstr "lujuéeu'"
 
 msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr ""
+msgstr "makeje' peuk lu'ue lijiú"
 
 msgid "pixel color"
 msgstr ""
@@ -324,22 +324,22 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr ""
+msgstr "mapuu' ne nde'ets kily'e"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "mapee"
 
 msgid "box"
-msgstr ""
+msgstr "ndakjaat"
 
 msgid "obj"
 msgstr ""
 
 msgid "store in"
-msgstr ""
+msgstr "makjaat kiñkiep'"
 
 msgid "digest meal"
 msgstr ""
@@ -351,16 +351,16 @@ msgid "zoom factor"
 msgstr ""
 
 msgid "action"
-msgstr ""
+msgstr "matsjau"
 
 msgid "loudness"
-msgstr ""
+msgstr "manaja"
 
 msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "o"
 
 msgid "sense left"
 msgstr ""
@@ -378,10 +378,10 @@ msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "xikjia'"
 
 msgid "image"
-msgstr ""
+msgstr "xikji'ik"
 
 msgid "Welcome to Turtle Blocks"
 msgstr ""
@@ -396,7 +396,7 @@ msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr ""
+msgstr "ngutue'p"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -420,7 +420,7 @@ msgid "mouse button"
 msgstr ""
 
 msgid "speak"
-msgstr ""
+msgstr "nia"
 
 msgid "city"
 msgstr ""
@@ -444,13 +444,13 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr ""
+msgstr "majáu ne nde'ets kil'e"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
 
 msgid "start"
-msgstr ""
+msgstr "ndapup"
 
 msgid "stock price"
 msgstr ""
@@ -468,7 +468,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "D-uaja'"
 
 msgid "degrees"
 msgstr ""
@@ -477,7 +477,7 @@ msgid "translate"
 msgstr ""
 
 msgid "until"
-msgstr ""
+msgstr "lamee"
 
 msgid "define"
 msgstr ""
@@ -507,10 +507,10 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr ""
+msgstr "kad-ep"
 
 msgid "orange"
-msgstr ""
+msgstr "ni'an"
 
 msgid "begin fill"
 msgstr ""
@@ -540,7 +540,7 @@ msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr ""
+msgstr "liñjú"
 
 msgid "banana"
 msgstr ""
@@ -552,7 +552,7 @@ msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with
 msgstr ""
 
 msgid "while"
-msgstr ""
+msgstr "vupee sad-ia'"
 
 msgid "open file"
 msgstr ""
@@ -570,13 +570,13 @@ msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr ""
+msgstr "Maseiñ"
 
 msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "y"
 
 msgid "set grey"
 msgstr ""
@@ -591,7 +591,7 @@ msgid "Show/hide palettes"
 msgstr ""
 
 msgid "set heading"
-msgstr "seth"
+msgstr "makeje' peuk manamá"
 
 msgid "add 1 to"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "lik'iajam"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,19 +615,19 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "ngumúu se liviuch' nui niñ'eje'"
 
 msgid "get fat"
 msgstr ""
 
 msgid "min"
-msgstr ""
+msgstr "sau' lakejé"
 
 msgid "media"
 msgstr ""
 
 msgid "Stop"
-msgstr ""
+msgstr "Ndama'ai"
 
 msgid "sqrt"
 msgstr ""
@@ -639,16 +639,16 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr ""
+msgstr "makeje' xy"
 
 msgid "end fill"
-msgstr ""
+msgstr "maljung se mane'p"
 
 msgid "Copy"
-msgstr ""
+msgstr "Make'eik"
 
 msgid "Paste"
-msgstr ""
+msgstr "Makua'al"
 
 msgid "Delete"
 msgstr ""
@@ -660,7 +660,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr "Maleix"
 
 msgid "blocks"
 msgstr ""
@@ -672,7 +672,7 @@ msgid "Polar"
 msgstr ""
 
 msgid "max"
-msgstr ""
+msgstr "kutue' le'ei lakejé"
 
 msgid "logic"
 msgstr ""
@@ -690,7 +690,7 @@ msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "Matseiñ'"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +708,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "Leem"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,17 +732,17 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "lijiú"
 
 msgid "time"
 msgstr ""
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
-msgstr ""
+msgstr "hola"
 
 msgid "left"
-msgstr ""
+msgstr "meje'ep"
 

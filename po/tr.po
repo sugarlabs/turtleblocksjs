@@ -1,15 +1,14 @@
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-17 00:31-0400\n"
-"PO-Revision-Date: 2011-02-24 04:39+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <walter@sugarlabs.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.1\n"
+"X-Generator: Translate Toolkit 1.0.1\n"
 
 msgid "Delete all"
 msgstr ""
@@ -21,7 +20,7 @@ msgid "text"
 msgstr ""
 
 msgid "random"
-msgstr ""
+msgstr "rastgele"
 
 msgid "confirm"
 msgstr ""
@@ -48,7 +47,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "set color"
-msgstr ""
+msgstr "renk ayarı"
 
 msgid "apple"
 msgstr ""
@@ -69,7 +68,7 @@ msgid "add"
 msgstr ""
 
 msgid "set pen size"
-msgstr ""
+msgstr "kalem boyu ayan"
 
 msgid "start turtle"
 msgstr ""
@@ -87,7 +86,7 @@ msgid "Show/hide blocks"
 msgstr ""
 
 msgid "then"
-msgstr ""
+msgstr "sonra"
 
 msgid "move"
 msgstr ""
@@ -111,13 +110,13 @@ msgid "fat"
 msgstr ""
 
 msgid "number"
-msgstr ""
+msgstr "Sayılar"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "değil"
 
 msgid "Google map"
 msgstr ""
@@ -126,7 +125,7 @@ msgid "day"
 msgstr ""
 
 msgid "mod"
-msgstr ""
+msgstr "mod"
 
 msgid "Save project"
 msgstr ""
@@ -174,13 +173,13 @@ msgid "Load plugin from file"
 msgstr ""
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "show blocks"
 msgstr ""
 
 msgid "heading"
-msgstr ""
+msgstr "başlık"
 
 msgid "Help"
 msgstr ""
@@ -189,7 +188,7 @@ msgid "turtle"
 msgstr ""
 
 msgid "right"
-msgstr ""
+msgstr "sağ"
 
 msgid "Load samples from server"
 msgstr ""
@@ -204,7 +203,7 @@ msgid "This button opens a viewer for loading example projects."
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "geri"
 
 msgid "Publish"
 msgstr ""
@@ -213,10 +212,10 @@ msgid "grey"
 msgstr ""
 
 msgid "arc"
-msgstr ""
+msgstr "yay"
 
 msgid "radius"
-msgstr ""
+msgstr "yarıçap"
 
 msgid "longitude"
 msgstr ""
@@ -228,7 +227,7 @@ msgid " "Planet"
 msgstr ""
 
 msgid "set shade"
-msgstr ""
+msgstr "gölge ayarı"
 
 msgid "pixel color"
 msgstr ""
@@ -261,7 +260,7 @@ msgid "fish"
 msgstr ""
 
 msgid "print"
-msgstr ""
+msgstr "yazdır"
 
 msgid "size"
 msgstr ""
@@ -324,16 +323,16 @@ msgid "sensors"
 msgstr ""
 
 msgid "pen down"
-msgstr ""
+msgstr "kk"
 
 msgid "get name"
 msgstr ""
 
 msgid "wait"
-msgstr ""
+msgstr "bekle"
 
 msgid "box"
-msgstr ""
+msgstr "kutu"
 
 msgid "obj"
 msgstr ""
@@ -360,7 +359,7 @@ msgid "Increase the size of the blocks."
 msgstr ""
 
 msgid "or"
-msgstr ""
+msgstr "veya"
 
 msgid "sense left"
 msgstr ""
@@ -378,7 +377,7 @@ msgid "eval"
 msgstr ""
 
 msgid "color"
-msgstr ""
+msgstr "renk"
 
 msgid "image"
 msgstr ""
@@ -396,7 +395,7 @@ msgid "bitcoin"
 msgstr ""
 
 msgid "pen size"
-msgstr ""
+msgstr "kalem boyu"
 
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr ""
@@ -444,7 +443,7 @@ msgid "wait for"
 msgstr ""
 
 msgid "pen up"
-msgstr ""
+msgstr "kb"
 
 msgid "Decrease the size of the blocks."
 msgstr ""
@@ -468,7 +467,7 @@ msgid "motion y"
 msgstr ""
 
 msgid "forward"
-msgstr ""
+msgstr "ileri"
 
 msgid "degrees"
 msgstr ""
@@ -507,7 +506,7 @@ msgid "carbs"
 msgstr ""
 
 msgid "else"
-msgstr ""
+msgstr "voska"
 
 msgid "orange"
 msgstr ""
@@ -576,7 +575,7 @@ msgid "see distance"
 msgstr ""
 
 msgid "and"
-msgstr ""
+msgstr "ve"
 
 msgid "set grey"
 msgstr ""
@@ -606,7 +605,7 @@ msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "eğer"
 
 msgid "Save your project to a server."
 msgstr ""
@@ -615,7 +614,7 @@ msgid "Decrease block size"
 msgstr ""
 
 msgid "angle"
-msgstr ""
+msgstr "açı"
 
 msgid "get fat"
 msgstr ""
@@ -639,7 +638,7 @@ msgid "Palette buttons"
 msgstr ""
 
 msgid "set xy"
-msgstr ""
+msgstr "eksen ayarla"
 
 msgid "end fill"
 msgstr ""
@@ -660,7 +659,7 @@ msgid "Worldwide"
 msgstr ""
 
 msgid "repeat"
-msgstr ""
+msgstr "tekrarla"
 
 msgid "blocks"
 msgstr ""
@@ -690,7 +689,7 @@ msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr ""
+msgstr "temizle"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
@@ -708,7 +707,7 @@ msgid "tomato"
 msgstr ""
 
 msgid "forever"
-msgstr ""
+msgstr "sürekli"
 
 msgid "Load project from file"
 msgstr ""
@@ -732,17 +731,17 @@ msgid "extras"
 msgstr ""
 
 msgid "shade"
-msgstr ""
+msgstr "gölge"
 
 msgid "time"
 msgstr ""
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
 msgstr ""
 
 msgid "left"
-msgstr ""
+msgstr "sol"
 

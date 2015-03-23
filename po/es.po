@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-02-13 21:45-0300\n"
+"PO-Revision-Date: 2015-03-23 10:58-0300\n"
 "Last-Translator: Ignacio Rodríguez <ignacio@sugarlabs.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -311,30 +311,34 @@ msgstr "El botón de pegar está activo, por lo tanto hay bloques copiados en el
 msgid "Copy"
 msgstr "Copiar"
 
+#, fuzzy
 msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+msgstr "El botón copiar, copia bloques al portapapeles. Aparece luego de \"mantener presionado (por unos segundos)\" un bloque."
 
 msgid "Save stack"
 msgstr "Guardar pila"
 
+#, fuzzy
 msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+msgstr "El botón guardar pila, guarda la pila en una paleta personalizada. Aparece luego de \"mantener presionada (por unos segundos)\"  una pila."
 
 msgid "Settings"
-msgstr ""
+msgstr "Configuración"
 
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr ""
+msgstr "Abre el panel para configurar Turtle Blocks."
 
 msgid "Decrease block size"
-msgstr ""
+msgstr "Disminuir el tamaño de los bloques"
 
 msgid "Decrease the size of the blocks."
-msgstr ""
+msgstr "Disminuye el tamaño de los bloques"
 
 msgid "Increase block size"
-msgstr ""
+msgstr "Incrementar tamaño de bloques"
 
 msgid "Increase the size of the blocks."
-msgstr ""
+msgstr "Incrementa el tamaño de los bloques."
 
 msgid "Display statistics"
 msgstr "Analizar"
@@ -726,7 +730,7 @@ msgstr "baja"
 msgid "high"
 msgstr "alta"
 
-msgid = "Planet"
+msgid "Planet"
 msgstr "Planeta"
 
 msgid "On my device"

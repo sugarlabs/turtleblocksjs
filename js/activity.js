@@ -923,6 +923,10 @@ define(function(require) {
             if (blocks.visible) {
                 logo.hideBlocks();
             } else {
+                if (chartBitmap != null) {
+                    stage.removeChild(chartBitmap);
+                    chartBitmap = null;
+                }
                 logo.showBlocks();
             }
         }

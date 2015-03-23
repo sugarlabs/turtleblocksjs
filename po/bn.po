@@ -230,9 +230,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "ছায়া নির্ধারণ করো"
 
@@ -752,3 +749,6 @@ msgstr ""
 msgid "left"
 msgstr "বামে যাও"
 
+
+msgid "Planet"
+msgstr ""

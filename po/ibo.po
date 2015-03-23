@@ -1,5 +1,3 @@
-msgid ""
-msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
@@ -723,3 +721,42 @@ msgstr "ala"
 
 msgid "high"
 msgstr "elu"
+
+msgid "confirm"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "longitude"
+msgstr ""
+
+msgid "Planet"
+msgstr ""
+
+msgid "loudness"
+msgstr ""
+
+msgid "boolean"
+msgstr ""
+
+msgid "On my device"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Worldwide"
+msgstr ""
+
+msgid ""
+msgstr ""

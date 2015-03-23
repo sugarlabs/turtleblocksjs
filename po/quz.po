@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr "unayaynin"
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "llimp'ita churay"
 
@@ -746,3 +743,9 @@ msgstr "allillanchu"
 msgid "left"
 msgstr "lluqi"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

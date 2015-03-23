@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "रंगाचा दर्जा निश्चीत करा"
 
@@ -746,3 +743,9 @@ msgstr ""
 msgid "left"
 msgstr ""
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

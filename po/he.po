@@ -716,3 +716,42 @@ msgstr ""
 
 msgid "high"
 msgstr ""
+
+msgid "confirm"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "mouse x"
+msgstr ""
+
+msgid "mouse y"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "pixel color"
+msgstr ""
+
+msgid "size"
+msgstr ""
+
+msgid "Planet"
+msgstr ""
+
+msgid "On my device"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Worldwide"
+msgstr ""

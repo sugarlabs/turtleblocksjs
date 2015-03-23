@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "நிழலை ஒழுங்கு படுத்து"
 
@@ -746,3 +743,9 @@ msgstr ""
 msgid "left"
 msgstr "இடது"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

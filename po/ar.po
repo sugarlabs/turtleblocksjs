@@ -718,3 +718,45 @@ msgstr ""
 msgid "high"
 msgstr ""
 
+
+msgid "confirm"
+msgstr ""
+
+msgid "latitude"
+msgstr ""
+
+msgid "Google map"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "zoom"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "longitude"
+msgstr ""
+
+msgid "Planet"
+msgstr ""
+
+msgid "zoom factor"
+msgstr ""
+
+msgid "coordinates"
+msgstr ""
+
+msgid "On my device"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Worldwide"
+msgstr ""

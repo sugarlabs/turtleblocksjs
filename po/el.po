@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr "διάρκεια"
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "ορισμός σκιάς"
 
@@ -746,3 +743,9 @@ msgstr "γεια"
 msgid "left"
 msgstr "αριστερά"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

@@ -746,3 +746,9 @@ msgstr "hola"
 msgid "left"
 msgstr "meje'ep"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

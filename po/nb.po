@@ -223,11 +223,11 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
+msgid "set shade"
 msgstr ""
 
-msgid "set shade"
-msgstr "sett tone"
+msgstr "set tone"
+msgstr ""
 
 msgid "pixel color"
 msgstr ""
@@ -745,3 +745,9 @@ msgstr ""
 msgid "left"
 msgstr "venstre"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

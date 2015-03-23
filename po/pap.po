@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr "durashon"
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "instala sombra"
 
@@ -746,3 +743,9 @@ msgstr "haló"
 msgid "left"
 msgstr "na man robes"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

@@ -230,9 +230,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "aseta sävy"
 
@@ -751,3 +748,6 @@ msgstr ""
 
 msgid "left"
 msgstr "vasen"
+
+msgid "Planet"
+msgstr ""

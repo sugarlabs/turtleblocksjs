@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr "owát"
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "ka ts'at'banchij in ts'apik in tajax"
 
@@ -746,3 +743,9 @@ msgstr "ne'nek"
 msgid "left"
 msgstr "k'watab'"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

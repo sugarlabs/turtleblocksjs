@@ -841,3 +841,27 @@ msgstr ""
 msgid "high"
 msgstr ""
 
+
+msgid "confirm"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "Planet"
+msgstr ""
+
+msgid "On my device"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Worldwide"
+msgstr ""

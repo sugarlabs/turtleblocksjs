@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr "Duy trỳ"
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "Tô bóng"
 
@@ -746,3 +743,9 @@ msgstr "Chào"
 msgid "left"
 msgstr "trái"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

@@ -750,3 +750,12 @@ msgstr ""
 
 msgid "Download"
 msgstr ""
+
+msgid "confirm"
+msgstr ""
+
+msgid "Planet"
+msgstr ""
+
+msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
+msgstr ""

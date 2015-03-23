@@ -231,9 +231,6 @@ msgstr ""
 msgid "duration"
 msgstr "czas trwania"
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "ustaw cień"
 
@@ -753,3 +750,6 @@ msgstr "cześć"
 msgid "left"
 msgstr "w lewo"
 
+
+msgid "Planet"
+msgstr ""

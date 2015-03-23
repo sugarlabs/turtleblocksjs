@@ -223,9 +223,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "gölge ayarı"
 
@@ -745,3 +742,9 @@ msgstr ""
 msgid "left"
 msgstr "sol"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

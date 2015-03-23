@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "shyiramo igipimo"
 
@@ -746,3 +743,9 @@ msgstr "allo"
 msgid "left"
 msgstr "ibumoso"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

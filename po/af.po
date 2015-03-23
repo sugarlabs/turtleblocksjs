@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "stel skadu"
 
@@ -746,3 +743,9 @@ msgstr ""
 msgid "left"
 msgstr "links"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

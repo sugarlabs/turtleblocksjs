@@ -729,3 +729,33 @@ msgstr ""
 msgid "left"
 msgstr "왼쪽"
 
+
+msgid "confirm"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "Planet"
+msgstr ""
+
+msgid "loudness"
+msgstr ""
+
+msgid "On my device"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Worldwide"
+msgstr ""
+
+msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
+msgstr ""

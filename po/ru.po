@@ -231,9 +231,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "затенение"
 
@@ -753,3 +750,6 @@ msgstr ""
 msgid "left"
 msgstr "влево"
 
+
+msgid "Planet"
+msgstr ""

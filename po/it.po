@@ -736,3 +736,36 @@ msgstr "ciao"
 msgid "left"
 msgstr "sinistra"
 
+
+msgid "confirm"
+msgstr ""
+
+msgid "turtle x"
+msgstr ""
+
+msgid "turtle y"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "The paste button is enabled when there are blocks copied onto the clipboard."
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "Planet"
+msgstr ""
+
+msgid "On my device"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Worldwide"
+msgstr ""

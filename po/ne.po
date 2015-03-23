@@ -230,9 +230,6 @@ msgstr ""
 msgid "duration"
 msgstr "अन्तराल"
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "छाया राख"
 
@@ -752,3 +749,6 @@ msgstr "हेलो"
 msgid "left"
 msgstr "बायाँ"
 
+
+msgid "Planet"
+msgstr ""

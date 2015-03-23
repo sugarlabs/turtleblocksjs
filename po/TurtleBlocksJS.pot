@@ -726,7 +726,7 @@ msgstr ""
 msgid "high"
 msgstr ""
 
-msgid = "Planet"
+msgid "Planet"
 msgstr ""
 
 msgid "On my device"

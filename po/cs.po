@@ -224,9 +224,6 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-msgid " "Planet"
-msgstr ""
-
 msgid "set shade"
 msgstr "nastavit odstín"
 
@@ -746,3 +743,9 @@ msgstr ""
 msgid "left"
 msgstr "vlevo"
 
+
+msgid ""
+msgstr ""
+
+msgid "Planet"
+msgstr ""

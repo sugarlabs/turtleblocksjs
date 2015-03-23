@@ -1353,6 +1353,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = logo.doMinus(a, b);
                     break;
+                case 'myclick':
+                    logo.blocks.blockList[blk].value = 'click' + logo.turtles.turtleList[turtle].name;
+                    break;
                 case 'heading':
                     logo.blocks.blockList[blk].value = logo.turtles.turtleList[turtle].orientation;
                     break;

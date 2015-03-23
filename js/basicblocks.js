@@ -855,6 +855,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     dispatchBlock.defaults.push(_('event'));
     dispatchBlock.dockTypes[1] = 'textin';
 
+    // Turtle-specific click event
+    var myClickBlock = new ProtoBlock('myclick');
+    myClickBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['myclick'] = myClickBlock;
+    myClickBlock.staticLabels.push(_('click'));
+    myClickBlock.adjustWidthToLabel();
+    myClickBlock.parameterBlock();
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         if (blocks.protoBlockDict[protoblock].palette != null) {

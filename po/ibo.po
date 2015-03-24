@@ -308,38 +308,38 @@ msgid "The paste button is enabled when there are blocks copied onto the clipboa
 msgstr "The tapawa button na-nyeere e nwere blocks depụtaghachiri n'elu clipboard"
 
 msgid "Copy"
-msgstr ""
+msgstr "Detuo"
 
 msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
 
 msgid "Save stack"
-msgstr ""
+msgstr "ịzọpụta tojupụtara"
 
 msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
 
 msgid "Settings"
-msgstr ""
+msgstr "Ntọala"
 
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr ""
+msgstr "Mepee a panel maka configuring mbe nkanka ."
 
 msgid "Decrease block size"
-msgstr ""
+msgstr "Ibelata ngọngọ size"
 
 msgid "Decrease the size of the blocks."
-msgstr ""
+msgstr "Ibelata size nke blocks."
 
 msgid "Increase block size"
-msgstr ""
+msgstr "Mmụba ngọngọ size"
 
 msgid "Increase the size of the blocks."
-msgstr ""
+msgstr "Dịkwuo size nke blocks."
 
 msgid "Display statistics"
-msgstr ""
+msgstr "Ngosipụta ọnụ ọgụgụ"
 
 msgid "Display statistics about your Turtle project."
-msgstr ""
+msgstr "Ngosipụta ọnụ ọgụgụ banyere gị mbe oru ngo."
 
 msgid "Cartesian"
 msgstr "Cartesian"
@@ -723,40 +723,40 @@ msgid "high"
 msgstr "elu"
 
 msgid "confirm"
-msgstr ""
+msgstr "gosi"
 
 msgid "to"
-msgstr ""
+msgstr "ka"
 
 msgid "Download"
-msgstr ""
+msgstr "ala-ibu"
 
 msgid "Publish"
-msgstr ""
+msgstr "asuanetop"
 
 msgid "longitude"
-msgstr ""
+msgstr "lonjituudu"
 
 msgid "Planet"
-msgstr ""
+msgstr "Planet"
 
 msgid "loudness"
-msgstr ""
+msgstr "keuzu"
 
 msgid "boolean"
-msgstr ""
+msgstr "boolean"
 
 msgid "On my device"
-msgstr ""
+msgstr "On m ngwaọrụ"
 
 msgid "Open"
-msgstr ""
+msgstr "Mekpe"
 
 msgid "Delete"
-msgstr ""
+msgstr "hichapụ"
 
 msgid "Worldwide"
-msgstr ""
+msgstr "Uwa-obosara"
 
 msgid ""
 msgstr ""

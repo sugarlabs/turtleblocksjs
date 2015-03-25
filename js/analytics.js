@@ -29,6 +29,7 @@ TACAT = {'clear': 'forward', 'forward': 'forward', 'back': 'forward',
          'repeat': 'repeat', 'forever': 'repeat', 'if': 'ifthen',
          'ifthenelse': 'ifthen', 'while': 'ifthen', 'until': 'ifthen',
          'action': 'action', 'do': 'action', 'nameddo': 'action',
+         'listen': 'action', 'broadcast': 'action',
          'storein': 'box', 'namedbox': 'box', 'incrementOne': 'box',
          'luminance': 'sensor', 'mousex': 'sensor', 'mousey': 'sensor',
          'start': 'action', 'mousebutton': 'sensor', 'keyboard': 'sensor',
@@ -117,18 +118,38 @@ function analyzeProject(blocks) {
 
 
 function scoreToChartData(scores) {
+    var normalizedScores = [];
+    var maxScore = 0;
+    for (i = 0; i < scores.length; i++) {
+        if (scores[i] > maxScore) {
+            maxScore = scores[i];
+        }
+    }
+    if (maxScore > 0) {
+        var scale = 100 / maxScore;
+    } else {
+        var scale = 1;
+    }
+    console.log(scale);
+    if (scale > 1) {
+        scale = 1;
+    }
+    for (i = 0; i < scores.length; i++) {
+        normalizedScores.push(scores[i] * scale);
+    }
+
     var data = {
         labels: [_('turtle'), _('pen'), _('number'), _('flow'), _('box'), _('sensors'), _('media'), _('extras')],
         datasets: [
             {
-                label: "My First dataset",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: scores,
+                label: '',
+                fillColor: 'rgba(220,220,220,0.4)',
+                strokeColor: 'rgba(220,220,220,1)',
+                pointColor: 'rgba(220,220,220,1)',
+                pointStrokeColor: '#fff',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(220,220,220,1)',
+                data: normalizedScores,
             },
         ]
     };
@@ -155,22 +176,22 @@ function getChartOptions(callback) {
     scaleBeginAtZero : true,
 
     //String - Colour of the angle line
-    angleLineColor : "rgba(0,0,0,.1)",
+    angleLineColor : 'rgba(0,0,0,.2)',
 
     //Number - Pixel width of the angle line
     angleLineWidth : 10,
 
     //String - Point label font declaration
-    pointLabelFontFamily : "'Arial'",
+    pointLabelFontFamily : 'Arial',
 
     //String - Point label font weight
-    pointLabelFontStyle : "normal",
+    pointLabelFontStyle : 'normal',
 
     //Number - Point label font size in pixels
     pointLabelFontSize : 30,
 
     //String - Point label font colour
-    pointLabelFontColor : "#666",
+    pointLabelFontColor : '#666',
 
     //Boolean - Whether to show a dot for each point
     pointDot : true,

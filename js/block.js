@@ -614,13 +614,15 @@ function Block(protoblock, blocks, overrideName) {
             myContainer.addChild(bitmap);
 
             // Resize the image to a reasonable maximum.
+            var MAXWIDTH = 600;
+            var MAXHEIGHT = 450;
             if (image.width > image.height) {
-                if (image.width > 1200) {
-                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1200 / image.width;
+                if (image.width > MAXWIDTH) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = MAXWIDTH / image.width;
                 }
             } else {
-                if (image.height > 900) {
-                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 900 / image.height;
+                if (image.height > MAXHEIGHT) {
+                    bitmap.scaleX = bitmap.scaleY = bitmap.scale = MAXHEIGHT / image.height;
                 }
             }
             var bounds = myContainer.getBounds();

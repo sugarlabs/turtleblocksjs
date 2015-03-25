@@ -762,7 +762,7 @@ define(function(require) {
                         break
                     case RETURN:
                         // toggle run
-                        runLogoCommands();
+                        logo.runLogoCommands();
                         break
                     default:
                         currentKey = String.fromCharCode(event.keyCode);

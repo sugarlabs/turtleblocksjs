@@ -489,6 +489,7 @@ function Palette(palettes, name) {
 
         if (this.downButton !== null) {
             this.downButton.y = this.getDownButtonY();
+            this.FadedDownButton.y = this.getDownButtonY();
         }
     }
 

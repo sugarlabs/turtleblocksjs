@@ -23,6 +23,7 @@ Then, enable the 'proxy' modules in apache.
 cd /etc/apache2/mods-enabled 
 sudo ln -s ../mods-available/proxy* . 
 sudo ln -s ../mods-available/xml2enc.load .
+sudo ln -s ../mods-available/slotmem_* .
 ```
 
 Remove the alias module.

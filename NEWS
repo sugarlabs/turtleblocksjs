@@ -303,6 +303,9 @@
   * Added more error message artwork.
   * Updated help to include spanner, copy, save stack.
 
+0.7
+
+
 TODO:
   * Save errors
   * More efficient until and while?
@@ -345,3 +348,5 @@ KNOWN BUGS:
   * Python show block not compatible with JS show block.
   * Not serious, but there is still a race condition when creating
     if-then-else blocks (so there is a work-around in place).
+  * Mouse x/y is noisy.
+  * Break doesn't work in forever loops.

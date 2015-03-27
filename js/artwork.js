@@ -75,7 +75,7 @@ function showMaterialHighlight(x, y, r, event, scale, stage) {
     return circles;
 }
 
-function hideMaterialHighlight(circles, stage) {
+function hideButtonHighlight(circles, stage) {
     // Un-real circles!
     if (circles.active === undefined) {
         return;

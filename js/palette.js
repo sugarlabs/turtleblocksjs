@@ -300,17 +300,17 @@ function loadPaletteButtonHandler(palettes, name) {
     var circles = {};
     palettes.buttons[name].on('mouseover', function(event) {
         var r = palettes.cellSize / 2;
-        circles = showMaterialHighlight(
+        circles = showButtonHighlight(
             palettes.buttons[name].x + r, palettes.buttons[name].y + r, r,
             event, palettes.scale, palettes.stage);
     });
 
     palettes.buttons[name].on('pressup', function(event) {
-        hideMaterialHighlight(circles, palettes.stage);
+        hideButtonHighlight(circles, palettes.stage);
     });
 
     palettes.buttons[name].on('mouseout', function(event) {
-        hideMaterialHighlight(circles, palettes.stage);
+        hideButtonHighlight(circles, palettes.stage);
     });
 
     palettes.buttons[name].on('click', function(event) {

@@ -20,6 +20,8 @@ if (lang.indexOf("-") != -1) {
 }
 
 define(function(require) {
+    require('activity/platformstyle');
+
     require('easeljs');
     require('tweenjs');
     require('preloadjs');
@@ -141,9 +143,6 @@ define(function(require) {
         var stageMouseDown = false;
         var stageX = 0;
         var stageY = 0;
-
-        var onAndroid = /Android/i.test(navigator.userAgent);
-        console.log('on Android? ' + onAndroid);
 
         var onXO = (screen.width == 1200 && screen.height == 900) || (screen.width == 900 && screen.height == 1200);
         console.log('on XO? ' + onXO);
@@ -786,7 +785,7 @@ define(function(require) {
                 return;
             }
 
-            if (!onAndroid) {
+            if (!platform.androidWebkit) {
                 var w = window.innerWidth;
                 var h = window.innerHeight;
             } else {
@@ -1393,9 +1392,11 @@ define(function(require) {
             }
 
             headerContainer = new createjs.Shape();
-            headerContainer.graphics.f('#2196f3').r(0, 0,
+            headerContainer.graphics.f(platformColor.header).r(0, 0,
                 screen.width / scale, cellSize);
-            headerContainer.shadow = new createjs.Shadow('#777', 0, 2, 2);
+            if (platformColor.doHeaderShadow) {
+                headerContainer.shadow = new createjs.Shadow('#777', 0, 2, 2);
+            }
             stage.addChild(headerContainer);
 
             // Buttons used when running turtle programs
@@ -1680,10 +1681,10 @@ define(function(require) {
                     y: container.y - Math.round(event.stageY / blocks.scale)
                 };
 
-                var circles = showMaterialHighlight(ox, oy, cellSize / 2,
-                                                    event, scale, stage);
+                var circles = showButtonHighlight(ox, oy, cellSize / 2,
+                                                  event, scale, stage);
                 container.on('pressup', function(event) {
-                    hideMaterialHighlight(circles, stage);
+                    hideButtonHighlight(circles, stage);
 
                     container.x = ox;
                     container.y = oy;

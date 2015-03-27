@@ -9,7 +9,6 @@
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
-var DEFAULTBACKGROUNDCOLOR = [70, 80, 20];
 var DEFAULTDELAY = 500; // milleseconds
 var TURTLESTEP = -1;  // Run in step-by-step mode
 
@@ -1579,7 +1578,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         /// Change body background in DOM to current color.
         var body = document.body;
         if (turtle == -1) {
-            var c = getMunsellColor(DEFAULTBACKGROUNDCOLOR[0], DEFAULTBACKGROUNDCOLOR[1], DEFAULTBACKGROUNDCOLOR[2]);
+            var c = platformColor.background;
         } else {
             var c = this.turtles.turtleList[turtle].canvasColor;
         }

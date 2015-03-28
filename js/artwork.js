@@ -8,7 +8,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-// Define below are the inline SVGs used for turtles and blocks. SVGs
+
+// Defined below are the inline SVGs used for turtles and blocks. SVGs
 // are modified by fill_color, stroke_color, block_label, et al. using
 // .replace, e.g.,
 // BASICBLOCK.replace(/fill_color/g,

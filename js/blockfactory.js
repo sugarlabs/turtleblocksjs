@@ -312,7 +312,7 @@ function SVG() {
 
         var yy = y;
         var tspans = string.split('\n');
-        var text = '<text style="font-size:' + fontSize + 'px;fill:#000000;font-family:Sans;text-anchor:' + align + '">';
+        var text = '<text style="font-size:' + fontSize + 'px;fill:#000000;font-family:sans-serif;text-anchor:' + align + '">';
         for (var i = 0; i < tspans.length; i++) {
             text += '<tspan x="' + x + '" y="' + yy + '">' + tspans[i] + '</tspan>';
             yy += fontSize;

@@ -917,6 +917,8 @@ function Palette(palettes, name) {
     }
 
     this.moveMenu = function(x, y) {
+        // :sigh: race condition on iOS 7.1.2
+        if (this.menuContainer === null) return;
         dx = x - this.menuContainer.x;
         dy = y - this.menuContainer.y;
         this.menuContainer.x = x;

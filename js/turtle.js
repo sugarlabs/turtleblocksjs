@@ -611,24 +611,16 @@ function Turtles(canvas, stage, refreshCanvas) {
             }
 
             var offset = {
-                x: myTurtle.container.x - event.stageX,
-                y: myTurtle.container.y - event.stageY
+                x: myTurtle.container.x - (event.stageX / turtles.scale),
+                y: myTurtle.container.y - (event.stageY / turtles.scale)
             }
 
-            myTurtle.container.on('pressup', function(event) {
-                myTurtle.bitmap.scaleX = 1;
-                myTurtle.bitmap.scaleY = 1;
-                myTurtle.bitmap.scale = 1;
-                turtles.refreshCanvas();
-            });
-
             myTurtle.container.on('pressmove', function(event) {
-                if (turtles.rotating) {
+                if (myTurtle.running) {
                     return;
                 }
-
-                myTurtle.container.x = event.stageX + offset.x;
-                myTurtle.container.y = event.stageY + offset.y;
+                myTurtle.container.x = (event.stageX / turtles.scale) + offset.x;
+                myTurtle.container.y = (event.stageY / turtles.scale) + offset.y;
                 myTurtle.x = turtles.screenX2turtleX(myTurtle.container.x);
                 myTurtle.y = turtles.screenY2turtleY(myTurtle.container.y);
                 turtles.refreshCanvas();
@@ -636,35 +628,8 @@ function Turtles(canvas, stage, refreshCanvas) {
         });
 
         myTurtle.container.on('click', function(event) {
-            var fromX, fromY;
-
             // If turtles listen for clicks then they can be used as buttons.
             turtles.stage.dispatchEvent('click' + myTurtle.name);
-
-            myTurtle.container.on('mousedown', function(event) {
-                // Rotation interferes with button click events.
-                // turtles.rotating = true;
-                fromX = event.stageX;
-                fromY = event.stageY;
-            }, null, true);  // once = true
-
-            myTurtle.container.on('pressmove', function(event) {
-                if (turtles.rotating && fromX !== undefined) {
-                    var rad = Math.atan2(fromY - event.stageY, fromX - event.stageX);
-                    var deg = rad * 180 / Math.PI - 90;
-                    deg %= 360;
-
-                    // Only rotate if there is a more than 1/2 deg difference
-                    if (Math.abs(deg - myTurtle.orientation) > 0.5) {
-                        myTurtle.doSetHeading(deg);
-                        turtles.refreshCanvas();
-                    }
-                }
-            });
-
-            myTurtle.container.on('pressup', function(event) {
-                turtles.rotating = false;
-            });
         });
 
         myTurtle.container.on('mouseover', function(event) {

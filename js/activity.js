@@ -540,13 +540,6 @@ define(function(require) {
 
         function setupBlocksContainerEvents() {
             var moving = false;
-            stage.on('stagemousedown', function (event) {
-                stageMouseDown = true;
-            });
-
-            stage.on('stagemouseup', function (event) {
-                stageMouseDown = false;
-            });
 
             stage.on('stagemousemove', function (event) {
                 stageX = event.stageX;
@@ -554,10 +547,13 @@ define(function(require) {
             });
 
             stage.on('stagemousedown', function (event) {
+                stageMouseDown = true;
                 if (stage.getObjectUnderPoint() !== null | turtles.running()) {
+                    stage.on('stagemouseup', function (event) {
+                        stageMouseDown = false;
+                    });
                     return;
                 }
-
                 moving = true;
                 lastCords = {x: event.stageX, y: event.stageY};
 
@@ -565,7 +561,6 @@ define(function(require) {
                     if (!moving) {
                         return;
                     }
-
                     blocksContainer.x += event.stageX - lastCords.x;
                     blocksContainer.y += event.stageY - lastCords.y;
                     lastCords = {x: event.stageX, y: event.stageY};
@@ -573,6 +568,7 @@ define(function(require) {
                 });
 
                 stage.on('stagemouseup', function (event) {
+                    stageMouseDown = false;
                     moving = false;
                 }, null, true);  // once = true
             });

@@ -525,7 +525,7 @@ msgid "high"
 msgstr ""
 
 msgid "set hue"
-msgstr ""
+msgstr "setze Farbton"
 
 msgid "currency"
 msgstr ""

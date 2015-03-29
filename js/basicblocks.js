@@ -863,6 +863,16 @@ function initBasicProtoBlocks(palettes, blocks) {
     myClickBlock.adjustWidthToLabel();
     myClickBlock.parameterBlock();
 
+    var urlBlock = new ProtoBlock('url');
+    urlBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['url'] = urlBlock;
+    urlBlock.staticLabels.push(_('url'));
+    urlBlock.adjustWidthToLabel();
+    urlBlock.oneArgMathBlock();
+    urlBlock.defaults.push('http://')
+    urlBlock.dockTypes[0] = 'anyout';
+    urlBlock.dockTypes[1] = 'textin';
+
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
         if (blocks.protoBlockDict[protoblock].palette != null) {

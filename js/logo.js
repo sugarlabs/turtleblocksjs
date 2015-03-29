@@ -1269,6 +1269,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         logo.blocks.blockList[blk].value = null;
                     }
                     break;
+                case 'url':
+                    var cblk = logo.blocks.blockList[blk].connections[1];
+                    var a = logo.parseArg(logo, turtle, cblk, blk);
+                    logo.blocks.blockList[blk].value = logo.doURL(a);
+                    break;
                 case 'sqrt':
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var a = logo.parseArg(logo, turtle, cblk, blk);
@@ -1616,4 +1621,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             // trashcan.show();
             this.refreshCanvas();
         }
+
+    this.doURL = function(url) {
+        callback = function() {
+            console.log('NOT IMPLEMENTED');
+        }
+        HttpRequest(url, callback, null);
+        return 0;
+    }
+
 }

@@ -548,11 +548,11 @@ function PopdownPalette(palettes) {
                 .replace(/#f{3,6}/gi, PALETTEFILLCOLORS[name]);
             html += format('<h2 data-name="{n}"> \
                                 {i}<span>{n}</span> \
-                                <img class="hide-button" src="/icons/hide.svg" \
+                                <img class="hide-button" src="icons/hide.svg" \
                                      alt="{_Hide}" title="{_Hide}" /> \
-                                <img class="show-button" src="/icons/show.svg" \
+                                <img class="show-button" src="icons/show.svg" \
                                      alt="{_Show}" title="{_Show}" /> \
-                                <img class="popout-button" src="/icons/popout.svg" \
+                                <img class="popout-button" src="icons/popout.svg" \
                                      alt="{_Popout}" title="{_Popout}" /> \
                             </h2>',
                            {i: icon, n: name});

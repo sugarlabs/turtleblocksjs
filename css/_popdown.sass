@@ -31,8 +31,6 @@
 
     &.show
         display: block
-        ul
-            display: block
 
     &.show ~ .canvasHolder
         filter: blur(10px)
@@ -40,6 +38,8 @@
 
     ul
         display: none
+    .palette.show ul
+        display: block
 
     li
         list-style: none

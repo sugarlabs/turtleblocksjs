@@ -12,13 +12,13 @@
     margin-bottom: 2.5em; }
   #popdown-palette.show {
     display: block; }
-    #popdown-palette.show ul {
-      display: block; }
   #popdown-palette.show ~ .canvasHolder {
     filter: blur(10px);
     -webkit-filter: blur(10px); }
   #popdown-palette ul {
     display: none; }
+  #popdown-palette .palette.show ul {
+    display: block; }
   #popdown-palette li {
     list-style: none; }
   #popdown-palette h2 {

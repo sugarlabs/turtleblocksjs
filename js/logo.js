@@ -1623,11 +1623,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
 
     this.doURL = function(url) {
-        callback = function() {
-            console.log('NOT IMPLEMENTED');
-        }
-        HttpRequest(url, callback, null);
-        return 0;
+        var value = simpleHttpRequest(url);
+        console.log(value);
+        return value;
     }
 
 }

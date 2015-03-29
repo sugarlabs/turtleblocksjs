@@ -59,6 +59,26 @@ function httpPost(projectName, data) {
 }
 
 
+function simpleHttpRequest(url) {
+    var xmlHttp = null;
+    try {
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", url, false);
+        xmlHttp.send(null);
+        if (xmlHttp.status > 299) {
+            console.log('Error from ' + url);
+            return '';
+        } else {
+            return xmlHttp.responseText;
+        }
+    } catch (e) {    
+        console.log(e);
+        return '';
+    }
+}
+
+
+/* 
 function HttpRequest(url, loadCallback, userCallback) {
     // userCallback is an optional callback-handler.
     var req = this.request = new XMLHttpRequest();
@@ -78,6 +98,7 @@ function HttpRequest(url, loadCallback, userCallback) {
         this.request = this.handler = this.userCallback = null;
     }
 }
+*/
 
 
 function docByTagName(tag) {

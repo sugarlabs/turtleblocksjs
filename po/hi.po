@@ -519,130 +519,130 @@ msgid "orange"
 msgstr "नारंगी"
 
 msgid "begin fill"
-msgstr ""
+msgstr "भरना शुरू करें"
 
 msgid "sense right"
-msgstr ""
+msgstr "दाईं ओर भावना करें"
 
 msgid "eat"
-msgstr ""
+msgstr "खाएं"
 
 msgid "Expand/collapse collapsable blocks"
-msgstr ""
+msgstr "खुलने और बंधने वाले ब्लॉक को खोलें या बंद करें"
 
 msgid "high"
-msgstr ""
+msgstr "ऊंचा"
 
 msgid "set hue"
-msgstr ""
+msgstr "रंग सेट करें"
 
 msgid "currency"
-msgstr ""
+msgstr "मुद्रा"
 
 msgid "potato"
-msgstr ""
+msgstr "आलू "
 
 msgid "Click to run the project step by step."
-msgstr ""
+msgstr "प्रोजेक्ट को क्रमशः चलने के लिए क्लिक करें "
 
 msgid "value"
 msgstr "मान"
 
 msgid "banana"
-msgstr ""
+msgstr "केला"
 
 msgid "wheat bread"
-msgstr ""
+msgstr "गेहूं की रोटी"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr ""
+msgstr "टर्टल ब्लॉक्स लोगो से प्रेरित टर्टल है जो दृश्य-प्रोग्रामिंग ब्लॉक्स से रंगीन चित्र बनता है"
 
 msgid "while"
 msgstr "जबकि"
 
 msgid "open file"
-msgstr ""
+msgstr "फाइल खोलें "
 
 msgid "detect lang"
-msgstr ""
+msgstr "भाषा पता लगएं "
 
 msgid "cake"
-msgstr ""
+msgstr "केक"
 
 msgid "exp"
 msgstr ""
 
 msgid "load heap"
-msgstr ""
+msgstr "ढेर को लोड करें "
 
 msgid "Open"
 msgstr "खोलें"
 
 msgid "see distance"
-msgstr ""
+msgstr "दूरी देखें "
 
 msgid "and"
 msgstr "और"
 
 msgid "set grey"
-msgstr ""
+msgstr "ग्रे सेट करें "
 
 msgid "do"
-msgstr ""
+msgstr "करें "
 
 msgid "Run step by step"
-msgstr ""
+msgstr "क्रमशः चलाएं "
 
 msgid "Show/hide palettes"
-msgstr ""
+msgstr "पैलेट दिखाएँ /छुपाएं "
 
 msgid "set heading"
 msgstr "शीर्षक सेट करें"
 
 msgid "add 1 to"
-msgstr ""
+msgstr "में 1 जोड़ें "
 
 msgid "stop play"
-msgstr ""
+msgstr "रोकिये "
 
 msgid "protein"
-msgstr ""
+msgstr "प्रोटीन"
 
 msgid "play back"
-msgstr ""
+msgstr "दोबारा चलाऐं "
 
 msgid "if"
 msgstr "यदि"
 
 msgid "Save your project to a server."
-msgstr ""
+msgstr "अपने प्रोजॆक्ट को सर्वर पे सेव करें"
 
 msgid "Decrease block size"
-msgstr ""
+msgstr "ब्लॊक को छोटा करें"
 
 msgid "angle"
 msgstr "कोण"
 
 msgid "get fat"
-msgstr ""
+msgstr "चर्बी लें"
 
 msgid "min"
 msgstr "न्यून."
 
 msgid "media"
-msgstr ""
+msgstr "मीडिया"
 
 msgid "Stop"
 msgstr "रूकें"
 
 msgid "sqrt"
-msgstr ""
+msgstr "वर्गमूल"
 
 msgid "note"
-msgstr ""
+msgstr "नोट"
 
 msgid "Palette buttons"
-msgstr ""
+msgstr "पॆलेट बटन"
 
 msgid "set xy"
 msgstr "xy सेट करें"
@@ -657,85 +657,85 @@ msgid "Paste"
 msgstr "चिपकाएँ"
 
 msgid "Delete"
-msgstr ""
+msgstr "हटाएं"
 
 msgid "tamale"
-msgstr ""
+msgstr "तमालि"
 
 msgid "Worldwide"
-msgstr ""
+msgstr "दुनिया भर में"
 
 msgid "repeat"
 msgstr "दोहराएँ"
 
 msgid "blocks"
-msgstr ""
+msgstr "ब्लॊक्स "
 
 msgid "Display statistics about your Turtle project."
-msgstr ""
+msgstr "अपने टर्टल प्रोजेक्ट के आङ्कडे  देखें "
 
 msgid "Polar"
-msgstr ""
+msgstr "ध्रुवीय"
 
 msgid "max"
 msgstr "अधि."
 
 msgid "logic"
-msgstr ""
+msgstr "तर्क"
 
 msgid "empty heap"
 msgstr "रिक्त ढेर"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr ""
+msgstr "आप टूर पूरा कर चुके। टर्टल ब्लॊक्स का आनन्द लें।"
 
 msgid "push"
 msgstr "दबाएँ"
 
 msgid "rodi"
-msgstr ""
+msgstr "रोडी"
 
 msgid "Clean"
 msgstr "साफ"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
-msgstr ""
+msgstr "इस उपकरण पट्टी में पेलेट बटन हैं: ब्लॊक के पॆलेट देखने के लिए क्लिक करे (टर्टल, कलम, सङ्ख्या, बूलियन, बहाव, ब्लॊक, मीडिया, इत्यादि) आप ब्लॊक्स को पॆलेट से कॆन्वास पे खीञ्च सकते हैं"
 
 msgid "Run fast"
-msgstr ""
+msgstr "तेज चलिए"
 
 msgid "broccoli"
-msgstr ""
+msgstr "ब्रोकली"
 
 msgid "stop media"
-msgstr ""
+msgstr "रोकिए"
 
 msgid "tomato"
-msgstr ""
+msgstr "टमाटर"
 
 msgid "forever"
 msgstr "हमेशा के लिए"
 
 msgid "Load project from file"
-msgstr ""
+msgstr "फ़ाइल से प्रोजेक्ट लें"
 
 msgid "get protein"
-msgstr ""
+msgstr "प्रोटीन मिलता है"
 
 msgid "clear"
-msgstr ""
+msgstr "साफ़ करें"
 
 msgid "floor"
 msgstr ""
 
 msgid "flow"
-msgstr ""
+msgstr "बहाव"
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
-msgstr ""
+msgstr "सहायक पट्टीको खोलने या बन्द करने के लिए यह बटन दबाएं"
 
 msgid "extras"
-msgstr ""
+msgstr "अतिरिक्त"
 
 msgid "shade"
 msgstr "छाया"
@@ -754,4 +754,4 @@ msgstr "बायाँ"
 
 
 msgid "Planet"
-msgstr ""
+msgstr "ग्रह"

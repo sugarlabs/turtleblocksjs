@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 
 msgid "Delete all"
-msgstr ""
+msgstr "सब मिटाइए"
 
 msgid "show"
 msgstr "दिखाएँ"
@@ -33,58 +33,58 @@ msgid "random"
 msgstr "बेतरतीब"
 
 msgid "confirm"
-msgstr ""
+msgstr "पक्का करीये"
 
 msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
-msgstr ""
+msgstr "खोलें या बंद करे जैसे के चालु करे या क्रिया का ढेर"
 
 msgid "rice and beans"
-msgstr ""
+msgstr "चावल और फली "
 
 msgid "mashape"
-msgstr ""
+msgstr "आकार"
 
 msgid "target"
-msgstr ""
+msgstr "लक्ष्य"
 
 msgid "keyboard"
 msgstr "कुंजीपट"
 
 msgid "You can also load projects from the file system."
-msgstr ""
+msgstr "फाइल सिस्टम से भी प्रोजेक्ट ले सकते है"
 
 msgid "chicken"
-msgstr ""
+msgstr "चूज़ा"
 
 msgid "set color"
 msgstr "रंग सेट करें"
 
 msgid "apple"
-msgstr ""
+msgstr "सेब"
 
 msgid "title"
-msgstr ""
+msgstr "शीर्षक"
 
 msgid "radians"
-msgstr ""
+msgstr "तेज"
 
 msgid "Undo"
-msgstr ""
+msgstr "पूर्ववत् करें"
 
 msgid "to"
-msgstr ""
+msgstr "को"
 
 msgid "add"
-msgstr ""
+msgstr "जोडें"
 
 msgid "set pen size"
 msgstr "पेन आकार सेट करें"
 
 msgid "start turtle"
-msgstr ""
+msgstr "टरटल चालू करे"
 
 msgid "latitude"
-msgstr ""
+msgstr "अक्षांश"
 
 msgid "mouse x"
 msgstr "माउस एक्स"
@@ -99,55 +99,55 @@ msgid "then"
 msgstr "तब"
 
 msgid "move"
-msgstr ""
+msgstr "सरकाय"
 
 msgid "Stop the current project."
-msgstr ""
+msgstr "ये प्रोजेक्ट बंद करे"
 
 msgid "stop turtle"
-msgstr ""
+msgstr "टर्टल बंद करे"
 
 msgid "food"
-msgstr ""
+msgstr "खाना"
 
 msgid "Click to run the project in slow mode."
-msgstr ""
+msgstr "प्रोजेक्ट को धीरे चलाने के लिये यँहा क्लिक करे"
 
 msgid "stop"
 msgstr "रोकें"
 
 msgid "fat"
-msgstr ""
+msgstr "चर्बी"
 
 msgid "number"
 msgstr "संख्या"
 
 msgid "background"
-msgstr ""
+msgstr "पृष्ठभूमि"
 
 msgid "not"
 msgstr "नहीं"
 
 msgid "Google map"
-msgstr ""
+msgstr "गूगल का नक्शा"
 
 msgid "day"
-msgstr ""
+msgstr "दिन"
 
 msgid "mod"
 msgstr "मॉड"
 
 msgid "Save project"
-msgstr ""
+msgstr "प्रोजेक्ट को संचय करे"
 
 msgid "get fiber"
-msgstr ""
+msgstr "रेशा मिलता है"
 
 msgid "Open a panel for configuring Turtle Blocks."
 msgstr ""
 
 msgid "name"
-msgstr ""
+msgstr "नाम "
 
 msgid "turtle x"
 msgstr "टर्टल"

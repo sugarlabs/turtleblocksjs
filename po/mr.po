@@ -12,7 +12,7 @@
 "X-Generator: Pootle 2.0.1\n"
 
 msgid "Delete all"
-msgstr ""
+msgstr "सर्व हटवा"
 
 msgid "show"
 msgstr "दाखवा"
@@ -24,19 +24,19 @@ msgid "random"
 msgstr ""
 
 msgid "confirm"
-msgstr ""
+msgstr "पुष्टी"
 
 msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
 msgstr ""
 
 msgid "rice and beans"
-msgstr ""
+msgstr "तांदूळ आणि सोयाबीनचे"
 
 msgid "mashape"
 msgstr ""
 
 msgid "target"
-msgstr ""
+msgstr "लक्ष्य"
 
 msgid "keyboard"
 msgstr "किबोर्ड"
@@ -45,115 +45,115 @@ msgid "You can also load projects from the file system."
 msgstr ""
 
 msgid "chicken"
-msgstr ""
+msgstr "कोंबडी"
 
 msgid "set color"
-msgstr ""
+msgstr "रंग संच करणे"
 
 msgid "apple"
-msgstr ""
+msgstr "सफरचंद"
 
 msgid "title"
-msgstr ""
+msgstr "शीर्षक"
 
 msgid "radians"
-msgstr ""
+msgstr "त्रिज्यी"
 
 msgid "Undo"
-msgstr ""
+msgstr "पूर्ववत"
 
 msgid "to"
 msgstr ""
 
 msgid "add"
-msgstr ""
+msgstr "जोडा"
 
 msgid "set pen size"
 msgstr ""
 
 msgid "start turtle"
-msgstr ""
+msgstr "टर्टल सुरु करा"
 
 msgid "latitude"
-msgstr ""
+msgstr "अक्षांश"
 
 msgid "mouse x"
-msgstr ""
+msgstr "माऊस x"
 
 msgid "mouse y"
-msgstr ""
+msgstr "माऊस y"
 
 msgid "Show/hide blocks"
 msgstr "ब्लॉक दाखवा/लपवा"
 
 msgid "then"
-msgstr ""
+msgstr "नंतर"
 
 msgid "move"
-msgstr ""
+msgstr "हलवा"
 
 msgid "Stop the current project."
-msgstr ""
+msgstr "वर्तमान प्रकल्प थांबवा."
 
 msgid "stop turtle"
-msgstr ""
+msgstr "टर्टल थांबवा"
 
 msgid "food"
-msgstr ""
+msgstr "अन्न"
 
 msgid "Click to run the project in slow mode."
-msgstr ""
+msgstr "प्रकल्प मंद पणे चालण्या साठी इकडे दाबा"
 
 msgid "stop"
 msgstr "थांबा"
 
 msgid "fat"
-msgstr ""
+msgstr "चरबी"
 
 msgid "number"
-msgstr ""
+msgstr "अंक"
 
 msgid "background"
 msgstr ""
 
 msgid "not"
-msgstr ""
+msgstr "नाही"
 
 msgid "Google map"
-msgstr ""
+msgstr "Google नकाशा"
 
 msgid "day"
-msgstr ""
+msgstr "दिवस"
 
 msgid "mod"
 msgstr ""
 
 msgid "Save project"
-msgstr ""
+msgstr "प्रकल्प जतन करा"
 
 msgid "get fiber"
 msgstr ""
 
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr ""
+msgstr "एक फळी उघडा टर्टल चा संरांचना साठी "
 
 msgid "name"
-msgstr ""
+msgstr "नाव"
 
 msgid "turtle x"
-msgstr ""
+msgstr "टर्टल x"
 
 msgid "turtle y"
-msgstr ""
+msgstr "टर्टल y"
 
 msgid "Download"
-msgstr ""
+msgstr "डाउनलोड"
 
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr ""
 
 msgid "Expand/collapse toolbar"
-msgstr ""
+msgstr "साधनपट्टी दाखवा/लपवा"
 
 msgid "zoom"
 msgstr ""

@@ -318,22 +318,22 @@ msgid "Show or hide a polar-coordinate grid."
 msgstr ""
 
 msgid "sweet potato"
-msgstr ""
+msgstr "शकरकंद"
 
 msgid "maths"
-msgstr ""
+msgstr "गणित"
 
 msgid "from"
 msgstr ""
 
 msgid "sensors"
-msgstr ""
+msgstr "सेंसर"
 
 msgid "pen down"
 msgstr "पेन नीचे"
 
 msgid "get name"
-msgstr ""
+msgstr "नाम हासिल करें"
 
 msgid "wait"
 msgstr "इंतजार करें"
@@ -342,16 +342,16 @@ msgid "box"
 msgstr "बक्सा"
 
 msgid "obj"
-msgstr ""
+msgstr "वस्तु"
 
 msgid "store in"
 msgstr "में भंडारित करें"
 
 msgid "digest meal"
-msgstr ""
+msgstr "भोजन का हाजमा करे"
 
 msgid "calories"
-msgstr ""
+msgstr "कैलोरी"
 
 msgid "zoom factor"
 msgstr ""
@@ -363,19 +363,19 @@ msgid "loudness"
 msgstr "आवाज़ की उंचाई"
 
 msgid "Increase the size of the blocks."
-msgstr ""
+msgstr "ब्लॉक्स का आकार बढ़ाएं"
 
 msgid "or"
 msgstr "या"
 
 msgid "sense left"
-msgstr ""
+msgstr "बाईं ओर भावना करें""
 
 msgid "comment"
 msgstr "टिप्पणी"
 
 msgid "cheese"
-msgstr ""
+msgstr "चीज़"
 
 msgid "Cartesian"
 msgstr "कार्टेसियन"
@@ -390,130 +390,130 @@ msgid "image"
 msgstr "फोटो"
 
 msgid "Welcome to Turtle Blocks"
-msgstr ""
+msgstr "टर्टल ब्लॉक्स में आपका स्वागत है"
 
 msgid "Increase block size"
-msgstr ""
+msgstr "ब्लॉक साइज बढ़ाएं"
 
 msgid "pop"
 msgstr "पॉप"
 
 msgid "bitcoin"
-msgstr ""
+msgstr "बिटकॉइन"
 
 msgid "pen size"
 msgstr "पेन आकार"
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr ""
+msgstr "स्क्रीन साफ़ करके टर्टल्सको प्रारंभिक स्थान पर लाएं"
 
 msgid "boolean"
-msgstr ""
+msgstr " बूलियन"
 
 msgid "coordinates"
-msgstr ""
+msgstr "निर्देशांक"
 
 msgid "sing"
-msgstr ""
+msgstr "गाएं"
 
 msgid "Congratulations."
-msgstr ""
+msgstr "बधाई"
 
 msgid "Run slow"
-msgstr ""
+msgstr "धीरे चलाएं"
 
 msgid "mouse button"
-msgstr ""
+msgstr "माउस का बटन"
 
 msgid "speak"
 msgstr "बोलो"
 
 msgid "city"
-msgstr ""
+msgstr "शहर"
 
 msgid "get carbs"
-msgstr ""
+msgstr "कार्बोहाइड्रेट्स लें"
 
 msgid "Click to run the project in fast mode."
-msgstr ""
+msgstr "प्रोजेक्ट को तेज़ चलने के लिए क्लिक करें"
 
 msgid "beef"
-msgstr ""
+msgstr "गाय का गोश्त"
 
 msgid "source"
-msgstr ""
+msgstr "स्रोत"
 
 msgid "unknown"
-msgstr ""
+msgstr "अंजान"
 
 msgid "wait for"
-msgstr ""
+msgstr "का इंतज़ार करें"
 
 msgid "pen up"
 msgstr "पेन ऊपर"
 
 msgid "Decrease the size of the blocks."
-msgstr ""
+msgstr "ब्लॉक्स का साइज छोटा करें"
 
 msgid "start"
 msgstr "प्रारंभ"
 
 msgid "stock price"
-msgstr ""
+msgstr "शेयर की कीमत"
 
 msgid "motion z"
-msgstr ""
+msgstr "z की ओर प्रस्ताव"
 
 msgid "low"
-msgstr ""
+msgstr "कम"
 
 msgid "motion x"
-msgstr ""
+msgstr "x की ओर प्रस्ताव"
 
 msgid "motion y"
-msgstr ""
+msgstr "y की ओर प्रस्ताव"
 
 msgid "forward"
 msgstr "आगे"
 
 msgid "degrees"
-msgstr ""
+msgstr "डिग्रीयां"
 
 msgid "translate"
-msgstr ""
+msgstr "अनुवाद करें"
 
 msgid "until"
 msgstr "तब तक"
 
 msgid "define"
-msgstr ""
+msgstr "परिभाषित करें"
 
 msgid "On my device"
-msgstr ""
+msgstr "मेरी मशीन पर"
 
 msgid "save svg"
-msgstr ""
+msgstr "svg सेव करें"
 
 msgid "ceiling"
 msgstr ""
 
 msgid "shell"
-msgstr ""
+msgstr "शैल"
 
 msgid "blink (ms)"
 msgstr ""
 
 msgid "set lang"
-msgstr ""
+msgstr "भाषा सेट करें"
 
 msgid "turtle name"
-msgstr ""
+msgstr "टर्टल का नाम"
 
 msgid "carbs"
-msgstr ""
+msgstr "कार्बोहाइड्रेट"
 
 msgid "else"
-msgstr ""
+msgstr "अलावा"
 
 msgid "orange"
 msgstr "नारंगी"

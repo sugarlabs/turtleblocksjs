@@ -46,24 +46,6 @@ var GLOBAL_PROJECT_TEMPLATE = '\
     </div> \
 </li>';
 
-function format(str, data) {
-  str = str.replace(/{([a-zA-Z.]*)}/g,
-                     function (match, name) {
-    x = data;
-    name.split('.').forEach(function (v) {
-      if (x === undefined) {
-        console.log('Undefined value in template string', str, name, x, v);
-      }
-      x = x[v];
-    });
-    return x;
-  });
-  return str.replace(/{_([a-zA-Z0-9]+)}/g,
-                     function (match, item) {
-    return _(item);
-  });
-}
-
 
 function PlanetModel(controller) {
     this.controller = controller;

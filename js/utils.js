@@ -8,6 +8,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
+
+function format(str, data) {
+  str = str.replace(/{([a-zA-Z0-9.]*)}/g,
+                     function (match, name) {
+    x = data;
+    name.split('.').forEach(function (v) {
+      if (x === undefined) {
+        console.log('Undefined value in template string', str, name, x, v);
+      }
+      x = x[v];
+    });
+    return x;
+  });
+  return str.replace(/{_([a-zA-Z0-9]+)}/g,
+                     function (match, item) {
+    return _(item);
+  });
+}
+
 function canvasPixelRatio() {
     var devicePixelRatio = window.devicePixelRatio || 1;
     var context = document.querySelector('#myCanvas').getContext('2d');

@@ -46,6 +46,7 @@ define(function(require) {
     require('activity/basicblocks');
     require('activity/blockfactory');
     require('activity/analytics');
+    require('prefixfree');
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
@@ -790,13 +791,15 @@ define(function(require) {
             }
 
             var smallSide = Math.min(w, h);
-            if (smallSide < cellSize * 10) {
+            if (smallSide < cellSize * 11) {
+                var mobileSize = true;
                 if (w < cellSize * 10) {
-                    scale = smallSide / (cellSize * 10);
+                    scale = smallSide / (cellSize * 11);
                 } else {
-                    scale = Math.max(smallSide / (cellSize * 10), 0.75);
+                    scale = Math.max(smallSide / (cellSize * 11), 0.75);
                 }
             } else {
+                var mobileSize = false;
                 if (w > h) {
                     scale = w / 1200;
                 } else {
@@ -818,7 +821,7 @@ define(function(require) {
             blocks.setScale(scale);
             palettes.setScale(scale);
             trashcan.resizeEvent(scale);
-            setupAndroidToolbar();
+            setupAndroidToolbar(mobileSize);
 
             // Reposition coordinate grids.
             cartesianBitmap.x = (canvas.width / (2 * scale)) - (600);
@@ -829,6 +832,14 @@ define(function(require) {
 
             // Setup help now that we have calculated scale.
             showHelp(true);
+
+            // Hide palette icons on mobile
+            if (mobileSize) {
+                palettes.hide();
+            } else {
+                palettes.show();
+                palettes.bringToTop();
+            }
         }
 
         window.onresize = function() {
@@ -1379,7 +1390,7 @@ define(function(require) {
             img.src = 'icons/paste-button.svg';
         }
 
-        function setupAndroidToolbar() {
+        function setupAndroidToolbar(showPalettesPopover) {
             if (headerContainer !== undefined) {
                 stage.removeChild(headerContainer);
                 for (i in onscreenButtons) {
@@ -1407,6 +1418,10 @@ define(function(require) {
                 ['collapse-blocks', toggleCollapsibleStacks],
                 ['help', showHelp]
             ];
+
+            if (showPalettesPopover) {
+                buttonNames.unshift(['popdown-palette', doPopdownPalette])
+            }
 
             var btnSize = cellSize;
             var x = Math.floor(btnSize / 2);
@@ -1481,6 +1496,11 @@ define(function(require) {
                     onscreenMenu[button].visible = true;
                 }
             }
+        }
+
+        function doPopdownPalette() {
+            var p = new PopdownPalette(palettes);
+            p.popdown();
         }
 
         function showHelp(firstTime) {

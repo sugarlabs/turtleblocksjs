@@ -156,31 +156,31 @@ msgid "turtle y"
 msgstr "टर्टल"
 
 msgid "Download"
-msgstr ""
+msgstr "डाउनलोड"
 
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
-msgstr ""
+msgstr "जब क्लिपबोर्ड में ब्लॉक्स प्रतिलिपित होते हैं तब "पेस्ट" बटन सक्रिय होता है"
 
 msgid "Expand/collapse toolbar"
-msgstr ""
+msgstr "उपकरण पट्टी को खोलें या बंद करें"
 
 msgid "zoom"
-msgstr ""
+msgstr " ज़ूम"
 
 msgid "Hide or show the blocks and the palettes."
-msgstr ""
+msgstr "ब्लॉक्स एवं पलेटस को छिपाएं अथवा प्रदर्शित करें"
 
 msgid "to degrees"
-msgstr ""
+msgstr "डिग्री में"
 
 msgid "Restore blocks from the trash."
-msgstr ""
+msgstr "डिलीट किये गए ब्लॉक्स वापस लाएं"
 
 msgid "get calories"
-msgstr ""
+msgstr "कैलोरी लें"
 
 msgid "Load plugin from file"
-msgstr ""
+msgstr " फाइल से प्लगइन लोड करें"
 
 msgid "x"
 msgstr "एक्स"
@@ -201,25 +201,25 @@ msgid "right"
 msgstr "दायाँ"
 
 msgid "Load samples from server"
-msgstr ""
+msgstr " सर्वर से नमूना लोड करें"
 
 msgid "hide blocks"
 msgstr "खण्ड छुपाएँ"
 
 msgid "Hide or show the block palettes."
-msgstr ""
+msgstr "ब्लॉक पैलेट दिखाएँ / छिपाएं    "
 
 msgid "This button opens a viewer for loading example projects."
-msgstr ""
+msgstr "यह बटन नमूने देखने के लिए एक खिड़की खोलता है"
 
 msgid "back"
 msgstr "पीछे"
 
 msgid "Publish"
-msgstr ""
+msgstr "प्रकाशित करें "
 
 msgid "grey"
-msgstr ""
+msgstr "ग्रे "
 
 msgid "arc"
 msgstr "चाप"
@@ -228,7 +228,7 @@ msgid "radius"
 msgstr "त्रिज्या"
 
 msgid "longitude"
-msgstr ""
+msgstr "देशान्तर"
 
 msgid "duration"
 msgstr "अवधि"
@@ -237,103 +237,103 @@ msgid "set shade"
 msgstr "छाया सेट करें"
 
 msgid "pixel color"
-msgstr ""
+msgstr "पिक्सेल का रंग "
 
 msgid "eatme"
-msgstr ""
+msgstr "मुझे खाओ "
 
 msgid "This button opens and closes the primary toolbar."
-msgstr ""
+msgstr "यह बटन मुख्य उपकरण पट्टी को खोलता एवं  बंद करता है "
 
 msgid "Show these messages."
-msgstr ""
+msgstr "यह सन्देश दिखाएँ "
 
 msgid "show heap"
 msgstr "ढेर दिखाएँ"
 
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr ""
+msgstr "कर्टेसिअन ग्रिड दिखाएँ या छिपाएं "
 
 msgid "publish"
-msgstr ""
+msgstr "प्रकाशित करें "
 
 msgid "forecast"
-msgstr ""
+msgstr "पूर्वानुमान"
 
 msgid "pen"
 msgstr "खोलें"
 
 msgid "fish"
-msgstr ""
+msgstr "मछली "
 
 msgid "print"
 msgstr "छापें"
 
 msgid "size"
-msgstr ""
+msgstr "आकार"
 
 msgid "Expand/collapse option toolbar"
-msgstr ""
+msgstr "विकल्प पट्टी को खोलें या बंद करें "
 
 msgid "save heap"
-msgstr ""
+msgstr "ढेर सेव करें "
 
 msgid "fiber"
-msgstr ""
+msgstr "रेशा "
 
 msgid "You can load new blocks from the file system."
-msgstr ""
+msgstr "आप फाइल सिस्टम से नए ब्लॉक्स लोड कर सकते हैं "
 
 msgid "power"
-msgstr ""
+msgstr "शक्ति "
 
 msgid "Settings"
-msgstr ""
+msgstr "सेटिंग "
 
 msgid "Save stack"
-msgstr ""
+msgstr "स्टैक को सेव करें"
 
 msgid "corn"
-msgstr ""
+msgstr "मकई "
 
 msgid "Display statistics"
-msgstr ""
+msgstr "आँकड़े प्रदर्शित करें "
 
 msgid "Remove all content on the canvas, including the blocks."
-msgstr ""
+msgstr "कैनवास के ऊपर से सब साफ़ करें, ब्लॉक्स के साथ "
 
 msgid "to radians"
-msgstr ""
+msgstr "रेडियंस में "
 
 msgid "water"
-msgstr ""
+msgstr "जल "
 
 msgid "base"
-msgstr ""
+msgstr "आधार"
 
 msgid "cookie"
-msgstr ""
+msgstr "कुकी"
 
 msgid "Show or hide a polar-coordinate grid."
-msgstr ""
+msgstr "ध्रुवीय समन्वय ग्रिड दिखाएँ या छिपाएं "
 
 msgid "sweet potato"
-msgstr ""
+msgstr "शकरकन्द "
 
 msgid "maths"
-msgstr ""
+msgstr "गणित "
 
 msgid "from"
-msgstr ""
+msgstr "से "
 
 msgid "sensors"
-msgstr ""
+msgstr "सेंसर"
 
 msgid "pen down"
 msgstr "पेन नीचे"
 
 msgid "get name"
-msgstr ""
+msgstr "नाम उपलब्ध करें "
 
 msgid "wait"
 msgstr "इंतजार करें"
@@ -342,19 +342,19 @@ msgid "box"
 msgstr "बक्सा"
 
 msgid "obj"
-msgstr ""
+msgstr "वस्तु"
 
 msgid "store in"
 msgstr "में भंडारित करें"
 
 msgid "digest meal"
-msgstr ""
+msgstr "भोजन हज़म करना "
 
 msgid "calories"
-msgstr ""
+msgstr "कैलोरी "
 
 msgid "zoom factor"
-msgstr ""
+msgstr "ज़ूम गुणक "
 
 msgid "action"
 msgstr "क्रिया"
@@ -363,19 +363,19 @@ msgid "loudness"
 msgstr "आवाज़ की उंचाई"
 
 msgid "Increase the size of the blocks."
-msgstr ""
+msgstr "ब्लॉक्स का आकार बढ़ाएं "
 
 msgid "or"
 msgstr "या"
 
 msgid "sense left"
-msgstr ""
+msgstr "बाईं ओर  भावना करें "
 
 msgid "comment"
 msgstr "टिप्पणी"
 
 msgid "cheese"
-msgstr ""
+msgstr "चीज़ "
 
 msgid "Cartesian"
 msgstr "कार्टेसियन"
@@ -393,127 +393,127 @@ msgid "Welcome to Turtle Blocks"
 msgstr ""
 
 msgid "Increase block size"
-msgstr ""
+msgstr "मूल्यांकन करें "
 
 msgid "pop"
 msgstr "पॉप"
 
 msgid "bitcoin"
-msgstr ""
+msgstr "बिटकॉइन "
 
 msgid "pen size"
 msgstr "पेन आकार"
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr ""
+msgstr "स्क्रीन साफ़ करके टर्टल को प्रारम्भिक स्थान पर लौटाएं "
 
 msgid "boolean"
-msgstr ""
+msgstr "बूलियन "
 
 msgid "coordinates"
-msgstr ""
+msgstr "निर्देशांक"
 
 msgid "sing"
-msgstr ""
+msgstr "गाओ "
 
 msgid "Congratulations."
-msgstr ""
+msgstr "गाओ "
 
 msgid "Run slow"
-msgstr ""
+msgstr "धीमे चलाएं "
 
 msgid "mouse button"
-msgstr ""
+msgstr " माउस का बटन "
 
 msgid "speak"
 msgstr "बोलो"
 
 msgid "city"
-msgstr ""
+msgstr "शहर "
 
 msgid "get carbs"
-msgstr ""
+msgstr "कार्बोहायड्रेट लो "
 
 msgid "Click to run the project in fast mode."
-msgstr ""
+msgstr " प्रोजेक्ट को तेज़ी से चलाने के लिए क्लिक करें "
 
 msgid "beef"
-msgstr ""
+msgstr " गाय का गोश्त "
 
 msgid "source"
-msgstr ""
+msgstr "स्रोत "
 
 msgid "unknown"
 msgstr ""
 
 msgid "wait for"
-msgstr ""
+msgstr "अज्ञात "
 
 msgid "pen up"
 msgstr "पेन ऊपर"
 
 msgid "Decrease the size of the blocks."
-msgstr ""
+msgstr " ब्लॉक्स का आकार घटाएं "
 
 msgid "start"
 msgstr "प्रारंभ"
 
 msgid "stock price"
-msgstr ""
+msgstr "मूलधन कीमत "
 
 msgid "motion z"
-msgstr ""
+msgstr "'z'दिशा में गतिवान "
 
 msgid "low"
-msgstr ""
+msgstr "नीचा "
 
 msgid "motion x"
-msgstr ""
+msgstr "'x'दिशा में गतिवान "
 
 msgid "motion y"
-msgstr ""
+msgstr "'y'दिशा में गतिवान "
 
 msgid "forward"
 msgstr "आगे"
 
 msgid "degrees"
-msgstr ""
+msgstr "डिग्री "
 
 msgid "translate"
-msgstr ""
+msgstr "अनुवाद करें "
 
 msgid "until"
 msgstr "तब तक"
 
 msgid "define"
-msgstr ""
+msgstr "परिभाषित करें "
 
 msgid "On my device"
-msgstr ""
+msgstr "मेरे यन्त्र पे "
 
 msgid "save svg"
-msgstr ""
+msgstr "svg सेव करें "
 
 msgid "ceiling"
-msgstr ""
+msgstr "उच्चतम सीमा"
 
 msgid "shell"
-msgstr ""
+msgstr "शैल "
 
 msgid "blink (ms)"
-msgstr ""
+msgstr "झिलमिलाहट (ms)"
 
 msgid "set lang"
-msgstr ""
+msgstr "भाषा स्थित करें "
 
 msgid "turtle name"
-msgstr ""
+msgstr "टर्टल का नाम "
 
 msgid "carbs"
-msgstr ""
+msgstr "कार्बोहायड्रेट "
 
 msgid "else"
-msgstr ""
+msgstr "अन्यथा"
 
 msgid "orange"
 msgstr "नारंगी"

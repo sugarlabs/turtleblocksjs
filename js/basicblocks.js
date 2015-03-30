@@ -862,6 +862,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     myClickBlock.staticLabels.push(_('click'));
     myClickBlock.adjustWidthToLabel();
     myClickBlock.parameterBlock();
+    myClickBlock.dockTypes[0] = 'textout';
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

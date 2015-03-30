@@ -582,7 +582,7 @@ define(function(require) {
             if (event.clientX < cellSize) {
                 palettes.menuScrollEvent(delta, scrollSpeed);
             } else {
-                palette = palettes.findPalette(event.clientX, event.clientY);
+                palette = palettes.findPalette(event.clientX/scale, event.clientY/scale);
                 if (palette) {
                     palette.scrollEvent(delta, scrollSpeed);
                 }

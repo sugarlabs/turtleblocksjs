@@ -46,7 +46,7 @@ define(function(require) {
     require('activity/basicblocks');
     require('activity/blockfactory');
     require('activity/analytics');
-    require('prefixfree');
+    require('prefixfree.min');
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {

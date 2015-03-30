@@ -332,6 +332,7 @@ FEATURE IDEAS:
     we can use turtlename to create instance variables.
   * Pass argments to actions? (and arg blocks to reference them)?
   * Arrays
+  * Color mixer that outputs a stack: set hue; set value; set chroma.
 
 KNOWN BUGS:
   * Find a scalable approach to drawing on the canvas
@@ -351,3 +352,7 @@ KNOWN BUGS:
   * Not serious, but there is still a race condition when creating
     if-then-else blocks (so there is a work-around in place).
   * Break doesn't work in forever loops.
+  * Sometimes clamp block highlight scale is too large.
+  * Sometimes docking position is not scaled properly when dragging block
+    after block resize.
+  * Sometimes selected blocks not on top when dragging.

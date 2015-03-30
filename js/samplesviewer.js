@@ -407,7 +407,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
         document.querySelector('.planet').style.display = 'none';
         document.querySelector('body').classList.remove('samples-shown');
         document.querySelector('.canvasHolder').classList.remove('hide');
-        document.querySelector('#theme-color').content = '#2196F3';
+        document.querySelector('#theme-color').content = platformColor.header;
         me.stage.enableDOMEvents(true);
         window.scroll(0, 0);
     }

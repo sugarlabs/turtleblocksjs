@@ -21,7 +21,7 @@ msgid "text"
 msgstr "मजकूर"
 
 msgid "random"
-msgstr ""
+msgstr "कुटला पण"
 
 msgid "confirm"
 msgstr "पुष्टी"
@@ -42,7 +42,7 @@ msgid "keyboard"
 msgstr "किबोर्ड"
 
 msgid "You can also load projects from the file system."
-msgstr ""
+msgstr "आपण फाइल प्रणाली मधुन पण प्रकल्प लोड करू शकतो."
 
 msgid "chicken"
 msgstr "कोंबडी"
@@ -63,13 +63,13 @@ msgid "Undo"
 msgstr "पूर्ववत"
 
 msgid "to"
-msgstr ""
+msgstr "करण्यासाठी / च्यापर्यत"
 
 msgid "add"
 msgstr "जोडा"
 
 msgid "set pen size"
-msgstr ""
+msgstr "लोखणीचे आकार संच करा"
 
 msgid "start turtle"
 msgstr "टर्टल सुरु करा"
@@ -114,7 +114,7 @@ msgid "number"
 msgstr "अंक"
 
 msgid "background"
-msgstr ""
+msgstr "बैक्ग्राउन्ड / मागे / पार्श्वभूमी"
 
 msgid "not"
 msgstr "नाही"
@@ -132,7 +132,7 @@ msgid "Save project"
 msgstr "प्रकल्प जतन करा"
 
 msgid "get fiber"
-msgstr ""
+msgstr "फाइबर \ तंतू काडा"
 
 msgid "Open a panel for configuring Turtle Blocks."
 msgstr "एक फळी उघडा टर्टल चा संरांचना साठी "
@@ -156,32 +156,32 @@ msgid "Expand/collapse toolbar"
 msgstr "साधनपट्टी दाखवा/लपवा"
 
 msgid "zoom"
-msgstr ""
+msgstr "मोठा आणि छोटा करा"
 
 msgid "Hide or show the blocks and the palettes."
-msgstr ""
+msgstr "ब्लॉक आणि पॅलेट दाखवा/लपवा"
 
 msgid "to degrees"
-msgstr ""
+msgstr "अंश"
 
 msgid "Restore blocks from the trash."
-msgstr ""
+msgstr "कचरा मधुन ब्लॉक पुनर्संचयित करा."
 
 msgid "get calories"
-msgstr ""
+msgstr "कैलरी काडा"
 
 msgid "Load plugin from file"
-msgstr ""
+msgstr "फाइल मधुन प्लगइन लोड करा"
 
 msgid "x"
-msgstr ""
+msgstr "x"
 
 msgid "show blocks"
 msgstr "ब्लॉक्स दाखवा"
 
 msgid "heading"
 msgstr "शिर्षक"
-ba
+
 msgid "Help"
 msgstr "मदत"
 
@@ -189,19 +189,19 @@ msgid "turtle"
 msgstr "कासव"
 
 msgid "right"
-msgstr ""
+msgstr "उजव्या"
 
 msgid "Load samples from server"
-msgstr ""
+msgstr "सर्व्हर नमुने लोड करा"
 
 msgid "hide blocks"
 msgstr "ब्लॉक्स लपवा"
 
 msgid "Hide or show the block palettes."
-msgstr ""
+msgstr "ब्लॉक आणि पॅलेट दाखवा/लपवा"
 
 msgid "This button opens a viewer for loading example projects."
-msgstr ""
+msgstr "हे बटण उदाहरणार्थ प्रकल्प लोड करण्यासाठी एक दर्शक उघडते."
 
 msgid "back"
 msgstr "परत"
@@ -243,7 +243,7 @@ msgid "show heap"
 msgstr "ढीग दाखवा"
 
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr ""
+msgstr "कार्टेशियन-समन्वय ग्रीड दाखवा/लपवा"
 
 msgid "publish"
 msgstr "प्रकाशित"
@@ -273,13 +273,13 @@ msgid "fiber"
 msgstr "धागा"
 
 msgid "You can load new blocks from the file system."
-msgstr ""
+msgstr "आपण फाइल प्रणाली मधुन नवीन ब्लॉक लोड करू शकतो."
 
 msgid "power"
 msgstr "शक्ती"
 
 msgid "Settings"
-msgstr ""
+msgstr "सेटिंग"
 
 msgid "Save stack"
 msgstr "स्टॅक जतन करा"
@@ -291,7 +291,7 @@ msgid "Display statistics"
 msgstr "आकडेवारी दाखवणे"
 
 msgid "Remove all content on the canvas, including the blocks."
-msgstr ""
+msgstr "कॅनव्हास वरून ब्लॉक सोबत सर्व सामग्री काढा."
 
 msgid "to radians"
 msgstr "त्रिज्यी कडे"
@@ -306,7 +306,7 @@ msgid "cookie"
 msgstr "कुकी"
 
 msgid "Show or hide a polar-coordinate grid."
-msgstr ""
+msgstr "ध्रुवीय-समन्वय ग्रीड दाखवा/लपवा"
 
 msgid "sweet potato"
 msgstr "रताळे"
@@ -324,7 +324,7 @@ msgid "pen down"
 msgstr "लोखणी खाली ठेवा"
 
 msgid "get name"
-msgstr "नाव द्या"
+msgstr "नाव सांगा"
 
 msgid "wait"
 msgstr "थांबा"
@@ -369,7 +369,7 @@ msgid "cheese"
 msgstr "चीज"
 
 msgid "Cartesian"
-msgstr ""
+msgstr "कार्टेशियन"
 
 msgid "eval"
 msgstr "मूल्यमापन"
@@ -426,10 +426,10 @@ msgid "get carbs"
 msgstr ""
 
 msgid "Click to run the project in fast mode."
-msgstr ""
+msgstr "प्रकल्प वागने चालण्या साठी इकडे दाबा"
 
 msgid "beef"
-msgstr ""
+msgstr "गोमांस"
 
 msgid "source"
 msgstr "स्रोत"
@@ -495,55 +495,55 @@ msgid "blink (ms)"
 msgstr ""
 
 msgid "set lang"
-msgstr ""
+msgstr "भाषा संच करा"
 
 msgid "turtle name"
-msgstr ""
+msgstr "टर्टलचे नाव"
 
 msgid "carbs"
-msgstr ""
+msgstr "खेकडा"
 
 msgid "else"
-msgstr ""
+msgstr "इतर"
 
 msgid "orange"
-msgstr ""
+msgstr "संत्रा"
 
 msgid "begin fill"
-msgstr ""
+msgstr "भरायची सुरुवात"
 
 msgid "sense right"
 msgstr ""
 
 msgid "eat"
-msgstr ""
+msgstr "खाणे"
 
 msgid "Expand/collapse collapsable blocks"
 msgstr ""
 
 msgid "high"
-msgstr ""
+msgstr "उच्च"
 
 msgid "set hue"
 msgstr ""
 
 msgid "currency"
-msgstr ""
+msgstr "चलन"
 
 msgid "potato"
-msgstr ""
+msgstr "बटाटा"
 
 msgid "Click to run the project step by step."
 msgstr ""
 
 msgid "value"
-msgstr ""
+msgstr "मूल्य"
 
 msgid "banana"
-msgstr ""
+msgstr "केळी"
 
 msgid "wheat bread"
-msgstr ""
+msgstr "गहू चे ब्रेड / घवाचे ब्रेड"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
 msgstr ""
@@ -552,94 +552,94 @@ msgid "while"
 msgstr "ज्यावेळी"
 
 msgid "open file"
-msgstr ""
+msgstr "फाइल उघडा"
 
 msgid "detect lang"
-msgstr ""
+msgstr "भाषा शोधणे"
 
 msgid "cake"
-msgstr ""
+msgstr "केक"
 
 msgid "exp"
 msgstr ""
 
 msgid "load heap"
-msgstr ""
+msgstr "लोड ढीग"
 
 msgid "Open"
 msgstr "उघडा"
 
 msgid "see distance"
-msgstr ""
+msgstr "अंतर पाहू"
 
 msgid "and"
-msgstr ""
+msgstr "आणि"
 
 msgid "set grey"
-msgstr ""
+msgstr "राखाडी संच करा"
 
 msgid "do"
-msgstr ""
+msgstr "करा"
 
 msgid "Run step by step"
 msgstr ""
 
 msgid "Show/hide palettes"
-msgstr ""
+msgstr "पॅलेटलेट्स दाखवा/लपवा"
 
 msgid "set heading"
-msgstr "seth"
+msgstr "शीर्षक संच करा"
 
 msgid "add 1 to"
-msgstr ""
+msgstr "१ जोड"
 
 msgid "stop play"
-msgstr ""
+msgstr "खेळणे / चालणे थांबवा"
 
 msgid "protein"
-msgstr ""
+msgstr "प्रोटीन"
 
 msgid "play back"
 msgstr ""
 
 msgid "if"
-msgstr ""
+msgstr "जर"
 
 msgid "Save your project to a server."
-msgstr ""
+msgstr "सर्व्हर वर आपले प्रकल्प जतन करा."
 
 msgid "Decrease block size"
-msgstr ""
+msgstr "ब्लॉकचे आकार कमी करा"
 
 msgid "angle"
-msgstr ""
+msgstr "कोन"
 
 msgid "get fat"
-msgstr ""
+msgstr "चरबी सांगा"
 
 msgid "min"
-msgstr ""
+msgstr "किमान / कमीत कमी"
 
 msgid "media"
-msgstr ""
+msgstr "मीडिया"
 
 msgid "Stop"
-msgstr "थांबा"
+msgstr "थांबवा"
 
 msgid "sqrt"
-msgstr ""
+msgstr "वर्गमुळ"
 
 msgid "note"
-msgstr ""
+msgstr "नोंद"
 
 msgid "Palette buttons"
-msgstr ""
+msgstr "पैलेट बटण"
 
 msgid "set xy"
-msgstr ""
+msgstr "संच xy"
 
 msgid "end fill"
-msgstr ""
+msgstr "भरायची अंत"
 
 msgid "Copy"
 msgstr "कॉपी"
@@ -648,104 +648,104 @@ msgid "Paste"
 msgstr "पेस्ट"
 
 msgid "Delete"
-msgstr ""
+msgstr "हटवा"
 
 msgid "tamale"
 msgstr ""
 
 msgid "Worldwide"
-msgstr ""
+msgstr "जगभरात"
 
 msgid "repeat"
-msgstr ""
+msgstr "पुन्हा"
 
 msgid "blocks"
-msgstr ""
+msgstr "ब्लॉक"
 
 msgid "Display statistics about your Turtle project."
-msgstr ""
+msgstr "आकडेवारी दाखवणे आपल्या टर्टल प्रकल्पाचे"
 
 msgid "Polar"
-msgstr ""
+msgstr "ध्रुवीय"
 
 msgid "max"
-msgstr ""
+msgstr "कमाल / जस्तिस जास्त"
 
 msgid "logic"
-msgstr ""
+msgstr "तर्कशास्त्र"
 
 msgid "empty heap"
-msgstr ""
+msgstr "रिक्त ढीग"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr ""
+msgstr "आपला दौरा सम्पला. कृपया करून टर्टलचे आनंद घ्या आणि चला मजा करू."
 
 msgid "push"
-msgstr ""
+msgstr "ढकलणे"
 
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
-msgstr "साफ"
+msgstr "स्वच्छ"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
 
 msgid "Run fast"
-msgstr ""
+msgstr "वेगाने चालवा"
 
 msgid "broccoli"
-msgstr ""
+msgstr "ब्रोकोली"
 
 msgid "stop media"
-msgstr ""
+msgstr "मीडिया थांबवा"
 
 msgid "tomato"
-msgstr ""
+msgstr "टोमॅटो"
 
 msgid "forever"
-msgstr ""
+msgstr "कायमचे"
 
 msgid "Load project from file"
-msgstr ""
+msgstr "फाइल मधुन प्रकल्प लोड करा"
 
 msgid "get protein"
-msgstr ""
+msgstr "प्रोटीन काडा"
 
 msgid "clear"
-msgstr ""
+msgstr "स्वच्छ"
 
 msgid "floor"
-msgstr ""
+msgstr "मजला"
 
 msgid "flow"
-msgstr ""
+msgstr "प्रवाह"
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr ""
 
 msgid "extras"
-msgstr ""
+msgstr "अतिरिक्त"
 
 msgid "shade"
-msgstr ""
+msgstr "सावली"
 
 msgid "time"
-msgstr ""
+msgstr "वेळ"
 
 msgid "y"
-msgstr ""
+msgstr "y"
 
 msgid "hello"
-msgstr ""
+msgstr "हॅलो"
 
 msgid "left"
-msgstr ""
+msgstr "डाव्या"
 
 
 msgid ""
 msgstr ""
 
 msgid "Planet"
-msgstr ""
+msgstr "ग्रह"

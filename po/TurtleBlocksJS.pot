@@ -11,6 +11,7 @@ msgstr ""
 "Language: en\n"
 "X-Generator: ini-to-pot script\n"
 
+#. TRANS: clear the screen of any graphics drawn by the turtle
 msgid "clear"
 msgstr ""
 
@@ -50,21 +51,25 @@ msgstr ""
 msgid "y"
 msgstr ""
 
+#. TRANS: color refers to a hue, value, chroma triplet
 msgid "set color"
 msgstr ""
 
 msgid "color"
 msgstr ""
 
+#. TRANS: hue refers to spectral hue (red, yellow, green, blue...)
 msgid "set hue"
 msgstr ""
 
+#. TRANS: shade refers to value (dark to light)
 msgid "set shade"
 msgstr ""
 
 msgid "shade"
 msgstr ""
 
+#. TRANS: grey refers to chroma (grey to vivid)
 msgid "set grey"
 msgstr ""
 
@@ -83,6 +88,7 @@ msgstr ""
 msgid "pen down"
 msgstr ""
 
+#. TRANS: fill refers to filling a shape with a color (e.g., paint bucket).
 msgid "begin fill"
 msgstr ""
 
@@ -95,42 +101,55 @@ msgstr ""
 msgid "random"
 msgstr ""
 
+#. TRANS: minimum
 msgid "min"
 msgstr ""
 
+#. TRANS: maximum
 msgid "max"
 msgstr ""
 
+#. TRANS: square root
 msgid "sqrt"
 msgstr ""
 
+#. TRANS: mathematical modular (remainder) function.
 msgid "mod"
 msgstr ""
 
+#. TRANS: logical "and" operator
 msgid "and"
 msgstr ""
 
+#. TRANS: logical "or" operator
 msgid "or"
 msgstr ""
 
+#. TRANS: logical "not" operator
 msgid "not"
 msgstr ""
 
+#. TRANS: store a value in a box
 msgid "store in"
 msgstr ""
 
+#. TRANS: the name of a variable (stored in a box)
 msgid "name"
 msgstr ""
 
+#. TRANS: the value of a variable (stored in a box)
 msgid "value"
 msgstr ""
 
+#. TRANS: a container for a variable
 msgid "box"
 msgstr ""
 
+#. TRANS: the name of a stack of blocks
 msgid "action"
 msgstr ""
 
+#. TRANS: do this action
 msgid "do"
 msgstr ""
 
@@ -143,6 +162,7 @@ msgstr ""
 msgid "add"
 msgstr ""
 
+#. TRANS: as in "add 1 to"
 msgid "to"
 msgstr ""
 
@@ -155,18 +175,21 @@ msgstr ""
 msgid "size"
 msgstr ""
 
+#. TRANS: object
 msgid "obj"
 msgstr ""
 
 msgid "text"
 msgstr ""
 
+#. TRANS: a turtle shell
 msgid "shell"
 msgstr ""
 
 msgid "image"
 msgstr ""
 
+#. TRANS: stop playing current media file (movie or audio)
 msgid "stop media"
 msgstr ""
 
@@ -399,30 +422,37 @@ msgstr ""
 msgid "hide blocks"
 msgstr ""
 
+#. TRANS: volume of microphone audio
 msgid "loudness"
 msgstr ""
 
+#. TRANS: publish project to Facebook
 msgid "publish"
 msgstr ""
 
 msgid "comment"
 msgstr ""
 
+#. TRANS: play media (audio or video)
 msgid "play back"
 msgstr ""
 
+#. TRANS: save project as simple vector graphic (SVG)
 msgid "save svg"
 msgstr ""
 
+#. TRANS: name of project
 msgid "title"
 msgstr ""
 
+#. TRANS: evaluate Javascript code
 msgid "eval"
 msgstr ""
 
 msgid "show blocks"
 msgstr ""
 
+#. TRANS: stop playing current media file (movie or audio)
 msgid "stop play"
 msgstr ""
 
@@ -435,6 +465,7 @@ msgstr ""
 msgid "number"
 msgstr ""
 
+#. TRANS: Boolean logic
 msgid "boolean"
 msgstr ""
 
@@ -465,12 +496,14 @@ msgstr ""
 msgid "motion x"
 msgstr ""
 
+#. TRANS: bitcoin currency (probably no need to translate)
 msgid "bitcoin"
 msgstr ""
 
 msgid "from"
 msgstr ""
 
+#. TRANS: mashape webservices (probably no need to translate)
 msgid "mashape"
 msgstr ""
 
@@ -501,9 +534,11 @@ msgstr ""
 msgid "longitude"
 msgstr ""
 
+#. TRANS: the heap is a first-in-last-out (FILO) stack
 msgid "show heap"
 msgstr ""
 
+#. TRANS: pop a value off of the heap.
 msgid "pop"
 msgstr ""
 
@@ -516,27 +551,34 @@ msgstr ""
 msgid "load heap"
 msgstr ""
 
+#. TRANS: push a value on to the heap.
 msgid "push"
 msgstr ""
 
 msgid "logic"
 msgstr ""
 
+#. TRANS: mathematical power, e.g., 2^4 == 16
 msgid "power"
 msgstr ""
 
+#. TRANS: mathematical exponential base
 msgid "base"
 msgstr ""
 
+#. TRANS: mathematical exponent
 msgid "exp"
 msgstr ""
 
+#. TRANS: mathematical floor function, e.g., floor(2.5) == 2
 msgid "floor"
 msgstr ""
 
+#. TRANS: mathematical ceiling function, e.g., ceiling(2.5) == 3
 msgid "ceiling"
 msgstr ""
 
+#. TRANS: 360 degrees in a circle
 msgid "degrees"
 msgstr ""
 
@@ -579,6 +621,7 @@ msgstr ""
 msgid "get fiber"
 msgstr ""
 
+#. TRANS: carbohydrates
 msgid "carbs"
 msgstr ""
 
@@ -594,9 +637,11 @@ msgstr ""
 msgid "banana"
 msgstr ""
 
+#. TRANS: Mexican tamale
 msgid "tamale"
 msgstr ""
 
+#. TRANS: dietary fiber
 msgid "fiber"
 msgstr ""
 
@@ -606,6 +651,7 @@ msgstr ""
 msgid "fat"
 msgstr ""
 
+#. TRANS: carbohydrates
 msgid "get carbs"
 msgstr ""
 
@@ -651,12 +697,15 @@ msgstr ""
 msgid "eatme"
 msgstr ""
 
+#. TRANS: use sensor to detect objects on the left
 msgid "sense left"
 msgstr ""
 
+#. TRANS: use sensor to detect distance to objects
 msgid "see distance"
 msgstr ""
 
+#. TRANS: use sensor to detect objects on the right
 msgid "sense right"
 msgstr ""
 
@@ -672,18 +721,23 @@ msgstr ""
 msgid "move"
 msgstr ""
 
+#. TRANS: flash (blink) an LED light
 msgid "blink (ms)"
 msgstr ""
 
+#. TRANS: the name of a robot built in Paraguay (probably no need to translate)
 msgid "rodi"
 msgstr ""
 
+#. TRANS: set language
 msgid "set lang"
 msgstr ""
 
+#. TRANS: source language for translation
 msgid "source"
 msgstr ""
 
+#. TRANS: target language for translation
 msgid "target"
 msgstr ""
 
@@ -693,6 +747,7 @@ msgstr ""
 msgid "hello"
 msgstr ""
 
+#. TRANS: detect language
 msgid "detect lang"
 msgstr ""
 
@@ -711,6 +766,7 @@ msgstr ""
 msgid "start turtle"
 msgstr ""
 
+#. TRANS: weather forecast
 msgid "forecast"
 msgstr ""
 
@@ -720,9 +776,11 @@ msgstr ""
 msgid "day"
 msgstr ""
 
+#. TRANS: low tempurature
 msgid "low"
 msgstr ""
 
+#. TRANS: high tempurature
 msgid "high"
 msgstr ""
 

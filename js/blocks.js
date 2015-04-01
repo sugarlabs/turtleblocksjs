@@ -647,6 +647,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
             }
             myBlock.connections[0] = null;
+            this.raiseStackToTop(thisBlock);
         }
 
         // Look for a new connection.

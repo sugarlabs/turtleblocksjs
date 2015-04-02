@@ -37,313 +37,313 @@ back onto the palette. Click anywhere on a "stack" of blocks to start
 executing that stack or by clicking in the Rabbit (fast) or Turtle
 (slow) on the Main Toolbar.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/fast-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/fast-button.svg'</img>
 Making the turtle move faster
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/slow-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/slow-button.svg'</img>
 Making the turtle move slower
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/step-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/step-button.svg'</img>
 Making the turtle move step by step (Turtle moves one step once clicked).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/stop-turtle-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/stop-turtle-button.svg'</img>
 Stopping the current project
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/clear-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/clear-button.svg'</img>
 Clear the screen and return the turtles to their initial positions.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/palette-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/palette-button.svg'</img>
 Hide or show the block palettes.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/hide-blocks-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/hide-blocks-button.svg'</img>
 Hide or show the blocks and the palettes.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/collapse-blocks-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/collapse-blocks-button.svg'</img>
 Expand or collapse stacks of blocks, e.g, start and action stacks.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/help-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/help-button.svg'</img>
 Show these messages.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/menu-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/menu-button.svg'</img>
 Expands or Collapses the auxillary toolbar.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/planet-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/planet-button.svg'</img>
 Opens a viewer for loading example projects.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/paste-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/paste-button.svg'</img>
 Copies the blocks onto the clipboard.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/Cartesian-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/Cartesian-button.svg'</img>
 Show or hide a Cartesian-coordinate grid.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/polar-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/polar-button.svg'</img>
 Show or hide a polar-coordinate grid.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/plugin-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/plugin-button.svg'</img>
 Load new blocks/plugin from the file system.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/empty-trash-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/empty-trash-button.svg'</img>
 Remove all content on the canvas, including the blocks.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/restore-trash-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/restore-trash-button.svg'</img>
 Restore blocks from the trash.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/clear.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/clear.svg'</img>
 Clears the screen and reset the turtle.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/forward.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/forward.svg'</img>
 Moves turtle forward.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/right.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/right.svg'</img>
 Turns turtle clockwise (angle in degrees).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/back.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/back.svg'</img>
 Moves turtle backward.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/left.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/left.svg'</img>
 Turns turtle counterclockwise (angle in degrees).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/arc.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/arc.svg'</img>
 Moves turtle along an arc.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/set_heading.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/set_heading.svg'</img>
 Sets the heading of the turtle (0 is towards the top of the screen)
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/set_heading.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/set_heading.svg'</img>
 Holds current heading value of the turtle (can be used in place of a number block).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/setxy.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/setxy.svg'</img>
 Moves turtle to position xcor, ycor; (0, 0) is in the center of the screen.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/x.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/x.svg'</img>
 Holds current x-coordinate value of the turtle (can be used in place of a number block).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/y.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/y.svg'</img>
 Holds current y-coordinate value of the turtle (can be used in place of a number block).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/set_color.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/set_color.svg'</img>
 Sets color of the line drawn by the turtle.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/color.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/color.svg'</img>
 Holds current pen color (can be used in place of a number block).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/set_hue.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/set_hue.svg'</img>
 Sets hue of the line drawn by the turtle.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/set_shade.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/set_shade.svg'</img>
 Sets shade of the line drawn by the turtle.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/shade.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/shade.svg'</img>
 Holds current pen shade.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/set_grey.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/set_grey.svg'</img>
 Sets grey level of the line drawn by the turtle.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/grey.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/grey.svg'</img>
 Holds current grey level (can be used in place of a number block).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/set_pen_size.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/set_pen_size.svg'</img>
 Sets size of the line drawn by the turtle.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/pen_size.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/pen_size.svg'</img>
 Holds current pen size (can be used in place of a number block).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/pen_up.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/pen_up.svg'</img>
 Turtle will not draw when moved.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/pen_down.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/pen_down.svg'</img>
 Turtle will draw when moved.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/begin_fill.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/begin_fill.svg'</img>
 Starts filled polygon (used with end fill block).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/end_fill.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/end_fill.svg'</img>
 Completes filled polygon (used with start fill block).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/set_font.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/set_font.svg'</img>
 Sets the font of the text.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/background.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/background.svg'</img>
 Sets the background color.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/number.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/number.svg'</img>
 Used as numeric input in mathematic operators.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/random.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/random.svg'</img>
 Returns random number between minimum (top) and maximum (bottom) values.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/plus.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/plus.svg'</img>
 Adds two alphanumeric inputs.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/subtract.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/subtract.svg'</img>
 Subtracts bottom numeric input from top numeric input.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/multiply.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/multiply.svg'</img>
 Multiplies two numeric inputs.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/divide.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/divide.svg'</img>
 Divides top numeric input (numerator) by bottom numeric input (denominator).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/sqrt.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/sqrt.svg'</img>
 Calculates square root.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/int.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/int.svg'</img>
 Used as int input in mathematic operators.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/mod.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/mod.svg'</img>
 Modular (remainder) operator.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/eval.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/eval.svg'</img>
 A programmable block: used to add advanced single-variable math equations, e.g., sin(x).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/greater_than.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/greater_than.svg'</img>
 Logical greater-than operator.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/less_than.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/less_than.svg'</img>
 Logical less-than operator.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/equal.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/equal.svg'</img>
 Logical equal-to operator.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/and.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/and.svg'</img>
 Logical AND operator.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/or.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/or.svg'</img>
 Logical OR operator.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/not.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/not.svg'</img>
 Logical NOT operator.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/repeat.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/repeat.svg'</img>
 Loops specified number of times.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/forever.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/forever.svg'</img>
 Loops forever.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/stop.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/stop.svg'</img>
 Stops current action.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/if.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/if.svg'</img>
 If-then operator that uses boolean operators from Numbers palette.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/until.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/until.svg'</img>
 Do-until-True operator that uses boolean operators from numbers palette.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/wait_for.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/wait_for.svg'</img>
 Wait.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/while.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/while.svg'</img>
 Do-while-True operator that uses boolean operators from numbers palette.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/if_else.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/if_else.svg'</img>
 If-then-else operator that uses boolean operators from Numbers palette.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/name_box_value.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/name_box_value.svg'</img>
 Stores numeric value in named variable.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/box_value.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/box_value.svg'</img>
 Named variable (numeric value).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/add_1_to.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/add_1_to.svg'</img>
 Adds 1 to named variable.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/add_to.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/add_to.svg'</img>
 Adds numeric value to named variable.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/box.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/box.svg'</img>
 Named variable (numeric value).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/action_flow.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/action_flow.svg'</img>
 Top of nameable action stack.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/action.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/action.svg'</img>
 Invokes named action stack.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/start.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/start.svg'</img>
 Connects action to toolbar run buttons.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/do.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/do.svg'</img>
 Invokes named action stack.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/event_on_do.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/event_on_do.svg'</img>
 Connect an event with any signal/action.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/broadcast.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/broadcast.svg'</img>
 Broadcast named event.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/speak.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/speak.svg'</img>
 Speaks text.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/show.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/show.svg'</img>
 Draws text or show media from the Journal.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/size_shell_image.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/size_shell_image.svg'</img>
 Put a custom shell on the turtle.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/text.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/text.svg'</img>
 String value.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/open_file.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/open_file.svg'</img>
 Returns the selected file.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/stop_media.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/stop_media.svg'</img>
 Stops the media being played.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/tone.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/tone.svg'</img>
 Plays a tone at frequency and duration(in seconds).
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/note_to_frequency.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/note_to_frequency.svg'</img>
 Changes the note of frequency.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/time.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/time.svg'</img>
 Elapsed time(in seconds) since program started.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/mouse_x.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/mouse_x.svg'</img>
 Returns mouse X co-ordinate.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/mouse_y.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/mouse_y.svg'</img>
 Returns mouse Y co-ordinate.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/mouse_button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/mouse_button.svg'</img>
 Returs true if mouse button is pressed.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/keyboard.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/keyboard.svg'</img>
 Holds results of query-keyboard block as ASCII.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/pixel_color.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/pixel_color.svg'</img>
 Returns pixel color.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/loudness.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/loudness.svg'</img>
 Microphone input volume.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/click.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/click.svg'</img>
 Connects to click action.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/vspace.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/vspace.svg'</img>
 Jogs stack down.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/hspace.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/hspace.svg'</img>
 Jogs stack right.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/wait.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/wait.svg'</img>
 Pauses program execution a specified number of seconds.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/print.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/print.svg'</img>
 Prints value in status block at bottom of the screen.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/save_svg.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/save_svg.svg'</img>
 Saves turtle graphics as an SVG file in the Sugar Journal.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/show_blocks.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/show_blocks.svg'</img>
 Restores hidden blocks.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/hide_blocks.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/hide_blocks.svg'</img>
 Declutters canvas by hiding blocks.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/play_back.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/play_back.svg'</img>
 Play the media.
 
-<img src='https://github.com/walterbender/turtleblocksjs/raw/master/icons/stop_play.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/icons/stop_play.svg'</img>
 Stops the playing media.
 
 Getting Started Documentation

@@ -307,12 +307,16 @@
   * Removed drag to rotate.
   * Fixed scaling when dragging turtle.
   * Disable drag while running.
+  * Don't wait for adjustBlocks to position vspace blocks.
+  * Raise stack to top when disconnectiong from parent stack.
+  * Fixed problem with disappearing protoblock.
+  * New documentation folder (w/Amitjha).
 
 TODO:
   * Save errors
   * More efficient until and while?
   * Save to javascript
-  * Rtl support
+  * RTL support
   * Zoom and scroll?
   * Make expand an array, one element for each arg or slot
   * User-defined block types (trivial with factory)
@@ -342,7 +346,6 @@ KNOWN BUGS:
   * Cannot open plugins loader on Android
   * Sometimes returning to backgrounded project results in empty project
   * Loading macros there is a funny collapsed state sometimes.
-  * Sometimes the protoblock doesn't return to the palette after dragging.
   * Crashes the Browse activity on the XO: a multitude of cross-source
     violations that eventually crash the app.
   * No access to camera or microphone on XO.
@@ -355,4 +358,3 @@ KNOWN BUGS:
   * Sometimes clamp block highlight scale is too large.
   * Sometimes docking position is not scaled properly when dragging block
     after block resize.
-  * Sometimes selected blocks not on top when dragging.

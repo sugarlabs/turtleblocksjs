@@ -1233,7 +1233,7 @@ function makeBlockFromPalette(blk, blkname, palette, callback) {
 // Menu Item event handlers
 function loadPaletteMenuItemHandler(palette, blk, blkname) {
     // A menu item is a protoblock that is used to create a new block.
-    var locked = false;
+    var pressupLock = false;
     var moved = false;
     var saveX = palette.protoContainers[blkname].x;
     var saveY = palette.protoContainers[blkname].y;
@@ -1253,14 +1253,6 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
         if (palette.draggingProtoBlock) {
             return;
         }
-        if (locked) {
-            return;
-        }
-        locked = true;
-        setTimeout(function() {
-            locked = false;
-        }, 500);
-
         var mode = window.hasMouse ? MODEDRAG : MODEUNSURE;
 
         palette.protoContainers[blkname].on('pressmove', function(event) {
@@ -1290,6 +1282,23 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
     });
 
     palette.protoContainers[blkname].on('pressup', function(event) {
+        if (pressupLock) {
+            // console.log('pressup: locked ' + pressupLock);
+            return;
+        } else {
+            pressupLock = true;
+            setTimeout(function() {
+                // console.log('pressup: unlock');
+                pressupLock = false;
+            }, 1000);
+        }
+        // console.log('pressup');
+        makeBlockFromProtoblock(palette, blk, moved, blkname, event, saveX, saveY);
+    });
+}
+
+
+function makeBlockFromProtoblock(palette, blk, moved, blkname, event, saveX, saveY) {
         if (moved) {
             moved = false;
             palette.draggingProtoBlock = false;
@@ -1345,14 +1354,6 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                     paletteBlocks.blockList[topBlk].collapseToggle();
                 }, 500);
             } else {
-                if (locked) {
-                    return;
-                }
-                locked = true;
-                setTimeout(function() {
-                    locked = false;
-                }, 500);
-
                 // Create the block.
                 function myCallback (newBlock) {
                     // Move the drag group under the cursor.
@@ -1361,20 +1362,23 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
                         paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale) - paletteBlocks.stage.x, Math.round(event.stageY / palette.palettes.scale) - paletteBlocks.stage.y);
                     }
                     // Dock with other blocks if needed
-                    console.log('new block moved ' + newBlock);
                     blocks.blockMoved(newBlock);
+                    restoreProtoblock(palette, blkname, saveX, saveY + palette.scrollDiff);
                 }
 
                 var newBlock = makeBlockFromPalette(blk, blkname, palette, myCallback);
             }
 
-            // Return protoblock we've been dragging back to the palette.
-            palette.protoContainers[blkname].x = saveX;
-            palette.protoContainers[blkname].y = saveY + palette.scrollDiff;
             palette.updateBlockMasks();
             palette.palettes.refreshCanvas();
         }
-    });
+}
+
+
+function restoreProtoblock(palette, name, x, y) {
+    // Return protoblock we've been dragging back to the palette.
+    palette.protoContainers[name].x = x;
+    palette.protoContainers[name].y = y;
 }
 
 

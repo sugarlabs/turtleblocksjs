@@ -112,7 +112,7 @@ Moves turtle along an arc.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/artwork/set_heading.svg'</img>
 Sets the heading of the turtle (0 is towards the top of the screen)
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/artwork/set_heading.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/artwork/heading.svg'</img>
 Holds current heading value of the turtle (can be used in place of a number block).
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/artwork/setxy.svg'</img>

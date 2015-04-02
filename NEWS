@@ -358,3 +358,4 @@ KNOWN BUGS:
   * Sometimes clamp block highlight scale is too large.
   * Sometimes docking position is not scaled properly when dragging block
     after block resize.
+  * Cannot edit number/text blocks on Android (regression).

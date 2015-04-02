@@ -70,8 +70,11 @@ Expands or Collapses the auxillary toolbar.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/artwork/planet-button.png'</img>
 Opens a viewer for loading example projects.
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/artwork/copy-button.png'</img>
+Copies blocks onto the clipboard.
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/artwork/paste-button.png'</img>
-Copies the blocks onto the clipboard.
+Pastes blocks from the clipboard.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/artwork/Cartesian-button.png'</img>
 Show or hide a Cartesian-coordinate grid.

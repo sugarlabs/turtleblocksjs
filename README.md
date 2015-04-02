@@ -40,7 +40,7 @@ executing that stack or by clicking in the Rabbit (fast) or Turtle
 Getting Started Documentation
 -----------------------------
 
-The basic buttons and basic blocks are explained in detail in [Documentation](https://github.com/walterbender/turtleblocksjs/blob/master/documention/README.md).
+The basic buttons and basic blocks are explained in detail in [Documentation](https://github.com/walterbender/turtleblocksjs/blob/master/documentation/README.md).
 
 A quick start:
 

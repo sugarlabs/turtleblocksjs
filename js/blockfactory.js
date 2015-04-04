@@ -732,7 +732,7 @@ function SVG() {
         } else if (!notnot) {
             var svg = this._startBoolean(this._strokeWidth / 2.0, this._radius * 2.0 + this._strokeWidth / 2.0);
         } else {
-            var svg = this._startBoolean(this._strokeWidth / 2.0, this._radius + this._strokeWidth / 2.0);
+            var svg = this._startBoolean(this._strokeWidth / 2.0, this._radius * 1.25 + this._strokeWidth / 2.0);
         }
         svg += this._rLineTo(0, -this._strokeWidth);
 
@@ -740,6 +740,8 @@ function SVG() {
             svg += this._rLineTo(0, -this._radius / 4.0);
         } else if (!notnot) {
             svg += this._rarcTo(1, -1, 90, 0, 1);
+        } else {
+            svg += this._rLineTo(0, -this._radius / 4.0);
         }
         svg += this._rLineTo(this._radius / 2.0 + this._expandX, 0);
         var xx = this._x;
@@ -753,7 +755,7 @@ function SVG() {
             svg += this._doBoolean();
             svg += this._rLineTo(0, this._radius / 2.0);
         } else {
-            svg += this._rLineTo(0, this._radius * 2);
+            svg += this._rLineTo(0, this._radius * 2.25);
         }
 
         svg += this.lineTo(xx, this._y);

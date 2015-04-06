@@ -113,16 +113,16 @@ var BORDER = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120">'
 // palette artwork
 // Palettes have different colored blocks
 var PALETTEFILLCOLORS = {
-    'turtle': '#00b700',
-    'pen': '#00c0e7',
-    'blocks': '#ffc000',
-    'actions': '#ffc000',
-    'media': '#987aff',
-    'number': '#ff00ff',
-    'boolean': '#ff00ff',
-    'flow': '#fd6600',
-    'sensors': '#ff0066',
-    'extras': '#ff0066',
+    'turtle': '#30ac36', // '#00b700',
+    'pen': '#00aec0', // '#00c0e7',
+    'blocks': '#fbc312', // '#ffc000',
+    'actions': '#fbc312', // '#ffc000',
+    'media': '#958ae4', // '#987aff',
+    'number': '#c67ac8', // '#ff00ff',
+    'boolean':' #c67ac8', // '#ff00ff',
+    'flow': '#e67730', // '#fd6600',
+    'sensors': '#f76931', // '#ff0066',
+    'extras': '#f96174', // '#ff0066',
     'myblocks': '#a0a0a0'
 };
 
@@ -149,7 +149,7 @@ var PALETTEHIGHLIGHTCOLORS = {
     'number': '#ff9fff',
     'boolean': '#ff9fff',
     'flow': '#ffa548',
-    'sensors': '#ffb1b3',
+    'sensors': '#ff9e61', // '#ffb1b3',
     'extras': '#ffb1b3',
     'myblocks': '#d0d0d0'
 };

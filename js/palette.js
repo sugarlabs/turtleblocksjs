@@ -613,7 +613,6 @@ function PopdownPalette(palettes) {
                                 - paletteBlocks.stage.y);
                     }
                     // Dock with other blocks if needed
-                    console.log('new block moved ' + newBlock);
                     blocks.blockMoved(newBlock);
                 });
             });
@@ -1187,21 +1186,24 @@ function setupBackgroundEvents(palette) {
     });
 }
 
+
 function makeBlockFromPalette(blk, blkname, palette, callback) {
-    var arg = '__NOARG__';
     switch (palette.protoList[blk].name) {
         case 'do':
             blkname = 'do ' + palette.protoList[blk].defaults[0];
+            var newBlk = palette.protoList[blk].name;
             var arg = palette.protoList[blk].defaults[0];
             break;
         case 'storein':
             // Use the name of the box in the label
             blkname = 'store in ' + palette.protoList[blk].defaults[0];
+            var newBlk = palette.protoList[blk].name;
             var arg = palette.protoList[blk].defaults[0];
             break;
         case 'box':
             // Use the name of the box in the label
             blkname = palette.protoList[blk].defaults[0];
+            var newBlk = palette.protoList[blk].name;
             var arg = palette.protoList[blk].defaults[0];
             break;
         case 'namedbox':
@@ -1213,6 +1215,7 @@ function makeBlockFromPalette(blk, blkname, palette, callback) {
                 blkname = palette.protoList[blk].defaults[0];
                 var arg = palette.protoList[blk].defaults[0];
             }
+            var newBlk = palette.protoList[blk].name;
             break;
         case 'nameddo':
             // Use the name of the action in the label
@@ -1223,9 +1226,14 @@ function makeBlockFromPalette(blk, blkname, palette, callback) {
                 blkname = palette.protoList[blk].defaults[0];
                 var arg = palette.protoList[blk].defaults[0];
             }
+            var newBlk = palette.protoList[blk].name;
+            break;
+        default:
+            var newBlk = blkname;
+            var arg = '__NOARG__';
             break;
     }
-    var newBlock = paletteBlockButtonPush(palette.protoList[blk].name, arg);
+    var newBlock = paletteBlockButtonPush(newBlk, arg);
     callback(newBlock);
 }
 
@@ -1283,16 +1291,13 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
 
     palette.protoContainers[blkname].on('pressup', function(event) {
         if (pressupLock) {
-            // console.log('pressup: locked ' + pressupLock);
             return;
         } else {
             pressupLock = true;
             setTimeout(function() {
-                // console.log('pressup: unlock');
                 pressupLock = false;
             }, 1000);
         }
-        // console.log('pressup');
         makeBlockFromProtoblock(palette, blk, moved, blkname, event, saveX, saveY);
     });
 }

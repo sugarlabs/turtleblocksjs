@@ -1250,8 +1250,15 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
     palette.protoContainers[blkname].on('mousedown', function(event) {
         var stage = palette.palettes.stage;
         stage.setChildIndex(palette.protoContainers[blkname], stage.getNumChildren() - 1);
-        palette.protoContainers[blkname].mask = null;
 
+        var h = Math.min(maxPaletteHeight(palette.palettes.cellSize, palette.palettes.scale), palette.palettes.y);
+        var clickY = event.stageY/palette.palettes.scale;
+        var paletteEndY = palette.menuContainer.y + h + STANDARDBLOCKHEIGHT;
+
+        if(clickY < paletteEndY)
+        {
+            palette.protoContainers[blkname].mask = null;
+        }
         moved = false;
         saveX = palette.protoContainers[blkname].x;
         saveY = palette.protoContainers[blkname].y - palette.scrollDiff;
@@ -1265,11 +1272,14 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
 
         palette.protoContainers[blkname].on('pressmove', function(event) {
             if (mode === MODEDRAG) {
-                moved = true;
-                palette.draggingProtoBlock = true;
-                palette.protoContainers[blkname].x = Math.round(event.stageX / palette.palettes.scale) - PALETTELEFTMARGIN;
-                palette.protoContainers[blkname].y = Math.round(event.stageY / palette.palettes.scale);
-                palette.palettes.refreshCanvas();
+                if(clickY < paletteEndY)
+                {
+                    moved = true;
+                    palette.draggingProtoBlock = true;
+                    palette.protoContainers[blkname].x = Math.round(event.stageX / palette.palettes.scale) - PALETTELEFTMARGIN;
+                    palette.protoContainers[blkname].y = Math.round(event.stageY / palette.palettes.scale);
+                    palette.palettes.refreshCanvas();
+                }
                 return;
             }
 

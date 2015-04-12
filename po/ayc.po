@@ -847,33 +847,43 @@ msgstr ""
 msgid "day"
 msgstr ""
 
+
+#. TRANS: baja
 msgid "low"
 msgstr ""
 
+#. TRANS: alta
 msgid "high"
 msgstr ""
 
-
+#. TRANS: confirmar
 msgid "confirm"
 msgstr ""
 
+#. TRANS: Descargar
 msgid "Download"
 msgstr ""
 
+#. TRANS: Publicar
 msgid "Publish"
 msgstr ""
 
+#. TRANS: Planeta
 msgid "Planet"
 msgstr ""
 
+#. TRANS: En mu dispositivo
 msgid "On my device"
 msgstr ""
 
+#. TRANS: Abrir
 msgid "Open"
 msgstr ""
 
+#. TRANS: Borrar
 msgid "Delete"
 msgstr ""
 
+#. TRANS: En todo el mundo
 msgid "Worldwide"
 msgstr ""

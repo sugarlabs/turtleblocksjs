@@ -718,6 +718,16 @@ msgstr ""
 msgid "confirm"
 msgstr ""
 
+msgid "city latitude"
+msgstr ""
+
+msgid "city longitude"
+msgstr ""
+
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
 msgid "latitude"
 msgstr ""
 

@@ -74,6 +74,16 @@ msgstr "लोखणीचे आकार संच करा"
 msgid "start turtle"
 msgstr "टर्टल सुरु करा"
 
+msgid "city latitude"
+msgstr ""
+
+msgid "city longitude"
+msgstr ""
+
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
 msgid "latitude"
 msgstr "अक्षांश"
 

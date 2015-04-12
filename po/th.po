@@ -80,6 +80,16 @@ msgstr "ตั้งค่าขนาดปากกา"
 msgid "start turtle"
 msgstr ""
 
+msgid "city latitude"
+msgstr ""
+
+msgid "city longitude"
+msgstr ""
+
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
 msgid "latitude"
 msgstr ""
 

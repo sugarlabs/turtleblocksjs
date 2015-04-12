@@ -78,6 +78,16 @@ msgstr "selezionare dimensione della penna"
 msgid "start turtle"
 msgstr "iniziare tartaruga"
 
+msgid "city latitude"
+msgstr ""
+
+msgid "city longitude"
+msgstr ""
+
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
 msgid "latitude"
 msgstr "latitudine"
 

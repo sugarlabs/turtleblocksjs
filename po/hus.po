@@ -74,6 +74,16 @@ msgstr "ka ts'atba' in puwel"
 msgid "start turtle"
 msgstr ""
 
+msgid "city latitude"
+msgstr ""
+
+msgid "city longitude"
+msgstr ""
+
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
 msgid "latitude"
 msgstr ""
 

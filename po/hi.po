@@ -80,6 +80,16 @@ msgstr "पेन आकार सेट करें"
 msgid "start turtle"
 msgstr "टरटल चालू करे"
 
+msgid "city latitude"
+msgstr ""
+
+msgid "city longitude"
+msgstr ""
+
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
 msgid "latitude"
 msgstr "अक्षांश"
 

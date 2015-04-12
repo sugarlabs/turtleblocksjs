@@ -566,6 +566,18 @@ msgstr ""
 msgid "zoom"
 msgstr ""
 
+#. TRANS: latitud de la cuidad
+msgid "city latitude"
+msgstr ""
+
+#. TRANS: longitud de la cuidad
+msgid "city longitude"
+msgstr ""
+
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
 #. TRANS: latitud
 msgid "latitude"
 msgstr ""

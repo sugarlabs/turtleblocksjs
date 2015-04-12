@@ -19,55 +19,95 @@ NOTE: Default local is downtown Boston.
 
 //* globals *//
 var mashapeKey = 'JidA8phgY8mshJ8MiEUeHTdwFjjtp1wq209jsncYthfRDMQNW6';
+var cityName = '';
+var cityLatitude = 0;
+var cityLongitude = 0;
 
-//* block:cityToCoord *//
-var cityToCoordBlk = new ProtoBlock('cityToCoord');
-cityToCoordBlk.palette = palettes.dict['GMAP'];
-blocks.protoBlockDict['cityToCoord'] = cityToCoordBlk;
-cityToCoordBlk.staticLabels.push('City to Coordinates');
-cityToCoordBlk.adjustWidthToLabel();
-cityToCoordBlk.oneArgMathBlock();
-cityToCoordBlk.dockTypes[1] = 'anyin';
-cityToCoordBlk.defaults.push("Boston");
+//* block:cityToLat *//
+var cityToLatBlk = new ProtoBlock('cityToLat');
+cityToLatBlk.palette = palettes.dict['GMAP'];
+blocks.protoBlockDict['cityToLat'] = cityToLatBlk;
+cityToLatBlk.staticLabels.push('city latitude');
+cityToLatBlk.adjustWidthToLabel();
+cityToLatBlk.oneArgMathBlock();
+cityToLatBlk.dockTypes[1] = 'anyin';
+cityToLatBlk.defaults.push("Boston");
 
-//* arg:cityToCoord *//
+//* block:cityToLong *//
+var cityToLongBlk = new ProtoBlock('cityToLong');
+cityToLongBlk.palette = palettes.dict['GMAP'];
+blocks.protoBlockDict['cityToLong'] = cityToLongBlk;
+cityToLongBlk.staticLabels.push('city longitude');
+cityToLongBlk.adjustWidthToLabel();
+cityToLongBlk.oneArgMathBlock();
+cityToLongBlk.dockTypes[1] = 'anyin';
+cityToLongBlk.defaults.push("Boston");
+
+//* arg:cityToLong *//
 var block = logo.blocks.blockList[blk];
 var conns = block.connections;
-var inputPlace = logo.parseArg(logo, turtle, conns[1]);
+var city = logo.parseArg(logo, turtle, conns[1]);
 
-var apiURL = "https://devru-latitude-longitude-find-v1.p.mashape.com/latlon.php?location=" + inputPlace;
-var request = new XMLHttpRequest();
-request.open('GET', apiURL, false);
-request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
-request.send(null);
-var response = request.responseText;
-var data = JSON.parse(response);
-if(data['Results'].length > 0)
-{   
-    data = data['Results'][0]['ll'];
-    var ans = "Latitude is ", flag = 0;
-    for(var i=0 ; i<data.length ; i++)
-    {
-        if(!flag)
-        {
-          if(data[i] != ' ')
-              ans += data[i];
-          else
-              {
-                ans += " and Longitude of " + inputPlace + " is ";
-                flag = 1;
-              }
+if (city == cityName) {
+    block.value = cityLongitude;
+} else {
+    var apiURL = 'https://devru-latitude-longitude-find-v1.p.mashape.com/latlon.php?location=' + city;
+    var request = new XMLHttpRequest();
+    request.open('GET', apiURL, false);
+    request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+    request.send(null);
+    var response = request.responseText;
+    var data = JSON.parse(response);
+    var longitude = 0;
+    if (data['Results'].length > 0) {   
+        data = data['Results'][0]['ll'];
+        var parts = data.split(' ');
+        try {
+            cityLatitude = Number(parts[0]);
+            cityLongitude = Number(parts[1]);
+            var longitude = cityLongitude;
+            cityName = city;
+        } catch (e) {
+           logo.errorMsg('Data not available for ' + city, blk);
         }
-        if(flag)
-        {
-          ans += data[i];
-        }
+    } else {
+        logo.errorMsg('Data not available for ' + city, blk);
     }
-
-    block.value = ans;
+    block.value = longitude;
 }
-else
-    block.value = "data not available";    
+
+//* arg:cityToLat *//
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
+var city = logo.parseArg(logo, turtle, conns[1]);
+
+if (city == cityName) {
+    block.value = cityLongitude;
+} else {
+    var apiURL = 'https://devru-latitude-longitude-find-v1.p.mashape.com/latlon.php?location=' + city;
+    var request = new XMLHttpRequest();
+    request.open('GET', apiURL, false);
+    request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+    request.send(null);
+    var response = request.responseText;
+    var data = JSON.parse(response);
+    var latitude = 0;
+    if(data['Results'].length > 0) {   
+        data = data['Results'][0]['ll'];
+        var parts = data.split(' ');
+        try {
+            cityLatitude = Number(parts[0]);
+            cityLongitude = Number(parts[1]);
+            var latitude = cityLatitude;
+            cityName = city;
+        } catch (e) {
+            logo.errorMsg('Data not available for ' + city, blk);
+        }
+    } else {
+        logo.errorMsg('Data not available for ' + city, blk);
+    }
+    block.value = latitude;
+}
 
 //* block:gmap *//
 var gmapBlk = new ProtoBlock('gmap');

@@ -18,6 +18,56 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 NOTE: Default local is downtown Boston.
 
 //* globals *//
+var mashapeKey = 'JidA8phgY8mshJ8MiEUeHTdwFjjtp1wq209jsncYthfRDMQNW6';
+
+//* block:cityToCoord *//
+var cityToCoordBlk = new ProtoBlock('cityToCoord');
+cityToCoordBlk.palette = palettes.dict['GMAP'];
+blocks.protoBlockDict['cityToCoord'] = cityToCoordBlk;
+cityToCoordBlk.staticLabels.push('City to Coordinates');
+cityToCoordBlk.adjustWidthToLabel();
+cityToCoordBlk.oneArgMathBlock();
+cityToCoordBlk.dockTypes[1] = 'anyin';
+cityToCoordBlk.defaults.push("Boston");
+
+//* arg:cityToCoord *//
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
+var inputPlace = logo.parseArg(logo, turtle, conns[1]);
+
+var apiURL = "https://devru-latitude-longitude-find-v1.p.mashape.com/latlon.php?location=" + inputPlace;
+var request = new XMLHttpRequest();
+request.open('GET', apiURL, false);
+request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+request.send(null);
+var response = request.responseText;
+var data = JSON.parse(response);
+if(data['Results'].length > 0)
+{   
+    data = data['Results'][0]['ll'];
+    var ans = "Latitude is ", flag = 0;
+    for(var i=0 ; i<data.length ; i++)
+    {
+        if(!flag)
+        {
+          if(data[i] != ' ')
+              ans += data[i];
+          else
+              {
+                ans += " and Longitude of " + inputPlace + " is ";
+                flag = 1;
+              }
+        }
+        if(flag)
+        {
+          ans += data[i];
+        }
+    }
+
+    block.value = ans;
+}
+else
+    block.value = "data not available";    
 
 //* block:gmap *//
 var gmapBlk = new ProtoBlock('gmap');

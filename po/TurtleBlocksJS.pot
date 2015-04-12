@@ -534,6 +534,16 @@ msgstr ""
 msgid "longitude"
 msgstr ""
 
+msgid "city latitude"
+msgstr ""
+
+msgid "city longitude"
+msgstr ""
+
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
 #. TRANS: the heap is a first-in-last-out (FILO) stack
 msgid "show heap"
 msgstr ""

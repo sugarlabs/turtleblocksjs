@@ -505,6 +505,15 @@ msgstr "latitud"
 msgid "longitude"
 msgstr "longitud"
 
+msgid "city latitude"
+msgstr "latitud de la ciudad"
+
+msgid "city longitude"
+msgstr "longitud de la ciudad"
+
+msgid "Coordinate data not available."
+msgstr "Coordinar datos no disponibles."
+
 msgid "show heap"
 msgstr "mostrar pila"
 

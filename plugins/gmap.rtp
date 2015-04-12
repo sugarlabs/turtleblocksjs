@@ -27,7 +27,7 @@ var cityLongitude = 0;
 var cityToLatBlk = new ProtoBlock('cityToLat');
 cityToLatBlk.palette = palettes.dict['GMAP'];
 blocks.protoBlockDict['cityToLat'] = cityToLatBlk;
-cityToLatBlk.staticLabels.push('city latitude');
+cityToLatBlk.staticLabels.push(_('city latitude'));
 cityToLatBlk.adjustWidthToLabel();
 cityToLatBlk.oneArgMathBlock();
 cityToLatBlk.dockTypes[1] = 'anyin';
@@ -37,7 +37,7 @@ cityToLatBlk.defaults.push("Boston");
 var cityToLongBlk = new ProtoBlock('cityToLong');
 cityToLongBlk.palette = palettes.dict['GMAP'];
 blocks.protoBlockDict['cityToLong'] = cityToLongBlk;
-cityToLongBlk.staticLabels.push('city longitude');
+cityToLongBlk.staticLabels.push(_('city longitude'));
 cityToLongBlk.adjustWidthToLabel();
 cityToLongBlk.oneArgMathBlock();
 cityToLongBlk.dockTypes[1] = 'anyin';
@@ -68,10 +68,10 @@ if (city == cityName) {
             var longitude = cityLongitude;
             cityName = city;
         } catch (e) {
-           logo.errorMsg('Data not available for ' + city, blk);
+           logo.errorMsg(_('Coordinate data not available.'), blk);
         }
     } else {
-        logo.errorMsg('Data not available for ' + city, blk);
+        logo.errorMsg(_('Coordinate data not available.)', blk);
     }
     block.value = longitude;
 }
@@ -101,10 +101,10 @@ if (city == cityName) {
             var latitude = cityLatitude;
             cityName = city;
         } catch (e) {
-            logo.errorMsg('Data not available for ' + city, blk);
+           logo.errorMsg(_('Coordinate data not available.'), blk);
         }
     } else {
-        logo.errorMsg('Data not available for ' + city, blk);
+       logo.errorMsg(_('Coordinate data not available.'), blk);
     }
     block.value = latitude;
 }
@@ -113,7 +113,7 @@ if (city == cityName) {
 var gmapBlk = new ProtoBlock('gmap');
 gmapBlk.palette = palettes.dict['GMAP'];
 blocks.protoBlockDict['gmap'] = gmapBlk;
-gmapBlk.staticLabels.push('Google map','coordinates','zoom factor');
+gmapBlk.staticLabels.push(_('Google map'),_('coordinates'),_('zoom factor'));
 gmapBlk.adjustWidthToLabel();
 gmapBlk.twoArgMathBlock();
 
@@ -141,7 +141,7 @@ block.value = gmapURL;
 var zoomBlk = new ProtoBlock('zoom');
 zoomBlk.palette = palettes.dict['GMAP'];
 blocks.protoBlockDict['zoom'] = zoomBlk;
-zoomBlk.staticLabels.push('zoom');
+zoomBlk.staticLabels.push(_('zoom'));
 zoomBlk.adjustWidthToLabel();
 zoomBlk.oneArgMathBlock();
 zoomBlk.dockTypes[1] = 'anyin';
@@ -157,7 +157,7 @@ block.value = zoomFactor;
 var coordBlk = new ProtoBlock('coord');
 coordBlk.palette = palettes.dict['GMAP'];
 blocks.protoBlockDict['coord'] = coordBlk;
-coordBlk.staticLabels.push('coordinates','latitude','longitude');
+coordBlk.staticLabels.push(_('coordinates'),_('latitude'),_('longitude'));
 coordBlk.adjustWidthToLabel();
 coordBlk.twoArgMathBlock();
 coordBlk.dockTypes[1] = 'anyin';

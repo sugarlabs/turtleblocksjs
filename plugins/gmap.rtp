@@ -71,7 +71,7 @@ if (city == cityName) {
            logo.errorMsg(_('Coordinate data not available.'), blk);
         }
     } else {
-        logo.errorMsg(_('Coordinate data not available.)', blk);
+        logo.errorMsg(_('Coordinate data not available.'), blk);
     }
     block.value = longitude;
 }

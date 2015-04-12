@@ -82,7 +82,7 @@ var conns = block.connections;
 var city = logo.parseArg(logo, turtle, conns[1]);
 
 if (city == cityName) {
-    block.value = cityLongitude;
+    block.value = cityLatitude;
 } else {
     var apiURL = 'https://devru-latitude-longitude-find-v1.p.mashape.com/latlon.php?location=' + city;
     var request = new XMLHttpRequest();

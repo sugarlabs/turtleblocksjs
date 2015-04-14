@@ -541,7 +541,7 @@ function PopdownPalette(palettes) {
     }
 
     this.update = function () {
-        var html = '<div class="back"><h2>Back to the Canvas</h2></div>';
+        var html = '<div class="back"><h2>' + _('back') + '</h2></div>';
         for (var name in this.models) {
             html += '<div class="palette">';
             var icon = PALETTEICONS[name]
@@ -549,11 +549,14 @@ function PopdownPalette(palettes) {
             html += format('<h2 data-name="{n}"> \
                                 {i}<span>{n}</span> \
                                 <img class="hide-button" src="icons/hide.svg" \
-                                     alt="{_Hide}" title="{_Hide}" /> \
+                                     alt="{' + _('hide') + '}" \
+                                     title="{' + _('hide') + '}" /> \
                                 <img class="show-button" src="icons/show.svg" \
-                                     alt="{_Show}" title="{_Show}" /> \
+                                     alt="{' + _('show') + '}" \
+                                     title="{' + _('show') + '}" /> \
                                 <img class="popout-button" src="icons/popout.svg" \
-                                     alt="{_Popout}" title="{_Popout}" /> \
+                                     alt="{' + _('popout') + '}" \
+                                     title="{' + _('popout') + '}" /> \
                             </h2>',
                            {i: icon, n: name});
             html += '<ul>';

@@ -175,6 +175,7 @@ msgstr ""
 msgid "hide"
 msgstr ""
 
+#. TRANS: popout window
 msgid "popout"
 msgstr ""
 

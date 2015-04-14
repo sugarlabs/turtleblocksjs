@@ -155,8 +155,9 @@ msgstr "mostrar"
 msgid "hide"
 msgstr "ocultar"
 
+#. TRANS: popout window (ventana emergente)
 msgid "popout"
-msgstr "salir"
+msgstr ""
 
 msgid "size"
 msgstr "tamaño"

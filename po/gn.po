@@ -201,7 +201,7 @@ msgstr ""
 msgid "hide"
 msgstr ""
 
-#. TRANS: salir
+#. TRANS: popout window (ventana emergente)
 msgid "popout"
 msgstr ""
 

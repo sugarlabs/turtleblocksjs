@@ -166,7 +166,7 @@ msgstr "uñachayaña"
 msgid "hide"
 msgstr "wakichata"
 
-#. TRANS: salir
+#. TRANS: popout window (ventana emergente)
 msgid "popout"
 msgstr ""
 

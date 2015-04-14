@@ -153,7 +153,7 @@ msgstr ""
 msgid "add"
 msgstr ""
 
-#. TRANS: a
+#. TRANS: para
 msgid "to"
 msgstr ""
 
@@ -162,6 +162,13 @@ msgstr "arsuña"
 
 msgid "show"
 msgstr "uñachayaña"
+
+msgid "hide"
+msgstr "wakichata"
+
+#. TRANS: salir
+msgid "popout"
+msgstr ""
 
 #. TRANS: 
 msgid "size"
@@ -592,8 +599,11 @@ msgstr "siqi wakichata uñachayma"
 msgid "pop"
 msgstr "apsuña"
 
-msgid "empty heap"
+msgid "empty heap?"
 msgstr "ch'usa siqi?"
+
+msgid "empty heap"
+msgstr "siqi wakichata ch'ussuña"
 
 msgid "save heap"
 msgstr "wakichata siqi imaña"

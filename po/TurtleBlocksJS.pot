@@ -172,6 +172,12 @@ msgstr ""
 msgid "show"
 msgstr ""
 
+msgid "hide"
+msgstr ""
+
+msgid "popout"
+msgstr ""
+
 msgid "size"
 msgstr ""
 

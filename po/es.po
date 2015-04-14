@@ -152,6 +152,12 @@ msgstr "hablar"
 msgid "show"
 msgstr "mostrar"
 
+msgid "hide"
+msgstr "ocultar"
+
+msgid "popout"
+msgstr "salir"
+
 msgid "size"
 msgstr "tamaño"
 
@@ -522,7 +528,7 @@ msgstr "sacar"
 
 #. TRANS: is the heap empty?
 msgid "heap empty?"
-msgstr "pila vacío?"
+msgstr "¿pila vacío?"
 
 msgid "empty heap"
 msgstr "vaciar pila"
@@ -768,4 +774,4 @@ msgid "confirm"
 msgstr "confirmar"
 
 msgid "to"
-msgstr ""
+msgstr "para"

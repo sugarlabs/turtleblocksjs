@@ -197,6 +197,14 @@ msgstr ""
 msgid "show"
 msgstr ""
 
+#. TRANS: ocultar
+msgid "hide"
+msgstr ""
+
+#. TRANS: salir
+msgid "popout"
+msgstr ""
+
 #. TRANS: tamaño
 msgid "size"
 msgstr ""
@@ -680,6 +688,10 @@ msgstr ""
 
 #. TRANS: vaciar pila
 msgid "empty heap"
+msgstr ""
+
+#. TRANS: ¿pila vacío?
+msgid "heap empty?"
 msgstr ""
 
 #. TRANS: guardar pila

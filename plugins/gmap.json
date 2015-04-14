@@ -1,6 +1,6 @@
 {
     "HIGHLIGHTSTROKECOLORS": {
-        "GMAP": "#000000"
+        "GMAP": "#002659"
     }, 
     "ARGPLUGINS": {
         "coord": "var block = logo.blocks.blockList[blk];var conns = block.connections;var latitude    = logo.parseArg(logo, turtle, conns[1]);var longitude   = logo.parseArg(logo, turtle, conns[2]);latitude = eval(latitude);longitude = eval(longitude);if(!latitude || !longitude) {    latitude = 42.357279;    longitude = -71.065740;}gmapURL = 'http://maps.googleapis.com/maps/api/staticmap?center=' + latitude + ',' + longitude;        block.value = gmapURL;", 
@@ -11,7 +11,7 @@
     }, 
     "GLOBALS": "mashapeKey = 'JidA8phgY8mshJ8MiEUeHTdwFjjtp1wq209jsncYthfRDMQNW6';cityName = '';cityLatitude = 0;cityLongitude = 0;", 
     "PALETTEHIGHLIGHTCOLORS": {
-        "GMAP": "#ffb1b3"
+        "GMAP": "#00c5ff"
     }, 
     "PALETTEPLUGINS": {
         "GMAP": "<svg   xmlns=\"http://www.w3.org/2000/svg\"   version=\"1.1\"   width=\"55\"   height=\"55\">  <g     transform=\"translate(0,-997.36218)\">    <path       d=\"m 26.666222,1048.911 c -0.09596,-0.1879 -0.280246,-1.1767 -0.409529,-2.1972 -0.565075,-4.4605 -1.668106,-8.4319 -3.417528,-12.3047 -1.042617,-2.3081 -1.991286,-4.0116 -4.785815,-8.5938 -2.157572,-3.5377 -3.416439,-6.1924 -3.906374,-8.2377 -1.94515,-8.1203 3.386556,-15.8819 11.66714,-16.9844 6.55392,-0.87256 12.754344,3.0441 14.884012,9.4018 0.303361,0.9057 0.454986,1.948 0.528971,3.6362 0.12683,2.8942 -0.172817,4.4431 -1.375035,7.1077 -0.81051,1.7964 -1.193239,2.47 -3.882801,6.8343 -4.222383,6.8514 -6.42126,12.8338 -7.162043,19.4855 -0.09889,0.8879 -0.288049,1.7449 -0.420357,1.9043 -0.340934,0.4108 -1.502333,0.3757 -1.720641,-0.052 z m 3.610049,-29.2554 c 2.087523,-1.02 3.263533,-2.9613 3.249324,-5.3637 -0.01655,-2.7984 -1.484926,-4.8055 -4.176295,-5.7086 -1.149887,-0.3858 -3.454027,-0.19 -4.573135,0.3887 -0.987414,0.5106 -2.073445,1.6471 -2.65731,2.7808 -0.65002,1.2622 -0.65002,3.816 0,5.0782 1.595933,3.0989 5.107552,4.3148 8.157416,2.8246 z\"       style=\"fill:#ffffff\" />  </g></svg>"
@@ -24,9 +24,9 @@
         "gmap": "var gmapBlk = new ProtoBlock('gmap');gmapBlk.palette = palettes.dict['GMAP'];blocks.protoBlockDict['gmap'] = gmapBlk;gmapBlk.staticLabels.push(_('Google map'),_('coordinates'),_('zoom factor'));gmapBlk.adjustWidthToLabel();gmapBlk.twoArgMathBlock();"
     }, 
     "PALETTEFILLCOLORS": {
-        "GMAP": "#c0c0c0"
+        "GMAP": "#00abff"
     }, 
     "PALETTESTROKECOLORS": {
-        "GMAP": "#ef003e"
+        "GMAP": "#005aaa"
     }
 }

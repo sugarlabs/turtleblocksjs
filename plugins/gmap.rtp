@@ -196,7 +196,7 @@ block.value = gmapURL;
 </svg>
 
 
-//* palette-fill:GMAP *// #c0c0c0
-//* palette-stroke:GMAP *// #ef003e
-//* palette-highlight:GMAP *// #ffb1b3
-//* palette-stroke-highlight:GMAP *// #000000
+//* palette-fill:GMAP *// #00abff
+//* palette-stroke:GMAP *// #005aaa
+//* palette-highlight:GMAP *// #00c5ff
+//* palette-stroke-highlight:GMAP *// #002659

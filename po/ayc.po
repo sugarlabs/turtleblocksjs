@@ -599,7 +599,7 @@ msgstr "siqi wakichata uñachayma"
 msgid "pop"
 msgstr "apsuña"
 
-msgid "empty heap?"
+msgid "heap empty?"
 msgstr "ch'usa siqi?"
 
 msgid "empty heap"

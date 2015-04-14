@@ -17,6 +17,12 @@ msgstr "सर्व हटवा"
 msgid "show"
 msgstr "दाखवा"
 
+msgid "hide"
+msgstr ""
+
+msgid "popout"
+msgstr ""
+
 msgid "text"
 msgstr "मजकूर"
 
@@ -683,6 +689,9 @@ msgstr "कमाल / जस्तिस जास्त"
 
 msgid "logic"
 msgstr "तर्कशास्त्र"
+
+msgid "heap empty?"
+msgstr ""
 
 msgid "empty heap"
 msgstr "रिक्त ढीग"

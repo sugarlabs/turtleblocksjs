@@ -23,6 +23,12 @@ msgstr "सब मिटाइए"
 msgid "show"
 msgstr "दिखाएँ"
 
+msgid "hide"
+msgstr ""
+
+msgid "popout"
+msgstr ""
+
 msgid "text"
 msgstr "पाठ"
 
@@ -692,6 +698,9 @@ msgstr "तर्क"
 
 msgid "empty heap"
 msgstr "रिक्त ढेर"
+
+msgid "heap empty?"
+msgstr ""
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "आप टूर पूरा कर चुके। टर्टल ब्लॊक्स का आनन्द लें।"

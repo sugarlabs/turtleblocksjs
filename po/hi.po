@@ -87,14 +87,14 @@ msgid "start turtle"
 msgstr "टरटल चालू करे"
 
 msgid "city latitude"
-msgstr ""
+msgstr "शहर अक्षांश"
 
 msgid "city longitude"
-msgstr ""
+msgstr "शहर देशांतर"
 
 #. TRANS: longitude and latitude coordinate data
 msgid "Coordinate data not available."
-msgstr ""
+msgstr "डेटा उपलब्ध नहीं है समन्वय"
 
 msgid "latitude"
 msgstr "अक्षांश"
@@ -142,7 +142,7 @@ msgid "not"
 msgstr "नहीं"
 
 msgid "Google map"
-msgstr "गूगल का नक्शा"
+msgstr "गूगल मानचित्र"
 
 msgid "day"
 msgstr "दिन"
@@ -157,22 +157,22 @@ msgid "get fiber"
 msgstr "रेशा मिलता है"
 
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr ""
+msgstr "कछुए ब्लाकों विन्यास के लिए एक पैनल खोलें।"
 
 msgid "name"
 msgstr "नाम"
 
 msgid "turtle x"
-msgstr "टर्टल"
+msgstr "कछुआ x"
 
 msgid "turtle y"
-msgstr "टर्टल"
+msgstr "कछुआ y"
 
 msgid "Download"
 msgstr "डाउनलोड"
 
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
-msgstr "जब क्लिपबोर्ड में ब्लॉक्स प्रतिलिपित होते हैं तब \"पेस्ट\" बटन सक्रिय होता है"
+msgstr "जब क्लिपबोर्ड में ब्लॉक्स प्रतिलिपित होते हैं तब \"पेस्ट\" बटन सक्रिय होता है।"
 
 msgid "Expand/collapse toolbar"
 msgstr "उपकरण पट्टी को खोलें या बंद करें"
@@ -208,7 +208,7 @@ msgid "Help"
 msgstr "मदद"
 
 msgid "turtle"
-msgstr "टर्टल"
+msgstr "कछुआ"
 
 msgid "right"
 msgstr "दायाँ"
@@ -496,7 +496,7 @@ msgid "translate"
 msgstr "अनुवाद करें"
 
 msgid "until"
-msgstr "तब तक"
+msgstr "जब तक"
 
 msgid "define"
 msgstr "परिभाषित करें"
@@ -520,7 +520,7 @@ msgid "set lang"
 msgstr "भाषा स्थित करें"
 
 msgid "turtle name"
-msgstr "टर्टल का नाम"
+msgstr "कछुआ नाम"
 
 msgid "carbs"
 msgstr "कार्बोहायड्रेट"
@@ -535,7 +535,7 @@ msgid "begin fill"
 msgstr "भरना शुरू करें"
 
 msgid "sense right"
-msgstr "दाईं ओर भावना करें"
+msgstr "भावना सही"
 
 msgid "eat"
 msgstr "खाएं"
@@ -583,7 +583,7 @@ msgid "cake"
 msgstr "केक"
 
 msgid "exp"
-msgstr ""
+msgstr "ऍक्स्प"
 
 msgid "load heap"
 msgstr "ढेर को लोड करें"
@@ -700,7 +700,7 @@ msgid "empty heap"
 msgstr "रिक्त ढेर"
 
 msgid "heap empty?"
-msgstr ""
+msgstr "खाली ढेर"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "आप टूर पूरा कर चुके। टर्टल ब्लॊक्स का आनन्द लें।"
@@ -724,7 +724,7 @@ msgid "broccoli"
 msgstr "ब्रोकली"
 
 msgid "stop media"
-msgstr "रोकिए"
+msgstr "मीडिया रोक"
 
 msgid "tomato"
 msgstr "टमाटर"
@@ -742,7 +742,7 @@ msgid "clear"
 msgstr "साफ़ करें"
 
 msgid "floor"
-msgstr ""
+msgstr "मंज़िल"
 
 msgid "flow"
 msgstr "बहाव"
@@ -767,7 +767,6 @@ msgstr "नमस्ते"
 
 msgid "left"
 msgstr "बायाँ"
-
 
 msgid "Planet"
 msgstr "ग्रह"

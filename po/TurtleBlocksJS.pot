@@ -552,6 +552,10 @@ msgstr ""
 msgid "pop"
 msgstr ""
 
+#. TRANS: is the heap empty?
+msgid "heap empty?"
+msgstr ""
+
 msgid "empty heap"
 msgstr ""
 

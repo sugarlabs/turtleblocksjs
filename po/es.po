@@ -520,6 +520,10 @@ msgstr "mostrar pila"
 msgid "pop"
 msgstr "sacar"
 
+#. TRANS: is the heap empty?
+msgid "heap empty?"
+msgstr "pila vacío?"
+
 msgid "empty heap"
 msgstr "vaciar pila"
 

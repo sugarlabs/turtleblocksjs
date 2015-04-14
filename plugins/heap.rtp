@@ -43,6 +43,13 @@ if (turtle in turtleHeaps && turtleHeaps[turtle].length > 0) {
     block.value = null;
 }
 
+//* arg:heapEmpty *//
+var block = logo.blocks.blockList[blk];
+if (turtle in turtleHeaps) {
+    block.value = (turtleHeaps[turtle].length == 0);
+} else {
+    block.value = true;
+}
 
 //* flow:saveHeap *//
 function downloadFile(filename, mimetype, content) {
@@ -119,6 +126,14 @@ blocks.protoBlockDict['showHeap'] = showHeap;
 showHeap.staticLabels.push(_('show heap'));
 showHeap.adjustWidthToLabel();
 showHeap.zeroArgBlock();
+
+//* block:heapEmpty *//
+var heapEmpty = new ProtoBlock('heapEmpty');
+heapEmpty.palette = palettes.dict['extras'];
+blocks.protoBlockDict['heapEmpty'] = heapEmpty;
+heapEmpty.staticLabels.push(_('heap empty?'));
+heapEmpty.adjustWidthToLabel();
+heapEmpty.booleanZeroArgBlock();
 
 //* block:emptyHeap *//
 var emptyHeap = new ProtoBlock('emptyHeap');

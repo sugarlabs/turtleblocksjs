@@ -1,5 +1,6 @@
 {
     "BLOCKPLUGINS": {
+        "heapEmpty": "var heapEmpty = new ProtoBlock('heapEmpty');heapEmpty.palette = palettes.dict['extras'];blocks.protoBlockDict['heapEmpty'] = heapEmpty;heapEmpty.staticLabels.push(_('heap empty?'));heapEmpty.adjustWidthToLabel();heapEmpty.booleanZeroArgBlock();", 
         "showHeap": "var showHeap = new ProtoBlock('showHeap');showHeap.palette = palettes.dict['extras'];blocks.protoBlockDict['showHeap'] = showHeap;showHeap.staticLabels.push(_('show heap'));showHeap.adjustWidthToLabel();showHeap.zeroArgBlock();", 
         "pop": "var popBlk = new ProtoBlock('pop');popBlk.palette = palettes.dict['extras'];blocks.protoBlockDict['pop'] = popBlk;popBlk.staticLabels.push(_('pop'));popBlk.adjustWidthToLabel();popBlk.parameterBlock();", 
         "emptyHeap": "var emptyHeap = new ProtoBlock('emptyHeap');emptyHeap.palette = palettes.dict['extras'];blocks.protoBlockDict['emptyHeap'] = emptyHeap;emptyHeap.staticLabels.push(_('empty heap'));emptyHeap.adjustWidthToLabel();emptyHeap.zeroArgBlock();", 
@@ -9,6 +10,7 @@
     }, 
     "GLOBALS": "turtleHeaps = {};", 
     "ARGPLUGINS": {
+        "heapEmpty": "var block = logo.blocks.blockList[blk];if (turtle in turtleHeaps) {    block.value = (turtleHeaps[turtle].length == 0);} else {    block.value = true;}", 
         "pop": "var block = logo.blocks.blockList[blk];if (turtle in turtleHeaps && turtleHeaps[turtle].length > 0) {    block.value = turtleHeaps[turtle].pop();} else {    logo.errorMsg(_('empty heap'));    block.value = null;}"
     }, 
     "FLOWPLUGINS": {

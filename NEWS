@@ -311,6 +311,10 @@
   * Raise stack to top when disconnectiong from parent stack.
   * Fixed problem with disappearing protoblock.
   * New documentation folder (w/Amitjha).
+  * Added short press detection for Android text and number blocks.
+  * Improvements? to color model.
+  * Improvements to GMAP plugin.
+  * Added heap empty? block to HEAP plugin.
 
 TODO:
   * Save errors
@@ -341,14 +345,8 @@ FEATURE IDEAS:
 KNOWN BUGS:
   * Find a scalable approach to drawing on the canvas
   * Not all blocks highlight when using step-by-step mode
-  * Camera doesn't work on Android
-  * Music block doesn't work on Android
-  * Cannot open plugins loader on Android
   * Sometimes returning to backgrounded project results in empty project
   * Loading macros there is a funny collapsed state sometimes.
-  * Crashes the Browse activity on the XO: a multitude of cross-source
-    violations that eventually crash the app.
-  * No access to camera or microphone on XO.
   * Somehow we end up in a browser resize loop??? (2842 console messages are
     not shown js/activity.js:770)
   * Python show block not compatible with JS show block.
@@ -358,4 +356,13 @@ KNOWN BUGS:
   * Sometimes clamp block highlight scale is too large.
   * Sometimes docking position is not scaled properly when dragging block
     after block resize.
-  * Cannot edit number/text blocks on Android (regression).
+
+ANDROID-SPECIFIC BUGS:
+  * Camera doesn't work on Android
+  * Music block doesn't work on Android
+  * Cannot open plugins loader on Android
+
+SUGAR-SPECIFIC BUGS:
+  * Crashes the Browse activity on the XO: a multitude of cross-source
+    violations that eventually crash the app.
+  * No access to camera or microphone on XO.

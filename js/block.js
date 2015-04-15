@@ -344,7 +344,7 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.blocks.adjustDocks(thisBlock);
 
                     // Adjust the text position.
-		    positionText(myBlock, myBlock.protoblock.scale);
+                    positionText(myBlock, myBlock.protoblock.scale);
 
                     // Are there clamp blocks that need expanding?
                     if (myBlock.blocks.clampBlocksToCheck.length > 0) {
@@ -1010,80 +1010,7 @@ function loadEventHandlers(myBlock) {
             } else if (myBlock.name == 'loadFile') {
                 myBlock.doOpenMedia(myBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
-                var x = myBlock.container.x
-                var y = myBlock.container.y
-                var canvasLeft = blocks.canvas.offsetLeft + 28;
-                var canvasTop = blocks.canvas.offsetTop + 6;
-
-                var movedStage = false;
-                if (!window.hasMouse && blocks.stage.y + y > 75) {
-                    movedStage = true;
-                    var fromY = blocks.stage.y;
-                    blocks.stage.y = -y + 75;
-                }
-
-                if (myBlock.name == 'text') {
-                    var type = 'text';
-                } else {
-                    var type = 'number';
-                }
-
-                // A place in the DOM to put modifiable labels (textareas).
-                var labelElem = docById('labelDiv');
-                labelElem.innerHTML = '<input id="' + type + 'Label" \
-                    style="position: absolute; \
-                    -webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" \
-                    class="' + type + '" type="' + type + '" \
-                    value="' + myBlock.value + '" />';
-                labelElem.classList.add('hasKeyboard');
-
-                myBlock.label = docById(type + 'Label');
-
-                var focused = false;
-                var blur = function (event) {
-                    if (!focused) {
-                        return;
-                    }
-
-                    labelChanged(myBlock);
-                    event.preventDefault();
-
-                    labelElem.classList.remove('hasKeyboard');
-                    window.scroll(0, 0);
-                    myBlock.label.style.display = 'none';
-                    myBlock.label.removeEventListener('keypress', keypress);
-
-                    if (movedStage) {
-                         blocks.stage.y = fromY;
-                         blocks.updateStage();
-                    }
-                };
-                myBlock.label.addEventListener('blur', blur);
-
-                var keypress = function (event) {
-                    if ([13, 10, 9].indexOf(event.keyCode) !== -1) {
-                        blur(event);
-                    }
-                };
-                myBlock.label.addEventListener('keypress', keypress);
-
-                myBlock.label.addEventListener('change', function() {
-                    labelChanged(myBlock);
-                });
-
-                myBlock.label.style.left = Math.round((x + blocks.stage.x) * blocks.scale + canvasLeft) + 'px';
-                myBlock.label.style.top = Math.round((y + blocks.stage.y) * blocks.scale + canvasTop) + 'px';
-                myBlock.label.style.width = Math.round(100 * blocks.scale) * myBlock.protoblock.scale / 2 + 'px';
-                myBlock.label.style.fontSize = Math.round(20 * blocks.scale * myBlock.protoblock.scale / 2) + 'px';
-                myBlock.label.style.display = '';
-                myBlock.label.focus();
-
-                // Firefox fix
-                setTimeout(function () {
-                    myBlock.label.style.display = '';
-                    myBlock.label.focus();
-                    focused = true;
-                }, 100);
+		changeLabel(myBlock);
             } else {
                 if (!blocks.inLongPress) {
                     var topBlock = blocks.findTopBlock(thisBlock);
@@ -1224,7 +1151,19 @@ function mouseoutCallback(myBlock, event, moved) {
             sendStackToTrash(blocks, myBlock);
         } else {
             // Otherwise, process move.
+            // Keep track of time of last move
+            var d = new Date();
+            blocks.time = d.getTime();
             myBlock.blocks.blockMoved(thisBlock);
+        }
+    } else if (myBlock.name == 'text' || myBlock.name == 'number') {
+        var d = new Date();
+        if ((d.getTime() - blocks.time) < 500) {
+            // console.log('blocks WERE moving or we are EDITING already');
+        } else {
+            var d = new Date();
+            blocks.time = d.getTime();
+            changeLabel(myBlock);
         }
     }
 
@@ -1260,6 +1199,84 @@ function makeBitmap(data, name, callback, args) {
         unescape(encodeURIComponent(data)));
 }
 
+
+function changeLabel(myBlock) {
+    var blocks = myBlock.blocks;
+    var x = myBlock.container.x;
+    var y = myBlock.container.y;
+    var canvasLeft = blocks.canvas.offsetLeft + 28;
+    var canvasTop = blocks.canvas.offsetTop + 6;
+
+    var movedStage = false;
+    if (!window.hasMouse && blocks.stage.y + y > 75) {
+        movedStage = true;
+        var fromY = blocks.stage.y;
+        blocks.stage.y = -y + 75;
+    }
+
+    if (myBlock.name == 'text') {
+        var type = 'text';
+    } else {
+        var type = 'number';
+    }
+
+    // A place in the DOM to put modifiable labels (textareas).
+    var labelElem = docById('labelDiv');
+    labelElem.innerHTML = '<input id="' + type + 'Label" \
+style="position: absolute; \
+-webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" \
+class="' + type + '" type="' + type + '" \
+value="' + myBlock.value + '" />';
+    labelElem.classList.add('hasKeyboard');
+
+    myBlock.label = docById(type + 'Label');
+
+    var focused = false;
+    var blur = function (event) {
+        if (!focused) {
+            return;
+        }
+
+        labelChanged(myBlock);
+        event.preventDefault();
+
+        labelElem.classList.remove('hasKeyboard');
+        window.scroll(0, 0);
+        myBlock.label.style.display = 'none';
+        myBlock.label.removeEventListener('keypress', keypress);
+
+        if (movedStage) {
+            blocks.stage.y = fromY;
+            blocks.updateStage();
+        }
+    };
+    myBlock.label.addEventListener('blur', blur);
+
+    var keypress = function (event) {
+        if ([13, 10, 9].indexOf(event.keyCode) !== -1) {
+            blur(event);
+        }
+    };
+    myBlock.label.addEventListener('keypress', keypress);
+
+    myBlock.label.addEventListener('change', function() {
+        labelChanged(myBlock);
+    });
+
+    myBlock.label.style.left = Math.round((x + blocks.stage.x) * blocks.scale + canvasLeft) + 'px';
+    myBlock.label.style.top = Math.round((y + blocks.stage.y) * blocks.scale + canvasTop) + 'px';
+    myBlock.label.style.width = Math.round(100 * blocks.scale) * myBlock.protoblock.scale / 2 + 'px';
+    myBlock.label.style.fontSize = Math.round(20 * blocks.scale * myBlock.protoblock.scale / 2) + 'px';
+    myBlock.label.style.display = '';
+    myBlock.label.focus();
+
+    // Firefox fix
+    setTimeout(function () {
+        myBlock.label.style.display = '';
+        myBlock.label.focus();
+        focused = true;
+    }, 100);
+}
 
 function labelChanged(myBlock) {
     // Update the block values as they change in the DOM label.

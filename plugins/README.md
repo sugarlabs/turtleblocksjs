@@ -14,8 +14,8 @@ You need to download the plugins for load it.
 How to load plugins
 -------------------
 
-Under the Option Toolbar (click it if it is not expanded) you will see
-this option:
+On the Settings Palette found on the Option Toolbar (click it if it is
+not expanded) you will see this option:
 
 <img src='http://people.sugarlabs.org/walter/plugin-button.svg'>
 
@@ -42,18 +42,6 @@ available to the user.
 Prerequisites
 -------------
 
-* You will need to familiarize yourself with [JSON](http://en.wikipedia.org/wiki/JSON)
-
-  About JSON: JavaScript Object Notation, is an open standard format
-  that uses human-readable text to transmit data objects consisting of
-  attribute-value pairs. It is used primarily to transmit data between
-  a server and web application, as an alternative to XML. To learn
-  more about JSON, go to http://www.json.org/
-
-* You may also want to familarize yourself with the Python plugin
-  library [plugins in Turtle
-  Art](http://wiki.sugarlabs.org/go/Activities/Turtle_Art/Plugins)
-
 * It facilitates debugging if you must have turtleblocksjs up and
   running. Use the following command to run it from your cloned
   repository: <pre><code>python -m SimpleHTTPServer</code></pre>
@@ -64,42 +52,48 @@ Prerequisites
   basicblocks.js]
   (https://github.com/walterbender/turtleblocksjs/blob/master/js/basicblocks.js)
 
-* We provide a tool to help you (see the section on Pluginify below).
+* We provide a tool to help you compile psuedo-code into JSON (see the
+  section on Pluginify below). But you may also want to at least
+  familiarize yourself with [JSON](http://en.wikipedia.org/wiki/JSON)
+
+* You may also want to familarize yourself with the Python plugin
+  library [plugins in Turtle
+  Art](http://wiki.sugarlabs.org/go/Activities/Turtle_Art/Plugins)
 
 The Plugin Dictionary
 ---------------------
 
-Now that you know JSON and have turtleblocksjs running, you can go
-through [some example
+You should explore [some example
 plugins](https://github.com/walterbender/turtleblocksjs/blob/master/README.md#Plugins)
 and learn [how to install
 them.](https://github.com/walterbender/turtleblocksjs/blob/master/README.md#how-to-load-plugins)
 
 Plugins are a dictionary of JSON-encoded components that incorporates:
 a flow-block dictionary, an arg-block dictionary, a block dictionary,
-and a palette dictionary.
+a globals dictionary, a palette dictionary, and color dictionaries.
 
-* `flow-block` dictionary is a set of commands that are evaluated when
-  a flow block is run
-* `arg-block` dictionary is a set of commands that are evaluated when
-  an arg block is run
-* `block` dictionary defines the new blocks in the plugin
-* `palette` dictionary defines icons (svg) associated with the
-  palettes populated by the blocks found in the plugin. It is
-  expressed by the following dictionaries (these dictionaries at the
-  same level with `flow-block`, `arg-block` and all):
-  * `fill-colors` Set the hex color of the blocks in the plugin's palatte
-  * `stroke-colors` Set the hex color for stroke of the blocks in the
-    plugin's palatte
-  * `highlight-colors` Set the hex color of the blocks when they are
-    highlighted (in the plugin's palatte)
-  * `plugins` Code of the svg icon used to show/hide the palatte
+* `flow-block` dictionary: commands that are evaluated when
+  a flow block is run;
+* `arg-block` dictionary: commands that are evaluated when
+  an arg block is run;
+* `block` dictionary: new blocks defined in the plugin;
+* `globals` dictionary: globals that you can reference throughout
+  your code (Please use a unique name for your globals -- by convention, we
+  have been prepending the plugin name to global variables, e.g.,
+  weatherSecretKey for the secretKey used in the weather plugin.);
+* `palette` dictionary: icons (in SVG format) associated with the
+  palette;
+* `fill-colors`: hex color of the blocks;
+* `stroke-colors`: hex color for stroke of the blocks;
+* `highlight-colors`: hex color of the blocks when they are
+  highlighted.
 
 Layout and Format
 -----------------
 <pre>
   <code>
   {
+    "GLOBALS":{},
     "FLOWPLUGINS":{},
     "ARGSPLUGINS":{},
     "BLOCKPLUGINS":{},
@@ -111,13 +105,13 @@ Layout and Format
   </code>
 </pre>
 
-Format for `PALETTEFILLCOLORS`, `PALATTEHIGHLIGHTCOLORS` and
-`PALATTESTROKECOLORS`:
-<pre><code>{"[palatte name]":"[color hex code]"}</code></pre>
+Format for `PALETTEFILLCOLORS`, `PALETTEHIGHLIGHTCOLORS` and
+`PALETTESTROKECOLORS`:
+<pre><code>{"[palette name]":"[color hex code]"}</code></pre>
 Example: ```"PALETTESTROKECOLORS":{"mashape":"#ef003e"}```
 
-Format for `PALATTEPLUGINS`:
-<pre><code>{"[palatte name]":"[svg file code]"}</code></pre>
+Format for `PALETTEPLUGINS`:
+<pre><code>{"[palette name]":"[svg file code]"}</code></pre>
 Example: ```"PALETTEPLUGINS":{"mashape":"<?xml version........</svg>"}```
 
 Format for blocks:

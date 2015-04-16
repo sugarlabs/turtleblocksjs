@@ -72,16 +72,16 @@ Plugins are a dictionary of JSON-encoded components that incorporates:
 a flow-block dictionary, an arg-block dictionary, a block dictionary,
 a globals dictionary, a palette dictionary, and color dictionaries.
 
-* `flow-block` dictionary: commands that are evaluated when
+* `flow-block`: commands that are evaluated when
   a flow block is run;
-* `arg-block` dictionary: commands that are evaluated when
+* `arg-block`: commands that are evaluated when
   an arg block is run;
-* `block` dictionary: new blocks defined in the plugin;
-* `globals` dictionary: globals that you can reference throughout
+* `block`: new blocks defined in the plugin;
+* `globals`: globals that you can reference throughout
   your code (Please use a unique name for your globals -- by convention, we
   have been prepending the plugin name to global variables, e.g.,
   weatherSecretKey for the secretKey used in the weather plugin.);
-* `palette` dictionary: icons (in SVG format) associated with the
+* `palette`: icons (in SVG format) associated with the
   palette;
 * `fill-colors`: hex color of the blocks;
 * `stroke-colors`: hex color for stroke of the blocks;
@@ -141,34 +141,34 @@ that it can be used in TurtleBlocksjs. To convert it to JSON, run
 
 References
 ----------
-* List of valid blocks styles in turtleblocksjs:
-  * `zeroArgBlock`: E.g., penup, pendown
-  * `basicBlockNoFlow`: E.g., break
-  * `oneArgBlock`: E.g., forward, right
-  * `twoArgBlock`: E.g., setxy. These are expandable.
-  * `oneArgMathBlock`: E.g., sqrt
-  * `oneArgMathWithLabelBlock`: E.g., box
-  * `twoArgMathBlock`: E.g., plus, minus, multiply, divide. These are also expandable.
-  * `valueBlock`: E.g., number, string. Value blocks get DOM textareas associated with them so their values can be edited by the user.
-  * `mediaBlock`: E.g., media. Media blocks invoke a chooser and a thumbnail image is overlayed to represent the data associated with the block.
-  * `flowClampZeroArgBlock`: E.g., start. A "child" flow is docked in an expandable clamp. There are no additional arguments and no flow above or below.
-  * `flowClampOneArgBlock`: E.g., repeat. Unlike action, there is a flow above and below.
-  * `flowClampBooleanArgBlock`: E.g., if.  A "child" flow is docked in an expandable clamp. The additional argument is a boolean. There is flow above and below.
-  * `doubleFlowClampBooleanArgBlock`: E.g., if then else.  Two "child" flows are docked in expandable clamps. The additional argument is a boolean. There is flow above and below.
-  * `blockClampZeroArgBlock`: E.g., forever. Unlike start, there is flow above and below.
-  * `blockClampOneArgBlock`: E.g., action. A "child" flow is docked in an expandable clamp. The additional argument is a name. Again, no flow above or below.
-  * `booleanZeroArgBlock`: E.g., mouse button.
-  * `booleanOneBooleanArgBlock`: E.g., not
-  * `booleanTwoBooleanArgBlock`: E.g., and
-  * `booleanOneArgBlock`: E.g.,
-  * `booleanTwoArgBlock`: E.g., greater, less, equal.
-  * `parameterBlock`: E.g., color, shade, pensize
+Valid blocks styles in turtleblocksjs:
+* `zeroArgBlock`: E.g., penup, pendown
+* `basicBlockNoFlow`: E.g., break
+* `oneArgBlock`: E.g., forward, right
+* `twoArgBlock`: E.g., setxy. These are expandable.
+* `oneArgMathBlock`: E.g., sqrt
+* `oneArgMathWithLabelBlock`: E.g., box
+* `twoArgMathBlock`: E.g., plus, minus, multiply, divide. These are also expandable.
+* `valueBlock`: E.g., number, string. Value blocks get DOM textareas associated with them so their values can be edited by the user.
+* `mediaBlock`: E.g., media. Media blocks invoke a chooser and a thumbnail image is overlayed to represent the data associated with the block.
+* `flowClampZeroArgBlock`: E.g., start. A "child" flow is docked in an expandable clamp. There are no additional arguments and no flow above or below.
+* `flowClampOneArgBlock`: E.g., repeat. Unlike action, there is a flow above and below.
+* `flowClampBooleanArgBlock`: E.g., if.  A "child" flow is docked in an expandable clamp. The additional argument is a boolean. There is flow above and below.
+* `doubleFlowClampBooleanArgBlock`: E.g., if then else.  Two "child" flows are docked in expandable clamps. The additional argument is a boolean. There is flow above and below.
+* `blockClampZeroArgBlock`: E.g., forever. Unlike start, there is flow above and below.
+* `blockClampOneArgBlock`: E.g., action. A "child" flow is docked in an expandable clamp. The additional argument is a name. Again, no flow above or below.
+* `booleanZeroArgBlock`: E.g., mouse button.
+* `booleanOneBooleanArgBlock`: E.g., not
+* `booleanTwoBooleanArgBlock`: E.g., and
+* `booleanOneArgBlock`: E.g.,
+* `booleanTwoArgBlock`: E.g., greater, less, equal.
+* `parameterBlock`: E.g., color, shade, pensize
 
-  To use the block styles to create your blocks, let us go through [an example](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json#L38)
+To use the block styles to create your blocks, let us go through [an example](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json#L38)
 
-  ```"translate":"var TranslateBlock = new ProtoBlock(\"translate\"); TranslateBlock.palette = palettes.dict[\"mashape\"]; blocks.protoBlockDict[\"translate\"] = TranslateBlock; TranslateBlock.oneArgMathBlock(); TranslateBlock.docks[0][2] = \"textout\"; TranslateBlock.docks[1][2] = \"textin\"; TranslateBlock.defaults.push(\"Hello\"); TranslateBlock.staticLabels.push(\"translate\");",```
+```"translate":"var TranslateBlock = new ProtoBlock(\"translate\"); TranslateBlock.palette = palettes.dict[\"mashape\"]; blocks.protoBlockDict[\"translate\"] = TranslateBlock; TranslateBlock.oneArgMathBlock(); TranslateBlock.docks[0][2] = \"textout\"; TranslateBlock.docks[1][2] = \"textin\"; TranslateBlock.defaults.push(\"Hello\"); TranslateBlock.staticLabels.push(\"translate\");",```
 
-  See the line ```TranslateBlock.oneArgMathBlock();``` That is how you define the block style `oneArgMathBlock` to `TranslateBlock`. To define your own block, use any of the style methods listed above.
+See the line ```TranslateBlock.oneArgMathBlock();``` That is how you define the block style `oneArgMathBlock` to `TranslateBlock`. To define your own block, use any of the style methods listed above.
 
 Example plugins
 ---------------

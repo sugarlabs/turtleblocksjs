@@ -347,6 +347,7 @@ FEATURE IDEAS:
 
 ISSUES:
   * Find a scalable approach to drawing on the canvas
+  * Need to define a break behaviour from with stacks
 
 KNOWN BUGS:
   * Not all blocks highlight when using step-by-step mode

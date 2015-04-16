@@ -321,6 +321,7 @@
   * Fixed namespace collisions with plugin globals.
   * No longer overwriting existing plugin globals when adding new ones.
   * Fixed memory leak in while and until blocks.
+  * Fixed multiple problems with Break (Stop) block.
 
 TODO:
   * Save errors
@@ -344,8 +345,10 @@ FEATURE IDEAS:
   * Arrays
   * Color mixer that outputs a stack: set hue; set value; set chroma.
 
-KNOWN BUGS:
+ISSUES:
   * Find a scalable approach to drawing on the canvas
+
+KNOWN BUGS:
   * Not all blocks highlight when using step-by-step mode
   * Sometimes returning to backgrounded project results in empty project
   * Loading macros there is a funny collapsed state sometimes.
@@ -354,7 +357,6 @@ KNOWN BUGS:
   * Python show block not compatible with JS show block.
   * Not serious, but there is still a race condition when creating
     if-then-else blocks (so there is a work-around in place).
-  * Break doesn't work in forever loops.
   * Sometimes clamp block highlight scale is too large.
   * Sometimes docking position is not scaled properly when dragging block
     after block resize.

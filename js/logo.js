@@ -1203,25 +1203,41 @@ length;
     this.doBreak = function(turtle) {
         // Look for a parent loopBlock in queue and set its count to 1.
 
-        // First, find the parent loopBlock
-        var parentBlk = null;
-        for (var i = this.turtles.turtleList[turtle].queue.length - 1; i > -1; i--) {
-            if (this.loopBlock(this.blocks.blockList[this.turtles.turtleList[turtle].queue[i].parentBlk].name)) {
-                parentBlk = this.turtles.turtleList[turtle].queue[i].parentBlk;
+        var parentLoopBlock = null;
+        var loopBlkIdx = -1;
+        var queueLength = this.turtles.turtleList[turtle].queue.length;
+        for (var i = queueLength - 1; i > -1; i--) {
+            if (this.loopBlock(this.blocks.blockList[this.turtles.turtleList[turtle].queue[i].blk].name)) {
+                // while or until
+                loopBlkIdx = this.turtles.turtleList[turtle].queue[i].blk;
+                parentLoopBlock = this.blocks.blockList[loopBlkIdx];
+                // Flush the parent from the queue.
+                this.turtles.turtleList[turtle].queue.pop();
+                break;
+            } else if (this.loopBlock(this.blocks.blockList[this.turtles.turtleList[turtle].queue[i].parentBlk].name)) {
+                // repeat or forever
+                loopBlkIdx = this.turtles.turtleList[turtle].queue[i].parentBlk;
+                parentLoopBlock = this.blocks.blockList[loopBlkIdx];
+                // Flush the parent from the queue.
+                this.turtles.turtleList[turtle].queue.pop();
                 break;
             }
         }
-        if (parentBlk == null) {
+        if (parentLoopBlock == null) {
             return;
         }
 
-        // Finally, flush the parent from the queue.
-        var queueLength = this.turtles.turtleList[turtle].queue.length;
-        for (var i = queueLength - 1; i > 0; i--) {
-            // console.log(this.turtles.turtleList[turtle].queue[i].parentBlk + ' == ' + parentBlk);
-            if (this.turtles.turtleList[turtle].queue[i].parentBlk == parentBlk) {
-                // console.log('POP');
-                this.turtles.turtleList[turtle].queue.pop();
+        // For while and until, we need to add any childflow from the
+        // parent to the queue.
+        if (parentLoopBlock.name == 'while' || parentLoopBlock.name == 'until') {
+            var childFlow = last(parentLoopBlock.connections);
+            if (childFlow != null) {
+                var queueBlock = new Queue(childFlow, 1, loopBlkIdx);
+                // We need to keep track of the parent block to the
+                // child flow so we can unlightlight the parent block
+                // after the child flow completes.
+                this.parentFlowQueue[turtle].push(loopBlkIdx);
+                this.turtles.turtleList[turtle].queue.push(queueBlock);
             }
         }
     }

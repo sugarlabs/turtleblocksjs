@@ -18,30 +18,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 TODO: description
 
 //* globals *//
-var calories = 0;
-var protein = 0;
-var carbohydrate = 0;
-var fiber = 0;
-var fat = 0;
-
-var foodData = {'apple': [72, 0, 19, 3, 0],
-                'banana':  [105, 1, 27, 3, 0],
-                'orange': [62, 1, 15, 3, 0],
-                'bread':  [69, 4, 12, 2, 1],
-                'corn': [96, 3, 21, 3, 1],
-                'potato': [159, 4, 36, 4, 0],
-                'sweetpotato': [169, 1, 22, 1, 8],
-                'tomato': [150, 4, 25, 3, 5],
-                'broccoli':  [94, 4, 11, 5, 5],
-                'riceandbeans': [411, 14, 60, 8, 13],
-                'tamale': [126, 6, 11, 1, 6],
-                'cheese': [114, 7, 0, 0, 9],
-                'chicken': [152, 15, 0, 0, 10],
-                'fish': [58, 6, 0, 0, 3],
-                'beef': [285, 46, 0, 0, 10],
-                'cake': [387, 4, 69, 2, 13],
-                'cookie': [68, 1, 8, 0, 4],
-                'water': [0, 0, 0, 0, 0]
+var nutritionCalories = 0;
+var nutritionProtein = 0;
+var nutritionCarbohydrate = 0;
+var nutritionFiber = 0;
+var nutritionFat = 0;
+var nutritionFoodData = {
+    'apple': [72, 0, 19, 3, 0],
+    'banana':  [105, 1, 27, 3, 0],
+    'orange': [62, 1, 15, 3, 0],
+    'bread':  [69, 4, 12, 2, 1],
+    'corn': [96, 3, 21, 3, 1],
+    'potato': [159, 4, 36, 4, 0],
+    'sweetpotato': [169, 1, 22, 1, 8],
+    'tomato': [150, 4, 25, 3, 5],
+    'broccoli':  [94, 4, 11, 5, 5],
+    'riceandbeans': [411, 14, 60, 8, 13],
+    'tamale': [126, 6, 11, 1, 6],
+    'cheese': [114, 7, 0, 0, 9],
+    'chicken': [152, 15, 0, 0, 10],
+    'fish': [58, 6, 0, 0, 3],
+    'beef': [285, 46, 0, 0, 10],
+    'cake': [387, 4, 69, 2, 13],
+    'cookie': [68, 1, 8, 0, 4],
+    'water': [0, 0, 0, 0, 0]
 };
 
 //* flow-globals *//
@@ -122,31 +122,31 @@ get_eatme('get_name', _('get name'));
 show_value('calories', _('calories'));
 
 //* parameter:calories )*//
-value = calories;
+value = nutritionCalories;
 
 //* block:protein *//
 show_value('protein', _('protein'));
 
 //* parameter:protein *//
-value = protein;
+value = nutritionProtein;
 
 //* block:carbohydrates *//
 show_value('carbohydrates', _('carbs'));
 
 //* parameter:carbohydrates *//
-value = carbohydrates;
+value = nutritionCarbohydrates;
 
 //* block:fiber *//
 show_value('fiber', _('fiber'));
 
 //* parameter:fiber *//
-value = fiber;
+value = nutritionFiber;
 
 //* block:fat *//
 show_value('fat', _('fat'));
 
 //* parameter:fat *//
-value = fat;
+value = nutritionFat;
 
 //* block:eat *//
 eat('eat', _('eat'));
@@ -209,131 +209,130 @@ food_block('cookie', _('cookie'));
 food_block('water', _('water'));
 
 //* flow:apple *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:banana *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:orange *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:bread *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:corn *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:potato *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:sweetpotato *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:tomato *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:broccoli *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:riceandbeans *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:tamale *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:cheese *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:chicken *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:fish *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:beef *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:cake *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:cookie *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:water *//
-block.value = foodData[block.name];
+block.value = nutritionFoodData[block.name];
 showMsg(block.value);
 
 //* flow:eat *//
 console.log();
-var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
-calories += blockFoodData[0];
-protein += blockFoodData[1];
-carbohydrate += blockFoodData[2];
-fiber += blockFoodData[3];
-fat += blockFoodData[4];
+var blockFoodData = nutritionFoodData[logo.blocks.blockList[conns[1]].name];
+nutritionCalories += blockFoodData[0];
+nutritionProtein += blockFoodData[1];
+nutritionCarbohydrate += blockFoodData[2];
+nutritionFiber += blockFoodData[3];
+nutritionFat += blockFoodData[4];
 
 //* flow:digest *//
-calories = 0;
-protein = 0;
-carbohydrate = 0;
-fiber = 0;
-fat = 0;
+nutritionCalories = 0;
+nutritionProtein = 0;
+nutritionCarbohydrate = 0;
+nutritionFiber = 0;
+nutritionFat = 0;
 
 //* arg:fiber *//
-block.value = fiber;
+block.value = nutritionFiber;
 
 //* arg:calories *//
-block.value = calories;
+block.value = nutritionCalories;
 
 //* arg:protein *//
-block.value = protein;
+block.value = nutritionProtein;
 
 //* arg:carbohydrates *//
-block.value = carbohydrate;
+block.value = nutritionCarbohydrate;
 
 //* arg:fat *//
-block.value = fat;
+block.value = nutritionFat;
 
 //* arg:get_calories *//
-var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
+var blockFoodData = nutritionFoodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[0];
 
 //* arg:get_protein *//
-var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
+var blockFoodData = nutritionFoodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[1];
 
 //* arg:get_carbohydrates *//
-var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
+var blockFoodData = nutritionFoodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[2];
 
 //* arg:get_fiber *//
-var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
+var blockFoodData = nutritionFoodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[3];
 
 //* arg:get_fat *//
-var blockFoodData = foodData[logo.blocks.blockList[conns[1]].name];
+var blockFoodData = nutritionFoodData[logo.blocks.blockList[conns[1]].name];
 block.value = blockFoodData[4];
 
 //* arg:get_name *//
 block.value = logo.blocks.blockList[conns[1]].name;
-
 
 //* palette-icon:food *//
 <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"><g transform="matrix(.17664 0 0 .17664 5.327 2.929)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="8.492"><path d="m4.109 146.44c-4.866-30.845 7.585-67.26 30.909-88.02 19.819-17.643 53.962-15.281 80.15-21.569 14.601-3.506 41.696-9.16 56.36-5.944 26.19 5.742 40.579 17.94 58.801 41.645 10.05 13.07 15.215 35.519 17.245 51.883 5.296 42.693-41.793 122.62-51.33 130.73-12.287 10.457-41.758 13.398-59.729 21.539-9.744 4.414-45.527-2.479-55.56-6.178-19.01-7.01-68.21-69.33-76.845-124.08z"/><path d="m77.16 62.47c0 0 22.54 8.764 34.35 8.96 17.02.283 48.784-11.947 48.784-11.947"/><path d="m113 70.43c0 0 10.1-56.838 28.872-68.2 4.192-2.537 10.515 2.713 12.943 6.969 2.057 3.606 2.857 9.999-.498 12.445-2.505 1.826-6.954-4.852-8.96-2.489-6.242 7.355-18.418 47.788-18.418 47.788"/></g></svg>

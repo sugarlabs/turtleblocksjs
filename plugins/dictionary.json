@@ -3,9 +3,9 @@
         "mashape": "#000000"
     }, 
     "ARGPLUGINS": {
-        "dictionary": "var block = logo.blocks.blockList[blk];var conns = block.connections;var word = (logo.parseArg(logo, turtle, conns[1])).toLowerCase();var apiURL = \"https://montanaflynn-dictionary.p.mashape.com/define?word=\" + word;var request = new XMLHttpRequest();request.open('GET', apiURL, false);request.setRequestHeader('X-Mashape-Authorization', mashapeKey);request.send(null);var response = request.responseText;var data = JSON.parse(response);if ('definitions' in data) {    try {        block.value = data['definitions'][0]['text'];    }    catch (e) {        block.value = null;    }}"
+        "dictionary": "var block = logo.blocks.blockList[blk];var conns = block.connections;var word = (logo.parseArg(logo, turtle, conns[1])).toLowerCase();var apiURL = \"https://montanaflynn-dictionary.p.mashape.com/define?word=\" + word;var request = new XMLHttpRequest();request.open('GET', apiURL, false);request.setRequestHeader('X-Mashape-Authorization', dictionaryMashapeKey);request.send(null);var response = request.responseText;var data = JSON.parse(response);if ('definitions' in data) {    try {        block.value = data['definitions'][0]['text'];    }    catch (e) {        block.value = null;    }}"
     }, 
-    "GLOBALS": "mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';", 
+    "GLOBALS": "dictionaryMashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';", 
     "PALETTEHIGHLIGHTCOLORS": {
         "mashape": "#ffb1b3"
     }, 

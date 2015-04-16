@@ -3,9 +3,9 @@
         "mashape": "#000000"
     }, 
     "ARGPLUGINS": {
-        "bitcoinrate": "var block = logo.blocks.blockList[blk];var conns = block.connections;var from = logo.parseArg(logo, turtle, conns[1]);var amount = logo.parseArg(logo, turtle, conns[2]);var apiURL = 'https://community-bitcointy.p.mashape.com/convert/' + amount + '/' + from;if (block.cacheFor === apiURL && block.cache !== undefined) {    var response = block.cache;} else {    try {        var request = new XMLHttpRequest();        request.open('GET', apiURL, false);        request.setRequestHeader('X-Mashape-Authorization', mashapeKey);        request.send(null);        var response = request.responseText;        block.cacheFor = apiURL;        block.cache = response;    } catch (e) {        logo.errorMsg('Could not connect to Currency API', blk);    }}console.log(response);obj = JSON.parse(response);block.value = obj['value'] / 100;"
+        "bitcoinrate": "var block = logo.blocks.blockList[blk];var conns = block.connections;var from = logo.parseArg(logo, turtle, conns[1]);var amount = logo.parseArg(logo, turtle, conns[2]);var apiURL = 'https://community-bitcointy.p.mashape.com/convert/' + amount + '/' + from;if (block.cacheFor === apiURL && block.cache !== undefined) {    var response = block.cache;} else {    try {        var request = new XMLHttpRequest();        request.open('GET', apiURL, false);        request.setRequestHeader('X-Mashape-Authorization', bitcoinMashapeKey);        request.send(null);        var response = request.responseText;        block.cacheFor = apiURL;        block.cache = response;    } catch (e) {        logo.errorMsg('Could not connect to Currency API', blk);    }}console.log(response);obj = JSON.parse(response);block.value = obj['value'] / 100;"
     }, 
-    "GLOBALS": "mashapeKey = 'PCwj8N1ftxmsh4WCJmQoJqiNhRCbp1DTsnTjsnkmyDCNwB94sm';", 
+    "GLOBALS": "bitcoinMashapeKey = 'PCwj8N1ftxmsh4WCJmQoJqiNhRCbp1DTsnTjsnkmyDCNwB94sm';", 
     "PALETTEHIGHLIGHTCOLORS": {
         "mashape": "#ffb1b3"
     }, 

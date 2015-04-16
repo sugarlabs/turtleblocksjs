@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
-var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
+var dictionaryMashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
 
 //* block:dictionary *//
 var dictionaryBlk = new ProtoBlock('dictionary');
@@ -35,7 +35,7 @@ var word = (logo.parseArg(logo, turtle, conns[1])).toLowerCase();
 var apiURL = "https://montanaflynn-dictionary.p.mashape.com/define?word=" + word;
 var request = new XMLHttpRequest();
 request.open('GET', apiURL, false);
-request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+request.setRequestHeader('X-Mashape-Authorization', dictionaryMashapeKey);
 request.send(null);
 var response = request.responseText;
 var data = JSON.parse(response);

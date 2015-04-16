@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
 
-var mashapeKey = 'PCwj8N1ftxmsh4WCJmQoJqiNhRCbp1DTsnTjsnkmyDCNwB94sm';
+var bitcoinMashapeKey = 'PCwj8N1ftxmsh4WCJmQoJqiNhRCbp1DTsnTjsnkmyDCNwB94sm';
 
 //* block:bitcoinrate *//
 
@@ -47,7 +47,7 @@ if (block.cacheFor === apiURL && block.cache !== undefined) {
     try {
         var request = new XMLHttpRequest();
         request.open('GET', apiURL, false);
-        request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+        request.setRequestHeader('X-Mashape-Authorization', bitcoinMashapeKey);
         request.send(null);
 
         var response = request.responseText;

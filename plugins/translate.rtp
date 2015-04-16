@@ -25,9 +25,9 @@
 // international weather forecasts.
 
 //* globals *//
-var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
-var publicKey = 'nGhwbdV7TrtzC9qLp3DZ';
-var secretKey = '3b68e1d00446eed728cdda66280a8312';
+var translateMashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
+var translatePublicKey = 'nGhwbdV7TrtzC9qLp3DZ';
+var translateSecretKey = '3b68e1d00446eed728cdda66280a8312';
 
 //* flow:setlang *//
 fromLang = logo.parseArg(logo, turtle, logo.blocks.blockList[blk].connections[1]);
@@ -38,10 +38,10 @@ var apiURL = 'https://community-onehourtranslation.p.mashape.com/mt/';
 var key = 'TranslatedText';
 var text = logo.parseArg(logo, turtle, logo.blocks.blockList[blk].connections[1]);
 var targetLang = 'Spanish';
-var args = 'translate/text?public_key=' + publicKey + '&secret_key=' + secretKey + '&source_content=' + text + '&source_language=' + fromLang + '&target_language=' + toLang;
+var args = 'translate/text?public_key=' + translatePublicKey + '&secret_key=' + translateSecretKey + '&source_content=' + text + '&source_language=' + fromLang + '&target_language=' + toLang;
 var request = new XMLHttpRequest();
 request.open('GET', apiURL + args, false);
-request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+request.setRequestHeader('X-Mashape-Authorization', translateMashapeKey);
 request.send(null);
 var value = JSON.parse(request.responseText)['results'][key];
 if (!value) {
@@ -54,10 +54,10 @@ logo.blocks.blockList[blk].value = value;
 var apiURL = 'https://community-onehourtranslation.p.mashape.com/mt/';
 var key = 'language';
 var text = logo.parseArg(logo, turtle, logo.blocks.blockList[blk].connections[1]);
-var args = 'detect/text?public_key=' + publicKey + '&secret_key=' + secretKey + '&source_content=' + text;
+var args = 'detect/text?public_key=' + translatePublicKey + '&secret_key=' + translateSecretKey + '&source_content=' + text;
 var request = new XMLHttpRequest();
 request.open('GET', apiURL + args, false);
-request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+request.setRequestHeader('X-Mashape-Authorization', translateMashapeKey);
 request.send(null);
 var value = JSON.parse(request.responseText)['results'][key];
 if (!value) {

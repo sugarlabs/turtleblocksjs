@@ -26,7 +26,7 @@
 
 //* globals *//
 
-var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
+var weatherMashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
 
 //* arg:weatherincity *//
 var block = logo.blocks.blockList[blk];
@@ -43,7 +43,7 @@ if (block.cacheCity === city && block.cache !== undefined) {
 } else {
    var request = new XMLHttpRequest();
    request.open('GET', apiURL + city, false);
-   request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+   request.setRequestHeader('X-Mashape-Authorization', weatherMashapeKey);
    request.send(null);
    var response = request.responseText;
    block.cacheCity = city;
@@ -67,7 +67,7 @@ if (block.cacheCity === city && block.cache !== undefined) {
 } else {
    var request = new XMLHttpRequest();
    request.open('GET', apiURL + city, false);
-   request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+   request.setRequestHeader('X-Mashape-Authorization', weatherMashapeKey);
    request.send(null);
    var response = request.responseText;
    block.cacheCity = city;
@@ -91,7 +91,7 @@ if (block.cacheCity === city && block.cache !== undefined) {
 } else {
    var request = new XMLHttpRequest();
    request.open('GET', apiURL + city, false);
-   request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+   request.setRequestHeader('X-Mashape-Authorization', weatherMashapeKey);
    request.send(null);
    var response = request.responseText;
    block.cacheCity = city;

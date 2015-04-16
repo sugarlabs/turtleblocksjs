@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
 
-var mashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
+var financeMashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
 
 //* block:currencyrate *//
 
@@ -48,7 +48,7 @@ if (block.cacheFor === apiURL && block.cache !== undefined) {
     try {
         var request = new XMLHttpRequest();
         request.open('GET', apiURL, false);
-        request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+        request.setRequestHeader('X-Mashape-Authorization', financeMashapeKey);
         request.send(null);
 
         var response = request.responseText;

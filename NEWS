@@ -314,24 +314,26 @@
   * Added short press detection for Android text and number blocks.
   * Improvements? to color model.
   * Improvements to GMAP plugin.
+  * Added city to long/city to lat block to gmap plugin (Yash).
   * Added heap empty? block to HEAP plugin.
+
+0.8
+  * fix namespace collisions with plugin globals
+  * don't overwrite existing plugin globals when adding new ones
 
 TODO:
   * Save errors
   * More efficient until and while?
   * Save to javascript
   * RTL support
-  * Zoom and scroll?
   * Make expand an array, one element for each arg or slot
-  * User-defined block types (trivial with factory)
-  * Three-arg arg blocks (trivial with factory)
+  * User-defined block types
   * Artwork beautification?
   * Try to detect difference between unknown flow and arg blocks
   * What palette/block features from the Python version do we need to port?
   * Do we need to add support for plugins init, quit, etc.?
   * Better interoperability with Python version
   * Sugar datastore/toolbar support
-  * Add city to long/city to lat block to gmap plugin.
   * Unit tests
   * Make error messages extendable with plugins.
 
@@ -363,6 +365,4 @@ ANDROID-SPECIFIC BUGS:
   * Cannot open plugins loader on Android
 
 SUGAR-SPECIFIC BUGS:
-  * Crashes the Browse activity on the XO: a multitude of cross-source
-    violations that eventually crash the app.
   * No access to camera or microphone on XO.

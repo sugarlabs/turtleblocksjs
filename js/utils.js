@@ -292,7 +292,6 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
         }
     }
 
-
     // Populate the flow-block dictionary, i.e., the code that is
     // eval'd by this block.
     if ('FLOWPLUGINS' in obj) {
@@ -382,7 +381,10 @@ function updatePluginObj(obj) {
         pluginObjs['BLOCKPLUGINS'][block] = obj['BLOCKPLUGINS'][block];
     }
     if ('GLOBALS' in obj) {
-        pluginObjs['GLOBALS'] = obj['GLOBALS'];
+        if (!('GLOBALS' in pluginObjs)) {
+            pluginObjs['GLOBALS'] = '';
+        }
+        pluginObjs['GLOBALS'] += obj['GLOBALS'];
     }
     if ('IMAGES' in obj) {
         pluginObjs['IMAGES'] = obj['IMAGES'];

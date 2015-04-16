@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 NOTE: Default local is downtown Boston.
 
 //* globals *//
-var mashapeKey = 'JidA8phgY8mshJ8MiEUeHTdwFjjtp1wq209jsncYthfRDMQNW6';
+var gmapMashapeKey = 'JidA8phgY8mshJ8MiEUeHTdwFjjtp1wq209jsncYthfRDMQNW6';
 var cityName = '';
 var cityLatitude = 0;
 var cityLongitude = 0;
@@ -54,7 +54,7 @@ if (city == cityName) {
     var apiURL = 'https://devru-latitude-longitude-find-v1.p.mashape.com/latlon.php?location=' + city;
     var request = new XMLHttpRequest();
     request.open('GET', apiURL, false);
-    request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+    request.setRequestHeader('X-Mashape-Authorization', gmapMashapeKey);
     request.send(null);
     var response = request.responseText;
     var data = JSON.parse(response);
@@ -87,7 +87,7 @@ if (city == cityName) {
     var apiURL = 'https://devru-latitude-longitude-find-v1.p.mashape.com/latlon.php?location=' + city;
     var request = new XMLHttpRequest();
     request.open('GET', apiURL, false);
-    request.setRequestHeader('X-Mashape-Authorization', mashapeKey);
+    request.setRequestHeader('X-Mashape-Authorization', gmapMashapeKey);
     request.send(null);
     var response = request.responseText;
     var data = JSON.parse(response);

@@ -558,7 +558,7 @@ function PopdownPalette(palettes) {
                                      alt="{' + _('popout') + '}" \
                                      title="{' + _('popout') + '}" /> \
                             </h2>',
-                           {i: icon, n: name});
+                           {i: icon, n: _(name)});
             html += '<ul>';
             this.models[name].update();
             for (var blk in this.models[name].blocks) {

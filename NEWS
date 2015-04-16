@@ -318,12 +318,12 @@
   * Added heap empty? block to HEAP plugin.
 
 0.8
-  * fix namespace collisions with plugin globals
-  * don't overwrite existing plugin globals when adding new ones
+  * Fixed namespace collisions with plugin globals.
+  * No longer overwriting existing plugin globals when adding new ones.
+  * Fixed memory leak in while and until blocks.
 
 TODO:
   * Save errors
-  * More efficient until and while?
   * Save to javascript
   * RTL support
   * Make expand an array, one element for each arg or slot

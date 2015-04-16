@@ -640,6 +640,16 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     childFlow = args[1];
                     childFlowCount = 1;
                     if (!args[0]) {
+                        // We will add the outflow of the until block
+                        // each time through, so we pop it off so as
+                        // to not accumulate multiple copies.
+                        var queueLength = logo.turtles.turtleList[turtle].queue.
+length;
+                        if (queueLength > 0) {
+                            if (logo.turtles.turtleList[turtle].queue[queueLength - 1].parentBlk == blk) {
+                                logo.turtles.turtleList[turtle].queue.pop();
+                            }
+                        }
                         // Requeue.
                         var parentBlk = logo.blocks.blockList[blk].connections[0];
                         var queueBlock = new Queue(blk, 1, parentBlk);
@@ -707,12 +717,23 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 // itself.
                 if (args.length == 2) {
                     if (args[0]) {
-                        // Requeue the while block...
+                        // We will add the outflow of the while block
+                        // each time through, so we pop it off so as
+                        // to not accumulate multiple copies.
+                        var queueLength = logo.turtles.turtleList[turtle].queue.
+length;
+                        if (queueLength > 0) {
+                            if (logo.turtles.turtleList[turtle].queue[queueLength - 1].parentBlk == blk) {
+                                logo.turtles.turtleList[turtle].queue.pop();
+                            }
+                        }
+
                         var parentBlk = logo.blocks.blockList[blk].connections[0];
                         var queueBlock = new Queue(blk, 1, parentBlk);
                         logo.parentFlowQueue[turtle].push(parentBlk);
                         logo.turtles.turtleList[turtle].queue.push(queueBlock);
-                        // and queue the child flow.
+
+                        // and queue the interior child flow.
                         childFlow = args[1];
                         childFlowCount = 1;
                     } else {
@@ -723,6 +744,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         var queueLength = logo.turtles.turtleList[turtle].queue.length;
                         for (var i = queueLength - 1; i > 0; i--) {
                             if (logo.turtles.turtleList[turtle].queue[i].parentBlk == blk) {
+                            // if (logo.turtles.turtleList[turtle].queue[i].blk == blk) {
                                 logo.turtles.turtleList[turtle].queue.pop();
                             }
                         }

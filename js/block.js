@@ -1221,12 +1221,14 @@ function changeLabel(myBlock) {
     }
 
     // A place in the DOM to put modifiable labels (textareas).
+    var labelValue = (myBlock.label)?myBlock.label.value:myBlock.value;
+
     var labelElem = docById('labelDiv');
     labelElem.innerHTML = '<input id="' + type + 'Label" \
 style="position: absolute; \
 -webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" \
 class="' + type + '" type="' + type + '" \
-value="' + myBlock.value + '" />';
+value="' + labelValue + '" />';
     labelElem.classList.add('hasKeyboard');
 
     myBlock.label = docById(type + 'Label');

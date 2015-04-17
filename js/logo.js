@@ -1202,7 +1202,6 @@ length;
 
     this.doBreak = function(turtle) {
         // Look for a parent loopBlock in queue and set its count to 1.
-
         var parentLoopBlock = null;
         var loopBlkIdx = -1;
         var queueLength = this.turtles.turtleList[turtle].queue.length;
@@ -1224,6 +1223,8 @@ length;
             }
         }
         if (parentLoopBlock == null) {
+            // In this case, we flush the child flow.
+            this.turtles.turtleList[turtle].queue.pop();
             return;
         }
 

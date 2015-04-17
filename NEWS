@@ -322,6 +322,7 @@
   * No longer overwriting existing plugin globals when adding new ones.
   * Fixed memory leak in while and until blocks.
   * Fixed multiple problems with Break (Stop) block.
+  * Defined a break behaviour from within stacks.
 
 TODO:
   * Save errors
@@ -347,7 +348,6 @@ FEATURE IDEAS:
 
 ISSUES:
   * Find a scalable approach to drawing on the canvas
-  * Need to define a break behaviour from with stacks
 
 KNOWN BUGS:
   * Not all blocks highlight when using step-by-step mode

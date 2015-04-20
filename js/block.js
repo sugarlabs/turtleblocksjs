@@ -1025,7 +1025,10 @@ function loadEventHandlers(myBlock) {
             } else if (myBlock.name == 'loadFile') {
                 myBlock.doOpenMedia(myBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
-		changeLabel(myBlock);
+		          if(!myBlock.trash)
+                  {
+                      changeLabel(myBlock);
+                  }
             } else {
                 if (!blocks.inLongPress) {
                     var topBlock = blocks.findTopBlock(thisBlock);
@@ -1176,9 +1179,12 @@ function mouseoutCallback(myBlock, event, moved) {
         if ((d.getTime() - blocks.time) < 500) {
             // console.log('blocks WERE moving or we are EDITING already');
         } else {
-            var d = new Date();
-            blocks.time = d.getTime();
-            changeLabel(myBlock);
+            if(!myBlock.trash)
+            {
+                var d = new Date();
+                blocks.time = d.getTime();
+                changeLabel(myBlock);
+            }
         }
     }
 

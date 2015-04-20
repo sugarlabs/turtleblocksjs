@@ -863,6 +863,8 @@ function loadCollapsibleEventHandlers(myBlock) {
         // Always show the trash when there is a block selected.
         trashcan.show();
         moved = false;
+        var d = new Date();
+        blocks.time = d.getTime();
         var offset = {
             x: myBlock.collapseContainer.x - Math.round(event.stageX / myBlock.blocks.scale),
             y: myBlock.collapseContainer.y - Math.round(event.stageY / myBlock.blocks.scale)
@@ -873,7 +875,12 @@ function loadCollapsibleEventHandlers(myBlock) {
                 collapseOut(blocks, myBlock, thisBlock, moved, event);
                 moved = false;
             } else {
-                handleClick();
+                var d = new Date();
+                if ((d.getTime() - blocks.time) > 1000) {
+                    var d = new Date();
+                    blocks.time = d.getTime();
+                    handleClick();
+                }
             }
         });
 
@@ -881,6 +888,14 @@ function loadCollapsibleEventHandlers(myBlock) {
             if (moved) {
                 collapseOut(blocks, myBlock, thisBlock, moved, event);
                 moved = false;
+            } else {
+                // Maybe restrict to Android?
+                var d = new Date();
+                if ((d.getTime() - blocks.time) > 1000) {
+                    var d = new Date();
+                    blocks.time = d.getTime();
+                    handleClick();
+                }
             }
         });
 

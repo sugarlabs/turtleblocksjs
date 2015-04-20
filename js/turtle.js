@@ -240,6 +240,26 @@ function Turtle (name, turtles) {
     }
 
     this.doArc = function(angle, radius) {
+        // Break up arcs into chucks of 90 degrees or less (in order
+        // to have exported SVG properly rendered).
+        var adeg = Number(angle);
+        if (adeg < 0) {
+            var factor = -1;
+            adeg = -adeg;
+        } else {
+            var factor = 1;
+        }
+        var remainder = adeg % 90;
+        var n = Math.floor(adeg / 90);
+        for (var i = 0; i < n; i++) {
+            this.doArcPart(90 * factor, radius);
+        }
+        if (remainder > 0) {
+            this.doArcPart(remainder * factor, radius);
+        }
+    }
+
+    this.doArcPart = function(angle, radius) {
         if (!this.fillState) {
             this.drawingCanvas.graphics.beginStroke(this.canvasColor);
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');

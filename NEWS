@@ -323,6 +323,7 @@
   * Fixed memory leak in while and until blocks.
   * Fixed multiple problems with Break (Stop) block.
   * Defined a break behaviour from within stacks.
+  * Fixed problem with SVG arcs in saved output.
 
 TODO:
   * Save errors

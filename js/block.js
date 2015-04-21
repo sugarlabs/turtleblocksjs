@@ -840,6 +840,9 @@ function loadCollapsibleEventHandlers(myBlock) {
 
     var moved = false;
     var locked = false;
+    var mousedown = false;
+    var offset = {x:0, y:0};
+
     function handleClick () {
         if (locked) {
             return;
@@ -863,84 +866,92 @@ function loadCollapsibleEventHandlers(myBlock) {
         // Always show the trash when there is a block selected.
         trashcan.show();
         moved = false;
+        mousedown = true;
         var d = new Date();
         blocks.time = d.getTime();
-        var offset = {
+        offset = {
             x: myBlock.collapseContainer.x - Math.round(event.stageX / myBlock.blocks.scale),
             y: myBlock.collapseContainer.y - Math.round(event.stageY / myBlock.blocks.scale)
         };
 
-        myBlock.collapseContainer.on('pressup', function(event) {
-            if (moved) {
-                collapseOut(blocks, myBlock, thisBlock, moved, event);
-                moved = false;
-            } else {
-                var d = new Date();
-                if ((d.getTime() - blocks.time) > 1000) {
-                    var d = new Date();
-                    blocks.time = d.getTime();
-                    handleClick();
-                }
-            }
-        });
-
-        myBlock.collapseContainer.on('mouseout', function(event) {
-            if (moved) {
-                collapseOut(blocks, myBlock, thisBlock, moved, event);
-                moved = false;
-            } else {
-                // Maybe restrict to Android?
-                var d = new Date();
-                if ((d.getTime() - blocks.time) > 1000) {
-                    var d = new Date();
-                    blocks.time = d.getTime();
-                    handleClick();
-                }
-            }
-        });
-
-        myBlock.collapseContainer.on('pressmove', function(event) {
-            moved = true;
-            var oldX = myBlock.collapseContainer.x;
-            var oldY = myBlock.collapseContainer.y;
-            myBlock.collapseContainer.x = Math.round(event.stageX / myBlock.blocks.scale + offset.x);
-            myBlock.collapseContainer.y = Math.round(event.stageY / myBlock.blocks.scale + offset.y);
-            var dx = myBlock.collapseContainer.x - oldX;
-            var dy = myBlock.collapseContainer.y - oldY;
-            myBlock.container.x += dx;
-            myBlock.container.y += dy;
-            myBlock.x = myBlock.container.x;
-            myBlock.y = myBlock.container.y;
-
-            // If we are over the trash, warn the user.
-            if (trashcan.overTrashcan(event.stageX / myBlock.blocks.scale, event.stageY / myBlock.blocks.scale)) {
-                trashcan.highlight();
-            } else {
-                trashcan.unhighlight();
-            }
-
-            myBlock.blocks.findDragGroup(thisBlock)
-            if (myBlock.blocks.dragGroup.length > 0) {
-                for (var b = 0; b < myBlock.blocks.dragGroup.length; b++) {
-                    var blk = myBlock.blocks.dragGroup[b];
-                    if (b != 0) {
-                        myBlock.blocks.moveBlockRelative(blk, dx, dy);
-                    }
-                }
-            }
-
-            myBlock.blocks.refreshCanvas();
-        });
     });
 
     myBlock.collapseContainer.on('pressup', function(event) {
-        collapseOut(blocks, myBlock, thisBlock, moved, event);
-        moved = false;
+        if (!mousedown) {
+            // console.log('pressup w/o mouse down?');
+            return;
+        }
+        mousedown = false;
+        if (moved) {
+            collapseOut(blocks, myBlock, thisBlock, moved, event);
+            moved = false;
+        } else {
+            var d = new Date();
+            if ((d.getTime() - blocks.time) > 1000) {
+                var d = new Date();
+                blocks.time = d.getTime();
+                handleClick();
+            }
+        }
     });
 
     myBlock.collapseContainer.on('mouseout', function(event) {
-        collapseOut(blocks, myBlock, thisBlock, moved, event);
-        moved = false;
+        if (!mousedown) {
+            // console.log('mouseout w/o mouse down?');
+            return;
+        }
+        mousedown = false;
+        if (moved) {
+            collapseOut(blocks, myBlock, thisBlock, moved, event);
+            moved = false;
+        } else {
+            // Maybe restrict to Android?
+            var d = new Date();
+            // var diff = (d.getTime() - blocks.time);
+            // console.log(diff);
+            if ((d.getTime() - blocks.time) < 200) {
+                var d = new Date();
+                blocks.time = d.getTime();
+                handleClick();
+            }
+        }
+    });
+
+    myBlock.collapseContainer.on('pressmove', function(event) {
+        if (!mousedown) {
+            // console.log('pressmove w/o mouse down?');
+            return;
+        }
+        moved = true;
+        var oldX = myBlock.collapseContainer.x;
+        var oldY = myBlock.collapseContainer.y;
+        myBlock.collapseContainer.x = Math.round(event.stageX / myBlock.blocks.scale + offset.x);
+        myBlock.collapseContainer.y = Math.round(event.stageY / myBlock.blocks.scale + offset.y);
+        var dx = myBlock.collapseContainer.x - oldX;
+        var dy = myBlock.collapseContainer.y - oldY;
+        myBlock.container.x += dx;
+        myBlock.container.y += dy;
+        myBlock.x = myBlock.container.x;
+        myBlock.y = myBlock.container.y;
+
+        // If we are over the trash, warn the user.
+        if (trashcan.overTrashcan(event.stageX / myBlock.blocks.scale, event.stageY / myBlock.blocks.scale)) {
+            trashcan.highlight();
+        } else {
+            trashcan.unhighlight();
+        }
+
+        myBlock.blocks.findDragGroup(thisBlock)
+        if (myBlock.blocks.dragGroup.length > 0) {
+            for (var b = 0; b < myBlock.blocks.dragGroup.length; b++) {
+                var blk = myBlock.blocks.dragGroup[b];
+                if (b != 0) {
+                    myBlock.blocks.moveBlockRelative(blk, dx, dy);
+                }
+            }
+        }
+
+        myBlock.blocks.refreshCanvas();
     });
 }
 
@@ -1025,10 +1036,10 @@ function loadEventHandlers(myBlock) {
             } else if (myBlock.name == 'loadFile') {
                 myBlock.doOpenMedia(myBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
-		          if(!myBlock.trash)
-                  {
-                      changeLabel(myBlock);
-                  }
+                if(!myBlock.trash)
+                {
+                    changeLabel(myBlock);
+                }
             } else {
                 if (!blocks.inLongPress) {
                     var topBlock = blocks.findTopBlock(thisBlock);

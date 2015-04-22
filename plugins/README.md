@@ -9,6 +9,19 @@ The plugins are identified by the extension <code>**.json**</code>
 You need to download the plugins for load it.
 [(In this guide I will use this plugin)](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json)
 
+> NOTE: You need to download the "raw" plugin by clicking on the "Raw"
+> link on the .JSON file page. In other words, don't download
+> <code>
+> https://github.com/walterbender/turtleblocksjs/blob/master/plugins/gmap.json
+> </code>,
+> but do download
+> <code>
+> https://raw.githubusercontent.com/walterbender/turtleblocksjs/master/plugins/gmap.json
+> </code>.
+>
+> If you see the error message "Syntax Error: unexpected <" it means you
+> probably did not download the "raw" plugin.
+
 ![Nutrition Plugin](https://github.com/walterbender/turtleblocksjs/raw/master/screenshots/foodplugin.png "The Nutrition plugin")
 
 How to load plugins

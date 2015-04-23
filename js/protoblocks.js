@@ -340,7 +340,7 @@ function ProtoBlock(name) {
     // block.
     this.mediaBlock = function() {
         this.style = 'value';
-        this.size = 1;
+        this.size = 2;
         this.args = 0;
         this.dockTypes.push('mediaout');
         this.generator = this.mediaBlockGenerator;

@@ -1185,7 +1185,8 @@ function mouseoutCallback(myBlock, event, moved) {
             blocks.time = d.getTime();
             myBlock.blocks.blockMoved(thisBlock);
         }
-    } else if (myBlock.name == 'text' || myBlock.name == 'number') {
+    } else if (['text', 'number', 'media', 'loadFile'].indexOf(myBlock.name) != -1) {
+        // Simulate click on Android.
         var d = new Date();
         if ((d.getTime() - blocks.time) < 500) {
             // console.log('blocks WERE moving or we are EDITING already');
@@ -1194,7 +1195,11 @@ function mouseoutCallback(myBlock, event, moved) {
             {
                 var d = new Date();
                 blocks.time = d.getTime();
-                changeLabel(myBlock);
+                if (myBlock.name == 'media' || myBlock.name == 'loadFile') {
+                    myBlock.doOpenMedia(myBlock);
+                } else {
+                    changeLabel(myBlock);
+                }
             }
         }
     }

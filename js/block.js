@@ -644,9 +644,8 @@ function Block(protoblock, blocks, overrideName) {
         }
     }
 
-    this.doOpenMedia = function (myBlock) {
+    this.doOpenMedia = function (myBlock, thisBlock) {
         var fileChooser = docById('myOpenAll');
-        var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
 
         readerAction = function (event) {
             window.scroll(0, 0)
@@ -1010,14 +1009,18 @@ function loadEventHandlers(myBlock) {
 
     myBlock.container.on('mouseover', function(event) {
         blocks.highlight(thisBlock, true);
-        blocks.activeBlock = thisBlock;
+        // blocks.activeBlock = thisBlock;
         blocks.refreshCanvas();
     });
 
+    var haveClick = false;
     var moved = false;
     var locked = false;
     var getInput = window.hasMouse;
     myBlock.container.on('click', function(event) {
+        // console.log('CLICK');
+	blocks.activeBlock = thisBlock;
+	haveClick = true;
         if (locked) {
             return;
         }
@@ -1032,9 +1035,9 @@ function loadEventHandlers(myBlock) {
                 blocks.selectedStack = topBlock;
                 blocks.selectingStack = false;
             } else if (myBlock.name == 'media') {
-                myBlock.doOpenMedia(myBlock);
+                myBlock.doOpenMedia(myBlock, thisBlock);
             } else if (myBlock.name == 'loadFile') {
-                myBlock.doOpenMedia(myBlock);
+                myBlock.doOpenMedia(myBlock, thisBlock);
             } else if (myBlock.name == 'text' || myBlock.name == 'number') {
                 if(!myBlock.trash)
                 {
@@ -1051,7 +1054,8 @@ function loadEventHandlers(myBlock) {
     });
 
     myBlock.container.on('mousedown', function(event) {
-        hideDOMLabel();
+        // console.log('MOUSEDOWN');
+        // hideDOMLabel();
 
         // Track time for detecting long pause...
         // but only for top block in stack
@@ -1081,6 +1085,10 @@ function loadEventHandlers(myBlock) {
         };
 
         myBlock.container.on('mouseout', function(event) {
+            if (haveClick) {
+               return;
+            }
+            // console.log('MOUSEOUT');
             if (!blocks.inLongPress) {
                 mouseoutCallback(myBlock, event, moved);
             }
@@ -1088,6 +1096,10 @@ function loadEventHandlers(myBlock) {
         });
 
         myBlock.container.on('pressup', function(event) {
+            if (haveClick) {
+               return;
+            }
+            // console.log('PRESSUP');
             if (!blocks.inLongPress) {
                 mouseoutCallback(myBlock, event, moved);
             }
@@ -1096,6 +1108,7 @@ function loadEventHandlers(myBlock) {
 
         var original = {x: event.stageX, y: event.stageY};
         myBlock.container.on('pressmove', function(event) {
+            // console.log('PRESSMOVE');
             // FIXME: More voodoo
             event.nativeEvent.preventDefault();
 
@@ -1158,13 +1171,14 @@ function loadEventHandlers(myBlock) {
 
     myBlock.container.on('mouseout', function(event) {
         if (!blocks.inLongPress) {
-            mouseoutCallback(myBlock, event, moved);
+            // console.log('MOUSEOUT (OUT)');
+            mouseoutCallback(myBlock, event, moved, haveClick);
         }
     });
 }
 
 
-function mouseoutCallback(myBlock, event, moved) {
+function mouseoutCallback(myBlock, event, moved, haveClick) {
     var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
     // Always hide the trash when there is no block selected.
     // FIXME: need to remove timer
@@ -1186,30 +1200,39 @@ function mouseoutCallback(myBlock, event, moved) {
             myBlock.blocks.blockMoved(thisBlock);
         }
     } else if (['text', 'number', 'media', 'loadFile'].indexOf(myBlock.name) != -1) {
-        // Simulate click on Android.
-        var d = new Date();
-        if ((d.getTime() - blocks.time) < 500) {
-            // console.log('blocks WERE moving or we are EDITING already');
-        } else {
-            if(!myBlock.trash)
-            {
-                var d = new Date();
-                blocks.time = d.getTime();
-                if (myBlock.name == 'media' || myBlock.name == 'loadFile') {
-                    myBlock.doOpenMedia(myBlock);
-                } else {
-                    changeLabel(myBlock);
+        if (!haveClick) {
+            // Simulate click on Android.
+            var d = new Date();
+            if ((d.getTime() - blocks.time) < 500) {
+                if(!myBlock.trash)
+                {
+                    var d = new Date();
+                    blocks.time = d.getTime();
+                    if (myBlock.name == 'media' || myBlock.name == 'loadFile') {
+                        myBlock.doOpenMedia(myBlock, thisBlock);
+                    } else {
+                        changeLabel(myBlock);
+                    }
                 }
             }
         }
     }
 
+    if (myBlock.blocks.activeBlock != thisBlock) {
+        hideDOMLabel();
+    } else {
+        myBlock.blocks.unhighlight(null);
+        myBlock.blocks.refreshCanvas();
+    }
+    myBlock.blocks.activeBlock = null;
+    /*
     if (myBlock.blocks.activeBlock != myBlock) {
     } else {
         myBlock.blocks.unhighlight(null);
         myBlock.blocks.activeBlock = null;
         myBlock.blocks.refreshCanvas();
     }
+    */
 }
 
 

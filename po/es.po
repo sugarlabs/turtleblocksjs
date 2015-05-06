@@ -776,3 +776,12 @@ msgstr "confirmar"
 
 msgid "to"
 msgstr "para"
+
+msgid "one of"
+msgstr "uno de estos"
+
+msgid "this"
+msgstr "éste"
+
+msgid "that"
+msgstr "ése"

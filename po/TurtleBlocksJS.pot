@@ -828,3 +828,12 @@ msgstr ""
 
 msgid "confirm"
 msgstr ""
+
+msgid "one of"
+msgstr ""
+
+msgid "this"
+msgstr ""
+
+msgid "that"
+msgstr ""

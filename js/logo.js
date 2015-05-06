@@ -255,6 +255,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         var d = new Date();
         this.time = d.getTime();
 
+        // Ensure we have at least one turtle.
+        if (this.turtles.turtleList.length == 0) {
+            this.turtles.add(null);
+        }
+
         // Each turtle needs to keep its own wait time.
         for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
             this.waitTimes[turtle] = 0;
@@ -774,7 +779,7 @@ length;
                 break;
             case 'setxy':
                 if (args.length == 2) {
-                    if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
+                    if (typeof(args[0]) == 'string' || typeof(args[1]) == 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -784,7 +789,7 @@ length;
                 break;
             case 'arc':
                 if (args.length == 2) {
-                    if (typeof(args[0]) == 'string' || typeof(args[1]) == 'sting') {
+                    if (typeof(args[0]) == 'string' || typeof(args[1]) == 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -1363,6 +1368,13 @@ length;
                     var b = logo.parseArg(logo, turtle, cblk2, blk);
                     logo.blocks.blockList[blk].value = logo.doRandom(a, b);
                     break;
+                case 'oneOf':
+                    var cblk1 = logo.blocks.blockList[blk].connections[1];
+                    var cblk2 = logo.blocks.blockList[blk].connections[2];
+                    var a = logo.parseArg(logo, turtle, cblk1, blk);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk);
+                    logo.blocks.blockList[blk].value = logo.doOneOf(a, b);
+                    break;
                 case 'plus':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
@@ -1542,6 +1554,14 @@ length;
             return 0;
         }
         return Math.floor(Math.random() * (Number(b) - Number(a) + 1) + Number(a));
+    }
+
+    this.doOneOf = function(a, b) {
+        if (Math.random() < 0.5) {
+            return a;
+        } else {
+            return b;
+        }
     }
 
     this.doMod = function(a, b) {

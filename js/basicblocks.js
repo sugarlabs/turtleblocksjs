@@ -279,6 +279,17 @@ function initBasicProtoBlocks(palettes, blocks) {
     randomBlock.twoArgMathBlock();
     randomBlock.defaults.push(0, 100);
 
+    var oneOfBlock = new ProtoBlock('oneOf');
+    oneOfBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['oneOf'] = oneOfBlock;
+    oneOfBlock.staticLabels.push(_('one of'), _('this'), _('that'));
+    oneOfBlock.adjustWidthToLabel();
+    oneOfBlock.twoArgMathBlock();
+    oneOfBlock.dockTypes[0] = 'anyout';
+    oneOfBlock.dockTypes[1] = 'anyin';
+    oneOfBlock.dockTypes[2] = 'anyin';
+    oneOfBlock.defaults.push(-90, 90);
+
     var plusBlock = new ProtoBlock('plus');
     plusBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['plus'] = plusBlock;

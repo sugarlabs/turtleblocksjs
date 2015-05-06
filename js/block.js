@@ -1090,7 +1090,7 @@ function loadEventHandlers(myBlock) {
             }
             // console.log('MOUSEOUT');
             if (!blocks.inLongPress) {
-                mouseoutCallback(myBlock, event, moved);
+                mouseoutCallback(myBlock, event, moved, haveClick);
             }
             moved = false;
         });
@@ -1101,7 +1101,7 @@ function loadEventHandlers(myBlock) {
             }
             // console.log('PRESSUP');
             if (!blocks.inLongPress) {
-                mouseoutCallback(myBlock, event, moved);
+                mouseoutCallback(myBlock, event, moved, haveClick);
             }
             moved = false;
         });
@@ -1174,6 +1174,15 @@ function loadEventHandlers(myBlock) {
             // console.log('MOUSEOUT (OUT)');
             mouseoutCallback(myBlock, event, moved, haveClick);
         }
+        moved = false;
+    });
+
+    myBlock.container.on('pressup', function(event) {
+        if (!blocks.inLongPress) {
+            // console.log('PRESSUP (OUT)');
+            mouseoutCallback(myBlock, event, moved, haveClick);
+        }
+        moved = false;
     });
 }
 

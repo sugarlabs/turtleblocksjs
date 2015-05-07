@@ -165,6 +165,9 @@ Use as numeric input in mathematic operators (click to change the value).
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/random.svg'</img>
 Returns random number between minimum (top) and maximum (bottom) values
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/one-of.svg'</img>
+Returns one of two inputs as determined by a coin toss (random selection)
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/plus.svg'</img>
 Adds two numeric inputs (also can be used to concatenate two strings)
 

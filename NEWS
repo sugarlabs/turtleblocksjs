@@ -326,6 +326,7 @@
   * Fixed problem with SVG arcs in saved output.
   * Fixed problem with negative radius on arcs.
   * Fixed problem with copying stacks with nameddo blocks.
+  * Fixed problem with copying stacks with namedbox blocks.
 
 TODO:
   * Browser for plugins

@@ -242,6 +242,9 @@ function Turtle (name, turtles) {
     this.doArc = function(angle, radius) {
         // Break up arcs into chucks of 90 degrees or less (in order
         // to have exported SVG properly rendered).
+        if (radius < 0) {
+            radius = -radius;
+        }
         var adeg = Number(angle);
         if (adeg < 0) {
             var factor = -1;

@@ -1,4 +1,4 @@
-0.1
+`0.1
   * New project: a Javascript version of Turtle Blocks
   * Basic block manipluation
   * Basic block execution
@@ -324,6 +324,8 @@
   * Fixed multiple problems with Break (Stop) block.
   * Defined a break behaviour from within stacks.
   * Fixed problem with SVG arcs in saved output.
+  * Fixed problem with negative radius on arcs.
+  * Fixed problem with copying stacks with nameddo blocks.
 
 TODO:
   * Browser for plugins
@@ -368,7 +370,8 @@ ANDROID-SPECIFIC BUGS:
   * Camera doesn't work on Android
   * Music block doesn't work on Android
   * Cannot open plugins loader on Android
-  * Cannot import images on Android
+  * Cannot import images on Android (fileChooser doesn't appear)
+  * When changing number blocks, no way to insert negative number
   * On some Android systems, then all blocks are dragged, a copy is
     left on the canvas.
   * Lots of freezing on some Android systems.

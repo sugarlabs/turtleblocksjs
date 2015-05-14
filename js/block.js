@@ -1090,7 +1090,7 @@ function loadEventHandlers(myBlock) {
             }
             // console.log('MOUSEOUT');
             if (!blocks.inLongPress) {
-                mouseoutCallback(myBlock, event, moved, haveClick);
+                mouseoutCallback(myBlock, event, moved, haveClick, true);
             }
             moved = false;
         });
@@ -1101,7 +1101,7 @@ function loadEventHandlers(myBlock) {
             }
             // console.log('PRESSUP');
             if (!blocks.inLongPress) {
-                mouseoutCallback(myBlock, event, moved, haveClick);
+                mouseoutCallback(myBlock, event, moved, haveClick, true);
             }
             moved = false;
         });
@@ -1172,7 +1172,7 @@ function loadEventHandlers(myBlock) {
     myBlock.container.on('mouseout', function(event) {
         if (!blocks.inLongPress) {
             // console.log('MOUSEOUT (OUT)');
-            mouseoutCallback(myBlock, event, moved, haveClick);
+            mouseoutCallback(myBlock, event, moved, haveClick, true);
         }
         moved = false;
     });
@@ -1180,14 +1180,14 @@ function loadEventHandlers(myBlock) {
     myBlock.container.on('pressup', function(event) {
         if (!blocks.inLongPress) {
             // console.log('PRESSUP (OUT)');
-            mouseoutCallback(myBlock, event, moved, haveClick);
+            mouseoutCallback(myBlock, event, moved, haveClick, false);
         }
         moved = false;
     });
 }
 
 
-function mouseoutCallback(myBlock, event, moved, haveClick) {
+function mouseoutCallback(myBlock, event, moved, haveClick, hideDOM) {
     var thisBlock = myBlock.blocks.blockList.indexOf(myBlock);
     // Always hide the trash when there is no block selected.
     // FIXME: need to remove timer
@@ -1227,21 +1227,15 @@ function mouseoutCallback(myBlock, event, moved, haveClick) {
         }
     }
 
-    if (myBlock.blocks.activeBlock != thisBlock) {
-        hideDOMLabel();
-    } else {
-        myBlock.blocks.unhighlight(null);
-        myBlock.blocks.refreshCanvas();
-    }
-    myBlock.blocks.activeBlock = null;
-    /*
-    if (myBlock.blocks.activeBlock != myBlock) {
-    } else {
-        myBlock.blocks.unhighlight(null);
+    if (hideDOM) {
+        if (myBlock.blocks.activeBlock != thisBlock) {
+            hideDOMLabel();
+        } else {
+            myBlock.blocks.unhighlight(null);
+            myBlock.blocks.refreshCanvas();
+        }
         myBlock.blocks.activeBlock = null;
-        myBlock.blocks.refreshCanvas();
     }
-    */
 }
 
 

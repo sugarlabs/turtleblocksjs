@@ -789,3 +789,12 @@ msgstr ""
 
 msgid "that"
 msgstr ""
+
+msgid "no background"
+msgstr ""
+
+msgid "begin hollow line"
+msgstr ""
+
+msgid "end hollow line"
+msgstr ""

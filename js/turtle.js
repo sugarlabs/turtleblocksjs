@@ -85,7 +85,11 @@ function Turtle (name, turtles) {
             this.stroke = 1;
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
             // Draw a hollow line.
-            var step = (savedStroke - 2) / 2.;
+            if (savedStroke < 3) {
+                var step = 0.5;
+            } else {
+                var step = (savedStroke - 2) / 2.;
+            }
 
             var rad = (this.orientation - 90) * Math.PI / 180.0;
             var dx = step * Math.sin(rad);

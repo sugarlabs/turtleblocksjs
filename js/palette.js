@@ -309,7 +309,6 @@ function loadPaletteButtonHandler(palettes, name) {
         }, null, true); // once = true
     });
 
-
     // A palette button opens or closes a palette.
     var circles = {};
     palettes.buttons[name].on('mouseover', function(event) {
@@ -499,13 +498,19 @@ function PaletteModel(palette, palettes, name) {
                     break;
             }
 
-            artwork = artwork
-                .replace(/fill_color/g,
+            if (protoBlock.disabled) {
+                artwork = artwork
+                    .replace(/fill_color/g, DISABLEDFILLCOLOR)
+                    .replace(/stroke_color/g, DISABLEDSTROKECOLOR)
+                    .replace('block_label', label);
+            } else {
+                artwork = artwork
+                    .replace(/fill_color/g,
                          PALETTEFILLCOLORS[protoBlock.palette.name])
-                .replace(/stroke_color/g,
+                    .replace(/stroke_color/g,
                          PALETTESTROKECOLORS[protoBlock.palette.name])
-                .replace('block_label', label);
-
+                    .replace('block_label', label);
+            }
             for (var i = 0; i <= protoBlock.args; i++) {
                 artwork = artwork.replace('arg_label_' + i,
                                           protoBlock.staticLabels[i] || '');
@@ -529,6 +534,7 @@ function PaletteModel(palette, palettes, name) {
         }
     }
 }
+
 
 function PopdownPalette(palettes) {
     this.palettes = palettes;

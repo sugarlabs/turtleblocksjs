@@ -54,6 +54,8 @@ function ProtoBlock(name) {
     this.image = null;
     // Hidden: don't show on any palette
     this.hidden = false;
+    // Disabled: use inactive colors
+    this.disabled = false;
 
     this.adjustWidthToLabel = function() {
         if (this.staticLabels.length == 0) {

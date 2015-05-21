@@ -265,6 +265,20 @@ function initBasicProtoBlocks(palettes, blocks) {
     fillscreenBlock.adjustWidthToLabel();
     fillscreenBlock.threeArgBlock();
 
+    var beginHollowLineBlock = new ProtoBlock('beginhollowline');
+    beginHollowLineBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['beginhollowline'] = beginHollowLineBlock;
+    beginHollowLineBlock.staticLabels.push(_('begin hollow line'));
+    beginHollowLineBlock.adjustWidthToLabel();
+    beginHollowLineBlock.zeroArgBlock();
+
+    var endHollowLineBlock = new ProtoBlock('endhollowline');
+    endHollowLineBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['endhollowline'] = endHollowLineBlock;
+    endHollowLineBlock.staticLabels.push(_('end hollow line'));
+    endHollowLineBlock.adjustWidthToLabel();
+    endHollowLineBlock.zeroArgBlock();
+
     // Numbers palette
     var numberBlock = new ProtoBlock('number');
     numberBlock.palette = palettes.dict['number'];
@@ -803,6 +817,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     svgBlock.oneArgBlock();
     svgBlock.defaults.push(_('title') + '.svg');
     svgBlock.dockTypes[1] = 'textin';
+
+    var noBackgroundBlock = new ProtoBlock('nobackground');
+    blocks.protoBlockDict['nobackground'] = noBackgroundBlock;
+    noBackgroundBlock.palette = palettes.dict['extras'];
+    noBackgroundBlock.staticLabels.push(_('no background'));
+    noBackgroundBlock.adjustWidthToLabel();
+    noBackgroundBlock.zeroArgBlock();
 
     var showBlocks = new ProtoBlock('showblocks');
     showBlocks.palette = palettes.dict['extras'];

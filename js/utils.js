@@ -120,7 +120,7 @@ function last(myList) {
 
 
 function doSVG(canvas, logo, turtles, width, height, scale) {
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
+    var svg = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
     svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
     svg += logo.svgOutput;
     for (var turtle in turtles.turtleList) {
@@ -131,6 +131,7 @@ function doSVG(canvas, logo, turtles, width, height, scale) {
     svg += '</svg>';
     return svg;
 }
+
 
 function isSVGEmpty(turtles) {
     for (var turtle in turtles.turtleList) {
@@ -428,6 +429,7 @@ function doSaveSVG(logo, desc) {
     var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
     download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
 }
+
 
 function download(filename, data) {
     var a = document.createElement('a');

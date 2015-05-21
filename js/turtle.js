@@ -59,6 +59,7 @@ function Turtle (name, turtles) {
     this.canvasColor = '#ff0031';
     this.orientation = 0;
     this.fillState = false;
+    this.hollowState = false;
     this.penState = true;
     this.font = DEFAULTFONT;
     this.media = [];  // Media (text, images) we need to remove on clear.
@@ -75,7 +76,86 @@ function Turtle (name, turtles) {
         }
 
         // Draw a line if the pen is down.
-        if (this.penState) {
+        if (this.penState && this.hollowState) {
+            // First, we need to close the current SVG path.
+            this.closeSVG();
+            this.svgPath = true;
+            // Save the current stroke width.
+            var savedStroke = this.stroke;
+            this.stroke = 1;
+            this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+            // Draw a hollow line.
+            var step = (savedStroke - 2) / 2.;
+
+            var rad = (this.orientation - 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(rad);
+            var dy = -step * Math.cos(rad);
+
+            var fx = ox + dx;
+            var fy = oy + dy;
+            this.drawingCanvas.graphics.moveTo(ox + dx, oy + dy);
+            var oxScaled = (ox + dx) * this.turtles.scale;
+            var oyScaled = (oy + dy) * this.turtles.scale;
+            this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
+
+            var fx = nx + dx;
+            var fy = ny + dy;
+            this.drawingCanvas.graphics.lineTo(nx + dx, ny + dy);
+            var nxScaled = (nx + dx) * this.turtles.scale;
+            var nyScaled = (ny + dy) * this.turtles.scale;
+            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
+
+            var rad = (this.orientation + 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(rad);
+            var dy = -step * Math.cos(rad);
+
+            var orad = (this.orientation / 180) * Math.PI;
+            var cx = nx;
+            var cy = ny;
+            var sa = orad - Math.PI;
+            var ea = orad;
+            this.drawingCanvas.graphics.arc(cx, cy, step, sa, ea, false);
+
+            var fx = nx + dx;
+            var fy = ny + dy;
+            var nxScaled = (nx + dx) * this.turtles.scale;
+            var nyScaled = (ny + dy) * this.turtles.scale;
+
+            var radiusScaled = step * this.turtles.scale;
+            this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
+            this.svgOutput += 'M ' + nxScaled + ',' + nyScaled + ' ';
+
+            var fx = ox + dx;
+            var fy = oy + dy;
+            this.drawingCanvas.graphics.lineTo(ox + dx, oy + dy);
+            var nxScaled = (ox + dx) * this.turtles.scale;
+            var nyScaled = (oy + dy) * this.turtles.scale;
+            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
+
+            var rad = (this.orientation - 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(rad);
+            var dy = -step * Math.cos(rad);
+
+            var orad = ((this.orientation + 180) / 180) * Math.PI;
+            var cx = ox;
+            var cy = oy;
+            var sa = orad - Math.PI;
+            var ea = orad;
+            this.drawingCanvas.graphics.arc(cx, cy, step, sa, ea, false);
+
+            var nxScaled = (ox + dx) * this.turtles.scale;
+            var nyScaled = (oy + dy) * this.turtles.scale;
+
+            var radiusScaled = step * this.turtles.scale;
+            this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
+
+            this.closeSVG();
+
+            // restore stroke.
+            this.stroke = savedStroke;
+            this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+            this.drawingCanvas.graphics.moveTo(nx, ny);
+        } else if (this.penState) {
             this.drawingCanvas.graphics.lineTo(nx, ny);
             if (!this.svgPath) {
                 this.svgPath = true;
@@ -188,6 +268,7 @@ function Turtle (name, turtles) {
         // Clear all graphics.
         this.penState = true;
         this.fillState = false;
+        this.hollowState = false;
 
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.clear();
@@ -512,6 +593,16 @@ function Turtle (name, turtles) {
         this.drawingCanvas.graphics.endFill();
         this.closeSVG();
         this.fillState = false;
+    }
+
+    this.doStartHollowLine = function() {
+        /// start tracking points here
+        this.hollowState = true;
+    }
+
+    this.doEndHollowLine = function() {
+        /// redraw the points with fill enabled
+        this.hollowState = false;
     }
 
     this.closeSVG = function() {

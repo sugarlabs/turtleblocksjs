@@ -69,7 +69,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.stepQueue = {};
     this.unhighlightStepQueue = {};
 
-    this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
+    this.svgOutput = '';
+    this.svgBackground = true;
 
     try {
         this.mic = new p5.AudioIn()
@@ -316,7 +317,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
         }
 
-        this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
+        this.svgOutput = '';
+        this.svgBackground = true;
 
         this.parentFlowQueue = {};
         this.unhightlightQueue = {};
@@ -775,6 +777,7 @@ length;
                 }
                 break;
             case 'clear':
+                logo.svgBackground = true;
                 logo.turtles.turtleList[turtle].doClear();
                 break;
             case 'setxy':
@@ -954,6 +957,12 @@ length;
             case 'endfill':
                 logo.turtles.turtleList[turtle].doEndFill();
                 break;
+            case 'beginhollowline':
+                logo.turtles.turtleList[turtle].doStartHollowLine();
+                break;
+            case 'endhollowline':
+                logo.turtles.turtleList[turtle].doEndHollowLine();
+                break;
             case 'fillscreen':
                 if (args.length == 3) {
                     var hue = logo.turtles.turtleList[turtle].color;
@@ -967,6 +976,9 @@ length;
                     logo.turtles.turtleList[turtle].doSetValue(value);
                     logo.turtles.turtleList[turtle].doSetChroma(chroma);
                 }
+                break;
+            case 'nobackground':
+                logo.svgBackground = false;
                 break;
             case 'background':
                 logo.setBackgroundColor(turtle);
@@ -1035,6 +1047,9 @@ length;
                 break;
             case 'savesvg':
                 if (args.length == 1) {
+                    if (logo.svgBackground) {
+                        logo.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n' + logo.svgOutput;
+                    }
                     doSaveSVG(logo, args[0]);
                 }
                 break;
@@ -1644,7 +1659,7 @@ length;
 
         body.style.background = c;
         document.querySelector('.canvasHolder').style.background = c;
-        this.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n';
+        this.svgOutput = '';
     }
 
     this.setCameraID = function(id) {

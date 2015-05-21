@@ -1521,6 +1521,9 @@ function promptPaletteDelete(palette) {
         delete pluginObjs['FLOWPLUGINS'][name];
         delete pluginObjs['ARGPLUGINS'][name];
         delete pluginObjs['BLOCKPLUGINS'][name];
+        delete pluginObjs['ONLOAD'][name];
+        delete pluginObjs['ONSTART'][name];
+        delete pluginObjs['ONSTOP'][name];
     }
 
     localStorage.plugins = preparePluginExports({});

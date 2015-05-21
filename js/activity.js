@@ -116,7 +116,10 @@ define(function(require) {
             'PALETTEHIGHLIGHTCOLORS': {},
             'FLOWPLUGINS': {},
             'ARGPLUGINS': {},
-            'BLOCKPLUGINS': {}
+            'BLOCKPLUGINS': {},
+            'ONLOAD': {},
+            'ONSTART': {},
+            'ONSTOP': {}
         };
 
         // Stacks of blocks saved in local storage
@@ -429,7 +432,7 @@ define(function(require) {
             // Load any plugins saved in local storage.
             var pluginData = localStorage.getItem('plugins');
             if (pluginData != null) {
-                var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
+                var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
                 updatePluginObj(obj);
             }
 
@@ -473,7 +476,7 @@ define(function(require) {
                     // Show busy cursor.
                     document.body.style.cursor = 'wait';
                     setTimeout(function() {
-                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict);
+                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
                         // Save plugins to local storage.
                         if (obj != null) {
                             var foo = preparePluginExports(obj);

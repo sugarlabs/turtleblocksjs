@@ -327,6 +327,10 @@
   * Fixed problem with negative radius on arcs.
   * Fixed problem with copying stacks with nameddo blocks.
   * Fixed problem with copying stacks with namedbox blocks.
+  * Added no background block for SVG output (useful for icons, et al.).
+  * Added hollow-line rendering.
+  * Added disabled protoblock attritribute.
+  * Added onload, onstart, onstop support to plugins.
 
 TODO:
   * Browser for plugins

@@ -50,6 +50,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.evalArgDict = {};
     this.evalParameterDict = {};
     this.evalSetterDict = {};
+    this.evalOnStartList = {};
+    this.evalOnStopList = {};
     this.eventList = {};
 
     this.boxes = {};
@@ -245,6 +247,10 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.runLogoCommands = function(startHere) {
         // Save the state before running.
         this.saveLocally();
+
+        for (var arg in this.evalOnStartList) {
+            eval(this.evalOnStartList[arg]);
+        }
 
         this.stopTurtle = false;
         this.blocks.unhighlightAll();
@@ -1184,6 +1190,10 @@ length;
             var i = logo.stage.getNumChildren() - 1;
             logo.stage.setChildIndex(logo.turtles.turtleList[turtle].container, i);
             logo.refreshCanvas();
+
+            for (var arg in logo.evalOnStopList) {
+                eval(logo.evalOnStopList[arg]);
+            }
         }
 
         clearTimeout(this.saveTimeout);

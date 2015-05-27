@@ -126,8 +126,9 @@ function Turtle (name, turtles) {
             var nyScaled = (ny + dy) * this.turtles.scale;
 
             var radiusScaled = step * this.turtles.scale;
-            this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
-            this.svgOutput += 'M ' + nxScaled + ',' + nyScaled + ' ';
+            // this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
+            // this.svgOutput += 'M ' + nxScaled + ',' + nyScaled + ' ';
+            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
 
             var fx = ox + dx;
             var fy = oy + dy;
@@ -151,7 +152,9 @@ function Turtle (name, turtles) {
             var nyScaled = (oy + dy) * this.turtles.scale;
 
             var radiusScaled = step * this.turtles.scale;
-            this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
+            // this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
+            // this.svgOutput += 'M ' + nxScaled + ',' + nyScaled + ' ';
+            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
 
             this.closeSVG();
 

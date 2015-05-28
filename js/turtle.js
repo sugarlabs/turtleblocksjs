@@ -95,15 +95,11 @@ function Turtle (name, turtles) {
             var dx = step * Math.sin(rad);
             var dy = -step * Math.cos(rad);
 
-            var fx = ox + dx;
-            var fy = oy + dy;
             this.drawingCanvas.graphics.moveTo(ox + dx, oy + dy);
             var oxScaled = (ox + dx) * this.turtles.scale;
             var oyScaled = (oy + dy) * this.turtles.scale;
             this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
 
-            var fx = nx + dx;
-            var fy = ny + dy;
             this.drawingCanvas.graphics.lineTo(nx + dx, ny + dy);
             var nxScaled = (nx + dx) * this.turtles.scale;
             var nyScaled = (ny + dy) * this.turtles.scale;
@@ -120,18 +116,31 @@ function Turtle (name, turtles) {
             var ea = orad;
             this.drawingCanvas.graphics.arc(cx, cy, step, sa, ea, false);
 
-            var fx = nx + dx;
-            var fy = ny + dy;
             var nxScaled = (nx + dx) * this.turtles.scale;
             var nyScaled = (ny + dy) * this.turtles.scale;
 
             var radiusScaled = step * this.turtles.scale;
+
+            // Simulate an arc with line segments since Tinkercad
+            // cannot import SVG arcs reliably.
+            // Replaces:
             // this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
             // this.svgOutput += 'M ' + nxScaled + ',' + nyScaled + ' ';
+            function svgArc(me, nsteps, cx, cy, radius, sa) {
+                var a = sa;
+                var da = Math.PI / nsteps;
+                for (var i = 0; i < nsteps; i++) {
+                    var nx = cx + radius * Math.cos(a);
+                    var ny = cy + radius * Math.sin(a);
+                    me.svgOutput += nx + ',' + ny + ' ';
+                    a += da;
+                }
+            }
+
+            steps = Math.max(Math.floor(savedStroke, 1));
+            svgArc(this, steps, cx * this.turtles.scale, cy * this.turtles.scale, radiusScaled, sa);
             this.svgOutput += nxScaled + ',' + nyScaled + ' ';
 
-            var fx = ox + dx;
-            var fy = oy + dy;
             this.drawingCanvas.graphics.lineTo(ox + dx, oy + dy);
             var nxScaled = (ox + dx) * this.turtles.scale;
             var nyScaled = (oy + dy) * this.turtles.scale;
@@ -152,8 +161,7 @@ function Turtle (name, turtles) {
             var nyScaled = (oy + dy) * this.turtles.scale;
 
             var radiusScaled = step * this.turtles.scale;
-            // this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
-            // this.svgOutput += 'M ' + nxScaled + ',' + nyScaled + ' ';
+            svgArc(this, steps, cx * this.turtles.scale, cy * this.turtles.scale, radiusScaled, sa);
             this.svgOutput += nxScaled + ',' + nyScaled + ' ';
 
             this.closeSVG();

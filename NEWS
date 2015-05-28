@@ -331,6 +331,7 @@
   * Added hollow-line rendering.
   * Added disabled protoblock attritribute.
   * Added onload, onstart, onstop support to plugins.
+  * Added hollow-line rendering for arcs.
 
 TODO:
   * Browser for plugins

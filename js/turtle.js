@@ -218,7 +218,66 @@ function Turtle (name, turtles) {
         }
 
         // Draw an arc if the pen is down.
-        if (this.penState) {
+        if (this.penState && this.hollowState) {
+            // First, we need to close the current SVG path.
+            this.closeSVG();
+            this.svgPath = true;
+            // Save the current stroke width.
+            var savedStroke = this.stroke;
+            this.stroke = 1;
+            this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+            // Draw a hollow line.
+            if (savedStroke < 3) {
+                var step = 0.5;
+            } else {
+                var step = (savedStroke - 2) / 2.;
+            }
+
+            var rad = (this.orientation + 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(rad);
+            var dy = -step * Math.cos(rad);
+
+            if (anticlockwise) {
+                this.drawingCanvas.graphics.moveTo(ox + dx, oy + dy);
+            } else {
+                this.drawingCanvas.graphics.moveTo(ox - dx, oy - dy);
+            }
+            var oxScaled = (ox + dx) * this.turtles.scale;
+            var oyScaled = (oy + dy) * this.turtles.scale;
+            this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
+
+            this.drawingCanvas.graphics.arc(cx, cy, radius + step, sa, ea, anticlockwise);
+
+            // this.drawingCanvas.graphics.lineTo(nx + dx, ny + dy);
+            var nxScaled = (nx + dx) * this.turtles.scale;
+            var nyScaled = (ny + dy) * this.turtles.scale;
+            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
+
+            var rad = (this.orientation + 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(rad);
+            var dy = -step * Math.cos(rad);
+
+            var cx1 = nx;
+            var cy1 = ny;
+            var sa1 = ea;
+            var ea1 = ea + Math.PI;
+            this.drawingCanvas.graphics.arc(cx1, cy1, step, sa1, ea1, anticlockwise);
+
+            this.drawingCanvas.graphics.arc(cx, cy, radius - step, ea, sa, !anticlockwise);
+            // this.drawingCanvas.graphics.lineTo(ox + dx, oy + dy);
+            var cx2 = ox;
+            var cy2 = oy;
+            var sa2 = sa - Math.PI;
+            var ea2 = sa;
+            this.drawingCanvas.graphics.arc(cx2, cy2, step, sa2, ea2, anticlockwise);
+
+            this.closeSVG();
+
+            // restore stroke.
+            this.stroke = savedStroke;
+            this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+            this.drawingCanvas.graphics.moveTo(nx, ny);
+        } else if (this.penState) {
             this.drawingCanvas.graphics.arc(cx, cy, radius, sa, ea, anticlockwise);
             if (!this.svgPath) {
                 this.svgPath = true;

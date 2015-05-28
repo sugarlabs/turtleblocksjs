@@ -91,9 +91,9 @@ function Turtle (name, turtles) {
                 var step = (savedStroke - 2) / 2.;
             }
 
-            var rad = (this.orientation - 90) * Math.PI / 180.0;
-            var dx = step * Math.sin(rad);
-            var dy = -step * Math.cos(rad);
+            var capAngleRadians = (this.orientation - 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(capAngleRadians);
+            var dy = -step * Math.cos(capAngleRadians);
 
             this.drawingCanvas.graphics.moveTo(ox + dx, oy + dy);
             var oxScaled = (ox + dx) * this.turtles.scale;
@@ -105,15 +105,15 @@ function Turtle (name, turtles) {
             var nyScaled = (ny + dy) * this.turtles.scale;
             this.svgOutput += nxScaled + ',' + nyScaled + ' ';
 
-            var rad = (this.orientation + 90) * Math.PI / 180.0;
-            var dx = step * Math.sin(rad);
-            var dy = -step * Math.cos(rad);
+            var capAngleRadians = (this.orientation + 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(capAngleRadians);
+            var dy = -step * Math.cos(capAngleRadians);
 
-            var orad = (this.orientation / 180) * Math.PI;
+            var oAngleRadians = (this.orientation / 180) * Math.PI;
             var cx = nx;
             var cy = ny;
-            var sa = orad - Math.PI;
-            var ea = orad;
+            var sa = oAngleRadians - Math.PI;
+            var ea = oAngleRadians;
             this.drawingCanvas.graphics.arc(cx, cy, step, sa, ea, false);
 
             var nxScaled = (nx + dx) * this.turtles.scale;
@@ -146,15 +146,15 @@ function Turtle (name, turtles) {
             var nyScaled = (oy + dy) * this.turtles.scale;
             this.svgOutput += nxScaled + ',' + nyScaled + ' ';
 
-            var rad = (this.orientation - 90) * Math.PI / 180.0;
-            var dx = step * Math.sin(rad);
-            var dy = -step * Math.cos(rad);
+            var capAngleRadians = (this.orientation - 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(capAngleRadians);
+            var dy = -step * Math.cos(capAngleRadians);
 
-            var orad = ((this.orientation + 180) / 180) * Math.PI;
+            var oAngleRadians = ((this.orientation + 180) / 180) * Math.PI;
             var cx = ox;
             var cy = oy;
-            var sa = orad - Math.PI;
-            var ea = orad;
+            var sa = oAngleRadians - Math.PI;
+            var ea = oAngleRadians;
             this.drawingCanvas.graphics.arc(cx, cy, step, sa, ea, false);
 
             var nxScaled = (ox + dx) * this.turtles.scale;
@@ -233,44 +233,58 @@ function Turtle (name, turtles) {
                 var step = (savedStroke - 2) / 2.;
             }
 
-            var rad = (this.orientation + 90) * Math.PI / 180.0;
-            var dx = step * Math.sin(rad);
-            var dy = -step * Math.cos(rad);
+            // Simulate an arc with line segments since Tinkercad
+            // cannot import SVG arcs reliably.
+            function svgArc(me, nsteps, cx, cy, radius, sa, ea) {
+                var a = sa;
+                var da = (ea - sa) / nsteps;
+                for (var i = 0; i < nsteps; i++) {
+                    var nx = cx + radius * Math.cos(a);
+                    var ny = cy + radius * Math.sin(a);
+                    me.svgOutput += nx + ',' + ny + ' ';
+                    a += da;
+                }
+            }
+
+            var capAngleRadians = (this.orientation + 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(capAngleRadians);
+            var dy = -step * Math.cos(capAngleRadians);
 
             if (anticlockwise) {
                 this.drawingCanvas.graphics.moveTo(ox + dx, oy + dy);
+                var oxScaled = (ox + dx) * this.turtles.scale;
+                var oyScaled = (oy + dy) * this.turtles.scale;
             } else {
                 this.drawingCanvas.graphics.moveTo(ox - dx, oy - dy);
+                var oxScaled = (ox - dx) * this.turtles.scale;
+                var oyScaled = (oy - dy) * this.turtles.scale;
             }
-            var oxScaled = (ox + dx) * this.turtles.scale;
-            var oyScaled = (oy + dy) * this.turtles.scale;
             this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
 
             this.drawingCanvas.graphics.arc(cx, cy, radius + step, sa, ea, anticlockwise);
+            nsteps = Math.max(Math.floor(radius * Math.abs(sa - ea) / 2), 2);
+            steps = Math.max(Math.floor(savedStroke, 1));
 
-            // this.drawingCanvas.graphics.lineTo(nx + dx, ny + dy);
-            var nxScaled = (nx + dx) * this.turtles.scale;
-            var nyScaled = (ny + dy) * this.turtles.scale;
-            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
+            svgArc(this, nsteps, cx * this.turtles.scale, cy * this.turtles.scale, (radius + step) * this.turtles.scale, sa, ea);
 
-            var rad = (this.orientation + 90) * Math.PI / 180.0;
-            var dx = step * Math.sin(rad);
-            var dy = -step * Math.cos(rad);
+            var capAngleRadians = (this.orientation + 90) * Math.PI / 180.0;
+            var dx = step * Math.sin(capAngleRadians);
+            var dy = -step * Math.cos(capAngleRadians);
 
             var cx1 = nx;
             var cy1 = ny;
             var sa1 = ea;
             var ea1 = ea + Math.PI;
             this.drawingCanvas.graphics.arc(cx1, cy1, step, sa1, ea1, anticlockwise);
-
+            svgArc(this, steps, cx1 * this.turtles.scale, cy1 * this.turtles.scale, step * this.turtles.scale, sa1, ea1);
             this.drawingCanvas.graphics.arc(cx, cy, radius - step, ea, sa, !anticlockwise);
-            // this.drawingCanvas.graphics.lineTo(ox + dx, oy + dy);
+            svgArc(this, nsteps, cx * this.turtles.scale, cy * this.turtles.scale, (radius - step) * this.turtles.scale, ea, sa);
             var cx2 = ox;
             var cy2 = oy;
             var sa2 = sa - Math.PI;
             var ea2 = sa;
             this.drawingCanvas.graphics.arc(cx2, cy2, step, sa2, ea2, anticlockwise);
-
+            svgArc(this, steps, cx2 * this.turtles.scale, cy2 * this.turtles.scale, step * this.turtles.scale, sa2, ea2);
             this.closeSVG();
 
             // restore stroke.
@@ -367,9 +381,9 @@ function Turtle (name, turtles) {
         var oy = this.turtles.screenY2turtleY(this.container.y);
 
         // new turtle point
-        var rad = this.orientation * Math.PI / 180.0;
-        var nx = ox + Number(steps) * Math.sin(rad);
-        var ny = oy + Number(steps) * Math.cos(rad);
+        var angleRadians = this.orientation * Math.PI / 180.0;
+        var nx = ox + Number(steps) * Math.sin(angleRadians);
+        var ny = oy + Number(steps) * Math.cos(angleRadians);
 
         this.move(ox, oy, nx, ny, true);
         this.turtles.refreshCanvas();
@@ -424,8 +438,8 @@ function Turtle (name, turtles) {
             this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
         }
         var adeg = Number(angle);
-        var arad = (adeg / 180) * Math.PI;
-        var orad = (this.orientation / 180) * Math.PI;
+        var angleRadians = (adeg / 180) * Math.PI;
+        var oAngleRadians = (this.orientation / 180) * Math.PI;
         var r = Number(radius);
 
         // old turtle point
@@ -436,21 +450,21 @@ function Turtle (name, turtles) {
             var anticlockwise = true;
             adeg = -adeg;
             // center point for arc
-            var cx = ox - Math.cos(orad) * r;
-            var cy = oy + Math.sin(orad) * r;
+            var cx = ox - Math.cos(oAngleRadians) * r;
+            var cy = oy + Math.sin(oAngleRadians) * r;
             // new position of turtle
-            var nx = cx + Math.cos(orad + arad) * r;
-            var ny = cy - Math.sin(orad + arad) * r;
+            var nx = cx + Math.cos(oAngleRadians + angleRadians) * r;
+            var ny = cy - Math.sin(oAngleRadians + angleRadians) * r;
         } else {
             var anticlockwise = false;
             // center point for arc
-            var cx = ox + Math.cos(orad) * r;
-            var cy = oy - Math.sin(orad) * r;
+            var cx = ox + Math.cos(oAngleRadians) * r;
+            var cy = oy - Math.sin(oAngleRadians) * r;
             // new position of turtle
-            var nx = cx - Math.cos(orad + arad) * r;
-            var ny = cy + Math.sin(orad + arad) * r;
+            var nx = cx - Math.cos(oAngleRadians + angleRadians) * r;
+            var ny = cy + Math.sin(oAngleRadians + angleRadians) * r;
         }
-        this.arc(cx, cy, ox, oy, nx, ny, r, orad, orad + arad, anticlockwise, true);
+        this.arc(cx, cy, ox, oy, nx, ny, r, oAngleRadians, oAngleRadians + angleRadians, anticlockwise, true);
 
         if (anticlockwise) {
             this.doRight(-adeg);

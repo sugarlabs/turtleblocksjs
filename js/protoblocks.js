@@ -313,6 +313,40 @@ function ProtoBlock(name) {
 	return [artwork, svg.docks];
     }
 
+    // 
+    this.threeArgMathBlock = function() {
+        this.expandable = true;
+        this.style = 'arg';
+        this.size = 3;
+        this.args = 3;
+        this.parameter = true;
+        this.dockTypes.push('numberout');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('numberin');
+        this.generator = this.threeArgMathBlockGenerator;
+    }
+
+    this.threeArgMathBlockGenerator = function(expandY) {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setSlot(false);
+        svg.setInnies([true, true, true]);
+        svg.setOutie(true);
+        svg.setTab(false);
+        if (expandY) {
+            svg.setExpand(30 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        } else {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        var artwork = svg.basicBlock();
+	return [artwork, svg.docks];
+    }
+
     // E.g., number, string. Value blocks get DOM textareas associated
     // with them so their values can be edited by the user.
     this.valueBlock = function() {

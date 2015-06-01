@@ -76,13 +76,24 @@ if (haveData) {
     impactLastFetchTime = now;
     impactUID = uid;
     impactDate = date;
-    if (true) {   
-        try {
-            output = impactData['sensor-data'][0][field];
-        } catch (e) {
-           logo.errorMsg(_('Impact field not found.'), blk);
-        }
-    } else {
+    var foundUID = false;
+    try {
+        for (var sensorData in impactData) {
+            if (sensorData == uid) {
+                console.log('found UID in impactData');
+                foundUID = true;
+                if (field in impactData[sensorData]) {
+                    output = impactData[sensorData][field];
+                } else {
+                    logo.errorMsg(_('Impact field not found.'), blk);
+                }
+                break;
+            }
+         }
+         if (!foundUID) {
+            logo.errorMsg(_('Impact UID not found.'), blk);
+         }
+    } catch (e) {
         logo.errorMsg(_('Impact data not available.'), blk);
     }
 }

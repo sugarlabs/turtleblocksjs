@@ -48,7 +48,7 @@ msgid "heading"
 msgstr "כיוון (אזימוט)"
 
 msgid "set xy"
-msgstr "קבע ערך XY"
+msgstr "XY קבע ערך"
 
 msgid "x"
 msgstr "x"
@@ -114,10 +114,10 @@ msgid "mod"
 msgstr "mod"
 
 msgid "and"
-msgstr "and"
+msgstr "וגם"
 
 msgid "or"
-msgstr "or"
+msgstr "או"
 
 msgid "not"
 msgstr "לא"
@@ -126,7 +126,7 @@ msgid "store in"
 msgstr "שמור ב"
 
 msgid "name"
-msgstr ""
+msgstr "שם"
 
 msgid "value"
 msgstr "ערך"
@@ -138,16 +138,16 @@ msgid "action"
 msgstr "פעולה"
 
 msgid "do"
-msgstr "לבצע"
+msgstr "בצע"
 
 msgid "start"
 msgstr "התחל"
 
 msgid "add 1 to"
-msgstr "להוסיף 1 ל"
+msgstr "הוסף 1 ל"
 
 msgid "add"
-msgstr "להוסיף"
+msgstr "הוסף"
 
 msgid "speak"
 msgstr "דבר"
@@ -156,13 +156,13 @@ msgid "show"
 msgstr "הצג"
 
 msgid "obj"
-msgstr ""
+msgstr "אובייקט"
 
 msgid "text"
-msgstr ""
+msgstr "טקסט"
 
 msgid "shell"
-msgstr "שריון צב"
+msgstr "שריון"
 
 msgid "image"
 msgstr "תמונה"
@@ -174,10 +174,10 @@ msgid "repeat"
 msgstr "חזור"
 
 msgid "forever"
-msgstr "בלי-סוף"
+msgstr "תמיד"
 
 msgid "stop"
-msgstr "עצור פעולה"
+msgstr "עצור"
 
 msgid "if"
 msgstr "אם"
@@ -216,176 +216,178 @@ msgid "unknown"
 msgstr "לא ידוע"
 
 msgid "Welcome to Turtle Blocks"
-msgstr ""
+msgstr "Turtle Blocks-ברוכים הבאים ל"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr ""
+msgstr "הוא צב בהשראת לוגו אשר מצייר תמונות צבעוניות יחד עם בלוקים ויזואליים של תכנות Turtle Blocks"
 
 msgid "Palette buttons"
-msgstr ""
+msgstr "סרגל כלים"
 
 msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
-msgstr ""
+msgstr "סרגל כלים זה כולל את כפתורי הכלים; לחצו כדי להציג את כלי הבלוקים (צב, עט, מספרים, בוליאני, זרימה, בלוקים, מדיה וכו'). ניתן לגרור את הבלוקים מהסרגל לתוך הקנבס "
 
 msgid "Expand/collapse toolbar"
-msgstr ""
+msgstr "הרחב/כווץ את סרגל הכלים"
 
 msgid "This button opens and closes the primary toolbar."
-msgstr ""
+msgstr "כפתור זה פותח וסוגר את סרגל הכלים הראשי"
 
 msgid "Run fast"
-msgstr ""
+msgstr "הרצה מהירה"
 
 msgid "Click to run the project in fast mode."
-msgstr ""
+msgstr "לחצו כדי להריץ את הפרויקט במצב מהיר"
 
 msgid "Run slow"
-msgstr ""
+msgstr "הרצה איטית"
 
 msgid "Click to run the project in slow mode."
-msgstr ""
+msgstr "לחצו כדי להריץ את הפרויקט במצב איטי"
 
 msgid "Run step by step"
-msgstr ""
+msgstr "הרצה צעד אחרי צעד"
 
 msgid "Click to run the project step by step."
-msgstr ""
+msgstr "לחצו כדי להריץ את הפרויקט צעד אחרי צעד"
 
 msgid "Stop"
 msgstr "עצור"
 
 msgid "Stop the current project."
-msgstr ""
+msgstr "עצור את הפרויקט הנוכחי"
 
 msgid "Clean"
 msgstr "נקה"
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr ""
+msgstr "נקה את המסך והחזר את הצבים למיקום הראשוני"
 
 msgid "Show/hide palettes"
-msgstr ""
+msgstr "הצג/הראה "
 
 msgid "Hide or show the block palettes."
-msgstr ""
+msgstr "הצג או הסתר את סרגלי הכלים"
 
 msgid "Show/hide blocks"
-msgstr ""
+msgstr "הצג או הסתר את הבלוקים"
 
 msgid "Hide or show the blocks and the palettes."
-msgstr ""
+msgstr "הצג או הסתר את הבלוקים ואת הכלים"
 
 msgid "Expand/collapse collapsable blocks"
-msgstr ""
+msgstr "צמצם/הרחב את הבלוקים הניתנים לצמצום"
 
 msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
-msgstr ""
+msgstr "הרחב או צמצם קבוצת בלוקים כמו קבוצת התחל או פעולה"
 
 msgid "Help"
 msgstr "עזרה"
 
 msgid "Show these messages."
-msgstr ""
+msgstr "הצג את הודעות אלה"
 
 msgid "Expand/collapse option toolbar"
-msgstr ""
+msgstr "הרחב/צמצם סרגל האפשרויות"
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
-msgstr ""
+msgstr "לחצו על כפתור זה כדי להרחיב או לצמצם את סרגל כלי העזר"
 
 msgid "Copy"
-msgstr ""
+msgstr "העתק"
 
 msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+msgstr ""
 
 msgid "Save stack"
-msgstr ""
+msgstr "שמור את הקבוצה"
 
 msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+msgstr ""
 
 msgid "Settings"
-msgstr ""
+msgstr "הגדרות"
 
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr ""
+msgstr "פתיחת פאנל להתאמת בלוקים"
 
 msgid "Decrease block size"
-msgstr ""
+msgstr "הקטן גודל בלוק"
 
 msgid "Decrease the size of the blocks."
-msgstr ""
+msgstr "הקטן את גודל הבלוקים"
 
 msgid "Increase block size"
-msgstr ""
+msgstr "הגדל את גודל הבלוק"
 
 msgid "Increase the size of the blocks."
-msgstr ""
+msgstr "הגדל את גודל הבלוקים"
 
 msgid "Display statistics"
-msgstr ""
+msgstr "הצג סטטיסטיקות"
 
 msgid "Display statistics about your Turtle project."
-msgstr ""
+msgstr "הצג סטטיסטיקות אודות פרויקט הצב שלך"
 
 msgid "Paste"
 msgstr "הדבק"
 
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
-msgstr ""
+msgstr "כפתור הדבק פעיל כאשר ישנם בלוקים שהועתקו אל הלוח"
 
 msgid "Cartesian"
 msgstr "קוארדינטות קרטזיות"
 
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr ""
+msgstr "הצג או הסתר רשת של קואורדינטות קרטזיות"
 
 msgid "Polar"
 msgstr "קוארדינטות פולריות"
 
 msgid "Show or hide a polar-coordinate grid."
-msgstr ""
+msgstr "הצג או הסתר רשת קוארדינטות פולריות"
 
 msgid "Load samples from server"
-msgstr ""
+msgstr "העלאת דוגמאות מן השרת"
 
 msgid "This button opens a viewer for loading example projects."
-msgstr ""
+msgstr "כפתור זה פותח מציג להעלאת פרויקטים"
 
 msgid "Load project from file"
-msgstr ""
+msgstr "העלאת פרויקטים מקובץ"
 
 msgid "You can also load projects from the file system."
-msgstr ""
+msgstr "ניתן להעלות פרויקטים מתוך מערכת הקבצים"
 
 msgid "Load plugin from file"
-msgstr ""
+msgstr "העלאת פלאגין מקובץ"
 
 msgid "You can load new blocks from the file system."
-msgstr ""
+msgstr "ניתן להעלות בלוקים חדשים מתוך מערכת הקבצים"
 
 msgid "Delete all"
-msgstr ""
+msgstr "מחק הכל"
 
 msgid "Remove all content on the canvas, including the blocks."
-msgstr ""
+msgstr "הסר את כל תוכן הקנבס, כולל הבלוקים"
 
 msgid "Undo"
 msgstr "לבטל"
 
 msgid "Restore blocks from the trash."
-msgstr ""
+msgstr "שחזור בלוקים מסל המחזור"
 
 msgid "Save project"
-msgstr ""
+msgstr "שמור פרויקט"
 
 msgid "Save your project to a server."
-msgstr ""
+msgstr "שמור את הפרויקט שלך בשרת"
 
 msgid "Congratulations."
-msgstr ""
+msgstr "איחולנו"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr ""
+msgstr "!Turtle Blocks סיימתם את הסיור. תהנו מ"
 
 msgid "hide blocks"
 msgstr "הסתר בלוקים"
@@ -394,7 +396,7 @@ msgid "loudness"
 msgstr "עוצמת קול"
 
 msgid "publish"
-msgstr ""
+msgstr "פרסום"
 
 msgid "comment"
 msgstr "הערה"
@@ -415,7 +417,7 @@ msgid "show blocks"
 msgstr "הראה בלוקים"
 
 msgid "stop play"
-msgstr ""
+msgstr "הפסקת נגן"
 
 msgid "turtle"
 msgstr "צב"
@@ -427,37 +429,37 @@ msgid "number"
 msgstr "מספר"
 
 msgid "boolean"
-msgstr ""
+msgstr "בוליאני"
 
 msgid "flow"
-msgstr ""
+msgstr "זרם"
 
 msgid "blocks"
-msgstr ""
+msgstr "בלוקים"
 
 msgid "media"
-msgstr ""
+msgstr "מדיה"
 
 msgid "sensors"
 msgstr "חיישנים"
 
 msgid "extras"
-msgstr ""
+msgstr "אקסטרה"
 
 msgid "open file"
-msgstr ""
+msgstr "פתיחת קובץ"
 
 msgid "motion z"
-msgstr ""
+msgstr "z תנועת"
 
 msgid "motion y"
-msgstr ""
+msgstr "y תנועת"
 
 msgid "motion x"
-msgstr ""
+msgstr "x תנועת"
 
 msgid "bitcoin"
-msgstr ""
+msgstr "ביטקוין"
 
 msgid "from"
 msgstr "מ"
@@ -466,16 +468,16 @@ msgid "mashape"
 msgstr ""
 
 msgid "define"
-msgstr ""
+msgstr "הגדר"
 
 msgid "stock price"
-msgstr ""
+msgstr "מחיר מניה"
 
 msgid "currency"
-msgstr ""
+msgstr "מטבע"
 
 msgid "Google map"
-msgstr ""
+msgstr "גוגל מפות"
 
 msgid "coordinates"
 msgstr "קואורדינטות"
@@ -487,14 +489,14 @@ msgid "zoom"
 msgstr "זום"
 
 msgid "city latitude"
-msgstr ""
+msgstr "קו רוחב של עיר"
 
 msgid "city longitude"
-msgstr ""
+msgstr "קו אורך של עיר"
 
 #. TRANS: longitude and latitude coordinate data
 msgid "Coordinate data not available."
-msgstr ""
+msgstr "נתוני הקואורדינטות אינם זמינים"
 
 msgid "latitude"
 msgstr "קו רוחב"
@@ -521,37 +523,37 @@ msgid "push"
 msgstr "דחוף\\שמור ערך"
 
 msgid "logic"
-msgstr ""
+msgstr "לוגיקה"
 
 msgid "power"
-msgstr ""
+msgstr "כוח"
 
 msgid "base"
-msgstr ""
+msgstr "בסיס"
 
 msgid "exp"
-msgstr ""
+msgstr "ביטוי"
 
 msgid "floor"
-msgstr ""
+msgstr "רצפה"
 
 msgid "ceiling"
-msgstr ""
+msgstr "תקרה"
 
 msgid "degrees"
-msgstr ""
+msgstr "מעלות"
 
 msgid "to degrees"
-msgstr ""
+msgstr "למעלות"
 
 msgid "radians"
-msgstr ""
+msgstr "רדיאנים"
 
 msgid "to radians"
-msgstr ""
+msgstr "לרדיאנים"
 
 msgid "maths"
-msgstr ""
+msgstr "מתמטיקה"
 
 msgid "cheese"
 msgstr "גבינה"
@@ -560,16 +562,16 @@ msgid "apple"
 msgstr "תפוח"
 
 msgid "get fat"
-msgstr ""
+msgstr "קבל שומן"
 
 msgid "fish"
 msgstr "דג"
 
 msgid "get calories"
-msgstr ""
+msgstr "קבל קלוריות"
 
 msgid "protein"
-msgstr ""
+msgstr "חלבון"
 
 msgid "chicken"
 msgstr "עוף"
@@ -578,10 +580,10 @@ msgid "digest meal"
 msgstr "לעכל"
 
 msgid "get fiber"
-msgstr ""
+msgstr "קבל סיבים"
 
 msgid "carbs"
-msgstr ""
+msgstr "קלפים"
 
 msgid "eat"
 msgstr "לאכול"
@@ -599,16 +601,16 @@ msgid "tamale"
 msgstr ""
 
 msgid "fiber"
-msgstr ""
+msgstr "סיבים"
 
 msgid "corn"
 msgstr "תירס"
 
 msgid "fat"
-msgstr ""
+msgstr "שומן"
 
 msgid "get carbs"
-msgstr ""
+msgstr "קבל קלפים"
 
 msgid "water"
 msgstr "מים"
@@ -635,16 +637,16 @@ msgid "potato"
 msgstr "תַפּוּד"
 
 msgid "calories"
-msgstr ""
+msgstr "קלוריות"
 
 msgid "get name"
-msgstr ""
+msgstr "קבל שם"
 
 msgid "cake"
 msgstr "עוגה"
 
 msgid "get protein"
-msgstr ""
+msgstr "קבל חלבון"
 
 msgid "food"
 msgstr "מזון"
@@ -653,148 +655,148 @@ msgid "eatme"
 msgstr "לאכול"
 
 msgid "sense left"
-msgstr ""
+msgstr "הרגש שמאל"
 
 msgid "see distance"
-msgstr ""
+msgstr "ראה מרחק"
 
 msgid "sense right"
-msgstr ""
+msgstr "הרגש ימין"
 
 msgid "sing"
 msgstr "לשיר"
 
 msgid "note"
-msgstr ""
+msgstr "הערה"
 
 msgid "duration"
 msgstr "משך זמן"
 
 msgid "move"
-msgstr ""
+msgstr "זוז"
 
 msgid "blink (ms)"
-msgstr ""
+msgstr "מצמץ"
 
 msgid "rodi"
 msgstr "RoDi"
 
 msgid "set lang"
-msgstr ""
+msgstr "קבע שפה"
 
 msgid "source"
-msgstr ""
+msgstr "מקור"
 
 msgid "target"
-msgstr ""
+msgstr "יעד"
 
 msgid "translate"
-msgstr ""
+msgstr "תרגם"
 
 msgid "hello"
 msgstr "שלום"
 
 msgid "detect lang"
-msgstr ""
+msgstr "זיהוי שפה"
 
 msgid "turtle x"
-msgstr ""
+msgstr "צב x"
 
 msgid "turtle y"
-msgstr ""
+msgstr "y צב"
 
 msgid "stop turtle"
-msgstr ""
+msgstr "עצור צב"
 
 msgid "turtle name"
-msgstr ""
+msgstr "שם צב"
 
 msgid "start turtle"
-msgstr ""
+msgstr "התחל צב"
 
 msgid "forecast"
-msgstr ""
+msgstr "תחזית מזג אוויר"
 
 msgid "city"
-msgstr ""
+msgstr "עיר"
 
 msgid "day"
-msgstr ""
+msgstr "יום"
 
 msgid "low"
-msgstr ""
+msgstr "נמוך"
 
 msgid "high"
-msgstr ""
+msgstr "גבוה"
 
 msgid "confirm"
-msgstr ""
+msgstr "אישור"
 
 msgid "to"
-msgstr ""
+msgstr "אל"
 
 msgid "mouse x"
-msgstr ""
+msgstr "עכבר x"
 
 msgid "mouse y"
-msgstr ""
+msgstr "עכבר y"
 
 msgid "Download"
-msgstr ""
+msgstr "הורדה"
 
 msgid "Publish"
-msgstr ""
+msgstr "פרסום"
 
 msgid "pixel color"
-msgstr ""
+msgstr "צבע פיקסל"
 
 msgid "size"
-msgstr ""
+msgstr "גודל"
 
 msgid "Planet"
-msgstr ""
+msgstr "כוכב"
 
 msgid "On my device"
-msgstr ""
+msgstr "במכשיר שלי"
 
 msgid "Open"
-msgstr ""
+msgstr "פתיחה"
 
 msgid "Delete"
-msgstr ""
+msgstr "מחיקה"
 
 msgid "Worldwide"
-msgstr ""
+msgstr "בעולם כולו"
 
 msgid "Open"
-msgstr ""
+msgstr "פתיחה"
 
 msgid "Delete"
-msgstr ""
+msgstr "מחיקה"
 
 msgid "Publish"
-msgstr ""
+msgstr "פרסום"
 
 msgid "Download"
-msgstr ""
+msgstr "הורדה"
 
 msgid "confirm"
-msgstr ""
+msgstr "אישור"
 
 msgid "one of"
-msgstr ""
+msgstr "אחד מ"
 
 msgid "this"
-msgstr ""
+msgstr "זה"
 
 msgid "that"
-msgstr ""
+msgstr "זה"
 
 msgid "no background"
-msgstr ""
+msgstr "ללא רקע"
 
 msgid "begin hollow line"
-msgstr ""
+msgstr "התחל קו"
 
 msgid "end hollow line"
-msgstr ""
+msgstr "סיים קו"

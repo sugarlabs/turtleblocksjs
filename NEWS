@@ -360,8 +360,8 @@ ISSUES:
   * Find a scalable approach to drawing on the canvas
 
 KNOWN BUGS:
-  * Not all blocks highlight when using step-by-step mode
-  * Sometimes returning to backgrounded project results in empty project
+  * Not all blocks highlight when using step-by-step mode.
+  * Sometimes returning to backgrounded project results in empty project.
   * Loading macros there is a funny collapsed state sometimes.
   * Somehow we end up in a browser resize loop??? (2842 console messages are
     not shown js/activity.js:770)
@@ -371,6 +371,8 @@ KNOWN BUGS:
   * Sometimes clamp block highlight scale is too large.
   * Sometimes docking position is not scaled properly when dragging block
     after block resize.
+  * Second vspace block is not positioned properly.
+  * Sometimes collapses blocks get moved.
 
 ANDROID-SPECIFIC BUGS:
   * Camera doesn't work on Android
@@ -384,3 +386,7 @@ ANDROID-SPECIFIC BUGS:
 
 SUGAR-SPECIFIC BUGS:
   * No access to camera or microphone on XO.
+
+WINDOWS-SPECIFIC BUGS:
+  * Loudness block doesn't work on Windows (tested in Chrome)
+  * Tone block doesn't work on Windows (tested in Chrome)

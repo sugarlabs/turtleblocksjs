@@ -383,6 +383,12 @@ msgstr "Cargar plugin desde archivo"
 msgid "You can load new blocks from the file system."
 msgstr "Tu puedes cargar nuevos bloques desde un archivo."
 
+msgid "Enable scrolling"
+msgstr ""
+
+msgid "You can scroll the blocks on the canvas."
+msgstr ""
+
 msgid "Delete all"
 msgstr "Borrar todo"
 

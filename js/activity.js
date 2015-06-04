@@ -94,6 +94,7 @@ define(function(require) {
         var toolbarButtonsVisible = true;
         var menuButtonsVisible = false;
         var menuContainer = null;
+        var scrollBlockContainer = false;
         var currentKey = '';
         var currentKeyCode = 0;
         var lastKeyCode = 0;
@@ -193,6 +194,7 @@ define(function(require) {
                            [_('Increase block size'), _('Increase the size of the blocks.'), 'icons/bigger-button.svg'],
                            [_('Display statistics'), _('Display statistics about your Turtle project.'), 'icons/chart-button.svg'],
                            [_('Load plugin from file'), _('You can load new blocks from the file system.'), 'icons/plugin-button.svg'],
+                           [_('Enable scrolling'), _('You can scroll the blocks on the canvas.'), 'icons/scroll-button.svg'],
                            [_('Delete all'), _('Remove all content on the canvas, including the blocks.'), 'icons/empty-trash-button.svg'],
                            [_('Undo'), _('Restore blocks from the trash.'), 'icons/restore-trash-button.svg'],
                            [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']]
@@ -279,6 +281,10 @@ define(function(require) {
                 showPolar();
                 polarVisible = true;
             }
+        }
+
+        function doScroller() {
+            scrollBlockContainer = true;
         }
 
         function doAnalytics() {
@@ -414,7 +420,7 @@ define(function(require) {
 
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
 
-            utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, doAnalytics);
+            utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, doAnalytics, doScroller);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
 
@@ -573,10 +579,12 @@ define(function(require) {
                     if (!moving) {
                         return;
                     }
-                    blocksContainer.x += event.stageX - lastCords.x;
-                    blocksContainer.y += event.stageY - lastCords.y;
-                    lastCords = {x: event.stageX, y: event.stageY};
-                    refreshCanvas();
+                    if (scrollBlockContainer) {
+                        blocksContainer.x += event.stageX - lastCords.x;
+                        blocksContainer.y += event.stageY - lastCords.y;
+                        lastCords = {x: event.stageX, y: event.stageY};
+                        refreshCanvas();
+                    }
                 });
 
                 stage.on('stagemouseup', function (event) {

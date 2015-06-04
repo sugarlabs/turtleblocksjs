@@ -365,6 +365,12 @@ msgstr "העלאת פלאגין מקובץ"
 msgid "You can load new blocks from the file system."
 msgstr "ניתן להעלות בלוקים חדשים מתוך מערכת הקבצים"
 
+msgid "Enable scrolling"
+msgstr ""
+
+msgid "You can scroll the blocks on the canvas."
+msgstr ""
+
 msgid "Delete all"
 msgstr "מחק הכל"
 
@@ -464,6 +470,7 @@ msgstr "ביטקוין"
 msgid "from"
 msgstr "מ"
 
+#. TRANS: Do not translate
 msgid "mashape"
 msgstr ""
 
@@ -678,6 +685,7 @@ msgstr "זוז"
 msgid "blink (ms)"
 msgstr "מצמץ"
 
+#. TRANS: RoDi robot
 msgid "rodi"
 msgstr "RoDi"
 
@@ -767,18 +775,6 @@ msgstr "מחיקה"
 
 msgid "Worldwide"
 msgstr "בעולם כולו"
-
-msgid "Open"
-msgstr "פתיחה"
-
-msgid "Delete"
-msgstr "מחיקה"
-
-msgid "Publish"
-msgstr "פרסום"
-
-msgid "Download"
-msgstr "הורדה"
 
 msgid "confirm"
 msgstr "אישור"

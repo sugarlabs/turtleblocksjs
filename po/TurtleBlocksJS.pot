@@ -402,6 +402,12 @@ msgstr ""
 msgid "You can load new blocks from the file system."
 msgstr ""
 
+msgid "Enable scrolling"
+msgstr ""
+
+msgid "You can scroll the blocks on the canvas."
+msgstr ""
+
 msgid "Delete all"
 msgstr ""
 

@@ -278,7 +278,7 @@ msgstr "הצג או הסתר את הבלוקים ואת הכלים"
 msgid "Expand/collapse collapsable blocks"
 msgstr "צמצם/הרחב את הבלוקים הניתנים לצמצום"
 
-msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
+msgid "Expand or collapse start and action stacks."
 msgstr "הרחב או צמצם קבוצת בלוקים כמו קבוצת התחל או פעולה"
 
 msgid "Help"
@@ -796,3 +796,43 @@ msgstr "התחל קו"
 
 msgid "end hollow line"
 msgstr "סיים קו"
+
+#. TRANS: as in broadcast a signal
+msgid "broadcast"
+msgstr ""
+
+#. TRANS: as in the event that a signal arrives
+msgid "event"
+msgstr ""
+
+#. TRANS: as in "on event do"
+msgid "on"
+msgstr ""
+
+#. TRANS: audio (as in musical note)
+msgid "tone"
+msgstr ""
+
+#. TRANS: ms is micro seconds
+msgid "duration (ms)"
+msgstr ""
+
+#. TRANS: in mathematical sense (inverse of period)
+msgid "frequency"
+msgstr ""
+
+#. TRANS: musical note to frequency
+msgid "note to frequency"
+msgstr ""
+
+#. TRANS: as in button click
+msgid "click"
+msgstr ""
+
+#. TRANS: vertical space
+msgid "vspace"
+msgstr ""
+
+#. TRANS: horizontal space
+msgid "hspace"
+msgstr ""

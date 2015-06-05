@@ -286,7 +286,7 @@ msgstr "Zoo ma ọ bụ na-egosi na blocks na palettes"
 msgid "Expand/collapse collapsable blocks"
 msgstr "Ịmụbawanye / daa collapsable blocks"
 
-msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
+msgid "Expand or collapse start and action stacks."
 msgstr "Ịmụbawanye ma ọ bụ daa stacks nke blocks, dịka, na-amalite na edinam stack"
 
 msgid "Help"

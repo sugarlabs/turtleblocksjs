@@ -11,17 +11,15 @@
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.1\n"
 
+
+msgid ""
+msgstr ""
+
 msgid "Delete all"
 msgstr "सर्व हटवा"
 
 msgid "show"
 msgstr "दाखवा"
-
-msgid "hide"
-msgstr ""
-
-msgid "popout"
-msgstr ""
 
 msgid "text"
 msgstr "मजकूर"
@@ -32,15 +30,14 @@ msgstr "कुटला पण"
 msgid "confirm"
 msgstr "पुष्टी"
 
-msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
-msgstr ""
-
 msgid "rice and beans"
 msgstr "तांदूळ आणि सोयाबीनचे"
 
+#. TRANS: mashape webservices (probably no need to translate)
 msgid "mashape"
 msgstr ""
 
+#. TRANS: target language for translation
 msgid "target"
 msgstr "लक्ष्य"
 
@@ -50,15 +47,24 @@ msgstr "किबोर्ड"
 msgid "You can also load projects from the file system."
 msgstr "आपण फाइल प्रणाली मधुन पण प्रकल्प लोड करू शकतो."
 
+#. TRANS: as in "on event do"
+msgid "on"
+msgstr ""
+
 msgid "chicken"
 msgstr "कोंबडी"
-
-msgid "set color"
-msgstr "रंग संच करणे"
 
 msgid "apple"
 msgstr "सफरचंद"
 
+msgid "number"
+msgstr "अंक"
+
+#. TRANS: unique ID
+msgid "UID"
+msgstr ""
+
+#. TRANS: name of project
 msgid "title"
 msgstr "शीर्षक"
 
@@ -68,6 +74,11 @@ msgstr "त्रिज्यी"
 msgid "Undo"
 msgstr "पूर्ववत"
 
+#. TRANS: ms is micro seconds
+msgid "duration (ms)"
+msgstr ""
+
+#. TRANS: as in "add 1 to"
 msgid "to"
 msgstr "करण्यासाठी / च्यापर्यत"
 
@@ -79,16 +90,6 @@ msgstr "लोखणीचे आकार संच करा"
 
 msgid "start turtle"
 msgstr "टर्टल सुरु करा"
-
-msgid "city latitude"
-msgstr ""
-
-msgid "city longitude"
-msgstr ""
-
-#. TRANS: longitude and latitude coordinate data
-msgid "Coordinate data not available."
-msgstr ""
 
 msgid "latitude"
 msgstr "अक्षांश"
@@ -126,12 +127,17 @@ msgstr "थांबा"
 msgid "fat"
 msgstr "चरबी"
 
-msgid "number"
-msgstr "अंक"
+msgid "Expand or collapse start and action stacks."
+msgstr ""
+
+#. TRANS: pop a value off of the heap.
+msgid "pop"
+msgstr ""
 
 msgid "background"
 msgstr "बैक्ग्राउन्ड / मागे / पार्श्वभूमी"
 
+#. TRANS: logical "not" operator
 msgid "not"
 msgstr "नाही"
 
@@ -141,6 +147,7 @@ msgstr "Google नकाशा"
 msgid "day"
 msgstr "दिवस"
 
+#. TRANS: mathematical modular (remainder) function.
 msgid "mod"
 msgstr ""
 
@@ -153,6 +160,7 @@ msgstr "फाइबर \ तंतू काडा"
 msgid "Open a panel for configuring Turtle Blocks."
 msgstr "एक फळी उघडा टर्टल चा संरांचना साठी "
 
+#. TRANS: the name of a variable (stored in a box)
 msgid "name"
 msgstr "नाव"
 
@@ -189,6 +197,9 @@ msgstr "कैलरी काडा"
 msgid "Load plugin from file"
 msgstr "फाइल मधुन प्लगइन लोड करा"
 
+msgid "You can scroll the blocks on the canvas."
+msgstr ""
+
 msgid "x"
 msgstr "x"
 
@@ -219,6 +230,9 @@ msgstr "ब्लॉक आणि पॅलेट दाखवा/लपवा"
 msgid "This button opens a viewer for loading example projects."
 msgstr "हे बटण उदाहरणार्थ प्रकल्प लोड करण्यासाठी एक दर्शक उघडते."
 
+msgid "Enable scrolling"
+msgstr ""
+
 msgid "back"
 msgstr "परत"
 
@@ -240,8 +254,17 @@ msgstr "रेखांश"
 msgid "duration"
 msgstr "कालावधी"
 
+#. TRANS: shade refers to value (dark to light)
 msgid "set shade"
 msgstr "रंगाचा दर्जा निश्चीत करा"
+
+#. TRANS: in mathematical sense (inverse of period)
+msgid "frequency"
+msgstr ""
+
+#. TRANS: as in the event that a signal arrives
+msgid "event"
+msgstr ""
 
 msgid "pixel color"
 msgstr "पिक्सेल रंग"
@@ -252,20 +275,31 @@ msgstr "मला खावा"
 msgid "This button opens and closes the primary toolbar."
 msgstr "प्राथमिक साधनपट्टी दिसायला आणि लपवायला हे बटण दाबा"
 
-msgid "Show these messages."
-msgstr "हे संदेश दर्शवा."
+msgid "hide"
+msgstr ""
 
+#. TRANS: the heap is a first-in-last-out (FILO) stack
 msgid "show heap"
 msgstr "ढीग दाखवा"
 
 msgid "Show or hide a Cartesian-coordinate grid."
 msgstr "कार्टेशियन-समन्वय ग्रीड दाखवा/लपवा"
 
+#. TRANS: vertical space
+msgid "vspace"
+msgstr ""
+
+#. TRANS: publish project to Facebook
 msgid "publish"
 msgstr "प्रकाशित"
 
+#. TRANS: weather forecast
 msgid "forecast"
 msgstr "अंदाज"
+
+#. TRANS: hours ago that the data was updated.
+msgid "hours ago"
+msgstr ""
 
 msgid "pen"
 msgstr "पेन"
@@ -282,20 +316,28 @@ msgstr "आकार"
 msgid "Expand/collapse option toolbar"
 msgstr "साधनपट्टी दाखवायसाठी / लपवायसाठी पर्याय"
 
-msgid "save heap"
-msgstr "ढीग जतन करा"
+msgid "end hollow line"
+msgstr ""
 
+msgid "city latitude"
+msgstr ""
+
+#. TRANS: dietary fiber
 msgid "fiber"
 msgstr "धागा"
 
 msgid "You can load new blocks from the file system."
 msgstr "आपण फाइल प्रणाली मधुन नवीन ब्लॉक लोड करू शकतो."
 
+#. TRANS: mathematical power, e.g., 2^4 == 16
 msgid "power"
 msgstr "शक्ती"
 
 msgid "Settings"
 msgstr "सेटिंग"
+
+msgid "one of"
+msgstr ""
 
 msgid "Save stack"
 msgstr "स्टॅक जतन करा"
@@ -315,6 +357,7 @@ msgstr "त्रिज्यी कडे"
 msgid "water"
 msgstr "पाणी"
 
+#. TRANS: mathematical exponential base
 msgid "base"
 msgstr "तळ"
 
@@ -327,8 +370,8 @@ msgstr "ध्रुवीय-समन्वय ग्रीड दाखवा
 msgid "sweet potato"
 msgstr "रताळे"
 
-msgid "maths"
-msgstr "गणित"
+msgid "save heap"
+msgstr "ढीग जतन करा"
 
 msgid "from"
 msgstr "पासून"
@@ -345,36 +388,53 @@ msgstr "नाव सांगा"
 msgid "wait"
 msgstr "थांबा"
 
+#. TRANS: a container for a variable
 msgid "box"
 msgstr "पेटी"
 
+msgid "Planet"
+msgstr "ग्रह"
+
+msgid "Show these messages."
+msgstr "हे संदेश दर्शवा."
+
+#. TRANS: object
 msgid "obj"
 msgstr ""
 
+#. TRANS: store a value in a box
 msgid "store in"
 msgstr "मध्ये संग्रह करणे"
 
 msgid "digest meal"
 msgstr "जेवण पचवणे"
 
-msgid "calories"
-msgstr "कॅलरीज"
+msgid "maths"
+msgstr "गणित"
+
+#. TRANS: popout window
+msgid "popout"
+msgstr ""
 
 msgid "zoom factor"
 msgstr "झूम घटक"
 
+#. TRANS: the name of a stack of blocks
 msgid "action"
 msgstr "क्रिया"
 
+#. TRANS: volume of microphone audio
 msgid "loudness"
 msgstr "जॊरत"
 
 msgid "Increase the size of the blocks."
 msgstr "ब्लॉकचा आकार वाढवा"
 
+#. TRANS: logical "or" operator
 msgid "or"
 msgstr "किंवा"
 
+#. TRANS: use sensor to detect objects on the left
 msgid "sense left"
 msgstr ""
 
@@ -387,6 +447,11 @@ msgstr "चीज"
 msgid "Cartesian"
 msgstr "कार्टेशियन"
 
+#. TRANS: audio (as in musical note)
+msgid "tone"
+msgstr ""
+
+#. TRANS: evaluate Javascript code
 msgid "eval"
 msgstr "मूल्यमापन"
 
@@ -402,9 +467,10 @@ msgstr "टर्टल मध्ये आपले स्वागत आह�
 msgid "Increase block size"
 msgstr "ब्लॉकचा आकार वाढवा"
 
-msgid "pop"
+msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
 msgstr ""
 
+#. TRANS: bitcoin currency (probably no need to translate)
 msgid "bitcoin"
 msgstr ""
 
@@ -414,6 +480,7 @@ msgstr "पेन आकार"
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr "स्क्रीन साफ करा आणि कासवाला त्याचा प्रारंभिक भूमिके वर आणा"
 
+#. TRANS: Boolean logic
 msgid "boolean"
 msgstr "बुलियन"
 
@@ -432,12 +499,17 @@ msgstr "मंद पाणे चालवा"
 msgid "mouse button"
 msgstr "माऊस बटण"
 
+#. TRANS: cloud as in cloud server
+msgid "cloud"
+msgstr ""
+
 msgid "speak"
 msgstr "बोलणे"
 
 msgid "city"
 msgstr "शहर"
 
+#. TRANS: carbohydrates
 msgid "get carbs"
 msgstr ""
 
@@ -447,6 +519,7 @@ msgstr "प्रकल्प वागने चालण्या साठी
 msgid "beef"
 msgstr "गोमांस"
 
+#. TRANS: source language for translation
 msgid "source"
 msgstr "स्रोत"
 
@@ -468,9 +541,14 @@ msgstr "सुरूवात"
 msgid "stock price"
 msgstr "स्टॉकची किंमत"
 
+#. TRANS: is the heap empty?
+msgid "heap empty?"
+msgstr ""
+
 msgid "motion z"
 msgstr "z चलऩ"
 
+#. TRANS: low temperature
 msgid "low"
 msgstr "कमी"
 
@@ -483,6 +561,7 @@ msgstr "y चलऩ"
 msgid "forward"
 msgstr "पुढे"
 
+#. TRANS: 360 degrees in a circle
 msgid "degrees"
 msgstr "अंश"
 
@@ -498,36 +577,54 @@ msgstr "परिभाषित"
 msgid "On my device"
 msgstr ""
 
+#. TRANS: save project as simple vector graphic (SVG)
 msgid "save svg"
 msgstr "SVG जतन करा"
 
+#. TRANS: mathematical ceiling function, e.g., ceiling(2.5) == 3
 msgid "ceiling"
 msgstr ""
 
+#. TRANS: a turtle shell
 msgid "shell"
 msgstr "शेल"
 
+#. TRANS: flash (blink) an LED light
 msgid "blink (ms)"
 msgstr ""
 
+msgid "that"
+msgstr ""
+
+#. TRANS: set language
 msgid "set lang"
 msgstr "भाषा संच करा"
 
 msgid "turtle name"
 msgstr "टर्टलचे नाव"
 
+#. TRANS: carbohydrates
 msgid "carbs"
 msgstr "खेकडा"
 
 msgid "else"
 msgstr "इतर"
 
+#. TRANS: as in broadcast a signal
+msgid "broadcast"
+msgstr ""
+
 msgid "orange"
 msgstr "संत्रा"
 
+msgid "begin hollow line"
+msgstr ""
+
+#. TRANS: fill refers to filling a shape with a color (e.g., paint bucket).
 msgid "begin fill"
 msgstr "भरायची सुरुवात"
 
+#. TRANS: use sensor to detect objects on the right
 msgid "sense right"
 msgstr ""
 
@@ -537,21 +634,38 @@ msgstr "खाणे"
 msgid "Expand/collapse collapsable blocks"
 msgstr ""
 
+#. TRANS: high temperature
 msgid "high"
 msgstr "उच्च"
 
+#. TRANS: longitude and latitude coordinate data
+msgid "Coordinate data not available."
+msgstr ""
+
+#. TRANS: hue refers to spectral hue (red, yellow, green, blue...)
 msgid "set hue"
 msgstr ""
 
 msgid "currency"
 msgstr "चलन"
 
+msgid "this"
+msgstr ""
+
+#. TRANS: horizontal space
+msgid "hspace"
+msgstr ""
+
 msgid "potato"
 msgstr "बटाटा"
+
+msgid "city longitude"
+msgstr ""
 
 msgid "Click to run the project step by step."
 msgstr ""
 
+#. TRANS: the value of a variable (stored in a box)
 msgid "value"
 msgstr "मूल्य"
 
@@ -570,12 +684,14 @@ msgstr "ज्यावेळी"
 msgid "open file"
 msgstr "फाइल उघडा"
 
+#. TRANS: detect language
 msgid "detect lang"
 msgstr "भाषा शोधणे"
 
 msgid "cake"
 msgstr "केक"
 
+#. TRANS: mathematical exponent
 msgid "exp"
 msgstr ""
 
@@ -585,17 +701,28 @@ msgstr "लोड ढीग"
 msgid "Open"
 msgstr "उघडा"
 
+#. TRANS: database fetch
+msgid "fetch"
+msgstr ""
+
+#. TRANS: use sensor to detect distance to objects
 msgid "see distance"
 msgstr "अंतर पाहू"
 
+#. TRANS: logical "and" operator
 msgid "and"
 msgstr "आणि"
 
+#. TRANS: grey refers to chroma (grey to vivid)
 msgid "set grey"
 msgstr "राखाडी संच करा"
 
+#. TRANS: do this action
 msgid "do"
 msgstr "करा"
+
+msgid "calories"
+msgstr "कॅलरीज"
 
 msgid "Run step by step"
 msgstr ""
@@ -609,12 +736,14 @@ msgstr "शीर्षक संच करा"
 msgid "add 1 to"
 msgstr "१ जोड"
 
+#. TRANS: stop playing current media file (movie or audio)
 msgid "stop play"
 msgstr "खेळणे / चालणे थांबवा"
 
 msgid "protein"
 msgstr "प्रोटीन"
 
+#. TRANS: play media (audio or video)
 msgid "play back"
 msgstr ""
 
@@ -633,6 +762,7 @@ msgstr "कोन"
 msgid "get fat"
 msgstr "चरबी सांगा"
 
+#. TRANS: minimum
 msgid "min"
 msgstr "किमान / कमीत कमी"
 
@@ -642,11 +772,20 @@ msgstr "मीडिया"
 msgid "Stop"
 msgstr "थांबवा"
 
+#. TRANS: square root
 msgid "sqrt"
 msgstr "वर्गमुळ"
 
+#. TRANS: as in button click
+msgid "click"
+msgstr ""
+
 msgid "note"
 msgstr "नोंद"
+
+#. TRANS: field of interest in a database, e.g., temperature in a weather database
+msgid "field"
+msgstr ""
 
 msgid "Palette buttons"
 msgstr "पैलेट बटण"
@@ -666,6 +805,7 @@ msgstr "पेस्ट"
 msgid "Delete"
 msgstr "हटवा"
 
+#. TRANS: Mexican tamale
 msgid "tamale"
 msgstr ""
 
@@ -684,14 +824,12 @@ msgstr "आकडेवारी दाखवणे आपल्या टर्
 msgid "Polar"
 msgstr "ध्रुवीय"
 
+#. TRANS: maximum
 msgid "max"
 msgstr "कमाल / जस्तिस जास्त"
 
 msgid "logic"
 msgstr "तर्कशास्त्र"
-
-msgid "heap empty?"
-msgstr ""
 
 msgid "empty heap"
 msgstr "रिक्त ढीग"
@@ -699,17 +837,20 @@ msgstr "रिक्त ढीग"
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "आपला दौरा सम्पला. कृपया करून टर्टलचे आनंद घ्या आणि चला मजा करू."
 
+#. TRANS: push a value on to the heap.
 msgid "push"
 msgstr "ढकलणे"
 
+#. TRANS: the name of a robot built in Paraguay (probably no need to translate)
 msgid "rodi"
 msgstr ""
 
 msgid "Clean"
 msgstr "स्वच्छ"
 
-msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
-msgstr ""
+#. TRANS: color refers to a hue, value, chroma triplet
+msgid "set color"
+msgstr "रंग संच करणे"
 
 msgid "Run fast"
 msgstr "वेगाने चालवा"
@@ -717,6 +858,7 @@ msgstr "वेगाने चालवा"
 msgid "broccoli"
 msgstr "ब्रोकोली"
 
+#. TRANS: stop playing current media file (movie or audio)
 msgid "stop media"
 msgstr "मीडिया थांबवा"
 
@@ -726,15 +868,21 @@ msgstr "टोमॅटो"
 msgid "forever"
 msgstr "कायमचे"
 
+#. TRANS: musical note to frequency
+msgid "note to frequency"
+msgstr ""
+
 msgid "Load project from file"
 msgstr "फाइल मधुन प्रकल्प लोड करा"
 
 msgid "get protein"
 msgstr "प्रोटीन काडा"
 
+#. TRANS: clear the screen of any graphics drawn by the turtle
 msgid "clear"
 msgstr "स्वच्छ"
 
+#. TRANS: mathematical floor function, e.g., floor(2.5) == 2
 msgid "floor"
 msgstr "मजला"
 
@@ -756,105 +904,11 @@ msgstr "वेळ"
 msgid "y"
 msgstr "y"
 
+msgid "no background"
+msgstr ""
+
 msgid "hello"
 msgstr "हॅलो"
 
 msgid "left"
 msgstr "डाव्या"
-
-
-msgid ""
-msgstr ""
-
-msgid "Planet"
-msgstr "ग्रह"
-
-#. TRANS: as in "on event do"
-msgid "on"
-msgstr ""
-
-#. TRANS: unique ID
-msgid "UID"
-msgstr ""
-
-#. TRANS: ms is micro seconds
-msgid "duration (ms)"
-msgstr ""
-
-msgid "Expand or collapse start and action stacks."
-msgstr ""
-
-msgid "You can scroll the blocks on the canvas."
-msgstr ""
-
-msgid "Enable scrolling"
-msgstr ""
-
-#. TRANS: in mathematical sense (inverse of period)
-msgid "frequency"
-msgstr ""
-
-#. TRANS: as in the event that a signal arrives
-msgid "event"
-msgstr ""
-
-#. TRANS: vertical space
-msgid "vspace"
-msgstr ""
-
-#. TRANS: hours ago that the data was updated.
-msgid "hours ago"
-msgstr ""
-
-msgid "end hollow line"
-msgstr ""
-
-msgid "one of"
-msgstr ""
-
-#. TRANS: audio (as in musical note)
-msgid "tone"
-msgstr ""
-
-msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
-msgstr ""
-
-msgid "that"
-msgstr ""
-
-#. TRANS: as in broadcast a signal
-msgid "broadcast"
-msgstr ""
-
-msgid "begin hollow line"
-msgstr ""
-
-msgid "this"
-msgstr ""
-
-#. TRANS: horizontal space
-msgid "hspace"
-msgstr ""
-
-#. TRANS: database fetch
-msgid "fetch"
-msgstr ""
-
-#. TRANS: as in button click
-msgid "click"
-msgstr ""
-
-#. TRANS: field of interest in a database, e.g., temperature in a weather database
-msgid "field"
-msgstr ""
-
-#. TRANS: musical note to frequency
-msgid "note to frequency"
-msgstr ""
-
-msgid "no background"
-msgstr ""
-
-#. TRANS: cloud as in cloud server
-msgid "cloud"
-msgstr ""

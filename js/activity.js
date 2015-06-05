@@ -283,8 +283,8 @@ define(function(require) {
             }
         }
 
-        function doScroller() {
-            scrollBlockContainer = true;
+        function toggleScroller() {
+            scrollBlockContainer = !scrollBlockContainer;
         }
 
         function doAnalytics() {
@@ -420,7 +420,7 @@ define(function(require) {
 
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
 
-            utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, doAnalytics, doScroller);
+            utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, doAnalytics, toggleScroller);
 
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
 

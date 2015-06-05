@@ -841,6 +841,10 @@ msgstr ""
 msgid "hspace"
 msgstr ""
 
+#. TRANS: cloud as in cloud server
+msgid "cloud"
+msgstr "ענן"
+
 #. TRANS: database fetch
 msgid "fetch"
 msgstr ""

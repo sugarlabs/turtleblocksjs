@@ -768,6 +768,10 @@ msgstr "hichapụ"
 msgid "Worldwide"
 msgstr "Uwa-obosara"
 
+#. TRANS: cloud as in cloud server
+msgid "cloud"
+msgstr ""
+
 #. TRANS: database fetch
 msgid "fetch"
 msgstr ""

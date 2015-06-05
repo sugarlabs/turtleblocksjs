@@ -873,3 +873,23 @@ msgstr ""
 
 msgid "no background"
 msgstr ""
+
+#. TRANS: cloud as in cloud server
+msgid "cloud"
+msgstr ""
+
+#. TRANS: database fetch
+msgid "fetch"
+msgstr ""
+
+#. TRANS: unique ID
+msgid "UID"
+msgstr ""
+
+#. TRANS: field of interest in a database, e.g., temperature in a weather database
+msgid "field"
+msgstr ""
+
+#. TRANS: hours ago that the data was updated.
+msgid "hours ago"
+msgstr ""

@@ -180,7 +180,7 @@ define(function(require) {
                            [_('Clean'), _('Clear the screen and return the turtles to their initial positions.'), 'icons/clear-button.svg'],
                            [_('Show/hide palettes'), _('Hide or show the block palettes.'), 'icons/palette-button.svg'],
                            [_('Show/hide blocks'), _('Hide or show the blocks and the palettes.'), 'icons/hide-blocks-button.svg'],
-                           [_('Expand/collapse collapsable blocks'), _('Expand or collapse stacks of blocks, e.g, start and action stacks.'), 'icons/collapse-blocks-button.svg'],
+                           [_('Expand/collapse collapsable blocks'), _('Expand or collapse start and action stacks.'), 'icons/collapse-blocks-button.svg'],
                            [_('Help'), _('Show these messages.'), 'icons/help-button.svg'],
                            [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxillary toolbar.'), 'icons/menu-button.svg'],
                            [_('Load samples from server'), _('This button opens a viewer for loading example projects.'), 'icons/planet-button.svg'],

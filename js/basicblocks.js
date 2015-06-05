@@ -323,6 +323,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     minusBlock.twoArgMathBlock();
     minusBlock.defaults.push(100, 50)
 
+    var negBlock = new ProtoBlock('neg');
+    negBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['neg'] = negBlock;
+    negBlock.fontsize = 14;
+    negBlock.staticLabels.push('–');
+    negBlock.oneArgMathBlock();
+
     var multiplyBlock = new ProtoBlock('multiply');
     multiplyBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['multiply'] = multiplyBlock;

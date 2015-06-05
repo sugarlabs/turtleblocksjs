@@ -56,15 +56,19 @@ msgstr "x"
 msgid "y"
 msgstr "y"
 
+#. TRANS: color refers to a hue, value, chroma triplet
 msgid "set color"
 msgstr  "קבע צבע"
 
+#. TRANS: hue refers to spectral hue (red, yellow, green, blue...)
 msgid "set hue"
 msgstr  "קבע צבע"
 
+#. TRANS: shade refers to value (dark to light)
 msgid "set shade"
 msgstr "קבע גוון"
 
+#. TRANS: grey refers to chroma (grey to vivid)
 msgid "set grey"
 msgstr "קבע אפור"
 
@@ -224,7 +228,7 @@ msgstr "הוא צב בהשראת לוגו אשר מצייר תמונות צבע�
 msgid "Palette buttons"
 msgstr "סרגל כלים"
 
-msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
+msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
 msgstr "סרגל כלים זה כולל את כפתורי הכלים; לחצו כדי להציג את כלי הבלוקים (צב, עט, מספרים, בוליאני, זרימה, בלוקים, מדיה וכו'). ניתן לגרור את הבלוקים מהסרגל לתוך הקנבס "
 
 msgid "Expand/collapse toolbar"
@@ -835,4 +839,20 @@ msgstr ""
 
 #. TRANS: horizontal space
 msgid "hspace"
+msgstr ""
+
+#. TRANS: database fetch
+msgid "fetch"
+msgstr ""
+
+#. TRANS: unique ID
+msgid "UID"
+msgstr ""
+
+#. TRANS: field of interest in a database, e.g., temperature in a weather database
+msgid "field"
+msgstr ""
+
+#. TRANS: hours ago that the data was updated.
+msgid "hours ago"
 msgstr ""

@@ -232,7 +232,7 @@ msgstr "Mbe nkanka bụ a Logo-sitere n'ike mmụọ nsọ mbe na-adọta yi fot
 msgid "Palette buttons"
 msgstr "palette buttons"
 
-msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
+msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
 msgstr "Nke a toolbar e dere ihe palette buttons: pịa na-egosi ma ọ bụ zoo palettes nke blocks (mbe, Pen, Ọnụ Ọgụgụ, Boolean, Igba, nkanka, Media, sensọ, na Mkponyeaka). Ozugbo oghe, ị nwere ike ịdọrọ blocks si palettes n'elu kwaaji-eji ha."
 
 msgid "Expand/collapse toolbar"
@@ -768,5 +768,18 @@ msgstr "hichapụ"
 msgid "Worldwide"
 msgstr "Uwa-obosara"
 
-msgid ""
+#. TRANS: database fetch
+msgid "fetch"
+msgstr ""
+
+#. TRANS: unique ID
+msgid "UID"
+msgstr ""
+
+#. TRANS: field of interest in a database, e.g., temperature in a weather database
+msgid "field"
+msgstr ""
+
+#. TRANS: hours ago that the data was updated.
+msgid "hours ago"
 msgstr ""

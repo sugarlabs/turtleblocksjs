@@ -1,4 +1,4 @@
-`0.1
+0.1
   * New project: a Javascript version of Turtle Blocks
   * Basic block manipluation
   * Basic block execution
@@ -333,6 +333,9 @@
   * Added onload, onstart, onstop support to plugins.
   * Added hollow-line rendering for arcs.
   * Turn off block scrolling by default.
+  * Added neg block (so as to insert negative numbers on Android).
+  * Added missing strings to POT file.
+  * Tweaked some strings to work better with JS localization package.
 
 TODO:
   * Browser for plugins
@@ -380,7 +383,6 @@ ANDROID-SPECIFIC BUGS:
   * Music block doesn't work on Android
   * Cannot open plugins loader on Android
   * Cannot import images on Android (fileChooser doesn't appear)
-  * When changing number blocks, no way to insert negative number
   * On some Android systems, then all blocks are dragged, a copy is
     left on the canvas.
   * Lots of freezing on some Android systems.

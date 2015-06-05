@@ -240,7 +240,7 @@ msgstr "Turtle Blocks es una tortuga basada en Logo que dibuja imágenes colorid
 msgid "Palette buttons"
 msgstr "Botones de paleta"
 
-msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
+msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
 msgstr "Esta barra de herramientas contiene los botones de la paleta: haz click para mostrar u ocultar la paleta de bloques (Tortuga, Lapicera, Números, Booleanos, Medios, Sensores y Extrasa). Una vez abierto, puedes arrastrar bloques de la paleta al lienzo para usarlos."
 
 msgid "Expand/collapse toolbar"
@@ -839,4 +839,20 @@ msgstr ""
 
 #. TRANS: horizontal space
 msgid "hspace"
+msgstr ""
+
+#. TRANS: database fetch
+msgid "fetch"
+msgstr ""
+
+#. TRANS: unique ID
+msgid "UID"
+msgstr ""
+
+#. TRANS: field of interest in a database, e.g., temperature in a weather database
+msgid "field"
+msgstr ""
+
+#. TRANS: hours ago that the data was updated.
+msgid "hours ago"
 msgstr ""

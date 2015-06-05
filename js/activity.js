@@ -172,7 +172,7 @@ define(function(require) {
         var helpContainer = null;
         var helpIdx = 0;
         var HELPCONTENT = [[_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
-                           [_('Palette buttons'), _('This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
+                           [_('Palette buttons'), _('This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
                            [_('Run fast'), _('Click to run the project in fast mode.'), 'icons/fast-button.svg'],
                            [_('Run slow'), _('Click to run the project in slow mode.'), 'icons/slow-button.svg'],
                            [_('Run step by step'), _('Click to run the project step by step.'), 'icons/step-button.svg'],

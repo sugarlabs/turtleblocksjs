@@ -714,7 +714,7 @@ msgstr "रोडी"
 msgid "Clean"
 msgstr "साफ"
 
-msgid "This toolbar contains the palette buttons: click to show the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, etc.). You can drag blocks from the palettes onto the canvas to use them."
+msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
 msgstr "इस उपकरण पट्टी में पेलेट बटन हैं: ब्लॊक के पॆलेट देखने के लिए क्लिक करे (टर्टल, कलम, सङ्ख्या, बूलियन, बहाव, ब्लॊक, मीडिया, इत्यादि) आप ब्लॊक्स को पॆलेट से कॆन्वास पे खीञ्च सकते हैं"
 
 msgid "Run fast"
@@ -828,3 +828,19 @@ msgstr ""
 #. TRANS: horizontal space
 msgid "hspace"
 msgstr ""
+#. TRANS: database fetch
+msgid "fetch"
+msgstr ""
+
+#. TRANS: unique ID
+msgid "UID"
+msgstr ""
+
+#. TRANS: field of interest in a database, e.g., temperature in a weather database
+msgid "field"
+msgstr ""
+
+#. TRANS: hours ago that the data was updated.
+msgid "hours ago"
+msgstr ""
+

@@ -1012,3 +1012,96 @@ msgstr ""
 #. TRANS: En todo el mundo
 msgid "Worldwide"
 msgstr ""
+
+msgid ""
+msgstr ""
+
+#. TRANS: as in "on event do"
+msgid "on"
+msgstr ""
+
+#. TRANS: unique ID
+msgid "UID"
+msgstr ""
+
+#. TRANS: ms is micro seconds
+msgid "duration (ms)"
+msgstr ""
+
+msgid "Expand or collapse start and action stacks."
+msgstr ""
+
+msgid "You can scroll the blocks on the canvas."
+msgstr ""
+
+msgid "Enable scrolling"
+msgstr ""
+
+#. TRANS: in mathematical sense (inverse of period)
+msgid "frequency"
+msgstr ""
+
+#. TRANS: as in the event that a signal arrives
+msgid "event"
+msgstr ""
+
+#. TRANS: vertical space
+msgid "vspace"
+msgstr ""
+
+#. TRANS: hours ago that the data was updated.
+msgid "hours ago"
+msgstr ""
+
+msgid "end hollow line"
+msgstr ""
+
+msgid "one of"
+msgstr ""
+
+#. TRANS: audio (as in musical note)
+msgid "tone"
+msgstr ""
+
+msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
+msgstr ""
+
+#. TRANS: cloud as in cloud server
+msgid "cloud"
+msgstr ""
+
+msgid "that"
+msgstr ""
+
+#. TRANS: as in broadcast a signal
+msgid "broadcast"
+msgstr ""
+
+msgid "begin hollow line"
+msgstr ""
+
+msgid "this"
+msgstr ""
+
+#. TRANS: horizontal space
+msgid "hspace"
+msgstr ""
+
+#. TRANS: database fetch
+msgid "fetch"
+msgstr ""
+
+#. TRANS: as in button click
+msgid "click"
+msgstr ""
+
+#. TRANS: field of interest in a database, e.g., temperature in a weather database
+msgid "field"
+msgstr ""
+
+#. TRANS: musical note to frequency
+msgid "note to frequency"
+msgstr ""
+
+msgid "no background"
+msgstr ""

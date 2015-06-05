@@ -854,3 +854,7 @@ msgstr ""
 
 msgid "no background"
 msgstr ""
+
+#. TRANS: cloud as in cloud server
+msgid "cloud"
+msgstr ""

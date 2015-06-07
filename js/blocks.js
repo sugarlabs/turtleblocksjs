@@ -1070,6 +1070,19 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         this.refreshCanvas();
     }
 
+    this.changeDisabledStatus = function(name, flag) {
+        // Some blocks, e.g., sensor blocks for Butia, change their
+        // appearance depending upon if they have been enabled or
+        // disabled.
+        for (var blk in this.blockList) {
+            var myBlock = this.blockList[blk];
+            if (myBlock.name == name) {
+                myBlock.protoblock.disabled = flag;
+                myBlock.regenerateArtwork(false);
+            }
+        }
+    }
+
     this.unhighlightAll = function() {
         for (var blk in this.blockList) {
             this.unhighlight(blk);
@@ -1086,6 +1099,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             var thisBlock = this.highlightedBlock;
         }
         if (thisBlock != null) {
+
             this.blockList[thisBlock].unhighlight();
         }
         if (this.highlightedBlock = thisBlock) {

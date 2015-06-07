@@ -336,8 +336,11 @@
   * Added neg block (so as to insert negative numbers on Android).
   * Added missing strings to POT file.
   * Tweaked some strings to work better with JS localization package.
+  * Added blocks.changeDisabledStatus() method for changing appearance of
+    blocks whose status can change, e.g., Butia sensor blocks.
 
 TODO:
+  * Better model and view distinction in code
   * Browser for plugins
   * Save errors
   * Save to javascript

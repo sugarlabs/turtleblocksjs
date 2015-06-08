@@ -153,6 +153,12 @@ Start filled polygon (used with end fill block).
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/end_fill.svg'</img>
 Complete filled polygon (any shape drawn bewteen start fill and end fill will be filled with the current color).
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/begin_hollow.svg'</img>
+Set pen attribute to hollow line mode (useful for working with 3D printers).
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/end_hollow.svg'</img>
+Stop drawing hollow lines.
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_font.svg'</img>
 Set the font of the text drawn with Show Block.
 
@@ -314,6 +320,36 @@ Microphone input volume
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/click.svg'</img>
 The "click" event associated with a turtle (used with Do Block)
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/push.svg'</img>
+Push a value onto the heap.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/pop.svg'</img>
+Pop a value off of the heap.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/index_heap.svg'</img>
+Reference an entry in the heap.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_heap_entry.svg'</img>
+Change an entry in the heap.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/show_heap.svg'</img>
+Display the contents of the heap.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/heap_length.svg'</img>
+The length of the heap.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/empty_heap.svg'</img>
+Empty the heap.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/heap_empty.svg'</img>
+True is the heap is empty.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/save_heap.svg'</img>
+Save the heap to a file (JSON-encoded).
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/load_heap.svg'</img>
+Load the heap from a file (JSON-encoded).
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/vspace.svg'</img>
 Used to layout blocks vertically

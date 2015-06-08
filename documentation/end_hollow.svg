@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="257.60001"
+   height="73.599998"
+   id="svg2">
+  <metadata
+     id="metadata31">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs29" />
+  <g
+     transform="matrix(2,0,0,2,36.8,18.399996)"
+     id="g4">
+    <filter
+       height="1.3"
+       color-interpolation-filters="sRGB"
+       id="dropshadow">
+      <feGaussianBlur
+         id="feGaussianBlur7"
+         stdDeviation="3"
+         in="SourceAlpha" />
+      <feOffset
+         id="feOffset9"
+         result="offsetblur"
+         dy="2"
+         dx="2" />
+      <feComponentTransfer
+         id="feComponentTransfer11">
+        <feFuncA
+           id="feFuncA13"
+           slope="0.2"
+           type="linear" />
+      </feComponentTransfer>
+      <feMerge
+         id="feMerge15">
+        <feMergeNode
+           id="feMergeNode17" />
+        <feMergeNode
+           id="feMergeNode19"
+           in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <path
+       d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 0,2 10,0 0,-2 65,0 4,0 c 2.094395,0 4,1.9056049 4,4 l 0,4 0,4 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -65,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.0943951,0 -4,-1.905605 -4,-4 l 0,-4 z"
+       id="path21"
+       style="fill:#00c0e7;fill-opacity:1;stroke:#0081a9;stroke-width:1;stroke-linecap:round;stroke-opacity:1;filter:url(#dropshadow)" />
+    <text
+       x="28"
+       id="text23"
+       style="font-size:10px;text-anchor:end;fill:#000000;font-family:Sans">
+      <tspan
+         x="83"
+         y="14"
+         id="tspan25">end hollow line</tspan>
+    </text>
+  </g>
+</svg>

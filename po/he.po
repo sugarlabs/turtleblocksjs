@@ -58,11 +58,11 @@ msgstr "y"
 
 #. TRANS: color refers to a hue, value, chroma triplet
 msgid "set color"
-msgstr  "קבע צבע"
+msgstr "קבע צבע"
 
 #. TRANS: hue refers to spectral hue (red, yellow, green, blue...)
 msgid "set hue"
-msgstr  "קבע צבע"
+msgstr "קבע צבע"
 
 #. TRANS: shade refers to value (dark to light)
 msgid "set shade"
@@ -73,7 +73,7 @@ msgid "set grey"
 msgstr "קבע אפור"
 
 msgid "color"
-msgstr  "צבע"
+msgstr "צבע"
 
 msgid "shade"
 msgstr "גוון"
@@ -525,10 +525,10 @@ msgid "empty heap"
 msgstr "רוקן מחסנית FILO"
 
 msgid "save heap"
-msgstr  "שמור FILO"
+msgstr "שמור FILO"
 
 msgid "load heap"
-msgstr  "פתח FILO"
+msgstr "פתח FILO"
 
 msgid "push"
 msgstr "דחוף\\שמור ערך"

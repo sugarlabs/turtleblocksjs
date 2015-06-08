@@ -56,6 +56,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.boxes = {};
     this.actions = {};
+    this.turtleHeaps = {};
 
     this.time = 0;
     this.waitTimes = {};
@@ -1077,6 +1078,81 @@ length;
                 }, args[1], osc);
 
                 break;
+            case 'showHeap':
+                if (!(turtle in turtleHeaps)) {
+                    turtleHeaps[turtle] = [];
+                }
+                logo.textMsg(JSON.stringify(turtleHeaps[turtle]));
+                break;
+            case 'emptyHeap':
+                turtleHeaps[turtle] = [];
+                break;
+            case 'push':
+                if (args.length == 1) {
+                    if (!(turtle in turtleHeaps)) {
+                        turtleHeaps[turtle] = [];
+                    }
+                    turtleHeaps[turtle].push(args[0]);
+                }
+                break;
+            case 'saveHeap':
+                function downloadFile(filename, mimetype, content) {
+                    var download = document.createElement('a');
+                    download.setAttribute('href', 'data:' + mimetype + ';charset-utf-8,' + content);
+                    download.setAttribute('download', filename);
+                    document.body.appendChild(download);
+                    download.click();
+                    document.body.removeChild(download);
+                }
+                if (args[0] && turtle in turtleHeaps) {
+                     downloadFile(args[0], 'text/json', JSON.stringify(turtleHeaps[turtle]));
+                }
+                break;
+            case 'loadHeap':
+                var block = logo.blocks.blockList[blk];
+                if (turtle in turtleHeaps) {
+                    var oldHeap = turtleHeaps[turtle];
+                } else {
+                    var oldHeap = [];
+                }
+                if (blocks.blockList[conns[1]].name == 'loadFile') {
+                    if (!args[0]) {
+                        logo.errorMsg(_('You need to select a file.'));
+                    } else {
+                        if (args.length != 2) {
+                            logo.errorMsg(_('You need to select a file.'));
+                        } else {
+                            try {
+                                turtleHeaps[turtle] = JSON.parse(args[1]);
+                                if (!Array.isArray(turtleHeaps[turtle])) {
+                                    throw 'is not array';
+                                }
+                            } catch (e) {
+                                turtleHeaps[turtle] = oldHeap;
+                                logo.errorMsg(_('The file you selected does not contain a valid heap.'));
+                            }
+                        }
+                    }
+                } else {
+                     logo.errorMsg(_('The loadHeap block needs a loadFile block.'))
+                }
+                break;
+            case 'setHeapEntry':
+                if (args.length == 2) {
+                    if (!(turtle in turtleHeaps)) {
+                        turtleHeaps[turtle] = [];
+                    }
+                    var idx = Math.floor(args[0]);
+                    if (idx < 1) {
+                        logo.errorMsg(_('Index must be > 0.'))
+                    }
+                    // If index > heap length, grow the heap.
+                    while (turtleHeaps[turtle].length < idx) {
+                        turtleHeaps[turtle].push(null);
+                    }
+                    turtleHeaps[turtle][idx - 1] = args[1];
+                }
+                break;
             default:
                 if (logo.blocks.blockList[blk].name in logo.evalFlowDict) {
                     eval(logo.evalFlowDict[logo.blocks.blockList[blk].name]);
@@ -1556,6 +1632,44 @@ length;
                     } catch (e) {
                         this.errorMsg(v + ' is not a note.');
                         block.value = 440;
+                    }
+                    break;
+                case 'pop':
+                    var block = logo.blocks.blockList[blk];
+                    if (turtle in turtleHeaps && turtleHeaps[turtle].length > 0) {
+                        block.value = turtleHeaps[turtle].pop();
+                    } else {
+                        logo.errorMsg(_('empty heap'));
+                        block.value = null;
+                    }
+                    break;
+                case 'indexHeap':
+                    var block = logo.blocks.blockList[blk];
+                    var cblk = logo.blocks.blockList[blk].connections[1];
+                    var a = logo.parseArg(logo, turtle, cblk, blk);
+                    if (!(turtle in turtleHeaps)) {
+                        turtleHeaps[turtle] = [];
+                    }
+                    // If index > heap length, grow the heap.
+                    while (turtleHeaps[turtle].length < a) {
+                        turtleHeaps[turtle].push(null);
+                    }
+                    block.value = turtleHeaps[turtle][a - 1];
+                    break;
+                case 'heapLength':
+                    var block = logo.blocks.blockList[blk];
+                    if (!(turtle in turtleHeaps)) {
+                        turtleHeaps[turtle] = [];
+                    }
+                    console.log(turtleHeaps[turtle].length);
+                    block.value = turtleHeaps[turtle].length;
+                    break;
+                case 'heapEmpty':
+                    var block = logo.blocks.blockList[blk];
+                    if (turtle in turtleHeaps) {
+                        block.value = (turtleHeaps[turtle].length == 0);
+                    } else {
+                        block.value = true;
                     }
                     break;
                 default:

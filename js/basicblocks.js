@@ -503,6 +503,89 @@ function initBasicProtoBlocks(palettes, blocks) {
     doBlock.defaults.push(_('action'));
     doBlock.dockTypes[1] = 'anyin';
 
+    // Heap palette
+    var pushBlk = new ProtoBlock('push');
+    pushBlk.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['push'] = pushBlk;
+    pushBlk.staticLabels.push(_('push'));
+    pushBlk.adjustWidthToLabel();
+    pushBlk.oneArgBlock();
+    pushBlk.dockTypes[1] = 'anyin';
+
+    var popBlk = new ProtoBlock('pop');
+    popBlk.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['pop'] = popBlk;
+    popBlk.staticLabels.push(_('pop'));
+    popBlk.adjustWidthToLabel();
+    popBlk.parameterBlock();
+
+    var indexHeap = new ProtoBlock('indexHeap');
+    indexHeap.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['indexHeap'] = indexHeap;
+    indexHeap.staticLabels.push(_('index heap'));
+    indexHeap.adjustWidthToLabel();
+    indexHeap.oneArgMathBlock();
+    indexHeap.dockTypes[1] = 'numberin';
+    indexHeap.defaults.push(1);
+
+    var setHeapEntry = new ProtoBlock('setHeapEntry');
+    setHeapEntry.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['setHeapEntry'] = setHeapEntry;
+    setHeapEntry.staticLabels.push(_('set heap'), _('index'), _('value'));
+    setHeapEntry.adjustWidthToLabel();
+    setHeapEntry.twoArgBlock();
+    setHeapEntry.dockTypes[1] = 'numberin';
+    setHeapEntry.dockTypes[2] = 'anyin';
+    setHeapEntry.defaults.push(1);
+    setHeapEntry.defaults.push(100);
+
+    var showHeap = new ProtoBlock('showHeap');
+    showHeap.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['showHeap'] = showHeap;
+    showHeap.staticLabels.push(_('show heap'));
+    showHeap.adjustWidthToLabel();
+    showHeap.zeroArgBlock();
+
+    var heapLength = new ProtoBlock('heapLength');
+    heapLength.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['heapLength'] = heapLength;
+    heapLength.staticLabels.push(_('heap length'));
+    heapLength.adjustWidthToLabel();
+    heapLength.parameterBlock();
+    heapLength.dockTypes[0] = 'numberout';
+
+    var heapEmpty = new ProtoBlock('heapEmpty');
+    heapEmpty.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['heapEmpty'] = heapEmpty;
+    heapEmpty.staticLabels.push(_('heap empty?'));
+    heapEmpty.adjustWidthToLabel();
+    heapEmpty.booleanZeroArgBlock();
+
+    var emptyHeap = new ProtoBlock('emptyHeap');
+    emptyHeap.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['emptyHeap'] = emptyHeap;
+    emptyHeap.staticLabels.push(_('empty heap'));
+    emptyHeap.adjustWidthToLabel();
+    emptyHeap.zeroArgBlock();
+
+    var saveHeap = new ProtoBlock('saveHeap');
+    saveHeap.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['saveHeap'] = saveHeap;
+    saveHeap.staticLabels.push(_('save heap'));
+    saveHeap.adjustWidthToLabel();
+    saveHeap.oneArgBlock();
+    saveHeap.defaults.push('heap.json');
+    saveHeap.dockTypes[1] = 'textin';
+
+    var loadHeap = new ProtoBlock('loadHeap');
+    loadHeap.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['loadHeap'] = loadHeap;
+    loadHeap.staticLabels.push(_('load heap'));
+    loadHeap.adjustWidthToLabel();
+    loadHeap.oneArgBlock();
+    loadHeap.dockTypes[1] = 'filein';
+    loadHeap.defaults = [[null, null]];
+
     // Media palette
     var speakBlock = new ProtoBlock('speak');
     speakBlock.palette = palettes.dict['media'];
@@ -653,7 +736,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     ifthenelseBlock.doubleFlowClampBooleanArgBlock();
 
     var clampBlock = new ProtoBlock('clamp');
-    clampBlock.palette = palettes.dict['extras'];
+    clampBlock.palette = palettes.dict['heap'];
     blocks.protoBlockDict['clamp'] = clampBlock;
     clampBlock.hidden = true;
     clampBlock.flowClampBlock();

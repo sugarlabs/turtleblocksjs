@@ -15,6 +15,9 @@ msgid ""
 
 
 msgid ""
+
+
+msgid ""
 msgstr ""
 
 msgid "Delete all"
@@ -277,6 +280,10 @@ msgstr "manger"
 msgid "This button opens and closes the primary toolbar."
 msgstr ""
 
+#. TRANS: index specifies a position into an array (heap)
+msgid "index"
+msgstr ""
+
 msgid "hide"
 msgstr ""
 
@@ -311,6 +318,10 @@ msgstr ""
 
 msgid "print"
 msgstr "montre"
+
+#. TRANS: how many entries are in the heap?
+msgid "heap length"
+msgstr ""
 
 msgid "size"
 msgstr ""
@@ -372,6 +383,7 @@ msgstr ""
 msgid "sweet potato"
 msgstr ""
 
+#. TRANS: save the heap to a file
 msgid "save heap"
 msgstr ""
 
@@ -383,6 +395,10 @@ msgstr "capteur"
 
 msgid "pen down"
 msgstr ""crayon abaissé"
+
+#. TRANS: retrieve the value at a specific entry (index) in the heap
+msgid "index heap"
+msgstr ""
 
 msgid "get name"
 msgstr ""
@@ -622,6 +638,10 @@ msgstr ""
 msgid "begin hollow line"
 msgstr ""
 
+#. TRANS: the heap is a first-in-last-out (FILO) stack
+msgid "heap"
+msgstr ""
+
 #. TRANS: fill refers to filling a shape with a color (e.g., paint bucket).
 msgid "begin fill"
 msgstr "commence le remplissage"
@@ -697,6 +717,7 @@ msgstr ""
 msgid "exp"
 msgstr ""
 
+#. TRANS: load the heap from a file
 msgid "load heap"
 msgstr ""
 
@@ -833,6 +854,7 @@ msgstr "max"
 msgid "logic"
 msgstr "logique"
 
+#. TRANS: empty the heap
 msgid "empty heap"
 msgstr ""
 
@@ -874,6 +896,9 @@ msgstr "toujours"
 msgid "note to frequency"
 msgstr ""
 
+msgid "no background"
+msgstr ""
+
 msgid "Load project from file"
 msgstr ""
 
@@ -906,7 +931,8 @@ msgstr "temps"
 msgid "y"
 msgstr "y"
 
-msgid "no background"
+#. TRANS: set the value at a specific entry (index) in the heap
+msgid "set heap"
 msgstr ""
 
 msgid "hello"

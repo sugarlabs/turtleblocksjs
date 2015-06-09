@@ -13,6 +13,9 @@
 
 
 msgid ""
+
+
+msgid ""
 msgstr ""
 
 #. TRANS: Borrar todo
@@ -339,6 +342,10 @@ msgstr ""
 msgid "This button opens and closes the primary toolbar."
 msgstr ""
 
+#. TRANS: index specifies a position into an array (heap)
+msgid "index"
+msgstr ""
+
 #. TRANS: ocultar
 msgid "hide"
 msgstr ""
@@ -377,6 +384,10 @@ msgstr ""
 
 #. TRANS: imprimir
 msgid "print"
+msgstr ""
+
+#. TRANS: how many entries are in the heap?
+msgid "heap length"
 msgstr ""
 
 #. TRANS: tamaño
@@ -467,6 +478,10 @@ msgstr ""
 
 #. TRANS: bajar pluma
 msgid "pen down"
+msgstr ""
+
+#. TRANS: retrieve the value at a specific entry (index) in the heap
+msgid "index heap"
 msgstr ""
 
 #. TRANS: obtener nombre
@@ -748,6 +763,10 @@ msgid "orange"
 msgstr ""
 
 msgid "begin hollow line"
+msgstr ""
+
+#. TRANS: the heap is a first-in-last-out (FILO) stack
+msgid "heap"
 msgstr ""
 
 #. TRANS: iniciar relleno
@@ -1046,6 +1065,9 @@ msgstr ""
 msgid "note to frequency"
 msgstr ""
 
+msgid "no background"
+msgstr ""
+
 #. TRANS: Cargar proyecto desde archivo
 msgid "Load project from file"
 msgstr ""
@@ -1085,7 +1107,8 @@ msgstr ""
 msgid "y"
 msgstr ""
 
-msgid "no background"
+#. TRANS: set the value at a specific entry (index) in the heap
+msgid "set heap"
 msgstr ""
 
 #. TRANS: hola

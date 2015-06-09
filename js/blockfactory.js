@@ -463,6 +463,9 @@ function SVG() {
     }
 
     this._doTab = function () {
+        if (this._outie) {
+            return this._rLineTo(-this._slotX, 0);
+        }
         var x = this._x - this._slotX / 2.0;
         this.docks.push([x * this._scale,
                          (this._y + this._strokeWidth) * this._scale]);
@@ -847,9 +850,9 @@ function SVG() {
         this.resetMinMax();
         var x = this._strokeWidth / 2.0;
         if (this._cap) {
-            y = this._strokeWidth / 2.0 + this._radius + this._slotY * 3.0;
+            var y = this._strokeWidth / 2.0 + this._radius + this._slotY * 3.0;
         } else {
-            y = this._strokeWidth / 2.0 + this._radius;
+            var y = this._strokeWidth / 2.0 + this._radius;
         }
         this.margins[0] = (x + this._strokeWidth + 0.5) * this._scale;
         this.margins[1] = (this._strokeWidth + 0.5) * this._scale;
@@ -947,6 +950,104 @@ function SVG() {
 		count += 1;
             }
         }
+
+        svg += this.footer();
+        return this.header(false) + svg;
+    }
+
+    this.argClamp = function () {
+        // A clamp that contains innies rather than flow blocks
+        var save_slot = this._slot;
+        this.resetMinMax();
+        if (this._outie) {
+            var x = this._strokeWidth / 2.0 + this._innieX1 + this._innieX2;
+        } else {
+            var x = this._strokeWidth / 2.0;
+        }
+        var y = this._strokeWidth / 2.0 + this._radius;
+        this.margins[0] = (x + this._strokeWidth + 0.5) * this._scale;
+        this.margins[1] = (this._strokeWidth + 0.5) * this._scale;
+        this.margins[2] = 0;
+        this.margins[3] = 0;
+        var svg = this.newPath(x, y);
+        svg += this._corner(1, -1 , 90, 0, 1, true, true, false);
+        svg += this._doSlot();
+
+        svg += this._rLineTo(this._radius + this._strokeWidth, 0);
+        var xx = this._x;
+        svg += this._rLineTo(this._expandX, 0);
+        svg += this._corner(1, 1 , 90, 0, 1, true, true, false);
+        if (this._innies[0]) {
+            svg += this._doInnie();
+        } else {
+            svg += this._rLineTo(0, this._padding);
+            this.margins[2] = (this._x - this._strokeWidth + 0.5) * this._scale;
+        }
+
+	for (var clamp = 0; clamp < this._clampCount; clamp++) {
+	    if (clamp > 0) {
+                svg += this._rLineTo(0, 3 * this._padding);
+            }
+            else {
+            svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
+            svg += this.lineTo(xx, this._y);
+            svg += this._iCorner(-1, 1, 90, 0, 0, true, true);
+            }
+	    svg += this._doInnie();
+	    if (this._clampSlots[clamp] > 1) {
+		var dy = this._slotSize * (this._clampSlots[clamp] - 1);
+		svg += this._rLineTo(0, dy);
+		svg += this._doInnie();
+	    }
+            svg += this._rLineTo(0, this._expandY2);
+            svg += this._iCorner(1, 1, 90, 0, 0, true, true);
+            svg += this._rLineTo(this._radius, 0);
+        }
+        svg += this._rLineTo(0, this._innieY1 * 2);
+
+	// Add a bit of padding to make multiple of standard block height.
+        svg += this._rLineTo(0, this._innieY1 + 3 * this._strokeWidth);
+
+        svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
+
+        if (this._clampCount == 0) {
+            svg += this.lineTo(xx, this._y);
+        }
+
+        svg += this._rLineTo(-this._radius - this._strokeWidth, 0);
+
+        if (this._tail) {
+            svg += this._doTail();
+        } else {
+            svg += this._doTab();
+        }
+
+        svg += this._corner(-1, -1, 90, 0, 1, true, true, false);
+        if (this._outie) {
+            svg += this.lineTo(x, this._radius + this._innieY2 + this._strokeWidth / 2.0);
+            svg += this._doOutie();
+        }
+        svg += this._closePath();
+        this.calculateWH(true);
+        svg += this.style();
+
+        // Add a block label
+        if (this._outie) {
+            var tx = 10 * this._strokeWidth + this._innieX1 + this._innieX2;
+        } else {
+            var tx = 8 * this._strokeWidth;
+        }
+        if (this._cap) {
+            var ty = (this._strokeWidth / 2.0 + this._radius + this._slotY) * this._scale;
+        } else {
+            var ty = (this._strokeWidth / 2.0 + this._radius) * this._scale / 2;
+        }
+	ty += (this._fontSize + 1) * this._scale;
+        if (this._bool) {
+            ty += this._fontSize / 2;
+        }
+
+        svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'left', 'block_label');
 
         svg += this.footer();
         return this.header(false) + svg;

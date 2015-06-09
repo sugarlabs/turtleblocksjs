@@ -445,6 +445,7 @@ function ProtoBlock(name) {
         svg.init();
         svg.setScale(this.scale);
         svg.setTab(true);
+
         svg.setSlot(true);
         svg.setExpand(20 + this.extraWidth, 0, 0, 0);
         if (slots) {
@@ -489,6 +490,136 @@ function ProtoBlock(name) {
             svg.setFontSize(this.fontsize);
         }
         var artwork = svg.basicClamp();
+	return [artwork, svg.docks];
+    }
+
+    // E.g., do with args: innies instead of interior slots.
+    this.argClampOneArgBlock = function() {
+        this.style = 'clamp';
+        this.expandable = true;
+        this.size = 2;
+        this.args = 2;
+        this.dockTypes.push('out');
+        this.dockTypes.push('textin');
+        this.dockTypes.push('anyin');
+        this.dockTypes.push('in');
+        this.generator = this.argClampOneArgBlockGenerator;
+    }
+
+    this.argClampOneArgBlockGenerator = function(slots) {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setTab(true);
+        svg.setSlot(true);
+        svg.setInnies([true]);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        var artwork = svg.argClamp();
+	return [artwork, svg.docks];
+    }
+
+    // E.g., calculate with args: innies instead of interior slots.
+    this.argClampOneArgMathBlock = function() {
+        this.style = 'clamp';
+        this.expandable = true;
+        this.size = 2;
+        this.args = 2;
+        this.dockTypes.push('numberout');
+        this.dockTypes.push('textin');
+        this.dockTypes.push('anyin');
+        this.generator = this.argClampOneArgMathBlockGenerator;
+    }
+
+    this.argClampOneArgMathBlockGenerator = function(slots) {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setInnies([true]);
+        svg.setOutie(true);
+        svg.setTab(false);
+        svg.setSlot(false);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        var artwork = svg.argClamp();
+        console.log(svg.docks);
+	return [artwork, svg.docks];
+    }
+
+    // E.g., named do with args: innies instead of interior slots.
+    this.argClampBlock = function() {
+        this.style = 'clamp';
+        this.expandable = true;
+        this.size = 2;
+        this.args = 2;
+        this.dockTypes.push('out');
+        this.dockTypes.push('anyin');
+        this.dockTypes.push('in');
+        this.generator = this.argClampBlockGenerator;
+    }
+
+    this.argClampBlockGenerator = function(slots) {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setTab(true);
+        svg.setSlot(true);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        var artwork = svg.argClamp();
+	return [artwork, svg.docks];
+    }
+
+    // E.g., named calculate with args: innies instead of interior slots.
+    this.argClampMathBlock = function() {
+        this.style = 'clamp';
+        this.expandable = true;
+        this.size = 2;
+        this.args = 2;
+        this.dockTypes.push('numberout');
+        this.dockTypes.push('anyin');
+        this.generator = this.argClampMathBlockGenerator;
+    }
+
+    this.argClampMathBlockGenerator = function(slots) {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setOutie(true);
+        svg.setTab(false);
+        svg.setSlot(false);
+        svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        if (slots) {
+            svg.setClampSlots(0, slots);
+        } else {
+            svg.setClampSlots(0, 1);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        var artwork = svg.argClamp();
+        console.log(svg.docks);
 	return [artwork, svg.docks];
     }
 

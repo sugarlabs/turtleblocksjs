@@ -558,6 +558,10 @@ msgid "Coordinate data not available."
 msgstr ""
 
 #. TRANS: the heap is a first-in-last-out (FILO) stack
+msgid "heap"
+msgstr ""
+
+#. TRANS: show the contents of the heap.
 msgid "show heap"
 msgstr ""
 
@@ -569,13 +573,32 @@ msgstr ""
 msgid "heap empty?"
 msgstr ""
 
+#. TRANS: empty the heap
 msgid "empty heap"
 msgstr ""
 
+#. TRANS: save the heap to a file
 msgid "save heap"
 msgstr ""
 
+#. TRANS: load the heap from a file
 msgid "load heap"
+msgstr ""
+
+#. TRANS: how many entries are in the heap?
+msgid "heap length"
+msgstr ""
+
+#. TRANS: retrieve the value at a specific entry (index) in the heap
+msgid "index heap"
+msgstr ""
+
+#. TRANS: set the value at a specific entry (index) in the heap
+msgid "set heap"
+msgstr ""
+
+#. TRANS: index specifies a position into an array (heap)
+msgid "index"
 msgstr ""
 
 #. TRANS: push a value on to the heap.

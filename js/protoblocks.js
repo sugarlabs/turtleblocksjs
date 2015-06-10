@@ -495,7 +495,7 @@ function ProtoBlock(name) {
 
     // E.g., do with args: innies instead of interior slots.
     this.argClampOneArgBlock = function() {
-        this.style = 'clamp';
+        this.style = 'argclamp';
         this.expandable = true;
         this.size = 2;
         this.args = 2;
@@ -517,7 +517,7 @@ function ProtoBlock(name) {
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
-            svg.setClampSlots(0, 1);
+            svg.setClampSlots(0, [1]);
         }
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
@@ -528,7 +528,7 @@ function ProtoBlock(name) {
 
     // E.g., calculate with args: innies instead of interior slots.
     this.argClampOneArgMathBlock = function() {
-        this.style = 'clamp';
+        this.style = 'argclamparg';
         this.expandable = true;
         this.size = 2;
         this.args = 2;
@@ -550,7 +550,7 @@ function ProtoBlock(name) {
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
-            svg.setClampSlots(0, 1);
+            svg.setClampSlots(0, [1]);
         }
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
@@ -561,7 +561,7 @@ function ProtoBlock(name) {
 
     // E.g., named do with args: innies instead of interior slots.
     this.argClampBlock = function() {
-        this.style = 'clamp';
+        this.style = 'argclamp';
         this.expandable = true;
         this.size = 2;
         this.args = 2;
@@ -581,7 +581,7 @@ function ProtoBlock(name) {
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
-            svg.setClampSlots(0, 1);
+            svg.setClampSlots(0, [1]);
         }
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);
@@ -592,7 +592,7 @@ function ProtoBlock(name) {
 
     // E.g., named calculate with args: innies instead of interior slots.
     this.argClampMathBlock = function() {
-        this.style = 'clamp';
+        this.style = 'argclamparg';
         this.expandable = true;
         this.size = 2;
         this.args = 2;
@@ -612,7 +612,7 @@ function ProtoBlock(name) {
         if (slots) {
             svg.setClampSlots(0, slots);
         } else {
-            svg.setClampSlots(0, 1);
+            svg.setClampSlots(0, [1]);
         }
         if (this.fontsize) {
             svg.setFontSize(this.fontsize);

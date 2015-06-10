@@ -957,7 +957,6 @@ function SVG() {
 
     this.argClamp = function () {
         // A clamp that contains innies rather than flow blocks
-        var save_slot = this._slot;
         this.resetMinMax();
         if (this._outie) {
             var x = this._strokeWidth / 2.0 + this._innieX1 + this._innieX2;
@@ -987,12 +986,24 @@ function SVG() {
         svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
         svg += this.lineTo(xx, this._y);
         svg += this._iCorner(-1, 1, 90, 0, 0, true, true);
-        svg += this._doInnie();
 
-        var dy = (this._slotSize - this._innieY2 - this._strokeWidth / 2.0);
-        for (var i = 1; i < this._clampSlots[0]; i++) {
+        var j = 0;
+        svg += this._doInnie();
+        var dy = this._slotSize * (this._clampSlots[0][j] - 1);
+        if (dy > 0) {
             svg += this._rLineTo(0, dy);
+        }
+        j += 1;
+
+        var ddy = (this._slotSize - this._innieY2 - this._strokeWidth / 2.0);
+        for (var i = 1; i < this._clampSlots[0].length; i++) {
+            svg += this._rLineTo(0, ddy);
             svg += this._doInnie();
+            var dy = this._slotSize * (this._clampSlots[0][j] - 1);
+            if (dy > 0) {
+                svg += this._rLineTo(0, dy);
+            }
+            j += 1;
         }
 
         svg += this._rLineTo(0, this._expandY2);

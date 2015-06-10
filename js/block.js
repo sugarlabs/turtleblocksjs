@@ -231,6 +231,8 @@ function Block(protoblock, blocks, overrideName) {
                 for (var i = 0; i < this.argClampSlots.length; i++) {
                     this.size += this.argClampSlots[i];
                 }
+                this.docks = [];
+                this.docks.push([obj[1][0][0], obj[1][0][1], this.protoblock.dockTypes[0]]);
                 break;
             default:
                 if (this.isArgBlock()) {
@@ -241,6 +243,35 @@ function Block(protoblock, blocks, overrideName) {
                     var obj = this.protoblock.generator();
                 }
                 this.size += plusMinus;
+                break;
+        }
+
+        switch (this.name) {
+            case 'doArg':
+                for (var i = 1; i < obj[1].length - 1; i++) {
+                    this.docks.push([obj[1][i][0], obj[1][i][1], 'anyin']);
+                }
+                this.docks.push([obj[1][2][0], obj[1][2][1], 'in']);
+                break;
+            case 'calcArg':
+                for (var i = 1; i < obj[1].length; i++) {
+                    this.docks.push([obj[1][i][0], obj[1][i][1], 'anyin']);
+                }
+                break;
+            case 'doArgArg':
+                this.docks.push([obj[1][1][0], obj[1][1][1], this.protoblock.dockTypes[1]]);
+                for (var i = 2; i < obj[1].length - 1; i++) {
+                    this.docks.push([obj[1][i][0], obj[1][i][1], 'anyin']);
+                }
+                this.docks.push([obj[1][3][0], obj[1][3][1], 'in']);
+                break;
+            case 'calcArgArg':
+                for (var i = 2; i < obj[1].length; i++) {
+                    this.docks.push([obj[1][i][0], obj[1][i][1], 'anyin']);
+                }
+                this.docks.push([obj[1][1][0], obj[1][1][1], this.protoblock.dockTypes[1]]);
+                break;
+            default:
                 break;
         }
 

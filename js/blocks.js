@@ -87,6 +87,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     // Blocks that contain child flows of blocks
     this.clampBlocks = [];
     this.doubleExpandable = [];
+    this.argClampBlocks = [];
     // Blocks that are used as arguments to other blocks
     this.argBlocks = [];
     // Blocks that return values
@@ -223,6 +224,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             if (this.protoBlockDict[proto].style == 'clamp') {
                 this.clampBlocks.push(this.protoBlockDict[proto].name);
             }
+            if (this.protoBlockDict[proto].style == 'argclamp') {
+                this.argClampBlocks.push(this.protoBlockDict[proto].name);
+            }
+            if (this.protoBlockDict[proto].style == 'argclamparg') {
+                this.argClampBlocks.push(this.protoBlockDict[proto].name);
+                this.argBlocks.push(this.protoBlockDict[proto].name);
+            }
             if (this.protoBlockDict[proto].style == 'twoarg') {
                 this.twoArgBlocks.push(this.protoBlockDict[proto].name);
             }
@@ -236,7 +244,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             if (this.protoBlockDict[proto].style == 'doubleclamp') {
                 this.doubleExpandable.push(this.protoBlockDict[proto].name);
             }
-
         }
     }
 
@@ -304,6 +311,49 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         clampAdjuster(this, blk, myBlock, clamp);
+    }
+
+    // Adjust the number and size of the innies in the clamp of an
+    // argclamp block when blocks are inserted into (or removed from)
+    // the child flow.
+    // doArg, calcArg, etc.
+
+    // FIXME: completely bogus code here
+    this.adjustExpandableArgClampBlock = function() {
+        if (this.clampBlocksToCheck.length == 0) {
+            return;
+        }
+        var blk = this.clampBlocksToCheck.pop();
+        var myBlock = this.blockList[blk];
+
+        function clampAdjuster(blocks, blk, myBlock) {
+	    // We need a list of blocks to insert; and we need to calculate
+	    // their sizes.
+            c = 0; // FIXME
+            blocks.sizeCounter = 0;
+            var childFlowSize = 1;
+            if (c > 0 && myBlock.connections[c] != null) {
+                childFlowSize = Math.max(blocks.getStackSize(myBlock.connections[c]), 1);
+            }
+
+            // Adjust the clamp size to match the size of the child
+            // flow.
+            var plusMinus = childFlowSize - myBlock.clampCount[clamp];
+            if (plusMinus != 0) {
+                if (!(childFlowSize == 0 && myBlock.clampCount[clamp] == 1)) {
+                    myBlock.updateSlots(clamp, plusMinus);
+                }
+            }
+
+            // Recurse through the list.
+            setTimeout(function() {
+                if (blocks.clampBlocksToCheck.length > 0) {
+                    blocks.adjustExpandableClampBlock();
+                }
+            }, 250);
+        }
+
+        clampAdjuster(this, blk, myBlock);
     }
 
     // Returns the block size.
@@ -587,9 +637,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     this.blockMoved = function(thisBlock) {
         // When a block is moved, we have lots of things to check:
         // (0) Is it inside of a expandable block?
+        //     Is it an arg inside an arg clamp?
         // (1) Is it an arg block connected to a two-arg block?
         // (2) Disconnect its connection[0];
         // (3) Look for a new connection;
+        //     Is it potentially an arg inside an arg clamp?
         // (4) Is it an arg block connected to a 2-arg block?
         // (5) Recheck if it inside of a expandable block.
 
@@ -698,7 +750,17 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myBlock.connections[0] = newBlock;
             var connection = this.blockList[newBlock].connections[newConnection];
             if (connection != null) {
-                if (myBlock.isArgBlock()) {
+                // Three scenarios:
+                // (1) if it is an argClamp, add a new slot
+                // (2) if it is an arg block, replace it
+                // (3) if it is a flow block, insert it into the stream
+                if (this.blockList[newBlock].isArgClamp()) {
+                    var slotList = this.blockList[newBlock].argClampSlots;
+                    slotList.push(1);
+                    this.blockList[newBlock].updateArgSlots(slotList);
+                    // FIXME: move to the newly created connection (but should cascade)
+                    newConnection += 1;
+                } else if (myBlock.isArgBlock()) {
                     this.blockList[connection].connections[0] = null;
                     this.findDragGroup(connection);                    
                     for (var c = 0; c < this.dragGroup.length; c++) {
@@ -780,10 +842,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     break;
                 }
                 if (blocks.blockList[blk].name == 'ifthenelse') {
-		    blocks.clampBlocksToCheck.push([blk, 0]);
+                    blocks.clampBlocksToCheck.push([blk, 0]);
                     blocks.clampBlocksToCheck.push([blk, 1]);
-		} else {
-		    blocks.clampBlocksToCheck.push([blk, 0]);
+                } else {
+                    blocks.clampBlocksToCheck.push([blk, 0]);
                 }
                 blk = blocks.insideExpandableBlock(blk);
             }
@@ -1060,10 +1122,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         this.clampBlocksToCheck = [];
         for(i = 0; i < this.expandablesList.length; i++) {
             if (this.blockList[this.expandablesList[i]].name == 'ifthenelse') {
-		this.clampBlocksToCheck.push([this.expandablesList[i], 0]);
-		this.clampBlocksToCheck.push([this.expandablesList[i], 1]);
+                this.clampBlocksToCheck.push([this.expandablesList[i], 0]);
+                this.clampBlocksToCheck.push([this.expandablesList[i], 1]);
             } else {
-		this.clampBlocksToCheck.push([this.expandablesList[i], 0]);
+                this.clampBlocksToCheck.push([this.expandablesList[i], 0]);
             }
         }
         this.adjustExpandableClampBlock();
@@ -1672,6 +1734,24 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
         myActionBlock.palette.add(myActionBlock);
+    }
+
+    this.insideArgClamp = function(blk) {
+        // Returns a containing arg clamp block or null
+        if (this.blockList[blk] == null) {
+            // race condition?
+            console.log('null block in blockList? ' + blk);
+            return null;
+        } else if (this.blockList[blk].connections[0] == null) {
+            return null;
+        } else {
+            var cblk = this.blockList[blk].connections[0];
+            if (this.blockList[cblk].isArgClamp()) {
+                return cblk;
+            } else {
+                return null;
+            }
+        }
     }
 
     this.insideExpandableBlock = function(blk) {

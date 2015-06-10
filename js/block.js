@@ -61,6 +61,7 @@ function Block(protoblock, blocks, overrideName) {
     this.connections = []; // Blocks that cannot be run on their own.
     // Keep track of clamp count for blocks with clamps
     this.clampCount = [1, 1];
+    this.argClampSlots = [1];
 
     // Some blocks have some post process after they are first loaded.
     this.postProcess = null;
@@ -131,10 +132,15 @@ function Block(protoblock, blocks, overrideName) {
         this.blocks.refreshCanvas();
     }
 
+    this.updateArgSlots = function(slotList) {
+        // Resize and update number of slots in argClamp
+        this.argClampSlots = slotList;
+        this.newArtwork();
+        this.regenerateArtwork(false);
+    }
+
     this.updateSlots = function(clamp, plusMinus) {
         // Resize an expandable block.
-        var thisBlock = this.blocks.blockList.indexOf(this);
-
         this.clampCount[clamp] += plusMinus;
         this.newArtwork(plusMinus);
         this.regenerateArtwork(false);
@@ -215,6 +221,16 @@ function Block(protoblock, blocks, overrideName) {
                 break;
             case 'ifthenelse':
                 var obj = this.protoblock.generator(this.clampCount[0], this.clampCount[1]);
+                break;
+            case 'doArg':
+            case 'calcArg':
+            case 'doArgArg':
+            case 'calcArgArg':
+                var obj = this.protoblock.generator(this.argClampSlots);
+                this.size = 2;
+                for (var i = 0; i < this.argClampSlots.length; i++) {
+                    this.size += this.argClampSlots[i];
+                }
                 break;
             default:
                 if (this.isArgBlock()) {
@@ -579,6 +595,10 @@ function Block(protoblock, blocks, overrideName) {
 
     this.isNoRunBlock = function() {
         return this.name == 'action';
+    }
+
+    this.isArgClamp = function() {
+        return this.protoblock.style == 'argclamp' || this.protoblock.style == 'argclamparg';
     }
 
     this.isExpandableBlock = function() {

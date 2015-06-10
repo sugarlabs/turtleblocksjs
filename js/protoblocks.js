@@ -556,7 +556,6 @@ function ProtoBlock(name) {
             svg.setFontSize(this.fontsize);
         }
         var artwork = svg.argClamp();
-        console.log(svg.docks);
 	return [artwork, svg.docks];
     }
 

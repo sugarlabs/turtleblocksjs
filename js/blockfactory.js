@@ -984,36 +984,28 @@ function SVG() {
             this.margins[2] = (this._x - this._strokeWidth + 0.5) * this._scale;
         }
 
-	for (var clamp = 0; clamp < this._clampCount; clamp++) {
-	    if (clamp > 0) {
-                svg += this._rLineTo(0, 3 * this._padding);
-            }
-            else {
-            svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
-            svg += this.lineTo(xx, this._y);
-            svg += this._iCorner(-1, 1, 90, 0, 0, true, true);
-            }
-	    svg += this._doInnie();
-	    if (this._clampSlots[clamp] > 1) {
-		var dy = this._slotSize * (this._clampSlots[clamp] - 1);
-		svg += this._rLineTo(0, dy);
-		svg += this._doInnie();
-	    }
-            svg += this._rLineTo(0, this._expandY2);
-            svg += this._iCorner(1, 1, 90, 0, 0, true, true);
-            svg += this._rLineTo(this._radius, 0);
+        svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
+        svg += this.lineTo(xx, this._y);
+        svg += this._iCorner(-1, 1, 90, 0, 0, true, true);
+        svg += this._doInnie();
+
+        var dy = (this._slotSize - this._innieY2 - this._strokeWidth / 2.0);
+        for (var i = 1; i < this._clampSlots[0]; i++) {
+            svg += this._rLineTo(0, dy);
+            svg += this._doInnie();
         }
+
+        svg += this._rLineTo(0, this._expandY2);
+        svg += this._iCorner(1, 1, 90, 0, 0, true, true);
+        svg += this._rLineTo(this._radius, 0);
+
         svg += this._rLineTo(0, this._innieY1 * 2);
 
-	// Add a bit of padding to make multiple of standard block height.
+        // Add a bit of padding to make multiple of standard block height.
         svg += this._rLineTo(0, this._innieY1 + 3 * this._strokeWidth);
 
         svg += this._corner(-1, 1, 90, 0, 1, true, true, false);
-
-        if (this._clampCount == 0) {
-            svg += this.lineTo(xx, this._y);
-        }
-
+        svg += this.lineTo(xx, this._y);
         svg += this._rLineTo(-this._radius - this._strokeWidth, 0);
 
         if (this._tail) {
@@ -1042,7 +1034,7 @@ function SVG() {
         } else {
             var ty = (this._strokeWidth / 2.0 + this._radius) * this._scale / 2;
         }
-	ty += (this._fontSize + 1) * this._scale;
+        ty += (this._fontSize + 1) * this._scale;
         if (this._bool) {
             ty += this._fontSize / 2;
         }

@@ -532,7 +532,7 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 2;
         this.args = 2;
-        this.dockTypes.push('numberout');
+        this.dockTypes.push('anyout');
         this.dockTypes.push('textin');
         this.dockTypes.push('anyin');
         this.generator = this.argClampOneArgMathBlockGenerator;
@@ -596,7 +596,7 @@ function ProtoBlock(name) {
         this.expandable = true;
         this.size = 2;
         this.args = 2;
-        this.dockTypes.push('numberout');
+        this.dockTypes.push('anyout');
         this.dockTypes.push('anyin');
         this.generator = this.argClampMathBlockGenerator;
     }
@@ -618,7 +618,6 @@ function ProtoBlock(name) {
             svg.setFontSize(this.fontsize);
         }
         var artwork = svg.argClamp();
-        console.log(svg.docks);
 	return [artwork, svg.docks];
     }
 

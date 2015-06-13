@@ -327,8 +327,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var myBlock = this.blockList[blk];
 
         function clampAdjuster(blocks, blk, myBlock) {
-	    // We need a list of blocks to insert; and we need to calculate
-	    // their sizes.
+            // We need a list of blocks to insert; and we need to calculate
+            // their sizes.
             c = 0; // FIXME
             blocks.sizeCounter = 0;
             var childFlowSize = 1;
@@ -755,11 +755,62 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 // (2) if it is an arg block, replace it
                 // (3) if it is a flow block, insert it into the stream
                 if (this.blockList[newBlock].isArgClamp()) {
-                    var slotList = this.blockList[newBlock].argClampSlots;
-                    slotList.push(1);
-                    this.blockList[newBlock].updateArgSlots(slotList);
-                    // FIXME: move to the newly created connection (but should cascade)
-                    newConnection += 1;
+                    if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'doCalc') && newConnection == 1) {
+                        // If it is the action name then treat it like
+                        // a standard replacement.
+                        this.blockList[connection].connections[0] = null;
+                        this.findDragGroup(connection);                    
+                        for (var c = 0; c < this.dragGroup.length; c++) {
+                            this.moveBlockRelative(this.dragGroup[c], 40, 40);
+                        }
+                    } else if (['doArg', 'nameddoArg'].indexOf(this.blockList[newBlock].name) != -1 && newConnection == this.blockList[newBlock].connections.length - 1) {
+                        // If it is the bottom of the flow, insert.
+                        var bottom = this.findBottomBlock(thisBlock);
+                        this.blockList[connection].connections[0] = bottom;
+                        this.blockList[bottom].connections[this.blockList[bottom].connections.length - 1] = connection;
+                    } else {
+                        // Move the block in the current slot down one
+                        // slot (cascading and creating a new slot if
+                        // necessary).
+
+                        // Get the current slot list.
+                        var slotList = this.blockList[newBlock].argClampSlots;
+                        // Which slot is this block in?
+                        var ci = this.blockList[newBlock].connections.indexOf(connection);
+                        if (['doArg', 'doCalc'].indexOf(this.blockList[newBlock].name) != -1) {
+                            var si = ci - 2;
+                        } else {
+                            var si = ci - 1;
+                        }
+
+                        var emptySlot = null;
+                        var emptyConnection = null;
+                        // Is there an empty slot below?
+                        for (var emptySlot = si; emptySlot < slotList.length; emptySlot++) {
+                            if (this.blockList[newBlock].connections[ci + emptySlot - si] == null) {
+                                emptyConnection = ci + emptySlot - si;
+                                break;
+                            }
+                        }
+
+                        if (emptyConnection == null) {
+                            // TODO: check size
+                            slotList.push(1);
+                            emptyConnection = ci + emptySlot - si;
+                            this.blockList[newBlock].connections.push(null);
+
+                            // Slide everything down one slot.
+                            for (var i = this.blockList[newBlock].connections.length - 1; i > ci + 1; i--) {
+                                var j = i - 1;
+                                this.blockList[newBlock].connections[i] = this.blockList[newBlock].connections[i - 1];
+                            }
+                        }
+                        
+                        // The new block is added below the current connection...
+                        newConnection += 1;
+
+                        this.blockList[newBlock].updateArgSlots(slotList);
+                    }
                 } else if (myBlock.isArgBlock()) {
                     this.blockList[connection].connections[0] = null;
                     this.findDragGroup(connection);                    
@@ -1231,7 +1282,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
-        if (name == 'namedbox' || name == 'nameddo') {
+        if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(name) != -1) {
             this.blockList.push(new Block(this.protoBlockDict[name], this, postProcessArg[1]));
         } else {
             this.blockList.push(new Block(this.protoBlockDict[name], this));
@@ -1337,7 +1388,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 me.updateBlockText(args[0]);
             }
             postProcessArg = [thisBlock, null];
-        } else if (name == 'namedbox' || name == 'nameddo') {
+        } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(name) != -1) {
             postProcess = function(args) {
                 me.blockList[thisBlock].value = null;
                 me.blockList[thisBlock].privateData = args[1];
@@ -1358,7 +1409,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     me.makeNewBlock(proto, postProcess, postProcessArg);
                     protoFound = true;
                     break;
-                } else if (name == 'namedbox' || name == 'nameddo') {
+                } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(name) != -1) {
                     if (me.protoBlockDict[proto].defaults[0] == undefined) {
                         me.makeNewBlock(proto, postProcess, postProcessArg);
                         protoFound = true;
@@ -1634,7 +1685,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // Update the blocks, do->oldName should be do->newName
         for (var blk = 0; blk < this.blockList.length; blk++) {
-            if (this.blockList[blk].name == 'nameddo') {
+            if (['nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(this.blockList[blk].name) != -1) {
                 if (this.blockList[blk].privateData == oldName) {
                     this.blockList[blk].privateData = newName;
                     var label = newName;
@@ -1653,7 +1704,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var nameChanged = false;
         for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
             var block = blockPalette.protoList[blockId];
-            if (block.name == 'nameddo' && block.defaults[0] != _('action') && block.defaults[0] == oldName) {
+            if (['nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(block.name) != -1 && block.defaults[0] != _('action') && block.defaults[0] == oldName) {
                 console.log('renaming ' + block.defaults[0] + ' to ' + newName);
                 block.defaults[0] = newName;
                 nameChanged = true;
@@ -1716,6 +1767,54 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
         myDoBlock.palette.add(myDoBlock);
+    }
+
+    this.newNamedcalcBlock = function(name) {
+        if ('myCalc_' + name in this.protoBlockDict) {
+            return;
+        }
+        var myCalcBlock = new ProtoBlock('namedcalc');
+        this.protoBlockDict['myCalc_' + name] = myCalcBlock;
+        myCalcBlock.zeroArgBlock();
+        myCalcBlock.palette = this.palettes.dict['actions'];
+        myCalcBlock.defaults.push(name);
+        myCalcBlock.staticLabels.push(name);
+        if (name == 'action') {
+            return;
+        }
+        myCalcBlock.palette.add(myCalcBlock);
+    }
+
+    this.newNameddoArgBlock = function(name) {
+        if ('myDoArg_' + name in this.protoBlockDict) {
+            return;
+        }
+        var myDoArgBlock = new ProtoBlock('nameddoArg');
+        this.protoBlockDict['myDoArg_' + name] = myDoArgBlock;
+        myDoArgBlock.zeroArgBlock();
+        myDoArgBlock.palette = this.palettes.dict['actions'];
+        myDoArgBlock.defaults.push(name);
+        myDoArgBlock.staticLabels.push(name);
+        if (name == 'action') {
+            return;
+        }
+        myDoArgBlock.palette.add(myDoArgBlock);
+    }
+
+    this.newNamedcalcArgBlock = function(name) {
+        if ('myCalcArg_' + name in this.protoBlockDict) {
+            return;
+        }
+        var myCalcArgBlock = new ProtoBlock('namedcalcArg');
+        this.protoBlockDict['myCalcArg_' + name] = myCalcArgBlock;
+        myCalcArgBlock.zeroArgBlock();
+        myCalcArgBlock.palette = this.palettes.dict['actions'];
+        myCalcArgBlock.defaults.push(name);
+        myCalcArgBlock.staticLabels.push(name);
+        if (name == 'action') {
+            return;
+        }
+        myCalcArgBlock.palette.add(myCalcArgBlock);
     }
 
     this.newActionBlock = function(name) {
@@ -1854,7 +1953,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
                         break;
                 }
-            } else if (myBlock.name == 'namedbox' || myBlock.name == 'nameddo') {
+            } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(myBlock.name) != -1) {
                 blockItem = [b, [myBlock.name, {'value': myBlock.privateData}], x, y, []];
             } else {
                 blockItem = [b, myBlock.name, x, y, []];
@@ -1974,6 +2073,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     }
                     break;
                 case 'nameddo': 
+                case 'namedcalc':
+                case 'nameddoArg': 
+                case 'namedcalcArg':
                     doNames[b] = blkData[1][1]['value'];
                     break;
                 case 'do':
@@ -2012,6 +2114,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
                 // console.log('Adding new palette entries for store-in ' + name);
                 this.newStoreinBlock(name);
+                // FIXME: Do we add calc, nameddoArg, namedcalcArg blocks?
                 this.newNamedboxBlock(name);
                 updatePalettes = true;
             }
@@ -2047,6 +2150,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
 
             // add a new nameddo block to the palette...
+            // FIXME: Do we add calc, nameddoArg, namedcalcArg blocks?
             this.newNameddoBlock(name);
             updatePalettes = true;
             // and any do blocks
@@ -2057,7 +2161,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 } else {
                     var blkName = thisBlkData[1][0];
                 }
-                if (blkName == 'nameddo') {
+                if (['nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(blkName) != -1) {
                     if (thisBlkData[1][1]['value'] == oldName) {
                         // console.log('renaming ' + oldName + ' to ' + name);
                         thisBlkData[1][1] = {'value': name};
@@ -2161,6 +2265,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     }
                     this.makeNewBlockWithConnections('namedbox', blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
+                case 'namedcalc':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].privateData = value;
+                        me.blockList[thisBlock].value = null;
+                    }
+                    this.makeNewBlockWithConnections('namedcalc', blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                    break;
                 case 'nameddo':
                     postProcess = function(args) {
                         var thisBlock = args[0];
@@ -2169,6 +2282,86 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         me.blockList[thisBlock].value = null;
                     }
                     this.makeNewBlockWithConnections('nameddo', blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                    break;
+
+                    // Arg clamps may need extra slots added.
+                case 'doArg':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var extraSlots = args[1].length - 4;
+                        if (extraSlots > 0) {
+                            var slotList = me.blockList[thisBlock].argClampSlots;
+                            for (var i = 0; i < extraSlots; i++) {
+                                slotList.push(1);
+                                me.blockList[thisBlock].connections.push(null);
+                            }
+                            me.blockList[thisBlock].updateArgSlots(slotList);
+                            for (var i = 0; i < args[1].length; i++) {
+                                me.blockList[thisBlock].connections[i] = args[1][i];
+                            }
+                        }
+                    }
+                    this.makeNewBlockWithConnections('doArg', blockOffset, blkData[4], postProcess, [thisBlock, blkData[4]]);
+                    break;
+                case 'nameddoArg':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].privateData = value;
+                        me.blockList[thisBlock].value = null;
+                        var extraSlots = args[2].length - 3;
+                        if (extraSlots > 0) {
+                            var slotList = me.blockList[thisBlock].argClampSlots;
+                            for (var i = 0; i < extraSlots; i++) {
+                                slotList.push(1);
+                                me.blockList[thisBlock].connections.push(null);
+                            }
+                            me.blockList[thisBlock].updateArgSlots(slotList);
+                            for (var i = 0; i < args[2].length; i++) {
+                                me.blockList[thisBlock].connections[i] = args[2][i];
+                            }
+                        }
+                    }
+                    this.makeNewBlockWithConnections('nameddoArg', blockOffset, blkData[4], postProcess, [thisBlock, value, blkData[4]]);
+                    break;
+                case 'calcArg':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var extraSlots = args[1].length - 3;
+                        if (extraSlots > 0) {
+                            var slotList = me.blockList[thisBlock].argClampSlots;
+                            for (var i = 0; i < extraSlots; i++) {
+                                slotList.push(1);
+                                me.blockList[thisBlock].connections.push(null);
+                            }
+                            me.blockList[thisBlock].updateArgSlots(slotList);
+                            for (var i = 0; i < args[1].length; i++) {
+                                me.blockList[thisBlock].connections[i] = args[1][i];
+                            }
+                        }
+                    }
+                    this.makeNewBlockWithConnections('calcArg', blockOffset, blkData[4], postProcess, [thisBlock, blkData[4]]);
+                    break;
+                case 'namedcalcArg':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].privateData = value;
+                        me.blockList[thisBlock].value = null;
+                        var extraSlots = args[2].length - 2;
+                        if (extraSlots > 0) {
+                            var slotList = me.blockList[thisBlock].argClampSlots;
+                            for (var i = 0; i < extraSlots; i++) {
+                                slotList.push(1);
+                                me.blockList[thisBlock].connections.push(null);
+                            }
+                            me.blockList[thisBlock].updateArgSlots(slotList);
+                            for (var i = 0; i < args[2].length; i++) {
+                                me.blockList[thisBlock].connections[i] = args[2][i];
+                            }
+                        }
+                    }
+                    this.makeNewBlockWithConnections('namedcalcArg', blockOffset, blkData[4], postProcess, [thisBlock, value, blkData[4]]);
                     break;
 
                     // Value blocks need a default value set.

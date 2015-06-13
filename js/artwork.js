@@ -125,6 +125,7 @@ var PALETTECOLORS = {
     'sensors': [7.5, 60, 80],
     'extras': [7.5, 50, 50],
     'myblocks': [57.5, 70, 14],
+    'heap': [17.5, 60, 70],
 };
 
 // These colors are calculated at load time from the colors defined above.
@@ -175,6 +176,8 @@ var EXTRASPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" heig
 
 var MYBLOCKSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="55" height="55"> <path d="m 15.719636,31.331478 0.114372,5.261133 11.437247,6.290486 L 27.5,29.387146" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="m 27.728744,29.501519 0.05719,13.381578 11.723178,-7.548583 0,-4.689272 -5.947368,3.545548" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="m 10.001012,27.328441 5.604251,-5.146761 -5.832996,-2.973684 12.123482,-7.091093 5.718623,3.316801 5.489879,-3.088056 12.123482,7.319838 -5.832996,2.401822 5.489878,5.032388 -11.322874,7.205466 -5.947369,-5.261134 -6.290485,5.261134 -11.322875,-6.976721 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="M 16.40587,21.952935 27.156883,15.204959 38.937247,22.067308 27.614372,28.815283 16.40587,21.952935 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <g transform="matrix(0.39620698,0,0,0.39620698,28.654032,26.094918)" style="display:block"> <path d="m 33.233,35.1 10.102,10.1 c 0.752,0.75 1.217,1.783 1.217,2.932 0,2.287 -1.855,4.143 -4.146,4.143 -1.145,0 -2.178,-0.463 -2.932,-1.211 l -10.102,-10.103 -10.1,10.1 c -0.75,0.75 -1.787,1.211 -2.934,1.211 -2.284,0 -4.143,-1.854 -4.143,-4.141 0,-1.146 0.465,-2.184 1.212,-2.934 L 21.511,35.095 11.409,24.995 c -0.747,-0.748 -1.212,-1.785 -1.212,-2.93 0,-2.289 1.854,-4.146 4.146,-4.146 1.143,0 2.18,0.465 2.93,1.214 L 27.372,29.235 37.474,19.132 c 0.754,-0.749 1.787,-1.214 2.934,-1.214 2.289,0 4.146,1.856 4.146,4.145 0,1.146 -0.467,2.18 -1.217,2.932 L 33.233,35.1 z" style="fill:#ffffff;stroke:#00abff;stroke-width:3.5" /> <circle cx="27.371" cy="10.849" r="8.1219997" style="fill:#ffffff;stroke:#00abff;stroke-width:3.5" /> </g></svg>';
 
+var HEAPPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="55" height="55"> <g transform="translate(0,-997.36218)"> <rect width="28.5" height="8.5" x="13.25" y="1018.3622" style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" /> <rect width="28.5" height="8.5" x="13.25" y="1028.3622" style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" /> <rect width="28.5" height="8.5" x="13.25" y="1038.3622" style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" /> <g transform="translate(-1.3831668,0)" style="stroke:#ffffff;stroke-opacity:1"> <g transform="matrix(0,-1,-1,0,73.9376,1080.0188)" style="stroke:#ffffff;stroke-opacity:1"> <g transform="translate(34.0803,-1006.42)" style="stroke:#ffffff;stroke-opacity:1"> <polyline points="51.562,15.306 41.17,16.188 42.053,5.794" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" transform="matrix(-0.469241,0.469241,-0.469241,-0.469241,66.2906,1019.03)" /> <path d="m 39.363241,1033.1291 -0.05636,9.9115 -8.750608,0.067" style="fill:none;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> </g> </g> <g transform="matrix(1,0,0,-1,-56.386573,1039.3397)" style="stroke:#ffffff;stroke-opacity:1"> <g transform="translate(34.0803,-1006.42)" style="stroke:#ffffff;stroke-opacity:1"> <polyline points="51.562,15.306 41.17,16.188 42.053,5.794" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" transform="matrix(-0.469241,0.469241,-0.469241,-0.469241,66.2906,1019.03)" /> <path d="m 39.363241,1033.1291 -0.05636,9.9115 -8.750608,0.067" style="fill:none;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> </g> </g> </g> </g> </svg>';
+
 var PALETTEICONS = {
     'turtle': TURTLEPALETTEICON,
     'pen': PENPALETTEICON,
@@ -186,5 +189,6 @@ var PALETTEICONS = {
     'media': MEDIAPALETTEICON,
     'sensors': SENSORSPALETTEICON,
     'extras': EXTRASPALETTEICON,
-    'myblocks': MYBLOCKSPALETTEICON
+    'myblocks': MYBLOCKSPALETTEICON,
+    'heap': HEAPPALETTEICON
 }

@@ -18,7 +18,7 @@ var PALETTELEFTMARGIN = 10;
 // We don't include 'extras' since we want to be able to delete
 // plugins from the extras palette.
 var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'blocks',
-    'actions', 'media', 'sensors', 'myblocks',
+    'actions', 'media', 'sensors', 'myblocks', 'heap'
 ];
 
 
@@ -406,11 +406,20 @@ function PaletteModel(palette, palettes, name) {
                         var arg = block.defaults[0];
                     }
                     break;
+                case 'nameddoArg':
+                    if (block.defaults[0] == undefined) {
+                        modname = 'nameddoArg';
+                        var arg = _('action');
+                    } else {
+                        modname = block.defaults[0];
+                        var arg = block.defaults[0];
+                    }
+                    break;
             }
 
             var protoBlock = paletteBlocks.protoBlockDict[blkname];
             if (protoBlock == null) {
-                console.log('Could not find block ' + b.blkname);
+                console.log('Could not find block ' + blkname);
                 continue;
             }
 
@@ -1154,6 +1163,7 @@ function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, tra
     add('actions').
     add('media').
     add('sensors').
+    add('heap').
     add('extras');
     palettes.makePalettes();
     blocks = b;
@@ -1230,6 +1240,17 @@ function makeBlockFromPalette(blk, blkname, palette, callback) {
             // Use the name of the action in the label
             if (palette.protoList[blk].defaults[0] == undefined) {
                 blkname = 'nameddo';
+                var arg = _('action');
+            } else {
+                blkname = palette.protoList[blk].defaults[0];
+                var arg = palette.protoList[blk].defaults[0];
+            }
+            var newBlk = palette.protoList[blk].name;
+            break;
+        case 'nameddoArg':
+            // Use the name of the action in the label
+            if (palette.protoList[blk].defaults[0] == undefined) {
+                blkname = 'nameddoArg';
                 var arg = _('action');
             } else {
                 blkname = palette.protoList[blk].defaults[0];

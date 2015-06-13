@@ -58,7 +58,7 @@ function Block(protoblock, blocks, overrideName) {
 
     this.size = 1; // Proto size is copied here.
     this.docks = []; // Proto dock is copied here.
-    this.connections = []; // Blocks that cannot be run on their own.
+    this.connections = [];
     // Keep track of clamp count for blocks with clamps
     this.clampCount = [1, 1];
     this.argClampSlots = [1];
@@ -222,10 +222,10 @@ function Block(protoblock, blocks, overrideName) {
             case 'ifthenelse':
                 var obj = this.protoblock.generator(this.clampCount[0], this.clampCount[1]);
                 break;
+            case 'nameddoArg':
+            case 'namedcalcArg':
             case 'doArg':
             case 'calcArg':
-            case 'doArgArg':
-            case 'calcArgArg':
                 var obj = this.protoblock.generator(this.argClampSlots);
                 this.size = 2;
                 for (var i = 0; i < this.argClampSlots.length; i++) {
@@ -247,29 +247,29 @@ function Block(protoblock, blocks, overrideName) {
         }
 
         switch (this.name) {
-            case 'doArg':
+            case 'nameddoArg':
                 for (var i = 1; i < obj[1].length - 1; i++) {
                     this.docks.push([obj[1][i][0], obj[1][i][1], 'anyin']);
                 }
                 this.docks.push([obj[1][2][0], obj[1][2][1], 'in']);
                 break;
-            case 'calcArg':
+            case 'namedcalcArg':
                 for (var i = 1; i < obj[1].length; i++) {
                     this.docks.push([obj[1][i][0], obj[1][i][1], 'anyin']);
                 }
                 break;
-            case 'doArgArg':
+            case 'doArg':
                 this.docks.push([obj[1][1][0], obj[1][1][1], this.protoblock.dockTypes[1]]);
                 for (var i = 2; i < obj[1].length - 1; i++) {
                     this.docks.push([obj[1][i][0], obj[1][i][1], 'anyin']);
                 }
                 this.docks.push([obj[1][3][0], obj[1][3][1], 'in']);
                 break;
-            case 'calcArgArg':
+            case 'calcArg':
+                this.docks.push([obj[1][1][0], obj[1][1][1], this.protoblock.dockTypes[1]]);
                 for (var i = 2; i < obj[1].length; i++) {
                     this.docks.push([obj[1][i][0], obj[1][i][1], 'anyin']);
                 }
-                this.docks.push([obj[1][1][0], obj[1][1][1], this.protoblock.dockTypes[1]]);
                 break;
             default:
                 break;

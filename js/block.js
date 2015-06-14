@@ -1050,7 +1050,7 @@ function calculateBlockHitArea(myBlock) {
     var bounds = myBlock.container.getBounds()
 
     // Only detect hits on top section of block.
-    if (myBlock.isClampBlock()) {
+    if (myBlock.isClampBlock() || myBlock.isArgClamp()) {
         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT);
     } else {
         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height * 0.75); // Shrinking the height makes it easier to grab blocks below in the stack.

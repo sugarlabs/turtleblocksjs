@@ -796,6 +796,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         if (emptyConnection == null) {
                             // TODO: check size
                             slotList.push(1);
+                            this.newLocalArgBlock(slotList.length);
                             emptyConnection = ci + emptySlot - si;
                             this.blockList[newBlock].connections.push(null);
 
@@ -1743,14 +1744,32 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         var myBoxBlock = new ProtoBlock('namedbox');
         this.protoBlockDict['myBox_' + name] = myBoxBlock;
-        myBoxBlock.parameterBlock();
         myBoxBlock.palette = this.palettes.dict['blocks'];
         myBoxBlock.defaults.push(name);
         myBoxBlock.staticLabels.push(name);
+        myBoxBlock.parameterBlock();
         if (name == 'box') {
             return;
         }
         myBoxBlock.palette.add(myBoxBlock);
+    }
+
+    this.newLocalArgBlock = function(name) {
+        // name == 1, 2, 3, ...
+        var blkname = 'local_' + name;
+        if (blkname in this.protoBlockDict) {
+            return;
+        }
+        var myLocalArgBlock = new ProtoBlock(blkname);
+        this.protoBlockDict[blkname] = myLocalArgBlock;
+        myLocalArgBlock.palette = this.palettes.dict['actions'];
+        myLocalArgBlock.defaults.push(_('arg') + ' ' + name);
+        myLocalArgBlock.staticLabels.push(_('arg') + ' ' + name);
+        myLocalArgBlock.parameterBlock();
+        if (name == 'local_1') {
+            return;
+        }
+        myLocalArgBlock.palette.add(myLocalArgBlock);
     }
 
     this.newNameddoBlock = function(name) {
@@ -1759,10 +1778,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         var myDoBlock = new ProtoBlock('nameddo');
         this.protoBlockDict['myDo_' + name] = myDoBlock;
-        myDoBlock.zeroArgBlock();
         myDoBlock.palette = this.palettes.dict['actions'];
         myDoBlock.defaults.push(name);
         myDoBlock.staticLabels.push(name);
+        myDoBlock.zeroArgBlock();
         if (name == 'action') {
             return;
         }
@@ -1775,10 +1794,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         var myCalcBlock = new ProtoBlock('namedcalc');
         this.protoBlockDict['myCalc_' + name] = myCalcBlock;
-        myCalcBlock.zeroArgBlock();
         myCalcBlock.palette = this.palettes.dict['actions'];
         myCalcBlock.defaults.push(name);
         myCalcBlock.staticLabels.push(name);
+        myCalcBlock.zeroArgBlock();
         if (name == 'action') {
             return;
         }
@@ -1791,10 +1810,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         var myDoArgBlock = new ProtoBlock('nameddoArg');
         this.protoBlockDict['myDoArg_' + name] = myDoArgBlock;
-        myDoArgBlock.zeroArgBlock();
         myDoArgBlock.palette = this.palettes.dict['actions'];
         myDoArgBlock.defaults.push(name);
         myDoArgBlock.staticLabels.push(name);
+        myDoArgBlock.zeroArgBlock();
         if (name == 'action') {
             return;
         }
@@ -1807,10 +1826,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         var myCalcArgBlock = new ProtoBlock('namedcalcArg');
         this.protoBlockDict['myCalcArg_' + name] = myCalcArgBlock;
-        myCalcArgBlock.zeroArgBlock();
         myCalcArgBlock.palette = this.palettes.dict['actions'];
         myCalcArgBlock.defaults.push(name);
         myCalcArgBlock.staticLabels.push(name);
+        myCalcArgBlock.zeroArgBlock();
         if (name == 'action') {
             return;
         }
@@ -1823,12 +1842,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         var myActionBlock = new ProtoBlock('action');
         this.protoBlockDict['myAction_' + name] = myActionBlock;
-        myActionBlock.stackClampOneArgBlock();
         myActionBlock.palette = this.palettes.dict['actions'];
         myActionBlock.defaults.push(name);
         myActionBlock.staticLabels.push(_('action'));
         myActionBlock.expandable = true;
         myActionBlock.style = 'clamp';
+        myActionBlock.stackClampOneArgBlock();
         if (name == 'action') {
             return;
         }
@@ -2293,6 +2312,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                             var slotList = me.blockList[thisBlock].argClampSlots;
                             for (var i = 0; i < extraSlots; i++) {
                                 slotList.push(1);
+                                me.newLocalArgBlock(slotList.length);
                                 me.blockList[thisBlock].connections.push(null);
                             }
                             me.blockList[thisBlock].updateArgSlots(slotList);
@@ -2314,6 +2334,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                             var slotList = me.blockList[thisBlock].argClampSlots;
                             for (var i = 0; i < extraSlots; i++) {
                                 slotList.push(1);
+                                me.newLocalArgBlock(slotList.length);
                                 me.blockList[thisBlock].connections.push(null);
                             }
                             me.blockList[thisBlock].updateArgSlots(slotList);
@@ -2332,6 +2353,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                             var slotList = me.blockList[thisBlock].argClampSlots;
                             for (var i = 0; i < extraSlots; i++) {
                                 slotList.push(1);
+                                me.newLocalArgBlock(slotList.length);
                                 me.blockList[thisBlock].connections.push(null);
                             }
                             me.blockList[thisBlock].updateArgSlots(slotList);
@@ -2353,6 +2375,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                             var slotList = me.blockList[thisBlock].argClampSlots;
                             for (var i = 0; i < extraSlots; i++) {
                                 slotList.push(1);
+                                me.newLocalArgBlock(slotList.length);
                                 me.blockList[thisBlock].connections.push(null);
                             }
                             me.blockList[thisBlock].updateArgSlots(slotList);

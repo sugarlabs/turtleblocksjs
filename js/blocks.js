@@ -1283,7 +1283,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
-        if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(name) != -1) {
+        if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg', 'namedarg'].indexOf(name) != -1) {
             this.blockList.push(new Block(this.protoBlockDict[name], this, postProcessArg[1]));
         } else {
             this.blockList.push(new Block(this.protoBlockDict[name], this));
@@ -1389,7 +1389,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 me.updateBlockText(args[0]);
             }
             postProcessArg = [thisBlock, null];
-        } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(name) != -1) {
+        } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg', 'namedarg'].indexOf(name) != -1) {
             postProcess = function(args) {
                 me.blockList[thisBlock].value = null;
                 me.blockList[thisBlock].privateData = args[1];
@@ -1410,7 +1410,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     me.makeNewBlock(proto, postProcess, postProcessArg);
                     protoFound = true;
                     break;
-                } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(name) != -1) {
+                } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg', 'namedarg'].indexOf(name) != -1) {
                     if (me.protoBlockDict[proto].defaults[0] == undefined) {
                         me.makeNewBlock(proto, postProcess, postProcessArg);
                         protoFound = true;
@@ -1449,7 +1449,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             var me = this;
             var thisBlock = this.blockList.length;
-            if (myBlock.docks[i + 1][2] == 'anyin') {
+            if (myBlock.docks.length > i && myBlock.docks[i + 1][2] == 'anyin') {
                 if (value == null) {
                     console.log('cannot set default value');
                 } else if (typeof(value) == 'string') {
@@ -1756,20 +1756,20 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.newLocalArgBlock = function(name) {
         // name == 1, 2, 3, ...
-        var blkname = 'local_' + name;
+        var blkname = 'arg_' + name;
         if (blkname in this.protoBlockDict) {
             return;
         }
-        var myLocalArgBlock = new ProtoBlock(blkname);
-        this.protoBlockDict[blkname] = myLocalArgBlock;
-        myLocalArgBlock.palette = this.palettes.dict['actions'];
-        myLocalArgBlock.defaults.push(_('arg') + ' ' + name);
-        myLocalArgBlock.staticLabels.push(_('arg') + ' ' + name);
-        myLocalArgBlock.parameterBlock();
-        if (name == 'local_1') {
+        var myNamedArgBlock = new ProtoBlock('namedarg');
+        this.protoBlockDict[blkname] = myNamedArgBlock;
+        myNamedArgBlock.palette = this.palettes.dict['actions'];
+        myNamedArgBlock.defaults.push('arg ' + name);
+        myNamedArgBlock.staticLabels.push('arg ' + name);
+        myNamedArgBlock.parameterBlock();
+        if (name == 'arg_1') {
             return;
         }
-        myLocalArgBlock.palette.add(myLocalArgBlock);
+        myNamedArgBlock.palette.add(myNamedArgBlock);
     }
 
     this.newNameddoBlock = function(name) {
@@ -1972,7 +1972,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
                         break;
                 }
-            } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(myBlock.name) != -1) {
+            } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg', 'namedarg'].indexOf(myBlock.name) != -1) {
                 blockItem = [b, [myBlock.name, {'value': myBlock.privateData}], x, y, []];
             } else {
                 blockItem = [b, myBlock.name, x, y, []];
@@ -2283,6 +2283,15 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         me.blockList[thisBlock].value = null;
                     }
                     this.makeNewBlockWithConnections('namedbox', blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                    break;
+                case 'namedarg':
+                    postProcess = function(args) {
+                        var thisBlock = args[0];
+                        var value = args[1];
+                        me.blockList[thisBlock].privateData = value;
+                        me.blockList[thisBlock].value = null;
+                    }
+                    this.makeNewBlockWithConnections('namedarg', blockOffset, blkData[4], postProcess, [thisBlock, value]);
                     break;
                 case 'namedcalc':
                     postProcess = function(args) {

@@ -397,6 +397,15 @@ function PaletteModel(palette, palettes, name) {
                         var arg = block.defaults[0];
                     }
                     break;
+                case 'namedarg':
+                    if (block.defaults[0] == undefined) {
+                        modname = 'namedarg';
+                        var arg = 'arg 1';
+                    } else {
+                        modname = block.defaults[0];
+                        var arg = block.defaults[0];
+                    }
+                    break;
                 case 'nameddo':
                     if (block.defaults[0] == undefined) {
                         modname = 'nameddo';
@@ -454,7 +463,7 @@ function PaletteModel(palette, palettes, name) {
                         label = blkname;
                     }
             }
-            if (['do', 'nameddo', 'namedbox'].indexOf(protoBlock.name) != -1
+            if (['do', 'nameddo', 'namedbox', 'namedarg'].indexOf(protoBlock.name) != -1
              && label.length > 8) {
                 label = label.substr(0, 7) + '...';
             }
@@ -466,6 +475,7 @@ function PaletteModel(palette, palettes, name) {
             // Finally, the SVGs!
             switch (protoBlock.name) {
                 case 'namedbox':
+                case 'namedarg':
                     // so the label will fit
                     var svg = new SVG();
                     svg.init();
@@ -1230,6 +1240,17 @@ function makeBlockFromPalette(blk, blkname, palette, callback) {
             if (palette.protoList[blk].defaults[0] == undefined) {
                 blkname = 'namedbox';
                 var arg = _('box');
+            } else {
+                blkname = palette.protoList[blk].defaults[0];
+                var arg = palette.protoList[blk].defaults[0];
+            }
+            var newBlk = palette.protoList[blk].name;
+            break;
+        case 'namedarg':
+            // Use the name of the arg in the label
+            if (palette.protoList[blk].defaults[0] == undefined) {
+                blkname = 'namedarg';
+                var arg = 'arg 1';
             } else {
                 blkname = palette.protoList[blk].defaults[0];
                 var arg = palette.protoList[blk].defaults[0];

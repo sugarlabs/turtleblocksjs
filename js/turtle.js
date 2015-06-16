@@ -49,6 +49,7 @@ function Turtle (name, turtles) {
 
     // Things used for what the turtle draws.
     this.drawingCanvas = null;
+    this.imageContainer = null;
     this.svgOutput = '';
     // Are we currently drawing a path?
     this.svgPath = false;
@@ -484,7 +485,7 @@ function Turtle (name, turtles) {
         var me = this;
         image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
-            me.turtles.stage.addChild(bitmap);
+            me.imageContainer.addChild(bitmap);
             me.media.push(bitmap);
             bitmap.scaleX = Number(size) / image.width;
             bitmap.scaleY = bitmap.scaleX;
@@ -509,7 +510,7 @@ function Turtle (name, turtles) {
         var me = this;
         image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
-            me.turtles.stage.addChild(bitmap);
+            me.imageContainer.addChild(bitmap);
             me.media.push(bitmap);
             bitmap.scaleX = Number(size) / image.width;
             bitmap.scaleY = bitmap.scaleX;
@@ -756,6 +757,9 @@ function Turtles(canvas, stage, refreshCanvas) {
         this.turtleList.push(myTurtle);
 
         // Each turtle needs its own canvas.
+        myTurtle.imageContainer = new createjs.Container();
+        console.log('creating image container');
+        this.stage.addChild(myTurtle.imageContainer);
         myTurtle.drawingCanvas = new createjs.Shape();
         this.stage.addChild(myTurtle.drawingCanvas);
         // In theory, this prevents some unnecessary refresh of the

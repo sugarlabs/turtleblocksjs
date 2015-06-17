@@ -341,7 +341,8 @@ function loadPaletteButtonHandler(palettes, name) {
 
 
 var EXPANDBYONE = ['repeat', 'forever', 'media', 'camera', 'video', 'action',
-                   'start', 'and', 'or'];
+                   'start', 'and', 'or',
+                   'doArg', 'nameddoArg', 'calcArg', 'namedcalcArg'];
 
 // Kinda a model, but it only keeps a list of SVGs
 function PaletteModel(palette, palettes, name) {
@@ -368,7 +369,9 @@ function PaletteModel(palette, palettes, name) {
         this.blocks = [];
         for (var blk in this.palette.protoList) {
             var block = this.palette.protoList[blk];
-
+            if(this.palette.name == 'actions') {
+               console.log(block.name);
+            }
             // Don't show hidden blocks on the menus
             if (block.hidden) {
                 continue;
@@ -766,7 +769,6 @@ function Palette(palettes, name) {
                             bitmap.hitArea = hitArea;
                             bitmap.visible = false;
                             palette.FadedDownButton = bitmap;
-                            
                         } 
                         makePaletteBitmap(palette, FADEDDOWNICON, name, makeFadedDownIcon, null);
 
@@ -866,7 +868,6 @@ function Palette(palettes, name) {
         this.model.update();
         for (var blk in this.model.blocks) {
             var b = this.model.blocks[blk];
-
             if (!this.protoContainers[b.modname]) {
                 // create graphics for the palette entry for this block
                 this.protoContainers[b.modname] = new createjs.Container();
@@ -1064,7 +1065,6 @@ function Palette(palettes, name) {
         }
         if (this.scrollDiff + diff > 0 && direction > 0) {
             var x = -this.scrollDiff;
-
             if (x == 0) {
                 this.downButton.visible = true;
                 this.upButton.visible = false;
@@ -1072,7 +1072,6 @@ function Palette(palettes, name) {
                 this.FadedDownButton.visible = false;
                 return;
             }
-
             this.scrollDiff += x;
             this.FadedDownButton.visible = false;
             this.downButton.visible = true;
@@ -1111,7 +1110,6 @@ function Palette(palettes, name) {
                 this.downButton.visible = false;
                 this.FadedDownButton.visible = true;
                 this.FadedUpButton.visible = false;
-                
             }
 
         } else if (this.count == 0) {
@@ -1132,7 +1130,6 @@ function Palette(palettes, name) {
             }
         }
         this.updateBlockMasks();
-
         var stage = this.palettes.stage;
         stage.setChildIndex(this.menuContainer, stage.getNumChildren() - 1);
         this.palettes.refreshCanvas();

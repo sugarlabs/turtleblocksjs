@@ -1770,6 +1770,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
         myNamedArgBlock.palette.add(myNamedArgBlock);
+        // Force regeneration of palette after adding new block.
+        regeneratePalette(this.palettes.dict['actions']);
     }
 
     this.newNameddoBlock = function(name) {

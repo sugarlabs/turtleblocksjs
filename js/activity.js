@@ -1346,6 +1346,10 @@ define(function(require) {
                     var args = {'value': myBlock.privateData}
                 } else if (myBlock.name == 'nameddo') {
                     var args = {'value': myBlock.privateData}
+                } else if (myBlock.name == 'namedcalc') {
+                    var args = {'value': myBlock.privateData}
+                } else if (myBlock.name == 'namedarg') {
+                    var args = {'value': myBlock.privateData}
                 } else {
                     var args = {};
                 }

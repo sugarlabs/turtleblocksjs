@@ -369,9 +369,6 @@ function PaletteModel(palette, palettes, name) {
         this.blocks = [];
         for (var blk in this.palette.protoList) {
             var block = this.palette.protoList[blk];
-            if(this.palette.name == 'actions') {
-               console.log(block.name);
-            }
             // Don't show hidden blocks on the menus
             if (block.hidden) {
                 continue;
@@ -403,7 +400,7 @@ function PaletteModel(palette, palettes, name) {
                 case 'namedarg':
                     if (block.defaults[0] == undefined) {
                         modname = 'namedarg';
-                        var arg = 'arg 1';
+                        var arg = '1';
                     } else {
                         modname = block.defaults[0];
                         var arg = block.defaults[0];
@@ -449,6 +446,9 @@ function PaletteModel(palette, palettes, name) {
                     // Label should be inside _() when defined.
                     label = protoBlock.staticLabels[0];
                     break;
+                case 'namedarg':
+                    label = 'arg ' +  arg;
+                    break;
                 default:
                     if (blkname != modname) {
                         // Override label for do, storein, and box
@@ -466,10 +466,11 @@ function PaletteModel(palette, palettes, name) {
                         label = blkname;
                     }
             }
-            if (['do', 'nameddo', 'namedbox', 'namedarg'].indexOf(protoBlock.name) != -1
+            if (['do', 'nameddo', 'namedbox', 'namedcalc'].indexOf(protoBlock.name) != -1
              && label.length > 8) {
                 label = label.substr(0, 7) + '...';
             }
+
             // Don't display the label on image blocks.
             if (protoBlock.image) {
                 label = '';
@@ -489,6 +490,7 @@ function PaletteModel(palette, palettes, name) {
                     var docks = svg.docks;
                     break;
                 case 'nameddo':
+                case 'namedcalc':
                     // so the label will fit
                     var svg = new SVG();
                     svg.init();
@@ -804,7 +806,8 @@ function Palette(palettes, name) {
         if (this.y > max) {
             h = max;
         }
-        return this.menuContainer.y + h - STANDARDBLOCKHEIGHT / 2;
+        // return this.menuContainer.y + h - STANDARDBLOCKHEIGHT / 2;
+        return this.menuContainer.y + h - STANDARDBLOCKHEIGHT * 3;
     }
 
     this.resizeEvent = function() {
@@ -1247,7 +1250,7 @@ function makeBlockFromPalette(blk, blkname, palette, callback) {
             // Use the name of the arg in the label
             if (palette.protoList[blk].defaults[0] == undefined) {
                 blkname = 'namedarg';
-                var arg = 'arg 1';
+                var arg = '1';
             } else {
                 blkname = palette.protoList[blk].defaults[0];
                 var arg = palette.protoList[blk].defaults[0];

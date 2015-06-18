@@ -794,8 +794,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         }
 
                         if (emptyConnection == null) {
-                            // TODO: check size
-                            slotList.push(1);
+                            // FIXME: only works when inserting into
+                            // the last slot.
+                            var size = this.getBlockSize(thisBlock);
+                            console.log(size);
+                            slotList.push(size);
                             this.newLocalArgBlock(slotList.length);
                             emptyConnection = ci + emptySlot - si;
                             this.blockList[newBlock].connections.push(null);
@@ -865,6 +868,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             // If we changed the contents of a arg block, we may need a vspace.
             if (checkArgBlocks.length > 0) {
                 for (var i = 0; i < checkArgBlocks.length; i++) {
+                    // FIXME: change slot size instead if docking into argclamp
                     blocks.addRemoveVspaceBlock(checkArgBlocks[i]);
                 }
             }
@@ -1283,8 +1287,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             console.log('makeNewBlock: no prototype for ' + name);
             return null;
         }
-        if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg', 'namedarg'].indexOf(name) != -1) {
+        if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(name) != -1) {
             this.blockList.push(new Block(this.protoBlockDict[name], this, postProcessArg[1]));
+        } else if (name == 'namedarg') {
+            this.blockList.push(new Block(this.protoBlockDict[name], this, 'arg ' + postProcessArg[1]));
         } else {
             this.blockList.push(new Block(this.protoBlockDict[name], this));
         }
@@ -1763,10 +1769,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         var myNamedArgBlock = new ProtoBlock('namedarg');
         this.protoBlockDict[blkname] = myNamedArgBlock;
         myNamedArgBlock.palette = this.palettes.dict['actions'];
-        myNamedArgBlock.defaults.push('arg ' + name);
+        myNamedArgBlock.defaults.push(name);
         myNamedArgBlock.staticLabels.push('arg ' + name);
         myNamedArgBlock.parameterBlock();
-        if (name == 'arg_1') {
+        if (name == 'arg 1') {
             return;
         }
         myNamedArgBlock.palette.add(myNamedArgBlock);
@@ -2135,7 +2141,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 }
                 // console.log('Adding new palette entries for store-in ' + name);
                 this.newStoreinBlock(name);
-                // FIXME: Do we add calc, nameddoArg, namedcalcArg blocks?
                 this.newNamedboxBlock(name);
                 updatePalettes = true;
             }

@@ -764,7 +764,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                             this.moveBlockRelative(this.dragGroup[c], 40, 40);
                         }
                     } else if (['doArg', 'nameddoArg'].indexOf(this.blockList[newBlock].name) != -1 && newConnection == this.blockList[newBlock].connections.length - 1) {
-                        // If it is the bottom of the flow, insert.
+                        // If it is the bottom of the flow, insert as
+                        // usual.
                         var bottom = this.findBottomBlock(thisBlock);
                         this.blockList[connection].connections[0] = bottom;
                         this.blockList[bottom].connections[this.blockList[bottom].connections.length - 1] = connection;
@@ -772,6 +773,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         // Move the block in the current slot down one
                         // slot (cascading and creating a new slot if
                         // necessary).
+
+                        // Get the size of the block we are inserting adding.
+                        var size = this.getBlockSize(thisBlock);
+                        console.log(size);
 
                         // Get the current slot list.
                         var slotList = this.blockList[newBlock].argClampSlots;
@@ -796,22 +801,24 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         if (emptyConnection == null) {
                             // FIXME: only works when inserting into
                             // the last slot.
-                            var size = this.getBlockSize(thisBlock);
-                            console.log(size);
-                            slotList.push(size);
+                            slotList.push(1);
                             this.newLocalArgBlock(slotList.length);
                             emptyConnection = ci + emptySlot - si;
                             this.blockList[newBlock].connections.push(null);
 
                             // Slide everything down one slot.
+                            for (var i = slotList.length - 1; i > si + 1; i--) {
+                                slotList[i] = slotList[i - 1];
+                            }
                             for (var i = this.blockList[newBlock].connections.length - 1; i > ci + 1; i--) {
-                                var j = i - 1;
                                 this.blockList[newBlock].connections[i] = this.blockList[newBlock].connections[i - 1];
                             }
                         }
                         
                         // The new block is added below the current connection...
                         newConnection += 1;
+                        // Set its slot size too.
+                        slotList[si + 1] = size;
 
                         this.blockList[newBlock].updateArgSlots(slotList);
                     }

@@ -850,11 +850,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     }
                 }
             }
-            // We also care about the second-to-last connection to an arg block.
+            // We also care about the second-to-last connection to an
+            // arg block.
             var n = this.blockList[newBlock].connections.length;
             if (this.blockList[newBlock].connections[n - 2] == thisBlock) {
-                // Only flow blocks.
-                if (this.blockList[newBlock].docks[n - 1][2] == 'in') {
+                // Only flow blocks, but not ArgClamps
+                if (!this.blockList[newBlock].isArgClamp() && this.blockList[newBlock].docks[n - 1][2] == 'in') {
                     checkArgBlocks.push(newBlock);
                 }
             }
@@ -868,7 +869,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             // If we changed the contents of a arg block, we may need a vspace.
             if (checkArgBlocks.length > 0) {
                 for (var i = 0; i < checkArgBlocks.length; i++) {
-                    // FIXME: change slot size instead if docking into argclamp
                     blocks.addRemoveVspaceBlock(checkArgBlocks[i]);
                 }
             }

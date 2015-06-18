@@ -749,11 +749,33 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             // We found a match.
             myBlock.connections[0] = newBlock;
             var connection = this.blockList[newBlock].connections[newConnection];
-            if (connection != null) {
-                // Three scenarios:
-                // (1) if it is an argClamp, add a new slot
-                // (2) if it is an arg block, replace it
-                // (3) if it is a flow block, insert it into the stream
+            if (connection == null && this.blockList[newBlock].isArgClamp()) {
+                // If it is an arg clamp, we may have to adjust the slot size.
+                if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'doCalc') && newConnection == 1) {
+                } else if (['doArg', 'nameddoArg'].indexOf(this.blockList[newBlock].name) != -1 && newConnection == this.blockList[newBlock].connections.length - 1) {
+                } else {
+                    // Get the size of the block we are inserting adding.
+                    var size = this.getBlockSize(thisBlock);
+
+                    // Get the current slot list.
+                    var slotList = this.blockList[newBlock].argClampSlots;
+
+                    // Which slot is this block in?
+                    if (['doArg', 'doCalc'].indexOf(this.blockList[newBlock].name) != -1) {
+                        var si = newConnection - 2;
+                    } else {
+                        var si = newConnection - 1;
+                    }
+                    if (slotList[si] != size) {
+                        slotList[si] = size;
+                        this.blockList[newBlock].updateArgSlots(slotList);
+                    }
+                }
+            } else {
+                // Three scenarios in which we may be overriding an existing connection:
+                // (1) if it is an argClamp, add a new slot below the current block;
+                // (2) if it is an arg block, replace it; and
+                // (3) if it is a flow block, insert it into the flow.
                 if (this.blockList[newBlock].isArgClamp()) {
                     if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'doCalc') && newConnection == 1) {
                         // If it is the action name then treat it like
@@ -776,7 +798,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
                         // Get the size of the block we are inserting adding.
                         var size = this.getBlockSize(thisBlock);
-                        console.log(size);
 
                         // Get the current slot list.
                         var slotList = this.blockList[newBlock].argClampSlots;

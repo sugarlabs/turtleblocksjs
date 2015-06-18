@@ -424,6 +424,24 @@ function PaletteModel(palette, palettes, name) {
                         var arg = block.defaults[0];
                     }
                     break;
+                case 'namedcalc':
+                    if (block.defaults[0] == undefined) {
+                        modname = 'namedcalc';
+                        var arg = _('action');
+                    } else {
+                        modname = block.defaults[0];
+                        var arg = block.defaults[0];
+                    }
+                    break;
+                case 'namedcalcArg':
+                    if (block.defaults[0] == undefined) {
+                        modname = 'namedcalcArg';
+                        var arg = _('action');
+                    } else {
+                        modname = block.defaults[0];
+                        var arg = block.defaults[0];
+                    }
+                    break;
             }
 
             var protoBlock = paletteBlocks.protoBlockDict[blkname];
@@ -1272,6 +1290,28 @@ function makeBlockFromPalette(blk, blkname, palette, callback) {
             // Use the name of the action in the label
             if (palette.protoList[blk].defaults[0] == undefined) {
                 blkname = 'nameddoArg';
+                var arg = _('action');
+            } else {
+                blkname = palette.protoList[blk].defaults[0];
+                var arg = palette.protoList[blk].defaults[0];
+            }
+            var newBlk = palette.protoList[blk].name;
+            break;
+        case 'namedcalc':
+            // Use the name of the action in the label
+            if (palette.protoList[blk].defaults[0] == undefined) {
+                blkname = 'namedcalc';
+                var arg = _('action');
+            } else {
+                blkname = palette.protoList[blk].defaults[0];
+                var arg = palette.protoList[blk].defaults[0];
+            }
+            var newBlk = palette.protoList[blk].name;
+            break;
+        case 'namedcalcArg':
+            // Use the name of the action in the label
+            if (palette.protoList[blk].defaults[0] == undefined) {
+                blkname = 'namedcalcArg';
                 var arg = _('action');
             } else {
                 blkname = palette.protoList[blk].defaults[0];

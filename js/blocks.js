@@ -313,49 +313,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         clampAdjuster(this, blk, myBlock, clamp);
     }
 
-    // Adjust the number and size of the innies in the clamp of an
-    // argclamp block when blocks are inserted into (or removed from)
-    // the child flow.
-    // doArg, calcArg, etc.
-
-    // FIXME: completely bogus code here
-    this.adjustExpandableArgClampBlock = function() {
-        if (this.clampBlocksToCheck.length == 0) {
-            return;
-        }
-        var blk = this.clampBlocksToCheck.pop();
-        var myBlock = this.blockList[blk];
-
-        function clampAdjuster(blocks, blk, myBlock) {
-            // We need a list of blocks to insert; and we need to calculate
-            // their sizes.
-            c = 0; // FIXME
-            blocks.sizeCounter = 0;
-            var childFlowSize = 1;
-            if (c > 0 && myBlock.connections[c] != null) {
-                childFlowSize = Math.max(blocks.getStackSize(myBlock.connections[c]), 1);
-            }
-
-            // Adjust the clamp size to match the size of the child
-            // flow.
-            var plusMinus = childFlowSize - myBlock.clampCount[clamp];
-            if (plusMinus != 0) {
-                if (!(childFlowSize == 0 && myBlock.clampCount[clamp] == 1)) {
-                    myBlock.updateSlots(clamp, plusMinus);
-                }
-            }
-
-            // Recurse through the list.
-            setTimeout(function() {
-                if (blocks.clampBlocksToCheck.length > 0) {
-                    blocks.adjustExpandableClampBlock();
-                }
-            }, 250);
-        }
-
-        clampAdjuster(this, blk, myBlock);
-    }
-
     // Returns the block size.
     this.getBlockSize = function(blk) {
         var myBlock = this.blockList[blk];

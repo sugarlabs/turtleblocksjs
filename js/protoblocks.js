@@ -497,7 +497,7 @@ function ProtoBlock(name) {
     this.argClampOneArgBlock = function() {
         this.style = 'argclamp';
         this.expandable = true;
-        this.size = 2;
+        this.size = 3;
         this.args = 2;
         this.dockTypes.push('out');
         this.dockTypes.push('textin');
@@ -530,7 +530,7 @@ function ProtoBlock(name) {
     this.argClampOneArgMathBlock = function() {
         this.style = 'argclamparg';
         this.expandable = true;
-        this.size = 2;
+        this.size = 3;
         this.args = 2;
         this.dockTypes.push('anyout');
         this.dockTypes.push('textin');
@@ -563,7 +563,7 @@ function ProtoBlock(name) {
     this.argClampBlock = function() {
         this.style = 'argclamp';
         this.expandable = true;
-        this.size = 2;
+        this.size = 3;
         this.args = 2;
         this.dockTypes.push('out');
         this.dockTypes.push('anyin');
@@ -594,7 +594,7 @@ function ProtoBlock(name) {
     this.argClampMathBlock = function() {
         this.style = 'argclamparg';
         this.expandable = true;
-        this.size = 2;
+        this.size = 3;
         this.args = 2;
         this.dockTypes.push('anyout');
         this.dockTypes.push('anyin');

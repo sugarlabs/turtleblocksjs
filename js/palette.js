@@ -341,8 +341,7 @@ function loadPaletteButtonHandler(palettes, name) {
 
 
 var EXPANDBYONE = ['repeat', 'forever', 'media', 'camera', 'video', 'action',
-                   'start', 'and', 'or',
-                   'doArg', 'nameddoArg', 'calcArg', 'namedcalcArg'];
+                   'start', 'and', 'or'];
 
 // Kinda a model, but it only keeps a list of SVGs
 function PaletteModel(palette, palettes, name) {

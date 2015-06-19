@@ -1446,7 +1446,7 @@ function labelChanged(myBlock) {
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {
         var cblock = myBlock.blocks.blockList[c];
-        console.log('Label changed to: ' + myBlock.name);
+        // console.log('Label changed to: ' + myBlock.value);
         switch (cblock.name) {
             case 'action':
                 // If the label was the name of an action, update the
@@ -1458,6 +1458,7 @@ function labelChanged(myBlock) {
                 // Rename both do <- name and nameddo blocks.
                 myBlock.blocks.renameDos(oldValue, newValue);
                 myBlock.blocks.renameNameddos(oldValue, newValue);
+                // FIXME: rename calc (and doArg, calcArg, et al.)
                 myBlock.blocks.palettes.updatePalettes('actions');
                 break;
             case 'storein':
@@ -1472,6 +1473,8 @@ function labelChanged(myBlock) {
                 myBlock.blocks.renameBoxes(oldValue, newValue);
                 myBlock.blocks.renameNamedboxes(oldValue, newValue);
                 myBlock.blocks.palettes.updatePalettes('blocks');
+                break;
+            default:
                 break;
         }
     }

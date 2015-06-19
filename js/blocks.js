@@ -706,26 +706,30 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             // We found a match.
             myBlock.connections[0] = newBlock;
             var connection = this.blockList[newBlock].connections[newConnection];
-            if (connection == null && this.blockList[newBlock].isArgClamp()) {
-                // If it is an arg clamp, we may have to adjust the slot size.
-                if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'doCalc') && newConnection == 1) {
-                } else if (['doArg', 'nameddoArg'].indexOf(this.blockList[newBlock].name) != -1 && newConnection == this.blockList[newBlock].connections.length - 1) {
-                } else {
-                    // Get the size of the block we are inserting adding.
-                    var size = this.getBlockSize(thisBlock);
-
-                    // Get the current slot list.
-                    var slotList = this.blockList[newBlock].argClampSlots;
-
-                    // Which slot is this block in?
-                    if (['doArg', 'doCalc'].indexOf(this.blockList[newBlock].name) != -1) {
-                        var si = newConnection - 2;
+            if (connection == null) {
+                if (this.blockList[newBlock].isArgClamp()) {
+                    // If it is an arg clamp, we may have to adjust
+                    // the slot size.
+                    if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'doCalc') && newConnection == 1) {
+                    } else if (['doArg', 'nameddoArg'].indexOf(this.blockList[newBlock].name) != -1 && newConnection == this.blockList[newBlock].connections.length - 1) {
                     } else {
-                        var si = newConnection - 1;
-                    }
-                    if (slotList[si] != size) {
-                        slotList[si] = size;
-                        this.blockList[newBlock].updateArgSlots(slotList);
+                        // Get the size of the block we are inserting
+                        // adding.
+                        var size = this.getBlockSize(thisBlock);
+
+                        // Get the current slot list.
+                        var slotList = this.blockList[newBlock].argClampSlots;
+
+                        // Which slot is this block in?
+                        if (['doArg', 'doCalc'].indexOf(this.blockList[newBlock].name) != -1) {
+                            var si = newConnection - 2;
+                        } else {
+                            var si = newConnection - 1;
+                        }
+                        if (slotList[si] != size) {
+                            slotList[si] = size;
+                            this.blockList[newBlock].updateArgSlots(slotList);
+                        }
                     }
                 }
             } else {
@@ -777,8 +781,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         }
 
                         if (emptyConnection == null) {
-                            // FIXME: only works when inserting into
-                            // the last slot.
                             slotList.push(1);
                             this.newLocalArgBlock(slotList.length);
                             emptyConnection = ci + emptySlot - si;
@@ -1431,8 +1433,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 value = this.findUniqueActionName(_('action'));
                 console.log('renaming action block to ' + value);
                 if (value != _('action')) {
+                    // FIXME: if there is a return block in the stack,
+                    // make a new named calc block. If there are args,
+                    // make new nameddoArg or namedcalcArg blocks.
                     console.log('calling newNameddoBlock with value ' + value);
-                    // this.newDoBlock(value);
                     this.newNameddoBlock(value);
                     this.palettes.updatePalettes();
                 }
@@ -1654,7 +1658,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             if (blkParent == null) {
                 continue;
             }
-            if (['do', 'action'].indexOf(blkParent.name) == -1) {
+            if (['do', 'calc', 'doArg', 'calcArg', 'action'].indexOf(blkParent.name) == -1) {
                 continue;
             }
             var blockValue = myBlock.value;
@@ -2632,7 +2636,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
 function sendStackToTrash(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
-    // disconnect block
+
+    // Disconnect block.
     var b = myBlock.connections[0];
     if (b != null) {
         for (var c in blocks.blockList[b].connections) {
@@ -2665,7 +2670,7 @@ function sendStackToTrash(blocks, myBlock) {
                 if (blkParent == null) {
                     continue;
                 }
-                if (['nameddo', 'do', 'action'].indexOf(blkParent.name) != -1) {
+                if (['namedcalc', 'calc', 'nameddo', 'do', 'action'].indexOf(blkParent.name) != -1) {
                     continue;
                 }
                 var blockValue = myBlock.value;
@@ -2684,10 +2689,13 @@ function sendStackToTrash(blocks, myBlock) {
             var blockRemoved = false;
             for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
                 var block = blockPalette.protoList[blockId];
-                // if (block.name == 'do' && block.defaults[0] != _('action') && block.defaults[0] == actionName) {
-                if (block.name == 'nameddo' && block.privateData != _('action')) {
+                if (['nameddo', 'namedcalc'].indexOf(block.name) != -1 && block.privateData != _('action')) {
                     blockPalette.protoList.splice(blockPalette.protoList.indexOf(block), 1);
+                    // Any of these could be in the palette.
                     delete blocks.protoBlockDict['myDo_' + actionName];
+                    delete blocks.protoBlockDict['myCalc_' + actionName];
+                    delete blocks.protoBlockDict['myDoArg_' + actionName];
+                    delete blocks.protoBlockDict['myCalcArg_' + actionName];
                     blockPalette.y = 0;
                     blockRemoved = true;
                 }

@@ -710,7 +710,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 if (this.blockList[newBlock].isArgClamp()) {
                     // If it is an arg clamp, we may have to adjust
                     // the slot size.
-                    if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'doCalc') && newConnection == 1) {
+                    if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'calcArg') && newConnection == 1) {
                     } else if (['doArg', 'nameddoArg'].indexOf(this.blockList[newBlock].name) != -1 && newConnection == this.blockList[newBlock].connections.length - 1) {
                     } else {
                         // Get the size of the block we are inserting
@@ -721,7 +721,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         var slotList = this.blockList[newBlock].argClampSlots;
 
                         // Which slot is this block in?
-                        if (['doArg', 'doCalc'].indexOf(this.blockList[newBlock].name) != -1) {
+                        if (['doArg', 'calcArg'].indexOf(this.blockList[newBlock].name) != -1) {
                             var si = newConnection - 2;
                         } else {
                             var si = newConnection - 1;
@@ -738,7 +738,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 // (2) if it is an arg block, replace it; and
                 // (3) if it is a flow block, insert it into the flow.
                 if (this.blockList[newBlock].isArgClamp()) {
-                    if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'doCalc') && newConnection == 1) {
+                    if ((this.blockList[newBlock].name == 'doArg' || this.blockList[newBlock].name == 'calcArg') && newConnection == 1) {
                         // If it is the action name then treat it like
                         // a standard replacement.
                         this.blockList[connection].connections[0] = null;
@@ -764,7 +764,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         var slotList = this.blockList[newBlock].argClampSlots;
                         // Which slot is this block in?
                         var ci = this.blockList[newBlock].connections.indexOf(connection);
-                        if (['doArg', 'doCalc'].indexOf(this.blockList[newBlock].name) != -1) {
+                        if (['doArg', 'calcArg'].indexOf(this.blockList[newBlock].name) != -1) {
                             var si = ci - 2;
                         } else {
                             var si = ci - 1;
@@ -795,7 +795,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                             }
                         }
                         
-                        // The new block is added below the current connection...
+                        // The new block is added below the current
+                        // connection...
                         newConnection += 1;
                         // Set its slot size too.
                         slotList[si + 1] = size;

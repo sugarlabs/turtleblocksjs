@@ -631,15 +631,16 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         if (c != null) {
             var cBlock = this.blockList[c];
         }
+
         // If it is an arg block, where is it coming from?
         if (myBlock.isArgBlock() && c != null) {
             // We care about twoarg (2arg) blocks with
             // connections to the first arg;
-            if (this.blockList[c].isTwoArgBlock()) {
+            if (this.blockList[c].isTwoArgBlock() || this.blockList[c].isArgClamp()) {
                 if (cBlock.connections[1] == thisBlock) {
                     this.checkTwoArgBlocks.push(c);
                 }
-            } else if (this.blockList[c].isArgBlock() && this.blockList[c].isExpandableBlock()) {
+            } else if (this.blockList[c].isArgBlock() && this.blockList[c].isExpandableBlock() || this.blockList[c].isArgClamp()) {
                 if (cBlock.connections[1] == thisBlock) {
                     this.checkTwoArgBlocks.push(c);
                 }
@@ -822,7 +823,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         // If it is an arg block, where is it coming from?
-        if (myBlock.isArgBlock() && newBlock != null) {
+        // FIXME: improve mechanism for testing block types.
+        if ((myBlock.isArgBlock() || myBlock.name == 'calcArg' || myBlock.name == 'namedcalcArg') && newBlock != null) {
             // We care about twoarg blocks with connections to the
             // first arg;
             if (this.blockList[newBlock].isTwoArgBlock()) {

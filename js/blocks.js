@@ -1475,11 +1475,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 value = this.findUniqueActionName(_('action'));
                 console.log('renaming action block to ' + value);
                 if (value != _('action')) {
-                    // FIXME: if there is a return block in the stack,
-                    // make a new named calc block. If there are args,
-                    // make new nameddoArg or namedcalcArg blocks.
                     console.log('calling newNameddoBlock with value ' + value);
-                    this.newNameddoBlock(value);
+                    // TODO: are there return or arg blocks?
+                    this.newNameddoBlock(value, false, false);
                     this.palettes.updatePalettes();
                 }
             }
@@ -1812,30 +1810,39 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         regeneratePalette(this.palettes.dict['actions']);
     }
 
-    this.newNameddoBlock = function(name) {
-        // FIXME: depending upon the form of the associated action
-        // block, we want to add a named do, a named calc, a named do
-        // w/args, or a named calc w/args.
+    this.newNameddoBlock = function(name, hasReturn, hasArgs) {
+        // Depending upon the form of the associated action block, we
+        // want to add a named do, a named calc, a named do w/args, or
+        // a named calc w/args.
+        console.log(hasReturn + ' ' + hasArgs);
 
-        if ('myDo_' + name in this.protoBlockDict) {
-            return;
+        // Delete any old palette entries.
+        delete blocks.protoBlockDict['myDo_' + name];
+        delete blocks.protoBlockDict['myCalc_' + name];
+        delete blocks.protoBlockDict['myDoArg_' + name];
+        delete blocks.protoBlockDict['myCalcArg_' + name];
+
+        if (hasReturn && hasArgs) {
+            this.newNamedcalcArgBlock(name);
+        } else if (!hasReturn && hasArgs) {
+            this.newNameddoArgBlock(name);
+        } else if (hasReturn && !hasArgs) {
+            this.newNamedcalcBlock(name);
+        } else {
+            var myDoBlock = new ProtoBlock('nameddo');
+            this.protoBlockDict['myDo_' + name] = myDoBlock;
+            myDoBlock.palette = this.palettes.dict['actions'];
+            myDoBlock.defaults.push(name);
+            myDoBlock.staticLabels.push(name);
+            myDoBlock.zeroArgBlock();
+            if (name == 'action') {
+                return;
+            }
+            myDoBlock.palette.add(myDoBlock);
         }
-        var myDoBlock = new ProtoBlock('nameddo');
-        this.protoBlockDict['myDo_' + name] = myDoBlock;
-        myDoBlock.palette = this.palettes.dict['actions'];
-        myDoBlock.defaults.push(name);
-        myDoBlock.staticLabels.push(name);
-        myDoBlock.zeroArgBlock();
-        if (name == 'action') {
-            return;
-        }
-        myDoBlock.palette.add(myDoBlock);
     }
 
     this.newNamedcalcBlock = function(name) {
-        if ('myCalc_' + name in this.protoBlockDict) {
-            return;
-        }
         var myCalcBlock = new ProtoBlock('namedcalc');
         this.protoBlockDict['myCalc_' + name] = myCalcBlock;
         myCalcBlock.palette = this.palettes.dict['actions'];
@@ -1849,9 +1856,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newNameddoArgBlock = function(name) {
-        if ('myDoArg_' + name in this.protoBlockDict) {
-            return;
-        }
         var myDoArgBlock = new ProtoBlock('nameddoArg');
         this.protoBlockDict['myDoArg_' + name] = myDoArgBlock;
         myDoArgBlock.palette = this.palettes.dict['actions'];
@@ -1865,9 +1869,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newNamedcalcArgBlock = function(name) {
-        if ('myCalcArg_' + name in this.protoBlockDict) {
-            return;
-        }
         var myCalcArgBlock = new ProtoBlock('namedcalcArg');
         this.protoBlockDict['myCalcArg_' + name] = myCalcArgBlock;
         myCalcArgBlock.palette = this.palettes.dict['actions'];
@@ -2214,10 +2215,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 blkData[1][1] = {'value': name};
             }
 
-            // add a new nameddo block to the palette...
-            // FIXME: Do we add calc, nameddoArg, namedcalcArg blocks?
-            this.newNameddoBlock(name);
+            // TODO: are there return or arg blocks?
+            this.newNameddoBlock(name, false, false);
             updatePalettes = true;
+
             // and any do blocks
             for (var d in doNames) {
                 var thisBlkData = blockObjs[d];

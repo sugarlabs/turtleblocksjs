@@ -1452,8 +1452,7 @@ function labelChanged(myBlock) {
                 // If the label was the name of an action, update the
                 // associated run myBlock.blocks and the palette buttons
                 if (myBlock.value != _('action')) {
-                    // myBlock.blocks.newDoBlock(myBlock.value);
-                    myBlock.blocks.newNameddoBlock(myBlock.value);
+                    myBlock.blocks.newNameddoBlock(myBlock.value, myBlock.blocks.actionHasReturn(c), myBlock.blocks.actionHasArgs(c));
                 }
                 // Rename both do <- name and nameddo blocks.
                 myBlock.blocks.renameDos(oldValue, newValue);
@@ -1466,7 +1465,6 @@ function labelChanged(myBlock) {
                 //associated box myBlock.blocks and the palette buttons
                 if (myBlock.value != 'box') {
                     myBlock.blocks.newStoreinBlock(myBlock.value);
-                    // myBlock.blocks.newBoxBlock(myBlock.value);
                     myBlock.blocks.newNamedboxBlock(myBlock.value);
                 }
                 // Rename both box <- name and namedbox blocks.

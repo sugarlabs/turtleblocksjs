@@ -76,6 +76,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     this.blocksToCollapse = [];
     // Arg blocks that need expanding after load.
     this.checkTwoArgBlocks = [];
+    // Arg clamp blocks that need expanding after load.
+    this.checkArgClampBlocks = [];
     // Clamp blocks that need expanding after load.
     this.clampBlocksToCheck = [];
 
@@ -328,6 +330,43 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return size;
         }
         */
+    }
+
+    // Adjust the slot sizes of arg clamps.
+    this.adjustArgClampBlock = function(argBlocksToCheck) {
+        if (argBlocksToCheck.length == 0) {
+            return;
+        }
+
+        var blk = argBlocksToCheck.pop();
+        var myBlock = this.blockList[blk];
+
+        // Which connection do we start with?
+        if (['doArg', 'calcArg'].indexOf(myBlock.name) != -1) {
+            ci = 2;
+        } else {
+            ci = 1;
+        }
+
+        // Get the current slot list.
+        var slotList = myBlock.argClampSlots;
+
+        var update = false;
+        // Determine the size of each argument.
+        for (i = 0; i < slotList.length; i++) {
+            var c = myBlock.connections[ci + i];
+            var size = 1; // Minimum size
+            if (c != null) {
+                size = Math.max(this.getBlockSize(c), 1);
+            }
+            if (slotList[i] != size) {
+                slotList[i] = size;
+                update = true;
+            }
+        }
+        if (update) {
+            myBlock.updateArgSlots(slotList);
+        }
     }
 
     // We also adjust the size of twoarg blocks. It is similar to how
@@ -2037,8 +2076,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         }
 
-        // We need to track two-arg blocks incase they need expanding. 
+        // We need to track two-arg blocks in case they need expanding. 
         this.checkTwoArgBlocks = [];
+
+        // And arg clamp blocks in case they need expanding.
+        this.checkArgClampBlocks = [];
 
         // Don't make duplicate action names.
         // Add a palette entry for any new storein blocks.
@@ -2328,6 +2370,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                                 me.blockList[thisBlock].connections[i] = args[1][i];
                             }
                         }
+                        me.checkArgClampBlocks.push(thisBlock);
                     }
                     this.makeNewBlockWithConnections('doArg', blockOffset, blkData[4], postProcess, [thisBlock, blkData[4]]);
                     break;
@@ -2350,6 +2393,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                                 me.blockList[thisBlock].connections[i] = args[2][i];
                             }
                         }
+                        me.checkArgClampBlocks.push(thisBlock);
                     }
                     this.makeNewBlockWithConnections('nameddoArg', blockOffset, blkData[4], postProcess, [thisBlock, value, blkData[4]]);
                     break;
@@ -2369,6 +2413,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                                 me.blockList[thisBlock].connections[i] = args[1][i];
                             }
                         }
+                        me.checkArgClampBlocks.push(thisBlock);
                     }
                     this.makeNewBlockWithConnections('calcArg', blockOffset, blkData[4], postProcess, [thisBlock, blkData[4]]);
                     break;
@@ -2391,6 +2436,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                                 me.blockList[thisBlock].connections[i] = args[2][i];
                             }
                         }
+                        me.checkArgClampBlocks.push(thisBlock);
                     }
                     this.makeNewBlockWithConnections('namedcalcArg', blockOffset, blkData[4], postProcess, [thisBlock, value, blkData[4]]);
                     break;
@@ -2587,6 +2633,17 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         this.updateBlockPositions();
+
+        if (this.checkArgClampBlocks.length > 0) {
+            // We make multiple passes because we need to account for nesting.
+            // FIXME: needs to be interwoven with TwoArgBlocks check.
+            for (i = 0; i < this.checkArgClampBlocks.length; i++) {
+                for (b = 0; b < this.checkArgClampBlocks.length; b++) {
+                    this.adjustArgClampBlock([this.checkArgClampBlocks[b]]);
+                }
+            }
+        }
+
         if (this.checkTwoArgBlocks.length > 0) {
             // We make multiple passes because we need to account for nesting.
             for (i = 0; i < this.checkTwoArgBlocks.length; i++) {

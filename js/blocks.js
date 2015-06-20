@@ -1694,6 +1694,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             return;
         }
         // Update the blocks, do->oldName should be do->newName
+        // Named dos are modified in a separate function below.
         for (var blk = 0; blk < this.blockList.length; blk++) {
             var myBlock = this.blockList[blk];
             var blkParent = this.blockList[myBlock.connections[0]];
@@ -1812,6 +1813,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     }
 
     this.newNameddoBlock = function(name) {
+        // FIXME: depending upon the form of the associated action
+        // block, we want to add a named do, a named calc, a named do
+        // w/args, or a named calc w/args.
+
         if ('myDo_' + name in this.protoBlockDict) {
             return;
         }
@@ -2673,6 +2678,42 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         }
         this.refreshCanvas();
+    }
+
+    this.actionHasReturn = function (blk) {
+        // Look for a return block in an action stack.
+        if (this.blockList[blk].name != 'action') {
+            return false;
+        }
+        var loopcounter = 0;
+        var c = this.blockList[blk].connections[2];
+        while (c != null) {
+            if (this.blockList[c].name == 'return') {
+                return true;
+            }
+            loopcounter += 1;
+            if (loopcounter > this.blockList.length) {
+                console.log('inifinite loop? encountered while testing for return.');
+                return false;
+            }
+            var last = this.blockList[c].connections.length - 1;
+            c = this.blockList[c].connections[last];
+        }
+        return false;
+    }
+
+    this.actionHasArgs = function (blk) {
+        // Look for an arg blocks in an action stack.
+        if (this.blockList[blk].name != 'action') {
+            return false;
+        }
+        this.findDragGroup(blk);
+        for (var b = 0; b < this.dragGroup.length; b++) {
+            if (this.blockList[b].name == 'arg' || this.blockList[b].name == 'namedarg') {
+                return true;
+            }
+        }
+        return false;
     }
 
     this.raiseStackToTop = function (blk) {

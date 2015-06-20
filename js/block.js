@@ -1411,6 +1411,11 @@ function labelChanged(myBlock) {
     var oldValue = myBlock.value;
     var newValue = myBlock.label.value;
 
+    if (oldValue == newValue) {
+       // Nothing to do in this case.
+       return;    
+    }
+
     // Update the block value and block text.
     if (myBlock.name == 'number') {
         myBlock.value = Number(newValue);
@@ -1442,22 +1447,21 @@ function labelChanged(myBlock) {
     }
     myBlock.blocks.refreshCanvas();
 
-    // TODO: Don't allow duplicate action names
     var c = myBlock.connections[0];
     if (myBlock.name == 'text' && c != null) {
         var cblock = myBlock.blocks.blockList[c];
-        // console.log('Label changed to: ' + myBlock.value);
+        console.log('Label changed to: ' + myBlock.value);
         switch (cblock.name) {
             case 'action':
                 // If the label was the name of an action, update the
                 // associated run myBlock.blocks and the palette buttons
                 if (myBlock.value != _('action')) {
+                    myBlock.blocks.removeNamedoEntries(oldValue);
                     myBlock.blocks.newNameddoBlock(myBlock.value, myBlock.blocks.actionHasReturn(c), myBlock.blocks.actionHasArgs(c));
                 }
                 // Rename both do <- name and nameddo blocks.
                 myBlock.blocks.renameDos(oldValue, newValue);
                 myBlock.blocks.renameNameddos(oldValue, newValue);
-                // FIXME: rename calc (and doArg, calcArg, et al.)
                 myBlock.blocks.palettes.updatePalettes('actions');
                 break;
             case 'storein':

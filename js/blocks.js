@@ -1810,17 +1810,23 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         regeneratePalette(this.palettes.dict['actions']);
     }
 
+    this.removeNamedoEntries = function(name) {
+        // Delete any old palette entries.
+        console.log('removing old palette entries for ' + name);
+        delete this.protoBlockDict['myDo_' + name];
+        delete this.protoBlockDict['myCalc_' + name];
+        delete this.protoBlockDict['myDoArg_' + name];
+        delete this.protoBlockDict['myCalcArg_' + name];
+    }
+
     this.newNameddoBlock = function(name, hasReturn, hasArgs) {
         // Depending upon the form of the associated action block, we
         // want to add a named do, a named calc, a named do w/args, or
         // a named calc w/args.
-        console.log(hasReturn + ' ' + hasArgs);
-
-        // Delete any old palette entries.
-        delete blocks.protoBlockDict['myDo_' + name];
-        delete blocks.protoBlockDict['myCalc_' + name];
-        delete blocks.protoBlockDict['myDoArg_' + name];
-        delete blocks.protoBlockDict['myCalcArg_' + name];
+        if (name == _('action')) {
+            // 'action' already has its associated palette entries.
+            return;
+        }
 
         if (hasReturn && hasArgs) {
             this.newNamedcalcArgBlock(name);
@@ -1835,9 +1841,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myDoBlock.defaults.push(name);
             myDoBlock.staticLabels.push(name);
             myDoBlock.zeroArgBlock();
-            if (name == 'action') {
-                return;
-            }
             myDoBlock.palette.add(myDoBlock);
         }
     }
@@ -1849,9 +1852,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         myCalcBlock.defaults.push(name);
         myCalcBlock.staticLabels.push(name);
         myCalcBlock.zeroArgBlock();
-        if (name == 'action') {
-            return;
-        }
         myCalcBlock.palette.add(myCalcBlock);
     }
 
@@ -1862,9 +1862,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         myDoArgBlock.defaults.push(name);
         myDoArgBlock.staticLabels.push(name);
         myDoArgBlock.zeroArgBlock();
-        if (name == 'action') {
-            return;
-        }
         myDoArgBlock.palette.add(myDoArgBlock);
     }
 
@@ -1875,9 +1872,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         myCalcArgBlock.defaults.push(name);
         myCalcArgBlock.staticLabels.push(name);
         myCalcArgBlock.zeroArgBlock();
-        if (name == 'action') {
-            return;
-        }
         myCalcArgBlock.palette.add(myCalcArgBlock);
     }
 
@@ -2216,6 +2210,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
 
             // TODO: are there return or arg blocks?
+            console.log('calling newNameddoBlock with name ' + name);
             this.newNameddoBlock(name, false, false);
             updatePalettes = true;
 

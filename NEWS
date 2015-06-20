@@ -340,6 +340,7 @@
     blocks whose status can change, e.g., Butia sensor blocks.
   * Added support for arg clamp blocks (doArg, calcArg, etc.)
   * Fixed sizing issue with arg clamps.
+  * Renaming action blocks takes into account type of action block.
 
 TODO:
   * Better model and view distinction in code
@@ -379,6 +380,7 @@ ISSUES:
     Do we auto-generate the protoblocks with the requisit number of arg slots?
 
 KNOWN BUGS:
+  * Deleting palette entries when renaming actions is not working properly.
   * Sometimes change in size of arg blocks not auto-cascaded.
   * Not all blocks highlight when using step-by-step mode.
   * Sometimes returning to backgrounded project results in empty project.

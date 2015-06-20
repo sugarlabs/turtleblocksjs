@@ -339,6 +339,7 @@
   * Added blocks.changeDisabledStatus() method for changing appearance of
     blocks whose status can change, e.g., Butia sensor blocks.
   * Added support for arg clamp blocks (doArg, calcArg, etc.)
+  * Fixed sizing issue with arg clamps.
 
 TODO:
   * Better model and view distinction in code
@@ -378,7 +379,6 @@ ISSUES:
     Do we auto-generate the protoblocks with the requisit number of arg slots?
 
 KNOWN BUGS:
-  * Sizing slightly off with arg clamps.
   * Sometimes change in size of arg blocks not auto-cascaded.
   * Not all blocks highlight when using step-by-step mode.
   * Sometimes returning to backgrounded project results in empty project.

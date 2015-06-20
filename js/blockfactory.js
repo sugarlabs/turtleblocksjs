@@ -990,7 +990,7 @@ function SVG() {
         }
         j += 1;
 
-        var ddy = (this._slotSize - this._innieY2 - this._strokeWidth / 2.0);
+        var ddy = (this._slotSize - this._innieY2);
         for (var i = 1; i < this._clampSlots[0].length; i++) {
             svg += this._rLineTo(0, ddy);
             svg += this._doInnie();

@@ -564,7 +564,7 @@ function ProtoBlock(name) {
         this.style = 'argclamp';
         this.expandable = true;
         this.size = 3;
-        this.args = 2;
+        this.args = 1;
         this.dockTypes.push('out');
         this.dockTypes.push('anyin');
         this.dockTypes.push('in');
@@ -595,7 +595,7 @@ function ProtoBlock(name) {
         this.style = 'argclamparg';
         this.expandable = true;
         this.size = 3;
-        this.args = 2;
+        this.args = 1;
         this.dockTypes.push('anyout');
         this.dockTypes.push('anyin');
         this.generator = this.argClampMathBlockGenerator;

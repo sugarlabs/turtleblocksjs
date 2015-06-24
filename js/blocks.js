@@ -1823,6 +1823,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Depending upon the form of the associated action block, we
         // want to add a named do, a named calc, a named do w/args, or
         // a named calc w/args.
+        console.log(name + ' ' + hasReturn + ' ' + hasArgs);
+
         if (name == _('action')) {
             // 'action' already has its associated palette entries.
             return;
@@ -2705,7 +2707,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         this.findDragGroup(blk);
         for (var b = 0; b < this.dragGroup.length; b++) {
-            if (this.blockList[b].name == 'arg' || this.blockList[b].name == 'namedarg') {
+            if (this.blockList[this.dragGroup[b]].name == 'arg' || this.blockList[this.dragGroup[b]].name == 'namedarg') {
                 return true;
             }
         }

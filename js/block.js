@@ -1457,6 +1457,7 @@ function labelChanged(myBlock) {
                 // associated run myBlock.blocks and the palette buttons
                 if (myBlock.value != _('action')) {
                     myBlock.blocks.removeNamedoEntries(oldValue);
+                    console.log('renaming nameddoblock');
                     myBlock.blocks.newNameddoBlock(myBlock.value, myBlock.blocks.actionHasReturn(c), myBlock.blocks.actionHasArgs(c));
                 }
                 // Rename both do <- name and nameddo blocks.

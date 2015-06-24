@@ -264,7 +264,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     // Adjust the size of the clamp in an expandable block when blocks
     // are inserted into (or removed from) the child flow. This is a
     // common operation for start and action blocks, but also for
-    // repeat, forever, if, etc. 
+    // repeat, forever, if, etc.
     this.adjustExpandableClampBlock = function() {
         if (this.clampBlocksToCheck.length == 0) {
             return;
@@ -322,7 +322,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // FIXME? No need to recurse since cascaded value is stored in
         // myBlock.size. But is it robust? Maybe we should recurse
         // and not store the cascaded size?
-        /* 
+        /*
         var size = myBlock.size;
         if ((myBlock.isArgBlock() || myBlock.isTwoArgBlock()) && this.blockList[i].isExpandableBlock() && myBlock.connections[1] != null) {
             return size + this.getBlockSize(myBlock.connections[1]) - 1;
@@ -782,7 +782,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         // If it is the action name then treat it like
                         // a standard replacement.
                         this.blockList[connection].connections[0] = null;
-                        this.findDragGroup(connection);                    
+                        this.findDragGroup(connection);
                         for (var c = 0; c < this.dragGroup.length; c++) {
                             this.moveBlockRelative(this.dragGroup[c], 40, 40);
                         }
@@ -834,7 +834,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                                 this.blockList[newBlock].connections[i] = this.blockList[newBlock].connections[i - 1];
                             }
                         }
-                        
                         // The new block is added below the current
                         // connection...
                         newConnection += 1;
@@ -845,7 +844,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     }
                 } else if (myBlock.isArgBlock()) {
                     this.blockList[connection].connections[0] = null;
-                    this.findDragGroup(connection);                    
+                    this.findDragGroup(connection);
                     for (var c = 0; c < this.dragGroup.length; c++) {
                         this.moveBlockRelative(this.dragGroup[c], 40, 40);
                     }
@@ -2078,7 +2077,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         }
 
-        // We need to track two-arg blocks in case they need expanding. 
+        // We need to track two-arg blocks in case they need expanding.
         this.checkTwoArgBlocks = [];
 
         // And arg clamp blocks in case they need expanding.
@@ -2135,9 +2134,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         storeinNames[b] = blkData[4][1];
                     }
                     break;
-                case 'nameddo': 
+                case 'nameddo':
                 case 'namedcalc':
-                case 'nameddoArg': 
+                case 'nameddoArg':
                 case 'namedcalcArg':
                     doNames[b] = blkData[1][1]['value'];
                     break;

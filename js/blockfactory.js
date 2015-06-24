@@ -556,7 +556,7 @@ function SVG() {
         return 'style="fill:' + this._fill + ';fill-opacity:1;stroke:' + this._stroke + ';stroke-width:' + this._strokeWidth + ';stroke-linecap:round;stroke-opacity:1;filter:url(#dropshadow);" />';
     }
 
-    /* 
+    /*
     The block construction methods typically start on the upper-left side
     of a block and proceed clockwise around the block, first constructing
     a corner (1, -1), a slot or hat on along the top, a corner (1, 1),

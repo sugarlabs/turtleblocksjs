@@ -430,14 +430,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     storeinBlock.dockTypes[1] = 'anyin';
     storeinBlock.dockTypes[2] = 'anyin';
 
-    var namedboxBlock = new ProtoBlock('namedbox');
-    namedboxBlock.palette = palettes.dict['blocks'];
-    blocks.protoBlockDict['namedbox'] = namedboxBlock;
-    namedboxBlock.staticLabels.push(_('box'));
-    namedboxBlock.extraWidth = 10;
-    namedboxBlock.adjustWidthToLabel();
-    namedboxBlock.parameterBlock();
-    namedboxBlock.dockTypes[0] = 'anyout';
+    var namedBoxBlock = new ProtoBlock('namedbox');
+    namedBoxBlock.palette = palettes.dict['blocks'];
+    blocks.protoBlockDict['namedbox'] = namedBoxBlock;
+    namedBoxBlock.staticLabels.push(_('box'));
+    namedBoxBlock.extraWidth = 10;
+    namedBoxBlock.adjustWidthToLabel();
+    namedBoxBlock.parameterBlock();
+    namedBoxBlock.dockTypes[0] = 'anyout';
 
     var actionBlock = new ProtoBlock('action');
     actionBlock.palette = palettes.dict['actions'];
@@ -448,13 +448,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     actionBlock.stackClampOneArgBlock();
     actionBlock.defaults.push(_('action'));
 
-    var nameddoBlock = new ProtoBlock('nameddo');
-    nameddoBlock.palette = palettes.dict['actions'];
-    blocks.protoBlockDict['nameddo'] = nameddoBlock;
-    nameddoBlock.staticLabels.push(_('action'));
-    nameddoBlock.extraWidth = 10;
-    nameddoBlock.adjustWidthToLabel();
-    nameddoBlock.zeroArgBlock();
+    var namedDoBlock = new ProtoBlock('nameddo');
+    namedDoBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['nameddo'] = namedDoBlock;
+    namedDoBlock.staticLabels.push(_('action'));
+    namedDoBlock.extraWidth = 10;
+    namedDoBlock.adjustWidthToLabel();
+    namedDoBlock.zeroArgBlock();
 
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['actions'];
@@ -489,7 +489,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     boxBlock.oneArgMathBlock();
     boxBlock.defaults.push(_('box'));
     boxBlock.dockTypes[0] = 'anyout';
-    boxBlock.dockTypes[1] = 'anyin';
     // Show the value in the box as if it were a parameter.
     boxBlock.parameter = true;
     boxBlock.dockTypes[1] = 'anyin';
@@ -502,6 +501,105 @@ function initBasicProtoBlocks(palettes, blocks) {
     doBlock.oneArgBlock();
     doBlock.defaults.push(_('action'));
     doBlock.dockTypes[1] = 'anyin';
+
+    var returnBlock = new ProtoBlock('return');
+    returnBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['return'] = returnBlock;
+    returnBlock.staticLabels.push(_('return'));
+    returnBlock.extraWidth = 10;
+    returnBlock.adjustWidthToLabel();
+    returnBlock.oneArgBlock();
+    returnBlock.defaults.push(_('100'));
+    returnBlock.dockTypes[1] = 'anyin';
+
+    var voidReturnBlock = new ProtoBlock('voidReturn');
+    blocks.protoBlockDict['voidReturn'] = voidReturnBlock;
+    voidReturnBlock.palette = palettes.dict['actions'];
+    voidReturnBlock.staticLabels.push(_('Return'));
+    voidReturnBlock.adjustWidthToLabel();
+    voidReturnBlock.zeroArgBlock();
+
+    var calcBlock = new ProtoBlock('calc');
+    calcBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['calc'] = calcBlock;
+    calcBlock.staticLabels.push(_('calculate'));
+    calcBlock.adjustWidthToLabel();
+    calcBlock.oneArgMathBlock();
+    calcBlock.defaults.push(_('action'));
+    calcBlock.dockTypes[1] = 'anyin';
+
+    var listenBlock = new ProtoBlock('listen');
+    listenBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['listen'] = listenBlock;
+    listenBlock.staticLabels.push(_('on'), _('event'), _('do'));
+    listenBlock.adjustWidthToLabel();
+    listenBlock.twoArgBlock();
+    listenBlock.defaults.push(_('event'));
+    listenBlock.defaults.push(_('action'));
+    listenBlock.dockTypes[1] = 'textin';
+    listenBlock.dockTypes[2] = 'textin';
+
+    var dispatchBlock = new ProtoBlock('dispatch');
+    dispatchBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['dispatch'] = dispatchBlock;
+    dispatchBlock.staticLabels.push(_('broadcast'));
+    dispatchBlock.adjustWidthToLabel();
+    dispatchBlock.oneArgBlock();
+    dispatchBlock.defaults.push(_('event'));
+    dispatchBlock.dockTypes[1] = 'textin';
+
+    var namedDoArgBlock = new ProtoBlock('nameddoArg');
+    namedDoArgBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['nameddoArg'] = namedDoArgBlock;
+    namedDoArgBlock.staticLabels.push(_('do'));
+    namedDoArgBlock.adjustWidthToLabel();
+    namedDoArgBlock.argClampBlock();
+    namedDoArgBlock.dockTypes[1] = 'anyin';
+
+    var namedCalcArgBlock = new ProtoBlock('namedcalcArg');
+    namedCalcArgBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['namedcalcArg'] = namedCalcArgBlock;
+    namedCalcArgBlock.staticLabels.push(_('calculate'));
+    namedCalcArgBlock.adjustWidthToLabel();
+    namedCalcArgBlock.argClampMathBlock();
+    namedCalcArgBlock.dockTypes[1] = 'anyin';
+
+    var doArgBlock = new ProtoBlock('doArg');
+    doArgBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['doArg'] = doArgBlock;
+    doArgBlock.staticLabels.push(_('do'));
+    doArgBlock.adjustWidthToLabel();
+    doArgBlock.argClampOneArgBlock();
+    doArgBlock.defaults.push(_('action'));
+    doArgBlock.dockTypes[1] = 'anyin';
+    doArgBlock.dockTypes[2] = 'anyin';
+
+    var calcArgBlock = new ProtoBlock('calcArg');
+    calcArgBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['calcArg'] = calcArgBlock;
+    calcArgBlock.staticLabels.push(_('calculate'));
+    calcArgBlock.adjustWidthToLabel();
+    calcArgBlock.argClampOneArgMathBlock();
+    calcArgBlock.defaults.push(_('action'));
+    calcArgBlock.dockTypes[1] = 'anyin';
+    calcArgBlock.dockTypes[2] = 'anyin';
+
+    var argBlock = new ProtoBlock('arg');
+    argBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['arg'] = argBlock;
+    argBlock.staticLabels.push('arg');
+    argBlock.adjustWidthToLabel();
+    argBlock.oneArgMathBlock();
+    argBlock.defaults.push(1);
+    argBlock.dockTypes[0] = 'anyout';
+    argBlock.dockTypes[1] = 'numberin';
+
+    var namedArgBlock = new ProtoBlock('namedarg');
+    namedArgBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['namedarg'] = namedArgBlock;
+    namedArgBlock.staticLabels.push('arg ' + 1);
+    namedArgBlock.adjustWidthToLabel();
+    namedArgBlock.parameterBlock();
 
     // Heap palette
     var pushBlk = new ProtoBlock('push');
@@ -656,7 +754,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     stopVideoCamBlock.staticLabels.push(_('stop media'));
     stopVideoCamBlock.adjustWidthToLabel();
     stopVideoCamBlock.zeroArgBlock();
-    
+
     var toneBlock = new ProtoBlock('tone');
     toneBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['tone'] = toneBlock;
@@ -667,7 +765,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     toneBlock.twoArgBlock();
     toneBlock.dockTypes[1] = 'numberin';
     toneBlock.dockTypes[2] = 'numberin';
-    
+
     var toFrequencyBlock = new ProtoBlock('tofrequency');
     toFrequencyBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['tofrequency'] = toFrequencyBlock;
@@ -956,26 +1054,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     audioStopBlock.staticLabels.push(_('stop play'));
     audioStopBlock.adjustWidthToLabel();
     audioStopBlock.zeroArgBlock();
-
-    var listenBlock = new ProtoBlock('listen');
-    listenBlock.palette = palettes.dict['actions'];
-    blocks.protoBlockDict['listen'] = listenBlock;
-    listenBlock.staticLabels.push(_('on'), _('event'), _('do'));
-    listenBlock.adjustWidthToLabel();
-    listenBlock.twoArgBlock();
-    listenBlock.defaults.push(_('event'));
-    listenBlock.defaults.push(_('action'));
-    listenBlock.dockTypes[1] = 'textin';
-    listenBlock.dockTypes[2] = 'textin';
-
-    var dispatchBlock = new ProtoBlock('dispatch');
-    dispatchBlock.palette = palettes.dict['actions'];
-    blocks.protoBlockDict['dispatch'] = dispatchBlock;
-    dispatchBlock.staticLabels.push(_('broadcast'));
-    dispatchBlock.adjustWidthToLabel();
-    dispatchBlock.oneArgBlock();
-    dispatchBlock.defaults.push(_('event'));
-    dispatchBlock.dockTypes[1] = 'textin';
 
     // Turtle-specific click event
     var myClickBlock = new ProtoBlock('myclick');

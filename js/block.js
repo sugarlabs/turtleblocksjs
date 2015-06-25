@@ -491,7 +491,7 @@ function Block(protoblock, blocks, overrideName) {
             var postProcess = function(myBlock) {
                 loadCollapsibleEventHandlers(myBlock);
                 myBlock.loadComplete = true;
-                    
+
                 if (myBlock.postProcess != null) {
                     myBlock.postProcess(myBlock.postProcessArg);
                     myBlock.postProcess = null;

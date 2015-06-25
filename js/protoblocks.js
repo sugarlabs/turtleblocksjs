@@ -313,7 +313,7 @@ function ProtoBlock(name) {
 	return [artwork, svg.docks];
     }
 
-    // 
+    //
     this.threeArgMathBlock = function() {
         this.expandable = true;
         this.style = 'arg';
@@ -523,7 +523,7 @@ function ProtoBlock(name) {
             svg.setFontSize(this.fontsize);
         }
         var artwork = svg.argClamp();
-	return [artwork, svg.docks];
+    return [artwork, svg.docks];
     }
 
     // E.g., calculate with args: innies instead of interior slots.

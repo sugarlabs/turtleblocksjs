@@ -519,6 +519,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     calcBlock.adjustWidthToLabel();
     calcBlock.oneArgMathBlock();
     calcBlock.defaults.push(_('action'));
+    calcBlock.dockTypes[0] = 'anyout';
     calcBlock.dockTypes[1] = 'anyin';
 
     var listenBlock = new ProtoBlock('listen');
@@ -555,6 +556,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     namedCalcArgBlock.staticLabels.push(_('calculate'));
     namedCalcArgBlock.adjustWidthToLabel();
     namedCalcArgBlock.argClampMathBlock();
+    namedCalcArgBlock.dockTypes[0] = 'anyout';
     namedCalcArgBlock.dockTypes[1] = 'anyin';
 
     var doArgBlock = new ProtoBlock('doArg');
@@ -574,6 +576,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     calcArgBlock.adjustWidthToLabel();
     calcArgBlock.argClampOneArgMathBlock();
     calcArgBlock.defaults.push(_('action'));
+    calcArgBlock.dockTypes[0] = 'anyout';
     calcArgBlock.dockTypes[1] = 'anyin';
     calcArgBlock.dockTypes[2] = 'anyin';
 

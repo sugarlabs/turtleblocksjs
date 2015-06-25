@@ -851,7 +851,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 break;
             case 'return':
                 if (args.length == 1) {
-                    logo.returns.push(Number(args[0]));
+                    logo.returns.push(args[0]);
                 }
                 break;
             case 'forward':

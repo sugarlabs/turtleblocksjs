@@ -1459,6 +1459,17 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                         logo.stopTurtle = true;
                     }
                     break;
+                case 'namedcalc':
+                    var name = logo.blocks.blockList[blk].privateData;
+                    var action_args = [];
+                    if (name in logo.actions) {
+                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args)
+                            logo.blocks.blockList[blk].value = logo.returns.shift();
+                    } else {
+                        logo.errorMsg(NOACTIONERRORMSG, blk, name);
+                        logo.stopTurtle = true;
+                    }
+                    break;
                 case 'arg':
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var name = logo.parseArg(logo, turtle, cblk, blk, receivedArg);

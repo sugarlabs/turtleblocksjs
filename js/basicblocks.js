@@ -522,6 +522,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     calcBlock.dockTypes[0] = 'anyout';
     calcBlock.dockTypes[1] = 'anyin';
 
+    var namedCalcBlock = new ProtoBlock('namedcalc');
+    namedCalcBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['namedcalc'] = namedCalcBlock;
+    namedCalcBlock.staticLabels.push(_('action'));
+    namedCalcBlock.extraWidth = 10;
+    namedCalcBlock.adjustWidthToLabel();
+    namedCalcBlock.parameterBlock();
+
     var listenBlock = new ProtoBlock('listen');
     listenBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['listen'] = listenBlock;

@@ -483,7 +483,7 @@ function PaletteModel(palette, palettes, name) {
                         label = blkname;
                     }
             }
-            if (['do', 'nameddo', 'namedbox', 'namedcalc'].indexOf(protoBlock.name) != -1
+            if (['do', 'nameddo', 'namedbox', 'namedcalc', 'doArg', 'calcArg', 'nameddoArg', 'namedcalcArg'].indexOf(protoBlock.name) != -1
              && label.length > 8) {
                 label = label.substr(0, 7) + '...';
             }
@@ -507,7 +507,6 @@ function PaletteModel(palette, palettes, name) {
                     var docks = svg.docks;
                     break;
                 case 'nameddo':
-                case 'namedcalc':
                     // so the label will fit
                     var svg = new SVG();
                     svg.init();

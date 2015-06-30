@@ -1736,6 +1736,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         // Update the palette
+        console.log('updating the palette in renameNameddos');
         var blockPalette = this.palettes.dict['actions'];
         var nameChanged = false;
         for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
@@ -1748,7 +1749,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         // Force an update if the name has changed.
         if (nameChanged) {
-            regeneratePalette(blockPalette);
+            regeneratePalette(this.palettes.dict['actions']);
         }
     }
 
@@ -1811,7 +1812,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.removeNamedoEntries = function(name) {
         // Delete any old palette entries.
-        console.log('removing old palette entries for ' + name);
+        console.log('DELETE: removing old palette entries for ' + name);
         if (this.protoBlockDict['myDo_' + name]) {
             console.log('deleting myDo_' + name + ' ' + this.protoBlockDict['myDo_' + name].name);
             this.protoBlockDict['myDo_' + name].hide = true;
@@ -1835,7 +1836,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Depending upon the form of the associated action block, we
         // want to add a named do, a named calc, a named do w/args, or
         // a named calc w/args.
-        console.log(name + ' ' + hasReturn + ' ' + hasArgs);
+        console.log('NEW DO: ' + name + ' ' + hasReturn + ' ' + hasArgs);
 
         if (name == _('action')) {
             // 'action' already has its associated palette entries.
@@ -1848,9 +1849,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             this.newNameddoArgBlock(name);
         } else if (hasReturn && !hasArgs) {
             this.newNamedcalcBlock(name);
-        } else {
-            console.log(this.protoBlockDict['myDo_' + name]);
-
+        } else if (this.protoBlockDict['myDo_' + name] == undefined) {
+            console.log('creating myDo_' + name);
             var myDoBlock = new ProtoBlock('nameddo');
             this.protoBlockDict['myDo_' + name] = myDoBlock;
             myDoBlock.palette = this.palettes.dict['actions'];
@@ -1858,40 +1858,55 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myDoBlock.staticLabels.push(name);
             myDoBlock.zeroArgBlock();
             myDoBlock.palette.add(myDoBlock);
+        } else {
+            console.log('myDo_' + name + ' already exists.');
         }
+        // regeneratePalette(this.palettes.dict['actions']);
     }
 
     this.newNamedcalcBlock = function(name) {
-        console.log(this.protoBlockDict['myCalc_' + name]);
-        var myCalcBlock = new ProtoBlock('namedcalc');
-        this.protoBlockDict['myCalc_' + name] = myCalcBlock;
-        myCalcBlock.palette = this.palettes.dict['actions'];
-        myCalcBlock.defaults.push(name);
-        myCalcBlock.staticLabels.push(name);
-        myCalcBlock.zeroArgBlock();
-        myCalcBlock.palette.add(myCalcBlock);
+        if (this.protoBlockDict['myCalc_' + name] == undefined) {
+            console.log('creating myCalc_' + name);
+            var myCalcBlock = new ProtoBlock('namedcalc');
+            this.protoBlockDict['myCalc_' + name] = myCalcBlock;
+            myCalcBlock.palette = this.palettes.dict['actions'];
+            myCalcBlock.defaults.push(name);
+            myCalcBlock.staticLabels.push(name);
+            myCalcBlock.zeroArgBlock();
+            myCalcBlock.palette.add(myCalcBlock);
+        } else {
+            console.log('myCalc_' + name + ' already exists.');
+        }
     }
 
     this.newNameddoArgBlock = function(name) {
-        console.log(this.protoBlockDict['myDoArg_' + name]);
-        var myDoArgBlock = new ProtoBlock('nameddoArg');
-        this.protoBlockDict['myDoArg_' + name] = myDoArgBlock;
-        myDoArgBlock.palette = this.palettes.dict['actions'];
-        myDoArgBlock.defaults.push(name);
-        myDoArgBlock.staticLabels.push(name);
-        myDoArgBlock.zeroArgBlock();
-        myDoArgBlock.palette.add(myDoArgBlock);
+        if (this.protoBlockDict['myDoArg_' + name] == undefined) {
+            console.log('creating myDoArg_' + name);
+            var myDoArgBlock = new ProtoBlock('nameddoArg');
+            this.protoBlockDict['myDoArg_' + name] = myDoArgBlock;
+            myDoArgBlock.palette = this.palettes.dict['actions'];
+            myDoArgBlock.defaults.push(name);
+            myDoArgBlock.staticLabels.push(name);
+            myDoArgBlock.zeroArgBlock();
+            myDoArgBlock.palette.add(myDoArgBlock);
+        } else {
+            console.log('myDoArg_' + name + ' already exists.');
+        }
     }
 
     this.newNamedcalcArgBlock = function(name) {
-        console.log(this.protoBlockDict['myCalcArg_' + name]);
-        var myCalcArgBlock = new ProtoBlock('namedcalcArg');
-        this.protoBlockDict['myCalcArg_' + name] = myCalcArgBlock;
-        myCalcArgBlock.palette = this.palettes.dict['actions'];
-        myCalcArgBlock.defaults.push(name);
-        myCalcArgBlock.staticLabels.push(name);
-        myCalcArgBlock.zeroArgBlock();
-        myCalcArgBlock.palette.add(myCalcArgBlock);
+        if (this.protoBlockDict['myCalcArg_' + name] == undefined) {
+            console.log('creating myCalcArg_' + name);
+            var myCalcArgBlock = new ProtoBlock('namedcalcArg');
+            this.protoBlockDict['myCalcArg_' + name] = myCalcArgBlock;
+            myCalcArgBlock.palette = this.palettes.dict['actions'];
+            myCalcArgBlock.defaults.push(name);
+            myCalcArgBlock.staticLabels.push(name);
+            myCalcArgBlock.zeroArgBlock();
+            myCalcArgBlock.palette.add(myCalcArgBlock);
+        } else {
+            console.log('myCalcArg_' + name + ' already exists.');
+        }
     }
 
     this.newActionBlock = function(name) {

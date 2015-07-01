@@ -1108,11 +1108,11 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 }
                 break;
             case 'tone':
-                if (typeof(this.turtleOscs[turtle]) == "undefined") {
-                    this.turtleOscs[turtle] = new p5.TriOsc();
+                if (typeof(logo.turtleOscs[turtle]) == "undefined") {
+                    logo.turtleOscs[turtle] = new p5.TriOsc();
                 }
 
-                osc = this.turtleOscs[turtle];
+                osc = logo.turtleOscs[turtle];
                 osc.stop();
                 osc.start();
                 osc.amp(0);
@@ -1126,20 +1126,20 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
 
                 break;
             case 'showHeap':
-                if (!(turtle in turtleHeaps)) {
-                    turtleHeaps[turtle] = [];
+                if (!(turtle in logo.turtleHeaps)) {
+                    logo.turtleHeaps[turtle] = [];
                 }
-                logo.textMsg(JSON.stringify(turtleHeaps[turtle]));
+                logo.textMsg(JSON.stringify(logo.turtleHeaps[turtle]));
                 break;
             case 'emptyHeap':
-                turtleHeaps[turtle] = [];
+                logo.turtleHeaps[turtle] = [];
                 break;
             case 'push':
                 if (args.length == 1) {
-                    if (!(turtle in turtleHeaps)) {
-                        turtleHeaps[turtle] = [];
+                    if (!(turtle in logo.turtleHeaps)) {
+                        logo.turtleHeaps[turtle] = [];
                     }
-                    turtleHeaps[turtle].push(args[0]);
+                    logo.turtleHeaps[turtle].push(args[0]);
                 }
                 break;
             case 'saveHeap':
@@ -1151,33 +1151,31 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     download.click();
                     document.body.removeChild(download);
                 }
-                if (args[0] && turtle in turtleHeaps) {
-                     downloadFile(args[0], 'text/json', JSON.stringify(turtleHeaps[turtle]));
+                if (args[0] && turtle in logo.turtleHeaps) {
+                     downloadFile(args[0], 'text/json', JSON.stringify(logo.turtleHeaps[turtle]));
                 }
                 break;
             case 'loadHeap':
                 var block = logo.blocks.blockList[blk];
-                if (turtle in turtleHeaps) {
-                    var oldHeap = turtleHeaps[turtle];
+                if (turtle in logo.turtleHeaps) {
+                    var oldHeap = logo.turtleHeaps[turtle];
                 } else {
                     var oldHeap = [];
                 }
-                if (blocks.blockList[conns[1]].name == 'loadFile') {
-                    if (!args[0]) {
+                var c = block.connections[1];
+                if (c != null && blocks.blockList[c].name == 'loadFile') {
+                    if (args.length != 1) {
                         logo.errorMsg(_('You need to select a file.'));
                     } else {
-                        if (args.length != 2) {
-                            logo.errorMsg(_('You need to select a file.'));
-                        } else {
-                            try {
-                                turtleHeaps[turtle] = JSON.parse(args[1]);
-                                if (!Array.isArray(turtleHeaps[turtle])) {
-                                    throw 'is not array';
-                                }
-                            } catch (e) {
-                                turtleHeaps[turtle] = oldHeap;
-                                logo.errorMsg(_('The file you selected does not contain a valid heap.'));
+                        try { 
+                            console.log(blocks.blockList[c].value);
+                            logo.turtleHeaps[turtle] = JSON.parse(blocks.blockList[c].value[1]);
+                            if (!Array.isArray(logo.turtleHeaps[turtle])) {
+                                throw 'is not array';
                             }
+                        } catch (e) {
+                            logo.turtleHeaps[turtle] = oldHeap;
+                            logo.errorMsg(_('The file you selected does not contain a valid heap.'));
                         }
                     }
                 } else {
@@ -1186,18 +1184,18 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 break;
             case 'setHeapEntry':
                 if (args.length == 2) {
-                    if (!(turtle in turtleHeaps)) {
-                        turtleHeaps[turtle] = [];
+                    if (!(turtle in logo.turtleHeaps)) {
+                        logo.turtleHeaps[turtle] = [];
                     }
                     var idx = Math.floor(args[0]);
                     if (idx < 1) {
                         logo.errorMsg(_('Index must be > 0.'))
                     }
                     // If index > heap length, grow the heap.
-                    while (turtleHeaps[turtle].length < idx) {
-                        turtleHeaps[turtle].push(null);
+                    while (logo.turtleHeaps[turtle].length < idx) {
+                        logo.turtleHeaps[turtle].push(null);
                     }
-                    turtleHeaps[turtle][idx - 1] = args[1];
+                    logo.turtleHeaps[turtle][idx - 1] = args[1];
                 }
                 break;
             default:
@@ -1741,8 +1739,8 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     break;
                 case 'pop':
                     var block = logo.blocks.blockList[blk];
-                    if (turtle in turtleHeaps && turtleHeaps[turtle].length > 0) {
-                        block.value = turtleHeaps[turtle].pop();
+                    if (turtle in logo.turtleHeaps && logo.turtleHeaps[turtle].length > 0) {
+                        block.value = logo.turtleHeaps[turtle].pop();
                     } else {
                         logo.errorMsg(_('empty heap'));
                         block.value = null;
@@ -1752,27 +1750,27 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     var block = logo.blocks.blockList[blk];
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var a = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
-                    if (!(turtle in turtleHeaps)) {
-                        turtleHeaps[turtle] = [];
+                    if (!(turtle in logo.turtleHeaps)) {
+                        logo.turtleHeaps[turtle] = [];
                     }
                     // If index > heap length, grow the heap.
-                    while (turtleHeaps[turtle].length < a) {
-                        turtleHeaps[turtle].push(null);
+                    while (logo.turtleHeaps[turtle].length < a) {
+                        logo.turtleHeaps[turtle].push(null);
                     }
-                    block.value = turtleHeaps[turtle][a - 1];
+                    block.value = logo.turtleHeaps[turtle][a - 1];
                     break;
                 case 'heapLength':
                     var block = logo.blocks.blockList[blk];
-                    if (!(turtle in turtleHeaps)) {
-                        turtleHeaps[turtle] = [];
+                    if (!(turtle in logo.turtleHeaps)) {
+                        logo.turtleHeaps[turtle] = [];
                     }
-                    console.log(turtleHeaps[turtle].length);
-                    block.value = turtleHeaps[turtle].length;
+                    console.log(logo.turtleHeaps[turtle].length);
+                    block.value = logo.turtleHeaps[turtle].length;
                     break;
                 case 'heapEmpty':
                     var block = logo.blocks.blockList[blk];
-                    if (turtle in turtleHeaps) {
-                        block.value = (turtleHeaps[turtle].length == 0);
+                    if (turtle in logo.turtleHeaps) {
+                        block.value = (logo.turtleHeaps[turtle].length == 0);
                     } else {
                         block.value = true;
                     }

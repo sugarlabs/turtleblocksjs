@@ -1729,7 +1729,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         label = label.substr(0, 7) + '...';
                     }
                     this.blockList[blk].overrideName = label;
-                    console.log('regenerating artwork for ' + label);
+                    console.log('regenerating artwork for ' + this.blockList[blk].name + ' block[' + blk + ']: ' + oldName + ' -> ' + label);
                     this.blockList[blk].regenerateArtwork();
                 }
             }
@@ -1737,10 +1737,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // Update the palette
         console.log('updating the palette in renameNameddos');
-        var blockPalette = this.palettes.dict['actions'];
+        var actionsPalette = this.palettes.dict['actions'];
         var nameChanged = false;
-        for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
-            var block = blockPalette.protoList[blockId];
+        for (var blockId = 0; blockId < actionsPalette.protoList.length; blockId++) {
+            var block = actionsPalette.protoList[blockId];
             if (['nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(block.name) != -1 && block.defaults[0] != _('action') && block.defaults[0] == oldName) {
                 console.log('renaming ' + block.name + ': ' + block.defaults[0] + ' to ' + newName);
                 block.defaults[0] = newName;
@@ -1749,7 +1749,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         // Force an update if the name has changed.
         if (nameChanged) {
-            regeneratePalette(this.palettes.dict['actions']);
+            console.log('regenerating actions palette');
+            regeneratePalette(actionsPalette);
         }
     }
 
@@ -1861,7 +1862,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         } else {
             console.log('myDo_' + name + ' already exists.');
         }
-        // regeneratePalette(this.palettes.dict['actions']);
     }
 
     this.newNamedcalcBlock = function(name) {
@@ -2834,7 +2834,7 @@ function sendStackToTrash(blocks, myBlock) {
 
             var blockPalette = blocks.palettes.dict['actions'];
             var blockRemoved = false;
-            console.log('---------->');
+
             for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
                 var block = blockPalette.protoList[blockId];
                 if (['nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(block.name) != -1 && block.privateData != _('action')) {

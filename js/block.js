@@ -1466,8 +1466,13 @@ function labelChanged(myBlock) {
                 // Rename both do <- name and nameddo blocks.
                 console.log('renameDos and...');
                 myBlock.blocks.renameDos(oldValue, newValue);
-                console.log('renameNameddos.');
-                myBlock.blocks.renameNameddos(oldValue, newValue);
+                if (oldValue == _('action')) {
+                    console.log('newNameddoBlock.');
+                    myBlock.blocks.newNameddoBlock(newValue, myBlock.blocks.actionHasReturn(c), myBlock.blocks.actionHasArgs(c));
+                } else {
+                    console.log('renameNameddos.');
+                    myBlock.blocks.renameNameddos(oldValue, newValue);
+                }
                 myBlock.blocks.palettes.updatePalettes('actions');
                 break;
             case 'storein':

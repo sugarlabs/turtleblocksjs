@@ -2,11 +2,10 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-msgid ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-07 00:30-0500\n"
-"PO-Revision-Date: 2014-02-21 19:52+0200\n"
+"PO-Revision-Date: 2015-07-03 19:52+0200\n"
 "Last-Translator: EdgarQuispeChambi <quispedgar@yahoo.es>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ayc\n"
@@ -17,15 +16,12 @@ msgid ""
 "X-Generator: ini-to-pot script\n"
 
 
-msgid ""
-msgstr ""
-
 #. TRANS: Borrar todo
 msgid "Delete all"
-msgstr ""
+msgstr "Qawayata apsuña"
 
 msgid "show"
-msgstr "uñachayaña"
+msgstr "Jañurt’äwi"
 
 msgid "text"
 msgstr "qillqata"
@@ -35,44 +31,44 @@ msgstr "maski kawkïrsa"
 
 #. TRANS: confirmar
 msgid "confirm"
-msgstr ""
+msgstr "yatiyaña"
 
 msgid "rice and beans"
-msgstr ""
+msgstr "arroz ukata frijoles juyranaka"
 
 #. TRANS: mashape webservices (probably no need to translate)
 msgid "mashape"
-msgstr "mashape"
+msgstr "mashape wakichata"
 
 #. TRANS: destino
 msgid "target"
-msgstr ""
+msgstr "purïwi"
 
 msgid "keyboard"
 msgstr "qillqañana thaqaña"
 
 #. TRANS: También puede cargar proyectos desde el sistema de archivos.
-msgid "You can also load projects from the file system."
-msgstr ""
+msgid ""
+msgstr "Wakichatanaka taypita amtäwinaka qhantayarakismawa"
 
 #. TRANS: as in "on event do"
 msgid "on"
-msgstr ""
+msgstr "on qhantayaña"
 
 #. TRANS: pollo
 msgid "chicken"
-msgstr ""
+msgstr "chhiwchhi"
 
 #. TRANS: manzana
 msgid "apple"
-msgstr ""
+msgstr "manzana puquta"
 
 msgid "number"
-msgstr "jakhunaka"
+msgstr "jakhu"
 
 #. TRANS: unique ID
 msgid "UID"
-msgstr ""
+msgstr "UID wakichata"
 
 #. TRANS: name of project
 msgid "title"
@@ -80,34 +76,34 @@ msgstr "p'iqinchiri suti"
 
 #. TRANS: radianes
 msgid "radians"
-msgstr ""
+msgstr "radianes wakichata"
 
 #. TRANS: Deshacer
 msgid "Undo"
-msgstr ""
+msgstr "Kutjayaña"
 
 #. TRANS: ms is micro seconds
 msgid "duration (ms)"
-msgstr ""
+msgstr "sara pacha"
 
 #. TRANS: para
 msgid "to"
-msgstr ""
+msgstr "ukataki"
 
 #. TRANS: sumar
 msgid "add"
-msgstr ""
+msgstr "jakhuxataña"
 
 msgid "set pen size"
 msgstr "taña chanichaña"
 
 #. TRANS: iniciar tortuga
 msgid "start turtle"
-msgstr ""
+msgstr "tortuga wakichata qalltaña"
 
 #. TRANS: latitud
 msgid "latitude"
-msgstr ""
+msgstr "ampsta"
 
 msgid "mouse x"
 msgstr "x chimpuni thaqnaqiri lliphi qhana"
@@ -117,39 +113,39 @@ msgstr "y chimpuni thaqnaqiri lliphi qhana"
 
 #. TRANS: Mostrar o ocultar los bloques.
 msgid "Show/hide blocks"
-msgstr ""
+msgstr "wakichata siqinaka uñstayaña imantaña"
 
 msgid "then"
 msgstr "ukhamaxa"
 
 #. TRANS: mover
 msgid "move"
-msgstr ""
+msgstr "unxtayaña"
 
 #. TRANS: Detener el proyecto actual
 msgid "Stop the current project."
-msgstr ""
+msgstr "Jichha wakichata sayt'ayaña"
 
 #. TRANS: detener tortuga
 msgid "stop turtle"
-msgstr ""
+msgstr "tortuga wakichata sayt'ayaña"
 
 #. TRANS: alimentos
 msgid "food"
-msgstr ""
+msgstr "juyranaka"
 
 #. TRANS: Haz click para ejecutar el proyecto en modo lento.
 msgid "Click to run the project in slow mode."
-msgstr ""
+msgstr "Clikc limt'ma wakichata k'achata uñjañataki"
 
 msgid "stop"
 msgstr "sayt'ayaña"
 
 msgid "fat"
-msgstr ""
+msgstr "ch'islli"
 
 msgid "Expand or collapse start and action stacks."
-msgstr ""
+msgstr "siqinaka wakichaña qallta jithitatayaña jiththapiyaña"
 
 #. TRANS: pop a value off of the heap.
 msgid "pop"
@@ -164,77 +160,77 @@ msgstr "janiwa"
 
 #. TRANS: Mapa de Google
 msgid "Google map"
-msgstr ""
+msgstr "Google pacha rixipa wakichata"
 
 #. TRANS: día
 msgid "day"
-msgstr ""
+msgstr "uru"
 
 #. TRANS: mathematical modular (remainder) function.
 msgid "mod"
-msgstr ""
+msgstr "uñanaqa"
 
 #. TRANS: Guardar proyecto
 msgid "Save project"
-msgstr ""
+msgstr "Wakichata imaña"
 
 msgid "get fiber"
-msgstr ""
+msgstr "llika wakichata katuña"
 
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr ""
+msgstr "Tortuga wakichata siqinaka wakichañataki wakisiri wakichaña qhantayma"
 
 #. TRANS: nombre
 msgid "name"
-msgstr ""
+msgstr "suti"
 
 #. TRANS: tortuga x
 msgid "turtle x"
-msgstr ""
+msgstr "tortuga X wakichata"
 
 #. TRANS: tortuga y
 msgid "turtle y"
-msgstr ""
+msgstr "tortuga Y wakichata"
 
 #. TRANS: Descargar
 msgid "Download"
-msgstr ""
+msgstr "Apaqaña"
 
 #. TRANS: "El botón de pegar está activo, por lo tanto hay bloques copiados en el portapapeles."
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
-msgstr ""
+msgstr "Lip'katayañataki wakichata qhantatawa, ukata wakichatanaka siqinaka apaqata utjiwa"
 
 #. TRANS: Expandir o colapsar barra
 msgid "Expand/collapse toolbar"
-msgstr ""
+msgstr "wakichatanaka apanaqaña jithitatayaña chhaqtayaña"
 
 #. TRANS: zoom
 msgid "zoom"
-msgstr ""
+msgstr "jach'aptayaña"
 
 #. TRANS: Ocultar o mostrar los bloques y las paletas.
 msgid "Hide or show the blocks and the palettes."
-msgstr ""
+msgstr "wakichaña siqinaka chhaqtayaña uñachayaña"
 
 msgid "to degrees"
-msgstr ""
+msgstr "jukha chaniru"
 
 #. TRANS: Restaurar bloques de la papelera
 msgid "Restore blocks from the trash."
-msgstr ""
+msgstr "apsuta wakichata siqinaka jaktayaña"
 
 msgid "get calories"
-msgstr ""
+msgstr "ch'amanchirinaka katuña"
 
 #. TRANS: Cargar plugin desde archivo
 msgid "Load plugin from file"
-msgstr ""
+msgstr "plugin wakichata qhantayaña"
 
 msgid "You can scroll the blocks on the canvas."
-msgstr ""
+msgstr "lienzo wakichataru siqinaka apanukuña"
 
 msgid "x"
-msgstr "x wakichata"
+msgstr "X wakichata"
 
 msgid "show blocks"
 msgstr "siqichata wakichatana uñachayaña"
@@ -244,7 +240,7 @@ msgstr "saraña chimpu"
 
 #. TRANS: Ayuda
 msgid "Help"
-msgstr ""
+msgstr "Yanapa"
 
 msgid "turtle"
 msgstr "tortuga wakichata"
@@ -254,28 +250,28 @@ msgstr "kupi"
 
 #. TRANS: Cargar ejemplos desde el servidor
 msgid "Load samples from server"
-msgstr ""
+msgstr "wakichata apanaqañata yant'äwinaka qhantayaña"
 
 msgid "hide blocks"
 msgstr "siqichata wakichatanaka imantaña"
 
 #. TRANS: Ocultar o mostrar las paletas de bloques.
 msgid "Hide or show the block palettes."
-msgstr ""
+msgstr "siqinaka wakichaña imantaña unstayaña"
 
 #. TRANS: Este botón abre la pantalla de carga de proyectos de ejemplo.
 msgid "This button opens a viewer for loading example projects."
-msgstr ""
+msgstr "akïri limt'añaxa yant'aña wakichatanaka qhantayañatakiwa"
 
 msgid "Enable scrolling"
-msgstr ""
+msgstr "apanaqaña wakichata qhantayaña"
 
 msgid "back"
 msgstr "qhipäxa"
 
 #. TRANS: Publicar
 msgid "Publish"
-msgstr ""
+msgstr "wakichata uñachayaña"
 
 msgid "grey"
 msgstr "uqiru samiri"
@@ -288,11 +284,11 @@ msgstr "muruq'u taypi muyuri"
 
 #. TRANS: longitud
 msgid "longitude"
-msgstr ""
+msgstr "sara taña"
 
 #. TRANS: duración
 msgid "duration"
-msgstr ""
+msgstr "pacha chimpu"
 
 #. TRANS: shade refers to value (dark to light)
 msgid "set shade"
@@ -300,22 +296,22 @@ msgstr "ist'añataki wakichata wakichaña"
 
 #. TRANS: in mathematical sense (inverse of period)
 msgid "frequency"
-msgstr ""
+msgstr "Sapa kuti qhantayäwi"
 
 #. TRANS: as in the event that a signal arrives
 msgid "event"
-msgstr ""
+msgstr "luräwi"
 
 msgid "pixel color"
 msgstr "pixel wakichata ullaña"
 
 #. TRANS: cómeme
 msgid "eatme"
-msgstr ""
+msgstr "manq´antati"
 
 #. TRANS: Este botón abre y cierra la barra de herramientas principal.
 msgid "This button opens and closes the primary toolbar."
-msgstr ""
+msgstr "Aka limt’añaxa wakichatanaka wakisiri apanaqañanaka qhantayi jiwayi"
 
 #. TRANS: index specifies a position into an array (heap)
 msgid "index"
@@ -330,106 +326,106 @@ msgstr "siqi wakichata uñachayma"
 
 #. TRANS: Mostrar u ocultar cuadrícula en coordenadas cartesianas.
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr ""
+msgstr "coordenadas cartesianas wakichata siqinaka uñstayaña chhaqatayaña"
 
 #. TRANS: vertical space
 msgid "vspace"
-msgstr ""
+msgstr "sayt’u wakichaña"
 
 #. TRANS: publish project to Facebook
 msgid "publish"
-msgstr ""
+msgstr "Facebook taypita yatiyaña"
 
 #. TRANS: pronóstico
 msgid "forecast"
-msgstr ""
+msgstr "watiqaña"
 
 #. TRANS: hours ago that the data was updated.
 msgid "hours ago"
-msgstr ""
+msgstr "nikht’a pacha"
 
 msgid "pen"
 msgstr "phuyu"
 
 msgid "fish"
-msgstr ""
+msgstr "chawlla"
 
 msgid "print"
 msgstr "wakichata laphiru apsuña"
 
 #. TRANS: how many entries are in the heap?
 msgid "heap length"
-msgstr ""
+msgstr "phina taña"
 
 #. TRANS: 
 msgid "size"
-msgstr "tamaño"
+msgstr "taña"
 
 #. TRANS: Expandir/colapsar la barra de opciones.
 msgid "Expand/collapse option toolbar"
-msgstr ""
+msgstr "wakichatanaka apanaqaña jach’aptayaña/jiwthapiyaña"
 
 msgid "end hollow line"
-msgstr ""
+msgstr "p’iyani rixita tukuyaña"
 
 #. TRANS: latitud de la cuidad
 msgid "city latitude"
-msgstr ""
+msgstr "Marka sayt’u taña "
 
 #. TRANS: dietary fiber
 msgid "fiber"
-msgstr ""
+msgstr "llika"
 
 #. TRANS: Tu puedes cargar nuevos bloques desde un archivo. 
 msgid "You can load new blocks from the file system."
-msgstr ""
+msgstr "Imata wakichatanakata machaqa siqinaka apxatma"
 
 #. TRANS: mathematical power, e.g., 2^4 == 16
 msgid "power"
-msgstr ""
+msgstr "kankaña"
 
 msgid "Settings"
-msgstr ""
+msgstr "Chiqachatanaka"
 
 msgid "one of"
-msgstr ""
+msgstr "Maynïripa"
 
 msgid "Save stack"
-msgstr ""
+msgstr "siqi imaña"
 
 #. TRANS: maíz
 msgid "corn"
-msgstr ""
+msgstr "tunqu"
 
 msgid "Display statistics"
-msgstr ""
+msgstr "Jakhuthapitanaka uñachayaña"
 
 #. TRANS: Eliminar todo el contenido del canvas, incluyendo los bloques.
 msgid "Remove all content on the canvas, including the blocks."
-msgstr ""
+msgstr "carnavas taypina wakichatanakapa qawayata apsuña, siqinakamppacha"
 
 #. TRANS: a radianes
 msgid "to radians"
-msgstr ""
+msgstr "radianes wakichataru"
 
 #. TRANS: agua
 msgid "water"
-msgstr ""
+msgstr "uma"
 
 #. TRANS: mathematical exponential base
 msgid "base"
-msgstr ""
+msgstr "chillpa"
 
 #. TRANS: galleta
 msgid "cookie"
-msgstr ""
+msgstr "khapu t’ant’a"
 
 #. TRANS: Mostrar o ocultar la rejilla de coordenadas polares.
 msgid "Show or hide a polar-coordinate grid."
-msgstr ""
+msgstr "coordenadas polares sayt’unakapa uñachayaña chhaqtayaña"
 
 msgid "sweet potato"
-msgstr ""
+msgstr "kamuti juyra"
 
 #. TRANS: save the heap to a file
 msgid "save heap"
@@ -437,7 +433,7 @@ msgstr "wakichata siqi imaña"
 
 #. TRANS: desde
 msgid "from"
-msgstr ""
+msgstr "ukatpacha"
 
 msgid "sensors"
 msgstr "katjiri"
@@ -447,11 +443,11 @@ msgstr "samichaña phuyu jithiqayaña"
 
 #. TRANS: retrieve the value at a specific entry (index) in the heap
 msgid "index heap"
-msgstr ""
+msgstr "nayrïri qutu"
 
 #. TRANS: obtener nombre
 msgid "get name"
-msgstr ""
+msgstr "suti jakiña"
 
 msgid "wait"
 msgstr "suyt'aña"
@@ -462,15 +458,15 @@ msgstr "kajuna wakichata"
 
 #. TRANS: Planeta
 msgid "Planet"
-msgstr ""
+msgstr "Uraqi"
 
 #. TRANS: Mostrar esos mensajes.
 msgid "Show these messages."
-msgstr ""
+msgstr "Uka qillqatanaka uñachayaña"
 
 #. TRANS: objeto
 msgid "obj"
-msgstr ""
+msgstr "apanaqaña"
 
 #. TRANS: store a value in a box
 msgid "store in"
@@ -478,19 +474,19 @@ msgstr "imaña"
 
 #. TRANS: digerir
 msgid "digest meal"
-msgstr ""
+msgstr "qhatjayaña"
 
 #. TRANS: matemáticas
 msgid "maths"
-msgstr ""
+msgstr "jakhunaka tuqita"
 
 #. TRANS: popout window (ventana emergente)
 msgid "popout"
-msgstr ""
+msgstr "yaqha uñtaña"
 
 #. TRANS: factor de zoom
 msgid "zoom factor"
-msgstr ""
+msgstr "jach’aptayaña wakisiripa"
 
 #. TRANS: the name of a stack of blocks
 msgid "action"
@@ -501,7 +497,7 @@ msgid "loudness"
 msgstr "ist'asiñapa jithxatayaña"
 
 msgid "Increase the size of the blocks."
-msgstr ""
+msgstr "wakichata siqinaka tañapa jach’aptayaña"
 
 #. TRANS: logical "or" operator
 msgid "or"
@@ -509,26 +505,26 @@ msgstr "o wakichata"
 
 #. TRANS: use sensor to detect objects on the left
 msgid "sense left"
-msgstr ""
+msgstr "ch’iqa tuqi"
 
 msgid "comment"
 msgstr "amuyt'aña"
 
 #. TRANS: queso
 msgid "cheese"
-msgstr ""
+msgstr "kisulla"
 
 #. TRANS: Cartesiano
 msgid "Cartesian"
-msgstr ""
+msgstr "Cartesiano wakichata"
 
 #. TRANS: audio (as in musical note)
 msgid "tone"
-msgstr ""
+msgstr "ist’äwi"
 
 #. TRANS: evaluate Javascript code
 msgid "eval"
-msgstr ""
+msgstr "eval wakichata"
 
 msgid "color"
 msgstr "sami"
@@ -538,94 +534,94 @@ msgstr "rixita"
 
 #. TRANS: Bienvenidos a TortuBloques
 msgid "Welcome to Turtle Blocks"
-msgstr ""
+msgstr "Tortuga siqinaka wakichataru suma katuqt’atäwa"
 
 msgid "Increase block size"
-msgstr ""
+msgstr "wakichata siqinaka tañapa yapxataña"
 
 msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
-msgstr ""
+msgstr "Wakichata apanaqañanaka akïri wakichatawa katuxa, uka wakichataru limt’ma ukhamata sami siqinaka wakichata samichañataki qatatisa samichma "
 
 #. TRANS: bitcoin currency (probably no need to translate)
 msgid "bitcoin"
-msgstr "bitcoin"
+msgstr "bitcoin wakichata"
 
 msgid "pen size"
 msgstr "taña wakichata"
 
 #. TRANS: Borrar la pantalla y volver a las tortugas a sus posiciones iniciales.
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr ""
+msgstr "Uñtaña wakichata apsusa Tortuga wakichata qalltaparu kuttayma"
 
 #. TRANS: booleano
 msgid "boolean"
-msgstr ""
+msgstr "booleano wakichata"
 
 #. TRANS: coordenadas
 msgid "coordinates"
-msgstr ""
+msgstr "coordenadas wakichata"
 
 #. TRANS: cantar
 msgid "sing"
-msgstr ""
+msgstr "warurt’aña"
 
 #. TRANS: Felicitaciones
 msgid "Congratulations."
-msgstr ""
+msgstr "Jallalla"
 
 #. TRANS: Ejecutar lentamente
 msgid "Run slow"
-msgstr ""
+msgstr "K’achata qhantayaña"
 
 msgid "mouse button"
 msgstr "limt'aña limxatata"
 
 #. TRANS: cloud as in cloud server
 msgid "cloud"
-msgstr ""
+msgstr "qinaya"
 
 msgid "speak"
 msgstr "arsuña"
 
 #. TRANS: ciudad
 msgid "city"
-msgstr ""
+msgstr "marka"
 
 #. TRANS: obtener carbohidratos
 msgid "get carbs"
-msgstr ""
+msgstr "carbohidratos ch’amanchirinaka katuña"
 
 #. TRANS: Haga clic para ejecutar el proyecto en modo rápido.
 msgid "Click to run the project in fast mode."
-msgstr ""
+msgstr "K’ataki qhantayaña amtäwi wakichata qhantayañataki limt’ma"
 
 msgid "beef"
-msgstr ""
+msgstr "waka aycha"
 
 #. TRANS: origen
 msgid "source"
-msgstr ""
+msgstr "qallta"
 
 #. TRANS: desconocido
 msgid "unknown"
-msgstr ""
+msgstr "jani uñt’ata"
 
 #. TRANS: esperar hasta
 msgid "wait for"
-msgstr ""
+msgstr "ukakama suyt’aña"
 
 msgid "pen up"
 msgstr "samichaña phuyu jithsuyaña"
 
 msgid "Decrease the size of the blocks."
-msgstr ""
+msgstr "wakichata siqinaka tañapa jisk’aptayaña"
 
 msgid "start"
 msgstr "qalltaña"
 
 #. TRANS: stock price
 msgid "stock price"
-msgstr ""
+msgstr "qhatu alapa"
 
 #. TRANS: is the heap empty?
 msgid "heap empty?"
@@ -633,49 +629,49 @@ msgstr "ch'usa siqi?"
 
 #. TRANS: z del acelerómetro
 msgid "motion z"
-msgstr ""
+msgstr "Z unxtäwi"
 
 #. TRANS: baja
 msgid "low"
-msgstr ""
+msgstr "jisk’a"
 
 #. TRANS: x del acelerómetro
 msgid "motion x"
-msgstr ""
+msgstr "X unxtäwi"
 
 #. TRANS: y del acelerómetro
 msgid "motion y"
-msgstr ""
+msgstr "Y unxtäwi"
 
 msgid "forward"
 msgstr "qalltma"
 
 #. TRANS: 360 degrees in a circle
 msgid "degrees"
-msgstr ""
+msgstr "muyta taña chimpu"
 
 #. TRANS: traducir
 msgid "translate"
-msgstr ""
+msgstr "jaqukipaña"
 
 msgid "until"
 msgstr "akakama"
 
 #. TRANS: definir
 msgid "define"
-msgstr ""
+msgstr "amtaña"
 
 #. TRANS: En mu dispositivo
 msgid "On my device"
-msgstr ""
+msgstr "wakichatanaka machaqa imaña"
 
 #. TRANS: save project as simple vector graphic (SVG)
 msgid "save svg"
-msgstr "Sutini imaña SVG"
+msgstr " SVG Sutini imaña"
 
 #. TRANS: mathematical ceiling function, e.g., ceiling(2.5) == 3
 msgid "ceiling"
-msgstr ""
+msgstr "pillu"
 
 #. TRANS: a turtle shell
 msgid "shell"
@@ -683,40 +679,40 @@ msgstr "tortuga uywana lip'ichipa"
 
 #. TRANS: flash (blink) an LED light
 msgid "blink (ms)"
-msgstr ""
+msgstr "lliphiqiña (ms)"
 
 msgid "that"
-msgstr ""
+msgstr "kuna"
 
 #. TRANS: combiar idioma
 msgid "set lang"
-msgstr ""
+msgstr "aru jaqukipaña"
 
 #. TRANS: renombrar tortuga
 msgid "turtle name"
-msgstr ""
+msgstr "Tortuga wakichatampi mayachasiña"
 
 #. TRANS: carbohidratos
 msgid "carbs"
-msgstr ""
+msgstr "carbohidratos ch’amanchirinakata wakichata"
 
 msgid "else"
 msgstr "jani ukaxa"
 
 #. TRANS: as in broadcast a signal
 msgid "broadcast"
-msgstr ""
+msgstr "luqtaña"
 
 #. TRANS: naranja
 msgid "orange"
-msgstr ""
+msgstr "laranja puquta"
 
 msgid "begin hollow line"
-msgstr ""
+msgstr "p’iyani rixita qalltaña"
 
 #. TRANS: the heap is a first-in-last-out (FILO) stack
 msgid "heap"
-msgstr ""
+msgstr "qutu"
 
 #. TRANS: fill refers to filling a shape with a color (e.g., paint bucket).
 msgid "begin fill"
@@ -724,23 +720,23 @@ msgstr "phuqachaña wakichaña qalltaña"
 
 #. TRANS: use sensor to detect objects on the right
 msgid "sense right"
-msgstr ""
+msgstr "chiqapa uñta"
 
 #. TRANS: comer
 msgid "eat"
-msgstr ""
+msgstr "manq’aña"
 
 #. TRANS: Expandir o colapsar los bloques colapsables
 msgid "Expand/collapse collapsable blocks"
-msgstr ""
+msgstr "japhalla wakichata siqinaka jach’aptayaña jani uka chhaqtayaña"
 
 #. TRANS: alta
 msgid "high"
-msgstr ""
+msgstr "jach’a"
 
 #. TRANS: longitude and latitude coordinate data
 msgid "Coordinate data not available."
-msgstr ""
+msgstr "Jani jakiña yatiyäwinaka tuqita aruskipaña"
 
 #. TRANS: hue refers to spectral hue (red, yellow, green, blue...)
 msgid "set hue"
@@ -748,58 +744,58 @@ msgstr "sami wakichaña"
 
 #. TRANS: moneda
 msgid "currency"
-msgstr ""
+msgstr "qullqi"
 
 msgid "this"
-msgstr ""
+msgstr "akïri"
 
 #. TRANS: horizontal space
 msgid "hspace"
-msgstr ""
+msgstr "ampsta sara"
 
 #. TRANS: papa
 msgid "potato"
-msgstr ""
+msgstr "ch’uqi juyra"
 
 #. TRANS: longitud de la cuidad
 msgid "city longitude"
-msgstr ""
+msgstr "marka sayt’u tañapa"
 
 #. TRANS: Haz click para ejecutar el proyecto en modo paso a paso.
 msgid "Click to run the project step by step."
-msgstr ""
+msgstr "sapa mayata mayata amtäwi wakichata qalltañataki limt’aña"
 
 #. TRANS: the value of a variable (stored in a box)
 msgid "value"
 msgstr "chani"
 
 msgid "banana"
-msgstr ""
+msgstr "latanusa puquta"
 
 msgid "wheat bread"
-msgstr ""
+msgstr "tiriwu t’ant’a"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr ""
+msgstr " Bloques de la tortuga es una tortuga de Logo de inspiración que hace dibujos coloridos con complemento juntos bloques de programación visuales "
 
 msgid "while"
 msgstr "ukchiñkama"
 
 #. TRANS: abrir archivo
 msgid "open file"
-msgstr ""
+msgstr "imata wakichata qhantayaña"
 
 #. TRANS: detecar idioma
 msgid "detect lang"
-msgstr ""
+msgstr "aru katjaña"
 
 #. TRANS: pastel
 msgid "cake"
-msgstr ""
+msgstr "llamp’u t’ant’a"
 
 #. TRANS: mathematical exponent
 msgid "exp"
-msgstr ""
+msgstr "exponente chimpu"
 
 #. TRANS: load the heap from a file
 msgid "load heap"
@@ -807,15 +803,15 @@ msgstr "imata wakichata siqi apxataña"
 
 #. TRANS: Abrir
 msgid "Open"
-msgstr ""
+msgstr "Qhantayaña"
 
 #. TRANS: database fetch
 msgid "fetch"
-msgstr ""
+msgstr "apaniña"
 
 #. TRANS: use sensor to detect distance to objects
 msgid "see distance"
-msgstr ""
+msgstr "sara taña uñjaña"
 
 #. TRANS: logical "and" operator
 msgid "and"
@@ -827,53 +823,53 @@ msgstr "uqiru samiri wakichaña"
 
 #. TRANS: hacer
 msgid "do"
-msgstr ""
+msgstr "luraña"
 
 #. TRANS: calorías
 msgid "calories"
-msgstr ""
+msgstr "junt’u manq’anaka"
 
 #. TRANS: Ejecutar paso a paso
 msgid "Run step by step"
-msgstr ""
+msgstr "mayata mayata qhantayaña"
 
 #. TRANS: Mostrar u ocultar paletas
 msgid "Show/hide palettes"
-msgstr ""
+msgstr "wakichaña apanaqañanaka uñachayaña jani ukaxa chhaqtayaña"
 
 msgid "set heading"
 msgstr "sarayaña chimpuña"
 
 #. TRANS: sumar 1 a
 msgid "add 1 to"
-msgstr ""
+msgstr "1 jakhuta jakhuña"
 
 #. TRANS: detener
 msgid "stop play"
-msgstr ""
+msgstr "sayt’ayaña"
 
 #. TRANS: proteína
 msgid "protein"
-msgstr ""
+msgstr "ch’amanchiri juyra"
 
 #. TRANS: reproducir
 msgid "play back"
-msgstr ""
+msgstr "qhantayaña"
 
 msgid "if"
 msgstr "jïsa"
 
 msgid "Save your project to a server."
-msgstr ""
+msgstr "Wakichatanaka apanaqaña taypiru amtäwima imma"
 
 msgid "Decrease block size"
-msgstr ""
+msgstr "Wakichata siqi taña jisk’aptayma"
 
 msgid "angle"
 msgstr "k'uchu"
 
 msgid "get fat"
-msgstr ""
+msgstr "lik’intaña"
 
 #. TRANS: minimum
 msgid "min"
@@ -884,7 +880,7 @@ msgstr "wakisirinaka"
 
 #. TRANS: Detener
 msgid "Stop"
-msgstr ""
+msgstr "Sayt’ayaña"
 
 #. TRANS: square root
 msgid "sqrt"
@@ -892,19 +888,19 @@ msgstr "raíz cuadrada wakichata"
 
 #. TRANS: as in button click
 msgid "click"
-msgstr ""
+msgstr "click limt’aña"
 
 #. TRANS: nota
 msgid "note"
-msgstr ""
+msgstr "qhananchäwi"
 
 #. TRANS: field of interest in a database, e.g., temperature in a weather database
 msgid "field"
-msgstr ""
+msgstr "apanaqäwi"
 
 #. TRANS: Botones de paleta
 msgid "Palette buttons"
-msgstr ""
+msgstr "wakichatanaka apanaqaña limt’añanaka"
 
 msgid "set xy"
 msgstr "xy wakichata chimpuña"
@@ -913,23 +909,23 @@ msgid "end fill"
 msgstr "samichasa phuqachaña tukuyaña"
 
 msgid "Copy"
-msgstr ""
+msgstr "Apaqata"
 
 #. TRANS: Pegar
 msgid "Paste"
-msgstr ""
+msgstr "Apxataña"
 
 #. TRANS: Borrar
 msgid "Delete"
-msgstr ""
+msgstr "Apsuña"
 
 #. TRANS: Mexican tamale
 msgid "tamale"
-msgstr ""
+msgstr "tamal manq’a"
 
 #. TRANS: En todo el mundo
 msgid "Worldwide"
-msgstr ""
+msgstr "Aka pachana"
 
 msgid "repeat"
 msgstr "kutxataña"
@@ -938,10 +934,10 @@ msgid "blocks"
 msgstr "t'aqanaka"
 
 msgid "Display statistics about your Turtle project."
-msgstr ""
+msgstr "Tortuga amtäwi wakichatama jakhuthapinakapa uñachayaña"
 
 msgid "Polar"
-msgstr ""
+msgstr "Polar wakichata"
 
 #. TRANS: maximum
 msgid "max"
@@ -949,7 +945,7 @@ msgstr "jilata sipana"
 
 #. TRANS: lógica
 msgid "logic"
-msgstr ""
+msgstr "Sara"
 
 #. TRANS: empty the heap
 msgid "empty heap"
@@ -957,7 +953,7 @@ msgstr "siqi wakichata ch'ussuña"
 
 #. TRANS: Guarde proyecto en el servidor.
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr ""
+msgstr "Wakichatanaka apanaqañaru amtäwima imma"
 
 #. TRANS: push a value on to the heap.
 msgid "push"
@@ -965,7 +961,7 @@ msgstr "nukht'aña"
 
 #. TRANS: the name of a robot built in Paraguay (probably no need to translate)
 msgid "rodi"
-msgstr "Rodi"
+msgstr "Rodi wakichata"
 
 msgid "Clean"
 msgstr "Mayampi qalltañataki wakichaña"
@@ -976,10 +972,10 @@ msgstr "sami wakichaña"
 
 #. TRANS: Ejecutar rápidamente
 msgid "Run fast"
-msgstr ""
+msgstr "k’ataki qhantayaña"
 
 msgid "broccoli"
-msgstr ""
+msgstr "broccoli juyra"
 
 #. TRANS: stop playing current media file (movie or audio)
 msgid "stop media"
@@ -987,25 +983,25 @@ msgstr "wakisirinaka sayt'ayaña"
 
 #. TRANS: tomate
 msgid "tomato"
-msgstr ""
+msgstr "tomate juyra"
 
 msgid "forever"
 msgstr "wiñayataki"
 
 #. TRANS: musical note to frequency
 msgid "note to frequency"
-msgstr ""
+msgstr "maya maya mantäwi jakhuña"
 
 msgid "no background"
-msgstr ""
+msgstr "jani manqha wakichatani"
 
 #. TRANS: Cargar proyecto desde archivo
 msgid "Load project from file"
-msgstr ""
+msgstr "wakichata imatanaka taypita amtäwi qhantayaña"
 
 #. TRANS: obtener proteínas
 msgid "get protein"
-msgstr ""
+msgstr "ch’amanchirinaka katuña"
 
 #. TRANS: clear the screen of any graphics drawn by the turtle
 msgid "clear"
@@ -1013,14 +1009,14 @@ msgstr "mayampi qalltañataki wakichaña"
 
 #. TRANS: mathematical floor function, e.g., floor(2.5) == 2
 msgid "floor"
-msgstr ""
+msgstr "uraqi"
 
 msgid "flow"
 msgstr "siqi"
 
 #. TRANS: Haz click en este botón para expandir o colapsar la barra de herramientas auxiliar.
 msgid "Click this button to expand or collapse the auxillary toolbar."
-msgstr ""
+msgstr "Yanapiri apanaqaña wakichatanaka jach’aptayañataki jani ukaxa chhaqtayañataki click limt’ma"
 
 msgid "extras"
 msgstr "yaqhanaka"
@@ -1036,11 +1032,11 @@ msgstr "y wakichata"
 
 #. TRANS: set the value at a specific entry (index) in the heap
 msgid "set heap"
-msgstr ""
+msgstr "qutunaka tama"
 
 #. TRANS: hola
 msgid "hello"
-msgstr ""
+msgstr "kamisaraki"
 
 msgid "left"
 msgstr "ch'iqa"

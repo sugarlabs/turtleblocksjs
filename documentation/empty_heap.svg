@@ -8,8 +8,8 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
-   width="198.99191"
-   height="73.599998"
+   width="142.13708"
+   height="46"
    id="svg2">
   <metadata
      id="metadata31">
@@ -30,44 +30,43 @@
        color-interpolation-filters="sRGB"
        id="dropshadow">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur7"
          stdDeviation="3"
-         id="feGaussianBlur7" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset9"
          result="offsetblur"
-         id="feOffset9" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer11">
         <feFuncA
-           type="linear"
+           id="feFuncA13"
            slope="0.2"
-           id="feFuncA13" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15">
         <feMergeNode
            id="feMergeNode17" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode19" />
+           id="feMergeNode19"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
   <path
-     d="m 0.5,8.5 0,-4 c 0,-2.0943951 1.9056049,-4 4,-4 l 4,0 0,2 10,0 0,-2 44,0 4,0 c 2.094395,0 4.507965,1.9681383 4,4 l 0,4 0,4 0,4 c 0,2.094395 -1.905605,4 -4,4 l -4,0 -44,0 -1,0 0,2 -8,0 0,-2 -1,0 -4,0 c -2.0943951,0 -4,-1.905605 -4,-4 l 0,-4 z"
-     transform="matrix(2,0,0,2,28.427416,18.399996)"
+     d="M 1,17 1,9 C 1,4.8112098 4.8112098,1 9,1 l 8,0 0,4 20,0 0,-4 88,0 8,0 c 4.18879,0 9.01593,3.9362766 8,8 l 0,8 0,8 0,8 c 0,4.18879 -3.81121,8 -8,8 l -8,0 -88,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 C 4.8112098,41 1,37.18879 1,33 l 0,-8 z"
      id="path21"
-     style="fill:#dd7f00;fill-opacity:1;stroke:#955100;stroke-width:1;stroke-linecap:round;stroke-opacity:1;filter:url(#dropshadow)" />
+     style="fill:#dd7f00;fill-opacity:1;stroke:#955100;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
-     x="64.427414"
-     y="18.399996"
+     x="35.999996"
+     y="-1.9616699e-07"
      id="text23"
      style="font-size:20px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="158.42741"
-       y="46.399994"
+       x="130"
+       y="27.999998"
        id="tspan25">empty heap</tspan>
   </text>
 </svg>

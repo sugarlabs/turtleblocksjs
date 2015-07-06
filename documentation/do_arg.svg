@@ -58,7 +58,7 @@
   <path
      d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 18,0 40,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -40,0 -8,0 A 10,10 0 0 0 37,51 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 10,10 0 0 0 10,10 l 8,0 16,0 0,12 0,12 0,8 a 8,8 0 0 1 -8,8 l -8,0 -18,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 z"
      id="path3062"
-     style="fill:#ffdf37;fill-opacity:1;stroke:#644300;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+     style="fill:#ffc000;fill-opacity:1;stroke:#c48d00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
      id="text3064"
      style="font-size:20px;text-anchor:start;fill:#000000;font-family:sans-serif">

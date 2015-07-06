@@ -276,6 +276,18 @@ Top of nameable action stack
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/action.svg'</img>
 Invokes named action stack
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/do_arg.svg'</img>
+Invokes an action stack with arguments (To add more arguments, drag them into the clamp.)
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/calc.svg'</img>
+Invokes an action stack that returns a value
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/calc_arg.svg'</img>
+Invokes an action stack with arguments that returns a value
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/return.svg'</img>
+Return a value from an action stack
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/start.svg'</img>
 Connects action to toolbar run buttons (each Start Block invokes its own turtle)
 

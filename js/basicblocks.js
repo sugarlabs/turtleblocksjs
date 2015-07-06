@@ -688,6 +688,28 @@ function initBasicProtoBlocks(palettes, blocks) {
     loadHeap.dockTypes[1] = 'filein';
     loadHeap.defaults = [[null, null]];
 
+    var loadHeapFromApp = new ProtoBlock('loadHeapFromApp');
+    loadHeapFromApp.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['loadHeapFromApp'] = loadHeapFromApp;
+    loadHeapFromApp.staticLabels.push(_('load from App'));
+    loadHeapFromApp.adjustWidthToLabel();
+    loadHeapFromApp.twoArgBlock();
+    loadHeapFromApp.dockTypes[1] = 'textin';
+    loadHeapFromApp.dockTypes[2] = 'textin';
+    loadHeapFromApp.defaults.push('appName')
+    loadHeapFromApp.defaults.push('localhost');
+
+    var saveHeapToApp = new ProtoBlock('saveHeapToApp');
+    saveHeapToApp.palette = palettes.dict['heap'];
+    blocks.protoBlockDict['saveHeapToApp'] = saveHeapToApp;
+    saveHeapToApp.staticLabels.push(_('save to App'));
+    saveHeapToApp.adjustWidthToLabel();
+    saveHeapToApp.twoArgBlock();
+    saveHeapToApp.dockTypes[1] = 'textin';
+    saveHeapToApp.dockTypes[2] = 'textin';
+    saveHeapToApp.defaults.push('appName')
+    saveHeapToApp.defaults.push('localhost');
+
     // Media palette
     var speakBlock = new ProtoBlock('speak');
     speakBlock.palette = palettes.dict['media'];
@@ -844,6 +866,16 @@ function initBasicProtoBlocks(palettes, blocks) {
     clampBlock.flowClampBlock();
 
     // Extras palette
+
+    var openProjectBlock = new ProtoBlock('openProject');
+    openProjectBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['openProject'] = openProjectBlock;
+    openProjectBlock.staticLabels.push(_('openProject'));
+    openProjectBlock.adjustWidthToLabel();
+    openProjectBlock.oneArgBlock();
+    openProjectBlock.defaults.push('url');
+    openProjectBlock.dockTypes[1] = 'textin';
+
     var vspaceBlock = new ProtoBlock('vspace');
     vspaceBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['vspace'] = vspaceBlock;

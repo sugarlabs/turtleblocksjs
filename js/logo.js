@@ -1043,6 +1043,33 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
             case 'pendown':
                 logo.turtles.turtleList[turtle].doPenDown();
                 break;
+	    case 'openProject':
+                url = args[0];
+                function ValidURL(str) {
+                    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+                        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+                        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+                        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+                        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+                        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+                    if(!pattern.test(str)) {
+                        logo.errorMsg("Please enter a valid URL.");
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                if (ValidURL(url)) {
+                    var win = window.open(url, '_blank')
+                    if (win) {
+                        //Browser has allowed it to be opened
+                        win.focus();
+                    } else {
+                        //Broswer has blocked it
+                        alert('Please allow popups for this site');
+                    }
+                }
+                break;
             case 'vspace':
                 break;
             case 'playback':
@@ -1180,6 +1207,52 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     }
                 } else {
                      logo.errorMsg(_('The loadHeap block needs a loadFile block.'))
+                }
+                break;
+            case 'loadHeapFromApp':
+                //var block = logo.blocks.blockList[blk];
+                var url = args[1];
+                var name = args [0]
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("GET", url, false );
+                xmlHttp.send();
+                if (xmlHttp.readyState == 4  && xmlHttp.status == 200){
+                    console.log(xmlHttp.responseText);
+                    //TODO: error handling
+                    var data = JSON.parse(xmlHttp.responseText);
+                }
+                else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+                    console.log('fetched the wrong page or network error...');
+                    logo.errorMsg(_('404: Page not found'));
+                    break;
+                }
+                else {
+                    logo.errorMsg(_('xmlHttp.readyState: '+xmlHttp.readyState));
+                    break;
+                }
+                if (name in logo.turtleHeaps){
+                    var oldHeap = turtleHeaps[turtle];
+                } else {
+                    var oldHeap = [];
+                }
+                logo.turtleHeaps[name] = data;
+                break;
+            case 'saveHeapToApp':
+                var name = args[0];
+                var url = args[1];
+                var data = JSON.stringify({ x: 5, y: 6 });
+                var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open("POST", url, true);
+                    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xmlHttp.send(data);
+                if (name in logo.turtleHeaps) {
+                    var data = JSON.stringify(logo.turtleHeaps[name]);
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open("POST", url, true);
+                    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xmlHttp.send(data);
+                } else {
+                    logo.errorMsg(_('turtleHeaps does not contain a valid heap for '+name));
                 }
                 break;
             case 'setHeapEntry':

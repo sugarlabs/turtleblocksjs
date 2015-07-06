@@ -286,7 +286,13 @@ Invokes an action stack that returns a value
 Invokes an action stack with arguments that returns a value
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/return.svg'</img>
-Return a value from an action stack
+Returns a value from an action stack
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/arg.svg'</img>
+An argument passed to an action stack
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/arg1.svg'</img>
+The first argument passed to an action stack
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/start.svg'</img>
 Connects action to toolbar run buttons (each Start Block invokes its own turtle)

@@ -69,7 +69,7 @@ Show or hide a Cartesian-coordinate grid.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/polar-button.png'</img>
 Show or hide a polar-coordinate grid.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/utility-button.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/utility-button.png'</img>
 Open utility panel to access controls for changing block size, loading plugins, looking at project statistics, and enabling/disabling scrolling.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/smaller-button.svg'</img>

@@ -69,8 +69,23 @@ Show or hide a Cartesian-coordinate grid.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/polar-button.png'</img>
 Show or hide a polar-coordinate grid.
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/utility-button.png'</img>
+Open utility panel to access controls for changing block size, loading plugins, looking at project statistics, and enabling/disabling scrolling.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/smaller-button.png'</img>
+Decrease the size of the blocks.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/bigger-button.png'</img>
+Increase the size of the blocks.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/stats-button.png'</img>
+Show project statistics.
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/plugin-button.png'</img>
 Load new blocks from plugins (previously downloaded to the file system).
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/scrolllock-button.png'</img>
+Enable/disable scrolling.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/empty-trash-button.png'</img>
 Remove all blocks.

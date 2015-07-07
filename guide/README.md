@@ -58,13 +58,15 @@ Using the Random block from the Numbers palette to select a random color (0 to 1
 
 2. Boxes
 --------
-Boxes let you store an object, e.g., a number, and then refer to the object by using the name of the box. (Whenever you name a box, a new block is created that lets you access the content of the box.) This is used in a trivial way in the first example below: putting 100 in the box and then referencing the box from the Forward block. In the second example, we increase the value of the number stored in the box so each time the box is referenced by the Forward block, the value is larger.
+When explaining boxes in workshops, I often use a shoebox. I have someone write a number on a piece of paper and put it in the shoebox. I then ask repeatedly, "What is the number in the box?" Once it is clear that we can reference the number in the shoebox, I have someone put a different number in the shoebox. Again I ask, "What is the number in the box?" The power of the box is that you can refer to it multiple times from multiple places in your program.
+
+Boxes let you store an object, e.g., a number, and then refer to the object by using the name of the box. (Whenever you name a box, a new block is created on the Boxes palette that lets you access the content of the box.) This is used in a trivial way in the first example below: putting 100 in the box and then referencing the box from the Forward block. In the second example, we increase the value of the number stored in the box so each time the box is referenced by the Forward block, the value is larger.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing12.svg'</img>
 Putting a value in a box and then referring to the value in box
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing13.svg'</img>
-We can change the value in a box as the program runs. The result in this case is a spiral.
+We can change the value in a box as the program runs. The result in this case is a spiral, since the turtle goes forward further with each step.
 
 3. Action Stacks
 ----------------

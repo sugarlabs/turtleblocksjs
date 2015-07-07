@@ -56,14 +56,14 @@ Changing the color to 70 (blue)
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing11.svg'</img>
 Using the Random block to select a random color (0 to 100)
 
+2. Boxes
+--------
 
 
+3. Actions
+----------
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing6.svg'</img>
+Defining an action to create a new block, "square"
 
-
-
-
-
-
-
-
-
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing7.svg'</img>
+Using the "square" block

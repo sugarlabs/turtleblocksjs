@@ -524,6 +524,7 @@ define(function(require) {
 
             var URL = window.location.href;
             var projectName = null;
+            var runProjectOnLoad = false;
             try {
                 httpGet(null);
                 console.log('running from server or the user can access to examples.');
@@ -538,14 +539,40 @@ define(function(require) {
             // Scale the canvas relative to the screen size.
             onResize();
 
+            var urlParts;
+
             if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
-                if (urlParts[1].indexOf('=') > 0) {
-                    var projectName = urlParts[1].split('=')[1];
+                if (urlParts[1].indexOf('&') >0) {
+                    var newUrlParts = urlParts[1].split('&');
+                    for (var i = 0; i < newUrlParts.length; i++) {
+                        if (newUrlParts[i].indexOf('=') > 0) {
+                            var args = newUrlParts[i].split('=');
+                            switch (args[0].toLowerCase()) {
+                                case 'file':
+                                    projectName = args[1];
+                                    break;
+                                case 'run':
+                                    if (args[1].toLowerCase() == 'true')
+                                        runProjectOnLoad = true;
+                                    break;
+                                default:
+                                    errorMsg("Invalid parameters");
+                            }
+                        }
+                    }
+                } else {
+                    if (urlParts[1].indexOf('=') > 0)
+                        var args = urlParts[1].split('=');
+                    //File is the only arg that can stand alone
+                    if (args[0].toLowerCase() == 'file') {
+                        projectName = args[1];
+                    }
                 }
             }
+
             if (projectName != null) {
-                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName); }, 2000);
+                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName, runProjectOnLoad); }, 2000);
             } else {
                 setTimeout(function () { loadStart(); }, 2000);
             }
@@ -1039,7 +1066,9 @@ define(function(require) {
                       window.btoa(unescape(encodeURIComponent(svgData)));
         }
 
-        function loadProject(projectName) {
+        function loadProject(projectName, run) {
+            //set default value of run
+            run = typeof run !== 'undefined' ? run : false;
             // Show busy cursor.
             document.body.style.cursor = 'wait';
             // palettes.updatePalettes();
@@ -1065,7 +1094,11 @@ define(function(require) {
                 document.body.style.cursor = 'default';
                 update = true;
             }, 200);
-
+            if (run) {
+                setTimeout(function() {
+                    doFastButton();
+                },2000);
+            }
             docById('loading-image-container').style.display = 'none';
         }
 
@@ -1551,7 +1584,7 @@ define(function(require) {
                             if (helpIdx >= HELPCONTENT.length) {
                                 helpIdx = 0;
                             }
-                            var imageScale = 55 * scale; 
+                            var imageScale = 55 * scale;
                             helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
                         }
                         update = true;

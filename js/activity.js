@@ -524,6 +524,7 @@ define(function(require) {
 
             var URL = window.location.href;
             var projectName = null;
+            var run = false;
             try {
                 httpGet(null);
                 console.log('running from server or the user can access to examples.');
@@ -538,14 +539,32 @@ define(function(require) {
             // Scale the canvas relative to the screen size.
             onResize();
 
-            if (URL.indexOf('?') > 0) {
-                var urlParts = URL.split('?');
+            var urlParts;
+
+            if (URL.indexOf('&') >0) {
+                urlParts = URL.split('&');
                 if (urlParts[1].indexOf('=') > 0) {
-                    var projectName = urlParts[1].split('=')[1];
+                    if (urlParts[1].split('=')[1] == 'True') {
+                        run = true;
+                    }
+                }
+                if (urlParts[0].indexOf('?') > 0) {
+                    var newUrlParts = urlParts[0].split('?');
+                    if (newUrlParts[1].indexOf('=') > 0) {
+                        var projectName = newUrlParts[1].split('=')[1];
+                    }
+                }
+            } else {
+                if (URL.indexOf('?') > 0) {
+                    var newUrlParts = URL.split('?');
+                    if (newUrlParts[1].indexOf('=') > 0) {
+                        var projectName = newUrlParts[1].split('=')[1];
+                    }
                 }
             }
+
             if (projectName != null) {
-                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName); }, 2000);
+                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName, run); }, 2000);
             } else {
                 setTimeout(function () { loadStart(); }, 2000);
             }
@@ -1039,7 +1058,7 @@ define(function(require) {
                       window.btoa(unescape(encodeURIComponent(svgData)));
         }
 
-        function loadProject(projectName) {
+        function loadProject(projectName, run = false) {
             // Show busy cursor.
             document.body.style.cursor = 'wait';
             // palettes.updatePalettes();
@@ -1065,7 +1084,11 @@ define(function(require) {
                 document.body.style.cursor = 'default';
                 update = true;
             }, 200);
-
+            if (run == true) {
+                setTimeout(function() {
+                    doFastButton();
+                },2000);
+            }
             docById('loading-image-container').style.display = 'none';
         }
 
@@ -1551,7 +1574,7 @@ define(function(require) {
                             if (helpIdx >= HELPCONTENT.length) {
                                 helpIdx = 0;
                             }
-                            var imageScale = 55 * scale; 
+                            var imageScale = 55 * scale;
                             helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
                         }
                         update = true;

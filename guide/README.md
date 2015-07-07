@@ -42,19 +42,19 @@ Adding a right turn of 90 degrees. Running this stack four times produces a squa
 Forward, right, forward, right, ...
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing5.svg'</img>
-Using the Repeat block from the flow palette
+Using the Repeat block from the Flow palette
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing8.svg'</img>
 Using the Arc block to make rounded corners
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing9.svg'</img>
-Using the Begin and End Fill blocks to make a solid square
+Using the Begin Fill and End Fill blocks from the Pen palette to make a solid square
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing10.svg'</img>
-Changing the color to 70 (blue)
+Changing the color to 70 (blue) using the Set Color block from the Pen palette
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing11.svg'</img>
-Using the Random block to select a random color (0 to 100)
+Using the Random block from the Numbers palette to select a random color (0 to 100)
 
 2. Boxes
 --------

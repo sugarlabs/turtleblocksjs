@@ -561,6 +561,12 @@ define(function(require) {
                             }
                         }
                     }
+                } else {
+                    if (urlParts[1].indexOf('=') > 0)
+                        var args = urlParts[1].split('=');
+                    if (args[0].toLowerCase() == 'file') {
+                        projectName = args[1];
+                    }
                 }
             }
 

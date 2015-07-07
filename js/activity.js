@@ -524,7 +524,7 @@ define(function(require) {
 
             var URL = window.location.href;
             var projectName = null;
-            var run = false;
+            var runProjectOnLoad = false;
             try {
                 httpGet(null);
                 console.log('running from server or the user can access to examples.');
@@ -541,30 +541,31 @@ define(function(require) {
 
             var urlParts;
 
-            if (URL.indexOf('&') >0) {
-                urlParts = URL.split('&');
-                if (urlParts[1].indexOf('=') > 0) {
-                    if (urlParts[1].split('=')[1] == 'True') {
-                        run = true;
-                    }
-                }
-                if (urlParts[0].indexOf('?') > 0) {
-                    var newUrlParts = urlParts[0].split('?');
-                    if (newUrlParts[1].indexOf('=') > 0) {
-                        var projectName = newUrlParts[1].split('=')[1];
-                    }
-                }
-            } else {
-                if (URL.indexOf('?') > 0) {
-                    var newUrlParts = URL.split('?');
-                    if (newUrlParts[1].indexOf('=') > 0) {
-                        var projectName = newUrlParts[1].split('=')[1];
+            if (URL.indexOf('?') > 0) {
+                var urlParts = URL.split('?');
+                if (urlParts[1].indexOf('&') >0) {
+                    var newUrlParts = urlParts[1].split('&');
+                    for (var i = 0; i < newUrlParts.length; i++) {
+                        if (newUrlParts[i].indexOf('=') > 0) {
+                            var args = newUrlParts[i].split('=');
+                            switch (args[0].toLowerCase()) {
+                                case 'file':
+                                    projectName = args[1];
+                                    break;
+                                case 'run':
+                                    if (args[1].toLowerCase() == 'true')
+                                        runProjectOnLoad = true;
+                                    break;
+                                default:
+                                    errorMsg("Invalid parameters");
+                            }
+                        }
                     }
                 }
             }
 
             if (projectName != null) {
-                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName, run); }, 2000);
+                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName, runProjectOnLoad); }, 2000);
             } else {
                 setTimeout(function () { loadStart(); }, 2000);
             }
@@ -1058,7 +1059,9 @@ define(function(require) {
                       window.btoa(unescape(encodeURIComponent(svgData)));
         }
 
-        function loadProject(projectName, run = false) {
+        function loadProject(projectName, run) {
+            //set default value of run
+            run = typeof run !== 'undefined' ? run : false;
             // Show busy cursor.
             document.body.style.cursor = 'wait';
             // palettes.updatePalettes();
@@ -1084,7 +1087,7 @@ define(function(require) {
                 document.body.style.cursor = 'default';
                 update = true;
             }, 200);
-            if (run == true) {
+            if (run) {
                 setTimeout(function() {
                     doFastButton();
                 },2000);

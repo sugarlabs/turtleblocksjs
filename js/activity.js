@@ -1096,6 +1096,7 @@ define(function(require) {
             }, 200);
             if (run) {
                 setTimeout(function() {
+                    changeBlockVisibility();
                     doFastButton();
                 },2000);
             }

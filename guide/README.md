@@ -77,3 +77,14 @@ Defining an action to create a new block, "square"
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing7.svg'</img>
 Using the "square" block
+
+4. Parameters
+-------------
+
+Parameter blocks hold a value that represents the state of some turtle attribute, e.g., the x or y position of the turtle, the heading of the turtle, the color of the pen, the size of the pen, etc. You can use parameter blocks interchangeably with number blocks. You can change their values with the Add block or with the corresponding set blocks.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing14.svg'</img>
+Using the heading parameter, which changes each time the turtle changes direction, to change the color of a spiral
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing15.svg'</img>
+"Squiral" by Brian Silverman uses the heading and x parameter blocks.

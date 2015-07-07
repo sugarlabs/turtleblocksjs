@@ -26,8 +26,8 @@ TO SQUARE
 
 The traditional introduction to Logo has been to draw a square. Often times when running a workshop, I have the learners form a circle around one volunteer, the "turtle", and invite them to instruct the turtle to draw a square. (I coach the volunteer beforehand to take every command literally, as does our graphical turtle.) Eventually the group converges on "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps". It is only on rare occasions that the group includes a final "turn right (or left) 90 degrees" in order to return the turtle to its original orientation. At this point I introduce the concept of "repeat" and then we start in with programming with Turtle Blocks.
 
-1.
---
+1. Forward/Right
+----------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing1.svg'</img>
 A single line of length 100
@@ -58,7 +58,13 @@ Using the Random block from the Numbers palette to select a random color (0 to 1
 
 2. Boxes
 --------
+Boxes let you store an object, e.g., a number, and then refer to the object by using the name of the box. (Whenever you name a box, a new block is created that lets you access the content of the box.) This is used in a trivial way in the first example below: putting 100 in the box and then referencing the box from the Forward block. In the second example, we increase the value of the number stored in the box so each time the box is referenced by the Forward block, the value is larger.
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing12.svg'</img>
+Putting a value in a box and then referring to the value in box
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing13.svg'</img>
+We can change the value in a box as the program runs. The result in this case is a spiral.
 
 3. Action Stacks
 ----------------

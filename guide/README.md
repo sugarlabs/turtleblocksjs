@@ -26,7 +26,7 @@ TO SQUARE
 
 The traditional introduction to Logo has been to draw a square. Often times when running a workshop, I have the learners form a circle around one volunteer, the "turtle", and invite them to instruct the turtle to draw a square. (I coach the volunteer beforehand to take every command literally, as does our graphical turtle.) Eventually the group converges on "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps". It is only on rare occasions that the group includes a final "turn right (or left) 90 degrees" in order to return the turtle to its original orientation. At this point I introduce the concept of "repeat" and then we start in with programming with Turtle Blocks.
 
-1. Forward/Right
+1. Turtle Basics
 ----------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing1.svg'</img>
@@ -88,3 +88,36 @@ Using the heading parameter, which changes each time the turtle changes directio
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing15.svg'</img>
 "Squiral" by Brian Silverman uses the heading and x parameter blocks.
+
+5. Logic
+--------
+
+6. Multimedia
+-------------
+
+8. Sensors
+----------
+
+9. Presentations
+----------------
+
+10. Turtles and Sprites
+-----------------------
+
+11. The Heap
+------------
+
+12. Advanced Actions
+--------------------
+
+13. Advanced Boxes
+------------------
+
+14. Extras
+----------
+
+15. Debugging Aids
+------------------
+
+16. Plugins
+-----------

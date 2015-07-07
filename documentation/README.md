@@ -255,7 +255,7 @@ Do-while-True operator that uses boolean operators to determine how long to run 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/if_else.svg'</img>
 If-then-else operator that uses boolean operators to determine which encloded "flow" to run
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/name_box_value.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/storein.svg'</img>
 Stores value in named variable.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/box_value.svg'</img>

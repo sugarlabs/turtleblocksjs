@@ -24,7 +24,19 @@ executing that stack or by clicking in the Rabbit (fast) or Turtle
 TO SQUARE
 ---------
 
-The traditional introduction to Logo has been to draw a square. Often times when running a workshop, I have the learners form a circle around one volunteer, the "turtle", and invite them to instruct the turtle to draw a square. (I coach the volunteer beforehand to take every command literally, as does our graphical turtle.) Eventually the group converges on "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps", "turn right (or left) 90 degrees", "go forward some number of steps". It is only on rare occasions that the group includes a final "turn right (or left) 90 degrees" in order to return the turtle to its original orientation. At this point I introduce the concept of "repeat" and then we start in with programming with Turtle Blocks.
+The traditional introduction to Logo has been to draw a square. Often
+times when running a workshop, I have the learners form a circle
+around one volunteer, the "turtle", and invite them to instruct the
+turtle to draw a square. (I coach the volunteer beforehand to take
+every command literally, as does our graphical turtle.) Eventually the
+group converges on "go forward some number of steps", "turn right (or
+left) 90 degrees", "go forward some number of steps", "turn right (or
+left) 90 degrees", "go forward some number of steps", "turn right (or
+left) 90 degrees", "go forward some number of steps". It is only on
+rare occasions that the group includes a final "turn right (or left)
+90 degrees" in order to return the turtle to its original
+orientation. At this point I introduce the concept of "repeat" and
+then we start in with programming with Turtle Blocks.
 
 1. Turtle Basics
 ----------------
@@ -36,7 +48,8 @@ A single line of length 100
 Changing the line length to 200
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing3.svg'</img>
-Adding a right turn of 90 degrees. Running this stack four times produces a square.
+Adding a right turn of 90 degrees. Running this stack four times
+produces a square.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing4.svg'</img>
 Forward, right, forward, right, ...
@@ -48,19 +61,34 @@ Using the Repeat block from the Flow palette
 Using the Arc block to make rounded corners
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing9.svg'</img>
-Using the Begin Fill and End Fill blocks from the Pen palette to make a solid square
+Using the Begin Fill and End Fill blocks from the Pen palette to make
+a solid square
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing10.svg'</img>
 Changing the color to 70 (blue) using the Set Color block from the Pen palette
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing11.svg'</img>
-Using the Random block from the Numbers palette to select a random color (0 to 100)
+Using the Random block from the Numbers palette to select a random
+color (0 to 100)
 
 2. Boxes
 --------
-When explaining boxes in workshops, I often use a shoebox. I have someone write a number on a piece of paper and put it in the shoebox. I then ask repeatedly, "What is the number in the box?" Once it is clear that we can reference the number in the shoebox, I have someone put a different number in the shoebox. Again I ask, "What is the number in the box?" The power of the box is that you can refer to it multiple times from multiple places in your program.
+When explaining boxes in workshops, I often use a shoebox. I have
+someone write a number on a piece of paper and put it in the
+shoebox. I then ask repeatedly, "What is the number in the box?" Once
+it is clear that we can reference the number in the shoebox, I have
+someone put a different number in the shoebox. Again I ask, "What is
+the number in the box?" The power of the box is that you can refer to
+it multiple times from multiple places in your program.
 
-Boxes let you store an object, e.g., a number, and then refer to the object by using the name of the box. (Whenever you name a box, a new block is created on the Boxes palette that lets you access the content of the box.) This is used in a trivial way in the first example below: putting 100 in the box and then referencing the box from the Forward block. In the second example, we increase the value of the number stored in the box so each time the box is referenced by the Forward block, the value is larger.
+Boxes let you store an object, e.g., a number, and then refer to the
+object by using the name of the box. (Whenever you name a box, a new
+block is created on the Boxes palette that lets you access the content
+of the box.) This is used in a trivial way in the first example below:
+putting 100 in the box and then referencing the box from the Forward
+block. In the second example, we increase the value of the number
+stored in the box so each time the box is referenced by the Forward
+block, the value is larger.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing12.svg'</img>
 Putting a value in a box and then referring to the value in box
@@ -89,17 +117,29 @@ Using the heading parameter, which changes each time the turtle changes directio
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing15.svg'</img>
 "Squiral" by Brian Silverman uses the heading and x parameter blocks.
 
-5. Logic
---------
+5. Conditionals
+---------------
+Conditionals are a powerful tool in computing. They let your program
+behave differently under differing circumstances. The basic idea is
+that if a condition is true, then take some action. Variants include
+if-then-else, while, until, and forever. Turtle Blocks provides
+logical constructs such as equal, greater than, less than, and, or,
+and not.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing16.svg'</img>
+Using a conditonal to select a color
 
 6. Multimedia
 -------------
 
-8. Sensors
+7. Sensors
 ----------
 
-9. Presentations
-----------------
+8. Example: Paint
+-----------------
+
+9. Example: Slide Show
+----------------------
 
 10. Turtles and Sprites
 -----------------------

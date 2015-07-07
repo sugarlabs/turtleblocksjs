@@ -42,6 +42,8 @@ Getting Started Documentation
 
 The basic buttons and basic blocks are explained in detail in [Documentation](https://github.com/walterbender/turtleblocksjs/blob/master/documentation/README.md).
 
+A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](https://github.com/walterbender/turtleblocksjs/blob/master/guide/README.md).
+
 A quick start:
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/fast-button.png'</img>

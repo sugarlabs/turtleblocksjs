@@ -1455,14 +1455,6 @@ function labelChanged(myBlock) {
             case 'action':
                 // If the label was the name of an action, update the
                 // associated run myBlock.blocks and the palette buttons
-                /*
-                if (myBlock.value != _('action')) {
-                    console.log('block: calling remove')
-                    myBlock.blocks.removeNamedoEntries(oldValue);
-                    console.log('block: new named do Block proto blocks');
-                    myBlock.blocks.newNameddoBlock(myBlock.value, myBlock.blocks.actionHasReturn(c), myBlock.blocks.actionHasArgs(c));
-                }
-                */
                 // Rename both do <- name and nameddo blocks.
                 console.log('renameDos and...');
                 myBlock.blocks.renameDos(oldValue, newValue);

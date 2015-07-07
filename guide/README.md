@@ -60,8 +60,10 @@ Using the Random block to select a random color (0 to 100)
 --------
 
 
-3. Actions
-----------
+3. Action Stacks
+----------------
+Action stacks let you to extend the Turtle Blocks language by defining new blocks. For example, if you draw lots of squares, you may want a block to draw squares. In the examples below, we define an action which draws a square (repeat 4 forward 100 right 90), which in turn results in a new block on the Actions palette that we can use whenever we want to draw a square. Every new action stack results in a new block.
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing6.svg'</img>
 Defining an action to create a new block, "square"
 

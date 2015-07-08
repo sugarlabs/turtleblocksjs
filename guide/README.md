@@ -130,7 +130,7 @@ logical constructs such as equal, greater than, less than, and, or,
 and not.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals1.svg'</img>
-Using a conditonal to select a color: Once the heading > 180, the color changes. [RUN LIVE](http://turtle.sugarlabs.org/?file=conditionals1.tb&run=true)
+Using a conditonal to select a color: Once the heading > 180, the color changes. [RUN LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
 
 6. Multimedia
 -------------

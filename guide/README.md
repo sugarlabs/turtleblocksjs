@@ -1,6 +1,19 @@
 Guide to Using Turtle Art JS
 ============================
 
+Turtle Blocks expands upon what children can do with Logo and how it
+can be used as the underlying motivator for “improving” programming
+languages and programmable devices.
+
+In this guide, we illustrate this point by both walking the reader
+through numerous examples, but also by discussing some of our favorite
+explorations of Turtle Blocks, including multi-media, the Internet
+(both as a forum for collaboration and data collection), and a broad
+collection of sensors.
+
+Getting Started
+---------------
+
 Turtle Blocks Javascript is designed to run in a browser. Most of the
 development has been done in Chrome, but it should also work in
 Firefox. You can run it directly from index.html, from a [server
@@ -111,11 +124,25 @@ We can change the value in a box as the program runs. Here we add 10 to the valu
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes3.svg'</img>
 
-If we want to make a more complex change, we can store in the box some computed value based on the current content of the box. Here we multiply the content of the box by 1.2 and store the result in the box. The result in this case is also a spiral, but one that grows geometrically instead of arithmetically.
+If we want to make a more complex change, we can store in the box some
+computed value based on the current content of the box. Here we
+multiply the content of the box by 1.2 and store the result in the
+box. The result in this case is also a spiral, but one that grows
+geometrically instead of arithmetically.
 
 3. Action Stacks
 ----------------
-Action stacks let you to extend the Turtle Blocks language by defining new blocks. For example, if you draw lots of squares, you may want a block to draw squares. In the examples below, we define an action which draws a square (repeat 4 forward 100 right 90), which in turn results in a new block on the Actions palette that we can use whenever we want to draw a square. Every new action stack results in a new block.
+With Turtle Blocks there is an opportunity for the learner to expand
+upon the language, taking the conversation in directions unanticipated
+by the Turtle Block developers.
+
+Action stacks let you to extend the Turtle Blocks language by defining
+new blocks. For example, if you draw lots of squares, you may want a
+block to draw squares. In the examples below, we define an action
+which draws a square (repeat 4 forward 100 right 90), which in turn
+results in a new block on the Actions palette that we can use whenever
+we want to draw a square. Every new action stack results in a new
+block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions1.svg'</img>
 
@@ -167,6 +194,35 @@ A coin toss is such a common operation that we added the One-of block as a conve
 
 8. Example: Paint
 -----------------
+
+As described in the Sensors section, Turtle Blocks enables the
+programmer/artist to incorporate sensors into their work. Among the
+sensors available are the mouse button and mouse x and y
+position. These can be used to create a simple paint program, as
+illustrated below. Writing your own paint program is empowering: it
+demystifies a commonly used tool. At the same time, it places the
+burden of responsibility on the programmer: once we write it, it
+belongs to us, and we are responsible for making it cool. Some
+variations of paint are also shown below, including using microphone
+levels to vary the pen size as ambient sound-levels change. Once
+learners realize that they can make changes to the behavior of their
+paint program, they become deeply engaged. How will you modify paint?
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint1.svg'</img>
+
+In its simplest form, paint is just a matter of moving the turtle to whereever the mouse is positioned.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint2.svg'</img>
+
+Adding a test for the mouse button lets us move the turtle without leaving a trail of ink.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint3.svg'</img>
+
+In this example, we change the pen size based on the volume of microphone input.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint4.svg'</img>
+
+In another example, inspired by a student in a workshop in Colombia, we use time to change both the pen color and the pen size.
 
 9. Example: Slide Show
 ----------------------

@@ -136,7 +136,7 @@ With Turtle Blocks there is an opportunity for the learner to expand
 upon the language, taking the conversation in directions unanticipated
 by the Turtle Block developers.
 
-Action stacks let you to extend the Turtle Blocks language by defining
+Action stacks let you extend the Turtle Blocks language by defining
 new blocks. For example, if you draw lots of squares, you may want a
 block to draw squares. In the examples below, we define an action
 which draws a square (repeat 4 forward 100 right 90), which in turn

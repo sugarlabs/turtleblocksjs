@@ -163,7 +163,7 @@ Using the heading parameter, which changes each time the turtle changes directio
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters2.svg'</img>
 
-"Squiral" by Brian Silverman uses the heading and x parameter blocks.
+"Squiral" by Brian Silverman uses the heading and x parameter blocks. [RUN LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 
 5. Conditionals
 ---------------

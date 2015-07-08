@@ -349,6 +349,8 @@
   * Added URL argument to run projects i.e., ?file=foo.tb&run=True
    (w/Amit Kumar Jha).
   * Improved design of conditional blocks to stack more compactly.
+  * Found/fixed cornercase where named calcArg blocks didn't appear on
+    the Actions palette.
 
 TODO:
   * Better model and view distinction in code
@@ -389,7 +391,6 @@ ISSUES:
     Do we auto-generate the protoblocks with the requisit number of arg slots?
 
 KNOWN BUGS:
-  * Named calcArg blocks don't appear on the palette.
   * Deleting palette entries when renaming actions is not working properly.
   * Sometimes change in size of arg blocks not auto-cascaded.
   * Not all blocks highlight when using step-by-step mode.

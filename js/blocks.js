@@ -2731,19 +2731,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         if (this.blockList[blk].name != 'action') {
             return false;
         }
-        var loopcounter = 0;
-        var c = this.blockList[blk].connections[2];
-        while (c != null) {
-            if (this.blockList[c].name == 'return') {
+        this.findDragGroup(blk);
+        for (var b = 0; b < this.dragGroup.length; b++) {
+            if (this.blockList[this.dragGroup[b]].name == 'return') {
                 return true;
             }
-            loopcounter += 1;
-            if (loopcounter > this.blockList.length) {
-                console.log('inifinite loop? encountered while testing for return.');
-                return false;
-            }
-            var last = this.blockList[c].connections.length - 1;
-            c = this.blockList[c].connections[last];
         }
         return false;
     }

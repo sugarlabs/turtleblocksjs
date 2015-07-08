@@ -80,8 +80,8 @@ Changing the color to 70 (blue) using the Set Color block from the Pen palette
 Using the Random block from the Numbers palette to select a random
 color (0 to 100)
 
-2. Boxes
---------
+A SHOEBOX
+---------
 When explaining boxes in workshops, I often use a shoebox. I have
 someone write a number on a piece of paper and put it in the
 shoebox. I then ask repeatedly, "What is the number in the box?" Once
@@ -90,6 +90,8 @@ someone put a different number in the shoebox. Again I ask, "What is
 the number in the box?" The power of the box is that you can refer to
 it multiple times from multiple places in your program.
 
+2. Boxes
+--------
 Boxes let you store an object, e.g., a number, and then refer to the
 object by using the name of the box. (Whenever you name a box, a new
 block is created on the Boxes palette that lets you access the content

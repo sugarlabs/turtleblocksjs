@@ -41,33 +41,33 @@ then we start in with programming with Turtle Blocks.
 1. Turtle Basics
 ----------------
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics1.svg'</img>
 A single line of length 100
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics2.svg'</img>
 Changing the line length to 200
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics3.svg'</img>
 Adding a right turn of 90 degrees. Running this stack four times
 produces a square.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics4.svg'</img>
 Forward, right, forward, right, ...
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing5.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics5.svg'</img>
 Using the Repeat block from the Flow palette
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing8.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics6.svg'</img>
 Using the Arc block to make rounded corners
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing9.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics7.svg'</img>
 Using the Begin Fill and End Fill blocks from the Pen palette to make
 a solid square
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing10.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics8.svg'</img>
 Changing the color to 70 (blue) using the Set Color block from the Pen palette
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing11.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics9.svg'</img>
 Using the Random block from the Numbers palette to select a random
 color (0 to 100)
 
@@ -90,23 +90,23 @@ block. In the second example, we increase the value of the number
 stored in the box so each time the box is referenced by the Forward
 block, the value is larger.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing12.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes1.svg'</img>
 Putting a value in a box and then referring to the value in box
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing13.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes2.svg'</img>
 We can change the value in a box as the program runs. Here we add 10 to the value in the box with each iteration. The result in this case is a spiral, since the turtle goes forward further with each step.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing17.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes3.svg'</img>
 If we want to make a more complex change, we can store in the box some computed value based on the current content of the box. Here we multiply the content of the box by 1.2 and store the result in the box. The result in this case is also a spiral, but one that grows geometrically instead of arithmetically.
 
 3. Action Stacks
 ----------------
 Action stacks let you to extend the Turtle Blocks language by defining new blocks. For example, if you draw lots of squares, you may want a block to draw squares. In the examples below, we define an action which draws a square (repeat 4 forward 100 right 90), which in turn results in a new block on the Actions palette that we can use whenever we want to draw a square. Every new action stack results in a new block.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing6.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions1.svg'</img>
 Defining an action to create a new block, "square"
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing7.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions2.svg'</img>
 Using the "square" block
 
 4. Parameters
@@ -114,10 +114,10 @@ Using the "square" block
 
 Parameter blocks hold a value that represents the state of some turtle attribute, e.g., the x or y position of the turtle, the heading of the turtle, the color of the pen, the size of the pen, etc. You can use parameter blocks interchangeably with number blocks. You can change their values with the Add block or with the corresponding set blocks.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing14.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters1.svg'</img>
 Using the heading parameter, which changes each time the turtle changes direction, to change the color of a spiral
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing15.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters2.svg'</img>
 "Squiral" by Brian Silverman uses the heading and x parameter blocks.
 
 5. Conditionals
@@ -129,7 +129,7 @@ if-then-else, while, until, and forever. Turtle Blocks provides
 logical constructs such as equal, greater than, less than, and, or,
 and not.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing16.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals1.svg'</img>
 Using a conditonal to select a color
 
 6. Multimedia

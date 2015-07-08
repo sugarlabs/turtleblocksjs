@@ -222,7 +222,7 @@ In this example, we change the pen size based on the volume of microphone input.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint4.svg'</img>
 
-In another example, inspired by a student in a workshop in Colombia, we use time to change both the pen color and the pen size.
+In another example, inspired by a student in a workshop in Colombia, we use time to change both the pen color and the pen size. [RUN LIVE](http://turtle.sugarlabs.org/?file=Paint-4.tb&run=true)
 
 9. Example: Slide Show
 ----------------------
@@ -242,7 +242,7 @@ Calculating the Fibonacci sequence is often done using a resursive method. In th
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci1.svg'</img>
 
-Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci.tb&run=true)
+Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
 
 14. Advanced Boxes
 ------------------

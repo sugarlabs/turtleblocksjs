@@ -415,7 +415,7 @@
        id="tspan25-7-2">8</tspan>
   </text>
   <g
-     transform="translate(302,54.000002)"
+     transform="translate(292,54.000002)"
      id="g3213">
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 18,0 8,0 a 8,8 0 0 1 8,8 l 0,8 0,18 A 16,16 0 0 0 55,51 16,16 0 0 0 71,67 l 0,8 a 8,8 0 0 1 -8,8 l -8,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 10,10 0 0 0 17,93 l 0,8 0,8 0,8 a 10,10 0 0 0 10,10 l 8,0 0,4 20,0 0,-4 16,0 0,24 0,8 a 8,8 0 0 1 -8,8 l -8,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 10,10 0 0 0 -10,10 l 0,8 0,8 0,8 a 10,10 0 0 0 10,10 l 8,0 0,4 20,0 0,-4 16,0 0,12 0,12 0,8 a 8,8 0 0 1 -8,8 l -8,0 -18,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 z"
@@ -447,7 +447,7 @@
     </text>
   </g>
   <g
-     transform="translate(4,0)"
+     transform="translate(-6,0)"
      id="g3253-4">
     <g
        id="g3243-4">
@@ -501,35 +501,35 @@
     </text>
   </g>
   <g
-     transform="matrix(2,0,0,2,444,54)"
+     transform="matrix(2,0,0,2,434,54)"
      id="g4">
     <filter
        height="1.3"
        color-interpolation-filters="sRGB"
        id="dropshadow-2">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur7-96"
          stdDeviation="3"
-         id="feGaussianBlur7-96" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset9-1"
          result="offsetblur"
-         id="feOffset9-1" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer11-7">
         <feFuncA
-           type="linear"
+           id="feFuncA13-11"
            slope="0.2"
-           id="feFuncA13-11" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15-9">
         <feMergeNode
            id="feMergeNode17-5" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode19-4" />
+           id="feMergeNode19-4"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
     <path
@@ -546,7 +546,7 @@
     </text>
   </g>
   <g
-     transform="translate(444,96)"
+     transform="translate(434,96)"
      id="g3552">
     <path
        d="m 17,1 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
@@ -563,7 +563,7 @@
     </text>
   </g>
   <g
-     transform="translate(320,138)"
+     transform="translate(310,138)"
      id="g3636">
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 84,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -84,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 8,8 0 0 1 1,33 l 0,-8 0,-8 z"
@@ -587,7 +587,7 @@
     </text>
   </g>
   <g
-     transform="translate(320,222)"
+     transform="translate(310,222)"
      id="g3636-5">
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 84,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -84,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 8,8 0 0 1 1,33 l 0,-8 0,-8 z"
@@ -611,7 +611,7 @@
     </text>
   </g>
   <g
-     transform="translate(308,-148.23397)"
+     transform="translate(298,-148.23397)"
      id="g3694-3">
     <path
        d="m 151,287.23397 120.00001,0 0,40 -120.00001,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
@@ -629,7 +629,7 @@
     </text>
   </g>
   <g
-     transform="translate(308,-64.23397)"
+     transform="translate(298,-64.23397)"
      id="g3694-2">
     <path
        d="m 151,287.23397 120.00001,0 0,40 -120.00001,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
@@ -647,7 +647,7 @@
     </text>
   </g>
   <g
-     transform="translate(358,54)"
+     transform="translate(348,54)"
      id="g3280">
     <g
        transform="matrix(2,0,0,2,0,-32)"

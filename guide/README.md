@@ -180,14 +180,22 @@ A coin toss is such a common operation that we added the One-of block as a conve
 12. Advanced Actions
 --------------------
 
-13. Advanced Boxes
+13. Example: Fibonacci
+----------------------
+Calculating the Fibonacci sequence is often done using a resursive method. In the example below, we pass an argument to the Fib action, which returns a value if the argument is &lt; 2; otherwise it returns the sum of the result of calling the Fib action with argument - 1 and argument - 2.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci1.svg'</img>
+
+Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci.tb&run=true)
+
+14. Advanced Boxes
 ------------------
 
-14. Extras
+15. Extras
 ----------
 
-15. Debugging Aids
+16. Debugging Aids
 ------------------
 
-16. Plugins
+17. Plugins
 -----------

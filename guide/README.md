@@ -94,7 +94,10 @@ block, the value is larger.
 Putting a value in a box and then referring to the value in box
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing13.svg'</img>
-We can change the value in a box as the program runs. The result in this case is a spiral, since the turtle goes forward further with each step.
+We can change the value in a box as the program runs. Here we add 10 to the value in the box with each iteration. The result in this case is a spiral, since the turtle goes forward further with each step.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/drawing17.svg'</img>
+If we want to make a more complex change, we can store in the box some computed value based on the current content of the box. Here we multiply the content of the box by 1.2 and store the result in the box. The result in this case is also a spiral, but one that grows geometrically instead of arithmetically.
 
 3. Action Stacks
 ----------------

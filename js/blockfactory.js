@@ -477,7 +477,7 @@ function SVG() {
     }
 
     this._startBoolean = function (xoffset, yoffset) {
-        var svg = this.newPath(xoffset, yoffset);
+        var svg = this.newPath(xoffset, yoffset); // - this._radius);
         this._radius -= this._strokeWidth;
         this.docks.push([this._x * this._scale, this._y * this._scale]);
         svg += this._rarcTo(1, -1, 90, 0, 1);
@@ -800,15 +800,28 @@ function SVG() {
         // Booleans are in a class of their own (greater than, less than, etc)
         this.resetMinMax();
         var yoffset = this._radius * 2 + 2 * this._innieY2 + this._inniesSpacer + this._strokeWidth / 2.0 + this._expandY;
-        var svg = this._startBoolean(this._strokeWidth / 2.0, yoffset);
+        var xoffset = this._strokeWidth / 2.0;
+
+        var yoff = this._radius * 2;
+        var svg = '<g transform="matrix(1,0,0,1,0,-' + yoff + ')"> ';
+
+        svg += this.newPath(xoffset, yoffset + this._radius);
+        this.docks.push([this._x * this._scale, (this._y - 2 * this._radius) * this._scale]);
+        this._radius -= this._strokeWidth;
+        svg += this._rarcTo(1, -1, 90, 0, 1);
+        this._radius += this._strokeWidth;
+        svg += this._rLineTo(this._strokeWidth, 0);
+        svg += this._rLineTo(0, -this._expandY);
+
         yoffset = -2 * this._innieY2 - this._inniesSpacer - this._strokeWidth;
-        svg += this._rLineTo(0, yoffset);
+        svg += this._rLineTo(0, yoffset + this._radius);
 
         svg += this._rarcTo(1, -1, 90, 0, 1);
         svg += this._rLineTo(this._radius / 2.0 + this._expandX, 0);
         svg += this._rLineTo(0, this._radius);
         var xx = this._x;
         svg += this._doInnie();
+        this.docks[1][1] -= this._radius * 2 * this._scale;
         svg += this._rLineTo(0, this._expandY);
 
         if (this._porch) {
@@ -817,19 +830,31 @@ function SVG() {
             svg += this._rLineTo(0, 2 * this._innieY2 + this._inniesSpacer);
         }
         svg += this._doInnie();
+        this.docks[2][1] -= this._radius * 2 * this._scale;
         svg += this._rLineTo(0, this._radius);
         svg += this.lineTo(xx, this._y);
 
         svg += this._rLineTo(-this._expandX, 0);
 
-        svg += this._endBoolean(false);
+        svg += this._rLineTo(-this._radius * 1.5, 0);
+        svg += this._rLineTo(0, -this._radius);
+        svg += this._rLineTo(0, -this._strokeWidth);
+        svg += this._rLineTo(-this._strokeWidth, 0);
+        this._radius -= this._strokeWidth;
+        svg += this._rarcTo(-1, -1, 90, 0, 1);
+        this._radius += this._strokeWidth;
+        svg += this._closePath();
+        this.calculateWH(true);
+        svg += this.style();
+        svg += '</g>';
+
         this.margins[0] = (this._radius + this._strokeWidth) * this._scale;
         this.margins[1] = this._strokeWidth * this._scale;
         this.margins[2] = this._strokeWidth * this._scale;
 
         // Add a block label
         var tx = this._width - 2 * (this._innieX1 + this._innieX2) - 4 * this._strokeWidth;
-        var ty = this._height / 2 + this._fontSize / 2;
+        var ty = this._height / 2 + this._fontSize / 2; // + this._radius * this._scale;
         svg += this.text(tx / this._scale, ty / this._scale, this._fontSize, this._width, 'right', 'block_label');
 
         svg += this.footer();

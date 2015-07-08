@@ -342,7 +342,13 @@
   * Fixed sizing issue with arg clamps.
   * Renaming action blocks takes into account type of action block.
   * Added support for passing args to actions and returning values
-    (w/Amit Kumar Jha)
+    (w/Amit Kumar Jha).
+
+0.9
+  * Added How to Guide.
+  * Added URL argument to run projects i.e., ?file=foo.tb&run=True
+   (w/Amit Kumar Jha).
+  * Improved design of conditional blocks to stack more compactly.
 
 TODO:
   * Better model and view distinction in code
@@ -360,6 +366,7 @@ TODO:
   * Sugar datastore/toolbar support
   * Unit tests
   * Make error messages extendable with plugins.
+  * Improve design of boolean blocks a la conditional blocks.
 
 FEATURE IDEAS:
   * Local variables? (e.g., boxes only defined inside an action?) Note that
@@ -382,6 +389,7 @@ ISSUES:
     Do we auto-generate the protoblocks with the requisit number of arg slots?
 
 KNOWN BUGS:
+  * Named calcArg blocks don't appear on the palette.
   * Deleting palette entries when renaming actions is not working properly.
   * Sometimes change in size of arg blocks not auto-cascaded.
   * Not all blocks highlight when using step-by-step mode.

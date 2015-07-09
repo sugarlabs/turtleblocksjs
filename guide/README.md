@@ -170,7 +170,7 @@ Using the heading parameter, which changes each time the turtle changes directio
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters2.svg'</img>
 
-"Squiral" by Brian Silverman uses the heading and x parameter blocks. [RUN LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
+"Squiral" by Brian Silverman uses the Heading and X parameter blocks. [RUN LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 
 5. Conditionals
 ---------------
@@ -206,8 +206,8 @@ tone generation, and video playback.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media1.svg'</img>
 
-Using the show block to display text; the orientation of the text
-matches the orientation of the turtle.
+Using the Show block to display text; the orientation of the text
+matches the orientation of the turtle. [RUN LIVE](https://turtle.sugarlabs.org/?file=Media-1.tb&run=True)
 
 7. Sensors
 ----------
@@ -227,7 +227,7 @@ thief to a file. Turtle Blocks also makes it possible to save and
 restore sensor data from a file. Children may use a “URL” block to
 import data from a web page.
 
-Using sensors. The loudness block is used to determine if there is an
+Using sensors. The Loudness block is used to determine if there is an
 intruder. A loud sound triggers the alarm action: the turtle shouts
 “thief” and takes a picture of the intruder.
 

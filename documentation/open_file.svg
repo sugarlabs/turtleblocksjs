@@ -30,35 +30,35 @@
        color-interpolation-filters="sRGB"
        id="dropshadow">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur3003"
          stdDeviation="3"
-         id="feGaussianBlur3003" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset3005"
          result="offsetblur"
-         id="feOffset3005" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer3007">
         <feFuncA
-           type="linear"
+           id="feFuncA3009"
            slope="0.2"
-           id="feFuncA3009" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3011">
         <feMergeNode
            id="feMergeNode3013" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode3015" />
+           id="feMergeNode3015"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
   <path
      d="m 17,1 140,0 0,40 -140,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
      id="path3017"
-     style="fill:#987aff;fill-opacity:1;stroke:#8000fe;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+     style="fill:#7bbbb8;fill-opacity:1;stroke:#4c8585;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
      id="text3019"
      style="font-size:20px;text-anchor:start;fill:#000000;font-family:Sans">

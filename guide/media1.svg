@@ -18,28 +18,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow">
       <feGaussianBlur
-         id="feGaussianBlur3013"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur3013" />
       <feOffset
-         id="feOffset3015"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset3015" />
       <feComponentTransfer
          id="feComponentTransfer3017">
         <feFuncA
-           id="feFuncA3019"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA3019" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3021">
         <feMergeNode
            id="feMergeNode3023" />
         <feMergeNode
-           id="feMergeNode3025"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode3025" />
       </feMerge>
     </filter>
     <filter
@@ -47,28 +47,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-6">
       <feGaussianBlur
-         id="feGaussianBlur7"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur7" />
       <feOffset
-         id="feOffset9"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset9" />
       <feComponentTransfer
          id="feComponentTransfer11">
         <feFuncA
-           id="feFuncA13"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA13" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15">
         <feMergeNode
            id="feMergeNode17" />
         <feMergeNode
-           id="feMergeNode19"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode19" />
       </feMerge>
     </filter>
     <filter
@@ -76,28 +76,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-8">
       <feGaussianBlur
-         id="feGaussianBlur3087"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur3087" />
       <feOffset
-         id="feOffset3089"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset3089" />
       <feComponentTransfer
          id="feComponentTransfer3091">
         <feFuncA
-           id="feFuncA3093"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA3093" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3095">
         <feMergeNode
            id="feMergeNode3097" />
         <feMergeNode
-           id="feMergeNode3099"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode3099" />
       </feMerge>
     </filter>
     <filter
@@ -105,28 +105,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-7">
       <feGaussianBlur
-         id="feGaussianBlur3021"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur3021" />
       <feOffset
-         id="feOffset3023"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset3023" />
       <feComponentTransfer
          id="feComponentTransfer3025">
         <feFuncA
-           id="feFuncA3027"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA3027" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3029">
         <feMergeNode
            id="feMergeNode3031" />
         <feMergeNode
-           id="feMergeNode3033"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode3033" />
       </feMerge>
     </filter>
     <filter
@@ -134,28 +134,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-73">
       <feGaussianBlur
-         id="feGaussianBlur7-9"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur7-9" />
       <feOffset
-         id="feOffset9-8"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset9-8" />
       <feComponentTransfer
          id="feComponentTransfer11-4">
         <feFuncA
-           id="feFuncA13-9"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA13-9" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15-0">
         <feMergeNode
            id="feMergeNode17-2" />
         <feMergeNode
-           id="feMergeNode19-3"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode19-3" />
       </feMerge>
     </filter>
     <filter
@@ -163,28 +163,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-66">
       <feGaussianBlur
-         id="feGaussianBlur7-5"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur7-5" />
       <feOffset
-         id="feOffset9-5"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset9-5" />
       <feComponentTransfer
          id="feComponentTransfer11-6">
         <feFuncA
-           id="feFuncA13-95"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA13-95" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15-2">
         <feMergeNode
            id="feMergeNode17-21" />
         <feMergeNode
-           id="feMergeNode19-8"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode19-8" />
       </feMerge>
     </filter>
     <filter
@@ -192,28 +192,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-76">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur3110"
          stdDeviation="3"
-         id="feGaussianBlur3110" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset3112"
          result="offsetblur"
-         id="feOffset3112" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer3114">
         <feFuncA
-           type="linear"
+           id="feFuncA3116"
            slope="0.2"
-           id="feFuncA3116" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3118">
         <feMergeNode
            id="feMergeNode3120" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode3122" />
+           id="feMergeNode3122"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
     <filter
@@ -221,28 +221,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-2">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur3484"
          stdDeviation="3"
-         id="feGaussianBlur3484" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset3486"
          result="offsetblur"
-         id="feOffset3486" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer3488">
         <feFuncA
-           type="linear"
+           id="feFuncA3490"
            slope="0.2"
-           id="feFuncA3490" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3492">
         <feMergeNode
            id="feMergeNode3494" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode3496" />
+           id="feMergeNode3496"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
     <filter
@@ -250,28 +250,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-760">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur3083"
          stdDeviation="3"
-         id="feGaussianBlur3083" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset3085"
          result="offsetblur"
-         id="feOffset3085" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer3087">
         <feFuncA
-           type="linear"
+           id="feFuncA3089"
            slope="0.2"
-           id="feFuncA3089" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3091">
         <feMergeNode
            id="feMergeNode3093" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode3095" />
+           id="feMergeNode3095"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
     <filter
@@ -279,28 +279,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-62">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur3123"
          stdDeviation="3"
-         id="feGaussianBlur3123" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset3125"
          result="offsetblur"
-         id="feOffset3125" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer3127">
         <feFuncA
-           type="linear"
+           id="feFuncA3129"
            slope="0.2"
-           id="feFuncA3129" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3131">
         <feMergeNode
            id="feMergeNode3133" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode3135" />
+           id="feMergeNode3135"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
     <filter
@@ -308,28 +308,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-68">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur3158"
          stdDeviation="3"
-         id="feGaussianBlur3158" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset3160"
          result="offsetblur"
-         id="feOffset3160" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer3162">
         <feFuncA
-           type="linear"
+           id="feFuncA3164"
            slope="0.2"
-           id="feFuncA3164" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3166">
         <feMergeNode
            id="feMergeNode3168" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode3170" />
+           id="feMergeNode3170"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
     <filter
@@ -337,28 +337,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-4">
       <feGaussianBlur
-         in="SourceAlpha"
+         id="feGaussianBlur7-0"
          stdDeviation="3"
-         id="feGaussianBlur7-0" />
+         in="SourceAlpha" />
       <feOffset
-         dx="2"
-         dy="2"
+         id="feOffset9-52"
          result="offsetblur"
-         id="feOffset9-52" />
+         dy="2"
+         dx="2" />
       <feComponentTransfer
          id="feComponentTransfer11-8">
         <feFuncA
-           type="linear"
+           id="feFuncA13-3"
            slope="0.2"
-           id="feFuncA13-3" />
+           type="linear" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15-9">
         <feMergeNode
            id="feMergeNode17-4" />
         <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode19-9" />
+           id="feMergeNode19-9"
+           in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
@@ -670,7 +670,7 @@
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 60,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,34 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -60,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 8,8 0 0 1 1,75 L 1,67 1,25 1,17 z"
        id="path3498"
-       style="fill:#987aff;fill-opacity:1;stroke:#8000fe;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+       style="fill:#7bbbb8;fill-opacity:1;stroke:#4c8585;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
     <text
        id="text3500"
        style="font-size:20px;text-anchor:end;fill:#000000;font-family:Sans">
@@ -742,7 +742,7 @@
     <path
        d="m 17,1 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
        id="path21-1"
-       style="fill:#987aff;fill-opacity:1;stroke:#8000fe;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+       style="fill:#7bbbb8;fill-opacity:1;stroke:#4c8585;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
     <text
        x="38"
        id="text23-14"
@@ -809,7 +809,7 @@
     <path
        d="m 17,1 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
        id="path21-1-5"
-       style="fill:#987aff;fill-opacity:1;stroke:#8000fe;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+       style="fill:#7bbbb8;fill-opacity:1;stroke:#4c8585;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
     <text
        x="26"
        id="text23-14-6"

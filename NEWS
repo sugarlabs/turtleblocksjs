@@ -391,6 +391,8 @@ ISSUES:
     Do we auto-generate the protoblocks with the requisit number of arg slots?
 
 KNOWN BUGS:
+  * Text rotation not saved properly in SVG output.
+  * Block colors in documentation don't match current design.
   * Deleting palette entries when renaming actions is not working properly.
   * Sometimes change in size of arg blocks not auto-cascaded.
   * Not all blocks highlight when using step-by-step mode.

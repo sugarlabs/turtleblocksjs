@@ -34,6 +34,13 @@ back onto the palette. Click anywhere on a "stack" of blocks to start
 executing that stack or by clicking in the Rabbit (fast) or Turtle
 (slow) on the Main Toolbar.
 
+ABOUT THIS GUIDE
+----------------
+
+Many of the examples given in the guide have links to code you can
+run. Look for RUN LIVE links that will take you to
+http://turtle.sugarlabs.org.
+
 TO SQUARE
 ---------
 
@@ -189,8 +196,49 @@ A coin toss is such a common operation that we added the One-of block as a conve
 6. Multimedia
 -------------
 
+Turtle Blocks provides rich-media tools that enable the incorporation
+of sound, typography, images, and video.
+
+At the heart of the multimedia extensions is the Show block. It can be
+used to show text, image data from the web or the local file system,
+or a web camera. Other extensions include blocks for synthetic speech,
+tone generation, and video playback.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media1.svg'</img>
+
+Using the show block to display text; the orientation of the text
+matches the orientation of the turtle.
+
 7. Sensors
 ----------
+
+Seymour Papert’s idea of learning through making is well supported in
+Turtle Blocks. According to Papert, “learning happens especially
+felicitously in a context where the learner is consciously engaged in
+constructing a public entity, whether it’s a sand castle on the beach
+or a theory of the universe”. Research and development that supports
+and demonstrates the children’s learning benefits as they interact
+with the physical world continues to grow. In similar ways, children
+can communicate with the physical world using a variety of sensors in
+Turtle Blocks. Sensor blocks include keyboard input, sound, time,
+camera, mouse location, color that the turtle sees. For example,
+children may want to build a burglar alarm and save photos of the
+thief to a file. Turtle Blocks also makes it possible to save and
+restore sensor data from a file. Children may use a “URL” block to
+import data from a web page.
+
+Using sensors. The loudness block is used to determine if there is an
+intruder. A loud sound triggers the alarm action: the turtle shouts
+“thief” and takes a picture of the intruder.
+
+Teachers from the OLPC community have developed extensive collection
+of examples using Turtle Block sensors. Guzmán Trinidad, a physics
+teacher from Uruguay, wrote a book, Physics of the XO, which includes
+a wide variety of sensors and experiments. Tony Forster, an engineer
+from Australia, has also made remarkable contribution to the community
+by documenting examples using Turtle Blocks. In one example, Tony uses
+the XO laptop to experiments with motion, rolling a ball down a
+ramp. He made inexpensive sensor switches using aluminium foil.
 
 8. Example: Paint
 -----------------

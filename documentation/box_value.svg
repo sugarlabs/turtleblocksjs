@@ -11,54 +11,10 @@
    width="138"
    height="42"
    id="svg3153">
-  <metadata
-     id="metadata3182">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs3180">
-    <filter
-       height="1.3"
-       color-interpolation-filters="sRGB"
-       id="dropshadow">
-      <feGaussianBlur
-         in="SourceAlpha"
-         stdDeviation="3"
-         id="feGaussianBlur3158" />
-      <feOffset
-         dx="2"
-         dy="2"
-         result="offsetblur"
-         id="feOffset3160" />
-      <feComponentTransfer
-         id="feComponentTransfer3162">
-        <feFuncA
-           type="linear"
-           slope="0.2"
-           id="feFuncA3164" />
-      </feComponentTransfer>
-      <feMerge
-         id="feMerge3166">
-        <feMergeNode
-           id="feMergeNode3168" />
-        <feMergeNode
-           in="SourceGraphic"
-           id="feMergeNode3170" />
-      </feMerge>
-    </filter>
-  </defs>
   <path
      d="m 17,1 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
      id="path3172"
-     style="fill:#ffc000;fill-opacity:1;stroke:#c48d00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+     style="fill:#fd6600;fill-opacity:1;stroke:#ac3d00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
      id="text3174"
      style="font-size:20px;text-anchor:start;fill:#000000;font-family:Sans">

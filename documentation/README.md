@@ -116,8 +116,10 @@ Remove all blocks.
 
 Restore blocks from the trash.
 
-Basic Blocks
-------------
+---
+
+Turtle Palette
+--------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/clear.svg'</img>
 
@@ -162,6 +164,9 @@ Current x-coordinate value of the turtle (can be used in place of a number block
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/y.svg'</img>
 
 Current y-coordinate value of the turtle (can be used in place of a number block)
+
+Pen Palette
+-----------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_color.svg'</img>
 
@@ -231,6 +236,9 @@ Set the font of the text drawn with Show Block.
 
 Set the background color.
 
+Number Palette
+--------------
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/number.svg'</img>
 
 Use as numeric input in mathematic operators (click to change the value).
@@ -275,6 +283,9 @@ Returns top input modular (remainder) bottom input.
 
 A programmable block used to add advanced single-variable math equations, e.g., sin(x).
 
+Boolean Palette
+---------------
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/greater_than.svg'</img>
 
 Logical greater-than operator
@@ -298,6 +309,9 @@ Logical OR operator
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/not.svg'</img>
 
 Logical NOT operator
+
+Flow Palette
+------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/repeat.svg'</img>
 
@@ -331,6 +345,9 @@ Do-while-True operator that uses boolean operators to determine how long to run 
 
 If-then-else operator that uses boolean operators to determine which encloded "flow" to run
 
+Boxes Palette
+-------------
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/storein.svg'</img>
 
 Stores value in named variable.
@@ -350,6 +367,9 @@ Adds numeric value to named variable
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/box.svg'</img>
 
 Named variable (name is passed as input)
+
+Action Palette
+--------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/action_flow.svg'</img>
 
@@ -399,6 +419,9 @@ Connects an action with an event
 
 Broadcasts an event (event name is given as input)
 
+Media Palette
+-------------
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/speak.svg'</img>
 
 Speaks text
@@ -443,6 +466,9 @@ Plays a tone at frequency (Hz) and duration (in seconds)
 
 Converts notes to frequency, e.g., A4 --> 440 Hz.
 
+Sensor Palette
+--------------
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/time.svg'</img>
 
 Elapsed time (in seconds) since program started
@@ -474,6 +500,9 @@ Microphone input volume
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/click.svg'</img>
 
 The "click" event associated with a turtle (used with Do Block)
+
+Heap Palette
+------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/push.svg'</img>
 
@@ -514,6 +543,9 @@ Save the heap to a file (JSON-encoded).
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/load_heap.svg'</img>
 
 Load the heap from a file (JSON-encoded).
+
+Extras Palette
+--------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/vspace.svg'</img>
 

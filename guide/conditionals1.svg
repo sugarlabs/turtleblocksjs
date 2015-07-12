@@ -11,20 +11,6 @@
    width="872"
    height="360"
    id="svg2">
-  <metadata
-     id="metadata157">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs155" />
   <text
      x="298"
      y="115.03644"
@@ -134,7 +120,7 @@
   <path
      d="m 611,155.00001 0,-8 c 0,-4.18879 3.81121,-8 8,-8 l 8,0 0,4 20,0 0,-4 18,0 40,0 8,0 c 4.18879,0 8,3.81121 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 c 0,4.18879 -3.81121,8 -8,8 l -8,0 -40,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 c -2.61799,0 -5.21987,1.07773 -7.07107,2.92893 -1.8512,1.8512 -2.92893,4.45308 -2.92893,7.07107 l 0,8 0,50 0,8 c 0,2.61799 1.07773,5.21987 2.92893,7.07107 1.8512,1.8512 4.53124,3.56389 7.07107,2.92893 l 8,0 0,4 20,0 0,-4 16,0 0,12 0,12 0,8 c 0,4.18879 -3.81121,8 -8,8 l -8,0 -18,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 c -4.18879,0 -8,-3.81121 -8,-8 l 0,-8 z"
      id="path3035"
-     style="fill:#fd6600;fill-opacity:1;stroke:#ac3d00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+     style="fill:#e37a00;fill-opacity:1;stroke:#a34600;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
      x="610"
      y="138.00002"
@@ -289,7 +275,7 @@
       <path
          d="m 423,13 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
          id="path21-2"
-         style="fill:#987aff;fill-opacity:1;stroke:#8000fe;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+         style="fill:#7bbbb8;fill-opacity:1;stroke:#4c8585;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
       <text
          x="432"
          y="12"
@@ -390,7 +376,7 @@
     <path
        d="M 1,17 1,9 C 1,4.8112098 4.8112098,1 9,1 l 8,0 0,4 20,0 0,-4 18,0 40,0 8,0 c 4.18879,0 8,3.8112098 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 c 0,4.18879 -3.81121,8 -8,8 l -8,0 -40,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 c -2.617994,0 -5.219867,1.077731 -7.071068,2.928932 C 18.077731,45.780133 17,48.382006 17,51 l 0,8 0,92 0,8 c 0,2.61799 1.077731,5.21987 2.928932,7.07107 1.851201,1.8512 4.53124,3.56389 7.071068,2.92893 l 8,0 0,4 20,0 0,-4 16,0 0,12 0,12 0,8 c 0,4.18879 -3.936277,9.01593 -8,8 l -8,0 -18,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 c -4.1887902,0 -8,-3.81121 -8,-8 l 0,-8 z"
        id="path3035-2"
-       style="fill:#fd6600;fill-opacity:1;stroke:#ac3d00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+       style="fill:#e37a00;fill-opacity:1;stroke:#a34600;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
     <text
        id="text3037-4"
        style="font-size:20px;text-anchor:start;fill:#000000;font-family:Sans">
@@ -420,7 +406,7 @@
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 18,0 8,0 a 8,8 0 0 1 8,8 l 0,8 0,18 A 16,16 0 0 0 55,51 16,16 0 0 0 71,67 l 0,8 a 8,8 0 0 1 -8,8 l -8,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 10,10 0 0 0 17,93 l 0,8 0,8 0,8 a 10,10 0 0 0 10,10 l 8,0 0,4 20,0 0,-4 16,0 0,24 0,8 a 8,8 0 0 1 -8,8 l -8,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 10,10 0 0 0 -10,10 l 0,8 0,8 0,8 a 10,10 0 0 0 10,10 l 8,0 0,4 20,0 0,-4 16,0 0,12 0,12 0,8 a 8,8 0 0 1 -8,8 l -8,0 -18,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 z"
        id="path21-3"
-       style="fill:#fd6600;fill-opacity:1;stroke:#ac3d00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+       style="fill:#e37a00;fill-opacity:1;stroke:#a34600;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
     <text
        id="text23-00"
        style="font-size:20px;text-anchor:start;fill:#000000;font-family:sans-serif">
@@ -471,7 +457,7 @@
       <path
          d="m 423,13 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
          id="path21-2-7"
-         style="fill:#987aff;fill-opacity:1;stroke:#8000fe;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+         style="fill:#7bbbb8;fill-opacity:1;stroke:#4c8585;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
       <text
          x="432"
          y="12"
@@ -503,35 +489,6 @@
   <g
      transform="matrix(2,0,0,2,434,54)"
      id="g4">
-    <filter
-       height="1.3"
-       color-interpolation-filters="sRGB"
-       id="dropshadow-2">
-      <feGaussianBlur
-         id="feGaussianBlur7-96"
-         stdDeviation="3"
-         in="SourceAlpha" />
-      <feOffset
-         id="feOffset9-1"
-         result="offsetblur"
-         dy="2"
-         dx="2" />
-      <feComponentTransfer
-         id="feComponentTransfer11-7">
-        <feFuncA
-           id="feFuncA13-11"
-           slope="0.2"
-           type="linear" />
-      </feComponentTransfer>
-      <feMerge
-         id="feMerge15-9">
-        <feMergeNode
-           id="feMergeNode17-5" />
-        <feMergeNode
-           id="feMergeNode19-4"
-           in="SourceGraphic" />
-      </feMerge>
-    </filter>
     <path
        d="m 8.5,0.5 74,0 0,20 -74,0 0,-8 0,-1 -6,0 0,3 -2,0 0,-8 2,0 0,3 6,0 0,-1 z"
        id="path21-28"
@@ -568,7 +525,7 @@
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 84,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -84,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 8,8 0 0 1 1,33 l 0,-8 0,-8 z"
        id="path3097"
-       style="fill:#00c0e7;fill-opacity:1;stroke:#0081a9;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+       style="fill:#1d8989;fill-opacity:1;stroke:#005459;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
     <text
        id="text3099"
        style="font-size:20px;text-anchor:end;fill:#000000;font-family:Sans">
@@ -592,7 +549,7 @@
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 84,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -84,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 8,8 0 0 1 1,33 l 0,-8 0,-8 z"
        id="path3097-2"
-       style="fill:#00c0e7;fill-opacity:1;stroke:#0081a9;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
+       style="fill:#1d8989;fill-opacity:1;stroke:#005459;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
     <text
        id="text3099-1"
        style="font-size:20px;text-anchor:end;fill:#000000;font-family:Sans">

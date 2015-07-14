@@ -349,9 +349,9 @@ function Turtle (name, turtles) {
 
         // Clear all media.
         for (i = 0; i < this.media.length; i++) {
-            this.turtles.stage.removeChild(this.media[i]);
+            this.imageContainer.removeChild(this.media[i]);
+            delete this.media[i];
         }
-        // FIX ME: potential memory leak
         this.media = [];
 
         // Clear all graphics.

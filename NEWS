@@ -351,6 +351,7 @@
   * Improved design of conditional blocks to stack more compactly.
   * Found/fixed cornercase where named calcArg blocks didn't appear on
     the Actions palette.
+  * Fixed regression in clearing images on erase
 
 TODO:
   * Better model and view distinction in code

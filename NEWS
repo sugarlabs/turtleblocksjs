@@ -352,6 +352,8 @@
   * Found/fixed cornercase where named calcArg blocks didn't appear on
     the Actions palette.
   * Fixed regression in clearing images on erase
+  * Fixed problem with stray vspace blocks
+  * Fixed problem with disappearing palette entries
 
 TODO:
   * Better model and view distinction in code
@@ -407,8 +409,8 @@ KNOWN BUGS:
   * Sometimes clamp block highlight scale is too large.
   * Sometimes docking position is not scaled properly when dragging block
     after block resize.
-  * Second vspace block is not positioned properly.
   * Sometimes collapses blocks get moved.
+  * Polar coordinate grid not centered under some circumstances.
 
 ANDROID-SPECIFIC BUGS:
   * Camera doesn't work on Android

@@ -435,8 +435,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     var lastDock = last(myBlock.docks);
                     var dx = lastDock[0] - vspaceBlock.docks[0][0];
                     var dy = lastDock[1] - vspaceBlock.docks[0][1];
+                    vspaceBlock.x = myBlock.container.x + dx;
+                    vspaceBlock.y = myBlock.container.y + dy;
                     vspaceBlock.container.x = myBlock.container.x + dx;
-                    vspaceBlock.container.y = myBlock.container.x + dy;
+                    vspaceBlock.container.y = myBlock.container.y + dy;
                     vspaceBlock.connections[0] = blk;
                     vspaceBlock.connections[1] = nextBlock;
                     myBlock.connections[myBlock.connections.length - 1] = vspace;

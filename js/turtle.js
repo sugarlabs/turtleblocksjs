@@ -349,7 +349,9 @@ function Turtle (name, turtles) {
 
         // Clear all media.
         for (i = 0; i < this.media.length; i++) {
+            // Could be in the image Container or the Stage
             this.imageContainer.removeChild(this.media[i]);
+            this.turtles.stage.removeChild(this.media[i]);
             delete this.media[i];
         }
         this.media = [];

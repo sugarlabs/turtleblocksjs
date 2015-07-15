@@ -102,6 +102,7 @@ color (0 to 100)
 
 A SHOEBOX
 ---------
+
 When explaining boxes in workshops, I often use a shoebox. I have
 someone write a number on a piece of paper and put it in the
 shoebox. I then ask repeatedly, "What is the number in the box?" Once
@@ -112,6 +113,7 @@ it multiple times from multiple places in your program.
 
 2. Boxes
 --------
+
 Boxes let you store an object, e.g., a number, and then refer to the
 object by using the name of the box. (Whenever you name a box, a new
 block is created on the Boxes palette that lets you access the content
@@ -139,6 +141,7 @@ geometrically instead of arithmetically.
 
 3. Action Stacks
 ----------------
+
 With Turtle Blocks there is an opportunity for the learner to expand
 upon the language, taking the conversation in directions unanticipated
 by the Turtle Block developers.
@@ -186,6 +189,7 @@ To make other changes to a parameter based on the current value, use the paramet
 
 5. Conditionals
 ---------------
+
 Conditionals are a powerful tool in computing. They let your program
 behave differently under differing circumstances. The basic idea is
 that if a condition is true, then take some action. Variants include
@@ -251,18 +255,28 @@ thief to a file. Turtle Blocks also makes it possible to save and
 restore sensor data from a file. Children may use a “URL” block to
 import data from a web page.
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/sensors1.svg'</img>
+
 Using sensors. The Loudness block is used to determine if there is an
 intruder. A loud sound triggers the alarm action: the turtle shouts
-“thief” and takes a picture of the intruder.
+“intruder” and takes a picture of the intruder.
 
-Teachers from the OLPC community have developed extensive collection
+Teachers from the Sugar community have developed extensive collection
 of examples using Turtle Block sensors. Guzmán Trinidad, a physics
 teacher from Uruguay, wrote a book, Physics of the XO, which includes
 a wide variety of sensors and experiments. Tony Forster, an engineer
-from Australia, has also made remarkable contribution to the community
-by documenting examples using Turtle Blocks. In one example, Tony uses
-the XO laptop to experiments with motion, rolling a ball down a
-ramp. He made inexpensive sensor switches using aluminium foil.
+from Australia, has also made remarkable contributions to the
+community by documenting examples using Turtle Blocks. In one example,
+Tony uses the series of switches to measure gravitational
+acceleration; a ball rolling down a ramp trips the switches in
+sequence. Examining the time between switch events can be used to
+determine the gravitational constant.
+
+One of the typical challenges of using sensors is calibration. This is
+true as well in Turtle Blocks. The typical project life-cycle
+includes: (1) reading values; (2) plotting values as they change over
+time; (3) finding minimum and maximum values; and finally (4)
+incorporating the sensor block in a Turtle program.
 
 8. Example: Paint
 -----------------
@@ -299,8 +313,17 @@ In another example, inspired by a student in a workshop in Colombia, we use time
 9. Example: Slide Show
 ----------------------
 
-10. Turtles and Sprites
------------------------
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/slideshow1.svg'</img>
+
+Why use Powerpoint when you can write Powerpoint? In this example, an
+Action stack is used to detect keyboard input: if the keyboard value
+is zero, then no key has been pressed, so we call the action again. If
+a key is pressed, the keyboard value is greater than zero, so we
+return from the action and show the next image.
+
+
+10. Turtles, Sprites, and Buttons
+---------------------------------
 
 11. The Heap
 ------------
@@ -310,6 +333,7 @@ In another example, inspired by a student in a workshop in Colombia, we use time
 
 13. Example: Fibonacci
 ----------------------
+
 Calculating the Fibonacci sequence is often done using a resursive method. In the example below, we pass an argument to the Fib action, which returns a value if the argument is &lt; 2; otherwise it returns the sum of the result of calling the Fib action with argument - 1 and argument - 2.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci1.svg'</img>

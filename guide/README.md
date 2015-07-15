@@ -172,6 +172,18 @@ Using the heading parameter, which changes each time the turtle changes directio
 
 "Squiral" by Brian Silverman uses the Heading and X parameter blocks. [RUN LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters3.svg'</img>
+
+Often you want to just increment a parameter by 1. For this, use the Add-1-to block.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters4.svg'</img>
+
+To increment (or decrement) a parameter by an arbitrary value, use the Add-to block.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters5.svg'</img>
+
+To make other changes to a parameter based on the current value, use the parameter's Set block. In this example, the pen size is doubled with each step in the iteration.
+
 5. Conditionals
 ---------------
 Conditionals are a powerful tool in computing. They let your program

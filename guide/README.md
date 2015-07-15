@@ -221,6 +221,18 @@ tone generation, and video playback.
 Using the Show block to display text; the orientation of the text
 matches the orientation of the turtle. [RUN LIVE](https://turtle.sugarlabs.org/?file=Media-1.tb&run=True)
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media2.svg'</img>
+
+You can also use the Show block to show images. Clicking on the Image block (left) will open a file browser. After selecting an image file (PNG, JPG, SVG, etc.) a thumbnail will appear on the Image block (right).
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media3.svg'</img>
+
+The Show block in combination with the Camera block will capture and display an image from a webcam.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media4.svg'</img>
+
+The Show block can also be used in conjunction with a URL that points to media.
+
 7. Sensors
 ----------
 

@@ -139,6 +139,14 @@ multiply the content of the box by 1.2 and store the result in the
 box. The result in this case is also a spiral, but one that grows
 geometrically instead of arithmetically.
 
+In practice, the use of boxes is not unlike the use of keyword-value
+pairs in text-based programming languages. The keyword is the name of
+the box and the value associated with the keyword is the value stored
+in the box. You can have as many boxes as you'd like (until you run
+out of memory) and treat the boxes as if they were a dictionary. Note
+that the boxes are global, meaning all turtles and all action stacks
+share the same collection of boxes.
+
 3. Action Stacks
 ----------------
 
@@ -405,7 +413,8 @@ toss a pair of dice 100 times (example inspired by Tony Forster).
 
 Rather than specifying a box to hold each possible result (2 through
 12), we use a box as a counter (index) and create a box with the name
-of the current value in the counter and store in that box a 0.
+of the current value in the counter and store in that box a value of
+0.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes5.svg'</img>
 
@@ -429,6 +438,39 @@ accumulated number of times that the dice toss resulted in a 3; etc.
 
 11. The Heap
 ------------
+
+Sometimes you need a place to temporarily store data. One way to do it
+is with boxes (as mentioned at the end of the Boxes section of this
+guide, they can be used as a dictionary or individual keyword-value
+pairs). However, sometimes it is nice to simply use a heap.
+
+A heap is a essential a pile. The first thing you put on the heap is
+on the bottom. The last thing you put on the heap is on the top. You
+put things onto the heap using the Push block. You take things off of
+the heap using the Pop block. In Turtle Blocks, the heap is first-in
+last-out (FILO), so you pop things off of the heap in the reverse
+order in which you put them onto the heap.
+
+There is also an Index block that lets you refer to an item in the
+heap by an index. This essentially lets you treat the heap as an
+array. Some other useful blocks include a block to empty the heap, a
+block that returns the length of the heap, a block that saves the heap
+to a file, and a block that loads the heap from a file.
+
+In the examples below we use the heap to store a drawing made with a
+paint program similar to the previous examples and then to playback
+the drawing by popping points off of the heap.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap1.svg'</img>
+
+In the first example, we simply push the turtle position whenever we
+draw, along with the pen state. Note since we pop in the reverse order
+that we push, we push y, then x, then the mouse state.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap2.svg'</img>
+
+In the second example, we pop pen state, x, and y off of the heap and
+playback our drawing.
 
 12. Extras
 ----------

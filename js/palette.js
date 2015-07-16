@@ -1349,9 +1349,9 @@ function loadPaletteMenuItemHandler(palette, blk, blkname) {
             palette.protoContainers[blkname].mask = null;
         }
         moved = false;
-        // No need to recalculate saveX, saveY (prevents lost palette entry)
+        // No need to recalculate saveX (prevents lost palette entry)
         // saveX = palette.protoContainers[blkname].x;
-        // saveY = palette.protoContainers[blkname].y - palette.scrollDiff;
+        saveY = palette.protoContainers[blkname].y - palette.scrollDiff;
         var startX = event.stageX;
         var startY = event.stageY;
         var lastY = event.stageY;

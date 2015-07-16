@@ -394,6 +394,31 @@ Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.t
 10. Advanced Boxes
 ------------------
 
+Sometimes it is more convenient to compute the name of a box than to
+specify it explicitly. (Note that a similar mechanism is available for
+computing the names of actions.)
+
+In the following examples, we use this to accumulate the results of
+toss a pair of dice 100 times.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes4.svg'</img>
+
+Rather than specifying a box to hold each possible result (2 through
+12), we use a box as a counter (index) and create a box with the name
+of the current value in the counter and store in that box a 0.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes5.svg'</img>
+
+Next we add an action to toss the dice 100 times. To simulate tossing
+a pair of dice, we sum two random numbers between 1 and 6. We use the
+result as the name of the box we want to increment. So for example, if
+we throw a 7, we add one to the box named 7. In this way we increment
+the value in the appropriate box.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes6.svg'</img>
+
+Finally, we plot the results. Again, we use a box as a counter and call the plot action with counter as its argument. In the bar action, we draw a rectangle of length value-in-box-with-name-argument.
+
 11. The Heap
 ------------
 

@@ -278,8 +278,8 @@ includes: (1) reading values; (2) plotting values as they change over
 time; (3) finding minimum and maximum values; and finally (4)
 incorporating the sensor block in a Turtle program.
 
-8. Example: Paint
------------------
+Example: Paint
+--------------
 
 As described in the Sensors section, Turtle Blocks enables the
 programmer/artist to incorporate sensors into their work. Among the
@@ -310,8 +310,8 @@ In this example, we change the pen size based on the volume of microphone input.
 
 In another example, inspired by a student in a workshop in Colombia, we use time to change both the pen color and the pen size. [RUN LIVE](http://turtle.sugarlabs.org/?file=Paint-4.tb&run=true)
 
-9. Example: Slide Show
-----------------------
+Example: Slide Show
+-------------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/slideshow1.svg'</img>
 
@@ -322,17 +322,39 @@ a key is pressed, the keyboard value is greater than zero, so we
 return from the action and show the next image.
 
 
-10. Turtles, Sprites, and Buttons
+8. Turtles, Sprites, and Buttons
 ---------------------------------
 
-11. The Heap
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles1.svg'</img>
+
+A separate turtle is created for each Start block. The turtles run
+their code in parallel with each other whenever the Run button is
+clicked. Each turtle maintains its own set of parameters for position,
+color, pen size, pen state, etc. In this example, three different
+turtles draw three different shapes.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles2.svg'</img>
+
+Custom graphics can be applied to the turtles, using the Shell block
+on the Media palette. Thus you can treat turtles as sprites that can
+be moved around the screen. In this example, the sprite changes back
+and forth between two states as it moves across the screen.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles3.svg'</img>
+
+Turtles can be programmed to respond to a "click" event, so they can
+be used as buttons. In this example, each time the turtle is clicked,
+the action is run, which move the turtle to a random location on the
+screen.
+
+9. The Heap
 ------------
 
-12. Advanced Actions
+10. Advanced Actions
 --------------------
 
-13. Example: Fibonacci
-----------------------
+Example: Fibonacci
+------------------
 
 Calculating the Fibonacci sequence is often done using a resursive method. In the example below, we pass an argument to the Fib action, which returns a value if the argument is &lt; 2; otherwise it returns the sum of the result of calling the Fib action with argument - 1 and argument - 2.
 
@@ -340,14 +362,14 @@ Calculating the Fibonacci sequence is often done using a resursive method. In th
 
 Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
 
-14. Advanced Boxes
+11. Advanced Boxes
 ------------------
 
-15. Extras
+12. Extras
 ----------
 
-16. Debugging Aids
+13. Debugging Aids
 ------------------
 
-17. Plugins
+14. Plugins
 -----------

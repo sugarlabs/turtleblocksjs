@@ -322,8 +322,8 @@ a key is pressed, the keyboard value is greater than zero, so we
 return from the action and show the next image.
 
 
-8. Turtles, Sprites, and Buttons
----------------------------------
+8. Turtles, Sprites, Buttons, and Events
+----------------------------------------
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles1.svg'</img>
 
@@ -346,6 +346,13 @@ Turtles can be programmed to respond to a "click" event, so they can
 be used as buttons. In this example, each time the turtle is clicked,
 the action is run, which move the turtle to a random location on the
 screen.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles4.svg'</img>
+
+Events can be broadcast as well. In this example, another variant on
+Paint, turtle "buttons", which listen for "click" events, are used to
+broadcast change-color events. The turtle used as the paintbrush is
+listening for these events.
 
 9. The Heap
 ------------

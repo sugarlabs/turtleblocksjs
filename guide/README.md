@@ -354,11 +354,33 @@ Paint, turtle "buttons", which listen for "click" events, are used to
 broadcast change-color events. The turtle used as the paintbrush is
 listening for these events.
 
-9. The Heap
-------------
-
-10. Advanced Actions
+9. Advanced Actions
 --------------------
+
+Sometime you might want an action to not just run a stack of blocks
+but also to return a value. This is the role of the return block. If
+you put a return block into a stack, then the action stack because a
+calculate stack.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions3.svg'</img>
+
+In this example, a calculate stack is used to return the current
+distance of the turtle from the center of the screen. Renaming an
+action stack that has a return block will cause the creation of a new
+block in the Actions palette that can be used to reference the return
+value: in this case, a distance block is created.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions4.svg'</img>
+
+You can also pass arguments to an action stack. In this example, we
+calculate the distance between the turtle and an arbitrary point on
+the screen by passing x and y coordinates in the calculate
+block. (Note that you add additional arguments by dragging them into
+the "clamp".)
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions5.svg'</img>
+
+Args are local to action stacks, but boxes are not. If you planned to use the distance function in the previous example in a recursive function, you would be better to avoid boxes as per this example.
 
 Example: Fibonacci
 ------------------
@@ -369,8 +391,11 @@ Calculating the Fibonacci sequence is often done using a resursive method. In th
 
 Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
 
-11. Advanced Boxes
+10. Advanced Boxes
 ------------------
+
+11. The Heap
+------------
 
 12. Extras
 ----------

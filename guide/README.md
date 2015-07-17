@@ -427,14 +427,14 @@ the value in the appropriate box.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes6.svg'</img>
 
 Finally, we plot the results. Again, we use a box as a counter (index)
-and call the plot action with counter as its argument. In the bar
-action, we draw a rectangle of length value stored in the box with the
-name of the argument to the bar action (the current value of
-index). E.g., when the value in the index box is 2, the turtle goes
-forward by the value in box 2, which is the accumulated number of
-times that the dice toss resulted in a 2; when the value in the index
-box is 3, the turtle goes forward by the value in box 3, which is the
-accumulated number of times that the dice toss resulted in a 3; etc.
+and call the plot action in a loop. In the bar action, we draw a
+rectangle of length value stored in the box with the name of the
+current value of the index. E.g., when the value in the index box is
+2, the turtle goes forward by the value in box 2, which is the
+accumulated number of times that the dice toss resulted in a 2; when
+the value in the index box is 3, the turtle goes forward by the value
+in box 3, which is the accumulated number of times that the dice toss
+resulted in a 3; etc.
 
 11. The Heap
 ------------
@@ -480,3 +480,6 @@ playback our drawing.
 
 14. Plugins
 -----------
+
+15. Advanced Color
+------------------

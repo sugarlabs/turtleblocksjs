@@ -512,6 +512,16 @@ function initBasicProtoBlocks(palettes, blocks) {
     returnBlock.defaults.push(_('100'));
     returnBlock.dockTypes[1] = 'anyin';
 
+    var returnToUrlBlock = new ProtoBlock('returnToUrl');
+    returnToUrlBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['returnToUrl'] = returnToUrlBlock;
+    returnToUrlBlock.staticLabels.push(_('return to URL'));
+    returnToUrlBlock.extraWidth = 10;
+    returnToUrlBlock.adjustWidthToLabel();
+    returnToUrlBlock.oneArgBlock();
+    returnToUrlBlock.defaults.push(_('100'));
+    returnToUrlBlock.dockTypes[1] = 'anyin';
+
     var calcBlock = new ProtoBlock('calc');
     calcBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['calc'] = calcBlock;

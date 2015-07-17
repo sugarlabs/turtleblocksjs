@@ -218,12 +218,12 @@ define(function(require) {
             blocksContainer.y = 0;
         }
 
-        function doFastButton() {
+        function doFastButton(env) {
             logo.setTurtleDelay(0);
             if (!turtles.running()) {
-                logo.runLogoCommands();
+                logo.runLogoCommands(null, env);
             } else {
-                logo.step();
+                logo.step(null, env);
             }
         }
 
@@ -540,6 +540,7 @@ define(function(require) {
             onResize();
 
             var urlParts;
+            var env = [];
 
             if (URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
@@ -555,6 +556,35 @@ define(function(require) {
                                 case 'run':
                                     if (args[1].toLowerCase() == 'true')
                                         runProjectOnLoad = true;
+                                    break;
+                                case 'inurl':
+                                    var url = args[1];
+                                    var getJSON = function(url) {
+                                        return new Promise(function(resolve, reject) {
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open('get', url, true);
+                                        xhr.responseType = 'json';
+                                        xhr.onload = function() {
+                                          var status = xhr.status;
+                                          if (status == 200) {
+                                            resolve(xhr.response);
+                                          } else {
+                                            reject(status);
+                                          }
+                                        };
+                                        xhr.send();
+                                      });
+                                    };
+                                    getJSON(url).then(function(data) {
+                                        console.log('Your Json result is:  ' + data.arg); //you can comment this, i used it to debug
+                                        n = data.arg;
+                                        env.push(parseInt(n));
+                                    }, function(status) { //error detection....
+                                      alert('Something went wrong.');
+                                    });
+                                    break;
+                                case 'outurl':
+                                    var url = args[1];
                                     break;
                                 default:
                                     errorMsg("Invalid parameters");
@@ -572,7 +602,7 @@ define(function(require) {
             }
 
             if (projectName != null) {
-                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName, runProjectOnLoad); }, 2000);
+                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName, runProjectOnLoad, env); }, 2000);
             } else {
                 setTimeout(function () { loadStart(); }, 2000);
             }
@@ -1066,7 +1096,7 @@ define(function(require) {
                       window.btoa(unescape(encodeURIComponent(svgData)));
         }
 
-        function loadProject(projectName, run) {
+        function loadProject(projectName, run, env) {
             //set default value of run
             run = typeof run !== 'undefined' ? run : false;
             // Show busy cursor.
@@ -1097,7 +1127,7 @@ define(function(require) {
             if (run) {
                 setTimeout(function() {
                     changeBlockVisibility();
-                    doFastButton();
+                    doFastButton(env);
                 },2000);
             }
             docById('loading-image-container').style.display = 'none';

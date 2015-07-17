@@ -246,7 +246,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
     }
 
-    this.runLogoCommands = function(startHere) {
+    this.runLogoCommands = function(startHere , env) {
         // Save the state before running.
         this.saveLocally();
 
@@ -363,7 +363,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             this.unhightlightQueue[turtle] = [];
             this.parameterQueue[turtle] = [];
             this.turtles.turtleList[turtle].running = true;
-            this.runFromBlock(this, turtle, startHere, 0, null);
+            this.runFromBlock(this, turtle, startHere, 0, env);
         } else if (startBlocks.length > 0) {
             // If there are start blocks, run them all.
             for (var b = 0; b < startBlocks.length; b++) {
@@ -375,7 +375,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (!this.turtles.turtleList[turtle].trash) {
                     console.log('running from turtle ' + turtle);
                     this.turtles.turtleList[turtle].running = true;
-                    this.runFromBlock(this, turtle, startBlocks[b], 0, null);
+                    this.runFromBlock(this, turtle, startBlocks[b], 0, env);
                 }
             }
         } else {
@@ -418,7 +418,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         }
                         // This is a degenerative case.
                         this.turtles.turtleList[0].running = true;
-                        this.runFromBlock(this, 0, this.blocks.stackList[blk], 0, null);
+                        this.runFromBlock(this, 0, this.blocks.stackList[blk], 0, env);
                     }
                 }
             }
@@ -854,6 +854,40 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     logo.returns.push(args[0]);
                 }
                 break;
+            case 'returnToUrl':
+                var URL = window.location.href;
+                var urlParts;
+                var outurl;
+                if (URL.indexOf('?') > 0) {
+                    var urlParts = URL.split('?');
+                    if (urlParts[1].indexOf('&') >0) {
+                        var newUrlParts = urlParts[1].split('&');
+                        for (var i = 0; i < newUrlParts.length; i++) {
+                            if (newUrlParts[i].indexOf('=') > 0) {
+                                var tempargs = newUrlParts[i].split('=');
+                                switch (tempargs[0].toLowerCase()) {
+                                    case 'outurl':
+                                        outurl = tempargs[1];
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (args.length == 1) {
+                    var jsonRet = {};
+                    jsonRet["result"] = args[0];
+                    var json= JSON.stringify(jsonRet);
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open("POST",outurl, true);
+                    xmlHttp.onreadystatechange = function() {//Call a function when the state changes.
+                        if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                            alert(xmlHttp.responseText);
+                        }
+                    }
+                    xmlHttp.send(json);
+                }
+                break;
             case 'forward':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
@@ -1043,7 +1077,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
             case 'pendown':
                 logo.turtles.turtleList[turtle].doPenDown();
                 break;
-	    case 'openProject':
+        case 'openProject':
                 url = args[0];
                 function ValidURL(str) {
                     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -1194,7 +1228,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     if (args.length != 1) {
                         logo.errorMsg(_('You need to select a file.'));
                     } else {
-                        try { 
+                        try {
                             console.log(blocks.blockList[c].value);
                             logo.turtleHeaps[turtle] = JSON.parse(blocks.blockList[c].value[1]);
                             if (!Array.isArray(logo.turtleHeaps[turtle])) {
@@ -1240,11 +1274,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
             case 'saveHeapToApp':
                 var name = args[0];
                 var url = args[1];
-                var data = JSON.stringify({ x: 5, y: 6 });
-                var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("POST", url, true);
-                    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                    xmlHttp.send(data);
+                //var data = JSON.stringify({ x: 5, y: 6 });
                 if (name in logo.turtleHeaps) {
                     var data = JSON.stringify(logo.turtleHeaps[name]);
                     var xmlHttp = new XMLHttpRequest();
@@ -1522,6 +1552,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     var action_args = [];
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var name = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
+                    action_args = receivedArg ;
                     if (name in logo.actions) {
                         logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args)
                             logo.blocks.blockList[blk].value = logo.returns.shift();
@@ -1580,7 +1611,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     break;
                 case 'namedarg' :
                     var name = logo.blocks.blockList[blk].privateData;
-                    var action_args=receivedArg
+                    var action_args = receivedArg;
                     if(action_args.length >= Number(name)){
                         var value = action_args[Number(name)-1];
                         logo.blocks.blockList[blk].value = value;

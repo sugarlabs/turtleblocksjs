@@ -129,7 +129,9 @@ Putting a value in a box and then referring to the value in box
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes2.svg'</img>
 
-We can change the value in a box as the program runs. Here we add 10 to the value in the box with each iteration. The result in this case is a spiral, since the turtle goes forward further with each step.
+We can change the value in a box as the program runs. Here we add 10
+to the value in the box with each iteration. The result in this case
+is a spiral, since the turtle goes forward further with each step.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes3.svg'</img>
 
@@ -170,30 +172,47 @@ Defining an action to create a new block, "square"
 
 Using the "square" block
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions3.svg'</img>
+
+The Do block lets you specify an action by name. In this example, we
+choose "one of" two names, "square" and "triangle" to determine which
+action to take.
+
 4. Parameters
 -------------
 
-Parameter blocks hold a value that represents the state of some turtle attribute, e.g., the x or y position of the turtle, the heading of the turtle, the color of the pen, the size of the pen, etc. You can use parameter blocks interchangeably with number blocks. You can change their values with the Add block or with the corresponding set blocks.
+Parameter blocks hold a value that represents the state of some turtle
+attribute, e.g., the x or y position of the turtle, the heading of the
+turtle, the color of the pen, the size of the pen, etc. You can use
+parameter blocks interchangeably with number blocks. You can change
+their values with the Add block or with the corresponding set blocks.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters1.svg'</img>
 
-Using the heading parameter, which changes each time the turtle changes direction, to change the color of a spiral
+Using the heading parameter, which changes each time the turtle
+changes direction, to change the color of a spiral
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters2.svg'</img>
 
-"Squiral" by Brian Silverman uses the Heading and X parameter blocks. [RUN LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
+"Squiral" by Brian Silverman uses the Heading and X parameter
+blocks. [RUN
+LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters3.svg'</img>
 
-Often you want to just increment a parameter by 1. For this, use the Add-1-to block.
+Often you want to just increment a parameter by 1. For this, use the
+Add-1-to block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters4.svg'</img>
 
-To increment (or decrement) a parameter by an arbitrary value, use the Add-to block.
+To increment (or decrement) a parameter by an arbitrary value, use the
+Add-to block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters5.svg'</img>
 
-To make other changes to a parameter based on the current value, use the parameter's Set block. In this example, the pen size is doubled with each step in the iteration.
+To make other changes to a parameter based on the current value, use
+the parameter's Set block. In this example, the pen size is doubled
+with each step in the iteration.
 
 5. Conditionals
 ---------------
@@ -207,7 +226,9 @@ and not.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals1.svg'</img>
 
-Using a conditonal to select a color: Once the heading > 179, the color changes. [RUN LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
+Using a conditonal to select a color: Once the heading > 179, the
+color changes. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals2.svg'</img>
 
@@ -215,7 +236,8 @@ Conditionals along with the Random block can be used to simulate a coin toss.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals3.svg'</img>
 
-A coin toss is such a common operation that we added the One-of block as a convenience.
+A coin toss is such a common operation that we added the One-of block
+as a convenience.
 
 6. Multimedia
 -------------
@@ -231,15 +253,20 @@ tone generation, and video playback.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media1.svg'</img>
 
 Using the Show block to display text; the orientation of the text
-matches the orientation of the turtle. [RUN LIVE](https://turtle.sugarlabs.org/?file=Media-1.tb&run=True)
+matches the orientation of the turtle. [RUN
+LIVE](https://turtle.sugarlabs.org/?file=Media-1.tb&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media2.svg'</img>
 
-You can also use the Show block to show images. Clicking on the Image block (left) will open a file browser. After selecting an image file (PNG, JPG, SVG, etc.) a thumbnail will appear on the Image block (right).
+You can also use the Show block to show images. Clicking on the Image
+block (left) will open a file browser. After selecting an image file
+(PNG, JPG, SVG, etc.) a thumbnail will appear on the Image block
+(right).
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media3.svg'</img>
 
-The Show block in combination with the Camera block will capture and display an image from a webcam.
+The Show block in combination with the Camera block will capture and
+display an image from a webcam.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media4.svg'</img>
 
@@ -304,19 +331,24 @@ paint program, they become deeply engaged. How will you modify paint?
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint1.svg'</img>
 
-In its simplest form, paint is just a matter of moving the turtle to whereever the mouse is positioned.
+In its simplest form, paint is just a matter of moving the turtle to
+whereever the mouse is positioned.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint2.svg'</img>
 
-Adding a test for the mouse button lets us move the turtle without leaving a trail of ink.
+Adding a test for the mouse button lets us move the turtle without
+leaving a trail of ink.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint3.svg'</img>
 
-In this example, we change the pen size based on the volume of microphone input.
+In this example, we change the pen size based on the volume of
+microphone input.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint4.svg'</img>
 
-In another example, inspired by a student in a workshop in Colombia, we use time to change both the pen color and the pen size. [RUN LIVE](http://turtle.sugarlabs.org/?file=Paint-4.tb&run=true)
+In another example, inspired by a student in a workshop in Colombia,
+we use time to change both the pen color and the pen size. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Paint-4.tb&run=true)
 
 Example: Slide Show
 -------------------
@@ -388,12 +420,18 @@ the "clamp".)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions5.svg'</img>
 
-Args are local to action stacks, but boxes are not. If you planned to use the distance function in the previous example in a recursive function, you would be better to avoid boxes as per this example.
+Args are local to action stacks, but boxes are not. If you planned to
+use the distance function in the previous example in a recursive
+function, you would be better to avoid boxes as per this example.
 
 Example: Fibonacci
 ------------------
 
-Calculating the Fibonacci sequence is often done using a resursive method. In the example below, we pass an argument to the Fib action, which returns a value if the argument is &lt; 2; otherwise it returns the sum of the result of calling the Fib action with argument - 1 and argument - 2.
+Calculating the Fibonacci sequence is often done using a resursive
+method. In the example below, we pass an argument to the Fib action,
+which returns a value if the argument is &lt; 2; otherwise it returns
+the sum of the result of calling the Fib action with argument - 1 and
+argument - 2.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci1.svg'</img>
 
@@ -403,8 +441,8 @@ Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.t
 ------------------
 
 Sometimes it is more convenient to compute the name of a box than to
-specify it explicitly. (Note that a similar mechanism is available for
-computing the names of actions.)
+specify it explicitly. (Note that the Do block affrds a similar
+mechanism for computing the names of actions.)
 
 In the following examples, we use this to accumulate the results of
 toss a pair of dice 100 times (example inspired by Tony Forster).
@@ -490,7 +528,16 @@ project's output in different ways.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/extras1.svg'</img>
 
-The Save as SVG block will save your drawing as simple vector graphics (SVG), a format compatible with HTML5 and many image manipulation programs, e.g., Inkscake. In the example above, we use it to save a design in a from that can be converted to STL, a common file format used by 3D printers. A few things to take note of: (1) the No Background block is used to suppress the inclusion of the background fill in the SVG output; (2) hollow lines are used to make graphic have dimension; and (3) the Save as SVG block writes to the Downloads directory on your computer. (Josh Burker introduced me to Tinkercad, a website that can be used to convert SVG to STL.)
+The Save as SVG block will save your drawing as simple vector graphics
+(SVG), a format compatible with HTML5 and many image manipulation
+programs, e.g., Inkscake. In the example above, we use it to save a
+design in a from that can be converted to STL, a common file format
+used by 3D printers. A few things to take note of: (1) the No
+Background block is used to suppress the inclusion of the background
+fill in the SVG output; (2) hollow lines are used to make graphic have
+dimension; and (3) the Save as SVG block writes to the Downloads
+directory on your computer. (Josh Burker introduced me to Tinkercad, a
+website that can be used to convert SVG to STL.)
 
 Open project
 

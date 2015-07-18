@@ -472,6 +472,16 @@ that we push, we push y, then x, then the mouse state.
 In the second example, we pop pen state, x, and y off of the heap and
 playback our drawing.
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap3.svg'</img>
+
+Use the Save Heap block to save the state of the heap to a file. In
+this example, we save our drawing to a file for playback later.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap4.svg'</img>
+
+Use the Load Heap block to load the heap from data saved in a file. In
+this example, we playback the drawing from data stored in a file.
+
 12. Extras
 ----------
 
@@ -481,9 +491,6 @@ project's output in different ways.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/extras1.svg'</img>
 
 The Save as SVG block will save your drawing as simple vector graphics (SVG), a format compatible with HTML5 and many image manipulation programs, e.g., Inkscake. In the example above, we use it to save a design in a from that can be converted to STL, a common file format used by 3D printers. A few things to take note of: (1) the No Background block is used to suppress the inclusion of the background fill in the SVG output; (2) hollow lines are used to make graphic have dimension; and (3) the Save as SVG block writes to the Downloads directory on your computer. (Josh Burker introduced me to Tinkercad, a website that can be used to convert SVG to STL.)
-
-Save Heap
-Load Heap
 
 Open project
 

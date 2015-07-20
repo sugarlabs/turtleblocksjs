@@ -701,7 +701,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var loadHeapFromApp = new ProtoBlock('loadHeapFromApp');
     loadHeapFromApp.palette = palettes.dict['heap'];
     blocks.protoBlockDict['loadHeapFromApp'] = loadHeapFromApp;
-    loadHeapFromApp.staticLabels.push(_('load from App'));
+    loadHeapFromApp.staticLabels.push(_('load heap from App'));
     loadHeapFromApp.adjustWidthToLabel();
     loadHeapFromApp.twoArgBlock();
     loadHeapFromApp.dockTypes[1] = 'textin';
@@ -712,7 +712,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var saveHeapToApp = new ProtoBlock('saveHeapToApp');
     saveHeapToApp.palette = palettes.dict['heap'];
     blocks.protoBlockDict['saveHeapToApp'] = saveHeapToApp;
-    saveHeapToApp.staticLabels.push(_('save to App'));
+    saveHeapToApp.staticLabels.push(_('save heap to App'));
     saveHeapToApp.adjustWidthToLabel();
     saveHeapToApp.twoArgBlock();
     saveHeapToApp.dockTypes[1] = 'textin';

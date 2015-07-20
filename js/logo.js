@@ -876,10 +876,10 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 }
                 if (args.length == 1) {
                     var jsonRet = {};
-                    jsonRet["result"] = args[0];
+                    jsonRet['result'] = args[0];
                     var json= JSON.stringify(jsonRet);
                     var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("POST",outurl, true);
+                    xmlHttp.open('POST',outurl, true);
                     xmlHttp.onreadystatechange = function() {//Call a function when the state changes.
                         if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                             alert(xmlHttp.responseText);
@@ -1087,7 +1087,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                         '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
                         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
                     if(!pattern.test(str)) {
-                        logo.errorMsg("Please enter a valid URL.");
+                        logo.errorMsg('Please enter a valid URL.');
                         return false;
                     } else {
                         return true;
@@ -1169,7 +1169,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 }
                 break;
             case 'tone':
-                if (typeof(logo.turtleOscs[turtle]) == "undefined") {
+                if (typeof(logo.turtleOscs[turtle]) == 'undefined') {
                     logo.turtleOscs[turtle] = new p5.TriOsc();
                 }
 
@@ -1244,16 +1244,20 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 }
                 break;
             case 'loadHeapFromApp':
-                //var block = logo.blocks.blockList[blk];
+                var data = [];
                 var url = args[1];
                 var name = args [0]
                 var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("GET", url, false );
+                xmlHttp.open('GET', url, false );
                 xmlHttp.send();
                 if (xmlHttp.readyState == 4  && xmlHttp.status == 200){
                     console.log(xmlHttp.responseText);
-                    //TODO: error handling
-                    var data = JSON.parse(xmlHttp.responseText);
+                    try {
+                        var data = JSON.parse(xmlHttp.responseText);
+                    } catch (e) {
+                        console.log(e);
+                        logo.errorMsg(_('Error parsing JSON data:') + e);
+                    }
                 }
                 else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
                     console.log('fetched the wrong page or network error...');
@@ -1261,7 +1265,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     break;
                 }
                 else {
-                    logo.errorMsg(_('xmlHttp.readyState: '+xmlHttp.readyState));
+                    logo.errorMsg('xmlHttp.readyState: ' + xmlHttp.readyState);
                     break;
                 }
                 if (name in logo.turtleHeaps){
@@ -1274,12 +1278,11 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
             case 'saveHeapToApp':
                 var name = args[0];
                 var url = args[1];
-                //var data = JSON.stringify({ x: 5, y: 6 });
                 if (name in logo.turtleHeaps) {
                     var data = JSON.stringify(logo.turtleHeaps[name]);
                     var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("POST", url, true);
-                    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xmlHttp.open('POST', url, true);
+                    xmlHttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
                     xmlHttp.send(data);
                 } else {
                     logo.errorMsg(_('turtleHeaps does not contain a valid heap for '+name));
@@ -1804,7 +1807,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     var x = logo.turtles.turtleList[turtle].container.x;
                     var y = logo.turtles.turtleList[turtle].container.y;
                     logo.refreshCanvas();
-                    var ctx = this.canvas.getContext("2d");
+                    var ctx = this.canvas.getContext('2d');
                     var imgData = ctx.getImageData(x, y, 1, 1).data;
                     var color = searchColors(imgData[0], imgData[1], imgData[2]);
                     if (imgData[3] == 0) {

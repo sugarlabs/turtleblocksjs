@@ -18,10 +18,18 @@ if (lang.indexOf("-") != -1) {
     lang = lang.slice(0, lang.indexOf("-"));
     document.webL10n.setLanguage(lang);
 }
+var activity;
+var xoColor = {
+                stroke: "#00A0FF",
+                fill: "#8BFF7A"
+              };
 
 define(function(require) {
-    require('activity/platformstyle');
+    activity = require("sugar-web/activity/activity");
+    console.log(activity)
+    activity.setup();
 
+    require('activity/platformstyle');
     require('easeljs');
     require('tweenjs');
     require('preloadjs');
@@ -51,6 +59,12 @@ define(function(require) {
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
         window.scroll(0, 0);
+
+        activity.getDatastoreObject().loadAsText(function(error, metadata, jsonData) {
+          if (metadata.buddy_color) {
+            xoColor = metadata.buddy_color;
+          }
+        })
 
         try {
             meSpeak.loadConfig('lib/mespeak_config.json');
@@ -107,7 +121,7 @@ define(function(require) {
             PALETTESTROKECOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1] - 30, PALETTECOLORS[p][2]);
             PALETTEHIGHLIGHTCOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1] + 10, PALETTECOLORS[p][2]);
             HIGHLIGHTSTROKECOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1] - 50, PALETTECOLORS[p][2]);
-            // console.log(p + ' ' + PALETTEFILLCOLORS[p]  + ' ' + PALETTESTROKECOLORS[p] + ' ' + PALETTEHIGHLIGHTCOLORS[p] + ' ' + HIGHLIGHTSTROKECOLORS[p]);
+            //  console.log(p + ' ' + PALETTEFILLCOLORS[p]  + ' ' + PALETTESTROKECOLORS[p] + ' ' + PALETTEHIGHLIGHTCOLORS[p] + ' ' + HIGHLIGHTSTROKECOLORS[p]);
         }
 
         pluginObjs = {
@@ -1508,7 +1522,8 @@ define(function(require) {
                 ['palette', changePaletteVisibility],
                 ['hide-blocks', changeBlockVisibility],
                 ['collapse-blocks', toggleCollapsibleStacks],
-                ['help', showHelp]
+                ['help', showHelp],
+                ['stop', stop]
             ];
 
             if (showPalettesPopover) {
@@ -1689,6 +1704,10 @@ define(function(require) {
                     doMenuAnimation(1);
                 }
             }
+        }
+
+        function stop() {
+          document.getElementById("stop-button").click()
         }
 
         function doMenuButton() {

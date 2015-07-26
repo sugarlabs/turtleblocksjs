@@ -805,12 +805,10 @@ function Turtles(canvas, stage, refreshCanvas) {
 
             me.refreshCanvas();
         }
-
-        makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
+        makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, xoColor.fill).replace(/stroke_color/g, xoColor.stroke), 'turtle', processTurtleBitmap, startBlock);
 
         myTurtle.color = i * 10;
         myTurtle.canvasColor = getMunsellColor(myTurtle.color, DEFAULTVALUE, DEFAULTCHROMA);
-
         var turtles = this;
 
         myTurtle.container.on('mousedown', function(event) {

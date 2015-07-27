@@ -34,6 +34,11 @@ back onto the palette. Click anywhere on a "stack" of blocks to start
 executing that stack or by clicking in the Rabbit (fast) or Turtle
 (slow) on the Main Toolbar.
 
+For more details on how to use Turtle Blocks JS, see [Using Turtle
+Blocks
+JS](http://github.com/walterbender/turtleblocksjs/tree/master/documentation)
+for more details.
+
 ABOUT THIS GUIDE
 ----------------
 

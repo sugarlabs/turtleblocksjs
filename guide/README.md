@@ -539,8 +539,6 @@ dimension; and (3) the Save as SVG block writes to the Downloads
 directory on your computer. (Josh Burker introduced me to Tinkercad, a
 website that can be used to convert SVG to STL.)
 
-Open project
-
 13. Debugging Aids
 ------------------
 
@@ -607,10 +605,5 @@ background to the current hue/value/chroma triplet.
 15. Plugins
 -----------
 
-Google map
-city latitude
-city longitute
-coordinates
-zoom
-
-turtle plugin
+There are a growing number of extensions to Turtle Blocks in the from
+of plugins. See [Plugins](http://github.com/walterbender/turtleblocksjs/plugins) for more details.

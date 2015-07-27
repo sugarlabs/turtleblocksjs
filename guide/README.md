@@ -1,5 +1,5 @@
-Guide to Using Turtle Art JS
-============================
+Guide to Programming with Turtle Art
+====================================
 
 Turtle Blocks expands upon what children can do with Logo and how it
 can be used as the underlying motivator for “improving” programming
@@ -544,13 +544,35 @@ Open project
 13. Debugging Aids
 ------------------
 
-Print
+Probably the most oft-used debugging aid in any language is the print
+statement. In Turtle Blocks, it is also quite useful. You can use it
+to examine the value of parameters and variables (boxes) and to
+monitor progress through a program.
 
-Parameter blocks
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/debugging1.svg'</img>
 
-Wait
+In this example, we use the addition operator to concatinate strings
+in a print statement. The mouse x + ", " + mouse y are printed in the
+inner loop.
 
-Hide and Show
+Parameter blocks, boxes, arithmetic and boolean operators, and many
+sensor blocks will print their current value as the program runs when
+running in "slow" or "step-by-step" mode, obviating the need to use
+the Print block in many situations.
+
+The Wait block will pause program execution for some number (or
+fractions) of seconds.
+
+The Hide and Show blocks can be used to set "break points". When a
+Hide block is encountered, the blocks are hidden and the program
+proceeds at full speed. When a Show block is encountered, the program
+proceeds at a slower pace an the block values are shown.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/debugging2.svg'</img>
+
+A Show block is used to slow down execution of the code in an Action
+stack in order to facilitate debugging. In this case, we slow down
+during playback in order to watch the values popped off the heap.
 
 14. Advanced Color
 ------------------

@@ -577,12 +577,32 @@ during playback in order to watch the values popped off the heap.
 14. Advanced Color
 ------------------
 
-color
-hue
-shade
-gray
+The internal representation of color in Turtle Blocks is based on the
+[Munsell color
+system](http://en.wikipedia.org/wiki/Munsell_color_system). It is a
+three-dimensional system: (1) hue (red, yellow, green, blue, and
+purple), (2) value (black to white), and (3) chroma (gray to vivid).
 
-background
+There are parameters for each color dimension and corresponding
+"setters". All three dimensions have been normalized to run from 0 to
+100. For Hue, 0 maps to Munsell 0R. For Value, 0 maps to Munsell value
+0 (black) and 100 maps to Munsell value 10 (white). For chroma, 0 maps
+to Munsell chroma 0 (gray) and 100 maps to Munsell chroma 26 (spectral
+color).
+
+A note about Chroma: In the Munsell system, the maximum chroma of
+each hue varies with value. To simplify the model, if the chroma
+specified is greated than the maximum chroma available for a hue/value
+pair, the maximum chroma available is used.
+
+The Set Color block maps the three dimensions of the Munsell color
+space into one dimension. It always returns the maximum value/chroma
+pair for a given hue, ensuring vivid colors. If you want to more
+subtle colors, be sure to use the Set Hue block rather than the Set
+Color block.
+
+To set the background color, use the background block. It will set the
+background to the current hue/value/chroma triplet.
 
 15. Plugins
 -----------

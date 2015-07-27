@@ -18,11 +18,25 @@ lines are drawn.
 You add blocks to your program by clicking on or dragging them from
 the palette to the main area. You can delete a block by dragging it
 back onto the palette. Click anywhere on a "stack" of blocks to start
-executing that stack or by clicking in the Rabbit (fast) or Turtle
-(slow) on the Main Toolbar.
+executing that stack or by clicking on the rabbit (fast) or snail
+(slow) on the Main Toolbar. To maximize screen real estate, Turtle
+Blocks overlays the program elements (stacks of blocks) on top of the
+canvas. These blocks can be hidden at any time will running the program.
 
-Toolbar Buttons
----------------
+Toolbars
+--------
+
+There are three toolbars: (1) the main toolbar across the top of the
+screen; (2) the secondary toolbar on the right side of the screen; and
+(3) the palette toolbar on the right side of the screen. An additional
+menu appears when a "long press" is applied to a stack of
+blocks. There is also a utility panel with additional controls.
+
+Main toolbar
+------------
+
+The Main toolbar is used to run programs, erase the screen, and hide
+the palettes and blocks.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/fast-button.png'</img>
 
@@ -30,11 +44,12 @@ Run the blocks fast.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/slow-button.png'</img>
 
-Run the blocks slowly.
+Run the blocks slowly. When running slowly, the values of parameter
+boxes are shown as an additional debugging aid.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/step-button.png'</img>
 
-Run the blocks step by step (one block per turtle per click).
+Run the blocks step by step (one block is executed per turtle per click).
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/stop-turtle-button.png'</img>
 
@@ -42,7 +57,8 @@ Stop running the current project.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/clear-button.png'</img>
 
-Clear the screen and return the turtles to their initial positions.
+Clear the screen and return the turtles to their initial positions in
+the center of the screen.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/palette-button.png'</img>
 
@@ -64,17 +80,32 @@ Show the help messages.
 
 Expand or collapse the auxillary toolbar.
 
+Auxillary toolbar
+-----------------
+
+The Auxillary toolbar, displayed on the right side of the screen, has
+buttons for various utilities such as accessing the planet for saving
+programs, overlaying grids, and accessing the utility panel. The
+Auxillary toolbar button on the Main toolbar (top right) is used to
+show/hide the Auxillary toolbar.
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/planet-button.png'</img>
 
 Open a viewer for loading example projects.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/copy-button.png'</img>
 
-Copy blocks onto the clipboard.
+Copy blocks onto the clipboard. (This button appears at the top of a
+stack after a "long press".)
+
+Also shown on after a long press is the Save Action-stack button. This
+will save an action stack on the custom palette for use in other
+projects.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/paste-button.png'</img>
 
-Paste blocks from the clipboard.
+Paste blocks from the clipboard. (This button is highlighted only when
+there are blocks available on the clipboard to paste.)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/Cartesian-button.png'</img>
 
@@ -86,7 +117,22 @@ Show or hide a polar-coordinate grid.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/utility-button.svg'</img>
 
-Open utility panel to access controls for changing block size, loading plugins, looking at project statistics, and enabling/disabling scrolling.
+Open utility panel to access controls for changing block size, loading
+plugins, looking at project statistics, and enabling/disabling
+scrolling.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/empty-trash-button.png'</img>
+
+Remove all blocks.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/restore-trash-button.png'</img>
+
+Restore blocks from the trash.
+
+Utility panel
+-------------
+
+The utility panel has some useful but seldom used controls.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/smaller-button.svg'</img>
 
@@ -108,15 +154,15 @@ Load new blocks from plugins (previously downloaded to the file system).
 
 Enable/disable scrolling.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/empty-trash-button.png'</img>
+Block Palettes
+--------------
 
-Remove all blocks.
-
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/restore-trash-button.png'</img>
-
-Restore blocks from the trash.
-
----
+The block palettes are displayed on the left side of the screen. The
+palette button on the Main toolbar show and hide the block
+palettes. These palettes contain the blocks used to create
+programs. See the [Programming Guide]
+(http://github.com/walterbender/turtleblocksjs/tree/master/guide) for
+more details on how to use the blocks.
 
 Turtle Palette
 --------------

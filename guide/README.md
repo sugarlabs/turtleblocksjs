@@ -611,4 +611,6 @@ background to the current hue/value/chroma triplet.
 -----------
 
 There are a growing number of extensions to Turtle Blocks in the from
-of plugins. See [Plugins](http://github.com/walterbender/turtleblocksjs/tree/master/plugins) for more details.
+of plugins. See
+[Plugins](http://github.com/walterbender/turtleblocksjs/tree/master/plugins)
+for more details.

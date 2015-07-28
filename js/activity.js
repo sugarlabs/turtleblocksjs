@@ -18,17 +18,40 @@ if (lang.indexOf("-") != -1) {
     lang = lang.slice(0, lang.indexOf("-"));
     document.webL10n.setLanguage(lang);
 }
-var activity;
-var xoColor = {
-                stroke: "#00A0FF",
-                fill: "#8BFF7A"
-              };
+
+var sugarizerCompability = {
+  xoColor : {
+                  stroke: "#00A0FF",
+                  fill: "#8BFF7A"
+  },
+
+  activity: undefined,
+
+  isInsideSugarizer : function() {
+    if (sugar != undefined && sugar.environment != undefined && sugar.environment.activityId != undefined) {
+      return true;
+    }
+    return false;
+  },
+
+  loadXoColor: function() {
+    this.activity.getDatastoreObject().loadAsText(function(error, metadata, jsonData) {
+      if (metadata.buddy_color) {
+        this.xoColor = metadata.buddy_color;
+      }
+    })
+  },
+
+  setup: function() {
+    this.activity.setup()
+  }
+}
+
+
 
 define(function(require) {
-    activity = require("sugar-web/activity/activity");
-    console.log(activity)
-    activity.setup();
-
+    sugarizerCompability.activity = require("sugar-web/activity/activity");
+    sugarizerCompability.setup();
     require('activity/platformstyle');
     require('easeljs');
     require('tweenjs');
@@ -59,12 +82,9 @@ define(function(require) {
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function(doc) {
         window.scroll(0, 0);
-
-        activity.getDatastoreObject().loadAsText(function(error, metadata, jsonData) {
-          if (metadata.buddy_color) {
-            xoColor = metadata.buddy_color;
-          }
-        })
+        if (sugarizerCompability.isInsideSugarizer()) {
+          sugarizerCompability.loadXoColor();
+        }
 
         try {
             meSpeak.loadConfig('lib/mespeak_config.json');
@@ -1522,9 +1542,12 @@ define(function(require) {
                 ['palette', changePaletteVisibility],
                 ['hide-blocks', changeBlockVisibility],
                 ['collapse-blocks', toggleCollapsibleStacks],
-                ['help', showHelp],
-                ['stop', stop]
+                ['help', showHelp]
             ];
+
+            if (sugarizerCompability.isInsideSugarizer()) {
+              buttonNames.push(['stop', stop])
+            }
 
             if (showPalettesPopover) {
                 buttonNames.unshift(['popdown-palette', doPopdownPalette])

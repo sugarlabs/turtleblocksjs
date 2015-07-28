@@ -805,7 +805,11 @@ function Turtles(canvas, stage, refreshCanvas) {
 
             me.refreshCanvas();
         }
-        makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, xoColor.fill).replace(/stroke_color/g, xoColor.stroke), 'turtle', processTurtleBitmap, startBlock);
+        if (sugarizerCompability.isInsideSugarizer()) {
+          makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, xoColor.fill).replace(/stroke_color/g, xoColor.stroke), 'turtle', processTurtleBitmap, startBlock);
+        } else {
+          makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
+        }
 
         myTurtle.color = i * 10;
         myTurtle.canvasColor = getMunsellColor(myTurtle.color, DEFAULTVALUE, DEFAULTCHROMA);

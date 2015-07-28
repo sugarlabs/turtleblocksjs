@@ -42,6 +42,10 @@ var sugarizerCompability = {
     })
   },
 
+  sugarizerStop: function() {
+    document.getElementById("stop-button").click()
+  },
+
   setup: function() {
     this.activity.setup()
   }
@@ -1546,7 +1550,7 @@ define(function(require) {
             ];
 
             if (sugarizerCompability.isInsideSugarizer()) {
-              buttonNames.push(['stop', stop])
+              buttonNames.push(['sugarizer-stop', sugarizerCompability.sugarizerStop])
             }
 
             if (showPalettesPopover) {
@@ -1727,10 +1731,6 @@ define(function(require) {
                     doMenuAnimation(1);
                 }
             }
-        }
-
-        function stop() {
-          document.getElementById("stop-button").click()
         }
 
         function doMenuButton() {

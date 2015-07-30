@@ -36,7 +36,6 @@ var NAMEDICT = {
     'less2': 'less',
     'equal2': 'equal',
     'random2': 'random',
-    'sethue': 'setcolor',
     'setvalue': 'setshade',
     'setchroma': 'setgrey',
     'setgray': 'setgrey',

@@ -604,6 +604,10 @@ pair for a given hue, ensuring vivid colors. If you want to more
 subtle colors, be sure to use the Set Hue block rather than the Set
 Color block.
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/color1.svg'</img>
+
+Color vs. hue example [RUN LIVE](https://turtle.sugarlabs.org/?file=Color-vs-Hue.tb&run=true)
+
 To set the background color, use the background block. It will set the
 background to the current hue/value/chroma triplet.
 

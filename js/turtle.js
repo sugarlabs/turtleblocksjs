@@ -805,8 +805,9 @@ function Turtles(canvas, stage, refreshCanvas) {
 
             me.refreshCanvas();
         }
+
         if (sugarizerCompability.isInsideSugarizer()) {
-          makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, xoColor.fill).replace(/stroke_color/g, xoColor.stroke), 'turtle', processTurtleBitmap, startBlock);
+          makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, sugarizerCompability.xoColor.fill).replace(/stroke_color/g, sugarizerCompability.xoColor.stroke), 'turtle', processTurtleBitmap, startBlock);
         } else {
           makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
         }

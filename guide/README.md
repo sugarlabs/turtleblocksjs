@@ -415,19 +415,18 @@ action stack that has a return block will cause the creation of a new
 block in the Actions palette that can be used to reference the return
 value: in this case, a distance block is created.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions5.svg'</img>
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions6.svg'</img>
 
 You can also pass arguments to an action stack. In this example, we
 calculate the distance between the turtle and an arbitrary point on
 the screen by passing x and y coordinates in the calculate
-block. (Note that you add additional arguments by dragging them into
-the "clamp".)
+block. You add additional arguments by dragging them into
+the "clamp".
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions6.svg'</img>
-
-Args are local to action stacks, but boxes are not. If you planned to
-use the distance function in the previous example in a recursive
-function, you would be better to avoid boxes as per this example.
+Note that args are local to action stacks, but boxes are not. If you
+planned to use an action in a recursive function, you had best avoid
+boxes.
 
 Example: Fibonacci
 ------------------

@@ -9,14 +9,6 @@ define(["sugar-web/env", "sugar-web/activity/activity"], function (env, activity
             fill: "#8BFF7A"
         },
 
-        loadStart: function (blocks, justLoadStart) {
-            if (this.data && this.data.blocks) {
-                blocks.loadNewBlocks(JSON.parse(this.data.blocks));
-            } else {
-                justLoadStart();
-            }
-        },
-
         saveLocally: function (callback) {
             var t = this;
             activity.getDatastoreObject().setDataAsText(JSON.stringify(t.data));

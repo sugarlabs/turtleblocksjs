@@ -1290,7 +1290,6 @@ define(function (require) {
             sessionData = null;
             // Try restarting where we were when we hit save.
             var currentProject = storage.currentProject;
-            console.log(storage)
             sessionData = storage['SESSION' + currentProject];
             if (sessionData) {
                 try {

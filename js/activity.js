@@ -256,7 +256,6 @@ define(function (require) {
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].doClear();
             }
-
             blocksContainer.x = 0;
             blocksContainer.y = 0;
         }
@@ -474,12 +473,7 @@ define(function (require) {
             initBasicProtoBlocks(palettes, blocks);
 
             // Load any macros saved in local storage.
-            if (sugarizerCompatibility.isInsideSugarizer()) {
-                macroData = sugarizerCompatibility.data.macros;
-
-            } else {
-                macroData = localStorage.getItem('macros');
-            }
+            macroData = storage.macros
             if (macroData != null) {
                 processMacroData(macroData, palettes, blocks, macroDict);
             }
@@ -488,11 +482,7 @@ define(function (require) {
             palettes.setMacroDictionary(macroDict);
 
             // Load any plugins saved in local storage.
-            if (sugarizerCompatibility.isInsideSugarizer()) {
-                pluginData = sugarizerCompatibility.data.plugins;
-            } else {
-                pluginData = localStorage.getItem('plugins');
-            }
+            pluginData = storage.plugins;
             if (pluginData != null) {
                 var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
                 updatePluginObj(obj);
@@ -547,7 +537,7 @@ define(function (require) {
                         if (obj != null) {
                             var foo = preparePluginExports(obj);
                             console.log(foo);
-                            localStorage.setItem('plugins', foo); // preparePluginExports(obj));
+                            storage.plugins = foo; // preparePluginExports(obj));
                         }
 
                         // Refresh the palettes.
@@ -602,7 +592,7 @@ define(function (require) {
             var urlParts;
             var env = [];
 
-            if (URL.indexOf('?') > 0) {
+            if (!sugarizerCompatibility.isInsideSugarizer() && URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
                 if (urlParts[1].indexOf('&') > 0) {
                     var newUrlParts = urlParts[1].split('&');
@@ -1136,18 +1126,20 @@ define(function (require) {
         window.saveLocally = saveLocally
 
         function saveLocally() {
+
             if (sugarizerCompatibility.isInsideSugarizer()) {
-                sugarizerCompatibility.data.blocks = prepareExport();
-                sugarizerCompatibility.saveLocally();
-                return;
+                //sugarizerCompatibility.data.blocks = prepareExport();
+                storage = sugarizerCompatibility.data;
+            } else {
+                storage = localStorage;
             }
 
             console.log('overwriting session data');
 
-            if (localStorage.currentProject === undefined) {
+            if (storage.currentProject === undefined) {
                 try {
-                    localStorage.currentProject = 'My Project';
-                    localStorage.allProjects = JSON.stringify(['My Project'])
+                    storage.currentProject = 'My Project';
+                    storage.allProjects = JSON.stringify(['My Project'])
                 } catch (e) {
                     // Edge case, eg. Firefox localSorage DB corrupted
                     console.log(e);
@@ -1155,8 +1147,8 @@ define(function (require) {
             }
 
             try {
-                var p = localStorage.currentProject;
-                localStorage['SESSION' + p] = prepareExport();
+                var p = storage.currentProject;
+                storage['SESSION' + p] = prepareExport();
             } catch (e) {
                 console.log(e);
             }
@@ -1164,7 +1156,6 @@ define(function (require) {
             if (isSVGEmpty(turtles)) {
                 return;
             }
-
             var img = new Image();
             var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
             img.onload = function () {
@@ -1172,13 +1163,17 @@ define(function (require) {
                 var bounds = bitmap.getBounds();
                 bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                 try {
-                    localStorage['SESSIONIMAGE' + p] = bitmap.getCacheDataURL();
+                    storage['SESSIONIMAGE' + p] = bitmap.getCacheDataURL();
                 } catch (e) {
                     console.log(e);
                 }
             }
             img.src = 'data:image/svg+xml;base64,' +
             window.btoa(unescape(encodeURIComponent(svgData)));
+            console.log(img.src);
+            if (sugarizerCompatibility.isInsideSugarizer()) {
+                sugarizerCompatibility.saveLocally();
+            }
         }
 
         function loadProject(projectName, run, env) {
@@ -1286,18 +1281,17 @@ define(function (require) {
             }
 
             if (sugarizerCompatibility.isInsideSugarizer()) {
-                sugarizerCompatibility.loadStart(blocks, justLoadStart);
-                update = true
-                return;
+                storage = sugarizerCompatibility.data;
+            }
+            else {
+                storage = localStorage;
             }
 
             sessionData = null;
             // Try restarting where we were when we hit save.
-            if (typeof(Storage) !== 'undefined') {
-                // localStorage is how we'll save the session (and metadata)
-                var currentProject = localStorage.currentProject;
-                sessionData = localStorage['SESSION' + currentProject];
-            }
+            var currentProject = storage.currentProject;
+            console.log(storage)
+            sessionData = storage['SESSION' + currentProject];
             if (sessionData) {
                 try {
                     if (sessionData == 'undefined' || sessionData == '[]') {
@@ -1679,10 +1673,6 @@ define(function (require) {
                 ['restore-trash', restoreTrash]
             ];
 
-            if (sugarizerCompatibility.isInsideSugarizer()) {
-                menuNames.shift();
-            }
-
             var btnSize = cellSize;
             var x = Math.floor(canvas.width / scale) - btnSize / 2;
             var y = Math.floor(btnSize / 2);
@@ -1791,11 +1781,7 @@ define(function (require) {
                 }
             }
 
-            if (sugarizerCompatibility.isInsideSugarizer()) {
-                doneTour = sugarizerCompatibility.data.doneTour === 'true'
-            } else {
-                doneTour = localStorage.doneTour === 'true'
-            }
+            doneTour = storage.doneTour === 'true'
 
             if (firstTime && doneTour) {
                 docById('helpElem').style.visibility = 'hidden';
@@ -1804,7 +1790,7 @@ define(function (require) {
                 if (sugarizerCompatibility.isInsideSugarizer()) {
                     sugarizerCompatibility.data.doneTour = 'true'
                 } else {
-                    localStorage.doneTour = 'true'
+                    storage.doneTour = 'true'
                 }
                 docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
                 docById('helpElem').style.visibility = 'visible';

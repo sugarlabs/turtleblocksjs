@@ -2,7 +2,7 @@ define(["sugar-web/env", "sugar-web/activity/activity"], function (env, activity
 
     var sugarizerCompatibility = {
         activity: activity,
-        data: {},
+        data: {allProjects: "[]"},
         env: env,
         xoColor: {
             stroke: "#00A0FF",

@@ -56,14 +56,18 @@ function PlanetModel(controller) {
     this.updated = function () {};
     this.stop = false;
     var me = this;
-
+    if (sugarizerCompatibility.isInsideSugarizer()) {
+        server = 'https://turtle.sugarlabs.org/server/';
+        storage = sugarizerCompatibility.data;
+    } else {
+        storage = localStorage;
+    }
     this.start = function (cb) {
         me.updated = cb;
         me.stop = false;
 
         this.redoLocalStorageData();
         me.updated();
-
         this.downloadWorldWideProjects();
     }
 
@@ -76,14 +80,12 @@ function PlanetModel(controller) {
         }).done(function (l) {
             me.globalProjects = [];
             me.stop = false;
-
             var todo = [];
             l.forEach(function (name, i) {
                 if (name.indexOf('.b64') !== -1) 	{
                     todo.push(name);
                 }
             });
-
             me.getImages(todo);
         });
     }
@@ -125,9 +127,9 @@ function PlanetModel(controller) {
 
     this.redoLocalStorageData = function () {
         this.localProjects = [];
-        var l = JSON.parse(localStorage.allProjects);
+        var l = JSON.parse(storage.allProjects);
         l.forEach(function (p, i) {
-            var img = localStorage['SESSIONIMAGE' + p];
+            var img = storage['SESSIONIMAGE' + p];
             if (img === 'undefined') {
                 img = EMPTYIMAGE;
             }
@@ -135,8 +137,8 @@ function PlanetModel(controller) {
             var e = {
                 title: p,
                 img: img,
-                data: localStorage['SESSION' + p],
-                current: p === localStorage.currentProject
+                data: storage['SESSION' + p],
+                current: p === storage.currentProject
             }
 
             if (e.current) {
@@ -149,7 +151,7 @@ function PlanetModel(controller) {
     }
 
     this.uniqueName = function (base) {
-        var l = JSON.parse(localStorage.allProjects);
+        var l = JSON.parse(storage.allProjects);
         if (l.indexOf(base) === -1) {
             return base;
         }
@@ -173,48 +175,48 @@ function PlanetModel(controller) {
 
     this.renameProject = function (oldName, newName, current) {
         if (current) {
-            localStorage.currentProject = newName;
+            storage.currentProject = newName;
         }
 
-        var l = JSON.parse(localStorage.allProjects);
+        var l = JSON.parse(storage.allProjects);
         l[l.indexOf(oldName)] = newName;
-        localStorage.allProjects = JSON.stringify(l);
+        storage.allProjects = JSON.stringify(l);
 
-        localStorage['SESSIONIMAGE' + newName] =
-            localStorage['SESSIONIMAGE' + oldName];
-        localStorage['SESSION' + newName] = localStorage['SESSION' + oldName];
+        storage['SESSIONIMAGE' + newName] =
+            storage['SESSIONIMAGE' + oldName];
+        storage['SESSION' + newName] = storage['SESSION' + oldName];
 
-        localStorage['SESSIONIMAGE' + oldName] = undefined;
-        localStorage['SESSION' + oldName] = undefined;
+        storage['SESSIONIMAGE' + oldName] = undefined;
+        storage['SESSION' + oldName] = undefined;
 
         me.redoLocalStorageData();
     }
 
     this.delete = function (name) {
-        var l = JSON.parse(localStorage.allProjects);
+        var l = JSON.parse(storage.allProjects);
         l.splice(l.indexOf(name), 1);
-        localStorage.allProjects = JSON.stringify(l);
+        storage.allProjects = JSON.stringify(l);
 
-        localStorage['SESSIONIMAGE' + name] = undefined;
-        localStorage['SESSION' + name] = undefined;
+        storage['SESSIONIMAGE' + name] = undefined;
+        storage['SESSION' + name] = undefined;
 
         me.redoLocalStorageData();
         me.updated();
     }
 
     this.open = function (name, data) {
-        localStorage.currentProject = name;
+        storage.currentProject = name;
         me.controller.sendAllToTrash(false, true);
         me.controller.loadRawProject(data);
         me.stop = true;
     }
 
     this.prepLoadingProject = function (name) {
-        localStorage.currentProject = name;
+        storage.currentProject = name;
 
-        var l = JSON.parse(localStorage.allProjects);
+        var l = JSON.parse(storage.allProjects);
         l.push(name);
-        localStorage.allProjects = JSON.stringify(l);
+        storage.allProjects = JSON.stringify(l);
     }
 
     this.load = function (name) {

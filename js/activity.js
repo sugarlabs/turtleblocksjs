@@ -13,15 +13,44 @@
 // (https://github.com/walterbender/turtleart), but implemented from
 // scratch. -- Walter Bender, October 2014.
 
+function facebookInit() {
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1496189893985945',
+            xfbml: true,
+            version: 'v2.1'
+        });
+
+        // ADD ADDITIONAL FACEBOOK CODE HERE
+    };
+}
+
+try {
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+} catch (e) {
+}
+
 var lang = document.webL10n.getLanguage();
 if (lang.indexOf("-") != -1) {
     lang = lang.slice(0, lang.indexOf("-"));
     document.webL10n.setLanguage(lang);
 }
 
-define(function(require) {
-    require('activity/platformstyle');
 
+// sugarizerCompatibility.ifInsideSugarizerHideLoading();
+
+define(function (require) {
+    require("activity/sugarizer-compatibility");
+    require('activity/platformstyle');
     require('easeljs');
     require('tweenjs');
     require('preloadjs');
@@ -49,7 +78,18 @@ define(function(require) {
     require('prefixfree.min');
 
     // Manipulate the DOM only when it is ready.
-    require(['domReady!'], function(doc) {
+    require(['domReady!'], function (doc) {
+        if (sugarizerCompatibility.isInsideSugarizer()) {
+            sugarizerCompatibility.loadData(function () {
+                domReady(doc);
+            });
+        } else {
+            domReady(doc);
+        }
+    });
+
+    function domReady(doc) {
+        facebookInit();
         window.scroll(0, 0);
 
         try {
@@ -141,8 +181,8 @@ define(function(require) {
         var CAMERAVALUE = '##__CAMERA__##';
         var VIDEOVALUE = '##__VIDEO__##';
 
-        var DEFAULTDELAY = 500;  // milleseconds
-        var TURTLESTEP = -1;  // Run in step-by-step mode
+        var DEFAULTDELAY = 500; // milleseconds
+        var TURTLESTEP = -1; // Run in step-by-step mode
 
         var blockscale = 2;
         var blockscales = [1, 1.5, 2, 3, 4];
@@ -164,40 +204,43 @@ define(function(require) {
         var cellSize = 55;
         if (onXO) {
             cellSize = 75;
-        };
+        }
+        ;
 
         var onscreenButtons = [];
         var onscreenMenu = [];
 
         var helpContainer = null;
         var helpIdx = 0;
-        var HELPCONTENT = [[_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
-                           [_('Palette buttons'), _('This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
-                           [_('Run fast'), _('Click to run the project in fast mode.'), 'icons/fast-button.svg'],
-                           [_('Run slow'), _('Click to run the project in slow mode.'), 'icons/slow-button.svg'],
-                           [_('Run step by step'), _('Click to run the project step by step.'), 'icons/step-button.svg'],
-                           [_('Stop'), _('Stop the current project.'), 'icons/stop-turtle-button.svg'],
-                           [_('Clean'), _('Clear the screen and return the turtles to their initial positions.'), 'icons/clear-button.svg'],
-                           [_('Show/hide palettes'), _('Hide or show the block palettes.'), 'icons/palette-button.svg'],
-                           [_('Show/hide blocks'), _('Hide or show the blocks and the palettes.'), 'icons/hide-blocks-button.svg'],
-                           [_('Expand/collapse collapsable blocks'), _('Expand or collapse start and action stacks.'), 'icons/collapse-blocks-button.svg'],
-                           [_('Help'), _('Show these messages.'), 'icons/help-button.svg'],
-                           [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxillary toolbar.'), 'icons/menu-button.svg'],
-                           [_('Load samples from server'), _('This button opens a viewer for loading example projects.'), 'icons/planet-button.svg'],
-                           [_('Copy'), _('The copy button copies a stack to the clipboard. It appears after a "long press" on a stack.'), 'icons/copy-button.svg'],
-                           [_('Paste'), _('The paste button is enabled when there are blocks copied onto the clipboard.'), 'icons/paste-disabled-button.svg'],
-                           [_('Save stack'), _('The save-stack button saves a stack onto a custom palette. It appears after a "long press" on a stack.'), 'icons/save-blocks-button.svg'],
-                           [_('Cartesian'), _('Show or hide a Cartesian-coordinate grid.'), 'icons/Cartesian-button.svg'],
-                           [_('Polar'), _('Show or hide a polar-coordinate grid.'), 'icons/polar-button.svg'],
-                           [_('Settings'), _('Open a panel for configuring Turtle Blocks.'), 'icons/utility-button.svg'],
-                           [_('Decrease block size'), _('Decrease the size of the blocks.'), 'icons/smaller-button.svg'],
-                           [_('Increase block size'), _('Increase the size of the blocks.'), 'icons/bigger-button.svg'],
-                           [_('Display statistics'), _('Display statistics about your Turtle project.'), 'icons/chart-button.svg'],
-                           [_('Load plugin from file'), _('You can load new blocks from the file system.'), 'icons/plugin-button.svg'],
-                           [_('Enable scrolling'), _('You can scroll the blocks on the canvas.'), 'icons/scroll-button.svg'],
-                           [_('Delete all'), _('Remove all content on the canvas, including the blocks.'), 'icons/empty-trash-button.svg'],
-                           [_('Undo'), _('Restore blocks from the trash.'), 'icons/restore-trash-button.svg'],
-                           [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']]
+        var HELPCONTENT = [
+            [_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
+            [_('Palette buttons'), _('This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
+            [_('Run fast'), _('Click to run the project in fast mode.'), 'icons/fast-button.svg'],
+            [_('Run slow'), _('Click to run the project in slow mode.'), 'icons/slow-button.svg'],
+            [_('Run step by step'), _('Click to run the project step by step.'), 'icons/step-button.svg'],
+            [_('Stop'), _('Stop the current project.'), 'icons/stop-turtle-button.svg'],
+            [_('Clean'), _('Clear the screen and return the turtles to their initial positions.'), 'icons/clear-button.svg'],
+            [_('Show/hide palettes'), _('Hide or show the block palettes.'), 'icons/palette-button.svg'],
+            [_('Show/hide blocks'), _('Hide or show the blocks and the palettes.'), 'icons/hide-blocks-button.svg'],
+            [_('Expand/collapse collapsable blocks'), _('Expand or collapse start and action stacks.'), 'icons/collapse-blocks-button.svg'],
+            [_('Help'), _('Show these messages.'), 'icons/help-button.svg'],
+            [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxillary toolbar.'), 'icons/menu-button.svg'],
+            [_('Load samples from server'), _('This button opens a viewer for loading example projects.'), 'icons/planet-button.svg'],
+            [_('Copy'), _('The copy button copies a stack to the clipboard. It appears after a "long press" on a stack.'), 'icons/copy-button.svg'],
+            [_('Paste'), _('The paste button is enabled when there are blocks copied onto the clipboard.'), 'icons/paste-disabled-button.svg'],
+            [_('Save stack'), _('The save-stack button saves a stack onto a custom palette. It appears after a "long press" on a stack.'), 'icons/save-blocks-button.svg'],
+            [_('Cartesian'), _('Show or hide a Cartesian-coordinate grid.'), 'icons/Cartesian-button.svg'],
+            [_('Polar'), _('Show or hide a polar-coordinate grid.'), 'icons/polar-button.svg'],
+            [_('Settings'), _('Open a panel for configuring Turtle Blocks.'), 'icons/utility-button.svg'],
+            [_('Decrease block size'), _('Decrease the size of the blocks.'), 'icons/smaller-button.svg'],
+            [_('Increase block size'), _('Increase the size of the blocks.'), 'icons/bigger-button.svg'],
+            [_('Display statistics'), _('Display statistics about your Turtle project.'), 'icons/chart-button.svg'],
+            [_('Load plugin from file'), _('You can load new blocks from the file system.'), 'icons/plugin-button.svg'],
+            [_('Enable scrolling'), _('You can scroll the blocks on the canvas.'), 'icons/scroll-button.svg'],
+            [_('Delete all'), _('Remove all content on the canvas, including the blocks.'), 'icons/empty-trash-button.svg'],
+            [_('Undo'), _('Restore blocks from the trash.'), 'icons/restore-trash-button.svg'],
+            [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']
+        ]
 
         pluginsImages = {};
 
@@ -213,7 +256,6 @@ define(function(require) {
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 turtles.turtleList[turtle].doClear();
             }
-
             blocksContainer.x = 0;
             blocksContainer.y = 0;
         }
@@ -257,11 +299,13 @@ define(function(require) {
         }
 
         var stopTurtle = false;
+
         function doStopButton() {
             logo.doStopTurtle();
         }
 
         var cartesianVisible = false;
+
         function doCartesian() {
             if (cartesianVisible) {
                 hideCartesian();
@@ -273,6 +317,7 @@ define(function(require) {
         }
 
         var polarVisible = false;
+
         function doPolar() {
             if (polarVisible) {
                 hidePolar();
@@ -296,7 +341,7 @@ define(function(require) {
             console.log(scores);
             var data = scoreToChartData(scores);
 
-            var callback = function() {
+            var callback = function () {
                 var imageData = myRadarChart.toBase64Image();
                 var img = new Image();
                 img.onload = function () {
@@ -365,15 +410,15 @@ define(function(require) {
             createjs.Touch.enable(stage);
 
             createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
-                    createjs.Ticker.setFPS(30);
+            createjs.Ticker.setFPS(30);
             createjs.Ticker.addEventListener('tick', stage);
             createjs.Ticker.addEventListener('tick', tick);
 
-            createMsgContainer('#ffffff', '#7a7a7a', function(text) {
+            createMsgContainer('#ffffff', '#7a7a7a', function (text) {
                 msgText = text;
             }, 55);
 
-            createMsgContainer('#ffcbc4', '#ff0031', function(text) {
+            createMsgContainer('#ffcbc4', '#ff0031', function (text) {
                 errorMsgText = text;
             }, 110);
 
@@ -391,8 +436,9 @@ define(function(require) {
             blocksContainer = new createjs.Container();
             trashContainer = new createjs.Container();
             turtleContainer = new createjs.Container();
+
             stage.addChild(turtleContainer, trashContainer, blocksContainer,
-                           palettesContainer);
+                palettesContainer);
             setupBlocksContainerEvents();
 
             trashcan = new Trashcan(canvas, trashContainer, cellSize, refreshCanvas);
@@ -408,11 +454,11 @@ define(function(require) {
 
             // TODO: clean up this mess.
             logo = new Logo(canvas, blocks, turtles, turtleContainer,
-                            refreshCanvas,
-                            textMsg, errorMsg, hideMsgs, onStopTurtle,
-                            onRunTurtle, prepareExport, getStageX, getStageY,
-                            getStageMouseDown, getCurrentKeyCode,
-                            clearCurrentKeyCode, meSpeak, saveLocally);
+                refreshCanvas,
+                textMsg, errorMsg, hideMsgs, onStopTurtle,
+                onRunTurtle, prepareExport, getStageX, getStageY,
+                getStageMouseDown, getCurrentKeyCode,
+                clearCurrentKeyCode, meSpeak, saveLocally);
             blocks.setLogo(logo);
 
             // Set the default background color...
@@ -427,7 +473,7 @@ define(function(require) {
             initBasicProtoBlocks(palettes, blocks);
 
             // Load any macros saved in local storage.
-            var macroData = localStorage.getItem('macros');
+            macroData = storage.macros
             if (macroData != null) {
                 processMacroData(macroData, palettes, blocks, macroDict);
             }
@@ -436,22 +482,24 @@ define(function(require) {
             palettes.setMacroDictionary(macroDict);
 
             // Load any plugins saved in local storage.
-            var pluginData = localStorage.getItem('plugins');
+            pluginData = storage.plugins;
             if (pluginData != null) {
                 var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
                 updatePluginObj(obj);
             }
 
-            fileChooser.addEventListener('click', function(event) { this.value = null; });
-            fileChooser.addEventListener('change', function(event) {
+            fileChooser.addEventListener('click', function (event) {
+                this.value = null;
+            });
+            fileChooser.addEventListener('change', function (event) {
 
                 // Read file here.
                 var reader = new FileReader();
 
-                reader.onload = (function(theFile) {
+                reader.onload = (function (theFile) {
                     // Show busy cursor.
                     document.body.style.cursor = 'wait';
-                    setTimeout(function() {
+                    setTimeout(function () {
                         var rawData = reader.result;
                         var cleanData = rawData.replace('\n', ' ');
                         console.log(cleanData);
@@ -466,32 +514,34 @@ define(function(require) {
                 reader.readAsText(fileChooser.files[0]);
             }, false);
 
-            allFilesChooser.addEventListener('click', function(event) { this.value = null; });
+            allFilesChooser.addEventListener('click', function (event) {
+                this.value = null;
+            });
 
-            pluginChooser.addEventListener('click', function(event) {
+            pluginChooser.addEventListener('click', function (event) {
                 window.scroll(0, 0);
                 this.value = null;
             });
-            pluginChooser.addEventListener('change', function(event) {
+            pluginChooser.addEventListener('change', function (event) {
                 window.scroll(0, 0)
 
                 // Read file here.
                 var reader = new FileReader();
 
-                reader.onload = (function(theFile) {
+                reader.onload = (function (theFile) {
                     // Show busy cursor.
                     document.body.style.cursor = 'wait';
-                    setTimeout(function() {
+                    setTimeout(function () {
                         obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
                         // Save plugins to local storage.
                         if (obj != null) {
                             var foo = preparePluginExports(obj);
                             console.log(foo);
-                            localStorage.setItem('plugins', foo); // preparePluginExports(obj));
+                            storage.plugins = foo; // preparePluginExports(obj));
                         }
 
                         // Refresh the palettes.
-                        setTimeout(function() {
+                        setTimeout(function () {
                             if (palettes.visible) {
                                 palettes.hide();
                             }
@@ -542,9 +592,9 @@ define(function(require) {
             var urlParts;
             var env = [];
 
-            if (URL.indexOf('?') > 0) {
+            if (!sugarizerCompatibility.isInsideSugarizer() && URL.indexOf('?') > 0) {
                 var urlParts = URL.split('?');
-                if (urlParts[1].indexOf('&') >0) {
+                if (urlParts[1].indexOf('&') > 0) {
                     var newUrlParts = urlParts[1].split('&');
                     for (var i = 0; i < newUrlParts.length; i++) {
                         if (newUrlParts[i].indexOf('=') > 0) {
@@ -559,28 +609,28 @@ define(function(require) {
                                     break;
                                 case 'inurl':
                                     var url = args[1];
-                                    var getJSON = function(url) {
-                                        return new Promise(function(resolve, reject) {
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open('get', url, true);
-                                        xhr.responseType = 'json';
-                                        xhr.onload = function() {
-                                          var status = xhr.status;
-                                          if (status == 200) {
-                                            resolve(xhr.response);
-                                          } else {
-                                            reject(status);
-                                          }
-                                        };
-                                        xhr.send();
-                                      });
+                                    var getJSON = function (url) {
+                                        return new Promise(function (resolve, reject) {
+                                            var xhr = new XMLHttpRequest();
+                                            xhr.open('get', url, true);
+                                            xhr.responseType = 'json';
+                                            xhr.onload = function () {
+                                                var status = xhr.status;
+                                                if (status == 200) {
+                                                    resolve(xhr.response);
+                                                } else {
+                                                    reject(status);
+                                                }
+                                            };
+                                            xhr.send();
+                                        });
                                     };
-                                    getJSON(url).then(function(data) {
+                                    getJSON(url).then(function (data) {
                                         console.log('Your Json result is:  ' + data.arg); //you can comment this, i used it to debug
                                         n = data.arg;
                                         env.push(parseInt(n));
-                                    }, function(status) { //error detection....
-                                      alert('Something went wrong.');
+                                    }, function (status) { //error detection....
+                                        alert('Something went wrong.');
                                     });
                                     break;
                                 case 'outurl':
@@ -602,9 +652,14 @@ define(function(require) {
             }
 
             if (projectName != null) {
-                setTimeout(function () { console.log('load ' + projectName); loadProject(projectName, runProjectOnLoad, env); }, 2000);
+                setTimeout(function () {
+                    console.log('load ' + projectName);
+                    loadProject(projectName, runProjectOnLoad, env);
+                }, 2000);
             } else {
-                setTimeout(function () { loadStart(); }, 2000);
+                setTimeout(function () {
+                    loadStart();
+                }, 2000);
             }
 
             document.addEventListener('mousewheel', scrollEvent, false);
@@ -630,7 +685,10 @@ define(function(require) {
                     return;
                 }
                 moving = true;
-                lastCords = {x: event.stageX, y: event.stageY};
+                lastCords = {
+                    x: event.stageX,
+                    y: event.stageY
+                };
 
                 stage.on('stagemousemove', function (event) {
                     if (!moving) {
@@ -639,7 +697,10 @@ define(function(require) {
                     if (scrollBlockContainer) {
                         blocksContainer.x += event.stageX - lastCords.x;
                         blocksContainer.y += event.stageY - lastCords.y;
-                        lastCords = {x: event.stageX, y: event.stageY};
+                        lastCords = {
+                            x: event.stageX,
+                            y: event.stageY
+                        };
                         refreshCanvas();
                     }
                 });
@@ -647,7 +708,7 @@ define(function(require) {
                 stage.on('stagemouseup', function (event) {
                     stageMouseDown = false;
                     moving = false;
-                }, null, true);  // once = true
+                }, null, true); // once = true
             });
         }
 
@@ -659,7 +720,7 @@ define(function(require) {
             if (event.clientX < cellSize) {
                 palettes.menuScrollEvent(delta, scrollSpeed);
             } else {
-                palette = palettes.findPalette(event.clientX/scale, event.clientY/scale);
+                palette = palettes.findPalette(event.clientX / scale, event.clientY / scale);
                 if (palette) {
                     palette.scrollEvent(delta, scrollSpeed);
                 }
@@ -710,7 +771,7 @@ define(function(require) {
             var img = new Image();
             var svgData = MSGBLOCK.replace('fill_color', fillColor).replace(
                 'stroke_color', strokeColor);
-            img.onload = function() {
+            img.onload = function () {
                 var msgBlock = new createjs.Bitmap(img);
                 container.addChild(msgBlock);
                 text = new createjs.Text('your message here',
@@ -730,7 +791,7 @@ define(function(require) {
                 hitArea.y = 0;
                 container.hitArea = hitArea;
 
-                container.on('click', function(event) {
+                container.on('click', function (event) {
                     container.visible = false;
                     // On the possibility that there was an error
                     // arrow associated with this container
@@ -755,44 +816,44 @@ define(function(require) {
         }
 
         function makeErrorArtwork(name) {
-                var container = new createjs.Container();
-                stage.addChild(container);
-                container.x = (canvas.width - 1000) / 2;
-                container.y = 110;
-                errorArtwork[name] = container;
-                errorArtwork[name].name = name;
-                errorArtwork[name].visible = false;
+            var container = new createjs.Container();
+            stage.addChild(container);
+            container.x = (canvas.width - 1000) / 2;
+            container.y = 110;
+            errorArtwork[name] = container;
+            errorArtwork[name].name = name;
+            errorArtwork[name].visible = false;
 
-                var img = new Image();
-                img.onload = function() {
-                    console.log('creating error message artwork for ' + img.src);
-                    var artwork = new createjs.Bitmap(img);
-                    container.addChild(artwork);
-                    var text = new createjs.Text('', '20px Sans', '#000000');
-                    container.addChild(text);
-                    text.x = 70;
-                    text.y = 10;
+            var img = new Image();
+            img.onload = function () {
+                console.log('creating error message artwork for ' + img.src);
+                var artwork = new createjs.Bitmap(img);
+                container.addChild(artwork);
+                var text = new createjs.Text('', '20px Sans', '#000000');
+                container.addChild(text);
+                text.x = 70;
+                text.y = 10;
 
-                    var bounds = container.getBounds();
-                    container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                var bounds = container.getBounds();
+                container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 
-                    var hitArea = new createjs.Shape();
-                    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
-                    hitArea.x = 0;
-                    hitArea.y = 0;
-                    container.hitArea = hitArea;
+                var hitArea = new createjs.Shape();
+                hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
+                hitArea.x = 0;
+                hitArea.y = 0;
+                container.hitArea = hitArea;
 
-                    container.on('click', function(event) {
-                        container.visible = false;
-                        // On the possibility that there was an error
-                        // arrow associated with this container
-                        if (errorMsgArrow !== null) {
-                            errorMsgArrow.removeAllChildren(); // Hide the error arrow.
-                        }
-                        update = true;
-                    });
-                }
-                img.src = 'images/' + name + '.svg';
+                container.on('click', function (event) {
+                    container.visible = false;
+                    // On the possibility that there was an error
+                    // arrow associated with this container
+                    if (errorMsgArrow !== null) {
+                        errorMsgArrow.removeAllChildren(); // Hide the error arrow.
+                    }
+                    update = true;
+                });
+            }
+            img.src = 'images/' + name + '.svg';
         }
 
         function keyPressed(event) {
@@ -827,7 +888,8 @@ define(function(require) {
                         logo.doStopTurtle();
                         break;
                 }
-            } else if (event.ctrlKey) {} else {
+            } else if (event.ctrlKey) {
+            } else {
                 switch (event.keyCode) {
                     case ESC:
                         // toggle full screen
@@ -890,9 +952,9 @@ define(function(require) {
             stage.canvas.height = h;
 
             console.log('Resize: scale ' + scale +
-                ', windowW ' + w + ', windowH ' + h +
-                ', canvasW ' + canvas.width + ', canvasH ' + canvas.height +
-                ', screenW ' + screen.width + ', screenH ' + screen.height);
+            ', windowW ' + w + ', windowH ' + h +
+            ', canvasW ' + canvas.width + ', canvasH ' + canvas.height +
+            ', screenW ' + screen.width + ', screenH ' + screen.height);
 
             turtles.setScale(scale);
             blocks.setScale(scale);
@@ -919,7 +981,7 @@ define(function(require) {
             }
         }
 
-        window.onresize = function() {
+        window.onresize = function () {
             onResize();
         }
 
@@ -1060,13 +1122,24 @@ define(function(require) {
             thumbnails.show()
         }
 
+        window.prepareExport = prepareExport
+        window.saveLocally = saveLocally
+
         function saveLocally() {
+
+            if (sugarizerCompatibility.isInsideSugarizer()) {
+                //sugarizerCompatibility.data.blocks = prepareExport();
+                storage = sugarizerCompatibility.data;
+            } else {
+                storage = localStorage;
+            }
+
             console.log('overwriting session data');
 
-            if (localStorage.currentProject === undefined) {
+            if (storage.currentProject === undefined) {
                 try {
-                    localStorage.currentProject = 'My Project';
-                    localStorage.allProjects = JSON.stringify(['My Project'])
+                    storage.currentProject = 'My Project';
+                    storage.allProjects = JSON.stringify(['My Project'])
                 } catch (e) {
                     // Edge case, eg. Firefox localSorage DB corrupted
                     console.log(e);
@@ -1074,26 +1147,33 @@ define(function(require) {
             }
 
             try {
-                var p = localStorage.currentProject;
-                localStorage['SESSION' + p] = prepareExport();
-            } catch (e) { console.log(e); }
+                var p = storage.currentProject;
+                storage['SESSION' + p] = prepareExport();
+            } catch (e) {
+                console.log(e);
+            }
 
             if (isSVGEmpty(turtles)) {
                 return;
             }
-
             var img = new Image();
             var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
-            img.onload = function() {
+            img.onload = function () {
                 var bitmap = new createjs.Bitmap(img);
                 var bounds = bitmap.getBounds();
                 bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                 try {
-                    localStorage['SESSIONIMAGE' + p] = bitmap.getCacheDataURL();
-                } catch (e) { console.log(e); }
+                    storage['SESSIONIMAGE' + p] = bitmap.getCacheDataURL();
+                } catch (e) {
+                    console.log(e);
+                }
             }
             img.src = 'data:image/svg+xml;base64,' +
-                      window.btoa(unescape(encodeURIComponent(svgData)));
+            window.btoa(unescape(encodeURIComponent(svgData)));
+            console.log(img.src);
+            if (sugarizerCompatibility.isInsideSugarizer()) {
+                sugarizerCompatibility.saveLocally();
+            }
         }
 
         function loadProject(projectName, run, env) {
@@ -1102,7 +1182,7 @@ define(function(require) {
             // Show busy cursor.
             document.body.style.cursor = 'wait';
             // palettes.updatePalettes();
-            setTimeout(function() {
+            setTimeout(function () {
                 if (fileExt(projectName) != 'tb') {
                     projectName += '.tb';
                 }
@@ -1117,18 +1197,18 @@ define(function(require) {
                     console.log('save locally');
                     saveLocally();
                 } catch (e) {
-                   console.log(e);
-                   loadStart();
+                    console.log(e);
+                    loadStart();
                 }
                 // Restore default cursor
                 document.body.style.cursor = 'default';
                 update = true;
             }, 200);
             if (run) {
-                setTimeout(function() {
+                setTimeout(function () {
                     changeBlockVisibility();
                     doFastButton(env);
-                },2000);
+                }, 2000);
             }
             docById('loading-image-container').style.display = 'none';
         }
@@ -1148,7 +1228,7 @@ define(function(require) {
             // palettes.updatePalettes();
             // Show busy cursor.
             document.body.style.cursor = 'wait';
-            setTimeout(function() {
+            setTimeout(function () {
                 var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
                 projectName = punctuationless.replace(/ /g, '_');
                 if (fileExt(projectName) != 'tb') {
@@ -1161,7 +1241,7 @@ define(function(require) {
 
                     var img = new Image();
                     var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
-                    img.onload = function() {
+                    img.onload = function () {
                         var bitmap = new createjs.Bitmap(img);
                         var bounds = bitmap.getBounds();
                         bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -1185,10 +1265,10 @@ define(function(require) {
         function loadStart() {
             // where to put this?
             // palettes.updatePalettes();
-
-            justLoadStart = function() {
+            console.log(" LOAD START")
+            justLoadStart = function () {
                 console.log('loading start');
-                postProcess = function(thisBlock) {
+                postProcess = function (thisBlock) {
                     blocks.blockList[0].x = 250;
                     blocks.blockList[0].y = 250;
                     blocks.blockList[0].connections = [null, null, null];
@@ -1200,13 +1280,17 @@ define(function(require) {
                 blocks.makeNewBlock('start', postProcess, null);
             }
 
+            if (sugarizerCompatibility.isInsideSugarizer()) {
+                storage = sugarizerCompatibility.data;
+            }
+            else {
+                storage = localStorage;
+            }
+
             sessionData = null;
             // Try restarting where we were when we hit save.
-            if (typeof(Storage) !== 'undefined') {
-                // localStorage is how we'll save the session (and metadata)
-                var currentProject = localStorage.currentProject;
-                sessionData = localStorage['SESSION' + currentProject];
-            }
+            var currentProject = storage.currentProject;
+            sessionData = storage['SESSION' + currentProject];
             if (sessionData) {
                 try {
                     if (sessionData == 'undefined' || sessionData == '[]') {
@@ -1234,7 +1318,7 @@ define(function(require) {
                 refreshCanvas();
             }
             msgText.parent.visible = false;
-            for(var i in errorArtwork) {
+            for (var i in errorArtwork) {
                 errorArtwork[i].visible = false;
             }
         }
@@ -1257,8 +1341,7 @@ define(function(require) {
                 return;
             }
 
-            if (blk !== undefined && blk !== null
-                && !blocks.blockList[blk].collapsed) {
+            if (blk !== undefined && blk !== null && !blocks.blockList[blk].collapsed) {
                 var fromX = (canvas.width - 1000) / 2;
                 var fromY = 128;
                 var toX = blocks.blockList[blk].x + blocksContainer.x;
@@ -1392,32 +1475,50 @@ define(function(require) {
                 }
                 if (blocks.blockList[blk].isValueBlock() || blocks.blockList[blk].name == 'loadFile') {
                     // FIX ME: scale image if it exceeds a maximum size.
-                    var args = {'value': myBlock.value};
-                } else  if (myBlock.name == 'start') {
+                    var args = {
+                        'value': myBlock.value
+                    };
+                } else if (myBlock.name == 'start') {
                     // It's a turtle.
                     turtle = turtles.turtleList[myBlock.value];
-                    var args = {'collapsed': myBlock.collapsed,
-                                'xcor': turtle.x,
-                                'ycor': turtle.y,
-                                'heading': turtle.orientation,
-                                'color': turtle.color,
-                                'shade': turtle.value,
-                                'pensize': turtle.stroke,
-                                'grey': turtle.chroma};
+                    var args = {
+                        'collapsed': myBlock.collapsed,
+                        'xcor': turtle.x,
+                        'ycor': turtle.y,
+                        'heading': turtle.orientation,
+                        'color': turtle.color,
+                        'shade': turtle.value,
+                        'pensize': turtle.stroke,
+                        'grey': turtle.chroma
+                    };
                 } else if (myBlock.name == 'action') {
-                    var args = {'collapsed': myBlock.collapsed}
+                    var args = {
+                        'collapsed': myBlock.collapsed
+                    }
                 } else if (myBlock.name == 'namedbox') {
-                    var args = {'value': myBlock.privateData}
+                    var args = {
+                        'value': myBlock.privateData
+                    }
                 } else if (myBlock.name == 'nameddo') {
-                    var args = {'value': myBlock.privateData}
+                    var args = {
+                        'value': myBlock.privateData
+                    }
                 } else if (myBlock.name == 'nameddoArg') {
-                    var args = {'value': myBlock.privateData}
+                    var args = {
+                        'value': myBlock.privateData
+                    }
                 } else if (myBlock.name == 'namedcalc') {
-                    var args = {'value': myBlock.privateData}
+                    var args = {
+                        'value': myBlock.privateData
+                    }
                 } else if (myBlock.name == 'namedcalcArg') {
-                    var args = {'value': myBlock.privateData}
+                    var args = {
+                        'value': myBlock.privateData
+                    }
                 } else if (myBlock.name == 'namedarg') {
-                    var args = {'value': myBlock.privateData}
+                    var args = {
+                        'value': myBlock.privateData
+                    }
                 } else {
                     var args = {};
                 }
@@ -1465,7 +1566,7 @@ define(function(require) {
         function updatePasteButton() {
             pasteContainer.removeChild(pasteContainer.children[0]);
             var img = new Image();
-            img.onload = function() {
+            img.onload = function () {
                 var originalSize = 55; // this is the original svg size
                 var halfSize = Math.floor(cellSize / 2);
 
@@ -1510,6 +1611,15 @@ define(function(require) {
                 ['collapse-blocks', toggleCollapsibleStacks],
                 ['help', showHelp]
             ];
+
+            if (sugarizerCompatibility.isInsideSugarizer()) {
+                buttonNames.push(['sugarizer-stop', function () {
+                    sugarizerCompatibility.data.blocks = prepareExport();
+                    sugarizerCompatibility.saveLocally(function () {
+                        sugarizerCompatibility.sugarizerStop();
+                    });
+                }])
+            }
 
             if (showPalettesPopover) {
                 buttonNames.unshift(['popdown-palette', doPopdownPalette])
@@ -1570,7 +1680,7 @@ define(function(require) {
             var dy = btnSize;
 
             menuContainer = makeButton('menu-button', x, y, btnSize,
-                                       menuButtonsVisible? 90 : undefined);
+                menuButtonsVisible ? 90 : undefined);
             loadButtonDragHandler(menuContainer, x, y, doMenuButton);
 
             for (var name in menuNames) {
@@ -1605,7 +1715,7 @@ define(function(require) {
                     helpContainer.x = 65;
                     helpContainer.y = 65;
 
-                    helpContainer.on('click', function(event) {
+                    helpContainer.on('click', function (event) {
                         var bounds = helpContainer.getBounds();
                         if (event.stageY < helpContainer.y + bounds.height / 2) {
                             helpContainer.visible = false;
@@ -1622,7 +1732,7 @@ define(function(require) {
                     });
 
                     var img = new Image();
-                    img.onload = function() {
+                    img.onload = function () {
                         // console.log(scale);
                         bitmap = new createjs.Bitmap(img);
                         if (scale > 1) {
@@ -1650,7 +1760,7 @@ define(function(require) {
                 }
 
                 var helpElem = docById('helpElem');
-                helpElem.style.position= 'absolute';
+                helpElem.style.position = 'absolute';
                 helpElem.style.display = 'block';
                 helpElem.style.paddingLeft = 20 * scale + 'px';
                 helpElem.style.paddingRight = 20 * scale + 'px';
@@ -1670,13 +1780,17 @@ define(function(require) {
                 }
             }
 
-            var doneTour = localStorage.doneTour === 'true';
+            doneTour = storage.doneTour === 'true'
 
             if (firstTime && doneTour) {
                 docById('helpElem').style.visibility = 'hidden';
                 helpContainer.visible = false;
             } else {
-                localStorage.doneTour = 'true';
+                if (sugarizerCompatibility.isInsideSugarizer()) {
+                    sugarizerCompatibility.data.doneTour = 'true'
+                } else {
+                    storage.doneTour = 'true'
+                }
                 docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
                 docById('helpElem').style.visibility = 'visible';
                 helpContainer.visible = true;
@@ -1700,13 +1814,17 @@ define(function(require) {
             if (bitmap !== null) {
                 var r = bitmap.rotation;
                 createjs.Tween.get(bitmap)
-                    .to({rotation: r})
-                    .to({rotation: r + 90}, 500);
+                    .to({
+                        rotation: r
+                    })
+                    .to({
+                        rotation: r + 90
+                    }, 500);
             } else {
                 // Race conditions during load
                 setTimeout(doMenuAnimation, 50);
             }
-            setTimeout(function() {
+            setTimeout(function () {
                 if (menuButtonsVisible) {
                     menuButtonsVisible = false;
                     for (button in onscreenMenu) {
@@ -1747,7 +1865,7 @@ define(function(require) {
 
             var img = new Image();
 
-            img.onload = function() {
+            img.onload = function () {
                 var originalSize = 55; // this is the original svg size
                 var halfSize = Math.floor(size / 2);
 
@@ -1782,7 +1900,7 @@ define(function(require) {
             // Prevent multiple button presses (i.e., debounce).
             var locked = false;
 
-            container.on('mousedown', function(event) {
+            container.on('mousedown', function (event) {
                 var moved = true;
                 var offset = {
                     x: container.x - Math.round(event.stageX / blocks.scale),
@@ -1790,15 +1908,15 @@ define(function(require) {
                 };
 
                 var circles = showButtonHighlight(ox, oy, cellSize / 2,
-                                                  event, scale, stage);
-                container.on('pressup', function(event) {
+                    event, scale, stage);
+                container.on('pressup', function (event) {
                     hideButtonHighlight(circles, stage);
 
                     container.x = ox;
                     container.y = oy;
                     if (action != null && moved && !locked) {
                         locked = true;
-                        setTimeout(function() {
+                        setTimeout(function () {
                             locked = false;
                         }, 500);
                         action();
@@ -1807,5 +1925,6 @@ define(function(require) {
                 });
             });
         }
-    });
+    }
+
 });

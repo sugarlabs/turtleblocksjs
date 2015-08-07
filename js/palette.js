@@ -67,6 +67,12 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     this.originalSize = 55; // this is the original svg size
     this.trashcan = trashcan;
 
+    if (sugarizerCompatibility.isInsideSugarizer()) {
+        storage = sugarizerCompatibility.data;
+    } else {
+        storage = localStorage;
+    }
+
     // The collection of palettes.
     this.dict = {};
     this.buttons = {}; // The toolbar button for each palette.
@@ -1607,7 +1613,10 @@ function promptPaletteDelete(palette) {
         delete pluginObjs['ONSTOP'][name];
     }
 
-    localStorage.plugins = preparePluginExports({});
+    storage.plugins = preparePluginExports({});
+    if (sugarizerCompatibility.isInsideSugarizer()) {
+        sugarizerCompatibility.saveLocally();
+    }
 }
 
 
@@ -1624,7 +1633,10 @@ function promptMacrosDelete(palette) {
         palette.protoList.splice(i, 1);
     }
     palette.palettes.updatePalettes('myblocks');
-    localStorage.macros = prepareMacroExports(null, null, {});
+    storage.macros =  prepareMacroExports(null, null, {});
+    if (sugarizerCompatibility.isInsideSugarizer()) {
+        sugarizerCompatibility.saveLocally();
+    }
 }
 
 

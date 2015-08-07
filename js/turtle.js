@@ -806,11 +806,14 @@ function Turtles(canvas, stage, refreshCanvas) {
             me.refreshCanvas();
         }
 
-        makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
+        if (sugarizerCompatibility.isInsideSugarizer()) {
+          makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, sugarizerCompatibility.xoColor.fill).replace(/stroke_color/g, sugarizerCompatibility.xoColor.stroke), 'turtle', processTurtleBitmap, startBlock);
+        } else {
+          makeTurtleBitmap(this, TURTLESVG.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
+        }
 
         myTurtle.color = i * 10;
         myTurtle.canvasColor = getMunsellColor(myTurtle.color, DEFAULTVALUE, DEFAULTCHROMA);
-
         var turtles = this;
 
         myTurtle.container.on('mousedown', function(event) {

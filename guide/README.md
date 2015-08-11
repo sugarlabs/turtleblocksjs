@@ -366,7 +366,6 @@ is zero, then no key has been pressed, so we call the action again. If
 a key is pressed, the keyboard value is greater than zero, so we
 return from the action and show the next image.
 
-
 8. Turtles, Sprites, Buttons, and Events
 ----------------------------------------
 
@@ -440,6 +439,19 @@ argument - 2.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci1.svg'</img>
 
 Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
+
+Example: Reflection Paint
+-------------------------
+
+By combining multiple turtles and passing arguments to actions, we can
+have some more fun with paint. In the example below, the paint action
+uses arg 1 and arg 2 to reflect the mouse coordinates about the y and
+x axes. The result is that the painting is reflected into all four
+quadrants.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtle5.svg'</img>
+
+Reflection Paint [RUN LIVE](http://turtle.sugarlabs.org/?file=Reflection-Paint.tb&run=true)
 
 10. Advanced Boxes
 ------------------

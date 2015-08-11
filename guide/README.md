@@ -449,7 +449,7 @@ uses arg 1 and arg 2 to reflect the mouse coordinates about the y and
 x axes. The result is that the painting is reflected into all four
 quadrants.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtle5.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles5.svg'</img>
 
 Reflection Paint [RUN LIVE](http://turtle.sugarlabs.org/?file=Reflection-Paint.tb&run=true)
 

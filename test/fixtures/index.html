@@ -1,0 +1,34 @@
+<!-- Mocha tests in the browser use unicode symbols for bullet points
+so unless you want weird character bullet points, we add this. It doesn't
+break anything with or without it. -->
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../node_modules/grunt-blanket-mocha/node_modules/mocha/mocha.css">
+<!-- This is where mocha inserts the test results that are styled with the css file above -->
+<div id="mocha"></div>
+<!-- This is where any fixtures we need for the test will be inserted into. Naturally, we won't want to cover the mocha test results so we position this bad boy off screen. -->
+<div id="test" style="position: fixed; top: 0; left: -99999px;">
+</div>
+<!-- We need to insert our testing dependencies here -->
+<script src="../../node_modules/chai/chai.js"></script>
+<script src="../../node_modules/sinon-chai/lib/sinon-chai.js"></script>
+<script src="../../node_modules/sinon/pkg/sinon.js"></script>
+<script src="../../node_modules/grunt-blanket-mocha/node_modules/mocha/mocha.js"></script>
+<script src="../../node_modules/grunt-blanket-mocha/node_modules/blanket/dist/mocha/blanket_mocha.js"></script>
+<script src="../../node_modules/grunt-blanket-mocha/support/mocha-blanket.js"></script>
+<!-- We will using BDD-style assertions. See Mocha documentation for more info -->
+<script>mocha.setup('bdd');</script>
+<!-- The source file we will be testing! Don't forget the data-cover attribute so Blanket will know which file will need to be instrumented for coverage. -->
+<!--<script src="../../src/main/js/calculator.js" data-cover></script>>--
+<!-- Our test suite needs to be after the source file, of course -->
+<script src="../js/test.js"></script>
+<script>
+// For Blanket add coverage in our Mocha CLI tests (node environment),
+// we need to add this reporter
+if (window.PHANTOMJS) {
+   blanket.options("reporter", "../node_modules/grunt-blanket-mocha/support/grunt-reporter.js");
+}
+// If we're in in the browser
+else {
+   mocha.run();
+}
+</script>

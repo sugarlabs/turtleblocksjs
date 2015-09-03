@@ -414,7 +414,6 @@ action stack that has a return block will cause the creation of a new
 block in the Actions palette that can be used to reference the return
 value: in this case, a distance block is created.
 
-
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions6.svg'</img>
 
 You can also pass arguments to an action stack. In this example, we

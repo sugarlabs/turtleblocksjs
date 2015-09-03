@@ -451,28 +451,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-47">
       <feGaussianBlur
-         id="feGaussianBlur7-3"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur7-3" />
       <feOffset
-         id="feOffset9-5"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset9-5" />
       <feComponentTransfer
          id="feComponentTransfer11-6">
         <feFuncA
-           id="feFuncA13-1"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA13-1" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15-2">
         <feMergeNode
            id="feMergeNode17-3" />
         <feMergeNode
-           id="feMergeNode19-2"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode19-2" />
       </feMerge>
     </filter>
     <path
@@ -605,28 +605,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-47-3">
       <feGaussianBlur
-         id="feGaussianBlur7-3-7"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur7-3-7" />
       <feOffset
-         id="feOffset9-5-7"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset9-5-7" />
       <feComponentTransfer
          id="feComponentTransfer11-6-5">
         <feFuncA
-           id="feFuncA13-1-0"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA13-1-0" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15-2-0">
         <feMergeNode
            id="feMergeNode17-3-0" />
         <feMergeNode
-           id="feMergeNode19-2-9"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode19-2-9" />
       </feMerge>
     </filter>
     <path

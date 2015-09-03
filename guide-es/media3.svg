@@ -24,66 +24,7 @@
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs110">
-    <filter
-       height="1.3"
-       color-interpolation-filters="sRGB"
-       id="dropshadow">
-      <feGaussianBlur
-         id="feGaussianBlur7"
-         stdDeviation="3"
-         in="SourceAlpha" />
-      <feOffset
-         id="feOffset9"
-         result="offsetblur"
-         dy="2"
-         dx="2" />
-      <feComponentTransfer
-         id="feComponentTransfer11">
-        <feFuncA
-           id="feFuncA13"
-           slope="0.2"
-           type="linear" />
-      </feComponentTransfer>
-      <feMerge
-         id="feMerge15">
-        <feMergeNode
-           id="feMergeNode17" />
-        <feMergeNode
-           id="feMergeNode19"
-           in="SourceGraphic" />
-      </feMerge>
-    </filter>
-    <filter
-       height="1.3"
-       color-interpolation-filters="sRGB"
-       id="dropshadow-4">
-      <feGaussianBlur
-         id="feGaussianBlur7-6"
-         stdDeviation="3"
-         in="SourceAlpha" />
-      <feOffset
-         id="feOffset9-3"
-         result="offsetblur"
-         dy="2"
-         dx="2" />
-      <feComponentTransfer
-         id="feComponentTransfer11-4">
-        <feFuncA
-           id="feFuncA13-8"
-           slope="0.2"
-           type="linear" />
-      </feComponentTransfer>
-      <feMerge
-         id="feMerge15-8">
-        <feMergeNode
-           id="feMergeNode17-9" />
-        <feMergeNode
-           id="feMergeNode19-0"
-           in="SourceGraphic" />
-      </feMerge>
-    </filter>
-  </defs>
+     id="defs110" />
   <text
      x="18"
      y="73.036423"
@@ -308,14 +249,14 @@
         <g
            id="g7">
           <polygon
-             points="48.209,14.52 38.532,14.52 34.904,9.862 18.783,9.862 15.155,14.52 6.29,14.52 6.29,38.973 48.209,38.973 "
+             points="38.532,14.52 34.904,9.862 18.783,9.862 15.155,14.52 6.29,14.52 6.29,38.973 48.209,38.973 48.209,14.52 "
              id="polygon9"
              style="fill:#ffffff" />
         </g>
         <g
            id="g11">
           <polygon
-             points="38.532,14.52 34.904,9.862 18.783,9.862 15.155,14.52 6.29,14.52 6.29,38.973 48.209,38.973 48.209,14.52 "
+             points="34.904,9.862 18.783,9.862 15.155,14.52 6.29,14.52 6.29,38.973 48.209,38.973 48.209,14.52 38.532,14.52 "
              id="polygon13"
              style="fill:none;stroke:#010101;stroke-width:2.33333325" />
         </g>

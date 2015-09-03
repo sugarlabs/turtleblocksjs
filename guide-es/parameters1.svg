@@ -385,28 +385,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-65">
       <feGaussianBlur
-         id="feGaussianBlur7-4"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur7-4" />
       <feOffset
-         id="feOffset9-5"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset9-5" />
       <feComponentTransfer
          id="feComponentTransfer11-44">
         <feFuncA
-           id="feFuncA13-8"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA13-8" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15-71">
         <feMergeNode
            id="feMergeNode17-5" />
         <feMergeNode
-           id="feMergeNode19-0"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode19-0" />
       </feMerge>
     </filter>
     <path

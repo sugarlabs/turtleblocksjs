@@ -8,8 +8,8 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
-   width="228"
-   height="42"
+   width="524"
+   height="403.125"
    id="svg2">
   <metadata
      id="metadata106">
@@ -30,28 +30,28 @@
        color-interpolation-filters="sRGB"
        id="dropshadow">
       <feGaussianBlur
-         id="feGaussianBlur3100"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur3100" />
       <feOffset
-         id="feOffset3102"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset3102" />
       <feComponentTransfer
          id="feComponentTransfer3104">
         <feFuncA
-           id="feFuncA3106"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA3106" />
       </feComponentTransfer>
       <feMerge
          id="feMerge3108">
         <feMergeNode
            id="feMergeNode3110" />
         <feMergeNode
-           id="feMergeNode3112"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode3112" />
       </feMerge>
     </filter>
     <filter
@@ -59,57 +59,57 @@
        color-interpolation-filters="sRGB"
        id="dropshadow-0">
       <feGaussianBlur
-         id="feGaussianBlur7"
+         in="SourceAlpha"
          stdDeviation="3"
-         in="SourceAlpha" />
+         id="feGaussianBlur7" />
       <feOffset
-         id="feOffset9"
-         result="offsetblur"
+         dx="2"
          dy="2"
-         dx="2" />
+         result="offsetblur"
+         id="feOffset9" />
       <feComponentTransfer
          id="feComponentTransfer11">
         <feFuncA
-           id="feFuncA13"
+           type="linear"
            slope="0.2"
-           type="linear" />
+           id="feFuncA13" />
       </feComponentTransfer>
       <feMerge
          id="feMerge15">
         <feMergeNode
            id="feMergeNode17" />
         <feMergeNode
-           id="feMergeNode19"
-           in="SourceGraphic" />
+           in="SourceGraphic"
+           id="feMergeNode19" />
       </feMerge>
     </filter>
   </defs>
   <text
-     x="-278"
-     y="-148.96358"
+     x="18"
+     y="73.598923"
      id="text3033"
      style="font-size:13.33333302px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="-176"
-       y="-126.46358"
+       x="120"
+       y="96.098923"
        id="tspan3035" />
   </text>
   <path
-     d="m -259,-66.99999 0,-8 a 8,8 0 0 1 8,-8 l 8,0 0,4 20,0 0,-4 68,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -68,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 0,-8 z"
+     d="m 37,155.56251 0,-8 a 8,8 0 0 1 8,-8 l 8,0 0,4 20,0 0,-4 68,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -68,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 0,-8 z"
      id="path3027"
      style="fill:#00b700;fill-opacity:1;stroke:#007b00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
-     x="-260"
-     y="-83.999969"
+     x="36"
+     y="138.56253"
      id="text3029"
      style="font-size:20px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="-158"
-       y="-55.999969"
+       x="138"
+       y="166.56253"
        id="tspan3031">atrás</tspan>
   </text>
   <g
-     transform="translate(-286,-180)"
+     transform="translate(10,42.5625)"
      id="g3083">
     <path
        d="m 149,97 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
@@ -127,7 +127,7 @@
     </text>
   </g>
   <g
-     transform="translate(-334.8,-87.6302)"
+     transform="translate(-38.8,134.9323)"
      id="g3739">
     <path
        d="m 351.8,130.6302 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
@@ -145,103 +145,103 @@
     </text>
   </g>
   <path
-     d="m -259,-24.99999 0,-8 a 8,8 0 0 1 8,-8 l 8,0 0,4 20,0 0,-4 60,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -60,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 0,-8 z"
+     d="m 37,197.56251 0,-8 a 8,8 0 0 1 8,-8 l 8,0 0,4 20,0 0,-4 60,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -60,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 0,-8 z"
      id="path3101"
      style="fill:#00b700;fill-opacity:1;stroke:#007b00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
-     x="-260"
-     y="-42"
+     x="36"
+     y="180.5625"
      id="text3103"
      style="font-size:20px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="-166"
-       y="-14"
+       x="130"
+       y="208.5625"
        id="tspan3105">derecha</tspan>
   </text>
   <text
-     x="-260"
-     y="-83.999985"
+     x="36"
+     y="138.56252"
      id="text3107"
      style="font-size:13.33333302px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="-166"
-       y="-61.499985"
+       x="130"
+       y="161.06252"
        id="tspan3109" />
   </text>
   <path
-     d="m -145,-40.99999 120.00001,0 0,40 -120.00001,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
+     d="m 151,181.56251 120.00001,0 0,40 -120.00001,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
      id="path21-7"
      style="fill:#ff00ff;fill-opacity:1;stroke:#c700d3;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
-     x="-121.14932"
-     y="-40.201416"
+     x="174.85068"
+     y="182.36108"
      id="text23-1"
      style="font-size:20px;text-anchor:start;fill:#000000;font-family:Sans">
     <tspan
-       x="-101.14935"
-       y="-14.201416"
+       x="194.85065"
+       y="208.36108"
        id="tspan25-0">36</tspan>
   </text>
   <text
-     x="-278"
-     y="-64.963577"
+     x="18"
+     y="157.59892"
      id="text3033-0"
      style="font-size:13.33333302px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="-176"
-       y="-42.463577"
+       x="120"
+       y="180.09892"
        id="tspan3035-1" />
   </text>
   <text
-     x="-278"
-     y="19.036423"
+     x="18"
+     y="241.59892"
      id="text3033-1"
      style="font-size:13.33333302px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="-176"
-       y="41.536407"
+       x="120"
+       y="264.09891"
        id="tspan3035-8" />
   </text>
   <text
-     x="-278"
-     y="103.03641"
+     x="18"
+     y="325.59891"
      id="text3033-0-9"
      style="font-size:13.33333302px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="-176"
-       y="125.53641"
+       x="120"
+       y="348.09891"
        id="tspan3035-1-5" />
   </text>
   <path
-     d="m -277,-151 0,-8 c 0,-4.18879 3.81121,-8 8,-8 l 8,0 0,4 20,0 0,-4 18,0 40,0 8,0 c 4.18879,0 8,3.81121 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 c 0,4.18879 -3.81121,8 -8,8 l -8,0 -40,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 c -2.61799,0 -5.21987,1.07773 -7.07107,2.92893 -1.8512,1.8512 -2.92893,4.45308 -2.92893,7.07107 l 0,8 0,176 0,8 c 0,2.61799 1.07773,5.21987 2.92893,7.07107 1.8512,1.8512 4.53124,3.56389 7.07107,2.92893 l 8,0 0,4 20,0 0,-4 16,0 0,12 0,12 0,8 c 0,4.18879 -3.93628,9.01593 -8,8 l -8,0 -18,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 c -4.18879,0 -8,-3.81121 -8,-8 l 0,-8 z"
+     d="m 19,71.5625 0,-8 c 0,-4.18879 3.81121,-8 8,-8 l 8,0 0,4 20,0 0,-4 18,0 40,0 8,0 c 4.18879,0 8,3.81121 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 c 0,4.18879 -3.81121,8 -8,8 l -8,0 -40,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 c -2.61799,0 -5.21987,1.07773 -7.07107,2.92893 C 36.07773,100.34263 35,102.94451 35,105.5625 l 0,8 0,176 0,8 c 0,2.61799 1.07773,5.21987 2.92893,7.07107 1.8512,1.8512 4.53124,3.56389 7.07107,2.92893 l 8,0 0,4 20,0 0,-4 16,0 0,12 0,12 0,8 c 0,4.18879 -3.93628,9.01593 -8,8 l -8,0 -18,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 c -4.18879,0 -8,-3.81121 -8,-8 l 0,-8 z"
      id="path3035"
      style="fill:#e37a00;fill-opacity:1;stroke:#a34600;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
-     x="-278"
-     y="-168"
+     x="18"
+     y="54.5625"
      id="text3037"
      style="font-size:20px;text-anchor:start;fill:#000000;font-family:Sans">
     <tspan
-       x="-270"
-       y="-137.5"
+       x="26"
+       y="85.0625"
        id="tspan3039">repetir</tspan>
   </text>
   <path
-     d="m -165,-166.99999 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
+     d="m 131,55.56251 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
      id="path21-8"
      style="fill:#ff00ff;fill-opacity:1;stroke:#c700d3;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
-     x="-139"
-     y="-165.99997"
+     x="157"
+     y="56.562531"
      id="text23-0"
      style="font-size:20px;text-anchor:start;fill:#000000;font-family:Sans">
     <tspan
-       x="-119"
-       y="-140"
+       x="177"
+       y="82.5625"
        id="tspan25-7">10</tspan>
   </text>
   <g
-     transform="translate(-296,-222)"
+     transform="translate(0,0.5625)"
      id="g3055">
     <g
        id="g4085">
@@ -330,21 +330,21 @@
     </g>
   </g>
   <path
-     d="m -259,-109 0,-8 a 8,8 0 0 1 8,-8 l 8,0 0,4 20,0 0,-4 68,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -68,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 0,-8 z"
+     d="m 37,113.5625 0,-8 a 8,8 0 0 1 8,-8 l 8,0 0,4 20,0 0,-4 68,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -68,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 0,-8 z"
      id="path3027-1"
      style="fill:#00b700;fill-opacity:1;stroke:#007b00;stroke-width:2;stroke-linecap:round;stroke-opacity:1" />
   <text
-     x="-260"
-     y="-125.99998"
+     x="36"
+     y="96.562523"
      id="text3029-5"
      style="font-size:20px;text-anchor:end;fill:#000000;font-family:Sans">
     <tspan
-       x="-158"
-       y="-97.999977"
+       x="138"
+       y="124.56252"
        id="tspan3031-7">adelente</tspan>
   </text>
   <g
-     transform="translate(-286,-222.00001)"
+     transform="translate(10,0.56249)"
      id="g3083-0">
     <path
        d="m 149,97 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
@@ -362,7 +362,7 @@
     </text>
   </g>
   <g
-     transform="translate(-260,0)"
+     transform="translate(36,222.5625)"
      id="g3281">
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 108,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -108,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 8,8 0 0 1 1,33 l 0,-8 0,-8 z"
@@ -386,6 +386,7 @@
     </text>
   </g>
   <g
+     transform="translate(296,222.5625)"
      id="g3343">
     <path
        d="m 17,1 210,0 0,40 -210,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
@@ -401,7 +402,7 @@
     </text>
   </g>
   <g
-     transform="translate(-114,0)"
+     transform="translate(182,222.5625)"
      id="g3431">
     <path
        d="m 17,17 0,-8 a 8,8 0 0 1 8,-8 l 8,0 20,0 60,0 8,0 a 8,8 0 0 1 8,8 l 0,8 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,34 -8,0 0,-6 -8,0 0,20 8,0 0,-6 8,0 0,8 a 8,8 0 0 1 -8,8 l -8,0 -60,0 -20,0 -8,0 a 8,8 0 0 1 -8,-8 l 0,-8 0,-42 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z"
@@ -433,7 +434,7 @@
     </text>
   </g>
   <g
-     transform="translate(-260,42)"
+     transform="translate(36,264.5625)"
      id="g3515">
     <path
        d="M 1,17 1,9 A 8,8 0 0 1 9,1 l 8,0 0,4 20,0 0,-4 60,0 8,0 a 8,8 0 0 1 8,8 l 0,8 0,8 0,8 a 8,8 0 0 1 -8,8 l -8,0 -60,0 -2,0 0,4 -16,0 0,-4 -2,0 -8,0 A 8,8 0 0 1 1,33 l 0,-8 z"

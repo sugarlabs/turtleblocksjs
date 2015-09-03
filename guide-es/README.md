@@ -458,7 +458,7 @@ la acción Fib, que devuelve un valor si el argumento es <2; de lo
 contrario, devuelve la suma del resultado de llamar a la acción con el
 argumento Fib - 1 y el argumento - 2.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/fibonacci1.svg'</img>
 
 Cálculo de Fibonacci [CORRER  EN VIVO](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
 
@@ -471,7 +471,7 @@ ejemplo, la acción de pintura utiliza arg 1 y arg 2 para reflejar las
 coordenadas del ratón sobre los ejes Y y X. El resultado es que la
 pintura se refleja en los cuatro cuadrantes.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles5.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles5.svg'</img>
 
 Pintura de Reflexión [CORRER EN VIVO](http://turtle.sugarlabs.org/?file=Reflection-Paint.tb&run=true)
 

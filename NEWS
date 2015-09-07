@@ -395,6 +395,7 @@ ISSUES:
 
 KNOWN BUGS:
   * Text rotation not saved properly in SVG output.
+  * Text inserted mid-path breaks SVG output.
   * Block colors in documentation don't match current design.
   * Deleting palette entries when renaming actions is not working properly.
   * Sometimes change in size of arg blocks not auto-cascaded.
@@ -411,6 +412,9 @@ KNOWN BUGS:
     after block resize.
   * Sometimes collapses blocks get moved.
   * Polar coordinate grid not centered under some circumstances.
+  * Sometimes long press puts menu in wrong place.
+  * Multiple copy/paste cycles sometime concatenate clipboard stack.
+  * P5-related blocks no longer working -- P5 does not init properly.
 
 ANDROID-SPECIFIC BUGS:
   * Camera doesn't work on Android

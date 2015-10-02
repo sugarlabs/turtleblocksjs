@@ -1417,8 +1417,8 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
 
             // Garbage collection
             for (var i = 0; i < garbage.length; i++) {
-                logo.endOfFlowSignals[turtle][blk] = logo.endOfFlowSignals[turtle][blk].splice(garbage[i], 1); 
-                logo.endOfFlowClamps[turtle][blk] = logo.endOfFlowClamps[turtle][blk].splice(garbage[i], 1); 
+                logo.endOfFlowSignals[turtle][blk] = logo.endOfFlowSignals[turtle][blk].splice(garbage[i], 1);
+                logo.endOfFlowClamps[turtle][blk] = logo.endOfFlowClamps[turtle][blk].splice(garbage[i], 1);
             }
         }
 

@@ -89,6 +89,9 @@ msgid "pen down"
 msgstr ""
 
 #. TRANS: fill refers to filling a shape with a color (e.g., paint bucket).
+msgid "fill"
+msgstr ""
+
 msgid "begin fill"
 msgstr ""
 
@@ -868,6 +871,10 @@ msgid "that"
 msgstr ""
 
 msgid "no background"
+msgstr ""
+
+#. TRANS: hollow line refers to drawing an outline around a line
+msgid "hollow line"
 msgstr ""
 
 msgid "begin hollow line"

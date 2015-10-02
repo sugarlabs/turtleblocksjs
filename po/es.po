@@ -320,6 +320,10 @@ msgstr "tamaño"
 msgid "Expand/collapse option toolbar"
 msgstr "Expandir/colapsar la barra de opciones."
 
+#. TRANS: hollow line refers to drawing an outline around a line
+msgid "hollow line"
+msgstr "linea sin relleno"
+
 msgid "end hollow line"
 msgstr "finalizar linea sin relleno"
 
@@ -634,6 +638,9 @@ msgid "heap"
 msgstr "pila"
 
 #. TRANS: fill refers to filling a shape with a color (e.g., paint bucket).
+msgid "fill"
+msgstr "relleno"
+
 msgid "begin fill"
 msgstr "iniciar relleno"
 

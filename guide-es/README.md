@@ -572,7 +572,7 @@ la salida de su proyecto de diferentes maneras.
 
 El bloque Guardar como SVG guardará su dibujo como gráficos
 vectoriales simples (SVG), un formato compatible con HTML5 y muchos
-programas de manipulación de imágenes, por ejemplo, Inkscake. En el
+programas de manipulación de imágenes, por ejemplo, Inkscape. En el
 ejemplo anterior, lo usamos para guardar un diseño en una forma que se
 puede convertir en STL, un formato de archivo común utilizado por las
 impresoras 3D. Algunas cosas para tomar not: (1) el bloque de sin

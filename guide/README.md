@@ -545,7 +545,7 @@ project's output in different ways.
 
 The Save as SVG block will save your drawing as simple vector graphics
 (SVG), a format compatible with HTML5 and many image manipulation
-programs, e.g., Inkscake. In the example above, we use it to save a
+programs, e.g., Inkscape. In the example above, we use it to save a
 design in a from that can be converted to STL, a common file format
 used by 3D printers. A few things to take note of: (1) the No
 Background block is used to suppress the inclusion of the background

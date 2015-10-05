@@ -1844,7 +1844,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Depending upon the form of the associated action block, we
         // want to add a named do, a named calc, a named do w/args, or
         // a named calc w/args.
-        console.log('NEW DO: ' + name + ' ' + hasReturn + ' ' + hasArgs);
+        // console.log('NEW DO: ' + name + ' ' + hasReturn + ' ' + hasArgs);
 
         if (name == _('action')) {
             // 'action' already has its associated palette entries.
@@ -1867,8 +1867,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myDoBlock.zeroArgBlock();
             myDoBlock.palette.add(myDoBlock);
         } else {
-            console.log('myDo_' + name + ' already exists.');
+            // console.log('myDo_' + name + ' already exists.');
+            return false;
         }
+        return true;
     }
 
     this.newNamedcalcBlock = function (name) {
@@ -2730,8 +2732,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 var c = myBlock.connections[1];
                 if (c != null && this.blockList[c].value != _('action')) {
                     console.log('calling newNameddoBlock with name ' + this.blockList[c].value);
-                    this.newNameddoBlock(this.blockList[c].value, this.actionHasReturn(blk), this.actionHasArgs(blk));
-                    updatePalettes = true;
+                    if(this.newNameddoBlock(this.blockList[c].value, this.actionHasReturn(blk), this.actionHasArgs(blk))) {
+                        updatePalettes = true;
+                    }
                 }
             }
         }

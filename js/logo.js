@@ -983,6 +983,26 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     }
                 }
                 break;
+            case 'setturtlename':
+                var foundTurtle = false;
+                var sourceName = '';
+                if (args.length == 2) {
+                    sourceName = args[0];
+                    var targetName = args[1];
+                    var thisTurtle = null;
+                    for (var i = 0; i < turtles.turtleList.length; i++) {
+                        thisTurtle = turtles.turtleList[i];
+                        if (sourceName == thisTurtle.name) {
+                            thisTurtle.rename(targetName);
+                            foundTurtle = true;
+                            break;
+                        }
+                    }
+                }
+                if (!foundTurtle) {
+                    logo.errorMsg('Could not find turtle ' + sourceName, blk);
+                }
+                break;
             case 'setcolor':
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
@@ -993,7 +1013,6 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     }
                 }
                 break;
-
             case 'setfont' :
                 if (args.length == 1) {
                     if (typeof(args[0]) == 'string') {
@@ -1205,7 +1224,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     logo.parentFlowQueue[targetTurtle] = [];
                     logo.unhightlightQueue[targetTurtle] = [];
                     logo.parameterQueue[targetTurtle] = [];
-                    runFromBlock(logo, targetTurtle, startHere, isflow, receivedArg);
+                    logo.runFromBlock(logo, targetTurtle, startHere, isflow, receivedArg);
                 }
                 break;
             case 'stopTurtle':

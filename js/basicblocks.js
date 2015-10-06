@@ -943,6 +943,19 @@ function initBasicProtoBlocks(palettes, blocks) {
     turtleNameBlock.parameterBlock();
     turtleNameBlock.dockTypes[0] = 'textout';
 
+    var setTurtleName = new ProtoBlock('setturtlename');
+    setTurtleName.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['setturtlename'] = setTurtleName;
+    setTurtleName.staticLabels.push(_('turtle name'));
+    setTurtleName.staticLabels.push(_('source'));
+    setTurtleName.staticLabels.push(_('target'));
+    setTurtleName.adjustWidthToLabel();
+    setTurtleName.twoArgBlock();
+    setTurtleName.dockTypes[1] = 'anyin';
+    setTurtleName.dockTypes[2] = 'anyin';
+    setTurtleName.defaults.push('0');
+    setTurtleName.defaults.push('Yertle');
+
     // Sensors palette
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];

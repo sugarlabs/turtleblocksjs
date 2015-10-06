@@ -65,6 +65,17 @@ function Turtle (name, turtles) {
     this.font = DEFAULTFONT;
     this.media = [];  // Media (text, images) we need to remove on clear.
 
+    this.rename = function(name) {
+        this.name = name;
+
+        // Use the name on the label of the start block.
+        if (this.startBlock != null) {
+            this.startBlock.overrideName = this.name;
+            this.startBlock.collapseText.text = this.name;
+	    this.startBlock.regenerateArtwork(false);
+        }
+    }
+    
     this.move = function(ox, oy, x, y, invert) {
         if (invert) {
             ox = this.turtles.turtleX2screenX(ox);
@@ -338,6 +349,9 @@ function Turtle (name, turtles) {
         this.font = DEFAULTFONT;
         this.container.x = this.turtles.turtleX2screenX(this.x);
         this.container.y = this.turtles.turtleY2screenY(this.y);
+        if (this.name != _('start')) {
+            this.rename(_('start'));
+        }
 
         if (this.skinChanged) {
             this.doTurtleShell(55, turtleBasePath + 'turtle-' + i.toString() + '.svg');

@@ -1018,7 +1018,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     // Find the start block associated with this turtle.
                     var foundStartBlock = false;
                     for (var i = 0; i < logo.blocks.blockList.length; i++) {
-                        if (logo.blocks.blocksList[i] == logo.turtles.turtleList[targetTurtle].startBlock) {
+                        if (logo.blocks.blockList[i] == logo.turtles.turtleList[targetTurtle].startBlock) {
                             foundStartBlock = true;
                             break;
                         }

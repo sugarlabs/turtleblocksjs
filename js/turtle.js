@@ -72,8 +72,8 @@ function Turtle (name, turtles) {
         if (this.startBlock != null) {
             this.startBlock.overrideName = this.name;
             this.startBlock.collapseText.text = this.name;
-	    this.startBlock.regenerateArtwork(false);
-            this.startBlock.value = this.name;
+            this.startBlock.regenerateArtwork(false);
+            this.startBlock.value = this.turtles.turtleList.indexOf(this);
         }
     }
     
@@ -750,6 +750,10 @@ function Turtles(canvas, stage, refreshCanvas) {
         // Add a new turtle for each start block
         if (startBlock != null) {
             console.log('adding a new turtle ' + startBlock.name);
+            if (startBlock.value != this.turtleList.length) {
+                startBlock.value = this.turtleList.length;
+                console.log('turtle #' + startBlock.value);
+            }
         } else {
             console.log('adding a new turtle startBlock is null');
         };
@@ -775,7 +779,6 @@ function Turtles(canvas, stage, refreshCanvas) {
 
         // Each turtle needs its own canvas.
         myTurtle.imageContainer = new createjs.Container();
-        console.log('creating image container');
         this.stage.addChild(myTurtle.imageContainer);
         myTurtle.drawingCanvas = new createjs.Shape();
         this.stage.addChild(myTurtle.drawingCanvas);

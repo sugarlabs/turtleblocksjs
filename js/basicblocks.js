@@ -956,6 +956,42 @@ function initBasicProtoBlocks(palettes, blocks) {
     setTurtleName.defaults.push('0');
     setTurtleName.defaults.push('Yertle');
 
+    var getxTurtleBlock = new ProtoBlock('xturtle');
+    getxTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['xturtle'] = getxTurtleBlock;
+    getxTurtleBlock.staticLabels.push(_('turtle x'));
+    getxTurtleBlock.adjustWidthToLabel();
+    getxTurtleBlock.oneArgBlock();
+    getxTurtleBlock.dockTypes[1] = 'anyin';
+    getxTurtleBlock.defaults.push('0');
+
+    var getyTurtleBlock = new ProtoBlock('yturtle');
+    getyTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
+    getyTurtleBlock.staticLabels.push(_('turtle y'));
+    getyTurtleBlock.adjustWidthToLabel();
+    getyTurtleBlock.oneArgBlock();
+    getyTurtleBlock.dockTypes[1] = 'anyin';
+    getyTurtleBlock.defaults.push('0');
+
+    var startTurtleBlock = new ProtoBlock('startTurtle');
+    startTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
+    startTurtleBlock.staticLabels.push(_('start turtle'));
+    startTurtleBlock.adjustWidthToLabel();
+    startTurtleBlock.oneArgBlock();
+    startTurtleBlock.dockTypes[1] = 'anyin';
+    startTurtleBlock.defaults.push('0');
+
+    var stopTurtleBlock = new ProtoBlock('stopTurtle');
+    stopTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
+    stopTurtleBlock.staticLabels.push(_('stop turtle'));
+    stopTurtleBlock.adjustWidthToLabel();
+    stopTurtleBlock.oneArgBlock();
+    stopTurtleBlock.dockTypes[1] = 'anyin';
+    stopTurtleBlock.defaults.push('0');
+
     // Sensors palette
     var timeBlock = new ProtoBlock('time');
     timeBlock.palette = palettes.dict['sensors'];

@@ -147,7 +147,6 @@ define(function (require) {
             PALETTESTROKECOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1] - 30, PALETTECOLORS[p][2]);
             PALETTEHIGHLIGHTCOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1] + 10, PALETTECOLORS[p][2]);
             HIGHLIGHTSTROKECOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1] - 50, PALETTECOLORS[p][2]);
-            // console.log(p + ' ' + PALETTEFILLCOLORS[p]  + ' ' + PALETTESTROKECOLORS[p] + ' ' + PALETTEHIGHLIGHTCOLORS[p] + ' ' + HIGHLIGHTSTROKECOLORS[p]);
         }
 
         pluginObjs = {
@@ -501,10 +500,9 @@ define(function (require) {
                     document.body.style.cursor = 'wait';
                     setTimeout(function () {
                         var rawData = reader.result;
+                        console.log(rawData)
                         var cleanData = rawData.replace('\n', ' ');
-                        console.log(cleanData);
                         var obj = JSON.parse(cleanData);
-                        console.log(obj)
                         blocks.loadNewBlocks(obj);
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
@@ -535,9 +533,7 @@ define(function (require) {
                         obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
                         // Save plugins to local storage.
                         if (obj != null) {
-                            var foo = preparePluginExports(obj);
-                            console.log(foo);
-                            storage.plugins = foo; // preparePluginExports(obj));
+                            storage.plugins = preparePluginExports(obj);
                         }
 
                         // Refresh the palettes.
@@ -1011,19 +1007,17 @@ define(function (require) {
             utilityBox.show(scale);
         }
 
-        // FIXME: confirm???
+        // Confirmation is handled in the utility palette.
         function sendAllToTrash(addStartBlock, doNotSave) {
-            var dx = 2000;
-            var dy = cellSize;
+            var dx = 0;
+            var dy = cellSize * 3;
             for (var blk in blocks.blockList) {
                 blocks.blockList[blk].trash = true;
                 blocks.moveBlockRelative(blk, dx, dy);
                 blocks.blockList[blk].hide();
                 if (blocks.blockList[blk].name == 'start') {
-                    console.log('start blk ' + blk + ' value is ' + blocks.blockList[blk].value)
                     turtle = blocks.blockList[blk].value;
                     if (turtle != null) {
-                        console.log('sending turtle ' + turtle + ' to trash');
                         turtles.turtleList[turtle].trash = true;
                         turtles.turtleList[turtle].container.visible = false;
                     }
@@ -1038,17 +1032,12 @@ define(function (require) {
                     last(blocks.blockList).value = turtles.turtleList.length - 1;
                     blocks.updateBlockPositions();
                     if (!doNotSave) {
-                        console.log('save locally');
                         saveLocally();
                     }
                 }
 
                 blocks.makeNewBlock('start', postprocess);
-            }
-
-            if (!doNotSave) {
-                // Overwrite session data too.
-                console.log('save locally');
+            } else if (!doNotSave) {
                 saveLocally();
             }
 
@@ -1078,7 +1067,6 @@ define(function (require) {
 
         function toggleCollapsibleStacks() {
             if (blocks.visible) {
-                console.log('calling toggleCollapsibles');
                 blocks.toggleCollapsibles();
             }
         }
@@ -1117,7 +1105,6 @@ define(function (require) {
         }
 
         function doOpenSamples() {
-            console.log('save locally');
             saveLocally();
             thumbnails.show()
         }
@@ -1194,7 +1181,6 @@ define(function (require) {
                     }
                     var obj = JSON.parse(cleanData);
                     blocks.loadNewBlocks(obj);
-                    console.log('save locally');
                     saveLocally();
                 } catch (e) {
                     console.log(e);
@@ -1263,11 +1249,7 @@ define(function (require) {
         }
 
         function loadStart() {
-            // where to put this?
-            // palettes.updatePalettes();
-            console.log(" LOAD START")
             justLoadStart = function () {
-                console.log('loading start');
                 postProcess = function (thisBlock) {
                     blocks.blockList[0].x = 250;
                     blocks.blockList[0].y = 250;
@@ -1479,18 +1461,8 @@ define(function (require) {
                         'value': myBlock.value
                     };
                 } else if (myBlock.name == 'start') {
-                    // It's a turtle.
-                    // Find the turtle with this name.
-                    if (typeof(myBlock.value) == 'number') {
-                        var targetName = myBlock.value.toString();
-		    } else {
-                        var targetName = myBlock.value;
-		    }
-                    for (var t = 0; t < turtles.turtleList.length; t++) {
-                        if (turtles.turtleList[t].name == targetName) {
-                            var turtle = turtles.turtleList[t];
-                        }
-		    }
+                    // Find the turtle associated with this block.
+                    var turtle = turtles.turtleList[myBlock.value];
                     var args = {
                         'collapsed': myBlock.collapsed,
                         'xcor': turtle.x,
@@ -1743,7 +1715,6 @@ define(function (require) {
 
                     var img = new Image();
                     img.onload = function () {
-                        // console.log(scale);
                         bitmap = new createjs.Bitmap(img);
                         if (scale > 1) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;

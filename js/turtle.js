@@ -73,6 +73,7 @@ function Turtle (name, turtles) {
             this.startBlock.overrideName = this.name;
             this.startBlock.collapseText.text = this.name;
 	    this.startBlock.regenerateArtwork(false);
+            this.startBlock.value = this.name;
         }
     }
     

@@ -9,6 +9,7 @@
   * New-style clamp for fill and hollow line clamps.
   * Reordered NEWS so that recent changes are at the top.
   * GPL->AGPL as it was meant to be from the get-go.
+  * Don't connect to collapsed blocks.
 
 0.9
   * Added How to Guide.
@@ -409,7 +410,6 @@ KNOWN BUGS:
   * Sometimes clamp block highlight scale is too large.
   * Sometimes docking position is not scaled properly when dragging block
     after block resize.
-  * Sometimes collapses blocks get moved.
   * Polar coordinate grid not centered under some circumstances.
   * Sometimes long press puts menu in wrong place.
   * Multiple copy/paste cycles sometime concatenate clipboard stack.

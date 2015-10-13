@@ -8,6 +8,7 @@
   * Changed boxes palette label to boxes.
   * New-style clamp for fill and hollow line clamps.
   * Reordered NEWS so that recent changes are at the top.
+  * GPL->AGPL as it was meant to be from the get-go.
 
 0.9
   * Added How to Guide.

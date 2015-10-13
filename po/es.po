@@ -405,6 +405,10 @@ msgstr "esperar"
 msgid "box"
 msgstr "caja"
 
+#. TRANS: a container for a variable
+msgid "boxes"
+msgstr "cajas"
+
 msgid "Planet"
 msgstr "Planeta"
 

@@ -116,7 +116,7 @@ var BORDER = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120">'
 var PALETTECOLORS = {
     'turtle': [37.5, 70, 50],
     'pen': [57.5, 50, 28],
-    'blocks': [12.5, 60, 80],
+    'boxes': [12.5, 60, 80],
     'actions': [22.5, 80, 57],
     'media': [57.5, 70, 28],
     'number': [0, 70, 42],
@@ -184,7 +184,7 @@ var PALETTEICONS = {
     'number': NUMBERPALETTEICON,
     'boolean': BOOLEANPALETTEICON,
     'flow': FLOWPALETTEICON,
-    'blocks': BLOCKSPALETTEICON,
+    'boxes': BLOCKSPALETTEICON,
     'actions': ACTIONSPALETTEICON,
     'media': MEDIAPALETTEICON,
     'sensors': SENSORSPALETTEICON,

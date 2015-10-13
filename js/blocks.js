@@ -1779,7 +1779,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         if (name == 'box') {
             return;
         }
-        myStoreinBlock.palette.add(myStoreinBlock);
+        myStoreinBlock.palette.add(myStoreinBlock, true);
     }
 
     this.newNamedboxBlock = function (name) {
@@ -1795,7 +1795,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         if (name == 'box') {
             return;
         }
-        myBoxBlock.palette.add(myBoxBlock);
+        myBoxBlock.palette.add(myBoxBlock, true);
     }
 
     this.newLocalArgBlock = function (name) {
@@ -1865,7 +1865,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myDoBlock.defaults.push(name);
             myDoBlock.staticLabels.push(name);
             myDoBlock.zeroArgBlock();
-            myDoBlock.palette.add(myDoBlock);
+            myDoBlock.palette.add(myDoBlock, true);
         } else {
             // console.log('myDo_' + name + ' already exists.');
             return false;
@@ -1882,7 +1882,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myCalcBlock.defaults.push(name);
             myCalcBlock.staticLabels.push(name);
             myCalcBlock.zeroArgBlock();
-            myCalcBlock.palette.add(myCalcBlock);
+            myCalcBlock.palette.add(myCalcBlock, true);
         } else {
             console.log('myCalc_' + name + ' already exists.');
         }
@@ -1897,7 +1897,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myDoArgBlock.defaults.push(name);
             myDoArgBlock.staticLabels.push(name);
             myDoArgBlock.zeroArgBlock();
-            myDoArgBlock.palette.add(myDoArgBlock);
+            myDoArgBlock.palette.add(myDoArgBlock, true);
         } else {
             console.log('myDoArg_' + name + ' already exists.');
         }
@@ -1912,28 +1912,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myCalcArgBlock.defaults.push(name);
             myCalcArgBlock.staticLabels.push(name);
             myCalcArgBlock.zeroArgBlock();
-            myCalcArgBlock.palette.add(myCalcArgBlock);
+            myCalcArgBlock.palette.add(myCalcArgBlock, true);
         } else {
             console.log('myCalcArg_' + name + ' already exists.');
         }
-    }
-
-    this.newActionBlock = function (name) {
-        if ('myAction_' + name in this.protoBlockDict) {
-            return;
-        }
-        var myActionBlock = new ProtoBlock('action');
-        this.protoBlockDict['myAction_' + name] = myActionBlock;
-        myActionBlock.palette = this.palettes.dict['actions'];
-        myActionBlock.defaults.push(name);
-        myActionBlock.staticLabels.push(_('action'));
-        myActionBlock.expandable = true;
-        myActionBlock.style = 'clamp';
-        myActionBlock.stackClampOneArgBlock();
-        if (name == 'action') {
-            return;
-        }
-        myActionBlock.palette.add(myActionBlock);
     }
 
     this.insideArgClamp = function (blk) {

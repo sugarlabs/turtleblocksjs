@@ -297,8 +297,10 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // blocks with their associated textareas.
         for (var blk = 0; blk < this.blocks.blockList.length; blk++) {
             if (this.blocks.blockList[blk].label != null) {
-                console.log('REASSIGNING VALUE: ' + this.blocks.blockList[blk].value + ' <-- ' + this.blocks.blockList[blk].label.value);
-                this.blocks.blockList[blk].value = this.blocks.blockList[blk].label.value;
+                if (this.blocks.blockList[blk].value != this.blocks.blockList[blk].label.value) {
+                    console.log('REASSIGNING VALUE: ' + this.blocks.blockList[blk].value + ' <-- ' + this.blocks.blockList[blk].label.value);
+                    this.blocks.blockList[blk].value = this.blocks.blockList[blk].label.value;
+                }
             }
         }
 

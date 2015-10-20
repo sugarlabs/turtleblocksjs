@@ -114,6 +114,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.doStopTurtle = function() {
         // The stop button was pressed. Stop the turtle and clean up a
         // few odds and ends.
+        this.stage.dispatchEvent('__STOP__');
+
         this.stopTurtle = true;
         this.turtles.markAsStopped();
 

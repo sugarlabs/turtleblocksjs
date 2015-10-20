@@ -1,6 +1,7 @@
 //* comment *//
 
 Copyright (C) 2015 Walter Bender
+Copyright (C) 2015 Martin Abente Lahaye
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,7 +28,7 @@ var sensorsCacheExpires = 0;
 var rodiBlink = new ProtoBlock('rodiblink');
 rodiBlink.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodiblink'] = rodiBlink;
-rodiBlink.staticLabels.push(_('blink (ms)'));
+rodiBlink.staticLabels.push(_('blink'));
 rodiBlink.adjustWidthToLabel();
 rodiBlink.oneArgBlock();
 rodiBlink.defaults.push(1000);
@@ -61,8 +62,8 @@ rodiMove.adjustWidthToLabel();
 rodiMove.twoArgBlock();
 rodiMove.dockTypes[1] = 'numberin';
 rodiMove.dockTypes[2] = 'numberin';
-rodiMove.defaults.push(99);
-rodiMove.defaults.push(99);
+rodiMove.defaults.push(100);
+rodiMove.defaults.push(100);
 
 //* flow:rodimove *//
 
@@ -88,7 +89,7 @@ try {
 var rodiSenseLeft = new ProtoBlock('rodisenseleft');
 rodiSenseLeft.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodisenseleft'] = rodiSenseLeft;
-rodiSenseLeft.staticLabels.push(_('sense left'));
+rodiSenseLeft.staticLabels.push(_('line follower (left)'));
 rodiSenseLeft.adjustWidthToLabel();
 rodiSenseLeft.parameterBlock();
 
@@ -127,7 +128,7 @@ block.value = sensor;
 var rodiSenseRight = new ProtoBlock('rodisenseright');
 rodiSenseRight.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodisenseright'] = rodiSenseRight;
-rodiSenseRight.staticLabels.push(_('sense right'));
+rodiSenseRight.staticLabels.push(_('line follower (right)'));
 rodiSenseRight.adjustWidthToLabel();
 rodiSenseRight.parameterBlock();
 
@@ -166,7 +167,7 @@ block.value = sensor;
 var rodiSing = new ProtoBlock('rodising');
 rodiSing.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodising'] = rodiSing;
-rodiSing.staticLabels.push(_('sing'));
+rodiSing.staticLabels.push(_('play'));
 rodiSing.staticLabels.push(_('note'));
 rodiSing.staticLabels.push(_('duration'));
 rodiSing.adjustWidthToLabel();
@@ -200,7 +201,7 @@ try {
 var rodiSee = new ProtoBlock('rodisee');
 rodiSee.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodisee'] = rodiSee;
-rodiSee.staticLabels.push(_('see distance'));
+rodiSee.staticLabels.push(_('distance'));
 rodiSee.adjustWidthToLabel();
 rodiSee.parameterBlock();
 

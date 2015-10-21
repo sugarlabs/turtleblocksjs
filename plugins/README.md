@@ -101,6 +101,15 @@ a globals dictionary, a palette dictionary, and color dictionaries.
 * `highlight-colors`: hex color of the blocks when they are
   highlighted.
 
+Resources
+---------
+
+Resources available to your plugin vary by section. `globals` have
+access to the `blocks` class, where as `flow-block` and `arg-block`
+have access to both the `blocks` class and the `logo` class. Note that
+you can access the `logo` class from the `blocks` class by referencing
+<code>blocks.logo</code>.
+
 Layout and Format
 -----------------
 <pre>

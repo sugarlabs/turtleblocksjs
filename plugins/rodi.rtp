@@ -29,12 +29,17 @@ var doRodiMove = function (left, right) {
 
     try {
         var request = new XMLHttpRequest();
-        request.open('GET', apiURL, false);
+        request.open('GET', apiURL, true);
         request.send(null);
     } catch (e) {
         console.log(e);
     }
 };
+
+function doRodiStop(){
+    doRodiMove(0,0);
+};
+blocks.logo.stage.addEventListener('__STOP__', doRodiStop, false);
 
 //* block:rodiblink *//
 

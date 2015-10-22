@@ -232,7 +232,7 @@ rodiLeft.zeroArgBlock();
 
 //* flow:rodileft *//
 
-doRodiMove(100, -100);
+doRodiMove(-100, 100);
 
 //* block:rodiright *//
 
@@ -245,7 +245,7 @@ rodiRight.zeroArgBlock();
 
 //* flow:rodiright *//
 
-doRodiMove(-100, 100);
+doRodiMove(100, -100);
 
 //* block:rodistop *//
 

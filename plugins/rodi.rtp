@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
+
 var RODI_BASE_URL = 'http://192.168.4.1:1234';
 
 var sensorsCache = null;
@@ -24,15 +25,52 @@ var sensorsValidFor = 100;
 var sensorsCacheExpires = 0;
 
 var doRodiMove = function (left, right) {
-    var apiURL = RODI_BASE_URL + '/3/' + left + '/' + right + '/';
-    console.log(apiURL);
+    var apiUrl = RODI_BASE_URL + '/3/' + left + '/' + right + '/';
+    doAsyncCall(apiUrl)
+};
+
+var doRodiGetSensor = function (index) {
+    if (Date.now() > sensorsCacheExpires) {
+
+        var apiUrl = RODI_BASE_URL + '/2/';
+        var sensors = doSyncCall(apiUrl);
+
+        if (sensors != null) {
+            sensorsCacheExpires = Date.now() + sensorsValidFor;
+            sensorsCache = sensors;
+            return sensors[index];
+        } else {
+            return -1
+        }
+
+    } else {
+        return sensorsCache[index];
+    }
+};
+
+var doAsyncCall = function (url){
+    console.log(url);
 
     try {
         var request = new XMLHttpRequest();
-        request.open('GET', apiURL, true);
+        request.open('GET', url, true);
         request.send(null);
     } catch (e) {
         console.log(e);
+    }
+};
+
+var doSyncCall = function (url) {
+    console.log(url);
+
+    var request = new XMLHttpRequest();
+    try {
+        request.open('GET', url, false);
+        request.send(null);
+        return JSON.parse(request.responseText);
+    } catch (e) {
+        console.log(e);
+        return null;
     }
 };
 
@@ -57,16 +95,8 @@ var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
 var rate = logo.parseArg(logo, turtle, conns[1]);
-var apiURL = RODI_BASE_URL + '/1/' + rate + '/';
-console.log(apiURL);
-
-try {
-    var request = new XMLHttpRequest();
-    request.open('GET', apiURL, false);
-    request.send(null);
-} catch (e) {
-    console.log(e);
-}
+var apiUrl = RODI_BASE_URL + '/1/' + rate + '/';
+doAsyncCall(apiUrl);
 
 //* block:rodimove *//
 
@@ -103,33 +133,8 @@ rodiSenseLeft.parameterBlock();
 
 //* arg:rodisenseleft *//
 
-var sensor = -1;
-var sensors = [-1, -1];
-
-if (Date.now() > sensorsCacheExpires) {
-
-    var apiURL = RODI_BASE_URL + '/2/';
-    console.log(apiURL);
-
-    var request = new XMLHttpRequest();
-    try {
-        request.open('GET', apiURL, false);
-        request.send(null);
-        sensors = JSON.parse(request.responseText);
-    } catch (e) {
-        console.log(e);
-    }
-
-    sensorsCacheExpires = Date.now() + sensorsValidFor;
-    sensorsCache = sensors;
-
-    sensor = sensors[0];
-} else {
-    sensor = sensorsCache[0];
-}
-
 var block = logo.blocks.blockList[blk];
-block.value = sensor;
+block.value = doRodiGetSensor(0);
 
 //* block:rodisenseright *//
 
@@ -142,33 +147,8 @@ rodiSenseRight.parameterBlock();
 
 //* arg:rodisenseright *//
 
-var sensor = -1;
-var sensors = [-1, -1];
-
-if (Date.now() > sensorsCacheExpires) {
-
-    var apiURL = RODI_BASE_URL + '/2/';
-    console.log(apiURL);
-
-    var request = new XMLHttpRequest();
-    try {
-        request.open('GET', apiURL, false);
-        request.send(null);
-        sensors = JSON.parse(request.responseText);
-    } catch (e) {
-        console.log(e);
-    }
-
-    sensorsCacheExpires = Date.now() + sensorsValidFor;
-    sensorsCache = sensors;
-
-    sensor = sensors[1];
-} else {
-    sensor = sensorsCache[1];
-}
-
 var block = logo.blocks.blockList[blk];
-block.value = sensor;
+block.value = doRodiGetSensor(1);
 
 //* block:rodising *//
 
@@ -192,17 +172,8 @@ var conns = block.connections;
 
 var note = logo.parseArg(logo, turtle, conns[1]);
 var duration = logo.parseArg(logo, turtle, conns[2]);
-var apiURL = RODI_BASE_URL + '/4/' + note + '/' + duration + '/';
-
-console.log(apiURL);
-
-try {
-    var request = new XMLHttpRequest();
-    request.open('GET', apiURL, false);
-    request.send(null);
-} catch (e) {
-     console.log(e);
-}
+var apiUrl = RODI_BASE_URL + '/4/' + note + '/' + duration + '/';
+doAsyncCall(apiUrl);
 
 //* block:rodisee *//
 
@@ -215,23 +186,18 @@ rodiSee.parameterBlock();
 
 //* arg:rodisee *//
 
-var apiURL = RODI_BASE_URL + '/5/';
-console.log(apiURL);
+var apiUrl = RODI_BASE_URL + '/5/';
+var block = logo.blocks.blockList[blk];
+var distance = doSyncCall(apiUrl);
 
-var distance = 100;
-var request = new XMLHttpRequest();
-try {
-    request.open('GET', apiURL, false);
-    request.send(null);
-    distance = JSON.parse(request.responseText);
-} catch (e) {
-    console.log(e);
+if (distance != null) {
+    block.value = distance;
+} else {
+    block.value = 100;
 }
 
-var block = logo.blocks.blockList[blk];
-block.value = distance;
-
 //* block:rodiforward *//
+
 var rodiForward = new ProtoBlock('rodiforward');
 rodiForward.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodiforward'] = rodiForward;
@@ -256,6 +222,7 @@ rodiBack.zeroArgBlock();
 doRodiMove(-100, -100);
 
 //* block:rodileft *//
+
 var rodiLeft = new ProtoBlock('rodileft');
 rodiLeft.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodileft'] = rodiLeft;
@@ -268,6 +235,7 @@ rodiLeft.zeroArgBlock();
 doRodiMove(100, -100);
 
 //* block:rodiright *//
+
 var rodiRight = new ProtoBlock('rodiright');
 rodiRight.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodiright'] = rodiRight;
@@ -280,6 +248,7 @@ rodiRight.zeroArgBlock();
 doRodiMove(-100, 100);
 
 //* block:rodistop *//
+
 var rodiStop = new ProtoBlock('rodistop');
 rodiStop.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodistop'] = rodiStop;

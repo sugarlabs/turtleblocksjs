@@ -692,7 +692,9 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 break;
             case 'print':
                 if (args.length == 1) {
-                    logo.textMsg(args[0].toString());
+                    if (args[0] != null) {
+                        logo.textMsg(args[0].toString());
+		    }
                 }
                 break;
             case 'speak':
@@ -1499,6 +1501,9 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
         var nextBlock = null;
         // Run the last flow in the queue.
         if (logo.turtles.turtleList[turtle].queue.length > 0) {
+            for (var i = 0; i < logo.turtles.turtleList[turtle].queue.length; i++) {
+                console.log(i + ': blk ' + logo.blocks.blockList[logo.turtles.turtleList[turtle].queue[i].blk].name + ' count ' + logo.turtles.turtleList[turtle].queue[i].count + ' parent ' + logo.blocks.blockList[logo.turtles.turtleList[turtle].queue[i].parentBlk].name + ' args ' + logo.turtles.turtleList[turtle].queue[i].args);
+	    }
             nextBlock = last(logo.turtles.turtleList[turtle].queue).blk;
             passArg = last(logo.turtles.turtleList[turtle].queue).args;
             // Since the forever block starts at -1, it will never == 1.
@@ -1615,6 +1620,23 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 this.endOfFlowActions[turtle][endBlk[0]] = [endBlk[2]];
             }
         }
+    }
+
+    this.getBlockAtStartOfArg = function(blk) {
+        if (blk == null) {
+            return null;
+	}
+        var c0 = this.blocks.blockList[blk].connections[0];
+        if (c0 == null) {
+            console.log('No flow block found at start of arg.');
+            return blk;
+	}
+	var blkType = this.blocks.blockList[c0].docks[0][2];
+	if (['unavailable', 'out'].indexOf(blkType) != -1) {
+            console.log('Block ' + c0 + ': ' + this.blocks.blockList[c0].name + ' at start of arg');
+	    return c0;
+	}
+	return this.getBlockAtStartOfArg(c0);
     }
 
     this.getBlockAtEndOfFlow = function(blk, loopClamp, doClamp) {
@@ -1812,6 +1834,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var name = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
                     action_args = receivedArg;
+                    logo.getBlockAtStartOfArg(blk);
                     if (name in logo.actions) {
                         // FIXME: We need to queue a child flow
                         logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args);
@@ -1824,6 +1847,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 case 'namedcalc':
                     var name = logo.blocks.blockList[blk].privateData;
                     var action_args = [];
+                    logo.getBlockAtStartOfArg(blk);
                     if (name in logo.actions) {
                         // FIXME: We need to queue a child flow
                         logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args);
@@ -2154,6 +2178,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 case 'namedcalcArg':
                     var name = logo.blocks.blockList[blk].privateData;
                     var action_args = [];
+                    logo.getBlockAtStartOfArg(blk);
                     if (logo.blocks.blockList[blk].argClampSlots.length > 0) {
                         for (var i = 0; i < logo.blocks.blockList[blk].argClampSlots.length; i++){
                             var t = (logo.parseArg(logo, turtle, logo.blocks.blockList[blk].connections[i + 1], blk, receivedArg));
@@ -2161,7 +2186,16 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                         }
                     }
                     if (name in logo.actions) {
-                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args)
+                        // logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args)
+                        var childFlow = logo.actions[name]
+                        var childFlowCount = 1;
+                        if (logo.doBlocks[turtle].indexOf(blk) == -1) {
+                            logo.doBlocks[turtle].push(blk);
+                        }
+                        var queueBlock = new Queue(childFlow, childFlowCount, logo.getBlockAtStartOfArg(blk), actionArgs);
+                        logo.parentFlowQueue[turtle].push(logo.getBlockAtStartOfArg(blk));
+                        logo.turtles.turtleList[turtle].queue.push(queueBlock);
+
                         logo.blocks.blockList[blk].value = logo.returns.pop();
                     } else {
                         logo.errorMsg(NOACTIONERRORMSG, blk, name);
@@ -2170,6 +2204,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     break;
                 case 'calcArg':
                     var action_args = [];
+                    logo.getBlockAtStartOfArg(blk);
                     if (logo.blocks.blockList[blk].argClampSlots.length > 0) {
                         for (var i = 0; i < logo.blocks.blockList[blk].argClampSlots.length; i++){
                             var t = (logo.parseArg(logo, turtle, logo.blocks.blockList[blk].connections[i + 2], blk, receivedArg));

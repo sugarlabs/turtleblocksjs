@@ -451,10 +451,6 @@ msgstr "Incrementa el tamaño de los bloques."
 msgid "or"
 msgstr "o"
 
-#. TRANS: use sensor to detect objects on the left
-msgid "sense left"
-msgstr "sentido izquierda"
-
 msgid "comment"
 msgstr "comentar"
 
@@ -606,10 +602,6 @@ msgstr "techo"
 msgid "shell"
 msgstr "caparazón"
 
-#. TRANS: flash (blink) an LED light
-msgid "blink (ms)"
-msgstr "destellar (ms)"
-
 msgid "that"
 msgstr "ése"
 
@@ -647,10 +639,6 @@ msgstr "relleno"
 
 msgid "begin fill"
 msgstr "iniciar relleno"
-
-#. TRANS: use sensor to detect objects on the right
-msgid "sense right"
-msgstr "sentido derecha"
 
 msgid "eat"
 msgstr "comer"
@@ -729,10 +717,6 @@ msgstr "Abrir"
 #. TRANS: database fetch
 msgid "fetch"
 msgstr "comprobar"
-
-#. TRANS: use sensor to detect distance to objects
-msgid "see distance"
-msgstr "sentido distancia"
 
 #. TRANS: logical "and" operator
 msgid "and"
@@ -942,3 +926,24 @@ msgstr "hola"
 
 msgid "left"
 msgstr "izquierda"
+
+#. TRANS: robot sensors.
+msgid "distance"
+msgstr "distancia"
+
+#. TRANS: robot sensors.
+msgid "infrared light (left)"
+msgstr "luz infrarroja (izquierda)"
+
+#. TRANS: robot sensors.
+msgid "infrared light (right)"
+msgstr "luz infrarroja (derecha)"
+
+#. TRANS: as in play a musical note.
+msgid "play"
+msgstr "tocar"
+
+#. TRANS: as in blinking an eye.
+msgid "blink"
+msgstr "parpadear"
+

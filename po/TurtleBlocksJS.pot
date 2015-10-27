@@ -754,18 +754,6 @@ msgstr ""
 msgid "eatme"
 msgstr ""
 
-#. TRANS: use sensor to detect objects on the left
-msgid "sense left"
-msgstr ""
-
-#. TRANS: use sensor to detect distance to objects
-msgid "see distance"
-msgstr ""
-
-#. TRANS: use sensor to detect objects on the right
-msgid "sense right"
-msgstr ""
-
 msgid "sing"
 msgstr ""
 
@@ -776,10 +764,6 @@ msgid "duration"
 msgstr ""
 
 msgid "move"
-msgstr ""
-
-#. TRANS: flash (blink) an LED light
-msgid "blink (ms)"
 msgstr ""
 
 #. TRANS: the name of a robot built in Paraguay (probably no need to translate)
@@ -945,5 +929,25 @@ msgstr ""
 
 #. TRANS: hours ago that the data was updated.
 msgid "hours ago"
+msgstr ""
+
+#. TRANS: robot sensors.
+msgid "distance"
+msgstr ""
+
+#. TRANS: robot sensors.
+msgid "infrared light (left)"
+msgstr ""
+
+#. TRANS: robot sensors.
+msgid "infrared light (right)"
+msgstr ""
+
+#. TRANS: as in play a musical note.
+msgid "play"
+msgstr ""
+
+#. TRANS: as in blinking an eye.
+msgid "blink"
 msgstr ""
 

@@ -127,7 +127,7 @@ doRodiMove(left, right);
 var rodiSenseLeft = new ProtoBlock('rodisenseleft');
 rodiSenseLeft.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodisenseleft'] = rodiSenseLeft;
-rodiSenseLeft.staticLabels.push(_('line follower (left)'));
+rodiSenseLeft.staticLabels.push(_('infrared light (left)'));
 rodiSenseLeft.adjustWidthToLabel();
 rodiSenseLeft.parameterBlock();
 
@@ -141,7 +141,7 @@ block.value = doRodiGetSensor(0);
 var rodiSenseRight = new ProtoBlock('rodisenseright');
 rodiSenseRight.palette = palettes.dict['rodi'];
 blocks.protoBlockDict['rodisenseright'] = rodiSenseRight;
-rodiSenseRight.staticLabels.push(_('line follower (right)'));
+rodiSenseRight.staticLabels.push(_('infrared light (right)'));
 rodiSenseRight.adjustWidthToLabel();
 rodiSenseRight.parameterBlock();
 

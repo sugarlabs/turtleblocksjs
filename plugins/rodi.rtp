@@ -24,6 +24,10 @@ var sensorsCache = null;
 var sensorsValidFor = 100;
 var sensorsCacheExpires = 0;
 
+var lightSensorCache = null;
+var lightSensorValidFor = 100;
+var lightSensorCacheExpires = 0;
+
 var doRodiMove = function (left, right) {
     var apiUrl = RODI_BASE_URL + '/3/' + left + '/' + right + '/';
     doAsyncCall(apiUrl)
@@ -45,6 +49,25 @@ var doRodiGetSensor = function (index) {
 
     } else {
         return sensorsCache[index];
+    }
+};
+
+var doRodiGetLightSensor = function () {
+    if (Date.now() > lightSensorCacheExpires) {
+
+        var apiUrl = RODI_BASE_URL + '/7/';
+        var sensor = doSyncCall(apiUrl);
+
+        if (sensor != null) {
+            lightSensorCacheExpires = Date.now() + lightSensorValidFor;
+            lightSensorCache = sensor;
+            return sensor;
+        } else {
+            return -1
+        }
+
+    } else {
+        return lightSensorCache;
     }
 };
 
@@ -259,6 +282,72 @@ rodiStop.zeroArgBlock();
 //* flow:rodistop *//
 
 doRodiMove(0, 0);
+
+//* block:rodipixel *//
+
+var rodiPixel = new ProtoBlock('rodipixel');
+rodiPixel.palette = palettes.dict['rodi'];
+blocks.protoBlockDict['rodipixel'] = rodiPixel;
+rodiPixel.staticLabels.push(_('pixel color'));
+rodiPixel.staticLabels.push(_('red'));
+rodiPixel.staticLabels.push(_('green'));
+rodiPixel.staticLabels.push(_('blue'));
+rodiPixel.adjustWidthToLabel();
+rodiPixel.threeArgBlock();
+rodiPixel.dockTypes[1] = 'numberin';
+rodiPixel.dockTypes[2] = 'numberin';
+rodiPixel.dockTypes[3] = 'numberin';
+rodiPixel.defaults.push(0);
+rodiPixel.defaults.push(0);
+rodiPixel.defaults.push(0);
+
+//* flow:rodipixel *//
+
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
+
+var red = logo.parseArg(logo, turtle, conns[1]);
+var green = logo.parseArg(logo, turtle, conns[2]);
+var blue = logo.parseArg(logo, turtle, conns[3]);
+
+var apiUrl = RODI_BASE_URL + '/6/' + red + '/' + green + '/' + blue + '/';
+doAsyncCall(apiUrl)
+
+//* block:rodisenselight *//
+
+var rodiSenseLight = new ProtoBlock('rodisenselight');
+rodiSenseLight.palette = palettes.dict['rodi'];
+blocks.protoBlockDict['rodisenselight'] = rodiSenseLight;
+rodiSenseLight.staticLabels.push(_('light intensity'));
+rodiSenseLight.adjustWidthToLabel();
+rodiSenseLight.parameterBlock();
+
+//* arg:rodisenselight *//
+
+var block = logo.blocks.blockList[blk];
+block.value = doRodiGetLightSensor();
+
+var apiUrl = RODI_BASE_URL + '/8/';
+doAsyncCall(apiUrl);
+
+//* block:rodiled *//
+
+var rodiLed = new ProtoBlock('rodiled');
+rodiLed.palette = palettes.dict['rodi'];
+blocks.protoBlockDict['rodiled'] = rodiLed;
+rodiLed.staticLabels.push(_('led'));
+rodiLed.adjustWidthToLabel();
+rodiLed.oneArgBlock();
+rodiLed.defaults.push(1);
+
+//* flow:rodiled *//
+
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
+
+var state = logo.parseArg(logo, turtle, conns[1]);
+var apiUrl = RODI_BASE_URL + '/8/' + state + '/';
+doAsyncCall(apiUrl);
 
 //* palette-icon:rodi *//
 

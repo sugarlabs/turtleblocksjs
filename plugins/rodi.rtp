@@ -327,7 +327,7 @@ rodiSenseLight.parameterBlock();
 var block = logo.blocks.blockList[blk];
 block.value = doRodiGetLightSensor();
 
-var apiUrl = RODI_BASE_URL + '/8/';
+var apiUrl = RODI_BASE_URL + '/7/';
 doAsyncCall(apiUrl);
 
 //* block:rodiled *//

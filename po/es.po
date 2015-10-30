@@ -947,3 +947,7 @@ msgstr "tocar"
 msgid "blink"
 msgstr "parpadear"
 
+#. TRANS: robot sensors.
+msgid "light intensity"
+msgstr "intensidad de luz"
+

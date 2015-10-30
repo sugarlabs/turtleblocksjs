@@ -951,3 +951,7 @@ msgstr ""
 msgid "blink"
 msgstr ""
 
+#. TRANS: robot sensors.
+msgid "light intensity"
+msgstr ""
+

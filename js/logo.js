@@ -1435,24 +1435,41 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
             // There is a list of signals and parent clamps. Each
             // needs to be handled separately.
             // console.log(logo.endOfFlowSignals[turtle][blk]);
+            var parentActions = [];
             for (var i = logo.endOfFlowSignals[turtle][blk].length - 1; i >= 0; i--) {
                 var parentLoop = logo.endOfFlowLoops[turtle][blk][i];
                 var parentAction = logo.endOfFlowActions[turtle][blk][i];
                 var signal = logo.endOfFlowSignals[turtle][blk][i];
-                if (parentLoop != null && logo.parentFlowQueue[turtle].indexOf(parentLoop) != -1 && logo.loopBlock(logo.blocks.blockList[parentLoop].name)) {
-                    console.log(logo.endOfFlowSignals[turtle][blk][i] + ' still in child flow of loop block');
-                } else if (parentAction != null && (logo.namedActionBlock(logo.blocks.blockList[parentAction].name) || logo.actionBlock(logo.blocks.blockList[parentAction].name)) && logo.doBlocks[turtle].indexOf(parentAction) == -1) {
-                    console.log(logo.endOfFlowSignals[turtle][blk][i] + ' still in child flow of action block');
-                } else if (signal != null) {
-                    if (logo.doBlocks[turtle].indexOf(parentAction) != -1) {
-                        logo.doBlocks[turtle][logo.doBlocks[turtle].indexOf(parentAction)] = -1;
+                var loopTest = parentLoop != null && logo.parentFlowQueue[turtle].indexOf(parentLoop) != -1 && logo.loopBlock(logo.blocks.blockList[parentLoop].name);
+                var actionTest = (parentAction != null && (logo.namedActionBlock(logo.blocks.blockList[parentAction].name) || logo.actionBlock(logo.blocks.blockList[parentAction].name)) && logo.doBlocks[turtle].indexOf(parentAction) == -1);
+                var stillInLoop = false;
+                if (loopTest) {
+                    for (var j = 0; j < logo.turtles.turtleList[turtle].queue.length; j++) {
+                        // console.log(logo.turtles.turtleList[turtle].queue[j].parentBlk);
+                        if (parentLoop == logo.turtles.turtleList[turtle].queue[j].parentBlk) {
+                            stillInLoop = true;
+                            break;
+                        }
                     }
+                }
+                if (loopTest && stillInLoop) {
+                    // console.log(logo.endOfFlowSignals[turtle][blk][i] + ' still in child flow of loop block');
+                } else if (actionTest) {
+                    // console.log(logo.endOfFlowSignals[turtle][blk][i] + ' still in child flow of action block');
+                } else if (signal != null) {
                     console.log('dispatching ' + logo.endOfFlowSignals[turtle][blk][i]);
                     logo.stage.dispatchEvent(logo.endOfFlowSignals[turtle][blk][i]);
                     // Mark issued signals as null
                     logo.endOfFlowSignals[turtle][blk][i] = null;
                     logo.endOfFlowLoops[turtle][blk][i] = null;
                     logo.endOfFlowActions[turtle][blk][i] = null;
+                }
+            }
+
+            for (var i = 0; i < parentActions.length; i++ ) {
+                if (logo.doBlocks[turtle].indexOf(parentAction) != -1) {
+                    // console.log('setting doBlocks[' + logo.doBlocks[turtle][logo.doBlocks[turtle].indexOf(parentAction)] + '] to -1');
+                    logo.doBlocks[turtle][logo.doBlocks[turtle].indexOf(parentAction)] = -1;
                 }
             }
 

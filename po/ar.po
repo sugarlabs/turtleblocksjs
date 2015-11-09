@@ -3,250 +3,244 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-07 00:30-0500\n"
-"PO-Revision-Date: 2011-01-24 00:35+0200\n"
-"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Samir Alsulahat\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: ini-to-pot script\n"
-
-
-msgid ""
-msgstr ""
+"Language: ar\n"
+"X-Generator: Poedit 1.8.6\n"
 
 msgid "Delete all"
-msgstr ""
+msgstr "حذف الكل"
 
 msgid "show"
-msgstr ""
+msgstr "نص"
 
 msgid "text"
-msgstr ""
+msgstr "نص"
 
 msgid "random"
 msgstr "عشوائي"
 
 msgid "confirm"
-msgstr ""
+msgstr "تأكيد"
 
 msgid "rice and beans"
-msgstr ""
+msgstr "الأرز والفول"
 
 #. TRANS: mashape webservices (probably no need to translate)
 msgid "mashape"
-msgstr ""
+msgstr "mashape"
 
 #. TRANS: target language for translation
 msgid "target"
-msgstr ""
+msgstr "اللغة الهدف"
 
 msgid "keyboard"
-msgstr ""
+msgstr "لوحة المفاتيح"
 
 msgid "You can also load projects from the file system."
-msgstr ""
+msgstr "يمكنك أيضاً تحميل المشاريع من نظام الملفّات."
 
 #. TRANS: as in "on event do"
 msgid "on"
-msgstr ""
+msgstr "في"
 
 msgid "chicken"
-msgstr ""
+msgstr "دجاجة"
 
 msgid "apple"
-msgstr ""
+msgstr "تفاحة"
 
 msgid "number"
-msgstr ""
+msgstr "عدد"
 
 #. TRANS: unique ID
 msgid "UID"
-msgstr ""
+msgstr "هويّة فريدة"
 
 #. TRANS: name of project
 msgid "title"
-msgstr ""
+msgstr "عنوان المشروع"
 
 msgid "radians"
-msgstr ""
+msgstr "النظام الدائري"
 
 msgid "Undo"
-msgstr ""
+msgstr "إلغاء الإجراء السابق"
 
 #. TRANS: ms is micro seconds
 msgid "duration (ms)"
-msgstr ""
+msgstr "المدة الزمنية (بالميكرو ثانية)"
 
 #. TRANS: as in "add 1 to"
 msgid "to"
-msgstr ""
+msgstr "إلى"
 
 msgid "add"
-msgstr ""
+msgstr "أضف"
 
 msgid "set pen size"
-msgstr "حدد حجم القلم"
+msgstr "اضبط حجم القلم"
 
 msgid "start turtle"
-msgstr ""
+msgstr "ابدأ السلحفاة"
 
 msgid "latitude"
-msgstr ""
+msgstr "خط العرض"
 
 msgid "mouse x"
-msgstr ""
+msgstr "الفأرة س"
 
 msgid "mouse y"
-msgstr ""
+msgstr "الفأرة ص"
 
 msgid "Show/hide blocks"
-msgstr ""
+msgstr "إظهار/ إخفاء اللبنات"
 
 msgid "then"
-msgstr "عندها"
+msgstr "ثم"
 
 msgid "move"
-msgstr ""
+msgstr "حرّك"
 
 msgid "Stop the current project."
-msgstr ""
+msgstr "أوقف المشروع الحالي"
 
 msgid "stop turtle"
-msgstr ""
+msgstr "أوقف السلحفاة"
 
 msgid "food"
-msgstr ""
+msgstr "الطعام"
 
 msgid "Click to run the project in slow mode."
-msgstr ""
+msgstr "انقر لتنفيذ المشروع بالعرض البطيء."
 
 msgid "stop"
-msgstr ""
+msgstr "توقف"
 
 msgid "fat"
-msgstr ""
+msgstr "سمين"
 
 msgid "Expand or collapse start and action stacks."
-msgstr ""
+msgstr "قم بتوسيع أو تقليص أكوام البدء والنشاط."
 
 #. TRANS: pop a value off of the heap.
 msgid "pop"
-msgstr ""
+msgstr "أظهر"
 
 msgid "background"
-msgstr "ملء الشاشه"
+msgstr "الخلفية"
 
 #. TRANS: logical "not" operator
 msgid "not"
 msgstr "ليس"
 
 msgid "Google map"
-msgstr ""
+msgstr "خريطة غوغل"
 
 msgid "day"
-msgstr ""
+msgstr "يوم"
 
 #. TRANS: mathematical modular (remainder) function.
 msgid "mod"
-msgstr ""
+msgstr "الشكل النمطي"
 
 msgid "Save project"
-msgstr ""
+msgstr "حفظ المشروع"
 
 msgid "get fiber"
-msgstr ""
+msgstr "احصل على الألياف"
 
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr ""
+msgstr "افتح لوحة لتكوين لبنات السلحفاة."
 
 #. TRANS: the name of a variable (stored in a box)
 msgid "name"
-msgstr ""
+msgstr "الاسم"
 
 msgid "turtle x"
-msgstr ""
+msgstr "السلحفاة س"
 
 msgid "turtle y"
-msgstr ""
+msgstr "السلحفاة ص"
 
 msgid "Download"
-msgstr ""
+msgstr "تحميل"
 
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
-msgstr ""
+msgstr "يتم تفعيل زر اللصق عندما يتم نسخ لبنات إلى الحافظة."
 
 msgid "Expand/collapse toolbar"
-msgstr ""
+msgstr "توسيع/ تقليص شريط الأدوات"
 
 msgid "zoom"
-msgstr ""
+msgstr "تقريب"
 
 msgid "Hide or show the blocks and the palettes."
-msgstr ""
+msgstr "إخفاء أو إظهار اللبنات أو اللوحات."
 
 msgid "to degrees"
-msgstr ""
+msgstr "إلى درجات"
 
 msgid "Restore blocks from the trash."
-msgstr ""
+msgstr "إعادة اللبنات من سلة المهملات."
 
 msgid "get calories"
-msgstr ""
+msgstr "احصل على سعرات حرارية"
 
 msgid "Load plugin from file"
-msgstr ""
+msgstr "تحميل البرنامج المساعد من الملف"
 
 msgid "You can scroll the blocks on the canvas."
-msgstr ""
+msgstr "يمكنك تمرير اللبنات على اللوحات."
 
 msgid "x"
 msgstr "س"
 
 msgid "show blocks"
-msgstr ""
+msgstr "أظهر اللبنات"
 
 msgid "heading"
-msgstr "عنوان"
+msgstr "الترويسة"
 
 msgid "Help"
-msgstr ""
+msgstr "المساعدة"
 
 msgid "turtle"
-msgstr ""
+msgstr "السلحفاة"
 
 msgid "right"
 msgstr "يمين"
 
 msgid "Load samples from server"
-msgstr ""
+msgstr "تحميل عينات من الخادم"
 
 msgid "hide blocks"
-msgstr ""
+msgstr "قم بإخفاؤ اللبنات"
 
 msgid "Hide or show the block palettes."
-msgstr ""
+msgstr "إخفاء أو إظهار لوحات المنع."
 
 msgid "This button opens a viewer for loading example projects."
-msgstr ""
+msgstr "يفتح هذا الزر شاشة عرض لتحميل أمثلة على المشاريع."
 
 msgid "Enable scrolling"
-msgstr ""
+msgstr "تفعيل التمرير"
 
 msgid "back"
-msgstr "السابق:: للخلف"
+msgstr "رجوع"
 
 msgid "Publish"
-msgstr ""
+msgstr "نشر"
 
 msgid "grey"
-msgstr ""
+msgstr "رمادي"
 
 msgid "arc"
 msgstr "قوس"
@@ -255,199 +249,199 @@ msgid "radius"
 msgstr "نصف القطر"
 
 msgid "longitude"
-msgstr ""
+msgstr "الطول"
 
 msgid "duration"
-msgstr ""
+msgstr "المدة"
 
 #. TRANS: shade refers to value (dark to light)
 msgid "set shade"
-msgstr "حدد التظليل"
+msgstr "حدد درجة اللون"
 
 #. TRANS: in mathematical sense (inverse of period)
 msgid "frequency"
-msgstr ""
+msgstr "التواتر"
 
 #. TRANS: as in the event that a signal arrives
 msgid "event"
-msgstr ""
+msgstr "في حالة"
 
 msgid "pixel color"
-msgstr ""
+msgstr "لون بكسل"
 
 msgid "eatme"
-msgstr ""
+msgstr "eatme"
 
 msgid "This button opens and closes the primary toolbar."
-msgstr ""
+msgstr "يقوم هذا الزر بفتح وإغلاق شريط الأدوات الأساسي."
 
 #. TRANS: index specifies a position into an array (heap)
 msgid "index"
-msgstr ""
+msgstr "مؤشر"
 
 msgid "hide"
-msgstr ""
+msgstr "إخفاء"
 
 #. TRANS: show the contents of the heap.
 msgid "show heap"
-msgstr ""
+msgstr "أظهر مكونات الكومة"
 
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr ""
+msgstr "إظهار أو إخفاء شبكة التنسيق الديكارتي."
 
 #. TRANS: vertical space
 msgid "vspace"
-msgstr ""
+msgstr "الفراغ العامودي"
 
 #. TRANS: publish project to Facebook
 msgid "publish"
-msgstr ""
+msgstr "نشر المشروع على الفيسبوك"
 
 #. TRANS: weather forecast
 msgid "forecast"
-msgstr ""
+msgstr "التنبؤات الجوية"
 
 #. TRANS: hours ago that the data was updated.
 msgid "hours ago"
-msgstr ""
+msgstr "قبل عدة ساعات"
 
 msgid "pen"
-msgstr ""
+msgstr "القلم"
 
 msgid "fish"
-msgstr ""
+msgstr "السمكة"
 
 msgid "print"
 msgstr "اطبع"
 
 #. TRANS: how many entries are in the heap?
 msgid "heap length"
-msgstr ""
+msgstr "عدد المدخلات التي تكون في الكومة"
 
 msgid "size"
-msgstr ""
+msgstr "الحجم"
 
 msgid "Expand/collapse option toolbar"
-msgstr ""
+msgstr "توسيع/ تقليص شريط الأدوات"
 
 msgid "end hollow line"
-msgstr ""
+msgstr "أنهِ الخط المجوف"
 
 msgid "city latitude"
-msgstr ""
+msgstr "خط عرض المدينة"
 
 #. TRANS: dietary fiber
 msgid "fiber"
-msgstr ""
+msgstr "الألياف الغذائية"
 
 msgid "You can load new blocks from the file system."
-msgstr ""
+msgstr "يمكنك تحميل لبنات جديدة من نظام الملفات."
 
 #. TRANS: mathematical power, e.g., 2^4 == 16
 msgid "power"
-msgstr ""
+msgstr "الأس"
 
 msgid "Settings"
-msgstr ""
+msgstr "الإعدادات"
 
 msgid "one of"
-msgstr ""
+msgstr "أحد"
 
 msgid "Save stack"
-msgstr ""
+msgstr "قم بتخزين الكومة"
 
 msgid "corn"
-msgstr ""
+msgstr "ذرة"
 
 msgid "Display statistics"
-msgstr ""
+msgstr "أظهر الإحصاءات"
 
 msgid "Remove all content on the canvas, including the blocks."
-msgstr ""
+msgstr "قم بإزالة المحتويات الموجودة على اللوحات, بما في ذلك اللبنات."
 
 msgid "to radians"
-msgstr ""
+msgstr "إلى النظام الدائري"
 
 msgid "water"
-msgstr ""
+msgstr "الماء"
 
 #. TRANS: mathematical exponential base
 msgid "base"
-msgstr ""
+msgstr "الأساس"
 
 msgid "cookie"
-msgstr ""
+msgstr "ملفات تعريف الارتباط"
 
 msgid "Show or hide a polar-coordinate grid."
-msgstr ""
+msgstr "إخفاء أو إظهار شبكة التنسيق القطبي."
 
 msgid "sweet potato"
-msgstr ""
+msgstr "البطاطا الحلوة"
 
 #. TRANS: save the heap to a file
 msgid "save heap"
-msgstr ""
+msgstr "قم بتخزين الكومة"
 
 msgid "from"
-msgstr ""
+msgstr "من"
 
 msgid "sensors"
-msgstr ""
+msgstr "الحسّاسات"
 
 msgid "pen down"
-msgstr "ضع القلم"
+msgstr "احتجز"
 
 #. TRANS: retrieve the value at a specific entry (index) in the heap
 msgid "index heap"
-msgstr ""
+msgstr "قيمة (مؤشر) الكومة"
 
 msgid "get name"
-msgstr ""
+msgstr "احصل على الاسم"
 
 msgid "wait"
 msgstr "انتظر"
 
 #. TRANS: a container for a variable
 msgid "box"
-msgstr "الصندوق"
+msgstr "صندوق المتغير"
 
 msgid "Planet"
-msgstr ""
+msgstr "كوكب"
 
 msgid "Show these messages."
-msgstr ""
+msgstr "أظهر هذه الرسائل."
 
 #. TRANS: object
 msgid "obj"
-msgstr ""
+msgstr "كينونة"
 
 #. TRANS: store a value in a box
 msgid "store in"
-msgstr "احفظ في"
+msgstr "خزن القيمة في الصندوق"
 
 msgid "digest meal"
-msgstr ""
+msgstr "هضم الوجبة"
 
 msgid "maths"
-msgstr ""
+msgstr "الرياضيات"
 
 #. TRANS: popout window
 msgid "popout"
-msgstr ""
+msgstr "الصندوق المنبثق"
 
 msgid "zoom factor"
-msgstr ""
+msgstr "عامل التقريب"
 
 #. TRANS: the name of a stack of blocks
 msgid "action"
-msgstr ""
+msgstr "الإجراء"
 
 #. TRANS: volume of microphone audio
 msgid "loudness"
-msgstr ""
+msgstr "درجة الصوت"
 
 msgid "Increase the size of the blocks."
-msgstr ""
+msgstr "زيادة حجم اللبنات"
 
 #. TRANS: logical "or" operator
 msgid "or"
@@ -455,283 +449,283 @@ msgstr "أو"
 
 #. TRANS: use sensor to detect objects on the left
 msgid "sense left"
-msgstr ""
+msgstr "استشعار الأشياء الموجودة إلى اليسار"
 
 msgid "comment"
-msgstr ""
+msgstr "تعليق"
 
 msgid "cheese"
-msgstr ""
+msgstr "جبنة"
 
 msgid "Cartesian"
-msgstr ""
+msgstr "الديكارتي"
 
 #. TRANS: audio (as in musical note)
 msgid "tone"
-msgstr ""
+msgstr "نبرة الصوت"
 
 #. TRANS: evaluate Javascript code
 msgid "eval"
-msgstr ""
+msgstr "قيّم"
 
 msgid "color"
-msgstr "لون"
+msgstr "اللون"
 
 msgid "image"
-msgstr ""
+msgstr "الصورة"
 
 msgid "Welcome to Turtle Blocks"
-msgstr ""
+msgstr "مرحباً بك في لبنات السلحفاة"
 
 msgid "Increase block size"
-msgstr ""
+msgstr "قم بزيادة حجم اللبنات"
 
 msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
-msgstr ""
+msgstr "يحتوي شريط الأدوات هذا على أزرار اللوحة, انقر لإظهار لوحات اللبنات واسحبها من اللوحات إلى اللوحات الأخرى لاستخدامها."
 
 #. TRANS: bitcoin currency (probably no need to translate)
 msgid "bitcoin"
-msgstr ""
+msgstr "bitcoin"
 
 msgid "pen size"
 msgstr "حجم القلم"
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr ""
+msgstr "نظف الشاشة وأعد السلاحف إلى مكانها الأساسي."
 
 #. TRANS: Boolean logic
 msgid "boolean"
-msgstr ""
+msgstr "القيمة المنطقية"
 
 msgid "coordinates"
-msgstr ""
+msgstr "الإحداثيات"
 
 msgid "sing"
-msgstr ""
+msgstr "غنِّ"
 
 msgid "Congratulations."
-msgstr ""
+msgstr "تهانينا"
 
 msgid "Run slow"
-msgstr ""
+msgstr "نفذ ببطء"
 
 msgid "mouse button"
-msgstr ""
+msgstr "زر الفأرة"
 
 #. TRANS: cloud as in cloud server
 msgid "cloud"
-msgstr ""
+msgstr "السحابة"
 
 msgid "speak"
-msgstr ""
+msgstr "تحدّث"
 
 msgid "city"
-msgstr ""
+msgstr "مدينة"
 
 #. TRANS: carbohydrates
 msgid "get carbs"
-msgstr ""
+msgstr "احصل على الكربوهيدرات"
 
 msgid "Click to run the project in fast mode."
-msgstr ""
+msgstr "انقر لتنفيذ المشروع بشكل سريع."
 
 msgid "beef"
-msgstr ""
+msgstr "لحم بقر"
 
 #. TRANS: source language for translation
 msgid "source"
-msgstr ""
+msgstr "اللغة المصدر"
 
 msgid "unknown"
-msgstr ""
+msgstr "المجهول"
 
 msgid "wait for"
-msgstr ""
+msgstr "انتظر"
 
 msgid "pen up"
-msgstr "ارفع القلم"
+msgstr "احتجز"
 
 msgid "Decrease the size of the blocks."
-msgstr ""
+msgstr "قم بتقليل حجم اللبنات"
 
 msgid "start"
-msgstr ""
+msgstr "ابدأ"
 
 msgid "stock price"
-msgstr ""
+msgstr "سعر الكومة"
 
 #. TRANS: is the heap empty?
 msgid "heap empty?"
-msgstr ""
+msgstr "هل الكومة فارغة؟"
 
 msgid "motion z"
-msgstr ""
+msgstr "حركة ع"
 
 #. TRANS: low temperature
 msgid "low"
-msgstr ""
+msgstr "متدنية"
 
 msgid "motion x"
-msgstr ""
+msgstr "حركة س"
 
 msgid "motion y"
-msgstr ""
+msgstr "pv;m w"
 
 msgid "forward"
-msgstr "للأمام"
+msgstr "إلى الأمام"
 
 #. TRANS: 360 degrees in a circle
 msgid "degrees"
-msgstr ""
+msgstr "الدرجات"
 
 msgid "translate"
-msgstr ""
+msgstr "ترجم"
 
 msgid "until"
-msgstr ""
+msgstr "حتى"
 
 msgid "define"
-msgstr ""
+msgstr "عرّف"
 
 msgid "On my device"
-msgstr ""
+msgstr "على جهازي"
 
 #. TRANS: save project as simple vector graphic (SVG)
 msgid "save svg"
-msgstr ""
+msgstr "حفظ المشروع كرسم متجه بسيط (SVG)"
 
 #. TRANS: mathematical ceiling function, e.g., ceiling(2.5) == 3
 msgid "ceiling"
-msgstr ""
+msgstr "السقف"
 
 #. TRANS: a turtle shell
 msgid "shell"
-msgstr ""
+msgstr "صدفة السلحفاة"
 
 #. TRANS: flash (blink) an LED light
 msgid "blink (ms)"
-msgstr ""
+msgstr "رمشة (بالميكرو ثانية)"
 
 msgid "that"
-msgstr ""
+msgstr "ذلك"
 
 #. TRANS: set language
 msgid "set lang"
-msgstr ""
+msgstr "اضبط اللغة"
 
 msgid "turtle name"
-msgstr ""
+msgstr "اسم السلحفاة"
 
 #. TRANS: carbohydrates
 msgid "carbs"
-msgstr ""
+msgstr "الكربوهيدرات"
 
 msgid "else"
-msgstr "وإلا"
+msgstr "أخرى"
 
 #. TRANS: as in broadcast a signal
 msgid "broadcast"
-msgstr ""
+msgstr "بث"
 
 msgid "orange"
-msgstr ""
+msgstr "برتقال"
 
 msgid "begin hollow line"
-msgstr ""
+msgstr "ابدأ الخط المجوف"
 
 #. TRANS: the heap is a first-in-last-out (FILO) stack
 msgid "heap"
-msgstr ""
+msgstr "الكومة"
 
 #. TRANS: fill refers to filling a shape with a color (e.g., paint bucket).
 msgid "begin fill"
-msgstr ""
+msgstr "ابدأ بملء اللون"
 
 #. TRANS: use sensor to detect objects on the right
 msgid "sense right"
-msgstr ""
+msgstr "الاستشعار بشيء موجود إلى اليمين"
 
 msgid "eat"
-msgstr ""
+msgstr "يأكل"
 
 msgid "Expand/collapse collapsable blocks"
-msgstr ""
+msgstr "توسيع/ تقليص اللبنات القابلة للتقليص"
 
 #. TRANS: high temperature
 msgid "high"
-msgstr ""
+msgstr "مرتفعة"
 
 #. TRANS: longitude and latitude coordinate data
 msgid "Coordinate data not available."
-msgstr ""
+msgstr "بيانات الإحداثيات غير متوفرة"
 
 #. TRANS: hue refers to spectral hue (red, yellow, green, blue...)
 msgid "set hue"
-msgstr "حدد اللون"
+msgstr "تحديد درجة اللون"
 
 msgid "currency"
-msgstr ""
+msgstr "العملة"
 
 msgid "this"
-msgstr ""
+msgstr "هذا"
 
 #. TRANS: horizontal space
 msgid "hspace"
-msgstr ""
+msgstr "الفراغ الأفقي"
 
 msgid "potato"
-msgstr ""
+msgstr "البطاطا"
 
 msgid "city longitude"
-msgstr ""
+msgstr "طول المدينة"
 
 msgid "Click to run the project step by step."
-msgstr ""
+msgstr "انقر لتنفيذ المشروع خطوةً خطوة."
 
 #. TRANS: the value of a variable (stored in a box)
 msgid "value"
-msgstr ""
+msgstr "قيمة المتغير"
 
 msgid "banana"
-msgstr ""
+msgstr "موز"
 
 msgid "wheat bread"
-msgstr ""
+msgstr "خبز قمح"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr ""
+msgstr "لبنات السلاحف هي شعارات مستوحاة من السلاحف ترسم الصور الملونة مع لبنات البرمجة المرئية المجموعة معاً."
 
 msgid "while"
-msgstr ""
+msgstr "ريثما"
 
 msgid "open file"
-msgstr ""
+msgstr "فتح الملف"
 
 #. TRANS: detect language
 msgid "detect lang"
-msgstr ""
+msgstr "اكتشف اللغة"
 
 msgid "cake"
-msgstr ""
+msgstr "الكعك"
 
 #. TRANS: mathematical exponent
 msgid "exp"
-msgstr ""
+msgstr "الأس"
 
 #. TRANS: load the heap from a file
 msgid "load heap"
-msgstr ""
+msgstr "حمّل الكومة"
 
 msgid "Open"
-msgstr ""
+msgstr "افتح"
 
 #. TRANS: database fetch
 msgid "fetch"
-msgstr ""
+msgstr "الاستحضار"
 
 #. TRANS: use sensor to detect distance to objects
 msgid "see distance"
-msgstr ""
+msgstr "حدد المسافة"
 
 #. TRANS: logical "and" operator
 msgid "and"
@@ -739,205 +733,205 @@ msgstr "و"
 
 #. TRANS: grey refers to chroma (grey to vivid)
 msgid "set grey"
-msgstr ""
+msgstr "اختر الرمادي"
 
 #. TRANS: do this action
 msgid "do"
-msgstr ""
+msgstr "أجرِ"
 
 msgid "calories"
-msgstr ""
+msgstr "السعرات الحرارية"
 
 msgid "Run step by step"
-msgstr ""
+msgstr "نفذ خطوةً خطوة"
 
 msgid "Show/hide palettes"
-msgstr ""
+msgstr "إظهار/ إخفاء اللوحات"
 
 msgid "set heading"
-msgstr "حدد العنوان"
+msgstr "حدد الترويسة"
 
 msgid "add 1 to"
-msgstr ""
+msgstr "أضف 1 إلى"
 
 #. TRANS: stop playing current media file (movie or audio)
 msgid "stop play"
-msgstr ""
+msgstr "أوقف العرض"
 
 msgid "protein"
-msgstr ""
+msgstr "بروتينات"
 
 #. TRANS: play media (audio or video)
 msgid "play back"
-msgstr ""
+msgstr "شغل"
 
 msgid "if"
 msgstr "إذا"
 
 msgid "Save your project to a server."
-msgstr ""
+msgstr "احفظ مشروعك على خادم"
 
 msgid "Decrease block size"
-msgstr ""
+msgstr "قلل حجم اللبنة"
 
 msgid "angle"
 msgstr "زاوية"
 
 msgid "get fat"
-msgstr ""
+msgstr "اكسب المزيد من الوزن"
 
 #. TRANS: minimum
 msgid "min"
-msgstr "أقل"
+msgstr "الأدنى"
 
 msgid "media"
-msgstr ""
+msgstr "وسائل الإعلام"
 
 msgid "Stop"
-msgstr ""
+msgstr "أوقف"
 
 #. TRANS: square root
 msgid "sqrt"
-msgstr ""
+msgstr "الجذر التربيعي"
 
 #. TRANS: as in button click
 msgid "click"
-msgstr ""
+msgstr "انقر"
 
 msgid "note"
-msgstr ""
+msgstr "ملاحظة"
 
 #. TRANS: field of interest in a database, e.g., temperature in a weather database
 msgid "field"
-msgstr ""
+msgstr "مجال الاهتمام"
 
 msgid "Palette buttons"
-msgstr ""
+msgstr "ازرار اللوحة"
 
 msgid "set xy"
 msgstr "حدد س ص"
 
 msgid "end fill"
-msgstr ""
+msgstr "أنه تعبئة اللون"
 
 msgid "Copy"
-msgstr ""
+msgstr "نسخ"
 
 msgid "Paste"
-msgstr ""
+msgstr "لصق"
 
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #. TRANS: Mexican tamale
 msgid "tamale"
-msgstr ""
+msgstr "تامالي"
 
 msgid "Worldwide"
-msgstr ""
+msgstr "في جميع أنحاء العالم"
 
 msgid "repeat"
 msgstr "كرر"
 
 msgid "blocks"
-msgstr ""
+msgstr "لبنات"
 
 msgid "Display statistics about your Turtle project."
-msgstr ""
+msgstr "اعرض الإحصائيات المتعلقة ببرنامج السلحفاة."
 
 msgid "Polar"
-msgstr ""
+msgstr "قطبي"
 
 #. TRANS: maximum
 msgid "max"
-msgstr "أاكثر"
+msgstr "القصوى"
 
 msgid "logic"
-msgstr ""
+msgstr "منطقي"
 
 #. TRANS: empty the heap
 msgid "empty heap"
-msgstr ""
+msgstr "قم بتفريغ الكومة"
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr ""
+msgstr "لقد انتهت الجولة. الرجاء الاستمتاع بلبنات السلحفاة!"
 
 #. TRANS: push a value on to the heap.
 msgid "push"
-msgstr ""
+msgstr "ادفع قيمة إلى أعلى الكومة"
 
 #. TRANS: the name of a robot built in Paraguay (probably no need to translate)
 msgid "rodi"
-msgstr ""
+msgstr "rodi"
 
 msgid "Clean"
-msgstr ""
+msgstr "نظف"
 
 #. TRANS: color refers to a hue, value, chroma triplet
 msgid "set color"
 msgstr "حدد اللون"
 
 msgid "Run fast"
-msgstr ""
+msgstr "شغل بشكل سريع"
 
 msgid "broccoli"
-msgstr ""
+msgstr "بروكولي"
 
 #. TRANS: stop playing current media file (movie or audio)
 msgid "stop media"
-msgstr ""
+msgstr "أوقف العرض"
 
 msgid "tomato"
-msgstr ""
+msgstr "طماطم"
 
 msgid "forever"
-msgstr "للأبد"
+msgstr "إلى الأبد"
 
 #. TRANS: musical note to frequency
 msgid "note to frequency"
-msgstr ""
+msgstr "النغمة إلى التردد"
 
 msgid "no background"
-msgstr ""
+msgstr "بدون خلفية"
 
 msgid "Load project from file"
-msgstr ""
+msgstr "حمل المشروع من الملف"
 
 msgid "get protein"
-msgstr ""
+msgstr "hpwg ugn hgfv,jdk"
 
 #. TRANS: clear the screen of any graphics drawn by the turtle
 msgid "clear"
-msgstr "نظف"
+msgstr "نظف الشاشة"
 
 #. TRANS: mathematical floor function, e.g., floor(2.5) == 2
 msgid "floor"
-msgstr ""
+msgstr "دالة الجزء الصحيح"
 
 msgid "flow"
-msgstr ""
+msgstr "تدفق"
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
-msgstr ""
+msgstr "انقر على هذا الزر لتوسيع أو تقليص شريط الأدوات المساعد."
 
 msgid "extras"
-msgstr ""
+msgstr "إضافات"
 
 msgid "shade"
-msgstr ""
+msgstr "درجة اللون"
 
 msgid "time"
-msgstr ""
+msgstr "الوقت"
 
 msgid "y"
 msgstr "ص"
 
 #. TRANS: set the value at a specific entry (index) in the heap
 msgid "set heap"
-msgstr ""
+msgstr "حدد القيمة المدخلة إلى الكومة"
 
 msgid "hello"
-msgstr ""
+msgstr "مرحباً"
 
 msgid "left"
 msgstr "يسار"

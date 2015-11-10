@@ -8,7 +8,7 @@
 // You should have received a copy of the GNU Affero General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-//
+
 // All things related to palettes
 require(['activity/utils']);
 
@@ -18,7 +18,8 @@ var PALETTELEFTMARGIN = 10;
 
 // We don't include 'extras' since we want to be able to delete
 // plugins from the extras palette.
-var BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'boxes',
+var BUILTINPALETTES = [
+    'turtle', 'pen', 'number', 'boolean', 'flow', 'boxes',
     'actions', 'media', 'sensors', 'myblocks', 'heap'
 ];
 
@@ -33,7 +34,7 @@ function maxPaletteHeight(menuSize, scale) {
 
 
 function paletteBlockButtonPush(name, arg) {
-    console.log('paletteBlockButtonPush: ' + name + ' ' + arg);
+    // console.log('paletteBlockButtonPush: ' + name + ' ' + arg);
     blk = paletteBlocks.makeBlock(name, arg);
     return blk;
 }
@@ -347,6 +348,8 @@ function loadPaletteButtonHandler(palettes, name) {
 }
 
 
+// FIXME: this should be calculated
+var EXPANDBYTWO = ['namedcalcArg', 'nameddoArg'];
 var EXPANDBYONE = ['repeat', 'forever', 'media', 'camera', 'video', 'action',
                    'start', 'and', 'or', 'fill', 'hollowline'];
 
@@ -366,6 +369,9 @@ function PaletteModel(palette, palettes, name) {
         } else if (EXPANDBYONE.indexOf(blkname) != -1
                 || this.palette.protoList[blk].image) {
                     size += 1;
+        } else if (EXPANDBYTWO.indexOf(blkname) != -1
+                || this.palette.protoList[blk].image) {
+                    size += 2;
         }
         return STANDARDBLOCKHEIGHT * size
                * this.palette.protoList[blk].scale / 2.0;
@@ -601,13 +607,13 @@ function PopdownPalette(palettes) {
                 .replace(/#f{3,6}/gi, PALETTEFILLCOLORS[name]);
             html += format('<h2 data-name="{n}"> \
                                 {i}<span>{n}</span> \
-                                <img class="hide-button" src="icons/hide.svg" \
+                                <img class="hide-button" src="header-icons/hide.svg" \
                                      alt="{' + _('hide') + '}" \
                                      title="{' + _('hide') + '}" /> \
-                                <img class="show-button" src="icons/show.svg" \
+                                <img class="show-button" src="header-icons/show.svg" \
                                      alt="{' + _('show') + '}" \
                                      title="{' + _('show') + '}" /> \
-                                <img class="popout-button" src="icons/popout.svg" \
+                                <img class="popout-button" src="header-icons/popout.svg" \
                                      alt="{' + _('popout') + '}" \
                                      title="{' + _('popout') + '}" /> \
                             </h2>',
@@ -655,6 +661,7 @@ function PopdownPalette(palettes) {
                 var palette = me.palettes.dict[e.dataset.palettename];
                 var container = palette.protoContainers[e.dataset.modname];
 
+                console.log(e.dataset.blk + ' ' + e.dataset.modname);
                 var newBlock = makeBlockFromPalette(
                     palette.protoList[e.dataset.blk], e.dataset.modname,
                     palette, function (newBlock) {
@@ -830,7 +837,7 @@ function Palette(palettes, name) {
             h = max;
         }
         // return this.menuContainer.y + h - STANDARDBLOCKHEIGHT / 2;
-        return this.menuContainer.y + h;  // - STANDARDBLOCKHEIGHT * 3;
+        return this.menuContainer.y + h; // - STANDARDBLOCKHEIGHT * 3;
     }
 
     this.resizeEvent = function() {
@@ -868,6 +875,10 @@ function Palette(palettes, name) {
             this.palettes.stage.addChild(this.background);
             setupBackgroundEvents(this);
         }
+
+        // Since we don't always add items at the end, the dependency
+        // on this.y is unrelable. Easy workaround is just to always
+        // extend the palette to the bottom.
 
         // var h = Math.min(maxPaletteHeight(this.palettes.cellSize, this.palettes.scale), this.y);
         var h = maxPaletteHeight(this.palettes.cellSize, this.palettes.scale);
@@ -969,7 +980,6 @@ function Palette(palettes, name) {
                 this.protoContainers[b.modname].x = this.menuContainer.x;
                 this.protoContainers[b.modname].y = this.menuContainer.y
                     + this.y + this.scrollDiff + STANDARDBLOCKHEIGHT;
-
                 this.y += Math.ceil(b.height * PROTOBLOCKSCALE);
             }
         }
@@ -1178,6 +1188,8 @@ function Palette(palettes, name) {
     };
 
     this.add = function(protoblock, top) {
+        // Add a new palette entry to the end of the list (default) or
+        // to the top.
         if (this.protoList.indexOf(protoblock) == -1) {
             if (top == undefined) {
                 this.protoList.push(protoblock);
@@ -1358,14 +1370,14 @@ function loadPaletteMenuItemHandler(palette, protoblk, blkname) {
         stage.setChildIndex(palette.protoContainers[blkname], stage.getNumChildren() - 1);
 
         var h = Math.min(maxPaletteHeight(palette.palettes.cellSize, palette.palettes.scale), palette.palettes.y);
-        var clickY = event.stageY/palette.palettes.scale;
+        var clickY = event.stageY / palette.palettes.scale;
         var paletteEndY = palette.menuContainer.y + h + STANDARDBLOCKHEIGHT;
 
-        if(clickY < paletteEndY)
-        {
-            palette.protoContainers[blkname].mask = null;
-        }
+        // if (clickY < paletteEndY) is not reliable
+        palette.protoContainers[blkname].mask = null;
+
         moved = false;
+
         // No need to recalculate saveX (prevents lost palette entry)
         // saveX = palette.protoContainers[blkname].x;
         saveY = palette.protoContainers[blkname].y - palette.scrollDiff;
@@ -1379,14 +1391,12 @@ function loadPaletteMenuItemHandler(palette, protoblk, blkname) {
 
         palette.protoContainers[blkname].on('pressmove', function(event) {
             if (mode === MODEDRAG) {
-                if(clickY < paletteEndY)
-                {
-                    moved = true;
-                    palette.draggingProtoBlock = true;
-                    palette.protoContainers[blkname].x = Math.round(event.stageX / palette.palettes.scale) - PALETTELEFTMARGIN;
-                    palette.protoContainers[blkname].y = Math.round(event.stageY / palette.palettes.scale);
-                    palette.palettes.refreshCanvas();
-                }
+                // if (clickY < paletteEndY) is not reliable
+                moved = true;
+                palette.draggingProtoBlock = true;
+                palette.protoContainers[blkname].x = Math.round(event.stageX / palette.palettes.scale) - PALETTELEFTMARGIN;
+                palette.protoContainers[blkname].y = Math.round(event.stageY / palette.palettes.scale);
+                palette.palettes.refreshCanvas();
                 return;
             }
 
@@ -1488,6 +1498,7 @@ function makeBlockFromProtoblock(palette, protoblk, moved, blkname, event, saveX
                     restoreProtoblock(palette, blkname, saveX, saveY + palette.scrollDiff);
                 }
 
+                // console.log(protoblk + ' ' + blkname);
                 var newBlock = makeBlockFromPalette(protoblk, blkname, palette, myCallback);
             }
 
@@ -1628,18 +1639,12 @@ function promptPaletteDelete(palette) {
     if ('ONSTOP' in pluginObjs) {
         delete pluginObjs['ONSTOP'][palette.name];
     }
-    
+
     for (var i = 0; i < palette.protoList.length; i++) {
         var name = palette.protoList[i].name;
-        if (name in pluginObjs['FLOWPLUGINS']) {
-            delete pluginObjs['FLOWPLUGINS'][name];
-        }
-        if (name in pluginObjs['ARGPLUGINS']) {
-            delete pluginObjs['ARGPLUGINS'][name];
-        }
-        if (name in pluginObjs['BLOCKPLUGINS']) {
-            delete pluginObjs['BLOCKPLUGINS'][name];
-        }
+        delete pluginObjs['FLOWPLUGINS'][name];
+        delete pluginObjs['ARGPLUGINS'][name];
+        delete pluginObjs['BLOCKPLUGINS'][name];
     }
 
     storage.plugins = preparePluginExports({});

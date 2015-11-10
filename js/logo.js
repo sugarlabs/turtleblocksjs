@@ -53,6 +53,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.evalSetterDict = {};
     this.evalOnStartList = {};
     this.evalOnStopList = {};
+
     this.eventList = {};
 
     this.boxes = {};
@@ -277,7 +278,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             this.turtles.add(null);
         }
 
-        // Each turtle needs to keep its own wait time.
+        // Each turtle needs to keep its own wait time, et al.
         for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
             this.waitTimes[turtle] = 0;
             this.endOfFlowSignals[turtle] = {};
@@ -515,7 +516,10 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
     }
 
-this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
+    this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg, queueStart) {
+        if (queueStart == undefined) {
+            queueStart = 0;
+        }
         // Run a stack of blocks, beginning with blk.
         // (1) Evaluate any arguments (beginning with connection[1]);
         var args = [];
@@ -526,8 +530,8 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
         }
 
         // (2) Run function associated with the block;
+        var nextFlow = null;
         if (logo.blocks.blockList[blk].isValueBlock()) {
-            var nextFlow = null;
         } else {
             // All flow blocks have a nextFlow, but it can be null
             // (i.e., end of a flow).
@@ -693,8 +697,9 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
             case 'print':
                 if (args.length == 1) {
                     if (args[0] != null) {
+                        console.log(args[0].toString());
                         logo.textMsg(args[0].toString());
-		    }
+                    }
                 }
                 break;
             case 'speak':
@@ -1516,12 +1521,11 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
         }
 
         var nextBlock = null;
+        var parentBlk = null;
         // Run the last flow in the queue.
-        if (logo.turtles.turtleList[turtle].queue.length > 0) {
-            for (var i = 0; i < logo.turtles.turtleList[turtle].queue.length; i++) {
-                console.log(i + ': blk ' + logo.blocks.blockList[logo.turtles.turtleList[turtle].queue[i].blk].name + ' count ' + logo.turtles.turtleList[turtle].queue[i].count + ' parent ' + logo.blocks.blockList[logo.turtles.turtleList[turtle].queue[i].parentBlk].name + ' args ' + logo.turtles.turtleList[turtle].queue[i].args);
-	    }
+        if (logo.turtles.turtleList[turtle].queue.length > queueStart) {
             nextBlock = last(logo.turtles.turtleList[turtle].queue).blk;
+            parentBlk = last(logo.turtles.turtleList[turtle].queue).parentBlk;
             passArg = last(logo.turtles.turtleList[turtle].queue).args;
             // Since the forever block starts at -1, it will never == 1.
             if (last(logo.turtles.turtleList[turtle].queue).count == 1) {
@@ -1534,11 +1538,6 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
         }
 
         if (nextBlock != null) {
-            parentBlk = null;
-            if (logo.turtles.turtleList[turtle].queue.length > 0) {
-                parentBlk = last(logo.turtles.turtleList[turtle].queue).parentBlk;
-            }
-
             if (parentBlk != blk) {
                 // The wait block waits waitTimes longer than other
                 // blocks before it is unhighlighted.
@@ -1571,7 +1570,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 }
             }
             if (isflow){
-                logo.runFromBlockNow(logo, turtle, nextBlock, isflow, passArg);
+                logo.runFromBlockNow(logo, turtle, nextBlock, isflow, passArg, queueStart);
             }
             else{
                 logo.runFromBlock(logo, turtle, nextBlock, isflow, passArg);
@@ -1642,18 +1641,17 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
     this.getBlockAtStartOfArg = function(blk) {
         if (blk == null) {
             return null;
-	}
+        }
         var c0 = this.blocks.blockList[blk].connections[0];
         if (c0 == null) {
             console.log('No flow block found at start of arg.');
             return blk;
-	}
-	var blkType = this.blocks.blockList[c0].docks[0][2];
-	if (['unavailable', 'out'].indexOf(blkType) != -1) {
-            console.log('Block ' + c0 + ': ' + this.blocks.blockList[c0].name + ' at start of arg');
-	    return c0;
-	}
-	return this.getBlockAtStartOfArg(c0);
+        }
+        var blkType = this.blocks.blockList[c0].docks[0][2];
+        if (['unavailable', 'out'].indexOf(blkType) != -1) {
+            return c0;
+        }
+        return this.getBlockAtStartOfArg(c0);
     }
 
     this.getBlockAtEndOfFlow = function(blk, loopClamp, doClamp) {
@@ -1823,7 +1821,7 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                 }
             }
             return logo.blocks.blockList[blk].value;
-        } else if (logo.blocks.blockList[blk].isArgBlock()) {
+        } else if (logo.blocks.blockList[blk].isArgBlock() || logo.blocks.blockList[blk].isArgClamp()) {
             switch (logo.blocks.blockList[blk].name) {
                 case 'loudness':
                     try {  // DEBUGGING P5 MIC
@@ -1845,34 +1843,6 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                     var a = logo.parseArg(logo, turtle, cblk1, blk, receivedArg);
                     var b = logo.parseArg(logo, turtle, cblk2, blk, receivedArg);
                     logo.blocks.blockList[blk].value = Number(eval(a.replace(/x/g, b.toString())));
-                    break;
-                case 'calc':
-                    var action_args = [];
-                    var cblk = logo.blocks.blockList[blk].connections[1];
-                    var name = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
-                    action_args = receivedArg;
-                    logo.getBlockAtStartOfArg(blk);
-                    if (name in logo.actions) {
-                        // FIXME: We need to queue a child flow
-                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args);
-                        logo.blocks.blockList[blk].value = logo.returns.shift();
-                    } else {
-                        logo.errorMsg(NOACTIONERRORMSG, blk, name);
-                        logo.stopTurtle = true;
-                    }
-                    break;
-                case 'namedcalc':
-                    var name = logo.blocks.blockList[blk].privateData;
-                    var action_args = [];
-                    logo.getBlockAtStartOfArg(blk);
-                    if (name in logo.actions) {
-                        // FIXME: We need to queue a child flow
-                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args);
-                        logo.blocks.blockList[blk].value = logo.returns.shift();
-                    } else {
-                        logo.errorMsg(NOACTIONERRORMSG, blk, name);
-                        logo.stopTurtle = true;
-                    }
                     break;
                 case 'arg':
                     var cblk = logo.blocks.blockList[blk].connections[1];
@@ -2181,68 +2151,79 @@ this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg) {
                         block.value = true;
                     }
                     break;
-                default:
-                    if (logo.blocks.blockList[blk].name in logo.evalArgDict) {
-                        eval(logo.evalArgDict[logo.blocks.blockList[blk].name]);
+                case 'calc':
+                    var actionArgs = [];
+                    var cblk = logo.blocks.blockList[blk].connections[1];
+                    var name = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
+                    actionArgs = receivedArg;
+                    // logo.getBlockAtStartOfArg(blk);
+                    if (name in logo.actions) {
+                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, actionArgs, logo.turtles.turtleList[turtle].queue.length);
+                        logo.blocks.blockList[blk].value = logo.returns.shift();
                     } else {
-                        console.log('ERROR: I do not know how to ' + logo.blocks.blockList[blk].name);
+                        logo.errorMsg(NOACTIONERRORMSG, blk, name);
+                        logo.stopTurtle = true;
                     }
                     break;
-            }
-            return logo.blocks.blockList[blk].value;
-        } else if (logo.blocks.blockList[blk].isArgClamp()) {
-            switch (logo.blocks.blockList[blk].name) {
-                case 'namedcalcArg':
+                case 'namedcalc':
                     var name = logo.blocks.blockList[blk].privateData;
-                    var action_args = [];
-                    logo.getBlockAtStartOfArg(blk);
-                    if (logo.blocks.blockList[blk].argClampSlots.length > 0) {
-                        for (var i = 0; i < logo.blocks.blockList[blk].argClampSlots.length; i++){
-                            var t = (logo.parseArg(logo, turtle, logo.blocks.blockList[blk].connections[i + 1], blk, receivedArg));
-                            action_args.push(t);
-                        }
-                    }
-                    if (name in logo.actions) {
-                        // logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args)
-                        var childFlow = logo.actions[name]
-                        var childFlowCount = 1;
-                        if (logo.doBlocks[turtle].indexOf(blk) == -1) {
-                            logo.doBlocks[turtle].push(blk);
-                        }
-                        var queueBlock = new Queue(childFlow, childFlowCount, logo.getBlockAtStartOfArg(blk), actionArgs);
-                        logo.parentFlowQueue[turtle].push(logo.getBlockAtStartOfArg(blk));
-                        logo.turtles.turtleList[turtle].queue.push(queueBlock);
+                    var actionArgs = [];
 
-                        logo.blocks.blockList[blk].value = logo.returns.pop();
+                    actionArgs = receivedArg;
+                    // logo.getBlockAtStartOfArg(blk);
+                    if (name in logo.actions) {
+                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, actionArgs, logo.turtles.turtleList[turtle].queue.length);
+                        logo.blocks.blockList[blk].value = logo.returns.shift();
                     } else {
                         logo.errorMsg(NOACTIONERRORMSG, blk, name);
                         logo.stopTurtle = true;
                     }
                     break;
                 case 'calcArg':
-                    var action_args = [];
-                    logo.getBlockAtStartOfArg(blk);
+                    var actionArgs = [];
+                    // logo.getBlockAtStartOfArg(blk);
                     if (logo.blocks.blockList[blk].argClampSlots.length > 0) {
                         for (var i = 0; i < logo.blocks.blockList[blk].argClampSlots.length; i++){
                             var t = (logo.parseArg(logo, turtle, logo.blocks.blockList[blk].connections[i + 2], blk, receivedArg));
-                            action_args.push(t);
+                            actionArgs.push(t);
                         }
                     }
                     var cblk = logo.blocks.blockList[blk].connections[1];
                     var name = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
                     if (name in logo.actions) {
-                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, action_args)
+                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, actionArgs, logo.turtles.turtleList[turtle].queue.length);
                         logo.blocks.blockList[blk].value = logo.returns.pop();
                     } else {
                         logo.errorMsg(NOACTIONERRORMSG, blk, name);
                         logo.stopTurtle = true;
                     }
                     break;
-                case 'nameddoArg':
-                    return blk;
+                case 'namedcalcArg':
+                    var name = logo.blocks.blockList[blk].privateData;
+                    var actionArgs = [];
+                    // logo.getBlockAtStartOfArg(blk);
+                    if (logo.blocks.blockList[blk].argClampSlots.length > 0) {
+                        for (var i = 0; i < logo.blocks.blockList[blk].argClampSlots.length; i++){
+                            var t = (logo.parseArg(logo, turtle, logo.blocks.blockList[blk].connections[i + 1], blk, receivedArg));
+                            actionArgs.push(t);
+                        }
+                    }
+                    if (name in logo.actions) {
+                        // Just run the stack.
+                        logo.runFromBlockNow(logo, turtle, logo.actions[name], true, actionArgs, logo.turtles.turtleList[turtle].queue.length);
+                        logo.blocks.blockList[blk].value = logo.returns.pop();
+                    } else {
+                        logo.errorMsg(NOACTIONERRORMSG, blk, name);
+                        logo.stopTurtle = true;
+                    }
                     break;
-                case 'doArg' :
-                    return blk;
+                case 'returnValue':
+                    if (logo.returns.length > 0) {
+                        logo.blocks.blockList[blk].value = logo.returns.pop();
+                    } else {
+                        console.log('WARNING: No return value.');
+                        logo.blocks.blockList[blk].value = 0;
+                    }
                     break;
                 default:
                     if (logo.blocks.blockList[blk].name in logo.evalArgDict) {

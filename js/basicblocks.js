@@ -534,6 +534,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     returnBlock.defaults.push(100);
     returnBlock.dockTypes[1] = 'anyin';
 
+    var returnValueBlock = new ProtoBlock('returnValue');
+    returnValueBlock.palette = palettes.dict['actions'];
+    blocks.protoBlockDict['returnValue'] = returnValueBlock;
+    returnValueBlock.hidden = true;    
+    returnValueBlock.staticLabels.push(_('return value'));
+    returnValueBlock.adjustWidthToLabel();
+    returnValueBlock.valueBlock();
+    returnValueBlock.dockTypes[1] = 'anyout';
+
     var returnToUrlBlock = new ProtoBlock('returnToUrl');
     returnToUrlBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['returnToUrl'] = returnToUrlBlock;

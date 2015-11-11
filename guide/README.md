@@ -437,7 +437,13 @@ argument - 2.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci1.svg'</img>
 
-Calculating Fibonacci [RUN LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
+Calculating Fibonacci [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci2.svg'</img>
+
+In the second example, we use a repeat loop to generate the first six
+Fibonacci numbers and use them to draw a nautilus.
 
 Example: Reflection Paint
 -------------------------

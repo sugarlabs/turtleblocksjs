@@ -462,6 +462,14 @@ argumento Fib - 1 y el argumento - 2.
 
 Cálculo de Fibonacci [CORRER  EN VIVO](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/fibonacci2.svg'</img>
+
+En el segundo ejemplo, se utiliza un bucle de repetición para generar
+los seis primeros números de Fibonacci y los utilizamos para dibujar
+un nautilus.
+
+Dibuja una nautilus [CORRER  EN VIVO](http://turtle.sugarlabs.org/?file=nautilus.tb&run=true)
+
 Ejemplo: Pintura de Reflexión
 -----------------------------
 

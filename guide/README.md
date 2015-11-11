@@ -445,6 +445,9 @@ LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
 In the second example, we use a repeat loop to generate the first six
 Fibonacci numbers and use them to draw a nautilus.
 
+Draw a nautilus [RUN
+LIVE](http://turtle.sugarlabs.org/?file=nautilus.tb&run=true)
+
 Example: Reflection Paint
 -------------------------
 

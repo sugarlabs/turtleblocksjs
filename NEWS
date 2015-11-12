@@ -10,6 +10,9 @@
   * Reordered NEWS so that recent changes are at the top.
   * GPL->AGPL as it was meant to be from the get-go.
   * Don't connect to collapsed blocks.
+  * Fixed flow bug when nesting clamps.
+  * Added ArgClamps to list of blocks that are expanded on load.
+  * Fixed problem with selected blocks from bottom of palette.
 
 0.9
   * Added How to Guide.
@@ -414,6 +417,8 @@ KNOWN BUGS:
   * Sometimes long press puts menu in wrong place.
   * Multiple copy/paste cycles sometime concatenate clipboard stack.
   * P5-related blocks no longer working -- P5 does not init properly.
+  * Turtle and Music Blocks should use separate local storage
+  * Turtle and Music Blocks should use separate name space on server
 
 ANDROID-SPECIFIC BUGS:
   * Camera doesn't work on Android

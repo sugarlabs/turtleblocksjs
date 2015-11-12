@@ -283,6 +283,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Make sure myBlock is a clamp block.
         if (myBlock.isArgBlock() || myBlock.isTwoArgBlock()) {
             return;
+        } else if (myBlock.isArgClamp()) {
+            // We handle ArgClamp blocks elsewhere.
+            this.adjustArgClampBlock([blk]);
+            return;
         }
 
         function clampAdjuster(blocks, blk, myBlock, clamp) {
@@ -438,7 +442,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 var nextBlock = args[1];
                 var vspace = args[2];
                 var i = args[3];
-		var n = args[4];
+                var n = args[4];
                 var vspaceBlock = blockBlocks.blockList[vspace];
                 var lastDock = last(thisBlock.docks);
                 var dx = lastDock[0] - vspaceBlock.docks[0][0];
@@ -454,12 +458,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     blockBlocks.blockList[nextBlock].connections[0] = vspace;
                 }
                 if (i + 1 < n) {
-		    var newPos = blockBlocks.blockList.length;
+                    var newPos = blockBlocks.blockList.length;
                     thisBlock = last(blockBlocks.blockList);
-		    nextBlock = last(thisBlock.connections);
+                    nextBlock = last(thisBlock.connections);
                     blockBlocks.makeNewBlockWithConnections('vspace', newPos, [null, null], vspaceAdjuster, [thisBlock, nextBlock, newPos, i + 1, n]);
-		}
-	    }
+                }
+            }
 
             blockBlocks.makeNewBlockWithConnections('vspace', newPos, [null, null], vspaceAdjuster, [thisBlock, nextBlock, newPos, 0, n]);
         }
@@ -1217,6 +1221,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 this.expandablesList.push(blk);
                 var c = this.blockList[blk].connections.length - 2;
                 this.searchForExpandables(this.blockList[blk].connections[c]);
+            } else if (this.blockList[blk].isArgClamp()) {
+                // FIXME: We need to do something with ArgClampArg blocks too.
+                this.expandablesList.push(blk);
             }
             blk = last(this.blockList[blk].connections);
         }

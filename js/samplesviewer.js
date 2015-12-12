@@ -96,7 +96,7 @@ function PlanetModel(controller) {
         }
         var name = image.replace('.b64', '');
 
-        if (me.globalImagesCache[image] !== undefined) {
+        if (typeof(me.globalImagesCache[image]) !== "undefined") {
             me.globalProjects.push({title: name,
                                     img: me.globalImagesCache[image]});
             me.updated();
@@ -416,7 +416,7 @@ function validateImageData(d) {
     }
     else {
         var data = d.split(",");
-        if(data[1].length == 0){
+        if(data[1].length === 0){
             return false;
         }
     }

@@ -56,7 +56,7 @@ function httpGet(projectName) {
 
     xmlHttp = new XMLHttpRequest();
 
-    if (projectName == null) {
+    if (projectName === null) {
         xmlHttp.open("GET", window.server, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     } else {
@@ -87,7 +87,7 @@ function HttpRequest(url, loadCallback, userCallback) {
     var req = this.request = new XMLHttpRequest();
     this.handler = loadCallback;
     this.url = url;
-    this.localmode = Boolean(self.location.href.search(/^file:/i) == 0);
+    this.localmode = Boolean(self.location.href.search(/^file:/i) === 0);
     this.userCallback = userCallback;
     var objref = this;
     try {
@@ -97,7 +97,7 @@ function HttpRequest(url, loadCallback, userCallback) {
     }
     catch(e) {
         if (self.console) console.log('Failed to load resource from ' + url + ': Network error.');
-        if (typeof userCallback == 'function') userCallback(false, 'network error');
+        if (typeof userCallback === 'function') userCallback(false, 'network error');
         this.request = this.handler = this.userCallback = null;
     }
 }
@@ -115,7 +115,7 @@ function docById(id) {
 
 function last(myList) {
     var i = myList.length;
-    if (i == 0) {
+    if (i === 0) {
         return null;
     } else {
         return myList[i - 1];
@@ -150,7 +150,7 @@ function isSVGEmpty(turtles) {
 
 function fileExt(file) {
     var parts = file.split('.');
-    if (parts.length == 1 || (parts[0] == '' && parts.length == 2)) {
+    if (parts.length === 1 || (parts[0] === '' && parts.length === 2)) {
         return '';
     }
     return parts.pop();
@@ -159,9 +159,9 @@ function fileExt(file) {
 
 function fileBasename(file) {
     var parts = file.split('.');
-    if (parts.length == 1) {
+    if (parts.length === 1) {
         return parts[0];
-    } else if (parts[0] == '' && parts.length == 2) {
+    } else if (parts[0] === '' && parts.length === 2) {
         return file;
     } else {
         parts.pop(); // throw away suffix
@@ -181,13 +181,13 @@ function _(text) {
     replaced = replaced.replace(/ /g, '-');
     // Needed to generate new data for localization.ini
     // txt = "\n" + replaced + " = " + text;
-    // if (translated.lastIndexOf(txt) == -1) {
+    // if (translated.lastIndexOf(txt) === -1) {
     //     translated = translated + txt;
     //  }
     // You can log translated in console.log(translated)
     try {
         translation = document.webL10n.get(replaced);
-        if (translation == '') {
+        if (translation === '') {
             translation = text;
         };
         return translation;
@@ -205,10 +205,10 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
     // We need to remove blank lines and comments and then
     // join the data back together for processing as JSON.
     for (i = 0; i < lineData.length; i++) {
-        if (lineData[i].length == 0) {
+        if (lineData[i].length === 0) {
             continue;
         }
-        if (lineData[i][0] == '/') {
+        if (lineData[i][0] === '/') {
             continue;
         }
         cleanData += lineData[i];
@@ -367,7 +367,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     // Push the protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
-        if (blocks.protoBlockDict[protoblock].palette == undefined) {
+        if (blocks.protoBlockDict[protoblock].palette === undefined) {
             console.log('Cannot find palette for protoblock ' + protoblock);
         } else {
             blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
@@ -437,7 +437,7 @@ function preparePluginExports(obj) {
 
 function processMacroData(macroData, palettes, blocks, macroDict) {
     // Macros are stored in a JSON-encoded dictionary.
-    if (macroData != '{}') {
+    if (macroData !== '{}') {
         var obj = JSON.parse(macroData);
         console.log('adding myblocks palette');
         palettes.add('myblocks', 'black', '#a0a0a0');
@@ -452,7 +452,7 @@ function processMacroData(macroData, palettes, blocks, macroDict) {
 
 
 function prepareMacroExports(name, stack, macroDict) {
-    if (name != null) {
+    if (name) {
         macroDict[name] = stack;
     }
     return JSON.stringify(macroDict);
@@ -568,7 +568,7 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
 
 
 function doStopVideoCam(cameraID, setCameraID) {
-    if (cameraID != null) {
+    if (cameraID) {
         window.clearInterval(cameraID);
     }
     setCameraID(null);
@@ -578,11 +578,11 @@ function doStopVideoCam(cameraID, setCameraID) {
 
 function hideDOMLabel() {
     var textLabel = docById('textLabel');
-    if (textLabel != null) {
+    if (textLabel) {
         textLabel.style.display = 'none';
     }
     var numberLabel = docById('numberLabel');
-    if (numberLabel != null) {
+    if (numberLabel) {
         numberLabel.style.display = 'none';
     }
 }

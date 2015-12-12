@@ -1192,7 +1192,7 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
-        if (blocks.protoBlockDict[protoblock].palette != null) {
+        if (blocks.protoBlockDict[protoblock].palette) {
             blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
         }
     }

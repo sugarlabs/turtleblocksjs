@@ -26,13 +26,13 @@ define(["sugar-web/env", "sugar-web/activity/activity"], function (env, activity
         loadData: function (callback) {
             var t = this;
             activity.getDatastoreObject().loadAsText(function (error, metadata, jsonData) {
-                if (jsonData !== undefined && jsonData !== null) {
+                if (typeof(jsonData) !== "undefined" && jsonData) {
                     t.data = JSON.parse(jsonData);
                 }
                 if (metadata.buddy_color) {
                     t.xoColor = metadata.buddy_color;
                 }
-                if (callback !== undefined) {
+                if (typeof(callback) !== "undefined") {
                     callback();
                 }
             });

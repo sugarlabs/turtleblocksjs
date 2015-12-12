@@ -19,13 +19,13 @@ function swfInstallFallback(swfUrl, swfId, parentElementOrId) {
 	if (!swfIsAvailable(10)) return false;
 	swfInstalled=true;
 	// set defaults
-	swfElementId = (swfId && typeof swfId == 'string')? swfId:swfDefaultId;
-	url = (swfUrl && typeof swfUrl == 'string')? swfUrl:swfDefaultUrl;
+	swfElementId = (swfId && typeof swfId === 'string')? swfId:swfDefaultId;
+	url = (swfUrl && typeof swfUrl === 'string')? swfUrl:swfDefaultUrl;
 	if (parentElementOrId) {
-		if (typeof parentElementOrId == 'string') {
+		if (typeof parentElementOrId === 'string') {
 			parentEl=document.getElementById(parentElementOrId);
 		}
-		else if (typeof parentElementOrId == 'object') {
+		else if (typeof parentElementOrId === 'object') {
 			parentEl=parentElementOrId=null;
 		}
 	}
@@ -69,7 +69,7 @@ function swfSpeak(txt, options) {
 	if (swfHasLoaded && window.meSpeak) {
 		var obj=document.getElementById(swfElementId);
 		if (obj) {
-			if (!typeof options != 'object') options={};
+			if (!typeof options !== 'object') options={};
 			options.rawdata='array';
 			obj.play( meSpeak.speak(txt, options) );
 		}
@@ -92,7 +92,7 @@ function swfFallbackHandshake() {
 function swfIsAvailable(leastMajorVersion) {
 	// returns Boolean: flashplayer and version at least 10.x
 	var sf='Shockwave Flash', sfm='application/x-shockwave-flash';
-	if (navigator.plugins !== undefined && typeof navigator.plugins[sf] == 'object') {
+	if (navigator.plugins !== undefined && typeof navigator.plugins[sf] === 'object') {
 		var d=navigator.plugins[sf].description;
 		if (d && !(typeof navigator.mimeTypes !==undefined && navigator.mimeTypes[sfm] && !navigator.mimeTypes[sfm].enabledPlugin)) {
 			d=d.replace(/^.*\s+(\S+\s+\S+$)/, '$1');
@@ -132,7 +132,7 @@ function swfCreate(attributes, params) {
 			}
 		}
 		for (i in params) {
-			if (params[i] != Object.prototype[i]) par+=' <param name="'+i+'" value="'+params[i]+'" />';
+			if (params[i] !== Object.prototype[i]) par+=' <param name="'+i+'" value="'+params[i]+'" />';
 		}
 		var el=document.createElement('div');
 		el.outerHTML='<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'+att+'>'+par+'</object>';
@@ -142,7 +142,7 @@ function swfCreate(attributes, params) {
 		var o=document.createElement('object');
 		o.setAttribute('type', 'application/x-shockwave-flash');
 		for (var i in attributes) {
-			if (attributes[i] != Object.prototype[i]) {
+			if (attributes[i] !== Object.prototype[i]) {
 				var a=i.toLowerCase();
 				if (a=='styleclass') {
 					o.setAttribute('class', attributes[i]);
@@ -153,7 +153,7 @@ function swfCreate(attributes, params) {
 			}
 		}
 		for (i in params) {
-			if (attributes[i] != Object.prototype[i] && i.toLowerCase() != 'movie') {
+			if (attributes[i] !== Object.prototype[i] && i.toLowerCase() !== 'movie') {
 				var p=document.createElement('param');
 				p.setAttribute('name', i);
 				p.setAttribute('value', attributes[i]);

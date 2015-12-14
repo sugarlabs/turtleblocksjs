@@ -150,7 +150,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
 
                 function processButtonIcon(me, name, bitmap, extras) {
                     me.buttons[name].addChild(bitmap);
-                    if (me.cellSize != me.originalSize) {
+                    if (me.cellSize !== me.originalSize) {
                         bitmap.scaleX = me.cellSize / me.originalSize;
                         bitmap.scaleY = me.cellSize / me.originalSize;
                     }
@@ -174,7 +174,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
 
     this.showPalette = function (name) {
         for (var i in this.dict) {
-            if (this.dict[i] == this.dict[name]) {
+            if (this.dict[i] === this.dict[name]) {
                 this.dict[name].showMenu(true);
                 this.dict[name].showMenuItems(true);
             } else {
@@ -363,13 +363,13 @@ function PaletteModel(palette, palettes, name) {
     this.calculateHeight = function (blk, blkname) {
         var size = this.palette.protoList[blk].size;
         if (['if', 'while', 'until', 'ifthenelse', 'waitFor']
-            .indexOf(blkname) != -1) {
+            .indexOf(blkname) !== -1) {
             // Some blocks are not shown full-size on the palette.
             size = 1;
-        } else if (EXPANDBYONE.indexOf(blkname) != -1
+        } else if (EXPANDBYONE.indexOf(blkname) !== -1
                 || this.palette.protoList[blk].image) {
                     size += 1;
-        } else if (EXPANDBYTWO.indexOf(blkname) != -1
+        } else if (EXPANDBYTWO.indexOf(blkname) !== -1
                 || this.palette.protoList[blk].image) {
                     size += 2;
         }
@@ -401,7 +401,7 @@ function PaletteModel(palette, palettes, name) {
                     var arg = block.defaults[0];
                     break;
                 case 'namedbox':
-                    if (block.defaults[0] == undefined) {
+                    if (block.defaults[0] === undefined) {
                         modname = 'namedbox';
                         var arg = _('box');
                     } else {
@@ -410,7 +410,7 @@ function PaletteModel(palette, palettes, name) {
                     }
                     break;
                 case 'namedarg':
-                    if (block.defaults[0] == undefined) {
+                    if (block.defaults[0] === undefined) {
                         modname = 'namedarg';
                         var arg = '1';
                     } else {
@@ -419,7 +419,7 @@ function PaletteModel(palette, palettes, name) {
                     }
                     break;
                 case 'nameddo':
-                    if (block.defaults[0] == undefined) {
+                    if (block.defaults[0] === undefined) {
                         modname = 'nameddo';
                         var arg = _('action');
                     } else {
@@ -428,7 +428,7 @@ function PaletteModel(palette, palettes, name) {
                     }
                     break;
                 case 'nameddoArg':
-                    if (block.defaults[0] == undefined) {
+                    if (block.defaults[0] === undefined) {
                         modname = 'nameddoArg';
                         var arg = _('action');
                     } else {
@@ -437,7 +437,7 @@ function PaletteModel(palette, palettes, name) {
                     }
                     break;
                 case 'namedcalc':
-                    if (block.defaults[0] == undefined) {
+                    if (block.defaults[0] === undefined) {
                         modname = 'namedcalc';
                         var arg = _('action');
                     } else {
@@ -446,7 +446,7 @@ function PaletteModel(palette, palettes, name) {
                     }
                     break;
                 case 'namedcalcArg':
-                    if (block.defaults[0] == undefined) {
+                    if (block.defaults[0] === undefined) {
                         modname = 'namedcalcArg';
                         var arg = _('action');
                     } else {
@@ -457,7 +457,7 @@ function PaletteModel(palette, palettes, name) {
             }
 
             var protoBlock = paletteBlocks.protoBlockDict[blkname];
-            if (protoBlock == null) {
+            if (protoBlock === null) {
                 console.log('Could not find block ' + blkname);
                 continue;
             }
@@ -480,13 +480,13 @@ function PaletteModel(palette, palettes, name) {
                     label = 'arg ' +  arg;
                     break;
                 default:
-                    if (blkname != modname) {
+                    if (blkname !== modname) {
                         // Override label for do, storein, and box
                         label = block.defaults[0];
                     } else if (protoBlock.staticLabels.length > 0) {
                         label = protoBlock.staticLabels[0];
-                        if (label == '') {
-                            if (blkname == 'loadFile') {
+                        if (label === '') {
+                            if (blkname === 'loadFile') {
                                 label = _('open file')
                             } else {
                                 label = blkname;
@@ -496,7 +496,7 @@ function PaletteModel(palette, palettes, name) {
                         label = blkname;
                     }
             }
-            if (['do', 'nameddo', 'namedbox', 'namedcalc', 'doArg', 'calcArg', 'nameddoArg', 'namedcalcArg'].indexOf(protoBlock.name) != -1
+            if (['do', 'nameddo', 'namedbox', 'namedcalc', 'doArg', 'calcArg', 'nameddoArg', 'namedcalcArg'].indexOf(protoBlock.name) !== -1
              && label.length > 8) {
                 label = label.substr(0, 7) + '...';
             }
@@ -716,7 +716,7 @@ function Palette(palettes, name) {
     this.count = 0;
 
     this.makeMenu = function(createHeader) {
-        if (this.menuContainer == null) {
+        if (this.menuContainer === null) {
             this.menuContainer = new createjs.Container();
             this.menuContainer.snapToPixelEnabled = true;
         }
@@ -894,7 +894,7 @@ function Palette(palettes, name) {
     }
 
     this.updateMenu = function(hide) {
-        if (this.menuContainer == null) {
+        if (this.menuContainer === null) {
             this.makeMenu(false);
         } else {
             // Hide the menu while we update.
@@ -1019,7 +1019,7 @@ function Palette(palettes, name) {
     }
 
     this.hideMenu = function() {
-        if (this.menuContainer != null) {
+        if (this.menuContainer !== null) {
             this.menuContainer.visible = false;
             this.hideMenuItems(true);
         }
@@ -1037,7 +1037,7 @@ function Palette(palettes, name) {
         if (this.background !== null) {
             this.background.visible = false;
         }
-        if (this.FadedDownButton != null) {
+        if (this.FadedDownButton !== null) {
             this.upButton.visible = false;
             this.downButton.visible = false;
             this.FadedUpButton.visible = false;
@@ -1047,7 +1047,7 @@ function Palette(palettes, name) {
     }
 
     this.showMenuItems = function(init) {
-        if (this.scrollDiff == 0) {
+        if (this.scrollDiff === 0) {
             this.count = 0;
         }
         for (var i in this.protoContainers) {
@@ -1107,7 +1107,7 @@ function Palette(palettes, name) {
         }
         if (this.scrollDiff + diff > 0 && direction > 0) {
             var x = -this.scrollDiff;
-            if (x == 0) {
+            if (x === 0) {
                 this.downButton.visible = true;
                 this.upButton.visible = false;
                 this.FadedUpButton.visible = true;
@@ -1122,7 +1122,7 @@ function Palette(palettes, name) {
                 this.protoContainers[i].y += x;
                 this.protoContainers[i].visible = true;
 
-                if (this.scrollDiff == 0) {
+                if (this.scrollDiff === 0) {
                     this.downButton.visible = true;
                     this.upButton.visible = false;
                     this.FadedUpButton.visible = true;
@@ -1131,7 +1131,7 @@ function Palette(palettes, name) {
             }
         } else if (this.y + this.scrollDiff + diff < h && direction < 0) {
             var x = -this.y + h - this.scrollDiff;
-            if (x == 0) {
+            if (x === 0) {
                 this.upButton.visible = true;
                 this.downButton.visible = false;
                 this.FadedDownButton.visible = true;
@@ -1147,14 +1147,14 @@ function Palette(palettes, name) {
                 this.protoContainers[i].visible = true;
             }
 
-            if(-this.y + h - this.scrollDiff == 0) {
+            if(-this.y + h - this.scrollDiff === 0) {
                 this.upButton.visible   = true;
                 this.downButton.visible = false;
                 this.FadedDownButton.visible = true;
                 this.FadedUpButton.visible = false;
             }
 
-        } else if (this.count == 0) {
+        } else if (this.count === 0) {
             this.FadedUpButton.visible = true;
             this.FadedDownButton.visible = false;
             this.upButton.visible = false;
@@ -1190,8 +1190,8 @@ function Palette(palettes, name) {
     this.add = function(protoblock, top) {
         // Add a new palette entry to the end of the list (default) or
         // to the top.
-        if (this.protoList.indexOf(protoblock) == -1) {
-            if (top == undefined) {
+        if (this.protoList.indexOf(protoblock) === -1) {
+            if (top === undefined) {
                 this.protoList.push(protoblock);
             } else {
                 this.protoList.splice(0, 0, protoblock);
@@ -1282,7 +1282,7 @@ function makeBlockFromPalette(protoblk, blkname, palette, callback) {
             break;
         case 'namedbox':
             // Use the name of the box in the label
-            if (protoblk.defaults[0] == undefined) {
+            if (protoblk.defaults[0] === undefined) {
                 blkname = 'namedbox';
                 var arg = _('box');
             } else {
@@ -1293,7 +1293,7 @@ function makeBlockFromPalette(protoblk, blkname, palette, callback) {
             break;
         case 'namedarg':
             // Use the name of the arg in the label
-            if (protoblk.defaults[0] == undefined) {
+            if (protoblk.defaults[0] === undefined) {
                 blkname = 'namedarg';
                 var arg = '1';
             } else {
@@ -1304,7 +1304,7 @@ function makeBlockFromPalette(protoblk, blkname, palette, callback) {
             break;
         case 'nameddo':
             // Use the name of the action in the label
-            if (protoblk.defaults[0] == undefined) {
+            if (protoblk.defaults[0] === undefined) {
                 blkname = 'nameddo';
                 var arg = _('action');
             } else {
@@ -1315,7 +1315,7 @@ function makeBlockFromPalette(protoblk, blkname, palette, callback) {
             break;
         case 'nameddoArg':
             // Use the name of the action in the label
-            if (protoblk.defaults[0] == undefined) {
+            if (protoblk.defaults[0] === undefined) {
                 blkname = 'nameddoArg';
                 var arg = _('action');
             } else {
@@ -1326,7 +1326,7 @@ function makeBlockFromPalette(protoblk, blkname, palette, callback) {
             break;
         case 'namedcalc':
             // Use the name of the action in the label
-            if (protoblk.defaults[0] == undefined) {
+            if (protoblk.defaults[0] === undefined) {
                 blkname = 'namedcalc';
                 var arg = _('action');
             } else {
@@ -1337,7 +1337,7 @@ function makeBlockFromPalette(protoblk, blkname, palette, callback) {
             break;
         case 'namedcalcArg':
             // Use the name of the action in the label
-            if (protoblk.defaults[0] == undefined) {
+            if (protoblk.defaults[0] === undefined) {
                 blkname = 'namedcalcArg';
                 var arg = _('action');
             } else {
@@ -1434,7 +1434,7 @@ function makeBlockFromProtoblock(palette, protoblk, moved, blkname, event, saveX
         if (moved) {
             moved = false;
             palette.draggingProtoBlock = false;
-            if (palette.name == 'myblocks') {
+            if (palette.name === 'myblocks') {
                 // If we are on the myblocks palette, it is a macro.
                 var macroName = blkname.replace('macro_', '');
 
@@ -1443,22 +1443,22 @@ function makeBlockFromProtoblock(palette, protoblk, moved, blkname, event, saveX
                 for (var b = 0; b < palette.palettes.macroDict[macroName].length; b++) {
                     var valueEntry = palette.palettes.macroDict[macroName][b][1];
                     var newValue = [];
-                    if (typeof(valueEntry) == 'string') {
+                    if (typeof(valueEntry) === 'string') {
                         newValue = valueEntry;
-                    } else if (typeof(valueEntry[1]) == 'string') {
-                        if (valueEntry[0] == 'number') {
+                    } else if (typeof(valueEntry[1]) === 'string') {
+                        if (valueEntry[0] === 'number') {
                             newValue = [valueEntry[0], Number(valueEntry[1])];
                         } else {
                             newValue = [valueEntry[0], valueEntry[1]];
                         }
-                    } else if (typeof(valueEntry[1]) == 'number') {
-                        if (valueEntry[0] == 'number') {
+                    } else if (typeof(valueEntry[1]) === 'number') {
+                        if (valueEntry[0] === 'number') {
                             newValue = [valueEntry[0], valueEntry[1]];
                         } else {
                             newValue = [valueEntry[0], valueEntry[1].toString()];
                         }
                     } else {
-                        if (valueEntry[0] == 'number') {
+                        if (valueEntry[0] === 'number') {
                             newValue = [valueEntry[0], Number(valueEntry[1]['value'])];
                         } else {
                             newValue = [valueEntry[0], {'value': valueEntry[1]['value']}];
@@ -1540,7 +1540,7 @@ function loadPaletteMenuHandler(palette) {
         }, 500);
 
         for (p in palette.palettes.dict) {
-            if (palette.name != p) {
+            if (palette.name !== p) {
                 if (palette.palettes.dict[p].visible) {
                     palette.palettes.dict[p].hideMenuItems(false);
                 }
@@ -1569,7 +1569,7 @@ function loadPaletteMenuHandler(palette) {
                 // Only delete plugin palettes.
                 if (BUILTINPALETTES.indexOf(palette.name) === -1) {
                     promptPaletteDelete(palette);
-                } else if (palette.name == 'myblocks') {
+                } else if (palette.name === 'myblocks') {
                     promptMacrosDelete(palette);
                 }
             }

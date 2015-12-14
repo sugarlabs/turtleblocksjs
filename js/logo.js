@@ -100,12 +100,12 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // Take one step for each turtle in excuting Logo commands.
         for (turtle in this.stepQueue) {
             if (this.stepQueue[turtle].length > 0) {
-                if (turtle in this.unhighlightStepQueue && this.unhighlightStepQueue[turtle] != null) {
+                if (turtle in this.unhighlightStepQueue && this.unhighlightStepQueue[turtle] !== null) {
                     this.blocks.unhighlight(this.unhighlightStepQueue[turtle]);
                     this.unhighlightStepQueue[turtle] = null;
                 }
                 var blk = this.stepQueue[turtle].pop();
-                if (blk != null) {
+                if (blk !== null) {
                     this.runFromBlockNow(this, turtle, blk, 0, null);
                 }
             }
@@ -125,7 +125,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
         this.sounds = [];
 
-        if (this.cameraID != null) {
+        if (this.cameraID !== null) {
             doStopVideoCam(this.cameraID, this.setCameraID);
         }
 
@@ -227,7 +227,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     value = this.lastKeyCode;
                     break;
                 case 'loudness':
-                    if (logo.mic == null) {
+                    if (logo.mic === null) {
                         logo.errorMsg(NOMICERRORMSG);
                         value = 0;
                     } else {
@@ -242,7 +242,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     }
                     break;
             }
-            if (typeof(value) == 'string') {
+            if (typeof(value) === 'string') {
                 if (value.length > 6) {
                     value = value.substr(0, 5) + '...';
                 }
@@ -274,7 +274,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         this.time = d.getTime();
 
         // Ensure we have at least one turtle.
-        if (this.turtles.turtleList.length == 0) {
+        if (this.turtles.turtleList.length === 0) {
             this.turtles.add(null);
         }
 
@@ -298,8 +298,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // First we need to reconcile the values in all the value
         // blocks with their associated textareas.
         for (var blk = 0; blk < this.blocks.blockList.length; blk++) {
-            if (this.blocks.blockList[blk].label != null) {
-                if (this.blocks.blockList[blk].value != this.blocks.blockList[blk].label.value) {
+            if (this.blocks.blockList[blk].label !== null) {
+                if (this.blocks.blockList[blk].value !== this.blocks.blockList[blk].label.value) {
                     this.blocks.blockList[blk].value = this.blocks.blockList[blk].label.value;
                 }
             }
@@ -318,19 +318,19 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         this.blocks.findStacks();
         this.actions = {};
         for (var blk = 0; blk < this.blocks.stackList.length; blk++) {
-            if (this.blocks.blockList[this.blocks.stackList[blk]].name == 'start') {
+            if (this.blocks.blockList[this.blocks.stackList[blk]].name === 'start') {
                 // Don't start on a start block in the trash.
                 if (!this.blocks.blockList[this.blocks.stackList[blk]].trash) {
                     // Don't start on a start block with no connections.
-                    if (this.blocks.blockList[this.blocks.stackList[blk]].connections[1] != null) {
+                    if (this.blocks.blockList[this.blocks.stackList[blk]].connections[1] !== null) {
                         startBlocks.push(this.blocks.stackList[blk]);
                     }
                 }
-            } else if (this.blocks.blockList[this.blocks.stackList[blk]].name == 'action') {
+            } else if (this.blocks.blockList[this.blocks.stackList[blk]].name === 'action') {
                 // Does the action stack have a name?
                 var c = this.blocks.blockList[this.blocks.stackList[blk]].connections[1];
                 var b = this.blocks.blockList[this.blocks.stackList[blk]].connections[2];
-                if (c != null && b != null) {
+                if (c !== null && b !== null) {
                     // Don't use an action block in the trash.
                     if (!this.blocks.blockList[this.blocks.stackList[blk]].trash) {
                         this.actions[this.blocks.blockList[c].value] = b;
@@ -346,7 +346,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         this.unhightlightQueue = {};
         this.parameterQueue = {};
 
-        if (this.turtleDelay == 0) {
+        if (this.turtleDelay === 0) {
             // Don't update parameters when running full speed.
             this.clearParameterBlocks();
         }
@@ -360,12 +360,12 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
         // (2) Execute the stack.
         // A bit complicated because we have lots of corner cases:
-        if (startHere != null) {
+        if (startHere) {
             console.log('startHere is ' + this.blocks.blockList[startHere].name);
             // If a block to start from was passed, find its
             // associated turtle, i.e., which turtle should we use?
             var turtle = 0;
-            if (this.blocks.blockList[startHere].name == 'start') {
+            if (this.blocks.blockList[startHere].name === 'start') {
                 // Find the turtle associated with this start block.
                 var turtle = this.blocks.blockList[startHere].value;
                 console.log('starting on start with turtle ' + turtle);
@@ -406,7 +406,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
             }
 
-            if (turtle == null) {
+            if (turtle === null) {
                 console.log('could not find a turtle');
                 turtle = this.turtles.turtleList.length;
                 this.turtles.add(null);
@@ -429,7 +429,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     continue;
                 } else {
                     if (!this.blocks.blockList[this.blocks.stackList[blk]].trash) {
-                        if (this.blocks.blockList[this.blocks.stackList[blk]].name == 'start' && this.blocks.blockList[this.blocks.stackList[blk]].connections[1] == null) {
+                        if (this.blocks.blockList[this.blocks.stackList[blk]].name === 'start' && this.blocks.blockList[this.blocks.stackList[blk]].connections[1] === null) {
                             continue;
                         }
                         // This is a degenerative case.
@@ -443,7 +443,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.runFromBlock = function(logo, turtle, blk, isflow, receivedArg) {
-        if (blk == null) {
+        if (blk === null) {
             return;
         }
 
@@ -451,7 +451,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         logo.waitTimes[turtle] = 0;
 
         if (!logo.stopTurtle) {
-            if (logo.turtleDelay == TURTLESTEP) {
+            if (logo.turtleDelay === TURTLESTEP) {
                 // Step mode
                 if (!(turtle in logo.stepQueue)) {
                     logo.stepQueue[turtle] = [];
@@ -517,7 +517,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.runFromBlockNow = function(logo, turtle, blk, isflow, receivedArg, queueStart) {
-        if (queueStart == undefined) {
+        if (queueStart === undefined) {
             queueStart = 0;
         }
         // Run a stack of blocks, beginning with blk.
@@ -536,7 +536,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             // All flow blocks have a nextFlow, but it can be null
             // (i.e., end of a flow).
             var nextFlow = last(logo.blocks.blockList[blk].connections);
-            if (nextFlow != null) {
+            if (nextFlow !== null) {
                 var queueBlock = new Queue(nextFlow, 1, blk, receivedArg);
                 logo.turtles.turtleList[turtle].queue.push(queueBlock);
             }
@@ -547,13 +547,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         var childFlowCount = 0;
         var actionArgs = [];
 
-        if (logo.turtleDelay != 0) {
+        if (logo.turtleDelay !== 0) {
             logo.blocks.highlight(blk, false);
         }
         switch (logo.blocks.blockList[blk].name) {
             case 'dispatch':
                 // Dispatch an event.
-                if (args.length == 1) {
+                if (args.length === 1) {
                     // If the event is not in the event list, add it.
                     if (!(args[0] in logo.eventList)) {
                         var event = new Event(args[0]);
@@ -563,7 +563,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'listen':
-                if (args.length == 2) {
+                if (args.length === 2) {
                     if (!(args[1] in logo.actions)) {
                         logo.errorMsg(NOACTIONERRORMSG, blk, args[1]);
                         logo.stopTurtle = true;
@@ -594,7 +594,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'start':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     childFlow = args[0];
                     childFlowCount = 1;
                 }
@@ -604,7 +604,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (name in logo.actions) {
                     childFlow = logo.actions[name];
                     childFlowCount = 1;
-                    if (logo.doBlocks[turtle].indexOf(blk) == -1) {
+                    if (logo.doBlocks[turtle].indexOf(blk) === -1) {
                         logo.doBlocks[turtle].push(blk);
                     }
 
@@ -616,11 +616,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             // if we clicked on an action block, treat it like a do block.
             case 'action':
             case 'do':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     if (args[0] in logo.actions) {
                         childFlow = logo.actions[args[0]];
                         childFlowCount = 1;
-                        if (logo.doBlocks[turtle].indexOf(blk) == -1) {
+                        if (logo.doBlocks[turtle].indexOf(blk) === -1) {
                             logo.doBlocks[turtle].push(blk);
                         }
                     } else {
@@ -643,7 +643,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (name in logo.actions) {
                     childFlow = logo.actions[name]
                     childFlowCount = 1;
-                    if (logo.doBlocks[turtle].indexOf(blk) == -1) {
+                    if (logo.doBlocks[turtle].indexOf(blk) === -1) {
                         logo.doBlocks[turtle].push(blk);
                     }
                 } else{
@@ -666,7 +666,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         actionName = args[0];
                         childFlow = logo.actions[args[0]];
                         childFlowCount = 1;
-                        if (logo.doBlocks[turtle].indexOf(blk) == -1) {
+                        if (logo.doBlocks[turtle].indexOf(blk) === -1) {
                             logo.doBlocks[turtle].push(blk);
                         }
                     } else {
@@ -676,7 +676,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'forever':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     childFlow = args[0];
                     childFlowCount = -1;
                 }
@@ -685,33 +685,33 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.doBreak(turtle);
                 // Since we pop the queue, we need to unhighlight our parent.
                 var parentBlk = logo.blocks.blockList[blk].connections[0];
-                if (parentBlk != null) {
+                if (parentBlk !== null) {
                     logo.unhightlightQueue[turtle].push(parentBlk);
                 }
                 break;
             case 'wait':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     logo.doWait(turtle, args[0]);
                 }
                 break;
             case 'print':
-                if (args.length == 1) {
-                    if (args[0] != null) {
+                if (args.length === 1) {
+                    if (args[0] !== null) {
                         console.log(args[0].toString());
                         logo.textMsg(args[0].toString());
                     }
                 }
                 break;
             case 'speak':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     if (logo.meSpeak) {
                         logo.meSpeak.speak(args[0]);
                     }
                 }
                 break;
             case 'repeat':
-                if (args.length == 2) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 2) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -721,14 +721,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'clamp':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     childFlow = args[0];
                     childFlowCount = 1;
                 }
                 break;
             case 'until':
                 // Similar to 'while'
-                if (args.length == 2) {
+                if (args.length === 2) {
                     // Queue the child flow.
                     childFlow = args[1];
                     childFlowCount = 1;
@@ -738,7 +738,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         // to not accumulate multiple copies.
                         var queueLength = logo.turtles.turtleList[turtle].queue.length;
                         if (queueLength > 0) {
-                            if (logo.turtles.turtleList[turtle].queue[queueLength - 1].parentBlk == blk) {
+                            if (logo.turtles.turtleList[turtle].queue[queueLength - 1].parentBlk === blk) {
                                 logo.turtles.turtleList[turtle].queue.pop();
                             }
                         }
@@ -754,7 +754,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         // until block is executed multiple times.
                         var queueLength = logo.turtles.turtleList[turtle].queue.length;
                         for (var i = queueLength - 1; i > 0; i--) {
-                            if (logo.turtles.turtleList[turtle].queue[i].parentBlk == blk) {
+                            if (logo.turtles.turtleList[turtle].queue[i].parentBlk === blk) {
                                 logo.turtles.turtleList[turtle].queue.pop();
                             }
                         }
@@ -762,7 +762,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'waitFor':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     if (!args[0]) {
                         // Requeue.
                         var parentBlk = logo.blocks.blockList[blk].connections[0];
@@ -777,7 +777,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         // while block is executed multiple times.
                         var queueLength = logo.turtles.turtleList[turtle].queue.length;
                         for (var i = queueLength - 1; i > 0; i--) {
-                            if (logo.turtles.turtleList[turtle].queue[i].parentBlk == blk) {
+                            if (logo.turtles.turtleList[turtle].queue[i].parentBlk === blk) {
                                 logo.turtles.turtleList[turtle].queue.pop();
                             }
                         }
@@ -785,7 +785,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'if':
-                if (args.length == 2) {
+                if (args.length === 2) {
                     if (args[0]) {
                         childFlow = args[1];
                         childFlowCount = 1;
@@ -793,7 +793,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'ifthenelse':
-                if (args.length == 3) {
+                if (args.length === 3) {
                     if (args[0]) {
                         childFlow = args[1];
                         childFlowCount = 1;
@@ -807,14 +807,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 // While is tricky because we need to recalculate
                 // args[0] each time, so we requeue the While block
                 // itself.
-                if (args.length == 2) {
+                if (args.length === 2) {
                     if (args[0]) {
                         // We will add the outflow of the while block
                         // each time through, so we pop it off so as
                         // to not accumulate multiple copies.
                         var queueLength = logo.turtles.turtleList[turtle].queue.length;
                         if (queueLength > 0) {
-                            if (logo.turtles.turtleList[turtle].queue[queueLength - 1].parentBlk == blk) {
+                            if (logo.turtles.turtleList[turtle].queue[queueLength - 1].parentBlk === blk) {
                                 logo.turtles.turtleList[turtle].queue.pop();
                             }
                         }
@@ -834,8 +834,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         // block is executed multiple times.
                         var queueLength = logo.turtles.turtleList[turtle].queue.length;
                         for (var i = queueLength - 1; i > 0; i--) {
-                            if (logo.turtles.turtleList[turtle].queue[i].parentBlk == blk) {
-                            // if (logo.turtles.turtleList[turtle].queue[i].blk == blk) {
+                            if (logo.turtles.turtleList[turtle].queue[i].parentBlk === blk) {
+                            // if (logo.turtles.turtleList[turtle].queue[i].blk === blk) {
                                 logo.turtles.turtleList[turtle].queue.pop();
                             }
                         }
@@ -843,7 +843,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'storein':
-                if (args.length == 2) {
+                if (args.length === 2) {
                     logo.boxes[args[0]] = args[1];
                 }
                 break;
@@ -851,7 +851,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 var i = 1;
             case 'increment':
                 // If the 2nd arg is not set, default to 1.
-                if (args.length == 2) {
+                if (args.length === 2) {
                     var i = args[1];
                 }
 
@@ -865,8 +865,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.turtles.turtleList[turtle].doClear();
                 break;
             case 'setxy':
-                if (args.length == 2) {
-                    if (typeof(args[0]) == 'string' || typeof(args[1]) == 'string') {
+                if (args.length === 2) {
+                    if (typeof(args[0]) === 'string' || typeof(args[1]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -875,8 +875,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'arc':
-                if (args.length == 2) {
-                    if (typeof(args[0]) == 'string' || typeof(args[1]) == 'string') {
+                if (args.length === 2) {
+                    if (typeof(args[0]) === 'string' || typeof(args[1]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -885,7 +885,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'return':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     logo.returns.push(args[0]);
                 }
                 break;
@@ -909,14 +909,14 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         }
                     }
                 }
-                if (args.length == 1) {
+                if (args.length === 1) {
                     var jsonRet = {};
                     jsonRet['result'] = args[0];
                     var json= JSON.stringify(jsonRet);
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.open('POST',outurl, true);
                     xmlHttp.onreadystatechange = function() {//Call a function when the state changes.
-                        if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                        if(xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                             alert(xmlHttp.responseText);
                         }
                     }
@@ -924,8 +924,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'forward':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -934,8 +934,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'back':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -944,8 +944,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'right':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -954,8 +954,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'left':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -964,8 +964,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'setheading':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -974,25 +974,25 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'show':
-                if (args.length == 2) {
-                    if (typeof(args[1]) == 'string') {
+                if (args.length === 2) {
+                    if (typeof(args[1]) === 'string') {
                         var len = args[1].length;
-                        if (len == 14 && args[1].substr(0, 14) == CAMERAVALUE) {
+                        if (len === 14 && args[1].substr(0, 14) === CAMERAVALUE) {
                             doUseCamera(args, logo.turtles, turtle, false, logo.cameraID, logo.setCameraID, logo.errorMsg);
-                        } else if (len == 13 && args[1].substr(0, 13) == VIDEOVALUE) {
+                        } else if (len === 13 && args[1].substr(0, 13) === VIDEOVALUE) {
                             doUseCamera(args, logo.turtles, turtle, true, logo.cameraID, logo.setCameraID, logo.errorMsg);
-                        } else if (len > 10 && args[1].substr(0, 10) == 'data:image') {
+                        } else if (len > 10 && args[1].substr(0, 10) === 'data:image') {
                             logo.turtles.turtleList[turtle].doShowImage(args[0], args[1]);
-                        } else if (len > 8 && args[1].substr(0, 8) == 'https://') {
+                        } else if (len > 8 && args[1].substr(0, 8) === 'https://') {
                             logo.turtles.turtleList[turtle].doShowURL(args[0], args[1]);
-                        } else if (len > 7 && args[1].substr(0, 7) == 'http://') {
+                        } else if (len > 7 && args[1].substr(0, 7) === 'http://') {
                             logo.turtles.turtleList[turtle].doShowURL(args[0], args[1]);
-                        } else if (len > 7 && args[1].substr(0, 7) == 'file://') {
+                        } else if (len > 7 && args[1].substr(0, 7) === 'file://') {
                             logo.turtles.turtleList[turtle].doShowURL(args[0], args[1]);
                         } else {
                             logo.turtles.turtleList[turtle].doShowText(args[0], args[1]);
                         }
-                    } else if (typeof(args[1]) == 'object' && logo.blocks.blockList[logo.blocks.blockList[blk].connections[2]].name == 'loadFile') {
+                    } else if (typeof(args[1]) === 'object' && logo.blocks.blockList[logo.blocks.blockList[blk].connections[2]].name === 'loadFile') {
                         if (args[1]) {
                             logo.turtles.turtleList[turtle].doShowText(args[0], args[1][1]);
                         } else {
@@ -1004,8 +1004,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'turtleshell':
-                if (args.length == 2) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 2) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -1015,9 +1015,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'setturtlename':
                 var foundTargetTurtle = false;
-                if (args.length == 2) {
+                if (args.length === 2) {
                     for (var i = 0; i < logo.turtles.turtleList.length; i++) {
-                        if (logo.turtles.turtleList[i].name == args[0]) {
+                        if (logo.turtles.turtleList[i].name === args[0]) {
                             logo.turtles.turtleList[i].rename(args[1]);
                             foundTargetTurtle = true;
                             break;
@@ -1030,7 +1030,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'startTurtle':
                 var targetTurtle = logo.getTargetTurtle(args);
-                if (targetTurtle == null) {
+                if (targetTurtle === null) {
                     logo.errorMsg('Cannot find turtle: ' + args[0], blk)
                 } else {
                     if (logo.turtles.turtleList[targetTurtle].running) {
@@ -1045,7 +1045,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     // Find the start block associated with this turtle.
                     var foundStartBlock = false;
                     for (var i = 0; i < logo.blocks.blockList.length; i++) {
-                        if (logo.blocks.blockList[i] == logo.turtles.turtleList[targetTurtle].startBlock) {
+                        if (logo.blocks.blockList[i] === logo.turtles.turtleList[targetTurtle].startBlock) {
                             foundStartBlock = true;
                             break;
                         }
@@ -1060,7 +1060,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             case 'stopTurtle':
                 var targetTurtle = logo.getTargetTurtle(args);
-                if (targetTurtle == null) {
+                if (targetTurtle === null) {
                     logo.errorMsg('Cannot find turtle: ' + args[0], blk)
                 } else {
                     logo.turtles.turtleList[targetTurtle].queue = [];
@@ -1071,8 +1071,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'setcolor':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -1081,8 +1081,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'setfont' :
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.turtles.turtleList[turtle].doSetFont(args[0]);
                     } else {
                         logo.errorMsg(NOSTRINGERRORMSG, blk);
@@ -1091,8 +1091,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'sethue':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -1101,8 +1101,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'setshade':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -1111,8 +1111,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'setgrey':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -1121,8 +1121,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'setpensize':
-                if (args.length == 1) {
-                    if (typeof(args[0]) == 'string') {
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
                         logo.errorMsg(NANERRORMSG, blk);
                         logo.stopTurtle = true;
                     } else {
@@ -1185,7 +1185,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.turtles.turtleList[turtle].doEndHollowLine();
                 break;
             case 'fillscreen':
-                if (args.length == 3) {
+                if (args.length === 3) {
                     var hue = logo.turtles.turtleList[turtle].color;
                     var value = logo.turtles.turtleList[turtle].value;
                     var chroma = logo.turtles.turtleList[turtle].chroma;
@@ -1253,7 +1253,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.sounds = [];
                 break;
             case 'stopvideocam':
-                if (cameraID != null) {
+                if (cameraID !== null) {
                     doStopVideoCam(logo.cameraID, logo.setCameraID);
                 }
                 break;
@@ -1266,7 +1266,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.setTurtleDelay(0);
                 break;
             case 'savesvg':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     if (logo.svgBackground) {
                         logo.svgOutput = '<rect x="0" y="0" height="' + this.canvas.height + '" width="' + this.canvas.width + '" fill="' + body.style.background + '"/>\n' + logo.svgOutput;
                     }
@@ -1274,7 +1274,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'tone':
-                if (typeof(logo.turtleOscs[turtle]) == 'undefined') {
+                if (typeof(logo.turtleOscs[turtle]) === 'undefined') {
                     logo.turtleOscs[turtle] = new p5.TriOsc();
                 }
 
@@ -1301,7 +1301,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.turtleHeaps[turtle] = [];
                 break;
             case 'push':
-                if (args.length == 1) {
+                if (args.length === 1) {
                     if (!(turtle in logo.turtleHeaps)) {
                         logo.turtleHeaps[turtle] = [];
                     }
@@ -1329,8 +1329,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var oldHeap = [];
                 }
                 var c = block.connections[1];
-                if (c != null && blocks.blockList[c].name == 'loadFile') {
-                    if (args.length != 1) {
+                if (c !== null && blocks.blockList[c].name === 'loadFile') {
+                    if (args.length !== 1) {
                         logo.errorMsg(_('You need to select a file.'));
                     } else {
                         try {
@@ -1355,7 +1355,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open('GET', url, false );
                 xmlHttp.send();
-                if (xmlHttp.readyState == 4  && xmlHttp.status == 200){
+                if (xmlHttp.readyState === 4  && xmlHttp.status === 200){
                     console.log(xmlHttp.responseText);
                     try {
                         var data = JSON.parse(xmlHttp.responseText);
@@ -1364,7 +1364,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         logo.errorMsg(_('Error parsing JSON data:') + e);
                     }
                 }
-                else if (xmlHttp.readyState == 4 && xmlHttp.status != 200) {
+                else if (xmlHttp.readyState === 4 && xmlHttp.status !== 200) {
                     console.log('fetched the wrong page or network error...');
                     logo.errorMsg(_('404: Page not found'));
                     break;
@@ -1394,7 +1394,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
                 break;
             case 'setHeapEntry':
-                if (args.length == 2) {
+                if (args.length === 2) {
                     if (!(turtle in logo.turtleHeaps)) {
                         logo.turtleHeaps[turtle] = [];
                     }
@@ -1420,7 +1420,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                         console.log('block: ' + blk + ' turtle: ' + turtle);
                         console.log('block name: ' + logo.blocks.blockList[blk].name);
                         console.log('block value: ' + logo.blocks.blockList[blk].value);
-                        if (logo.blocks.blockList[blk].value == null) {
+                        if (logo.blocks.blockList[blk].value === null) {
                             logo.textMsg('null block value');
                         } else {
                             logo.textMsg(logo.blocks.blockList[blk].value.toString());
@@ -1445,13 +1445,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 var parentLoop = logo.endOfFlowLoops[turtle][blk][i];
                 var parentAction = logo.endOfFlowActions[turtle][blk][i];
                 var signal = logo.endOfFlowSignals[turtle][blk][i];
-                var loopTest = parentLoop != null && logo.parentFlowQueue[turtle].indexOf(parentLoop) != -1 && logo.loopBlock(logo.blocks.blockList[parentLoop].name);
-                var actionTest = (parentAction != null && (logo.namedActionBlock(logo.blocks.blockList[parentAction].name) || logo.actionBlock(logo.blocks.blockList[parentAction].name)) && logo.doBlocks[turtle].indexOf(parentAction) == -1);
+                var loopTest = parentLoop !== null && logo.parentFlowQueue[turtle].indexOf(parentLoop) !== -1 && logo.loopBlock(logo.blocks.blockList[parentLoop].name);
+                var actionTest = (parentAction !== null && (logo.namedActionBlock(logo.blocks.blockList[parentAction].name) || logo.actionBlock(logo.blocks.blockList[parentAction].name)) && logo.doBlocks[turtle].indexOf(parentAction) === -1);
                 var stillInLoop = false;
                 if (loopTest) {
                     for (var j = 0; j < logo.turtles.turtleList[turtle].queue.length; j++) {
                         // console.log(logo.turtles.turtleList[turtle].queue[j].parentBlk);
-                        if (parentLoop == logo.turtles.turtleList[turtle].queue[j].parentBlk) {
+                        if (parentLoop === logo.turtles.turtleList[turtle].queue[j].parentBlk) {
                             stillInLoop = true;
                             break;
                         }
@@ -1461,7 +1461,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     // console.log(logo.endOfFlowSignals[turtle][blk][i] + ' still in child flow of loop block');
                 } else if (actionTest) {
                     // console.log(logo.endOfFlowSignals[turtle][blk][i] + ' still in child flow of action block');
-                } else if (signal != null) {
+                } else if (signal !== null) {
                     console.log('dispatching ' + logo.endOfFlowSignals[turtle][blk][i]);
                     logo.stage.dispatchEvent(logo.endOfFlowSignals[turtle][blk][i]);
                     // Mark issued signals as null
@@ -1472,7 +1472,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
 
             for (var i = 0; i < parentActions.length; i++ ) {
-                if (logo.doBlocks[turtle].indexOf(parentAction) != -1) {
+                if (logo.doBlocks[turtle].indexOf(parentAction) !== -1) {
                     // console.log('setting doBlocks[' + logo.doBlocks[turtle][logo.doBlocks[turtle].indexOf(parentAction)] + '] to -1');
                     logo.doBlocks[turtle][logo.doBlocks[turtle].indexOf(parentAction)] = -1;
                 }
@@ -1485,7 +1485,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             var cleanLoops = [];
             var cleanActions = [];
             for (var i = 0; i < logo.endOfFlowSignals[turtle][blk].length; i++) { 
-                if (logo.endOfFlowSignals[turtle][blk][i] != null) {
+                if (logo.endOfFlowSignals[turtle][blk][i] !== null) {
                     cleanSignals.push(logo.endOfFlowSignals[turtle][blk][i]);
                     cleanLoops.push(logo.endOfFlowLoops[turtle][blk][i]);
                     cleanActions.push(logo.endOfFlowActions[turtle][blk][i]);
@@ -1497,7 +1497,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
             var cleanDos = [];
             for (var i = 0; i < logo.doBlocks[turtle].length; i++) {
-                if (logo.doBlocks[turtle][i] != -1) {
+                if (logo.doBlocks[turtle][i] !== -1) {
                     cleanDos.push(logo.doBlocks[turtle][i]);
                 }
             }
@@ -1507,8 +1507,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
 
         // If there is a child flow, queue it.
-        if (childFlow != null) {
-            if (logo.blocks.blockList[blk].name == 'doArg' || logo.blocks.blockList[blk].name == 'nameddoArg') {
+        if (childFlow !== null) {
+            if (logo.blocks.blockList[blk].name === 'doArg' || logo.blocks.blockList[blk].name === 'nameddoArg') {
                 var queueBlock = new Queue(childFlow, childFlowCount, blk, actionArgs);
             } else {
                 var queueBlock = new Queue(childFlow, childFlowCount, blk, receivedArg);
@@ -1527,8 +1527,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             nextBlock = last(logo.turtles.turtleList[turtle].queue).blk;
             parentBlk = last(logo.turtles.turtleList[turtle].queue).parentBlk;
             passArg = last(logo.turtles.turtleList[turtle].queue).args;
-            // Since the forever block starts at -1, it will never == 1.
-            if (last(logo.turtles.turtleList[turtle].queue).count == 1) {
+            // Since the forever block starts at -1, it will never === 1.
+            if (last(logo.turtles.turtleList[turtle].queue).count === 1) {
                 // Finished child so pop it off the queue.
                 logo.turtles.turtleList[turtle].queue.pop();
             } else {
@@ -1537,11 +1537,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
         }
 
-        if (nextBlock != null) {
-            if (parentBlk != blk) {
+        if (nextBlock !== null) {
+            if (parentBlk !== blk) {
                 // The wait block waits waitTimes longer than other
                 // blocks before it is unhighlighted.
-                if (logo.turtleDelay == TURTLESTEP) {
+                if (logo.turtleDelay === TURTLESTEP) {
                     logo.unhighlightStepQueue[turtle] = blk;
                 } else if (logo.turtleDelay > 0) {
                     setTimeout(function() {
@@ -1550,21 +1550,21 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 }
             }
 
-            if (last(logo.blocks.blockList[blk].connections) == null) {
+            if (last(logo.blocks.blockList[blk].connections) === null) {
                 // If we are at the end of the child flow, queue the
                 // unhighlighting of the parent block to the flow.
-                if (logo.parentFlowQueue[turtle].length > 0 && logo.turtles.turtleList[turtle].queue.length > 0 && last(logo.turtles.turtleList[turtle].queue).parentBlk != last(logo.parentFlowQueue[turtle])) {
+                if (logo.parentFlowQueue[turtle].length > 0 && logo.turtles.turtleList[turtle].queue.length > 0 && last(logo.turtles.turtleList[turtle].queue).parentBlk !== last(logo.parentFlowQueue[turtle])) {
                     logo.unhightlightQueue[turtle].push(logo.parentFlowQueue[turtle].pop());
                 } else if (logo.unhightlightQueue[turtle].length > 0) {
                     // The child flow is finally complete, so unhighlight.
-                    if (logo.turtleDelay != 0) {
+                    if (logo.turtleDelay !== 0) {
                         setTimeout(function() {
                             logo.blocks.unhighlight(logo.unhightlightQueue[turtle].pop());
                         }, logo.turtleDelay);
                     }
                 }
             }
-            if (logo.turtleDelay != 0) {
+            if (logo.turtleDelay !== 0) {
                 for (var pblk in logo.parameterQueue[turtle]) {
                     logo.updateParameterBlock(logo, turtle, logo.parameterQueue[turtle][pblk]);
                 }
@@ -1579,7 +1579,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             // Make sure any unissued signals are dispatched.
             for (var b in logo.endOfFlowSignals[turtle]) {
                 for (var i = 0; i < logo.endOfFlowSignals[turtle][b].length; i++) {
-                    if (logo.endOfFlowSignals[turtle][b][i] != null) {
+                    if (logo.endOfFlowSignals[turtle][b][i] !== null) {
                         logo.stage.dispatchEvent(logo.endOfFlowSignals[turtle][b][i]);
                         console.log('dispatching ' + logo.endOfFlowSignals[turtle][b][i]);
                     }
@@ -1594,7 +1594,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
 
             // Nothing else to do... so cleaning up.
-            if (logo.turtles.turtleList[turtle].queue.length == 0 || blk != last(logo.turtles.turtleList[turtle].queue).parentBlk) {
+            if (logo.turtles.turtleList[turtle].queue.length === 0 || blk !== last(logo.turtles.turtleList[turtle].queue).parentBlk) {
                 setTimeout(function() {
                     logo.blocks.unhighlight(blk);
                 }, logo.turtleDelay);
@@ -1625,7 +1625,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.updateEndBlks = function(childFlow, turtle, listenerName) {
         var endBlk = this.getBlockAtEndOfFlow(childFlow, null, null);
-        if (endBlk[0] != null) {
+        if (endBlk[0] !== null) {
             if (endBlk[0] in this.endOfFlowSignals[turtle]) {
                 this.endOfFlowSignals[turtle][endBlk[0]].push(listenerName);
                 this.endOfFlowLoops[turtle][endBlk[0]].push(endBlk[1]);
@@ -1639,16 +1639,16 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.getBlockAtStartOfArg = function(blk) {
-        if (blk == null) {
+        if (blk === null) {
             return null;
         }
         var c0 = this.blocks.blockList[blk].connections[0];
-        if (c0 == null) {
+        if (c0 === null) {
             console.log('No flow block found at start of arg.');
             return blk;
         }
         var blkType = this.blocks.blockList[c0].docks[0][2];
-        if (['unavailable', 'out'].indexOf(blkType) != -1) {
+        if (['unavailable', 'out'].indexOf(blkType) !== -1) {
             return c0;
         }
         return this.getBlockAtStartOfArg(c0);
@@ -1665,11 +1665,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         var newLoopClamp = null;
         var newdoClamp = null;
         // console.log(blk + ': ' + this.blocks.blockList[blk].name);
-        while (blk != null) {
-            if (blk != null && this.loopBlock(this.blocks.blockList[blk].name)) {
+        while (blk !== null) {
+            if (blk !== null && this.loopBlock(this.blocks.blockList[blk].name)) {
                 // console.log(blk + ' is a loopClamp');
                 // console.log(last(this.blocks.blockList[blk].connections));
-                if (last(this.blocks.blockList[blk].connections) == null) {
+                if (last(this.blocks.blockList[blk].connections) === null) {
                     // console.log(blk + ' ' + this.blocks.blockList[blk].name + ' ' + last(this.blocks.blockList[blk].connections));
                     newLoopClamp = blk;
                 }
@@ -1680,7 +1680,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
 
         // We want the parent loop.
-        if (loopClamp == null) {
+        if (loopClamp === null) {
             loopClamp = newLoopClamp;
         }
 
@@ -1693,9 +1693,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             return this.getBlockAtEndOfFlow(this.blocks.blockList[lastBlk].connections[i], loopClamp, doClamp);
         } else if (this.actionBlock(this.blocks.blockList[lastBlk].name)) {
             var argBlk = this.blocks.blockList[lastBlk].connections[1];
-            if (argBlk != null) {
+            if (argBlk !== null) {
                 var name = this.blocks.blockList[argBlk].value;
-                if (doClamp == null) {
+                if (doClamp === null) {
                     doClamp = lastBlk;
                 }
                 if (name in this.actions) {
@@ -1705,7 +1705,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         } else if (this.namedActionBlock(this.blocks.blockList[lastBlk].name)) {
             var name = this.blocks.blockList[lastBlk].privateData;
             // console.log(name);
-            if (doClamp == null) {
+            if (doClamp === null) {
                 doClamp = lastBlk;
             }
             if (name in this.actions) {
@@ -1725,16 +1725,16 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         var targetTurtle = args[0];
 
         // We'll compare the names as strings.
-        if (typeof(targetTurtle) == 'number') {
+        if (typeof(targetTurtle) === 'number') {
             targetTurtle = targetTurtle.toString();
         }
 
         for (var i = 0; i < this.turtles.turtleList.length; i++) {
             var turtleName = this.turtles.turtleList[i].name;
-            if (typeof(turtleName) == 'number') {
+            if (typeof(turtleName) === 'number') {
                 turtleName = turtleName.toString();
             }
-            if (turtleName == targetTurtle) {
+            if (turtleName === targetTurtle) {
                 return i;
             }
         }
@@ -1744,15 +1744,15 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     // FIXME: do we need to worry about calc blocks too?
     this.actionBlock = function(name) {
-        return ['do', 'doArg', 'calc', 'calcArg'].indexOf(name) != -1;
+        return ['do', 'doArg', 'calc', 'calcArg'].indexOf(name) !== -1;
     }
 
     this.namedActionBlock = function(name) {
-        return ['nameddo', 'nameddoArg', 'namedcalc', 'namedcalcArg'].indexOf(name) != -1;
+        return ['nameddo', 'nameddoArg', 'namedcalc', 'namedcalcArg'].indexOf(name) !== -1;
     }
 
     this.loopBlock = function(name) {
-        return ['forever', 'repeat', 'while', 'until'].indexOf(name) != -1;
+        return ['forever', 'repeat', 'while', 'until'].indexOf(name) !== -1;
     }
 
     this.doBreak = function(turtle) {
@@ -1777,7 +1777,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 break;
             }
         }
-        if (parentLoopBlock == null) {
+        if (parentLoopBlock === null) {
             // In this case, we flush the child flow.
             this.turtles.turtleList[turtle].queue.pop();
             return;
@@ -1785,9 +1785,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
         // For while and until, we need to add any childflow from the
         // parent to the queue.
-        if (parentLoopBlock.name == 'while' || parentLoopBlock.name == 'until') {
+        if (parentLoopBlock.name === 'while' || parentLoopBlock.name === 'until') {
             var childFlow = last(parentLoopBlock.connections);
-            if (childFlow != null) {
+            if (childFlow !== null) {
                 var queueBlock = new Queue(childFlow, 1, loopBlkIdx);
                 // We need to keep track of the parent block to the
                 // child flow so we can unlightlight the parent block
@@ -1800,20 +1800,20 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.parseArg = function(logo, turtle, blk, parentBlk, receivedArg) {
         // Retrieve the value of a block.
-        if (blk == null) {
+        if (blk === null) {
             logo.errorMsg('Missing argument.', parentBlk);
             logo.stopTurtle = true;
             return null
         }
 
         if (logo.blocks.blockList[blk].protoblock.parameter) {
-            if (logo.parameterQueue[turtle].indexOf(blk) == -1) {
+            if (logo.parameterQueue[turtle].indexOf(blk) === -1) {
                 logo.parameterQueue[turtle].push(blk);
             }
         }
 
         if (logo.blocks.blockList[blk].isValueBlock()) {
-            if (logo.blocks.blockList[blk].name == 'number' && typeof(logo.blocks.blockList[blk].value) == 'string') {
+            if (logo.blocks.blockList[blk].name === 'number' && typeof(logo.blocks.blockList[blk].value) === 'string') {
                 try {
                     logo.blocks.blockList[blk].value = Number(logo.blocks.blockList[blk].value);
                 } catch (e) {
@@ -1931,7 +1931,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var cblk2 = logo.blocks.blockList[blk].connections[2];
                     var a = logo.parseArg(logo, turtle, cblk1, blk, receivedArg);
                     var b = logo.parseArg(logo, turtle, cblk2, blk, receivedArg);
-                    logo.blocks.blockList[blk].value = (a == b);
+                    logo.blocks.blockList[blk].value = (a === b);
                     break;
                 case 'less':
                     var cblk1 = logo.blocks.blockList[blk].connections[1];
@@ -2006,8 +2006,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var targetTurtle = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
                     for (var i = 0; i < logo.turtles.turtleList.length; i++) {
                         var logoTurtle = logo.turtles.turtleList[i];
-                        if (targetTurtle == logoTurtle.name) {
-                            if (logo.blocks.blockList[blk].name == 'yturtle') {
+                        if (targetTurtle === logoTurtle.name) {
+                            if (logo.blocks.blockList[blk].name === 'yturtle') {
                                 logo.blocks.blockList[blk].value = logo.turtles.screenY2turtleY(logoTurtle.container.y);
                             } else {
                                 logo.blocks.blockList[blk].value = logo.turtles.screenX2turtleX(logoTurtle.container.x);
@@ -2015,7 +2015,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                             break;
                         }
                     }
-                    if (i == logo.turtles.turtleList.length) {
+                    if (i === logo.turtles.turtleList.length) {
                         logo.errorMsg('Could not find turtle ' + targetTurtle, blk);
                         logo.blocks.blockList[blk].value = 0;
                     }
@@ -2079,7 +2079,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var ctx = this.canvas.getContext('2d');
                     var imgData = ctx.getImageData(x, y, 1, 1).data;
                     var color = searchColors(imgData[0], imgData[1], imgData[2]);
-                    if (imgData[3] == 0) {
+                    if (imgData[3] === 0) {
                         color = body.style.background.substring(body.style.background.indexOf('(') + 1, body.style.background.lastIndexOf(')')).split(/,\s*/),
                         color = searchColors(color[0], color[1], color[2]);
                     }
@@ -2096,7 +2096,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     var cblk = block.connections[1];
                     var v = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
                     try {
-                        if (typeof(v) == 'string') {
+                        if (typeof(v) === 'string') {
                             v = v.toUpperCase();
                             var note = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭'].indexOf(v[0]);
                             var octave = v[1];
@@ -2146,7 +2146,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 case 'heapEmpty':
                     var block = logo.blocks.blockList[blk];
                     if (turtle in logo.turtleHeaps) {
-                        block.value = (logo.turtleHeaps[turtle].length == 0);
+                        block.value = (logo.turtleHeaps[turtle].length === 0);
                     } else {
                         block.value = true;
                     }
@@ -2251,7 +2251,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     // Math functions
     this.doRandom = function(a, b) {
-        if (typeof(a) == 'string' || typeof(b) == 'string') {
+        if (typeof(a) === 'string' || typeof(b) === 'string') {
             this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
@@ -2268,7 +2268,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.doMod = function(a, b) {
-        if (typeof(a) == 'string' || typeof(b) == 'string') {
+        if (typeof(a) === 'string' || typeof(b) === 'string') {
             this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
@@ -2277,7 +2277,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.doSqrt = function(a) {
-        if (typeof(a) == 'string') {
+        if (typeof(a) === 'string') {
             this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
@@ -2286,13 +2286,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.doPlus = function(a, b) {
-        if (typeof(a) == 'string' || typeof(b) == 'string') {
-            if (typeof(a) == 'string') {
+        if (typeof(a) === 'string' || typeof(b) === 'string') {
+            if (typeof(a) === 'string') {
                 var aString = a;
             } else {
                 var aString = a.toString();
             }
-            if (typeof(b) == 'string') {
+            if (typeof(b) === 'string') {
                 var bString = b;
             } else {
                 var bString = b.toString();
@@ -2304,7 +2304,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.doMinus = function(a, b) {
-        if (typeof(a) == 'string' || typeof(b) == 'string') {
+        if (typeof(a) === 'string' || typeof(b) === 'string') {
             this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
@@ -2313,7 +2313,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.doMultiply = function(a, b) {
-        if (typeof(a) == 'string' || typeof(b) == 'string') {
+        if (typeof(a) === 'string' || typeof(b) === 'string') {
             this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
@@ -2322,12 +2322,12 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     }
 
     this.doDivide = function(a, b) {
-        if (typeof(a) == 'string' || typeof(b) == 'string') {
+        if (typeof(a) === 'string' || typeof(b) === 'string') {
             this.errorMsg(NANERRORMSG);
             this.stopTurtle = true;
             return 0;
         }
-        if (Number(b) == 0) {
+        if (Number(b) === 0) {
             this.errorMsg(ZERODIVIDEERRORMSG);
             this.stopTurtle = true;
             return 0;
@@ -2339,7 +2339,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.setBackgroundColor = function(turtle) {
         /// Change body background in DOM to current color.
         var body = document.body;
-        if (turtle == -1) {
+        if (turtle === -1) {
             var c = platformColor.background;
         } else {
             var c = this.turtles.turtleList[turtle].canvasColor;

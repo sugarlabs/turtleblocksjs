@@ -1070,6 +1070,18 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     logo.doBreak(targetTurtle);
                 }
                 break;
+            case 'turtleTranslucency':
+                if (args.length === 1) {
+                    if (typeof(args[0]) === 'string') {
+                        logo.errorMsg(NANERRORMSG, blk);
+                        logo.stopTurtle = true;
+                    } else {
+                        args[0] %= 101;
+                        var alpha = 1.0 - (args[0] / 100);
+                        logo.turtles.turtleList[turtle].doSetAlpha(alpha);
+                    }
+                }
+                break;
             case 'setcolor':
                 if (args.length === 1) {
                     if (typeof(args[0]) === 'string') {

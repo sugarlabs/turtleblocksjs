@@ -635,6 +635,14 @@ function Turtle (name, turtles) {
         this.container.updateCache();
     }
 
+    this.doSetAlpha = function(alpha) {
+        this.bitmap.alpha = alpha;
+        var image = this.bitmap.image;
+        this.bitmap.cache(0, 0, image.width, image.height);
+        this.turtles.refreshCanvas();
+        this.container.updateCache();
+    }
+
     this.doSetFont = function(font) {
         this.font = font;
         this.turtles.refreshCanvas();

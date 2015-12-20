@@ -58,7 +58,8 @@ function Turtle (name, turtles) {
     this.value = DEFAULTVALUE;
     this.chroma = DEFAULTCHROMA;
     this.stroke = DEFAULTSTROKE;
-    this.canvasColor = '#ff0031';
+    this.canvasColor = 'rgba(255,0,49,1)';
+    this.canvasAlpha = 1.0;
     this.orientation = 0;
     this.fillState = false;
     this.hollowState = false;
@@ -379,7 +380,8 @@ function Turtle (name, turtles) {
 
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
         this.drawingCanvas.graphics.clear();
-        this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+        this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
         this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
 
         this.svgOutput = '';
@@ -390,7 +392,8 @@ function Turtle (name, turtles) {
 
     this.doForward = function(steps) {
         if (!this.fillState) {
-            this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+            var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+            this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
             this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
         }
@@ -410,7 +413,8 @@ function Turtle (name, turtles) {
 
     this.doSetXY = function(x, y) {
         if (!this.fillState) {
-            this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+            var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+            this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
             this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
         }
@@ -452,7 +456,8 @@ function Turtle (name, turtles) {
 
     this.doArcPart = function(angle, radius) {
         if (!this.fillState) {
-            this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+            var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+            this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
             this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
         }
@@ -650,28 +655,37 @@ function Turtle (name, turtles) {
         this.canvasValue = results[0];
         this.canvasChroma = results[1];
         this.canvasColor = results[2];
-        this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+        this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
+    }
+
+
+    this.doSetPenAlpha = function(alpha) {
+        this.canvasAlpha = alpha;
     }
 
     this.doSetHue = function(hue) {
         this.closeSVG();
         this.color = Number(hue);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+        this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
     }
 
     this.doSetValue = function(shade) {
         this.closeSVG();
         this.value = Number(shade);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+        this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
     }
 
     this.doSetChroma = function(chroma) {
         this.closeSVG();
         this.chroma = Number(chroma);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        this.drawingCanvas.graphics.beginStroke(this.canvasColor);
+        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+        this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
     }
 
     this.doSetPensize = function(size) {

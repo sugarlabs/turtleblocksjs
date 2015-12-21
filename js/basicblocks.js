@@ -197,6 +197,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     chromaBlock.adjustWidthToLabel();
     chromaBlock.parameterBlock();
 
+    var settranslucencyBlock = new ProtoBlock('settranslucency');
+    settranslucencyBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['settranslucency'] = settranslucencyBlock;
+    settranslucencyBlock.staticLabels.push(_('set translucency'));
+    settranslucencyBlock.adjustWidthToLabel();
+    settranslucencyBlock.oneArgBlock();
+    settranslucencyBlock.defaults.push(100);
+
     var setpensizeBlock = new ProtoBlock('setpensize');
     setpensizeBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['setpensize'] = setpensizeBlock;

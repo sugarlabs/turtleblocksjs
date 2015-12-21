@@ -379,6 +379,9 @@ function Turtle (name, turtles) {
         this.hollowState = false;
 
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
+        if (this.canvasColor[0] === "#") {
+            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+        }
         this.drawingCanvas.graphics.clear();
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
@@ -392,6 +395,9 @@ function Turtle (name, turtles) {
 
     this.doForward = function(steps) {
         if (!this.fillState) {
+            if (this.canvasColor[0] === "#") {
+                this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+            }
             var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
             this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
@@ -413,6 +419,9 @@ function Turtle (name, turtles) {
 
     this.doSetXY = function(x, y) {
         if (!this.fillState) {
+            if (this.canvasColor[0] === "#") {
+                this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+            }
             var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
             this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
@@ -456,6 +465,9 @@ function Turtle (name, turtles) {
 
     this.doArcPart = function(angle, radius) {
         if (!this.fillState) {
+            if (this.canvasColor[0] === "#") {
+                this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+            }
             var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
             this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
@@ -655,6 +667,9 @@ function Turtle (name, turtles) {
         this.canvasValue = results[0];
         this.canvasChroma = results[1];
         this.canvasColor = results[2];
+        if (this.canvasColor[0] === "#") {
+            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+        }
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
     }
@@ -668,6 +683,9 @@ function Turtle (name, turtles) {
         this.closeSVG();
         this.color = Number(hue);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
+        if (this.canvasColor[0] === "#") {
+            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+        }
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
     }
@@ -676,6 +694,9 @@ function Turtle (name, turtles) {
         this.closeSVG();
         this.value = Number(shade);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
+        if (this.canvasColor[0] === "#") {
+            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+        }
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
     }
@@ -684,6 +705,9 @@ function Turtle (name, turtles) {
         this.closeSVG();
         this.chroma = Number(chroma);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
+        if (this.canvasColor[0] === "#") {
+            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+        }
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
     }
@@ -960,3 +984,12 @@ function makeTurtleBitmap(me, data, name, callback, extras) {
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
 };
+
+function hex2rgb(hex) {
+    var bigint = parseInt(hex, 16);
+    var r = (bigint >> 16) & 255;
+    var g = (bigint >> 8) & 255;
+    var b = bigint & 255;
+
+    return "rgba(" + r + "," + g + "," + b + ",1)";
+}

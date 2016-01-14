@@ -616,7 +616,7 @@ function Turtle (name, turtles) {
         this.decorationBitmap.scaleX = this.decorationBitmap.scaleY = this.decorationBitmap.scale = 0.5 * scale / 2
     }
 	
-	this.doShowText = function(size, myText) {
+    this.doShowText = function(size, myText) {
         // Add a text or image object to the canvas
         this.closeSVG();
         this.svgPath = true;

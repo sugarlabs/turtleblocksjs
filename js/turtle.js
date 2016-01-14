@@ -616,9 +616,10 @@ function Turtle (name, turtles) {
         this.decorationBitmap.scaleX = this.decorationBitmap.scaleY = this.decorationBitmap.scale = 0.5 * scale / 2
     }
 
-    this.doShowText = function(size, myText) {
+this.doShowText = function(size, myText) {
         // Add a text or image object to the canvas
-
+        this.closeSVG();
+        this.svgPath = true;
         var textSize = size.toString() + 'px ' + this.font;
         var text = new createjs.Text(myText.toString(), textSize, this.canvasColor);
         text.textAlign = 'left';
@@ -631,10 +632,11 @@ function Turtle (name, turtles) {
         var xScaled = text.x * this.turtles.scale;
         var yScaled = text.y * this.turtles.scale;
         var sizeScaled = size * this.turtles.scale;
-        this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "' + this.font + '" font-size = "' + sizeScaled + '">' + myText + '</text>';
+        this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "' + this.font + '" font-size = "' + sizeScaled + '" transform = ' + '"rotate(' + this.orientation + " " + xScaled + " " + yScaled + ')' + '">' + myText + '</text>';
         this.turtles.refreshCanvas();
+        this.svgPath = false;
     }
-
+    
     this.doRight = function(degrees) {
         // Turn right and display corresponding turtle graphic.
         this.orientation += Number(degrees);

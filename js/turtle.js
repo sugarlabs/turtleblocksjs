@@ -632,7 +632,7 @@ function Turtle (name, turtles) {
         var xScaled = text.x * this.turtles.scale;
         var yScaled = text.y * this.turtles.scale;
         var sizeScaled = size * this.turtles.scale;
-        this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "' + this.font + '" font-size = "' + sizeScaled + '" transform = ' + '"rotate(' + this.orientation + " " + xScaled + " " + yScaled + ')' + '">' + myText + '</text>';
+        this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "' + this.font + '" font-size = "' + sizeScaled + '" transform = ' + '"rotate(' + this.orientation + ' ' + xScaled + ' ' + yScaled + ')' + '">' + myText + '</text>';
         this.turtles.refreshCanvas();
         this.svgPath = false;
     }

@@ -78,7 +78,8 @@ function PlanetModel(controller) {
             var todo = [];
             l.forEach(function (name, i) {
                 if (name.indexOf('.b64') !== -1) 	{
-                    todo.push(name);
+                    if(!(name.slice(0, 'MusicBlocks_'.length) == 'MusicBlocks_'))
+                        todo.push(name);
                 }
             });
             me.getImages(todo);

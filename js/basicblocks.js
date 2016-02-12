@@ -1123,6 +1123,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     audioStopBlock.adjustWidthToLabel();
     audioStopBlock.zeroArgBlock();
 
+    var turtleTranslucencyBlock = new ProtoBlock('turtleTranslucency');
+    turtleTranslucencyBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtleTranslucency'] = turtleTranslucencyBlock;
+    turtleTranslucencyBlock.staticLabels.push(_('turtle translucency'));
+    turtleTranslucencyBlock.adjustWidthToLabel();
+    turtleTranslucencyBlock.oneArgBlock();
+    turtleTranslucencyBlock.defaults.push(100);
+
     // NOP blocks (used as placeholders when loaded blocks not found)
     var nopValueBlock = new ProtoBlock('nopValueBlock');
     blocks.protoBlockDict['nopValueBlock'] = nopValueBlock;

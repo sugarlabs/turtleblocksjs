@@ -1,4 +1,4 @@
-// Copyright (c) 2014,2015 Walter Bender
+// Copyright (c) 2014-16 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -11,7 +11,7 @@
 //
 
 // Length of a long touch
-var LONGPRESSTIME = 2000;
+const LONGPRESSTIME = 1500;
 
 
 // Define block instance objects and any methods that are intra-block.
@@ -158,7 +158,7 @@ function Block(protoblock, blocks, overrideName) {
             }
             if (myBlock.name === 'start') {
                 // Rescale the decoration on the start blocks.
-                for (turtle = 0; turtle < myBlock.blocks.turtles.turtleList.length; turtle++) {
+                for (var turtle = 0; turtle < myBlock.blocks.turtles.turtleList.length; turtle++) {
                     if (myBlock.blocks.turtles.turtleList[turtle].startBlock === myBlock) {
                         myBlock.blocks.turtles.turtleList[turtle].resizeDecoration(scale, myBlock.bitmap.image.width);
                         ensureDecorationOnTop(myBlock);
@@ -1317,7 +1317,7 @@ function makeBitmap(data, name, callback, args) {
     // Works with Chrome, Safari, Firefox (untested on IE)
     var img = new Image();
     img.onload = function() {
-        bitmap = new createjs.Bitmap(img);
+        var bitmap = new createjs.Bitmap(img);
         callback(name, bitmap, args);
     }
     img.src = 'data:image/svg+xml;base64,' + window.btoa(

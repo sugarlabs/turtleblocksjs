@@ -280,6 +280,8 @@ define(function (require) {
                     }
                 }
             }
+            blocksContainer.x = 0;
+            blocksContainer.y = 0;
         }
 
         function allClear() {

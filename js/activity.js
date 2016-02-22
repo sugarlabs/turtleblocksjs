@@ -248,6 +248,40 @@ define(function (require) {
 
         pluginsImages = {};
 
+        function findBlocks() {
+            var x = 100 * scale;
+	    var y = 100 * scale;
+            logo.showBlocks();
+            for (var blk in blocks.blockList) {
+                var myBlock = blocks.blockList[blk];
+                if (['start', 'action', 'drum', 'matrix'].indexOf(myBlock.name) !== -1 && !myBlock.trash) {
+                    if (!myBlock.collapsed) {
+                        myBlock.collapseToggle();
+		    }
+		}
+
+		if (myBlock.connections[0] == null) {
+                    var dx = x - myBlock.container.x;
+		    var dy = y - myBlock.container.y;
+		    blocks.moveBlockRelative(blk, dx, dy);
+		    blocks.findDragGroup(blk);
+                    if (blocks.dragGroup.length > 0) {
+                        for (var b = 0; b < blocks.dragGroup.length; b++) {
+                            var bblk = blocks.dragGroup[b];
+                            if (b !== 0) {
+                                blocks.moveBlockRelative(bblk, dx, dy);
+                            }
+                        }
+                    }
+		    x += 200 * scale;
+		    if (x > (canvas.width - 100) / (scale)) {
+			x = 100 * scale;
+			y += 100 * scale;
+                    }
+                }
+            }
+        }
+
         function allClear() {
             if (chartBitmap) {
                 stage.removeChild(chartBitmap);
@@ -868,6 +902,7 @@ define(function (require) {
             const SHIFT = 16;
             const RETURN = 13;
             const SPACE = 32;
+            const HOME = 36;
 
             // Captured by browser
             const PAGE_UP = 33;
@@ -892,6 +927,9 @@ define(function (require) {
             } else if (event.ctrlKey) {
             } else {
                 switch (event.keyCode) {
+                case HOME:
+                    findBlocks();
+                    break;
                 case ESC:
                     // toggle full screen
                     toggleToolbar();

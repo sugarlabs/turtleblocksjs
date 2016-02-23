@@ -1657,10 +1657,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         }
 
-        if (actionNames.length === 1) {
-            return name;
-        }
-
         var i = 1;
         var value = name;
         while (actionNames.indexOf(value) !== -1) {

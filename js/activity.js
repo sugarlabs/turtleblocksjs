@@ -190,8 +190,11 @@ define(function (require) {
         const DEFAULTDELAY = 500; // milleseconds
         const TURTLESTEP = -1; // Run in step-by-step mode
 
-        var blockscale = 2;
         const BLOCKSCALES = [1, 1.5, 2, 3, 4];
+        var blockscale = BLOCKSCALES.indexOf(DEFAULTBLOCKSCALE);
+        if (blockscale === -1) {
+            blockscale = 1;
+	}
 
         // Time when we hit run
         var time = 0;

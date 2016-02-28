@@ -68,6 +68,10 @@ function Block(protoblock, blocks, overrideName) {
     this.postProcess = null;
     this.postProcessArg = null;
 
+    this.offScreen = function (canvas) {
+        return !this.trash && this.connections[0] == null && (this.container.x < 0 || this.container.y < 55 || this.container.x > canvas.width || this.container.y > canvas.height);
+    }
+
     this.copySize = function() {
         this.size = this.protoblock.size;
     }

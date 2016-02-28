@@ -37,6 +37,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     this.trashcan = trashcan;
     this.updateStage = updateStage;
 
+    // We keep a list of stacks in the trash.
+    this.trashStacks = [];
+
     // We keep a dictionary for the proto blocks,
     this.protoBlockDict = {}
     // and a list of the blocks we create.
@@ -104,6 +107,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     // Blocks that don't run when clicked.
     this.noRunBlocks = [];
 
+    this.homeButtonContainers = [];
     this.blockScale = DEFAULTBLOCKSCALE;
 
     // We need to know if we are processing a copy or save stack command.
@@ -173,6 +177,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 myBlock.collapseToggle();
             }
         }
+    }
+
+    // We need access to the go-home buttons.
+    this.setHomeContainers = function (containers) {
+        this.homeButtonContainers = containers;
     }
 
     // set up copy/paste, dismiss, and copy-stack buttons
@@ -1057,6 +1066,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 myBlock.collapseContainer.x = x + COLLAPSEBUTTONXOFF * (this.blockList[blk].protoblock.scale / 2);
                 myBlock.collapseContainer.y = y + COLLAPSEBUTTONYOFF * (this.blockList[blk].protoblock.scale / 2);
             }
+            if (myBlock.offScreen(canvas)) {
+                this.homeButtonContainers[0].visible = true;
+                this.homeButtonContainers[1].visible = false;
+            }
         } else {
             console.log('no container yet');
             myBlock.x = x
@@ -1075,6 +1088,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             if (myBlock.collapseContainer != null) {
                 myBlock.collapseContainer.x += dx;
                 myBlock.collapseContainer.y += dy;
+            }
+            if (myBlock.offScreen(canvas)) {
+                this.homeButtonContainers[0].visible = true;
+                this.homeButtonContainers[1].visible = false;
             }
         } else {
             console.log('no container yet');
@@ -2681,6 +2698,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     this.blockList[thisBlock].x = blkData[2];
                     this.blockList[thisBlock].y = blkData[3];
                     this.adjustTheseDocks.push(thisBlock);
+                    if (blkData[2] < 0 || blkData[3] < 0 || blkData[2] > canvas.width || blkData[3] > canvas.height) {
+                        this.homeButtonContainers[0].visible = true;
+                        this.homeButtonContainers[1].visible = false;
+                    }
                 }
             }
         }
@@ -2807,6 +2828,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
 function sendStackToTrash(blocks, myBlock) {
     var thisBlock = blocks.blockList.indexOf(myBlock);
+
+    // Add this block to the list of blocks in the trash so we can
+    // undo this action.
+    blocks.trashStacks.push(thisBlock);
 
     // Disconnect block.
     var b = myBlock.connections[0];

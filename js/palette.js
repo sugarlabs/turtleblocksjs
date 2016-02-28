@@ -1501,8 +1501,8 @@ function makeBlockFromProtoblock(palette, protoblk, moved, blkname, event, saveX
 
             // Set the position of the top block in the stack
             // before loading.
-            obj[0][2] = palette.protoContainers[blkname].x;
-            obj[0][3] = palette.protoContainers[blkname].y;
+            obj[0][2] = palette.protoContainers[blkname].x - paletteBlocks.stage.x;
+            obj[0][3] = palette.protoContainers[blkname].y - paletteBlocks.stage.y;
             console.log('loading macro ' + macroName);
             paletteBlocks.loadNewBlocks(obj);
 

@@ -120,7 +120,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         // Regenerate all of the artwork at the new scale.
         for (var blk = 0; blk < this.blockList.length; blk++) {
-            this.blockList[blk].resize(scale);
+            if (!this.blockList[blk].trash) {
+                this.blockList[blk].resize(scale)
+            };
         }
         this.findStacks();
         for (var stack = 0; stack < this.stackList.length; stack++) {
@@ -764,7 +766,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     break;
                 }
 
-		if ((i === this.blockList[b].connections.length - 1) && (this.blockList[b].connections[i] != null) && (this.blockList[this.blockList[b].connections[i]].isNoHitBlock())) {
+                if ((i === this.blockList[b].connections.length - 1) && (this.blockList[b].connections[i] != null) && (this.blockList[this.blockList[b].connections[i]].isNoHitBlock())) {
                     // Don't break the connection between a block and
                     // a hidden block below it.
                     continue;

@@ -781,11 +781,11 @@ define(function (require) {
         }
 
         function getStageX() {
-            return turtles.screenX2turtleX(stageX / blocks.scale);
+            return turtles.screenX2turtleX(stageX / scale);
         }
 
         function getStageY() {
-            return turtles.screenY2turtleY(stageY / blocks.scale);
+            return turtles.screenY2turtleY(stageY / scale);
         }
 
         function getStageMouseDown() {
@@ -2031,8 +2031,8 @@ define(function (require) {
             container.on('mousedown', function (event) {
                 var moved = true;
                 var offset = {
-                    x: container.x - Math.round(event.stageX / blocks.scale),
-                    y: container.y - Math.round(event.stageY / blocks.scale)
+                    x: container.x - Math.round(event.stageX / scale),
+                    y: container.y - Math.round(event.stageY / scale)
                 };
 
                 var circles = showButtonHighlight(ox, oy, cellSize / 2,

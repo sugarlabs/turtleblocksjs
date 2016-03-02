@@ -23,7 +23,7 @@ const NOSQRTERRORMSG = 'Cannot take square root of negative number.';
 const ZERODIVIDEERRORMSG = 'Cannot divide by zero.';
 const EMPTYHEAPERRORMSG = 'empty heap.';
 
-const NOTE = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭'].indexOf(v[0]);
+const NOTE = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭'];
 
 function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
@@ -63,10 +63,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.returns = [];
     this.turtleHeaps = {};
 
-    this.endOfFlowSignals = {};
-    this.endOfFlowLoops = {};
-    this.endOfFlowActions = {};
-    this.doBlocks = {};
+    // When we leave a clamp block, we need to dispatch a signal.
+    this.endOfClampSignals = {};
 
     this.time = 0;
     this.waitTimes = {};
@@ -283,10 +281,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // Each turtle needs to keep its own wait time, et al.
         for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
             this.waitTimes[turtle] = 0;
-            this.endOfFlowSignals[turtle] = {};
-            this.endOfFlowLoops[turtle] = {};
-            this.endOfFlowActions[turtle] = {};
-            this.doBlocks[turtle] = [];
+            this.endOfClampSignals[turtle] = {};
         }
 
         // Remove any listeners that might be still active
@@ -606,10 +601,6 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             if (name in logo.actions) {
                 childFlow = logo.actions[name];
                 childFlowCount = 1;
-                if (logo.doBlocks[turtle].indexOf(blk) === -1) {
-                    logo.doBlocks[turtle].push(blk);
-                }
-
             } else {
                 logo.errorMsg(NOACTIONERRORMSG, blk, name);
                 logo.stopTurtle = true;
@@ -622,9 +613,6 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (args[0] in logo.actions) {
                     childFlow = logo.actions[args[0]];
                     childFlowCount = 1;
-                    if (logo.doBlocks[turtle].indexOf(blk) === -1) {
-                        logo.doBlocks[turtle].push(blk);
-                    }
                 } else {
                     logo.errorMsg(NOACTIONERRORMSG, blk, args[0]);
                     logo.stopTurtle = true;
@@ -645,9 +633,6 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             if (name in logo.actions) {
                 childFlow = logo.actions[name]
                 childFlowCount = 1;
-                if (logo.doBlocks[turtle].indexOf(blk) === -1) {
-                    logo.doBlocks[turtle].push(blk);
-                }
             } else{
                 logo.errorMsg(NOACTIONERRORMSG, blk, name);
                 logo.stopTurtle = true;
@@ -668,9 +653,6 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     actionName = args[0];
                     childFlow = logo.actions[args[0]];
                     childFlowCount = 1;
-                    if (logo.doBlocks[turtle].indexOf(blk) === -1) {
-                        logo.doBlocks[turtle].push(blk);
-                    }
                 } else {
                     logo.errorMsg(NOACTIONERRORMSG, blk, args[0]);
                     logo.stopTurtle = true;
@@ -682,6 +664,10 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 childFlow = args[0];
                 childFlowCount = -1;
             }
+            break;
+        case 'hidden':
+            // Hidden block is used at end of clamps and actions to
+            // trigger listeners.
             break;
         case 'break':
             logo.doBreak(turtle);
@@ -1146,20 +1132,18 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             break;
         case 'fill':
             logo.turtles.turtleList[turtle].doStartFill();
+
             childFlow = args[0];
             childFlowCount = 1;
+
             var listenerName = '_fill_';
-            logo.updateEndBlks(childFlow, turtle, listenerName);
+            logo.setDispatchBlock(blk, turtle, listenerName);
 
             var listener = function (event) {
                 logo.turtles.turtleList[turtle].doEndFill();
             }
 
-            if (listenerName in logo.turtles.turtleList[turtle].listeners) {
-                logo.stage.removeEventListener(listenerName, logo.turtles.turtleList[turtle].listeners[listenerName], false);
-            }
-            logo.turtles.turtleList[turtle].listeners[listenerName] = listener;
-            logo.stage.addEventListener(listenerName, listener, false);
+            logo.setListener(turtle, listenerName, listener);
             break;
             // Deprecated
         case 'beginfill':
@@ -1176,17 +1160,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             childFlowCount = 1;
 
             var listenerName = '_hollowline_';
-            logo.updateEndBlks(childFlow, turtle, listenerName);
+            logo.setDispatchBlock(blk, turtle, listenerName);
 
             var listener = function (event) {
                 logo.turtles.turtleList[turtle].doEndHollowLine();
             }
 
-            if (listenerName in logo.turtles.turtleList[turtle].listeners) {
-                logo.stage.removeEventListener(listenerName, logo.turtles.turtleList[turtle].listeners[listenerName], false);
-            }
-            logo.turtles.turtleList[turtle].listeners[listenerName] = listener;
-            logo.stage.addEventListener(listenerName, listener, false);
+            logo.setListener(turtle, listenerName, listener);
             break;
             // Deprecated
         case 'beginhollowline':
@@ -1448,74 +1428,24 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // (3) Queue block below the current block.
 
         // Is the block in a queued clamp?
-        if (blk in logo.endOfFlowSignals[turtle]) {
-            // There is a list of signals and parent clamps. Each
-            // needs to be handled separately.
-            // console.log(logo.endOfFlowSignals[turtle][blk]);
-            var parentActions = [];
-            for (var i = logo.endOfFlowSignals[turtle][blk].length - 1; i >= 0; i--) {
-                var parentLoop = logo.endOfFlowLoops[turtle][blk][i];
-                var parentAction = logo.endOfFlowActions[turtle][blk][i];
-                var signal = logo.endOfFlowSignals[turtle][blk][i];
-                var loopTest = parentLoop !== null && logo.parentFlowQueue[turtle].indexOf(parentLoop) !== -1 && logo.loopBlock(logo.blocks.blockList[parentLoop].name);
-                var actionTest = (parentAction !== null && (logo.namedActionBlock(logo.blocks.blockList[parentAction].name) || logo.actionBlock(logo.blocks.blockList[parentAction].name)) && logo.doBlocks[turtle].indexOf(parentAction) === -1);
-                var stillInLoop = false;
-                if (loopTest) {
-                    for (var j = 0; j < logo.turtles.turtleList[turtle].queue.length; j++) {
-                        // console.log(logo.turtles.turtleList[turtle].queue[j].parentBlk);
-                        if (parentLoop === logo.turtles.turtleList[turtle].queue[j].parentBlk) {
-                            stillInLoop = true;
-                            break;
-                        }
-                    }
-                }
-                if (loopTest && stillInLoop) {
-                    // console.log(logo.endOfFlowSignals[turtle][blk][i] + ' still in child flow of loop block');
-                } else if (actionTest) {
-                    // console.log(logo.endOfFlowSignals[turtle][blk][i] + ' still in child flow of action block');
-                } else if (signal !== null) {
-                    console.log('dispatching ' + logo.endOfFlowSignals[turtle][blk][i]);
-                    logo.stage.dispatchEvent(logo.endOfFlowSignals[turtle][blk][i]);
+        if (blk in logo.endOfClampSignals[turtle]) {
+            for (var i = logo.endOfClampSignals[turtle][blk].length - 1; i >= 0; i--) {
+                // console.log(blk + ': ' + logo.blocks.blockList[blk].name + ' turtle: ' + turtle);
+                var signal = logo.endOfClampSignals[turtle][blk][i];
+                if (signal != null) {
+                    // console.log(logo.blocks.blockList[blk].name + ' dispatching ' + logo.endOfClampSignals[turtle][blk][i]);
+                    logo.stage.dispatchEvent(logo.endOfClampSignals[turtle][blk][i]);
                     // Mark issued signals as null
-                    logo.endOfFlowSignals[turtle][blk][i] = null;
-                    logo.endOfFlowLoops[turtle][blk][i] = null;
-                    logo.endOfFlowActions[turtle][blk][i] = null;
+                    logo.endOfClampSignals[turtle][blk][i] = null;
                 }
             }
-
-            for (var i = 0; i < parentActions.length; i++ ) {
-                if (logo.doBlocks[turtle].indexOf(parentAction) !== -1) {
-                    // console.log('setting doBlocks[' + logo.doBlocks[turtle][logo.doBlocks[turtle].indexOf(parentAction)] + '] to -1');
-                    logo.doBlocks[turtle][logo.doBlocks[turtle].indexOf(parentAction)] = -1;
-                }
-            }
-
-            // Garbage collection
-            // FIXME: reimplement more efficiently
-
             var cleanSignals = [];
-            var cleanLoops = [];
-            var cleanActions = [];
-            for (var i = 0; i < logo.endOfFlowSignals[turtle][blk].length; i++) {
-                if (logo.endOfFlowSignals[turtle][blk][i] !== null) {
-                    cleanSignals.push(logo.endOfFlowSignals[turtle][blk][i]);
-                    cleanLoops.push(logo.endOfFlowLoops[turtle][blk][i]);
-                    cleanActions.push(logo.endOfFlowActions[turtle][blk][i]);
+            for (var i = 0; i < logo.endOfClampSignals[turtle][blk].length; i++) {
+                if (logo.endOfClampSignals[turtle][blk][i] != null) {
+                    cleanSignals.push(logo.endOfClampSignals[turtle][blk][i]);
                 }
             }
-            logo.endOfFlowSignals[turtle][blk] = cleanSignals;
-            logo.endOfFlowLoops[turtle][blk] = cleanLoops;
-            logo.endOfFlowActions[turtle][blk] = cleanActions;
-
-            var cleanDos = [];
-            for (var i = 0; i < logo.doBlocks[turtle].length; i++) {
-                if (logo.doBlocks[turtle][i] !== -1) {
-                    cleanDos.push(logo.doBlocks[turtle][i]);
-                }
-            }
-            logo.doBlocks[turtle] = cleanDos;
-
-            // console.log(logo.endOfFlowSignals[turtle][blk]);
+            logo.endOfClampSignals[turtle][blk] = cleanSignals;
         }
 
         // If there is a child flow, queue it.
@@ -1589,11 +1519,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
         } else {
             // Make sure any unissued signals are dispatched.
-            for (var b in logo.endOfFlowSignals[turtle]) {
-                for (var i = 0; i < logo.endOfFlowSignals[turtle][b].length; i++) {
-                    if (logo.endOfFlowSignals[turtle][b][i] !== null) {
-                        logo.stage.dispatchEvent(logo.endOfFlowSignals[turtle][b][i]);
-                        console.log('dispatching ' + logo.endOfFlowSignals[turtle][b][i]);
+            for (var b in logo.endOfClampSignals[turtle]) {
+                for (var i = 0; i < logo.endOfClampSignals[turtle][b].length; i++) {
+                    if (logo.endOfClampSignals[turtle][b][i] !== null) {
+                        logo.stage.dispatchEvent(logo.endOfClampSignals[turtle][b][i]);
+                        // console.log('dispatching ' + logo.endOfClampSignals[turtle][b][i]);
                     }
                 }
             }
@@ -1635,98 +1565,22 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }, DEFAULTDELAY * 1.5)
     }
 
-    this.updateEndBlks = function(childFlow, turtle, listenerName) {
-        var endBlk = this.getBlockAtEndOfFlow(childFlow, null, null);
-        if (endBlk[0] !== null) {
-            if (endBlk[0] in this.endOfFlowSignals[turtle]) {
-                this.endOfFlowSignals[turtle][endBlk[0]].push(listenerName);
-                this.endOfFlowLoops[turtle][endBlk[0]].push(endBlk[1]);
-                this.endOfFlowActions[turtle][endBlk[0]].push(endBlk[2]);
-            } else {
-                this.endOfFlowSignals[turtle][endBlk[0]] = [listenerName];
-                this.endOfFlowLoops[turtle][endBlk[0]] = [endBlk[1]];
-                this.endOfFlowActions[turtle][endBlk[0]] = [endBlk[2]];
-            }
+    this.setListener = function(turtle, listenerName, listener) {
+        if (listenerName in this.turtles.turtleList[turtle].listeners) {
+            this.stage.removeEventListener(listenerName, this.turtles.turtleList[turtle].listeners[listenerName], false);
         }
+        this.turtles.turtleList[turtle].listeners[listenerName] = listener;
+        this.stage.addEventListener(listenerName, listener, false);
     }
 
-    this.getBlockAtStartOfArg = function(blk) {
-        if (blk === null) {
-            return null;
+    this.setDispatchBlock = function(blk, turtle, listenerName) {
+        var nextBlock = last(this.blocks.blockList[blk].connections);
+        if (nextBlock == null) {
+            // console.log('next block not found when setting dispatcher');
+            return;
         }
-        var c0 = this.blocks.blockList[blk].connections[0];
-        if (c0 === null) {
-            console.log('No flow block found at start of arg.');
-            return blk;
-        }
-        var blkType = this.blocks.blockList[c0].docks[0][2];
-        if (['unavailable', 'out'].indexOf(blkType) !== -1) {
-            return c0;
-        }
-        return this.getBlockAtStartOfArg(c0);
-    }
-
-    this.getBlockAtEndOfFlow = function(blk, loopClamp, doClamp) {
-        // This method is used to find the end of a child flow.  blk
-        // is the first block in a child flow.  This function returns
-        // the blk at the end of the child flow. It follows do blocks
-        // through their actions and it keeps track of queues created
-        // by loops and actions, which must complete in order to mark
-        // a flow as completed.
-        var lastBlk = blk;
-        var newLoopClamp = null;
-        var newdoClamp = null;
-        // console.log(blk + ': ' + this.blocks.blockList[blk].name);
-        while (blk !== null) {
-            if (blk !== null && this.loopBlock(this.blocks.blockList[blk].name)) {
-                // console.log(blk + ' is a loopClamp');
-                // console.log(last(this.blocks.blockList[blk].connections));
-                if (last(this.blocks.blockList[blk].connections) === null) {
-                    // console.log(blk + ' ' + this.blocks.blockList[blk].name + ' ' + last(this.blocks.blockList[blk].connections));
-                    newLoopClamp = blk;
-                }
-            }
-            var lastBlk = blk;
-            blk = last(this.blocks.blockList[blk].connections);
-            // console.log(lastBlk + ': ' + this.blocks.blockList[lastBlk].name);
-        }
-
-        // We want the parent loop.
-        if (loopClamp === null) {
-            loopClamp = newLoopClamp;
-        }
-
-        // console.log(loopClamp);
-
-        // Do we need to recurse?
-        if (this.blocks.blockList[lastBlk].isClampBlock()) {
-            // console.log('recursing... ' + this.blocks.blockList[lastBlk].name);
-            var i = this.blocks.blockList[lastBlk].protoblock.args;
-            return this.getBlockAtEndOfFlow(this.blocks.blockList[lastBlk].connections[i], loopClamp, doClamp);
-        } else if (this.actionBlock(this.blocks.blockList[lastBlk].name)) {
-            var argBlk = this.blocks.blockList[lastBlk].connections[1];
-            if (argBlk !== null) {
-                var name = this.blocks.blockList[argBlk].value;
-                if (doClamp === null) {
-                    doClamp = lastBlk;
-                }
-                if (name in this.actions) {
-                    return this.getBlockAtEndOfFlow(this.actions[name], loopClamp, doClamp);
-                }
-            }
-        } else if (this.namedActionBlock(this.blocks.blockList[lastBlk].name)) {
-            var name = this.blocks.blockList[lastBlk].privateData;
-            // console.log(name);
-            if (doClamp === null) {
-                doClamp = lastBlk;
-            }
-            if (name in this.actions) {
-                return this.getBlockAtEndOfFlow(this.actions[name], loopClamp, doClamp);
-            }
-        }
-
-        // console.log(lastBlk + ' ' + loopClamp + ' ' + doClamp);
-        return [lastBlk, loopClamp, doClamp];
+        // console.log('setting dispatch block for ' + blk + ' to ' + nextBlock);
+        this.endOfClampSignals[turtle][nextBlock] = [listenerName];
     }
 
     this.getTargetTurtle = function(args) {

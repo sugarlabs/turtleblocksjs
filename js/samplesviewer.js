@@ -1,4 +1,5 @@
 // Copyright (C) 2015 Sam Parkinson
+// Copyright (C) 2016 Walter Bender
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -8,19 +9,16 @@
 // You should have received a copy of the GNU Affero General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-//
 
-APIKEY = '3tgTzMXbbw6xEKX7';
-EMPTYIMAGE = 'data:image/svg+xml;base64,' + btoa('<svg \
+const APIKEY = '3tgTzMXbbw6xEKX7';
+const EMPTYIMAGE = 'data:image/svg+xml;base64,' + btoa('<svg \
               xmlns="http://www.w3.org/2000/svg" width="320" height="240" \
               viewBox="0 0 320 240"></svg>')
 
-window.server = '/server/';
-jQuery.ajax('/server/').error(function () {
-    server = 'https://turtle.sugarlabs.org/server/';
-});
+const SERVER = 'https://turtle.sugarlabs.org/server/';
+window.server = SERVER;
 
-var LOCAL_PROJECT_TEMPLATE = '\
+const LOCAL_PROJECT_TEMPLATE = '\
 <li data=\'{data}\' title="{title}" current="{current}"> \
     <img class="thumbnail" src="{img}" /> \
     <div class="options"> \
@@ -32,7 +30,7 @@ var LOCAL_PROJECT_TEMPLATE = '\
     </div> \
 </li>'
 
-var GLOBAL_PROJECT_TEMPLATE = '\
+const GLOBAL_PROJECT_TEMPLATE = '\
 <li url="{url}" title="{title}"> \
     <img class="thumbnail" src="{img}" /> \
     <div class="options"> \
@@ -52,11 +50,12 @@ function PlanetModel(controller) {
     this.stop = false;
     var me = this;
     if (sugarizerCompatibility.isInsideSugarizer()) {
-        server = 'https://turtle.sugarlabs.org/server/';
+        server = SERVER;
         storage = sugarizerCompatibility.data;
     } else {
         storage = localStorage;
     }
+
     this.start = function (cb) {
         me.updated = cb;
         me.stop = false;
@@ -68,7 +67,7 @@ function PlanetModel(controller) {
 
     this.downloadWorldWideProjects = function () {
         jQuery.ajax({
-            url: server,
+            url: SERVER,
             headers: {
                 'x-api-key' : APIKEY
             }
@@ -104,7 +103,7 @@ function PlanetModel(controller) {
             me.getImages(todo);
         } else {
             jQuery.ajax({
-  	            url: server + image,
+  	            url: SERVER + image,
                 headers: {
                     'x-api-key' : '3tgTzMXbbw6xEKX7'
                 },
@@ -220,7 +219,7 @@ function PlanetModel(controller) {
         me.controller.sendAllToTrash(false, false);
 
         jQuery.ajax({
-            url: server + name + ".tb",
+            url: SERVER + name + ".tb",
             headers: {
                 'x-api-key' : '3tgTzMXbbw6xEKX7'
             },

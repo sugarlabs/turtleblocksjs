@@ -1,4 +1,4 @@
-// Copyright (c) 2014,2015 Walter Bender
+// Copyright (c) 2014-16 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -61,11 +61,11 @@ function ProtoBlock(name) {
         if (this.staticLabels.length === 0) {
             return;
         }
-        var labelLength = this.staticLabels[0].length;
-        if ((labelLength - 6) > 0) {
-            // TODO: better estimation of label size
-            this.extraWidth += (labelLength - 6) * 4;
-        }
+        var c = new createjs.Container();
+        var text = new createjs.Text(this.staticLabels[0], this.fontSize + 'px Sans', '#000000');
+        c.addChild(text);
+        var b = c.getBounds();
+        this.extraWidth += Math.max(b.width - 30, 0);
     }
 
     // What follows are the initializations for different block
@@ -91,6 +91,34 @@ function ProtoBlock(name) {
         svg.setExpand(30 + this.extraWidth, 0, 0, 0);
         var artwork = svg.basicBlock();
 	return [artwork, svg.docks];
+    }
+
+    // E.g., hidden (used at end of clamp)
+    this.hiddenBlockNoFlow = function() {
+        this.args = 0;
+        this.size = 0;
+        this.dockTypes.push('out');
+        this.dockTypes.push('in');
+        this.generator = this.hiddenBlockNoFlowGenerator;
+    }
+
+    this.hiddenBlockNoFlowGenerator = function() {
+        // TODO: return empty SVG
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setSlot(true);
+        svg.setTab(true);
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        // We need to generate the artwork in order to generate the dock.
+        var artwork = svg.basicBlock();
+        // Then we replace the artwork with a single pixel.
+	var artwork = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><text style="font-size:10px;fill:#000000;font-family:sans-serif;text-anchor:end"><tspan x="46.333333333333336" y="13.5">block_label</tspan></text></svg>';
+        // And bring the last dock position to the top.
+        svg.docks[1][1] = svg.docks[0][1];
+        return [artwork, svg.docks];
     }
 
     // E.g., break

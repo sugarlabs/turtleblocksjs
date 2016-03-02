@@ -149,6 +149,22 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     // PEN PALETTE
     
+    var beginFillBlock = new ProtoBlock('beginfill');
+    beginFillBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['beginfill'] = beginFillBlock;
+    beginFillBlock.hidden = true;
+    beginFillBlock.staticLabels.push(_('begin fill'));
+    beginFillBlock.adjustWidthToLabel();
+    beginFillBlock.zeroArgBlock();
+
+    var endFillBlock = new ProtoBlock('endfill');
+    endFillBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['endfill'] = endFillBlock;
+    endFillBlock.hidden = true;
+    endFillBlock.staticLabels.push(_('end fill'));
+    endFillBlock.adjustWidthToLabel();
+    endFillBlock.zeroArgBlock();
+
     var fillscreenBlock = new ProtoBlock('fillscreen');
     fillscreenBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['fillscreen'] = fillscreenBlock;
@@ -826,8 +842,14 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     // FLOW PALETTE
 
+    var hiddenBlock = new ProtoBlock('hidden');
+    hiddenBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['hidden'] = hiddenBlock;
+    hiddenBlock.hidden = true;  // Now there is a surprise :)
+    hiddenBlock.hiddenBlockNoFlow();
+
     var clampBlock = new ProtoBlock('clamp');
-    clampBlock.palette = palettes.dict['heap'];
+    clampBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['clamp'] = clampBlock;
     clampBlock.hidden = true;
     clampBlock.flowClampBlock();

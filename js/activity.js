@@ -1417,8 +1417,8 @@ define(function (require) {
             if (blk != undefined && blk != null && !blocks.blockList[blk].collapsed) {
                 var fromX = (canvas.width - 1000) / 2;
                 var fromY = 128;
-                var toX = blocks.blockList[blk].x + blocksContainer.x;
-                var toY = blocks.blockList[blk].y + blocksContainer.y;
+                var toX = blocks.blockList[blk].container.x + blocksContainer.x;
+                var toY = blocks.blockList[blk].container.y + blocksContainer.y;
 
                 if (errorMsgArrow == null) {
                     errorMsgArrow = new createjs.Container();
@@ -1719,7 +1719,7 @@ define(function (require) {
                     homeButtonContainers.push(container);
                     homeButtonContainersX = x;
                     homeButtonContainersY = y;
-                    var container2 = makeButton('go-home-faded-button', '', x, y, btnSize, 0);
+                    var container2 = makeButton('go-home-faded-button', _('Home'), x, y, btnSize, 0);
                     loadButtonDragHandler(container2, x, y, buttonNames[name][1]);
                     homeButtonContainers.push(container2);
                     onscreenButtons.push(container2);
@@ -1957,8 +1957,13 @@ define(function (require) {
 
             var text = new createjs.Text(label, '14px Sans', '#282828');
             if (container.y < 55) {
-                text.textAlign = 'left';
-                text.x = -14;
+                if (container.x < 55) {
+                    text.textAlign = 'left';
+                    text.x = -14;
+                } else {
+                    text.textAlign = 'center';
+                    text.x = 0;
+                }
                 text.y = 30;
             } else {
                 text.textAlign = 'right';

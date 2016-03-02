@@ -764,6 +764,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     break;
                 }
 
+		if ((i === this.blockList[b].connections.length - 1) && (this.blockList[b].connections[i] != null) && (this.blockList[this.blockList[b].connections[i]].isNoHitBlock())) {
+                    // Don't break the connection between a block and
+                    // a hidden block below it.
+                    continue;
+                }
+
                 // Look for available connections.
                 if (this.testConnectionType(
                         blkType,
@@ -1238,6 +1244,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 this.expandablesList.push(blk);
                 var c = this.blockList[blk].connections.length - 2;
                 this.searchForExpandables(this.blockList[blk].connections[c]);
+                if (this.blockList[blk].name === 'ifthenelse') {
+                    // search top clamp too
+                    var c = 2;
+                    this.searchForExpandables(this.blockList[blk].connections[c]);
+                }
             } else if (this.blockList[blk].isArgClamp()) {
                 // FIXME: We need to do something with ArgClampArg blocks too.
                 this.expandablesList.push(blk);
@@ -2331,6 +2342,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // We add new blocks to the end of the block list.
         var blockOffset = this.blockList.length;
 
+        var hiddenBlocks = [];
         console.log(this.loadCounter + ' blocks to load');
         for (var b = 0; b < this.loadCounter; b++) {
             var thisBlock = blockOffset + b;
@@ -2374,6 +2386,22 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             var me = this;
             // A few special cases.
             switch (name) {
+                // Add a hidden block to the end of any clamp blocks.
+            case 'fill':
+            case 'hollowline':
+                if (last(blkData[4]) == null) {
+                    var len = blkData[4].length;
+                    blkData[4][len - 1] = this.loadCounter + hiddenBlocks.length;  // blockOffset is added in later.
+                    hiddenBlocks.push([thisBlock, null]);
+                } else if (blockObjs[last(blkData[4])][1] !== 'hidden') {
+                    var len = blkData[4].length;
+                    var nextBlock = last(blkData[4]);
+                    blkData[4][len - 1] = this.loadCounter + hiddenBlocks.length;  // blockOffset is added in later.
+                    blockObjs[nextBlock][4][0] = this.loadCounter + hiddenBlocks.length;  // blockOffset is added in later.
+                    hiddenBlocks.push([thisBlock, blockOffset + nextBlock]);
+                }
+                this.makeNewBlockWithConnections(name, blockOffset, blkData[4], null);
+                break;
                 // Only add 'collapsed' arg to start, action blocks.
                 case 'start':
                     blkData[4][0] = null;
@@ -2704,6 +2732,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     }
                 }
             }
+        }
+        var blockOffset = this.blockList.length;
+        for (var b = 0; b < hiddenBlocks.length; b++) {
+            var thisBlock = blockOffset + b;
+            this.makeNewBlockWithConnections('hidden', 0, [hiddenBlocks[b][0], hiddenBlocks[b][1]], null);
         }
     }
 

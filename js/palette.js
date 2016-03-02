@@ -1270,6 +1270,8 @@ function setupBackgroundEvents(palette) {
 
 
 function makeBlockFromPalette(protoblk, blkname, palette, callback) {
+    const BUILTINMACROS= ['fill', 'hollowline'];
+
     switch (protoblk.name) {
     case 'do':
         blkname = 'do ' + protoblk.defaults[0];
@@ -1359,8 +1361,18 @@ function makeBlockFromPalette(protoblk, blkname, palette, callback) {
         var arg = '__NOARG__';
         break;
     }
-    var newBlock = paletteBlockButtonPush(newBlk, arg);
-    callback(newBlock);
+    if(BUILTINMACROS.indexOf(blkname) > -1)
+    {
+      moved = true;
+      saveX = palette.protoContainers[blkname].x;
+      saveY = palette.protoContainers[blkname].y;
+      makeBlockFromProtoblock(palette, protoblk, moved, blkname, null, saveX, saveY);
+    }
+    else
+    {
+      var newBlock = paletteBlockButtonPush(newBlk, arg);
+      callback(newBlock);
+    }
 }
 
 
@@ -1450,8 +1462,14 @@ function loadPaletteMenuItemHandler(palette, protoblk, blkname) {
 
 function makeBlockFromProtoblock(palette, protoblk, moved, blkname, event, saveX, saveY) {
 
+    const FILLOBJ = [[0, 'fill', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
+    const HOLLOWOBJ = [[0, 'hollowline', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
+
     // Some blocks are expanded on load.
-    const BUILTINMACROS = {};
+    const BUILTINMACROS = {
+                           'fill': FILLOBJ,
+                           'hollowline': HOLLOWOBJ,
+    };
     
     if (moved) {
         moved = false;

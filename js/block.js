@@ -12,6 +12,8 @@
 
 // Length of a long touch
 const LONGPRESSTIME = 1500;
+const COLLAPSABLES = ['start', 'action'];
+const NOHIT = ['hidden'];
 
 
 // Define block instance objects and any methods that are intra-block.
@@ -611,6 +613,10 @@ function Block(protoblock, blocks, overrideName) {
         return this.protoblock.style === 'value';
     }
 
+    this.isNoHitBlock = function() {
+        return NOHIT.indexOf(this.name) !== -1;
+    }
+
     this.isArgBlock = function() {
         return this.protoblock.style === 'value' || this.protoblock.style === 'arg';
     }
@@ -1059,6 +1065,9 @@ function calculateBlockHitArea(myBlock) {
     // Only detect hits on top section of block.
     if (myBlock.isClampBlock() || myBlock.isArgClamp()) {
         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT);
+    } else if (myBlock.isNoHitBlock()) {
+        // No hit area
+        hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 0, 0);
     } else {
         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height * 0.75); // Shrinking the height makes it easier to grab blocks below in the stack.
     }

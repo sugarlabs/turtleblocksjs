@@ -1092,6 +1092,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var vspaceBlock = new ProtoBlock('vspace');
     vspaceBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['vspace'] = vspaceBlock;
+    vspaceBlock.staticLabels.push('↓');
     vspaceBlock.extraWidth = -10;
     vspaceBlock.zeroArgBlock();
 
@@ -1099,6 +1100,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     hspaceBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['hspace'] = hspaceBlock;
     hspaceBlock.oneArgMathBlock();
+    hspaceBlock.staticLabels.push('←');
     hspaceBlock.dockTypes[0] = 'anyout';
     hspaceBlock.dockTypes[1] = 'anyin';
 

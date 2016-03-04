@@ -1420,7 +1420,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         // Make a new block from a proto block.
         // Called from palettes.
 
-        console.log('makeBlock ' + name + ' ' + arg);
+        // console.log('makeBlock ' + name + ' ' + arg);
         var postProcess = null;
         var postProcessArg = null;
         var me = this;
@@ -1503,12 +1503,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         for (var proto in me.protoBlockDict) {
             if (me.protoBlockDict[proto].name === name) {
                 if (arg === '__NOARG__') {
-                    console.log('creating ' + name + ' block with no args');
+                    // console.log('creating ' + name + ' block with no args');
                     me.makeNewBlock(proto, postProcess, postProcessArg);
                     protoFound = true;
                     break;
                 } else if (me.protoBlockDict[proto].defaults[0] === arg) {
-                    console.log('creating ' + name + ' block with default arg ' + arg);
+                    // console.log('creating ' + name + ' block with default arg ' + arg);
                     me.makeNewBlock(proto, postProcess, postProcessArg);
                     protoFound = true;
                     break;
@@ -1538,11 +1538,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             if (myBlock.name === 'action') {
                 // Make sure we don't make two actions with the same name.
-                console.log('calling findUniqueActionName');
+                // console.log('calling findUniqueActionName');
                 value = this.findUniqueActionName(_('action'));
-                console.log('renaming action block to ' + value);
+                // console.log('renaming action block to ' + value);
                 if (value !== _('action')) {
-                    console.log('calling newNameddoBlock with value ' + value);
+                    // console.log('calling newNameddoBlock with value ' + value);
                     // TODO: are there return or arg blocks?
                     this.newNameddoBlock(value, false, false);
                     this.palettes.updatePalettes('actions');
@@ -1747,7 +1747,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         for (var blockId = 0; blockId < blockPalette.protoList.length; blockId++) {
             var block = blockPalette.protoList[blockId];
             if (block.name === 'namedbox' && block.defaults[0] !== _('box') && block.defaults[0] === oldName) {
-                console.log('renaming ' + block.defaults[0] + ' to ' + newName);
+                // console.log('renaming ' + block.defaults[0] + ' to ' + newName);
                 block.defaults[0] = newName;
                 nameChanged = true;
             }
@@ -1801,27 +1801,27 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         label = label.substr(0, 7) + '...';
                     }
                     this.blockList[blk].overrideName = label;
-                    console.log('regenerating artwork for ' + this.blockList[blk].name + ' block[' + blk + ']: ' + oldName + ' -> ' + label);
+                    // console.log('regenerating artwork for ' + this.blockList[blk].name + ' block[' + blk + ']: ' + oldName + ' -> ' + label);
                     this.blockList[blk].regenerateArtwork();
                 }
             }
         }
 
         // Update the palette
-        console.log('updating the palette in renameNameddos');
+        // console.log('updating the palette in renameNameddos');
         var actionsPalette = this.palettes.dict['actions'];
         var nameChanged = false;
         for (var blockId = 0; blockId < actionsPalette.protoList.length; blockId++) {
             var block = actionsPalette.protoList[blockId];
             if (['nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(block.name) !== -1 && block.defaults[0] !== _('action') && block.defaults[0] === oldName) {
-                console.log('renaming ' + block.name + ': ' + block.defaults[0] + ' to ' + newName);
+                // console.log('renaming ' + block.name + ': ' + block.defaults[0] + ' to ' + newName);
                 block.defaults[0] = newName;
                 nameChanged = true;
             }
         }
         // Force an update if the name has changed.
         if (nameChanged) {
-            console.log('regenerating actions palette');
+            // console.log('regenerating actions palette');
             regeneratePalette(actionsPalette);
         }
     }
@@ -1830,7 +1830,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         if ('myStorein_' + name in this.protoBlockDict) {
             return;
         }
-        console.log('new storein block ' + name);
+        // console.log('new storein block ' + name);
         var myStoreinBlock = new ProtoBlock('storein');
         this.protoBlockDict['myStorein_' + name] = myStoreinBlock;
         myStoreinBlock.palette = this.palettes.dict['boxes'];
@@ -1885,21 +1885,21 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.removeNamedoEntries = function (name) {
         // Delete any old palette entries.
-        console.log('DELETE: removing old palette entries for ' + name);
+        // console.log('DELETE: removing old palette entries for ' + name);
         if (this.protoBlockDict['myDo_' + name]) {
-            console.log('deleting myDo_' + name + ' ' + this.protoBlockDict['myDo_' + name].name);
+            // console.log('deleting myDo_' + name + ' ' + this.protoBlockDict['myDo_' + name].name);
             this.protoBlockDict['myDo_' + name].hide = true;
             delete this.protoBlockDict['myDo_' + name];
         } else if (this.protoBlockDict['myCalc_' + name]) {
-            console.log('deleting myCalc_' + name + ' ' + this.protoBlockDict['myCalc_' + name].name);
+            // console.log('deleting myCalc_' + name + ' ' + this.protoBlockDict['myCalc_' + name].name);
             this.protoBlockDict['myCalc_' + name].hide = true;
             delete this.protoBlockDict['myCalc_' + name];
         } else if (this.protoBlockDict['myDoArg_' + name]) {
-            console.log('deleting myDoArg_' + name + ' ' + this.protoBlockDict['myDoArg_' + name].name);
+            // console.log('deleting myDoArg_' + name + ' ' + this.protoBlockDict['myDoArg_' + name].name);
             this.protoBlockDict['myDoArg_' + name].hide = true;
             delete this.protoBlockDict['myDoArg_' + name];
         } else if (this.protoBlockDict['myCalcArg_' + name]) {
-            console.log('deleting myCalcArg_' + name + ' ' + this.protoBlockDict['myCalcArg_' + name].name);
+            // console.log('deleting myCalcArg_' + name + ' ' + this.protoBlockDict['myCalcArg_' + name].name);
             this.protoBlockDict['myCalcArg_' + name].hide = true;
             delete this.protoBlockDict['myCalcArg_' + name];
         }
@@ -1923,7 +1923,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         } else if (hasReturn && !hasArgs) {
             this.newNamedcalcBlock(name);
         } else if (this.protoBlockDict['myDo_' + name] === undefined) {
-            console.log('creating myDo_' + name);
+            // console.log('creating myDo_' + name);
             var myDoBlock = new ProtoBlock('nameddo');
             this.protoBlockDict['myDo_' + name] = myDoBlock;
             myDoBlock.palette = this.palettes.dict['actions'];
@@ -1940,7 +1940,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
     this.newNamedcalcBlock = function (name) {
         if (this.protoBlockDict['myCalc_' + name] === undefined) {
-            console.log('creating myCalc_' + name);
+            // console.log('creating myCalc_' + name);
             var myCalcBlock = new ProtoBlock('namedcalc');
             this.protoBlockDict['myCalc_' + name] = myCalcBlock;
             myCalcBlock.palette = this.palettes.dict['actions'];
@@ -1948,14 +1948,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myCalcBlock.staticLabels.push(name);
             myCalcBlock.zeroArgBlock();
             myCalcBlock.palette.add(myCalcBlock, true);
-        } else {
-            console.log('myCalc_' + name + ' already exists.');
+        // } else {
+        //     console.log('myCalc_' + name + ' already exists.');
         }
     }
 
     this.newNameddoArgBlock = function (name) {
         if (this.protoBlockDict['myDoArg_' + name] === undefined) {
-            console.log('creating myDoArg_' + name);
+            // console.log('creating myDoArg_' + name);
             var myDoArgBlock = new ProtoBlock('nameddoArg');
             this.protoBlockDict['myDoArg_' + name] = myDoArgBlock;
             myDoArgBlock.palette = this.palettes.dict['actions'];
@@ -1963,14 +1963,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myDoArgBlock.staticLabels.push(name);
             myDoArgBlock.zeroArgBlock();
             myDoArgBlock.palette.add(myDoArgBlock, true);
-        } else {
-            console.log('myDoArg_' + name + ' already exists.');
+        // } else {
+        //     console.log('myDoArg_' + name + ' already exists.');
         }
     }
 
     this.newNamedcalcArgBlock = function (name) {
         if (this.protoBlockDict['myCalcArg_' + name] === undefined) {
-            console.log('creating myCalcArg_' + name);
+            // console.log('creating myCalcArg_' + name);
             var myCalcArgBlock = new ProtoBlock('namedcalcArg');
             this.protoBlockDict['myCalcArg_' + name] = myCalcArgBlock;
             myCalcArgBlock.palette = this.palettes.dict['actions'];
@@ -1978,8 +1978,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             myCalcArgBlock.staticLabels.push(name);
             myCalcArgBlock.zeroArgBlock();
             myCalcArgBlock.palette.add(myCalcArgBlock, true);
-        } else {
-            console.log('myCalcArg_' + name + ' already exists.');
+        // } else {
+        //     console.log('myCalcArg_' + name + ' already exists.');
         }
     }
 
@@ -2076,11 +2076,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             if (sugarizerCompatibility.isInsideSugarizer()) {
                 sugarizerCompatibility.saveLocally(function () {
                     this.addToMyPalette(name, blockObjs);
-                    this.palettes.updatePalettes();
+                    this.palettes.updatePalettes('myblocks');
                 });
             } else {
                 this.addToMyPalette(name, blockObjs);
-                this.palettes.updatePalettes();
+                this.palettes.updatePalettes('myblocks');
             }
         }
     };
@@ -2093,8 +2093,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         for (var b = 0; b < this.dragGroup.length; b++) {
             myBlock = this.blockList[this.dragGroup[b]];
             if (b === 0) {
-                x = 25;
-                y = 25;
+                x = 75;
+                y = 75;
             } else {
                 x = 0;
                 y = 0;
@@ -2302,7 +2302,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
             if (oldName !== name) {
                 // Change the name of the action...
-                console.log('action ' + oldName + ' is being renamed ' + name);
+                // console.log('action ' + oldName + ' is being renamed ' + name);
                 blkData[1][1] = {'value': name};
             }
 
@@ -2337,7 +2337,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         if (updatePalettes) {
-            this.palettes.updatePalettes();
+            this.palettes.updatePalettes('actions');
         }
 
         // Append to the current set of blocks.
@@ -2481,9 +2481,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         for (var i = 0; i < args[1].length; i++) {
                             if (args[1][i] != null) {
                                 me.blockList[thisBlock].connections[i] = args[1][i] + firstBlock;
-			    } else {
+                            } else {
                                 me.blockList[thisBlock].connections[i] = args[1][i];
-			    }
+                            }
                         }
                     }
                     me.checkArgClampBlocks.push(thisBlock);
@@ -2508,9 +2508,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         for (var i = 0; i < args[2].length; i++) {
                             if (args[2][i] != null) {
                                 me.blockList[thisBlock].connections[i] = args[2][i] + firstBlock;
-			    } else {
+                            } else {
                                 me.blockList[thisBlock].connections[i] = args[2][i];
-			    }
+                            }
                         }
                     }
                     me.checkArgClampBlocks.push(thisBlock);
@@ -2532,9 +2532,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         for (var i = 0; i < args[1].length; i++) {
                             if (args[1][i] != null) {
                                 me.blockList[thisBlock].connections[i] = args[1][i] + firstBlock;
-			    } else {
+                            } else {
                                 me.blockList[thisBlock].connections[i] = args[1][i];
-			    }
+                            }
                         }
                     }
                     me.checkArgClampBlocks.push(thisBlock);
@@ -2559,9 +2559,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                         for (var i = 0; i < args[2].length; i++) {
                             if (args[2][i] != null) {
                                 me.blockList[thisBlock].connections[i] = args[2][i] + firstBlock;
-			    } else {
+                            } else {
                                 me.blockList[thisBlock].connections[i] = args[2][i];
-			    }
+                            }
                         }
                     }
                     me.checkArgClampBlocks.push(thisBlock);
@@ -2762,7 +2762,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
     }
 
-    this.cleanupAfterLoad = function () {
+    this.cleanupAfterLoad = function (name) {
         // If all the blocks are loaded, we can make the final adjustments.
         this.loadCounter -= 1;
         if (this.loadCounter > 0) {
@@ -2798,7 +2798,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
 
         for (var i = 0; i < this.blocksToCollapse.length; i++) {
-            console.log('collapse ' + this.blockList[this.blocksToCollapse[i]].name);
+            // console.log('collapse ' + this.blockList[this.blocksToCollapse[i]].name);
             this.blockList[this.blocksToCollapse[i]].collapseToggle();
         }
         this.blocksToCollapse = [];
@@ -2811,10 +2811,12 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
         this.refreshCanvas();
 
-        this.checkPaletteEntries();
+        if (['action', 'nameddo', 'namedarg', 'nameddoArg', 'calc', 'calcArg', 'namedcalcArg', 'storein'].indexOf(name) != -1) {
+            this.checkPaletteEntries(name);
+	}
     }
 
-    this.checkPaletteEntries = function () {
+    this.checkPaletteEntries = function (name) {
         var updatePalettes = false;
         for (var blk = 0; blk < this.blockList.length; blk++) {
             if (this.blockList[blk].name === 'action') {
@@ -2822,7 +2824,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 var arg = null;
                 var c = myBlock.connections[1];
                 if (c != null && this.blockList[c].value !== _('action')) {
-                    console.log('calling newNameddoBlock with name ' + this.blockList[c].value);
+                    // console.log('calling newNameddoBlock with name ' + this.blockList[c].value);
                     if (this.newNameddoBlock(this.blockList[c].value, this.actionHasReturn(blk), this.actionHasArgs(blk))) {
                         updatePalettes = true;
                     }
@@ -2830,7 +2832,11 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         }
         if (updatePalettes) {
-            this.palettes.updatePalettes();
+            if (name == 'storein') {
+		this.palettes.updatePalettes('boxes');
+            } else {
+                this.palettes.updatePalettes('actions');
+            }
         }
     }
 
@@ -2945,19 +2951,19 @@ function sendStackToTrash(blocks, myBlock) {
                     blockPalette.protoList.splice(blockPalette.protoList.indexOf(block), 1);
                     // Any of these could be in the palette.
                     if (blocks.protoBlockDict['myDo_' + actionName]) {
-                        console.log('deleting protoblocks for action ' + actionName);
+                        // console.log('deleting protoblocks for action ' + actionName);
                         blocks.protoBlockDict['myDo_' + actionName].hide = true;
                         delete blocks.protoBlockDict['myDo_' + actionName];
                     } else if (blocks.protoBlockDict['myCalc_' + actionName]) {
-                        console.log('deleting protoblocks for action ' + actionName);
+                        // console.log('deleting protoblocks for action ' + actionName);
                         blocks.protoBlockDict['myCalc_' + actionName].hide = true;
                         delete blocks.protoBlockDict['myCalc_' + actionName];
                     } else if (blocks.protoBlockDict['myDoArg_' + actionName]) {
-                        console.log('deleting protoblocks for action ' + actionName);
+                        // console.log('deleting protoblocks for action ' + actionName);
                         blocks.protoBlockDict['myDoArg_' + actionName].hide = true;
                         delete blocks.protoBlockDict['myDoArg_' + actionName];
                     } else if (blocks.protoBlockDict['myCalcArg_' + actionName]) {
-                        console.log('deleting protoblocks for action ' + actionName);
+                        // console.log('deleting protoblocks for action ' + actionName);
                         blocks.protoBlockDict['myCalcArg_' + actionName].hide = true;
                         delete blocks.protoBlockDict['myCalcArg_' + actionName];
                     }
@@ -2976,7 +2982,7 @@ function sendStackToTrash(blocks, myBlock) {
     blocks.findDragGroup(thisBlock);
     for (var b = 0; b < blocks.dragGroup.length; b++) {
         var blk = blocks.dragGroup[b];
-        console.log('putting ' + blocks.blockList[blk].name + ' in the trash');
+        // console.log('putting ' + blocks.blockList[blk].name + ' in the trash');
         blocks.blockList[blk].trash = true;
         blocks.blockList[blk].hide();
         blocks.refreshCanvas();

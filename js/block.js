@@ -487,7 +487,7 @@ function Block(protoblock, blocks, overrideName) {
                 this.postProcess = null;
             }
             this.blocks.refreshCanvas();
-            this.blocks.cleanupAfterLoad();
+            this.blocks.cleanupAfterLoad(this.name);
         } else {
             // Start blocks and Action blocks can collapse, so add an
             // event handler
@@ -573,7 +573,7 @@ function Block(protoblock, blocks, overrideName) {
                                 postProcess(myBlock);
                             }
                             myBlock.blocks.refreshCanvas();
-                            myBlock.blocks.cleanupAfterLoad();
+                            myBlock.blocks.cleanupAfterLoad(myBlock.name);
                         }
                         image.src = 'images/expand.svg';
                     }

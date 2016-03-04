@@ -276,7 +276,32 @@ define(function (require) {
                 logo.step();
             }
         }
-
+	function showChallenges()
+        {
+           var  background = new createjs.Container();
+             background.x =100;
+           background.y = 100;
+             
+             var temp = new Array(5);
+              for(var x=0;x<5;x++)
+              {
+                temp[x] = new Array(8);
+                for(var y=0;y<8;y++)
+                {
+            
+                          temp[x][y] = new createjs.Bitmap("./Challenges/confusion-"+(x*8+y+1)+".svg");
+           
+                    temp[x][y].x = 100*y;
+                    temp[x][y].y = 100*x;
+                    temp[x][y].scaleX= 100/temp[x][y].image.width;
+                     temp[x][y].scaleY= 100/temp[x][y].image.height;
+                    temp[x][y].image.onload = function(){stage.update();}
+                    background.addChild(temp[x][y]);
+                }
+            }
+                stage.addChild(background);
+             
+       }
         function doStepButton() {
             var turtleCount = 0;
             for (var turtle in logo.stepQueue) {
@@ -1607,7 +1632,8 @@ define(function (require) {
                 ['palette', changePaletteVisibility],
                 ['hide-blocks', changeBlockVisibility],
                 ['collapse-blocks', toggleCollapsibleStacks],
-                ['help', showHelp]
+                ['help', showHelp],
+		['ta-open',showChallenges]
             ];
 
             if (sugarizerCompatibility.isInsideSugarizer()) {

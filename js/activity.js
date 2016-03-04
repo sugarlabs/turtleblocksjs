@@ -147,7 +147,7 @@ define(function (require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
         var chartBitmap = null;
-
+        varnotime=0;
         // Calculate the palette colors.
         for (var p in PALETTECOLORS) {
             PALETTEFILLCOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1], PALETTECOLORS[p][2]);
@@ -631,7 +631,7 @@ define(function (require) {
             setupAndroidToolbar();
 
             // Scale the canvas relative to the screen size.
-            onResize();
+           // onResize();
 
             var urlParts;
             var env = [];
@@ -979,7 +979,7 @@ define(function (require) {
         }
 
         function onResize() {
-            if (docById('labelDiv').classList.contains('hasKeyboard')) {
+            /*if (docById('labelDiv').classList.contains('hasKeyboard')) {
                 return;
             }
 
@@ -1040,8 +1040,24 @@ define(function (require) {
             } else {
                 palettes.show();
                 palettes.bringToTop();
-            }
-        }
+            }*/    turtles.setScale(scale);
+            blocks.setScale(scale);
+            palettes.setScale(scale);
+            trashcan.resizeEvent(scale);
+            //setupAndroidToolbar(mobileSize);
+            this.stage.canvas.width=window.innerWidth;
+            this.stage.canvas.height=window.innerHeight;
+            trashcan.canvas.width=window.innerWidth;
+            trashcan.canvas.height=window.innerHeight;
+            turtles.canvas.width=window.innerWidth;
+            turtles.canvas.height=window.innerHeight;
+            blocks.canvas.height=window.innerHeight;
+            blocks.canvas.width=window.innerWidth;
+            palettes.canvas.width=window.innerWidth;
+            palettes.canvas.height=window.innerHeight;
+            update = true;        
+
+                }
 
         window.onresize = function () {
             onResize();

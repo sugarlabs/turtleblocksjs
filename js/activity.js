@@ -175,7 +175,7 @@ define(function (require) {
         var stopTurtleContainer = null;
         var stopTurtleContainerX = 0;
         var stopTurtleContainerY = 0;
-	var homeButtonContainers = [];
+        var homeButtonContainers = [];
         var homeButtonContainersX = 0;
         var homeButtonContainersY = 0;
 
@@ -198,7 +198,7 @@ define(function (require) {
         var blockscale = BLOCKSCALES.indexOf(DEFAULTBLOCKSCALE);
         if (blockscale === -1) {
             blockscale = 1;
-	}
+        }
 
         // Time when we hit run
         var time = 0;
@@ -265,7 +265,7 @@ define(function (require) {
 
         function findBlocks() {
             var x = 100 * scale;
-	    var y = 100 * scale;
+            var y = 100 * scale;
 
             logo.showBlocks();
             blocksContainer.x = 0;
@@ -273,11 +273,11 @@ define(function (require) {
 
             for (var blk in blocks.blockList) {
                 var myBlock = blocks.blockList[blk];
-		if (myBlock.connections[0] == null) {
+                if (myBlock.connections[0] == null) {
                     var dx = x - myBlock.container.x;
-		    var dy = y - myBlock.container.y;
-		    blocks.moveBlockRelative(blk, dx, dy);
-		    blocks.findDragGroup(blk);
+                    var dy = y - myBlock.container.y;
+                    blocks.moveBlockRelative(blk, dx, dy);
+                    blocks.findDragGroup(blk);
                     if (blocks.dragGroup.length > 0) {
                         for (var b = 0; b < blocks.dragGroup.length; b++) {
                             var bblk = blocks.dragGroup[b];
@@ -286,10 +286,10 @@ define(function (require) {
                             }
                         }
                     }
-		    x += 200 * scale;
-		    if (x > (canvas.width - 100) / (scale)) {
-			x = 100 * scale;
-			y += 100 * scale;
+                    x += 200 * scale;
+                    if (x > (canvas.width - 100) / (scale)) {
+                        x = 100 * scale;
+                        y += 100 * scale;
                     }
                 }
             }
@@ -740,7 +740,7 @@ define(function (require) {
                         return;
                     }
 
-		    if (blocks.inLongPress) {
+                    if (blocks.inLongPress) {
                         blocks.copyButton.visible = false;
                         blocks.saveStackButton.visible = false;
                         blocks.dismissButton.visible = false;
@@ -1068,11 +1068,13 @@ define(function (require) {
             blocks.findDragGroup(thisBlock);
             for (var b = 0; b < blocks.dragGroup.length; b++) {
                 var blk = blocks.dragGroup[b];
-                console.log('Restoring ' + blocks.blockList[blk].name + ' from the trash.');
+                // console.log('Restoring ' + blocks.blockList[blk].name + ' from the trash.');
                 blocks.blockList[blk].trash = false;
                 blocks.moveBlockRelative(blk, dx, dy);
                 blocks.blockList[blk].show();
             }
+
+            blocks.raiseStackToTop(thisBlock);
             blocks.refreshCanvas();
         }
 

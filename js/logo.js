@@ -361,7 +361,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             console.log('startHere is ' + this.blocks.blockList[startHere].name);
             // If a block to start from was passed, find its
             // associated turtle, i.e., which turtle should we use?
-            var turtle = 0;
+            var turtle = this.turtles.turtleList.length-1;
             if (this.blocks.blockList[startHere].name === 'start') {
                 // Find the turtle associated with this start block.
                 var turtle = this.blocks.blockList[startHere].value;

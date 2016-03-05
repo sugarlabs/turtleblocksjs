@@ -2403,7 +2403,14 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     var len = blkData[4].length;
                     var nextBlock = last(blkData[4]);
                     blkData[4][len - 1] = this.loadCounter + hiddenBlocks.length;  // blockOffset is added in later.
-                    blockObjs[nextBlock][4][0] = this.loadCounter + hiddenBlocks.length;  // blockOffset is added in later.
+                    // If we are looking into the future, we are
+                    // OK. If we are looking into the past, we need to
+                    // update a previously made connnection.
+                    if (thisBlock < nextBlock + blockOffset) {
+                        blockObjs[nextBlock][4][0] = this.loadCounter + hiddenBlocks.length;  // blockOffset is added in later.
+                    } else {
+                        this.blockList[nextBlock + blockOffset].connections[0] = this.loadCounter + hiddenBlocks.length + blockOffset;
+                    }
                     hiddenBlocks.push([thisBlock, blockOffset + nextBlock]);
                 }
                 this.makeNewBlockWithConnections(name, blockOffset, blkData[4], null);

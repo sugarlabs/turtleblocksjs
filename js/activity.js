@@ -1130,7 +1130,7 @@ define(function (require) {
                 blocks.blockList[blk].hide();
                 if (blocks.blockList[blk].name === 'start') {
                     turtle = blocks.blockList[blk].value;
-                    if (turtle) {
+                    if (turtle != null) {
                         turtles.turtleList[turtle].trash = true;
                         turtles.turtleList[turtle].container.visible = false;
                     }

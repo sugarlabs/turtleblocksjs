@@ -2906,7 +2906,7 @@ function sendStackToTrash(blocks, myBlock) {
         myBlock.connections[0] = null;
     }
 
-    if (myBlock.name === 'start') {
+    if (myBlock.name === 'start' && blocks.turtles.turtleList.length > 1) {
         turtle = myBlock.value;
         if (turtle != null) {
             console.log('putting turtle ' + turtle + ' in the trash');

@@ -640,14 +640,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                 // Move the connected block...
                 var dx = bdock[0] - cdock[0];
                 var dy = bdock[1] - cdock[1];
-                if (myBlock.container == null) {
-                    console.log('Does this ever happen any more?')
-                    var nx = myBlock.x + dx;
-                    var ny = myBlock.y + dy;
-                } else {
-                    var nx = myBlock.container.x + dx;
-                    var ny = myBlock.container.y + dy;
-                }
+                var nx = myBlock.container.x + dx;
+                var ny = myBlock.container.y + dy;
                 this.moveBlock(cblk, nx, ny);
             } else {
                 // or it's parent.
@@ -1046,7 +1040,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
     this.updateBlockPositions = function () {
         // Create the block image if it doesn't yet exist.
         for (var blk = 0; blk < this.blockList.length; blk++) {
-            this.moveBlock(blk, this.blockList[blk].x, this.blockList[blk].y);
+            this.moveBlock(blk, this.blockList[blk].container.x, this.blockList[blk].container.y);
         }
     }
 
@@ -1070,8 +1064,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         if (myBlock.container != null) {
             myBlock.container.x = x;
             myBlock.container.y = y;
-            myBlock.x = x
-            myBlock.y = y
             if (myBlock.collapseContainer != null) {
                 myBlock.collapseContainer.x = x + COLLAPSEBUTTONXOFF * (this.blockList[blk].protoblock.scale / 2);
                 myBlock.collapseContainer.y = y + COLLAPSEBUTTONYOFF * (this.blockList[blk].protoblock.scale / 2);
@@ -1082,8 +1074,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         } else {
             console.log('no container yet');
-            myBlock.x = x
-            myBlock.y = y
         }
     }
 
@@ -1093,8 +1083,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         if (myBlock.container != null) {
             myBlock.container.x += dx;
             myBlock.container.y += dy;
-            myBlock.x = myBlock.container.x;
-            myBlock.y = myBlock.container.y;
             if (myBlock.collapseContainer != null) {
                 myBlock.collapseContainer.x += dx;
                 myBlock.collapseContainer.y += dy;
@@ -1105,8 +1093,6 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
         } else {
             console.log('no container yet');
-            myBlock.x += dx
-            myBlock.y += dy
         }
     }
 
@@ -1408,8 +1394,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         myBlock.container = new createjs.Container();
         this.stage.addChild(myBlock.container);
         myBlock.container.snapToPixelEnabled = true;
-        myBlock.container.x = myBlock.x;
-        myBlock.container.y = myBlock.y;
+        myBlock.container.x = 0;
+        myBlock.container.y = 0;
 
         // and we need to load the images into the container.
         myBlock.imageLoad();
@@ -2752,8 +2738,8 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
             }
             if (thisBlock === this.blockList.length - 1) {
                 if (this.blockList[thisBlock].connections[0] == null) {
-                    this.blockList[thisBlock].x = blkData[2];
-                    this.blockList[thisBlock].y = blkData[3];
+                    this.blockList[thisBlock].container.x = blkData[2];
+                    this.blockList[thisBlock].container.y = blkData[3];
                     this.adjustTheseDocks.push(thisBlock);
                     if (blkData[2] < 0 || blkData[3] < 0 || blkData[2] > canvas.width || blkData[3] > canvas.height) {
                         this.homeButtonContainers[0].visible = true;
@@ -2916,7 +2902,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
 
         if (myBlock.name === 'start' || myBlock.name === 'drum') {
             turtle = myBlock.value;
-            if (turtle != null) {
+            if (turtle != null && blocks.turtles.turtleList.length > 1) {
                 console.log('putting turtle ' + turtle + ' in the trash');
                 this.turtles.turtleList[turtle].trash = true;
                 this.turtles.turtleList[turtle].container.visible = false;

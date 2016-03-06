@@ -26,8 +26,6 @@ function Block(protoblock, blocks, overrideName) {
     this.name = protoblock.name;
     this.overrideName = overrideName;
     this.blocks = blocks;
-    this.x = 0;
-    this.y = 0;
     this.collapsed = false; // Is this block in a collapsed stack?
     this.trash = false; // Is this block in the trash?
     this.loadComplete = false; // Has the block finished loading?
@@ -1002,8 +1000,6 @@ function loadCollapsibleEventHandlers(myBlock) {
         var dy = myBlock.collapseContainer.y - oldY;
         myBlock.container.x += dx;
         myBlock.container.y += dy;
-        myBlock.x = myBlock.container.x;
-        myBlock.y = myBlock.container.y;
 
         // If we are over the trash, warn the user.
         if (trashcan.overTrashcan(event.stageX / myBlock.blocks.blockScale, event.stageY / myBlock.blocks.blockScale)) {
@@ -1208,12 +1204,12 @@ function loadEventHandlers(myBlock) {
 
             var oldX = myBlock.container.x;
             var oldY = myBlock.container.y;
-            myBlock.container.x = Math.round(event.stageX / blocks.blockScale) + offset.x;
-            myBlock.container.y = Math.round(event.stageY / blocks.blockScale) + offset.y;
-            myBlock.x = myBlock.container.x;
-            myBlock.y = myBlock.container.y;
-            var dx = Math.round(myBlock.container.x - oldX);
-            var dy = Math.round(myBlock.container.y - oldY);
+
+            var dx = Math.round(Math.round(event.stageX / blocks.blockScale) + offset.x - oldX);
+            var dy = Math.round(Math.round(event.stageY / blocks.blockScale) + offset.y - oldY);
+
+            // Move this block...
+            blocks.moveBlockRelative(thisBlock, dx, dy);
 
             // If we are over the trash, warn the user.
             if (trashcan.overTrashcan(event.stageX / blocks.blockScale, event.stageY / blocks.blockScale)) {

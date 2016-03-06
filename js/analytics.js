@@ -81,7 +81,7 @@ const TASCORE = {
 // The list of palettes.
 const PALS = ['turtlep', 'penp', 'numberp', 'flowp', 'boxp', 'sensorp', 'mediap', 'extrasp'];
 
-const PALLABELS = [_('turtle'), _('pen'), _('number'), _('flow'), _('box'), _('sensors'), _('media'), _('extras')];
+const PALLABELS = [_('turtle'), _('pen'), _('number'), _('flow'), _('action'), _('sensors'), _('media'), _('extras')];
 
 
 function analyzeProject(blocks) {
@@ -92,6 +92,7 @@ function analyzeProject(blocks) {
         if (blocks.blockList[blk].trash) {
             continue;
         }
+        switch(blocks.blockList[blk].name) {
         case 'start':
         case 'fill':
         case 'hollowline':
@@ -109,6 +110,7 @@ function analyzeProject(blocks) {
                 continue;
             }
             break;
+        }
         blockList.push(blocks.blockList[blk].name);
     }
 

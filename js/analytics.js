@@ -92,6 +92,23 @@ function analyzeProject(blocks) {
         if (blocks.blockList[blk].trash) {
             continue;
         }
+        case 'start':
+        case 'fill':
+        case 'hollowline':
+            if (blocks.blockList[blk].connections[1] == null) {
+                continue;
+            }
+            break;
+        case 'action':
+            if (blocks.blockList[blk].connections[2] == null) {
+                continue;
+            }
+            break;
+        default:
+            if (blocks.blockList[blk].connections[0] == null && last(blocks.blockList[blk].connections) == null) {
+                continue;
+            }
+            break;
         blockList.push(blocks.blockList[blk].name);
     }
 

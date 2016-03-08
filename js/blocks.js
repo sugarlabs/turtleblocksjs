@@ -2385,7 +2385,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
                     var len = blkData[4].length;
                     blkData[4][len - 1] = this.loadCounter + hiddenBlocks.length;  // blockOffset is added in later.
                     hiddenBlocks.push([thisBlock, null]);
-                } else if (blockObjs[last(blkData[4])][1] !== 'hidden') {
+                } else if (blockObjs[last(blkData[4])][1][0] !== 'hidden' && blockObjs[last(blkData[4])][1] !== 'hidden') {
                     var len = blkData[4].length;
                     var nextBlock = last(blkData[4]);
                     blkData[4][len - 1] = this.loadCounter + hiddenBlocks.length;  // blockOffset is added in later.

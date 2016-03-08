@@ -68,6 +68,38 @@ function Block(protoblock, blocks, overrideName) {
     this.postProcess = null;
     this.postProcessArg = null;
 
+    // Internal function for creating cache.
+    // Includes workaround for a race condition.
+    this.createCache = function() {
+        var myBlock = this;
+        myBlock.bounds = myBlock.container.getBounds();
+
+        if (myBlock.bounds == null) {
+            // console.log('Block container for ' + myBlock.name + ' not yet ready.');
+            setTimeout(function() {
+                myBlock.createCache();
+            }, 200);
+        } else {
+            myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
+        }
+    }
+
+    // Internal function for creating cache.
+    // Includes workaround for a race condition.
+    this.updateCache = function() {
+        var myBlock = this;
+
+        if (myBlock.bounds == null) {
+            // console.log('Block container for ' + myBlock.name + ' not yet ready.');
+            setTimeout(function() {
+                myBlock.updateCache();
+            }, 300);
+        } else {
+            myBlock.container.updateCache();
+            myBlock.blocks.refreshCanvas();
+        }
+    }
+
     this.offScreen = function (canvas) {
         return !this.trash && this.connections[0] == null && (this.container.x < 0 || this.container.y < 55 || this.container.x > canvas.width || this.container.y > canvas.height);
     }
@@ -109,8 +141,7 @@ function Block(protoblock, blocks, overrideName) {
                 }
             }
         }
-        this.container.updateCache();
-        this.blocks.refreshCanvas();
+        this.updateCache();
     }
 
     this.unhighlight = function() {
@@ -133,8 +164,7 @@ function Block(protoblock, blocks, overrideName) {
                 }
             }
         }
-        this.container.updateCache();
-        this.blocks.refreshCanvas();
+        this.updateCache();
     }
 
     this.updateArgSlots = function(slotList) {
@@ -160,6 +190,7 @@ function Block(protoblock, blocks, overrideName) {
                 z = myBlock.container.getNumChildren() - 1;
                 myBlock.container.setChildIndex(myBlock.imageBitmap, z);
             }
+
             if (myBlock.name === 'start') {
                 // Rescale the decoration on the start blocks.
                 for (var turtle = 0; turtle < myBlock.blocks.turtles.turtleList.length; turtle++) {
@@ -170,9 +201,10 @@ function Block(protoblock, blocks, overrideName) {
                     }
                 }
             }
-            myBlock.container.updateCache();
+            myBlock.updateCache();
             calculateBlockHitArea(myBlock);
         }
+
         this.protoblock.scale = scale;
         this.newArtwork(0);
         this.regenerateArtwork(true, []);
@@ -180,6 +212,7 @@ function Block(protoblock, blocks, overrideName) {
         if (this.text !== null) {
             positionText(this, scale);
         }
+
         if (this.collapseContainer !== null) {
             this.collapseContainer.uncache();
             var postProcess = function(myBlock) {
@@ -314,8 +347,7 @@ function Block(protoblock, blocks, overrideName) {
             myBlock.container.addChild(bitmap);
             positionMedia(bitmap, myBlock, image.width, image.height, myBlock.protoblock.scale);
             myBlock.imageBitmap = bitmap;
-            myBlock.container.updateCache();
-            myBlock.blocks.refreshCanvas();
+            myBlock.updateCache();
         }
         image.src = this.image;
     }
@@ -325,14 +357,21 @@ function Block(protoblock, blocks, overrideName) {
         // to regenerate the artwork associated with a block.
 
         // First we need to remove the old artwork.
-        this.container.removeChild(this.bitmap);
-        this.container.removeChild(this.highlightBitmap);
+        if (this.bitmap != null) {
+            this.container.removeChild(this.bitmap);
+        }
+
+        if (this.highlightBitmap != null) {
+            this.container.removeChild(this.highlightBitmap);
+        }
+
         if (collapse && this.collapseBitmap !== null) {
             this.collapseContainer.removeChild(this.collapseBitmap);
             this.collapseContainer.removeChild(this.expandBitmap);
             this.container.removeChild(this.collapseBlockBitmap);
             this.container.removeChild(this.highlightCollapseBlockBitmap);
         }
+
         // Then we generate new artwork.
         this.generateArtwork(false);
     }
@@ -353,6 +392,10 @@ function Block(protoblock, blocks, overrideName) {
 
         // Create the bitmap for the block.
         function processBitmap(name, bitmap, myBlock) {
+            if (myBlock.bitmap != null) {
+                myBlock.container.removeChild(myBlock.bitmap);
+            }
+
             myBlock.bitmap = bitmap;
             myBlock.container.addChild(myBlock.bitmap);
             myBlock.bitmap.x = 0;
@@ -363,6 +406,10 @@ function Block(protoblock, blocks, overrideName) {
 
             // Create the highlight bitmap for the block.
             function processHighlightBitmap(name, bitmap, myBlock) {
+                if (myBlock.highlightBitmap != null) {
+                    myBlock.container.removeChild(myBlock.highlightBitmap);
+                }
+
                 myBlock.highlightBitmap = bitmap;
                 myBlock.container.addChild(myBlock.highlightBitmap);
                 myBlock.highlightBitmap.x = 0;
@@ -395,25 +442,29 @@ function Block(protoblock, blocks, overrideName) {
 
                     // Adjust the docks.
                     myBlock.blocks.loopCounter = 0;
+
+                    // console.log('adjust Docks ' + myBlock.name);
                     myBlock.blocks.adjustDocks(thisBlock);
 
                     // Adjust the text position.
                     positionText(myBlock, myBlock.protoblock.scale);
 
+                    /*
                     // Are there clamp blocks that need expanding?
                     if (myBlock.blocks.clampBlocksToCheck.length > 0) {
                         setTimeout(function () {
                             myBlock.blocks.adjustExpandableClampBlock();
                         }, 250);
                     }
+                    */
 
-                    if (['start', 'action'].indexOf(myBlock.name) !== -1) {
+                    if (COLLAPSABLES.indexOf(myBlock.name) !== -1) {
                         myBlock.bitmap.visible = !myBlock.collapsed;
                         myBlock.highlightBitmap.visible = false;
-                        myBlock.container.updateCache();
-                        myBlock.blocks.refreshCanvas();
+                        myBlock.updateCache();
                     }
-                    if (myBlock.postProcess !== null) {
+
+                    if (myBlock.postProcess != null) {
                         myBlock.postProcess(myBlock.postProcessArg);
                         myBlock.postProcess = null;
                     }
@@ -540,8 +591,7 @@ function Block(protoblock, blocks, overrideName) {
 
                     ensureDecorationOnTop(myBlock);
 
-                    myBlock.container.updateCache();
-                    myBlock.blocks.refreshCanvas();
+                    myBlock.updateCache();
 
                     myBlock.collapseContainer = new createjs.Container();
                     myBlock.collapseContainer.snapToPixelEnabled = true;
@@ -703,8 +753,7 @@ function Block(protoblock, blocks, overrideName) {
             // Next, scale the bitmap for the thumbnail.
             positionMedia(bitmap, myBlock, bitmap.image.width, bitmap.image.height, myBlock.protoblock.scale);
             myBlock.container.addChild(bitmap);
-            myBlock.container.updateCache();
-            myBlock.blocks.refreshCanvas();
+            myBlock.updateCache();
         }
 
         if (imagePath === null) {
@@ -773,7 +822,7 @@ function Block(protoblock, blocks, overrideName) {
                 myBlock.bitmap.visible = true;
             } else {
                 myBlock.bitmap.visible = false;
-                myBlock.container.updateCache();
+                myBlock.updateCache();
             }
             myBlock.highlightBitmap.visible = false;
 
@@ -804,8 +853,7 @@ function Block(protoblock, blocks, overrideName) {
             }
 
             myBlock.collapseContainer.updateCache();
-            myBlock.container.updateCache();
-            myBlock.blocks.refreshCanvas();
+            myBlock.updateCache();
         }
 
         toggle(this);
@@ -853,7 +901,7 @@ function positionText(myBlock, scale) {
     // Ensure text is on top.
     z = myBlock.container.getNumChildren() - 1;
     myBlock.container.setChildIndex(myBlock.text, z);
-    myBlock.container.updateCache();
+    myBlock.updateCache();
 }
 
 
@@ -1452,12 +1500,7 @@ function labelChanged(myBlock) {
     // Make sure text is on top.
     var z = myBlock.container.getNumChildren() - 1;
     myBlock.container.setChildIndex(myBlock.text, z);
-    try {
-        myBlock.container.updateCache();
-    } catch (e) {
-        console.log(e);
-    }
-    myBlock.blocks.refreshCanvas();
+    myBlock.updateCache();
 
     var c = myBlock.connections[0];
     if (myBlock.name === 'text' && c !== null) {

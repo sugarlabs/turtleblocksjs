@@ -938,72 +938,11 @@ define(function (require) {
         }
 
         function onResize() {
-            /*if (docById('labelDiv').classList.contains('hasKeyboard')) {
-                return;
-            }
-
-            if (!platform.androidWebkit) {
-                var w = window.innerWidth;
-                var h = window.innerHeight;
-            } else {
-                var w = window.outerWidth;
-                var h = window.outerHeight;
-            }
-
-            var smallSide = Math.min(w, h);
-            if (smallSide < cellSize * 11) {
-                var mobileSize = true;
-                if (w < cellSize * 10) {
-                    scale = smallSide / (cellSize * 11);
-                } else {
-                    scale = Math.max(smallSide / (cellSize * 11), 0.75);
-                }
-            } else {
-                var mobileSize = false;
-                if (w > h) {
-                    scale = w / 1200;
-                } else {
-                    scale = w / 900;
-                }
-            }
-            stage.scaleX = scale;
-            stage.scaleY = scale;
-
-            stage.canvas.width = w;
-            stage.canvas.height = h;
-
-            console.log('Resize: scale ' + scale +
-            ', windowW ' + w + ', windowH ' + h +
-            ', canvasW ' + canvas.width + ', canvasH ' + canvas.height +
-            ', screenW ' + screen.width + ', screenH ' + screen.height);
-
-            turtles.setScale(scale);
+              turtles.setScale(scale);
             blocks.setScale(scale);
             palettes.setScale(scale);
             trashcan.resizeEvent(scale);
             setupAndroidToolbar(mobileSize);
-
-            // Reposition coordinate grids.
-            cartesianBitmap.x = (canvas.width / (2 * scale)) - (600);
-            cartesianBitmap.y = (canvas.height / (2 * scale)) - (450);
-            polarBitmap.x = (canvas.width / (2 * scale)) - (600);
-            polarBitmap.y = (canvas.height / (2 * scale)) - (450);
-            update = true;
-
-            // Setup help now that we have calculated scale.
-            showHelp(true);
-
-            // Hide palette icons on mobile
-            if (mobileSize) {
-                palettes.hide();
-            } else {
-                palettes.show();
-                palettes.bringToTop();
-            }*/    turtles.setScale(scale);
-            blocks.setScale(scale);
-            palettes.setScale(scale);
-            trashcan.resizeEvent(scale);
-            //setupAndroidToolbar(mobileSize);
             this.stage.canvas.width=window.innerWidth;
             this.stage.canvas.height=window.innerHeight;
             trashcan.canvas.width=window.innerWidth;
@@ -1014,7 +953,18 @@ define(function (require) {
             blocks.canvas.width=window.innerWidth;
             palettes.canvas.width=window.innerWidth;
             palettes.canvas.height=window.innerHeight;
+             palettesContainer.scaleX = 1200/window.innerWidth;
+            blocksContainer.scaleX = 1200/window.innerWidth;;
+            trashContainer.scaleX = 1200/window.innerWidth;
+
+            turtleContainer.scaleX = 900/window.innerWidth;
+             palettesContainer.scaleY = 900/window.innerWidth;
+            blocksContainer.scaleY = 900/window.innerWidth;;
+            trashContainer.scaleY = 900/window.innerWidth;
+
+            turtleContainer.scaleY = 900/window.innerWidth;
             update = true;        
+
 
                 }
 

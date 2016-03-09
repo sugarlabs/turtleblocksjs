@@ -140,7 +140,7 @@ define(function (require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
         var chartBitmap = null;
-        varnotime=0;
+      
         // Calculate the palette colors.
         for (var p in PALETTECOLORS) {
             PALETTEFILLCOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1], PALETTECOLORS[p][2]);
@@ -608,7 +608,7 @@ define(function (require) {
             setupAndroidToolbar();
 
             // Scale the canvas relative to the screen size.
-           // onResize();
+          
 
             var urlParts;
             var env = [];

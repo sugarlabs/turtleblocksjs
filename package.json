@@ -6,5 +6,32 @@
       "domReady": "github:requirejs/domReady/2.0.1",
       "webL10n": "github:sugarlabs/webL10n/master"
     }
+  },
+  "devDependencies": {
+    "browserify": "^11.0.1",
+    "chai": "^3.2.0",
+    "grunt": "^0.4.5",
+    "grunt-blanket-mocha": "^0.5.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-karma": "^0.12.0",
+    "karma": "^0.13.6",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-coverage": "^0.5.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-html2js-preprocessor": "^0.1.0",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "karma-requirejs": "^0.2.2",
+    "load-grunt-tasks": "^3.2.0",
+    "request": "^2.60.0",
+    "requirejs": "^2.1.20",
+    "sinon": "^1.15.4",
+    "sinon-chai": "^2.8.0"
+  },
+  "dependencies": {
+    "request": "^2.60.0"
   }
 }

@@ -1913,9 +1913,9 @@ define(function (require) {
                 helpContainer.visible = false;
             } else {
                 if (sugarizerCompatibility.isInsideSugarizer()) {
-                    sugarizerCompatibility.data.doneTour = 'true'
+                    sugarizerCompatibility.data.doneTour = 'true';
                 } else {
-                    storage.doneTour = 'true'
+                    storage.doneTour = 'true';
                 }
                 docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
                 docById('helpElem').style.visibility = 'visible';

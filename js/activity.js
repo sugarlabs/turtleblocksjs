@@ -1141,8 +1141,8 @@ define(function (require) {
             }
             if (addStartBlock) {
                 function postprocess() {
-                    last(blocks.blockList).x = 250;
-                    last(blocks.blockList).y = 250;
+                    last(blocks.blockList).container.x = 250;
+                    last(blocks.blockList).container.y = 250;
                     last(blocks.blockList).connections = [null, null, null];
                     turtles.add(last(blocks.blockList));
                     last(blocks.blockList).value = turtles.turtleList.length - 1;

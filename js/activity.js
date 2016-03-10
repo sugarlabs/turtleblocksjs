@@ -270,6 +270,9 @@ define(function (require) {
             logo.showBlocks();
             blocksContainer.x = 0;
             blocksContainer.y = 0;
+            palettes.initial_x = 55;
+            palettes.initial_y = 55;
+            palettes.updatePalettes();
 
             for (var blk in blocks.blockList) {
                 var myBlock = blocks.blockList[blk];

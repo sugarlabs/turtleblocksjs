@@ -123,7 +123,7 @@ define(function (require) {
         // Set up a file chooser for the doOpenPlugin function.
         var pluginChooser = docById('myOpenPlugin');
         // The file chooser for all files.
-        var allFilesChooser = docById('myOpenAll')
+        var allFilesChooser = docById('myOpenAll');
 
         // Are we running off of a server?
         var server = true;
@@ -218,7 +218,6 @@ define(function (require) {
         if (onXO) {
             cellSize = 75;
         }
-        ;
 
         var onscreenButtons = [];
         var onscreenMenu = [];
@@ -441,7 +440,7 @@ define(function (require) {
                     Analytics.close(chartBitmap, ctx);
                 };
                 img.src = imageData;
-            }
+            };
 
             var options = getChartOptions(callback);
             console.log('creating new chart');
@@ -559,7 +558,7 @@ define(function (require) {
             initBasicProtoBlocks(palettes, blocks);
 
             // Load any macros saved in local storage.
-            macroData = storage.macros
+            macroData = storage.macros;
             if (macroData) {
                 processMacroData(macroData, palettes, blocks, macroDict);
             }
@@ -608,7 +607,7 @@ define(function (require) {
                 this.value = null;
             });
             pluginChooser.addEventListener('change', function (event) {
-                window.scroll(0, 0)
+                window.scroll(0, 0);
 
                 // Read file here.
                 var reader = new FileReader();
@@ -885,10 +884,10 @@ define(function (require) {
                 });
                 callback(text);
                 blocks.setMsgText(text);
-            }
+            };
             img.src = 'data:image/svg+xml;base64,' + window.btoa(
                 unescape(encodeURIComponent(svgData)));
-        };
+        }
 
         function createErrorContainers() {
             // Some error messages have special artwork.
@@ -935,7 +934,7 @@ define(function (require) {
                     }
                     update = true;
                 });
-            }
+            };
             img.src = 'images/' + name + '.svg';
         }
 
@@ -987,11 +986,11 @@ define(function (require) {
                 case ESC:
                     // toggle full screen
                     toggleToolbar();
-                    break
+                    break;
                 case RETURN:
                     // toggle run
                     logo.runLogoCommands();
-                    break
+                    break;
                 default:
                     currentKey = String.fromCharCode(event.keyCode);
                     currentKeyCode = event.keyCode;
@@ -1225,8 +1224,8 @@ define(function (require) {
             thumbnails.show()
         }
 
-        window.prepareExport = prepareExport
-        window.saveLocally = saveLocally
+        window.prepareExport = prepareExport;
+        window.saveLocally = saveLocally;
 
         function saveLocally() {
 
@@ -1270,7 +1269,7 @@ define(function (require) {
                 } catch (e) {
                     console.log(e);
                 }
-            }
+            };
             img.src = 'data:image/svg+xml;base64,' +
             window.btoa(unescape(encodeURIComponent(svgData)));
             console.log(img.src);
@@ -1390,7 +1389,7 @@ define(function (require) {
         function loadStart() {
             justLoadStart = function () {
                 blocks.loadNewBlocks(DATAOBJS);
-            }
+            };
 
             if (sugarizerCompatibility.isInsideSugarizer()) {
                 storage = sugarizerCompatibility.data;
@@ -1661,7 +1660,7 @@ define(function (require) {
                 filename += '.tb';
             }
             download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
-        };
+        }
 
         function hideStopButton() {
             stopTurtleContainer.x = stopTurtleContainerX;
@@ -1691,7 +1690,7 @@ define(function (require) {
                 bitmap.regY = halfSize / bitmap.scaleY;
                 pasteContainer.addChild(bitmap)
                 update = true;
-            }
+            };
             img.src = 'header-icons/paste-button.svg';
         }
 
@@ -1850,7 +1849,7 @@ define(function (require) {
                                 helpIdx = 0;
                             }
                             var imageScale = 55 * scale;
-                            helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                            helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
                         }
                         update = true;
                     });
@@ -1864,7 +1863,7 @@ define(function (require) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.125;
                         }
 
-                        helpContainer.addChild(bitmap)
+                        helpContainer.addChild(bitmap);
                         var bounds = helpContainer.getBounds();
                         var hitArea = new createjs.Shape();
                         hitArea.graphics.beginFill('#FFF').drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -1872,7 +1871,7 @@ define(function (require) {
                         hitArea.y = 0;
                         helpContainer.hitArea = hitArea;
 
-                        docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                        docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
                         if (!doneTour) {
                             docById('helpElem').style.visibility = 'visible';
                         }
@@ -1907,7 +1906,7 @@ define(function (require) {
 
             }
 
-            doneTour = storage.doneTour === 'true'
+            doneTour = storage.doneTour === 'true';
 
             if (firstTime && doneTour) {
                 docById('helpElem').style.visibility = 'hidden';
@@ -1918,7 +1917,7 @@ define(function (require) {
                 } else {
                     storage.doneTour = 'true'
                 }
-                docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>'
+                docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
                 docById('helpElem').style.visibility = 'visible';
                 helpContainer.visible = true;
                 update = true;
@@ -2055,7 +2054,7 @@ define(function (require) {
                 bitmap.cache(0, 0, size, size);
                 bitmap.updateCache();
                 update = true;
-            }
+            };
 
             img.src = 'header-icons/' + name + '.svg';
             container.addChild(text);

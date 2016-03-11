@@ -19,7 +19,7 @@ const PALETTELEFTMARGIN = 10;
 
 // We don't include 'extras' since we want to be able to delete
 // plugins from the extras palette.
-const BUILTINPALETTES = [    'turtle', 'pen', 'number', 'boolean', 'flow', 'boxes', 'actions', 'media', 'sensors', 'myblocks', 'heap'];
+const BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'boxes', 'actions', 'media', 'sensors', 'myblocks', 'heap'];
 
 
 function maxPaletteHeight(menuSize, scale) {
@@ -68,7 +68,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     this.trashcan = trashcan;
     this.initial_x = 55;
     this.initial_y = 55;
-
+    
     if (sugarizerCompatibility.isInsideSugarizer()) {
         storage = sugarizerCompatibility.data;
     } else {
@@ -216,7 +216,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     }
 
     this.updatePalettes = function(showPalette) {
-        if (showPalette) {
+        if (showPalette != null) {
             this.makePalettes(false);
             var myPalettes = this;
             setTimeout(function() {
@@ -226,7 +226,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
                 myPalettes.refreshCanvas();
             }, 100);
         } else {
-	    this.makePalettes(true);
+            this.makePalettes(true);
             this.refreshCanvas();
         }
     }
@@ -275,7 +275,8 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
                 this.stage.removeChild(this.dict[name].protoContainers[item]);
                 this.stage.addChild(this.dict[name].protoContainers[item]);
             }
-	    // this.dict[name].resetLayout();
+            // console.log('in bring to top');
+            // this.dict[name].resetLayout();
         }
         this.refreshCanvas();
     }
@@ -346,7 +347,6 @@ function loadPaletteButtonHandler(palettes, name) {
         setTimeout(function() {
             locked = false;
         }, 500);
-
         palettes.dict[name].moveMenu(palettes.initial_x, palettes.initial_y);
         palettes.showPalette(name);
         palettes.refreshCanvas();
@@ -451,8 +451,14 @@ function PaletteModel(palette, palettes, name) {
             case 'text':
                 label = _('text');
                 break;
+            case 'solfege':
+                label = _('sol');
+                break;
+            case 'notename':
+                label = 'G';
+                break;
             case 'number':
-                label = '100';
+                label = '4';
                 break;
             case 'less':
             case 'greater':
@@ -512,24 +518,6 @@ function PaletteModel(palette, palettes, name) {
                 var artwork = svg.basicBlock();
                 var docks = svg.docks;
                 break;
-            /*
-            case 'ifthenelse':
-                label = protoBlock.staticLabels[0]
-                    + ' ' + protoBlock.staticLabels[2];
-            case 'if':
-            case 'until':
-            case 'while':
-            case 'waitFor':
-                // so the block will fit
-                var svg = new SVG();
-                svg.init();
-                svg.setScale(protoBlock.scale);
-                svg.setTab(true);
-                svg.setSlot(true);
-                var artwork = svg.basicBlock();
-                var docks = svg.docks;
-                break;
-            */
             default:
                 var obj = protoBlock.generator();
                 var artwork = obj[0];
@@ -648,8 +636,7 @@ function PopdownPalette(palettes) {
 
                 console.log(e.dataset.blk + ' ' + e.dataset.modname);
                 var newBlock = makeBlockFromPalette(
-                    palette.protoList[e.dataset.blk], e.dataset.modname,
-                    palette, function (newBlock) {
+                    palette.protoList[e.dataset.blk], e.dataset.modname, palette, function (newBlock) {
                     // Move the drag group under the cursor.
                     paletteBlocks.findDragGroup(newBlock);
                     for (var i in paletteBlocks.dragGroup) {
@@ -768,7 +755,8 @@ function Palette(palettes, name) {
                             });
                         }
                         makePaletteBitmap(palette, DOWNICON, name, processDownIcon, null);
-                    function makeFadedDownIcon(palette, name, bitmap, extras) {
+
+                        function makeFadedDownIcon(palette, name, bitmap, extras) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
                             palette.palettes.stage.addChild(bitmap);
                             bitmap.x = palette.menuContainer.x + paletteWidth;
@@ -799,15 +787,19 @@ function Palette(palettes, name) {
                             palette.fadedUpButton = bitmap;
                         }
                         makePaletteBitmap(palette, FADEDUPICON, name, makeFadedUpIcon, null);
+
                     }
                     makePaletteBitmap(palette, UPICON, name, processUpIcon, null);
+
                 }
                 makePaletteBitmap(palette, CLOSEICON, name, processCloseIcon, null);
+
             }
             makePaletteBitmap(palette, PALETTEICONS[name], name, processButtonIcon, null);
-        }
 
+        }
         makePaletteBitmap(this, PALETTEHEADER.replace('fill_color', '#282828').replace('palette_label', _(this.name)).replace(/header_width/g, paletteWidth), this.name, processHeader, null);
+
     }
 
     this.getDownButtonY = function () {
@@ -816,6 +808,7 @@ function Palette(palettes, name) {
     }
 
     this.resizeEvent = function() {
+        this.hide();
         this.updateBackground();
         this.updateBlockMasks();
 
@@ -843,7 +836,7 @@ function Palette(palettes, name) {
 
         if (this.background !== null) {
             this.background.removeAllChildren();
-        } else { 
+        } else {
             this.background = new createjs.Container();
             this.background.snapToPixelEnabled = true;
             this.background.visible = false;
@@ -869,14 +862,14 @@ function Palette(palettes, name) {
     }
 
     this.resetLayout = function() {
-	// Account for menu toolbar
+        // Account for menu toolbar
         if (this.menuContainer == null) {
             return;
-	}
+        }
 
         for (var i in this.protoContainers) {
             this.protoContainers[i].y -= this.scrollDiff;
-	}
+        }
 
         this.y = this.menuContainer.y + STANDARDBLOCKHEIGHT;
         var items = [];
@@ -898,7 +891,7 @@ function Palette(palettes, name) {
 
         for (var i in this.protoContainers) {
             this.protoContainers[i].y += this.scrollDiff;
-	}
+        }
     }
 
     this.updateMenu = function(hide) {
@@ -969,7 +962,8 @@ function Palette(palettes, name) {
                                 bitmap.x = MEDIASAFEAREA[0] * (b.scale / 2);
                                 bitmap.y = MEDIASAFEAREA[1] * (b.scale / 2);
                                 calculateBounds(palette, blk, modname);
-                            }
+                            };
+
                             image.src = b.image;
                         } else {
                             calculateBounds(palette, blk, modname);
@@ -1192,6 +1186,25 @@ function Palette(palettes, name) {
         return returnString;
     };
 
+    this.remove = function(protoblock, name) {
+        // Remove the protoblock and its associated artwork container.
+        console.log('removing action ' + name);
+        var i = this.protoList.indexOf(protoblock);
+        if (i !== -1) {
+            this.protoList.splice(i, 1);
+        }
+
+        for (var i = 0; i < this.model.blocks.length; i++) {
+            if (['nameddo', 'nameddoArg', 'namedcalc', 'namedcalcArg'].indexOf(this.model.blocks[i].name) !== -1 && this.model.blocks[i].label === name) {
+                console.log(this.model.blocks[i]);
+                this.model.blocks.splice(i, 1);
+                break;
+            }
+        }
+        this.palettes.stage.removeChild(this.protoContainers[name]);
+        delete this.protoContainers[name];
+    }
+
     this.add = function(protoblock, top) {
         // Add a new palette entry to the end of the list (default) or
         // to the top.
@@ -1269,7 +1282,10 @@ function setupBackgroundEvents(palette) {
 
 
 function makeBlockFromPalette(protoblk, blkname, palette, callback) {
-    const BUILTINMACROS= ['fill', 'hollowline'];
+    const BUILTINMACROS= ['note', 'rhythmicdot', 'tie', 'dividebeatfactor', 'multiplybeatfactor', 'duplicatenotes', 'skipnotes', 'setbpm',
+    'drift', 'osctime', 'sharp', 'flat', 'settransposition', 'invert', 'staccato', 'slur', 'swing', 'crescendo', 'setnotevolume2',
+    'matrix', 'turtlepitch', 'setturtlename', 'wholeNote', 'halfNote', 'quarterNote', 'eighthNote', 'sixteenthNote',
+    'thirtysecondNote', 'sixtyfourthNote', 'tone', 'rest2', 'tuplet2', 'fill', 'hollowline' ];
 
     switch (protoblk.name) {
     case 'do':
@@ -1397,7 +1413,7 @@ function loadPaletteMenuItemHandler(palette, protoblk, blkname) {
         palette.protoContainers[blkname].mask = null;
 
         moved = false;
-	pressed = true;
+        pressed = true;
         saveX = palette.protoContainers[blkname].x;
         saveY = palette.protoContainers[blkname].y - palette.scrollDiff;
         var startX = event.stageX;
@@ -1461,15 +1477,80 @@ function loadPaletteMenuItemHandler(palette, protoblk, blkname) {
 
 function makeBlockFromProtoblock(palette, protoblk, moved, blkname, event, saveX, saveY) {
 
+    // Some blocks are expanded on load.
+    const NOTEOBJ = [[0, 'note', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, 5]], [1, ['number', {'value': 8}], 0, 0, [0]], [2, 'pitch', 0, 0, [0, 3, 4, null]], [3, ['solfege', {'value': _('la')}], 0, 0, [2]], [4, ['number', {'value': 4}], 0, 0, [2]], [5, 'hidden', 0, 0, [0, null]]];
+    const DOTOBJ = [[0, 'rhythmicdot', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
+    const TIEOBJ = [[0, 'tie', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
+    const DIVBEATOBJ = [[0, 'dividebeatfactor', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 2}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const MULTBEATOBJ = [[0, 'multiplybeatfactor', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 2}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const DUPOBJ = [[0, 'duplicatenotes', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 2}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const SKIPOBJ = [[0, 'skipnotes', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 2}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const BPMOBJ = [[0, 'setbpm', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 90}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const OSCTIMEOBJ = [[0, 'osctime', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 2, 1, 7]], [1, 'vspace', 0, 0, [0, 5]], [2, 'divide', 0, 0, [0, 3, 4]], [3, ['number', {'value': 1000}], 0, 0, [2]], [4, ['number', {'value': 3}], 0, 0, [2]], [5, 'triangle', 0, 0, [1, 6, null]], [6, ['number', {'value': 440}], 0, 0, [5]], [7, 'hidden', 0, 0, [0, null]]];
+    const DRIFTOBJ = [[0, 'drift', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
+    const SHARPOBJ = [[0, 'sharp', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
+    const FLATOBJ = [[0, 'flat', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
+    const TRANSPOBJ = [[0, 'settransposition', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const INVERTOBJ = [[0, 'invert', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null, 3]], [1, ['solfege', {'value': _('sol')}], 0, 0, [0]], [2, ['number', {'value': 4}], 0, 0, [0]], [3, 'hidden', 0, 0, [0, null]]];
+    const STACCATOOBJ = [[0, 'staccato', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 32}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const SLUROBJ = [[0, 'slur', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 32}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const SWINGOBJ = [[0, 'swing', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 32}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const CRESCENDOOBJ = [[0, 'crescendo', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 5}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const VOLOBJ = [[0, 'setnotevolume2', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 50}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const ARTICULATIONOOBJ = [[0, 'articulation', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null, 2]], [1, ['number', {'value': 25}], 0, 0, [0]], [2, 'hidden', 0, 0, [0, null]]];
+    const MATRIXOBJ = [[0, 'matrix', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 13]], [1, 'pitch', 0, 0, [0, 2, 3, 4]], [2, ['solfege', {'value': _('sol')}], 0, 0, [1]], [3, ['number', {'value': 4}], 0, 0, [1]], [4, 'pitch', 0, 0, [1, 5, 6, 7]], [5, ['solfege', {'value': _('mi')}], 0, 0, [4]], [6, ['number', {'value': 4}], 0, 0, [4]], [7, 'pitch', 0, 0, [4, 8, 9, 10]], [8, ['solfege', {'value': _('re')}], 0, 0, [7]], [9, ['number', {'value': 4}], 0, 0, [7]], [10, 'rhythm', 0, 0, [7, 11, 12, null]], [11, ['number', {'value': 3}], 0, 0, [10]], [12, ['number', {'value': 4}], 0, 0, [10]], [13, 'hidden', 0, 0, [0, null]]];
+    const TURTLEPITCHOBJ = [[0, 'turtlepitch', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null]], [1, 'turtlename', 0, 0, [0]]]
+    const SETTURTLENAMEOBJ = [[0, 'setturtlename', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, 'turtlename', 0, 0, [0]], [2, ['text', {'value': 'Yertle'}], 0, 0, [0]]];
+    const WHOLEOBJ = [[0, 'rhythm', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, ['number', {'value': 1}], 0, 0, [0]]];
+    const HALFOBJ = [[0, 'rhythm', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, ['number', {'value': 2}], 0, 0, [0]]];
+    const QUARTEROBJ = [[0, 'rhythm', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, ['number', {'value': 4}], 0, 0, [0]]];
+    const EIGHTHOBJ = [[0, 'rhythm', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, ['number', {'value': 8}], 0, 0, [0]]];
+    const SIXTEENTHOBJ = [[0, 'rhythm', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, ['number', {'value': 16}], 0, 0, [0]]];
+    const THIRTYSECONDOBJ = [[0, 'rhythm', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, ['number', {'value': 32}], 0, 0, [0]]];
+    const SIXTYFOURTHOBJ = [[0, 'rhythm', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, ['number', {'value': 64}], 0, 0, [0]]];
+    const TONEOBJ = [[0, 'drift', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null]], [1, 'osctime', 0, 0, [0, 3, 2, null]], [2, 'vspace', 0, 0, [1, 6]], [3, 'divide', 0, 0, [1, 4, 5]], [4, ['number', {'value': 1000}], 0, 0, [3]], [5, ['number', {'value': 3}], 0, 0, [3]], [6, 'triangle', 0, 0, [2, 7, null]], [7, ['number', {'value': 440}], 0, 0, [6]]];
+    const RESTOBJ = [[0, 'note', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, ['number', {'value': 8}], 0, 0, [0]], [2, 'rest2', 0, 0, [0, null]]];
+    const TUPLETOBJ = [[0, 'tuplet2', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, 3, 6]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, ['number', {'value': 4}], 0, 0, [0]], [3, 'rhythm', 0, 0, [0, 4, 5, null]], [4, ['number', {'value': 3}], 0, 0, [3]], [5, ['number', {'value': 4}], 0, 0, [3]], [6, 'hidden', 0, 0, [0, null]]];
     const FILLOBJ = [[0, 'fill', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
     const HOLLOWOBJ = [[0, 'hollowline', palette.protoContainers[blkname].x - paletteBlocks.stage.x, palette.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
 
-    // Some blocks are expanded on load.
-    const BUILTINMACROS = {
+    const BUILTINMACROS = {'note': NOTEOBJ,
+                           'rhythmicdot': DOTOBJ,
+                           'tie': TIEOBJ,
+                           'dividebeatfactor': DIVBEATOBJ,
+                           'multiplybeatfactor': MULTBEATOBJ,
+                           'duplicatenotes': DUPOBJ,
+                           'skipnotes': SKIPOBJ,
+                           'setbpm': BPMOBJ,
+                           'drift': DRIFTOBJ,
+                           'osctime': OSCTIMEOBJ,
+                           'sharp': SHARPOBJ,
+                           'flat': FLATOBJ,
+                           'settransposition': TRANSPOBJ,
+                           'invert': INVERTOBJ,
+                           'staccato': STACCATOOBJ,
+                           'slur': SLUROBJ,
+                           'swing': SWINGOBJ,
+                           'crescendo': CRESCENDOOBJ,
+                           'setnotevolume2': VOLOBJ,
+                           'articulation': ARTICULATIONOOBJ,
+                           'matrix': MATRIXOBJ,
+                           'turtlepitch': TURTLEPITCHOBJ,
+                           'setturtlename': SETTURTLENAMEOBJ,
+                           'wholeNote': WHOLEOBJ,
+                           'halfNote': HALFOBJ,
+                           'quarterNote': QUARTEROBJ,
+                           'eighthNote': EIGHTHOBJ,
+                           'sixteenthNote': SIXTEENTHOBJ,
+                           'thirtysecondNote': THIRTYSECONDOBJ,
+                           'sixtyfourthNote': SIXTYFOURTHOBJ,
+                           'tone': TONEOBJ,
+                           'rest2': RESTOBJ,
+                           'tuplet2': TUPLETOBJ,
                            'fill': FILLOBJ,
                            'hollowline': HOLLOWOBJ,
-    };
-    
+                        };
+
     if (moved) {
         moved = false;
         palette.draggingProtoBlock = false;
@@ -1520,7 +1601,6 @@ function makeBlockFromProtoblock(palette, protoblk, moved, blkname, event, saveX
             // before loading.
             obj[0][2] = palette.protoContainers[blkname].x - paletteBlocks.stage.x;
             obj[0][3] = palette.protoContainers[blkname].y - paletteBlocks.stage.y;
-            console.log('loading macro ' + macroName);
             paletteBlocks.loadNewBlocks(obj);
 
             // Ensure collapse state of new stack is set properly.
@@ -1540,12 +1620,11 @@ function makeBlockFromProtoblock(palette, protoblk, moved, blkname, event, saveX
                 blocks.blockMoved(newBlock);
             }
 
-            // console.log(protoblk + ' ' + blkname);
             var newBlock = makeBlockFromPalette(protoblk, blkname, palette, myCallback);
         }
 
         // Put the protoblock back on the palette...
-	palette.resetLayout();
+        palette.resetLayout();
 
         palette.updateBlockMasks();
         palette.palettes.refreshCanvas();
@@ -1666,7 +1745,6 @@ function promptPaletteDelete(palette) {
         return;
     }
 
-    console.log('removing palette ' + palette.name);
     palette.palettes.remove(palette.name);
 
     delete pluginObjs['PALETTEHIGHLIGHTCOLORS'][palette.name];
@@ -1709,7 +1787,6 @@ function promptMacrosDelete(palette) {
         return;
     }
 
-    console.log('removing macros from ' + palette.name);
     for (var i = 0; i < palette.protoList.length; i++) {
         var name = palette.protoList[i].name;
         delete palette.protoContainers[name];
@@ -1730,16 +1807,8 @@ function makePaletteBitmap(palette, data, name, callback, extras) {
     img.onload = function() {
         var bitmap = new createjs.Bitmap(img);
         callback(palette, name, bitmap, extras);
-    }
+    };
+
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
-}
-
-
-function regeneratePalette(palette) {
-    palette.visible = false;
-    palette.hideMenuItems();
-    palette.protoContainers = {};
-
-    palette.palettes.updatePalettes(palette.name);
 }

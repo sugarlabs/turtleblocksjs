@@ -13,6 +13,7 @@
 // (https://github.com/walterbender/turtleart), but implemented from
 // scratch. -- Walter Bender, October 2014.
 
+
 function facebookInit() {
     window.fbAsyncInit = function () {
         FB.init({
@@ -589,6 +590,13 @@ define(function (require) {
                         console.log(rawData)
                         var cleanData = rawData.replace('\n', ' ');
                         var obj = JSON.parse(cleanData);
+                        // First, hide the palettes as they will need updating.
+                        for (var name in blocks.palettes.dict) {
+                            blocks.palettes.dict[name].hideMenu(true);
+                        }
+
+                        refreshCanvas();
+
                         blocks.loadNewBlocks(obj);
                         // Restore default cursor.
                         document.body.style.cursor = 'default';
@@ -1079,6 +1087,12 @@ define(function (require) {
 
         function restoreTrash() {
             // Restore last stack pushed to trashStack.
+            // First, hide the palettes as they will need updating.
+            for (var name in blocks.palettes.dict) {
+                blocks.palettes.dict[name].hideMenu(true);
+            }
+            refreshCanvas();
+
             var dx = 0;
             var dy = -cellSize * 3; // Reposition blocks about trash area.
 
@@ -1088,13 +1102,8 @@ define(function (require) {
             }
 
             var thisBlock = blocks.trashStacks.pop();
-            if (blocks.blockList[thisBlock].name === 'start' || blocks.blockList[thisBlock].name === 'drum') {
-                turtle = blocks.blockList[thisBlock].value;
-                turtles.turtleList[turtle].trash = false;
-                turtles.turtleList[turtle].container.visible = true;
-            }
 
-            // put drag group in trash
+            // Restore drag group in trash
             blocks.findDragGroup(thisBlock);
             for (var b = 0; b < blocks.dragGroup.length; b++) {
                 var blk = blocks.dragGroup[b];
@@ -1105,6 +1114,22 @@ define(function (require) {
             }
 
             blocks.raiseStackToTop(thisBlock);
+
+            if (blocks.blockList[thisBlock].name === 'start' || blocks.blockList[thisBlock].name === 'drum') {
+                var turtle = blocks.blockList[thisBlock].value;
+                turtles.turtleList[turtle].trash = false;
+                turtles.turtleList[turtle].container.visible = true;
+            } else if (blocks.blockList[thisBlock].name === 'action') {
+                // We need to add a palette entry for this action.
+                var actionArg = blocks.blockList[blocks.blockList[thisBlock].connections[1]];
+                if (actionArg) {
+                    var actionName = actionArg.value;
+                    if (actionName !== _('action')) {
+                        blocks.checkPaletteEntries('action');
+                    }
+                }
+            }
+
             blocks.refreshCanvas();
         }
 
@@ -1118,6 +1143,12 @@ define(function (require) {
 
         // Confirmation is handled in the utility palette.
         function sendAllToTrash(addStartBlock, doNotSave) {
+            // First, hide the palettes as they will need updating.
+            for (var name in blocks.palettes.dict) {
+                blocks.palettes.dict[name].hideMenu(true);
+            }
+            refreshCanvas();
+
             var dx = 0;
             var dy = cellSize * 3;
             for (var blk in blocks.blockList) {
@@ -1136,6 +1167,8 @@ define(function (require) {
                         turtles.turtleList[turtle].trash = true;
                         turtles.turtleList[turtle].container.visible = false;
                     }
+                } else if (blocks.blockList[blk].name === 'action') {
+                    blocks.deleteActionBlock(blocks.blockList[blk]);
                 }
             }
             if (addStartBlock) {
@@ -1303,6 +1336,12 @@ define(function (require) {
                         console.log('receiving ' + rawData);
                         var cleanData = rawData.replace('\n', '');
                     }
+
+                    // First, hide the palettes as they will need updating.
+                    for (var name in blocks.palettes.dict) {
+                        blocks.palettes.dict[name].hideMenu(true);
+                    }
+
                     var obj = JSON.parse(cleanData);
                     blocks.loadNewBlocks(obj);
                     saveLocally();
@@ -1341,6 +1380,12 @@ define(function (require) {
             console.log('loadRawProject ' + data);
             document.body.style.cursor = 'wait';
             allClear();
+
+            // First, hide the palettes as they will need updating.
+            for (var name in blocks.palettes.dict) {
+                blocks.palettes.dict[name].hideMenu(true);
+            }
+
             var obj = JSON.parse(data);
             blocks.loadNewBlocks(obj);
 
@@ -1409,6 +1454,11 @@ define(function (require) {
                         justLoadStart();
                     } else {
                         console.log('restoring session: ' + sessionData);
+                        // First, hide the palettes as they will need updating.
+                        for (var name in blocks.palettes.dict) {
+                            blocks.palettes.dict[name].hideMenu(true);
+                        }
+
                         blocks.loadNewBlocks(JSON.parse(sessionData));
                     }
                 } catch (e) {
@@ -1417,6 +1467,7 @@ define(function (require) {
             } else {
                 justLoadStart();
             }
+
             update = true;
 
             docById('loading-image-container').style.display = 'none';

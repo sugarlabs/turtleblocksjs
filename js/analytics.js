@@ -157,15 +157,16 @@ function analyzeProject(blocks) {
 function scoreToChartData(scores) {
     var normalizedScores = [];
     var maxScore = 0;
+    var scale;
     for (var i = 0; i < scores.length; i++) {
         if (scores[i] > maxScore) {
             maxScore = scores[i];
         }
     }
     if (maxScore > 0) {
-        var scale = 100 / maxScore;
+        scale = 100 / maxScore;
     } else {
-        var scale = 1;
+        scale = 1;
     }
 
     if (scale > 1) {

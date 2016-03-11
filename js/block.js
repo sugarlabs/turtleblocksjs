@@ -82,7 +82,7 @@ function Block(protoblock, blocks, overrideName) {
         } else {
             myBlock.container.cache(myBlock.bounds.x, myBlock.bounds.y, myBlock.bounds.width, myBlock.bounds.height);
         }
-    }
+    };
 
     // Internal function for creating cache.
     // Includes workaround for a race condition.
@@ -98,19 +98,19 @@ function Block(protoblock, blocks, overrideName) {
             myBlock.container.updateCache();
             myBlock.blocks.refreshCanvas();
         }
-    }
+    };
 
     this.offScreen = function (canvas) {
         return !this.trash && this.connections[0] == null && (this.container.x < 0 || this.container.y < 55 || this.container.x > canvas.width || this.container.y > canvas.height);
-    }
+    };
 
     this.copySize = function() {
         this.size = this.protoblock.size;
-    }
+    };
 
     this.getInfo = function() {
         return this.name + ' block';
-    }
+    };
 
     this.highlight = function() {
         if (this.collapsed && ['start', 'action'].indexOf(this.name) !== -1) {
@@ -142,7 +142,7 @@ function Block(protoblock, blocks, overrideName) {
             }
         }
         this.updateCache();
-    }
+    };
 
     this.unhighlight = function() {
         if (this.collapsed && ['start', 'action'].indexOf(this.name) !== -1) {
@@ -165,21 +165,21 @@ function Block(protoblock, blocks, overrideName) {
             }
         }
         this.updateCache();
-    }
+    };
 
     this.updateArgSlots = function(slotList) {
         // Resize and update number of slots in argClamp
         this.argClampSlots = slotList;
         this.newArtwork();
         this.regenerateArtwork(false);
-    }
+    };
 
     this.updateSlots = function(clamp, plusMinus) {
         // Resize an expandable block.
         this.clampCount[clamp] += plusMinus;
         this.newArtwork(plusMinus);
         this.regenerateArtwork(false);
-    }
+    };
 
     this.resize = function(scale) {
         // If the block scale changes, we need to regenerate the
@@ -203,7 +203,7 @@ function Block(protoblock, blocks, overrideName) {
             }
             myBlock.updateCache();
             calculateBlockHitArea(myBlock);
-        }
+        };
 
         this.protoblock.scale = scale;
         this.newArtwork(0);
@@ -222,14 +222,14 @@ function Block(protoblock, blocks, overrideName) {
                 myBlock.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                 positionCollapseContainer(myBlock, myBlock.protoblock.scale);
                 calculateCollapseHitArea(myBlock);
-            }
+            };
 
             this.generateCollapseArtwork(postProcess);
             var fontSize = 10 * scale;
             this.collapseText.font = fontSize + 'px Sans';
             positionCollapseLabel(this, scale);
         }
-    }
+    };
 
     this.newArtwork = function(plusMinus) {
         switch (this.name) {
@@ -321,7 +321,7 @@ function Block(protoblock, blocks, overrideName) {
             this.docks[i][0] = obj[1][i][0];
             this.docks[i][1] = obj[1][i][1];
         }
-    }
+    };
 
     this.imageLoad = function() {
         // Load any artwork associated with the block and create any
@@ -335,7 +335,7 @@ function Block(protoblock, blocks, overrideName) {
         this.text = new createjs.Text('', fontSize + 'px Sans', '#000000');
 
         this.generateArtwork(true, []);
-    }
+    };
 
     this.addImage = function() {
         var image = new Image();
@@ -348,9 +348,9 @@ function Block(protoblock, blocks, overrideName) {
             positionMedia(bitmap, myBlock, image.width, image.height, myBlock.protoblock.scale);
             myBlock.imageBitmap = bitmap;
             myBlock.updateCache();
-        }
+        };
         image.src = this.image;
-    }
+    };
 
     this.regenerateArtwork = function(collapse) {
         // Sometimes (in the case of namedboxes and nameddos) we need
@@ -374,7 +374,7 @@ function Block(protoblock, blocks, overrideName) {
 
         // Then we generate new artwork.
         this.generateArtwork(false);
-    }
+    };
 
     this.generateArtwork = function(firstTime) {
         // Get the block labels from the protoblock
@@ -502,7 +502,7 @@ function Block(protoblock, blocks, overrideName) {
             artwork = artwork.replace('arg_label_' + i, this.protoblock.staticLabels[i]);
         }
         makeBitmap(artwork, this.name, processBitmap, this);
-    }
+    };
 
     this.finishImageLoad = function() {
         var thisBlock = this.blocks.blockList.indexOf(this);
@@ -554,10 +554,10 @@ function Block(protoblock, blocks, overrideName) {
                     myBlock.postProcess(myBlock.postProcessArg);
                     myBlock.postProcess = null;
                 }
-            }
+            };
             this.generateCollapseArtwork(postProcess);
         }
-    }
+    };
 
     this.generateCollapseArtwork = function(postProcess) {
         var thisBlock = this.blocks.blockList.indexOf(this);
@@ -603,7 +603,7 @@ function Block(protoblock, blocks, overrideName) {
                         myBlock.collapseContainer.addChild(myBlock.collapseBitmap);
                         myBlock.collapseBitmap.visible = !myBlock.collapsed;
                         finishCollapseButton(myBlock);
-                    }
+                    };
                     image.src = 'images/collapse.svg';
 
                     finishCollapseButton = function(myBlock) {
@@ -622,7 +622,7 @@ function Block(protoblock, blocks, overrideName) {
                             }
                             myBlock.blocks.refreshCanvas();
                             myBlock.blocks.cleanupAfterLoad(myBlock.name);
-                        }
+                        };
                         image.src = 'images/expand.svg';
                     }
                 }
@@ -633,7 +633,7 @@ function Block(protoblock, blocks, overrideName) {
 
             var artwork = this.collapseArtwork;
             makeBitmap(artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', ''), '', processCollapseBitmap, this);
-    }
+    };
 
     this.hide = function() {
         this.container.visible = false;
@@ -641,7 +641,7 @@ function Block(protoblock, blocks, overrideName) {
             this.collapseContainer.visible = false;
             this.collapseText.visible = false;
         }
-    }
+    };
 
     this.show = function() {
         if (!this.trash) {
@@ -654,54 +654,54 @@ function Block(protoblock, blocks, overrideName) {
                 }
             }
         }
-    }
+    };
 
     // Utility functions
     this.isValueBlock = function() {
         return this.protoblock.style === 'value';
-    }
+    };
 
     this.isNoHitBlock = function() {
         return NOHIT.indexOf(this.name) !== -1;
-    }
+    };
 
     this.isArgBlock = function() {
         return this.protoblock.style === 'value' || this.protoblock.style === 'arg';
-    }
+    };
 
     this.isTwoArgBlock = function() {
         return this.protoblock.style === 'twoarg';
-    }
+    };
 
     this.isTwoArgBooleanBlock = function() {
         return ['equal', 'greater', 'less'].indexOf(this.name) !== -1;
-    }
+    };
 
     this.isClampBlock = function() {
         return this.protoblock.style === 'clamp' || this.isDoubleClampBlock();
-    }
+    };
 
     this.isDoubleClampBlock = function() {
         return this.protoblock.style === 'doubleclamp';
-    }
+    };
 
     this.isNoRunBlock = function() {
         return this.name === 'action';
-    }
+    };
 
     this.isArgClamp = function() {
         return this.protoblock.style === 'argclamp' || this.protoblock.style === 'argclamparg';
-    }
+    };
 
     this.isExpandableBlock = function() {
         return this.protoblock.expandable;
-    }
+    };
 
     // Based on the block index into the blockList.
     this.getBlockId = function() {
         var number = blockBlocks.blockList.indexOf(this);
         return '_' + number.toString();
-    }
+    };
 
     this.removeChildBitmap = function(name) {
         for (var child = 0; child < this.container.getNumChildren(); child++) {
@@ -710,7 +710,7 @@ function Block(protoblock, blocks, overrideName) {
                 break;
             }
         }
-    }
+    };
 
     this.loadThumbnail = function (imagePath) {
         // Load an image thumbnail onto block.
@@ -754,20 +754,20 @@ function Block(protoblock, blocks, overrideName) {
             positionMedia(bitmap, myBlock, bitmap.image.width, bitmap.image.height, myBlock.protoblock.scale);
             myBlock.container.addChild(bitmap);
             myBlock.updateCache();
-        }
+        };
 
         if (imagePath === null) {
             image.src = this.value;
         } else {
             image.src = imagePath;
         }
-    }
+    };
 
     this.doOpenMedia = function (myBlock, thisBlock) {
         var fileChooser = docById('myOpenAll');
 
         readerAction = function (event) {
-            window.scroll(0, 0)
+            window.scroll(0, 0);
 
             var reader = new FileReader();
             reader.onloadend = (function() {
@@ -788,18 +788,18 @@ function Block(protoblock, blocks, overrideName) {
                 reader.readAsText(fileChooser.files[0]);
             }
             fileChooser.removeEventListener('change', readerAction);
-        }
+        };
 
         fileChooser.addEventListener('change', readerAction, false);
         fileChooser.focus();
         fileChooser.click();
         window.scroll(0, 0)
-    }
+    };
 
     this.collapseToggle = function () {
         // Find the blocks to collapse/expand
         var thisBlock = this.blocks.blockList.indexOf(this);
-        this.blocks.findDragGroup(thisBlock)
+        this.blocks.findDragGroup(thisBlock);
 
         function toggle(myBlock) {
             var collapse = myBlock.collapsed;
@@ -1275,7 +1275,7 @@ function loadEventHandlers(myBlock) {
             }
 
             // Move any connected blocks.
-            blocks.findDragGroup(thisBlock)
+            blocks.findDragGroup(thisBlock);
             if (blocks.dragGroup.length > 0) {
                 for (var b = 0; b < blocks.dragGroup.length; b++) {
                     var blk = blocks.dragGroup[b];
@@ -1376,7 +1376,7 @@ function makeBitmap(data, name, callback, args) {
     img.onload = function() {
         var bitmap = new createjs.Bitmap(img);
         callback(name, bitmap, args);
-    }
+    };
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
 }

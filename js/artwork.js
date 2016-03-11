@@ -191,4 +191,4 @@ const PALETTEICONS = {
     'extras': EXTRASPALETTEICON,
     'myblocks': MYBLOCKSPALETTEICON,
     'heap': HEAPPALETTEICON
-}
+};

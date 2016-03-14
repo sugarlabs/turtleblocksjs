@@ -64,6 +64,7 @@ define(function (require) {
     require('activity/artwork');
     require('activity/munsell');
     require('activity/trash');
+    require('activity/boundary');
     require('activity/turtle');
     require('activity/palette');
     require('activity/protoblocks');
@@ -300,6 +301,7 @@ define(function (require) {
             // Blocks are all home, so reset go-home-button.
             homeButtonContainers[0].visible = false;
             homeButtonContainers[1].visible = true;
+            boundary.hide();
         }
 
         function allClear() {
@@ -520,6 +522,9 @@ define(function (require) {
              */
             palettesContainer = new createjs.Container();
             blocksContainer = new createjs.Container();
+            // Put the boundary in the blocks container so it scrolls
+            // with the blocks.
+            boundary = new Boundary(canvas, blocksContainer, refreshCanvas);
             trashContainer = new createjs.Container();
             turtleContainer = new createjs.Container();
 
@@ -1058,6 +1063,7 @@ define(function (require) {
 
             turtles.setScale(scale);
             blocks.setScale(scale);
+            boundary.setScale(scale);
             palettes.setScale(scale);
             trashcan.resizeEvent(scale);
             setupAndroidToolbar(mobileSize);
@@ -1814,7 +1820,8 @@ define(function (require) {
                     onscreenButtons.push(container2);
                     homeButtonContainers[0].visible = false;
                     homeButtonContainers[1].visible = true;
-                    blocks.setHomeContainers(homeButtonContainers);
+                    boundary.hide();
+                    blocks.setHomeContainers(homeButtonContainers, boundary);
                 }
 
                 x += dx;

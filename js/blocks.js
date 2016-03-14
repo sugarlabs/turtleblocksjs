@@ -184,9 +184,10 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         }
     }
 
-    // We need access to the go-home buttons.
-    this.setHomeContainers = function (containers) {
+    // We need access to the go-home buttons and boundary.
+    this.setHomeContainers = function (containers, boundary) {
         this.homeButtonContainers = containers;
+        this.boundary = boundary;
     }
 
     // set up copy/paste, dismiss, and copy-stack buttons
@@ -1079,20 +1080,39 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         this.refreshCanvas();
     }
 
+    this.checkBounds = function() {
+        var onScreen = true;
+        for (var blk = 0; blk < this.blockList.length; blk++) {
+            if (this.blockList[blk].connections[0] == null) {
+                if (this.blockList[blk].offScreen(this.boundary)) {
+                    this.homeButtonContainers[0].visible = true;
+                    this.homeButtonContainers[1].visible = false;
+                    this.boundary.show();
+		    onScreen = false;
+                    break;
+		}
+            }
+	}
+        if (onScreen) {
+            this.homeButtonContainers[0].visible = false;
+            this.homeButtonContainers[1].visible = true;
+            this.boundary.hide();
+	}
+    }
+
     this.moveBlock = function (blk, x, y) {
         // Move a block (and its label) to x, y.
         var myBlock = this.blockList[blk];
         if (myBlock.container != null) {
             myBlock.container.x = x;
             myBlock.container.y = y;
+
             if (myBlock.collapseContainer != null) {
                 myBlock.collapseContainer.x = x + COLLAPSEBUTTONXOFF * (this.blockList[blk].protoblock.scale / 2);
                 myBlock.collapseContainer.y = y + COLLAPSEBUTTONYOFF * (this.blockList[blk].protoblock.scale / 2);
             }
-            if (myBlock.offScreen(canvas)) {
-                this.homeButtonContainers[0].visible = true;
-                this.homeButtonContainers[1].visible = false;
-            }
+
+	    this.checkBounds();
         } else {
             console.log('no container yet');
         }
@@ -1111,14 +1131,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage) {
         if (myBlock.container != null) {
             myBlock.container.x += dx;
             myBlock.container.y += dy;
+
             if (myBlock.collapseContainer != null) {
                 myBlock.collapseContainer.x += dx;
                 myBlock.collapseContainer.y += dy;
             }
-            if (myBlock.offScreen(canvas)) {
-                this.homeButtonContainers[0].visible = true;
-                this.homeButtonContainers[1].visible = false;
-            }
+
+	    this.checkBounds();
         } else {
             console.log('no container yet');
         }

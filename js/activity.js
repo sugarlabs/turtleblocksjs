@@ -250,11 +250,11 @@ define(function (require) {
             [_('Cartesian'), _('Show or hide a Cartesian-coordinate grid.'), 'header-icons/Cartesian-button.svg'],
             [_('Polar'), _('Show or hide a polar-coordinate grid.'), 'header-icons/polar-button.svg'],
             [_('Settings'), _('Open a panel for configuring Turtle Blocks.'), 'header-icons/utility-button.svg'],
-            [_('Decrease block size'), _('Decrease the size of the blocks.'), 'header-icons/smaller-button-white.svg'],
-            [_('Increase block size'), _('Increase the size of the blocks.'), 'header-icons/bigger-button-white.svg'],
-            [_('Display statistics'), _('Display statistics about your Turtle project.'), 'header-icons/chart-button.svg'],
+            [_('Decrease block size'), _('Decrease the size of the blocks.'), 'header-icons/smaller-button.svg'],
+            [_('Increase block size'), _('Increase the size of the blocks.'), 'header-icons/bigger-button.svg'],
+            [_('Display statistics'), _('Display statistics about your Turtle project.'), 'header-icons/stats-button.svg'],
             [_('Load plugin from file'), _('You can load new blocks from the file system.'), 'header-icons/plugin-button.svg'],
-            [_('Enable scrolling'), _('You can scroll the blocks on the canvas.'), 'header-icons/scroll-unlock-button-white.svg'],
+            [_('Enable scrolling'), _('You can scroll the blocks on the canvas.'), 'header-icons/scroll-unlock-button.svg'],
             [_('Delete all'), _('Remove all content on the canvas, including the blocks.'), 'header-icons/empty-trash-button.svg'],
             [_('Undo'), _('Restore blocks from the trash.'), 'header-icons/restore-trash-button.svg'],
             [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']
@@ -1915,13 +1915,20 @@ define(function (require) {
                     var img = new Image();
                     img.onload = function () {
                         var bitmap = new createjs.Bitmap(img);
+                        /*
                         if (scale > 1) {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
                         } else {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.125;
                         }
+                        */
+                        if (helpContainer.children.length > 0) {
+                            console.log('delete old help container');
+                            helpContainer.removeChild(helpContainer.children[0]);
+                        }
 
                         helpContainer.addChild(bitmap);
+
                         var bounds = helpContainer.getBounds();
                         var hitArea = new createjs.Shape();
                         hitArea.graphics.beginFill('#FFF').drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -1945,20 +1952,20 @@ define(function (require) {
                 helpElem.style.paddingLeft = 20 * scale + 'px';
                 helpElem.style.paddingRight = 20 * scale + 'px';
                 helpElem.style.paddingTop = '0px';
-                helpElem.style.paddingBottom = 20 * scale + 'px';
+                helpElem.style.paddingBottom = 20 + 'px';
                 helpElem.style.fontSize = 20 * scale + 'px';
-                helpElem.style.color = '#ffffff';
+                helpElem.style.color = '#000000';
                 helpElem.style.left = 65 * scale + 'px';
                 helpElem.style.top = 105 * scale + 'px';
-                var w = Math.min(300, 300 * scale);
-                var h = Math.min(300, 300 * scale);
+                var w = Math.min(300, 300);
+                var h = Math.min(300, 300);
                 helpElem.style.width = w + 'px';
                 helpElem.style.height = h + 'px';
 
                 if (scale > 1) {
                     var bitmap = helpContainer.children[0];
                     if (bitmap != undefined) {
-                        bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                        // bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
                     }
                 }
 

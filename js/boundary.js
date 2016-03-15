@@ -70,11 +70,11 @@ function Boundary (canvas, stage, refreshCanvas) {
     }
 
     this.hide = function() {
-        this,container.visible = false;
+        this.container.visible = false;
     }
 
     this.show = function() {
-        this,container.visible = true;
+        this.container.visible = true;
     }
 }
 

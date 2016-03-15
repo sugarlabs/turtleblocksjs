@@ -27,33 +27,34 @@ function Boundary (canvas, stage, refreshCanvas) {
 
 
     this.resizeEvent = function(scale) {
-    }
+    };
 
     this.stage.addChild(this.container);
     this.stage.setChildIndex(this.container, 0);
 
-    this.setScale = function(scale) {
+    this.setScale = function(w, h, scale) {
         this.destroy();
-        this.create(scale);
-    }
+        this.create(w, h, scale);
+    };
 
     this.destroy = function() {
         if (this.container.children.length > 0) {
             this.container.removeChild(this.container.children[0]);
-	}
-    }
+        }
+    };
 
     this.offScreen = function(x, y) {
         return (x < this.x || x > this.x + this.dx || y < this.y || y > this.y + this.dy);
-    }
+    };
 
-    this.create = function(scale) {
-        this.w = this.canvas.width / scale;
-        this.h = this.canvas.height / scale;
-        this.x = (55 + 13) / scale;
-        this.y = (55 + 13) / scale;
-        this.dx = this.w - ((110 + 13) / scale);
-        this.dy = this.h - ((55 + 13) / scale);
+    this.create = function(w, h, scale) {
+        this.w = w / scale;
+        this.x = 55 + 13;
+        this.dx = this.w - (110 + 26);
+
+        this.h = h / scale;
+        this.y = 55 + 13;
+	this.dy = this.h - (55 + 26);
 
         function makeBoundary(me) {
             var img = new Image();
@@ -64,19 +65,16 @@ function Boundary (canvas, stage, refreshCanvas) {
 
             img.src = 'data:image/svg+xml;base64,' + window.btoa(
                 unescape(encodeURIComponent(BOUNDARY.replace('HEIGHT', me.h).replace('WIDTH', me.w).replace('Y', me.y).replace('X', me.x).replace('DY', me.dy).replace('DX', me.dx).replace('stroke_color', '#e08080'))));
-        }
+        };
 
         makeBoundary(this);
-    }
+    };
 
     this.hide = function() {
         this.container.visible = false;
-    }
+    };
 
     this.show = function() {
         this.container.visible = true;
-    }
-}
-
-
-
+    };
+};

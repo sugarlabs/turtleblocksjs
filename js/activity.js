@@ -1063,7 +1063,7 @@ define(function (require) {
 
             turtles.setScale(scale);
             blocks.setScale(scale);
-            boundary.setScale(scale);
+            boundary.setScale(w, h, scale);
             palettes.setScale(scale);
             trashcan.resizeEvent(scale);
             setupAndroidToolbar(mobileSize);

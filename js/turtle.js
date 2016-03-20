@@ -69,6 +69,23 @@ function Turtle (name, turtles, drum) {
     this.font = DEFAULTFONT;
     this.media = [];  // Media (text, images) we need to remove on clear.
 
+    // Simulate an arc with line segments since Tinkercad cannot
+    // import SVG arcs reliably.
+    this._svgArc = function(nsteps, cx, cy, radius, sa, ea) {
+        var a = sa;
+        if (ea == null) {
+            var da = Math.PI / nsteps;
+        } else {
+            var da = (ea - sa) / nsteps;
+        }
+        for (var i = 0; i < nsteps; i++) {
+            var nx = cx + radius * Math.cos(a);
+            var ny = cy + radius * Math.sin(a);
+            this.svgOutput += nx + ',' + ny + ' ';
+            a += da;
+        }
+    };
+
     this.move = function(ox, oy, x, y, invert) {
         if (invert) {
             ox = this.turtles.turtleX2screenX(ox);
@@ -131,19 +148,9 @@ function Turtle (name, turtles, drum) {
             // Replaces:
             // this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 1 ' + nxScaled + ',' + nyScaled + ' ';
             // this.svgOutput += 'M ' + nxScaled + ',' + nyScaled + ' ';
-            function svgArc(me, nsteps, cx, cy, radius, sa) {
-                var a = sa;
-                var da = Math.PI / nsteps;
-                for (var i = 0; i < nsteps; i++) {
-                    var nx = cx + radius * Math.cos(a);
-                    var ny = cy + radius * Math.sin(a);
-                    me.svgOutput += nx + ',' + ny + ' ';
-                    a += da;
-                }
-            }
 
             steps = Math.max(Math.floor(savedStroke, 1));
-            svgArc(this, steps, cx * this.turtles.scale, cy * this.turtles.scale, radiusScaled, sa);
+            this._svgArc(steps, cx * this.turtles.scale, cy * this.turtles.scale, radiusScaled, sa);
             this.svgOutput += nxScaled + ',' + nyScaled + ' ';
 
             this.drawingCanvas.graphics.lineTo(ox + dx, oy + dy);
@@ -166,7 +173,7 @@ function Turtle (name, turtles, drum) {
             var nyScaled = (oy + dy) * this.turtles.scale;
 
             var radiusScaled = step * this.turtles.scale;
-            svgArc(this, steps, cx * this.turtles.scale, cy * this.turtles.scale, radiusScaled, sa);
+            this._svgArc(steps, cx * this.turtles.scale, cy * this.turtles.scale, radiusScaled, sa);
             this.svgOutput += nxScaled + ',' + nyScaled + ' ';
 
             this.closeSVG();
@@ -189,6 +196,7 @@ function Turtle (name, turtles, drum) {
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }
+
         // Update turtle position on screen.
         this.container.x = nx;
         this.container.y = ny;
@@ -199,7 +207,7 @@ function Turtle (name, turtles, drum) {
             this.x = this.turtles.screenX2turtleX(x);
             this.y = this.turtles.screenY2turtleY(y);
         }
-    }
+    };
 
     this.rename = function(name) {
         this.name = name;
@@ -215,7 +223,7 @@ function Turtle (name, turtles, drum) {
             this.startBlock.regenerateArtwork(false);
             this.startBlock.value = this.turtles.turtleList.indexOf(this);
         }
-    }
+    };
     
     this.arc = function(cx, cy, ox, oy, x, y, radius, start, end, anticlockwise, invert) {
         if (invert) {
@@ -254,19 +262,6 @@ function Turtle (name, turtles, drum) {
                 var step = (savedStroke - 2) / 2.;
             }
 
-            // Simulate an arc with line segments since Tinkercad
-            // cannot import SVG arcs reliably.
-            function svgArc(me, nsteps, cx, cy, radius, sa, ea) {
-                var a = sa;
-                var da = (ea - sa) / nsteps;
-                for (var i = 0; i < nsteps; i++) {
-                    var nx = cx + radius * Math.cos(a);
-                    var ny = cy + radius * Math.sin(a);
-                    me.svgOutput += nx + ',' + ny + ' ';
-                    a += da;
-                }
-            }
-
             var capAngleRadians = (this.orientation + 90) * Math.PI / 180.0;
             var dx = step * Math.sin(capAngleRadians);
             var dy = -step * Math.cos(capAngleRadians);
@@ -286,7 +281,7 @@ function Turtle (name, turtles, drum) {
             nsteps = Math.max(Math.floor(radius * Math.abs(sa - ea) / 2), 2);
             steps = Math.max(Math.floor(savedStroke, 1));
 
-            svgArc(this, nsteps, cx * this.turtles.scale, cy * this.turtles.scale, (radius + step) * this.turtles.scale, sa, ea);
+            this._svgArc(nsteps, cx * this.turtles.scale, cy * this.turtles.scale, (radius + step) * this.turtles.scale, sa, ea);
 
             var capAngleRadians = (this.orientation + 90) * Math.PI / 180.0;
             var dx = step * Math.sin(capAngleRadians);
@@ -297,15 +292,15 @@ function Turtle (name, turtles, drum) {
             var sa1 = ea;
             var ea1 = ea + Math.PI;
             this.drawingCanvas.graphics.arc(cx1, cy1, step, sa1, ea1, anticlockwise);
-            svgArc(this, steps, cx1 * this.turtles.scale, cy1 * this.turtles.scale, step * this.turtles.scale, sa1, ea1);
+            this._svgArc(steps, cx1 * this.turtles.scale, cy1 * this.turtles.scale, step * this.turtles.scale, sa1, ea1);
             this.drawingCanvas.graphics.arc(cx, cy, radius - step, ea, sa, !anticlockwise);
-            svgArc(this, nsteps, cx * this.turtles.scale, cy * this.turtles.scale, (radius - step) * this.turtles.scale, ea, sa);
+            this._svgArc(nsteps, cx * this.turtles.scale, cy * this.turtles.scale, (radius - step) * this.turtles.scale, ea, sa);
             var cx2 = ox;
             var cy2 = oy;
             var sa2 = sa - Math.PI;
             var ea2 = sa;
             this.drawingCanvas.graphics.arc(cx2, cy2, step, sa2, ea2, anticlockwise);
-            svgArc(this, steps, cx2 * this.turtles.scale, cy2 * this.turtles.scale, step * this.turtles.scale, sa2, ea2);
+            this._svgArc(steps, cx2 * this.turtles.scale, cy2 * this.turtles.scale, step * this.turtles.scale, sa2, ea2);
             this.closeSVG();
 
             // restore stroke.
@@ -342,7 +337,7 @@ function Turtle (name, turtles, drum) {
             this.x = this.screenX2turtles.turtleX(x);
             this.y = this.screenY2turtles.turtleY(y);
         }
-    }
+    };
 
     // Turtle functions
     this.doClear = function() {
@@ -394,6 +389,7 @@ function Turtle (name, turtles, drum) {
         if (this.canvasColor[0] === "#") {
             this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
         }
+
         this.drawingCanvas.graphics.clear();
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
@@ -403,7 +399,7 @@ function Turtle (name, turtles, drum) {
         this.svgPath = false;
 
         this.turtles.refreshCanvas();
-    }
+    };
 
     this.doForward = function(steps) {
         if (!this.fillState) {
@@ -427,7 +423,7 @@ function Turtle (name, turtles, drum) {
 
         this.move(ox, oy, nx, ny, true);
         this.turtles.refreshCanvas();
-    }
+    };
 
     this.doSetXY = function(x, y) {
         if (!this.fillState) {
@@ -450,7 +446,7 @@ function Turtle (name, turtles, drum) {
 
         this.move(ox, oy, nx, ny, true);
         this.turtles.refreshCanvas();
-    }
+    };
 
     this.doArc = function(angle, radius) {
         // Break up arcs into chucks of 90 degrees or less (in order
@@ -468,14 +464,14 @@ function Turtle (name, turtles, drum) {
         var remainder = adeg % 90;
         var n = Math.floor(adeg / 90);
         for (var i = 0; i < n; i++) {
-            this.doArcPart(90 * factor, radius);
+            this._doArcPart(90 * factor, radius);
         }
         if (remainder > 0) {
-            this.doArcPart(remainder * factor, radius);
+            this._doArcPart(remainder * factor, radius);
         }
-    }
+    };
 
-    this.doArcPart = function(angle, radius) {
+    this._doArcPart = function(angle, radius) {
         if (!this.fillState) {
             if (this.canvasColor[0] === "#") {
                 this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
@@ -513,6 +509,7 @@ function Turtle (name, turtles, drum) {
             var nx = cx - Math.cos(oAngleRadians + angleRadians) * r;
             var ny = cy + Math.sin(oAngleRadians + angleRadians) * r;
         }
+
         this.arc(cx, cy, ox, oy, nx, ny, r, oAngleRadians, oAngleRadians + angleRadians, anticlockwise, true);
 
         if (anticlockwise) {
@@ -521,7 +518,7 @@ function Turtle (name, turtles, drum) {
             this.doRight(adeg);
         }
         this.turtles.refreshCanvas();
-    }
+    };
 
     this.doShowImage = function(size, myImage) {
         // Add an image object to the canvas
@@ -529,24 +526,27 @@ function Turtle (name, turtles, drum) {
         if (myImage === null) {
             return;
         }
+
         var image = new Image();
-        var me = this;
+        var turtle = this;
+
         image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
-            me.imageContainer.addChild(bitmap);
-            me.media.push(bitmap);
+            turtle.imageContainer.addChild(bitmap);
+            turtle.media.push(bitmap);
             bitmap.scaleX = Number(size) / image.width;
             bitmap.scaleY = bitmap.scaleX;
             bitmap.scale = bitmap.scaleX;
-            bitmap.x = me.container.x;
-            bitmap.y = me.container.y;
+            bitmap.x = turtle.container.x;
+            bitmap.y = turtle.container.y;
             bitmap.regX = image.width / 2;
             bitmap.regY = image.height / 2;
-            bitmap.rotation = me.orientation;
-            me.turtles.refreshCanvas();
-        }
+            bitmap.rotation = turtle.orientation;
+            turtle.turtles.refreshCanvas();
+        };
+
         image.src = myImage;
-    }
+    };
 
     this.doShowURL = function(size, myURL) {
         // Add an image object from a URL to the canvas
@@ -555,22 +555,23 @@ function Turtle (name, turtles, drum) {
         }
         var image = new Image();
         image.src = myURL;
-        var me = this;
+        var turtle = this;
+
         image.onload = function() {
             var bitmap = new createjs.Bitmap(image);
-            me.imageContainer.addChild(bitmap);
-            me.media.push(bitmap);
+            turtle.imageContainer.addChild(bitmap);
+            turtle.media.push(bitmap);
             bitmap.scaleX = Number(size) / image.width;
             bitmap.scaleY = bitmap.scaleX;
             bitmap.scale = bitmap.scaleX;
-            bitmap.x = me.container.x;
-            bitmap.y = me.container.y;
+            bitmap.x = turtle.container.x;
+            bitmap.y = turtle.container.y;
             bitmap.regX = image.width / 2;
             bitmap.regY = image.height / 2;
-            bitmap.rotation = me.orientation;
-            me.turtles.refreshCanvas();
-        }
-    }
+            bitmap.rotation = turtle.orientation;
+            turtle.turtles.refreshCanvas();
+        };
+    };
 
     this.doTurtleShell = function(size, myImage) {
         // Add image to turtle
@@ -579,55 +580,58 @@ function Turtle (name, turtles, drum) {
         }
         var image = new Image();
         image.src = myImage;
-        var me = this;
-        image.onload = function() {
-            me.container.removeChild(me.bitmap);
-            me.bitmap = new createjs.Bitmap(image);
-            me.container.addChild(me.bitmap);
-            me.bitmap.scaleX = Number(size) / image.width;
-            me.bitmap.scaleY = me.bitmap.scaleX;
-            me.bitmap.scale = me.bitmap.scaleX;
-            me.bitmap.x = 0;
-            me.bitmap.y = 0;
-            me.bitmap.regX = image.width / 2;
-            me.bitmap.regY = image.height / 2;
-            me.bitmap.rotation = me.orientation;
-            me.skinChanged = true;
+        var turtle = this;
 
-            me.container.uncache();
-            var bounds = me.container.getBounds();
-            me.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+        image.onload = function() {
+            turtle.container.removeChild(turtle.bitmap);
+            turtle.bitmap = new createjs.Bitmap(image);
+            turtle.container.addChild(turtle.bitmap);
+            turtle.bitmap.scaleX = Number(size) / image.width;
+            turtle.bitmap.scaleY = turtle.bitmap.scaleX;
+            turtle.bitmap.scale = turtle.bitmap.scaleX;
+            turtle.bitmap.x = 0;
+            turtle.bitmap.y = 0;
+            turtle.bitmap.regX = image.width / 2;
+            turtle.bitmap.regY = image.height / 2;
+            turtle.bitmap.rotation = turtle.orientation;
+            turtle.skinChanged = true;
+
+            turtle.container.uncache();
+            var bounds = turtle.container.getBounds();
+            turtle.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 
             // Recalculate the hit area as well.
             var hitArea = new createjs.Shape();
             hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height);
             hitArea.x = -bounds.width / 2;
             hitArea.y = -bounds.height / 2;
-            me.container.hitArea = hitArea;
+            turtle.container.hitArea = hitArea;
 
-            if (me.startBlock != null) {
-                me.startBlock.container.removeChild(me.decorationBitmap);
-                me.decorationBitmap = new createjs.Bitmap(myImage);
-                me.startBlock.container.addChild(me.decorationBitmap);
-                me.decorationBitmap.name = 'decoration';
-                var bounds = me.startBlock.container.getBounds();
+            if (turtle.startBlock != null) {
+                turtle.startBlock.container.removeChild(turtle.decorationBitmap);
+                turtle.decorationBitmap = new createjs.Bitmap(myImage);
+                turtle.startBlock.container.addChild(turtle.decorationBitmap);
+                turtle.decorationBitmap.name = 'decoration';
+
+                var bounds = turtle.startBlock.container.getBounds();
                 // FIXME: Why is the position off? Does it need a scale factor?
-                me.decorationBitmap.x = bounds.width - 50 * me.startBlock.protoblock.scale / 2;
-                me.decorationBitmap.y = 20 * me.startBlock.protoblock.scale / 2;
-                me.decorationBitmap.scaleX = (27.5 / image.width) * me.startBlock.protoblock.scale / 2;
-                me.decorationBitmap.scaleY = (27.5 / image.height) * me.startBlock.protoblock.scale / 2;
-                me.decorationBitmap.scale = (27.5 / image.width) * me.startBlock.protoblock.scale / 2;
-                me.startBlock.updateCache();
+                turtle.decorationBitmap.x = bounds.width - 50 * turtle.startBlock.protoblock.scale / 2;
+                turtle.decorationBitmap.y = 20 * turtle.startBlock.protoblock.scale / 2;
+                turtle.decorationBitmap.scaleX = (27.5 / image.width) * turtle.startBlock.protoblock.scale / 2;
+                turtle.decorationBitmap.scaleY = (27.5 / image.height) * turtle.startBlock.protoblock.scale / 2;
+                turtle.decorationBitmap.scale = (27.5 / image.width) * turtle.startBlock.protoblock.scale / 2;
+                turtle.startBlock.updateCache();
             }
-            me.turtles.refreshCanvas();
-        }
-    }
+
+            turtle.turtles.refreshCanvas();
+        };
+    };
 
     this.resizeDecoration = function(scale, width) {
         this.decorationBitmap.x = width - 30 * scale / 2;
         this.decorationBitmap.y = 35 * scale / 2;
         this.decorationBitmap.scaleX = this.decorationBitmap.scaleY = this.decorationBitmap.scale = 0.5 * scale / 2
-    }
+    };
 
     this.doShowText = function(size, myText) {
         // Add a text or image object to the canvas
@@ -646,7 +650,7 @@ function Turtle (name, turtles, drum) {
         var sizeScaled = size * this.turtles.scale;
         this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "' + this.font + '" font-size = "' + sizeScaled + '">' + myText + '</text>';
         this.turtles.refreshCanvas();
-    }
+    };
 
     this.doRight = function(degrees) {
         // Turn right and display corresponding turtle graphic.
@@ -654,19 +658,19 @@ function Turtle (name, turtles, drum) {
         this.orientation %= 360;
         this.bitmap.rotation = this.orientation;
         this.updateCache();
-    }
+    };
 
     this.doSetHeading = function(degrees) {
         this.orientation = Number(degrees);
         this.orientation %= 360;
         this.bitmap.rotation = this.orientation;
         this.updateCache();
-    }
+    };
 
     this.doSetFont = function(font) {
         this.font = font;
         this.updateCache();
-    }
+    };
 
 
     this.doSetColor = function(color) {
@@ -680,13 +684,14 @@ function Turtle (name, turtles, drum) {
         if (this.canvasColor[0] === "#") {
             this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
         }
+
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
-    }
+    };
 
     this.doSetPenAlpha = function(alpha) {
         this.canvasAlpha = alpha;
-    }
+    };
 
     this.doSetHue = function(hue) {
         this.closeSVG();
@@ -695,9 +700,10 @@ function Turtle (name, turtles, drum) {
         if (this.canvasColor[0] === "#") {
             this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
         }
+
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
-    }
+    };
 
     this.doSetValue = function(shade) {
         this.closeSVG();
@@ -706,9 +712,10 @@ function Turtle (name, turtles, drum) {
         if (this.canvasColor[0] === "#") {
             this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
         }
+
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
-    }
+    };
 
     this.doSetChroma = function(chroma) {
         this.closeSVG();
@@ -718,47 +725,48 @@ function Turtle (name, turtles, drum) {
         if (this.canvasColor[0] === "#") {
             this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
         }
+
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
-    }
+    };
 
     this.doSetPensize = function(size) {
         this.closeSVG();
         this.stroke = size;
         this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
-    }
+    };
 
     this.doPenUp = function() {
         this.closeSVG();
         this.penState = false;
-    }
+    };
 
     this.doPenDown = function() {
         this.penState = true;
-    }
+    };
 
     this.doStartFill = function() {
         /// start tracking points here
         this.drawingCanvas.graphics.beginFill(this.canvasColor);
         this.fillState = true;
-    }
+    };
 
     this.doEndFill = function() {
         /// redraw the points with fill enabled
         this.drawingCanvas.graphics.endFill();
         this.closeSVG();
         this.fillState = false;
-    }
+    };
 
     this.doStartHollowLine = function() {
         /// start tracking points here
         this.hollowState = true;
-    }
+    };
 
     this.doEndHollowLine = function() {
         /// redraw the points with fill enabled
         this.hollowState = false;
-    }
+    };
 
     this.closeSVG = function() {
         if (this.svgPath) {
@@ -768,12 +776,13 @@ function Turtle (name, turtles, drum) {
             } else {
                 this.svgOutput += 'none;';
             }
+
             this.svgOutput += 'stroke:' + this.canvasColor + ';';
             var strokeScaled = this.stroke * this.turtles.scale;
             this.svgOutput += 'stroke-width:' + strokeScaled + 'pt;" />';
             this.svgPath = false;
         }
-    }
+    };
 
     // Internal function for creating cache.
     // Includes workaround for a race condition.
@@ -788,7 +797,7 @@ function Turtle (name, turtles, drum) {
         } else {
             myTurtle.container.cache(myTurtle.bounds.x, myTurtle.bounds.y, myTurtle.bounds.width, myTurtle.bounds.height);
         }
-    }
+    };
 
     // Internal function for creating cache.
     // Includes workaround for a race condition.
@@ -804,7 +813,7 @@ function Turtle (name, turtles, drum) {
             myTurtle.container.updateCache();
             myTurtle.turtles.refreshCanvas();
         }
-    }
+    };
 };
 
 
@@ -818,11 +827,11 @@ function Turtles(canvas, stage, refreshCanvas) {
 
     this.setScale = function(scale) {
         this.scale = scale;
-    }
+    };
 
     this.setBlocks = function(blocks) {
         this.blocks = blocks;
-    }
+    };
 
     // The list of all of our turtles, one for each start block.
     this.turtleList = [];
@@ -830,12 +839,12 @@ function Turtles(canvas, stage, refreshCanvas) {
     this.addDrum = function(startBlock, infoDict) {
         this.drum = true;
         this.add(startBlock, infoDict);
-    }
+    };
 
     this.addTurtle = function(startBlock, infoDict) {
         this.drum = false;
         this.add(startBlock, infoDict);
-    }
+    };
 
     this.add = function(startBlock, infoDict) {
         // Add a new turtle for each start block
@@ -847,14 +856,14 @@ function Turtles(canvas, stage, refreshCanvas) {
             }
         } else {
             console.log('adding a new turtle startBlock is null');
-        };
+        }
 
         var blkInfoAvailable = false;
 
         if (typeof(infoDict) === 'object') {
-          if (Object.keys(infoDict).length === 8) {
-            blkInfoAvailable = true;
-          }
+            if (Object.keys(infoDict).length === 8) {
+                blkInfoAvailable = true;
+            }
         }
 
         var i = this.turtleList.length;
@@ -890,7 +899,7 @@ function Turtles(canvas, stage, refreshCanvas) {
         hitArea.y = 0;
         myTurtle.container.hitArea = hitArea;
 
-        function processTurtleBitmap(me, name, bitmap, startBlock) {
+        function __processTurtleBitmap(turtles, name, bitmap, startBlock) {
             myTurtle.bitmap = bitmap;
             myTurtle.bitmap.regX = 27 | 0;
             myTurtle.bitmap.regY = 27 | 0;
@@ -921,8 +930,8 @@ function Turtles(canvas, stage, refreshCanvas) {
                 startBlock.updateCache();
             }
 
-            me.refreshCanvas();
-        }
+            turtles.refreshCanvas();
+        };
 
         if (this.drum) {
            var artwork = DRUMSVG;
@@ -931,9 +940,9 @@ function Turtles(canvas, stage, refreshCanvas) {
         }
 
         if (sugarizerCompatibility.isInsideSugarizer()) {
-          makeTurtleBitmap(this, artwork.replace(/fill_color/g, sugarizerCompatibility.xoColor.fill).replace(/stroke_color/g, sugarizerCompatibility.xoColor.stroke), 'turtle', processTurtleBitmap, startBlock);
+            this._makeTurtleBitmap(artwork.replace(/fill_color/g, sugarizerCompatibility.xoColor.fill).replace(/stroke_color/g, sugarizerCompatibility.xoColor.stroke), 'turtle', __processTurtleBitmap, startBlock);
         } else {
-          makeTurtleBitmap(this, artwork.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', processTurtleBitmap, startBlock);
+            this._makeTurtleBitmap(artwork.replace(/fill_color/g, FILLCOLORS[i]).replace(/stroke_color/g, STROKECOLORS[i]), 'turtle', __processTurtleBitmap, startBlock);
         }
 
         myTurtle.color = i * 10;
@@ -992,33 +1001,48 @@ function Turtles(canvas, stage, refreshCanvas) {
             }
         }, 1000);
         this.refreshCanvas();
-    }
+    };
+
+    this._makeTurtleBitmap = function(data, name, callback, extras) {
+        // Async creation of bitmap from SVG data
+        // Works with Chrome, Safari, Firefox (untested on IE)
+        var img = new Image();
+        var turtles = this;
+
+        img.onload = function () {
+            complete = true;
+            var bitmap = new createjs.Bitmap(img);
+            callback(turtles, name, bitmap, extras);
+        };
+
+        img.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(data)));
+    };
 
     this.screenX2turtleX = function(x) {
         return x - (this.canvas.width / (2.0 * this.scale));
-    }
+    };
 
     this.screenY2turtleY = function(y) {
         return this.invertY(y);
-    }
+    };
 
     this.turtleX2screenX = function(x) {
         return (this.canvas.width / (2.0 * this.scale)) + x;
-    }
+    };
 
     this.turtleY2screenY = function(y) {
         return this.invertY(y);
-    }
+    };
 
     this.invertY = function(y) {
         return this.canvas.height / (2.0 * this.scale) - y;
-    }
+    };
 
     this.markAsStopped = function() {
         for (var turtle in this.turtleList) {
             this.turtleList[turtle].running = false;
         }
-    }
+    };
 
     this.running = function() {
         for (var turtle in this.turtleList) {
@@ -1027,8 +1051,9 @@ function Turtles(canvas, stage, refreshCanvas) {
             }
         }
         return false;
-    }
-}
+    };
+};
+
 
 // Queue entry for managing running blocks.
 function Queue (blk, count, parentBlk, args) {
@@ -1036,19 +1061,6 @@ function Queue (blk, count, parentBlk, args) {
     this.count = count;
     this.parentBlk = parentBlk;
     this.args = args
-}
-
-
-function makeTurtleBitmap(me, data, name, callback, extras) {
-    // Async creation of bitmap from SVG data
-    // Works with Chrome, Safari, Firefox (untested on IE)
-    var img = new Image();
-    img.onload = function () {
-        complete = true;
-        var bitmap = new createjs.Bitmap(img);
-        callback(me, name, bitmap, extras);
-    };
-    img.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(data)));
 };
 
 
@@ -1059,4 +1071,4 @@ function hex2rgb(hex) {
     var b = bigint & 255;
 
     return "rgba(" + r + "," + g + "," + b + ",1)";
-}
+};

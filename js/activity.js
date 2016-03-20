@@ -534,7 +534,7 @@ define(function (require) {
 
             trashcan = new Trashcan(canvas, trashContainer, cellSize, refreshCanvas);
             turtles = new Turtles(canvas, turtleContainer, refreshCanvas);
-            blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan, stage.update);
+            blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan, stage.update, getStageScale);
             palettes = initPalettes(canvas, refreshCanvas, palettesContainer, cellSize, refreshCanvas, trashcan, blocks);
 
             palettes.setBlocks(blocks);
@@ -821,6 +821,10 @@ define(function (require) {
                     palette.scrollEvent(delta, scrollSpeed);
                 }
             }
+        }
+
+        function getStageScale() {
+            return scale;
         }
 
         function getStageX() {

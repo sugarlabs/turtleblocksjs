@@ -23,10 +23,10 @@ const LOCAL_PROJECT_TEMPLATE = '\
     <img class="thumbnail" src="{img}" /> \
     <div class="options"> \
         <input type="text" value="{title}"/><br/> \
-        <img class="open icon" title="{_("Open")}" alt="{_Open}" src="header-icons/edit.svg" /> \
-        <img class="delete icon" title="{_Delete}" alt="{_Delete}" src="header-icons/delete.svg" /> \
-        <img class="publish icon" title="{_Publish}" alt="{_Publish}" src="header-icons/publish.svg" /> \
-        <img class="download icon" title="{_Download}" alt="{_Download}" src="header-icons/download.svg" /> \
+        <img class="open icon" title="' + _('Open') + '" alt="' + _('Open') + '" src="header-icons/edit.svg" /> \
+        <img class="delete icon" title="' + _('Delete') + '" alt="' + _('Delete') + '" src="header-icons/delete.svg" /> \
+        <img class="publish icon" title="' + _('Publish') + '" alt="' + _('Publish') + '" src="header-icons/publish.svg" /> \
+        <img class="download icon" title="' + _('Download') + '" alt="' + _('Download') + '" src="header-icons/download.svg" /> \
     </div> \
 </li>'
 
@@ -35,7 +35,7 @@ const GLOBAL_PROJECT_TEMPLATE = '\
     <img class="thumbnail" src="{img}" /> \
     <div class="options"> \
         <span>{title}</span><br/> \
-        <img class="download icon" title="{_Download}" alt="{_Download}" src="header-icons/download.svg" /> \
+        <img class="download icon" title="' + _('Download') + '" alt="' + _('Download') + '" src="header-icons/download.svg" /> \
     </div> \
 </li>';
 
@@ -48,22 +48,23 @@ function PlanetModel(controller) {
     this.globalImagesCache = {};
     this.updated = function () {};
     this.stop = false;
-    var me = this;
+    var model = this;
+
     if (sugarizerCompatibility.isInsideSugarizer()) {
         server = SERVER;
         storage = sugarizerCompatibility.data;
     } else {
         storage = localStorage;
-    }
+    };
 
     this.start = function (cb) {
-        me.updated = cb;
-        me.stop = false;
+        model.updated = cb;
+        model.stop = false;
 
         this.redoLocalStorageData();
-        me.updated();
+        model.updated();
         this.downloadWorldWideProjects();
-    }
+    };
 
     this.downloadWorldWideProjects = function () {
         jQuery.ajax({
@@ -72,8 +73,8 @@ function PlanetModel(controller) {
                 'x-api-key' : APIKEY
             }
         }).done(function (l) {
-            me.globalProjects = [];
-            me.stop = false;
+            model.globalProjects = [];
+            model.stop = false;
             var todo = [];
             l.forEach(function (name, i) {
                 if (name.indexOf('.b64') !== -1) 	{
@@ -81,12 +82,12 @@ function PlanetModel(controller) {
                         todo.push(name);
                 }
             });
-            me.getImages(todo);
+            model.getImages(todo);
         });
-    }
+    };
 
     this.getImages = function (todo) {
-        if (me.stop === true) {
+        if (model.stop === true) {
             return;
         }
 
@@ -96,11 +97,11 @@ function PlanetModel(controller) {
         }
         var name = image.replace('.b64', '');
 
-        if (me.globalImagesCache[image] !== undefined) {
-            me.globalProjects.push({title: name,
-                                    img: me.globalImagesCache[image]});
-            me.updated();
-            me.getImages(todo);
+        if (model.globalImagesCache[image] !== undefined) {
+            model.globalProjects.push({title: name,
+                                    img: model.globalImagesCache[image]});
+            model.updated();
+            model.getImages(todo);
         } else {
             jQuery.ajax({
   	            url: SERVER + image,
@@ -112,13 +113,13 @@ function PlanetModel(controller) {
                 if(!validateImageData(d)){
                     d = EMPTYIMAGE;
                 }
-                me.globalImagesCache[image] = d;
-                me.globalProjects.push({title: name, img: d, url: image});
-                me.updated();
-                me.getImages(todo);
+                model.globalImagesCache[image] = d;
+                model.globalProjects.push({title: name, img: d, url: image});
+                model.updated();
+                model.getImages(todo);
             });
-      }
-    }
+        }
+    };
 
     this.redoLocalStorageData = function () {
         this.localProjects = [];
@@ -137,13 +138,13 @@ function PlanetModel(controller) {
             }
 
             if (e.current) {
-                me.localProjects.unshift(e);
+                model.localProjects.unshift(e);
             } else {
-                me.localProjects.push(e);
+                model.localProjects.push(e);
             }
         });
         this.localChanged = true;
-    }
+    };
 
     this.uniqueName = function (base) {
         var l = JSON.parse(storage.allProjects);
@@ -159,14 +160,14 @@ function PlanetModel(controller) {
             }
             i++;
         }
-    }
+    };
 
     this.newProject = function () {
         var name = this.uniqueName('My Project');
-        me.prepLoadingProject(name);
+        model.prepLoadingProject(name);
         this.controller.sendAllToTrash(true, true);
-        me.stop = true;
-    }
+        model.stop = true;
+    };
 
     this.renameProject = function (oldName, newName, current) {
         if (current) {
@@ -184,8 +185,8 @@ function PlanetModel(controller) {
         storage['SESSIONIMAGE' + oldName] = undefined;
         storage['SESSION' + oldName] = undefined;
 
-        me.redoLocalStorageData();
-    }
+        model.redoLocalStorageData();
+    };
 
     this.delete = function (name) {
         var l = JSON.parse(storage.allProjects);
@@ -195,16 +196,16 @@ function PlanetModel(controller) {
         storage['SESSIONIMAGE' + name] = undefined;
         storage['SESSION' + name] = undefined;
 
-        me.redoLocalStorageData();
-        me.updated();
-    }
+        model.redoLocalStorageData();
+        model.updated();
+    };
 
     this.open = function (name, data) {
         storage.currentProject = name;
-        me.controller.sendAllToTrash(false, true);
-        me.controller.loadRawProject(data);
-        me.stop = true;
-    }
+        model.controller.sendAllToTrash(false, true);
+        model.controller.loadRawProject(data);
+        model.stop = true;
+    };
 
     this.prepLoadingProject = function (name) {
         storage.currentProject = name;
@@ -212,11 +213,11 @@ function PlanetModel(controller) {
         var l = JSON.parse(storage.allProjects);
         l.push(name);
         storage.allProjects = JSON.stringify(l);
-    }
+    };
 
     this.load = function (name) {
-        me.prepLoadingProject(name);
-        me.controller.sendAllToTrash(false, false);
+        model.prepLoadingProject(name);
+        model.controller.sendAllToTrash(false, false);
 
         jQuery.ajax({
             url: SERVER + name + ".tb",
@@ -225,34 +226,40 @@ function PlanetModel(controller) {
             },
             dataType: 'text'
         }).done(function (d) {
-            me.controller.loadRawProject(d);
-            me.stop = true;
+            model.controller.loadRawProject(d);
+            model.stop = true;
         });
-    }
+    };
 
     this.publish = function (name, data, image) {
-        name = name.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g,
-                            '').replace(/ /g, '_');
-        httpPost(name + '.tb', data);
-        httpPost(name + '.b64', image);
-        me.downloadWorldWideProjects();
-    }
-}
+        // Show busy cursor.
+        document.body.style.cursor = 'wait';
+
+        setTimeout(function () {
+            name = name.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '').replace(/ /g, '_');
+            httpPost(name + '.tb', data);
+            httpPost(name + '.b64', image);
+            model.downloadWorldWideProjects();
+            // Restore default cursor.
+            document.body.style.cursor = 'default';
+        }, 250);
+    };
+};
 
 function PlanetView(model, controller) {
     this.model = model;
     this.controller = controller;
-    var me = this;  // for future reference
+    var planet = this;  // for future reference
 
     document.querySelector('.planet .new')
             .addEventListener('click', function () {
-        me.model.newProject();
-        me.controller.hide();
+        planet.model.newProject();
+        planet.controller.hide();
     });
 
     document.querySelector('#myOpenFile')
             .addEventListener('change', function(event) {
-        me.controller.hide();
+        planet.controller.hide();
     });
     document.querySelector('.planet .open')
             .addEventListener('click', function () {
@@ -275,17 +282,17 @@ function PlanetView(model, controller) {
             var eles = document.querySelectorAll('.planet .content.l li');
             Array.prototype.forEach.call(eles, function (ele, i) {
                 ele.querySelector('.open')
-                    .addEventListener('click', me.open(ele));
+                    .addEventListener('click', planet.open(ele));
                 ele.querySelector('.publish')
-                    .addEventListener('click', me.publish(ele));
+                    .addEventListener('click', planet.publish(ele));
                 ele.querySelector('.download')
-                   .addEventListener('click', me.download(ele));
+                   .addEventListener('click', planet.download(ele));
                 ele.querySelector('.delete')
-                   .addEventListener('click', me.delete(ele));
+                   .addEventListener('click', planet.delete(ele));
                 ele.querySelector('input')
-                   .addEventListener('change', me.input(ele));
+                   .addEventListener('change', planet.input(ele));
                 ele.querySelector('.thumbnail')
-                   .addEventListener('click', me.open(ele));
+                   .addEventListener('click', planet.open(ele));
             });
             model.localChanged = false;
         }
@@ -298,69 +305,70 @@ function PlanetView(model, controller) {
 
         var eles = document.querySelectorAll('.planet .content.w li');
         Array.prototype.forEach.call(eles, function (ele, i) {
-            ele.addEventListener('click', me.load(ele))
+            ele.addEventListener('click', planet.load(ele))
         });
-    }
+    };
 
     this.load = function (ele) {
         return function () {
             document.querySelector('#loading-image-container')
                     .style.display = '';
 
-            me.model.load(ele.attributes.title.value);
-            me.controller.hide();
-        }
-    }
+            planet.model.load(ele.attributes.title.value);
+            planet.controller.hide();
+        };
+    };
 
     this.publish = function (ele) {
         return function () {
             document.querySelector('#loading-image-container')
                     .style.display = '';
-            me.model.publish(ele.attributes.title.value,
+            planet.model.publish(ele.attributes.title.value,
                              ele.attributes.data.value,
                              ele.querySelector('img').src);
             document.querySelector('#loading-image-container')
                     .style.display = 'none';
-        }
-    }
+        };
+    };
 
     this.download = function (ele) {
         return function () {
             download(ele.attributes.title.value + '.tb',
                 'data:text/plain;charset=utf-8,' + ele.attributes.data.value);
-        }
-    }
+        };
+    };
 
     this.open = function (ele) {
         return function () {
             if (ele.attributes.current.value === 'true') {
-                me.controller.hide();
+                planet.controller.hide();
                 return;
             }
             
-            me.model.open(ele.attributes.title.value,
+            planet.model.open(ele.attributes.title.value,
                           ele.attributes.data.value);
-            me.controller.hide();
-        }
-    }
+            planet.controller.hide();
+        };
+    };
 
     this.delete = function (ele) {
         return function () {
             var title = ele.attributes.title.value;
-            me.model.delete(title);
-        }
-    }
+            planet.model.delete(title);
+        };
+    };
 
     this.input = function (ele) {
         return function () {
             var newName = ele.querySelector('input').value;
             var oldName = ele.attributes.title.value;
             var current = ele.attributes.current.value === 'true';
-            me.model.renameProject(oldName, newName, current);
+            planet.model.renameProject(oldName, newName, current);
             ele.attributes.title.value = newName;
-        }
-    }
-}
+        };
+    };
+};
+
 
 // A viewer for sample projects
 function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash) {
@@ -368,7 +376,7 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
     this.sendAllToTrash = trash;
     this.loadProject = load;
     this.loadRawProject = loadRawProject;
-    var me = this;  // for future reference
+    var samples = this;  // for future reference
 
     // i18n for section titles
     document.querySelector("#planetTitle").innerHTML = _("Planet");
@@ -380,32 +388,36 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
 
     this.setServer = function(server) {
         this.server = server;
-    }
+    };
 
     this.hide = function() {
         document.querySelector('.planet').style.display = 'none';
         document.querySelector('body').classList.remove('samples-shown');
         document.querySelector('.canvasHolder').classList.remove('hide');
         document.querySelector('#theme-color').content = platformColor.header;
-        me.stage.enableDOMEvents(true);
+        samples.stage.enableDOMEvents(true);
         window.scroll(0, 0);
-    }
+    };
 
     this.show = function() {
         document.querySelector('.planet').style.display = '';
         document.querySelector('body').classList.add('samples-shown');
         document.querySelector('.canvasHolder').classList.add('hide');
         document.querySelector('#theme-color').content = '#8bc34a';
+
         setTimeout(function () {
             // Time to release the mouse
-            me.stage.enableDOMEvents(false);
+            samples.stage.enableDOMEvents(false);
         }, 250);
+
         window.scroll(0, 0);
 
         this.model.start(this.view.update);
         return true;
-    }
-}
+    };
+};
+
+
 function validateImageData(d) {
     if(d === undefined) {
         return false;
@@ -421,4 +433,4 @@ function validateImageData(d) {
         }
     }
     return true;
-}
+};

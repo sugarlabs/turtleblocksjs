@@ -277,7 +277,7 @@ define(function (require) {
 
             for (var blk in blocks.blockList) {
                 var myBlock = blocks.blockList[blk];
-                if (myBlock.connections[0] == null) {
+                if (myBlock.connections[0] == null && !myBlock.trash) {
                     var dx = x - myBlock.container.x;
                     var dy = y - myBlock.container.y;
                     blocks.moveBlockRelative(blk, dx, dy);

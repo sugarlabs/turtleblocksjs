@@ -966,6 +966,7 @@ define(function (require) {
                 // Prevent browser from grabbing TAB key
                 event.preventDefault();
             }
+
             const ESC = 27;
             const ALT = 18;
             const CTRL = 17;
@@ -973,8 +974,6 @@ define(function (require) {
             const RETURN = 13;
             const SPACE = 32;
             const HOME = 36;
-
-            // Captured by browser
             const PAGE_UP = 33;
             const PAGE_DOWN = 34;
             const KEYCODE_LEFT = 37;
@@ -997,8 +996,64 @@ define(function (require) {
             } else if (event.ctrlKey) {
             } else {
                 switch (event.keyCode) {
+                case KEYCODE_UP:
+                    if (blocks.activeBlock != null) {
+                        blocks.moveStackRelative(blocks.activeBlock, 0, -STANDARDBLOCKHEIGHT / 2);
+                        blocks.blockMoved(blocks.activeBlock);
+                        blocks.adjustDocks(blocks.activeBlock, true);
+                    } else if (palettes.mouseOver) {
+                        palettes.menuScrollEvent(1, 10);
+                        palettes.hidePaletteIconCircles();
+                    } else if (palettes.activePalette != null) {
+                        palettes.activePalette.scrollEvent(STANDARDBLOCKHEIGHT, 1);
+                    } else if (scrollBlockContainer) {
+                        blocksContainer.y -= 21;
+                    }
+                    break;
+                case KEYCODE_DOWN:
+                    if (blocks.activeBlock != null) {
+                        blocks.moveStackRelative(blocks.activeBlock, 0, STANDARDBLOCKHEIGHT / 2);
+                        blocks.blockMoved(blocks.activeBlock);
+                        blocks.adjustDocks(blocks.activeBlock, true);
+                    } else if (palettes.mouseOver) {
+                        palettes.menuScrollEvent(-1, 10);
+                        palettes.hidePaletteIconCircles();
+                    } else if (palettes.activePalette != null) {
+                        palettes.activePalette.scrollEvent(-STANDARDBLOCKHEIGHT, 1);
+                    } else if (scrollBlockContainer) {
+                        blocksContainer.y += 21;
+                    }
+                    break;
+                case KEYCODE_LEFT:
+                    if (blocks.activeBlock != null) {
+                        blocks.moveStackRelative(blocks.activeBlock, -STANDARDBLOCKHEIGHT / 2, 0);
+                        blocks.blockMoved(blocks.activeBlock);
+                        blocks.adjustDocks(blocks.activeBlock, true);
+                    } else if (scrollBlockContainer) {
+                        blocksContainer.x -= 21;
+                    }
+                    break;
+                case KEYCODE_RIGHT:
+                    if (blocks.activeBlock != null) {
+                        blocks.moveStackRelative(blocks.activeBlock, STANDARDBLOCKHEIGHT / 2, 0);
+                        blocks.blockMoved(blocks.activeBlock);
+                        blocks.adjustDocks(blocks.activeBlock, true);
+                    } else if (scrollBlockContainer) {
+                        blocksContainer.x += 21;
+                    }
+                    break;
                 case HOME:
-                    findBlocks();
+                    if (palettes.mouseOver) {
+                        var dy = Math.max(55 - palettes.buttons['rhythm'].y, 0);
+                        palettes.menuScrollEvent(1, dy);
+                        palettes.hidePaletteIconCircles();
+                    } else if (palettes.activePalette != null) {
+                        palettes.activePalette.scrollEvent(-palettes.activePalette.scrollDiff, 1);
+                    } else {
+                        _findBlocks();
+                    }
+                    break;
+                case TAB:
                     break;
                 case ESC:
                     // toggle full screen

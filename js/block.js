@@ -548,7 +548,7 @@ function Block(protoblock, blocks, overrideName) {
                 } else if (this.name === 'rest') {
                     this.value = _('rest');
                 } else {
-                    this.value = 100;
+                    this.value = NUMBERBLOCKDEFAULT;
                 }
             }
 

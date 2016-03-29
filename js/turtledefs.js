@@ -9,11 +9,14 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 //
-// Note: This code is inspired by the Python Turtle Blocks project
-// (https://github.com/walterbender/turtleart), but implemented from
-// scratch. -- Walter Bender, October 2014.
 
 const NUMBERBLOCKDEFAULT = 100;
+
+const DEFAULTPALETTE = 'turtle';
+
+// We don't include 'extras' since we want to be able to delete
+// plugins from the extras palette.
+BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'boxes', 'actions', 'media', 'sensors', 'heap', 'extras'];
 
 
 function turtleRequires () {
@@ -21,6 +24,16 @@ function turtleRequires () {
     require('p5.sound');
     require('p5.dom');
 };
+
+
+function getMainToolbarButtonNames(name) {
+    return (['fast', 'slow', 'step', 'stop-turtle', 'clear', 'palette', 'hide-blocks', 'collapse-blocks', 'go-home', 'help'].indexOf(name) > -1);
+};
+
+
+function getAuxToolbarButtonNames(name) {
+    return (['planet', 'open', 'save', 'paste-disabled', 'Cartesian', 'polar', 'utility', 'empty-trash', 'restore-trash'].indexOf(name) > -1);
+}
 
 
 function createDefaultStack() {

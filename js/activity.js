@@ -896,7 +896,6 @@ define(function (require) {
 
             var img = new Image();
             img.onload = function () {
-                console.log('creating error message artwork for ' + img.src);
                 var artwork = new createjs.Bitmap(img);
                 container.addChild(artwork);
                 var text = new createjs.Text('', '20px Sans', '#000000');
@@ -1106,7 +1105,6 @@ define(function (require) {
             update = true;
 
             // Setup help now that we have calculated scale.
-            console.log(HELPCONTENT);
             showHelp(true);
 
             // Hide palette icons on mobile
@@ -1831,22 +1829,25 @@ define(function (require) {
             var dx = btnSize;
             var dy = 0;
 
-            for (var name in buttonNames) {
-                var container = makeButton(buttonNames[name][0] + '-button', buttonNames[name][2], x, y, btnSize, 0);
-                loadButtonDragHandler(container, x, y, buttonNames[name][1]);
+            for (var i = 0; i < buttonNames.length; i++) {
+                if (!getMainToolbarButtonNames(buttonNames[i][0])) {
+                    continue;
+                }
+                var container = makeButton(buttonNames[i][0] + '-button', buttonNames[i][2], x, y, btnSize, 0);
+                loadButtonDragHandler(container, x, y, buttonNames[i][1]);
                 onscreenButtons.push(container);
 
-                if (buttonNames[name][0] === 'stop-turtle') {
+                if (buttonNames[i][0] === 'stop-turtle') {
                     stopTurtleContainer = container;
                     stopTurtleContainerX = x;
                     stopTurtleContainerY = y;
-                } else if (buttonNames[name][0] === 'go-home') {
+                } else if (buttonNames[i][0] === 'go-home') {
                     homeButtonContainers = [];
                     homeButtonContainers.push(container);
                     homeButtonContainersX = x;
                     homeButtonContainersY = y;
                     var container2 = makeButton('go-home-faded-button', _('Home'), x, y, btnSize, 0);
-                    loadButtonDragHandler(container2, x, y, buttonNames[name][1]);
+                    loadButtonDragHandler(container2, x, y, buttonNames[i][1]);
                     homeButtonContainers.push(container2);
                     onscreenButtons.push(container2);
                     homeButtonContainers[0].visible = false;
@@ -1893,13 +1894,17 @@ define(function (require) {
             menuContainer = makeButton('menu-button', '', x, y, btnSize, menuButtonsVisible ? 90 : undefined);
             loadButtonDragHandler(menuContainer, x, y, doMenuButton);
 
-            for (var name in menuNames) {
+            for (var i = 0; i < menuNames.length; i++) {
+                if (!getAuxToolbarButtonNames(menuNames[i][0])) {
+                    continue;
+                }
+
                 x += dx;
                 y += dy;
-                var container = makeButton(menuNames[name][0] + '-button', menuNames[name][2], x, y, btnSize, 0);
-                loadButtonDragHandler(container, x, y, menuNames[name][1]);
+                var container = makeButton(menuNames[i][0] + '-button', menuNames[i][2], x, y, btnSize, 0);
+                loadButtonDragHandler(container, x, y, menuNames[i][1]);
                 onscreenMenu.push(container);
-                if (menuNames[name][0] === 'utility') {
+                if (menuNames[i][0] === 'utility') {
                     utilityButton = container;
                 }
                 container.visible = false;

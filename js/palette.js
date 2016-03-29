@@ -17,10 +17,6 @@ var paletteBlocks = null;
 const PROTOBLOCKSCALE = 1.0;
 const PALETTELEFTMARGIN = 10;
 
-// We don't include 'extras' since we want to be able to delete
-// plugins from the extras palette.
-const BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'boxes', 'actions', 'media', 'sensors', 'myblocks', 'heap'];
-
 
 function maxPaletteHeight(menuSize, scale) {
     // Palettes don't start at the top of the screen and the last
@@ -89,7 +85,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     this.x = 0;
     this.y = this.cellSize;
 
-    this.current = 'turtle';
+    this.current = DEFAULTPALETTE;
 
     this.container = new createjs.Container();
     this.container.snapToPixelEnabled = true;
@@ -307,10 +303,12 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     };
 
     this.remove = function(name) {
+        console.log(this.buttons);
         if (!(name in this.buttons)) {
             console.log('Palette.remove: Cannot find palette ' + name);
             return;
         }
+
         this.buttons[name].removeAllChildren();
         var btnKeys = Object.keys(this.dict);
         for (var btnKey = btnKeys.indexOf(name) + 1; btnKey < btnKeys.length; btnKey++) {
@@ -1359,10 +1357,10 @@ function Palette(palettes, name) {
                     palette.hide();
                     palette.palettes.refreshCanvas();
                     // Only delete plugin palettes.
-                    if (BUILTINPALETTES.indexOf(palette.name) === -1) {
-                        palette._promptPaletteDelete();
-                    } else if (palette.name === 'myblocks') {
+		    if (palette.name === 'myblocks') {
                         palette._promptMacrosDelete();
+                    } else if (BUILTINPALETTES.indexOf(palette.name) === -1) {
+                        palette._promptPaletteDelete();
                     }
                 }
                 trashcan.hide();
@@ -1557,7 +1555,8 @@ function Palette(palettes, name) {
         }
 
         this.palettes.updatePalettes('myblocks');
-        storage.macros =  prepareMacroExports(null, null, {});
+        storage.macros = prepareMacroExports(null, null, {});
+
         if (sugarizerCompatibility.isInsideSugarizer()) {
             sugarizerCompatibility.saveLocally();
         }
@@ -1841,18 +1840,10 @@ var blocks = undefined;
 
 function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan, b) {
     // Instantiate the palettes object on first load.
-    var palettes = new Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan).
-    add('turtle').
-    add('pen').
-    add('number').
-    add('boolean').
-    add('flow').
-    add('boxes').
-    add('actions').
-    add('media').
-    add('sensors').
-    add('heap').
-    add('extras');
+    var palettes = new Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan);
+    for (var i = 0; i < BUILTINPALETTES.length; i++) {
+	palettes.add(BUILTINPALETTES[i]);
+    }
 
     // Define some globals.
     palettes.makePalettes(true);

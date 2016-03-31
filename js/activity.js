@@ -1,4 +1,5 @@
 // Copyright (c) 2014-16 Walter Bender
+// Copyright (c) Yash Khandelwal, GSoC'15
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -24,7 +25,8 @@ function facebookInit() {
 
         // ADD ADDITIONAL FACEBOOK CODE HERE
     };
-}
+};
+
 
 try {
     (function (d, s, id) {
@@ -38,7 +40,7 @@ try {
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 } catch (e) {
-}
+};
 
 var lang = document.webL10n.getLanguage();
 if (lang.indexOf("-") !== -1) {
@@ -52,15 +54,18 @@ if (lang.indexOf("-") !== -1) {
 define(function (require) {
     require("activity/sugarizer-compatibility");
     require('activity/platformstyle');
+
     require('easeljs');
     require('tweenjs');
     require('preloadjs');
+    require('prefixfree.min');
     require('howler');
     require('mespeak');
     require('Chart');
+
     require('p5.sound');
     require('p5.dom');
-    require('activity/turtledefs');
+
     require('activity/utils');
     require('activity/artwork');
     require('activity/munsell');
@@ -71,14 +76,15 @@ define(function (require) {
     require('activity/protoblocks');
     require('activity/blocks');
     require('activity/block');
-    require('activity/logo');
     require('activity/clearbox');
     require('activity/utilitybox');
     require('activity/samplesviewer');
-    require('activity/basicblocks');
     require('activity/blockfactory');
+
+    require('activity/turtledefs');
+    require('activity/logo');
+    require('activity/basicblocks');
     require('activity/analytics');
-    require('prefixfree.min');
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!'], function (doc) {
@@ -92,11 +98,9 @@ define(function (require) {
     });
 
     function domReady(doc) {
-	turtleRequires();
         createDefaultStack();
 	createHelpContent();
-
-        facebookInit();
+        // facebookInit();
         window.scroll(0, 0);
 
         var txt = "";
@@ -134,7 +138,7 @@ define(function (require) {
 
         // Are we running off of a server?
         var server = true;
-        var scale = 1;
+        var turlteBlocksScale = 1;
         var stage;
         var turtles;
         var palettes;
@@ -195,9 +199,6 @@ define(function (require) {
         var scrollY = 0;
 
         // default values
-        const CAMERAVALUE = '##__CAMERA__##';
-        const VIDEOVALUE = '##__VIDEO__##';
-
         const DEFAULTDELAY = 500; // milleseconds
         const TURTLESTEP = -1; // Run in step-by-step mode
 
@@ -235,36 +236,36 @@ define(function (require) {
 
         pluginsImages = {};
 
-        function findBlocks() {
-            var x = 100 * scale;
-            var y = 100 * scale;
-
+        function _findBlocks() {
             logo.showBlocks();
             blocksContainer.x = 0;
             blocksContainer.y = 0;
             palettes.initial_x = 55;
             palettes.initial_y = 55;
             palettes.updatePalettes();
-
+            var x = 100 * turlteBlocksScale;
+            var y = 100 * turlteBlocksScale;
             for (var blk in blocks.blockList) {
-                var myBlock = blocks.blockList[blk];
-                if (myBlock.connections[0] == null && !myBlock.trash) {
-                    var dx = x - myBlock.container.x;
-                    var dy = y - myBlock.container.y;
-                    blocks.moveBlockRelative(blk, dx, dy);
-                    blocks.findDragGroup(blk);
-                    if (blocks.dragGroup.length > 0) {
-                        for (var b = 0; b < blocks.dragGroup.length; b++) {
-                            var bblk = blocks.dragGroup[b];
-                            if (b !== 0) {
-                                blocks.moveBlockRelative(bblk, dx, dy);
+                if (!blocks.blockList[blk].trash) {
+                    var myBlock = blocks.blockList[blk];
+                    if (myBlock.connections[0] == null) {
+                        var dx = x - myBlock.container.x;
+                        var dy = y - myBlock.container.y;
+                        blocks.moveBlockRelative(blk, dx, dy);
+                        blocks.findDragGroup(blk);
+                        if (blocks.dragGroup.length > 0) {
+                            for (var b = 0; b < blocks.dragGroup.length; b++) {
+                                var bblk = blocks.dragGroup[b];
+                                if (b !== 0) {
+                                    blocks.moveBlockRelative(bblk, dx, dy);
+                                }
                             }
                         }
-                    }
-                    x += 200 * scale;
-                    if (x > (canvas.width - 100) / (scale)) {
-                        x = 100 * scale;
-                        y += 100 * scale;
+                        x += 200 * turlteBlocksScale;
+                        if (x > (canvas.width - 100) / (turlteBlocksScale)) {
+                            x = 100 * turlteBlocksScale;
+                            y += 100 * turlteBlocksScale;
+                        }
                     }
                 }
             }
@@ -273,47 +274,74 @@ define(function (require) {
             homeButtonContainers[0].visible = false;
             homeButtonContainers[1].visible = true;
             boundary.hide();
-        }
+        };
 
-        function allClear() {
-            if (chartBitmap) {
+        function _allClear() {
+            if (chartBitmap != null) {
                 stage.removeChild(chartBitmap);
                 chartBitmap = null;
             }
+
             logo.boxes = {};
             logo.time = 0;
             hideMsgs();
             logo.setBackgroundColor(-1);
+            logo.lilypondOutput = LILYPONDHEADER;
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                logo.lilypondStaging[turtle] = [];
                 turtles.turtleList[turtle].doClear();
             }
+
             blocksContainer.x = 0;
             blocksContainer.y = 0;
-        }
 
-        function doFastButton(env) {
+            // Code specific to cleaning up music blocks
+            Element.prototype.remove = function() {
+                this.parentElement.removeChild(this);
+            };
+
+            NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+                for (var i = 0, len = this.length; i < len; i++) {
+                    if(this[i] && this[i].parentElement) {
+                        this[i].parentElement.removeChild(this[i]);
+                    }
+                }
+            };
+
+            var table = document.getElementById("myTable");
+            if(table != null) {
+                table.remove();
+            }
+
+            var canvas = document.getElementById("music");
+            var context = canvas.getContext("2d");
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        };
+
+        function _doFastButton(env) {
             logo.setTurtleDelay(0);
             if (!turtles.running()) {
                 logo.runLogoCommands(null, env);
             } else {
                 logo.step(null, env);
             }
-        }
+        };
 
-        function doSlowButton() {
+        function _doSlowButton() {
             logo.setTurtleDelay(DEFAULTDELAY);
             if (!turtles.running()) {
                 logo.runLogoCommands();
             } else {
                 logo.step();
             }
-        }
+        };
 
-        function doStepButton() {
+        function _doStepButton() {
             var turtleCount = 0;
             for (var turtle in logo.stepQueue) {
                 turtleCount += 1;
             }
+
             if (turtleCount === 0 || logo.turtleDelay !== TURTLESTEP) {
                 // Either we haven't set up a queue or we are
                 // switching modes.
@@ -327,47 +355,78 @@ define(function (require) {
                 logo.setTurtleDelay(TURTLESTEP);
                 logo.step();
             }
-        }
+        };
+
+        function _doSlowMusicButton() {
+            logo.setNoteDelay(DEFAULTDELAY);
+
+            if (!turtles.running()) {
+                logo.runLogoCommands();
+            } else {
+                logo.stepNotes();
+            }
+        };
+
+        function _doStepMusicButton() {
+            var turtleCount = 0;
+            for (var turtle in logo.stepQueue) {
+                turtleCount += 1;
+            }
+
+            if (turtleCount === 0 || logo.TurtleDelay !== TURTLESTEP) {
+                // Either we haven't set up a queue or we are
+                // switching modes.
+                logo.setTurtleDelay(TURTLESTEP);
+                // Queue and take first step.
+                if (!turtles.running()) {
+                    logo.runLogoCommands();
+                }
+                logo.stepNote();
+            } else {
+                logo.setTurtleDelay(TURTLESTEP);
+                logo.stepNote();
+            }
+        };
 
         var stopTurtle = false;
 
         function doStopButton() {
             logo.doStopTurtle();
-        }
+        };
 
         var cartesianVisible = false;
 
-        function doCartesian() {
+        function _doCartesian() {
             if (cartesianVisible) {
-                hideCartesian();
+                _hideCartesian();
                 cartesianVisible = false;
             } else {
-                showCartesian();
+                _showCartesian();
                 cartesianVisible = true;
             }
-        }
+        };
 
         var polarVisible = false;
 
-        function doPolar() {
+        function _doPolar() {
             if (polarVisible) {
-                hidePolar();
+                _hidePolar();
                 polarVisible = false;
             } else {
-                showPolar();
+                _showPolar();
                 polarVisible = true;
             }
-        }
+        };
 
         function toggleScroller() {
             scrollBlockContainer = !scrollBlockContainer;
-        }
+        };
 
         function closeAnalytics(chartBitmap, ctx) {
             var button = this;
-            button.x = (canvas.width / (2 * scale))  + (300 / Math.sqrt(2));
+            button.x = (canvas.width / (2 * turlteBlocksScale))  + (300 / Math.sqrt(2));
             button.y = 300.00 - (300.00 / Math.sqrt(2));
-            this.closeButton = makeButton('cancel-button', _('Close'), button.x, button.y, 55, 0);
+            this.closeButton = _makeButton('cancel-button', _('Close'), button.x, button.y, 55, 0);
             this.closeButton.on('click', function(event) {
                 console.log('Deleting Chart');
                 button.closeButton.visible = false;
@@ -376,20 +435,22 @@ define(function (require) {
                 update = true;
                 ctx.clearRect(0, 0, 600, 600);
             });
-        }
+        };
 
-        function isCanvasBlank(canvas) {
+        function _isCanvasBlank(canvas) {
             var blank = document.createElement('canvas');
             blank.width = canvas.width;
             blank.height = canvas.height;
-           return canvas.toDataURL() == blank.toDataURL();
-        }
+            return canvas.toDataURL() == blank.toDataURL();
+        };
 
         function doAnalytics() {
             var myChart = docById('myChart');
-            if(isCanvasBlank(myChart) == false) {
-                return;
-            }
+
+             if(_isCanvasBlank(myChart) == false) {
+                return ;
+             }
+
             var ctx = myChart.getContext('2d');
             document.body.style.cursor = 'wait';
             var myRadarChart = null;
@@ -398,14 +459,14 @@ define(function (require) {
             var data = scoreToChartData(scores);
             var Analytics = this;
             Analytics.close = closeAnalytics;
-    
-            var callback = function () {
+
+            var __callback = function () {
                 var imageData = myRadarChart.toBase64Image();
                 var img = new Image();
                 img.onload = function () {
                     var chartBitmap = new createjs.Bitmap(img);
                     stage.addChild(chartBitmap);
-                    chartBitmap.x = (canvas.width / (2 * scale)) - (300);
+                    chartBitmap.x = (canvas.width / (2 * turlteBlocksScale)) - (300);
                     chartBitmap.y = 0;
                     chartBitmap.scaleX = chartBitmap.scaleY = chartBitmap.scale = 600 / chartBitmap.image.width;
                     logo.hideBlocks();
@@ -416,24 +477,24 @@ define(function (require) {
                 img.src = imageData;
             };
 
-            var options = getChartOptions(callback);
+            var options = getChartOptions(__callback);
             console.log('creating new chart');
             myRadarChart = new Chart(ctx).Radar(data, options);
-        }
+        };
 
         function doBiggerFont() {
             if (blockscale < BLOCKSCALES.length - 1) {
                 blockscale += 1;
                 blocks.setBlockScale(BLOCKSCALES[blockscale]);
             }
-        }
+        };
 
         function doSmallerFont() {
             if (blockscale > 0) {
                 blockscale -= 1;
                 blocks.setBlockScale(BLOCKSCALES[blockscale]);
             }
-        }
+        };
 
         // Do we need to update the stage?
         var update = true;
@@ -471,17 +532,17 @@ define(function (require) {
             createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
             createjs.Ticker.setFPS(30);
             createjs.Ticker.addEventListener('tick', stage);
-            createjs.Ticker.addEventListener('tick', tick);
+            createjs.Ticker.addEventListener('tick', __tick);
 
-            createMsgContainer('#ffffff', '#7a7a7a', function (text) {
+            _createMsgContainer('#ffffff', '#7a7a7a', function (text) {
                 msgText = text;
             }, 55);
 
-            createMsgContainer('#ffcbc4', '#ff0031', function (text) {
+            _createMsgContainer('#ffcbc4', '#ff0031', function (text) {
                 errorMsgText = text;
             }, 110);
 
-            createErrorContainers();
+            _createErrorContainers();
 
             /* Z-Order (top to bottom):
              *   menus
@@ -493,18 +554,17 @@ define(function (require) {
              */
             palettesContainer = new createjs.Container();
             blocksContainer = new createjs.Container();
-            // Put the boundary in the blocks container so it scrolls
-            // with the blocks.
-            boundary = new Boundary(canvas, blocksContainer, refreshCanvas);
             trashContainer = new createjs.Container();
             turtleContainer = new createjs.Container();
 
-            stage.addChild(turtleContainer, trashContainer, blocksContainer,
-                palettesContainer);
-            setupBlocksContainerEvents();
+            stage.addChild(turtleContainer, trashContainer, blocksContainer, palettesContainer);
+            _setupBlocksContainerEvents();
 
             trashcan = new Trashcan(canvas, trashContainer, cellSize, refreshCanvas);
             turtles = new Turtles(canvas, turtleContainer, refreshCanvas);
+            // Put the boundary in the blocks container so it scrolls
+            // with the blocks.
+            boundary = new Boundary(canvas, blocksContainer, refreshCanvas);
             blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan, stage.update, getStageScale);
             palettes = initPalettes(canvas, refreshCanvas, palettesContainer, cellSize, refreshCanvas, trashcan, blocks);
 
@@ -512,7 +572,7 @@ define(function (require) {
             turtles.setBlocks(blocks);
             blocks.setTurtles(turtles);
             blocks.setErrorMsg(errorMsg);
-            blocks.makeCopyPasteButtons(makeButton, updatePasteButton);
+            blocks.makeCopyPasteButtons(_makeButton, updatePasteButton);
 
             // TODO: clean up this mess.
             logo = new Logo(canvas, blocks, turtles, turtleContainer,
@@ -527,25 +587,23 @@ define(function (require) {
             logo.setBackgroundColor(-1);
 
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
-
             utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, doAnalytics, toggleScroller);
-
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
-
             initBasicProtoBlocks(palettes, blocks);
 
             // Load any macros saved in local storage.
             macroData = storage.macros;
-            if (macroData) {
+            if (macroData != null) {
                 processMacroData(macroData, palettes, blocks, macroDict);
             }
+
             // Blocks and palettes need access to the macros dictionary.
             blocks.setMacroDictionary(macroDict);
             palettes.setMacroDictionary(macroDict);
 
             // Load any plugins saved in local storage.
             pluginData = storage.plugins;
-            if (pluginData) {
+            if (pluginData != null) {
                 var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
                 updatePluginObj(obj);
             }
@@ -553,8 +611,8 @@ define(function (require) {
             fileChooser.addEventListener('click', function (event) {
                 this.value = null;
             });
-            fileChooser.addEventListener('change', function (event) {
 
+            fileChooser.addEventListener('change', function (event) {
                 // Read file here.
                 var reader = new FileReader();
 
@@ -563,9 +621,10 @@ define(function (require) {
                     document.body.style.cursor = 'wait';
                     setTimeout(function () {
                         var rawData = reader.result;
-                        console.log(rawData)
                         var cleanData = rawData.replace('\n', ' ');
+                        console.log(cleanData);
                         var obj = JSON.parse(cleanData);
+                        console.log(obj)
                         // First, hide the palettes as they will need updating.
                         for (var name in blocks.palettes.dict) {
                             blocks.palettes.dict[name].hideMenu(true);
@@ -590,6 +649,7 @@ define(function (require) {
                 window.scroll(0, 0);
                 this.value = null;
             });
+
             pluginChooser.addEventListener('change', function (event) {
                 window.scroll(0, 0);
 
@@ -602,8 +662,10 @@ define(function (require) {
                     setTimeout(function () {
                         obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
                         // Save plugins to local storage.
-                        if (obj) {
-                            storage.plugins = preparePluginExports(obj);
+                        if (obj != null) {
+                            var pluginObj = preparePluginExports(obj);
+                            console.log(pluginObj);
+                            storage.plugins = pluginObj; // preparePluginExports(obj));
                         }
 
                         // Refresh the palettes.
@@ -634,18 +696,18 @@ define(function (require) {
             // Enabled mouse over and mouse out events.
             stage.enableMouseOver(10); // default is 20
 
-            cartesianBitmap = createGrid('images/Cartesian.svg');
+            cartesianBitmap = _createGrid('images/Cartesian.svg');
 
-            polarBitmap = createGrid('images/polar.svg');
+            polarBitmap = _createGrid('images/polar.svg');
 
             var URL = window.location.href;
             var projectName = null;
             var runProjectOnLoad = false;
 
-            setupAndroidToolbar();
+            _setupAndroidToolbar();
 
             // Scale the canvas relative to the screen size.
-            onResize();
+            _onResize();
 
             var urlParts;
             var env = [];
@@ -709,24 +771,24 @@ define(function (require) {
                 }
             }
 
-            if (projectName) {
+            if (projectName != null) {
                 setTimeout(function () {
                     console.log('load ' + projectName);
                     loadProject(projectName, runProjectOnLoad, env);
                 }, 2000);
             } else {
                 setTimeout(function () {
-                    loadStart();
+                    _loadStart();
                 }, 2000);
             }
 
             document.addEventListener('mousewheel', scrollEvent, false);
             document.addEventListener('DOMMouseScroll', scrollEvent, false);
 
-            this.document.onkeydown = keyPressed;
-        }
+            this.document.onkeydown = __keyPressed;
+        };
 
-        function setupBlocksContainerEvents() {
+        function _setupBlocksContainerEvents() {
             var moving = false;
 
             stage.on('stagemousemove', function (event) {
@@ -742,7 +804,6 @@ define(function (require) {
                     });
                     return;
                 }
-
                 moving = true;
                 lastCords = {
                     x: event.stageX,
@@ -753,14 +814,12 @@ define(function (require) {
                     if (!moving) {
                         return;
                     }
-
                     if (blocks.inLongPress) {
                         blocks.copyButton.visible = false;
                         blocks.saveStackButton.visible = false;
                         blocks.dismissButton.visible = false;
                         blocks.inLongPress = false;
                     }
-
                     if (scrollBlockContainer) {
                         blocksContainer.x += event.stageX - lastCords.x;
                         blocksContainer.y += event.stageY - lastCords.y;
@@ -777,7 +836,7 @@ define(function (require) {
                     moving = false;
                 }, null, true); // once = true
             });
-        }
+        };
 
         function scrollEvent(event) {
             var data = event.wheelDelta || -event.detail;
@@ -786,35 +845,36 @@ define(function (require) {
 
             if (event.clientX < cellSize) {
                 palettes.menuScrollEvent(delta, scrollSpeed);
+                palettes.hidePaletteIconCircles();
             } else {
-                palette = palettes.findPalette(event.clientX / scale, event.clientY / scale);
+                palette = palettes.findPalette(event.clientX / turlteBlocksScale, event.clientY / turlteBlocksScale);
                 if (palette) {
                     palette.scrollEvent(delta, scrollSpeed);
                 }
             }
-        }
+        };
 
         function getStageScale() {
-            return scale;
-        }
+            return turlteBlocksScale;
+        };
 
         function getStageX() {
-            return turtles.screenX2turtleX(stageX / scale);
-        }
+            return turtles.screenX2turtleX(stageX / turlteBlocksScale);
+        };
 
         function getStageY() {
-            return turtles.screenY2turtleY(stageY / scale);
-        }
+            return turtles.screenY2turtleY(stageY / turlteBlocksScale);
+        };
 
         function getStageMouseDown() {
             return stageMouseDown;
-        }
+        };
 
         function setCameraID(id) {
             cameraID = id;
-        }
+        };
 
-        function createGrid(imagePath) {
+        function _createGrid(imagePath) {
             var img = new Image();
             img.src = imagePath;
             var container = new createjs.Container();
@@ -829,10 +889,11 @@ define(function (require) {
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1;
             bitmap.visible = false;
             bitmap.updateCache();
+
             return bitmap;
         };
 
-        function createMsgContainer(fillColor, strokeColor, callback, y) {
+        function _createMsgContainer(fillColor, strokeColor, callback, y) {
             var container = new createjs.Container();
             stage.addChild(container);
             container.x = (canvas.width - 1000) / 2;
@@ -842,6 +903,7 @@ define(function (require) {
             var img = new Image();
             var svgData = MSGBLOCK.replace('fill_color', fillColor).replace(
                 'stroke_color', strokeColor);
+
             img.onload = function () {
                 var msgBlock = new createjs.Bitmap(img);
                 container.addChild(msgBlock);
@@ -873,19 +935,20 @@ define(function (require) {
                 callback(text);
                 blocks.setMsgText(text);
             };
+
             img.src = 'data:image/svg+xml;base64,' + window.btoa(
                 unescape(encodeURIComponent(svgData)));
-        }
+        };
 
-        function createErrorContainers() {
+        function _createErrorContainers() {
             // Some error messages have special artwork.
             for (var i = 0; i < ERRORARTWORK.length; i++) {
                 var name = ERRORARTWORK[i];
-                makeErrorArtwork(name);
+                _makeErrorArtwork(name);
             }
-        }
+        };
 
-        function makeErrorArtwork(name) {
+        function _makeErrorArtwork(name) {
             var container = new createjs.Container();
             stage.addChild(container);
             container.x = (canvas.width - 1000) / 2;
@@ -896,6 +959,7 @@ define(function (require) {
 
             var img = new Image();
             img.onload = function () {
+                // console.log('creating error message artwork for ' + img.src);
                 var artwork = new createjs.Bitmap(img);
                 container.addChild(artwork);
                 var text = new createjs.Text('', '20px Sans', '#000000');
@@ -922,10 +986,11 @@ define(function (require) {
                     update = true;
                 });
             };
-            img.src = 'images/' + name + '.svg';
-        }
 
-        function keyPressed(event) {
+            img.src = 'images/' + name + '.svg';
+        };
+
+        function __keyPressed(event) {
             if (docById('labelDiv').classList.contains('hasKeyboard')) {
                 return;
             }
@@ -954,10 +1019,10 @@ define(function (require) {
             if (event.altKey) {
                 switch (event.keyCode) {
                 case 69: // 'E'
-                    allClear();
+                    _allClear();
                     break;
                 case 82: // 'R'
-                    doFastButton();
+                    _doFastButton();
                     break;
                 case 83: // 'S'
                     logo.doStopTurtle();
@@ -1027,7 +1092,7 @@ define(function (require) {
                     break;
                 case ESC:
                     // toggle full screen
-                    toggleToolbar();
+                    _toggleToolbar();
                     break;
                 case RETURN:
                     // toggle run
@@ -1039,18 +1104,18 @@ define(function (require) {
                     break;
                 }
             }
-        }
+        };
 
         function getCurrentKeyCode() {
             return currentKeyCode;
-        }
+        };
 
         function clearCurrentKeyCode() {
             currentKey = '';
             currentKeyCode = 0;
-        }
+        };
 
-        function onResize() {
+        function _onResize() {
             if (docById('labelDiv').classList.contains('hasKeyboard')) {
                 return;
             }
@@ -1067,45 +1132,46 @@ define(function (require) {
             if (smallSide < cellSize * 11) {
                 var mobileSize = true;
                 if (w < cellSize * 10) {
-                    scale = smallSide / (cellSize * 11);
+                    turlteBlocksScale = smallSide / (cellSize * 11);
                 } else {
-                    scale = Math.max(smallSide / (cellSize * 11), 0.75);
+                    turlteBlocksScale = Math.max(smallSide / (cellSize * 11), 0.75);
                 }
             } else {
                 var mobileSize = false;
                 if (w / 1200 > h / 900) {
-                    scale = w / 1200;
+                    turlteBlocksScale = w / 1200;
                 } else {
-                    scale = h / 900;
+                    turlteBlocksScale = h / 900;
                 }
             }
-            stage.scaleX = scale;
-            stage.scaleY = scale;
+
+            stage.scaleX = turlteBlocksScale;
+            stage.scaleY = turlteBlocksScale;
 
             stage.canvas.width = w;
             stage.canvas.height = h;
 
-            console.log('Resize: scale ' + scale +
+            console.log('Resize: scale ' + turlteBlocksScale +
             ', windowW ' + w + ', windowH ' + h +
             ', canvasW ' + canvas.width + ', canvasH ' + canvas.height +
             ', screenW ' + screen.width + ', screenH ' + screen.height);
 
-            turtles.setScale(scale);
-            blocks.setScale(scale);
-            boundary.setScale(w, h, scale);
-            palettes.setScale(scale);
-            trashcan.resizeEvent(scale);
-            setupAndroidToolbar(mobileSize);
+            turtles.setScale(turlteBlocksScale);
+            blocks.setScale(turlteBlocksScale);
+            boundary.setScale(w, h, turlteBlocksScale);
+            palettes.setScale(turlteBlocksScale);
+            trashcan.resizeEvent(turlteBlocksScale);
+            _setupAndroidToolbar(mobileSize);
 
             // Reposition coordinate grids.
-            cartesianBitmap.x = (canvas.width / (2 * scale)) - (600);
-            cartesianBitmap.y = (canvas.height / (2 * scale)) - (450);
-            polarBitmap.x = (canvas.width / (2 * scale)) - (600);
-            polarBitmap.y = (canvas.height / (2 * scale)) - (450);
+            cartesianBitmap.x = (canvas.width / (2 * turlteBlocksScale)) - (600);
+            cartesianBitmap.y = (canvas.height / (2 * turlteBlocksScale)) - (450);
+            polarBitmap.x = (canvas.width / (2 * turlteBlocksScale)) - (600);
+            polarBitmap.y = (canvas.height / (2 * turlteBlocksScale)) - (450);
             update = true;
 
-            // Setup help now that we have calculated scale.
-            showHelp(true);
+            // Setup help now that we have calculated turlteBlocksScale.
+            _showHelp(true);
 
             // Hide palette icons on mobile
             if (mobileSize) {
@@ -1114,13 +1180,13 @@ define(function (require) {
                 palettes.show();
                 palettes.bringToTop();
             }
-        }
+        };
 
         window.onresize = function () {
-            onResize();
-        }
+            _onResize();
+        };
 
-        function restoreTrash() {
+        function _restoreTrash() {
             // Restore last stack pushed to trashStack.
             // First, hide the palettes as they will need updating.
             for (var name in blocks.palettes.dict) {
@@ -1166,17 +1232,16 @@ define(function (require) {
             }
 
             blocks.refreshCanvas();
-        }
+        };
 
-        function deleteBlocksBox() {
-            clearBox.show(scale);
-        }
+        function _deleteBlocksBox() {
+            clearBox.show(turlteBlocksScale);
+        };
 
-        function doUtilityBox() {
-            utilityBox.init(scale, utilityButton.x - 27, utilityButton.y, makeButton);
-        }
+        function _doUtilityBox() {
+            utilityBox.init(turlteBlocksScale, utilityButton.x - 27, utilityButton.y, _makeButton);
+        };
 
-        // Confirmation is handled in the utility palette.
         function sendAllToTrash(addStartBlock, doNotSave) {
             // First, hide the palettes as they will need updating.
             for (var name in blocks.palettes.dict) {
@@ -1196,9 +1261,11 @@ define(function (require) {
                 blocks.blockList[blk].trash = true;
                 blocks.moveBlockRelative(blk, dx, dy);
                 blocks.blockList[blk].hide();
-                if (blocks.blockList[blk].name === 'start') {
-                    turtle = blocks.blockList[blk].value;
+                if (blocks.blockList[blk].name === 'start' || blocks.blockList[blk].name === 'drum') {
+                    console.log('start blk ' + blk + ' value is ' + blocks.blockList[blk].value)
+                    var turtle = blocks.blockList[blk].value;
                     if (turtle != null) {
+                        console.log('sending turtle ' + turtle + ' to trash');
                         turtles.turtleList[turtle].trash = true;
                         turtles.turtleList[turtle].container.visible = false;
                     }
@@ -1206,91 +1273,111 @@ define(function (require) {
                     blocks.deleteActionBlock(blocks.blockList[blk]);
                 }
             }
-            if (addStartBlock) {
-                function postprocess() {
-                    last(blocks.blockList).container.x = 250;
-                    last(blocks.blockList).container.y = 250;
-                    last(blocks.blockList).connections = [null, null, null];
-                    turtles.add(last(blocks.blockList));
-                    last(blocks.blockList).value = turtles.turtleList.length - 1;
-                    blocks.updateBlockPositions();
-                    if (!doNotSave) {
-                        saveLocally();
-                    }
-                }
 
-                blocks.makeNewBlock('start', postprocess);
+            if (addStartBlock) {
+                blocks.loadNewBlocks(DATAOBJS);
             } else if (!doNotSave) {
+                // Overwrite session data too.
                 saveLocally();
             }
 
             update = true;
-        }
+        };
 
-        function changePaletteVisibility() {
+        function _changePaletteVisibility() {
             if (palettes.visible) {
                 palettes.hide();
             } else {
                 palettes.show();
                 palettes.bringToTop();
             }
-        }
+        };
 
-        function changeBlockVisibility() {
+        function _changeBlockVisibility() {
             if (blocks.visible) {
                 logo.hideBlocks();
             } else {
-                if (chartBitmap) {
+                if (chartBitmap != null) {
                     stage.removeChild(chartBitmap);
                     chartBitmap = null;
                 }
                 logo.showBlocks();
             }
-        }
+        };
 
-        function toggleCollapsibleStacks() {
+        function _toggleCollapsibleStacks() {
             if (blocks.visible) {
+                console.log('calling toggleCollapsibles');
                 blocks.toggleCollapsibles();
             }
-        }
+        };
 
         function stop() {
             // FIXME: who calls this???
-            createjs.Ticker.removeEventListener('tick', tick);
-        }
+            createjs.Ticker.removeEventListener('tick', __tick);
+        };
 
         function onStopTurtle() {
             // TODO: plugin support
-            if (!buttonsVisible) {
-                hideStopButton();
+            if (stopTurtleContainer.visible) {
+                _hideStopButton();
             }
-        }
+        };
 
         function onRunTurtle() {
             // TODO: plugin support
             // If the stop button is hidden, show it.
-            if (!buttonsVisible) {
-                showStopButton();
+            if (!stopTurtleContainer.visible) {
+                _showStopButton();
             }
-        }
+        };
 
         function refreshCanvas() {
             update = true;
-        }
+        };
 
-        function tick(event) {
+        function __tick(event) {
             // This set makes it so the stage only re-renders when an
             // event handler indicates a change has happened.
             if (update) {
                 update = false; // Only update once
                 stage.update(event);
             }
-        }
+        };
 
-        function doOpenSamples() {
+        function _doOpenSamples() {
+            console.log('save locally');
             saveLocally();
             thumbnails.show()
-        }
+        };
+
+        function doSave() {
+            console.log('Saving .tb file');
+            var name = 'My Project';
+            download(name + '.tb', 'data:text/plain;charset=utf-8,' + prepareExport());
+        };
+
+        function doLoad() {
+            console.log('Loading .tb file');
+            document.querySelector('#myOpenFile').focus();
+            document.querySelector('#myOpenFile').click();
+            window.scroll(0, 0);
+        };
+
+        function _doLilypond() {
+            // Show busy cursor.
+            document.body.style.cursor = 'wait';
+
+            console.log('Saving .ly file');
+            logo.lilypondSaveOnly = true;
+            logo.lilypondOutput = LILYPONDHEADER;
+            logo.lilypondNotes = {};
+            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                logo.lilypondStaging[turtle] = [];
+                turtles.turtleList[turtle].doClear();
+            }
+            logo.runLogoCommands();
+        };
 
         window.prepareExport = prepareExport;
         window.saveLocally = saveLocally;
@@ -1306,7 +1393,7 @@ define(function (require) {
 
             console.log('overwriting session data');
 
-            if (storage.currentProject == undefined) {
+            if (storage.currentProject === undefined) {
                 try {
                     storage.currentProject = 'My Project';
                     storage.allProjects = JSON.stringify(['My Project'])
@@ -1323,9 +1410,11 @@ define(function (require) {
                 console.log(e);
             }
 
-            if (isSVGEmpty(turtles)) {
-                return;
-            }
+            // if (isSVGEmpty(turtles)) {
+                // We will use the music icon in these cases.
+                // return;
+            // }
+
             var img = new Image();
             var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
             img.onload = function () {
@@ -1338,24 +1427,27 @@ define(function (require) {
                     console.log(e);
                 }
             };
+
             img.src = 'data:image/svg+xml;base64,' +
             window.btoa(unescape(encodeURIComponent(svgData)));
-            console.log(img.src);
+            // console.log(img.src);
             if (sugarizerCompatibility.isInsideSugarizer()) {
                 sugarizerCompatibility.saveLocally();
             }
-        }
+        };
 
         function loadProject(projectName, run, env) {
             //set default value of run
-            run = typeof run != 'undefined' ? run : false;
+            run = typeof run !== 'undefined' ? run : false;
             // Show busy cursor.
             document.body.style.cursor = 'wait';
             // palettes.updatePalettes();
             setTimeout(function () {
-                if (fileExt(projectName) !== 'tb') {
+                if (fileExt(projectName) !== 'tb')
+                {
                     projectName += '.tb';
                 }
+
                 try {
                     try {
                         httpGet(null);
@@ -1379,42 +1471,32 @@ define(function (require) {
 
                     var obj = JSON.parse(cleanData);
                     blocks.loadNewBlocks(obj);
+                    console.log('save locally');
                     saveLocally();
                 } catch (e) {
                     console.log(e);
-                    loadStart();
+                    _loadStart();
                 }
+
                 // Restore default cursor
                 document.body.style.cursor = 'default';
                 update = true;
             }, 200);
+
             if (run) {
                 setTimeout(function () {
                     changeBlockVisibility();
-                    doFastButton(env);
+                    _doFastButton(env);
                 }, 2000);
             }
+
             docById('loading-image-container').style.display = 'none';
-        }
-
-        function doSave() {
-            console.log('Saving .tb file');
-            var name = 'My Project';
-            download(name + '.tb',
-                'data:text/plain;charset=utf-8,' + prepareExport());
-        }
-
-        function doLoad() {
-            console.log('Loading .tb file');
-            document.querySelector('#myOpenFile').focus();
-            document.querySelector('#myOpenFile').click();
-            window.scroll(0, 0);
-        }
+        };
 
         function loadRawProject(data) {
             console.log('loadRawProject ' + data);
             document.body.style.cursor = 'wait';
-            allClear();
+            _allClear();
 
             // First, hide the palettes as they will need updating.
             for (var name in blocks.palettes.dict) {
@@ -1426,7 +1508,7 @@ define(function (require) {
 
             docById('loading-image-container').style.display = 'none';
             document.body.style.cursor = 'default';
-        }
+        };
 
         function saveProject(projectName) {
             // palettes.updatePalettes();
@@ -1440,7 +1522,7 @@ define(function (require) {
                 }
                 try {
                     // Post the project
-                    var returnValue = httpPost(projectName, prepareExport());
+                    var returnValue = httpPost('MusicBlocks_'+projectName, prepareExport());
                     errorMsg('Saved ' + projectName + ' to ' + window.location.host);
 
                     var img = new Image();
@@ -1450,8 +1532,9 @@ define(function (require) {
                         var bounds = bitmap.getBounds();
                         bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                         // and base64-encoded png
-                        httpPost(projectName.replace('.tb', '.b64'), bitmap.getCacheDataURL());
-                    }
+                        httpPost(('MusicBlocks_'+projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
+                    };
+
                     img.src = 'data:image/svg+xml;base64,' + window.btoa(
                         unescape(encodeURIComponent(svgData)));
                     // Restore default cursor
@@ -1464,9 +1547,12 @@ define(function (require) {
                     return;
                 }
             }, 200);
-        }
+        };
 
-        function loadStart() {
+        function _loadStart() {
+            // where to put this?
+            // palettes.updatePalettes();
+            console.log(" LOAD START")
             justLoadStart = function () {
                 blocks.loadNewBlocks(DATAOBJS);
             };
@@ -1484,7 +1570,7 @@ define(function (require) {
             sessionData = storage['SESSION' + currentProject];
             if (sessionData) {
                 try {
-                    if (!sessionData || sessionData === []) {
+                    if (sessionData === 'undefined' || sessionData === '[]') {
                         console.log('empty session found: loading start');
                         justLoadStart();
                     } else {
@@ -1506,7 +1592,7 @@ define(function (require) {
             update = true;
 
             docById('loading-image-container').style.display = 'none';
-        }
+        };
 
         function hideMsgs() {
             errorMsgText.parent.visible = false;
@@ -1514,11 +1600,12 @@ define(function (require) {
                 errorMsgArrow.removeAllChildren();
                 refreshCanvas();
             }
+
             msgText.parent.visible = false;
             for (var i in errorArtwork) {
                 errorArtwork[i].visible = false;
             }
-        }
+        };
 
         function textMsg(msg) {
             if (msgText == null) {
@@ -1530,7 +1617,7 @@ define(function (require) {
             msgText.text = msg;
             msgContainer.updateCache();
             stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
-        }
+        };
 
         function errorMsg(msg, blk, text) {
             if (errorMsgText == null) {
@@ -1538,7 +1625,7 @@ define(function (require) {
                 return;
             }
 
-            if (blk != undefined && blk != null && !blocks.blockList[blk].collapsed) {
+            if (blk !== undefined && blk != null && !blocks.blockList[blk].collapsed) {
                 var fromX = (canvas.width - 1000) / 2;
                 var fromY = 128;
                 var toX = blocks.blockList[blk].container.x + blocksContainer.x;
@@ -1620,35 +1707,35 @@ define(function (require) {
             }
 
             update = true;
-        }
+        };
 
-        function hideCartesian() {
+        function _hideCartesian() {
             cartesianBitmap.visible = false;
             cartesianBitmap.updateCache();
             update = true;
-        }
+        };
 
-        function showCartesian() {
+        function _showCartesian() {
             cartesianBitmap.visible = true;
             cartesianBitmap.updateCache();
             update = true;
-        }
+        };
 
-        function hidePolar() {
+        function _hidePolar() {
             polarBitmap.visible = false;
             polarBitmap.updateCache();
             update = true;
-        }
+        };
 
-        function showPolar() {
+        function _showPolar() {
             polarBitmap.visible = true;
             polarBitmap.updateCache();
             update = true;
-        }
+        };
 
         function pasteStack() {
             blocks.pasteStack();
-        }
+        };
 
         function prepareExport() {
             // We don't save blocks in the trash, so we need to
@@ -1670,12 +1757,13 @@ define(function (require) {
                     // Don't save blocks in the trash.
                     continue;
                 }
-                if (blocks.blockList[blk].isValueBlock() || blocks.blockList[blk].name === 'loadFile') {
+
+                if (myBlock.isValueBlock() || myBlock.name === 'loadFile') {
                     // FIX ME: scale image if it exceeds a maximum size.
                     var args = {
                         'value': myBlock.value
                     };
-                } else if (myBlock.name === 'start') {
+                } else if (myBlock.name === 'start' || myBlock.name === 'drum') {
                     // Find the turtle associated with this block.
                     var turtle = turtles.turtleList[myBlock.value];
                     var args = {
@@ -1691,6 +1779,10 @@ define(function (require) {
                 } else if (myBlock.name === 'action') {
                     var args = {
                         'collapsed': myBlock.collapsed
+                    }
+                } else if(myBlock.name === 'matrix') {
+                    var args = {
+                        'collapsed' : myBlock.collapsed
                     }
                 } else if (myBlock.name === 'namedbox') {
                     var args = {
@@ -1716,8 +1808,13 @@ define(function (require) {
                     var args = {
                         'value': myBlock.privateData
                     }
+                } else if (myBlock.name === 'matrixData') {
+                    var args = {
+                        'notes': window.savedMatricesNotes, 'count': window.savedMatricesCount
+                    }
+                    hasMatrixDataBlock = true;
                 } else {
-                    var args = {};
+                    var args = {}
                 }
 
                 connections = [];
@@ -1731,14 +1828,15 @@ define(function (require) {
                 }
                 data.push([blockMap.indexOf(blk), [myBlock.name, args], myBlock.container.x, myBlock.container.y, connections]);
             }
+
             return JSON.stringify(data);
-        }
+        };
 
         function doOpenPlugin() {
             // Click on the plugin open chooser in the DOM (.json).
             pluginChooser.focus();
             pluginChooser.click();
-        }
+        };
 
         function saveToFile() {
             var filename = prompt('Filename:');
@@ -1746,23 +1844,24 @@ define(function (require) {
                 filename += '.tb';
             }
             download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
-        }
+        };
 
-        function hideStopButton() {
-            stopTurtleContainer.x = stopTurtleContainerX;
-            stopTurtleContainer.y = stopTurtleContainerY;
+        function _hideStopButton() {
+            // stopTurtleContainer.x = stopTurtleContainerX;
+            // stopTurtleContainer.y = stopTurtleContainerY;
             stopTurtleContainer.visible = false;
-        }
+        };
 
-        function showStopButton() {
-            stopTurtleContainer.x = onscreenButtons[0].x;
-            stopTurtleContainer.y = onscreenButtons[0].y;
+        function _showStopButton() {
+            // stopTurtleContainer.x = onscreenButtons[0].x;
+            // stopTurtleContainer.y = onscreenButtons[0].y;
             stopTurtleContainer.visible = true;
-        }
+        };
 
         function updatePasteButton() {
             pasteContainer.removeChild(pasteContainer.children[0]);
             var img = new Image();
+
             img.onload = function () {
                 var originalSize = 55; // this is the original svg size
                 var halfSize = Math.floor(cellSize / 2);
@@ -1777,11 +1876,12 @@ define(function (require) {
                 pasteContainer.addChild(bitmap)
                 update = true;
             };
-            img.src = 'header-icons/paste-button.svg';
-        }
 
-        function setupAndroidToolbar(showPalettesPopover) {
-            if (headerContainer != undefined) {
+            img.src = 'header-icons/paste-button.svg';
+        };
+
+        function _setupAndroidToolbar(showPalettesPopover) {
+            if (headerContainer !== undefined) {
                 stage.removeChild(headerContainer);
                 for (var i in onscreenButtons) {
                     stage.removeChild(onscreenButtons[i]);
@@ -1790,24 +1890,28 @@ define(function (require) {
 
             headerContainer = new createjs.Shape();
             headerContainer.graphics.f(platformColor.header).r(0, 0,
-                screen.width / scale, cellSize);
+                screen.width / turlteBlocksScale, cellSize);
+
             if (platformColor.doHeaderShadow) {
                 headerContainer.shadow = new createjs.Shadow('#777', 0, 2, 2);
             }
+
             stage.addChild(headerContainer);
 
             // Buttons used when running turtle programs
             var buttonNames = [
-                ['fast', doFastButton, _('Run fast')],
-                ['slow', doSlowButton, _('Run slow')],
-                ['step', doStepButton, _('Run step by step')],
+                ['fast', _doFastButton, _('Run fast')],
+                ['slow', _doSlowButton, _('Run slow')],
+                ['step', _doStepButton, _('Run step by step')],
+                ['slow-music', _doSlowMusicButton, _('Run music slow')],
+                ['step-music', _doStepMusicButton, _('Run note by note')],
                 ['stop-turtle', doStopButton, _('Stop')],
-                ['clear', allClear, _('Clean')],
-                ['palette', changePaletteVisibility, _('Show/hide palettes')],
-                ['hide-blocks', changeBlockVisibility, _('Show/hide blocks')],
-                ['collapse-blocks', toggleCollapsibleStacks, _('Expand/collapse collapsable blocks')],
-                ['go-home', findBlocks, _('Home')],
-                ['help', showHelp, _('Help')]
+                ['clear', _allClear, _('Clean')],
+                ['palette', _changePaletteVisibility, _('Show/hide palettes')],
+                ['hide-blocks', _changeBlockVisibility, _('Show/hide blocks')],
+                ['collapse-blocks', _toggleCollapsibleStacks, _('Expand/collapse collapsable blocks')],
+                ['go-home', _findBlocks, _('Home')],
+                ['help', _showHelp, _('Help')]
             ];
 
             if (sugarizerCompatibility.isInsideSugarizer()) {
@@ -1833,8 +1937,9 @@ define(function (require) {
                 if (!getMainToolbarButtonNames(buttonNames[i][0])) {
                     continue;
                 }
-                var container = makeButton(buttonNames[i][0] + '-button', buttonNames[i][2], x, y, btnSize, 0);
-                loadButtonDragHandler(container, x, y, buttonNames[i][1]);
+
+                var container = _makeButton(buttonNames[i][0] + '-button', buttonNames[i][2], x, y, btnSize, 0);
+                _loadButtonDragHandler(container, x, y, buttonNames[i][1]);
                 onscreenButtons.push(container);
 
                 if (buttonNames[i][0] === 'stop-turtle') {
@@ -1846,8 +1951,8 @@ define(function (require) {
                     homeButtonContainers.push(container);
                     homeButtonContainersX = x;
                     homeButtonContainersY = y;
-                    var container2 = makeButton('go-home-faded-button', _('Home'), x, y, btnSize, 0);
-                    loadButtonDragHandler(container2, x, y, buttonNames[i][1]);
+                    var container2 = _makeButton('go-home-faded-button', _('Home'), x, y, btnSize, 0);
+                    _loadButtonDragHandler(container2, x, y, buttonNames[i][1]);
                     homeButtonContainers.push(container2);
                     onscreenButtons.push(container2);
                     homeButtonContainers[0].visible = false;
@@ -1860,11 +1965,11 @@ define(function (require) {
                 y += dy;
             }
 
-            setupRightMenu(scale);
-        }
+            _setupRightMenu(turlteBlocksScale);
+        };
 
-        function setupRightMenu(scale) {
-            if (menuContainer != undefined) {
+        function _setupRightMenu(turlteBlocksScale) {
+            if (menuContainer !== undefined) {
                 stage.removeChild(menuContainer);
                 for (var i in onscreenMenu) {
                     stage.removeChild(onscreenMenu[i]);
@@ -1873,26 +1978,32 @@ define(function (require) {
 
             // Misc. other buttons
             var menuNames = [
-                ['planet', doOpenSamples, _('Load samples from server')],
+                ['planet', _doOpenSamples, _('Load samples from server')],
                 ['open', doLoad, _('Load project from files')],
                 ['save', doSave, _('Save project')],
+                ['lilypond', _doLilypond, _('Save sheet music')],
                 ['paste-disabled', pasteStack, _('Paste')],
-                ['Cartesian', doCartesian, _('Cartesian')],
-                ['polar', doPolar, _('Polar')],
-                ['utility', doUtilityBox, _('Settings')],
-                ['empty-trash', deleteBlocksBox, _('Delete all')],
-                ['restore-trash', restoreTrash, _('Undo')]
+                ['Cartesian', _doCartesian, _('Cartesian')],
+                ['polar', _doPolar, _('Polar')],
+                ['utility', _doUtilityBox, _('Settings')],
+                ['empty-trash', _deleteBlocksBox, _('Delete all')],
+                ['restore-trash', _restoreTrash, _('Undo')]
             ];
 
+            document.querySelector('#myOpenFile')
+                    .addEventListener('change', function(event) {
+                        thumbnails.model.controller.hide();
+            });
+
             var btnSize = cellSize;
-            var x = Math.floor(canvas.width / scale) - btnSize / 2;
+            var x = Math.floor(canvas.width / turlteBlocksScale) - btnSize / 2;
             var y = Math.floor(btnSize / 2);
 
             var dx = 0;
             var dy = btnSize;
 
-            menuContainer = makeButton('menu-button', '', x, y, btnSize, menuButtonsVisible ? 90 : undefined);
-            loadButtonDragHandler(menuContainer, x, y, doMenuButton);
+            container = _makeButton('menu-button', '', x, y, btnSize, menuButtonsVisible ? 90 : undefined);
+            _loadButtonDragHandler(container, x, y, _doMenuButton);
 
             for (var i = 0; i < menuNames.length; i++) {
                 if (!getAuxToolbarButtonNames(menuNames[i][0])) {
@@ -1901,8 +2012,8 @@ define(function (require) {
 
                 x += dx;
                 y += dy;
-                var container = makeButton(menuNames[i][0] + '-button', menuNames[i][2], x, y, btnSize, 0);
-                loadButtonDragHandler(container, x, y, menuNames[i][1]);
+                var container = _makeButton(menuNames[i][0] + '-button', menuNames[i][2], x, y, btnSize, 0);
+                _loadButtonDragHandler(container, x, y, menuNames[i][1]);
                 onscreenMenu.push(container);
                 if (menuNames[i][0] === 'utility') {
                     utilityButton = container;
@@ -1915,14 +2026,14 @@ define(function (require) {
                     onscreenMenu[button].visible = true;
                 }
             }
-        }
+        };
 
         function doPopdownPalette() {
             var p = new PopdownPalette(palettes);
             p.popdown();
-        }
+        };
 
-        function showHelp(firstTime) {
+        function _showHelp(firstTime) {
             helpIdx = 0;
 
             if (firstTime) {
@@ -1942,7 +2053,7 @@ define(function (require) {
                             if (helpIdx >= HELPCONTENT.length) {
                                 helpIdx = 0;
                             }
-                            var imageScale = 55 * scale;
+                            var imageScale = 55 * turlteBlocksScale;
                             helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
                         }
                         update = true;
@@ -1950,10 +2061,11 @@ define(function (require) {
 
                     var img = new Image();
                     img.onload = function () {
+                        console.log(turlteBlocksScale);
                         var bitmap = new createjs.Bitmap(img);
                         /*
-                        if (scale > 1) {
-                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                        if (turlteBlocksScale > 1) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = turlteBlocksScale;
                         } else {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.125;
                         }
@@ -1962,8 +2074,7 @@ define(function (require) {
                             console.log('delete old help container');
                             helpContainer.removeChild(helpContainer.children[0]);
                         }
-
-                        helpContainer.addChild(bitmap);
+                        helpContainer.addChild(bitmap)
 
                         var bounds = helpContainer.getBounds();
                         var hitArea = new createjs.Shape();
@@ -1977,7 +2088,7 @@ define(function (require) {
                             docById('helpElem').style.visibility = 'visible';
                         }
                         update = true;
-                    }
+                    };
 
                     img.src = 'images/help-container.svg';
                 }
@@ -1985,23 +2096,23 @@ define(function (require) {
                 var helpElem = docById('helpElem');
                 helpElem.style.position = 'absolute';
                 helpElem.style.display = 'block';
-                helpElem.style.paddingLeft = 20 * scale + 'px';
-                helpElem.style.paddingRight = 20 * scale + 'px';
+                helpElem.style.paddingLeft = 20 * turlteBlocksScale + 'px';
+                helpElem.style.paddingRight = 20 * turlteBlocksScale + 'px';
                 helpElem.style.paddingTop = '0px';
-                helpElem.style.paddingBottom = 20 + 'px';
-                helpElem.style.fontSize = 20 * scale + 'px';
-                helpElem.style.color = '#000000';
-                helpElem.style.left = 65 * scale + 'px';
-                helpElem.style.top = 105 * scale + 'px';
-                var w = Math.min(300, 300);
-                var h = Math.min(300, 300);
+                helpElem.style.paddingBottom = 20 * turlteBlocksScale + 'px';
+                helpElem.style.fontSize = 20 + 'px'; //  * turlteBlocksScale + 'px';
+                helpElem.style.color = '#000000';  // '#ffffff';
+                helpElem.style.left = 65 * turlteBlocksScale + 'px';
+                helpElem.style.top = 105 * turlteBlocksScale + 'px';
+                var w = Math.min(300, 300); //  * turlteBlocksScale);
+                var h = Math.min(300, 300); //  * turlteBlocksScale);
                 helpElem.style.width = w + 'px';
                 helpElem.style.height = h + 'px';
 
-                if (scale > 1) {
+                if (turlteBlocksScale > 1) {
                     var bitmap = helpContainer.children[0];
                     if (bitmap != undefined) {
-                        // bitmap.scaleX = bitmap.scaleY = bitmap.scale = scale;
+                        // bitmap.scaleX = bitmap.scaleY = bitmap.scale = turlteBlocksScale;
                     }
                 }
 
@@ -2030,13 +2141,13 @@ define(function (require) {
                     doMenuAnimation(1);
                 }
             }
-        }
+        };
 
-        function doMenuButton() {
-            doMenuAnimation(1);
-        }
+        function _doMenuButton() {
+            _doMenuAnimation(1);
+        };
 
-        function doMenuAnimation() {
+        function _doMenuAnimation() {
             var bitmap = last(menuContainer.children);
             if (bitmap != null) {
                 var r = bitmap.rotation;
@@ -2049,8 +2160,9 @@ define(function (require) {
                     }, 500);
             } else {
                 // Race conditions during load
-                setTimeout(doMenuAnimation, 50);
+                setTimeout(_doMenuAnimation, 50);
             }
+
             setTimeout(function () {
                 if (menuButtonsVisible) {
                     menuButtonsVisible = false;
@@ -2065,22 +2177,24 @@ define(function (require) {
                 }
                 update = true;
             }, 500);
-        }
+        };
 
-        function toggleToolbar() {
+        function _toggleToolbar() {
             buttonsVisible = !buttonsVisible;
             menuContainer.visible = buttonsVisible;
             headerContainer.visible = buttonsVisible;
             for (var button in onscreenButtons) {
                 onscreenButtons[button].visible = buttonsVisible;
             }
+
             for (var button in onscreenMenu) {
                 onscreenMenu[button].visible = buttonsVisible;
             }
-            update = true;
-        }
 
-        function makeButton(name, label, x, y, size, rotation, parent) {
+            update = true;
+        };
+
+        function _makeButton(name, label, x, y, size, rotation, parent) {
             var container = new createjs.Container();
             if (name === 'paste-disabled-button') {
                 pasteContainer = container;
@@ -2091,6 +2205,7 @@ define(function (require) {
             } else {
                 parent.addChild(container);
             }
+
             container.x = x;
             container.y = y;
 
@@ -2109,6 +2224,7 @@ define(function (require) {
                 text.x = -28;
                 text.y = 0;
             }
+
             text.visible = false;
 
             container.on('mouseover', function(event) {
@@ -2140,9 +2256,10 @@ define(function (require) {
                     bitmap.scaleX = size / originalSize;
                     bitmap.scaleY = size / originalSize;
                 }
+
                 bitmap.regX = halfSize / bitmap.scaleX;
                 bitmap.regY = halfSize / bitmap.scaleY;
-                if (rotation != undefined) {
+                if (rotation !== undefined) {
                     bitmap.rotation = rotation;
                 }
 
@@ -2161,37 +2278,39 @@ define(function (require) {
             container.addChild(text);
 
             return container;
-        }
+        };
 
-        function loadButtonDragHandler(container, ox, oy, action) {
+        function _loadButtonDragHandler(container, ox, oy, action) {
             // Prevent multiple button presses (i.e., debounce).
             var locked = false;
 
             container.on('mousedown', function (event) {
                 var moved = true;
                 var offset = {
-                    x: container.x - Math.round(event.stageX / scale),
-                    y: container.y - Math.round(event.stageY / scale)
+                    x: container.x - Math.round(event.stageX / turlteBlocksScale),
+                    y: container.y - Math.round(event.stageY / turlteBlocksScale)
                 };
 
-                var circles = showButtonHighlight(ox, oy, cellSize / 2,
-                    event, scale, stage);
+                var circles = showButtonHighlight(ox, oy, cellSize / 2, event, turlteBlocksScale, stage);
+
                 container.on('pressup', function (event) {
                     hideButtonHighlight(circles, stage);
-
                     container.x = ox;
                     container.y = oy;
-                    if (action && moved && !locked) {
+
+                    if (action != null && moved && !locked) {
                         locked = true;
+
                         setTimeout(function () {
                             locked = false;
                         }, 500);
+
                         action();
                     }
+
                     moved = false;
                 });
             });
-        }
-    }
-
+        };
+    };
 });

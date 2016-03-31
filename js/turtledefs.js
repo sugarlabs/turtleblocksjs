@@ -19,13 +19,6 @@ const DEFAULTPALETTE = 'turtle';
 BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'boxes', 'actions', 'media', 'sensors', 'heap', 'extras'];
 
 
-function turtleRequires () {
-    // These modules are not used in all forks of Turtle Blocks, e.g., Music Blocks.
-    require('p5.sound');
-    require('p5.dom');
-};
-
-
 function getMainToolbarButtonNames(name) {
     return (['fast', 'slow', 'step', 'stop-turtle', 'clear', 'palette', 'hide-blocks', 'collapse-blocks', 'go-home', 'help'].indexOf(name) > -1);
 };

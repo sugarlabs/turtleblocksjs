@@ -286,9 +286,7 @@ define(function (require) {
             logo.time = 0;
             hideMsgs();
             logo.setBackgroundColor(-1);
-            logo.lilypondOutput = LILYPONDHEADER;
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                logo.lilypondStaging[turtle] = [];
                 turtles.turtleList[turtle].doClear();
             }
 
@@ -312,10 +310,6 @@ define(function (require) {
             if(table != null) {
                 table.remove();
             }
-
-            var canvas = document.getElementById("music");
-            var context = canvas.getContext("2d");
-            context.clearRect(0, 0, canvas.width, canvas.height);
         };
 
         function _doFastButton(env) {

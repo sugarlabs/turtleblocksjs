@@ -1283,7 +1283,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
         while (blk != null && this.blockList[blk] != null && !this.blockList[blk].isValueBlock()) {
             // More checks for malformed or corrupted block data.
             this._searchCounter += 1;
-            if (this._searchCounter > 2 * this.blockList.length) {
+            if (this._searchCounter > 4 * this.blockList.length) {
                 console.log('infinite loop searching for Expandables? ' + this._searchCounter);
                 console.log(blk + ' ' + this.blockList[blk].name);
                 break;

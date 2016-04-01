@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 
 msgid "Delete all"
-msgstr ""
+msgstr "Apaguar tudo"
 
 msgid "show"
 msgstr "mostre"
@@ -36,7 +36,7 @@ msgid "random"
 msgstr "aleatório"
 
 msgid "confirm"
-msgstr ""
+msgstr "confirme"
 
 msgid "rice and beans"
 msgstr ""
@@ -63,7 +63,7 @@ msgid "chicken"
 msgstr ""
 
 msgid "apple"
-msgstr ""
+msgstr "maçã"
 
 msgid "number"
 msgstr "número"
@@ -80,11 +80,11 @@ msgid "radians"
 msgstr ""
 
 msgid "Undo"
-msgstr ""
+msgstr "Desfazer"
 
 #. TRANS: ms is micro seconds
 msgid "duration (ms)"
-msgstr ""
+msgstr "duração (ms)"
 
 #. TRANS: as in "add 1 to"
 msgid "to"
@@ -100,7 +100,7 @@ msgid "start turtle"
 msgstr ""
 
 msgid "latitude"
-msgstr ""
+msgstr "latitude"
 
 msgid "mouse x"
 msgstr ""
@@ -115,7 +115,7 @@ msgid "then"
 msgstr "então"
 
 msgid "move"
-msgstr ""
+msgstr "mover"
 
 msgid "Stop the current project."
 msgstr ""
@@ -153,14 +153,14 @@ msgid "Google map"
 msgstr ""
 
 msgid "day"
-msgstr ""
+msgstr "dia"
 
 #. TRANS: mathematical modular (remainder) function.
 msgid "mod"
 msgstr "módulo"
 
 msgid "Save project"
-msgstr ""
+msgstr "Salvar projeto"
 
 msgid "get fiber"
 msgstr ""
@@ -179,7 +179,7 @@ msgid "turtle y"
 msgstr ""
 
 msgid "Download"
-msgstr ""
+msgstr "Baixar"
 
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr ""
@@ -218,7 +218,7 @@ msgid "heading"
 msgstr ""
 
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 msgid "turtle"
 msgstr "tartaruga"
@@ -257,10 +257,10 @@ msgid "radius"
 msgstr "raio"
 
 msgid "longitude"
-msgstr ""
+msgstr "longitude"
 
 msgid "duration"
-msgstr ""
+msgstr "duração"
 
 #. TRANS: shade refers to value (dark to light)
 msgid "set shade"
@@ -268,11 +268,11 @@ msgstr "defina tom"
 
 #. TRANS: in mathematical sense (inverse of period)
 msgid "frequency"
-msgstr ""
+msgstr "frequência"
 
 #. TRANS: as in the event that a signal arrives
 msgid "event"
-msgstr ""
+msgstr "evento"
 
 msgid "pixel color"
 msgstr ""
@@ -288,7 +288,7 @@ msgid "index"
 msgstr ""
 
 msgid "hide"
-msgstr ""
+msgstr "esconder"
 
 #. TRANS: the heap is a first-in-last-out (FILO) stack
 msgid "show heap"
@@ -327,7 +327,7 @@ msgid "heap length"
 msgstr ""
 
 msgid "size"
-msgstr ""
+msgstr "tamanho"
 
 msgid "Expand/collapse option toolbar"
 msgstr ""
@@ -347,7 +347,7 @@ msgstr ""
 
 #. TRANS: mathematical power, e.g., 2^4 == 16
 msgid "power"
-msgstr ""
+msgstr "potência"
 
 msgid "Settings"
 msgstr ""
@@ -371,11 +371,11 @@ msgid "to radians"
 msgstr ""
 
 msgid "water"
-msgstr ""
+msgstr "água"
 
 #. TRANS: mathematical exponential base
 msgid "base"
-msgstr ""
+msgstr "base"
 
 msgid "cookie"
 msgstr ""
@@ -463,7 +463,7 @@ msgid "comment"
 msgstr ""
 
 msgid "cheese"
-msgstr ""
+msgstr "queijo"
 
 msgid "Cartesian"
 msgstr "Cartesian"
@@ -522,13 +522,13 @@ msgstr "botão do mouse"
 
 #. TRANS: cloud as in cloud server
 msgid "cloud"
-msgstr ""
+msgstr "nuvem"
 
 msgid "speak"
 msgstr "fale"
 
 msgid "city"
-msgstr ""
+msgstr "cidade"
 
 #. TRANS: carbohydrates
 msgid "get carbs"
@@ -542,10 +542,10 @@ msgstr ""
 
 #. TRANS: source language for translation
 msgid "source"
-msgstr ""
+msgstr "fonte"
 
 msgid "unknown"
-msgstr ""
+msgstr "desconhecido"
 
 msgid "wait for"
 msgstr ""
@@ -584,7 +584,7 @@ msgstr "para frente"
 
 #. TRANS: 360 degrees in a circle
 msgid "degrees"
-msgstr ""
+msgstr "graus"
 
 msgid "translate"
 msgstr ""
@@ -600,7 +600,7 @@ msgstr ""
 
 #. TRANS: save project as simple vector graphic (SVG)
 msgid "save svg"
-msgstr ""
+msgstr "salvar svg"
 
 #. TRANS: mathematical ceiling function, e.g., ceiling(2.5) == 3
 msgid "ceiling"
@@ -626,7 +626,7 @@ msgstr ""
 
 #. TRANS: carbohydrates
 msgid "carbs"
-msgstr ""
+msgstr "carboidratos"
 
 msgid "else"
 msgstr "senão"
@@ -636,7 +636,7 @@ msgid "broadcast"
 msgstr ""
 
 msgid "orange"
-msgstr ""
+msgstr "laranja"
 
 msgid "begin hollow line"
 msgstr ""
@@ -682,7 +682,7 @@ msgid "hspace"
 msgstr ""
 
 msgid "potato"
-msgstr ""
+msgstr "batata"
 
 msgid "city longitude"
 msgstr ""
@@ -695,7 +695,7 @@ msgid "value"
 msgstr "valor"
 
 msgid "banana"
-msgstr ""
+msgstr "banana"
 
 msgid "wheat bread"
 msgstr ""
@@ -707,7 +707,7 @@ msgid "while"
 msgstr "enquanto"
 
 msgid "open file"
-msgstr ""
+msgstr "abrir arquivo"
 
 #. TRANS: detect language
 msgid "detect lang"
@@ -718,14 +718,14 @@ msgstr ""
 
 #. TRANS: mathematical exponent
 msgid "exp"
-msgstr ""
+msgstr "exponencial"
 
 #. TRANS: load the heap from a file
 msgid "load heap"
 msgstr ""
 
 msgid "Open"
-msgstr ""
+msgstr "abrir"
 
 #. TRANS: database fetch
 msgid "fetch"
@@ -745,10 +745,10 @@ msgstr "defina cinza"
 
 #. TRANS: do this action
 msgid "do"
-msgstr ""
+msgstr "faça"
 
 msgid "calories"
-msgstr ""
+msgstr "calorias"
 
 msgid "Run step by step"
 msgstr ""
@@ -767,7 +767,7 @@ msgid "stop play"
 msgstr ""
 
 msgid "protein"
-msgstr ""
+msgstr "proteina"
 
 #. TRANS: play media (audio or video)
 msgid "play back"
@@ -804,14 +804,14 @@ msgstr "raiz quadrada"
 
 #. TRANS: as in button click
 msgid "click"
-msgstr ""
+msgstr "clique"
 
 msgid "note"
-msgstr ""
+msgstr "nota"
 
 #. TRANS: field of interest in a database, e.g., temperature in a weather database
 msgid "field"
-msgstr ""
+msgstr "campo"
 
 msgid "Palette buttons"
 msgstr ""
@@ -823,13 +823,13 @@ msgid "end fill"
 msgstr ""
 
 msgid "Copy"
-msgstr ""
+msgstr "copiar"
 
 msgid "Paste"
-msgstr ""
+msgstr "colar"
 
 msgid "Delete"
-msgstr ""
+msgstr "Apagar"
 
 #. TRANS: Mexican tamale
 msgid "tamale"
@@ -890,7 +890,7 @@ msgid "stop media"
 msgstr "para mídia"
 
 msgid "tomato"
-msgstr ""
+msgstr "tomate"
 
 msgid "forever"
 msgstr "para sempre"
@@ -939,7 +939,7 @@ msgid "set heap"
 msgstr ""
 
 msgid "hello"
-msgstr ""
+msgstr "olá"
 
 msgid "left"
 msgstr "para esquerda"

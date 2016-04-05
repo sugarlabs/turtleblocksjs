@@ -1326,7 +1326,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             var c = block.connections[1];
             if (c !== null && blocks.blockList[c].name === 'loadFile') {
                 if (args.length !== 1) {
-                    logo.errorMsg(_('You need to select a file.'));
+                    logo.errorMsg(_('You must select a file.'));
                 } else {
                     try {
                         console.log(blocks.blockList[c].value);
@@ -1385,7 +1385,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 xmlHttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
                 xmlHttp.send(data);
             } else {
-                logo.errorMsg(_('turtleHeaps does not contain a valid heap for '+name));
+                logo.errorMsg(_('turtleHeaps does not contain a valid heap for') + ' ' + name);
             }
             break;
         case 'setHeapEntry':

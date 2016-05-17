@@ -80,6 +80,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
     this.stepQueue = {};
     this.unhighlightStepQueue = {};
 
+    this.cp1x = {};
+    this.cp1y = {};
+    this.cp2x = {};
+    this.cp2y = {};
+
     this.svgOutput = '';
     this.svgBackground = true;
 
@@ -282,6 +287,10 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
             this.waitTimes[turtle] = 0;
             this.endOfClampSignals[turtle] = {};
+            this.cp1x[turtle] = 0;
+            this.cp1y[turtle] = 100;
+            this.cp2x[turtle] = 100;
+            this.cp2y[turtle] = 100;
         }
 
         // Remove any listeners that might be still active
@@ -872,6 +881,38 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     logo.stopTurtle = true;
                 } else {
                     logo.turtles.turtleList[turtle].doArc(args[0], args[1]);
+                }
+            }
+            break;
+        case 'bezier':
+            if (args.length === 2) {
+                if (typeof(args[0]) === 'string' || typeof(args[1]) === 'string') {
+                    logo.errorMsg(NANERRORMSG, blk);
+                    logo.stopTurtle = true;
+                } else {
+                    logo.turtles.turtleList[turtle].doBezier(logo.cp1x[turtle], logo.cp1y[turtle], logo.cp2x[turtle], logo.cp2y[turtle], args[0], args[1]);
+                }
+            }
+            break;
+        case 'controlpoint1':
+            if (args.length === 2) {
+                if (typeof(args[0]) === 'string' || typeof(args[1]) === 'string') {
+                    logo.errorMsg(NANERRORMSG, blk);
+                    logo.stopTurtle = true;
+                } else {
+                    logo.cp1x[turtle] = args[0];
+                    logo.cp1y[turtle] = args[1];
+                }
+            }
+            break;
+        case 'controlpoint2':
+            if (args.length === 2) {
+                if (typeof(args[0]) === 'string' || typeof(args[1]) === 'string') {
+                    logo.errorMsg(NANERRORMSG, blk);
+                    logo.stopTurtle = true;
+                } else {
+                    logo.cp2x[turtle] = args[0];
+                    logo.cp2y[turtle] = args[1];
                 }
             }
             break;

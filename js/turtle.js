@@ -86,6 +86,130 @@ function Turtle (name, turtles, drum) {
         }
     };
 
+    this.doBezier = function(cp1x, cp1y, cp2x, cp2y, x2, y2) {
+        // FIXME: Add SVG output
+        if (this.penState && this.hollowState) {
+	    console.log('FIXME: draw hollow line');
+
+            // Convert from turtle coordinates to screen coordinates.
+            var nx = x2;
+            var ny = y2;
+            var ix = this.turtles.turtleX2screenX(this.x);
+            var iy = this.turtles.turtleY2screenY(this.y);
+            var fx = this.turtles.turtleX2screenX(x2);
+            var fy = this.turtles.turtleY2screenY(y2);
+            var cx1 = this.turtles.turtleX2screenX(cp1x);
+            var cy1 = this.turtles.turtleY2screenY(cp1y);
+            var cx2 = this.turtles.turtleX2screenX(cp2x);
+            var cy2 = this.turtles.turtleY2screenY(cp2y);
+
+            // First, we need to close the current SVG path.
+            this.closeSVG();
+
+            // Save the current stroke width.
+            var savedStroke = this.stroke;
+            this.stroke = 1;
+            this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+            // Draw a hollow line.
+            if (savedStroke < 3) {
+                var step = 0.5;
+            } else {
+                var step = (savedStroke - 2) / 2.;
+            }
+
+            // We need both the initial and final headings.
+            // The initial heading is the angle between (cp1x, cp1y) and (this.x, this.y).
+	    var degreesInitial = Math.atan2(cp1x - this.x, cp1y - this.y);
+            degreesInitial = (180 * degreesInitial / Math.PI);
+            if (degreesInitial < 0) { degreesInitial += 360; }
+            // The final heading is the angle between (cp2x, cp2y) and (fx, fy).
+	    var degreesFinal = Math.atan2(nx - cp2x, ny - cp2y);
+            degreesFinal = 180 * degreesFinal / Math.PI;
+            if (degreesFinal < 0) { degreesFinal += 360; }
+
+            // We also need to calculate the deltas for the "caps" at each end.
+            var capAngleRadiansInitial = (degreesInitial - 90) * Math.PI / 180.0;
+            var dxi = step * Math.sin(capAngleRadiansInitial);
+            var dyi = -step * Math.cos(capAngleRadiansInitial);
+            var capAngleRadiansFinal = (degreesFinal - 90) * Math.PI / 180.0;
+            var dxf = step * Math.sin(capAngleRadiansFinal);
+            var dyf = -step * Math.cos(capAngleRadiansFinal);
+
+            // The four "corners"
+            var ax = ix - dxi;
+	    var ay = iy - dyi;
+	    var bx = fx - dxf;
+	    var by = fy - dyf;
+	    var cx = fx + dxf;
+	    var cy = fy + dyf;
+            var dx = ix + dxi;
+	    var dy = iy + dyi;
+
+            this.drawingCanvas.graphics.moveTo(ax, ay);
+
+            // Initial arc
+	    var oAngleRadians = ((180 + degreesInitial) / 180) * Math.PI;
+            var arccx = ix;
+            var arccy = iy;
+            var sa = oAngleRadians - Math.PI;
+            var ea = oAngleRadians;
+            this.drawingCanvas.graphics.arc(arccx, arccy, step, sa, ea, false);
+
+            // this.drawingCanvas.graphics.moveTo(dx, dy);
+
+            this.drawingCanvas.graphics.bezierCurveTo(cx1 + dxi, cy1 + dyi , cx2 + dxf, cy2 + dyf, cx, cy);
+
+            // Final arc
+            var oAngleRadians = (degreesFinal / 180) * Math.PI;
+            var arccx = fx;
+            var arccy = fy;
+            var sa = oAngleRadians - Math.PI;
+            var ea = oAngleRadians;
+            this.drawingCanvas.graphics.arc(arccx, arccy, step, sa, ea, false);
+
+            this.drawingCanvas.graphics.bezierCurveTo(cx2 - dxf, cy2 - dyf, cx1 - dxi, cy1 - dyi, ax, ay);
+
+            // restore stroke.
+            this.stroke = savedStroke;
+            this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+            this.drawingCanvas.graphics.moveTo(fx, fy);
+        } else if (this.penState) {
+            if (this.canvasColor[0] === "#") {
+                this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+            }
+            var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+            this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
+            this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+            this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
+
+            // Convert from turtle coordinates to screen coordinates.
+            this.x = x2;
+            this.y = y2;
+            var fx = this.turtles.turtleX2screenX(x2);
+            var fy = this.turtles.turtleY2screenY(y2);
+            var cx1 = this.turtles.turtleX2screenX(cp1x);
+            var cy1 = this.turtles.turtleY2screenY(cp1y);
+            var cx2 = this.turtles.turtleX2screenX(cp2x);
+            var cy2 = this.turtles.turtleY2screenY(cp2y);
+
+            this.drawingCanvas.graphics.bezierCurveTo(cx1, cy1, cx2, cy2, fx, fy);
+	} else {
+            this.x = x2;
+            this.y = y2;
+            var fx = this.turtles.turtleX2screenX(x2);
+            var fy = this.turtles.turtleY2screenY(y2);
+        }
+
+        // Update turtle position on screen.
+        this.container.x = fx;
+        this.container.y = fy;
+
+        // The new heading is the angle between (cp2x, cp2y) and (nx, ny).
+        var degrees = Math.atan2(nx - cp2x, ny - cp2y);
+        degrees = 180 * degrees / Math.PI;
+        this.doSetHeading(degrees);
+    };
+
     this.move = function(ox, oy, x, y, invert) {
         if (invert) {
             ox = this.turtles.turtleX2screenX(ox);

@@ -115,13 +115,15 @@ function Turtle (name, turtles, drum) {
                 var step = (savedStroke - 2) / 2.;
             }
 
+            steps = Math.max(Math.floor(savedStroke, 1));
+
             // We need both the initial and final headings.
             // The initial heading is the angle between (cp1x, cp1y) and (this.x, this.y).
-	    var degreesInitial = Math.atan2(cp1x - this.x, cp1y - this.y);
+            var degreesInitial = Math.atan2(cp1x - this.x, cp1y - this.y);
             degreesInitial = (180 * degreesInitial / Math.PI);
             if (degreesInitial < 0) { degreesInitial += 360; }
             // The final heading is the angle between (cp2x, cp2y) and (fx, fy).
-	    var degreesFinal = Math.atan2(nx - cp2x, ny - cp2y);
+            var degreesFinal = Math.atan2(nx - cp2x, ny - cp2y);
             degreesFinal = 180 * degreesFinal / Math.PI;
             if (degreesFinal < 0) { degreesFinal += 360; }
 
@@ -135,27 +137,46 @@ function Turtle (name, turtles, drum) {
 
             // The four "corners"
             var ax = ix - dxi;
-	    var ay = iy - dyi;
-	    var bx = fx - dxf;
-	    var by = fy - dyf;
-	    var cx = fx + dxf;
-	    var cy = fy + dyf;
+            var ay = iy - dyi;
+            var axScaled = ax * this.turtles.scale;
+            var ayScaled = ay * this.turtles.scale;
+            var bx = fx - dxf;
+            var by = fy - dyf;
+            var bxScaled = bx * this.turtles.scale;
+            var byScaled = by * this.turtles.scale;
+            var cx = fx + dxf;
+            var cy = fy + dyf;
+            var cxScaled = cx * this.turtles.scale;
+            var cyScaled = cy * this.turtles.scale;
             var dx = ix + dxi;
-	    var dy = iy + dyi;
+            var dy = iy + dyi;
+            var dxScaled = dx * this.turtles.scale;
+            var dyScaled = dy * this.turtles.scale;
+
+            // Control points scaled for SVG output
+            var cx1Scaled = (cx1 + dxi)* this.turtles.scale;
+            var cy1Scaled = (cy1 + dyi) * this.turtles.scale;
+            var cx2Scaled = (cx2 + dxf) * this.turtles.scale;
+            var cy2Scaled = (cy2 + dyf) * this.turtles.scale;
 
             this.drawingCanvas.graphics.moveTo(ax, ay);
+            this.svgPath = true;
+            this.svgOutput += '<path d="M ' + axScaled + ',' + ayScaled + ' ';
 
             // Initial arc
-	    var oAngleRadians = ((180 + degreesInitial) / 180) * Math.PI;
+            var oAngleRadians = ((180 + degreesInitial) / 180) * Math.PI;
             var arccx = ix;
             var arccy = iy;
             var sa = oAngleRadians - Math.PI;
             var ea = oAngleRadians;
             this.drawingCanvas.graphics.arc(arccx, arccy, step, sa, ea, false);
+            this._svgArc(steps, arccx * this.turtles.scale, arccy * this.turtles.scale, step * this.turtles.scale, sa, ea);
 
-            // this.drawingCanvas.graphics.moveTo(dx, dy);
-
+            // Initial bezier curve
             this.drawingCanvas.graphics.bezierCurveTo(cx1 + dxi, cy1 + dyi , cx2 + dxf, cy2 + dyf, cx, cy);
+            this.svgOutput += 'C ' + cx1Scaled + ',' + cy1Scaled + ' ' + cx2Scaled + ',' + cy2Scaled + ' ' + cxScaled + ',' + cyScaled + ' ';
+
+            this.svgOutput += 'M ' + cxScaled + ',' + cyScaled + ' ';
 
             // Final arc
             var oAngleRadians = (degreesFinal / 180) * Math.PI;
@@ -164,8 +185,12 @@ function Turtle (name, turtles, drum) {
             var sa = oAngleRadians - Math.PI;
             var ea = oAngleRadians;
             this.drawingCanvas.graphics.arc(arccx, arccy, step, sa, ea, false);
+            this._svgArc(steps, arccx * this.turtles.scale, arccy * this.turtles.scale, step * this.turtles.scale, sa, ea);
 
+            // Final bezier curve
             this.drawingCanvas.graphics.bezierCurveTo(cx2 - dxf, cy2 - dyf, cx1 - dxi, cy1 - dyi, ax, ay);
+            this.svgOutput += 'C ' + cx2Scaled + ',' + cy2Scaled + ' ' + cx1Scaled + ',' + cy1Scaled + ' ' + axScaled + ',' + ayScaled + ' ';
+            this.closeSVG();
 
             // restore stroke.
             this.stroke = savedStroke;
@@ -205,7 +230,7 @@ function Turtle (name, turtles, drum) {
             var fxScaled = fx * this.turtles.scale;
             var fyScaled = fy * this.turtles.scale;
             this.svgOutput += 'C ' + cx1Scaled + ',' + cy1Scaled + ' ' + cx2Scaled + ',' + cy2Scaled + ' ' + fxScaled + ',' + fyScaled + ' ';
-	} else {
+        } else {
             this.x = x2;
             this.y = y2;
             var fx = this.turtles.turtleX2screenX(x2);

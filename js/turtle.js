@@ -89,8 +89,6 @@ function Turtle (name, turtles, drum) {
     this.doBezier = function(cp1x, cp1y, cp2x, cp2y, x2, y2) {
         // FIXME: Add SVG output
         if (this.penState && this.hollowState) {
-	    console.log('FIXME: draw hollow line');
-
             // Convert from turtle coordinates to screen coordinates.
             var nx = x2;
             var ny = y2;
@@ -183,8 +181,8 @@ function Turtle (name, turtles, drum) {
             this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
 
             // Convert from turtle coordinates to screen coordinates.
-            this.x = x2;
-            this.y = y2;
+            var ix = this.turtles.turtleX2screenX(this.x);
+            var iy = this.turtles.turtleY2screenY(this.y);
             var fx = this.turtles.turtleX2screenX(x2);
             var fy = this.turtles.turtleY2screenY(y2);
             var cx1 = this.turtles.turtleX2screenX(cp1x);
@@ -193,6 +191,20 @@ function Turtle (name, turtles, drum) {
             var cy2 = this.turtles.turtleY2screenY(cp2y);
 
             this.drawingCanvas.graphics.bezierCurveTo(cx1, cy1, cx2, cy2, fx, fy);
+
+            if (!this.svgPath) {
+                this.svgPath = true;
+                var ixScaled = ix * this.turtles.scale;
+                var iyScaled = iy * this.turtles.scale;
+                this.svgOutput += '<path d="M ' + ixScaled + ',' + iyScaled + ' ';
+            }
+            var cx1Scaled = cx1 * this.turtles.scale;
+            var cy1Scaled = cy1 * this.turtles.scale;
+            var cx2Scaled = cx2 * this.turtles.scale;
+            var cy2Scaled = cy2 * this.turtles.scale;
+            var fxScaled = fx * this.turtles.scale;
+            var fyScaled = fy * this.turtles.scale;
+            this.svgOutput += 'C ' + cx1Scaled + ',' + cy1Scaled + ' ' + cx2Scaled + ',' + cy2Scaled + ' ' + fxScaled + ',' + fyScaled + ' ';
 	} else {
             this.x = x2;
             this.y = y2;
@@ -308,15 +320,13 @@ function Turtle (name, turtles, drum) {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         } else if (this.penState) {
             this.drawingCanvas.graphics.lineTo(nx, ny);
-            if (!this.svgPath) {
-                this.svgPath = true;
-                var oxScaled = ox * this.turtles.scale;
-                var oyScaled = oy * this.turtles.scale;
-                this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
-            }
-            var nxScaled = nx * this.turtles.scale;
-            var nyScaled = ny * this.turtles.scale;
-            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
+            if (!this.svgPath) { this.svgPath = true; var oxScaled =
+                ox * this.turtles.scale; var oyScaled = oy *
+                this.turtles.scale; this.svgOutput += '<path d="M ' +
+                oxScaled + ',' + oyScaled + ' '; } var nxScaled = nx *
+                this.turtles.scale; var nyScaled = ny *
+                this.turtles.scale; this.svgOutput += nxScaled + ',' +
+                nyScaled + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }

@@ -456,7 +456,7 @@ Example: Reflection Paint
 -------------------------
 
 By combining multiple turtles and passing arguments to actions, we can
-have some more fun with paint. In the example below, the paint action
+have some more fun with paint. In the example below, the *Paint Action*
 uses *Arg 1* and *Arg 2* to reflect the mouse coordinates about the y and
 x axes. The result is that the painting is reflected into all four
 quadrants.

@@ -19,20 +19,21 @@ development has been done in Chrome, but it should also work in
 Firefox. You can run it directly from index.html, from a [server
 maintained by Sugar Labs](http://turtle.sugarlabs.org), from the
 [github
-repo](http://rawgit.com/walterbender/turtleblocksjs/master/index.html),
+repo](http://walterbender.github.io/turtleblocksjs),
 or by setting up a [local
 server](https://github.com/walterbender/turtleblocksjs/blob/master/server.md).
 
 Once you've launched it in your browser, start by clicking on (or
-dragging) blocks from the Turtle palette. Use multiple blocks to
+dragging) blocks from the *Turtle* palette. Use multiple blocks to
 create drawings; as the turtle moves under your control, colorful
 lines are drawn.
 
 You add blocks to your program by clicking on or dragging them from
 the palette to the main area. You can delete a block by dragging it
 back onto the palette. Click anywhere on a "stack" of blocks to start
-executing that stack or by clicking in the Rabbit (fast) or Turtle
-(slow) on the Main Toolbar.
+executing that stack or by clicking in the *Rabbit* (fast) or *Turtle*
+(slow) on the Main Toolbar. The *Snail* will step through your
+program, one block per click.
 
 For more details on how to use Turtle Blocks JS, see [Using Turtle
 Blocks
@@ -85,24 +86,26 @@ Forward, right, forward, right, ...
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics5.svg'</img>
 
-Using the Repeat block from the Flow palette
+Using the *Repeat* block from the *Flow* palette
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics6.svg'</img>
 
-Using the Arc block to make rounded corners
+Using the *Arc* block to make rounded corners
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics7.svg'</img>
 
-Using the Begin Fill and End Fill blocks from the Pen palette to make
-a solid square
+Using the *Fill* blocks from the Pen palette to make a solid square
+(what ever is drawn inside the *Fill* clamp will be filled upon
+exiting the clamp.)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics8.svg'</img>
 
-Changing the color to 70 (blue) using the Set Color block from the Pen palette
+Changing the color to 70 (blue) using the *Set Color* block from the
+*Pen* palette
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics9.svg'</img>
 
-Using the Random block from the Numbers palette to select a random
+Using the *Random* block from the *Numbers* palette to select a random
 color (0 to 100)
 
 A SHOEBOX
@@ -130,26 +133,26 @@ block, the value is larger.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes1.svg'</img>
 
-Putting a value in a box and then referring to the value in box
+Putting a value in a *Box* and then referring to the value in *Box*
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes2.svg'</img>
 
-We can change the value in a box as the program runs. Here we add 10
-to the value in the box with each iteration. The result in this case
+We can change the value in a *Box* as the program runs. Here we add 10
+to the value in the *Box( with each iteration. The result in this case
 is a spiral, since the turtle goes forward further with each step.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes3.svg'</img>
 
-If we want to make a more complex change, we can store in the box some
-computed value based on the current content of the box. Here we
+If we want to make a more complex change, we can store in the *Box* some
+computed value based on the current content of the *Box*. Here we
 multiply the content of the box by 1.2 and store the result in the
-box. The result in this case is also a spiral, but one that grows
+*Box*. The result in this case is also a spiral, but one that grows
 geometrically instead of arithmetically.
 
 In practice, the use of boxes is not unlike the use of keyword-value
 pairs in text-based programming languages. The keyword is the name of
-the box and the value associated with the keyword is the value stored
-in the box. You can have as many boxes as you'd like (until you run
+the *Box* and the value associated with the keyword is the value stored
+in the *Box*. You can have as many boxes as you'd like (until you run
 out of memory) and treat the boxes as if they were a dictionary. Note
 that the boxes are global, meaning all turtles and all action stacks
 share the same collection of boxes.
@@ -161,26 +164,26 @@ With Turtle Blocks there is an opportunity for the learner to expand
 upon the language, taking the conversation in directions unanticipated
 by the Turtle Block developers.
 
-Action stacks let you extend the Turtle Blocks language by defining
+*Action* stacks let you extend the Turtle Blocks language by defining
 new blocks. For example, if you draw lots of squares, you may want a
 block to draw squares. In the examples below, we define an action
-which draws a square (repeat 4 forward 100 right 90), which in turn
-results in a new block on the Actions palette that we can use whenever
-we want to draw a square. Every new action stack results in a new
+that draws a square (repeat 4 forward 100 right 90), which in turn
+results in a new block on the *Actions* palette that we can use whenever
+we want to draw a square. Every new *Action* stack results in a new
 block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions1.svg'</img>
 
-Defining an action to create a new block, "square"
+Defining an action to create a new block, "*Square*"
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions2.svg'</img>
 
-Using the "square" block
+Using the "*Square*" block
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions3.svg'</img>
 
-The Do block lets you specify an action by name. In this example, we
-choose "one of" two names, "square" and "triangle" to determine which
+The *Do* block lets you specify an action by name. In this example, we
+choose "one of" two names, "*Square*" and "*Triangle*" to determine which
 action to take.
 
 4. Parameters
@@ -190,33 +193,33 @@ Parameter blocks hold a value that represents the state of some turtle
 attribute, e.g., the x or y position of the turtle, the heading of the
 turtle, the color of the pen, the size of the pen, etc. You can use
 parameter blocks interchangeably with number blocks. You can change
-their values with the Add block or with the corresponding set blocks.
+their values with the *Add* block or with the corresponding set blocks.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters1.svg'</img>
 
-Using the heading parameter, which changes each time the turtle
+Using the *Heading* parameter, which changes each time the turtle
 changes direction, to change the color of a spiral
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters2.svg'</img>
 
-"Squiral" by Brian Silverman uses the Heading and X parameter
+"Squiral" by Brian Silverman uses the *Heading* and *X* parameter
 blocks. [RUN
 LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters3.svg'</img>
 
 Often you want to just increment a parameter by 1. For this, use the
-Add-1-to block.
+*Add-1-to* block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters4.svg'</img>
 
 To increment (or decrement) a parameter by an arbitrary value, use the
-Add-to block.
+*Add-to* block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters5.svg'</img>
 
 To make other changes to a parameter based on the current value, use
-the parameter's Set block. In this example, the pen size is doubled
+the parameter's *Set* block. In this example, the pen size is doubled
 with each step in the iteration.
 
 5. Conditionals
@@ -237,11 +240,12 @@ LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals2.svg'</img>
 
-Conditionals along with the Random block can be used to simulate a coin toss.
+Conditionals along with the *Random* block can be used to simulate a
+coin toss.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals3.svg'</img>
 
-A coin toss is such a common operation that we added the One-of block
+A coin toss is such a common operation that we added the *One-of* block
 as a convenience.
 
 6. Multimedia
@@ -250,32 +254,33 @@ as a convenience.
 Turtle Blocks provides rich-media tools that enable the incorporation
 of sound, typography, images, and video.
 
-At the heart of the multimedia extensions is the Show block. It can be
+At the heart of the multimedia extensions is the *Show* block. It can be
 used to show text, image data from the web or the local file system,
 or a web camera. Other extensions include blocks for synthetic speech,
 tone generation, and video playback.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media1.svg'</img>
 
-Using the Show block to display text; the orientation of the text
+Using the *Show* block to display text; the orientation of the text
 matches the orientation of the turtle. [RUN
 LIVE](https://turtle.sugarlabs.org/?file=Media-1.tb&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media2.svg'</img>
 
-You can also use the Show block to show images. Clicking on the Image
+You can also use the *Show* block to show images. Clicking on the Image
 block (left) will open a file browser. After selecting an image file
-(PNG, JPG, SVG, etc.) a thumbnail will appear on the Image block
+(PNG, JPG, SVG, etc.) a thumbnail will appear on the *Image* block
 (right).
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media3.svg'</img>
 
-The Show block in combination with the Camera block will capture and
+The *Show* block in combination with the *Camera* block will capture and
 display an image from a webcam.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media4.svg'</img>
 
-The Show block can also be used in conjunction with a URL that points to media.
+The *Show* block can also be used in conjunction with a URL that
+points to media.
 
 7. Sensors
 ----------
@@ -297,13 +302,13 @@ import data from a web page.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/sensors1.svg'</img>
 
-Using sensors. The Loudness block is used to determine if there is an
+Using sensors. The *Loudness* block is used to determine if there is an
 intruder. A loud sound triggers the alarm action: the turtle shouts
 “intruder” and takes a picture of the intruder.
 
 Teachers from the Sugar community have developed extensive collection
 of examples using Turtle Block sensors. Guzmán Trinidad, a physics
-teacher from Uruguay, wrote a book, Physics of the XO, which includes
+teacher from Uruguay, wrote a book, *Physics of the XO*, which includes
 a wide variety of sensors and experiments. Tony Forster, an engineer
 from Australia, has also made remarkable contributions to the
 community by documenting examples using Turtle Blocks. In one example,
@@ -371,16 +376,16 @@ return from the action and show the next image.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles1.svg'</img>
 
-A separate turtle is created for each Start block. The turtles run
-their code in parallel with each other whenever the Run button is
+A separate turtle is created for each *Start* block. The turtles run
+their code in parallel with each other whenever the *Run* button is
 clicked. Each turtle maintains its own set of parameters for position,
 color, pen size, pen state, etc. In this example, three different
 turtles draw three different shapes.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles2.svg'</img>
 
-Custom graphics can be applied to the turtles, using the Shell block
-on the Media palette. Thus you can treat turtles as sprites that can
+Custom graphics can be applied to the turtles, using the *Shell*block
+on the *Media* palette. Thus you can treat turtles as sprites that can
 be moved around the screen. In this example, the sprite changes back
 and forth between two states as it moves across the screen.
 
@@ -408,21 +413,20 @@ calculate stack.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions4.svg'</img>
 
-In this example, a calculate stack is used to return the current
+In this example, a *Calculate* stack is used to return the current
 distance of the turtle from the center of the screen. Renaming an
-action stack that has a return block will cause the creation of a new
-block in the Actions palette that can be used to reference the return
-value: in this case, a distance block is created.
+action stack that has a *Return* block will cause the creation of a new
+block in the *Actions* palette that can be used to reference the return
+value: in this case, a *Distance* block is created.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions6.svg'</img>
 
-You can also pass arguments to an action stack. In this example, we
+You can also pass arguments to an *Action* stack. In this example, we
 calculate the distance between the turtle and an arbitrary point on
-the screen by passing x and y coordinates in the calculate
-block. You add additional arguments by dragging them into
-the "clamp".
+the screen by passing x and y coordinates in the *Calculate*
+block. You add additional arguments by dragging them into the "clamp".
 
-Note that args are local to action stacks, but boxes are not. If you
+Note that args are local to *Action* stacks, but boxes are not. If you
 planned to use an action in a recursive function, you had best avoid
 boxes.
 
@@ -430,9 +434,9 @@ Example: Fibonacci
 ------------------
 
 Calculating the Fibonacci sequence is often done using a resursive
-method. In the example below, we pass an argument to the Fib action,
+method. In the example below, we pass an argument to the *Fib* action,
 which returns a value if the argument is &lt; 2; otherwise it returns
-the sum of the result of calling the Fib action with argument - 1 and
+the sum of the result of calling the *Fib* action with argument - 1 and
 argument - 2.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci1.svg'</img>
@@ -442,7 +446,7 @@ LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/fibonacci2.svg'</img>
 
-In the second example, we use a repeat loop to generate the first six
+In the second example, we use a *Repeat* loop to generate the first six
 Fibonacci numbers and use them to draw a nautilus.
 
 Draw a nautilus [RUN
@@ -453,7 +457,7 @@ Example: Reflection Paint
 
 By combining multiple turtles and passing arguments to actions, we can
 have some more fun with paint. In the example below, the paint action
-uses arg 1 and arg 2 to reflect the mouse coordinates about the y and
+uses *Arg 1* and *Arg 2* to reflect the mouse coordinates about the y and
 x axes. The result is that the painting is reflected into all four
 quadrants.
 
@@ -464,8 +468,8 @@ Reflection Paint [RUN LIVE](http://turtle.sugarlabs.org/?file=Reflection-Paint.t
 10. Advanced Boxes
 ------------------
 
-Sometimes it is more convenient to compute the name of a box than to
-specify it explicitly. (Note that the Do block affrds a similar
+Sometimes it is more convenient to compute the name of a *Box* than to
+specify it explicitly. (Note that the *Do* block affords a similar
 mechanism for computing the names of actions.)
 
 In the following examples, we use this to accumulate the results of
@@ -474,28 +478,28 @@ toss a pair of dice 100 times (example inspired by Tony Forster).
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes4.svg'</img>
 
 Rather than specifying a box to hold each possible result (2 through
-12), we use a box as a counter (index) and create a box with the name
+12), we use a *Box* as a counter (index) and create a box with the name
 of the current value in the counter and store in that box a value of
 0.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes5.svg'</img>
 
-Next we add an action to toss the dice 100 times. To simulate tossing
+Next we add an *Action* to toss the dice 100 times. To simulate tossing
 a pair of dice, we sum two random numbers between 1 and 6. We use the
 result as the name of the box we want to increment. So for example, if
-we throw a 7, we add one to the box named 7. In this way we increment
-the value in the appropriate box.
+we throw a 7, we add one to the *Box* named 7. In this way we increment
+the value in the appropriate *Box*.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes6.svg'</img>
 
-Finally, we plot the results. Again, we use a box as a counter (index)
-and call the plot action in a loop. In the bar action, we draw a
-rectangle of length value stored in the box with the name of the
-current value of the index. E.g., when the value in the index box is
-2, the turtle goes forward by the value in box 2, which is the
+Finally, we plot the results. Again, we use a *Box* as a counter ("index")
+and call the *Plot Action* in a loop. In the *Bar Action*, we draw a
+rectangle of length value stored in the *Box* with the name of the
+current value of the index. E.g., when the value in the index *Box* equals
+2, the turtle goes forward by the value in *Box 2*, which is the
 accumulated number of times that the dice toss resulted in a 2; when
-the value in the index box is 3, the turtle goes forward by the value
-in box 3, which is the accumulated number of times that the dice toss
+the value in the *Index Box* is 3, the turtle goes forward by the value
+in *Box 3*, which is the accumulated number of times that the dice toss
 resulted in a 3; etc.
 
 11. The Heap
@@ -508,12 +512,12 @@ pairs). However, sometimes it is nice to simply use a heap.
 
 A heap is a essential a pile. The first thing you put on the heap is
 on the bottom. The last thing you put on the heap is on the top. You
-put things onto the heap using the Push block. You take things off of
-the heap using the Pop block. In Turtle Blocks, the heap is first-in
+put things onto the heap using the *Push* block. You take things off of
+the heap using the *Pop* block. In Turtle Blocks, the heap is first-in
 last-out (FILO), so you pop things off of the heap in the reverse
 order in which you put them onto the heap.
 
-There is also an Index block that lets you refer to an item in the
+There is also an *Index* block that lets you refer to an item in the
 heap by an index. This essentially lets you treat the heap as an
 array. Some other useful blocks include a block to empty the heap, a
 block that returns the length of the heap, a block that saves the heap
@@ -536,30 +540,30 @@ playback our drawing.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap3.svg'</img>
 
-Use the Save Heap block to save the state of the heap to a file. In
+Use the *Save Heap* block to save the state of the heap to a file. In
 this example, we save our drawing to a file for playback later.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap4.svg'</img>
 
-Use the Load Heap block to load the heap from data saved in a file. In
+Use the *Load Heap* block to load the heap from data saved in a file. In
 this example, we playback the drawing from data stored in a file.
 
 12. Extras
 ----------
 
-The Extras palette is full of utilities that help you use your
+The *Extras* palette is full of utilities that help you use your
 project's output in different ways.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/extras1.svg'</img>
 
-The Save as SVG block will save your drawing as simple vector graphics
+The *Save as SVG* block will save your drawing as simple vector graphics
 (SVG), a format compatible with HTML5 and many image manipulation
 programs, e.g., Inkscape. In the example above, we use it to save a
 design in a from that can be converted to STL, a common file format
-used by 3D printers. A few things to take note of: (1) the No
-Background block is used to suppress the inclusion of the background
-fill in the SVG output; (2) hollow lines are used to make graphic have
-dimension; and (3) the Save as SVG block writes to the Downloads
+used by 3D printers. A few things to take note of: (1) the *No
+Background* block is used to suppress the inclusion of the background
+fill in the SVG output; (2) *Hollow lines* are used to make graphic have
+dimension; and (3) the *Save as SVG* block writes to the Downloads
 directory on your computer. (Josh Burker introduced me to Tinkercad, a
 website that can be used to convert SVG to STL.)
 
@@ -582,17 +586,17 @@ sensor blocks will print their current value as the program runs when
 running in "slow" or "step-by-step" mode, obviating the need to use
 the Print block in many situations.
 
-The Wait block will pause program execution for some number (or
+The *Wait* block will pause program execution for some number (or
 fractions) of seconds.
 
-The Hide and Show blocks can be used to set "break points". When a
-Hide block is encountered, the blocks are hidden and the program
-proceeds at full speed. When a Show block is encountered, the program
+The *Hide* and *Show* blocks can be used to set "break points". When a
+*Hide* block is encountered, the blocks are hidden and the program
+proceeds at full speed. When a *Show* block is encountered, the program
 proceeds at a slower pace an the block values are shown.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/debugging2.svg'</img>
 
-A Show block is used to slow down execution of the code in an Action
+A *Show* block is used to slow down execution of the code in an *Action*
 stack in order to facilitate debugging. In this case, we slow down
 during playback in order to watch the values popped off the heap.
 
@@ -617,17 +621,17 @@ each hue varies with value. To simplify the model, if the chroma
 specified is greated than the maximum chroma available for a hue/value
 pair, the maximum chroma available is used.
 
-The Set Color block maps the three dimensions of the Munsell color
+The *Set Color* block maps the three dimensions of the Munsell color
 space into one dimension. It always returns the maximum value/chroma
 pair for a given hue, ensuring vivid colors. If you want to more
-subtle colors, be sure to use the Set Hue block rather than the Set
-Color block.
+subtle colors, be sure to use the *Set Hue* block rather than the *Set
+Color* block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/color1.svg'</img>
 
 Color vs. hue example [RUN LIVE](https://turtle.sugarlabs.org/?file=Color-vs-Hue.tb&run=true)
 
-To set the background color, use the background block. It will set the
+To set the background color, use the *Background* block. It will set the
 background to the current hue/value/chroma triplet.
 
 15. Plugins

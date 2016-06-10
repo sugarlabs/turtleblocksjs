@@ -68,6 +68,9 @@ function Block(protoblock, blocks, overrideName) {
     this.postProcess = null;
     this.postProcessArg = null;
 
+    // Lock on label change
+    this._label_lock = false;
+
     // Internal function for creating cache.
     // Includes workaround for a race condition.
     this._createCache = function() {
@@ -1636,6 +1639,12 @@ function Block(protoblock, blocks, overrideName) {
             return;
         }
 
+        if (this._label_lock) {
+            console.log('changing label lock already set');
+	} else {
+            this._label_lock = true;
+        }
+
         this.label.style.display = 'none';
         if (this.labelattr != null) {
             this.labelattr.style.display = 'none';
@@ -1694,6 +1703,22 @@ function Block(protoblock, blocks, overrideName) {
             var cblock = this.blocks.blockList[c];
             switch (cblock.name) {
             case 'action':
+                // If the new label is already being used in a different
+                // aciton, we need to come up with a unique name.
+                var uniqueValue = this.blocks.findUniqueActionName(newValue);
+                if (uniqueValue !== newValue) {
+                    console.log('old name: ' + oldValue + ' new name: ' + newValue + ' unique name: ' + uniqueValue);
+                    newValue = uniqueValue;
+                    this.value = newValue;
+                    var label = this.value.toString();
+                    if (label.length > 8) {
+                        label = label.substr(0, 7) + '...';
+                    }
+                    this.text.text = label;
+		    this.label.value = newValue;
+                    this.updateCache();
+                }
+
                 // If the label was the name of an action, update the
                 // associated run this.blocks and the palette buttons
                 // Rename both do <- name and nameddo blocks.
@@ -1721,6 +1746,9 @@ function Block(protoblock, blocks, overrideName) {
                 break;
             }
         }
+
+        // We are done changing the label, so unlock.
+        this._label_lock = false;
     };
 
 };

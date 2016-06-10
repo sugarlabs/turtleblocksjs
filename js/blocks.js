@@ -741,7 +741,7 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
         var newConnection = null;
         // TODO: Make minimum distance relative to scale.
         var min = MINIMUMDOCKDISTANCE;
-        var blkType = myBlock.docks[0][2]
+        var blkType = myBlock.docks[0][2];
         for (var b = 0; b < this.blockList.length; b++) {
             // Don't connect to yourself.
             if (b === thisBlock) {
@@ -1623,7 +1623,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
                     // console.log('calling newNameddoBlock with value ' + value);
                     // TODO: are there return or arg blocks?
                     this.newNameddoBlock(value, false, false);
+                    this.palettes.hide();
                     this.palettes.updatePalettes('actions');
+                    this.palettes.show();
                 }
             }
 
@@ -1797,7 +1799,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
 
         // Force an update if the name has changed.
         if (stateChanged) {
+            this.palettes.hide();
             this.palettes.updatePalettes('actions');
+            this.palettes.show();
         }
     }
 
@@ -1884,7 +1888,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
 
         // Force an update if the name has changed.
         if (nameChanged) {
+            this.palettes.hide();
             this.palettes.updatePalettes('boxes');
+            this.palettes.show();
         }
     };
 
@@ -1955,7 +1961,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
 
         // Force an update if the name has changed.
         if (nameChanged) {
+            this.palettes.hide();
             this.palettes.updatePalettes('actions');
+            this.palettes.show();
         }
     };
 
@@ -2021,7 +2029,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
 
         myNamedArgBlock.palette.add(myNamedArgBlock);
         // Force regeneration of palette after adding new block.
+        this.palettes.hide();
         this.palettes.updatePalettes('actions');
+        this.palettes.show();
     };
 
     this._removeNamedoEntries = function (name) {
@@ -2528,7 +2538,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
         }
 
         if (updatePalettes) {
+            this.palettes.hide();
             this.palettes.updatePalettes('actions');
+            this.palettes.show();
         }
 
         // Append to the current set of blocks.
@@ -3120,11 +3132,13 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
         }
         if (updatePalettes) {
             // console.log('in checkPaletteEntries');
+            this.palettes.hide();
             if (name === 'storein') {
                 this.palettes.updatePalettes('boxes');
             } else {
                 this.palettes.updatePalettes('actions');
             }
+            this.palettes.show();
         }
     };
 
@@ -3230,7 +3244,9 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
 
             // Force an update if a block was removed.
             if (blockRemoved) {
+                this.palettes.hide();
                 this.palettes.updatePalettes('actions');
+                this.palettes.show();
             }
         }
     };

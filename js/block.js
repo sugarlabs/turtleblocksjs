@@ -211,7 +211,7 @@ function Block(protoblock, blocks, overrideName) {
 
             // If it is in the trash, make sure it remains hidden.
             if (myBlock.trash) {
-		myBlock.hide();
+                myBlock.hide();
             }
         };
 
@@ -1642,7 +1642,7 @@ function Block(protoblock, blocks, overrideName) {
 
         if (this._label_lock) {
             console.log('changing label lock already set');
-	} else {
+        } else {
             this._label_lock = true;
         }
 
@@ -1678,6 +1678,10 @@ function Block(protoblock, blocks, overrideName) {
             var cblock = this.blocks.blockList[c];
             switch (cblock.name) {
             case 'action':
+                var that = this;
+                setTimeout(function () {
+                    that.blocks.palettes.removeActionPrototype(oldValue);
+                }, 1000);
                 // Ensure new name is unique.
                 var uniqueValue = this.blocks.findUniqueActionName(newValue);
                 if (uniqueValue !== newValue) {
@@ -1691,12 +1695,12 @@ function Block(protoblock, blocks, overrideName) {
                     this.text.text = label;
                     this.label.value = newValue;
                     this.updateCache();
-		}
-		break;
-	    default:
-		break;
-	    }
-	}
+                }
+                break;
+            default:
+                break;
+            }
+        }
 
         // Update the block value and block text.
         if (this.name === 'number') {
@@ -1736,7 +1740,7 @@ function Block(protoblock, blocks, overrideName) {
                 this.blocks.renameDos(oldValue, newValue);
                 if (oldValue === _('action')) {
                     this.blocks.newNameddoBlock(newValue, this.blocks.actionHasReturn(c), this.blocks.actionHasArgs(c));
-		    this.blocks.setActionProtoVisiblity(false);
+                    this.blocks.setActionProtoVisiblity(false);
                 }
                 this.blocks.renameNameddos(oldValue, newValue);
                 this.blocks.palettes.hide();

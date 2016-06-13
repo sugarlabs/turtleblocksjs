@@ -413,6 +413,43 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         });
     };
 
+    this.removeActionPrototype = function(actionName) {
+        var blockRemoved = false;
+        for (var blk = 0; blk < this.dict['actions'].protoList.length; blk++) {
+            var block = this.dict['actions'].protoList[blk];
+            if (['nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(block.name) !== -1 && (block.defaults[0] === actionName || blocks.defaults == undefined)) {
+                // Remove the palette protoList entry for this block.
+                this.dict['actions'].remove(block, actionName);
+                console.log('deleting protoblocks for ' + actionName);
+
+                // And remove it from the protoBlock dictionary.
+                if (paletteBlocks.protoBlockDict['myDo_' + actionName]) {
+                    // console.log('deleting protoblocks for action ' + actionName);
+                    delete paletteBlocks.protoBlockDict['myDo_' + actionName];
+                } else if (paletteBlocks.protoBlockDict['myCalc_' + actionName]) {
+                    // console.log('deleting protoblocks for action ' + actionName);
+                    delete paletteBlocks.protoBlockDict['myCalc_' + actionName];
+                } else if (paletteBlocks.protoBlockDict['myDoArg_' + actionName]) {
+                    // console.log('deleting protoblocks for action ' + actionName);
+                    delete paletteBlocks.protoBlockDict['myDoArg_' + actionName];
+                } else if (paletteBlocks.protoBlockDict['myCalcArg_' + actionName]) {
+                    // console.log('deleting protoblocks for action ' + actionName);
+                    delete paletteBlocks.protoBlockDict['myCalcArg_' + actionName];
+                }
+                this.dict['actions'].y = 0;
+                blockRemoved = true;
+                break;
+            }
+        }
+
+        // Force an update if a block was removed.
+        if (blockRemoved) {
+            this.hide();
+            this.updatePalettes('actions');
+            this.show();
+        }
+    };
+
     return this;
 }
 

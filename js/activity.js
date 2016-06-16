@@ -2013,6 +2013,7 @@ define(function (require) {
         function _setupRightMenu(turlteBlocksScale) {
             if (menuContainer !== undefined) {
                 stage.removeChild(menuContainer);
+
                 for (var i in onscreenMenu) {
                     stage.removeChild(onscreenMenu[i]);
                 }
@@ -2044,8 +2045,8 @@ define(function (require) {
             var dx = 0;
             var dy = btnSize;
 
-            container = _makeButton('menu-button', '', x, y, btnSize, menuButtonsVisible ? 90 : undefined);
-            _loadButtonDragHandler(container, x, y, _doMenuButton);
+            menuContainer = _makeButton('menu-button', '', x, y, btnSize, menuButtonsVisible ? 90 : undefined);
+            _loadButtonDragHandler(menuContainer, x, y, _doMenuButton);
 
             for (var i = 0; i < menuNames.length; i++) {
                 if (!getAuxToolbarButtonNames(menuNames[i][0])) {

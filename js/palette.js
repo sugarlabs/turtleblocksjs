@@ -260,8 +260,10 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
             this.dict[name].hideMenu(true);
         }
 
-        this.upIndicator.visible = false;
-        this.downIndicator.visible = false;
+        if (this.upIndicator != null) {
+            this.upIndicator.visible = false;
+            this.downIndicator.visible = false;
+        }
 
         this.refreshCanvas();
     };
@@ -1399,7 +1401,7 @@ function Palette(palettes, name) {
                     palette.hide();
                     palette.palettes.refreshCanvas();
                     // Only delete plugin palettes.
-		    if (palette.name === 'myblocks') {
+                    if (palette.name === 'myblocks') {
                         palette._promptMacrosDelete();
                     } else if (BUILTINPALETTES.indexOf(palette.name) === -1) {
                         palette._promptPaletteDelete();
@@ -1884,7 +1886,7 @@ function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, tra
     // Instantiate the palettes object on first load.
     var palettes = new Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan);
     for (var i = 0; i < BUILTINPALETTES.length; i++) {
-	palettes.add(BUILTINPALETTES[i]);
+        palettes.add(BUILTINPALETTES[i]);
     }
 
     // Define some globals.

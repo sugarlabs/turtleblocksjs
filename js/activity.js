@@ -287,8 +287,10 @@ define(function (require) {
             hideMsgs();
             logo.setBackgroundColor(-1);
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+		logo.turtleHeaps[turtle] = [];
                 turtles.turtleList[turtle].doClear();
             }
+
 
             blocksContainer.x = 0;
             blocksContainer.y = 0;

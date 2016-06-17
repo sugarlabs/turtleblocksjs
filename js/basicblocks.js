@@ -1226,9 +1226,8 @@ function initBasicProtoBlocks(palettes, blocks) {
     var toASCIIBlock = new ProtoBlock('toascii');
     toASCIIBlock.palette = palettes.dict['sensors'];
     blocks.protoBlockDict['toascii'] = toASCIIBlock;
-    toASCIIBlock.fontsize = 14;
-    toASCIIBlock.extraWidth = 15;
     toASCIIBlock.staticLabels.push(_('to ASCII'));
+    toASCIIBlock.defaults.push(65);
     toASCIIBlock.oneArgMathBlock();
 
     var keyboardBlock = new ProtoBlock('keyboard');

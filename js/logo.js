@@ -1898,6 +1898,11 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 var a = logo.parseArg(logo, turtle, cblk1, blk, receivedArg);
                 logo.blocks.blockList[blk].value = logo.doMinus(0, a);
                 break;
+            case 'toascii':
+                var cblk1 = logo.blocks.blockList[blk].connections[1];
+                var a = logo.parseArg(logo, turtle, cblk1, blk, receivedArg);
+                logo.blocks.blockList[blk].value = String.fromCharCode(a);
+                break;
             case 'myclick':
                 logo.blocks.blockList[blk].value = 'click' + logo.turtles.turtleList[turtle].name;
                 break;

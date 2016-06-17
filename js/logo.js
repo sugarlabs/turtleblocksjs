@@ -697,7 +697,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         case 'print':
             if (args.length === 1) {
                 if (args[0] !== null) {
-                    console.log(args[0].toString());
+                    // console.log(args[0].toString());
                     logo.textMsg(args[0].toString());
                 }
             }
@@ -2049,7 +2049,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (!(turtle in logo.turtleHeaps)) {
                     logo.turtleHeaps[turtle] = [];
                 }
-                console.log(logo.turtleHeaps[turtle].length);
+                // console.log(logo.turtleHeaps[turtle].length);
                 block.value = logo.turtleHeaps[turtle].length;
                 break;
             case 'heapEmpty':

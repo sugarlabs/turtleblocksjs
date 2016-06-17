@@ -1529,7 +1529,7 @@ define(function (require) {
 
             if (run) {
                 setTimeout(function () {
-                    changeBlockVisibility();
+                    _changeBlockVisibility();
                     _doFastButton(env);
                 }, 2000);
             }

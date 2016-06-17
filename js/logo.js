@@ -1992,11 +1992,17 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 var y = logo.turtles.turtleList[turtle].container.y;
                 logo.refreshCanvas();
                 var ctx = this.canvas.getContext('2d');
-                var imgData = ctx.getImageData(x, y, 1, 1).data;
-                var color = searchColors(imgData[0], imgData[1], imgData[2]);
-                if (imgData[3] === 0) {
-                    color = body.style.background.substring(body.style.background.indexOf('(') + 1, body.style.background.lastIndexOf(')')).split(/,\s*/),
-                    color = searchColors(color[0], color[1], color[2]);
+                try {
+                    var imgData = ctx.getImageData(x, y, 1, 1).data;
+                    var color = searchColors(imgData[0], imgData[1], imgData[2]);
+                    if (imgData[3] === 0) {
+                        color = body.style.background.substring(body.style.background.indexOf('(') + 1, body.style.background.lastIndexOf(')')).split(/,\s*/),
+                        color = searchColors(color[0], color[1], color[2]);
+                    }
+                } catch (e) {  // MORE DEBUGGING
+                    var color = 0;
+                    logo.errorMsg('Could not find access image data.', blk);
+                    console.log(e);
                 }
                 logo.blocks.blockList[blk].value = color;
                 if (wasVisible) {

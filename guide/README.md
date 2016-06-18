@@ -383,7 +383,7 @@ test it, and if it is > 0, return the value.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/keyboard2.svg'</img>
 
 If you want to convert the keycode to a alphanumeric character, you
-need to use the *To ASCII* block.
+need to use the *To ASCII* block. E.g., *toASCII(65) = A*
 
 8. Turtles, Sprites, Buttons, and Events
 ----------------------------------------

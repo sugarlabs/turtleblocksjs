@@ -265,6 +265,14 @@
 		  is zero, then no key has been pressed, so we call the action again. If
 		  a key is pressed, the keyboard value is greater than zero, so we
 		  return from the action and show the next image.</p>
+		<h2>Example: Keyboard input</h2>
+	<p><img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/keyboard.svg'</img></p>
+		<p>In order to grab keycodes from the keyboard, you need to use a *While*
+		  block. In the above example, we store the keyboard value in a box,
+		  test it, and if it is > 0, return the value.</p>
+	<p><img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/keyboard2.svg'</img></p>
+		<p>If you want to convert the keycode to a alphanumeric character, you
+		  need to use the *To ASCII* block. E.g., <em>toASCII(65) = A</em></p>
 		<h2>8. Turtles, Sprites, Buttons, and Events</h2>
 	<p><img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles1.svg'</img></p>
 		<p>A separate turtle is created for each <em>Start</em> block. The turtles run

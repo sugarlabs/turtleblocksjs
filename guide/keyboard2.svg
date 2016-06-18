@@ -932,16 +932,6 @@
      style="fill:#7bbbb8;fill-opacity:1;stroke:#4c8585;stroke-width:2;stroke-linecap:round;stroke-opacity:1"
      id="path21-2"
      d="m 393,55.6241 120,0 0,40 -120,0 0,-16 0,-2 -12,0 0,6 -4,0 0,-16 4,0 0,6 12,0 0,-2 z" />
-  <text
-     style="font-size:20px;font-family:Sans;text-anchor:start;fill:#000000"
-     id="text23-2"
-     y="54.6241"
-     x="258">
-    <tspan
-       id="tspan25-1"
-       y="80.6241"
-       x="278">keyboard</tspan>
-  </text>
   <path
      style="fill:#ffc000;fill-opacity:1;stroke:#c48d00;stroke-width:2;stroke-linecap:round;stroke-opacity:1"
      id="path3660"
@@ -1088,13 +1078,13 @@
     </text>
   </g>
   <text
-     style="font-size:13.33333302px;font-family:Sans;text-anchor:end;fill:#000000"
-     id="text3631"
-     x="130"
-     y="54.6241">
+     style="font-size:20px;font-family:Sans;text-anchor:start;fill:#000000"
+     id="text23-2"
+     y="54.6241"
+     x="258">
     <tspan
-       id="tspan3633"
-       y="77.1241"
-       x="240" />
+       id="tspan25-1"
+       y="80.6241"
+       x="404">keyboard</tspan>
   </text>
 </svg>

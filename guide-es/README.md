@@ -388,6 +388,16 @@ sido presionada, por lo que llama a la acción otra vez. Si se pulsa
 una tecla, el valor teclado es mayor que cero, por lo que regresó de
 la acción y muestra la siguiente imagen.
 
+Ejemplo entrada de teclado
+--------------------------
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/keyboard.svg'</img>
+
+Para grabar los códigos de botones del teclado, es necesario utilizar un
+*Mientras* bloque. En el ejemplo anterior, almacenamos el valor de
+teclado en una caja, probarlo, y si es > 0, retorno el valor.
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/keyboard2.svg'</img>
+
 8. Tortugas, Sprites, botones, y eventos
 ----------------------------------------
 

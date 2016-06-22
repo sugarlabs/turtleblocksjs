@@ -345,13 +345,15 @@ function Turtle (name, turtles, drum) {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         } else if (this.penState) {
             this.drawingCanvas.graphics.lineTo(nx, ny);
-            if (!this.svgPath) { this.svgPath = true; var oxScaled =
-                ox * this.turtles.scale; var oyScaled = oy *
-                this.turtles.scale; this.svgOutput += '<path d="M ' +
-                oxScaled + ',' + oyScaled + ' '; } var nxScaled = nx *
-                this.turtles.scale; var nyScaled = ny *
-                this.turtles.scale; this.svgOutput += nxScaled + ',' +
-                nyScaled + ' ';
+            if (!this.svgPath) {
+                this.svgPath = true;
+                var oxScaled = ox * this.turtles.scale;
+                var oyScaled = oy * this.turtles.scale;
+                this.svgOutput += '<path d="M ' + oxScaled + ',' + oyScaled + ' ';
+            }
+            var nxScaled = nx * this.turtles.scale;
+            var nyScaled = ny * this.turtles.scale;
+            this.svgOutput += nxScaled + ',' + nyScaled + ' ';
         } else {
             this.drawingCanvas.graphics.moveTo(nx, ny);
         }

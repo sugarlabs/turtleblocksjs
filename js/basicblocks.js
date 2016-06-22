@@ -641,14 +641,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     dispatchBlock.defaults.push(_('event'));
     dispatchBlock.dockTypes[1] = 'textin';
 
-    var drumBlock = new ProtoBlock('drum');
-    drumBlock.palette = palettes.dict['actions'];
-    blocks.protoBlockDict['drum'] = drumBlock;
-    drumBlock.staticLabels.push(_('start drum'));
-    drumBlock.extraWidth = 10;
-    drumBlock.adjustWidthToLabel();
-    drumBlock.stackClampZeroArgBlock();
-
     var startBlock = new ProtoBlock('start');
     startBlock.palette = palettes.dict['actions'];
     blocks.protoBlockDict['start'] = startBlock;

@@ -196,6 +196,8 @@ function Turtle (name, turtles, drum) {
             this.stroke = savedStroke;
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
             this.drawingCanvas.graphics.moveTo(fx, fy);
+            this.x = x2;
+            this.y = y2;
         } else if (this.penState) {
             if (this.canvasColor[0] === "#") {
                 this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
@@ -206,8 +208,6 @@ function Turtle (name, turtles, drum) {
             this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
 
             // Convert from turtle coordinates to screen coordinates.
-            var ix = this.turtles.turtleX2screenX(this.x);
-            var iy = this.turtles.turtleY2screenY(this.y);
             var fx = this.turtles.turtleX2screenX(x2);
             var fy = this.turtles.turtleY2screenY(y2);
             var cx1 = this.turtles.turtleX2screenX(cp1x);
@@ -219,17 +219,23 @@ function Turtle (name, turtles, drum) {
 
             if (!this.svgPath) {
                 this.svgPath = true;
+                var ix = this.turtles.turtleX2screenX(this.x);
+                var iy = this.turtles.turtleY2screenY(this.y);
                 var ixScaled = ix * this.turtles.scale;
                 var iyScaled = iy * this.turtles.scale;
                 this.svgOutput += '<path d="M ' + ixScaled + ',' + iyScaled + ' ';
             }
+
             var cx1Scaled = cx1 * this.turtles.scale;
             var cy1Scaled = cy1 * this.turtles.scale;
             var cx2Scaled = cx2 * this.turtles.scale;
             var cy2Scaled = cy2 * this.turtles.scale;
             var fxScaled = fx * this.turtles.scale;
             var fyScaled = fy * this.turtles.scale;
-            this.svgOutput += 'C ' + cx1Scaled + ',' + cy1Scaled + ' ' + cx2Scaled + ',' + cy2Scaled + ' ' + fxScaled + ',' + fyScaled + ' ';
+            this.svgOutput += 'C ' + cx1Scaled + ',' + cy1Scaled + ' ' + cx2Scaled + ',' + cy2Scaled + ' ' + fxScaled + ',' + fyScaled;
+            this.x = x2;
+            this.y = y2;
+
         } else {
             this.x = x2;
             this.y = y2;

@@ -51,6 +51,7 @@ function Turtle (name, turtles, drum) {
     this.listeners = {};
 
     // Things used for what the turtle draws.
+    this.shapes = [];  // One shape per line, so we can cache them individually
     this.drawingCanvas = null;
     this.imageContainer = null;
     this.svgOutput = '';
@@ -196,8 +197,6 @@ function Turtle (name, turtles, drum) {
             this.stroke = savedStroke;
             this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
             this.drawingCanvas.graphics.moveTo(fx, fy);
-            this.x = x2;
-            this.y = y2;
         } else if (this.penState) {
             if (this.canvasColor[0] === "#") {
                 this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
@@ -208,6 +207,8 @@ function Turtle (name, turtles, drum) {
             this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
 
             // Convert from turtle coordinates to screen coordinates.
+            var ix = this.turtles.turtleX2screenX(this.x);
+            var iy = this.turtles.turtleY2screenY(this.y);
             var fx = this.turtles.turtleX2screenX(x2);
             var fy = this.turtles.turtleY2screenY(y2);
             var cx1 = this.turtles.turtleX2screenX(cp1x);
@@ -219,23 +220,17 @@ function Turtle (name, turtles, drum) {
 
             if (!this.svgPath) {
                 this.svgPath = true;
-                var ix = this.turtles.turtleX2screenX(this.x);
-                var iy = this.turtles.turtleY2screenY(this.y);
                 var ixScaled = ix * this.turtles.scale;
                 var iyScaled = iy * this.turtles.scale;
                 this.svgOutput += '<path d="M ' + ixScaled + ',' + iyScaled + ' ';
             }
-
             var cx1Scaled = cx1 * this.turtles.scale;
             var cy1Scaled = cy1 * this.turtles.scale;
             var cx2Scaled = cx2 * this.turtles.scale;
             var cy2Scaled = cy2 * this.turtles.scale;
             var fxScaled = fx * this.turtles.scale;
             var fyScaled = fy * this.turtles.scale;
-            this.svgOutput += 'C ' + cx1Scaled + ',' + cy1Scaled + ' ' + cx2Scaled + ',' + cy2Scaled + ' ' + fxScaled + ',' + fyScaled;
-            this.x = x2;
-            this.y = y2;
-
+            this.svgOutput += 'C ' + cx1Scaled + ',' + cy1Scaled + ' ' + cx2Scaled + ',' + cy2Scaled + ' ' + fxScaled + ',' + fyScaled + ' ';
         } else {
             this.x = x2;
             this.y = y2;
@@ -557,6 +552,14 @@ function Turtle (name, turtles, drum) {
             this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
         }
 
+        // We have to remove each individual shape from the canvas.
+        var nshapes = this.shapes.length;
+        for (var i = 0; i < nshapes; i++) {
+            var shape = this.shapes.pop();
+	    this.turtles.stage.removeChild(shape);
+	    delete shape;
+        }
+
         this.drawingCanvas.graphics.clear();
         var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
@@ -569,7 +572,31 @@ function Turtle (name, turtles, drum) {
     };
 
     this.doForward = function(steps) {
+        // We want to cache in relatively small increments, so break
+        // steps up into smaller steps.
+        var stepsize = this.stroke * 20;
+
+        var totalSteps = Number(steps);
+        var nsteps = Math.floor(totalSteps / stepsize);
+        var lastStep = totalSteps - stepsize * nsteps;
+
+        if (lastStep > 0) {
+            nsteps += 1;
+        }
+
+        for (step = 0; step < nsteps; step++) {
+            if (lastStep > 0 && step === nsteps - 1) {
+                var dist = lastStep;
+	    } else {
+                var dist = stepsize;
+	    }
+
         if (!this.fillState) {
+            this.drawingCanvas = new createjs.Shape();
+	    this.turtles.stage.addChild(this.drawingCanvas);
+            this.shapes.push(this.drawingCanvas);
+            this.drawingCanvas.tickEnabled = false;
+
             if (this.canvasColor[0] === "#") {
                 this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
             }
@@ -579,17 +606,30 @@ function Turtle (name, turtles, drum) {
             this.drawingCanvas.graphics.moveTo(this.container.x, this.container.y);
         }
 
+        var angleRadians = this.orientation * Math.PI / 180.0;
+        // old canvas point
+	var oxc = this.container.x;
+	var oyc = this.container.y;
+        // new canvas point
+        var nxc = this.container.x + Number(dist) * Math.sin(angleRadians);
+        var nyc = this.container.y + Number(dist) * -Math.cos(angleRadians);
+
         // old turtle point
         var ox = this.turtles.screenX2turtleX(this.container.x);
         var oy = this.turtles.screenY2turtleY(this.container.y);
 
         // new turtle point
-        var angleRadians = this.orientation * Math.PI / 180.0;
-        var nx = ox + Number(steps) * Math.sin(angleRadians);
-        var ny = oy + Number(steps) * Math.cos(angleRadians);
+        var nx = this.turtles.screenX2turtleX(nxc);
+        var ny = this.turtles.screenY2turtleY(nyc);
 
         this.move(ox, oy, nx, ny, true);
-        this.turtles.refreshCanvas();
+
+        if (!this.fillState) {
+            this.drawingCanvas.cache(Math.min(oxc, nxc) - this.stroke, Math.min(oyc, nyc) - this.stroke, Math.abs(nxc - oxc) + (this.stroke * 2), Math.abs(nyc - oyc) + (this.stroke * 2));
+            this.turtles.refreshCanvas();
+        }
+
+	}
     };
 
     this.doSetXY = function(x, y) {

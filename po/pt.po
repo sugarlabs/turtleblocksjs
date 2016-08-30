@@ -608,7 +608,7 @@ msgstr "teto"
 
 #. TRANS: a turtle shell
 msgid "shell"
-msgstr "casca"
+msgstr "casco"
 
 #. TRANS: flash (blink) an LED light
 msgid "blink (ms)"
@@ -800,7 +800,7 @@ msgstr "Pare"
 
 #. TRANS: square root
 msgid "sqrt"
-msgstr "raíz quadrada"
+msgstr "raiz quadrada"
 
 #. TRANS: as in button click
 msgid "click"

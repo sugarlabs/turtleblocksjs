@@ -24,10 +24,10 @@ msgid ""
 msgstr ""
 
 msgid "Delete all"
-msgstr "Apaguar tudo"
+msgstr "Excluir tudo"
 
 msgid "show"
-msgstr "mostre"
+msgstr "mostrar"
 
 msgid "text"
 msgstr "texto"
@@ -91,13 +91,13 @@ msgid "to"
 msgstr "a"
 
 msgid "add"
-msgstr "adicione"
+msgstr "adicionar"
 
 msgid "set pen size"
-msgstr "define largura da caneta"
+msgstr "definir largura do traço"
 
 msgid "start turtle"
-msgstr "inicia tartaruga"
+msgstr "iniciar a tartaruga"
 
 msgid "latitude"
 msgstr "latitude"
@@ -109,7 +109,7 @@ msgid "mouse y"
 msgstr ""
 
 msgid "Show/hide blocks"
-msgstr "Exibir/ocultar blocos"
+msgstr "Mostrar/ocultar blocos"
 
 msgid "then"
 msgstr "então"
@@ -118,10 +118,10 @@ msgid "move"
 msgstr "mover"
 
 msgid "Stop the current project."
-msgstr "Para o projeto atual"
+msgstr "Parar o projeto atual"
 
 msgid "stop turtle"
-msgstr "Para a tartaruga"
+msgstr "Parar a tartaruga"
 
 msgid "food"
 msgstr "comida"
@@ -136,14 +136,14 @@ msgid "fat"
 msgstr "gordo"
 
 msgid "Expand or collapse start and action stacks."
-msgstr "Expande ou recolhe pilhas de início e de ação."
+msgstr "Expandir ou recolher pilhas de início e de ação."
 
 #. TRANS: pop a value off of the heap.
 msgid "pop"
 msgstr ""
 
 msgid "background"
-msgstr "preencha a tela"
+msgstr "preencher a tela"
 
 #. TRANS: logical "not" operator
 msgid "not"
@@ -166,7 +166,7 @@ msgid "get fiber"
 msgstr "obter fibra"
 
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr "abre um painel para configurar o Turtle Blocks."
+msgstr "Abrir um painel para configurar o Turtle Blocks."
 
 #. TRANS: the name of a variable (stored in a box)
 msgid "name"
@@ -182,7 +182,7 @@ msgid "Download"
 msgstr "Baixar"
 
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
-msgstr "O botão colar está habilitado quando há blocos copiados para a área de transferência"
+msgstr "O botão colar está habilitado quando há blocos copiados para a área de transferência."
 
 msgid "Expand/collapse toolbar"
 msgstr "Expande ou recolhe a barra de ferramentas"
@@ -191,13 +191,13 @@ msgid "zoom"
 msgstr ""
 
 msgid "Hide or show the blocks and the palettes."
-msgstr "Oculta ou exibe os blocos e as paletas"
+msgstr "Ocultar ou exibir os blocos e as paletas"
 
 msgid "to degrees"
 msgstr "para graus"
 
 msgid "Restore blocks from the trash."
-msgstr "Restaura blocos do lixo"
+msgstr "Restaura blocos da lixeira"
 
 msgid "get calories"
 msgstr "obter calorias"
@@ -212,7 +212,7 @@ msgid "x"
 msgstr "x"
 
 msgid "show blocks"
-msgstr "exibir blocos"
+msgstr "mostrar blocos"
 
 msgid "heading"
 msgstr "cabeçalho"
@@ -230,7 +230,7 @@ msgid "Load samples from server"
 msgstr "Abrir exemplos do servidor"
 
 msgid "hide blocks"
-msgstr "Esconder blocos"
+msgstr "Ocultar blocos"
 
 msgid "Hide or show the block palettes."
 msgstr "Esconder ou exibir as paletas de blocos"

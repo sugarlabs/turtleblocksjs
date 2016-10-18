@@ -2013,25 +2013,34 @@ function Blocks(canvas, stage, refreshCanvas, trashcan, updateStage, getStageSca
     this._newLocalArgBlock = function (name) {
         // name === 1, 2, 3, ...
         var blkname = 'arg_' + name;
+        if ('myArg_' + name in this.protoBlockDict) {
+            return;
+        }
+
         if (blkname in this.protoBlockDict) {
             return;
         }
 
         var myNamedArgBlock = new ProtoBlock('namedarg');
-        this.protoBlockDict[blkname] = myNamedArgBlock;
+        this.protoBlockDict['myArg' + blkname] = myNamedArgBlock;
         myNamedArgBlock.palette = this.palettes.dict['actions'];
         myNamedArgBlock.defaults.push(name);
         myNamedArgBlock.staticLabels.push('arg ' + name);
         myNamedArgBlock.parameterBlock();
+
         if (name === 'arg 1') {
             return;
         }
 
         myNamedArgBlock.palette.add(myNamedArgBlock);
         // Force regeneration of palette after adding new block.
-        this.palettes.hide();
-        this.palettes.updatePalettes('actions');
-        this.palettes.show();
+        // Add delay to avoid race condition.
+        var that = this;
+        setTimeout(function () {
+            that.palettes.hide();
+            that.palettes.updatePalettes('action');
+            that.palettes.show();
+        }, 500);
     };
 
     this._removeNamedoEntries = function (name) {

@@ -1058,6 +1058,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             }
             if (!foundTargetTurtle) {
                 logo.errorMsg('Could not find turtle ' + args[0], blk);
+                console.log('Could not find turtle ' + args[0]);
             }
             break;
         case 'startTurtle':
@@ -1919,6 +1920,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'yturtle':
                 var cblk = logo.blocks.blockList[blk].connections[1];
                 var targetTurtle = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
+                logo.blocks.blockList[blk].value = 0;
+
                 for (var i = 0; i < logo.turtles.turtleList.length; i++) {
                     var logoTurtle = logo.turtles.turtleList[i];
                     if (targetTurtle === logoTurtle.name) {
@@ -1931,8 +1934,13 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     }
                 }
                 if (i === logo.turtles.turtleList.length) {
+                    console.log('Could not find turtle ' + targetTurtle);
                     logo.errorMsg('Could not find turtle ' + targetTurtle, blk);
-                    logo.blocks.blockList[blk].value = 0;
+                    // logo.blocks.blockList[blk].value = 0;
+                    for (var i = 0; i < logo.turtles.turtleList.length; i++) {
+			var logoTurtle = logo.turtles.turtleList[i];
+                        console.log(targetTurtle + ' !== ' + logoTurtle.name);
+                    }
                 }
                 break;
             case 'color':

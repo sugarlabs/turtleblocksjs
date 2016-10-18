@@ -16,7 +16,7 @@ const DEFAULTPALETTE = 'turtle';
 
 // We don't include 'extras' since we want to be able to delete
 // plugins from the extras palette.
-BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'boxes', 'actions', 'media', 'sensors', 'heap', 'extras'];
+BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'boxes', 'action', 'media', 'sensors', 'heap', 'extras'];
 
 const BUILTINPALETTESL23N = [_('turtle'), _('pen'), _('number'), _('boolean'), _('flow'), _('boxes'), _('actions'), _('media'), _('sensors'), _('heap'), _('extras')];
 

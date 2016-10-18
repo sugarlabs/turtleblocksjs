@@ -417,11 +417,11 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
 
     this.removeActionPrototype = function(actionName) {
         var blockRemoved = false;
-        for (var blk = 0; blk < this.dict['actions'].protoList.length; blk++) {
-            var block = this.dict['actions'].protoList[blk];
+        for (var blk = 0; blk < this.dict['action'].protoList.length; blk++) {
+            var block = this.dict['action'].protoList[blk];
             if (['nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg'].indexOf(block.name) !== -1 && (block.defaults[0] === actionName || blocks.defaults == undefined)) {
                 // Remove the palette protoList entry for this block.
-                this.dict['actions'].remove(block, actionName);
+                this.dict['action'].remove(block, actionName);
                 console.log('deleting protoblocks for ' + actionName);
 
                 // And remove it from the protoBlock dictionary.
@@ -438,7 +438,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
                     // console.log('deleting protoblocks for action ' + actionName);
                     delete paletteBlocks.protoBlockDict['myCalcArg_' + actionName];
                 }
-                this.dict['actions'].y = 0;
+                this.dict['action'].y = 0;
                 blockRemoved = true;
                 break;
             }
@@ -447,7 +447,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         // Force an update if a block was removed.
         if (blockRemoved) {
             this.hide();
-            this.updatePalettes('actions');
+            this.updatePalettes('action');
             this.show();
         }
     };

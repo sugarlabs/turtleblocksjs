@@ -120,7 +120,7 @@ const PALETTECOLORS = {
     'turtle': [37.5, 70, 50],
     'pen': [57.5, 50, 28],
     'boxes': [12.5, 60, 80],
-    'actions': [22.5, 80, 57],
+    'action': [22.5, 80, 57],
     'media': [57.5, 70, 28],
     'number': [0, 70, 42],
     'boolean': [30, 80, 57],
@@ -169,7 +169,7 @@ const FLOWPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" heig
 
 const BLOCKSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <path d="m 15.719636,31.331478 0.114372,5.261133 11.437247,6.290486 L 27.5,29.387146" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="m 27.728744,29.501519 0.05719,13.381578 11.723178,-7.548583 0,-4.689272 -5.947368,3.545548" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="m 10.001012,27.328441 5.604251,-5.146761 -5.832996,-2.973684 12.123482,-7.091093 5.718623,3.316801 5.489879,-3.088056 12.123482,7.319838 -5.832996,2.401822 5.489878,5.032388 -11.322874,7.205466 -5.947369,-5.261134 -6.290485,5.261134 -11.322875,-6.976721 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> <path d="M 16.40587,21.952935 27.156883,15.204959 38.937247,22.067308 27.614372,28.815283 16.40587,21.952935 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> </svg>';
 
-const ACTIONSPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <path d="m 5.8333331,25.833333 0,-6.666667 A 6.6666667,6.6666667 0 0 1 12.5,12.5 l 6.666667,0 0,3.333333 16.666666,0 0,-3.333333 6.666667,0 a 6.6666667,6.6666667 0 0 1 6.666667,6.666666 l 0,6.666667 0,6.666667 A 6.6666667,6.6666667 0 0 1 42.5,39.166666 l -6.666667,0 -1.666666,0 0,3.333334 -13.333334,0 0,-3.333334 -1.666666,0 -6.666667,0 A 6.6666667,6.6666667 0 0 1 5.8333331,32.5 l 0,-6.666667 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> </svg>';
+const ACTIONPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <path d="m 5.8333331,25.833333 0,-6.666667 A 6.6666667,6.6666667 0 0 1 12.5,12.5 l 6.666667,0 0,3.333333 16.666666,0 0,-3.333333 6.666667,0 a 6.6666667,6.6666667 0 0 1 6.666667,6.666666 l 0,6.666667 0,6.666667 A 6.6666667,6.6666667 0 0 1 42.5,39.166666 l -6.666667,0 -1.666666,0 0,3.333334 -13.333334,0 0,-3.333334 -1.666666,0 -6.666667,0 A 6.6666667,6.6666667 0 0 1 5.8333331,32.5 l 0,-6.666667 z" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /> </svg>';
 
 const MEDIAPALETTEICON = '<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55"> <g transform="matrix(0.67,0,0,0.67,9.075,9.075)"> <path d="m 46.7405,44.669 c 0,2.511 -1.528,4.331 -4.332,4.331 l -29.457,0 0,-43 29.458,0 c 2.15,0 4.332,2.154 4.332,4.33 l -0.001,34.339 0,0 z" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <line style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" x1="22.2155" x2="22.2155" y1="6.1209998" y2="48.881001" /> <path d="m 8.2585,14.464 c 0,0 2.084,0.695 4.17,0.695 2.086,0 4.173,-0.695 4.173,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <path d="m 8.2585,28.021 c 0,0 1.912,0.695 4.345,0.695 2.433,0 3.999,-0.695 3.999,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> <path d="m 8.2585,41.232 c 0,0 1.736,0.695 4.518,0.695 2.781,0 3.825,-0.695 3.825,-0.695" style="fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" /> </g> </svg> ';
 
@@ -188,7 +188,7 @@ const PALETTEICONS = {
     'boolean': BOOLEANPALETTEICON,
     'flow': FLOWPALETTEICON,
     'boxes': BLOCKSPALETTEICON,
-    'actions': ACTIONSPALETTEICON,
+    'action': ACTIONPALETTEICON,
     'media': MEDIAPALETTEICON,
     'sensors': SENSORSPALETTEICON,
     'extras': EXTRASPALETTEICON,

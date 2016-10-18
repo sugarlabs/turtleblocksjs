@@ -1744,7 +1744,7 @@ function Block(protoblock, blocks, overrideName) {
                 }
                 this.blocks.renameNameddos(oldValue, newValue);
                 this.blocks.palettes.hide();
-                this.blocks.palettes.updatePalettes('actions');
+                this.blocks.palettes.updatePalettes('action');
                 this.blocks.palettes.show();
                 break;
             case 'storein':

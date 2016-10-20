@@ -1993,6 +1993,28 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 logo.blocks.blockList[blk].value = logo.lastKeyCode;
                 logo.clearCurrentKeyCode();
                 break;
+            case 'getred':
+            case 'getgreen':
+            case 'getblue':
+                var colorString = logo.turtles.turtleList[turtle].canvasColor;
+		// 'rgba(255,0,49,1)' or '#ff0031'
+		if (colorString[0] === "#") {
+                    colorString = hex2rgb(colorString.split("#")[1]);
+		}
+                var obj = colorString.split('(');
+                var obj = obj[1].split(',');
+                switch (logo.blocks.blockList[blk].name) {
+		case 'getred':
+                    logo.blocks.blockList[blk].value = parseInt(Number(obj[0]) / 2.55);
+		    break;
+		case 'getgreen':
+                    logo.blocks.blockList[blk].value = parseInt(Number(obj[1]) / 2.55);
+		    break;
+		case 'getblue':
+                    logo.blocks.blockList[blk].value = parseInt(Number(obj[2]) / 2.55);
+		    break;
+		}
+		break;
             case 'getcolorpixel':
                 var wasVisible = logo.turtles.turtleList[turtle].container.visible;
                 logo.turtles.turtleList[turtle].container.visible = false;

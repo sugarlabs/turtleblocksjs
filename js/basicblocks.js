@@ -1024,13 +1024,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     audioStopBlock.adjustWidthToLabel();
     audioStopBlock.zeroArgBlock();
 
-    var loudnessBlock = new ProtoBlock('loudness');
-    loudnessBlock.palette = palettes.dict['sensors'];
-    blocks.protoBlockDict['loudness'] = loudnessBlock;
-    loudnessBlock.staticLabels.push(_('loudness'));
-    loudnessBlock.adjustWidthToLabel();
-    loudnessBlock.parameterBlock();
-
     var lilypondBlock = new ProtoBlock('savelilypond');
     lilypondBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['savelilypond'] = lilypondBlock;
@@ -1169,6 +1162,13 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     // SENSORS PALETTE
 
+    var loudnessBlock = new ProtoBlock('loudness');
+    loudnessBlock.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['loudness'] = loudnessBlock;
+    loudnessBlock.staticLabels.push(_('loudness'));
+    loudnessBlock.adjustWidthToLabel();
+    loudnessBlock.parameterBlock();
+
     // Turtle-specific click event
     var myClickBlock = new ProtoBlock('myclick');
     myClickBlock.palette = palettes.dict['sensors'];
@@ -1177,6 +1177,27 @@ function initBasicProtoBlocks(palettes, blocks) {
     myClickBlock.adjustWidthToLabel();
     myClickBlock.parameterBlock();
     myClickBlock.dockTypes[0] = 'textout';
+
+    var getBlue = new ProtoBlock('getblue');
+    getBlue.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['getblue'] = getBlue;
+    getBlue.staticLabels.push(_('blue'));
+    getBlue.adjustWidthToLabel();
+    getBlue.parameterBlock();
+
+    var getGreen = new ProtoBlock('getgreen');
+    getGreen.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['getgreen'] = getGreen;
+    getGreen.staticLabels.push(_('green'));
+    getGreen.adjustWidthToLabel();
+    getGreen.parameterBlock();
+
+    var getRed = new ProtoBlock('getred');
+    getRed.palette = palettes.dict['sensors'];
+    blocks.protoBlockDict['getred'] = getRed;
+    getRed.staticLabels.push(_('red'));
+    getRed.adjustWidthToLabel();
+    getRed.parameterBlock();
 
     var getColorPixel = new ProtoBlock('getcolorpixel');
     getColorPixel.palette = palettes.dict['sensors'];

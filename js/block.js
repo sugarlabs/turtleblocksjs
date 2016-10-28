@@ -287,6 +287,7 @@ function Block(protoblock, blocks, overrideName) {
         case 'hollowline':
         case 'clamp':
         case 'forever':
+        case 'status':
         case 'if':
         case 'while':
         case 'until':

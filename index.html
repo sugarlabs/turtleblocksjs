@@ -10,7 +10,8 @@
     <script src="lib/mespeak.js"></script>
     <script src="lib/reqwest.js"></script>
     <script src="lib/p5.min.js"></script>
-    <script src="lib/jquery-1.10.1.js"></script>
+    <script src="lib/jquery-2.1.4.js"></script>
+    <script src="lib/jquery-ui.js"></script>
     <script src="lib/webL10n.js"></script>
 
     <link rel="prefetch" type="application/l10n" href="./localization.ini" />
@@ -23,6 +24,22 @@
 </head>
 
 <body id="body" style="background: #96D3F3;">
+  <script>
+    $(function() {
+        $("#statusmatrix").draggable();
+    });
+
+    function moveStatusMatrix(event) {
+        var myDiv = document.getElementById('statusmatrix');
+        var myDivPosition = myDiv.getBoundingClientRect();
+
+        var table = document.getElementById('statusTable');
+        var row = table.rows.item(0);
+        row.style.left = myDivPosition.left + 'px';
+        row.style.top = myDivPosition.top + 'px';
+    };
+
+  </script>
 
     <!-- see activity/activity-icon-color-loading.svg for info -->
     <div id="loading-image-container" style="position: absolute; width: 100%; height: 100%;">
@@ -83,6 +100,7 @@
         <div id="tourData"></div>
     </div>
 
+    <div id="statusmatrix" overflow-x="auto" ondrag="moveStatusMatrix(event)" onmouseup="moveStatusMatrix(event)"></div>
     <div id="helpElem"></div>
 
 </body>

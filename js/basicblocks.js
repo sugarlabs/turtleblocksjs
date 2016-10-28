@@ -1160,6 +1160,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     setTurtleName.defaults.push('0');
     setTurtleName.defaults.push('Yertle');
 
+    var statusBlock = new ProtoBlock('status');
+    statusBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['status'] = statusBlock;
+    statusBlock.staticLabels.push(_('status'));
+    statusBlock.adjustWidthToLabel();
+    statusBlock.stackClampZeroArgBlock();
+
     // SENSORS PALETTE
 
     var loudnessBlock = new ProtoBlock('loudness');

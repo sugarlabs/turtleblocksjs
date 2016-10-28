@@ -68,6 +68,7 @@ define(function (require) {
 
     require('activity/utils');
     require('activity/artwork');
+    require('activity/status');
     require('activity/munsell');
     require('activity/trash');
     require('activity/boundary');

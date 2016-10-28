@@ -1756,8 +1756,10 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         }
 
         if (logo.blocks.blockList[blk].protoblock.parameter) {
-            if (logo.parameterQueue[turtle].indexOf(blk) === -1) {
-                logo.parameterQueue[turtle].push(blk);
+            if (turtle in logo.parameterQueue) {
+                if (logo.parameterQueue[turtle].indexOf(blk) === -1) {
+                    logo.parameterQueue[turtle].push(blk);
+                }
             }
         }
 

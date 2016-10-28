@@ -1611,10 +1611,7 @@ function Palette(palettes, name) {
     };
 
     this._makeBlockFromPalette = function(protoblk, blkname, callback) {
-        const BUILTINMACROS= ['note', 'rhythmicdot', 'tie', 'dividebeatfactor', 'multiplybeatfactor', 'duplicatenotes', 'skipnotes', 'setbpm',
-                              'drift', 'osctime', 'sharp', 'flat', 'settransposition', 'invert', 'staccato', 'slur', 'swing', 'crescendo', 'setnotevolume2',
-                              'matrix', 'turtlepitch', 'setturtlename', 'wholeNote', 'halfNote', 'quarterNote', 'eighthNote', 'sixteenthNote',
-                              'thirtysecondNote', 'sixtyfourthNote', 'tone', 'rest2', 'tuplet2', 'fill', 'hollowline' ];
+        const BUILTINMACROS= ['note', 'rhythmicdot', 'tie', 'dividebeatfactor', 'multiplybeatfactor', 'duplicatenotes', 'skipnotes', 'setbpm','drift', 'osctime', 'sharp', 'flat', 'settransposition', 'invert', 'staccato', 'slur', 'swing', 'crescendo', 'setnotevolume2', 'matrix', 'turtlepitch', 'setturtlename', 'wholeNote', 'halfNote', 'quarterNote', 'eighthNote', 'sixteenthNote','thirtysecondNote', 'sixtyfourthNote', 'tone', 'rest2', 'tuplet2', 'fill', 'hollowline', 'status'];
 
         switch (protoblk.name) {
         case 'do':
@@ -1725,6 +1722,7 @@ function Palette(palettes, name) {
         var palette = this;
 
         // Some blocks are expanded on load.
+        const STATUSOBJ = [[0, 'status', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null]], [1, 'print', 0, 0, [0, 8, 12]], [2, 'y', 0, 0, [4]], [3, 'x', 0, 0, [5]], [4, 'int', 0, 0, [9, 2]], [5, 'int', 0, 0, [15, 3]], [6, 'heading', 0, 0, [7]], [7, 'print', 0, 0, [13, 6, null]], [8, 'plus', 0, 0, [1, 10, 15]], [9, 'plus', 0, 0, [16, 4, 11]], [10, ['text', {'value': '('}], 0, 0, [8]], [11, ['text', {'value': ')'}], 0, 0, [9]], [12, 'vspace', 0, 0, [1, 13]], [13, 'vspace', 0, 0, [12, 7]], [14, ['text', {'value': ',  '}], 0, 0, [16]], [15, 'plus', 0, 0, [8, 5, 16]], [16, 'plus', 0, 0, [15, 14, 9]]];
         const NOTEOBJ = [[0, 'note', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, 5]], [1, ['number', {'value': 8}], 0, 0, [0]], [2, 'pitch', 0, 0, [0, 3, 4, null]], [3, ['solfege', {'value': _('la')}], 0, 0, [2]], [4, ['number', {'value': 4}], 0, 0, [2]], [5, 'hidden', 0, 0, [0, null]]];
         const DOTOBJ = [[0, 'rhythmicdot', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
         const TIEOBJ = [[0, 'tie', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
@@ -1777,6 +1775,7 @@ function Palette(palettes, name) {
                                'invert': INVERTOBJ,
                                'staccato': STACCATOOBJ,
                                'slur': SLUROBJ,
+                               'status': STATUSOBJ,
                                'swing': SWINGOBJ,
                                'crescendo': CRESCENDOOBJ,
                                'setnotevolume2': VOLOBJ,

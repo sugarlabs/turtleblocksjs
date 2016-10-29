@@ -595,6 +595,13 @@ In this example, we use the addition operator to concatinate strings
 in a print statement. The mouse x + ", " + mouse y are printed in the
 inner loop.
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/status1.svg'</img>
+
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/status2.svg'</img>
+
+There is also a *Status* widget that can be programmed to show various
+paramters as per the figures above.
+
 Parameter blocks, boxes, arithmetic and boolean operators, and many
 sensor blocks will print their current value as the program runs when
 running in "slow" or "step-by-step" mode, obviating the need to use

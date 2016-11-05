@@ -11,146 +11,146 @@ msgstr ""
 "Language: en\n"
 "X-Generator: js2pot.py script\n"
 
-#: js/activity.js:423
+#: js/activity.js:426
 msgid "Close"
 msgstr ""
 
-#: js/activity.js:1222
-#: js/block.js:615
-#: js/block.js:1701
+#: js/activity.js:1273
+#: js/block.js:619
+#: js/block.js:1742
 #: js/analytics.js:84
-#: js/blocks.js:1620
-#: js/blocks.js:1622
-#: js/blocks.js:1806
-#: js/blocks.js:1949
-#: js/blocks.js:2055
-#: js/blocks.js:2478
-#: js/blocks.js:3114
-#: js/blocks.js:3189
-#: js/palette.js:471
-#: js/palette.js:480
-#: js/palette.js:489
-#: js/palette.js:498
-#: js/palette.js:1620
-#: js/palette.js:1631
-#: js/palette.js:1642
-#: js/palette.js:1653
-#: js/basicblocks.js:495
-#: js/basicblocks.js:524
-#: js/basicblocks.js:531
-#: js/basicblocks.js:559
-#: js/basicblocks.js:569
-#: js/basicblocks.js:598
-#: js/basicblocks.js:630
-#: js/basicblocks.js:634
-#: js/basicblocks.js:640
+#: js/blocks.js:1816
+#: js/blocks.js:1818
+#: js/blocks.js:2006
+#: js/blocks.js:2165
+#: js/blocks.js:2285
+#: js/blocks.js:2717
+#: js/blocks.js:3467
+#: js/blocks.js:3544
+#: js/palette.js:510
+#: js/palette.js:519
+#: js/palette.js:528
+#: js/palette.js:537
+#: js/palette.js:1660
+#: js/palette.js:1671
+#: js/palette.js:1682
+#: js/palette.js:1693
+#: js/basicblocks.js:528
+#: js/basicblocks.js:557
+#: js/basicblocks.js:564
+#: js/basicblocks.js:592
+#: js/basicblocks.js:602
+#: js/basicblocks.js:631
+#: js/basicblocks.js:655
+#: js/basicblocks.js:659
+#: js/basicblocks.js:665
 msgid "action"
 msgstr ""
 
-#: js/activity.js:1897
+#: js/activity.js:1948
 #: js/turtledefs.js:43
 msgid "Run fast"
 msgstr ""
 
-#: js/activity.js:1898
+#: js/activity.js:1949
 #: js/turtledefs.js:44
 msgid "Run slow"
 msgstr ""
 
-#: js/activity.js:1899
+#: js/activity.js:1950
 #: js/turtledefs.js:45
 msgid "Run step by step"
 msgstr ""
 
-#: js/activity.js:1900
+#: js/activity.js:1951
 msgid "Run music slow"
 msgstr ""
 
-#: js/activity.js:1901
+#: js/activity.js:1952
 msgid "Run note by note"
 msgstr ""
 
-#: js/activity.js:1902
+#: js/activity.js:1953
 #: js/turtledefs.js:46
 msgid "Stop"
 msgstr ""
 
-#: js/activity.js:1903
+#: js/activity.js:1954
 #: js/turtledefs.js:47
 msgid "Clean"
 msgstr ""
 
-#: js/activity.js:1904
+#: js/activity.js:1955
 #: js/turtledefs.js:48
 msgid "Show/hide palettes"
 msgstr ""
 
-#: js/activity.js:1905
+#: js/activity.js:1956
 #: js/turtledefs.js:49
 msgid "Show/hide blocks"
 msgstr ""
 
-#: js/activity.js:1906
+#: js/activity.js:1957
 #: js/turtledefs.js:50
 msgid "Expand/collapse collapsable blocks"
 msgstr ""
 
-#: js/activity.js:1907
-#: js/activity.js:1948
+#: js/activity.js:1958
+#: js/activity.js:1999
 #: js/turtledefs.js:51
 msgid "Home"
 msgstr ""
 
-#: js/activity.js:1908
+#: js/activity.js:1959
 #: js/turtledefs.js:52
 msgid "Help"
 msgstr ""
 
-#: js/activity.js:1975
+#: js/activity.js:2027
 #: js/turtledefs.js:54
 msgid "Load samples from server"
 msgstr ""
 
-#: js/activity.js:1976
+#: js/activity.js:2028
 #: js/turtledefs.js:55
 msgid "Load project from files"
 msgstr ""
 
-#: js/activity.js:1977
+#: js/activity.js:2029
 #: js/turtledefs.js:56
 msgid "Save project"
 msgstr ""
 
-#: js/activity.js:1978
+#: js/activity.js:2030
 msgid "Save sheet music"
 msgstr ""
 
-#: js/activity.js:1979
+#: js/activity.js:2031
 #: js/turtledefs.js:58
 msgid "Paste"
 msgstr ""
 
-#: js/activity.js:1980
+#: js/activity.js:2032
 #: js/turtledefs.js:60
 msgid "Cartesian"
 msgstr ""
 
-#: js/activity.js:1981
+#: js/activity.js:2033
 #: js/turtledefs.js:61
 msgid "Polar"
 msgstr ""
 
-#: js/activity.js:1982
+#: js/activity.js:2034
 #: js/turtledefs.js:62
 msgid "Settings"
 msgstr ""
 
-#: js/activity.js:1983
+#: js/activity.js:2035
 #: js/turtledefs.js:68
 msgid "Delete all"
 msgstr ""
 
-#: js/activity.js:1984
+#: js/activity.js:2036
 #: js/turtledefs.js:69
 msgid "Undo"
 msgstr ""
@@ -159,67 +159,67 @@ msgstr ""
 msgid "confirm"
 msgstr ""
 
-#: js/block.js:549
+#: js/block.js:553
 msgid "rest"
 msgstr ""
 
-#: js/block.js:618
-#: js/turtle.js:361
-#: js/turtle.js:362
-#: js/basicblocks.js:622
+#: js/block.js:622
+#: js/turtle.js:528
+#: js/turtle.js:529
+#: js/basicblocks.js:647
 msgid "start"
 msgstr ""
 
-#: js/block.js:621
+#: js/block.js:625
 msgid "matrix"
 msgstr ""
 
-#: js/block.js:624
-#: js/turtle.js:219
+#: js/block.js:628
+#: js/turtle.js:386
 msgid "drum"
 msgstr ""
 
-#: js/logo.js:162
+#: js/logo.js:173
 msgid "true"
 msgstr ""
 
-#: js/logo.js:164
+#: js/logo.js:175
 msgid "false"
 msgstr ""
 
-#: js/logo.js:990
-#: js/logo.js:1329
+#: js/logo.js:1065
+#: js/logo.js:1405
 msgid "You must select a file."
 msgstr ""
 
-#: js/logo.js:1339
+#: js/logo.js:1415
 #: plugins/heap.rtp:96
 msgid "The file you selected does not contain a valid heap."
 msgstr ""
 
-#: js/logo.js:1343
+#: js/logo.js:1419
 #: plugins/heap.rtp:102
 msgid "The loadHeap block needs a loadFile block."
 msgstr ""
 
-#: js/logo.js:1359
+#: js/logo.js:1435
 msgid "Error parsing JSON data:"
 msgstr ""
 
-#: js/logo.js:1364
+#: js/logo.js:1440
 msgid "404: Page not found"
 msgstr ""
 
-#: js/logo.js:1388
+#: js/logo.js:1464
 msgid "turtleHeaps does not contain a valid heap for"
 msgstr ""
 
-#: js/logo.js:1398
+#: js/logo.js:1474
 msgid "Index must be > 0."
 msgstr ""
 
-#: js/logo.js:1989
-#: js/basicblocks.js:705
+#: js/logo.js:2199
+#: js/basicblocks.js:730
 #: plugins/heap.rtp:42
 #: plugins/heap.rtp:142
 msgid "empty heap"
@@ -382,7 +382,6 @@ msgid "Save your project to a file."
 msgstr ""
 
 #: js/turtledefs.js:57
-#: js/blocks.js:197
 msgid "Copy"
 msgstr ""
 
@@ -395,7 +394,7 @@ msgid "The paste button is enabled when there are blocks copied onto the clipboa
 msgstr ""
 
 #: js/turtledefs.js:59
-#: js/blocks.js:203
+#: js/blocks.js:200
 msgid "Save stack"
 msgstr ""
 
@@ -485,91 +484,97 @@ msgstr ""
 msgid "Worldwide"
 msgstr ""
 
-#: js/turtle.js:218
-#: js/turtle.js:357
-#: js/turtle.js:358
-#: js/basicblocks.js:614
+#: js/turtle.js:385
+#: js/turtle.js:524
+#: js/turtle.js:525
 msgid "start drum"
 msgstr ""
 
-#: js/blocks.js:1161
-#: js/palette.js:543
+#: js/blocks.js:1271
+#: js/palette.js:586
 msgid "open file"
 msgstr ""
 
-#: js/blocks.js:1495
-#: js/palette.js:515
-#: js/basicblocks.js:827
+#: js/blocks.js:1660
+#: js/palette.js:554
+#: js/basicblocks.js:852
 msgid "text"
 msgstr ""
 
-#: js/blocks.js:1505
-#: js/palette.js:518
-#: js/palette.js:1698
-#: js/palette.js:1705
-msgid "sol"
-msgstr ""
-
-#: js/blocks.js:1878
-#: js/palette.js:453
-#: js/palette.js:1598
-#: js/basicblocks.js:457
-#: js/basicblocks.js:461
-#: js/basicblocks.js:473
-#: js/basicblocks.js:481
+#: js/blocks.js:2092
+#: js/palette.js:492
+#: js/palette.js:577
+#: js/palette.js:1638
+#: js/basicblocks.js:490
+#: js/basicblocks.js:494
+#: js/basicblocks.js:506
+#: js/basicblocks.js:514
 msgid "box"
 msgstr ""
 
-#: js/blocks.js:1973
-#: js/basicblocks.js:470
+#: js/blocks.js:2191
+#: js/palette.js:578
+#: js/basicblocks.js:503
 msgid "store in"
 msgstr ""
 
-#: js/blocks.js:1973
-#: js/basicblocks.js:470
+#: js/blocks.js:2191
+#: js/basicblocks.js:503
 msgid "name"
 msgstr ""
 
-#: js/blocks.js:1973
-#: js/basicblocks.js:448
-#: js/basicblocks.js:470
-#: js/basicblocks.js:672
+#: js/blocks.js:2191
+#: js/basicblocks.js:481
+#: js/basicblocks.js:503
+#: js/basicblocks.js:697
 #: plugins/bitcoin.rtp:27
 msgid "value"
 msgstr ""
 
-#: js/palette.js:639
-#: js/basicblocks.js:137
-#: plugins/rodi.rtp:239
+#: js/palette.js:557
+#: js/palette.js:1739
+#: js/palette.js:1746
+msgid "sol"
+msgstr ""
+
+#: js/palette.js:682
+#: js/basicblocks.js:170
+#: plugins/rodi.rtp:71
+#: plugins/rodi.rtp:391
 msgid "back"
 msgstr ""
 
-#: js/palette.js:647
-#: js/palette.js:648
+#: js/palette.js:690
+#: js/palette.js:691
 msgid "hide"
 msgstr ""
 
-#: js/palette.js:650
-#: js/palette.js:651
-#: js/basicblocks.js:823
+#: js/palette.js:693
+#: js/palette.js:694
+#: js/basicblocks.js:848
 msgid "show"
 msgstr ""
 
-#: js/palette.js:653
-#: js/palette.js:654
+#: js/palette.js:696
+#: js/palette.js:697
 msgid "popout"
 msgstr ""
 
-#: js/palette.js:1685
+#: js/palette.js:1726
 msgid "la"
 msgstr ""
 
-#: js/palette.js:1705
+#: js/palette.js:1746
 msgid "mi"
 msgstr ""
 
-#: js/palette.js:1705
+#: js/palette.js:1746
 msgid "re"
+msgstr ""
+
+#: js/status.js:84
+#: js/status.js:84
+msgid "close"
 msgstr ""
 
 #: js/basicblocks.js:65
@@ -577,12 +582,18 @@ msgid "heading"
 msgstr ""
 
 #: js/basicblocks.js:72
-#: js/basicblocks.js:111
+#: js/basicblocks.js:93
+#: js/basicblocks.js:104
+#: js/basicblocks.js:115
+#: js/basicblocks.js:144
 msgid "x"
 msgstr ""
 
 #: js/basicblocks.js:79
-#: js/basicblocks.js:111
+#: js/basicblocks.js:93
+#: js/basicblocks.js:104
+#: js/basicblocks.js:115
+#: js/basicblocks.js:144
 msgid "y"
 msgstr ""
 
@@ -591,487 +602,524 @@ msgid "clear"
 msgstr ""
 
 #: js/basicblocks.js:93
+msgid "control point 2"
+msgstr ""
+
+#: js/basicblocks.js:104
+msgid "control point 1"
+msgstr ""
+
+#: js/basicblocks.js:115
+msgid "bezier"
+msgstr ""
+
+#: js/basicblocks.js:126
 msgid "arc"
 msgstr ""
 
-#: js/basicblocks.js:93
+#: js/basicblocks.js:126
 msgid "angle"
 msgstr ""
 
-#: js/basicblocks.js:93
+#: js/basicblocks.js:126
 msgid "radius"
 msgstr ""
 
-#: js/basicblocks.js:103
+#: js/basicblocks.js:136
 msgid "set heading"
 msgstr ""
 
-#: js/basicblocks.js:111
+#: js/basicblocks.js:144
 msgid "set xy"
 msgstr ""
 
-#: js/basicblocks.js:121
-#: plugins/rodi.rtp:131
-#: plugins/rodi.rtp:265
+#: js/basicblocks.js:154
+#: plugins/rodi.rtp:79
+#: plugins/rodi.rtp:344
+#: plugins/rodi.rtp:379
 msgid "right"
 msgstr ""
 
-#: js/basicblocks.js:129
-#: plugins/rodi.rtp:130
-#: plugins/rodi.rtp:252
+#: js/basicblocks.js:162
+#: plugins/rodi.rtp:81
+#: plugins/rodi.rtp:343
+#: plugins/rodi.rtp:366
 msgid "left"
 msgstr ""
 
-#: js/basicblocks.js:145
-#: plugins/rodi.rtp:227
+#: js/basicblocks.js:178
+#: plugins/rodi.rtp:73
+#: plugins/rodi.rtp:404
 msgid "forward"
 msgstr ""
 
-#: js/basicblocks.js:156
+#: js/basicblocks.js:189
 msgid "begin fill"
 msgstr ""
 
-#: js/basicblocks.js:164
+#: js/basicblocks.js:197
 msgid "end fill"
 msgstr ""
 
-#: js/basicblocks.js:172
-#: js/basicblocks.js:216
+#: js/basicblocks.js:205
+#: js/basicblocks.js:249
 msgid "background"
 msgstr ""
 
-#: js/basicblocks.js:179
+#: js/basicblocks.js:212
 msgid "color"
 msgstr ""
 
-#: js/basicblocks.js:186
+#: js/basicblocks.js:219
 msgid "shade"
 msgstr ""
 
-#: js/basicblocks.js:193
+#: js/basicblocks.js:226
 msgid "grey"
 msgstr ""
 
-#: js/basicblocks.js:200
+#: js/basicblocks.js:233
 msgid "pen size"
 msgstr ""
 
-#: js/basicblocks.js:207
+#: js/basicblocks.js:240
 msgid "set font"
 msgstr ""
 
-#: js/basicblocks.js:223
+#: js/basicblocks.js:256
 msgid "hollow line"
 msgstr ""
 
-#: js/basicblocks.js:230
+#: js/basicblocks.js:263
 msgid "fill"
 msgstr ""
 
-#: js/basicblocks.js:237
+#: js/basicblocks.js:270
 msgid "pen up"
 msgstr ""
 
-#: js/basicblocks.js:244
+#: js/basicblocks.js:277
 msgid "pen down"
 msgstr ""
 
-#: js/basicblocks.js:251
+#: js/basicblocks.js:284
 msgid "set pen size"
 msgstr ""
 
-#: js/basicblocks.js:259
+#: js/basicblocks.js:292
 msgid "set translucency"
 msgstr ""
 
-#: js/basicblocks.js:267
+#: js/basicblocks.js:300
 msgid "set hue"
 msgstr ""
 
-#: js/basicblocks.js:275
+#: js/basicblocks.js:308
 msgid "set shade"
 msgstr ""
 
-#: js/basicblocks.js:283
+#: js/basicblocks.js:316
 msgid "set grey"
 msgstr ""
 
-#: js/basicblocks.js:291
+#: js/basicblocks.js:324
 msgid "set color"
 msgstr ""
 
-#: js/basicblocks.js:301
+#: js/basicblocks.js:334
 msgid "int"
 msgstr ""
 
-#: js/basicblocks.js:337
+#: js/basicblocks.js:370
 msgid "and"
 msgstr ""
 
-#: js/basicblocks.js:344
+#: js/basicblocks.js:377
 msgid "or"
 msgstr ""
 
-#: js/basicblocks.js:351
+#: js/basicblocks.js:384
 msgid "not"
 msgstr ""
 
-#: js/basicblocks.js:357
+#: js/basicblocks.js:390
 msgid "mod"
 msgstr ""
 
-#: js/basicblocks.js:365
+#: js/basicblocks.js:398
 msgid "sqrt"
 msgstr ""
 
-#: js/basicblocks.js:415
+#: js/basicblocks.js:448
 msgid "one of"
 msgstr ""
 
-#: js/basicblocks.js:415
+#: js/basicblocks.js:448
 msgid "this"
 msgstr ""
 
-#: js/basicblocks.js:415
+#: js/basicblocks.js:448
 msgid "that"
 msgstr ""
 
-#: js/basicblocks.js:426
+#: js/basicblocks.js:459
 msgid "random"
 msgstr ""
 
-#: js/basicblocks.js:426
+#: js/basicblocks.js:459
 msgid "min"
 msgstr ""
 
-#: js/basicblocks.js:426
+#: js/basicblocks.js:459
 msgid "max"
 msgstr ""
 
-#: js/basicblocks.js:441
+#: js/basicblocks.js:474
 msgid "add 1 to"
 msgstr ""
 
-#: js/basicblocks.js:448
+#: js/basicblocks.js:481
 msgid "add"
 msgstr ""
 
-#: js/basicblocks.js:448
+#: js/basicblocks.js:481
 #: plugins/finance.rtp:28
 msgid "to"
 msgstr ""
 
-#: js/basicblocks.js:492
-#: js/basicblocks.js:539
-#: js/basicblocks.js:556
-#: js/basicblocks.js:594
-#: js/basicblocks.js:875
-#: js/basicblocks.js:882
+#: js/basicblocks.js:525
+#: js/basicblocks.js:572
+#: js/basicblocks.js:589
+#: js/basicblocks.js:627
+#: js/basicblocks.js:900
+#: js/basicblocks.js:907
 msgid "do"
 msgstr ""
 
-#: js/basicblocks.js:501
+#: js/basicblocks.js:534
 msgid "return"
 msgstr ""
 
-#: js/basicblocks.js:511
+#: js/basicblocks.js:544
 msgid "return to URL"
 msgstr ""
 
-#: js/basicblocks.js:515
+#: js/basicblocks.js:548
 msgid "100"
 msgstr ""
 
-#: js/basicblocks.js:521
-#: js/basicblocks.js:547
-#: js/basicblocks.js:566
+#: js/basicblocks.js:554
+#: js/basicblocks.js:580
+#: js/basicblocks.js:599
 msgid "calculate"
 msgstr ""
 
-#: js/basicblocks.js:594
+#: js/basicblocks.js:627
 msgid "on"
 msgstr ""
 
-#: js/basicblocks.js:594
-#: js/basicblocks.js:597
-#: js/basicblocks.js:608
+#: js/basicblocks.js:627
+#: js/basicblocks.js:630
+#: js/basicblocks.js:641
 msgid "event"
 msgstr ""
 
-#: js/basicblocks.js:605
+#: js/basicblocks.js:638
 msgid "broadcast"
 msgstr ""
 
-#: js/basicblocks.js:650
+#: js/basicblocks.js:675
 msgid "load heap from App"
 msgstr ""
 
-#: js/basicblocks.js:661
+#: js/basicblocks.js:686
 msgid "save heap to App"
 msgstr ""
 
-#: js/basicblocks.js:672
+#: js/basicblocks.js:697
 msgid "set heap"
 msgstr ""
 
-#: js/basicblocks.js:672
+#: js/basicblocks.js:697
 msgid "index"
 msgstr ""
 
-#: js/basicblocks.js:683
+#: js/basicblocks.js:708
 #: plugins/heap.rtp:126
 msgid "show heap"
 msgstr ""
 
-#: js/basicblocks.js:690
+#: js/basicblocks.js:715
 msgid "heap length"
 msgstr ""
 
-#: js/basicblocks.js:698
+#: js/basicblocks.js:723
 #: plugins/heap.rtp:134
 msgid "heap empty?"
 msgstr ""
 
-#: js/basicblocks.js:712
+#: js/basicblocks.js:737
 #: plugins/heap.rtp:150
 msgid "save heap"
 msgstr ""
 
-#: js/basicblocks.js:721
+#: js/basicblocks.js:746
 #: plugins/heap.rtp:160
 msgid "load heap"
 msgstr ""
 
-#: js/basicblocks.js:730
+#: js/basicblocks.js:755
 msgid "index heap"
 msgstr ""
 
-#: js/basicblocks.js:739
+#: js/basicblocks.js:764
 #: plugins/heap.rtp:109
 msgid "push"
 msgstr ""
 
-#: js/basicblocks.js:747
+#: js/basicblocks.js:772
 #: plugins/heap.rtp:118
 msgid "pop"
 msgstr ""
 
-#: js/basicblocks.js:756
+#: js/basicblocks.js:781
 msgid "speak"
 msgstr ""
 
-#: js/basicblocks.js:784
+#: js/basicblocks.js:809
 msgid "stop media"
 msgstr ""
 
-#: js/basicblocks.js:791
+#: js/basicblocks.js:816
 msgid "tone"
 msgstr ""
 
-#: js/basicblocks.js:791
+#: js/basicblocks.js:816
 msgid "frequency"
 msgstr ""
 
-#: js/basicblocks.js:791
+#: js/basicblocks.js:816
 msgid "duration (ms)"
 msgstr ""
 
-#: js/basicblocks.js:801
+#: js/basicblocks.js:826
 msgid "note to frequency"
 msgstr ""
 
-#: js/basicblocks.js:801
-#: plugins/rodi.rtp:182
+#: js/basicblocks.js:826
+#: plugins/rodi.rtp:196
 msgid "note"
 msgstr ""
 
-#: js/basicblocks.js:801
+#: js/basicblocks.js:826
 msgid "octave"
 msgstr ""
 
-#: js/basicblocks.js:812
+#: js/basicblocks.js:837
 msgid "shell"
 msgstr ""
 
-#: js/basicblocks.js:812
-#: js/basicblocks.js:823
+#: js/basicblocks.js:837
+#: js/basicblocks.js:848
 msgid "size"
 msgstr ""
 
-#: js/basicblocks.js:812
+#: js/basicblocks.js:837
 msgid "image"
 msgstr ""
 
-#: js/basicblocks.js:823
+#: js/basicblocks.js:848
 msgid "obj"
 msgstr ""
 
-#: js/basicblocks.js:861
-#: plugins/rodi.rtp:278
+#: js/basicblocks.js:886
+#: plugins/rodi.rtp:31
+#: plugins/rodi.rtp:75
+#: plugins/rodi.rtp:417
 msgid "stop"
 msgstr ""
 
-#: js/basicblocks.js:868
+#: js/basicblocks.js:893
 msgid "wait for"
 msgstr ""
 
-#: js/basicblocks.js:875
+#: js/basicblocks.js:900
 msgid "until"
 msgstr ""
 
-#: js/basicblocks.js:882
+#: js/basicblocks.js:907
 msgid "while"
 msgstr ""
 
-#: js/basicblocks.js:889
-#: js/basicblocks.js:896
+#: js/basicblocks.js:914
+#: js/basicblocks.js:921
 msgid "if"
 msgstr ""
 
-#: js/basicblocks.js:889
-#: js/basicblocks.js:896
+#: js/basicblocks.js:914
+#: js/basicblocks.js:921
 msgid "then"
 msgstr ""
 
-#: js/basicblocks.js:889
+#: js/basicblocks.js:914
 msgid "else"
 msgstr ""
 
-#: js/basicblocks.js:903
+#: js/basicblocks.js:928
 msgid "forever"
 msgstr ""
 
-#: js/basicblocks.js:910
+#: js/basicblocks.js:935
 msgid "repeat"
 msgstr ""
 
-#: js/basicblocks.js:922
-#: js/basicblocks.js:933
-#: js/basicblocks.js:942
-#: js/basicblocks.js:952
-#: js/basicblocks.js:960
-#: js/basicblocks.js:969
-#: js/basicblocks.js:979
+#: js/basicblocks.js:947
+#: js/basicblocks.js:958
+#: js/basicblocks.js:967
+#: js/basicblocks.js:977
+#: js/basicblocks.js:985
+#: js/basicblocks.js:994
+#: js/basicblocks.js:1004
 msgid "unknown"
 msgstr ""
 
-#: js/basicblocks.js:990
+#: js/basicblocks.js:1015
 msgid "play back"
 msgstr ""
 
-#: js/basicblocks.js:998
+#: js/basicblocks.js:1023
 msgid "stop play"
 msgstr ""
 
-#: js/basicblocks.js:1005
-msgid "loudness"
-msgstr ""
-
-#: js/basicblocks.js:1012
-msgid "save as lilypond"
-msgstr ""
-
-#: js/basicblocks.js:1015
-#: js/basicblocks.js:1024
+#: js/basicblocks.js:1033
+#: js/basicblocks.js:1042
 msgid "title"
 msgstr ""
 
-#: js/basicblocks.js:1021
+#: js/basicblocks.js:1039
 msgid "save svg"
 msgstr ""
 
-#: js/basicblocks.js:1030
-#: plugins/turtle.rtp:42
-msgid "turtle x"
-msgstr ""
-
-#: js/basicblocks.js:1039
+#: js/basicblocks.js:1048
 #: plugins/turtle.rtp:52
 msgid "turtle y"
 msgstr ""
 
-#: js/basicblocks.js:1048
+#: js/basicblocks.js:1057
+#: plugins/turtle.rtp:42
+msgid "turtle x"
+msgstr ""
+
+#: js/basicblocks.js:1066
 #: plugins/turtle.rtp:62
 msgid "start turtle"
 msgstr ""
 
-#: js/basicblocks.js:1057
+#: js/basicblocks.js:1075
 #: plugins/turtle.rtp:72
 msgid "stop turtle"
 msgstr ""
 
-#: js/basicblocks.js:1066
+#: js/basicblocks.js:1084
 msgid "no background"
 msgstr ""
 
-#: js/basicblocks.js:1073
+#: js/basicblocks.js:1091
 msgid "show blocks"
 msgstr ""
 
-#: js/basicblocks.js:1080
+#: js/basicblocks.js:1098
 msgid "hide blocks"
 msgstr ""
 
-#: js/basicblocks.js:1087
-msgid "openProject"
+#: js/basicblocks.js:1105
+msgid "open project"
 msgstr ""
 
-#: js/basicblocks.js:1111
+#: js/basicblocks.js:1129
 msgid "wait"
 msgstr ""
 
-#: js/basicblocks.js:1119
+#: js/basicblocks.js:1137
 msgid "print"
 msgstr ""
 
-#: js/basicblocks.js:1127
-#: js/basicblocks.js:1135
+#: js/basicblocks.js:1145
+#: js/basicblocks.js:1153
 #: plugins/turtle.rtp:82
 msgid "turtle name"
 msgstr ""
 
-#: js/basicblocks.js:1136
+#: js/basicblocks.js:1154
 #: plugins/translate.rtp:95
 #: plugins/turtle.rtp:83
 msgid "source"
 msgstr ""
 
-#: js/basicblocks.js:1137
+#: js/basicblocks.js:1155
 #: plugins/translate.rtp:95
 #: plugins/turtle.rtp:84
 msgid "target"
 msgstr ""
 
-#: js/basicblocks.js:1151
+#: js/basicblocks.js:1166
+#: plugins/rodi.rtp:328
+msgid "status"
+msgstr ""
+
+#: js/basicblocks.js:1175
+msgid "loudness"
+msgstr ""
+
+#: js/basicblocks.js:1183
 msgid "click"
 msgstr ""
 
-#: js/basicblocks.js:1159
-#: plugins/rodi.rtp:291
-msgid "pixel color"
+#: js/basicblocks.js:1191
+#: plugins/rodi.rtp:223
+msgid "blue"
 msgstr ""
 
-#: js/basicblocks.js:1166
-msgid "time"
-msgstr ""
-
-#: js/basicblocks.js:1173
-msgid "mouse x"
-msgstr ""
-
-#: js/basicblocks.js:1181
-msgid "mouse y"
-msgstr ""
-
-#: js/basicblocks.js:1189
-msgid "mouse button"
-msgstr ""
-
-#: js/basicblocks.js:1196
-msgid "keyboard"
+#: js/basicblocks.js:1198
+#: plugins/rodi.rtp:222
+msgid "green"
 msgstr ""
 
 #: js/basicblocks.js:1205
+#: plugins/rodi.rtp:221
+msgid "red"
+msgstr ""
+
+#: js/basicblocks.js:1212
+#: plugins/rodi.rtp:220
+msgid "pixel color"
+msgstr ""
+
+#: js/basicblocks.js:1219
+msgid "time"
+msgstr ""
+
+#: js/basicblocks.js:1226
+msgid "mouse x"
+msgstr ""
+
+#: js/basicblocks.js:1234
+msgid "mouse y"
+msgstr ""
+
+#: js/basicblocks.js:1242
+msgid "mouse button"
+msgstr ""
+
+#: js/basicblocks.js:1249
+msgid "to ASCII"
+msgstr ""
+
+#: js/basicblocks.js:1256
+msgid "keyboard"
+msgstr ""
+
+#: js/basicblocks.js:1265
 msgid "eval"
 msgstr ""
 
@@ -1224,52 +1272,40 @@ msgstr ""
 msgid "set lang"
 msgstr ""
 
-#: plugins/rodi.rtp:110
+#: plugins/rodi.rtp:176
 msgid "blink"
 msgstr ""
 
-#: plugins/rodi.rtp:129
-msgid "move"
-msgstr ""
-
-#: plugins/rodi.rtp:153
-msgid "infrared light (left)"
-msgstr ""
-
-#: plugins/rodi.rtp:167
-msgid "infrared light (right)"
-msgstr ""
-
-#: plugins/rodi.rtp:181
+#: plugins/rodi.rtp:195
 msgid "play"
 msgstr ""
 
-#: plugins/rodi.rtp:183
+#: plugins/rodi.rtp:197
 msgid "duration"
 msgstr ""
 
-#: plugins/rodi.rtp:206
-msgid "distance"
+#: plugins/rodi.rtp:250
+msgid "led"
 msgstr ""
 
-#: plugins/rodi.rtp:292
-msgid "red"
-msgstr ""
-
-#: plugins/rodi.rtp:293
-msgid "green"
-msgstr ""
-
-#: plugins/rodi.rtp:294
-msgid "blue"
-msgstr ""
-
-#: plugins/rodi.rtp:321
+#: plugins/rodi.rtp:269
 msgid "light intensity"
 msgstr ""
 
-#: plugins/rodi.rtp:338
-msgid "led"
+#: plugins/rodi.rtp:286
+msgid "infrared light (left)"
+msgstr ""
+
+#: plugins/rodi.rtp:300
+msgid "infrared light (right)"
+msgstr ""
+
+#: plugins/rodi.rtp:314
+msgid "distance"
+msgstr ""
+
+#: plugins/rodi.rtp:342
+msgid "move"
 msgstr ""
 
 #: plugins/finance.rtp:28
@@ -1453,21 +1489,33 @@ msgstr ""
 msgid "motion z"
 msgstr ""
 
+#~msgid ""
+#~msgstr ""
+
+#: js/turtledefs.js:57
+#~msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#: js/turtledefs.js:59
+#~msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
 #. TRANS: mashape webservices (probably no need to translate)
-msgid "mashape"
-msgstr ""
+#~msgid "mashape"
+#~msgstr ""
 
-msgid "logic"
-msgstr ""
+#~msgid "logic"
+#~msgstr ""
 
-msgid "maths"
-msgstr ""
+#~msgid "maths"
+#~msgstr ""
 
-msgid "food"
-msgstr ""
+#~msgid "food"
+#~msgstr ""
 
-msgid "eatme"
-msgstr ""
+#~msgid "eatme"
+#~msgstr ""
 
-msgid "sing"
-msgstr ""
+#~msgid "sing"
+#~msgstr ""
+

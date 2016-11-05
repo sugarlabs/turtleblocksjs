@@ -1024,15 +1024,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     audioStopBlock.adjustWidthToLabel();
     audioStopBlock.zeroArgBlock();
 
-    var lilypondBlock = new ProtoBlock('savelilypond');
-    lilypondBlock.palette = palettes.dict['extras'];
-    blocks.protoBlockDict['savelilypond'] = lilypondBlock;
-    lilypondBlock.staticLabels.push(_('save as lilypond'));
-    lilypondBlock.adjustWidthToLabel();
-    lilypondBlock.oneArgBlock();
-    lilypondBlock.defaults.push(_('title') + '.ly');
-    lilypondBlock.dockTypes[1] = 'textin';
-
     var svgBlock = new ProtoBlock('savesvg');
     svgBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['savesvg'] = svgBlock;
@@ -1102,7 +1093,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var openProjectBlock = new ProtoBlock('openProject');
     openProjectBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['openProject'] = openProjectBlock;
-    openProjectBlock.staticLabels.push(_('openProject'));
+    openProjectBlock.staticLabels.push(_('open project'));
     openProjectBlock.adjustWidthToLabel();
     openProjectBlock.oneArgBlock();
     openProjectBlock.defaults.push('url');

@@ -1096,10 +1096,13 @@ define(function (require) {
                     logo.runLogoCommands();
                     break;
                 default:
-                    currentKey = String.fromCharCode(event.keyCode);
-                    currentKeyCode = event.keyCode;
+                    // currentKey = String.fromCharCode(event.keyCode);
+                    // currentKeyCode = event.keyCode;
                     break;
                 }
+                // Don't mask keyCode event from keyboard block.
+                currentKey = String.fromCharCode(event.keyCode);
+                currentKeyCode = event.keyCode;
             }
         };
 

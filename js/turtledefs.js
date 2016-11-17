@@ -22,7 +22,7 @@ const BUILTINPALETTESL23N = [_('turtle'), _('pen'), _('number'), _('boolean'), _
 
 
 function getMainToolbarButtonNames(name) {
-    return (['fast', 'slow', 'step', 'stop-turtle', 'clear', 'palette', 'hide-blocks', 'collapse-blocks', 'go-home', 'help'].indexOf(name) > -1);
+    return (['popdown-palette', 'fast', 'slow', 'step', 'stop-turtle', 'clear', 'palette', 'hide-blocks', 'collapse-blocks', 'go-home', 'help'].indexOf(name) > -1);
 };
 
 

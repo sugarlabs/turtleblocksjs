@@ -92,6 +92,15 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     this.container.snapToPixelEnabled = true;
     this.stage.addChild(this.container);
 
+    this.mobile = false;
+
+    this.setMobile = function(mobile) {
+        this.mobile = mobile;
+        if (mobile) {
+            this._hideMenus();
+        }
+    }
+
     this.setScale = function(scale) {
         this.scale = scale;
 
@@ -225,6 +234,10 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     };
 
     this.showPalette = function (name) {
+        if (this.mobile) {
+            return;
+        }
+
         for (var i in this.dict) {
             if (this.dict[i] === this.dict[name]) {
                 this.dict[name]._resetLayout();
@@ -241,12 +254,18 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
 
     this._showMenus = function() {
         // Show the menu buttons, but not the palettes.
+        if (this.mobile) {
+            return;
+        }
+
         for (var name in this.buttons) {
             this.buttons[name].visible = true;
         }
+
         for (var name in this.dict) {
             // this.dict[name].showMenu(true);
         }
+
         this.refreshCanvas();
     };
 
@@ -288,6 +307,20 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
             this.makePalettes(true);
             this.refreshCanvas();
         }
+
+        if (this.mobile) {
+            var that = this;
+            setTimeout(function() {
+                that.hide();
+
+                for (var i in that.dict) {
+                    if (that.dict[i].visible) {
+                        that.dict[i].hideMenu(true);
+                        that.dict[i]._hideMenuItems(true);
+                    }
+                }
+            }, 500);
+        }
     };
 
     this.hide = function() {
@@ -296,8 +329,13 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     };
 
     this.show = function() {
-        this._showMenus();
-        this.visible = true;
+        if (this.mobile) {
+            this._hideMenus();
+            this.visible = false;
+        } else {
+            this._showMenus();
+	    this.visible = true;
+        }
     };
 
     this.setBlocks = function(blocks) {
@@ -448,7 +486,11 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         if (blockRemoved) {
             this.hide();
             this.updatePalettes('action');
-            this.show();
+            if (this.mobile) {
+                this.hide();
+            } else {
+		this.show();
+	    }
         }
     };
 
@@ -1052,6 +1094,8 @@ function Palette(palettes, name) {
             // Hide the menu while we update.
             if (hide) {
                 this.hide();
+            } else if (this.palettes.mobile) {
+                this.hide();
             }
         }
 
@@ -1082,6 +1126,10 @@ function Palette(palettes, name) {
         }
 
         this.makeMenu(false);
+
+        if (this.palettes.mobile) {
+            this.hide();
+        }
     };
 
     this._moveMenu = function(x, y) {
@@ -1105,7 +1153,11 @@ function Palette(palettes, name) {
     };
 
     this.show = function() {
-        this.showMenu();
+	if (this.palettes.mobile) {
+            this.hideMenu();
+        } else {
+            this.showMenu();
+        }
 
         for (var i in this.protoContainers) {
             this.protoContainers[i].visible = true;
@@ -1125,7 +1177,11 @@ function Palette(palettes, name) {
     };
 
     this.showMenu = function() {
-        this.menuContainer.visible = true;
+	if (this.palettes.mobile) {
+            this.menuContainer.visible = false;
+        } else {
+            this.menuContainer.visible = true;
+        }
     };
 
     this._hideMenuItems = function(init) {

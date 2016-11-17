@@ -1175,9 +1175,11 @@ define(function (require) {
 
             // Hide palette icons on mobile
             if (mobileSize) {
+		palettes.setMobile(true);
                 palettes.hide();
             } else {
                 palettes.show();
+		palettes.setMobile(false);
                 palettes.bringToTop();
             }
         };

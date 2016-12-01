@@ -20,7 +20,7 @@ function facebookInit() {
         FB.init({
             appId: '1496189893985945',
             xfbml: true,
-            version: 'v2.1'
+            version: 'v2.8'
         });
 
         // ADD ADDITIONAL FACEBOOK CODE HERE

@@ -422,7 +422,7 @@ listening for these events.
 
 Sometime you might want an action to not just run a stack of blocks
 but also to return a value. This is the role of the return block. If
-you put a return block into a stack, then the action stack because a
+you put a return block into a stack, then the action stack becomes a
 calculate stack.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions4.svg'</img>

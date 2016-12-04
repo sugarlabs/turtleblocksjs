@@ -1952,7 +1952,7 @@ define(function (require) {
             // Buttons used when running turtle programs
             // Name / short-click action / description / long-click action (if different than short-click action)
             var buttonNames = [
-                ['run', _doFastButton, _('Run fast / long press for to run slow'), _doSlowButton],
+                ['run', _doFastButton, _('Run fast') + ' / ' + _('Long press to run slow'), _doSlowButton],
                 ['step', _doStepButton, _('Run step by step'), ""],
                 ['slow-music', _doSlowMusicButton, _('Run music slow'), ""],
                 ['step-music', _doStepMusicButton, _('Run note by note'), ""],

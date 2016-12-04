@@ -41,7 +41,7 @@ function createHelpContent() {
     HELPCONTENT = [
         [_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
         [_('Palette buttons'), _('This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
-        [_('Run'), _('Press to run the project in fast mode or long press to run the project in slow mode.'), 'header-icons/run-button.svg'],
+        [_('Run'), _('Click to run the project in fast mode.') + ' / ' + _('Long press to run the project in slow mode.'), 'header-icons/run-button.svg'],
         [_('Run step by step'), _('Click to run the project step by step.'), 'header-icons/step-button.svg'],
         [_('Stop'), _('Stop the current project.'), 'header-icons/stop-turtle-button.svg'],
         [_('Clean'), _('Clear the screen and return the turtles to their initial positions.'), 'header-icons/clear-button.svg'],

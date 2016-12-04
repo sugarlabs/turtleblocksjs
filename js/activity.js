@@ -64,8 +64,6 @@ define(function (require) {
     require('mespeak');
     require('Chart');
 
-    require('p5.sound');
-    require('p5.dom');
 
     require('activity/utils');
     require('activity/artwork');

@@ -568,6 +568,27 @@ function Turtle (name, turtles, drum) {
         this.turtles.refreshCanvas();
     };
 
+    this.clearPenStrokes = function() {
+        this.penState = true;
+        this.fillState = false;
+        this.hollowState = false;
+
+        this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
+        if (this.canvasColor[0] === "#") {
+            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+        }
+
+        this.drawingCanvas.graphics.clear();
+        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
+        this.drawingCanvas.graphics.beginStroke(subrgb + this.canvasAlpha + ")");
+        this.drawingCanvas.graphics.setStrokeStyle(this.stroke, 'round', 'round');
+
+        this.svgOutput = '';
+        this.svgPath = false;
+
+        this.turtles.refreshCanvas();
+    };
+
     this.doForward = function(steps) {
         if (!this.fillState) {
             if (this.canvasColor[0] === "#") {

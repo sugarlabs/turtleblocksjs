@@ -1181,6 +1181,13 @@ define(function (require) {
                 palettes.setMobile(false);
                 palettes.bringToTop();
             }
+            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                var tur = turtles.turtleList[turtle];
+                tur.clearPenStrokes();
+                tur.container.x = tur.turtles.turtleX2screenX(tur.x);
+                tur.container.y = tur.turtles.turtleY2screenY(tur.y);
+                tur.turtles.refreshCanvas();
+            }
         };
 
         window.onresize = function () {

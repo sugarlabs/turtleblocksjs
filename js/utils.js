@@ -478,7 +478,48 @@ function download(filename, data) {
 
 // Publish to FB
 function doPublish(desc) {
-    var url = doSave();
+
+        function __saveProject(projectName) {
+            // palettes.updatePalettes();
+            // Show busy cursor.
+            document.body.style.cursor = 'wait';
+            setTimeout(function () {
+                var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
+                projectName = punctuationless.replace(/ /g, '_');
+                if (fileExt(projectName) !== 'tb') {
+                    projectName += '.tb';
+                }
+                try {
+                    // Post the project
+                    var returnValue = httpPost(projectName, prepareExport());
+                    console.log('Saved ' + projectName + ' to ' + window.location.host);
+
+                    var img = new Image();
+                    var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
+                    img.onload = function () {
+                        var bitmap = new createjs.Bitmap(img);
+                        var bounds = bitmap.getBounds();
+                        bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+                        // and base64-encoded png
+                        httpPost((projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
+                    };
+
+                    img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                        unescape(encodeURIComponent(svgData)));
+                    // Restore default cursor
+                    document.body.style.cursor = 'default';
+                    return returnValue;
+                } catch (e) {
+                    console.log(e);
+                    // Restore default cursor
+                    document.body.style.cursor = 'default';
+                    return;
+                }
+            }, 200);
+        };
+
+
+    var url = __saveProject(desc.replace(/ /g,'-'));
     console.log('push ' + url + ' to FB');
     var descElem = docById("description");
     var msg = desc + ' ' + descElem.value + ' ' + url;

@@ -1181,6 +1181,13 @@ define(function (require) {
                 palettes.setMobile(false);
                 palettes.bringToTop();
             }
+            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                var tur = turtles.turtleList[turtle];
+                tur.clearPenStrokes();
+                tur.container.x = tur.turtles.turtleX2screenX(tur.x);
+                tur.container.y = tur.turtles.turtleY2screenY(tur.y);
+                tur.turtles.refreshCanvas();
+            }
         };
 
         window.onresize = function () {
@@ -1571,7 +1578,7 @@ define(function (require) {
                 }
                 try {
                     // Post the project
-                    var returnValue = httpPost('MusicBlocks_'+projectName, prepareExport());
+                    var returnValue = httpPost(projectName, prepareExport());
                     errorMsg('Saved ' + projectName + ' to ' + window.location.host);
 
                     var img = new Image();
@@ -1581,7 +1588,7 @@ define(function (require) {
                         var bounds = bitmap.getBounds();
                         bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                         // and base64-encoded png
-                        httpPost(('MusicBlocks_'+projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
+                        httpPost((projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
                     };
 
                     img.src = 'data:image/svg+xml;base64,' + window.btoa(

@@ -1033,6 +1033,16 @@ function initBasicProtoBlocks(palettes, blocks) {
     svgBlock.defaults.push(_('title') + '.svg');
     svgBlock.dockTypes[1] = 'textin';
 
+    var publishBlock = new ProtoBlock('publish');
+    publishBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['publish'] = publishBlock;
+    publishBlock.staticLabels.push(_('publish to Facebook'));
+    publishBlock.adjustWidthToLabel();
+    publishBlock.oneArgBlock();
+    publishBlock.defaults.push(_('title'));
+    publishBlock.dockTypes[1] = 'textin';
+    publishBlock.hidden = true;
+
     var getyTurtleBlock = new ProtoBlock('yturtle');
     getyTurtleBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['yturtle'] = getyTurtleBlock;

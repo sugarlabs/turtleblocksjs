@@ -36,8 +36,7 @@ Click it and a file chooser will appear.
 
 In the file chooser select a plugin file (they have <code>**.json**</code> file suffixes) and click 'Open'.
 
-The file will open and load new blocks into the palettes. Many plugins define their own palettes, so you will likely see a new palette button at the bottom of the column of buttons on the left side of the screen. (In the case of the translate plugin, new blocks will be added to a new palette, *mashape*) <img
-src='http://people.sugarlabs.org/walter/mashape.svg'>
+The file will open and load new blocks into the palettes. Many plugins define their own palettes, so you will likely see a new palette button at the bottom of the column of buttons on the left side of the screen. (In the case of the translate plugin, new blocks will be added to a new palette, *external*) <img src='http://people.sugarlabs.org/ignacio/externalrequests.svg'>
 
 The plugin is saved in the browser local storage so you don't need to
 reload it every time you run TurtleJS.
@@ -130,11 +129,11 @@ Layout and Format
 Format for `PALETTEFILLCOLORS`, `PALETTEHIGHLIGHTCOLORS` and
 `PALETTESTROKECOLORS`:
 <pre><code>{"[palette name]":"[color hex code]"}</code></pre>
-Example: ```"PALETTESTROKECOLORS":{"mashape":"#ef003e"}```
+Example: ```"PALETTESTROKECOLORS":{"external":"#3771c8"}```
 
 Format for `PALETTEPLUGINS`:
 <pre><code>{"[palette name]":"[svg file code]"}</code></pre>
-Example: ```"PALETTEPLUGINS":{"mashape":"<?xml version........</svg>"}```
+Example: ```"PALETTEPLUGINS":{"external":"<?xml version........</svg>"}```
 
 Format for blocks:
 
@@ -188,7 +187,7 @@ Valid blocks styles in turtleblocksjs:
 
 To use the block styles to create your blocks, let us go through [an example](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json#L38)
 
-```"translate":"var TranslateBlock = new ProtoBlock(\"translate\"); TranslateBlock.palette = palettes.dict[\"mashape\"]; blocks.protoBlockDict[\"translate\"] = TranslateBlock; TranslateBlock.oneArgMathBlock(); TranslateBlock.docks[0][2] = \"textout\"; TranslateBlock.docks[1][2] = \"textin\"; TranslateBlock.defaults.push(\"Hello\"); TranslateBlock.staticLabels.push(\"translate\");",```
+```"translate":"var TranslateBlock = new ProtoBlock(\"translate\"); TranslateBlock.palette = palettes.dict[\"external\"]; blocks.protoBlockDict[\"translate\"] = TranslateBlock; TranslateBlock.oneArgMathBlock(); TranslateBlock.docks[0][2] = \"textout\"; TranslateBlock.docks[1][2] = \"textin\"; TranslateBlock.defaults.push(\"Hello\"); TranslateBlock.staticLabels.push(\"translate\");",```
 
 See the line ```TranslateBlock.oneArgMathBlock();``` That is how you define the block style `oneArgMathBlock` to `TranslateBlock`. To define your own block, use any of the style methods listed above.
 

@@ -1,6 +1,7 @@
 //* comment *//
 
 Copyright (C) 2015 Daksh Shah
+Copyright (C) 2016 Tymon Radzik
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -15,9 +16,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//* globals *//
-var dictionaryMashapeKey = '3Rfxc7fwp2mshJxgtDxKSueYna8Ap1qZfAcjsn2hjpuWPuBCrI';
-
 //* block:dictionary *//
 var dictionaryBlk = new ProtoBlock('dictionary');
 dictionaryBlk.palette = palettes.dict['external'];
@@ -26,26 +24,37 @@ dictionaryBlk.staticLabels.push(_('define'));
 dictionaryBlk.adjustWidthToLabel();
 dictionaryBlk.oneArgMathBlock();
 dictionaryBlk.dockTypes[1] = 'anyin';
-dictionaryBlk.defaults.push('turtle');
+dictionaryBlk.defaults.push('programming');
 
 //* arg:dictionary *//
 var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 var word = (logo.parseArg(logo, turtle, conns[1])).toLowerCase();
-var apiURL = "https://montanaflynn-dictionary.p.mashape.com/define?word=" + word;
+var apiURL = "http://api.pearson.com/v2/dictionaries/entries?headword=" + word;
 var request = new XMLHttpRequest();
 request.open('GET', apiURL, false);
-request.setRequestHeader('X-Mashape-Authorization', dictionaryMashapeKey);
 request.send(null);
+
 var response = request.responseText;
-var data = JSON.parse(response);
-if ('definitions' in data) {
-    try {
-        block.value = data['definitions'][0]['text'];
+var results = (JSON.parse(response))['results'];
+mainLoop:
+for (var i = 0; i < results.length; i++) {
+    if (results[i].hasOwnProperty('senses')) {
+        var result_senses = results[i].senses;
+        for (var j = 0; j < result_senses.length; j++) {
+            if (result_senses[j].hasOwnProperty('subsenses')) {
+                if(result_senses[j].subsenses[0].hasOwnProperty('definition')) {
+                    block.value = result_senses[j].subsenses[0].definition;
+                    break mainLoop;
+                }
+            }
+            if (result_senses[j].hasOwnProperty('definition')) {  
+                block.value = result_senses[j].definition;
+                break mainLoop;
+            }         
+        }
     }
-    catch (e) {
-        block.value = null;
-    }
+    block.value = null;
 }
 
 //* palette-icon:external *//

@@ -227,56 +227,49 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
 
 
 function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList) {
-    // Plugins are JSON-encoded dictionaries.
+    // Plugins are JSON-encoded dictionaries of lists.
     // console.log(pluginData);
     var obj = JSON.parse(pluginData);
-
     // Create a palette entry.
     var newPalette = false;
     if ('PALETTEPLUGINS' in obj) {
-        for (var name in obj['PALETTEPLUGINS']) {
-            PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
-            var fillColor = '#ff0066';
-            if ('PALETTEFILLCOLORS' in obj) {
-                if (name in obj['PALETTEFILLCOLORS']) {
-                    var fillColor = obj['PALETTEFILLCOLORS'][name];
-                    // console.log(fillColor);
-                }
+        if ('PALETTEFILLCOLORS' in obj) {
+            for(var i = 0; i < obj['PALETTEFILLCOLORS'].length; i++) {
+                PALETTEFILLCOLORS[obj['PALETTEFILLCOLORS'][i][0]] = obj['PALETTEFILLCOLORS'][i][1];
             }
-            PALETTEFILLCOLORS[name] = fillColor;
+        }
 
-            var strokeColor = '#ef003e';
-            if ('PALETTESTROKECOLORS' in obj) {
-                if (name in obj['PALETTESTROKECOLORS']) {
-                    var strokeColor = obj['PALETTESTROKECOLORS'][name];
-                    // console.log(strokeColor);
-                }
+        if ('PALETTESTROKECOLORS' in obj) {
+            for(var i = 0; i < obj['PALETTESTROKECOLORS'].length; i++) {
+                PALETTESTROKECOLORS[obj['PALETTESTROKECOLORS'][i][0]] = obj['PALETTESTROKECOLORS'][i][1];
             }
-            PALETTESTROKECOLORS[name] = strokeColor;
+        }
 
-            var highlightColor = '#ffb1b3';
-            if ('PALETTEHIGHLIGHTCOLORS' in obj) {
-                if (name in obj['PALETTEHIGHLIGHTCOLORS']) {
-                    var highlightColor = obj['PALETTEHIGHLIGHTCOLORS'][name];
-                    // console.log(highlightColor);
-                }
+        if ('PALETTEHIGHLIGHTCOLORS' in obj) {
+            for(var i = 0; i < obj['PALETTEHIGHLIGHTCOLORS'].length; i++) {
+                PALETTEHIGHLIGHTCOLORS[obj['PALETTEHIGHLIGHTCOLORS'][i][0]] = obj['PALETTEHIGHLIGHTCOLORS'][i][1];
             }
-            PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
+        }
 
-            var strokeHighlightColor = '#404040';
-            if ('HIGHLIGHTSTROKECOLORS' in obj) {
-                if (name in obj['HIGHLIGHTSTROKECOLORS']) {
-                    var strokeHighlightColor = obj['HIGHLIGHTSTROKECOLORS'][name];
-                    // console.log(highlightColor);
-                }
+        if ('HIGHLIGHTSTROKECOLORS' in obj) {
+            for(var i = 0; i < obj['HIGHLIGHTSTROKECOLORS'].length; i++) {
+                HIGHLIGHTSTROKECOLORS[obj['HIGHLIGHTSTROKECOLORS'][i][0]] = obj['HIGHLIGHTSTROKECOLORS'][i][1];
             }
-            HIGHLIGHTSTROKECOLORS[name] = strokeHighlightColor;
+        }
 
-            if (name in palettes.buttons) {
-                console.log('palette ' + name + ' already exists');
+        for (var i = 0; i < obj['PALETTEPLUGINS'].length; i++) {
+            var palettePlugin = obj['PALETTEPLUGINS'][i];
+            PALETTEICONS[palettePlugin[0]] = palettePlugin[1];
+            if(!(palettePlugin[0] in PALETTEFILLCOLORS)) PALETTEFILLCOLORS[palettePlugin[0]] = '#ff0066';
+            if(!(palettePlugin[0] in PALETTESTROKECOLORS)) PALETTESTROKECOLORS[palettePlugin[0]] = '#ef003e';
+            if(!(palettePlugin[0] in PALETTEHIGHLIGHTCOLORS)) PALETTEHIGHLIGHTCOLORS[palettePlugin[0]] = '#ffb1b3';
+            if(!(palettePlugin[0] in HIGHLIGHTSTROKECOLORS)) HIGHLIGHTSTROKECOLORS[palettePlugin[0]] = '#404040';
+
+            if (palettePlugin[0] in palettes.buttons) {
+                console.log('palette ' + palettePlugin[0] + ' already exists');
             } else {
-                console.log('adding palette ' + name);
-                palettes.add(name);
+                console.log('adding palette ' + palettePlugin[0]);
+                palettes.add(palettePlugin[0]);
                 newPalette = true;
             }
         }
@@ -292,43 +285,43 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     // Define the image blocks
     if ('IMAGES' in obj)  {
-        for (var blkName in obj['IMAGES'])  {
-            pluginsImages[blkName] = obj['IMAGES'][blkName];
+        for (var i = 0; i < obj['IMAGES'].length; i++)  {
+            pluginsImages[obj['IMAGES'][i][0]] = obj['IMAGES'][i][1];
         }
     }
 
     // Populate the flow-block dictionary, i.e., the code that is
     // eval'd by this block.
     if ('FLOWPLUGINS' in obj) {
-        for (var flow in obj['FLOWPLUGINS']) {
-            evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
+        for (var i = 0; i < obj['FLOWPLUGINS'].length; i++) {
+            evalFlowDict[obj['FLOWPLUGINS'][i][0]] = obj['FLOWPLUGINS'][i][1];
         }
     }
 
     // Populate the arg-block dictionary, i.e., the code that is
     // eval'd by this block.
     if ('ARGPLUGINS' in obj) {
-        for (var arg in obj['ARGPLUGINS']) {
-            evalArgDict[arg] = obj['ARGPLUGINS'][arg];
+        for (var i = 0; i < obj['ARGPLUGINS'].length; i++) {
+            evalArgDict[obj['ARGPLUGINS'][i][0]] = obj['ARGPLUGINS'][i][1];
         }
     }
 
     // Populate the setter dictionary, i.e., the code that is
     // used to set a value block.
     if ('SETTERPLUGINS' in obj) {
-        for (var setter in obj['SETTERPLUGINS']) {
-            evalSetterDict[setter] = obj['SETTERPLUGINS'][setter];
+        for (var i = 0; i < obj['SETTERPLUGINS'].length; i++) {
+            evalSetterDict[obj['SETTERPLUGINS'][i][0]] = obj['SETTERPLUGINS'][i][1];
         }
     }
 
     // Create the plugin protoblocks.
     if ('BLOCKPLUGINS' in obj) {
-        for (var block in obj['BLOCKPLUGINS']) {
-            console.log('adding plugin block ' + block);
+        for (var i = 0; i < obj['BLOCKPLUGINS'].length; i++) {
+            var blockPlugin = obj['BLOCKPLUGINS'][i];
             try {
-                eval(obj['BLOCKPLUGINS'][block]);
+                eval(blockPlugin[1]);
             } catch (e) {
-                console.log('Failed to load plugin for ' + block + ': ' + e);
+                console.log('Failed to load plugin for ' + blockPlugin[0] + ': ' + e);
             }
         }
     }
@@ -339,29 +332,29 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     }
 
     if ('PARAMETERPLUGINS' in obj) {
-        for (var parameter in obj['PARAMETERPLUGINS']) {
-            evalParameterDict[parameter] = obj['PARAMETERPLUGINS'][parameter];
+        for (var i = 0; i < obj['PARAMETERPLUGINS'].length; i++) {
+            evalParameterDict[obj['PARAMETERPLUGINS'][i][0]] = obj['PARAMETERPLUGINS'][i][1];
         }
     }
 
     // Code to execute when plugin is loaded
     if ('ONLOAD' in obj) {
-        for (var arg in obj['ONLOAD']) {
-            eval(obj['ONLOAD'][arg]);
+        for (var i = 0; i < obj['ONLOAD'].length; i++) {
+            eval(obj['ONLOAD'][i][1]);
         }
     }
 
     // Code to execute when turtle code is started
     if ('ONSTART' in obj) {
-        for (var arg in obj['ONSTART']) {
-            evalOnStartList[arg] = obj['ONSTART'][arg];
+        for (var i = 0; i < obj['ONSTART'].length; i++) {
+            evalOnStartList[obj['ONSTART'][i][0]] = obj['ONSTART'][i][1];
         }
     }
 
     // Code to execute when turtle code is stopped
     if ('ONSTOP' in obj) {
-        for (var arg in obj['ONSTOP']) {
-            evalOnStopList[arg] = obj['ONSTOP'][arg];
+        for (var i = 0; i < obj['ONSTOP'].length; i++) {
+            evalOnStopList[obj['ONSTOP'][i][0]] = obj['ONSTOP'][i][1];
         }
     }
 
@@ -385,53 +378,76 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
 
 function updatePluginObj(obj) {
-    for (var name in obj['PALETTEPLUGINS']) {
-        pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
-    }
-    for (var name in obj['PALETTEFILLCOLORS']) {
-        pluginObjs['PALETTEFILLCOLORS'][name] = obj['PALETTEFILLCOLORS'][name];
-    }
-    for (var name in obj['PALETTESTROKECOLORS']) {
-        pluginObjs['PALETTESTROKECOLORS'][name] = obj['PALETTESTROKECOLORS'][name];
-    }
-    for (var name in obj['PALETTEHIGHLIGHTCOLORS']) {
-        pluginObjs['PALETTEHIGHLIGHTCOLORS'][name] = obj['PALETTEHIGHLIGHTCOLORS'][name];
-    }
-    for (var flow in obj['FLOWPLUGINS']) {
-        pluginObjs['FLOWPLUGINS'][flow] = obj['FLOWPLUGINS'][flow];
-    }
-    for (var arg in obj['ARGPLUGINS']) {
-        pluginObjs['ARGPLUGINS'][arg] = obj['ARGPLUGINS'][arg];
-    }
-    for (var block in obj['BLOCKPLUGINS']) {
-        pluginObjs['BLOCKPLUGINS'][block] = obj['BLOCKPLUGINS'][block];
-    }
+    if('PALETTEPLUGINS' in obj)
+        for (var i = 0; i < obj['PALETTEPLUGINS'].length; i++) {
+            pluginObjs['PALETTEPLUGINS'][obj['PALETTEPLUGINS'][i][0]] = obj['PALETTEPLUGINS'][i][1];
+        }
+    if('PALETTEFILLCOLORS' in obj)
+        for (var i = 0; i < obj['PALETTEFILLCOLORS'].length; i++) {
+            pluginObjs['PALETTEFILLCOLORS'][obj['PALETTEFILLCOLORS'][i][0]] = obj['PALETTEFILLCOLORS'][i][1];
+        }
+    if('PALETTESTROKECOLORS' in obj)
+        for (var i = 0; i < obj['PALETTESTROKECOLORS'].length; i++) {
+            pluginObjs['PALETTESTROKECOLORS'][obj['PALETTESTROKECOLORS'][i][0]] = obj['PALETTESTROKECOLORS'][i][1];
+        }
+    if('PALETTEHIGHLIGHTCOLORS' in obj)
+        for (var i = 0; i < obj['PALETTEHIGHLIGHTCOLORS'].length; i++) {
+            pluginObjs['PALETTEHIGHLIGHTCOLORS'][obj['PALETTEHIGHLIGHTCOLORS'][i][0]] = obj['PALETTEHIGHLIGHTCOLORS'][i][1];
+        }
+    if('FLOWPLUGINS' in obj)
+        for (var i = 0; i < obj['FLOWPLUGINS'].length; i++) {
+            pluginObjs['FLOWPLUGINS'][obj['FLOWPLUGINS'][i][0]] = obj['FLOWPLUGINS'][i][1];
+        }
+    if('ARGPLUGINS' in obj)
+        for (var i = 0; i < obj['ARGPLUGINS'].length; i++) {
+            pluginObjs['ARGPLUGINS'][obj['ARGPLUGINS'][i][0]] = obj['ARGPLUGINS'][i][1];
+        }
+    if('BLOCKPLUGINS' in obj)
+        for (var i = 0; i < obj['BLOCKPLUGINS'].length; i++) {
+            pluginObjs['BLOCKPLUGINS'][obj['BLOCKPLUGINS'][i][0]] = obj['BLOCKPLUGINS'][i][1];
+        }
     if ('GLOBALS' in obj) {
         if (!('GLOBALS' in pluginObjs)) {
             pluginObjs['GLOBALS'] = '';
         }
         pluginObjs['GLOBALS'] += obj['GLOBALS'];
     }
-    if ('IMAGES' in obj) {
-        pluginObjs['IMAGES'] = obj['IMAGES'];
-    }
-    for (var name in obj['ONLOAD']) {
-        pluginObjs['ONLOAD'][name] = obj['ONLOAD'][name];
-    }
-    for (var name in obj['ONSTART']) {
-        pluginObjs['ONSTART'][name] = obj['ONSTART'][name];
-    }
-    for (var name in obj['ONSTOP']) {
-        pluginObjs['ONSTOP'][name] = obj['ONSTOP'][name];
-    }
+    if ('IMAGES' in obj)
+        for(var i = 0; i < obj['IMAGES'].length; i++) {
+            pluginObjs['IMAGES'][obj['IMAGES'][i][0]] = obj['IMAGES'][i][1];
+        }
+    if('ONLOAD' in obj)
+        for (var i = 0; i < obj['ONLOAD'].length; i++) {
+            pluginObjs['ONLOAD'][obj['ONLOAD'][i][0]] = obj['ONLOAD'][i][1];
+        }
+    if('ONSTART' in obj)
+        for (var i = 0; i < obj['ONSTART'].length; i++) {
+            pluginObjs['ONSTART'][obj['ONSTART'][i][0]] = obj['ONSTART'][i][1];
+        }
+    if('ONSTOP' in obj)
+        for (var i = 0; i < obj['ONSTOP'].length; i++) {
+            pluginObjs['ONSTOP'][obj['ONSTOP'][i][0]] = obj['ONSTOP'][i][1];
+        }
 }
-
 
 function preparePluginExports(obj) {
     // add obj to plugin dictionary and return as JSON encoded text
     updatePluginObj(obj);
-
-    return JSON.stringify(pluginObjs);
+    console.log(pluginObjs);
+    var pluginObjs_JSON = {};
+    for (var piece in pluginObjs) {
+        var values = pluginObjs[piece];
+        if (piece != 'GLOBALS') {
+            pluginObjs_JSON[piece] = [];
+            for (var key in values) {
+                pluginObjs_JSON[piece].push([key, values[key]]);
+            }
+        }
+        else
+            pluginObjs_JSON['GLOBALS'] = values;
+    }
+    console.log(pluginObjs_JSON);
+    return JSON.stringify(pluginObjs_JSON)
 }
 
 

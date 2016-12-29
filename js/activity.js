@@ -177,7 +177,8 @@ define(function (require) {
             'BLOCKPLUGINS': {},
             'ONLOAD': {},
             'ONSTART': {},
-            'ONSTOP': {}
+            'ONSTOP': {},
+            'IMAGES': {}
         };
 
         // Stacks of blocks saved in local storage

@@ -1336,6 +1336,10 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             logo.hideBlocks();
             logo.setTurtleDelay(0);
             break;
+        case 'publish':  // Publish to Facebook
+            if (args.length === 1) {
+                doPublish(args[0]);
+            }
         case 'savesvg':
             if (args.length === 1) {
                 if (logo.svgBackground) {

@@ -1,5 +1,6 @@
 // Copyright (c) 2014-16 Walter Bender
 // Copyright (c) Yash Khandelwal, GSoC'15
+// Copyright (c) 2016 Tymon Radzik
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -20,7 +21,7 @@ function facebookInit() {
         FB.init({
             appId: '1496189893985945',
             xfbml: true,
-            version: 'v2.1'
+            version: 'v2.8'
         });
 
         // ADD ADDITIONAL FACEBOOK CODE HERE
@@ -63,8 +64,6 @@ define(function (require) {
     require('mespeak');
     require('Chart');
 
-    require('p5.sound');
-    require('p5.dom');
 
     require('activity/utils');
     require('activity/artwork');
@@ -100,7 +99,7 @@ define(function (require) {
 
     function domReady(doc) {
         createDefaultStack();
-	createHelpContent();
+        createHelpContent();
         // facebookInit();
         window.scroll(0, 0);
 
@@ -178,7 +177,8 @@ define(function (require) {
             'BLOCKPLUGINS': {},
             'ONLOAD': {},
             'ONSTART': {},
-            'ONSTOP': {}
+            'ONSTOP': {},
+            'IMAGES': {}
         };
 
         // Stacks of blocks saved in local storage
@@ -190,7 +190,7 @@ define(function (require) {
         var homeButtonContainers = [];
         var homeButtonContainersX = 0;
         var homeButtonContainersY = 0;
-
+        
         var cameraID = null;
         var toLang = null;
         var fromLang = null;
@@ -288,7 +288,7 @@ define(function (require) {
             hideMsgs();
             logo.setBackgroundColor(-1);
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-		logo.turtleHeaps[turtle] = [];
+                logo.turtleHeaps[turtle] = [];
                 turtles.turtleList[turtle].doClear();
             }
 
@@ -1175,12 +1175,19 @@ define(function (require) {
 
             // Hide palette icons on mobile
             if (mobileSize) {
-		palettes.setMobile(true);
+                palettes.setMobile(true);
                 palettes.hide();
             } else {
                 palettes.show();
-		palettes.setMobile(false);
+                palettes.setMobile(false);
                 palettes.bringToTop();
+            }
+            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                var tur = turtles.turtleList[turtle];
+                tur.clearPenStrokes();
+                tur.container.x = tur.turtles.turtleX2screenX(tur.x);
+                tur.container.y = tur.turtles.turtleY2screenY(tur.y);
+                tur.turtles.refreshCanvas();
             }
         };
 
@@ -1268,7 +1275,7 @@ define(function (require) {
                                 }
                                 me.text.text = label;
                                 me.overrideName = label;
-				me.regenerateArtwork();
+                                me.regenerateArtwork();
                                 me.container.updateCache();
                             }
                         }
@@ -1333,7 +1340,7 @@ define(function (require) {
 
             update = true;
         };
-
+        
         function _changePaletteVisibility() {
             if (palettes.visible) {
                 palettes.hide();
@@ -1572,7 +1579,7 @@ define(function (require) {
                 }
                 try {
                     // Post the project
-                    var returnValue = httpPost('MusicBlocks_'+projectName, prepareExport());
+                    var returnValue = httpPost(projectName, prepareExport());
                     errorMsg('Saved ' + projectName + ' to ' + window.location.host);
 
                     var img = new Image();
@@ -1582,7 +1589,7 @@ define(function (require) {
                         var bounds = bitmap.getBounds();
                         bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                         // and base64-encoded png
-                        httpPost(('MusicBlocks_'+projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
+                        httpPost((projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
                     };
 
                     img.src = 'data:image/svg+xml;base64,' + window.btoa(
@@ -1949,19 +1956,19 @@ define(function (require) {
             stage.addChild(headerContainer);
 
             // Buttons used when running turtle programs
+            // Name / short-click action / description / long-click action (if different than short-click action)
             var buttonNames = [
-                ['fast', _doFastButton, _('Run fast')],
-                ['slow', _doSlowButton, _('Run slow')],
-                ['step', _doStepButton, _('Run step by step')],
-                ['slow-music', _doSlowMusicButton, _('Run music slow')],
-                ['step-music', _doStepMusicButton, _('Run note by note')],
-                ['stop-turtle', doStopButton, _('Stop')],
-                ['clear', _allClear, _('Clean')],
-                ['palette', _changePaletteVisibility, _('Show/hide palettes')],
-                ['hide-blocks', _changeBlockVisibility, _('Show/hide blocks')],
-                ['collapse-blocks', _toggleCollapsibleStacks, _('Expand/collapse collapsable blocks')],
-                ['go-home', _findBlocks, _('Home')],
-                ['help', _showHelp, _('Help')]
+                ['run', _doFastButton, _('Run fast') + ' / ' + _('Long press to run slow'), _doSlowButton],
+                ['step', _doStepButton, _('Run step by step'), ""],
+                ['slow-music', _doSlowMusicButton, _('Run music slow'), ""],
+                ['step-music', _doStepMusicButton, _('Run note by note'), ""],
+                ['stop-turtle', doStopButton, _('Stop'), ""],
+                ['clear', _allClear, _('Clean'), ""],
+                ['palette', _changePaletteVisibility, _('Show/hide palettes'), ""],
+                ['hide-blocks', _changeBlockVisibility, _('Show/hide blocks'), ""],
+                ['collapse-blocks', _toggleCollapsibleStacks, _('Expand/collapse collapsable blocks'), ""],
+                ['go-home', _findBlocks, _('Home'), ""],
+                ['help', _showHelp, _('Help'), ""]
             ];
 
             if (sugarizerCompatibility.isInsideSugarizer()) {
@@ -1989,7 +1996,7 @@ define(function (require) {
                 }
 
                 var container = _makeButton(buttonNames[i][0] + '-button', buttonNames[i][2], x, y, btnSize, 0);
-                _loadButtonDragHandler(container, x, y, buttonNames[i][1]);
+                _loadButtonDragHandler(container, x, y, buttonNames[i][1], buttonNames[i][3]);
                 onscreenButtons.push(container);
 
                 if (buttonNames[i][0] === 'stop-turtle') {
@@ -2331,10 +2338,14 @@ define(function (require) {
             return container;
         };
 
-        function _loadButtonDragHandler(container, ox, oy, action) {
+        function _loadButtonDragHandler(container, ox, oy, action, long_action = action) {
             // Prevent multiple button presses (i.e., debounce).
             var locked = false;
 
+            // Measure press time and distinguish between short and long press
+            var pressTimer;
+            var isLong = false;
+            
             container.on('mousedown', function (event) {
                 var moved = true;
                 var offset = {
@@ -2342,6 +2353,10 @@ define(function (require) {
                     y: container.y - Math.round(event.stageY / turlteBlocksScale)
                 };
 
+                pressTimer = setTimeout(function(){
+                    isLong = true;
+                }, 500);
+                
                 var circles = showButtonHighlight(ox, oy, cellSize / 2, event, turlteBlocksScale, stage);
 
                 container.on('pressup', function (event) {
@@ -2349,18 +2364,22 @@ define(function (require) {
                     container.x = ox;
                     container.y = oy;
 
-                    if (action != null && moved && !locked) {
+                    if (action != null && long_action != null && moved && !locked) {
                         locked = true;
 
                         setTimeout(function () {
                             locked = false;
                         }, 500);
-
-                        action();
+                        
+                        if(!isLong) action();
+                        else long_action();
                     }
 
                     moved = false;
+                    clearTimeout(pressTimer);
                 });
+                
+                isLong = false;
             });
         };
     };

@@ -133,13 +133,13 @@ block, the value is larger.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes1.svg'</img>
 
-Putting a value in a *Box* and then referring to the value in *Box*
+Putting a value in a *Box* and then referring to the value in *Box* [RUN LIVE](https://turtle.sugarlabs.org/?file=Boxes_1&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes2.svg'</img>
 
 We can change the value in a *Box* as the program runs. Here we add 10
-to the value in the *Box( with each iteration. The result in this case
-is a spiral, since the turtle goes forward further with each step.
+to the value in the *Box* with each iteration. The result in this case
+is a spiral, since the turtle goes forward further with each step. [RUN LIVE](https://turtle.sugarlabs.org/?file=Boxes_2&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/boxes3.svg'</img>
 
@@ -155,7 +155,7 @@ the *Box* and the value associated with the keyword is the value stored
 in the *Box*. You can have as many boxes as you'd like (until you run
 out of memory) and treat the boxes as if they were a dictionary. Note
 that the boxes are global, meaning all turtles and all action stacks
-share the same collection of boxes.
+share the same collection of boxes. [RUN LIVE](https://turtle.sugarlabs.org/?file=Boxes_3&run=True)
 
 3. Action Stacks
 ----------------

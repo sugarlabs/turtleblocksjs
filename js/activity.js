@@ -177,7 +177,8 @@ define(function (require) {
             'BLOCKPLUGINS': {},
             'ONLOAD': {},
             'ONSTART': {},
-            'ONSTOP': {}
+            'ONSTOP': {},
+            'IMAGES': {}
         };
 
         // Stacks of blocks saved in local storage
@@ -1578,7 +1579,7 @@ define(function (require) {
                 }
                 try {
                     // Post the project
-                    var returnValue = httpPost('MusicBlocks_'+projectName, prepareExport());
+                    var returnValue = httpPost(projectName, prepareExport());
                     errorMsg('Saved ' + projectName + ' to ' + window.location.host);
 
                     var img = new Image();
@@ -1588,7 +1589,7 @@ define(function (require) {
                         var bounds = bitmap.getBounds();
                         bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                         // and base64-encoded png
-                        httpPost(('MusicBlocks_'+projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
+                        httpPost((projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
                     };
 
                     img.src = 'data:image/svg+xml;base64,' + window.btoa(

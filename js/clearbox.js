@@ -79,6 +79,7 @@ function ClearBox(canvas, stage, refreshCanvas, clear) {
 
             var x = (event.stageX / box.scale) - box.container.x;
             var y = (event.stageY / box.scale) - box.container.y;
+            console.log(x + ' ' + y);
             if (x > 125 && y < 55) {
                 box.hide();
             } else if (y > 55) {

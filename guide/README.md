@@ -69,44 +69,44 @@ then we start in with programming with Turtle Blocks.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics1.svg'</img>
 
-A single line of length 100
+A single line of length 100 [RUN LIVE](https://turtle.sugarlabs.org/?file=Forward_100.tb&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics2.svg'</img>
 
-Changing the line length to 200
+Changing the line length to 200 [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_2&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics3.svg'</img>
 
 Adding a right turn of 90 degrees. Running this stack four times
-produces a square.
+produces a square. [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_3&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics4.svg'</img>
 
-Forward, right, forward, right, ...
+Forward, right, forward, right, ... [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_4&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics5.svg'</img>
 
-Using the *Repeat* block from the *Flow* palette
+Using the *Repeat* block from the *Flow* palette [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_5&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics6.svg'</img>
 
-Using the *Arc* block to make rounded corners
+Using the *Arc* block to make rounded corners [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_6&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics7.svg'</img>
 
 Using the *Fill* blocks from the Pen palette to make a solid square
 (what ever is drawn inside the *Fill* clamp will be filled upon
-exiting the clamp.)
+exiting the clamp.) [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_7&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics8.svg'</img>
 
 Changing the color to 70 (blue) using the *Set Color* block from the
-*Pen* palette
+*Pen* palette [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_8&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/basics9.svg'</img>
 
 Using the *Random* block from the *Numbers* palette to select a random
-color (0 to 100)
+color (0 to 100) [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_9&run=True)
 
 A SHOEBOX
 ---------

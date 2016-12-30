@@ -741,13 +741,18 @@ function PopdownPalette(palettes) {
                            {i: icon, n: _(name)});
             html += '<ul>';
             this.models[name].update();
-            for (var blk in this.models[name].blocks) {
+            
+            var blocks = this.models[name].blocks;
+            if (BUILTINPALETTES.indexOf(name) > -1)
+                blocks.reverse();
+            
+            for (var blk in blocks) {
                 html += format('<li title="{label}" \
                                     data-blk="{blk}" \
                                     data-palettename="{palettename}" \
                                     data-modname="{modname}"> \
                                     <img src="{artwork64}" alt="{label}" /> \
-                                </li>', this.models[name].blocks[blk]);
+                                </li>', blocks[blk]);
             }
             html += '</div>';
         }
@@ -1101,8 +1106,13 @@ function Palette(palettes, name) {
 
         this.y = 0;
         this.model.update();
-        for (var blk in this.model.blocks) {
-            var b = this.model.blocks[blk];
+
+        var blocks = this.model.blocks;
+        if (BUILTINPALETTES.indexOf(name) == -1)
+            blocks.reverse();
+
+        for (var blk in blocks) {
+            var b = blocks[blk];
             if (!this.protoContainers[b.modname]) {
                 // create graphics for the palette entry for this block
                 this.protoContainers[b.modname] = new createjs.Container();

@@ -16,38 +16,25 @@ msgid ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-
-msgid ""
-
-
-msgid ""
-
 #: js/activity.js:426
 #: js/activity.js:426
 #: js/activity.js:426
-msgid "Close"
+#: js/block.js:553
+msgid "rest"
 msgstr ""
 
-#: js/activity.js:1273
 #: js/block.js:619
 #: js/block.js:1742
+#: js/activity.js:1279
 #: js/analytics.js:84
-#: js/blocks.js:1816
-#: js/blocks.js:1818
-#: js/blocks.js:2006
-#: js/blocks.js:2165
-#: js/blocks.js:2285
-#: js/blocks.js:2717
-#: js/blocks.js:3467
-#: js/blocks.js:3544
-#: js/palette.js:510
-#: js/palette.js:519
-#: js/palette.js:528
-#: js/palette.js:537
-#: js/palette.js:1660
-#: js/palette.js:1671
-#: js/palette.js:1682
-#: js/palette.js:1693
+#: js/palette.js:552
+#: js/palette.js:561
+#: js/palette.js:570
+#: js/palette.js:579
+#: js/palette.js:1716
+#: js/palette.js:1727
+#: js/palette.js:1738
+#: js/palette.js:1749
 #: js/basicblocks.js:528
 #: js/basicblocks.js:557
 #: js/basicblocks.js:564
@@ -57,124 +44,16 @@ msgstr ""
 #: js/basicblocks.js:655
 #: js/basicblocks.js:659
 #: js/basicblocks.js:665
+#: js/blocks.js:1816
+#: js/blocks.js:1818
+#: js/blocks.js:2006
+#: js/blocks.js:2165
+#: js/blocks.js:2285
+#: js/blocks.js:2717
+#: js/blocks.js:3467
+#: js/blocks.js:3544
 msgid "action"
 msgstr "ação"
-
-#: js/activity.js:1948
-#: js/turtledefs.js:43
-msgid "Run fast"
-msgstr "Executar rápido"
-
-#: js/activity.js:1949
-#: js/turtledefs.js:44
-msgid "Run slow"
-msgstr "Executar lentamente"
-
-#: js/activity.js:1950
-#: js/turtledefs.js:45
-msgid "Run step by step"
-msgstr "Executar passo a passo"
-
-#: js/activity.js:1951
-msgid "Run music slow"
-msgstr ""
-
-#: js/activity.js:1952
-msgid "Run note by note"
-msgstr ""
-
-#: js/activity.js:1953
-#: js/turtledefs.js:46
-msgid "Stop"
-msgstr "Pare"
-
-#: js/activity.js:1954
-#: js/turtledefs.js:47
-msgid "Clean"
-msgstr "Limpe"
-
-#: js/activity.js:1955
-#: js/turtledefs.js:48
-msgid "Show/hide palettes"
-msgstr "Exibir ou esconder paletas"
-
-#: js/activity.js:1956
-#: js/turtledefs.js:49
-msgid "Show/hide blocks"
-msgstr "Exibir/ocultar blocos"
-
-#: js/activity.js:1957
-#: js/turtledefs.js:50
-msgid "Expand/collapse collapsable blocks"
-msgstr "Expandir ou recolher blocos contraíveis"
-
-#: js/activity.js:1958
-#: js/activity.js:1999
-#: js/turtledefs.js:51
-msgid "Home"
-msgstr ""
-
-#: js/activity.js:1959
-#: js/turtledefs.js:52
-msgid "Help"
-msgstr "Ajuda"
-
-#: js/activity.js:2027
-#: js/turtledefs.js:54
-msgid "Load samples from server"
-msgstr "Abrir exemplos do servidor"
-
-#: js/activity.js:2028
-#: js/turtledefs.js:55
-msgid "Load project from files"
-msgstr ""
-
-#: js/activity.js:2029
-#: js/turtledefs.js:56
-msgid "Save project"
-msgstr "Salvar projeto"
-
-#: js/activity.js:2030
-msgid "Save sheet music"
-msgstr ""
-
-#: js/activity.js:2031
-#: js/turtledefs.js:58
-msgid "Paste"
-msgstr "colar"
-
-#: js/activity.js:2032
-#: js/turtledefs.js:60
-msgid "Cartesian"
-msgstr "Cartesiano"
-
-#: js/activity.js:2033
-#: js/turtledefs.js:61
-msgid "Polar"
-msgstr "Polar"
-
-#: js/activity.js:2034
-#: js/turtledefs.js:62
-msgid "Settings"
-msgstr "Configurações"
-
-#: js/activity.js:2035
-#: js/turtledefs.js:68
-msgid "Delete all"
-msgstr "Apaguar tudo"
-
-#: js/activity.js:2036
-#: js/turtledefs.js:69
-msgid "Undo"
-msgstr "Desfazer"
-
-#: js/clearbox.js:46
-msgid "confirm"
-msgstr "confirme"
-
-#: js/block.js:553
-msgid "rest"
-msgstr ""
 
 #: js/block.js:622
 #: js/turtle.js:528
@@ -190,6 +69,190 @@ msgstr ""
 #: js/block.js:628
 #: js/turtle.js:386
 msgid "drum"
+msgstr ""
+
+#: js/samplesviewer.js:26
+#: js/samplesviewer.js:26
+msgid "Open"
+msgstr "abrir"
+
+#: js/samplesviewer.js:27
+#: js/samplesviewer.js:27
+msgid "Delete"
+msgstr "Excluir"
+
+#: js/samplesviewer.js:28
+#: js/samplesviewer.js:28
+msgid "Publish"
+msgstr "Publicar"
+
+#: js/samplesviewer.js:29
+#: js/samplesviewer.js:29
+#: js/samplesviewer.js:38
+#: js/samplesviewer.js:38
+msgid "Download"
+msgstr "Baixar"
+
+#: js/samplesviewer.js:382
+msgid "Planet"
+msgstr "Planeta"
+
+#: js/samplesviewer.js:383
+msgid "On my device"
+msgstr "No meu dispositivo"
+
+#: js/samplesviewer.js:384
+msgid "Worldwide"
+msgstr "mundial"
+
+#: js/activity.js:427
+msgid "Close"
+msgstr ""
+
+#: js/activity.js:1955
+msgid "Run fast"
+msgstr "Executar rápido"
+
+#: js/activity.js:1955
+msgid "Long press to run slow"
+msgstr ""
+
+#: js/activity.js:1956
+#: js/turtledefs.js:45
+msgid "Run step by step"
+msgstr "Executar passo a passo"
+
+#: js/activity.js:1957
+msgid "Run music slow"
+msgstr ""
+
+#: js/activity.js:1958
+msgid "Run note by note"
+msgstr ""
+
+#: js/activity.js:1959
+#: js/turtledefs.js:46
+msgid "Stop"
+msgstr "Pare"
+
+#: js/activity.js:1960
+#: js/turtledefs.js:47
+msgid "Clean"
+msgstr "Limpar"
+
+#: js/activity.js:1961
+#: js/turtledefs.js:48
+msgid "Show/hide palettes"
+msgstr "Mostrar/ocultar paletas"
+
+#: js/activity.js:1962
+#: js/turtledefs.js:49
+msgid "Show/hide blocks"
+msgstr "Mostrar/ocultar blocos"
+
+#: js/activity.js:1963
+#: js/turtledefs.js:50
+msgid "Expand/collapse collapsable blocks"
+msgstr "Expandir/recolher blocos contraíveis"
+
+#: js/activity.js:1964
+#: js/activity.js:2005
+#: js/turtledefs.js:51
+msgid "Home"
+msgstr ""
+
+#: js/activity.js:1965
+#: js/turtledefs.js:52
+msgid "Help"
+msgstr "Ajuda"
+
+#: js/activity.js:2033
+#: js/turtledefs.js:54
+msgid "Load samples from server"
+msgstr "Abrir exemplos do servidor"
+
+#: js/activity.js:2034
+#: js/turtledefs.js:55
+msgid "Load project from files"
+msgstr ""
+
+#: js/activity.js:2035
+#: js/turtledefs.js:56
+msgid "Save project"
+msgstr "Salvar projeto"
+
+#: js/activity.js:2036
+msgid "Save sheet music"
+msgstr ""
+
+#: js/activity.js:2037
+#: js/turtledefs.js:58
+msgid "Paste"
+msgstr "colar"
+
+#: js/activity.js:2038
+#: js/turtledefs.js:60
+msgid "Cartesian"
+msgstr "Cartesiano"
+
+#: js/activity.js:2039
+#: js/turtledefs.js:61
+msgid "Polar"
+msgstr "Polar"
+
+#: js/activity.js:2040
+#: js/turtledefs.js:62
+msgid "Settings"
+msgstr "Configurações"
+
+#: js/activity.js:2041
+#: js/turtledefs.js:68
+msgid "Delete all"
+msgstr "Apaguar tudo"
+
+#: js/activity.js:2042
+#: js/turtledefs.js:69
+msgid "Undo"
+msgstr "Desfazer"
+
+#: js/analytics.js:84
+#: js/turtledefs.js:22
+msgid "turtle"
+msgstr "tartaruga"
+
+#: js/analytics.js:84
+#: js/turtledefs.js:22
+msgid "pen"
+msgstr "caneta"
+
+#: js/analytics.js:84
+#: js/turtledefs.js:22
+msgid "number"
+msgstr "número"
+
+#: js/analytics.js:84
+#: js/turtledefs.js:22
+msgid "flow"
+msgstr "fluxo"
+
+#: js/analytics.js:84
+#: js/turtledefs.js:22
+msgid "sensors"
+msgstr "sensores"
+
+#: js/analytics.js:84
+#: js/turtledefs.js:22
+msgid "media"
+msgstr "mídia"
+
+#: js/analytics.js:84
+#: js/turtledefs.js:22
+msgid "extras"
+msgstr "extras"
+
+#: js/status.js:84
+#: js/status.js:84
+msgid "close"
 msgstr ""
 
 #: js/logo.js:173
@@ -238,109 +301,128 @@ msgstr ""
 msgid "empty heap"
 msgstr "esvaziar monte"
 
-#: js/utilitybox.js:36
-#: js/turtledefs.js:63
-msgid "Decrease block size"
-msgstr "Diminui o tamanho do bloco"
+#: js/clearbox.js:46
+msgid "confirm"
+msgstr "confirme"
 
-#: js/utilitybox.js:44
-#: js/turtledefs.js:64
-msgid "Increase block size"
-msgstr "Aumenta o tamanho do bloco"
+#: js/palette.js:534
+#: js/palette.js:619
+#: js/palette.js:1694
+#: js/basicblocks.js:490
+#: js/basicblocks.js:494
+#: js/basicblocks.js:506
+#: js/basicblocks.js:514
+#: js/blocks.js:2092
+msgid "box"
+msgstr "caixa"
 
-#: js/utilitybox.js:52
-#: js/turtledefs.js:65
-msgid "Display statistics"
-msgstr "Mostrar estatísticas"
+#: js/palette.js:596
+#: js/basicblocks.js:852
+#: js/blocks.js:1660
+msgid "text"
+msgstr "texto"
 
-#: js/utilitybox.js:60
-#: js/turtledefs.js:66
-msgid "Load plugin from file"
-msgstr "Abrir plugin a partir do arquivo"
-
-#: js/utilitybox.js:68
-#: js/turtledefs.js:67
-msgid "Enable scrolling"
-msgstr "Habilitar rolagem"
-
-#: js/utilitybox.js:77
-msgid "Disable scrolling"
+#: js/palette.js:599
+#: js/palette.js:1795
+#: js/palette.js:1802
+msgid "sol"
 msgstr ""
 
-#: js/turtledefs.js:21
-#: js/analytics.js:84
-msgid "turtle"
-msgstr "tartaruga"
+#: js/palette.js:620
+#: js/basicblocks.js:503
+#: js/blocks.js:2191
+msgid "store in"
+msgstr "armazenar em"
 
-#: js/turtledefs.js:21
-#: js/analytics.js:84
-msgid "pen"
-msgstr "caneta"
+#: js/palette.js:628
+#: js/blocks.js:1271
+msgid "open file"
+msgstr "abrir arquivo"
 
-#: js/turtledefs.js:21
-#: js/analytics.js:84
-msgid "number"
-msgstr "número"
+#: js/palette.js:724
+#: js/basicblocks.js:170
+#: plugins/rodi.rtp:71
+#: plugins/rodi.rtp:389
+msgid "back"
+msgstr "para trás"
 
-#: js/turtledefs.js:21
+#: js/palette.js:732
+#: js/palette.js:733
+msgid "hide"
+msgstr "ocultar"
+
+#: js/palette.js:735
+#: js/palette.js:736
+#: js/basicblocks.js:848
+msgid "show"
+msgstr "mostrar"
+
+#: js/palette.js:738
+#: js/palette.js:739
+msgid "popout"
+msgstr ""
+
+#: js/palette.js:1782
+msgid "la"
+msgstr ""
+
+#: js/palette.js:1802
+msgid "mi"
+msgstr ""
+
+#: js/palette.js:1802
+msgid "re"
+msgstr ""
+
+#: js/turtle.js:385
+#: js/turtle.js:524
+#: js/turtle.js:525
+msgid "start drum"
+msgstr ""
+
+#: js/turtledefs.js:22
 msgid "boolean"
 msgstr "booleano"
 
-#: js/turtledefs.js:21
-#: js/analytics.js:84
-msgid "flow"
-msgstr "fluxo"
-
-#: js/turtledefs.js:21
+#: js/turtledefs.js:22
 msgid "boxes"
 msgstr ""
 
-#: js/turtledefs.js:21
+#: js/turtledefs.js:22
 msgid "actions"
 msgstr ""
 
-#: js/turtledefs.js:21
-#: js/analytics.js:84
-msgid "media"
-msgstr "mídia"
-
-#: js/turtledefs.js:21
-#: js/analytics.js:84
-msgid "sensors"
-msgstr "sensores"
-
-#: js/turtledefs.js:21
+#: js/turtledefs.js:22
 msgid "heap"
 msgstr "monte"
 
-#: js/turtledefs.js:21
-#: js/analytics.js:84
-msgid "extras"
-msgstr "extras"
-
-#: js/turtledefs.js:41
+#: js/turtledefs.js:42
 msgid "Welcome to Turtle Blocks"
 msgstr "Bem-vindo ao Turtle Blocks"
 
-#: js/turtledefs.js:41
-msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr "Turtle Blocks é uma tartaruga inspirada no Logo que desenha figuras coloridas com blocos de programação visual encaixáveis"
-
 #: js/turtledefs.js:42
+msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
+msgstr "Turtle Blocks é uma tartaruga inspirada no Logo que desenha figuras coloridas com blocos de programação visuais encaixáveis"
+
+#: js/turtledefs.js:43
 msgid "Palette buttons"
 msgstr "Botões da paleta"
 
-#: js/turtledefs.js:42
-msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
-msgstr "Esta barra de ferramentas contém a paleta botões, clique para exibir as paletas de blocos e arraste os blocos das paletas na tela para usá-los."
-
 #: js/turtledefs.js:43
+msgid "This toolbar contains the palette buttons, click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them."
+msgstr "Esta barra de ferramentas contém a paleta de botões, clique para mostrar as paletas de blocos e arraste os blocos das paletas para tela para usá-los."
+
+#: js/turtledefs.js:44
+msgid "Run"
+msgstr ""
+
+#: js/turtledefs.js:44
 msgid "Click to run the project in fast mode."
 msgstr "Clique para executar o projeto em modo rápido"
 
 #: js/turtledefs.js:44
-msgid "Click to run the project in slow mode."
-msgstr "Clique para executar o projeto em modo lento"
+msgid "Long press to run the project in slow mode."
+msgstr ""
 
 #: js/turtledefs.js:45
 msgid "Click to run the project step by step."
@@ -352,19 +434,19 @@ msgstr "Para o projeto atual"
 
 #: js/turtledefs.js:47
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr "Limpa a tela e retorna as tartarugas para suas posições iniciais."
+msgstr "Limpar a tela e retornar as tartarugas para suas posições iniciais."
 
 #: js/turtledefs.js:48
 msgid "Hide or show the block palettes."
-msgstr "Esconder ou exibir as paletas de blocos"
+msgstr "Ocultar ou mostrar as paletas de blocos"
 
 #: js/turtledefs.js:49
 msgid "Hide or show the blocks and the palettes."
-msgstr "Oculta ou exibe os blocos e as paletas"
+msgstr "Ocultar ou exibir os blocos e as paletas"
 
 #: js/turtledefs.js:50
 msgid "Expand or collapse start and action stacks."
-msgstr "Expande ou recolhe pilhas de início e de ação."
+msgstr "Expandir ou recolher pilhas de início e de ação."
 
 #: js/turtledefs.js:51
 msgid "Return all blocks to the center of the screen."
@@ -372,7 +454,7 @@ msgstr ""
 
 #: js/turtledefs.js:52
 msgid "Show these messages."
-msgstr "Mostre estas mensagens"
+msgstr "Mostrar estas mensagens."
 
 #: js/turtledefs.js:53
 msgid "Expand/collapse option toolbar"
@@ -404,7 +486,7 @@ msgstr ""
 
 #: js/turtledefs.js:58
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
-msgstr "O botão colar está habilitado quando há blocos copiados para a área de transferência"
+msgstr "O botão colar está habilitado quando há blocos copiados para a área de transferência."
 
 #: js/turtledefs.js:59
 #: js/blocks.js:200
@@ -417,31 +499,56 @@ msgstr ""
 
 #: js/turtledefs.js:60
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr "Exibir ou esconder uma grade de coordenadas cartesianas"
+msgstr "Mostrar ou ocultar uma grade de coordenadas cartesianas."
 
 #: js/turtledefs.js:61
 msgid "Show or hide a polar-coordinate grid."
-msgstr "Exibe ou esconde uma grade de coordenadas polares"
+msgstr "Mostrar ou ocultar uma grade de coordenadas polares"
 
 #: js/turtledefs.js:62
 msgid "Open a panel for configuring Turtle Blocks."
-msgstr "abre um painel para configurar o Turtle Blocks."
+msgstr "Abrir um painel para configurar o Turtle Blocks."
+
+#: js/turtledefs.js:63
+#: js/utilitybox.js:36
+msgid "Decrease block size"
+msgstr "Diminuir o tamanho do bloco"
 
 #: js/turtledefs.js:63
 msgid "Decrease the size of the blocks."
-msgstr "Diminui o tamanho dos blocos"
+msgstr "Diminuir o tamanho dos blocos"
+
+#: js/turtledefs.js:64
+#: js/utilitybox.js:44
+msgid "Increase block size"
+msgstr "Aumentar o tamanho do bloco"
 
 #: js/turtledefs.js:64
 msgid "Increase the size of the blocks."
-msgstr "Aumenta o tamanho dos blocos"
+msgstr "Aumentar o tamanho dos blocos"
+
+#: js/turtledefs.js:65
+#: js/utilitybox.js:52
+msgid "Display statistics"
+msgstr "Exibir estatísticas"
 
 #: js/turtledefs.js:65
 msgid "Display statistics about your Turtle project."
-msgstr "Mostra estatísticas sobre seu projeto Tartaruga"
+msgstr "Exibir estatísticas sobre seu projeto Tartaruga."
+
+#: js/turtledefs.js:66
+#: js/utilitybox.js:60
+msgid "Load plugin from file"
+msgstr "Abrir plugin a partir do arquivo"
 
 #: js/turtledefs.js:66
 msgid "You can load new blocks from the file system."
-msgstr "Você pode carregar novos blocos do sistema de arquivos"
+msgstr "Você pode carregar novos blocos do sistema de arquivos."
+
+#: js/turtledefs.js:67
+#: js/utilitybox.js:68
+msgid "Enable scrolling"
+msgstr "Habilitar rolagem"
 
 #: js/turtledefs.js:67
 msgid "You can scroll the blocks on the canvas."
@@ -449,7 +556,7 @@ msgstr "Você pode rolar os blocos na tela"
 
 #: js/turtledefs.js:68
 msgid "Remove all content on the canvas, including the blocks."
-msgstr "Remove todo o conteúdo na tela, incluindo os blocos."
+msgstr "Remover todo o conteúdo na tela, incluindo os blocos."
 
 #: js/turtledefs.js:69
 msgid "Restore blocks from the trash."
@@ -457,138 +564,11 @@ msgstr "Restaura blocos do lixo"
 
 #: js/turtledefs.js:70
 msgid "Congratulations."
-msgstr "Parabéns"
+msgstr "Parabéns."
 
 #: js/turtledefs.js:70
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr "Você terminou o passeio. Por favor, desfrute do Turtle Blocks"
-
-#: js/samplesviewer.js:26
-#: js/samplesviewer.js:26
-msgid "Open"
-msgstr "abrir"
-
-#: js/samplesviewer.js:27
-#: js/samplesviewer.js:27
-msgid "Delete"
-msgstr "Apagar"
-
-#: js/samplesviewer.js:28
-#: js/samplesviewer.js:28
-msgid "Publish"
-msgstr "Publicar"
-
-#: js/samplesviewer.js:29
-#: js/samplesviewer.js:29
-#: js/samplesviewer.js:38
-#: js/samplesviewer.js:38
-msgid "Download"
-msgstr "Baixar"
-
-#: js/samplesviewer.js:382
-msgid "Planet"
-msgstr "Planeta"
-
-#: js/samplesviewer.js:383
-msgid "On my device"
-msgstr "No meu dispositivo"
-
-#: js/samplesviewer.js:384
-msgid "Worldwide"
-msgstr "mundial"
-
-#: js/turtle.js:385
-#: js/turtle.js:524
-#: js/turtle.js:525
-msgid "start drum"
-msgstr ""
-
-#: js/blocks.js:1271
-#: js/palette.js:586
-msgid "open file"
-msgstr "abrir arquivo"
-
-#: js/blocks.js:1660
-#: js/palette.js:554
-#: js/basicblocks.js:852
-msgid "text"
-msgstr "texto"
-
-#: js/blocks.js:2092
-#: js/palette.js:492
-#: js/palette.js:577
-#: js/palette.js:1638
-#: js/basicblocks.js:490
-#: js/basicblocks.js:494
-#: js/basicblocks.js:506
-#: js/basicblocks.js:514
-msgid "box"
-msgstr "caixa"
-
-#: js/blocks.js:2191
-#: js/palette.js:578
-#: js/basicblocks.js:503
-msgid "store in"
-msgstr "armazene em"
-
-#: js/blocks.js:2191
-#: js/basicblocks.js:503
-msgid "name"
-msgstr "nome"
-
-#: js/blocks.js:2191
-#: js/basicblocks.js:481
-#: js/basicblocks.js:503
-#: js/basicblocks.js:697
-#: plugins/bitcoin.rtp:27
-msgid "value"
-msgstr "valor"
-
-#: js/palette.js:557
-#: js/palette.js:1739
-#: js/palette.js:1746
-msgid "sol"
-msgstr ""
-
-#: js/palette.js:682
-#: js/basicblocks.js:170
-#: plugins/rodi.rtp:71
-#: plugins/rodi.rtp:391
-msgid "back"
-msgstr "para trás"
-
-#: js/palette.js:690
-#: js/palette.js:691
-msgid "hide"
-msgstr "esconder"
-
-#: js/palette.js:693
-#: js/palette.js:694
-#: js/basicblocks.js:848
-msgid "show"
-msgstr "mostre"
-
-#: js/palette.js:696
-#: js/palette.js:697
-msgid "popout"
-msgstr ""
-
-#: js/palette.js:1726
-msgid "la"
-msgstr ""
-
-#: js/palette.js:1746
-msgid "mi"
-msgstr ""
-
-#: js/palette.js:1746
-msgid "re"
-msgstr ""
-
-#: js/status.js:84
-#: js/status.js:84
-msgid "close"
-msgstr ""
+msgstr "Você terminou o passeio. Por favor, desfrute do Turtle Blocks!"
 
 #: js/basicblocks.js:65
 msgid "heading"
@@ -612,7 +592,7 @@ msgstr "y"
 
 #: js/basicblocks.js:86
 msgid "clear"
-msgstr "limpe"
+msgstr "limpar"
 
 #: js/basicblocks.js:93
 msgid "control point 2"
@@ -648,31 +628,31 @@ msgstr "defina xy"
 
 #: js/basicblocks.js:154
 #: plugins/rodi.rtp:79
-#: plugins/rodi.rtp:344
-#: plugins/rodi.rtp:379
+#: plugins/rodi.rtp:341
+#: plugins/rodi.rtp:376
 msgid "right"
 msgstr "para direita"
 
 #: js/basicblocks.js:162
 #: plugins/rodi.rtp:81
-#: plugins/rodi.rtp:343
-#: plugins/rodi.rtp:366
+#: plugins/rodi.rtp:340
+#: plugins/rodi.rtp:363
 msgid "left"
 msgstr "para esquerda"
 
 #: js/basicblocks.js:178
 #: plugins/rodi.rtp:73
-#: plugins/rodi.rtp:404
+#: plugins/rodi.rtp:402
 msgid "forward"
 msgstr "para frente"
 
 #: js/basicblocks.js:189
 msgid "begin fill"
-msgstr "finalize preenchimento"
+msgstr "iniciar preenchimento"
 
 #: js/basicblocks.js:197
 msgid "end fill"
-msgstr "termina preenchimento"
+msgstr "terminar preenchimento"
 
 #: js/basicblocks.js:205
 #: js/basicblocks.js:249
@@ -693,7 +673,7 @@ msgstr "cinza"
 
 #: js/basicblocks.js:233
 msgid "pen size"
-msgstr "largura da caneta"
+msgstr "largura do traço"
 
 #: js/basicblocks.js:240
 msgid "set font"
@@ -709,7 +689,7 @@ msgstr ""
 
 #: js/basicblocks.js:270
 msgid "pen up"
-msgstr "levante caneta"
+msgstr "levantar a caneta"
 
 #: js/basicblocks.js:277
 msgid "pen down"
@@ -725,7 +705,7 @@ msgstr ""
 
 #: js/basicblocks.js:300
 msgid "set hue"
-msgstr "defina cor"
+msgstr ""
 
 #: js/basicblocks.js:308
 msgid "set shade"
@@ -737,7 +717,7 @@ msgstr "defina cinza"
 
 #: js/basicblocks.js:324
 msgid "set color"
-msgstr "defina cor"
+msgstr "definir cor"
 
 #: js/basicblocks.js:334
 msgid "int"
@@ -769,15 +749,15 @@ msgstr "um de"
 
 #: js/basicblocks.js:448
 msgid "this"
-msgstr "este"
+msgstr ""
 
 #: js/basicblocks.js:448
 msgid "that"
-msgstr "aquilo"
+msgstr ""
 
 #: js/basicblocks.js:459
 msgid "random"
-msgstr "aleatório"
+msgstr ""
 
 #: js/basicblocks.js:459
 msgid "min"
@@ -800,6 +780,19 @@ msgstr "adicione"
 msgid "to"
 msgstr "a"
 
+#: js/basicblocks.js:481
+#: js/basicblocks.js:503
+#: js/basicblocks.js:697
+#: js/blocks.js:2191
+#: plugins/bitcoin.rtp:27
+msgid "value"
+msgstr "valor"
+
+#: js/basicblocks.js:503
+#: js/blocks.js:2191
+msgid "name"
+msgstr "nome"
+
 #: js/basicblocks.js:525
 #: js/basicblocks.js:572
 #: js/basicblocks.js:589
@@ -807,7 +800,7 @@ msgstr "a"
 #: js/basicblocks.js:900
 #: js/basicblocks.js:907
 msgid "do"
-msgstr "faça"
+msgstr "fazer"
 
 #: js/basicblocks.js:534
 msgid "return"
@@ -901,7 +894,7 @@ msgstr "fale"
 
 #: js/basicblocks.js:809
 msgid "stop media"
-msgstr "para mídia"
+msgstr "parar mídia"
 
 #: js/basicblocks.js:816
 msgid "tone"
@@ -930,7 +923,7 @@ msgstr ""
 
 #: js/basicblocks.js:837
 msgid "shell"
-msgstr "roupa da tartaruga"
+msgstr "casco"
 
 #: js/basicblocks.js:837
 #: js/basicblocks.js:848
@@ -948,7 +941,7 @@ msgstr ""
 #: js/basicblocks.js:886
 #: plugins/rodi.rtp:31
 #: plugins/rodi.rtp:75
-#: plugins/rodi.rtp:417
+#: plugins/rodi.rtp:415
 msgid "stop"
 msgstr "parar"
 
@@ -962,7 +955,7 @@ msgstr "até que"
 
 #: js/basicblocks.js:907
 msgid "while"
-msgstr "enquanto"
+msgstr ""
 
 #: js/basicblocks.js:914
 #: js/basicblocks.js:921
@@ -984,7 +977,7 @@ msgstr "para sempre"
 
 #: js/basicblocks.js:935
 msgid "repeat"
-msgstr "repita"
+msgstr "repetir"
 
 #: js/basicblocks.js:947
 #: js/basicblocks.js:958
@@ -1002,232 +995,154 @@ msgstr "reproduzir"
 
 #: js/basicblocks.js:1023
 msgid "stop play"
-msgstr "parar de tocar"
+msgstr "parar de reproduzir"
+
+#: js/basicblocks.js:1030
+msgid "save svg"
+msgstr "salvar svg"
 
 #: js/basicblocks.js:1033
-#: js/basicblocks.js:1042
 msgid "title"
 msgstr "título"
 
 #: js/basicblocks.js:1039
-msgid "save svg"
-msgstr "salvar svg"
-
-#: js/basicblocks.js:1048
 #: plugins/turtle.rtp:52
 msgid "turtle y"
 msgstr "tartaruga y"
 
-#: js/basicblocks.js:1057
+#: js/basicblocks.js:1048
 #: plugins/turtle.rtp:42
 msgid "turtle x"
 msgstr "tartaruga x"
 
-#: js/basicblocks.js:1066
+#: js/basicblocks.js:1057
 #: plugins/turtle.rtp:62
 msgid "start turtle"
-msgstr "inicia tartaruga"
+msgstr "iniciar a tartaruga"
 
-#: js/basicblocks.js:1075
+#: js/basicblocks.js:1066
 #: plugins/turtle.rtp:72
 msgid "stop turtle"
-msgstr "Para a tartaruga"
+msgstr "Parar a tartaruga"
 
-#: js/basicblocks.js:1084
+#: js/basicblocks.js:1075
 msgid "no background"
 msgstr "sem fundo"
 
-#: js/basicblocks.js:1091
+#: js/basicblocks.js:1082
 msgid "show blocks"
 msgstr "exibir blocos"
 
-#: js/basicblocks.js:1098
+#: js/basicblocks.js:1089
 msgid "hide blocks"
 msgstr "Esconder blocos"
 
-#: js/basicblocks.js:1105
+#: js/basicblocks.js:1096
 msgid "open project"
 msgstr ""
 
-#: js/basicblocks.js:1129
+#: js/basicblocks.js:1120
 msgid "wait"
 msgstr "espere"
 
-#: js/basicblocks.js:1137
+#: js/basicblocks.js:1128
 msgid "print"
 msgstr "imprimir"
 
-#: js/basicblocks.js:1145
-#: js/basicblocks.js:1153
+#: js/basicblocks.js:1136
+#: js/basicblocks.js:1144
 #: plugins/turtle.rtp:82
 msgid "turtle name"
 msgstr "nome da tartaruga"
 
-#: js/basicblocks.js:1154
+#: js/basicblocks.js:1145
 #: plugins/translate.rtp:95
 #: plugins/turtle.rtp:83
 msgid "source"
 msgstr "fonte"
 
-#: js/basicblocks.js:1155
+#: js/basicblocks.js:1146
 #: plugins/translate.rtp:95
 #: plugins/turtle.rtp:84
 msgid "target"
 msgstr "alvo"
 
-#: js/basicblocks.js:1166
-#: plugins/rodi.rtp:328
+#: js/basicblocks.js:1157
+#: plugins/rodi.rtp:325
 msgid "status"
 msgstr ""
 
-#: js/basicblocks.js:1175
+#: js/basicblocks.js:1166
 msgid "loudness"
 msgstr "volume"
 
-#: js/basicblocks.js:1183
+#: js/basicblocks.js:1174
 msgid "click"
 msgstr "clique"
 
-#: js/basicblocks.js:1191
+#: js/basicblocks.js:1182
 #: plugins/rodi.rtp:223
 msgid "blue"
 msgstr ""
 
-#: js/basicblocks.js:1198
+#: js/basicblocks.js:1189
 #: plugins/rodi.rtp:222
 msgid "green"
 msgstr ""
 
-#: js/basicblocks.js:1205
+#: js/basicblocks.js:1196
 #: plugins/rodi.rtp:221
 msgid "red"
 msgstr ""
 
-#: js/basicblocks.js:1212
+#: js/basicblocks.js:1203
 #: plugins/rodi.rtp:220
 msgid "pixel color"
-msgstr "cor do pixel"
+msgstr ""
 
-#: js/basicblocks.js:1219
+#: js/basicblocks.js:1210
 msgid "time"
-msgstr "tempo"
+msgstr ""
 
-#: js/basicblocks.js:1226
+#: js/basicblocks.js:1217
 msgid "mouse x"
 msgstr ""
 
-#: js/basicblocks.js:1234
+#: js/basicblocks.js:1225
 msgid "mouse y"
 msgstr ""
 
-#: js/basicblocks.js:1242
+#: js/basicblocks.js:1233
 msgid "mouse button"
 msgstr "botão do mouse"
 
-#: js/basicblocks.js:1249
+#: js/basicblocks.js:1240
 msgid "to ASCII"
 msgstr ""
 
-#: js/basicblocks.js:1256
+#: js/basicblocks.js:1247
 msgid "keyboard"
 msgstr "teclado"
 
-#: js/basicblocks.js:1265
+#: js/basicblocks.js:1256
 msgid "eval"
 msgstr "avalie"
 
-#: plugins/gmap.rtp:30
-msgid "city latitude"
-msgstr "latitude da cidade"
-
-#: plugins/gmap.rtp:40
-msgid "city longitude"
-msgstr "longitude da cidade"
-
-#: plugins/gmap.rtp:71
-#: plugins/gmap.rtp:74
-#: plugins/gmap.rtp:104
-#: plugins/gmap.rtp:107
-msgid "Coordinate data not available."
-msgstr "Dados de coordanadas não disponíveis"
-
-#: plugins/gmap.rtp:116
-msgid "Google map"
-msgstr "Mapa do Google"
-
-#: plugins/gmap.rtp:116
-#: plugins/gmap.rtp:160
-msgid "coordinates"
-msgstr "coordenadas"
-
-#: plugins/gmap.rtp:116
-msgid "zoom factor"
-msgstr "fator de zoom"
-
-#: plugins/gmap.rtp:144
-msgid "zoom"
+#: js/utilitybox.js:77
+msgid "Disable scrolling"
 msgstr ""
 
-#: plugins/gmap.rtp:160
-msgid "latitude"
-msgstr "latitude"
-
-#: plugins/gmap.rtp:160
-msgid "longitude"
-msgstr "longitude"
-
-#: plugins/dictionary.rtp:25
-msgid "define"
-msgstr "defina"
-
-#: plugins/bitcoin.rtp:27
-msgid "bitcoin"
-msgstr ""
-
-#: plugins/bitcoin.rtp:27
 #: plugins/finance.rtp:28
+msgid "currency"
+msgstr "moeda"
+
+#: plugins/finance.rtp:28
+#: plugins/bitcoin.rtp:27
 msgid "from"
 msgstr "de"
 
-#: plugins/maths.rtp:47
-msgid "power"
-msgstr "potência"
-
-#: plugins/maths.rtp:47
-msgid "base"
-msgstr "base"
-
-#: plugins/maths.rtp:47
-msgid "exp"
-msgstr "exponencial"
-
-#: plugins/maths.rtp:69
-msgid "floor"
-msgstr "piso"
-
-#: plugins/maths.rtp:71
-msgid "ceiling"
-msgstr "teto"
-
-#: plugins/maths.rtp:74
-msgid "degrees"
-msgstr "graus"
-
-#: plugins/maths.rtp:74
-msgid "to degrees"
-msgstr "para graus"
-
-#: plugins/maths.rtp:76
-msgid "radians"
-msgstr "radianos"
-
-#: plugins/maths.rtp:76
-msgid "to radians"
-msgstr "para radianos"
-
-#: plugins/heap.rtp:81
-#: plugins/heap.rtp:85
-msgid "You need to select a file."
+#: plugins/finance.rtp:69
+msgid "stock price"
 msgstr ""
 
 #: plugins/impact.rtp:32
@@ -1285,86 +1200,97 @@ msgstr "detectar idioma"
 msgid "set lang"
 msgstr "definir idioma"
 
-#: plugins/rodi.rtp:176
-msgid "blink"
+#: plugins/gmap.rtp:30
+msgid "city latitude"
+msgstr "latitude da cidade"
+
+#: plugins/gmap.rtp:40
+msgid "city longitude"
+msgstr "longitude da cidade"
+
+#: plugins/gmap.rtp:71
+#: plugins/gmap.rtp:74
+#: plugins/gmap.rtp:104
+#: plugins/gmap.rtp:107
+msgid "Coordinate data not available."
+msgstr "Dados de coordenadas não disponíveis"
+
+#: plugins/gmap.rtp:116
+msgid "Google map"
+msgstr "Mapa do Google"
+
+#: plugins/gmap.rtp:116
+#: plugins/gmap.rtp:160
+msgid "coordinates"
+msgstr "coordenadas"
+
+#: plugins/gmap.rtp:116
+msgid "zoom factor"
+msgstr "fator de zoom"
+
+#: plugins/gmap.rtp:144
+msgid "zoom"
 msgstr ""
 
-#: plugins/rodi.rtp:195
-msgid "play"
+#: plugins/gmap.rtp:160
+msgid "latitude"
+msgstr "latitude"
+
+#: plugins/gmap.rtp:160
+msgid "longitude"
+msgstr "longitude"
+
+#: plugins/maths.rtp:47
+msgid "power"
+msgstr "potência"
+
+#: plugins/maths.rtp:47
+msgid "base"
+msgstr "base"
+
+#: plugins/maths.rtp:47
+msgid "exp"
+msgstr "exponencial"
+
+#: plugins/maths.rtp:69
+msgid "floor"
+msgstr "piso"
+
+#: plugins/maths.rtp:71
+msgid "ceiling"
+msgstr "teto"
+
+#: plugins/maths.rtp:74
+msgid "degrees"
+msgstr "graus"
+
+#: plugins/maths.rtp:74
+msgid "to degrees"
+msgstr "para graus"
+
+#: plugins/maths.rtp:76
+msgid "radians"
+msgstr "radianos"
+
+#: plugins/maths.rtp:76
+msgid "to radians"
+msgstr "para radianos"
+
+#: plugins/accelerometer.rtp:48
+msgid "motion x"
+msgstr "movimento x"
+
+#: plugins/accelerometer.rtp:56
+msgid "motion y"
 msgstr ""
 
-#: plugins/rodi.rtp:197
-msgid "duration"
-msgstr "duração"
+#: plugins/accelerometer.rtp:64
+msgid "motion z"
+msgstr "movimento z"
 
-#: plugins/rodi.rtp:250
-msgid "led"
-msgstr ""
-
-#: plugins/rodi.rtp:269
-msgid "light intensity"
-msgstr ""
-
-#: plugins/rodi.rtp:286
-msgid "infrared light (left)"
-msgstr ""
-
-#: plugins/rodi.rtp:300
-msgid "infrared light (right)"
-msgstr ""
-
-#: plugins/rodi.rtp:314
-msgid "distance"
-msgstr ""
-
-#: plugins/rodi.rtp:342
-msgid "move"
-msgstr "mover"
-
-#: plugins/finance.rtp:28
-msgid "currency"
-msgstr "moeda"
-
-#: plugins/finance.rtp:69
-msgid "stock price"
-msgstr "preço das ações"
-
-#: plugins/facebook.rtp:27
-msgid "publish"
-msgstr "publicar"
-
-#: plugins/facebook.rtp:30
-msgid "comment"
-msgstr "comentar"
-
-#: plugins/weather.rtp:62
-#: plugins/weather.rtp:86
-msgid "Days ahead must be in the range of -1 to 5."
-msgstr ""
-
-#: plugins/weather.rtp:107
-msgid "forecast"
-msgstr "previsão"
-
-#: plugins/weather.rtp:108
-#: plugins/weather.rtp:122
-#: plugins/weather.rtp:135
-msgid "city"
-msgstr "cidade"
-
-#: plugins/weather.rtp:109
-#: plugins/weather.rtp:123
-#: plugins/weather.rtp:136
-msgid "day"
-msgstr "dia"
-
-#: plugins/weather.rtp:121
-msgid "high"
-msgstr "alto"
-
-#: plugins/weather.rtp:134
-msgid "low"
-msgstr "baixa"
+#: plugins/dictionary.rtp:25
+msgid "define"
+msgstr "defina"
 
 #: plugins/nutrition.rtp:104
 msgid "get calories"
@@ -1384,7 +1310,7 @@ msgstr "obter fibra"
 
 #: plugins/nutrition.rtp:116
 msgid "get fat"
-msgstr "fica gordo"
+msgstr "fique gordo"
 
 #: plugins/nutrition.rtp:119
 msgid "get name"
@@ -1424,7 +1350,7 @@ msgstr "maçã"
 
 #: plugins/nutrition.rtp:161
 msgid "banana"
-msgstr "banana"
+msgstr ""
 
 #: plugins/nutrition.rtp:164
 msgid "orange"
@@ -1468,7 +1394,7 @@ msgstr "queijo"
 
 #: plugins/nutrition.rtp:194
 msgid "chicken"
-msgstr "galinha"
+msgstr ""
 
 #: plugins/nutrition.rtp:197
 msgid "fish"
@@ -1476,7 +1402,7 @@ msgstr "peixe"
 
 #: plugins/nutrition.rtp:200
 msgid "beef"
-msgstr "bife"
+msgstr ""
 
 #: plugins/nutrition.rtp:203
 msgid "cake"
@@ -1490,56 +1416,95 @@ msgstr "biscoito"
 msgid "water"
 msgstr "água"
 
-#: plugins/accelerometer.rtp:48
-msgid "motion x"
-msgstr "movimento x"
+#: plugins/bitcoin.rtp:27
+msgid "bitcoin"
+msgstr ""
 
-#: plugins/accelerometer.rtp:56
-msgid "motion y"
-msgstr "movimento y"
+#: plugins/facebook.rtp:27
+msgid "publish"
+msgstr "publicar"
 
-#: plugins/accelerometer.rtp:64
-msgid "motion z"
-msgstr "movimento z"
+#: plugins/facebook.rtp:30
+msgid "comment"
+msgstr "comentar"
 
-#~msgid "hspace"
-#~msgstr "espaço horizontal"
+#: plugins/weather.rtp:62
+#: plugins/weather.rtp:86
+msgid "Days ahead must be in the range of -1 to 5."
+msgstr ""
 
-#~msgid "vspace"
-#~msgstr "espaço vertical"
+#: plugins/weather.rtp:107
+msgid "forecast"
+msgstr ""
 
-#~msgid "sing"
-#~msgstr "cantar"
+#: plugins/weather.rtp:108
+#: plugins/weather.rtp:122
+#: plugins/weather.rtp:135
+msgid "city"
+msgstr "cidade"
 
-#~msgid "sense left"
-#~msgstr "sentir esquerda"
+#: plugins/weather.rtp:109
+#: plugins/weather.rtp:123
+#: plugins/weather.rtp:136
+msgid "day"
+msgstr "dia"
 
-#~msgid "cloud"
-#~msgstr "nuvem"
+#: plugins/weather.rtp:121
+msgid "high"
+msgstr ""
 
-#~msgid "rodi"
-#~msgstr "RoDi"
+#: plugins/weather.rtp:134
+msgid "low"
+msgstr ""
 
-#~msgid "Save your project to a server."
-#~msgstr "Salva seu projeto para um servidor"
+#: plugins/rodi.rtp:176
+msgid "blink"
+msgstr ""
 
-#~msgid "blocks"
-#~msgstr "blocos"
+#: plugins/rodi.rtp:195
+msgid "play"
+msgstr ""
 
-#~msgid "eatme"
-#~msgstr "coma-me"
+#: plugins/rodi.rtp:197
+msgid "duration"
+msgstr "duração"
+
+#: plugins/rodi.rtp:250
+msgid "led"
+msgstr ""
+
+#: plugins/rodi.rtp:269
+msgid "light intensity"
+msgstr ""
+
+#: plugins/rodi.rtp:283
+msgid "infrared light (left)"
+msgstr ""
+
+#: plugins/rodi.rtp:297
+msgid "infrared light (right)"
+msgstr ""
+
+#: plugins/rodi.rtp:311
+msgid "distance"
+msgstr ""
+
+#: plugins/rodi.rtp:339
+msgid "move"
+msgstr "mover"
+
+#: plugins/heap.rtp:81
+#: plugins/heap.rtp:85
+msgid "You need to select a file."
+msgstr ""
 
 #~msgid "food"
 #~msgstr "comida"
 
-#~msgid "maths"
-#~msgstr "matemática"
+#: js/turtledefs.js:44
 
-#~msgid "This button opens and closes the primary toolbar."
-#~msgstr "Este botão abre e fecha a barra de ferramentas primária"
-
-#~msgid "mashape"
-#~msgstr "mashape"
+#~msgid "Click to run the project in slow mode."
+#~msgstr "Clique para executar o projeto em modo lento"
 
 #~msgid "Expand/collapse toolbar"
 #~msgstr "Expande ou recolhe a barra de ferramentas"
@@ -1547,16 +1512,40 @@ msgstr "movimento z"
 #~msgid "see distance"
 #~msgstr "Ver distância"
 
-#~msgid "logic"
-#~msgstr "lógica"
+#~msgid "hspace"
+#~msgstr "espaço horizontal"
+
+#~msgid "eatme"
+#~msgstr "coma-me"
+
+#~msgid "This button opens and closes the primary toolbar."
+#~msgstr "Este botão abre e fecha a barra de ferramentas primária"
+
+#~msgid "maths"
+#~msgstr "matemática"
+
+#~msgid "sense left"
+#~msgstr "sentir esquerda"
+
+#: js/basicblocks.js:1030
+
+#~msgid "save as lilypond"
+#~msgstr ""
 
 #: js/basicblocks.js:1105
 
 #~msgid "openProject"
 #~msgstr ""
 
-#~msgid "end hollow line"
-#~msgstr "terminar linha oca"
+#: js/activity.js:1949
+
+#: js/turtledefs.js:44
+
+#~msgid "Run slow"
+#~msgstr "Executar lentamente"
+
+#~msgid "cloud"
+#~msgstr "nuvem"
 
 #~msgid "blink (ms)"
 #~msgstr "piscar (ms)"
@@ -1564,14 +1553,21 @@ msgstr "movimento z"
 #~msgid "begin hollow line"
 #~msgstr "iniciar linha oca"
 
+#~msgid "end hollow line"
+#~msgstr "terminar linha oca"
+
 #~msgid "sense right"
 #~msgstr "sentir direito"
 
 #~msgid "Load project from file"
 #~msgstr "Carregar projeto do arquivo"
 
-#: js/basicblocks.js:1030
+#~msgid "Save your project to a server."
+#~msgstr "Salva seu projeto para um servidor"
 
-#~msgid "save as lilypond"
-#~msgstr ""
+#~msgid "logic"
+#~msgstr "lógica"
+
+#~msgid "blocks"
+#~msgstr "blocos"
 

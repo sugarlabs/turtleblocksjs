@@ -174,17 +174,17 @@ block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions1.svg' />
 
-Defining an action to create a new block, "*Square*"
+Defining an action to create a new block, "*Square*" [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_1&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions2.svg' />
 
-Using the "*Square*" block
+Using the "*Square*" block [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_2&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions3.svg' />
 
 The *Do* block lets you specify an action by name. In this example, we
 choose "one of" two names, "*Square*" and "*Triangle*" to determine which
-action to take.
+action to take. [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_3&run=True)
 
 4. Parameters
 -------------

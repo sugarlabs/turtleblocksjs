@@ -198,7 +198,7 @@ their values with the *Add* block or with the corresponding set blocks.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters1.svg' />
 
 Using the *Heading* parameter, which changes each time the turtle
-changes direction, to change the color of a spiral
+changes direction, to change the color of a spiral [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_1&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters2.svg' />
 
@@ -209,18 +209,18 @@ LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters3.svg' />
 
 Often you want to just increment a parameter by 1. For this, use the
-*Add-1-to* block.
+*Add-1-to* block. [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_3&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters4.svg' />
 
 To increment (or decrement) a parameter by an arbitrary value, use the
-*Add-to* block.
+*Add-to* block. [RUN LIVE](https://turtle.sugarlabs.org/?file=parameters_4&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters5.svg' />
 
 To make other changes to a parameter based on the current value, use
 the parameter's *Set* block. In this example, the pen size is doubled
-with each step in the iteration.
+with each step in the iteration. [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_5&run=True)
 
 5. Conditionals
 ---------------

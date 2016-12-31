@@ -236,7 +236,7 @@ and not.
 
 Using a conditonal to select a color: Once the heading > 179, the
 color changes. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Conditionals_1.tb&run=true)
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals2.svg' />
 
@@ -346,17 +346,20 @@ paint program, they become deeply engaged. How will you modify paint?
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint1.svg' />
 
 In its simplest form, paint is just a matter of moving the turtle to
-whereever the mouse is positioned.
+whereever the mouse is positioned. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Paint_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint2.svg' />
 
 Adding a test for the mouse button lets us move the turtle without
-leaving a trail of ink.
+leaving a trail of ink. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Paint_2&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint3.svg' />
 
 In this example, we change the pen size based on the volume of
-microphone input.
+microphone input. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Paint_3&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint4.svg' />
 
@@ -382,12 +385,14 @@ Example: Keyboard
 
 In order to grab keycodes from the keyboard, you need to use a *While*
 block. In the above example, we store the keyboard value in a box,
-test it, and if it is > 0, return the value.
+test it, and if it is > 0, return the value. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Keyboard_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/keyboard2.svg' />
 
 If you want to convert the keycode to a alphanumeric character, you
-need to use the *To ASCII* block. E.g., *toASCII(65) = A*
+need to use the *To ASCII* block. E.g., *toASCII(65) = A* [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Keyboard_2&run=true)
 
 8. Turtles, Sprites, Buttons, and Events
 ----------------------------------------

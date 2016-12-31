@@ -277,12 +277,14 @@ block (left) will open a file browser. After selecting an image file
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media3.svg' />
 
 The *Show* block in combination with the *Camera* block will capture and
-display an image from a webcam.
+display an image from a webcam. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Media_3&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media4.svg' />
 
 The *Show* block can also be used in conjunction with a URL that
-points to media.
+points to media. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Media_4&run=true)
 
 7. Sensors
 ----------

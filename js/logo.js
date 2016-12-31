@@ -1554,7 +1554,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
         // Run the last flow in the queue.
         if (logo.turtles.turtleList[turtle].queue.length > queueStart) {
             nextBlock = last(logo.turtles.turtleList[turtle].queue).blk;
-            parentBlk = last(logo.turtles.turtleList[turtle].queue).parentBlk;
+            parentBlk = last(logo.parentFlowQueue[turtle]);
             passArg = last(logo.turtles.turtleList[turtle].queue).args;
             // Since the forever block starts at -1, it will never === 1.
             if (last(logo.turtles.turtleList[turtle].queue).count === 1) {

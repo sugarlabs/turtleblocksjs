@@ -174,17 +174,17 @@ block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions1.svg' />
 
-Defining an action to create a new block, "*Square*"
+Defining an action to create a new block, "*Square*" [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_1&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions2.svg' />
 
-Using the "*Square*" block
+Using the "*Square*" block [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_2&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions3.svg' />
 
 The *Do* block lets you specify an action by name. In this example, we
 choose "one of" two names, "*Square*" and "*Triangle*" to determine which
-action to take.
+action to take. [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_3&run=True)
 
 4. Parameters
 -------------
@@ -198,7 +198,7 @@ their values with the *Add* block or with the corresponding set blocks.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters1.svg' />
 
 Using the *Heading* parameter, which changes each time the turtle
-changes direction, to change the color of a spiral
+changes direction, to change the color of a spiral [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_1&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters2.svg' />
 
@@ -209,18 +209,18 @@ LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters3.svg' />
 
 Often you want to just increment a parameter by 1. For this, use the
-*Add-1-to* block.
+*Add-1-to* block. [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_3&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters4.svg' />
 
 To increment (or decrement) a parameter by an arbitrary value, use the
-*Add-to* block.
+*Add-to* block. [RUN LIVE](https://turtle.sugarlabs.org/?file=parameters_4&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters5.svg' />
 
 To make other changes to a parameter based on the current value, use
 the parameter's *Set* block. In this example, the pen size is doubled
-with each step in the iteration.
+with each step in the iteration. [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_5&run=True)
 
 5. Conditionals
 ---------------
@@ -236,17 +236,19 @@ and not.
 
 Using a conditonal to select a color: Once the heading > 179, the
 color changes. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals_1.tb&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals2.svg' />
 
 Conditionals along with the *Random* block can be used to simulate a
-coin toss.
+coin toss. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals_2&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals3.svg' />
 
 A coin toss is such a common operation that we added the *One-of* block
-as a convenience.
+as a convenience. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals_3&run=true)
 
 6. Multimedia
 -------------

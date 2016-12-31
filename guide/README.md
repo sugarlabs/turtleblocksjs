@@ -236,17 +236,19 @@ and not.
 
 Using a conditonal to select a color: Once the heading > 179, the
 color changes. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals_1.tb&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals2.svg' />
 
 Conditionals along with the *Random* block can be used to simulate a
-coin toss.
+coin toss. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals_2&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals3.svg' />
 
 A coin toss is such a common operation that we added the *One-of* block
-as a convenience.
+as a convenience. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals_3&run=true)
 
 6. Multimedia
 -------------

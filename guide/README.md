@@ -403,7 +403,8 @@ A separate turtle is created for each *Start* block. The turtles run
 their code in parallel with each other whenever the *Run* button is
 clicked. Each turtle maintains its own set of parameters for position,
 color, pen size, pen state, etc. In this example, three different
-turtles draw three different shapes.
+turtles draw three different shapes. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Turtles_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles2.svg' />
 
@@ -417,7 +418,8 @@ and forth between two states as it moves across the screen.
 Turtles can be programmed to respond to a "click" event, so they can
 be used as buttons. In this example, each time the turtle is clicked,
 the action is run, which move the turtle to a random location on the
-screen.
+screen. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Turtles_3&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles4.svg' />
 

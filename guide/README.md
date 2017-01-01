@@ -527,7 +527,8 @@ current value of the index. E.g., when the value in the index *Box* equals
 accumulated number of times that the dice toss resulted in a 2; when
 the value in the *Index Box* is 3, the turtle goes forward by the value
 in *Box 3*, which is the accumulated number of times that the dice toss
-resulted in a 3; etc.
+resulted in a 3; etc. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Advanced_Boxes&run=true)
 
 11. The Heap
 ------------
@@ -558,17 +559,20 @@ the drawing by popping points off of the heap.
 
 In the first example, we simply push the turtle position whenever we
 draw, along with the pen state. Note since we pop in the reverse order
-that we push, we push y, then x, then the mouse state.
+that we push, we push y, then x, then the mouse state. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Heaps_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap2.svg' />
 
 In the second example, we pop pen state, x, and y off of the heap and
-playback our drawing.
+playback our drawing. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Heaps_2&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap3.svg' />
 
 Use the *Save Heap* block to save the state of the heap to a file. In
-this example, we save our drawing to a file for playback later.
+this example, we save our drawing to a file for playback later. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Heaps_3&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap4.svg' />
 

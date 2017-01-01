@@ -442,7 +442,8 @@ In this example, a *Calculate* stack is used to return the current
 distance of the turtle from the center of the screen. Renaming an
 action stack that has a *Return* block will cause the creation of a new
 block in the *Actions* palette that can be used to reference the return
-value: in this case, a *Distance* block is created.
+value: in this case, a *Distance* block is created. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Actions_4&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions6.svg' />
 
@@ -453,7 +454,8 @@ block. You add additional arguments by dragging them into the "clamp".
 
 Note that args are local to *Action* stacks, but boxes are not. If you
 planned to use an action in a recursive function, you had best avoid
-boxes.
+boxes. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Actions_6&run=true)
 
 Example: Fibonacci
 ------------------

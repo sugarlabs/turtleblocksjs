@@ -611,14 +611,16 @@ monitor progress through a program.
 
 In this example, we use the addition operator to concatinate strings
 in a print statement. The mouse x + ", " + mouse y are printed in the
-inner loop.
+inner loop. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Debug_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/status1.svg' />
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/status2.svg' />
 
 There is also a *Status* widget that can be programmed to show various
-paramters as per the figures above.
+paramters as per the figures above. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Status_1&run=true)
 
 Parameter blocks, boxes, arithmetic and boolean operators, and many
 sensor blocks will print their current value as the program runs when
@@ -637,7 +639,8 @@ proceeds at a slower pace an the block values are shown.
 
 A *Show* block is used to slow down execution of the code in an *Action*
 stack in order to facilitate debugging. In this case, we slow down
-during playback in order to watch the values popped off the heap.
+during playback in order to watch the values popped off the heap. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Debug_2&run=true)
 
 14. Advanced Color
 ------------------

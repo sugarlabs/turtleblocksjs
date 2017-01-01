@@ -174,17 +174,17 @@ block.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions1.svg' />
 
-Defining an action to create a new block, "*Square*"
+Defining an action to create a new block, "*Square*" [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_1&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions2.svg' />
 
-Using the "*Square*" block
+Using the "*Square*" block [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_2&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions3.svg' />
 
 The *Do* block lets you specify an action by name. In this example, we
 choose "one of" two names, "*Square*" and "*Triangle*" to determine which
-action to take.
+action to take. [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_3&run=True)
 
 4. Parameters
 -------------
@@ -198,7 +198,7 @@ their values with the *Add* block or with the corresponding set blocks.
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters1.svg' />
 
 Using the *Heading* parameter, which changes each time the turtle
-changes direction, to change the color of a spiral
+changes direction, to change the color of a spiral [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_1&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters2.svg' />
 
@@ -209,18 +209,18 @@ LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters3.svg' />
 
 Often you want to just increment a parameter by 1. For this, use the
-*Add-1-to* block.
+*Add-1-to* block. [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_3&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters4.svg' />
 
 To increment (or decrement) a parameter by an arbitrary value, use the
-*Add-to* block.
+*Add-to* block. [RUN LIVE](https://turtle.sugarlabs.org/?file=parameters_4&run=True)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/parameters5.svg' />
 
 To make other changes to a parameter based on the current value, use
 the parameter's *Set* block. In this example, the pen size is doubled
-with each step in the iteration.
+with each step in the iteration. [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_5&run=True)
 
 5. Conditionals
 ---------------
@@ -241,12 +241,14 @@ LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals2.svg' />
 
 Conditionals along with the *Random* block can be used to simulate a
-coin toss.
+coin toss. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals_2&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/conditionals3.svg' />
 
 A coin toss is such a common operation that we added the *One-of* block
-as a convenience.
+as a convenience. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Conditionals_3&run=true)
 
 6. Multimedia
 -------------
@@ -275,12 +277,14 @@ block (left) will open a file browser. After selecting an image file
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media3.svg' />
 
 The *Show* block in combination with the *Camera* block will capture and
-display an image from a webcam.
+display an image from a webcam. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Media_3&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/media4.svg' />
 
 The *Show* block can also be used in conjunction with a URL that
-points to media.
+points to media. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Media_4&run=true)
 
 7. Sensors
 ----------
@@ -342,17 +346,20 @@ paint program, they become deeply engaged. How will you modify paint?
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint1.svg' />
 
 In its simplest form, paint is just a matter of moving the turtle to
-whereever the mouse is positioned.
+whereever the mouse is positioned. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Paint_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint2.svg' />
 
 Adding a test for the mouse button lets us move the turtle without
-leaving a trail of ink.
+leaving a trail of ink. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Paint_2&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint3.svg' />
 
 In this example, we change the pen size based on the volume of
-microphone input.
+microphone input. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Paint_3&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/paint4.svg' />
 
@@ -378,12 +385,14 @@ Example: Keyboard
 
 In order to grab keycodes from the keyboard, you need to use a *While*
 block. In the above example, we store the keyboard value in a box,
-test it, and if it is > 0, return the value.
+test it, and if it is > 0, return the value. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Keyboard_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/keyboard2.svg' />
 
 If you want to convert the keycode to a alphanumeric character, you
-need to use the *To ASCII* block. E.g., *toASCII(65) = A*
+need to use the *To ASCII* block. E.g., *toASCII(65) = A* [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Keyboard_2&run=true)
 
 8. Turtles, Sprites, Buttons, and Events
 ----------------------------------------
@@ -394,7 +403,8 @@ A separate turtle is created for each *Start* block. The turtles run
 their code in parallel with each other whenever the *Run* button is
 clicked. Each turtle maintains its own set of parameters for position,
 color, pen size, pen state, etc. In this example, three different
-turtles draw three different shapes.
+turtles draw three different shapes. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Turtles_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles2.svg' />
 
@@ -408,7 +418,8 @@ and forth between two states as it moves across the screen.
 Turtles can be programmed to respond to a "click" event, so they can
 be used as buttons. In this example, each time the turtle is clicked,
 the action is run, which move the turtle to a random location on the
-screen.
+screen. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Turtles_3&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/turtles4.svg' />
 
@@ -431,7 +442,8 @@ In this example, a *Calculate* stack is used to return the current
 distance of the turtle from the center of the screen. Renaming an
 action stack that has a *Return* block will cause the creation of a new
 block in the *Actions* palette that can be used to reference the return
-value: in this case, a *Distance* block is created.
+value: in this case, a *Distance* block is created. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Actions_4&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/actions6.svg' />
 
@@ -442,7 +454,8 @@ block. You add additional arguments by dragging them into the "clamp".
 
 Note that args are local to *Action* stacks, but boxes are not. If you
 planned to use an action in a recursive function, you had best avoid
-boxes.
+boxes. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Actions_6&run=true)
 
 Example: Fibonacci
 ------------------
@@ -514,7 +527,8 @@ current value of the index. E.g., when the value in the index *Box* equals
 accumulated number of times that the dice toss resulted in a 2; when
 the value in the *Index Box* is 3, the turtle goes forward by the value
 in *Box 3*, which is the accumulated number of times that the dice toss
-resulted in a 3; etc.
+resulted in a 3; etc. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Advanced_Boxes&run=true)
 
 11. The Heap
 ------------
@@ -545,17 +559,20 @@ the drawing by popping points off of the heap.
 
 In the first example, we simply push the turtle position whenever we
 draw, along with the pen state. Note since we pop in the reverse order
-that we push, we push y, then x, then the mouse state.
+that we push, we push y, then x, then the mouse state. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Heaps_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap2.svg' />
 
 In the second example, we pop pen state, x, and y off of the heap and
-playback our drawing.
+playback our drawing. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Heaps_2&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap3.svg' />
 
 Use the *Save Heap* block to save the state of the heap to a file. In
-this example, we save our drawing to a file for playback later.
+this example, we save our drawing to a file for playback later. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Heaps_3&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/heap4.svg' />
 
@@ -579,7 +596,8 @@ Background* block is used to suppress the inclusion of the background
 fill in the SVG output; (2) *Hollow lines* are used to make graphic have
 dimension; and (3) the *Save as SVG* block writes to the Downloads
 directory on your computer. (Josh Burker introduced me to Tinkercad, a
-website that can be used to convert SVG to STL.)
+website that can be used to convert SVG to STL.) [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Extras_1&run=true)
 
 13. Debugging Aids
 ------------------
@@ -593,14 +611,16 @@ monitor progress through a program.
 
 In this example, we use the addition operator to concatinate strings
 in a print statement. The mouse x + ", " + mouse y are printed in the
-inner loop.
+inner loop. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Debug_1&run=true)
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/status1.svg' />
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide/status2.svg' />
 
 There is also a *Status* widget that can be programmed to show various
-paramters as per the figures above.
+paramters as per the figures above. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Status_1&run=true)
 
 Parameter blocks, boxes, arithmetic and boolean operators, and many
 sensor blocks will print their current value as the program runs when
@@ -619,7 +639,8 @@ proceeds at a slower pace an the block values are shown.
 
 A *Show* block is used to slow down execution of the code in an *Action*
 stack in order to facilitate debugging. In this case, we slow down
-during playback in order to watch the values popped off the heap.
+during playback in order to watch the values popped off the heap. [RUN
+LIVE](http://turtle.sugarlabs.org/?file=Debug_2&run=true)
 
 14. Advanced Color
 ------------------

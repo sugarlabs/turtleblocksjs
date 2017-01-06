@@ -194,6 +194,8 @@ function Turtle (name, turtles, drum) {
             this.svgOutput += 'C ' + cx2Scaled + ',' + cy2Scaled + ' ' + cx1Scaled + ',' + cy1Scaled + ' ' + axScaled + ',' + ayScaled + ' ';
             this.closeSVG();
 
+            ctx.stroke();
+            ctx.closePath();
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
@@ -241,6 +243,8 @@ function Turtle (name, turtles, drum) {
             this.svgOutput += 'C ' + cx1Scaled + ',' + cy1Scaled + ' ' + cx2Scaled + ',' + cy2Scaled + ' ' + fxScaled + ',' + fyScaled;
             this.x = x2;
             this.y = y2;
+            ctx.stroke();
+            ctx.closePath();
 
         } else {
             this.x = x2;
@@ -257,7 +261,6 @@ function Turtle (name, turtles, drum) {
         var degrees = Math.atan2(nx - cp2x, ny - cp2y);
         degrees = 180 * degrees / Math.PI;
         this.doSetHeading(degrees);
-        ctx.stroke();
     };
 
     this.move = function(ox, oy, x, y, invert) {
@@ -353,6 +356,8 @@ function Turtle (name, turtles, drum) {
 
             this.closeSVG();
 
+            ctx.stroke();
+            ctx.closePath();
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
@@ -369,10 +374,11 @@ function Turtle (name, turtles, drum) {
             var nxScaled = nx * this.turtles.scale;
             var nyScaled = ny * this.turtles.scale;
             this.svgOutput += nxScaled + ',' + nyScaled + ' ';
+            ctx.stroke();
+            ctx.closePath();
         } else {
             ctx.moveTo(nx, ny);
         }
-        ctx.stroke();
         this.penstrokes.image = canvas;
         // Update turtle position on screen.
         this.container.x = nx;
@@ -481,6 +487,8 @@ function Turtle (name, turtles, drum) {
             this._svgArc(steps, cx2 * this.turtles.scale, cy2 * this.turtles.scale, step * this.turtles.scale, sa2, ea2);
             this.closeSVG();
 
+            ctx.stroke();
+            ctx.closePath();
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
@@ -504,6 +512,8 @@ function Turtle (name, turtles, drum) {
             var nyScaled = ny * this.turtles.scale;
             var radiusScaled = radius * this.turtles.scale;
             this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 ' + sweep + ' ' + nxScaled + ',' + nyScaled + ' ';
+            ctx.stroke();
+            ctx.closePath();
         } else {
             ctx.moveTo(nx, ny);
         }
@@ -517,7 +527,6 @@ function Turtle (name, turtles, drum) {
             this.x = this.screenX2turtles.turtleX(x);
             this.y = this.screenY2turtles.turtleY(y);
         }
-        ctx.stroke();
     };
 
     // Turtle functions

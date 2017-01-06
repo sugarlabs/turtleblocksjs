@@ -1407,6 +1407,9 @@ define(function (require) {
         };
 
         function _doOpenSamples() {
+            logo.doStopTurtle();
+            helpContainer.visible = false;
+            docById('helpElem').style.visibility = 'hidden';
             console.log('save locally');
             saveLocally();
             thumbnails.show()

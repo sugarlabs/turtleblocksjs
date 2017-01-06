@@ -1189,7 +1189,11 @@ define(function (require) {
                 tur.container.y = tur.turtles.turtleY2screenY(tur.y);
                 tur.turtles.refreshCanvas();
             }
-        };
+            var artcanvas = document.getElementById("overlayCanvas");
+            artcanvas.width = w;
+            artcanvas.height = h;
+            //artcanvas.getContext("2d").scale(turlteBlocksScale,turlteBlocksScale);
+            };
 
         window.onresize = function () {
             _onResize();
@@ -1403,6 +1407,9 @@ define(function (require) {
         };
 
         function _doOpenSamples() {
+            logo.doStopTurtle();
+            helpContainer.visible = false;
+            docById('helpElem').style.visibility = 'hidden';
             console.log('save locally');
             saveLocally();
             thumbnails.show()

@@ -64,7 +64,6 @@ define(function (require) {
     require('mespeak');
     require('Chart');
 
-
     require('activity/utils');
     require('activity/artwork');
     require('activity/status');
@@ -77,6 +76,7 @@ define(function (require) {
     require('activity/blocks');
     require('activity/block');
     require('activity/clearbox');
+    require('activity/savebox') // for save-as options box
     require('activity/utilitybox');
     require('activity/samplesviewer');
     require('activity/blockfactory');
@@ -145,6 +145,7 @@ define(function (require) {
         var blocks;
         var logo;
         var clearBox;
+        var saveBox;
         var utilityBox;
         var thumbnails;
         var buttonsVisible = true;
@@ -158,7 +159,7 @@ define(function (require) {
         var lastKeyCode = 0;
         var pasteContainer = null;
         var chartBitmap = null;
-
+        
         // Calculate the palette colors.
         for (var p in PALETTECOLORS) {
             PALETTEFILLCOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1], PALETTECOLORS[p][2]);
@@ -231,6 +232,7 @@ define(function (require) {
         var onscreenButtons = [];
         var onscreenMenu = [];
         var utilityButton = null;
+        var saveButton = null;
 
         var helpContainer = null;
         var helpIdx = 0;
@@ -584,6 +586,7 @@ define(function (require) {
             logo.setBackgroundColor(-1);
 
             clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
+            saveBox = new SaveBox(canvas, stage, refreshCanvas, doSaveTB, doSaveSVG, doSavePNG, doUploadToPlanet, doShareOnFacebook);
             utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, doAnalytics, toggleScroller);
             thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
             initBasicProtoBlocks(palettes, blocks);
@@ -1416,9 +1419,7 @@ define(function (require) {
         };
 
         function doSave() {
-            console.log('Saving .tb file');
-            var name = 'My Project';
-            download(name + '.tb', 'data:text/plain;charset=utf-8,' + prepareExport());
+            saveBox.init(turlteBlocksScale, saveButton.x - 27, saveButton.y - 97, _makeButton);
         };
 
         function doLoad() {
@@ -1902,12 +1903,36 @@ define(function (require) {
             pluginChooser.click();
         };
 
-        function saveToFile() {
+        function doSaveTB() {
             var filename = prompt('Filename:');
             if (fileExt(filename) !== 'tb') {
                 filename += '.tb';
             }
             download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
+        };
+
+        function doSaveSVG() {
+            var filename = prompt('Filename:');
+            if (fileExt(filename) !== 'svg') {
+                filename += '.svg';
+            }
+            download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
+        };
+
+        function doSavePNG() {
+            var filename = prompt('Filename:');
+            if (fileExt(filename) !== 'png') {
+                filename += '.png';
+            }
+            download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
+        };
+
+        function doUploadToPlanet() {
+
+        };
+
+        function doShareOnFacebook() {
+
         };
 
         function _hideStopButton() {
@@ -2081,6 +2106,7 @@ define(function (require) {
                 _loadButtonDragHandler(container, x, y, menuNames[i][1]);
                 onscreenMenu.push(container);
                 if (menuNames[i][0] === 'utility') {
+                    saveButton = container;
                     utilityButton = container;
                 }
                 container.visible = false;

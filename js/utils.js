@@ -558,53 +558,22 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
     var w = 320;
     var h = 240;
 
-    var streaming = false;
     var video = document.querySelector('#camVideo');
     var canvas = document.querySelector('#camCanvas');
-    navigator.getMedia = (navigator.getUserMedia ||
-                          navigator.mozGetUserMedia ||
-                          navigator.webkitGetUserMedia ||
-                          navigator.msGetUserMedia);
-    if (navigator.getMedia === undefined) {
-        errorMsg('Your browser does not support the webcam');
-    }
 
-    if (!hasSetupCamera) {
-        navigator.getMedia(
-            {video: true, audio: false},
-            function (stream) {
-                if (navigator.mozGetUserMedia) {
-                    video.mozSrcObject = stream;
-                } else {
-                    var vendorURL = window.URL || window.webkitURL;
-                    video.src = vendorURL.createObjectURL(stream);
-                }
+    if (navigator.mediaDevices.getUserMedia) {
+        if (!hasSetupCamera) {
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                video.src = window.URL.createObjectURL(stream);
                 video.play();
                 hasSetupCamera = true;
-            }, function (error) {
-                errorMsg('Could not connect to camera');
-                console.log('Could not connect to camera', error);
-        });
-    } else {
-        streaming = true;
-        video.play();
-        if (isVideo) {
-            cameraID = window.setInterval(draw, 100);
-            setCameraID(cameraID);
+            }, function(reason) {
+                errorMsg('Cannot launch camera. Probably your connection is not secure.');
+                console.log(reason);
+                return;
+            });
         } else {
-            draw();
-        }
-    }
-
-    video.addEventListener('canplay', function (event) {
-        console.log('canplay', streaming, hasSetupCamera);
-        if (!streaming) {
-            video.setAttribute('width', w);
-            video.setAttribute('height', h);
-            canvas.setAttribute('width', w);
-            canvas.setAttribute('height', h);
-            streaming = true;
-
+            video.play();
             if (isVideo) {
                 cameraID = window.setInterval(draw, 100);
                 setCameraID(cameraID);
@@ -612,13 +581,27 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
                 draw();
             }
         }
+    } else {
+        errorMsg('Your browser does not support the webcam');
+        return;
+    }
+
+    video.addEventListener('canplay', function (event) {
+        video.setAttribute('width', w);
+        video.setAttribute('height', h);
+        canvas.setAttribute('width', w);
+        canvas.setAttribute('height', h);
+        if (isVideo) {
+            cameraID = window.setInterval(draw, 100);
+            setCameraID(cameraID);
+        } else {
+            draw();
+        }
     }, false);
 
     function draw() {
-        canvas.width = w;
-        canvas.height = h;
         canvas.getContext('2d').drawImage(video, 0, 0, w, h);
-        var data = canvas.toDataURL('image/png');
+        var data = canvas.toDataURL('image/jpeg');
         turtles.turtleList[turtle].doShowImage(args[0], data);
     }
 }

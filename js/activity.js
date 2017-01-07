@@ -516,6 +516,7 @@ define(function (require) {
         // ErrorMsg block
         var errorMsgText = null;
         var errorMsgArrow = null;
+        var errorMsgTimeout = null;
         var errorArtwork = {};
         const ERRORARTWORK = ['emptybox', 'emptyheap', 'negroot', 'noinput', 'zerodivide', 'notanumber', 'nostack', 'notastring', 'nomicrophone'];
 
@@ -1661,15 +1662,15 @@ define(function (require) {
 
         function hideMsgs() {
             errorMsgText.parent.visible = false;
+            clearTimeout(errorMsgTimeout);
             if (errorMsgArrow != null) {
                 errorMsgArrow.removeAllChildren();
                 refreshCanvas();
             }
-
-            msgText.parent.visible = false;
             for (var i in errorArtwork) {
                 errorArtwork[i].visible = false;
             }
+            msgText.parent.visible = false;
         };
 
         function textMsg(msg) {
@@ -1771,6 +1772,7 @@ define(function (require) {
                 break;
             }
 
+            errorMsgTimeout = setTimeout(hideMsgs, 10000); // make error messages autodisappearing after 10 seconds
             update = true;
         };
 

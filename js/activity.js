@@ -1897,7 +1897,7 @@ define(function (require) {
         };
 
         function doSaveTB() {
-            var filename = prompt('Filename:');
+            var filename = prompt('Filename:', 'untitled.tb');  // default filename = untitled
             if (fileExt(filename) !== 'tb') {
                 filename += '.tb';
             }
@@ -1905,7 +1905,7 @@ define(function (require) {
         };
 
         function doSaveSVG() {
-            var filename = prompt('Filename:');
+            var filename = prompt('Filename:', 'untitled.svg');
             if (fileExt(filename) !== 'svg') {
                 filename += '.svg';
             }
@@ -1913,7 +1913,7 @@ define(function (require) {
         };
 
         function doSavePNG() {
-            var filename = prompt('Filename:');
+            var filename = prompt('Filename:', 'untitled.png');
             if (fileExt(filename) !== 'png') {
                 filename += '.png';
             }
@@ -1921,11 +1921,13 @@ define(function (require) {
         };
 
         function doUploadToPlanet() {
-
+            saveLocally();
+            thumbnails.show()
         };
 
         function doShareOnFacebook() {
-
+            alert("Facebook Sharing : disabled");    // remove when add fb share link
+            // add code for facebook share link
         };
 
         function _hideStopButton() {

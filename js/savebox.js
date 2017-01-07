@@ -21,44 +21,45 @@ function SaveBox(canvas, stage, refreshCanvas, saveAsTB, saveAsSVG, saveAsPNG, u
             this.createBox(scale, x, y);
             var box = this;
 
-            this.saveTB = makeButton('save-tb', _('Save as .tb'), this.container.x + 45, this.container.y + 85, 55, 0, this.stage);
+            this.saveTB = makeButton('save-tb', _('Save as .tb'), this.container.x + 50, this.container.y + 85, 55, 0, this.stage);
             this.saveTB.visible = true;
             this.positionHoverText(this.saveTB);
             this.saveTB.on('click', function(event) {
-                box.doSaveTB();
                 box.hide();
+                box.doSaveTB();
             });
 
-            this.saveSVG = makeButton('save-svg', _('Save as .svg'), this.container.x + 105, this.container.y + 85, 55, 0, this.stage);
+            this.saveSVG = makeButton('save-svg', _('Save as .svg'), this.container.x + 115, this.container.y + 85, 55, 0, this.stage);
             this.saveSVG.visible = true;
             this.positionHoverText(this.saveSVG);
             this.saveSVG.on('click', function(event) {
-                box.doSaveSVG();
                 box.hide();
+                box.doSaveSVG();
             });
 
-            this.savePNG = makeButton('save-png', _('Save as .png'), this.container.x + 165, this.container.y + 85, 55, 0, this.stage);
+            this.savePNG = makeButton('save-png', _('Save as .png'), this.container.x + 180, this.container.y + 85, 55, 0, this.stage);
             this.savePNG.visible = true;
             this.positionHoverText(this.savePNG);
             this.savePNG.on('click', function(event) {
-                box.doSavePNG();
                 box.hide();
+                box.doSavePNG();
             });
 
-            this.uploadToPlanet = makeButton('upload-planet', _('Upload to Planet'), this.container.x + 220, this.container.y + 85, 55, 0, this.stage);
+            this.uploadToPlanet = makeButton('upload-planet', _('Upload to Planet'), this.container.x + 245, this.container.y + 85, 55, 0, this.stage);
             this.uploadToPlanet.visible = true;
             this.positionHoverText(this.uploadToPlanet);
-            this.upToPlanet.on('click', function(event) {
-                box.doUploadToPlanet();
+            this.uploadToPlanet.on('click', function(event) {
                 box.hide();
+                box.doUploadToPlanet();
             });
 
-            this.shareOnFb = makeButton('fb', _('Share on Facebook'), this.container.x + 275, this.container.y + 85, 55, 0, this.stage);
+            this.shareOnFb = makeButton('fb-inactive', _('Share on Facebook'), this.container.x + 310, this.container.y + 85, 55, 0, this.stage);
             this.shareOnFb.visible = true;
             this.positionHoverText(this.shareOnFb);
             this.shareOnFb.on('click', function(event) {
-                box.doShareOnFacebook();
                 box.hide();
+                box.doShareOnFacebook();
+                // change 'fb-inactive' to 'fb' when the button becomes operational
             });
         } else {
             this.show();
@@ -82,7 +83,7 @@ function SaveBox(canvas, stage, refreshCanvas, saveAsTB, saveAsSVG, saveAsPNG, u
             this.saveSVG.visible = false;
             this.savePNG.visible = false;
             this.uploadToPlanet.visible = false;
-            this.shareToFb.visible = false;
+            this.shareOnFb.visible = false;
             this.container.visible = false;
             this.refreshCanvas();
         }
@@ -94,7 +95,7 @@ function SaveBox(canvas, stage, refreshCanvas, saveAsTB, saveAsSVG, saveAsPNG, u
             this.saveSVG.visible = true;
             this.savePNG.visible = true;
             this.uploadToPlanet.visible = true;
-            this.shareToFb.visible = true;
+            this.shareOnFb.visible = true;
             this.container.visible = true;
             this.refreshCanvas();
         }

@@ -600,6 +600,7 @@ function Turtle (name, turtles, drum) {
         }
         ctx.beginPath();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
         ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
         ctx.fillStyle = subrgb + this.canvasAlpha + ")";
         ctx.lineWidth = this.stroke;

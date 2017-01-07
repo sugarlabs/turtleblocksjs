@@ -1380,11 +1380,12 @@ function Block(protoblock, blocks, overrideName) {
                 // apart). Still need to get to the root cause.
                 this.blocks.adjustDocks(this.blocks.blockList.indexOf(this), true);
             }
-        } else if (['text', 'solfege', 'notename', 'number', 'media', 'loadFile'].indexOf(this.name) !== -1) {
+        }
+        if (['text', 'solfege', 'notename', 'number', 'media', 'loadFile'].indexOf(this.name) !== -1) {
             if (!haveClick) {
-                // Simulate click on Android.
+                // Simulate click on mobile devices.
                 var d = new Date();
-                if ((d.getTime() - blocks.mouseDownTime) < 500) {
+                if ((d.getTime() - blocks.mouseDownTime) < 200) {
                     if(!this.trash)
                     {
                         var d = new Date();

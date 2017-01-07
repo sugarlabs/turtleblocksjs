@@ -562,6 +562,10 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
     var video = document.querySelector('#camVideo');
     var canvas = document.querySelector('#camCanvas');
  
+    var cameraErrorTimeout = setTimeout(function () {
+        errorMsg(_('Cannot launch camera'));
+    }, 5000);
+
     if (navigator.mediaDevices.getUserMedia) {
         if (!hasSetupCamera) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
@@ -569,24 +573,25 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
                 video.play();
                 hasSetupCamera = true;
             }, function(reason) {
-                errorMsg('Cannot launch camera. Probably your connection is not secure.');
+                errorMsg(_('Cannot launch camera.'));
                 console.log(reason);
                 return;
             });
-         } else {
+        } else {
             video.play();
             if (isVideo) {
                 cameraID = window.setInterval(draw, 100);
                 setCameraID(cameraID);
-             } else {
-                 draw();
-             }
+            } else {
+                draw();
+            }
         }
     } else {
-        errorMsg('Your browser does not support the webcam');
+        errorMsg(_('Cannot launch camera.'));
         return;
     }
-     video.addEventListener('canplay', function (event) {
+
+    video.addEventListener('canplay', function (event) {
         video.setAttribute('width', w);
         video.setAttribute('height', h);
         canvas.setAttribute('width', w);
@@ -594,16 +599,18 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
         if (isVideo) {
             cameraID = window.setInterval(draw, 100);
             setCameraID(cameraID);
-         } else {
-             draw();
-         }
+        } else {
+            draw();
+        }
     }, false);
 
-     function draw() {
-         canvas.getContext('2d').drawImage(video, 0, 0, w, h);
+    function draw() {
+        canvas.getContext('2d').drawImage(video, 0, 0, w, h);
         var data = canvas.toDataURL('image/jpeg');
-         turtles.turtleList[turtle].doShowImage(args[0], data);
-     }
+        turtles.turtleList[turtle].doShowImage(args[0], data);
+        // Success? Clear error message timeout.
+        clearTimeout(cameraErrorTimeout);
+    }
 };
 
 

@@ -57,7 +57,7 @@ const LOCAL_PROJECT_STYLE ='\
 } \
 </style>';
 
-//style block is for the tooltip. num will be replaced with a unique number
+//style block is for the tooltip. _NUM_ will be replaced with a unique number
 const LOCAL_PROJECT_TEMPLATE ='\
 <li data=\'{data}\' title="{title}" current="{current}"> \
     <img class="thumbnail" src="{img}" /> \
@@ -68,10 +68,10 @@ const LOCAL_PROJECT_TEMPLATE ='\
         <img class="publish icon" title="' + _('Publish') + '" alt="' + _('Publish') + '" src="header-icons/publish.svg" /> \
         <span class="shareurlspan"> \
         <img class="share icon" title="' + _('Share') + '" alt="' + _('Share') + '" src="header-icons/share.svg" /> \
-        <div class="tooltiptriangle" id="shareurltrinum"></div> \
-        <div class="shareurltext" id="shareurldivnum"> \
+        <div class="tooltiptriangle" id="shareurltri_NUM_"></div> \
+        <div class="shareurltext" id="shareurldiv_NUM_"> \
             Copy the link to share your project:\
-            <input type="text" name="shareurl" id="shareurlboxnum" value="url here" style="margin-top:5px;width: 350px;text-align:left;" onblur="document.getElementById(\'shareurldivnum\').style.visibility = \'hidden\';document.getElementById(\'shareurlboxnum\').style.visibility = \'hidden\';document.getElementById(\'shareurltrinum\').style.visibility = \'hidden\';"/> \
+            <input type="text" name="shareurl" id="shareurlbox_NUM_" value="url here" style="margin-top:5px;width: 350px;text-align:left;" onblur="document.getElementById(\'shareurldiv_NUM_\').style.visibility = \'hidden\';document.getElementById(\'shareurlbox_NUM_\').style.visibility = \'hidden\';document.getElementById(\'shareurltri_NUM_\').style.visibility = \'hidden\';"/> \
         </div> \
         </span> \
         <img class="download icon" title="' + _('Download') + '" alt="' + _('Download') + '" src="header-icons/download.svg" /> \
@@ -84,10 +84,10 @@ const GLOBAL_PROJECT_TEMPLATE = '\
     <span>{title}</span><br/> \
     <span class="shareurlspan"> \
     <img class="share icon" title="' + _('Share') + '" alt="' + _('Share') + '" src="header-icons/share.svg" /> \
-    <div class="tooltiptriangle" id="plshareurltrinum"></div> \
-    <div class="shareurltext" id="plshareurldivnum"> \
+    <div class="tooltiptriangle" id="plshareurltri_NUM_"></div> \
+    <div class="shareurltext" id="plshareurldiv_NUM_"> \
         Copy the link to share your project:\
-        <input type="text" name="shareurl" id="plshareurlboxnum" value="url here" style="margin-top:5px;width: 350px;text-align:left;" onblur="document.getElementById(\'plshareurldivnum\').style.visibility = \'hidden\';document.getElementById(\'plshareurlboxnum\').style.visibility = \'hidden\';document.getElementById(\'plshareurltrinum\').style.visibility = \'hidden\';"/> \
+        <input type="text" name="shareurl" id="plshareurlbox_NUM_" value="url here" style="margin-top:5px;width: 350px;text-align:left;" onblur="document.getElementById(\'plshareurldiv_NUM_\').style.visibility = \'hidden\';document.getElementById(\'plshareurlbox_NUM_\').style.visibility = \'hidden\';document.getElementById(\'plshareurltri_NUM_\').style.visibility = \'hidden\';"/> \
     </div> \
     </span> \
     <img class="download icon" title="' + _('Download') + '" alt="' + _('Download') + '" src="header-icons/download.svg" /> \
@@ -137,13 +137,13 @@ function PlanetModel(controller) {
             model.stop = false;
             var todo = [];
             l.forEach(function (name, i) {
-                if (name.indexOf('.b64') !== -1) 	{
+                if (name.indexOf('.b64') !== -1) {
                     if(!(name.slice(0, 'MusicBlocks_'.length) == 'MusicBlocks_'))
                         todo.push(name);
                 }
             });
-            console.log("todo");
-            console.log(todo);
+            // console.log("todo");
+            // console.log(todo);
             model.count = 0;
             model.getImages(todo);
         });
@@ -168,7 +168,7 @@ function PlanetModel(controller) {
             model.getImages(todo);
         } else {
             jQuery.ajax({
-  	            url: SERVER + image,
+                      url: SERVER + image,
                 headers: {
                     'x-api-key' : '3tgTzMXbbw6xEKX7'
                 },
@@ -186,7 +186,7 @@ function PlanetModel(controller) {
         }
     };
 
-    this.redoLocalStorageData = function () {
+    this.redoLocalStorageData = function() {
         this.localProjects = [];
         var l = JSON.parse(storage.allProjects);
         l.forEach(function (p, i) {
@@ -339,15 +339,15 @@ function PlanetView(model, controller) {
         window.scroll(0, 0);
     });
 
-    this.update = function () {
+    this.update = function() {
         // This is werid
         var model = this;
-        console.log("update");
+        console.log('update');
         if (model.localChanged) {
             html = '';
             html = html + LOCAL_PROJECT_STYLE;
             model.localProjects.forEach(function (project, i) {
-                html = html + format(LOCAL_PROJECT_TEMPLATE, project).replace(new RegExp("num", 'g'), i.toString());
+                html = html + format(LOCAL_PROJECT_TEMPLATE, project).replace(new RegExp('_NUM_', 'g'), i.toString());
                 console.log(i);
                 console.log(project);
             });
@@ -376,15 +376,15 @@ function PlanetView(model, controller) {
         }
     };
 
-    this.addGlobalElement = function(glob,i){
+    this.addGlobalElement = function(glob, i){
         var d = document.createElement('li');
-        d.setAttribute("url",glob.url);
-        d.setAttribute("title",glob.title);
+        d.setAttribute('url', glob.url);
+        d.setAttribute('title', glob.title);
         html = '';
-        html += format(GLOBAL_PROJECT_TEMPLATE, glob).replace(new RegExp("num", 'g'), i.toString());
+        html += format(GLOBAL_PROJECT_TEMPLATE, glob).replace(new RegExp('_NUM_', 'g'), i.toString());
         d.innerHTML = html;
         var htmldata = d;
-        console.log(htmldata);
+        // console.log(htmldata);
         htmldata.querySelector('.download')
             .addEventListener('click', planet.load(htmldata));
         htmldata.querySelector('.share')
@@ -498,9 +498,9 @@ function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash
     var samples = this;  // for future reference
 
     // i18n for section titles
-    document.querySelector("#planetTitle").innerHTML = _("Planet");
-    document.querySelector("#planetMyDevice").innerHTML = _("On my device");
-    document.querySelector("#planetWorldwide").innerHTML = _("Worldwide");
+    document.querySelector('#planetTitle').innerHTML = _('Planet');
+    document.querySelector('#planetMyDevice').innerHTML = _('On my device');
+    document.querySelector('#planetWorldwide').innerHTML = _('Worldwide');
 
     this.model = new PlanetModel(this);
     this.view = new PlanetView(this.model, this);
@@ -546,7 +546,7 @@ function validateImageData(d) {
         return false;
     }
     else {
-        var data = d.split(",");
+        var data = d.split(',');
         if(data[1].length === 0){
             return false;
         }

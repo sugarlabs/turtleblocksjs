@@ -26,7 +26,7 @@ function format(str, data) {
                      function (match, item) {
     return _(item);
   });
-}
+};
 
 
 function canvasPixelRatio() {
@@ -38,7 +38,7 @@ function canvasPixelRatio() {
                             context.oBackingStorePixelRatio ||
                             context.backingStorePixelRatio || 1;
     return devicePixelRatio / backingStoreRatio;
-}
+};
 
 
 function windowHeight() {
@@ -48,7 +48,7 @@ function windowHeight() {
     } else {
         return window.innerHeight;
     }
-}
+};
 
 
 function httpGet(projectName) {
@@ -68,7 +68,7 @@ function httpGet(projectName) {
         throw 'Error from server';
     }
     return xmlHttp.responseText;
-}
+};
 
 
 function httpPost(projectName, data) {
@@ -79,7 +79,7 @@ function httpPost(projectName, data) {
     xmlHttp.send(data);
     // return xmlHttp.responseText;
     return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
-}
+};
 
 
 function HttpRequest(url, loadCallback, userCallback) {
@@ -100,17 +100,17 @@ function HttpRequest(url, loadCallback, userCallback) {
         if (typeof userCallback === 'function') userCallback(false, 'network error');
         this.request = this.handler = this.userCallback = null;
     }
-}
+};
 
 
 function docByTagName(tag) {
     document.getElementsByTagName(tag);
-}
+};
 
 
 function docById(id) {
     return document.getElementById(id);
-}
+};
 
 
 function last(myList) {
@@ -120,7 +120,7 @@ function last(myList) {
     } else {
         return myList[i - 1];
     }
-}
+};
 
 
 function doSVG(canvas, logo, turtles, width, height, scale) {
@@ -134,7 +134,7 @@ function doSVG(canvas, logo, turtles, width, height, scale) {
     svg += '</g>';
     svg += '</svg>';
     return svg;
-}
+};
 
 
 function isSVGEmpty(turtles) {
@@ -145,7 +145,7 @@ function isSVGEmpty(turtles) {
         }
     }
     return true;
-}
+};
 
 
 function fileExt(file) {
@@ -154,7 +154,7 @@ function fileExt(file) {
         return '';
     }
     return parts.pop();
-}
+};
 
 
 function fileBasename(file) {
@@ -167,7 +167,7 @@ function fileBasename(file) {
         parts.pop(); // throw away suffix
         return parts.join('.');
     }
-}
+};
 
 
 // Needed to generate new data for localization.ini
@@ -223,7 +223,7 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
     //    errorMsg('Error loading plugin: ' + e);
     //}
     return obj;
-}
+};
 
 
 function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList) {
@@ -374,7 +374,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     // Return the object in case we need to save it to local storage.
     return obj;
-}
+};
 
 
 function updatePluginObj(obj) {
@@ -428,7 +428,8 @@ function updatePluginObj(obj) {
         for (var i = 0; i < obj['ONSTOP'].length; i++) {
             pluginObjs['ONSTOP'][obj['ONSTOP'][i][0]] = obj['ONSTOP'][i][1];
         }
-}
+};
+
 
 function preparePluginExports(obj) {
     // add obj to plugin dictionary and return as JSON encoded text
@@ -448,7 +449,7 @@ function preparePluginExports(obj) {
     }
     console.log(pluginObjs_JSON);
     return JSON.stringify(pluginObjs_JSON)
-}
+};
 
 
 function processMacroData(macroData, palettes, blocks, macroDict) {
@@ -464,7 +465,7 @@ function processMacroData(macroData, palettes, blocks, macroDict) {
         }
         palettes.makePalettes();
     }
-}
+};
 
 
 function prepareMacroExports(name, stack, macroDict) {
@@ -472,13 +473,13 @@ function prepareMacroExports(name, stack, macroDict) {
         macroDict[name] = stack;
     }
     return JSON.stringify(macroDict);
-}
+};
 
 
 function doSaveSVG(logo, desc) {
     var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
     download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
-}
+};
 
 
 function download(filename, data) {
@@ -488,7 +489,7 @@ function download(filename, data) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-}
+};
 
 // Some block-specific code
 
@@ -549,7 +550,7 @@ function doPublish(desc) {
     FB.login(post_cb, {
         scope: 'publish_actions'
     });
-}
+};
 
 
 // TODO: Move to camera plugin
@@ -560,7 +561,7 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
 
     var video = document.querySelector('#camVideo');
     var canvas = document.querySelector('#camCanvas');
-
+ 
     if (navigator.mediaDevices.getUserMedia) {
         if (!hasSetupCamera) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
@@ -572,21 +573,20 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
                 console.log(reason);
                 return;
             });
-        } else {
+         } else {
             video.play();
             if (isVideo) {
                 cameraID = window.setInterval(draw, 100);
                 setCameraID(cameraID);
-            } else {
-                draw();
-            }
+             } else {
+                 draw();
+             }
         }
     } else {
         errorMsg('Your browser does not support the webcam');
         return;
     }
-
-    video.addEventListener('canplay', function (event) {
+     video.addEventListener('canplay', function (event) {
         video.setAttribute('width', w);
         video.setAttribute('height', h);
         canvas.setAttribute('width', w);
@@ -594,17 +594,17 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
         if (isVideo) {
             cameraID = window.setInterval(draw, 100);
             setCameraID(cameraID);
-        } else {
-            draw();
-        }
+         } else {
+             draw();
+         }
     }, false);
 
-    function draw() {
-        canvas.getContext('2d').drawImage(video, 0, 0, w, h);
+     function draw() {
+         canvas.getContext('2d').drawImage(video, 0, 0, w, h);
         var data = canvas.toDataURL('image/jpeg');
-        turtles.turtleList[turtle].doShowImage(args[0], data);
-    }
-}
+         turtles.turtleList[turtle].doShowImage(args[0], data);
+     }
+};
 
 
 function doStopVideoCam(cameraID, setCameraID) {
@@ -613,7 +613,7 @@ function doStopVideoCam(cameraID, setCameraID) {
     }
     setCameraID(null);
     document.querySelector('#camVideo').pause();
-}
+};
 
 
 function hideDOMLabel() {
@@ -625,7 +625,7 @@ function hideDOMLabel() {
     if (numberLabel !== null) {
         numberLabel.style.display = 'none';
     }
-}
+};
 
 
 function displayMsg(blocks, text) {
@@ -635,4 +635,4 @@ function displayMsg(blocks, text) {
     blocks.msgText.text = text;
     msgContainer.updateCache();
     blocks.stage.setChildIndex(msgContainer, blocks.stage.getNumChildren() - 1);
-}
+};

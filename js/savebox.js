@@ -37,7 +37,7 @@ function SaveBox(canvas, stage, refreshCanvas, saveAsTB, saveAsSVG, saveAsPNG, u
                 box.doSaveSVG();
             });
 
-            this.savePNG = makeButton('save-png', _('Save as .png'), this.container.x + 180, this.container.y + 85, 55, 0, this.stage);
+            this.savePNG = makeButton('save-png-inactive', _('Save as .png'), this.container.x + 180, this.container.y + 85, 55, 0, this.stage);
             this.savePNG.visible = true;
             this.positionHoverText(this.savePNG);
             this.savePNG.on('click', function(event) {

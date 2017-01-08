@@ -1918,15 +1918,17 @@ define(function (require) {
             if (fileExt(filename) !== 'svg') {
                 filename += '.svg';
             }
-            download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
+            var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
+            download(filename, 'data:image/svg+xml;utf8,' + svg, filename, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
         };
 
         function doSavePNG() {
-            var filename = prompt('Filename:', 'untitled.png');
-            if (fileExt(filename) !== 'png') {
-                filename += '.png';
-            }
-            download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
+            alert("Unavailable at the moment");
+            //var filename = prompt('Filename:', 'untitled.png');
+            //if (fileExt(filename) !== 'png') {
+            //    filename += '.png';
+            //}
+            //download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
         };
 
         function doUploadToPlanet() {

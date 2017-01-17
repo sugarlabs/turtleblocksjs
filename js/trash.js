@@ -23,6 +23,9 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
     this.size = size;
+    this.isReady = false;
+    this.timeout = null;
+    this.timeoutSet = false;
 
     this.iconsize = 55;  // default value
     this.container = new createjs.Container();
@@ -98,6 +101,7 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
     };
 
     this.highlight = function() {
+        this.isReady = true;
         if (!last(this.container.children).visible) {
             last(this.container.children).visible = true;
             this.container.children[1].visible = false;
@@ -108,6 +112,7 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
     };
 
     this.unhighlight = function() {
+        this.isReady = false;
         if (last(this.container.children).visible) {
             last(this.container.children).visible = false;
             this.container.children[1].visible = true;

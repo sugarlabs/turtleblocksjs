@@ -1078,6 +1078,7 @@ function Block(protoblock, blocks, overrideName) {
                 // console.log('pressmove w/o mouse down?');
                 return;
             }
+
             moved = true;
             var oldX = myBlock.collapseContainer.x;
             var oldY = myBlock.collapseContainer.y;
@@ -1090,9 +1091,20 @@ function Block(protoblock, blocks, overrideName) {
 
             // If we are over the trash, warn the user.
             if (trashcan.overTrashcan(event.stageX / scale, event.stageY / scale)) {
-                trashcan.highlight();
+                // But only after a slight delay.
+                if (!trashcan.isReady) {
+                    if (!trashcan.timeoutSet) {
+                        trashcan.timeoutSet = true;
+                        trashcan.timeout = setTimeout(function() {
+                            trashcan.highlight();
+                            trashcan.timeoutSet = false;
+                        }, 1000);
+                    }
+                }
             } else {
-                trashcan.unhighlight();
+                if (trashcan.isReady) {
+                    trashcan.unhighlight();
+                }
             }
 
             myBlock.blocks.findDragGroup(thisBlock)
@@ -1307,9 +1319,20 @@ function Block(protoblock, blocks, overrideName) {
 
                 // If we are over the trash, warn the user.
                 if (trashcan.overTrashcan(event.stageX / scale, event.stageY / scale)) {
-                    trashcan.highlight();
+                    // But only after a slight delay.
+                    if (!trashcan.isReady) {
+                        if (!trashcan.timeoutSet) {
+                            trashcan.timeoutSet = true;
+                            trashcan.timeout = setTimeout(function() {
+                                trashcan.highlight();
+                                trashcan.timeoutSet = false;
+                            }, 1000);
+                        }
+                    }
                 } else {
-                    trashcan.unhighlight();
+                    if (trashcan.isReady) {
+                        trashcan.unhighlight();
+                    }
                 }
 
                 if (myBlock.isValueBlock() && myBlock.name !== 'media') {
@@ -1357,17 +1380,25 @@ function Block(protoblock, blocks, overrideName) {
         var scale = blocks.getStageScale();
 
         // Always hide the trash when there is no block selected.
-        // FIXME: need to remove timer
+        trashcan.hide();
+
+        if (trashcan.timeout != null) {
+            clearTimeout(trashcan.timeout);
+            trashcan.timeout = null;
+            trashcan.timeoutSet = false;
+        }
+
         if (this.blocks.longPressTimeout != null) {
             clearTimeout(this.blocks.longPressTimeout);
             this.blocks.longPressTimeout = null;
         }
-        trashcan.hide();
 
         if (moved) {
             // Check if block is in the trash.
             if (trashcan.overTrashcan(event.stageX / scale, event.stageY / scale)) {
-                blocks.sendStackToTrash(this);
+                if (trashcan.isReady) {
+                    blocks.sendStackToTrash(this);
+                }
             } else {
                 // Otherwise, process move.
                 // Keep track of time of last move

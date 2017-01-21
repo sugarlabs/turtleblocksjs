@@ -1468,13 +1468,15 @@ function Palette(palettes, name) {
 
             palette.menuContainer.on('pressup', function(event) {
                 if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
-                    palette.hide();
-                    palette.palettes.refreshCanvas();
-                    // Only delete plugin palettes.
-                    if (palette.name === 'myblocks') {
-                        palette._promptMacrosDelete();
-                    } else if (BUILTINPALETTES.indexOf(palette.name) === -1) {
-                        palette._promptPaletteDelete();
+                    if (trashcan.isReady) {
+                        palette.hide();
+                        palette.palettes.refreshCanvas();
+                        // Only delete plugin palettes.
+                        if (palette.name === 'myblocks') {
+                            palette._promptMacrosDelete();
+                        } else if (BUILTINPALETTES.indexOf(palette.name) === -1) {
+                            palette._promptPaletteDelete();
+                        }
                     }
                 }
                 trashcan.hide();
@@ -1482,8 +1484,10 @@ function Palette(palettes, name) {
 
             palette.menuContainer.on('mouseout', function(event) {
                 if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
-                    palette.hide();
-                    palette.palettes.refreshCanvas();
+                    if (trashcan.isReady) {
+                        palette.hide();
+                        palette.palettes.refreshCanvas();
+                    }
                 }
                 trashcan.hide();
             });
@@ -1501,9 +1505,9 @@ function Palette(palettes, name) {
 
                 // If we are over the trash, warn the user.
                 if (trashcan.overTrashcan(event.stageX / palette.palettes.scale, event.stageY / palette.palettes.scale)) {
-                    trashcan.highlight();
+                    trashcan.startHighlightAnimation();
                 } else {
-                    trashcan.unhighlight();
+                    trashcan.stopHighlightAnimation();
                 }
 
                 // Hide the menu items while drag.

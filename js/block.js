@@ -1313,7 +1313,11 @@ function Block(protoblock, blocks, overrideName) {
 
                 var dx = Math.round(Math.round(event.stageX / scale) + offset.x - oldX);
                 var dy = Math.round(Math.round(event.stageY / scale) + offset.y - oldY);
+                var finalPos = oldY + dy;
 
+                if (blocks.stage.y === 0 && finalPos < (45*scale)){
+                	dy += (45*scale) - finalPos;
+                }
                 // Move this block...
                 blocks.moveBlockRelative(thisBlock, dx, dy);
 

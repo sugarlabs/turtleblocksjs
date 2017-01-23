@@ -1348,7 +1348,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 doSaveSVG(logo, args[0]);
             }
             break;
-        case 'tone':
+        case 'tone2':
             if (typeof(logo.turtleOscs[turtle]) === 'undefined') {
                 logo.turtleOscs[turtle] = new p5.TriOsc();
             }

@@ -810,9 +810,9 @@ function initBasicProtoBlocks(palettes, blocks) {
     stopVideoCamBlock.adjustWidthToLabel();
     stopVideoCamBlock.zeroArgBlock();
 
-    var toneBlock = new ProtoBlock('tone');
+    var toneBlock = new ProtoBlock('tone2');
     toneBlock.palette = palettes.dict['media'];
-    blocks.protoBlockDict['tone'] = toneBlock;
+    blocks.protoBlockDict['tone2'] = toneBlock;
     toneBlock.staticLabels.push(_('tone'),  _('frequency'), _('duration (ms)'));
     toneBlock.adjustWidthToLabel();
     toneBlock.defaults.push(440, 200);

@@ -2177,22 +2177,48 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'tofrequency':
                 var block = logo.blocks.blockList[blk];
                 var cblk = block.connections[1];
-                var v = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
+                var cblk2 = block.connections[2];
+                var note = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
+                var octave = logo.parseArg(logo, turtle, cblk2, blk, receivedArg);
                 try {
-                    if (typeof(v) === 'string') {
-                        v = v.toUpperCase();
-                        var octave = v[1];
-                        if (NOTE > 2) {
-                            octave -= 1;  // New octave starts on C
+                    note = note.toUpperCase().replace('#', '♯');
+                    if(note.length > 1 && note[1] == 'B')
+                        note = note.substr(0, 1) + '♭';
+
+                    var note_id = -1;
+                    if (NOTE.indexOf(note) > -1)
+                        note_id = NOTE.indexOf(note);
+                    else
+                        for (temp_note_id in NOTE) {
+                            if (NOTE[temp_note_id].indexOf(note) > -1) {
+                                note_id = temp_note_id;
+                                break;
+                            }
                         }
-                        var i = octave * 12 + NOTE;
-                        block.value = 27.5 * Math.pow(1.05946309435929, i);
-                    } else {
-                        block.value = 440 * Math.pow(2, (v - 69) / 12);
+                    if (note_id == -1)
+                        throw "Cannot detect note";
+
+                    var frequency = 440;
+                    var tone_jump = 1.05946;
+                    var note_distance = note_id;
+                    if (note_id > 2)
+                        note_distance = note_id - 12;
+                    note_distance += (Math.floor(octave) - 4) * 12;
+                    if (note_distance < 0) {
+                        tone_jump = 1 / tone_jump;
+                        note_distance = Math.abs(note_distance);
                     }
-                } catch (e) {
-                    this.errorMsg(v + ' is not a note.');
-                    block.value = 440;
+                    while (note_distance != 0) {
+                        frequency *= tone_jump;
+                        note_distance--;
+                    }
+
+                    block.value = Math.round(frequency);
+                }
+                catch (e) {
+                    block.value = null;
+                    console.log("Can't process note to its frequency. Error:");
+                    console.log(e);
                 }
                 break;
             case 'pop':

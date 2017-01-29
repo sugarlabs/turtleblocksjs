@@ -1377,11 +1377,6 @@ define(function (require) {
             }
         };
 
-        function stop() {
-            // FIXME: who calls this???
-            createjs.Ticker.removeEventListener('tick', __tick);
-        };
-
         function onStopTurtle() {
             // TODO: plugin support
             if (stopTurtleContainer.visible) {

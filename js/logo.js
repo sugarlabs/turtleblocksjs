@@ -22,6 +22,7 @@ const NOINPUTERRORMSG = 'Missing argument.';
 const NOSQRTERRORMSG = 'Cannot take square root of negative number.';
 const ZERODIVIDEERRORMSG = 'Cannot divide by zero.';
 const EMPTYHEAPERRORMSG = 'empty heap.';
+const POSNUMBER = 'Argument must be a positive number';
 
 const NOTE = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭'];
 
@@ -748,6 +749,8 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                 if (typeof(args[0]) === 'string') {
                     logo.errorMsg(NANERRORMSG, blk);
                     logo.stopTurtle = true;
+                } else if (args[0] <= 0) {
+                    logo.errorMsg(POSNUMBER, blk);
                 } else {
                     childFlow = args[1];
                     childFlowCount = Math.floor(args[0]);

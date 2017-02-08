@@ -25,7 +25,7 @@ const TACAT = {
     'gray': 'pen', 'fillscreen': 'pen', 'beginfill': 'fill',
     'fill': 'fill', 'setfont': 'fill', 'hollowline': 'fill',
     'endfill': 'fill', 'plus': 'number', 'minus': 'number',
-    'multiply': 'number', 'divide': 'number', 'oneOf': 'number',
+    'multiply': 'number', 'power': 'number', 'divide': 'number', 'oneOf': 'number',
     'pendown': 'pen', 'shade': 'pen', 'mod': 'number', 'int': 'number',
     'sqrt': 'number', 'identity': 'number', 'and': 'boolean',
     'or': 'boolean', 'not': 'boolean', 'greater': 'boolean',

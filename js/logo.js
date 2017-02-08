@@ -183,6 +183,7 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'plus':
             case 'minus':
             case 'multiply':
+            case 'power':
             case 'divide':
                 value = this.blocks.blockList[blk].value;
                 break;
@@ -1936,6 +1937,19 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
                     logo.blocks.blockList[blk].value = logo.doPlus(a, b);
                 }
                 break;
+            
+            case 'power':
+                if (logo.inStatusMatrix) {
+                    logo.statusFields.push([blk, 'power']);
+                } else {
+                    var cblk1 = logo.blocks.blockList[blk].connections[1];
+                    var cblk2 = logo.blocks.blockList[blk].connections[2];
+                    var a = logo.parseArg(logo, turtle, cblk1, blk, receivedArg);
+                    var b = logo.parseArg(logo, turtle, cblk2, blk, receivedArg);
+                    logo.blocks.blockList[blk].value = logo._doPower(a, b);
+                }
+                break;   
+    
             case 'multiply':
                 if (logo.inStatusMatrix) {
                     logo.statusFields.push([blk, logo.blocks.blockList[blk].name]);
@@ -2419,6 +2433,18 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             return Number(a) / Number(b);
         }
     }
+
+
+    this._doPower = function(a, b) {
+        if (typeof(a) === 'string' || typeof(b) === 'string') {
+            this.errorMsg(NANERRORMSG);
+            this.stopTurtle = true;
+            return 0;
+        }
+
+        return Math.pow(a,b);
+    }
+    
 
     this.setBackgroundColor = function(turtle) {
         /// Change body background in DOM to current color.

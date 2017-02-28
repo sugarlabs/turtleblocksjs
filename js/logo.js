@@ -24,7 +24,8 @@ const ZERODIVIDEERRORMSG = 'Cannot divide by zero.';
 const EMPTYHEAPERRORMSG = 'empty heap.';
 const POSNUMBER = 'Argument must be a positive number';
 
-const NOTE = ['A', 'A♯/B♭', 'B', 'C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭'];
+const NOTENAMES = ['A', 'B♭', 'B', 'C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭'];
+const NOTECONVERSION = {'A♯': 'B♭', 'C♯': 'D♭', 'D♯': 'E♭', 'F♯': 'G♭', 'G♯': 'A♭'};
 
 function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
               hideMsgs, onStopTurtle, onRunTurtle, prepareExport, getStageX,
@@ -2180,22 +2181,35 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
             case 'tofrequency':
                 var block = logo.blocks.blockList[blk];
                 var cblk = block.connections[1];
-                var v = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
-                try {
-                    if (typeof(v) === 'string') {
-                        v = v.toUpperCase();
-                        var octave = v[1];
-                        if (NOTE > 2) {
-                            octave -= 1;  // New octave starts on C
-                        }
-                        var i = octave * 12 + NOTE;
-                        block.value = 27.5 * Math.pow(1.05946309435929, i);
-                    } else {
-                        block.value = 440 * Math.pow(2, (v - 69) / 12);
+                var noteName = logo.parseArg(logo, turtle, cblk, blk, receivedArg);
+                if (typeof(noteName) === 'string') {
+                    noteName = noteName.replace('b', '♭');
+                    noteName = noteName.replace('#', '♯');
+                    if (noteName in NOTECONVERSION) {
+                        noteName = NOTECONVERSION[noteName];
                     }
-                } catch (e) {
-                    this.errorMsg(v + ' is not a note.');
-                    block.value = 440;
+
+                    var idx = NOTENAMES.indexOf(noteName);
+                    if (idx === -1) {
+			this.errorMsg(_('Note name must be one of A, A♯, B♭, B, C, C♯, D♭, D, D♯, E♭, E, F, F♯, G♭, G, G♯ or A♭.'));
+			block.value = 440;
+                    } else {
+
+			var cblk = block.connections[2];
+			var octave = Math.floor(logo.parseArg(logo, turtle, cblk, blk, receivedArg));
+			if (octave < 1) {
+                            octave = 1;
+			}
+
+			if (idx > 2) {
+                            octave -= 1;  // New octave starts on C
+			}
+
+			var i = octave * 12 + idx;
+			block.value = 27.5 * Math.pow(1.05946309435929, i);
+		    }
+                } else {
+                    block.value = 440 * Math.pow(2, (noteName - 69) / 12);
                 }
                 break;
             case 'pop':

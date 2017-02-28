@@ -823,7 +823,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var toFrequencyBlock = new ProtoBlock('tofrequency');
     toFrequencyBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['tofrequency'] = toFrequencyBlock;
-    toFrequencyBlock.staticLabels.push(_('note to frequency'), _('note'), _('octave'));
+    toFrequencyBlock.staticLabels.push(_('note to frequency'), _('name'), _('octave'));
     toFrequencyBlock.adjustWidthToLabel();
     toFrequencyBlock.defaults.push('A');
     toFrequencyBlock.defaults.push('4');

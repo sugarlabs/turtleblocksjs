@@ -23,7 +23,7 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
     this.stage = stage;
     this.refreshCanvas = refreshCanvas;
     this.size = size;
-    this.isReady = false;
+    this.isVisible = false;
 
     this.iconsize = 55;  // default value
     this.container = new createjs.Container();
@@ -34,7 +34,7 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
     this._animationInterval = null;
     this._highlightPower = 255;
     this._animationLevel = 0;
-    this.animationTime = 1000;
+    this.animationTime = 500;
 
     this._makeBorderHighlight = function(isRed = false) {
         var img = new Image();
@@ -113,7 +113,6 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
         createjs.Tween.get(this.container).to({alpha: 0.0, visible: true}).to({alpha: 1.0}, 200);
     };
 
-
     this.startHighlightAnimation = function() {
         if(this._inAnimation)
             return;
@@ -122,7 +121,7 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
         this._animationInterval = setInterval(function() {
             that._animationLevel += 20;
             if(that._animationLevel >= that.animationTime) {
-                that.isReady = true;
+                that.isVisible = true;
                 that._makeBorderHighlight(true); // make it red
                 that.refreshCanvas();
                 clearInterval(that._animationInterval); // autostop animation
@@ -140,7 +139,7 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
             return;
         clearInterval(this._animationInterval);
         this._inAnimation = false;
-        this.isReady = false;
+        this.isVisible = false;
         this._animationLevel = 0;
         this._highlightPower = 255;
         this._makeBorderHighlight();
@@ -153,6 +152,7 @@ function Trashcan (canvas, stage, size, refreshCanvas) {
         this.container.visible = true;
         this.refreshCanvas();
     };
+
 
     this.overTrashcan = function(x, y) {
         var tx = this.container.x;

@@ -195,7 +195,9 @@ function Turtle (name, turtles, drum) {
             this.closeSVG();
 
             ctx.stroke();
-            ctx.closePath();
+            if (!this.fillState) {
+                ctx.closePath();
+            }
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
@@ -244,7 +246,9 @@ function Turtle (name, turtles, drum) {
             this.x = x2;
             this.y = y2;
             ctx.stroke();
-            ctx.closePath();
+            if (!this.fillState) {
+                ctx.closePath();
+            }
 
         } else {
             this.x = x2;
@@ -357,7 +361,9 @@ function Turtle (name, turtles, drum) {
             this.closeSVG();
 
             ctx.stroke();
-            ctx.closePath();
+            if (!this.fillState) {
+                ctx.closePath();
+            }
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
@@ -375,7 +381,9 @@ function Turtle (name, turtles, drum) {
             var nyScaled = ny * this.turtles.scale;
             this.svgOutput += nxScaled + ',' + nyScaled + ' ';
             ctx.stroke();
-            ctx.closePath();
+            if (!this.fillState) {
+                ctx.closePath();
+            }
         } else {
             ctx.moveTo(nx, ny);
         }
@@ -488,7 +496,9 @@ function Turtle (name, turtles, drum) {
             this.closeSVG();
 
             ctx.stroke();
-            ctx.closePath();
+            if (!this.fillState) {
+                ctx.closePath();
+            }
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
@@ -513,7 +523,9 @@ function Turtle (name, turtles, drum) {
             var radiusScaled = radius * this.turtles.scale;
             this.svgOutput += 'A ' + radiusScaled + ',' + radiusScaled + ' 0 0 ' + sweep + ' ' + nxScaled + ',' + nyScaled + ' ';
             ctx.stroke();
-            ctx.closePath();
+            if (!this.fillState) {
+                ctx.closePath();
+            }
         } else {
             ctx.moveTo(nx, ny);
         }
@@ -978,6 +990,7 @@ function Turtle (name, turtles, drum) {
     this.doEndFill = function() {
         /// redraw the points with fill enabled
         ctx.fill();
+        ctx.closePath();
         this.closeSVG();
         this.fillState = false;
     };

@@ -641,7 +641,7 @@ function PaletteModel(palette, palettes, name) {
                 }
             }
 
-            if (['do', 'nameddo', 'namedbox', 'namedcalc', 'doArg', 'calcArg', 'nameddoArg', 'namedcalcArg'].indexOf(protoBlock.name) != -1 && label.length > 8) {
+            if (['do', 'nameddo', 'namedbox', 'namedcalc', 'doArg', 'calcArg', 'nameddoArg', 'namedcalcArg'].indexOf(protoBlock.name) != -1 && label != null && label.length > 8) {
                 label = label.substr(0, 7) + '...';
             }
 
@@ -1711,7 +1711,7 @@ function Palette(palettes, name) {
     };
 
     this._makeBlockFromPalette = function(protoblk, blkname, callback) {
-        const BUILTINMACROS= ['setturtlename', 'fill', 'hollowline', 'status'];
+        const BUILTINMACROS= ['setturtlename', 'fill', 'hollowline', 'status', 'xturtle', 'yturtle'];
         if (protoblk == null) {
             console.log('null protoblk?');
             return;
@@ -1831,12 +1831,16 @@ function Palette(palettes, name) {
         const SETTURTLENAMEOBJ = [[0, 'setturtlename', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, 'turtlename', 0, 0, [0]], [2, ['text', {'value': 'Yertle'}], 0, 0, [0]]];
         const FILLOBJ = [[0, 'fill', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
         const HOLLOWOBJ = [[0, 'hollowline', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
+        const XTURTLEOBJ = [[0, 'xturtle', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null]], [1, 'turtlename', 0, 0, [0]]];
+        const YTURTLEOBJ = [[0, 'yturtle', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null]], [1, 'turtlename', 0, 0, [0]]];
 
         const BUILTINMACROS = {
             'status': STATUSOBJ,
             'setturtlename': SETTURTLENAMEOBJ,
             'fill': FILLOBJ,
             'hollowline': HOLLOWOBJ,
+            'xturtle': XTURTLEOBJ,
+            'yturtle': YTURTLEOBJ,
         };
 
         function __myCallback (newBlock) {

@@ -195,9 +195,7 @@ function Turtle (name, turtles, drum) {
             this.closeSVG();
 
             ctx.stroke();
-            if (!this.fillState) {
-                ctx.closePath();
-            }
+            ctx.closePath();
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
@@ -361,9 +359,7 @@ function Turtle (name, turtles, drum) {
             this.closeSVG();
 
             ctx.stroke();
-            if (!this.fillState) {
-                ctx.closePath();
-            }
+            ctx.closePath();
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;

@@ -63,18 +63,15 @@ function showMaterialHighlight(x, y, r, event, scale, stage) {
     circles.active.graphics.f(ACTIVECOLOR).drawCircle(0, 0, r);
     circles.active.alpha = 0;
 
-	stage.addChild(circles.highlight, circles.active);
+    stage.addChild(circles.highlight, circles.active);
 
-	createjs.Tween.get(circles.active)
-        // Why doesn't stageX/stageY deal with scale?
-		.to({scaleX: 0.3, scaleY: 0.3, x: event.rawX / scale, y: event.rawY / scale})
-		.to({scaleX: 1, scaleY: 1, x: x, y: y}, 650, createjs.Ease.circInOut);
+    createjs.Tween.get(circles.active).to({scaleX: 0.3, scaleY: 0.3, x: event.rawX / scale, y: event.rawY / scale}).to({scaleX: 1, scaleY: 1, x: x, y: y}, 650, createjs.Ease.circInOut);
 
-    createjs.Tween.get(circles.active)
-        .to({alpha: 0.05}).to({alpha: 0.3}, 400);
+    createjs.Tween.get(circles.active).to({alpha: 0.05}).to({alpha: 0.3}, 400);
 
     return circles;
 }
+
 
 function hideButtonHighlight(circles, stage) {
     // Un-real circles!
@@ -88,6 +85,30 @@ function hideButtonHighlight(circles, stage) {
         stage.removeChild(circles.active, circles.highlight);
     }, 650);
 }
+
+
+function hideButtonHighlight(circles, stage) {
+    // Un-real circles!
+    if (circles.active === undefined) {
+        return;
+    }
+
+    createjs.Tween.get(circles.active).to({alpha: 0}, 400);
+    createjs.Tween.get(circles.highlight).to({alpha: 0}, 400);
+    setTimeout(function() {
+        stage.removeChild(circles.active, circles.highlight);
+    }, 650);
+}
+
+
+function hidePaletteNameDisplay(palette_text, stage){
+    
+    setTimeout(function(){
+        stage.removeChild(palette_text);
+    }, 150);
+}
+
+
 const MENUWIDTH = 200;
 
 const PALETTEFILLER = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="filler_height">' + '<rect width="200" height="filler_height" x="0" y="0" style="fill:#b3b3b3;fill-opacity:1;stroke:none" />' + '</svg>';

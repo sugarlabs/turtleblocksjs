@@ -651,3 +651,219 @@ function displayMsg(blocks, text) {
     msgContainer.updateCache();
     blocks.stage.setChildIndex(msgContainer, blocks.stage.getNumChildren() - 1);
 };
+
+
+// Music utils
+function Synth () {
+    this.loadSynth = function(name) {
+    };
+};
+
+const SOLFNOTES = ['ti', 'la', 'sol', 'fa', 'mi', 're', 'do'];
+const EASTINDIANSOLFNOTES = ['ni', 'dha', 'pa', 'ma', 'ga', 're', 'sa']
+const SOLFATTRS = ['♯♯', '♯', '♮', '♭', '♭♭'];
+const WESTERN2EISOLFEGENAMES = {'do': 'sa', 're': 're', 'mi': 'ga', 'fa': 'ma', 'sol': 'pa', 'la': 'dha', 'ti': 'ni'};
+const DEFAULTVOICE = 'sine';
+const DEFAULTDRUM = 'kick drum';
+const DEFAULTMODE = 'major';
+
+var MODENAMES = [
+    //.TRANS: twelve semi-tone scale for music
+    [_('chromatic'), 'chromatic'],
+    [_('algerian'), 'algerian'],
+    //.TRANS: modal scale for music
+    [_('diminished'), 'diminished'],
+    [_('spanish'), 'spanish'],
+    //.TRANS: modal scale for music
+    [_('octatonic'), 'octatonic'],
+    //.TRANS: major scales in music
+    [_('major'), 'major'],
+    //.TRANS: modal scale for music
+    [_('ionian'), 'ionian'],
+    //.TRANS: modal scale for music
+    [_('dorian'), 'dorian'],
+    //.TRANS: modal scale for music
+    [_('phrygian'), 'phrygian'],
+    //.TRANS: modal scale for music
+    [_('lydian'), 'lydian'],
+    //.TRANS: modal scale for music
+    [_('mixolydian'), 'mixolydian'],
+    //.TRANS: natural minor scales in music
+    [_('minor'), 'minor'],
+    //.TRANS: modal scale for music
+    [_('aeolian'), 'aeolian'],
+    //.TRANS: modal scale for music
+    [_('locrian'), 'locrian'],
+    //.TRANS: minor jazz scale for music
+    [_('jazz minor'), 'jazz minor'],
+    //.TRANS: bebop scale for music
+    [_('bebop'), 'bebop'],
+    [_('arabic'), 'arabic'],
+    [_('byzantine'), 'byzantine'],
+    //.TRANS: musical scale for music by Verdi
+    [_('enigmatic'), 'enigmatic'],
+    [_('ethiopian'), 'ethiopian'],
+    //.TRANS: Ethiopic scale for music
+    [_('geez'), 'geez'],
+    [_('hindu'), 'hindu'],
+    [_('hungarian'), 'hungarian'],
+    //.TRANS: minor Romanian scale for music
+    [_('romanian minor'), 'romanian minor'],
+    [_('spanish gypsy'), 'spanish gypsy'],
+    //.TRANS: musical scale for Mid-Eastern music
+    [_('maqam'), 'maqam'],
+    //.TRANS: minor blues scale for music
+    [_('blues'), 'blues'],
+    //.TRANS: major blues scale for music
+    [_('major blues'), 'major blues'],
+    [_('whole tone'), 'whole tone'],
+    //.TRANS: pentatonic scale in music
+    [_('pentatonic'), 'pentatonic'],
+    [_('chinese'), 'chinese'],
+    [_('egyptian'), 'egyptian'],
+    //.TRANS: Japanese pentatonic scale for music
+    [_('hirajoshi'), 'hirajoshi'],
+    [_('japanese'), 'japanese'],
+    //.TRANS: Italian mathematician
+    [_('fibonacci'), 'fibonacci'],
+    [_('custom'), 'custom'],
+];
+
+var VOICENAMES = [
+    //.TRANS: musical instrument
+    [_('violin'), 'violin', 'images/voices.svg'],
+    //.TRANS: musical instrument
+    [_('cello'), 'cello', 'images/voices.svg'],
+    //.TRANS: musical instrument
+    // [_('basse'), 'basse', 'images/voices.svg'],
+    //.TRANS: polytone synthesizer
+    [_('poly'), 'poly', 'images/synth.svg'],
+    //.TRANS: sine wave
+    [_('sine'), 'sine', 'images/synth.svg'],
+    //.TRANS: square wave
+    [_('square'), 'square', 'images/synth.svg'],
+    //.TRANS: sawtooth wave
+    [_('sawtooth'), 'sawtooth', 'images/synth.svg'],
+    //.TRANS: triangle wave
+    [_('triangle'), 'triangle', 'images/synth.svg'],
+];
+
+var DRUMNAMES = [
+    //.TRANS: musical instrument
+    [_('snare drum'), 'snare drum', 'images/snaredrum.svg'],
+    //.TRANS: musical instrument
+    [_('kick drum'), 'kick drum', 'images/kick.svg'],
+    //.TRANS: musical instrument
+    [_('tom tom'), 'tom tom', 'images/tom.svg'],
+    //.TRANS: musical instrument
+    [_('floor tom tom'), 'floor tom tom', 'images/floortom.svg'],
+    //.TRANS: a drum made from an inverted cup
+    [_('cup drum'), 'cup drum', 'images/cup.svg'],
+    //.TRANS: musical instrument
+    [_('darbuka drum'), 'darbuka drum', 'images/darbuka.svg'],
+    //.TRANS: musical instrument
+    [_('hi hat'), 'hi hat', 'images/hihat.svg'],
+    //.TRANS: a small metal bell
+    [_('ride bell'), 'ride bell', 'images/ridebell.svg'],
+    //.TRANS: musical instrument
+    [_('cow bell'), 'cow bell', 'images/cowbell.svg'],
+    //.TRANS: musical instrument
+    [_('triangle bell'), 'trianglebell', 'images/trianglebell.svg'],
+    //.TRANS: musical instrument
+    [_('finger cymbals'), 'finger cymbals', 'images/fingercymbals.svg'],
+    //.TRANS: a musically tuned set of bells
+    [_('chine'), 'chine', 'images/chine.svg'],
+    //.TRANS: sound effect
+    [_('clang'), 'clang', 'images/clang.svg'],
+    //.TRANS: sound effect
+    [_('crash'), 'crash', 'images/crash.svg'],
+    //.TRANS: sound effect
+    [_('bottle'), 'bottle', 'images/bottle.svg'],
+    //.TRANS: sound effect
+    [_('clap'), 'clap', 'images/clap.svg'],
+    //.TRANS: sound effect
+    [_('slap'), 'slap', 'images/slap.svg'],
+    //.TRANS: sound effect
+    [_('splash'), 'splash', 'images/splash.svg'],
+    //.TRANS: sound effect
+    [_('bubbles'), 'bubbles', 'images/bubbles.svg'],
+    //.TRANS: animal sound effect
+    [_('cat'), 'cat', 'images/cat.svg'],
+    //.TRANS: animal sound effect
+    [_('cricket'), 'cricket', 'images/cricket.svg'],
+    //.TRANS: animal sound effect
+    [_('dog'), 'dog', 'images/dog.svg'],
+    //.TRANS: animal sound effect
+    [_('duck'), 'duck', 'images/duck.svg'],
+];
+
+
+function i18nSolfege(note) {
+    // solfnotes_ is used in the interface for i18n
+    //.TRANS: the note names must be separated by single spaces 
+    var solfnotes_ = _('ti la sol fa mi re do').split(' ');
+    var obj = splitSolfege(note);
+
+    var i = SOLFNOTES.indexOf(obj[0]);
+    if (i !== -1) {
+        return solfnotes_[i] + obj[1];
+    } else {
+        console.log(note + ' not found.');
+        return note;
+    }
+};
+
+
+function splitSolfege(value) {
+    // Separate the pitch from any attributes, e.g., # or b
+    if (value != null) {
+        if (SOLFNOTES.indexOf(value) !== -1) {
+            var note = value;
+            var attr = '';
+        } else if (value.slice(0, 3) === 'sol') {
+            var note = 'sol';
+            if (value.length === 4) {
+                var attr = value[3];
+            } else {
+                var attr = value[3] + value[3];
+            }
+        } else {
+            var note = value.slice(0, 2);
+            if (value.length === 3) {
+                var attr = value[2];
+            } else {
+                var attr = value[2] + value[2];
+            }
+        }
+    } else {
+        var note = 'sol';
+        var attr = ''
+    }
+
+    return [note, attr];
+};
+
+
+function getModeName(name) {
+    return name;
+};
+
+
+function getDrumName(name) {
+    return name;
+};
+
+
+function getDrumSynthName(name) {
+    return name;
+};
+
+
+function getVoiceName(name) {
+    return name;
+};
+
+
+function getVoiceSynthName(name) {
+    return name;
+};

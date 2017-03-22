@@ -105,6 +105,9 @@ function Logo(canvas, blocks, turtles, stage, refreshCanvas, textMsg, errorMsg,
 
     this.turtleOscs = {};
 
+    // Dummy call to keep MB compatibility
+    this.synth = new Synth();
+
     this.setTurtleDelay = function(turtleDelay) {
         this.turtleDelay = turtleDelay;
     }

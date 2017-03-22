@@ -1,4 +1,4 @@
-// Copyright (c) 2014-16 Walter Bender
+// Copyright (c) 2014-17 Walter Bender
 // Copyright (c) Yash Khandelwal, GSoC'15
 // Copyright (c) 2016 Tymon Radzik
 //
@@ -51,43 +51,10 @@ if (lang.indexOf("-") !== -1) {
 
 
 // sugarizerCompatibility.ifInsideSugarizerHideLoading();
-
-define(function (require) {
-    require("activity/sugarizer-compatibility");
-    require('activity/platformstyle');
-
-    require('easeljs');
-    require('tweenjs');
-    require('preloadjs');
-    require('prefixfree.min');
-    require('howler');
-    require('mespeak');
-    require('Chart');
-
-    require('activity/utils');
-    require('activity/artwork');
-    require('activity/status');
-    require('activity/munsell');
-    require('activity/trash');
-    require('activity/boundary');
-    require('activity/turtle');
-    require('activity/palette');
-    require('activity/protoblocks');
-    require('activity/blocks');
-    require('activity/block');
-    require('activity/clearbox');
-    require('activity/savebox') // for save-as options box
-    require('activity/utilitybox');
-    require('activity/samplesviewer');
-    require('activity/blockfactory');
-
-    require('activity/turtledefs');
-    require('activity/logo');
-    require('activity/basicblocks');
-    require('activity/analytics');
+define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'howler', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'prefixfree.min'], function (compatibility) {
 
     // Manipulate the DOM only when it is ready.
-    require(['domReady!'], function (doc) {
+    require(['domReady!','activity/sugarizer-compatibility'], function (doc) {
         if (sugarizerCompatibility.isInsideSugarizer()) {
             sugarizerCompatibility.loadData(function () {
                 domReady(doc);
@@ -98,17 +65,10 @@ define(function (require) {
     });
 
     function domReady(doc) {
+        // facebookInit();
         createDefaultStack();
         createHelpContent();
-        // facebookInit();
         window.scroll(0, 0);
-
-        var txt = "";
-        txt += "innerWidth: " + window.innerWidth + " ";
-        txt += "innerHeight: " + window.innerHeight + " ";
-        txt += "outerWidth: " + window.outerWidth + " ";
-        txt += "outerHeight: " + window.outerHeight + " ";
-        console.log(txt);
 
         try {
             meSpeak.loadConfig('lib/mespeak_config.json');

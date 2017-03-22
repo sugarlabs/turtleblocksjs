@@ -51,7 +51,7 @@ if (lang.indexOf("-") !== -1) {
 
 
 // sugarizerCompatibility.ifInsideSugarizerHideLoading();
-define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'howler', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'prefixfree.min'], function (compatibility) {
+define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'howler', 'p5.sound', 'p5.dom', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'prefixfree.min'], function (compatibility) {
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!','activity/sugarizer-compatibility'], function (doc) {

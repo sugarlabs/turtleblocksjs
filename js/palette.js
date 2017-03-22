@@ -1018,7 +1018,7 @@ function Palette(palettes, name) {
             s.x = this.background.x;
             s.y = this.background.y;
             this.protoContainers[i].mask = s;
-        }
+        } 
     };
 
     this._getOverflowWidth = function() {

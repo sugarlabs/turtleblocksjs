@@ -467,7 +467,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
             
             circles = ShowButtonHighlight(
             	palettes.buttons[name].x + r, palettes.buttons[name].y + r, r,
-            	event, palettes.scale, palettes.stage):
+            	event, palettes.scale, palettes.stage);
 
 
             /*add tooltip for palette buttons*/

@@ -464,9 +464,14 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         this.buttons[name].on('mouseover', function (event) {
             palettes.mouseOver = true;
             var r = palettes.cellSize / 2;
-            that.circles = showButtonHighlight(palettes.buttons[name].x + r, palettes.buttons[name].y + r, r, event, palettes.scale, palettes.stage);
+            
+            circles = ShowButtonHighlight(
+            	palettes.buttons[name].x + r, palettes.buttons[name].y + r, r,
+            	event, palettes.scale, palettes.stage):
+
 
             /*add tooltip for palette buttons*/
+            console.log("r: " + r);
             palette_text = new createjs.Text(_(name), '20px Arial', 'black');
             palette_text.x = palettes.buttons[name].x + 2.2 * r;
             palette_text.y = palettes.buttons[name].y + 5 * r / 8;

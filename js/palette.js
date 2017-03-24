@@ -464,7 +464,7 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         this.buttons[name].on('mouseover', function (event) {
             palettes.mouseOver = true;
             var r = palettes.cellSize / 2;
-            
+            this.circles = showButtonHighlight(palettes.buttons[name].x + r, palettes.buttons[name].y + r, r, event, palettes.scale, palettes.stage);
             circles = ShowButtonHighlight(
             	palettes.buttons[name].x + r, palettes.buttons[name].y + r, r,
             	event, palettes.scale, palettes.stage);

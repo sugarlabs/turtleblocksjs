@@ -507,6 +507,8 @@ function Blocks () {
             this._makeNewBlockWithConnections('vspace', newPos, [null, null], vspaceAdjuster, [thisBlock, nextBlock, newPos, 0, n]);
         };
 
+        var that = this;
+
         function howManyVSpaceBlocksBelow(blk) {
             // Need to know how many vspace blocks are below the block
             // we're checking against.

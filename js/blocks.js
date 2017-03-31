@@ -453,6 +453,8 @@ function Blocks () {
             var secondArgumentSize = Math.max(this._getBlockSize(c), 1);
         }
 
+        var that = this;
+
         var vSpaceCount = howManyVSpaceBlocksBelow(blk);
         if (secondArgumentSize < vSpaceCount + 1) {
             // Remove a vspace block
@@ -506,8 +508,6 @@ function Blocks () {
 
             this._makeNewBlockWithConnections('vspace', newPos, [null, null], vspaceAdjuster, [thisBlock, nextBlock, newPos, 0, n]);
         };
-
-        var that = this;
 
         function howManyVSpaceBlocksBelow(blk) {
             // Need to know how many vspace blocks are below the block

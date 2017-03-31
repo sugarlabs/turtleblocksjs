@@ -1795,7 +1795,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     rest2Block.staticLabels.push(_('silence'));
     rest2Block.adjustWidthToLabel();
     rest2Block.zeroArgBlock();
-    rest2Block.hidden = 'true';
+    rest2Block.hidden = true;
 
     var newnoteBlock = new ProtoBlock('newnote');
     newnoteBlock.palette = palettes.dict['extras'];
@@ -1814,7 +1814,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     setkey2Block.twoArgBlock();
     setkey2Block.dockTypes[1] = 'anyin';
     setkey2Block.dockTypes[2] = 'anyin';
-    setkey2Block.hidden = 'true';
+    setkey2Block.hidden = true;
+
+    var keyBlock = new ProtoBlock('key');
+    keyBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['key'] = keyBlock;
+    keyBlock.staticLabels.push(_('key'));
+    keyBlock.adjustWidthToLabel();
+    keyBlock.parameterBlock();
+    keyBlock.hidden = true;
 
     var meter = new ProtoBlock('meter');
     meter.palette = palettes.dict['extras'];
@@ -1827,7 +1835,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     meter.twoArgMathBlock();
     meter.dockTypes[1] = 'number';
     meter.dockTypes[2] = 'number';
-    meter.hidden = 'true';
+    meter.hidden = true;
 
     var setMasterBPMBlock = new ProtoBlock('setmasterbpm');
     setMasterBPMBlock.palette = palettes.dict['extras'];
@@ -1836,14 +1844,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     setMasterBPMBlock.adjustWidthToLabel();
     setMasterBPMBlock.oneArgBlock();
     setMasterBPMBlock.defaults.push(90);
-    setMasterBPMBlock.hidden = 'true';
+    setMasterBPMBlock.hidden = true;
 
     var voicenameBlock = new ProtoBlock('voicename');
     voicenameBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['voicename'] = voicenameBlock;
     voicenameBlock.valueBlock();
     voicenameBlock.dockTypes[0] = 'textout';
-    voicenameBlock.hidden = 'true';
+    voicenameBlock.hidden = true;
 
     var vibratoBlock = new ProtoBlock('vibrato');
     vibratoBlock.palette = palettes.dict['extras'];
@@ -1853,7 +1861,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     vibratoBlock.flowClampTwoArgBlock();
     vibratoBlock.defaults.push(10);
     vibratoBlock.defaults.push(1 / 16);
-    vibratoBlock.hidden = 'true';
+    vibratoBlock.hidden = true;
 
     var voiceBlock = new ProtoBlock('setvoice');
     voiceBlock.palette = palettes.dict['extras'];
@@ -1863,7 +1871,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     voiceBlock.flowClampOneArgBlock();
     voiceBlock.dockTypes[1] = 'textin';
     voiceBlock.defaults.push(_('violin'));
-    voiceBlock.hidden = 'true';
+    voiceBlock.hidden = true;
 
     var articulationBlock = new ProtoBlock('articulation');
     articulationBlock.palette = palettes.dict['extras'];
@@ -1872,7 +1880,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     articulationBlock.adjustWidthToLabel();
     articulationBlock.flowClampOneArgBlock();
     articulationBlock.defaults.push(25);
-    articulationBlock.hidden = 'true';
+    articulationBlock.hidden = true;
 
     var noteVolumeBlock2 = new ProtoBlock('setnotevolume2');
     noteVolumeBlock2.palette = palettes.dict['extras'];
@@ -1881,7 +1889,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     noteVolumeBlock2.adjustWidthToLabel();
     noteVolumeBlock2.flowClampOneArgBlock();
     noteVolumeBlock2.defaults.push(50);
-    noteVolumeBlock2.hidden = 'true';
+    noteVolumeBlock2.hidden = true;
 
     var crescendoBlock = new ProtoBlock('crescendo');
     crescendoBlock.palette = palettes.dict['extras'];
@@ -1890,7 +1898,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     crescendoBlock.adjustWidthToLabel();
     crescendoBlock.flowClampOneArgBlock();
     crescendoBlock.defaults.push(5);
-    crescendoBlock.hidden = 'true';
+    crescendoBlock.hidden = true;
 
     var newslurBlock = new ProtoBlock('newslur');
     newslurBlock.palette = palettes.dict['extras'];
@@ -1899,7 +1907,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     newslurBlock.adjustWidthToLabel();
     newslurBlock.flowClampOneArgBlock();
     newslurBlock.defaults.push(1 / 16);
-    newslurBlock.hidden = 'true';
+    newslurBlock.hidden = true;
 
     var newstaccatoBlock = new ProtoBlock('newstaccato');
     newstaccatoBlock.palette = palettes.dict['extras'];
@@ -1908,7 +1916,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     newstaccatoBlock.adjustWidthToLabel();
     newstaccatoBlock.flowClampOneArgBlock();
     newstaccatoBlock.defaults.push(1 / 32);
-    newstaccatoBlock.hidden = 'true';
+    newstaccatoBlock.hidden = true;
 
     var diminishedxBlock = new ProtoBlock('diminishedx');
     diminishedxBlock.palette = palettes.dict['extras'];
@@ -1920,7 +1928,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     diminishedxBlock.dockTypes[2] = 'anyin';
     diminishedxBlock.defaults.push(5);
     diminishedxBlock.defaults.push(0);
-    diminishedxBlock.hidden = 'true';
+    diminishedxBlock.hidden = true;
 
     var augmentedxBlock = new ProtoBlock('augmentedx');
     augmentedxBlock.palette = palettes.dict['extras'];
@@ -1932,7 +1940,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     augmentedxBlock.dockTypes[2] = 'anyin';
     augmentedxBlock.defaults.push(5);
     augmentedxBlock.defaults.push(0);
-    augmentedxBlock.hidden = 'true';
+    augmentedxBlock.hidden = true;
 
     var perfectxBlock = new ProtoBlock('perfectx');
     perfectxBlock.palette = palettes.dict['extras'];
@@ -1944,7 +1952,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     perfectxBlock.dockTypes[2] = 'anyin';
     perfectxBlock.defaults.push(5);
     perfectxBlock.defaults.push(0);
-    perfectxBlock.hidden = 'true';
+    perfectxBlock.hidden = true;
 
     var minorxBlock = new ProtoBlock('minorx');
     minorxBlock.palette = palettes.dict['extras'];
@@ -1956,7 +1964,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     minorxBlock.dockTypes[2] = 'anyin';
     minorxBlock.defaults.push(3);
     minorxBlock.defaults.push(0);
-    minorxBlock.hidden = 'true';
+    minorxBlock.hidden = true;
 
     var majorxBlock = new ProtoBlock('majorx');
     majorxBlock.palette = palettes.dict['extras'];
@@ -1968,7 +1976,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     majorxBlock.dockTypes[2] = 'anyin';
     majorxBlock.defaults.push(3);
     majorxBlock.defaults.push(0);
-    majorxBlock.hidden = 'true';
+    majorxBlock.hidden = true;
 
     var intervalBlock = new ProtoBlock('interval');
     intervalBlock.palette = palettes.dict['extras'];
@@ -1978,14 +1986,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     intervalBlock.adjustWidthToLabel();
     intervalBlock.flowClampOneArgBlock();
     intervalBlock.defaults.push(5);
-    intervalBlock.hidden = 'true';
+    intervalBlock.hidden = true;
 
     var drumnameBlock = new ProtoBlock('drumname');
     drumnameBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['drumname'] = drumnameBlock;
     drumnameBlock.valueBlock();
     drumnameBlock.dockTypes[0] = 'textout';
-    drumnameBlock.hidden = 'true';
+    drumnameBlock.hidden = true;
 
     var setdrumBlock = new ProtoBlock('setdrum');
     setdrumBlock.palette = palettes.dict['extras'];
@@ -1995,7 +2003,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     setdrumBlock.adjustWidthToLabel();
     setdrumBlock.flowClampOneArgBlock();
     setdrumBlock.dockTypes[1] = 'anyin';
-    setdrumBlock.hidden = 'true';
+    setdrumBlock.hidden = true;
 
     var playdrumBlock = new ProtoBlock('playdrum');
     playdrumBlock.palette = palettes.dict['extras'];
@@ -2004,7 +2012,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     playdrumBlock.adjustWidthToLabel();
     playdrumBlock.oneArgBlock();
     playdrumBlock.dockTypes[1] = 'anyin';
-    playdrumBlock.hidden = 'true';
+    playdrumBlock.hidden = true;
 
     var lilypondBlock = new ProtoBlock('savelilypond');
     lilypondBlock.palette = palettes.dict['extras'];
@@ -2014,7 +2022,22 @@ function initBasicProtoBlocks(palettes, blocks) {
     lilypondBlock.oneArgBlock();
     lilypondBlock.defaults.push(_('title') + '.ly');
     lilypondBlock.dockTypes[1] = 'textin';
-    lilypondBlock.hidden = 'true';
+    lilypondBlock.hidden = true;
+
+    var notevolumeFactor = new ProtoBlock('notevolumefactor');
+    notevolumeFactor.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['notevolumefactor'] = notevolumeFactor;
+    //.TRANS: the volume at which notes are played
+    notevolumeFactor.staticLabels.push(_('note volume'));
+    notevolumeFactor.adjustWidthToLabel();
+    notevolumeFactor.parameterBlock();
+
+    var hiddenNoFlowBlock = new ProtoBlock('hiddennoflow');
+    hiddenNoFlowBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['hiddennoflow'] = hiddenNoFlowBlock;
+    hiddenNoFlowBlock.hiddenNoFlow = true;
+    hiddenNoFlowBlock.hiddenBlockNoFlow();
+    hiddenNoFlowBlock.hidden = true;
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

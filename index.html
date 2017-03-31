@@ -25,7 +25,7 @@
     <meta id="theme-color" name="theme-color" content="#2196F3">
 </head>
 
-<body id="body" style="background: #96D3F3;">
+<body id="body" style="background: #92B5C8;"> <!-- #96D3F3;"> -->
   <script>
     $(function() {
         $("#statusmatrix").draggable();
@@ -68,6 +68,7 @@
           <img src="header-icons/planet-button.svg" class="logo" />
           <h1 id="planetTitle"></h1>
           <ul>
+            <li class="back"><img src="header-icons/cancel-button.svg" /></li>
             <li class="new"><img src="header-icons/add.svg" /></li>
             <li class="open"><img src="header-icons/folder-open.svg" /></li>
           </ul>
@@ -83,6 +84,13 @@
         <ul class="content w"></ul>
       </div>
     </div>
+
+    <canvas id="canvas" width="3790" height="1743"style="background-color:#92B5C8; width:100%">
+    </canvas>
+
+    <!--hidden at the beginning whilst everything loads-->
+    <div id="hideContents" style="display: none;">
+      <div class="canvasHolder" id="canvasHolder">
 
     <div class="canvasHolder">
         <canvas id="myCanvas" width="1200" height="900"></canvas>
@@ -103,7 +111,15 @@
         <div id="tourData"></div>
     </div>
 
-    <div id="statusmatrix" style="overflow-x: hidden" ondrag="moveStatusMatrix(event)" onmouseup="moveStatusMatrix(event)"></div>
+      <div id="statusDiv" draggable="false">
+	<div id="statusButtonsDiv">
+	</div>
+
+	<div id="statusTableDiv">
+	</div>
+      </div>
+
+
     <div id="helpElem"></div>
     <div id="description"></div>
 

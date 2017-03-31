@@ -8,7 +8,6 @@
 // You should have received a copy of the GNU Affero General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-//
 
 function format(str, data) {
   str = str.replace(/{([a-zA-Z0-9.]*)}/g,
@@ -51,6 +50,16 @@ function windowHeight() {
 };
 
 
+function windowWidth() {
+    var onAndroid = /Android/i.test(navigator.userAgent);
+    if (onAndroid) {
+        return window.outerWidth;
+    } else {
+        return window.innerWidth;
+    }
+};
+
+
 function httpGet(projectName) {
     var xmlHttp = null;
 
@@ -89,6 +98,7 @@ function HttpRequest(url, loadCallback, userCallback) {
     this.url = url;
     this.localmode = Boolean(self.location.href.search(/^file:/i) === 0);
     this.userCallback = userCallback;
+
     var objref = this;
     try {
         req.open('GET', url);
@@ -124,14 +134,25 @@ function last(myList) {
 
 
 function doSVG(canvas, logo, turtles, width, height, scale) {
+    // Aggregate SVG output from each turtle. If there is none, use
+    // the MUSICICON.
+    var MUSICICON = '<g transform="matrix(20,0,0,20,-2500,-200)"> <g style="font-size:20px;font-family:Sans;text-anchor:end;fill:#000000" transform="translate(0.32906,-0.2)"> <path d="m 138.47094,26.82 q 0,-1.16 1.24,-2.02 0.96,-0.64 1.94,-0.64 0.68,0.02 1.18,0.34 l 0,-11.84 0.44,0 0,12.94 q 0,1.32 -1.34,2.1 -0.86,0.5 -1.8,0.5 -0.98,0 -1.44,-0.7 -0.22,-0.32 -0.22,-0.68 z" /> </g> <g transform="translate(-12.52094,4.8)" style="font-size:20px;font-family:Sans;text-anchor:end;fill:#000000"> <path d="m 138.47094,26.82 q 0,-1.16 1.24,-2.02 0.96,-0.64 1.94,-0.64 0.68,0.02 1.18,0.34 l 0,-11.84 0.44,0 0,12.94 q 0,1.32 -1.34,2.1 -0.86,0.5 -1.8,0.5 -0.98,0 -1.44,-0.7 -0.22,-0.32 -0.22,-0.68 z" /> </g> <path style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 130.81346,17 12.29007,-5 0,2 -12.29007,5 z" /> </g>';
+
+    var turtleSVG = '';
+    for (var turtle in turtles.turtleList) {
+        turtles.turtleList[turtle].closeSVG();
+        turtleSVG += turtles.turtleList[turtle].svgOutput;
+    }
+
     var svg = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">\n';
     svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
     svg += logo.svgOutput;
-    for (var turtle in turtles.turtleList) {
-        turtles.turtleList[turtle].closeSVG();
-        svg += turtles.turtleList[turtle].svgOutput;
-    }
     svg += '</g>';
+    if (turtleSVG === '') {
+        svg += MUSICICON;
+    } else {
+        svg += turtleSVG;
+    }
     svg += '</svg>';
     return svg;
 };
@@ -175,7 +196,7 @@ function fileBasename(file) {
 function _(text) {
     replaced = text;
     replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×", "!", "¡"];
-    for (p = 0; p < replace.length; p++) {
+    for (var p = 0; p < replace.length; p++) {
         replaced = replaced.replace(replace[p], "");
     }
     replaced = replaced.replace(/ /g, '-');
@@ -192,6 +213,7 @@ function _(text) {
         };
         return translation;
     } catch (e) {
+        console.log('i18n error: ' + text);
         return text;
     }
 };
@@ -203,7 +225,7 @@ function toTitleCase(str) {
     if (str.length > 1)
         tempStr = str.substring(1);
     return str.toUpperCase()[0] + tempStr;
-};
+}
 
 function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList) {
     // console.log(rawData);
@@ -212,7 +234,7 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
 
     // We need to remove blank lines and comments and then
     // join the data back together for processing as JSON.
-    for (i = 0; i < lineData.length; i++) {
+    for (var i = 0; i < lineData.length; i++) {
         if (lineData[i].length === 0) {
             continue;
         }
@@ -224,60 +246,67 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
 
     // Note to plugin developers: You may want to comment out this
     // try/catch while debugging your plugin.
-    //try {
+    try {
         var obj = processPluginData(cleanData.replace(/\n/g,''), palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList);
-    //} catch (e) {
-    //    var obj = null;
-    //    errorMsg('Error loading plugin: ' + e);
-    //}
+    } catch (e) {
+        var obj = null;
+        errorMsg('Error loading plugin: ' + e);
+    }
     return obj;
 };
 
 
 function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList) {
-    // Plugins are JSON-encoded dictionaries of lists.
+    // Plugins are JSON-encoded dictionaries.
     // console.log(pluginData);
     var obj = JSON.parse(pluginData);
+
     // Create a palette entry.
     var newPalette = false;
     if ('PALETTEPLUGINS' in obj) {
-        if ('PALETTEFILLCOLORS' in obj) {
-            for(var i = 0; i < obj['PALETTEFILLCOLORS'].length; i++) {
-                PALETTEFILLCOLORS[obj['PALETTEFILLCOLORS'][i][0]] = obj['PALETTEFILLCOLORS'][i][1];
+        for (var name in obj['PALETTEPLUGINS']) {
+            PALETTEICONS[name] = obj['PALETTEPLUGINS'][name];
+            var fillColor = '#ff0066';
+            if ('PALETTEFILLCOLORS' in obj) {
+                if (name in obj['PALETTEFILLCOLORS']) {
+                    var fillColor = obj['PALETTEFILLCOLORS'][name];
+                    // console.log(fillColor);
+                }
             }
-        }
+            PALETTEFILLCOLORS[name] = fillColor;
 
-        if ('PALETTESTROKECOLORS' in obj) {
-            for(var i = 0; i < obj['PALETTESTROKECOLORS'].length; i++) {
-                PALETTESTROKECOLORS[obj['PALETTESTROKECOLORS'][i][0]] = obj['PALETTESTROKECOLORS'][i][1];
+            var strokeColor = '#ef003e';
+            if ('PALETTESTROKECOLORS' in obj) {
+                if (name in obj['PALETTESTROKECOLORS']) {
+                    var strokeColor = obj['PALETTESTROKECOLORS'][name];
+                    // console.log(strokeColor);
+                }
             }
-        }
+            PALETTESTROKECOLORS[name] = strokeColor;
 
-        if ('PALETTEHIGHLIGHTCOLORS' in obj) {
-            for(var i = 0; i < obj['PALETTEHIGHLIGHTCOLORS'].length; i++) {
-                PALETTEHIGHLIGHTCOLORS[obj['PALETTEHIGHLIGHTCOLORS'][i][0]] = obj['PALETTEHIGHLIGHTCOLORS'][i][1];
+            var highlightColor = '#ffb1b3';
+            if ('PALETTEHIGHLIGHTCOLORS' in obj) {
+                if (name in obj['PALETTEHIGHLIGHTCOLORS']) {
+                    var highlightColor = obj['PALETTEHIGHLIGHTCOLORS'][name];
+                    // console.log(highlightColor);
+                }
             }
-        }
+            PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
 
-        if ('HIGHLIGHTSTROKECOLORS' in obj) {
-            for(var i = 0; i < obj['HIGHLIGHTSTROKECOLORS'].length; i++) {
-                HIGHLIGHTSTROKECOLORS[obj['HIGHLIGHTSTROKECOLORS'][i][0]] = obj['HIGHLIGHTSTROKECOLORS'][i][1];
+            var strokeHighlightColor = '#404040';
+            if ('HIGHLIGHTSTROKECOLORS' in obj) {
+                if (name in obj['HIGHLIGHTSTROKECOLORS']) {
+                    var strokeHighlightColor = obj['HIGHLIGHTSTROKECOLORS'][name];
+                    // console.log(highlightColor);
+                }
             }
-        }
+            HIGHLIGHTSTROKECOLORS[name] = strokeHighlightColor;
 
-        for (var i = 0; i < obj['PALETTEPLUGINS'].length; i++) {
-            var palettePlugin = obj['PALETTEPLUGINS'][i];
-            PALETTEICONS[palettePlugin[0]] = palettePlugin[1];
-            if(!(palettePlugin[0] in PALETTEFILLCOLORS)) PALETTEFILLCOLORS[palettePlugin[0]] = '#ff0066';
-            if(!(palettePlugin[0] in PALETTESTROKECOLORS)) PALETTESTROKECOLORS[palettePlugin[0]] = '#ef003e';
-            if(!(palettePlugin[0] in PALETTEHIGHLIGHTCOLORS)) PALETTEHIGHLIGHTCOLORS[palettePlugin[0]] = '#ffb1b3';
-            if(!(palettePlugin[0] in HIGHLIGHTSTROKECOLORS)) HIGHLIGHTSTROKECOLORS[palettePlugin[0]] = '#404040';
-
-            if (palettePlugin[0] in palettes.buttons) {
-                console.log('palette ' + palettePlugin[0] + ' already exists');
+            if (name in palettes.buttons) {
+                console.log('palette ' + name + ' already exists');
             } else {
-                console.log('adding palette ' + palettePlugin[0]);
-                palettes.add(palettePlugin[0]);
+                console.log('adding palette ' + name);
+                palettes.add(name);
                 newPalette = true;
             }
         }
@@ -293,43 +322,43 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
     // Define the image blocks
     if ('IMAGES' in obj)  {
-        for (var i = 0; i < obj['IMAGES'].length; i++)  {
-            pluginsImages[obj['IMAGES'][i][0]] = obj['IMAGES'][i][1];
+        for (var blkName in obj['IMAGES'])  {
+            pluginsImages[blkName] = obj['IMAGES'][blkName];
         }
     }
 
     // Populate the flow-block dictionary, i.e., the code that is
     // eval'd by this block.
     if ('FLOWPLUGINS' in obj) {
-        for (var i = 0; i < obj['FLOWPLUGINS'].length; i++) {
-            evalFlowDict[obj['FLOWPLUGINS'][i][0]] = obj['FLOWPLUGINS'][i][1];
+        for (var flow in obj['FLOWPLUGINS']) {
+            evalFlowDict[flow] = obj['FLOWPLUGINS'][flow];
         }
     }
 
     // Populate the arg-block dictionary, i.e., the code that is
     // eval'd by this block.
     if ('ARGPLUGINS' in obj) {
-        for (var i = 0; i < obj['ARGPLUGINS'].length; i++) {
-            evalArgDict[obj['ARGPLUGINS'][i][0]] = obj['ARGPLUGINS'][i][1];
+        for (var arg in obj['ARGPLUGINS']) {
+            evalArgDict[arg] = obj['ARGPLUGINS'][arg];
         }
     }
 
     // Populate the setter dictionary, i.e., the code that is
     // used to set a value block.
     if ('SETTERPLUGINS' in obj) {
-        for (var i = 0; i < obj['SETTERPLUGINS'].length; i++) {
-            evalSetterDict[obj['SETTERPLUGINS'][i][0]] = obj['SETTERPLUGINS'][i][1];
+        for (var setter in obj['SETTERPLUGINS']) {
+            evalSetterDict[setter] = obj['SETTERPLUGINS'][setter];
         }
     }
 
     // Create the plugin protoblocks.
     if ('BLOCKPLUGINS' in obj) {
-        for (var i = 0; i < obj['BLOCKPLUGINS'].length; i++) {
-            var blockPlugin = obj['BLOCKPLUGINS'][i];
+        for (var block in obj['BLOCKPLUGINS']) {
+            console.log('adding plugin block ' + block);
             try {
-                eval(blockPlugin[1]);
+                eval(obj['BLOCKPLUGINS'][block]);
             } catch (e) {
-                console.log('Failed to load plugin for ' + blockPlugin[0] + ': ' + e);
+                console.log('Failed to load plugin for ' + block + ': ' + e);
             }
         }
     }
@@ -340,29 +369,29 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
     }
 
     if ('PARAMETERPLUGINS' in obj) {
-        for (var i = 0; i < obj['PARAMETERPLUGINS'].length; i++) {
-            evalParameterDict[obj['PARAMETERPLUGINS'][i][0]] = obj['PARAMETERPLUGINS'][i][1];
+        for (var parameter in obj['PARAMETERPLUGINS']) {
+            evalParameterDict[parameter] = obj['PARAMETERPLUGINS'][parameter];
         }
     }
 
     // Code to execute when plugin is loaded
     if ('ONLOAD' in obj) {
-        for (var i = 0; i < obj['ONLOAD'].length; i++) {
-            eval(obj['ONLOAD'][i][1]);
+        for (var arg in obj['ONLOAD']) {
+            eval(obj['ONLOAD'][arg]);
         }
     }
 
     // Code to execute when turtle code is started
     if ('ONSTART' in obj) {
-        for (var i = 0; i < obj['ONSTART'].length; i++) {
-            evalOnStartList[obj['ONSTART'][i][0]] = obj['ONSTART'][i][1];
+        for (var arg in obj['ONSTART']) {
+            evalOnStartList[arg] = obj['ONSTART'][arg];
         }
     }
 
     // Code to execute when turtle code is stopped
     if ('ONSTOP' in obj) {
-        for (var i = 0; i < obj['ONSTOP'].length; i++) {
-            evalOnStopList[obj['ONSTOP'][i][0]] = obj['ONSTOP'][i][1];
+        for (var arg in obj['ONSTOP']) {
+            evalOnStopList[arg] = obj['ONSTOP'][arg];
         }
     }
 
@@ -386,77 +415,64 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 
 
 function updatePluginObj(obj) {
-    if('PALETTEPLUGINS' in obj)
-        for (var i = 0; i < obj['PALETTEPLUGINS'].length; i++) {
-            pluginObjs['PALETTEPLUGINS'][obj['PALETTEPLUGINS'][i][0]] = obj['PALETTEPLUGINS'][i][1];
-        }
-    if('PALETTEFILLCOLORS' in obj)
-        for (var i = 0; i < obj['PALETTEFILLCOLORS'].length; i++) {
-            pluginObjs['PALETTEFILLCOLORS'][obj['PALETTEFILLCOLORS'][i][0]] = obj['PALETTEFILLCOLORS'][i][1];
-        }
-    if('PALETTESTROKECOLORS' in obj)
-        for (var i = 0; i < obj['PALETTESTROKECOLORS'].length; i++) {
-            pluginObjs['PALETTESTROKECOLORS'][obj['PALETTESTROKECOLORS'][i][0]] = obj['PALETTESTROKECOLORS'][i][1];
-        }
-    if('PALETTEHIGHLIGHTCOLORS' in obj)
-        for (var i = 0; i < obj['PALETTEHIGHLIGHTCOLORS'].length; i++) {
-            pluginObjs['PALETTEHIGHLIGHTCOLORS'][obj['PALETTEHIGHLIGHTCOLORS'][i][0]] = obj['PALETTEHIGHLIGHTCOLORS'][i][1];
-        }
-    if('FLOWPLUGINS' in obj)
-        for (var i = 0; i < obj['FLOWPLUGINS'].length; i++) {
-            pluginObjs['FLOWPLUGINS'][obj['FLOWPLUGINS'][i][0]] = obj['FLOWPLUGINS'][i][1];
-        }
-    if('ARGPLUGINS' in obj)
-        for (var i = 0; i < obj['ARGPLUGINS'].length; i++) {
-            pluginObjs['ARGPLUGINS'][obj['ARGPLUGINS'][i][0]] = obj['ARGPLUGINS'][i][1];
-        }
-    if('BLOCKPLUGINS' in obj)
-        for (var i = 0; i < obj['BLOCKPLUGINS'].length; i++) {
-            pluginObjs['BLOCKPLUGINS'][obj['BLOCKPLUGINS'][i][0]] = obj['BLOCKPLUGINS'][i][1];
-        }
+    for (var name in obj['PALETTEPLUGINS']) {
+        pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
+    }
+
+    for (var name in obj['PALETTEFILLCOLORS']) {
+        pluginObjs['PALETTEFILLCOLORS'][name] = obj['PALETTEFILLCOLORS'][name];
+    }
+
+    for (var name in obj['PALETTESTROKECOLORS']) {
+        pluginObjs['PALETTESTROKECOLORS'][name] = obj['PALETTESTROKECOLORS'][name];
+    }
+
+    for (var name in obj['PALETTEHIGHLIGHTCOLORS']) {
+        pluginObjs['PALETTEHIGHLIGHTCOLORS'][name] = obj['PALETTEHIGHLIGHTCOLORS'][name];
+    }
+
+    for (var flow in obj['FLOWPLUGINS']) {
+        pluginObjs['FLOWPLUGINS'][flow] = obj['FLOWPLUGINS'][flow];
+    }
+
+    for (var arg in obj['ARGPLUGINS']) {
+        pluginObjs['ARGPLUGINS'][arg] = obj['ARGPLUGINS'][arg];
+    }
+
+    for (var block in obj['BLOCKPLUGINS']) {
+        pluginObjs['BLOCKPLUGINS'][block] = obj['BLOCKPLUGINS'][block];
+    }
+
     if ('GLOBALS' in obj) {
         if (!('GLOBALS' in pluginObjs)) {
             pluginObjs['GLOBALS'] = '';
         }
         pluginObjs['GLOBALS'] += obj['GLOBALS'];
     }
-    if ('IMAGES' in obj)
-        for(var i = 0; i < obj['IMAGES'].length; i++) {
-            pluginObjs['IMAGES'][obj['IMAGES'][i][0]] = obj['IMAGES'][i][1];
-        }
-    if('ONLOAD' in obj)
-        for (var i = 0; i < obj['ONLOAD'].length; i++) {
-            pluginObjs['ONLOAD'][obj['ONLOAD'][i][0]] = obj['ONLOAD'][i][1];
-        }
-    if('ONSTART' in obj)
-        for (var i = 0; i < obj['ONSTART'].length; i++) {
-            pluginObjs['ONSTART'][obj['ONSTART'][i][0]] = obj['ONSTART'][i][1];
-        }
-    if('ONSTOP' in obj)
-        for (var i = 0; i < obj['ONSTOP'].length; i++) {
-            pluginObjs['ONSTOP'][obj['ONSTOP'][i][0]] = obj['ONSTOP'][i][1];
-        }
+
+    if ('IMAGES' in obj) {
+        pluginObjs['IMAGES'] = obj['IMAGES'];
+    }
+
+    for (var name in obj['ONLOAD']) {
+        pluginObjs['ONLOAD'][name] = obj['ONLOAD'][name];
+    }
+
+    for (var name in obj['ONSTART']) {
+        pluginObjs['ONSTART'][name] = obj['ONSTART'][name];
+    }
+
+    for (var name in obj['ONSTOP']) {
+        pluginObjs['ONSTOP'][name] = obj['ONSTOP'][name];
+    }
 };
 
 
 function preparePluginExports(obj) {
     // add obj to plugin dictionary and return as JSON encoded text
     updatePluginObj(obj);
-    console.log(pluginObjs);
-    var pluginObjs_JSON = {};
-    for (var piece in pluginObjs) {
-        var values = pluginObjs[piece];
-        if (piece != 'GLOBALS') {
-            pluginObjs_JSON[piece] = [];
-            for (var key in values) {
-                pluginObjs_JSON[piece].push([key, values[key]]);
-            }
-        }
-        else
-            pluginObjs_JSON['GLOBALS'] = values;
-    }
-    console.log(pluginObjs_JSON);
-    return JSON.stringify(pluginObjs_JSON)
+
+    return JSON.stringify(pluginObjs);
 };
 
 
@@ -464,13 +480,14 @@ function processMacroData(macroData, palettes, blocks, macroDict) {
     // Macros are stored in a JSON-encoded dictionary.
     if (macroData !== '{}') {
         var obj = JSON.parse(macroData);
-        console.log('adding myblocks palette');
         palettes.add('myblocks', 'black', '#a0a0a0');
-        for (name in obj) {
+
+        for (var name in obj) {
             console.log('adding ' + name + ' to macroDict');
             macroDict[name] = obj[name];
             blocks.addToMyPalette(name, macroDict[name]);
         }
+
         palettes.makePalettes();
     }
 };
@@ -480,6 +497,7 @@ function prepareMacroExports(name, stack, macroDict) {
     if (name !== null) {
         macroDict[name] = stack;
     }
+
     return JSON.stringify(macroDict);
 };
 
@@ -487,6 +505,11 @@ function prepareMacroExports(name, stack, macroDict) {
 function doSaveSVG(logo, desc) {
     var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
     download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
+};
+
+
+function doSaveLilypond(logo, desc) {
+    download(desc, 'data:text;utf8,' + encodeURIComponent(logo.lilypondOutput), desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
 };
 
 
@@ -503,48 +526,7 @@ function download(filename, data) {
 
 // Publish to FB
 function doPublish(desc) {
-
-        function __saveProject(projectName) {
-            // palettes.updatePalettes();
-            // Show busy cursor.
-            document.body.style.cursor = 'wait';
-            setTimeout(function () {
-                var punctuationless = projectName.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^`{|}~']/g, '');
-                projectName = punctuationless.replace(/ /g, '_');
-                if (fileExt(projectName) !== 'tb') {
-                    projectName += '.tb';
-                }
-                try {
-                    // Post the project
-                    var returnValue = httpPost(projectName, prepareExport());
-                    console.log('Saved ' + projectName + ' to ' + window.location.host);
-
-                    var img = new Image();
-                    var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
-                    img.onload = function () {
-                        var bitmap = new createjs.Bitmap(img);
-                        var bounds = bitmap.getBounds();
-                        bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-                        // and base64-encoded png
-                        httpPost((projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
-                    };
-
-                    img.src = 'data:image/svg+xml;base64,' + window.btoa(
-                        unescape(encodeURIComponent(svgData)));
-                    // Restore default cursor
-                    document.body.style.cursor = 'default';
-                    return returnValue;
-                } catch (e) {
-                    console.log(e);
-                    // Restore default cursor
-                    document.body.style.cursor = 'default';
-                    return;
-                }
-            }, 200);
-        };
-
-
-    var url = __saveProject(desc.replace(/ /g,'-'));
+    var url = doSave();
     console.log('push ' + url + ' to FB');
     var descElem = docById("description");
     var msg = desc + ' ' + descElem.value + ' ' + url;
@@ -567,26 +549,53 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
     var w = 320;
     var h = 240;
 
+    var streaming = false;
     var video = document.querySelector('#camVideo');
     var canvas = document.querySelector('#camCanvas');
- 
-    var cameraErrorTimeout = setTimeout(function () {
-        errorMsg(_('Cannot launch camera'));
-    }, 5000);
+    navigator.getMedia = (navigator.getUserMedia ||
+                          navigator.mozGetUserMedia ||
+                          navigator.webkitGetUserMedia ||
+                          navigator.msGetUserMedia);
+    if (navigator.getMedia === undefined) {
+        errorMsg('Your browser does not support the webcam');
+    }
 
-    if (navigator.mediaDevices.getUserMedia) {
-        if (!hasSetupCamera) {
-            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-                video.src = window.URL.createObjectURL(stream);
+    if (!hasSetupCamera) {
+        navigator.getMedia(
+            {video: true, audio: false},
+            function (stream) {
+                if (navigator.mozGetUserMedia) {
+                    video.mozSrcObject = stream;
+                } else {
+                    var vendorURL = window.URL || window.webkitURL;
+                    video.src = vendorURL.createObjectURL(stream);
+                }
                 video.play();
                 hasSetupCamera = true;
-            }, function(reason) {
-                errorMsg(_('Cannot launch camera.'));
-                console.log(reason);
-                return;
-            });
+            }, function (error) {
+                errorMsg('Could not connect to camera');
+                console.log('Could not connect to camera', error);
+        });
+    } else {
+        streaming = true;
+        video.play();
+        if (isVideo) {
+            cameraID = window.setInterval(draw, 100);
+            setCameraID(cameraID);
         } else {
-            video.play();
+            draw();
+        }
+    }
+
+    video.addEventListener('canplay', function (event) {
+        console.log('canplay', streaming, hasSetupCamera);
+        if (!streaming) {
+            video.setAttribute('width', w);
+            video.setAttribute('height', h);
+            canvas.setAttribute('width', w);
+            canvas.setAttribute('height', h);
+            streaming = true;
+
             if (isVideo) {
                 cameraID = window.setInterval(draw, 100);
                 setCameraID(cameraID);
@@ -594,31 +603,15 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
                 draw();
             }
         }
-    } else {
-        errorMsg(_('Cannot launch camera.'));
-        return;
-    }
-
-    video.addEventListener('canplay', function (event) {
-        video.setAttribute('width', w);
-        video.setAttribute('height', h);
-        canvas.setAttribute('width', w);
-        canvas.setAttribute('height', h);
-        if (isVideo) {
-            cameraID = window.setInterval(draw, 100);
-            setCameraID(cameraID);
-        } else {
-            draw();
-        }
     }, false);
 
     function draw() {
+        canvas.width = w;
+        canvas.height = h;
         canvas.getContext('2d').drawImage(video, 0, 0, w, h);
-        var data = canvas.toDataURL('image/jpeg');
+        var data = canvas.toDataURL('image/png');
         turtles.turtleList[turtle].doShowImage(args[0], data);
-        // Success? Clear error message timeout.
-        clearTimeout(cameraErrorTimeout);
-    }
+    };
 };
 
 
@@ -626,6 +619,7 @@ function doStopVideoCam(cameraID, setCameraID) {
     if (cameraID !== null) {
         window.clearInterval(cameraID);
     }
+
     setCameraID(null);
     document.querySelector('#camVideo').pause();
 };
@@ -636,234 +630,148 @@ function hideDOMLabel() {
     if (textLabel !== null) {
         textLabel.style.display = 'none';
     }
+
     var numberLabel = docById('numberLabel');
     if (numberLabel !== null) {
         numberLabel.style.display = 'none';
+    }
+
+    var solfegeLabel = docById('solfegeLabel');
+    if (solfegeLabel !== null) {
+        solfegeLabel.style.display = 'none';
+    }
+
+    var notenameLabel = docById('notenameLabel');
+    if (notenameLabel !== null) {
+        notenameLabel.style.display = 'none';
+    }
+
+    var noteattrLabel = docById('noteattrLabel');
+    if (noteattrLabel !== null) {
+        noteattrLabel.style.display = 'none';
+    }
+
+    var drumnameLabel = docById('drumnameLabel');
+    if (drumnameLabel !== null) {
+        drumnameLabel.style.display = 'none';
+    }
+
+    var voicenameLabel = docById('voicenameLabel');
+    if (voicenameLabel !== null) {
+        voicenameLabel.style.display = 'none';
+    }
+
+    var modenameLabel = docById('modenameLabel');
+    if (modenameLabel !== null) {
+        modenameLabel.style.display = 'none';
     }
 };
 
 
 function displayMsg(blocks, text) {
-    return;
+    /*
     var msgContainer = blocks.msgText.parent;
     msgContainer.visible = true;
     blocks.msgText.text = text;
     msgContainer.updateCache();
     blocks.stage.setChildIndex(msgContainer, blocks.stage.getNumChildren() - 1);
+    */
+    return;
 };
 
 
-// Music utils
-function Synth () {
-    this.loadSynth = function(name) {
-    };
-};
-
-const SOLFNOTES = ['ti', 'la', 'sol', 'fa', 'mi', 're', 'do'];
-const EASTINDIANSOLFNOTES = ['ni', 'dha', 'pa', 'ma', 'ga', 're', 'sa']
-const SOLFATTRS = ['♯♯', '♯', '♮', '♭', '♭♭'];
-const WESTERN2EISOLFEGENAMES = {'do': 'sa', 're': 're', 'mi': 'ga', 'fa': 'ma', 'sol': 'pa', 'la': 'dha', 'ti': 'ni'};
-const DEFAULTVOICE = 'sine';
-const DEFAULTDRUM = 'kick drum';
-const DEFAULTMODE = 'major';
-
-var MODENAMES = [
-    //.TRANS: twelve semi-tone scale for music
-    [_('chromatic'), 'chromatic'],
-    [_('algerian'), 'algerian'],
-    //.TRANS: modal scale for music
-    [_('diminished'), 'diminished'],
-    [_('spanish'), 'spanish'],
-    //.TRANS: modal scale for music
-    [_('octatonic'), 'octatonic'],
-    //.TRANS: major scales in music
-    [_('major'), 'major'],
-    //.TRANS: modal scale for music
-    [_('ionian'), 'ionian'],
-    //.TRANS: modal scale for music
-    [_('dorian'), 'dorian'],
-    //.TRANS: modal scale for music
-    [_('phrygian'), 'phrygian'],
-    //.TRANS: modal scale for music
-    [_('lydian'), 'lydian'],
-    //.TRANS: modal scale for music
-    [_('mixolydian'), 'mixolydian'],
-    //.TRANS: natural minor scales in music
-    [_('minor'), 'minor'],
-    //.TRANS: modal scale for music
-    [_('aeolian'), 'aeolian'],
-    //.TRANS: modal scale for music
-    [_('locrian'), 'locrian'],
-    //.TRANS: minor jazz scale for music
-    [_('jazz minor'), 'jazz minor'],
-    //.TRANS: bebop scale for music
-    [_('bebop'), 'bebop'],
-    [_('arabic'), 'arabic'],
-    [_('byzantine'), 'byzantine'],
-    //.TRANS: musical scale for music by Verdi
-    [_('enigmatic'), 'enigmatic'],
-    [_('ethiopian'), 'ethiopian'],
-    //.TRANS: Ethiopic scale for music
-    [_('geez'), 'geez'],
-    [_('hindu'), 'hindu'],
-    [_('hungarian'), 'hungarian'],
-    //.TRANS: minor Romanian scale for music
-    [_('romanian minor'), 'romanian minor'],
-    [_('spanish gypsy'), 'spanish gypsy'],
-    //.TRANS: musical scale for Mid-Eastern music
-    [_('maqam'), 'maqam'],
-    //.TRANS: minor blues scale for music
-    [_('blues'), 'blues'],
-    //.TRANS: major blues scale for music
-    [_('major blues'), 'major blues'],
-    [_('whole tone'), 'whole tone'],
-    //.TRANS: pentatonic scale in music
-    [_('pentatonic'), 'pentatonic'],
-    [_('chinese'), 'chinese'],
-    [_('egyptian'), 'egyptian'],
-    //.TRANS: Japanese pentatonic scale for music
-    [_('hirajoshi'), 'hirajoshi'],
-    [_('japanese'), 'japanese'],
-    //.TRANS: Italian mathematician
-    [_('fibonacci'), 'fibonacci'],
-    [_('custom'), 'custom'],
-];
-
-var VOICENAMES = [
-    //.TRANS: musical instrument
-    [_('violin'), 'violin', 'images/voices.svg'],
-    //.TRANS: musical instrument
-    [_('cello'), 'cello', 'images/voices.svg'],
-    //.TRANS: musical instrument
-    // [_('basse'), 'basse', 'images/voices.svg'],
-    //.TRANS: polytone synthesizer
-    [_('poly'), 'poly', 'images/synth.svg'],
-    //.TRANS: sine wave
-    [_('sine'), 'sine', 'images/synth.svg'],
-    //.TRANS: square wave
-    [_('square'), 'square', 'images/synth.svg'],
-    //.TRANS: sawtooth wave
-    [_('sawtooth'), 'sawtooth', 'images/synth.svg'],
-    //.TRANS: triangle wave
-    [_('triangle'), 'triangle', 'images/synth.svg'],
-];
-
-var DRUMNAMES = [
-    //.TRANS: musical instrument
-    [_('snare drum'), 'snare drum', 'images/snaredrum.svg'],
-    //.TRANS: musical instrument
-    [_('kick drum'), 'kick drum', 'images/kick.svg'],
-    //.TRANS: musical instrument
-    [_('tom tom'), 'tom tom', 'images/tom.svg'],
-    //.TRANS: musical instrument
-    [_('floor tom tom'), 'floor tom tom', 'images/floortom.svg'],
-    //.TRANS: a drum made from an inverted cup
-    [_('cup drum'), 'cup drum', 'images/cup.svg'],
-    //.TRANS: musical instrument
-    [_('darbuka drum'), 'darbuka drum', 'images/darbuka.svg'],
-    //.TRANS: musical instrument
-    [_('hi hat'), 'hi hat', 'images/hihat.svg'],
-    //.TRANS: a small metal bell
-    [_('ride bell'), 'ride bell', 'images/ridebell.svg'],
-    //.TRANS: musical instrument
-    [_('cow bell'), 'cow bell', 'images/cowbell.svg'],
-    //.TRANS: musical instrument
-    [_('triangle bell'), 'trianglebell', 'images/trianglebell.svg'],
-    //.TRANS: musical instrument
-    [_('finger cymbals'), 'finger cymbals', 'images/fingercymbals.svg'],
-    //.TRANS: a musically tuned set of bells
-    [_('chine'), 'chine', 'images/chine.svg'],
-    //.TRANS: sound effect
-    [_('clang'), 'clang', 'images/clang.svg'],
-    //.TRANS: sound effect
-    [_('crash'), 'crash', 'images/crash.svg'],
-    //.TRANS: sound effect
-    [_('bottle'), 'bottle', 'images/bottle.svg'],
-    //.TRANS: sound effect
-    [_('clap'), 'clap', 'images/clap.svg'],
-    //.TRANS: sound effect
-    [_('slap'), 'slap', 'images/slap.svg'],
-    //.TRANS: sound effect
-    [_('splash'), 'splash', 'images/splash.svg'],
-    //.TRANS: sound effect
-    [_('bubbles'), 'bubbles', 'images/bubbles.svg'],
-    //.TRANS: animal sound effect
-    [_('cat'), 'cat', 'images/cat.svg'],
-    //.TRANS: animal sound effect
-    [_('cricket'), 'cricket', 'images/cricket.svg'],
-    //.TRANS: animal sound effect
-    [_('dog'), 'dog', 'images/dog.svg'],
-    //.TRANS: animal sound effect
-    [_('duck'), 'duck', 'images/duck.svg'],
-];
-
-
-function i18nSolfege(note) {
-    // solfnotes_ is used in the interface for i18n
-    //.TRANS: the note names must be separated by single spaces 
-    var solfnotes_ = _('ti la sol fa mi re do').split(' ');
-    var obj = splitSolfege(note);
-
-    var i = SOLFNOTES.indexOf(obj[0]);
-    if (i !== -1) {
-        return solfnotes_[i] + obj[1];
+function toFixed2 (d) {
+    // Return number as fixed 2 precision
+    var floor = Math.floor(d);
+    if (d !== floor) {
+        return d.toFixed(2).toString();
     } else {
-        console.log(note + ' not found.');
-        return note;
+        return d.toString();
     }
 };
 
 
-function splitSolfege(value) {
-    // Separate the pitch from any attributes, e.g., # or b
-    if (value != null) {
-        if (SOLFNOTES.indexOf(value) !== -1) {
-            var note = value;
-            var attr = '';
-        } else if (value.slice(0, 3) === 'sol') {
-            var note = 'sol';
-            if (value.length === 4) {
-                var attr = value[3];
-            } else {
-                var attr = value[3] + value[3];
-            }
+function mixedNumber (d) {
+    // Return number as a mixed fraction string, e.g., "2 1/4"
+    var floor = Math.floor(d);
+    if (d > floor) {
+	var obj = rationalToFraction(d - floor);
+        if (floor === 0) {
+            return obj[0] + '/' + obj[1];
         } else {
-            var note = value.slice(0, 2);
-            if (value.length === 3) {
-                var attr = value[2];
-            } else {
-                var attr = value[2] + value[2];
-            }
+            return floor + ' ' + obj[0] + '/' + obj[1];
         }
     } else {
-        var note = 'sol';
-        var attr = ''
+	return d.toString();
+    }
+};
+
+
+function LCD(a, b) {
+    return Math.abs((a * b) / GCD(a, b));
+};
+
+
+function GCD(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+
+    while(b) {
+        var n = b;
+        b = a % b;
+        a = n;
     }
 
-    return [note, attr];
+    return a;
 };
 
 
-function getModeName(name) {
-    return name;
-};
+function rationalToFraction (d) {
+    /*
+    Convert float to its approximate fractional representation. '''
 
+    This code was translated to JavaScript from the answers at
+    http://stackoverflow.com/questions/95727/how-to-convert-floats-to-human-\
+readable-fractions/681534#681534
 
-function getDrumName(name) {
-    return name;
-};
+    For example:
+    >>> 3./5
+    0.59999999999999998
 
+    >>> rationalToFraction(3./5)
+    "3/5"
 
-function getDrumSynthName(name) {
-    return name;
-};
+    */
 
+    if (d > 1) {
+        var invert = true;
+        d = 1 / d;
+    } else {
+        var invert = false;
+    }
 
-function getVoiceName(name) {
-    return name;
-};
+    var df = 1.0;
+    var top = 1;
+    var bot = 1;
 
+    while (Math.abs(df - d) > 0.00000001) {
+        if (df < d) {
+            top += 1;
+        } else {
+            bot += 1;
+            top = Math.floor(d * bot);
+        }
 
-function getVoiceSynthName(name) {
-    return name;
+        df = top / bot;
+    }
+
+    if (bot === 0 || top === 0) {
+        return [0, 1];
+    }
+
+    if (invert) {
+        return [bot, top];
+    } else {
+        return [top, bot];
+    }
 };

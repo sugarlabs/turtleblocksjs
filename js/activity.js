@@ -16,12 +16,15 @@
 // scratch. -- Walter Bender, October 2014.
 
 
+const _THIS_IS_MUSIC_BLOCKS_ = false;
+
+
 function facebookInit() {
     window.fbAsyncInit = function () {
         FB.init({
             appId: '1496189893985945',
             xfbml: true,
-            version: 'v2.8'
+            version: 'v2.1'
         });
 
         // ADD ADDITIONAL FACEBOOK CODE HERE
@@ -35,13 +38,15 @@ try {
         if (d.getElementById(id)) {
             return;
         }
+
         js = d.createElement(s);
         js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 } catch (e) {
 };
+
 
 var lang = document.webL10n.getLanguage();
 if (lang.indexOf("-") !== -1) {
@@ -50,8 +55,13 @@ if (lang.indexOf("-") !== -1) {
 }
 
 
-// sugarizerCompatibility.ifInsideSugarizerHideLoading();
-define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'howler', 'p5.sound', 'p5.dom', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'prefixfree.min'], function (compatibility) {
+if (_THIS_IS_MUSIC_BLOCKS_) {
+    MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'tone', 'howler', 'p5.sound', 'p5.dom', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/modewidget', 'activity/soundsamples', 'activity/pitchtimematrix', 'activity/pitchdrummatrix', 'activity/rhythmruler', 'activity/pitchstaircase', 'activity/tempo', 'activity/pitchslider', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'prefixfree.min'];
+} else {
+    MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'howler', 'p5.sound', 'p5.dom', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'prefixfree.min'];
+}
+
+define(MYDEFINES, function (compatibility) {
 
     // Manipulate the DOM only when it is ready.
     require(['domReady!','activity/sugarizer-compatibility'], function (doc) {
@@ -65,9 +75,9 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
     });
 
     function domReady(doc) {
-        // facebookInit();
         createDefaultStack();
         createHelpContent();
+        // facebookInit();
         window.scroll(0, 0);
 
         try {
@@ -98,14 +108,13 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
         // Are we running off of a server?
         var server = true;
-        var turlteBlocksScale = 1;
+        var turtleBlocksScale = 1;
         var stage;
         var turtles;
         var palettes;
         var blocks;
         var logo;
         var clearBox;
-        var saveBox;
         var utilityBox;
         var thumbnails;
         var buttonsVisible = true;
@@ -118,8 +127,12 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         var currentKeyCode = 0;
         var lastKeyCode = 0;
         var pasteContainer = null;
+        var pasteImage = null;
         var chartBitmap = null;
-        
+        if (!_THIS_IS_MUSIC_BLOCKS_) {
+            var saveBox;
+        }
+
         // Calculate the palette colors.
         for (var p in PALETTECOLORS) {
             PALETTEFILLCOLORS[p] = getMunsellColor(PALETTECOLORS[p][0], PALETTECOLORS[p][1], PALETTECOLORS[p][2]);
@@ -138,8 +151,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             'BLOCKPLUGINS': {},
             'ONLOAD': {},
             'ONSTART': {},
-            'ONSTOP': {},
-            'IMAGES': {}
+            'ONSTOP': {}
         };
 
         // Stacks of blocks saved in local storage
@@ -151,7 +163,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         var homeButtonContainers = [];
         var homeButtonContainersX = 0;
         var homeButtonContainersY = 0;
-        
+
         var cameraID = null;
         var toLang = null;
         var fromLang = null;
@@ -182,7 +194,6 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         var stageY = 0;
 
         var onXO = (screen.width === 1200 && screen.height === 900) || (screen.width === 900 && screen.height === 1200);
-        console.log('on XO? ' + onXO);
 
         var cellSize = 55;
         if (onXO) {
@@ -196,8 +207,21 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
         var helpContainer = null;
         var helpIdx = 0;
+        var firstRun = true;
 
         pluginsImages = {};
+
+        // Sometimes (race condition?) Firefox does not properly
+        // initialize strings in musicutils. These methods ensure that
+        // the names are never null.
+        console.log('initing i18n for music terms');
+        initDrumI18N();
+        initModeI18N();
+        initVoiceI18N();
+
+        window.onblur = function () {
+            logo.doStopTurtle();
+        };
 
         function _findBlocks() {
             logo.showBlocks();
@@ -206,8 +230,8 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             palettes.initial_x = 55;
             palettes.initial_y = 55;
             palettes.updatePalettes();
-            var x = 100 * turlteBlocksScale;
-            var y = 100 * turlteBlocksScale;
+            var x = 100 * turtleBlocksScale;
+            var y = 100 * turtleBlocksScale;
             for (var blk in blocks.blockList) {
                 if (!blocks.blockList[blk].trash) {
                     var myBlock = blocks.blockList[blk];
@@ -224,10 +248,10 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                                 }
                             }
                         }
-                        x += 200 * turlteBlocksScale;
-                        if (x > (canvas.width - 100) / (turlteBlocksScale)) {
-                            x = 100 * turlteBlocksScale;
-                            y += 100 * turlteBlocksScale;
+                        x += 200 * turtleBlocksScale;
+                        if (x > (canvas.width - 100) / (turtleBlocksScale)) {
+                            x = 100 * turtleBlocksScale;
+                            y += 100 * turtleBlocksScale;
                         }
                     }
                 }
@@ -249,21 +273,22 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             logo.time = 0;
             hideMsgs();
             logo.setBackgroundColor(-1);
+            logo.lilypondOutput = LILYPONDHEADER;
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 logo.turtleHeaps[turtle] = [];
+                logo.lilypondStaging[turtle] = [];
                 turtles.turtleList[turtle].doClear();
             }
-
 
             blocksContainer.x = 0;
             blocksContainer.y = 0;
 
             // Code specific to cleaning up music blocks
-            Element.prototype.remove = function() {
+            Element.prototype.remove = function () {
                 this.parentElement.removeChild(this);
             };
 
-            NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+            NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
                 for (var i = 0, len = this.length; i < len; i++) {
                     if(this[i] && this[i].parentElement) {
                         this[i].parentElement.removeChild(this[i]);
@@ -275,20 +300,85 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             if(table != null) {
                 table.remove();
             }
+
+            /*
+            var canvas = document.getElementById("music");
+            var context = canvas.getContext("2d");
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            */
         };
 
         function _doFastButton(env) {
+            var currentDelay = logo.turtleDelay;
+            var playingWidget = false;
             logo.setTurtleDelay(0);
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                if (docById('ptmDiv').style.visibility === 'visible') {
+                    playingWidget = true;
+                    logo.pitchTimeMatrix.playAll();
+                }
+
+                if (docById('pscDiv').style.visibility === 'visible') {
+                    playingWidget = true;
+                    pitchstaircase.playUpAndDown();
+                }
+
+                if (docById('rulerDiv').style.visibility === 'visible') {
+                    // If the tempo widget is open, sync it up with the
+                    // rhythm ruler.
+                    if (docById('tempoDiv').style.visibility === 'visible') {
+                        if (tempo.isMoving) {
+                            tempo.pause();
+                        }
+                        tempo.resume();
+                    }
+
+                    playingWidget = true;
+                    rhythmruler.playAll();
+                }
+
+                // We were using the run button to play a widget, not
+                // the turtles.
+                if (playingWidget) {
+                    return;
+                }
+
+                // Restart tempo widget and run blocks.
+                if (docById('tempoDiv').style.visibility === 'visible') {
+                    if (tempo.isMoving) {
+                        tempo.pause();
+                    }
+
+                    tempo.resume();
+                }
+            }
+
             if (!turtles.running()) {
+                console.log('running');
                 logo.runLogoCommands(null, env);
             } else {
-                logo.step(null, env);
+                if (currentDelay !== 0) {
+                    // keep playing at full speep
+                    console.log('running from step');
+                    logo.step();
+                } else {
+                    // stop and restart
+                    console.log('stopping...');
+                    logo.doStopTurtle();
+
+                    setTimeout(function () {
+                        console.log('and running');
+                        logo.runLogoCommands(null, env);
+                    }, 500);
+                }
             }
         };
 
         function _doSlowButton() {
             logo.setTurtleDelay(DEFAULTDELAY);
-            if (!turtles.running()) {
+            if (docById('ptmDiv').style.visibility === 'visible') {
+                logo.pitchTimeMatrix.playAll();
+            } else if (!turtles.running()) {
                 logo.runLogoCommands();
             } else {
                 logo.step();
@@ -319,10 +409,12 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         function _doSlowMusicButton() {
             logo.setNoteDelay(DEFAULTDELAY);
 
-            if (!turtles.running()) {
+            if (docById('ptmDiv').style.visibility === 'visible') {
+                logo.pitchTimeMatrix.playAll();
+            } else if (!turtles.running()) {
                 logo.runLogoCommands();
             } else {
-                logo.stepNotes();
+                logo.stepNote();
             }
         };
 
@@ -383,10 +475,10 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
         function closeAnalytics(chartBitmap, ctx) {
             var button = this;
-            button.x = (canvas.width / (2 * turlteBlocksScale))  + (300 / Math.sqrt(2));
+            button.x = (canvas.width / (2 * turtleBlocksScale))  + (300 / Math.sqrt(2));
             button.y = 300.00 - (300.00 / Math.sqrt(2));
             this.closeButton = _makeButton('cancel-button', _('Close'), button.x, button.y, 55, 0);
-            this.closeButton.on('click', function(event) {
+            this.closeButton.on('click', function (event) {
                 console.log('Deleting Chart');
                 button.closeButton.visible = false;
                 stage.removeChild(chartBitmap);
@@ -425,7 +517,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 img.onload = function () {
                     var chartBitmap = new createjs.Bitmap(img);
                     stage.addChild(chartBitmap);
-                    chartBitmap.x = (canvas.width / (2 * turlteBlocksScale)) - (300);
+                    chartBitmap.x = (canvas.width / (2 * turtleBlocksScale)) - (300);
                     chartBitmap.y = 0;
                     chartBitmap.scaleX = chartBitmap.scaleY = chartBitmap.scale = 600 / chartBitmap.image.width;
                     logo.hideBlocks();
@@ -476,7 +568,6 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         // ErrorMsg block
         var errorMsgText = null;
         var errorMsgArrow = null;
-        var errorMsgTimeout = null;
         var errorArtwork = {};
         const ERRORARTWORK = ['emptybox', 'emptyheap', 'negroot', 'noinput', 'zerodivide', 'notanumber', 'nostack', 'notastring', 'nomicrophone'];
 
@@ -520,36 +611,117 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             stage.addChild(turtleContainer, trashContainer, blocksContainer, palettesContainer);
             _setupBlocksContainerEvents();
 
-            trashcan = new Trashcan(canvas, trashContainer, cellSize, refreshCanvas);
-            turtles = new Turtles(canvas, turtleContainer, refreshCanvas);
+            trashcan = new Trashcan();
+            trashcan
+                .setCanvas(canvas)
+                .setStage(trashContainer)
+                .setSize(cellSize)
+                .setRefreshCanvas(refreshCanvas)
+                .init();
+
+            turtles = new Turtles();
+            turtles
+                .setCanvas(canvas)
+                .setStage(turtleContainer)
+                .setRefreshCanvas(refreshCanvas);
+
             // Put the boundary in the blocks container so it scrolls
             // with the blocks.
-            boundary = new Boundary(canvas, blocksContainer, refreshCanvas);
-            blocks = new Blocks(canvas, blocksContainer, refreshCanvas, trashcan, stage.update, getStageScale);
-            palettes = initPalettes(canvas, refreshCanvas, palettesContainer, cellSize, refreshCanvas, trashcan, blocks);
+            boundary = new Boundary();
+            boundary
+                .setStage(blocksContainer)
+                .init();
 
-            palettes.setBlocks(blocks);
-            turtles.setBlocks(blocks);
-            blocks.setTurtles(turtles);
-            blocks.setErrorMsg(errorMsg);
+            blocks = new Blocks();
+            blocks
+                .setCanvas(canvas)
+                .setStage(blocksContainer)
+                .setRefreshCanvas(refreshCanvas)
+                .setTrashcan(trashcan)
+                .setUpdateStage(stage.update)
+                .setGetStageScale(getStageScale)
+                .setTurtles(turtles)
+                .setErrorMsg(errorMsg);
             blocks.makeCopyPasteButtons(_makeButton, updatePasteButton);
 
-            // TODO: clean up this mess.
-            logo = new Logo(canvas, blocks, turtles, turtleContainer,
-                refreshCanvas,
-                textMsg, errorMsg, hideMsgs, onStopTurtle,
-                onRunTurtle, prepareExport, getStageX, getStageY,
-                getStageMouseDown, getCurrentKeyCode,
-                clearCurrentKeyCode, meSpeak, saveLocally);
+            turtles.setBlocks(blocks);
+
+            palettes = new Palettes();
+            palettes
+                .setCanvas(canvas)
+                .setStage(palettesContainer)
+                .setRefreshCanvas(refreshCanvas)
+                .setSize(cellSize)
+                .setTrashcan(trashcan)
+                .setBlocks(blocks)
+                .init();
+
+            initPalettes(palettes);
+
+            logo = new Logo();
+            logo
+                .setCanvas(canvas)
+                .setBlocks(blocks)
+                .setTurtles(turtles)
+                .setStage(turtleContainer)
+                .setRefreshCanvas(refreshCanvas)
+                .setTextMsg(textMsg)
+                .setErrorMsg(errorMsg)
+                .setHideMsgs(hideMsgs)
+                .setOnStopTurtle(onStopTurtle)
+                .setOnRunTurtle(onRunTurtle)
+                .setGetStageX(getStageX)
+                .setGetStageY(getStageY)
+                .setGetStageMouseDown(getStageMouseDown)
+                .setGetCurrentKeyCode(getCurrentKeyCode)
+                .setClearCurrentKeyCode(clearCurrentKeyCode)
+                .setMeSpeak(meSpeak)
+                .setSaveLocally(saveLocally);
+
             blocks.setLogo(logo);
 
             // Set the default background color...
             logo.setBackgroundColor(-1);
 
-            clearBox = new ClearBox(canvas, stage, refreshCanvas, sendAllToTrash);
-            saveBox = new SaveBox(canvas, stage, refreshCanvas, doSaveTB, doSaveSVG, doSavePNG, doUploadToPlanet, doShareOnFacebook);
-            utilityBox = new UtilityBox(canvas, stage, refreshCanvas, doBiggerFont, doSmallerFont, doOpenPlugin, doAnalytics, toggleScroller);
-            thumbnails = new SamplesViewer(canvas, stage, refreshCanvas, loadProject, loadRawProject, sendAllToTrash);
+            clearBox = new ClearBox();
+            clearBox
+                .setCanvas(canvas)
+                .setStage(stage)
+                .setRefreshCanvas(refreshCanvas)
+                .setClear(sendAllToTrash);
+
+            if (!_THIS_IS_MUSIC_BLOCKS_) {
+		saveBox = new SaveBox();
+		saveBox
+                    .setCanvas(canvas)
+                    .setStage(stage)
+                    .setRefreshCanvas(refreshCanvas)
+                    .setSaveTB(doSaveTB)
+                    .setSaveSVG(doSaveSVG)
+                    .setSavePNG(doSavePNG)
+                    .setSavePlanet(doUploadToPlanet)
+                    .setSaveFB(doShareOnFacebook);
+            }
+
+	    utilityBox = new UtilityBox();
+            utilityBox
+                .setStage(stage)
+                .setRefreshCanvas(refreshCanvas)
+                .setBigger(doBiggerFont)
+                .setSmaller(doSmallerFont)
+                .setPlugins(doOpenPlugin)
+                .setStats(doAnalytics)
+                .setScroller(toggleScroller);
+
+            thumbnails = new SamplesViewer();
+            thumbnails
+                .setStage(stage)
+                .setRefreshCanvas(refreshCanvas)
+                .setClear(sendAllToTrash)
+                .setLoad(loadProject)
+                .setLoadRaw(loadRawProject)
+                .init();
+
             initBasicProtoBlocks(palettes, blocks);
 
             // Load any macros saved in local storage.
@@ -569,6 +741,13 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 updatePluginObj(obj);
             }
 
+            // Load custom mode saved in local storage.
+            var custommodeData = storage.custommode;
+            if (custommodeData != undefined) {
+                customMode = JSON.parse(custommodeData);
+                console.log('restoring custom mode: ' + customMode);
+            }
+
             fileChooser.addEventListener('click', function (event) {
                 this.value = null;
             });
@@ -583,9 +762,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                     setTimeout(function () {
                         var rawData = reader.result;
                         var cleanData = rawData.replace('\n', ' ');
-                        console.log(cleanData);
                         var obj = JSON.parse(cleanData);
-                        console.log(obj)
                         // First, hide the palettes as they will need updating.
                         for (var name in blocks.palettes.dict) {
                             blocks.palettes.dict[name].hideMenu(true);
@@ -734,12 +911,12 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
             if (projectName != null) {
                 setTimeout(function () {
-                    console.log('load ' + projectName);
-                    loadProject(projectName, runProjectOnLoad, env);
+                    console.log('loading ' + projectName);
+                    loadStartWrapper(loadProject, projectName, runProjectOnLoad, env);
                 }, 2000);
             } else {
                 setTimeout(function () {
-                    _loadStart();
+                    loadStartWrapper(_loadStart);
                 }, 2000);
             }
 
@@ -747,6 +924,8 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             document.addEventListener('DOMMouseScroll', scrollEvent, false);
 
             this.document.onkeydown = __keyPressed;
+            _hideStopButton();
+
         };
 
         function _setupBlocksContainerEvents() {
@@ -776,7 +955,6 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                         return;
                     }
                     if (blocks.inLongPress) {
-                        blocks.copyButton.visible = false;
                         blocks.saveStackButton.visible = false;
                         blocks.dismissButton.visible = false;
                         blocks.inLongPress = false;
@@ -802,13 +980,13 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         function scrollEvent(event) {
             var data = event.wheelDelta || -event.detail;
             var delta = Math.max(-1, Math.min(1, (data)));
-            var scrollSpeed = 3;
+            var scrollSpeed = 30;
 
             if (event.clientX < cellSize) {
                 palettes.menuScrollEvent(delta, scrollSpeed);
                 palettes.hidePaletteIconCircles();
             } else {
-                palette = palettes.findPalette(event.clientX / turlteBlocksScale, event.clientY / turlteBlocksScale);
+                palette = palettes.findPalette(event.clientX / turtleBlocksScale, event.clientY / turtleBlocksScale);
                 if (palette) {
                     palette.scrollEvent(delta, scrollSpeed);
                 }
@@ -816,15 +994,15 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         };
 
         function getStageScale() {
-            return turlteBlocksScale;
+            return turtleBlocksScale;
         };
 
         function getStageX() {
-            return turtles.screenX2turtleX(stageX / turlteBlocksScale);
+            return turtles.screenX2turtleX(stageX / turtleBlocksScale);
         };
 
         function getStageY() {
-            return turtles.screenY2turtleY(stageY / turlteBlocksScale);
+            return turtles.screenY2turtleY(stageY / turtleBlocksScale);
         };
 
         function getStageMouseDown() {
@@ -952,8 +1130,26 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         };
 
         function __keyPressed(event) {
-            if (docById('labelDiv').classList.contains('hasKeyboard')) {
-                return;
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                if (docById('labelDiv').classList.contains('hasKeyboard')) {
+                    return;
+                }
+
+                if (docById('BPMInput').classList.contains('hasKeyboard')) {
+                    return;
+                }
+
+                if (docById('musicratio1').classList.contains('hasKeyboard')) {
+                    return;
+                }
+
+                if (docById('musicratio2').classList.contains('hasKeyboard')) {
+                    return;
+                }
+
+                if (docById('dissectNumber').classList.contains('hasKeyboard')) {
+                    return;
+                }
             }
 
             const BACKSPACE = 8;
@@ -1064,7 +1260,8 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                     // currentKeyCode = event.keyCode;
                     break;
                 }
-                // Don't mask keyCode event from keyboard block.
+                // Always store current key so as not to mask it from
+                // the keyboard block.
                 currentKey = String.fromCharCode(event.keyCode);
                 currentKeyCode = event.keyCode;
             }
@@ -1093,48 +1290,50 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             }
 
             var smallSide = Math.min(w, h);
+
             if (smallSide < cellSize * 11) {
                 var mobileSize = true;
                 if (w < cellSize * 10) {
-                    turlteBlocksScale = smallSide / (cellSize * 11);
+                    turtleBlocksScale = smallSide / (cellSize * 11);
                 } else {
-                    turlteBlocksScale = Math.max(smallSide / (cellSize * 11), 0.75);
+                    turtleBlocksScale = Math.max(smallSide / (cellSize * 11), 0.75);
                 }
             } else {
                 var mobileSize = false;
                 if (w / 1200 > h / 900) {
-                    turlteBlocksScale = w / 1200;
+                    turtleBlocksScale = w / 1200;
                 } else {
-                    turlteBlocksScale = h / 900;
+                    turtleBlocksScale = h / 900;
                 }
             }
 
-            stage.scaleX = turlteBlocksScale;
-            stage.scaleY = turlteBlocksScale;
+            stage.scaleX = turtleBlocksScale;
+            stage.scaleY = turtleBlocksScale;
 
             stage.canvas.width = w;
             stage.canvas.height = h;
 
-            console.log('Resize: scale ' + turlteBlocksScale +
+            /*
+            console.log('Resize: scale ' + turtleBlocksScale +
             ', windowW ' + w + ', windowH ' + h +
             ', canvasW ' + canvas.width + ', canvasH ' + canvas.height +
             ', screenW ' + screen.width + ', screenH ' + screen.height);
-
-            turtles.setScale(turlteBlocksScale);
-            blocks.setScale(turlteBlocksScale);
-            boundary.setScale(w, h, turlteBlocksScale);
-            palettes.setScale(turlteBlocksScale);
-            trashcan.resizeEvent(turlteBlocksScale);
+            */
+            turtles.setScale(turtleBlocksScale);
+            blocks.setScale(turtleBlocksScale);
+            boundary.setScale(w, h, turtleBlocksScale);
+            palettes.setScale(turtleBlocksScale);
+            trashcan.resizeEvent(turtleBlocksScale);
             _setupAndroidToolbar(mobileSize);
 
             // Reposition coordinate grids.
-            cartesianBitmap.x = (canvas.width / (2 * turlteBlocksScale)) - (600);
-            cartesianBitmap.y = (canvas.height / (2 * turlteBlocksScale)) - (450);
-            polarBitmap.x = (canvas.width / (2 * turlteBlocksScale)) - (600);
-            polarBitmap.y = (canvas.height / (2 * turlteBlocksScale)) - (450);
+            cartesianBitmap.x = (canvas.width / (2 * turtleBlocksScale)) - (600);
+            cartesianBitmap.y = (canvas.height / (2 * turtleBlocksScale)) - (450);
+            polarBitmap.x = (canvas.width / (2 * turtleBlocksScale)) - (600);
+            polarBitmap.y = (canvas.height / (2 * turtleBlocksScale)) - (450);
             update = true;
 
-            // Setup help now that we have calculated turlteBlocksScale.
+            // Setup help now that we have calculated turtleBlocksScale.
             _showHelp(true);
 
             // Hide palette icons on mobile
@@ -1142,10 +1341,11 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 palettes.setMobile(true);
                 palettes.hide();
             } else {
-                palettes.show();
                 palettes.setMobile(false);
+                palettes.show();
                 palettes.bringToTop();
             }
+
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 var tur = turtles.turtleList[turtle];
                 tur.clearPenStrokes();
@@ -1153,11 +1353,11 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 tur.container.y = tur.turtles.turtleY2screenY(tur.y);
                 tur.turtles.refreshCanvas();
             }
+
             var artcanvas = document.getElementById("overlayCanvas");
             artcanvas.width = w;
             artcanvas.height = h;
-            //artcanvas.getContext("2d").scale(turlteBlocksScale,turlteBlocksScale);
-            };
+        };
 
         window.onresize = function () {
             _onResize();
@@ -1251,7 +1451,8 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
                     var actionName = actionArg.value;
                     if (actionName !== _('action')) {
-                        blocks.checkPaletteEntries('actions');
+                        // blocks.checkPaletteEntries('action');
+                        console.log('FIXME: Check for unique action name here');
                     }
                 }
             }
@@ -1260,11 +1461,11 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         };
 
         function _deleteBlocksBox() {
-            clearBox.show(turlteBlocksScale);
+            clearBox.show(turtleBlocksScale);
         };
 
         function _doUtilityBox() {
-            utilityBox.init(turlteBlocksScale, utilityButton.x - 27, utilityButton.y, _makeButton);
+            utilityBox.init(turtleBlocksScale, utilityButton.x - 27, utilityButton.y, _makeButton);
         };
 
         function sendAllToTrash(addStartBlock, doNotSave) {
@@ -1283,20 +1484,23 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                     blocks.trashStacks.push(blk);
                 }
 
-                blocks.blockList[blk].trash = true;
-                blocks.moveBlockRelative(blk, dx, dy);
-                blocks.blockList[blk].hide();
                 if (blocks.blockList[blk].name === 'start' || blocks.blockList[blk].name === 'drum') {
                     console.log('start blk ' + blk + ' value is ' + blocks.blockList[blk].value)
                     var turtle = blocks.blockList[blk].value;
-                    if (turtle != null) {
+                    if (!blocks.blockList[blk].trash && turtle != null) {
                         console.log('sending turtle ' + turtle + ' to trash');
                         turtles.turtleList[turtle].trash = true;
                         turtles.turtleList[turtle].container.visible = false;
                     }
                 } else if (blocks.blockList[blk].name === 'action') {
-                    blocks.deleteActionBlock(blocks.blockList[blk]);
+                    if (!blocks.blockList[blk].trash) {
+                        blocks.deleteActionBlock(blocks.blockList[blk]);
+                    }
                 }
+
+                blocks.blockList[blk].trash = true;
+                blocks.moveBlockRelative(blk, dx, dy);
+                blocks.blockList[blk].hide();
             }
 
             if (addStartBlock) {
@@ -1308,7 +1512,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
             update = true;
         };
-        
+
         function _changePaletteVisibility() {
             if (palettes.visible) {
                 palettes.hide();
@@ -1328,6 +1532,9 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 }
                 logo.showBlocks();
             }
+
+            // Combine block and palette visibility into one button.
+            _changePaletteVisibility();
         };
 
         function _toggleCollapsibleStacks() {
@@ -1366,6 +1573,66 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         };
 
         function _doOpenSamples() {
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                localStorage.setItem('isMatrixHidden', docById('ptmDiv').style.visibility);
+                localStorage.setItem('isStaircaseHidden', docById('pscDiv').style.visibility);
+                localStorage.setItem('isPitchDrumMatrixHidden', docById('pdmDiv').style.visibility);
+                localStorage.setItem('isRhythmRulerHidden', docById('rulerDiv').style.visibility);
+                localStorage.setItem('isModeWidgetHidden', docById('modeDiv').style.visibility);
+                localStorage.setItem('isSliderHidden', docById('sliderDiv').style.visibility);
+                localStorage.setItem('isTempoHidden', docById('tempoDiv').style.visibility);
+
+                if (docById('ptmDiv').style.visibility !== 'hidden') {
+                    docById('ptmDiv').style.visibility = 'hidden';
+                    docById('ptmTableDiv').style.visibility = 'hidden';
+                    docById('ptmButtonsDiv').style.visibility = 'hidden';
+                }
+
+                if (docById('pdmDiv').style.visibility !== 'hidden') {
+                    docById('pdmDiv').style.visibility = 'hidden';
+                    docById('pdmButtonsDiv').style.visibility = 'hidden';
+                    docById('pdmTableDiv').style.visibility = 'hidden';
+                }
+
+                if (docById('rulerDiv').style.visibility !== 'hidden') {
+                    docById('rulerDiv').style.visibility = 'hidden';
+                    docById('rulerTableDiv').style.visibility = 'hidden';
+                    docById('rulerButtonsDiv').style.visibility = 'hidden';
+                }
+
+                if (docById('pscDiv').style.visibility !== 'hidden') {
+                    docById('pscDiv').style.visibility = 'hidden';
+                    docById('pscTableDiv').style.visibility = 'hidden';
+                    docById('pscButtonsDiv').style.visibility = 'hidden';
+                }
+
+                if (docById('statusDiv').style.visibility !== 'hidden') {
+                    docById('statusDiv').style.visibility = 'hidden';
+                    docById('statusButtonsDiv').style.visibility = 'hidden';
+                    docById('statusTableDiv').style.visibility = 'hidden';
+                }
+
+                if (docById('sliderDiv').style.visibility !== 'hidden') {
+                    docById('sliderDiv').style.visibility = 'hidden';
+                    docById('sliderButtonsDiv').style.visibility = 'hidden';
+                    docById('sliderTableDiv').style.visibility = 'hidden';
+                }
+
+                if (docById('modeDiv').style.visibility !== 'hidden') {
+                    docById('modeDiv').style.visibility = 'hidden';
+                    docById('modeButtonsDiv').style.visibility = 'hidden';
+                    docById('modeTableDiv').style.visibility = 'hidden';
+                }
+
+                if (docById('tempoDiv').style.visibility !== 'hidden') {
+                    if (logo.tempo != null) {
+                        logo.tempo.hide();
+                    }
+                }
+            }
+
+            localStorage.setItem('isStatusHidden', docById('statusDiv').style.visibility);
+
             logo.doStopTurtle();
             helpContainer.visible = false;
             docById('helpElem').style.visibility = 'hidden';
@@ -1375,7 +1642,53 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         };
 
         function doSave() {
-            saveBox.init(turlteBlocksScale, saveButton.x - 27, saveButton.y - 97, _makeButton);
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                console.log('Saving .tb file');
+                var name = 'My Project';
+                download(name + '.tb', 'data:text/plain;charset=utf-8,' + prepareExport());
+            } else {
+                saveBox.init(turtleBlocksScale, saveButton.x - 27, saveButton.y - 97, _makeButton);
+            }
+        };
+
+        function doSaveTB() {
+            var filename = prompt('Filename:', 'untitled.tb');  // default filename = untitled
+            if (filename != null) {
+                if (fileExt(filename) !== 'tb') {
+                    filename += '.tb';
+                }
+                download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
+            }
+        };
+
+        function doSaveSVG() {
+            var filename = prompt('Filename:', 'untitled.svg');
+            if (filename != null) {
+                if (fileExt(filename) !== 'svg') {
+                    filename += '.svg';
+                }
+                var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
+                download(filename, 'data:image/svg+xml;utf8,' + svg, filename, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
+            }
+        };
+
+        function doSavePNG() {
+            alert("Unavailable at the moment");
+            //var filename = prompt('Filename:', 'untitled.png');
+            //if (fileExt(filename) !== 'png') {
+            //    filename += '.png';
+            //}
+            //download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
+        };
+
+        function doUploadToPlanet() {
+            saveLocally();
+            thumbnails.show()
+        };
+
+        function doShareOnFacebook() {
+            alert("Facebook Sharing : disabled");    // remove when add fb share link
+            // add code for facebook share link
         };
 
         function doLoad() {
@@ -1390,7 +1703,9 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             document.body.style.cursor = 'wait';
 
             console.log('Saving .ly file');
-            logo.lilypondSaveOnly = true;
+            // Suppress music and turtle output when generating
+            // Lilypond output.
+            logo.runningLilypond = true;
             logo.lilypondOutput = LILYPONDHEADER;
             logo.lilypondNotes = {};
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
@@ -1404,7 +1719,6 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         window.saveLocally = saveLocally;
 
         function saveLocally() {
-
             if (sugarizerCompatibility.isInsideSugarizer()) {
                 //sugarizerCompatibility.data.blocks = prepareExport();
                 storage = sugarizerCompatibility.data;
@@ -1457,6 +1771,16 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             }
         };
 
+        function runProject(env){
+            console.log("Running Project from Event");
+            document.removeEventListener("finishedLoading", runProject);
+            setTimeout(function () {
+                console.log("Run");
+                _changeBlockVisibility();
+                _doFastButton(env);
+            }, 5000);
+        }
+
         function loadProject(projectName, run, env) {
             //set default value of run
             run = typeof run !== 'undefined' ? run : false;
@@ -1481,7 +1805,6 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
                     if (server) {
                         var rawData = httpGet(projectName);
-                        console.log('receiving ' + rawData);
                         var cleanData = rawData.replace('\n', '');
                     }
 
@@ -1492,11 +1815,10 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
                     var obj = JSON.parse(cleanData);
                     blocks.loadNewBlocks(obj);
-                    console.log('save locally');
                     saveLocally();
                 } catch (e) {
                     console.log(e);
-                    _loadStart();
+                    loadStartWrapper(_loadStart);
                 }
 
                 // Restore default cursor
@@ -1504,14 +1826,14 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 update = true;
             }, 200);
 
-            if (run) {
-                setTimeout(function () {
-                    _changeBlockVisibility();
-                    _doFastButton(env);
-                }, 2000);
+            if (run && firstRun) {
+                if (document.addEventListener) {
+                    document.addEventListener('finishedLoading', function (){runProject(env);}, false);
+                } else {
+                    document.attachEvent('finishedLoading', function (){runProject(env);});
+                }
             }
-
-            docById('loading-image-container').style.display = 'none';
+            firstRun = false;
         };
 
         function loadRawProject(data) {
@@ -1526,13 +1848,11 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
             var obj = JSON.parse(data);
             blocks.loadNewBlocks(obj);
-
-            docById('loading-image-container').style.display = 'none';
             document.body.style.cursor = 'default';
         };
 
         function saveProject(projectName) {
-            // palettes.updatePalettes();
+           // palettes.updatePalettes();
             // Show busy cursor.
             document.body.style.cursor = 'wait';
             setTimeout(function () {
@@ -1543,7 +1863,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 }
                 try {
                     // Post the project
-                    var returnValue = httpPost(projectName, prepareExport());
+                    var returnValue = httpPost('MusicBlocks_'+projectName, prepareExport());
                     errorMsg('Saved ' + projectName + ' to ' + window.location.host);
 
                     var img = new Image();
@@ -1553,7 +1873,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                         var bounds = bitmap.getBounds();
                         bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                         // and base64-encoded png
-                        httpPost((projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
+                        httpPost(('MusicBlocks_'+projectName).replace('.tb', '.b64'), bitmap.getCacheDataURL());
                     };
 
                     img.src = 'data:image/svg+xml;base64,' + window.btoa(
@@ -1570,11 +1890,35 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             }, 200);
         };
 
+        // Calculate time such that no matter how long it takes to
+        // load the program, the loading animation will cycle at least
+        // once.
+        function loadStartWrapper(func, arg1, arg2, arg3) {
+            var time1 = new Date();
+            func(arg1, arg2, arg3);
+
+            var time2 = new Date();
+            var elapsedTime = time2.getTime() - time1.getTime();
+            var timeLeft = Math.max(6000 - elapsedTime);
+            setTimeout(showContents, timeLeft);
+        };
+
+        // Hides the loading animation and unhides the background.
+        function showContents(){
+            if (!_THIS_IS_MUSIC_BLOCKS_) {
+                docById('loading-image-container').style.display = 'none';
+            }
+
+            docById('canvas').style.display = 'none';
+            docById('hideContents').style.display = 'block';
+        };
+
         function _loadStart() {
             // where to put this?
             // palettes.updatePalettes();
-            console.log(" LOAD START")
+            console.log('LOAD START')
             justLoadStart = function () {
+                console.log('loading start and a matrix');
                 blocks.loadNewBlocks(DATAOBJS);
             };
 
@@ -1612,20 +1956,20 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
             update = true;
 
-            docById('loading-image-container').style.display = 'none';
+
         };
 
         function hideMsgs() {
             errorMsgText.parent.visible = false;
-            clearTimeout(errorMsgTimeout);
             if (errorMsgArrow != null) {
                 errorMsgArrow.removeAllChildren();
                 refreshCanvas();
             }
+
+            msgText.parent.visible = false;
             for (var i in errorArtwork) {
                 errorArtwork[i].visible = false;
             }
-            msgText.parent.visible = false;
         };
 
         function textMsg(msg) {
@@ -1641,11 +1985,11 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         };
 
         function errorMsg(msg, blk, text) {
+             _hideStopButton(); //Hide the button, as the program is going to be terminated
             if (errorMsgText == null) {
                 // The container may not be ready yet... so do nothing
                 return;
             }
-
             if (blk !== undefined && blk != null && !blocks.blockList[blk].collapsed) {
                 var fromX = (canvas.width - 1000) / 2;
                 var fromY = 128;
@@ -1710,7 +2054,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 errorArtwork['zerodivide'].visible = true;
                 stage.setChildIndex(errorArtwork['zerodivide'], stage.getNumChildren() - 1);
                 break;
-            case NANERRORMSG:
+              case NANERRORMSG:
                 errorArtwork['notanumber'].visible = true;
                 stage.setChildIndex(errorArtwork['notanumber'], stage.getNumChildren() - 1);
                 break;
@@ -1727,7 +2071,6 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 break;
             }
 
-            errorMsgTimeout = setTimeout(hideMsgs, 10000); // make error messages autodisappearing after 10 seconds
             update = true;
         };
 
@@ -1763,6 +2106,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             // We don't save blocks in the trash, so we need to
             // consolidate the block list and remap the connections.
             var blockMap = [];
+            var hasMatrixDataBlock = false;
             for (var blk = 0; blk < blocks.blockList.length; blk++) {
                 var myBlock = blocks.blockList[blk];
                 if (myBlock.trash) {
@@ -1788,21 +2132,42 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 } else if (myBlock.name === 'start' || myBlock.name === 'drum') {
                     // Find the turtle associated with this block.
                     var turtle = turtles.turtleList[myBlock.value];
-                    var args = {
-                        'collapsed': myBlock.collapsed,
-                        'xcor': turtle.x,
-                        'ycor': turtle.y,
-                        'heading': turtle.orientation,
-                        'color': turtle.color,
-                        'shade': turtle.value,
-                        'pensize': turtle.stroke,
-                        'grey': turtle.chroma
-                    };
+                    if (turtle == null) {
+                        var args = {
+                            'collapsed': false,
+                            'xcor': 0,
+                            'ycor': 0,
+                            'heading': 0,
+                            'color': 0,
+                            'shade': 50,
+                            'pensize': 5,
+                            'grey': 100
+                        };
+                    } else {
+                        var args = {
+                            'collapsed': myBlock.collapsed,
+                            'xcor': turtle.x,
+                            'ycor': turtle.y,
+                            'heading': turtle.orientation,
+                            'color': turtle.color,
+                            'shade': turtle.value,
+                            'pensize': turtle.stroke,
+                            'grey': turtle.chroma
+                        };
+                    }
                 } else if (myBlock.name === 'action') {
                     var args = {
                         'collapsed': myBlock.collapsed
                     }
                 } else if(myBlock.name === 'matrix') {
+                    var args = {
+                        'collapsed' : myBlock.collapsed
+                    }
+                } else if(myBlock.name === 'pitchdrummatrix') {
+                    var args = {
+                        'collapsed' : myBlock.collapsed
+                    }
+                } else if(myBlock.name === 'status') {
                     var args = {
                         'collapsed' : myBlock.collapsed
                     }
@@ -1860,40 +2225,12 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             pluginChooser.click();
         };
 
-        function doSaveTB() {
-            var filename = prompt('Filename:', 'untitled.tb');  // default filename = untitled
+        function saveToFile() {
+            var filename = prompt('Filename:');
             if (fileExt(filename) !== 'tb') {
                 filename += '.tb';
             }
             download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
-        };
-
-        function doSaveSVG() {
-            var filename = prompt('Filename:', 'untitled.svg');
-            if (fileExt(filename) !== 'svg') {
-                filename += '.svg';
-            }
-            var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
-            download(filename, 'data:image/svg+xml;utf8,' + svg, filename, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
-        };
-
-        function doSavePNG() {
-            alert("Unavailable at the moment");
-            //var filename = prompt('Filename:', 'untitled.png');
-            //if (fileExt(filename) !== 'png') {
-            //    filename += '.png';
-            //}
-            //download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
-        };
-
-        function doUploadToPlanet() {
-            saveLocally();
-            thumbnails.show()
-        };
-
-        function doShareOnFacebook() {
-            alert("Facebook Sharing : disabled");    // remove when add fb share link
-            // add code for facebook share link
         };
 
         function _hideStopButton() {
@@ -1908,26 +2245,41 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             stopTurtleContainer.visible = true;
         };
 
-        function updatePasteButton() {
-            pasteContainer.removeChild(pasteContainer.children[0]);
-            var img = new Image();
-
-            img.onload = function () {
-                var originalSize = 55; // this is the original svg size
-                var halfSize = Math.floor(cellSize / 2);
-
-                var bitmap = new createjs.Bitmap(img);
-                if (cellSize !== originalSize) {
-                    bitmap.scaleX = cellSize / originalSize;
-                    bitmap.scaleY = cellSize / originalSize;
-                }
-                bitmap.regX = halfSize / bitmap.scaleX;
-                bitmap.regY = halfSize / bitmap.scaleY;
-                pasteContainer.addChild(bitmap)
-                update = true;
+        function blinkPasteButton(bitmap) {
+            function handleComplete() {
+                createjs.Tween.get(bitmap).to({alpha:1, visible:true}, 500);
             };
 
-            img.src = 'header-icons/paste-button.svg';
+            createjs.Tween.get(bitmap).to({alpha:0, visible:false}, 1000).call(
+handleComplete);
+        };
+
+        function updatePasteButton() {
+            if (pasteImage === null) {
+
+                var img = new Image();
+
+                img.onload = function () {
+                    var originalSize = 55; // this is the original svg size
+                    var halfSize = Math.floor(cellSize / 2);
+
+                    var bitmap = new createjs.Bitmap(img);
+                    if (cellSize !== originalSize) {
+                        bitmap.scaleX = cellSize / originalSize;
+                        bitmap.scaleY = cellSize / originalSize;
+                    }
+                    bitmap.regX = halfSize / bitmap.scaleX;
+                    bitmap.regY = halfSize / bitmap.scaleY;
+                    pasteContainer.addChild(bitmap);
+                    pasteImage = bitmap;
+
+                    update = true;
+                };
+
+                img.src = 'header-icons/paste-button.svg';
+            } else {
+                blinkPasteButton(pasteImage);
+            }
         };
 
         function _setupAndroidToolbar(showPalettesPopover) {
@@ -1939,8 +2291,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             }
 
             headerContainer = new createjs.Shape();
-            headerContainer.graphics.f(platformColor.header).r(0, 0,
-                screen.width / turlteBlocksScale, cellSize);
+            headerContainer.graphics.f(platformColor.header).r(0, 0, screen.width / turtleBlocksScale, cellSize);
 
             if (platformColor.doHeaderShadow) {
                 headerContainer.shadow = new createjs.Shadow('#777', 0, 2, 2);
@@ -1949,20 +2300,32 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             stage.addChild(headerContainer);
 
             // Buttons used when running turtle programs
-            // Name / short-click action / description / long-click action (if different than short-click action)
-            var buttonNames = [
-                ['run', _doFastButton, _('Run fast') + ' / ' + _('Long press to run slow'), _doSlowButton],
-                ['step', _doStepButton, _('Run step by step'), ""],
-                ['slow-music', _doSlowMusicButton, _('Run music slow'), ""],
-                ['step-music', _doStepMusicButton, _('Run note by note'), ""],
-                ['stop-turtle', doStopButton, _('Stop'), ""],
-                ['clear', _allClear, _('Clean'), ""],
-                ['palette', _changePaletteVisibility, _('Show/hide palettes'), ""],
-                ['hide-blocks', _changeBlockVisibility, _('Show/hide blocks'), ""],
-                ['collapse-blocks', _toggleCollapsibleStacks, _('Expand/collapse collapsable blocks'), ""],
-                ['go-home', _findBlocks, _('Home'), ""],
-                ['help', _showHelp, _('Help'), ""]
-            ];
+            // name / onpress function / label / onlongpress function / onextralongpress function / onlongpress icon / onextralongpress icon
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                var buttonNames = [
+                    ['run', _doFastButton, _('Run fast / long press to run slowly / extra-long press to run music slowly'), _doSlowButton, _doSlowMusicButton, 'slow-button', 'slow-music-button'],
+                    ['step', _doStepButton, _('Run step by step'), null, null, null, null],
+                    ['step-music', _doStepMusicButton, _('Run note by note'), null, null, null, null],
+                    ['stop-turtle', doStopButton, _('Stop'), null, null, null, null],
+                    ['clear', _allClear, _('Clean'), null, null, null, null],
+                    // ['palette', _changePaletteVisibility, _('Show/hide palettes'), null, null, null, null],
+                    ['hide-blocks', _changeBlockVisibility, _('Show/hide blocks'), null, null, null, null],
+                    ['collapse-blocks', _toggleCollapsibleStacks, _('Expand/collapse collapsable blocks'), null, null, null, null],
+                    ['go-home', _findBlocks, _('Home'), null, null, null, null],
+                    ['help', _showHelp, _('Help'), null, null, null, null]
+                ];
+            } else {
+                var buttonNames = [
+                    ['run', _doFastButton, _('Run fast / long press to run slowly'), _doSlowButton, null, 'slow-button', null],
+                    ['step', _doStepButton, _('Run step by step'), null, null, null, null],
+                    ['stop-turtle', doStopButton, _('Stop'), null, null, null, null],
+                    ['clear', _allClear, _('Clean'), null, null, null, null],
+                    ['hide-blocks', _changeBlockVisibility, _('Show/hide blocks'), null, null, null, null],
+                    ['collapse-blocks', _toggleCollapsibleStacks, _('Expand/collapse collapsable blocks'), null, null, null, null],
+                    ['go-home', _findBlocks, _('Home'), null, null, null, null],
+                    ['help', _showHelp, _('Help'), null, null, null, null]
+                ];
+            }
 
             if (sugarizerCompatibility.isInsideSugarizer()) {
                 buttonNames.push(['sugarizer-stop', function () {
@@ -1985,11 +2348,12 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
             for (var i = 0; i < buttonNames.length; i++) {
                 if (!getMainToolbarButtonNames(buttonNames[i][0])) {
+                    console.log('continue');
                     continue;
                 }
 
                 var container = _makeButton(buttonNames[i][0] + '-button', buttonNames[i][2], x, y, btnSize, 0);
-                _loadButtonDragHandler(container, x, y, buttonNames[i][1], buttonNames[i][3]);
+                _loadButtonDragHandler(container, x, y, buttonNames[i][1], buttonNames[i][3], buttonNames[i][4], buttonNames[i][5], buttonNames[i][6]);
                 onscreenButtons.push(container);
 
                 if (buttonNames[i][0] === 'stop-turtle') {
@@ -2015,39 +2379,52 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 y += dy;
             }
 
-            _setupRightMenu(turlteBlocksScale);
+            _setupRightMenu(turtleBlocksScale);
         };
 
-        function _setupRightMenu(turlteBlocksScale) {
+        function _setupRightMenu(turtleBlocksScale) {
             if (menuContainer !== undefined) {
                 stage.removeChild(menuContainer);
-
                 for (var i in onscreenMenu) {
                     stage.removeChild(onscreenMenu[i]);
                 }
             }
 
             // Misc. other buttons
-            var menuNames = [
-                ['planet', _doOpenSamples, _('Load samples from server')],
-                ['open', doLoad, _('Load project from files')],
-                ['save', doSave, _('Save project')],
-                ['lilypond', _doLilypond, _('Save sheet music')],
-                ['paste-disabled', pasteStack, _('Paste')],
-                ['Cartesian', _doCartesian, _('Cartesian')],
-                ['polar', _doPolar, _('Polar')],
-                ['utility', _doUtilityBox, _('Settings')],
-                ['empty-trash', _deleteBlocksBox, _('Delete all')],
-                ['restore-trash', _restoreTrash, _('Undo')]
-            ];
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                var menuNames = [
+                    ['planet', _doOpenSamples, _('Load samples from server')],
+                    ['open', doLoad, _('Load project from files')],
+                    ['save', doSave, _('Save project')],
+                    ['lilypond', _doLilypond, _('Save sheet music')],
+                    ['paste-disabled', pasteStack, _('Paste')],
+                    ['Cartesian', _doCartesian, _('Cartesian')],
+                    ['polar', _doPolar, _('Polar')],
+                    ['utility', _doUtilityBox, _('Settings')],
+                    ['empty-trash', _deleteBlocksBox, _('Delete all')],
+                    ['restore-trash', _restoreTrash, _('Undo')]
+                ];
+            } else {
+                var menuNames = [
+                    ['planet', _doOpenSamples, _('Load samples from server')],
+                    ['open', doLoad, _('Load project from files')],
+                    ['save', doSave, _('Save project')],
+                    ['paste-disabled', pasteStack, _('Paste')],
+                    ['Cartesian', _doCartesian, _('Cartesian')],
+                    ['polar', _doPolar, _('Polar')],
+                    ['utility', _doUtilityBox, _('Settings')],
+                    ['empty-trash', _deleteBlocksBox, _('Delete all')],
+                    ['restore-trash', _restoreTrash, _('Undo')]
+                ];
+            }
 
             document.querySelector('#myOpenFile')
-                    .addEventListener('change', function(event) {
+                    .addEventListener('change', function (event) {
                         thumbnails.model.controller.hide();
             });
 
             var btnSize = cellSize;
-            var x = Math.floor(canvas.width / turlteBlocksScale) - btnSize / 2;
+            var x = Math.floor(canvas.width / turtleBlocksScale) - btnSize / 2;
             var y = Math.floor(btnSize / 2);
 
             var dx = 0;
@@ -2067,9 +2444,11 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 _loadButtonDragHandler(container, x, y, menuNames[i][1]);
                 onscreenMenu.push(container);
                 if (menuNames[i][0] === 'utility') {
-                    saveButton = container;
                     utilityButton = container;
+                } else if (menuNames[i][0] === 'save') {
+                    saveButton = container;
                 }
+
                 container.visible = false;
             }
 
@@ -2081,6 +2460,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
         };
 
         function doPopdownPalette() {
+            console.log('doPopdownPalette');
             var p = new PopdownPalette(palettes);
             p.popdown();
         };
@@ -2105,7 +2485,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                             if (helpIdx >= HELPCONTENT.length) {
                                 helpIdx = 0;
                             }
-                            var imageScale = 55 * turlteBlocksScale;
+                            var imageScale = 55 * turtleBlocksScale;
                             helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
                         }
                         update = true;
@@ -2113,11 +2493,11 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
                     var img = new Image();
                     img.onload = function () {
-                        console.log(turlteBlocksScale);
+                        console.log(turtleBlocksScale);
                         var bitmap = new createjs.Bitmap(img);
                         /*
-                        if (turlteBlocksScale > 1) {
-                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = turlteBlocksScale;
+                        if (turtleBlocksScale > 1) {
+                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = turtleBlocksScale;
                         } else {
                             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.125;
                         }
@@ -2148,23 +2528,23 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 var helpElem = docById('helpElem');
                 helpElem.style.position = 'absolute';
                 helpElem.style.display = 'block';
-                helpElem.style.paddingLeft = 20 * turlteBlocksScale + 'px';
-                helpElem.style.paddingRight = 20 * turlteBlocksScale + 'px';
+                helpElem.style.paddingLeft = 20 * turtleBlocksScale + 'px';
+                helpElem.style.paddingRight = 20 * turtleBlocksScale + 'px';
                 helpElem.style.paddingTop = '0px';
-                helpElem.style.paddingBottom = 20 * turlteBlocksScale + 'px';
-                helpElem.style.fontSize = 20 + 'px'; //  * turlteBlocksScale + 'px';
+                helpElem.style.paddingBottom = 20 * turtleBlocksScale + 'px';
+                helpElem.style.fontSize = 20 + 'px'; //  * turtleBlocksScale + 'px';
                 helpElem.style.color = '#000000';  // '#ffffff';
-                helpElem.style.left = 65 * turlteBlocksScale + 'px';
-                helpElem.style.top = 105 * turlteBlocksScale + 'px';
-                var w = Math.min(300, 300); //  * turlteBlocksScale);
-                var h = Math.min(300, 300); //  * turlteBlocksScale);
+                helpElem.style.left = 65 * turtleBlocksScale + 'px';
+                helpElem.style.top = 105 * turtleBlocksScale + 'px';
+                var w = Math.min(300, 300); //  * turtleBlocksScale);
+                var h = Math.min(300, 300); //  * turtleBlocksScale);
                 helpElem.style.width = w + 'px';
                 helpElem.style.height = h + 'px';
 
-                if (turlteBlocksScale > 1) {
+                if (turtleBlocksScale > 1) {
                     var bitmap = helpContainer.children[0];
                     if (bitmap != undefined) {
-                        // bitmap.scaleX = bitmap.scaleY = bitmap.scale = turlteBlocksScale;
+                        // bitmap.scaleX = bitmap.scaleY = bitmap.scale = turtleBlocksScale;
                     }
                 }
 
@@ -2279,7 +2659,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
 
             text.visible = false;
 
-            container.on('mouseover', function(event) {
+            container.on('mouseover', function (event) {
                 for (var c = 0; c < container.children.length; c++) {
                     if (container.children[c].text != undefined) {
                         container.children[c].visible = true;
@@ -2288,7 +2668,7 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
                 }
             });
 
-            container.on('mouseout', function(event) {
+            container.on('mouseout', function (event) {
                 for (var c = 0; c < container.children.length; c++) {
                     if (container.children[c].text != undefined) {
                         container.children[c].visible = false;
@@ -2332,48 +2712,77 @@ define(["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs',
             return container;
         };
 
-        function _loadButtonDragHandler(container, ox, oy, action, long_action = action) {
+        function _loadButtonDragHandler(container, ox, oy, action, long_action = action, extra_long_action = long_action, long_img = null, extra_long_img = null) {
             // Prevent multiple button presses (i.e., debounce).
             var locked = false;
 
-            // Measure press time and distinguish between short and long press
-            var pressTimer;
-            var isLong = false;
-            
+            if (long_action === null)
+                long_action = action;
+            if (extra_long_action === null)
+                extra_long_action = long_action;
+
+            // Long and extra-long press variables declaration
+            var pressTimer, pressTimerExtra, isLong = false, isExtraLong = false;
+            var formerContainer = container;
+
             container.on('mousedown', function (event) {
                 var moved = true;
                 var offset = {
-                    x: container.x - Math.round(event.stageX / turlteBlocksScale),
-                    y: container.y - Math.round(event.stageY / turlteBlocksScale)
+                    x: container.x - Math.round(event.stageX / turtleBlocksScale),
+                    y: container.y - Math.round(event.stageY / turtleBlocksScale)
                 };
 
-                pressTimer = setTimeout(function(){
+                pressTimer = setTimeout(function () {
                     isLong = true;
+                    if (long_img !== null) {
+                        container.visible = false;
+                        container = _makeButton(long_img, "", ox, oy, cellSize, 0);
+                    }
                 }, 500);
-                
-                var circles = showButtonHighlight(ox, oy, cellSize / 2, event, turlteBlocksScale, stage);
+
+                pressTimerExtra = setTimeout(function () {
+                    isExtraLong = true;
+                    if (extra_long_img !== null) {
+                        container.visible = false;
+                        container = _makeButton(extra_long_img, "", ox, oy, cellSize, 0);
+                    }
+                }, 1000);
+
+                var circles = showButtonHighlight(ox, oy, cellSize / 2, event, turtleBlocksScale, stage);
 
                 container.on('pressup', function (event) {
                     hideButtonHighlight(circles, stage);
                     container.x = ox;
                     container.y = oy;
 
-                    if (action != null && long_action != null && moved && !locked) {
+                    if (long_img !== null || extra_long_img !== null) {
+                        container.visible = false;
+                        container = formerContainer;
+                        container.visible = true;
+                    }
+
+                    if (action != null && moved && !locked) {
                         locked = true;
 
                         setTimeout(function () {
                             locked = false;
                         }, 500);
-                        
-                        if(!isLong) action();
-                        else long_action();
-                    }
 
+                        clearTimeout(pressTimer);
+                        clearTimeout(pressTimerExtra);
+
+                        if (!isLong)
+                            action();
+                        else if (!isExtraLong)
+                            long_action();
+                        else
+                            extra_long_action();
+                    }
                     moved = false;
-                    clearTimeout(pressTimer);
                 });
-                
+
                 isLong = false;
+                isExtraLong = false;
             });
         };
     };

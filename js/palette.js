@@ -12,8 +12,6 @@
 // All things related to palettes
 require(['activity/utils']);
 
-var paletteBlocks = null;
-
 const PROTOBLOCKSCALE = 1.0;
 const PALETTELEFTMARGIN = 10;
 
@@ -28,8 +26,8 @@ function maxPaletteHeight(menuSize, scale) {
 };
 
 
-function paletteBlockButtonPush(name, arg) {
-    var blk = paletteBlocks.makeBlock(name, arg);
+function paletteBlockButtonPush(blocks, name, arg) {
+    var blk = blocks.makeBlock(name, arg);
     return blk;
 };
 
@@ -52,16 +50,15 @@ function paletteBlockButtonPush(name, arg) {
 // loadPaletteMenuItemHandler is the event handler for the palette menu.
 
 
-function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan) {
-    this.canvas = canvas;
-    this.refreshCanvas = refreshCanvas;
-    this.stage = stage;
-    this.cellSize = cellSize;
-    this.halfCellSize = Math.floor(cellSize / 2);
+function Palettes () {
+    this.canvas = null;
+    this.blocks = null;
+    this.refreshCanvas = null;
+    this.stage = null;
+    this.cellSize = null;
     this.scrollDiff = 0;
-    this.refreshCanvas = refreshCanvas;
     this.originalSize = 55;  // this is the original svg size
-    this.trashcan = trashcan;
+    this.trashcan = null;
     this.initial_x = 55;
     this.initial_y = 55;
     this.firstTime = true;
@@ -74,6 +71,13 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     this.palette_text = new createjs.Text('', '20px Arial', '#ff7700');
     this.mouseOver = false;
     this.activePalette = null;
+    this.visible = true;
+    this.scale = 1.0;
+    this.mobile = false;
+    this.current = DEFAULTPALETTE;
+    this.x = null;
+    this.y = null;
+    this.container = null;
 
     if (sugarizerCompatibility.isInsideSugarizer()) {
         storage = sugarizerCompatibility.data;
@@ -85,24 +89,48 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     this.dict = {};
     this.buttons = {};  // The toolbar button for each palette.
 
-    this.visible = true;
-    this.scale = 1.0;
-    this.x = 0;
-    this.y = this.cellSize;
+    this.init = function () {
+        this.halfCellSize = Math.floor(this.cellSize / 2);
+        this.x = 0;
+        this.y = this.cellSize;
 
-    this.current = DEFAULTPALETTE;
+        this.container = new createjs.Container();
+        this.container.snapToPixelEnabled = true;
+        this.stage.addChild(this.container);
+    };
 
-    this.container = new createjs.Container();
-    this.container.snapToPixelEnabled = true;
-    this.stage.addChild(this.container);
+    this.setCanvas = function (canvas) {
+        this.canvas = canvas;
+        return this;
+    };
 
-    this.mobile = false;
+    this.setStage = function (stage) {
+        this.stage = stage;
+        return this;
+    };
+
+    this.setRefreshCanvas = function (refreshCanvas) {
+        this.refreshCanvas = refreshCanvas;
+        return this;
+    };
+
+    this.setTrashcan = function (trashcan) {
+        this.trashcan = trashcan;
+        return this;
+    };
+
+    this.setSize = function (size) {
+        this.cellSize = size;
+        return this;
+    };
 
     this.setMobile = function (mobile) {
         this.mobile = mobile;
         if (mobile) {
             this._hideMenus();
         }
+
+        return this;
     };
 
     this.setScale = function (scale) {
@@ -117,11 +145,15 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
         if (this.downIndicator != null) {
             this.downIndicator.y = (windowHeight() / scale) - 27;
         }
+
+        return this;
     };
 
     // We need access to the macro dictionary because we load them.
     this.setMacroDictionary = function (obj) {
         this.macroDict = obj;
+
+        return this;
     };
 
     this.menuScrollEvent = function (direction, scrollSpeed) {
@@ -225,26 +257,26 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
 
         // Make an icon/button for each palette
 
-        var palettes = this;
+        var that = this;
 
         function __processButtonIcon(palettes, name, bitmap, args) {
-            palettes.buttons[name].addChild(bitmap);
-            if (palettes.cellSize != palettes.originalSize) {
-                bitmap.scaleX = palettes.cellSize / palettes.originalSize;
-                bitmap.scaleY = palettes.cellSize / palettes.originalSize;
+            that.buttons[name].addChild(bitmap);
+            if (that.cellSize != that.originalSize) {
+                bitmap.scaleX = that.cellSize / that.originalSize;
+                bitmap.scaleY = that.cellSize / that.originalSize;
             }
 
             var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill('#FFF').drawEllipse(-palettes.halfCellSize, -palettes.halfCellSize, palettes.cellSize, palettes.cellSize);
-            hitArea.x = palettes.halfCellSize;
-            hitArea.y = palettes.halfCellSize;
-            palettes.buttons[name].hitArea = hitArea;
-            palettes.buttons[name].visible = false;
+            hitArea.graphics.beginFill('#FFF').drawEllipse(-that.halfCellSize, -that.halfCellSize, that.cellSize, that.cellSize);
+            hitArea.x = that.halfCellSize;
+            hitArea.y = that.halfCellSize;
+            that.buttons[name].hitArea = hitArea;
+            that.buttons[name].visible = false;
 
-            palettes.dict[name].makeMenu(true);
-            palettes.dict[name]._moveMenu(palettes.cellSize, palettes.cellSize);
-            palettes.dict[name]._updateMenu(false);
-            palettes._loadPaletteButtonHandler(name);
+            that.dict[name].makeMenu(true);
+            that.dict[name]._moveMenu(that.cellSize, that.cellSize);
+            that.dict[name]._updateMenu(false);
+            that._loadPaletteButtonHandler(name);
         };
 
         for (var name in this.dict) {
@@ -380,7 +412,8 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
     };
 
     this.setBlocks = function (blocks) {
-        paletteBlocks = blocks;
+        this.blocks = blocks;
+        return this;
     };
 
     this.add = function (name) {
@@ -510,18 +543,18 @@ function Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashca
                 this.dict['action'].remove(actionBlock, actionName);
 
                 // And remove it from the protoBlock dictionary.
-                if (paletteBlocks.protoBlockDict['myDo_' + actionName]) {
+                if (this.blocks.protoBlockDict['myDo_' + actionName]) {
                     // console.log('DELETING PROTOBLOCKS FOR ACTION ' + actionName);
-                    delete paletteBlocks.protoBlockDict['myDo_' + actionName];
-                } else if (paletteBlocks.protoBlockDict['myCalc_' + actionName]) {
+                    delete this.blocks.protoBlockDict['myDo_' + actionName];
+                } else if (this.blocks.protoBlockDict['myCalc_' + actionName]) {
                     // console.log('deleting protoblocks for action ' + actionName);
-                    delete paletteBlocks.protoBlockDict['myCalc_' + actionName];
-                } else if (paletteBlocks.protoBlockDict['myDoArg_' + actionName]) {
+                    delete this.blocks.protoBlockDict['myCalc_' + actionName];
+                } else if (this.blocks.protoBlockDict['myDoArg_' + actionName]) {
                     // console.log('deleting protoblocks for action ' + actionName);
-                    delete paletteBlocks.protoBlockDict['myDoArg_' + actionName];
-                } else if (paletteBlocks.protoBlockDict['myCalcArg_' + actionName]) {
+                    delete this.blocks.protoBlockDict['myDoArg_' + actionName];
+                } else if (this.blocks.protoBlockDict['myCalcArg_' + actionName]) {
                     // console.log('deleting protoblocks for action ' + actionName);
-                    delete paletteBlocks.protoBlockDict['myCalcArg_' + actionName];
+                    delete this.blocks.protoBlockDict['myCalcArg_' + actionName];
                 }
                 this.dict['action'].y = 0;
                 blockRemoved = true;
@@ -631,7 +664,7 @@ function PaletteModel(palette, palettes, name) {
                 break;
             }
 
-            var protoBlock = paletteBlocks.protoBlockDict[blkname];
+            var protoBlock = this.palettes.blocks.protoBlockDict[blkname];
             if (protoBlock == null) {
                 console.log('Could not find block ' + blkname);
                 continue;
@@ -763,7 +796,6 @@ function PaletteModel(palette, palettes, name) {
 function PopdownPalette(palettes) {
     this.palettes = palettes;
     this.models = {};
-    var me = this;
 
     for (var name in this.palettes.dict) {
         this.models[name] = new PaletteModel(this.palettes.dict[name],
@@ -808,8 +840,10 @@ function PopdownPalette(palettes) {
         }
         document.querySelector('#popdown-palette').innerHTML = html;
 
+        var that = this;
+
         document.querySelector('#popdown-palette .back').addEventListener('click', function () {
-            me.popup();
+            that.popup();
         });
 
         var eles = document.querySelectorAll('#popdown-palette > .palette');
@@ -823,27 +857,28 @@ function PopdownPalette(palettes) {
             });
 
             d.querySelector('.popout-button').addEventListener('click', function () {
-                me.popup();
-                me.palettes.showPalette(d.querySelector('h2').dataset.name);
+                that.popup();
+                that.palettes.showPalette(d.querySelector('h2').dataset.name);
             });
         });
 
         var eles = document.querySelectorAll('#popdown-palette li');
         Array.prototype.forEach.call(eles, function (e) {
             e.addEventListener('click', function (event) {
-                me.popup();
-                var palette = me.palettes.dict[e.dataset.palettename];
+                that.popup();
+                var palette = that.palettes.dict[e.dataset.palettename];
                 var container = palette.protoContainers[e.dataset.modname];
 
                 // console.log(e.dataset.blk + ' ' + e.dataset.modname);
                 var newBlock = palette._makeBlockFromPalette(palette.protoList[e.dataset.blk], e.dataset.modname, function (newBlock) {
                     // Move the drag group under the cursor.
-                    paletteBlocks.findDragGroup(newBlock);
-                    for (var i in paletteBlocks.dragGroup) {
-                        paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.clientX / palette.palettes.scale) - paletteBlocks.stage.x, Math.round(event.clientY / palette.palettes.scale) - paletteBlocks.stage.y);
+                    that.palettes.blocks.findDragGroup(newBlock);
+                    for (var i in that.palettes.blocks.dragGroup) {
+                        that.palettes.blocks.moveBlockRelative(that.palettes.blocks.dragGroup[i], Math.round(event.clientX / that.palettes.scale) - that.palettes.blocks.stage.x, Math.round(event.clientY / that.palettes.scale) - that.palettes.blocks.stage.y);
                     }
+
                     // Dock with other blocks if needed
-                    blocks.blockMoved(newBlock);
+                    that.palettes.blocks.blockMoved(newBlock);
                 });
             });
         });
@@ -858,7 +893,6 @@ function PopdownPalette(palettes) {
         document.querySelector('#popdown-palette').classList.remove('show');
     };
 };
-
 
 // Define objects for individual palettes.
 function Palette(palettes, name) {
@@ -930,7 +964,7 @@ function Palette(palettes, name) {
             bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.7;
             palette.palettes.stage.addChild(bitmap);
             bitmap.x = palette.menuContainer.x + paletteWidth;
-            bitmap.y = palette._getDownButtonY();
+            bitmap.y = palette._getDownButtonY() - STANDARDBLOCKHEIGHT;
             __calculateHitArea(bitmap);
             palette.downButton = bitmap;
 
@@ -1018,7 +1052,7 @@ function Palette(palettes, name) {
             s.x = this.background.x;
             s.y = this.background.y;
             this.protoContainers[i].mask = s;
-        } 
+        }
     };
 
     this._getOverflowWidth = function() {
@@ -1762,13 +1796,10 @@ function Palette(palettes, name) {
     };
 
     this._makeBlockFromPalette = function (protoblk, blkname, callback) {
-        const BUILTINMACROS= ['setturtlename', 'fill', 'hollowline', 'status', 'xturtle', 'yturtle'];
-
         if (protoblk == null) {
             console.log('null protoblk?');
             return;
         }
-
         switch (protoblk.name) {
         case 'do':
             blkname = 'do ' + protoblk.defaults[0];
@@ -1859,13 +1890,13 @@ function Palette(palettes, name) {
             break;
         }
 
-        if (protoblk.name !== 'namedbox' && BUILTINMACROS.indexOf(blkname) > -1) {
+        if (protoblk.name !== 'namedbox' && blockIsMacro(blkname)) {
             moved = true;
             saveX = this.protoContainers[blkname].x;
             saveY = this.protoContainers[blkname].y;
             this._makeBlockFromProtoblock(protoblk, moved, blkname, null, saveX, saveY);
         } else {
-            var newBlock = paletteBlockButtonPush(newBlk, arg);
+            var newBlock = paletteBlockButtonPush(this.palettes.blocks, newBlk, arg);
             callback(newBlock);
         }
     };
@@ -1877,44 +1908,29 @@ function Palette(palettes, name) {
     };
 
     this._makeBlockFromProtoblock = function (protoblk, moved, blkname, event, saveX, saveY) {
-        var palette = this;
-
-        // Some blocks are expanded on load.
-        const STATUSOBJ = [[0, 'status', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null]], [1, 'print', 0, 0, [0, 2, 3]], [2, 'x', 0, 0, [1]], [3, 'print', 0, 0, [1, 4, 5]], [4, 'y', 0, 0, [3]], [5, 'print', 0, 0, [3, 6, null]], [6, 'heading', 0, 0, [5]]];
-        const SETTURTLENAMEOBJ = [[0, 'setturtlename', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, 2, null]], [1, 'turtlename', 0, 0, [0]], [2, ['text', {'value': 'Yertle'}], 0, 0, [0]]];
-        const FILLOBJ = [[0, 'fill', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
-        const HOLLOWOBJ = [[0, 'hollowline', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
-        const XTURTLEOBJ = [[0, 'xturtle', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null]], [1, 'turtlename', 0, 0, [0]]];
-        const YTURTLEOBJ = [[0, 'yturtle', this.protoContainers[blkname].x - paletteBlocks.stage.x, this.protoContainers[blkname].y - paletteBlocks.stage.y, [null, 1, null]], [1, 'turtlename', 0, 0, [0]]];
-
-        const BUILTINMACROS = {
-            'status': STATUSOBJ,
-            'setturtlename': SETTURTLENAMEOBJ,
-            'fill': FILLOBJ,
-            'hollowline': HOLLOWOBJ,
-            'xturtle': XTURTLEOBJ,
-            'yturtle': YTURTLEOBJ,
-        };
+        var that = this;
 
         function __myCallback (newBlock) {
             // Move the drag group under the cursor.
-            paletteBlocks.findDragGroup(newBlock);
-            for (var i in paletteBlocks.dragGroup) {
-                paletteBlocks.moveBlockRelative(paletteBlocks.dragGroup[i], Math.round(event.stageX / palette.palettes.scale) - paletteBlocks.stage.x, Math.round(event.stageY / palette.palettes.scale) - paletteBlocks.stage.y);
+            that.palettes.blocks.findDragGroup(newBlock);
+            for (var i in that.palettes.blocks.dragGroup) {
+                that.palettes.blocks.moveBlockRelative(that.palettes.blocks.dragGroup[i], Math.round(event.stageX / that.palettes.scale) - that.palettes.blocks.stage.x, Math.round(event.stageY / that.palettes.scale) - that.palettes.blocks.stage.y);
             }
             // Dock with other blocks if needed
-            blocks.blockMoved(newBlock);
-            paletteBlocks.checkBounds();
+            that.palettes.blocks.blockMoved(newBlock);
+            that.palettes.blocks.checkBounds();
         };
 
         if (moved) {
             moved = false;
             this.draggingProtoBlock = false;
 
-            if (['namedbox', 'nameddo', 'namedcalc', 'namedarg', 'nameddoArg'].indexOf(protoblk.name) === -1 && blkname in BUILTINMACROS) {
-                paletteBlocks.loadNewBlocks(BUILTINMACROS[blkname]);
-                var thisBlock = paletteBlocks.blockList.length - 1;
-                var topBlk = paletteBlocks.findTopBlock(thisBlock);
+            var macroExpansion = getMacroExpansion(blkname, this.protoContainers[blkname].x - this.palettes.blocks.stage.x, this.protoContainers[blkname].y - this.palettes.blocks.stage.y);
+
+            if (macroExpansion != null) {
+                this.palettes.blocks.loadNewBlocks(macroExpansion);
+                var thisBlock = this.palettes.blocks.blockList.length - 1;
+                var topBlk = this.palettes.blocks.findTopBlock(thisBlock);
             } else if (this.name === 'myblocks') {
                 // If we are on the myblocks palette, it is a macro.
                 var macroName = blkname.replace('macro_', '');
@@ -1956,19 +1972,18 @@ function Palette(palettes, name) {
 
                 // Set the position of the top block in the stack
                 // before loading.
-                obj[0][2] = this.protoContainers[blkname].x - paletteBlocks.stage.x;
-                obj[0][3] = this.protoContainers[blkname].y - paletteBlocks.stage.y;
-                paletteBlocks.loadNewBlocks(obj);
+                obj[0][2] = this.protoContainers[blkname].x - this.palettes.blocks.stage.x;
+                obj[0][3] = this.protoContainers[blkname].y - this.palettes.blocks.stage.y;
+                this.palettes.blocks.loadNewBlocks(obj);
 
                 // Ensure collapse state of new stack is set properly.
-                var thisBlock = paletteBlocks.blockList.length - 1;
-                var topBlk = paletteBlocks.findTopBlock(thisBlock);
+                var thisBlock = this.palettes.blocks.blockList.length - 1;
+                var topBlk = this.palettes.blocks.findTopBlock(thisBlock);
                 setTimeout(function () {
-                    paletteBlocks.blockList[topBlk].collapseToggle();
+                    this.palettes.blocks.blockList[topBlk].collapseToggle();
                 }, 500);
             } else {
                 var newBlock = this._makeBlockFromPalette(protoblk, blkname, __myCallback, newBlock);
-
             }
 
             // Put the protoblock back on the palette...
@@ -1980,18 +1995,14 @@ function Palette(palettes, name) {
 };
 
 
-var blocks = undefined;
-
-function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan, b) {
+function initPalettes (palettes) {
     // Instantiate the palettes object on first load.
-    var palettes = new Palettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, trashcan);
+
     for (var i = 0; i < BUILTINPALETTES.length; i++) {
         palettes.add(BUILTINPALETTES[i]);
     }
 
-    // Define some globals.
     palettes.makePalettes(true);
-    blocks = b;
 
     // Give the palettes time to load.
     // We are in no hurry since we are waiting on the splash screen.
@@ -1999,7 +2010,6 @@ function initPalettes(canvas, refreshCanvas, stage, cellSize, refreshCanvas, tra
         palettes.show();
         palettes.bringToTop();
     }, 6000);
-    return palettes;
 };
 
 

@@ -1,5 +1,5 @@
 // Copyright (C) 2015 Sam Parkinson
-// Copyright (C) 2016 Walter Bender
+// Copyright (C) 2016-17 Walter Bender
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -10,16 +10,22 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+const MUSICBLOCKSPREFIX = 'MusicBlocks_';
+
 const APIKEY = '3tgTzMXbbw6xEKX7';
 const EMPTYIMAGE = 'data:image/svg+xml;base64,' + btoa('<svg \
               xmlns="http://www.w3.org/2000/svg" width="320" height="240" \
               viewBox="0 0 320 240"></svg>')
 
 const SERVER = 'https://turtle.sugarlabs.org/server/';
-window.server = SERVER;
+window.server = SERVER; 'https://turtle.sugarlabs.org/server/'; // '/server/';
 
 //{NAME} will be replaced with project name
-const SHAREURL = 'https://walterbender.github.io/turtleblocksjs/?file={name}&run=True';
+if (_THIS_IS_MUSIC_BLOCKS_) {
+    const SHAREURL = 'https://walterbender.github.io/musicblocks/index.html?file={name}&run=True';
+} else {
+    const SHAREURL = 'https://walterbender.github.io/turtleblocksjs/index.html?file={name}&run=True';
+}
 const NAMESUBTEXT = '{name}';
 
 const LOCAL_PROJECT_STYLE ='\
@@ -107,11 +113,10 @@ function PlanetModel(controller) {
     var model = this;
 
     if (sugarizerCompatibility.isInsideSugarizer()) {
-        server = SERVER;
         storage = sugarizerCompatibility.data;
     } else {
         storage = localStorage;
-    };
+    }
 
     this.start = function (cb,glo) {
         model.updated = cb;
@@ -130,20 +135,23 @@ function PlanetModel(controller) {
         jQuery.ajax({
             url: SERVER,
             headers: {
-                'x-api-key' : APIKEY
+                'x-api-key': APIKEY
             }
         }).done(function (l) {
             model.globalProjects = [];
             model.stop = false;
+
             var todo = [];
             l.forEach(function (name, i) {
                 if (name.indexOf('.b64') !== -1) {
-                    if(!(name.slice(0, 'MusicBlocks_'.length) == 'MusicBlocks_'))
+                    if (_THIS_IS_MUSIC_BLOCKS_) {
                         todo.push(name);
+                    } else if (!(name.slice(0, MUSICBLOCKSPREFIX.length) == MUSICBLOCKSPREFIX)) {
+                        todo.push(name);
+                    }
                 }
             });
-            // console.log("todo");
-            // console.log(todo);
+
             model.count = 0;
             model.getImages(todo);
         });
@@ -158,48 +166,61 @@ function PlanetModel(controller) {
         if (image === undefined) {
             return;
         }
+
         var name = image.replace('.b64', '');
 
+        var mbcheck = false;
+        if (_THIS_IS_MUSIC_BLOCKS_) {
+            if (name.slice(0, MUSICBLOCKSPREFIX.length) === MUSICBLOCKSPREFIX){
+                name = name.substring(MUSICBLOCKSPREFIX.length);
+                mbcheck = true;
+            }
+        }
+
         if (model.globalImagesCache[image] !== undefined) {
-            model.globalProjects.push({title: name,
-                                    img: model.globalImagesCache[image]});
-            model.addGlobalElement(model.globalProjects[model.globalProjects.length-1],model.count);
+            model.globalProjects.push({title: name, img: model.globalImagesCache[image]});
+            model.addGlobalElement(model.globalProjects[model.globalProjects.length-1], model.count);
             model.count++;
             model.getImages(todo);
         } else {
             jQuery.ajax({
-                      url: SERVER + image,
+                  url: SERVER + image,
                 headers: {
                     'x-api-key' : '3tgTzMXbbw6xEKX7'
                 },
                 dataType: 'text'
             }).done(function (d) {
-                if(!validateImageData(d)){
-                    d = EMPTYIMAGE;
+                if (!validateImageData(d)) {
+                    d = 'images/planetgraphic.png'; // EMPTYIMAGE;
                 }
+
+                if (mbcheck) {
+                    d = 'images/planetgraphic.png';
+                }
+
                 model.globalImagesCache[image] = d;
                 model.globalProjects.push({title: name, img: d, url: image});
-                model.addGlobalElement(model.globalProjects[model.globalProjects.length-1],model.count);
+                model.addGlobalElement(model.globalProjects[model.globalProjects.length-1], model.count);
                 model.count++;
                 model.getImages(todo);
             });
         }
     };
 
-    this.redoLocalStorageData = function() {
+    this.redoLocalStorageData = function () {
         this.localProjects = [];
-        var l = JSON.parse(storage.allProjects);
+        var l = JSON.parse(localStorage.allProjects);
         l.forEach(function (p, i) {
-            var img = storage['SESSIONIMAGE' + p];
+            var img = localStorage['SESSIONIMAGE' + p];
             if (img === 'undefined') {
-                img = EMPTYIMAGE;
+                img = 'images/planetgraphic.png'; // EMPTYIMAGE;
             }
 
             var e = {
                 title: p,
                 img: img,
-                data: storage['SESSION' + p],
-                current: p === storage.currentProject
+                data: localStorage['SESSION' + p],
+                current: p === localStorage.currentProject
             }
 
             if (e.current) {
@@ -212,7 +233,7 @@ function PlanetModel(controller) {
     };
 
     this.uniqueName = function (base) {
-        var l = JSON.parse(storage.allProjects);
+        var l = JSON.parse(localStorage.allProjects);
         if (l.indexOf(base) === -1) {
             return base;
         }
@@ -236,48 +257,50 @@ function PlanetModel(controller) {
 
     this.renameProject = function (oldName, newName, current) {
         if (current) {
-            storage.currentProject = newName;
+            localStorage.currentProject = newName;
         }
 
-        var l = JSON.parse(storage.allProjects);
+        var l = JSON.parse(localStorage.allProjects);
         l[l.indexOf(oldName)] = newName;
-        storage.allProjects = JSON.stringify(l);
+        localStorage.allProjects = JSON.stringify(l);
 
-        storage['SESSIONIMAGE' + newName] =
-            storage['SESSIONIMAGE' + oldName];
-        storage['SESSION' + newName] = storage['SESSION' + oldName];
+        localStorage['SESSIONIMAGE' + newName] = localStorage['SESSIONIMAGE' + oldName];
+        localStorage['SESSION' + newName] = localStorage['SESSION' + oldName];
 
-        storage['SESSIONIMAGE' + oldName] = undefined;
-        storage['SESSION' + oldName] = undefined;
+        localStorage['SESSIONIMAGE' + oldName] = undefined;
+        localStorage['SESSION' + oldName] = undefined;
 
         model.redoLocalStorageData();
     };
 
     this.delete = function (name) {
-        var l = JSON.parse(storage.allProjects);
+        var l = JSON.parse(localStorage.allProjects);
         l.splice(l.indexOf(name), 1);
-        storage.allProjects = JSON.stringify(l);
+        localStorage.allProjects = JSON.stringify(l);
 
-        storage['SESSIONIMAGE' + name] = undefined;
-        storage['SESSION' + name] = undefined;
+        localStorage['SESSIONIMAGE' + name] = undefined;
+        localStorage['SESSION' + name] = undefined;
 
         model.redoLocalStorageData();
         model.updated();
     };
 
+    //Opens up projects in the "On my device" section
     this.open = function (name, data) {
-        storage.currentProject = name;
+        localStorage.currentProject = name;
         model.controller.sendAllToTrash(false, true);
         model.controller.loadRawProject(data);
         model.stop = true;
     };
 
+    //Adds the project from "Worldwide" to the "On my deivce" 
+    //section when download button is clicked
     this.prepLoadingProject = function (name) {
-        storage.currentProject = name;
+        localStorage.currentProject = name;
 
-        var l = JSON.parse(storage.allProjects);
+        var l = JSON.parse(localStorage.allProjects);
         l.push(name);
-        storage.allProjects = JSON.stringify(l);
+        localStorage.allProjects = JSON.stringify(l);
     };
 
     this.load = function (name) {
@@ -285,11 +308,23 @@ function PlanetModel(controller) {
         model.controller.sendAllToTrash(false, false);
 
         jQuery.ajax({
-            url: SERVER + name + ".tb",
+            url: SERVER + name + '.tb',
             headers: {
                 'x-api-key' : '3tgTzMXbbw6xEKX7'
             },
-            dataType: 'text'
+            dataType: 'text',
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                jQuery.ajax({
+                    url: SERVER + MUSICBLOCKSPREFIX + name + '.tb',
+                    headers: {
+                        'x-api-key' : '3tgTzMXbbw6xEKX7'
+                    },
+                    dataType: 'text',
+                }).done(function (d) {
+                    model.controller.loadRawProject(d);
+                    model.stop = true;
+                });
+            }
         }).done(function (d) {
             model.controller.loadRawProject(d);
             model.stop = true;
@@ -306,6 +341,9 @@ function PlanetModel(controller) {
 
         setTimeout(function () {
             name = model.getPublishableName(name);
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                name = MUSICBLOCKSPREFIX + name;
+            }
             httpPost(name + '.tb', data);
             httpPost(name + '.b64', image);
             //TODO: append project at beginning
@@ -317,46 +355,50 @@ function PlanetModel(controller) {
     };
 };
 
+
 function PlanetView(model, controller) {
     this.model = model;
     this.controller = controller;
     var planet = this;  // for future reference
 
-    document.querySelector('.planet .new')
-            .addEventListener('click', function () {
+    document.querySelector('.planet .new').addEventListener('click', function () {
         planet.model.newProject();
         planet.controller.hide();
     });
 
-    document.querySelector('#myOpenFile')
-            .addEventListener('change', function(event) {
+    document.querySelector('#myOpenFile').addEventListener('change', function(event) {
         planet.controller.hide();
     });
-    document.querySelector('.planet .open')
-            .addEventListener('click', function () {
+
+    document.querySelector('.planet .open').addEventListener('click', function () {
         document.querySelector('#myOpenFile').focus();
         document.querySelector('#myOpenFile').click();
         window.scroll(0, 0);
     });
 
-    this.update = function() {
+    document.querySelector('.planet .back').addEventListener('click', function () {
+        planet.controller.hide();
+    });
+
+    this.update = function () {
         // This is werid
         var model = this;
-        console.log('update');
+
+        // console.log('update');
         if (model.localChanged) {
             html = '';
             html = html + LOCAL_PROJECT_STYLE;
             model.localProjects.forEach(function (project, i) {
                 html = html + format(LOCAL_PROJECT_TEMPLATE, project).replace(new RegExp('_NUM_', 'g'), i.toString());
-                console.log(i);
-                console.log(project);
+                // console.log(i);
+                // console.log(project);
             });
             document.querySelector('.planet .content.l').innerHTML = html;
 
             var eles = document.querySelectorAll('.planet .content.l li');
             Array.prototype.forEach.call(eles, function (ele, i) {
-                console.log(i);
-                console.log(ele);
+                // console.log(i);
+                // console.log(ele);
                 ele.querySelector('.open')
                     .addEventListener('click', planet.open(ele));
                 ele.querySelector('.publish')
@@ -376,7 +418,7 @@ function PlanetView(model, controller) {
         }
     };
 
-    this.addGlobalElement = function(glob, i){
+    this.addGlobalElement = function (glob, i){
         var d = document.createElement('li');
         d.setAttribute('url', glob.url);
         d.setAttribute('title', glob.title);
@@ -385,6 +427,8 @@ function PlanetView(model, controller) {
         d.innerHTML = html;
         var htmldata = d;
         // console.log(htmldata);
+        htmldata.querySelector('.thumbnail')
+            .addEventListener('click', planet.load(htmldata));
         htmldata.querySelector('.download')
             .addEventListener('click', planet.load(htmldata));
         htmldata.querySelector('.share')
@@ -394,59 +438,48 @@ function PlanetView(model, controller) {
 
     this.load = function (ele) {
         return function () {
-            document.querySelector('#loading-image-container')
-                    .style.display = '';
-
             planet.model.load(ele.attributes.title.value);
             planet.controller.hide();
-        };
+        }
     };
 
     this.publish = function (ele) {
         return function () {
-            document.querySelector('#loading-image-container')
-                    .style.display = '';
             planet.model.publish(ele.attributes.title.value,
                              ele.attributes.data.value,
                              ele.querySelector('img').src);
-            document.querySelector('#loading-image-container')
-                    .style.display = 'none';
-        };
+        }
     };
 
     this.share = function (ele,i) {
         return function () {
-            document.querySelector('#loading-image-container')
-                    .style.display = '';
             planet.model.publish(ele.attributes.title.value,
                              ele.attributes.data.value,
                              ele.querySelector('img').src);
-            document.querySelector('#loading-image-container')
-                    .style.display = 'none';
-            var url = SHAREURL.replace(NAMESUBTEXT, planet.model.getPublishableName(ele.attributes.title.value)+'.tb');
+            var url = SHAREURL.replace(NAMESUBTEXT, MUSICBLOCKSPREFIX + planet.model.getPublishableName(ele.attributes.title.value)+'.tb');
             console.log(url);
             var n = i.toString();
-            document.getElementById('shareurldiv'+n).style.visibility = 'visible';
-            document.getElementById('shareurlbox'+n).style.visibility = 'visible';
-            document.getElementById('shareurltri'+n).style.visibility = 'visible';
-            document.getElementById('shareurlbox'+n).value = url;
-            document.getElementById('shareurlbox'+n).focus();
-            document.getElementById('shareurlbox'+n).select();
+            docById('shareurldiv'+n).style.visibility = 'visible';
+            docById('shareurlbox'+n).style.visibility = 'visible';
+            docById('shareurltri'+n).style.visibility = 'visible';
+            docById('shareurlbox'+n).value = url;
+            docById('shareurlbox'+n).focus();
+            docById('shareurlbox'+n).select();
         };
     };
 
     this.planetshare = function (ele,i) {
         return function () {
             console.log(ele);
-            var url = SHAREURL.replace(NAMESUBTEXT, planet.model.getPublishableName(ele.attributes.title.value)+'.tb');
+            var url = SHAREURL.replace(NAMESUBTEXT, MUSICBLOCKSPREFIX + planet.model.getPublishableName(ele.attributes.title.value)+'.tb');
             console.log(url);
             var n = i.toString();
-            document.getElementById('plshareurldiv'+n).style.visibility = 'visible';
-            document.getElementById('plshareurlbox'+n).style.visibility = 'visible';
-            document.getElementById('plshareurltri'+n).style.visibility = 'visible';
-            document.getElementById('plshareurlbox'+n).value = url;
-            document.getElementById('plshareurlbox'+n).focus();
-            document.getElementById('plshareurlbox'+n).select();
+            docById('plshareurldiv'+n).style.visibility = 'visible';
+            docById('plshareurlbox'+n).style.visibility = 'visible';
+            docById('plshareurltri'+n).style.visibility = 'visible';
+            docById('plshareurlbox'+n).value = url;
+            docById('plshareurlbox'+n).focus();
+            docById('plshareurlbox'+n).select();
         };
     };
 
@@ -454,27 +487,54 @@ function PlanetView(model, controller) {
         return function () {
             download(ele.attributes.title.value + '.tb',
                 'data:text/plain;charset=utf-8,' + ele.attributes.data.value);
-        };
+        }
     };
 
     this.open = function (ele) {
         return function () {
+            docById('statusDiv').style.visibility = localStorage.getItem('isStatusHidden');
+            docById('statusButtonsDiv').style.visibility = localStorage.getItem('isStatusHidden');
+            docById('statusTableDiv').style.visibility = localStorage.getItem('isStatusHidden');
+
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                docById('ptmDiv').style.visibility = localStorage.getItem('isMatrixHidden');
+                docById('ptmButtonsDiv').style.visibility = localStorage.getItem('isMatrixHidden'); 
+                docById('ptmTableDiv').style.visibility = localStorage.getItem('isMatrixHidden'); 
+                docById('pscDiv').style.visibility = localStorage.getItem('isStaircaseHidden');
+                docById('pscButtonsDiv').style.visibility = localStorage.getItem('isStaircaseHidden'); 
+                docById('pscTableDiv').style.visibility = localStorage.getItem('isStaircaseHidden'); 
+                docById('sliderDiv').style.visibility = localStorage.getItem('isSliderHidden');
+                docById('sliderButtonsDiv').style.visibility = localStorage.getItem('isSliderHidden');
+                docById('sliderTableDiv').style.visibility = localStorage.getItem('isSliderHidden');
+                docById('pdmDiv').style.visibility = localStorage.getItem('isPitchDrumMatrixHidden');
+                docById('pdmButtonsDiv').style.visibility = localStorage.getItem('isPitchDrumMatrixHidden');
+                docById('pdmTableDiv').style.visibility = localStorage.getItem('isPitchDrumMatrixHidden');
+                docById('rulerDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden'); 
+                docById('rulerButtonsDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden'); 
+                docById('rulerTableDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden'); 
+                docById('modeDiv').style.visibility = localStorage.getItem('isModeWidgetHidden');
+                docById('modeButtonsDiv').style.visibility = localStorage.getItem('isModeWidgetHidden');
+                docById('modeTableDiv').style.visibility = localStorage.getItem('isModeWidgetHidden');
+                // Don't reopen the tempo widget since we didn't just hide it, but also closed it.
+                // docById('tempoDiv').style.visibility = localStorage.getItem('isTempoHidden');
+                // docById('tempoButtonsDiv').style.visibility = localStorage.getItem('isTempoHidden');
+            }
+
             if (ele.attributes.current.value === 'true') {
                 planet.controller.hide();
                 return;
             }
             
-            planet.model.open(ele.attributes.title.value,
-                          ele.attributes.data.value);
+            planet.model.open(ele.attributes.title.value, ele.attributes.data.value);
             planet.controller.hide();
-        };
+        }
     };
 
     this.delete = function (ele) {
         return function () {
             var title = ele.attributes.title.value;
             planet.model.delete(title);
-        };
+        }
     };
 
     this.input = function (ele) {
@@ -484,49 +544,79 @@ function PlanetView(model, controller) {
             var current = ele.attributes.current.value === 'true';
             planet.model.renameProject(oldName, newName, current);
             ele.attributes.title.value = newName;
-        };
+        }
     };
 };
 
 
 // A viewer for sample projects
-function SamplesViewer(canvas, stage, refreshCanvas, load, loadRawProject, trash) {
-    this.stage = stage;
-    this.sendAllToTrash = trash;
-    this.loadProject = load;
-    this.loadRawProject = loadRawProject;
-    var samples = this;  // for future reference
+function SamplesViewer () {
+    this.stage = null;
+    this.sendAllToTrash = null;
+    this.loadProject = null;
+    this.loadRawProject = null;
 
-    // i18n for section titles
-    document.querySelector('#planetTitle').innerHTML = _('Planet');
-    document.querySelector('#planetMyDevice').innerHTML = _('On my device');
-    document.querySelector('#planetWorldwide').innerHTML = _('Worldwide');
+    this.init = function () {
+        this.samples = this;  // for future reference
 
-    this.model = new PlanetModel(this);
-    this.view = new PlanetView(this.model, this);
+        // i18n for section titles
+        document.querySelector('#planetTitle').innerHTML = _('Planet');
+        document.querySelector('#planetMyDevice').innerHTML = _('On my device');
+        document.querySelector('#planetWorldwide').innerHTML = _('Worldwide');
 
-    this.setServer = function(server) {
+        this.model = new PlanetModel(this);
+        this.view = new PlanetView(this.model, this);
+    }
+
+    this.setClear = function (trash) {
+        this.sendAllToTrash = trash;
+        return this;
+    }
+
+    this.setLoad = function (load) {
+        this.loadProject = load;
+        return this;
+    };
+
+    this.setStage = function (stage) {
+        this._stage = stage;
+        return this;
+    };
+
+    this.setLoadRaw = function (loadRawProject) {
+        this.loadRawProject = loadRawProject;
+        return this;
+    };
+
+    this.setRefreshCanvas = function (refreshCanvas) {
+        this._refreshCanvas = refreshCanvas;
+        return this;
+    };
+
+
+    this.setServer = function (server) {
         this.server = server;
     };
 
-    this.hide = function() {
+    this.hide = function () {
         document.querySelector('.planet').style.display = 'none';
         document.querySelector('body').classList.remove('samples-shown');
         document.querySelector('.canvasHolder').classList.remove('hide');
         document.querySelector('#theme-color').content = platformColor.header;
-        samples.stage.enableDOMEvents(true);
+        this.samples._stage.enableDOMEvents(true);
         window.scroll(0, 0);
     };
 
-    this.show = function() {
+    this.show = function () {
         document.querySelector('.planet').style.display = '';
         document.querySelector('body').classList.add('samples-shown');
         document.querySelector('.canvasHolder').classList.add('hide');
         document.querySelector('#theme-color').content = '#8bc34a';
+        var that = this;
 
         setTimeout(function () {
             // Time to release the mouse
-            samples.stage.enableDOMEvents(false);
+            that.samples._stage.enableDOMEvents(false);
         }, 250);
 
         window.scroll(0, 0);
@@ -544,10 +634,9 @@ function validateImageData(d) {
     
     if(d.indexOf('data:image') !== 0){
         return false;
-    }
-    else {
+    } else {
         var data = d.split(',');
-        if(data[1].length === 0){
+        if(data[1].length == 0){
             return false;
         }
     }

@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Walter Bender
+// Copyright (c) 2016-17 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -12,20 +12,15 @@
 // This widget makes displays the status of selected parameters and
 // notes as they are being played.
 
-const MATRIXBUTTONCOLOR = '#c374e9';
-const MATRIXLABELCOLOR = '#90c100';
-const MATRIXNOTECELLCOLOR = '#b1db00';
-const MATRIXRHYTHMCELLCOLOR = '#c8c8c8';
-const MATRIXBUTTONCOLORHOVER = '#c894e0';
-
-const MATRIXBUTTONHEIGHT = 40;
-const MATRIXSOLFEHEIGHT = 30;
-
 
 function StatusMatrix() {
-    docById('statusmatrix').style.visibility = 'hidden';
-    docById('statusmatrix').style.left = 200 + 'px';
-    docById('statusmatrix').style.top = 100 + 'px';
+    const BUTTONDIVWIDTH = 128;
+    const BUTTONSIZE = 53;
+    const ICONSIZE = 32;
+    const OUTERWINDOWWIDTH = 620;
+    const INNERWINDOWWIDTH = OUTERWINDOWWIDTH - BUTTONSIZE * 1.5;
+
+    docById('statusDiv').style.visibility = 'hidden';
 
     this.init = function(logo) {
         // Initializes the status matrix. First removes the
@@ -33,122 +28,227 @@ function StatusMatrix() {
         // object model)
         this._logo = logo;
 
-        console.log('setting status matrix to VISIBLE');
-        docById('statusmatrix').style.display = 'inline';
-        docById('statusmatrix').style.visibility = 'visible';
-        docById('statusmatrix').style.border = 2;
-
-        // FIXME: make this number based on canvas size.
         var w = window.innerWidth;
         this._cellScale = w / 1200;
-        docById('statusmatrix').style.overflowX = 'scroll';
+        var iconSize = ICONSIZE * this._cellScale;
 
-        // Used to remove the matrix table
-        Element.prototype.remove = function() {
-            this.parentElement.removeChild(this);
+        var canvas = docById('myCanvas');
+
+        // Position the widget and make it visible.
+        var statusDiv = docById('statusDiv');
+        statusDiv.style.visibility = 'visible';
+        statusDiv.setAttribute('draggable', 'true');
+        statusDiv.style.left = '200px';
+        statusDiv.style.top = '150px';
+
+        // The status buttons
+        var statusButtonsDiv = docById('statusButtonsDiv');
+        statusButtonsDiv.style.display = 'inline';
+        statusButtonsDiv.style.visibility = 'visible';
+        statusButtonsDiv.style.width = BUTTONDIVWIDTH;
+        statusButtonsDiv.innerHTML = '<table cellpadding="0px" id="statusButtonTable"></table>';
+
+        var buttonTable = docById('statusButtonTable');
+        var header = buttonTable.createTHead();
+        var row = header.insertRow(0);
+
+        // For the button callbacks
+        var that = this;
+
+        var cell = this._addButton(row, 'close-button.svg', ICONSIZE, _('close'));
+
+        cell.onclick=function() {
+            statusTableDiv.style.visibility = 'hidden';
+            statusButtonsDiv.style.visibility = 'hidden';
+            statusDiv.style.visibility = 'hidden';
         }
 
-        NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
-            for (var i = 0, len = this.length; i < len; i++) {
-                if (this[i] && this[i].parentElement) {
-                    this[i].parentElement.removeChild(this[i]);
-                }
+        // We use this cell as a handle for dragging.
+        var dragCell = this._addButton(row, 'grab.svg', ICONSIZE, _('drag'));
+        dragCell.style.cursor = 'move';
+
+        this._dx = dragCell.getBoundingClientRect().left - statusDiv.getBoundingClientRect().left;
+        this._dy = dragCell.getBoundingClientRect().top - statusDiv.getBoundingClientRect().top;
+        this._dragging = false;
+        this._target = false;
+        this._dragCellHTML = dragCell.innerHTML;
+
+        dragCell.onmouseover = function(e) {
+            // In order to prevent the dragged item from triggering a
+            // browser reload in Firefox, we empty the cell contents
+            // before dragging.
+            dragCell.innerHTML = '';
+        };
+
+        dragCell.onmouseout = function(e) {
+            if (!that._dragging) {
+                dragCell.innerHTML = that._dragCellHTML;
             }
         };
 
-        var table = docById('statusTable');
+        canvas.ondragover = function(e) {
+            e.preventDefault();
+        };
 
-        if (table !== null) {
-            table.remove();
+        canvas.ondrop = function(e) {
+            if (that._dragging) {
+                that._dragging = false;
+                var x = e.clientX - that._dx;
+                statusDiv.style.left = x + 'px';
+                var y = e.clientY - that._dy;
+                statusDiv.style.top = y + 'px';
+                dragCell.innerHTML = that._dragCellHTML;
+            }
+        };
+
+        statusDiv.ondragover = function(e) {
+            e.preventDefault();
+        };
+
+        statusDiv.ondrop = function(e) {
+            if (that._dragging) {
+                that._dragging = false;
+                var x = e.clientX - that._dx;
+                statusDiv.style.left = x + 'px';
+                var y = e.clientY - that._dy;
+                statusDiv.style.top = y + 'px';
+                dragCell.innerHTML = that._dragCellHTML;
+            }
+        };
+
+        statusDiv.onmousedown = function(e) {
+            that._dragging = true;
+            that._target = e.target;
+        };
+
+        statusDiv.ondragstart = function(e) {
+            if (dragCell.contains(that._target)) {
+                e.dataTransfer.setData('text/plain', '');
+            } else {
+                e.preventDefault();
+            }
+        };
+
+        // The status table
+        var statusTableDiv = docById('statusTableDiv');
+        statusTableDiv.style.display = 'inline';
+        statusTableDiv.style.visibility = 'visible';
+        statusTableDiv.style.border = '0px';
+
+        // We use an outer div to scroll vertically and an inner div to
+        // scroll horizontally.
+        statusTableDiv.innerHTML = '<div id="statusOuterDiv"><div id="statusInnerDiv"><table cellpadding="0px" id="statusTable"></table></div></div>';
+
+        var n = Math.max(Math.floor((window.innerHeight * 0.5) / 100), 8);
+        var outerDiv = docById('statusOuterDiv');
+        if (this._logo.turtles.turtleList.length > n) {
+            outerDiv.style.height = this._cellScale * MATRIXSOLFEHEIGHT * (n + 2) + 'px';
+            var w = Math.max(Math.min(window.innerWidth, this._cellScale * OUTERWINDOWWIDTH), BUTTONDIVWIDTH);
+            outerDiv.style.width = w + 'px';
+        } else {
+            if (this._logo.statusFields.length > 4) { // Assume we need a horizontal slider
+                outerDiv.style.height = this._cellScale * (MATRIXBUTTONHEIGHT2 + (2 + MATRIXSOLFEHEIGHT) * this._logo.turtles.turtleList.length) + 30 + 'px';
+            } else {
+                outerDiv.style.height = this._cellScale * (MATRIXBUTTONHEIGHT2 + (2 + MATRIXSOLFEHEIGHT) * this._logo.turtles.turtleList.length) + 'px';
+            }
+            var w = Math.max(Math.min(window.innerWidth, this._cellScale * OUTERWINDOWWIDTH - 20), BUTTONDIVWIDTH);
+            outerDiv.style.width = w + 'px';
         }
 
-        var x = document.createElement('TABLE');
-        x.setAttribute('id', 'statusTable');
-        x.style.textAlign = 'center';
+        var w = Math.max(Math.min(window.innerWidth, this._cellScale * INNERWINDOWWIDTH), BUTTONDIVWIDTH - BUTTONSIZE);
+        var innerDiv = docById('statusInnerDiv');
+        innerDiv.style.width = w + 'px';
+        innerDiv.style.marginLeft = (BUTTONSIZE * this._cellScale) + 'px';
 
-        var statusDiv = docById('statusmatrix');
-        statusDiv.style.paddingTop = 0 + 'px';
-        statusDiv.style.paddingLeft = 0 + 'px';
-        statusDiv.appendChild(x);
-        var statusDivPosition = statusDiv.getBoundingClientRect();
+        // Each row in the status table contains a note label in the
+        // first column and a table of buttons in the second column.
+        var statusTable = docById('statusTable');
 
-        var table = docById('statusTable');
-        var header = table.createTHead();
-        var row = header.insertRow(0);
-        row.style.left = Math.floor(statusDivPosition.left) + 'px';
-        row.style.top = Math.floor(statusDivPosition.top) + 'px';
+        var header = statusTable.createTHead();
+        var row = header.insertRow();
 
         var iconSize = Math.floor(this._cellScale * 24);
 
-        var cell = row.insertCell(-1);
-        cell.innerHTML = '&nbsp;&nbsp;<img src="header-icons/close-button.svg" title="' + _('close') + '" alt="' + _('close') + '" height="' + iconSize + '" width="' + iconSize + '">&nbsp;&nbsp;';
-        cell.style.width = Math.floor(MATRIXBUTTONHEIGHT * this._cellScale) + 'px';
-        cell.style.minWidth = cell.style.width;
-        cell.style.maxWidth = cell.style.width;
-        cell.style.height = Math.floor(MATRIXBUTTONHEIGHT * this._cellScale) + 'px';
+        var cell = row.insertCell();
         cell.style.backgroundColor = MATRIXBUTTONCOLOR;
-
-        cell.onclick=function() {
-            docById('statusmatrix').style.visibility = 'hidden';
-            docById('statusmatrix').style.border = 0;
-        }
-
-        cell.onmouseover=function() {
-            this.style.backgroundColor = MATRIXBUTTONCOLORHOVER;
-        }
-
-        cell.onmouseout=function() {
-            this.style.backgroundColor = MATRIXBUTTONCOLOR;
-        }
+        cell.className = 'headcol';
+        cell.style.height = Math.floor(MATRIXBUTTONHEIGHT * this._cellScale) + 'px';
+        cell.style.width = (BUTTONSIZE * this._cellScale) + 'px';
+        cell.innerHTML = '&nbsp;';
 
         // One column per field
         for (var i = 0; i < this._logo.statusFields.length; i++) {
             var cell = row.insertCell(i + 1);
             cell.style.fontSize = Math.floor(this._cellScale * 100) + '%';
 
-	    switch (this._logo.statusFields[i][1]) {
+            switch (this._logo.statusFields[i][1]) {
             case 'plus':
             case 'minus':
             case 'neg':
             case 'divide':
-            case 'multiply':
             case 'power':
+            case 'multiply':
             case 'sqrt':
             case 'int':
             case 'mod':
-		var label = '';
-		break;
-	    default:
+                var label = '';
+                break;
+            default:
                 var label = this._logo.blocks.blockList[this._logo.statusFields[i][0]].protoblock.staticLabels[0];
-		break;
-	    }
+                break;
+            }
 
             cell.innerHTML = '&nbsp;<b>' + label + '</b>&nbsp;'
             cell.style.height = Math.floor(MATRIXBUTTONHEIGHT * this._cellScale) + 'px';
             cell.style.backgroundColor = MATRIXBUTTONCOLOR;
         }
 
-        // One row per turtle
+        if (_THIS_IS_MUSIC_BLOCKS_) {
+            var cell = row.insertCell();
+            cell.style.fontSize = Math.floor(this._cellScale * 100) + '%';
+            cell.innerHTML = '&nbsp;<b>' + _('note') + '</b>&nbsp;'
+            cell.style.height = Math.floor(MATRIXBUTTONHEIGHT * this._cellScale) + 'px';
+            cell.style.backgroundColor = MATRIXBUTTONCOLOR;
+        }
+
+        // One row per voice (turtle)
         var activeTurtles = 0;
         for (var turtle = 0; turtle < this._logo.turtles.turtleList.length; turtle++) {
             if (this._logo.turtles.turtleList[turtle].trash) {
                 continue;
             }
 
-            var row = header.insertRow(activeTurtles + 1);
-            var cell = row.insertCell(0);
+            var row = header.insertRow();
+            var cell = row.insertCell();
             cell.style.backgroundColor = MATRIXLABELCOLOR;
 
-            cell.innerHTML = '&nbsp;&nbsp;<img src="header-icons/turtle-button.svg" title="' + this._logo.turtles.turtleList[turtle].name + '" alt="' + this._logo.turtles.turtleList[turtle].name + '" height="' + iconSize + '" width="' + iconSize + '">&nbsp;&nbsp;';
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                cell.innerHTML = '&nbsp;&nbsp;<img src="images/mouse.svg" title="' + this._logo.turtles.turtleList[turtle].name + '" alt="' + this._logo.turtles.turtleList[turtle].name + '" height="' + iconSize + '" width="' + iconSize + '">&nbsp;&nbsp;';
+            } else {
+                cell.innerHTML = '&nbsp;&nbsp;<img src="header-icons/turtle-button.svg" title="' + this._logo.turtles.turtleList[turtle].name + '" alt="' + this._logo.turtles.turtleList[turtle].name + '" height="' + iconSize + '" width="' + iconSize + '">&nbsp;&nbsp;';
+            }
 
+            cell.style.width = (BUTTONSIZE * this._cellScale) + 'px';
             cell.style.height = Math.floor(MATRIXSOLFEHEIGHT * this._cellScale) + 'px';
+            cell.className = 'headcol';
 
-            for (var i = 0; i < this._logo.statusFields.length; i++) {
-                var cell = row.insertCell(-1);
-                cell.style.backgroundColor = MATRIXRHYTHMCELLCOLOR;
-                cell.style.fontSize = Math.floor(this._cellScale * 100) + '%';
-                cell.innerHTML = '';
-                cell.style.height = Math.floor(MATRIXSOLFEHEIGHT * this._cellScale) + 'px';
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                // + 1 is for the note column
+                for (var i = 0; i < this._logo.statusFields.length + 1; i++) {
+                    var cell = row.insertCell();
+                    cell.style.backgroundColor = MATRIXRHYTHMCELLCOLOR;
+                    cell.style.fontSize = Math.floor(this._cellScale * 100) + '%';
+                    cell.innerHTML = '';
+                    cell.style.height = Math.floor(MATRIXSOLFEHEIGHT * this._cellScale) + 'px';
+                }
+            } else {
+                for (var i = 0; i < this._logo.statusFields.length; i++) {
+                    var cell = row.insertCell();
+                    cell.style.backgroundColor = MATRIXRHYTHMCELLCOLOR;
+                    cell.style.fontSize = Math.floor(this._cellScale * 100) + '%';
+                    cell.innerHTML = '';
+                    cell.style.height = Math.floor(MATRIXSOLFEHEIGHT * this._cellScale) + 'px';
+                }
             }
 
             activeTurtles += 1;
@@ -170,7 +270,22 @@ function StatusMatrix() {
                 this._logo.inStatusMatrix = false;
 
                 this._logo.parseArg(this._logo, turtle, this._logo.statusFields[i][0]);
-                var innerHTML = this._logo.blocks.blockList[this._logo.statusFields[i][0]].value;
+                switch (this._logo.blocks.blockList[this._logo.statusFields[i][0]].name) {
+                case 'x':
+                case 'y':
+                case 'heading':
+                    var value = this._logo.blocks.blockList[this._logo.statusFields[i][0]].value.toFixed(2);
+                    break;
+                case 'elapsednotes':
+                    var value = mixedNumber(this._logo.blocks.blockList[this._logo.statusFields[i][0]].value);
+                    break;
+                default:
+                    var value = this._logo.blocks.blockList[this._logo.statusFields[i][0]].value;
+                    break;
+                }
+
+                var innerHTML = value;
+
                 this._logo.inStatusMatrix = saveStatus;
 
                 var cell = table.rows[activeTurtles + 1].cells[i + 1];
@@ -179,7 +294,54 @@ function StatusMatrix() {
                 }
             }
 
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                var note = '';
+                var value = '';
+                if (this._logo.noteStatus[turtle] != null) {
+                    var notes = this._logo.noteStatus[turtle][0];
+                    for (var j = 0; j < notes.length; j++) {
+                        note += notes[j];
+                        if (typeof(notes[j]) === 'number') {
+                            note += 'Hz ';
+                        } else {
+                            note += ' ';
+                        }
+                    }
+                    var value = this._logo.noteStatus[turtle][1];
+
+                    var obj = rationalToFraction(value);
+                    note += obj[1] + '/' + obj[0];
+                }
+
+                var cell = table.rows[activeTurtles + 1].cells[i + 1];
+                if (cell != null) {
+                    cell.innerHTML = note.replace(/#/g, '♯').replace(/b/, '♭');
+                }
+            }
+
             activeTurtles += 1;
         }
+    };
+
+    this._addButton = function(row, icon, iconSize, label) {
+        var cell = row.insertCell(-1);
+        cell.innerHTML = '&nbsp;&nbsp;<img src="header-icons/' + icon + '" title="' + label + '" alt="' + label + '" height="' + iconSize + '" width="' + iconSize + '" vertical-align="middle" align-content="center">&nbsp;&nbsp;';
+        cell.style.width = BUTTONSIZE + 'px';
+        cell.style.minWidth = cell.style.width;
+        cell.style.maxWidth = cell.style.width;
+        cell.style.height = cell.style.width; 
+        cell.style.minHeight = cell.style.height;
+        cell.style.maxHeight = cell.style.height;
+        cell.style.backgroundColor = MATRIXBUTTONCOLOR;
+
+        cell.onmouseover=function() {
+            this.style.backgroundColor = MATRIXBUTTONCOLORHOVER;
+        }
+
+        cell.onmouseout=function() {
+            this.style.backgroundColor = MATRIXBUTTONCOLOR;
+        }
+
+        return cell;
     };
 };

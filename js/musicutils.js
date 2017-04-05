@@ -72,9 +72,9 @@ function calcAugmented(obj) {
     var interval = obj[0];
     var deltaOctave = obj[1];
     if (interval < 0) {
-        return -AUGMENTED[-interval] + (12 * deltaOctave);
+	return -AUGMENTED[-interval] + (12 * deltaOctave);
     } else {
-        return AUGMENTED[interval] + (12 * deltaOctave);
+	return AUGMENTED[interval] + (12 * deltaOctave);
     }
 }
 
@@ -83,9 +83,9 @@ function calcPerfect(obj) {
     var interval = obj[0];
     var deltaOctave = obj[1];
     if (interval < 0) {
-        return -PERFECT[-interval] + (12 * deltaOctave);
+	return -PERFECT[-interval] + (12 * deltaOctave);
     } else {
-        return PERFECT[interval] + (12 * deltaOctave);
+	return PERFECT[interval] + (12 * deltaOctave);
     }
 }
 
@@ -94,9 +94,9 @@ function calcDiminished(obj) {
     var interval = obj[0];
     var deltaOctave = obj[1];
     if (interval < 0) {
-        return -DIMINISHED[-interval] + (12 * deltaOctave);
+	return -DIMINISHED[-interval] + (12 * deltaOctave);
     } else {
-        return DIMINISHED[interval] + (12 * deltaOctave);
+	return DIMINISHED[interval] + (12 * deltaOctave);
     }
 }
 
@@ -105,9 +105,9 @@ function calcMajor(obj) {
     var interval = obj[0];
     var deltaOctave = obj[1];
     if (interval < 0) {
-        return -MAJOR[-interval] + (12 * deltaOctave);
+	return -MAJOR[-interval] + (12 * deltaOctave);
     } else {
-        return MAJOR[interval] + (12 * deltaOctave);
+	return MAJOR[interval] + (12 * deltaOctave);
     }
 }
 
@@ -116,9 +116,9 @@ function calcMinor(obj) {
     var interval = obj[0];
     var deltaOctave = obj[1];
     if (interval < 0) {
-        return -MINOR[-interval] + (12 * deltaOctave);
+	return -MINOR[-interval] + (12 * deltaOctave);
     } else {
-        return MINOR[interval] + (12 * deltaOctave);
+	return MINOR[interval] + (12 * deltaOctave);
     }
 }
 
@@ -434,7 +434,7 @@ function getDrumName(name) {
     }
 
     for (var drum = 0; drum < DRUMNAMES.length; drum++) {
-        if (DRUMNAMES[drum][0].toLowerCase() === name.toLowerCase() || DRUMNAMES[drum][1].toLowerCase() === name.toLowerCase()) {
+	if (DRUMNAMES[drum][0].toLowerCase() === name.toLowerCase() || DRUMNAMES[drum][1].toLowerCase() === name.toLowerCase()) {
             if (DRUMNAMES[drum][0] != '') {
                 return DRUMNAMES[drum][0];
             } else {
@@ -955,9 +955,9 @@ function numberToPitch(i) {
             n += 1;  // Count octave bump ups.
         }
 
-        return [PITCHES[(i + PITCHES.indexOf('A')) % 12], Math.floor((i + PITCHES.indexOf('A')) / 12) - n];
+	return [PITCHES[(i + PITCHES.indexOf('A')) % 12], Math.floor((i + PITCHES.indexOf('A')) / 12) - n];
     } else {
-        return [PITCHES[(i + PITCHES.indexOf('A')) % 12], Math.floor((i + PITCHES.indexOf('A')) / 12)];
+	return [PITCHES[(i + PITCHES.indexOf('A')) % 12], Math.floor((i + PITCHES.indexOf('A')) / 12)];
     }
 };
 
@@ -1011,7 +1011,7 @@ function pitchToNumber(pitch, octave, keySignature) {
                 // Not sure this could occur... but just in case.
                 pitch = pitch.slice(0, len - 2);
             }
-        }
+	}
 
         if (pitch.length > 1) {
             var lastOne = pitch.slice(len - 1);
@@ -1167,7 +1167,7 @@ function getNumNote(value, delta) {
 };
 
 
-calcOctave = function(current, arg) {
+calcOctave = function (current, arg) {
     switch(arg) {
     case _('next'):
     case 'next':
@@ -1184,7 +1184,7 @@ calcOctave = function(current, arg) {
 };
 
 
-calcOctaveInterval = function(arg) {
+calcOctaveInterval = function (arg) {
     // Used by intervals to determine octave to use in an interval.
     var value = 0;
     switch(arg) {
@@ -1204,10 +1204,10 @@ calcOctaveInterval = function(arg) {
         value = 0;
         break;
     case 2:
-        value = 2;
+	value = 2;
         break;
     case -2:
-        value = -2;
+	value = -2;
         break;
     default:
         console.log('Interval octave must be between -2 and 2.');
@@ -1227,7 +1227,7 @@ function isInt(value) {
 
 
 function reducedFraction(a, b) {
-    greatestCommonMultiple = function(a, b) {
+    greatestCommonMultiple = function (a, b) {
         return b === 0 ? a : greatestCommonMultiple(b, a % b);
     }
 
@@ -1243,7 +1243,7 @@ function reducedFraction(a, b) {
 function Synth () {
     // Isolate synth functions here.
 
-    if (_THIS_IS_MUSIC_BLOCKS) {
+    if (_THIS_IS_MUSIC_BLOCKS_) {
         // Using Tone.js
         this.tone = new Tone();
     }
@@ -1288,13 +1288,13 @@ function Synth () {
         'snare drum': [SNARESOUNDSAMPLE, null],
     };
 
-    if (_THIS_IS_MUSIC_BLOCKS) {
-        Tone.Buffer.onload = function(){
+    if (_THIS_IS_MUSIC_BLOCKS_) {
+        Tone.Buffer.onload = function (){
             console.log('drum loaded');
         };
     }
 
-    this.getSynthByName = function(name) {
+    this.getSynthByName = function (name) {
         if (name == null || name == undefined) {
             return this.synthset['poly'][1];
         }
@@ -1337,7 +1337,7 @@ function Synth () {
         return this.synthset['poly'][1];
     };
 
-    this.loadSynth = function(name) {
+    this.loadSynth = function (name) {
         var thisSynth = this.getSynthByName(name);
         if (thisSynth == null) {
             console.log('loading synth for ' + name);
@@ -1386,20 +1386,20 @@ function Synth () {
         this.getSynthByName(name).toMaster();
     };
 
-    this.performNotes = function(synth, notes, beatValue, doVibrato = false, vibratoIntensity = 0, vibratoFrequency = 0) {
+    this.performNotes = function (synth, notes, beatValue, doVibrato, vibratoIntensity, vibratoFrequency) {
         if (doVibrato) {
-            var vibrato = new Tone.Vibrato(1/vibratoFrequency, vibratoIntensity);
+            var vibrato = new Tone.Vibrato(1 / vibratoFrequency, vibratoIntensity);
             synth.chain(vibrato, Tone.Master);
             synth.triggerAttackRelease(notes, beatValue);
-            setTimeout(function() {
+            setTimeout(function () {
                 vibrato.dispose();
-            }, beatValue*1000); //disable vibrato effect when beat is over
+            }, beatValue * 1000);  //disable vibrato effect when beat is over
         } else {
             synth.triggerAttackRelease(notes, beatValue);
         }
     }
 
-    this.trigger = function(notes, beatValue, name, vibratoArgs = []) {
+    this.trigger = function (notes, beatValue, name, vibratoArgs) {
         var doVibrato = false;
         var vibratoIntensity = 0;
         var vibratoFrequency = 0;
@@ -1469,24 +1469,24 @@ function Synth () {
         }
     };
 
-    this.stopSound = function(name) {
+    this.stopSound = function (name) {
         this.getSynthByName(name).triggerRelease();
     };
 
-    this.start = function() {
+    this.start = function () {
         Tone.Transport.start();
     };
 
-    this.stop = function() {
+    this.stop = function () {
         Tone.Transport.stop();
     };
 
-    this.setVolume = function(vol) {
+    this.setVolume = function (vol) {
         var db = this.tone.gainToDb(vol / 100);
         Tone.Master.volume.rampTo(db, 0.01);
     };
 
-    this.getOscillator = function(oscillatorName, frequency) {
+    this.getOscillator = function (oscillatorName, frequency) {
         return new Tone.Oscillator(oscillatorName, frequency).toMaster();
     };
 };

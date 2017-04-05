@@ -1529,7 +1529,7 @@ function Logo () {
             break;
         case 'clear':
             that.svgBackground = true;
-            that.turtles.turtleList[turtle].doClear();
+            that.turtles.turtleList[turtle].doClear(true, true);
             break;
         case 'setxy':
             if (args.length === 2) {
@@ -2386,6 +2386,7 @@ function Logo () {
 
             var __listener = function (event) {
                 that.pitchStaircase.init(that);
+		that.inPitchStaircase = false;
             };
 
             that._setListener(turtle, listenerName, __listener);
@@ -2453,7 +2454,7 @@ function Logo () {
             that._setDispatchBlock(blk, turtle, listenerName);
 
             var __listener = function (event) {
-                if (pitchdrummatrix.drums.length === 0 || pitchdrummatrix.rowLabels.length === 0) {
+                if (that.pitchDrumMatrix.drums.length === 0 || that.pitchDrumMatrix.rowLabels.length === 0) {
                     that.errorMsg(_('You must have at least one pitch block and one drum block in the matrix.'), blk);
                 } else {
                     // Process queued up rhythms.
@@ -4271,7 +4272,6 @@ function Logo () {
                     that.pitchStaircase.Stairs.push([note[0], note[1], parseFloat(frequency)]);
                 }
             } else if (that.inPitchSlider) {
-                console.log('pushing ' + args[0]);
                 that.pitchSlider.Sliders.push([args[0], 0, 0]);
             } else {
                 that.errorMsg(_('Hertz Block: Did you mean to use a Note block?'), blk);

@@ -56,7 +56,7 @@ if (lang.indexOf("-") !== -1) {
 
 
 if (_THIS_IS_MUSIC_BLOCKS_) {
-    MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'tone', 'howler', 'p5.sound', 'p5.dom', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/modewidget', 'activity/soundsamples', 'activity/pitchtimematrix', 'activity/pitchdrummatrix', 'activity/rhythmruler', 'activity/pitchstaircase', 'activity/tempo', 'activity/pitchslider', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'prefixfree.min'];
+    MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'tone', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/modewidget', 'activity/soundsamples', 'activity/pitchtimematrix', 'activity/pitchdrummatrix', 'activity/rhythmruler', 'activity/pitchstaircase', 'activity/tempo', 'activity/pitchslider', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'prefixfree.min'];
 } else {
     MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs', 'tweenjs', 'preloadjs', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'prefixfree.min'];
 }
@@ -277,7 +277,7 @@ define(MYDEFINES, function (compatibility) {
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 logo.turtleHeaps[turtle] = [];
                 logo.lilypondStaging[turtle] = [];
-                turtles.turtleList[turtle].doClear();
+                turtles.turtleList[turtle].doClear(true, true);
             }
 
             blocksContainer.x = 0;
@@ -1347,11 +1347,7 @@ define(MYDEFINES, function (compatibility) {
             }
 
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                var tur = turtles.turtleList[turtle];
-                tur.clearPenStrokes();
-                tur.container.x = tur.turtles.turtleX2screenX(tur.x);
-                tur.container.y = tur.turtles.turtleY2screenY(tur.y);
-                tur.turtles.refreshCanvas();
+                turtles.turtleList[turtle].doClear(false, false);
             }
 
             var artcanvas = document.getElementById("overlayCanvas");
@@ -1710,7 +1706,7 @@ define(MYDEFINES, function (compatibility) {
             logo.lilypondNotes = {};
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 logo.lilypondStaging[turtle] = [];
-                turtles.turtleList[turtle].doClear();
+                turtles.turtleList[turtle].doClear(true, true);
             }
             logo.runLogoCommands();
         };

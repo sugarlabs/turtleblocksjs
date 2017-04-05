@@ -1525,16 +1525,19 @@ define(MYDEFINES, function (compatibility) {
         function _changeBlockVisibility() {
             if (blocks.visible) {
                 logo.hideBlocks();
+                palettes.hide();
             } else {
                 if (chartBitmap != null) {
                     stage.removeChild(chartBitmap);
                     chartBitmap = null;
                 }
                 logo.showBlocks();
+                palettes.show();
+                palettes.bringToTop();
             }
 
             // Combine block and palette visibility into one button.
-            _changePaletteVisibility();
+            // _changePaletteVisibility();
         };
 
         function _toggleCollapsibleStacks() {

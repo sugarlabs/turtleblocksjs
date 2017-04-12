@@ -6,7 +6,7 @@ How to get plugins
 
 You can find plugins in the [official app repository](https://github.com/walterbender/turtleblocksjs/plugins).
 The plugins are identified by the extension <code>**.json**</code>
-You need to download the plugins for load it.
+You need to download the plugins to load it.
 [(In this guide I will use this plugin)](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/translate.json)
 
 > NOTE: You need to download the "raw" plugin by clicking on the "Raw"

@@ -1014,14 +1014,20 @@ function Turtle (name, turtles, drum) {
 
     this.closeSVG = function() {
         if (this.svgPath) {
+            // For the SVG output, we need to replace rgba() with
+            // rgb();fill-opacity:1 and rgb();stroke-opacity:1
+
+            var svgColor = this.canvasColor.replace(/rgba/g, 'rgb');
+	    svgColor = svgColor.substr(0, this.canvasColor.length - 4) + ');';
+
             this.svgOutput += '" style="stroke-linecap:round;fill:';
             if (this.fillState) {
-                this.svgOutput += this.canvasColor + ';';
+                this.svgOutput += svgColor + 'fill-opacity:' + this.canvasAlpha + ';';
             } else {
                 this.svgOutput += 'none;';
             }
 
-            this.svgOutput += 'stroke:' + this.canvasColor + ';';
+            this.svgOutput += 'stroke:' + svgColor + 'stroke-opacity:' + this.canvasAlpha + ';';
             var strokeScaled = this.stroke * this.turtles.scale;
             this.svgOutput += 'stroke-width:' + strokeScaled + 'pt;" />';
             this.svgPath = false;
@@ -1362,5 +1368,5 @@ function hex2rgb (hex) {
     var g = (bigint >> 8) & 255;
     var b = bigint & 255;
 
-    return "rgba(" + r + "," + g + "," + b + ",1)";
+    return 'rgba(' + r + ',' + g + ',' + b + ',1)';
 };

@@ -876,11 +876,18 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     // FLOW PALETTE
 
+    var hiddenNoFlowBlock = new ProtoBlock('hiddennoflow');
+    hiddenNoFlowBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['hiddennoflow'] = hiddenNoFlowBlock;
+    hiddenNoFlowBlock.hiddenNoFlow = true;
+    hiddenNoFlowBlock.hiddenBlockNoFlow();
+    hiddenNoFlowBlock.hidden = true;
+
     var hiddenBlock = new ProtoBlock('hidden');
     hiddenBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['hidden'] = hiddenBlock;
-    hiddenBlock.hidden = true;  // Now there is a surprise :)
-    hiddenBlock.hiddenBlockNoFlow();
+    hiddenBlock.hidden = true;
+    hiddenBlock.hiddenBlockFlow();
 
     var clampBlock = new ProtoBlock('clamp');
     clampBlock.palette = palettes.dict['flow'];
@@ -2031,13 +2038,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     notevolumeFactor.staticLabels.push(_('note volume'));
     notevolumeFactor.adjustWidthToLabel();
     notevolumeFactor.parameterBlock();
-
-    var hiddenNoFlowBlock = new ProtoBlock('hiddennoflow');
-    hiddenNoFlowBlock.palette = palettes.dict['extras'];
-    blocks.protoBlockDict['hiddennoflow'] = hiddenNoFlowBlock;
-    hiddenNoFlowBlock.hiddenNoFlow = true;
-    hiddenNoFlowBlock.hiddenBlockNoFlow();
-    hiddenNoFlowBlock.hidden = true;
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

@@ -220,6 +220,7 @@ function Logo () {
 
     // Status matrix
     this.inStatusMatrix = false;
+    this.updatingStatusMatrix = false;
     this.statusFields = [];
 
     // When running in step-by-step mode, the next command to run is
@@ -5384,12 +5385,16 @@ function Logo () {
                 break;
             case 'namedbox':
                 var name = that.blocks.blockList[blk].privateData;
-                if (name in that.boxes) {
-                    that.blocks.blockList[blk].value = that.boxes[name];
-                } else {
-                    that.errorMsg(NOBOXERRORMSG, blk, name);
-                    that.stopTurtle = true;
-                    that.blocks.blockList[blk].value = null;
+                if (that.inStatusMatrix && that.blocks.blockList[that.blocks.blockList[blk].connections[0]].name === 'print') {
+                    that.statusFields.push([blk, that.blocks.blockList[blk].name]);
+                } else if (!that.updatingStatusMatrix) {
+                    if (name in that.boxes) {
+                        that.blocks.blockList[blk].value = that.boxes[name];
+                    } else {
+                        that.errorMsg(NOBOXERRORMSG, blk, name);
+                        that.stopTurtle = true;
+                        that.blocks.blockList[blk].value = null;
+                    }
                 }
                 break;
             case 'namedarg' :

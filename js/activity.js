@@ -65,9 +65,12 @@ define(MYDEFINES, function (compatibility) {
     // Manipulate the DOM only when it is ready.
     require(['domReady!','activity/sugarizer-compatibility'], function (doc) {
         if (sugarizerCompatibility.isInsideSugarizer()) {
-            sugarizerCompatibility.loadData(function () {
-                domReady(doc);
+            window.addEventListener('localized', function() {
+                sugarizerCompatibility.loadData(function () {
+                    domReady(doc);
+                });
             });
+			document.webL10n.setLanguage(sugarizerCompatibility.getLanguage());
         } else {
             domReady(doc);
         }
@@ -81,7 +84,10 @@ define(MYDEFINES, function (compatibility) {
 
         try {
             meSpeak.loadConfig('lib/mespeak_config.json');
-	    var lang = document.webL10n.getLanguage();
+            var lang = document.webL10n.getLanguage();
+            if (sugarizerCompatibility.isInsideSugarizer()) {
+                lang = sugarizerCompatibility.getLanguage();
+            }
             if (['es', 'ca', 'de', 'el', 'eo', 'fi', 'fr', 'hu', 'it', 'kn', 'la', 'lv', 'nl', 'pl', 'pt', 'ro', 'sk', 'sv', 'tr', 'zh'].indexOf(lang) !== -1) {
                 meSpeak.loadVoice('lib/voices/' + lang + '.json');
             } else {
@@ -2333,7 +2339,7 @@ handleComplete);
                     sugarizerCompatibility.saveLocally(function () {
                         sugarizerCompatibility.sugarizerStop();
                     });
-                }])
+                }, "Stop", null, null, null, null])
             }
 
             if (showPalettesPopover) {

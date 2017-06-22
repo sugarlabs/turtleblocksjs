@@ -168,7 +168,7 @@ MUNSELL = [
     "#949494", "#a59193", "#b58b8f", "#c4848c", "#d17e8a", "#de7587", "#eb6c85", "#f76183", "#ff5281", "#ff417f", "#ff277f", "#ff007e", "#ff007e", "#ff007e", "#ff007e",
     "#aeaeae", "#beabad", "#cfa6aa", "#df9fa6", "#ee98a3", "#fc90a0", "#ff869d", "#ff7b9a", "#ff6e98", "#ff6095", "#ff5293", "#ff5293", "#ff5293", "#ff5293", "#ff5293",
     "#c8c8c8", "#d7c7c8", "#eac0c4", "#fbbac0", "#ffb2bc", "#ffa9b9", "#ff9db5", "#ff94b1", "#ff94b1", "#ff94b1", "#ff94b1", "#ff94b1", "#ff94b1", "#ff94b1", "#ff94b1",
-    "#c8c8c8", "#d7c7c8", "#eac0c4", "#fbbac0", "#ffb2bc", "#ffb2bc", "#ffb2bc", "#ffb2bc", "#ffb2bc", "#ffb2bc", "#ffb2bc", "#ffb2bc", "#ffb2bc", "#ffb2bc", "#ffb2bc",
+    "#e3e3e3", "#f2e2e3", "#ffdbde", "#ffd3da", "#ffccd6", "#ffccd6", "#ffccd6", "#ffccd6", "#ffccd6", "#ffccd6", "#ffccd6", "#ffccd6", "#ffccd6", "#ffccd6", "#ffccd6",
     "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff",
     // 2.5R
     "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",
@@ -180,7 +180,7 @@ MUNSELL = [
     "#949494", "#a59191", "#b68b8c", "#c68486", "#d37d81", "#e1757d", "#ee6b78", "#f96174", "#ff5270", "#ff416c", "#ff2a69", "#ff0067", "#ff0066", "#ff0066", "#ff0066",
     "#aeaeae", "#bfabab", "#d0a5a6", "#e09fa0", "#f0989b", "#fe9095", "#ff868f", "#ff7b8b", "#ff6e86", "#ff6282", "#ff6282", "#ff6282", "#ff6282", "#ff6282", "#ff6282",
     "#c8c8c8", "#d8c7c7", "#ecc0c0", "#fdb9ba", "#ffb1b3", "#ffa9ad", "#ff9ea6", "#ff9ea6", "#ff9ea6", "#ff9ea6", "#ff9ea6", "#ff9ea6", "#ff9ea6", "#ff9ea6", "#ff9ea6",
-    "#c8c8c8", "#d8c7c7", "#ecc0c0", "#fdb9ba", "#ffb1b3", "#ffb1b3", "#ffb1b3", "#ffb1b3", "#ffb1b3", "#ffb1b3", "#ffb1b3", "#ffb1b3", "#ffb1b3", "#ffb1b3", "#ffb1b3",
+    "#e3e3e3", "#f3e2e2", "#ffdbda", "#ffd3d3", "#ffcccd", "#ffcccd", "#ffcccd", "#ffcccd", "#ffcccd", "#ffcccd", "#ffcccd", "#ffcccd", "#ffcccd", "#ffcccd", "#ffcccd",
     "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff",
     // 5R
     "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000",

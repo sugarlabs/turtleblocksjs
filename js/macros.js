@@ -13,7 +13,7 @@
 
 function blockIsMacro (blkname) {
 
-    const BUILTINMACROS = ['setturtlename', 'fill', 'hollowline', 'status', 'xturtle', 'yturtle'];
+    const BUILTINMACROS = ['setturtlename', 'fill', 'hollowline', 'status', 'switch', 'xturtle', 'yturtle'];
     return BUILTINMACROS.indexOf(blkname) > -1;
 };
 
@@ -24,7 +24,8 @@ function getMacroExpansion (blkname, x, y) {
         const HOLLOWOBJ = [[0, 'hollowline', x, y, [null, null, 1]], [1, 'hidden', 0, 0, [0, null]]];
         const SETTURTLENAMEOBJ = [[0, 'setturtlename', x, y, [null, 1, 2, null]], [1, 'turtlename', 0, 0, [0]], [2, ['text', {'value': 'Mozart'}], 0, 0, [0]]];
         const STATUSOBJ = [[0, 'status', x, y, [null, 1, null]], [1, 'print', 0, 0, [0, 2, 3]], [2, 'x', 0, 0, [1]], [3, 'print', 0, 0, [1, 4, 5]], [4, 'y', 0, 0, [3]], [5, 'print', 0, 0, [3, 6, null]], [6, 'heading', 0, 0, [5]]];
-        const XTURTLEOBJ = [[0, 'xturtle', x, y, [null, 1, null]], [1, 'turtlename', 0, 0, [0]]];
+    const SWITCHOBJ = [[0, 'switch', x, y, [null, 1, 2, 5]], [1, ['number', {'value': 1}], 0, 0, [0]], [2, 'case', 0, 0, [0, 3, null, 4]], [3, ['number', {'value': 1}], 0, 0, [2]], [4, 'defaultcase', 0, 0, [2, null, null]], [5, 'hidden', 0, 0, [0, null]]];
+    const XTURTLEOBJ = [[0, 'xturtle', x, y, [null, 1, null]], [1, 'turtlename', 0, 0, [0]]];
         const YTURTLEOBJ = [[0, 'yturtle', x, y, [null, 1, null]], [1, 'turtlename', 0, 0, [0]]];
 
         const BUILTINMACROS = {
@@ -32,6 +33,7 @@ function getMacroExpansion (blkname, x, y) {
             'hollowline': HOLLOWOBJ,
             'setturtlename': SETTURTLENAMEOBJ,
             'status': STATUSOBJ,
+            'switch': SWITCHOBJ,
             'xturtle': XTURTLEOBJ,
             'yturtle': YTURTLEOBJ,
         };

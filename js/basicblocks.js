@@ -889,6 +889,29 @@ function initBasicProtoBlocks(palettes, blocks) {
     hiddenBlock.hidden = true;
     hiddenBlock.hiddenBlockFlow();
 
+    var defaultBlock = new ProtoBlock('defaultcase');
+    defaultBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['defaultcase'] = defaultBlock;
+    defaultBlock.staticLabels.push(_('default'));
+    defaultBlock.adjustWidthToLabel();
+    defaultBlock.flowClampBlock();
+
+    var caseBlock = new ProtoBlock('case');
+    caseBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['case'] = caseBlock;
+    caseBlock.staticLabels.push(_('case'));
+    caseBlock.adjustWidthToLabel();
+    caseBlock.flowClampOneArgBlock();
+    caseBlock.dockTypes[1] = 'anyin';
+
+    var switchBlock = new ProtoBlock('switch');
+    switchBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['switch'] = switchBlock;
+    switchBlock.staticLabels.push(_('switch'));
+    switchBlock.adjustWidthToLabel();
+    switchBlock.flowClampOneArgBlock();
+    switchBlock.dockTypes[1] = 'anyin';
+
     var clampBlock = new ProtoBlock('clamp');
     clampBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['clamp'] = clampBlock;

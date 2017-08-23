@@ -334,6 +334,7 @@ define(MYDEFINES, function (compatibility) {
                         if (tempo.isMoving) {
                             tempo.pause();
                         }
+
                         tempo.resume();
                     }
 
@@ -2765,6 +2766,7 @@ handleComplete);
 
         function _loadButtonDragHandler(container, ox, oy, action, longAction, extraLongAction, longImg, extraLongImg) {
             // Prevent multiple button presses (i.e., debounce).
+            var lockTimer = null;
             var locked = false;
 
             if (longAction === null) {
@@ -2776,11 +2778,26 @@ handleComplete);
             }
 
             // Long and extra-long press variables declaration
-            var pressTimer, pressTimerExtra, isLong = false, isExtraLong = false;
+            var pressTimer = null;
+	    var isLong = false;
+	    var pressTimerExtra = null;
+	    var isExtraLong = false;
+
             var formerContainer = container;
 
             container.on('mousedown', function (event) {
-                var moved = true;
+                if (locked) {
+                    return;
+		} else {
+		    locked = true;
+
+                    lockTimer = setTimeout(function () {
+                        locked = false;
+                    }, 1000);
+		}
+
+                var mousedown = true;
+
                 var offset = {
                     x: container.x - Math.round(event.stageX / turtleBlocksScale),
                     y: container.y - Math.round(event.stageY / turtleBlocksScale)
@@ -2805,6 +2822,8 @@ handleComplete);
                 var circles = showButtonHighlight(ox, oy, cellSize / 2, event, turtleBlocksScale, stage);
 
                 container.on('pressup', function (event) {
+                    clearTimeout(lockTimer);
+
                     hideButtonHighlight(circles, stage);
                     container.x = ox;
                     container.y = oy;
@@ -2815,13 +2834,9 @@ handleComplete);
                         container.visible = true;
                     }
 
-                    if (action != null && moved && !locked) {
-                        locked = true;
+                    locked = false;
 
-                        setTimeout(function () {
-                            locked = false;
-                        }, 500);
-
+                    if (action != null && mousedown && !locked) {
                         clearTimeout(pressTimer);
                         clearTimeout(pressTimerExtra);
 
@@ -2833,7 +2848,8 @@ handleComplete);
                             extraLongAction();
                         }
                     }
-                    moved = false;
+
+                    mousedown = false;
                 });
 
                 isLong = false;

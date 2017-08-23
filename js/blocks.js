@@ -42,6 +42,8 @@ function Blocks () {
     // and a list of the blocks we create.
     this.blockList = [];
 
+    this.blockArt = {};
+
     // Track the time with mouse down.
     this.mouseDownTime = 0;
     this.longPressTimeout = null;
@@ -334,7 +336,6 @@ function Blocks () {
         } else if (myBlock.isArgClamp()) {
             // We handle ArgClamp blocks elsewhere.
             this._adjustArgClampBlock([blk]);
-            return;
         }
 
         function clampAdjuster(blocks, blk, myBlock, clamp) {
@@ -3173,7 +3174,6 @@ function Blocks () {
                 if (['note', 'slur', 'staccato', 'swing'].indexOf(name) !== -1) {
                     // We need to convert to newnote style:
                     // (1) add a vspace to the start of the clamp of a note block.
-                    console.log('note: ' + b);
                     var clampBlock = blockObjs[b][4][2];
                     blockObjs[b][4][2] = blockObjsLength + extraBlocksLength;
                     if (clampBlock == null) {
@@ -3841,6 +3841,7 @@ function Blocks () {
             }, 1500);
         }
         console.log("Finished block loading");
+
         var myCustomEvent = new Event('finishedLoading');
         document.dispatchEvent(myCustomEvent);
     };
@@ -3914,6 +3915,9 @@ function Blocks () {
         var z = this.stage.getNumChildren() - 1;
         for (var b = 0; b < this.dragGroup.length; b++) {
             this.stage.setChildIndex(this.blockList[this.dragGroup[b]].container, z);
+            if (this.blockList[this.dragGroup[b]].collapseContainer !== null) {
+		this.stage.setChildIndex(this.blockList[this.dragGroup[b]].collapseContainer, z);
+	    };
             z -= 1;
         }
 

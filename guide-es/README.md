@@ -66,42 +66,42 @@ programación con Turtle Blocks.
 1. Conceptos Básicos de la tortuga
 ----------------------------------
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics1.svg' />
 
 Una sola línea de longitud 100
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics2.svg' />
 
 Cambio de la longitud de la línea a 200
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics3.svg' />
 
 Adición de un giro a la derecha de 90 grados. La ejecución de esta
 pila cuatro veces produce un cuadrado.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics4.svg' />
 
 Adelante, derecha, adelante, derecha, ...
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics5.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics5.svg' />
 
 Utilizando el bloque de repetición de la paleta de flujo
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics6.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics6.svg' />
 
 Usando el bloque de Arco para hacer esquinas redondeadas
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics7.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics7.svg' />
 
 Utilizando comenzar relleno y terminan Relleno de la paleta de la
 pluma para hacer un cuadrado sólido
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics8.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics8.svg' />
 
 Cambiar el color a 70 (azul) con el bloque Set color de la paleta de
 la pluma
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics9.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/basics9.svg' />
 
 Uso del bloque aleatorio de la paleta de números para seleccionar un
 color al azar (0 a 100)
@@ -132,18 +132,18 @@ desde el bloque hacia adelante. En el segundo ejemplo, aumentamos el
 valor del número guardado en la caja para que cada vez que el cuadro
 se haga referencia por el bloque de Avanzar, el valor sea más grande.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes1.svg' />
 
 Poner un valor en una caja y luego hacer referencia al valor en la caja
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes2.svg' />
 
 Podemos cambiar el valor de la caja mientras el programa se
 ejecuta. Aquí le sumamos 10 al valor en la caja con cada iteración. El
 resultado en este caso es una espiral, ya que la tortuga avanza aún
 más con cada paso.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes3.svg' />
 
 Si queremos hacer un cambio más complejo, podemos almacenar en la caja
 un valor calculado basado en el contenido actual de la caja. Aquí
@@ -176,15 +176,15 @@ da lugar a un nuevo bloque en la paleta Acciones que podemos utilizar
 cuando queremos dibujar un cuadrado. Cada nueva acción de pila resulta
 en un nuevo bloque.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions1.svg' />
 
 Definición de una acción para crear un nuevo bloque, "cuadrado"
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions2.svg' />
 
 Uso del bloque "cuadrado"
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions3.svg' />
 
 El bloque Do le permite especificar una acción por su nombre. En este
 ejemplo, elegimos "uno de los" dos nombres, "cuadrado" y "triángulo"
@@ -200,28 +200,28 @@ pluma, etc. Usted puede utilizar el parámetro de bloques de manera
 intercambiable con bloques de números. Usted puede cambiar sus valores
 con el Agregar bloque o con los bloques correspondientes.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters1.svg' />
 
 Usando el parámetro de encabezado, que cambia cada vez que la tortuga
 cambia de dirección, para cambiar el color de una espiral
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters2.svg' />
 
 "Squiral" por Brian Silverman utiliza los bloques de parámetros
 encabezado y X. [EJECUTAR EN
 VIVO](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters3.svg' />
 
 A menudo sólo quiere incrementar un parámetro en 1. Para ello, utilice
 Añardir-1-a bloque.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters4.svg' />
 
 Para incrementar (o disminuir) un parámetro por un valor arbitrario,
 utilice Añardir-1-a bloque.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters5.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/parameters5.svg' />
 
 Para realizar otros cambios a un parámetro basado en el valor actual,
 utilice el parámetro establecer bloque. En este ejemplo, el tamaño de
@@ -240,18 +240,18 @@ tortuga proporcionan construcciones lógicas tales como equal (igual),
 greater than (mayor que), less tan (menos que), and (y), or (o), y not
 (no).
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/conditionals1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/conditionals1.svg' />
 
 Usando un condicional para seleccionar un color. Una vez que el título
 > 179, el color cambia. [CORRER EN
 VIVO](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/conditionals2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/conditionals2.svg' />
 
 Las condicionales junto con el bloque aleatorio pueden ser utilizadas
 para simular un lanzamiento de moneda.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/conditionals3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/conditionals3.svg' />
 
 Un lanzamiento de moneda es una operación tan común que hemos añadido
 el bloque Uno-de para su conveniencia.
@@ -268,25 +268,25 @@ sistema de archivos local, o una cámara web. Otras extensiones
 incluyen bloques para voz sintética, generación de tonos, y la
 reproducción de vídeo.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/media1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/media1.svg' />
 
 Utilizando Mostrar bloque para mostrar texto; la orientación del texto
 coincide con la orientación de la tortuga. [CORRER EN
 VIVO](https://turtle.sugarlabs.org/?file=Media-1.tb&run=True)
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/media2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/media2.svg' />
 
 También puede utilizar Mostrar bloque para mostrar imágenes. Al hacer
 clic en el bloque de imagen (izquierda) se abrirá un explorador de
 archivos. Después de seleccionar un archivo de imagen (PNG, JPG, SVG,
 etc.) en una miniatura aparecerá en el bloque de imagen (derecha).
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/media3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/media3.svg' />
 
 Mostrar bloque en combinación con el bloque de la cámara capturará y
 mostrara una imagen de una cámara web.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/media4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/media4.svg' />
 
 Mostrar bloque puede también ser usado en conjunción con un URL que
 apunte a archivos de media.
@@ -311,7 +311,7 @@ archivo. Bloques de tortuga también hacen posible guardar y restaurar
 los datos del sensor de un archivo. Los niños pueden usar un bloque
 "URL" para importar datos desde una página web.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/sensors1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/sensors1.svg' />
 
 El uso de sensores. El bloque de Loudness (sonoridad) se utiliza para
 determinar si hay un intruso. Un sonido fuerte desencadena la acción
@@ -357,29 +357,29 @@ se dan cuenta de que pueden realizar cambios en el comportamiento de
 su programa de dibujo, se vuelven profundamente comprometidos. ¿Cómo
 va a modificar la pintura?
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/paint1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/paint1.svg' />
 
 En su forma más simple, la pintura es sólo cuestión de mover la
 tortuga para donde el ratón se posicione.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/paint2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/paint2.svg' />
 
 Añadir una prueba para el botón del ratón nos permite mover a la
 tortuga sin dejar un rastro de tinta.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/paint3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/paint3.svg' />
 
 En este ejemplo, cambiamos el tamaño de la pluma sobre la base del
 volumen de entrada de micrófono.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/paint4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/paint4.svg' />
 
 En otro ejemplo, inspirado por un estudiante en un taller en Colombia, usamos el tiempo para cambiar tanto el color de la pluma y el tamaño de la pluma [CORRER EN VIVO](http://turtle.sugarlabs.org/?file=Paint-4.tb&run=true)
 
 Ejemplo diapositivas
 --------------------
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/slideshow1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/slideshow1.svg' />
 
 ¿Por qué utilizar Powerpoint cuando puede escribir Powerpoint? En este
 ejemplo, una pila de Acción se utiliza para detectar la entrada de
@@ -390,18 +390,18 @@ la acción y muestra la siguiente imagen.
 
 Ejemplo entrada de teclado
 --------------------------
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/keyboard.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/keyboard.svg' />
 
 Para grabar los códigos de botones del teclado, es necesario utilizar un
 *Mientras* bloque. En el ejemplo anterior, almacenamos el valor de
 teclado en una caja, probarlo, y si es > 0, retorno el valor.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/keyboard2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/keyboard2.svg' />
 
 8. Tortugas, Sprites, botones, y eventos
 ----------------------------------------
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles1.svg' />
 
 Se crea una tortuga separada para cada bloque de inicio. Las tortugas
 siguen su código en paralelo entre sí cada vez que se hace clic en el
@@ -409,7 +409,7 @@ botón Ejecutar. Cada tortuga mantiene su propio conjunto de parámetros
 de posición, color, tamaño de la pluma, el estado de la pluma, etc. En
 este ejemplo, tres tortugas diferentes dibujan tres formas diferentes.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles2.svg' />
 
 Se pueden aplicar gráficos personalizados a las tortugas, con el
 bloque de Shell en la paleta de Medios. De este modo se puede tratar
@@ -417,14 +417,14 @@ las tortugas como sprites que se pueden mover por la pantalla. En este
 ejemplo, el sprite cambia entre dos estados, mientras que se mueve por
 la pantalla.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles3.svg' />
 
 Las tortugas pueden ser programadas para responder a un evento
 "click", para que puedan ser utilizadas como botones. En este ejemplo,
 cada vez que la tortuga se hace clic, se ejecuta la acción, que se
 mueven a la tortuga a una ubicación aleatoria en la pantalla.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles4.svg' />
 
 También puede ser transmitidos Eventos. En este ejemplo, otra variante
 en la pintura, los "botones" de tortuga, que escuchan acontecimientos
@@ -439,7 +439,7 @@ ejecute una pila de bloques, sino también que regrese un valor. Este
 es el papel del bloque de retorno. Si pones un bloque de retorno en
 una pila, entonces la pila acción se vuelve una pila de calcular.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions4.svg' />
 
 En este ejemplo, una pila calcular se utiliza para devolver la
 distancia actual de la tortuga desde el centro de la pantalla. Cambiar
@@ -448,7 +448,7 @@ que la creación de un nuevo bloque en la paleta de acciones que se
 pueden utilizar para hacer referencia al valor de retorno. En este
 caso, se crea un bloque de distancia
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions6.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/actions6.svg' />
 
 También puede pasar argumentos a una pila de acción. En este ejemplo,
 se calcula la distancia entre la tortuga y un punto arbitrario en la
@@ -468,11 +468,11 @@ la acción Fib, que devuelve un valor si el argumento es <2; de lo
 contrario, devuelve la suma del resultado de llamar a la acción con el
 argumento Fib - 1 y el argumento - 2.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/fibonacci1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/fibonacci1.svg' />
 
 Cálculo de Fibonacci [CORRER  EN VIVO](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/fibonacci2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/fibonacci2.svg' />
 
 En el segundo ejemplo, se utiliza un bucle de repetición para generar
 los seis primeros números de Fibonacci y los utilizamos para dibujar
@@ -489,7 +489,7 @@ ejemplo, la acción de pintura utiliza arg 1 y arg 2 para reflejar las
 coordenadas del ratón sobre los ejes Y y X. El resultado es que la
 pintura se refleja en los cuatro cuadrantes.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles5.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/turtles5.svg' />
 
 Pintura de Reflexión [CORRER EN VIVO](http://turtle.sugarlabs.org/?file=Reflection-Paint.tb&run=true)
 
@@ -505,18 +505,18 @@ En los siguientes ejemplos, usamos esto para acumular los resultados
 de lanzar un par de dados 100 veces (ejemplo inspirado por Tony
 Forster).
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes4.svg' />
 
 En lugar de especificar una caja para cada resultado posible (2 a 12),
 se utiliza una caja como un contador (índice) y se crea una caja con
 el nombre del valor actual en el contador y se almacena en esa caja un
 valor de 0.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes5.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes5.svg' />
 
 A continuación añadimos una acción para tirar los dados 100 veces. Para simular lanzar un par de dados, sumamos dos números aleatorios entre 1 y 6. Utilizamos el resultado como el nombre de la caja queremos incrementar. Así por ejemplo, si tiramos un 7, añadimos uno a la caja de llamada 7. De esta manera incrementamos el valor en la casilla correspondiente.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes6.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/boxes6.svg' />
 
 Por último, trazamos los resultados. Una vez más, se utiliza una caja
 como un contador (índice) y llamamos la acción trama en un bucle. En
@@ -556,25 +556,25 @@ En los ejemplos siguientes se utiliza la pila para guardar un dibujo
 hecho con un programa de dibujo similar a los ejemplos anteriores y
 luego reproducir el dibujo haciendo estallar puntos fuera de la pila.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/heap1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/heap1.svg' />
 
 En el primer ejemplo, simplemente movemos la posición de tortuga cada
 vez que dibujamos, junto con el estado de la pluma. Note que salen en
 el orden inverso al que empujamos, empujamos y, luego x, del estado
 del ratón.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/heap2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/heap2.svg' />
 
 En el segundo ejemplo, sacamos el estado pluma, X, y Y fuera de la
 pila y reproducimos nuestro dibujo.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/heap3.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/heap3.svg' />
 
 Utilice la opción Guardar Pila de bloques para guardar el estado de la
 pila en un archivo. En este ejemplo, guardamos nuestro dibujo en un
 archivo para su posterior reproducción.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/heap4.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/heap4.svg' />
 
 Utilice el bloque Cargar Pila para cargar la pila de datos guardados
 en un archivo. En este ejemplo, la reproducción del dibujo a partir de
@@ -586,7 +586,7 @@ datos almacenados en un archivo.
 La Paleta de Extras está llena de utilidades que le ayudan a utilizar
 la salida de su proyecto de diferentes maneras.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/extras1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/extras1.svg' />
 
 El bloque Guardar como SVG guardará su dibujo como gráficos
 vectoriales simples (SVG), un formato compatible con HTML5 y muchos
@@ -610,7 +610,7 @@ muy útil. Se puede utilizar para examinar el valor de los parámetros y
 variables (cajas) y para monitorear el progreso a través de un
 programa.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/debugging1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/debugging1.svg' />
 
 En este ejemplo, se utiliza el operador de adición para concatenar
 cuerdas en una sentencia de impresión. El ratón x + "," + ratón y, se
@@ -631,7 +631,7 @@ bloques están ocultos y el programa pasa a toda velocidad. Cuando se
 encuentra un bloque Mostrar, se muestran los valores de los bloques y
 el programa avanza a un ritmo más lento.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/debugging2.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/debugging2.svg' />
 
 Un bloque demostración se utiliza para reducir la velocidad de
 ejecución del código en una pila de Acción con el fin de facilitar la
@@ -664,7 +664,7 @@ valor / croma de un color determinado, lo que garantiza colores
 vivos. Si quiere colores más sutiles, asegúrese de usar el bloque
 establecer Matiz en lugar del bloque Conjunto de color.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/color1.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/guide-es/color1.svg' />
 
 Color vs. Ejemplo de tonalidad [CORRER EN VIVO](https://turtle.sugarlabs.org/?file=Color-vs-Hue.tb&run=true)
 

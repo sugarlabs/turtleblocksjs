@@ -46,40 +46,40 @@ A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](
 
 A quick start:
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/fast-button.png'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/fast-button.png' />
 Run your project at full speed
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/stop-turtle-button.png'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/stop-turtle-button.png' />
 Stop the current project running.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/clear-button.png'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/clear-button.png' />
 Clear the screen and return the turtles to their initial positions.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/palette-button.png'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/palette-button.png' />
 Hide or show the block palettes.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/hide-blocks-button.png'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/hide-blocks-button.png' />
 Hide or show the blocks and the palettes.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/forward.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/forward.svg' />
 Moves turtle forward.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/right.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/right.svg' />
 Turns turtle clockwise (angle in degrees).
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_color.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_color.svg' />
 Sets color of the line drawn by the turtle.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_pen_size.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_pen_size.svg' />
 Sets size of the line drawn by the turtle.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/repeat.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/repeat.svg' />
 Loops specified number of times.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/action_flow.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/action_flow.svg' />
 Top of nameable action stack.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/action.svg'</img>
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/action.svg' />
 Invokes named action stack.
 
 Google Code-in participant Jasmine Park has created some guides to

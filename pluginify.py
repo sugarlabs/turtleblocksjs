@@ -118,14 +118,6 @@ Example:
 //* palette-fill:food *// #FFFFFF
 //* palette-stroke:food *// #A0A0A0
 //* palette-highlight:food *// #D5D5D5
-
-Plugins can specify code to be executed on load, on start, and on stop.
-Example:
-//* onload:foo *//
-your code here...
-
-NOTE: name of on load, on start, and on stop sections must match the
-name of one of the plugin blocks.
 '''
 
 
@@ -137,9 +129,6 @@ def clear():
         'block': 'BLOCKPLUGINS',
         'parameter': 'PARAMETERPLUGINS',
         'setter': 'SETTERPLUGINS',
-        'onload': 'ONLOAD',
-        'onstart': 'ONSTART',
-        'onstop': 'ONSTOP',
         'palette-icon': 'PALETTEPLUGINS',
         'palette-fill': 'PALETTEFILLCOLORS',
         'palette-stroke': 'PALETTESTROKECOLORS',
@@ -147,7 +136,7 @@ def clear():
         'palette-stroke-highlight': 'HIGHLIGHTSTROKECOLORS'}
     JS_TYPES = ('flow', 'arg', 'block', 'parameter', 'setter', 'onload', 'onstart', 'onstop')
     # 'blkName': 'imageData',
-    IMAGES = []
+    IMAGES = {}
 
 
 def pluginify(data):
@@ -187,12 +176,12 @@ def pluginify(data):
         if type_ in NAMES:
             type_ = NAMES[type_]
             if type_ not in outp:
-                outp[type_] = []
-            outp[type_].append([name,value])
+                outp[type_] = {}
+            outp[type_][name] = value
 
         if type_ == 'image':
             # TODO: Detect if its png
-            IMAGES.append([name, 'data:image/svg+xml;utf8,' + value])
+            IMAGES[name] = 'data:image/svg+xml;utf8,' + value
 
     if IMAGES:
         outp['IMAGES'] = IMAGES

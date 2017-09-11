@@ -202,7 +202,9 @@ function Palettes () {
     };
 
     this.hidePaletteIconCircles = function () {
-        hidePaletteNameDisplay(palette_text, this.stage);
+        if (!sugarizerCompatibility.isInsideSugarizer()) {
+            hidePaletteNameDisplay(palette_text, this.stage);
+        }
         hideButtonHighlight(this.circles, this.stage);
     };
 
@@ -508,13 +510,17 @@ function Palettes () {
 
         this.buttons[name].on('pressup', function (event) {
             palettes.mouseOver = false;
-            hidePaletteNameDisplay(palette_text, palettes.stage);
+            if (!sugarizerCompatibility.isInsideSugarizer()) {
+                hidePaletteNameDisplay(palette_text, palettes.stage);
+            }
             hideButtonHighlight(that.circles, palettes.stage);
         });
 
         this.buttons[name].on('mouseout', function (event) {
             palettes.mouseOver = false;
-            hidePaletteNameDisplay(palette_text, palettes.stage);
+            if (!sugarizerCompatibility.isInsideSugarizer()) {
+                hidePaletteNameDisplay(palette_text, palettes.stage);
+            }
             hideButtonHighlight(that.circles, palettes.stage);
         });
 
@@ -776,14 +782,14 @@ function PaletteModel(palette, palettes, name) {
             }
 
             this.blocks.push({
-                blk,
-                blkname,
-                modname,
+                blk: blk,
+                name: blkname,
+                modname: modname,
                 height: STANDARDBLOCKHEIGHT,
-                label,
-                artwork,
+                label: label,
+                artwork: artwork,
                 artwork64: 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(artwork))),
-                docks,
+                docks: docks,
                 image: block.image,
                 scale: block.scale,
                 palettename: this.palette.name

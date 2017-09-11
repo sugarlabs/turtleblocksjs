@@ -23,7 +23,7 @@ const BUILTINPALETTESL23N = [_('turtle'), _('pen'), _('number'), _('boolean'), _
 
 
 function getMainToolbarButtonNames(name) {
-    return (['popdown-palette', 'run', 'step', 'stop-turtle', 'clear', 'palette', 'hide-blocks', 'collapse-blocks', 'go-home', 'help'].indexOf(name) > -1);
+    return (['popdown-palette', 'run', 'step', 'stop-turtle', 'clear', 'palette', 'hide-blocks', 'collapse-blocks', 'go-home', 'help', 'sugarizer-stop'].indexOf(name) > -1);
 };
 
 
@@ -70,4 +70,3 @@ function createHelpContent() {
         [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']
     ];
 };
-

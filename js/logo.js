@@ -955,6 +955,8 @@ function Logo () {
             return;
         }
 
+        var logo = that;  // for plugin backward compatibility
+
         var delay = that.turtleDelay + that.waitTimes[turtle];
         that.waitTimes[turtle] = 0;
 
@@ -1092,6 +1094,8 @@ function Logo () {
 
     this._runFromBlockNow = function (that, turtle, blk, isflow, receivedArg, queueStart) {
         // Run a stack of blocks, beginning with blk.
+
+        var logo = that;  // for plugin backward compatibility
 
         // Sometimes we don't want to unwind the entire queue.
         if (queueStart === undefined) {
@@ -5350,11 +5354,14 @@ function Logo () {
 
     this.parseArg = function (that, turtle, blk, parentBlk, receivedArg) {
         // Retrieve the value of a block.
+
         if (blk == null) {
             that.errorMsg('Missing argument.', parentBlk);
             that.stopTurtle = true;
             return null
         }
+
+        var logo = that;  // for plugin backward compatibility
 
         if (that.blocks.blockList[blk].protoblock.parameter) {
             if (turtle in that.parameterQueue) {

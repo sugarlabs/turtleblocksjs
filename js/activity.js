@@ -1407,8 +1407,13 @@ define(MYDEFINES, function (compatibility) {
             }
 
             var artcanvas = document.getElementById("overlayCanvas");
-            artcanvas.width = w;
-            artcanvas.height = h;
+            if (mobileSize) {
+                artcanvas.width = w * 2;
+                artcanvas.height = h * 2;
+            } else {
+                artcanvas.width = w;
+                artcanvas.height = h;
+            }
         };
 
         window.onresize = function () {

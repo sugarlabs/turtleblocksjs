@@ -118,6 +118,11 @@ function Blocks () {
     // as to avoid palette refresh race conditions.
     this.deleteActionTimeout = 0;
 
+    this.setSetPlaybackStatus = function (setPlaybackStatus) {
+        this.setPlaybackStatus = setPlaybackStatus;
+        return this;
+    };
+
     this.setCanvas = function (canvas) {
         this.canvas = canvas;
         return this;
@@ -2414,7 +2419,11 @@ function Blocks () {
                 continue;
             }
 
-            if (['do', 'calc', 'doArg', 'calcArg', 'action'].indexOf(blkParent.name) === -1) {
+            if (['do', 'calc', 'doArg', 'calcArg', 'action', 'offbeatdo', 'onbeatdo', 'listen'].indexOf(blkParent.name) === -1) {
+                continue;
+            }
+
+            if ((blkParent.name === 'onbeatdo' || blkParent.name === 'listen') && blkParent.connections.indexOf(blk) !== 2) {
                 continue;
             }
 
@@ -2739,9 +2748,8 @@ function Blocks () {
     };
 
     this.triggerLongPress = function (myBlock) {
-        this.timeOut == null;
+        this.longPressTimeout = null;
         this.inLongPress = true;
-        var z = this.stage.getNumChildren() - 1;
 
         // Auto-select stack for copying -- no need to actually click on
         // the copy button.
@@ -2751,9 +2759,12 @@ function Blocks () {
         // Copy the selectedStack.
         this.selectedBlocksObj = JSON.parse(JSON.stringify(this._copyBlocksToObj()));
 
+        // Update the paster button to indicate a block is selected.
         this.updatePasteButton();
 
+        // We display some extra buttons when we long-press an action block.
         if (myBlock.name === 'action') {
+            var z = this.stage.getNumChildren() - 1;
             this.dismissButton.visible = true;
             this.dismissButton.x = myBlock.container.x - 27;
             this.dismissButton.y = myBlock.container.y - 27;
@@ -2779,9 +2790,9 @@ function Blocks () {
             this.palettes.dict[name].hideMenu(true);
         }
 
-        // var blockObjs = this._copyBlocksToObj();
-        // this.loadNewBlocks(blockObjs);
-        // console.log(this.selectedBlocksObj);
+        // Reposition the paste location relative to the stage position.
+        this.selectedBlocksObj[0][2] = 75 - this.stage.x;
+        this.selectedBlocksObj[0][3] = 75 - this.stage.y;
         this.loadNewBlocks(this.selectedBlocksObj);
     };
 
@@ -2886,10 +2897,19 @@ function Blocks () {
     };
 
     this.loadNewBlocks = function (blockObjs) {
+        var playbackQueueStartsHere = null;
+
         // Check for blocks connected to themselves,
         // and for action blocks not connected to text blocks.
         for (var b = 0; b < blockObjs.length; b++) {
             var blkData = blockObjs[b];
+
+            // Check for playbackQueue
+            if (typeof(blkData[1]) === 'number') {
+                playbackQueueStartsHere = b;
+                break;
+            }
+
             for (var c in blkData[4]) {
                 if (blkData[4][c] === blkData[0]) {
                     console.log('Circular connection in block data: ' + blkData);
@@ -2897,6 +2917,24 @@ function Blocks () {
                     console.log(blockObjs);
                     return;
                 }
+            }
+        }
+
+        // Load any playback code into the queue...
+        if (playbackQueueStartsHere != null) {
+            for (var b = playbackQueueStartsHere; b < blockObjs.length; b++) {
+                var turtle = blockObjs[b][1];
+                if (turtle in this.logo.playbackQueue) {
+                    this.logo.playbackQueue[turtle].push(blockObjs[b][2]);
+                } else {
+                    this.logo.playbackQueue[turtle] = [blockObjs[b][2]];
+                }
+            }
+
+            // and remove the entries from the end of blockObjs.
+            var n = blockObjs.length;
+            for (var b = playbackQueueStartsHere; b < n; b++) {
+                blockObjs.pop();
             }
         }
 
@@ -3803,6 +3841,40 @@ function Blocks () {
                 }
             }
         }
+
+        if (playbackQueueStartsHere != null) {
+            var that = this;
+            setTimeout(function () {
+                // Now that we know how many turtles we have, we can make
+                // sure that the playback queue does not reference turtles
+                // that are not known to us.
+
+                var firstTurtle = 0;
+                // Find the first turtle not in the trash.
+                for (firstTurtle = 0; firstTurtle < that.turtles.turtleList.length; firstTurtie++) {
+                    if (!that.turtles.turtleList[firstTurtle].trash) {
+                        break;
+                    }
+                }
+
+                if (firstTurtle === that.turtles.turtleList.length) {
+                    console.log('Cannot find a turtle');
+                    firstTurtle = 0;
+                }
+
+                // Is the first turtle in the playbackQueue?
+                if (!(firstTurtle in that.logo.playbackQueue)) {
+                    for (turtle in that.logo.playbackQueue) {
+                        console.log('playbackQueue: remapping from ' + turtle + ' to ' + firstTurtle);
+                        that.logo.playbackQueue[firstTurtle] = that.logo.playbackQueue[turtle];
+                        delete that.logo.playbackQueue[turtle];
+                        firstTurtle += 1;
+                    }
+                }
+
+                that.setPlaybackStatus();
+            }, 1500);
+        }
     };
 
     this.cleanupAfterLoad = function (name) {
@@ -3893,7 +3965,6 @@ function Blocks () {
     this._cleanupStacks = function () {
         if (this._checkArgClampBlocks.length > 0) {
             // We make multiple passes because we need to account for nesting.
-            // FIXME: needs to be interwoven with TwoArgBlocks check.
             for (var i = 0; i < this._checkArgClampBlocks.length; i++) {
                 for (var b = 0; b < this._checkArgClampBlocks.length; b++) {
                     this._adjustArgClampBlock([this._checkArgClampBlocks[b]]);

@@ -1,4 +1,4 @@
-// Copyright (c) 2014,2015 Walter Bender
+// Copyright (c) 2014-17 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -9,26 +9,27 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
-function format(str, data) {
-  str = str.replace(/{([a-zA-Z0-9.]*)}/g,
-                     function (match, name) {
-    x = data;
-    name.split('.').forEach(function (v) {
-      if (x === undefined) {
-        console.log('Undefined value in template string', str, name, x, v);
-      }
-      x = x[v];
+function format (str, data) {
+    str = str.replace(/{([a-zA-Z0-9.]*)}/g, function (match, name) {
+	x = data;
+	name.split('.').forEach(function (v) {
+	    if (x === undefined) {
+		console.log('Undefined value in template string', str, name, x, v);
+	    }
+
+	    x = x[v];
+	});
+
+	return x;
     });
-    return x;
-  });
-  return str.replace(/{_([a-zA-Z0-9]+)}/g,
-                     function (match, item) {
-    return _(item);
-  });
+
+    return str.replace(/{_([a-zA-Z0-9]+)}/g, function (match, item) {
+	return _(item);
+    });
 };
 
 
-function canvasPixelRatio() {
+function canvasPixelRatio () {
     var devicePixelRatio = window.devicePixelRatio || 1;
     var context = document.querySelector('#myCanvas').getContext('2d');
     var backingStoreRatio = context.webkitBackingStorePixelRatio ||
@@ -40,7 +41,7 @@ function canvasPixelRatio() {
 };
 
 
-function windowHeight() {
+function windowHeight () {
     var onAndroid = /Android/i.test(navigator.userAgent);
     if (onAndroid) {
         return window.outerHeight;
@@ -50,7 +51,7 @@ function windowHeight() {
 };
 
 
-function windowWidth() {
+function windowWidth () {
     var onAndroid = /Android/i.test(navigator.userAgent);
     if (onAndroid) {
         return window.outerWidth;
@@ -60,11 +61,9 @@ function windowWidth() {
 };
 
 
-function httpGet(projectName) {
+function httpGet (projectName) {
     var xmlHttp = null;
-
     xmlHttp = new XMLHttpRequest();
-
     if (projectName === null) {
         xmlHttp.open("GET", window.server, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
@@ -72,26 +71,28 @@ function httpGet(projectName) {
         xmlHttp.open("GET", window.server + projectName, false);
         xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     }
+
     xmlHttp.send();
     if (xmlHttp.status > 299) {
         throw 'Error from server';
     }
+
     return xmlHttp.responseText;
 };
 
 
-function httpPost(projectName, data) {
+function httpPost (projectName, data) {
     var xmlHttp = null;
     xmlHttp = new XMLHttpRequest();
     xmlHttp.open("POST", window.server + projectName, false);
     xmlHttp.setRequestHeader('x-api-key', '3tgTzMXbbw6xEKX7');
     xmlHttp.send(data);
-    // return xmlHttp.responseText;
-    return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
+    return xmlHttp.responseText;
+    // return 'https://apps.facebook.com/turtleblocks/?file=' + projectName;
 };
 
 
-function HttpRequest(url, loadCallback, userCallback) {
+function HttpRequest (url, loadCallback, userCallback) {
     // userCallback is an optional callback-handler.
     var req = this.request = new XMLHttpRequest();
     this.handler = loadCallback;
@@ -102,28 +103,42 @@ function HttpRequest(url, loadCallback, userCallback) {
     var objref = this;
     try {
         req.open('GET', url);
-        req.onreadystatechange = function() { objref.handler(); };
+
+        req.onreadystatechange = function () {
+	    objref.handler();
+	};
+
         req.send('');
-    }
-    catch(e) {
-        if (self.console) console.log('Failed to load resource from ' + url + ': Network error.');
-        if (typeof userCallback === 'function') userCallback(false, 'network error');
+    } catch(e) {
+        if (self.console) {
+	    console.log('Failed to load resource from ' + url + ': Network error.');
+	}
+
+        if (typeof userCallback === 'function') {
+	    userCallback(false, 'network error');
+	}
+
         this.request = this.handler = this.userCallback = null;
     }
 };
 
 
-function docByTagName(tag) {
+function docByTagName (tag) {
     document.getElementsByTagName(tag);
 };
 
 
-function docById(id) {
+function docById (id) {
     return document.getElementById(id);
 };
 
 
-function last(myList) {
+function docByName(name) {
+    return document.getElementsByName(name);
+};
+
+
+function last (myList) {
     var i = myList.length;
     if (i === 0) {
         return null;
@@ -133,7 +148,7 @@ function last(myList) {
 };
 
 
-function doSVG(canvas, logo, turtles, width, height, scale) {
+function doSVG (canvas, logo, turtles, width, height, scale) {
     // Aggregate SVG output from each turtle. If there is none, use
     // the MUSICICON.
     var MUSICICON = '<g transform="matrix(20,0,0,20,-2500,-200)"> <g style="font-size:20px;font-family:Sans;text-anchor:end;fill:#000000" transform="translate(0.32906,-0.2)"> <path d="m 138.47094,26.82 q 0,-1.16 1.24,-2.02 0.96,-0.64 1.94,-0.64 0.68,0.02 1.18,0.34 l 0,-11.84 0.44,0 0,12.94 q 0,1.32 -1.34,2.1 -0.86,0.5 -1.8,0.5 -0.98,0 -1.44,-0.7 -0.22,-0.32 -0.22,-0.68 z" /> </g> <g transform="translate(-12.52094,4.8)" style="font-size:20px;font-family:Sans;text-anchor:end;fill:#000000"> <path d="m 138.47094,26.82 q 0,-1.16 1.24,-2.02 0.96,-0.64 1.94,-0.64 0.68,0.02 1.18,0.34 l 0,-11.84 0.44,0 0,12.94 q 0,1.32 -1.34,2.1 -0.86,0.5 -1.8,0.5 -0.98,0 -1.44,-0.7 -0.22,-0.32 -0.22,-0.68 z" /> </g> <path style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 130.81346,17 12.29007,-5 0,2 -12.29007,5 z" /> </g>';
@@ -148,17 +163,19 @@ function doSVG(canvas, logo, turtles, width, height, scale) {
     svg += '<g transform="scale(' + scale + ',' + scale + ')">\n';
     svg += logo.svgOutput;
     svg += '</g>';
+
     if (turtleSVG === '') {
         svg += MUSICICON;
     } else {
         svg += turtleSVG;
     }
+
     svg += '</svg>';
     return svg;
 };
 
 
-function isSVGEmpty(turtles) {
+function isSVGEmpty (turtles) {
     for (var turtle in turtles.turtleList) {
         turtles.turtleList[turtle].closeSVG();
         if (turtles.turtleList[turtle].svgOutput !== '') {
@@ -169,16 +186,17 @@ function isSVGEmpty(turtles) {
 };
 
 
-function fileExt(file) {
+function fileExt (file) {
     var parts = file.split('.');
     if (parts.length === 1 || (parts[0] === '' && parts.length === 2)) {
         return '';
     }
+
     return parts.pop();
 };
 
 
-function fileBasename(file) {
+function fileBasename (file) {
     var parts = file.split('.');
     if (parts.length === 1) {
         return parts[0];
@@ -193,12 +211,13 @@ function fileBasename(file) {
 
 // Needed to generate new data for localization.ini
 // var translated = "";
-function _(text) {
+function _ (text) {
     replaced = text;
     replace = [",", "(", ")", "?", "¿", "<", ">", ".", '"\n', '"', ":", "%s", "%d", "/", "'", ";", "×", "!", "¡"];
     for (var p = 0; p < replace.length; p++) {
         replaced = replaced.replace(replace[p], "");
     }
+
     replaced = replaced.replace(/ /g, '-');
     // Needed to generate new data for localization.ini
     // txt = "\n" + replaced + " = " + text;
@@ -218,16 +237,18 @@ function _(text) {
     }
 };
 
-function toTitleCase(str) {
+
+function toTitleCase (str) {
     if (typeof str !== 'string')
         return;
     var tempStr = '';
     if (str.length > 1)
         tempStr = str.substring(1);
     return str.toUpperCase()[0] + tempStr;
-}
+};
 
-function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList) {
+
+function processRawPluginData (rawData, palettes, blocks, errorMsg, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList) {
     // console.log(rawData);
     var lineData = rawData.split('\n');
     var cleanData = '';
@@ -238,9 +259,11 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
         if (lineData[i].length === 0) {
             continue;
         }
+
         if (lineData[i][0] === '/') {
             continue;
         }
+
         cleanData += lineData[i];
     }
 
@@ -252,11 +275,12 @@ function processRawPluginData(rawData, palettes, blocks, errorMsg, evalFlowDict,
         var obj = null;
         errorMsg('Error loading plugin: ' + e);
     }
+
     return obj;
 };
 
 
-function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList) {
+function processPluginData (pluginData, palettes, blocks, evalFlowDict, evalArgDict, evalParameterDict, evalSetterDict, evalOnStartList, evalOnStopList) {
     // Plugins are JSON-encoded dictionaries.
     // console.log(pluginData);
     var obj = JSON.parse(pluginData);
@@ -273,6 +297,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
                     // console.log(fillColor);
                 }
             }
+
             PALETTEFILLCOLORS[name] = fillColor;
 
             var strokeColor = '#ef003e';
@@ -282,6 +307,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
                     // console.log(strokeColor);
                 }
             }
+
             PALETTESTROKECOLORS[name] = strokeColor;
 
             var highlightColor = '#ffb1b3';
@@ -291,6 +317,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
                     // console.log(highlightColor);
                 }
             }
+
             PALETTEHIGHLIGHTCOLORS[name] = highlightColor;
 
             var strokeHighlightColor = '#404040';
@@ -300,6 +327,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
                     // console.log(highlightColor);
                 }
             }
+
             HIGHLIGHTSTROKECOLORS[name] = strokeHighlightColor;
 
             if (name in palettes.buttons) {
@@ -414,7 +442,7 @@ function processPluginData(pluginData, palettes, blocks, evalFlowDict, evalArgDi
 };
 
 
-function updatePluginObj(obj) {
+function updatePluginObj (obj) {
     for (var name in obj['PALETTEPLUGINS']) {
         pluginObjs['PALETTEPLUGINS'][name] = obj['PALETTEPLUGINS'][name];
     }
@@ -468,7 +496,7 @@ function updatePluginObj(obj) {
 };
 
 
-function preparePluginExports(obj) {
+function preparePluginExports (obj) {
     // add obj to plugin dictionary and return as JSON encoded text
     updatePluginObj(obj);
 
@@ -476,7 +504,7 @@ function preparePluginExports(obj) {
 };
 
 
-function processMacroData(macroData, palettes, blocks, macroDict) {
+function processMacroData (macroData, palettes, blocks, macroDict) {
     // Macros are stored in a JSON-encoded dictionary.
     if (macroData !== '{}') {
         var obj = JSON.parse(macroData);
@@ -493,7 +521,7 @@ function processMacroData(macroData, palettes, blocks, macroDict) {
 };
 
 
-function prepareMacroExports(name, stack, macroDict) {
+function prepareMacroExports (name, stack, macroDict) {
     if (name !== null) {
         macroDict[name] = stack;
     }
@@ -502,18 +530,23 @@ function prepareMacroExports(name, stack, macroDict) {
 };
 
 
-function doSaveSVG(logo, desc) {
+function doSaveSVG (logo, desc) {
     var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
     download(desc, 'data:image/svg+xml;utf8,' + svg, desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
 };
 
 
-function doSaveLilypond(logo, desc) {
-    download(desc, 'data:text;utf8,' + encodeURIComponent(logo.lilypondOutput), desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
+function doSaveLilypond (logo, desc) {
+    download(desc, 'data:text;utf8,' + encodeURIComponent(logo.notationOutput), desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
 };
 
 
-function download(filename, data) {
+function doSaveAbc (logo, desc) {
+    download(desc, 'data:text;utf8,' + encodeURIComponent(logo.notationOutput), desc, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
+};
+
+
+function download (filename, data) {
     var a = document.createElement('a');
     a.setAttribute('href', data);
     a.setAttribute('download', filename);
@@ -525,7 +558,7 @@ function download(filename, data) {
 // Some block-specific code
 
 // Publish to FB
-function doPublish(desc) {
+function doPublish (desc) {
     var url = doSave();
     console.log('push ' + url + ' to FB');
     var descElem = docById("description");
@@ -545,7 +578,7 @@ function doPublish(desc) {
 
 // TODO: Move to camera plugin
 var hasSetupCamera = false;
-function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, errorMsg) {
+function doUseCamera (args, turtles, turtle, isVideo, cameraID, setCameraID, errorMsg) {
     var w = 320;
     var h = 240;
 
@@ -570,6 +603,7 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
                     var vendorURL = window.URL || window.webkitURL;
                     video.src = vendorURL.createObjectURL(stream);
                 }
+
                 video.play();
                 hasSetupCamera = true;
             }, function (error) {
@@ -605,7 +639,7 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
         }
     }, false);
 
-    function draw() {
+    function draw () {
         canvas.width = w;
         canvas.height = h;
         canvas.getContext('2d').drawImage(video, 0, 0, w, h);
@@ -615,7 +649,7 @@ function doUseCamera(args, turtles, turtle, isVideo, cameraID, setCameraID, erro
 };
 
 
-function doStopVideoCam(cameraID, setCameraID) {
+function doStopVideoCam (cameraID, setCameraID) {
     if (cameraID !== null) {
         window.clearInterval(cameraID);
     }
@@ -625,7 +659,7 @@ function doStopVideoCam(cameraID, setCameraID) {
 };
 
 
-function hideDOMLabel() {
+function hideDOMLabel () {
     var textLabel = docById('textLabel');
     if (textLabel !== null) {
         textLabel.style.display = 'none';
@@ -665,10 +699,20 @@ function hideDOMLabel() {
     if (modenameLabel !== null) {
         modenameLabel.style.display = 'none';
     }
+
+    var filtertypeLabel = docById('filtertypeLabel');
+    if (filtertypeLabel !== null) {
+        filtertypeLabel.style.display = 'none';
+    }
+
+    var oscillatortypeLabel = docById('oscillatortypeLabel');
+    if (oscillatortypeLabel !== null) {
+        oscillatortypeLabel.style.display = 'none';
+    }
 };
 
 
-function displayMsg(blocks, text) {
+function displayMsg (blocks, text) {
     /*
     var msgContainer = blocks.msgText.parent;
     msgContainer.visible = true;
@@ -682,45 +726,58 @@ function displayMsg(blocks, text) {
 
 function toFixed2 (d) {
     // Return number as fixed 2 precision
-    var floor = Math.floor(d);
-    if (d !== floor) {
-        return d.toFixed(2).toString();
+    if (typeof(d) === 'number') {
+        var floor = Math.floor(d);
+        if (d !== floor) {
+            return d.toFixed(2).toString();
+        } else {
+            return d.toString();
+        }
     } else {
-        return d.toString();
+        return d;
     }
 };
 
 
 function mixedNumber (d) {
     // Return number as a mixed fraction string, e.g., "2 1/4"
-    var floor = Math.floor(d);
-    if (d > floor) {
-	var obj = rationalToFraction(d - floor);
-        if (floor === 0) {
-            return obj[0] + '/' + obj[1];
-        } else {
-            if (obj[0] === 1 && obj[1] === 1) {
-                return floor + 1;
+
+    if (typeof(d) === 'number') {
+        var floor = Math.floor(d);
+        if (d > floor) {
+            var obj = rationalToFraction(d - floor);
+            if (floor === 0) {
+                return obj[0] + '/' + obj[1];
+
             } else {
-                if (obj[1] > 99) {
-                    return d.toFixed(2);
+                if (obj[0] === 1 && obj[1] === 1) {
+                    return floor + 1;
                 } else {
-                    return floor + ' ' + obj[0] + '/' + obj[1];
+                    if (obj[1] > 99) {
+                        return d.toFixed(2);
+                    } else {
+                        return floor + ' ' + obj[0] + '/' + obj[1];
+                    }
                 }
             }
+        } else {
+            return d.toString();
         }
     } else {
-	return d.toString();
+
+        return d;
+
+
     }
 };
 
 
-function LCD(a, b) {
+function LCD (a, b) {
     return Math.abs((a * b) / GCD(a, b));
 };
 
 
-function GCD(a, b) {
+function GCD( a, b) {
     a = Math.abs(a);
     b = Math.abs(b);
 
@@ -781,5 +838,200 @@ readable-fractions/681534#681534
         return [bot, top];
     } else {
         return [top, bot];
+    }
+};
+
+
+function nearestBeat (d, b) {
+    // Find the closest beat for a given fraction.
+
+    var sum = 1 / (2 * b);
+    var count = 0;
+    var dd = d / 100;
+    while (dd > sum) {
+        sum += 1 / b;
+        count += 1;
+    }
+
+    return [count, b];
+};
+
+
+function oneHundredToFraction (d) {
+    // Generate some simple fractions based on a scale of 1-100
+
+    if (d < 1) {
+        return [1, 64];
+    } else if (d > 99) {
+        return [1, 1];
+    }
+
+    switch(Math.floor(d)) {
+    case 1:
+        return [1, 64];
+        break;
+    case 2:
+        return [1, 48];
+        break;
+    case 3:
+    case 4:
+    case 5:
+        return [1, 32];
+        break;
+    case 6:
+    case 7:
+    case 8:
+        return [1, 16];
+        break;
+    case 9:
+    case 10:
+    case 11:
+        return [1, 12];
+        break;
+    case 12:
+    case 13:
+    case 14:
+        return [1, 8];
+        break;
+    case 15:
+    case 16:
+    case 17:
+        return [1, 6];
+        break;
+    case 18:
+    case 19:
+        return [3, 16];
+        break;
+    case 20:
+    case 21:
+    case 22:
+        return [1, 5];
+        break;
+    case 23:
+    case 24:
+    case 25:
+    case 26:
+    case 27:
+    case 28:
+    case 29:
+        return [1, 4];
+        break;
+    case 30:
+    case 31:
+        return [5, 16];
+        break;
+    case 32:
+    case 33:
+    case 34:
+    case 35:
+        return [1, 3];
+        break;
+    case 36:
+    case 37:
+    case 38:
+    case 39:
+        return [3, 8];
+        break;
+    case 40:
+    case 41:
+        return [2, 5];
+        break;
+    case 42:
+    case 43:
+    case 44:
+        return [7, 16];
+        break;
+    case 45:
+    case 46:
+    case 47:
+        return [15, 32];
+        break;
+    case 48:
+    case 49:
+    case 50:
+    case 51:
+    case 52:
+        return [1, 2];
+        break;
+    case 53:
+    case 54:
+        return [17, 32];
+        break;
+    case 56:
+    case 57:
+    case 58:
+        return [9, 16];
+        break;
+    case 59:
+    case 60:
+    case 61:
+        return [3, 5];
+        break;
+    case 62:
+    case 63:
+    case 64:
+    case 65:
+        return [5, 8];
+        break;
+    case 66:
+    case 67:
+        return [2, 3];
+        break;
+    case 68:
+    case 69:
+    case 70:
+        return [11, 16];
+        break;
+    case 71:
+    case 72:
+    case 73:
+    case 74:
+		return [23, 32];
+        break;
+    case 75:
+    case 76:
+    case 77:
+    case 78:
+    case 79:
+    case 80:
+        return [3, 4];
+        break;
+    case 81:
+    case 82:
+        return [13, 16];
+        break;
+    case 83:
+    case 84:
+    case 85:
+    case 86:
+        return [5, 6];
+        break;
+    case 87:
+    case 88:
+    case 89:
+    case 90:
+        return [7, 8];
+        break;
+    case 91:
+    case 92:
+        return [11, 12];
+        break;
+    case 93:
+    case 94:
+    case 95:
+        return [15, 16];
+        break;
+    case 96:
+    case 98:
+        return [31, 32];
+        break;
+    case 98:
+        return [63, 64];
+        break;
+    default:
+        return [d, 100];
+
+        break;
+
     }
 };

@@ -22,7 +22,8 @@ function SaveBox () {
     this._doSavePNG = null;
     this._doUploadToPlanet = null;
     this._doShareOnFacebook = null;
-    
+    this._doSaveBlockArtwork = null;    
+
     this._container = null;
     this._bounds = null;
     this.save = null;
@@ -56,6 +57,11 @@ function SaveBox () {
 
     this.setSaveFB = function (doSaveFB) {
         this._doShareOnFacebook = doSaveFB;
+        return this;
+    };
+
+    this.setSaveBlockArtwork = function (doSaveBlockArtwork) {
+        this._doSaveBlockArtwork = doSaveBlockArtwork;
         return this;
     };
 
@@ -114,6 +120,15 @@ function SaveBox () {
                 that._doShareOnFacebook();
                 // change 'fb-inactive' to 'fb' when the button becomes operational
             });
+
+            this.saveBlockArtwork = makeButton('save-block-artwork', _('Save block artwork'), this._container.x + 375, this._container.y + 85, 55, 0, this._stage);
+            this.saveBlockArtwork.visible = true;
+            this.positionHoverText(this.saveBlockArtwork, true);
+            this.saveBlockArtwork.on('click', function(event) {
+                that.hide();
+                that._doSaveBlockArtwork();
+            });
+
         } else {
             this.show();
         }
@@ -137,6 +152,7 @@ function SaveBox () {
             this.savePNG.visible = false;
             this.uploadToPlanet.visible = false;
             this.shareOnFb.visible = false;
+            this.saveBlockArtwork.visible = false;
             this._container.visible = false;
             this._refreshCanvas();
         }
@@ -149,6 +165,7 @@ function SaveBox () {
             this.savePNG.visible = true;
             this.uploadToPlanet.visible = true;
             this.shareOnFb.visible = true;
+            this.saveBlockArtwork.visible = true;
             this._container.visible = true;
             this._refreshCanvas();
         }

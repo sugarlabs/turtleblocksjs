@@ -18,35 +18,38 @@
 const _THIS_IS_MUSIC_BLOCKS_ = false;
 const _THIS_IS_TURTLE_BLOCKS_ = !_THIS_IS_MUSIC_BLOCKS_;
 
+const _ERRORMSGTIMEOUT_ = 15000;
 
-function facebookInit() {
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: '1496189893985945',
-            xfbml: true,
-            version: 'v2.1'
-        });
 
-        // ADD ADDITIONAL FACEBOOK CODE HERE
+if (_THIS_IS_TURTLE_BLOCKS_) {
+    function facebookInit() {
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '1496189893985945',
+                xfbml: true,
+                version: 'v2.1'
+            });
+
+            // ADD ADDITIONAL FACEBOOK CODE HERE
+        };
     };
-};
 
 
-try {
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-            return;
-        }
+    try {
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
 
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-} catch (e) {
-};
-
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    } catch (e) {
+    };
+}
 
 var lang = document.webL10n.getLanguage();
 if (lang.indexOf('-') !== -1) {
@@ -55,9 +58,9 @@ if (lang.indexOf('-') !== -1) {
 }
 
 if (_THIS_IS_MUSIC_BLOCKS_) {
-    MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'Tone.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/modewidget', 'activity/soundsamples', 'activity/pitchtimematrix', 'activity/pitchdrummatrix', 'activity/rhythmruler', 'activity/pitchstaircase', 'activity/tempo', 'activity/pitchslider', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'prefixfree.min'];
+    var MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'Tone.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'dsp', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/modewidget', 'activity/soundsamples', 'activity/pitchtimematrix', 'activity/pitchdrummatrix', 'activity/rhythmruler', 'activity/pitchstaircase', 'activity/tempo', 'activity/pitchslider', 'activity/timbre', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'activity/abc', 'activity/playbackbox', 'prefixfree.min'];
 } else {
-    MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'prefixfree.min'];
+    var MYDEFINES = ["activity/sugarizer-compatibility", 'activity/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'activity/utils', 'activity/artwork', 'activity/status', 'activity/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/macros', 'activity/musicutils', 'activity/lilypond', 'activity/playbackbox', 'prefixfree.min'];
 }
 
 define(MYDEFINES, function (compatibility) {
@@ -81,7 +84,7 @@ define(MYDEFINES, function (compatibility) {
 
         try {
             meSpeak.loadConfig('lib/mespeak_config.json');
-	    var lang = document.webL10n.getLanguage();
+            var lang = document.webL10n.getLanguage();
             if (['es', 'ca', 'de', 'el', 'eo', 'fi', 'fr', 'hu', 'it', 'kn', 'la', 'lv', 'nl', 'pl', 'pt', 'ro', 'sk', 'sv', 'tr', 'zh'].indexOf(lang) !== -1) {
                 meSpeak.loadVoice('lib/voices/' + lang + '.json');
             } else {
@@ -92,16 +95,6 @@ define(MYDEFINES, function (compatibility) {
         }
 
         var canvas = docById('myCanvas');
-
-        var queue = new createjs.LoadQueue(false);
-
-        // Check for the various File API support.
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var files = true;
-        } else {
-            alert('The File APIs are not fully supported in this browser.');
-            var files = false;
-        }
 
         // Set up a file chooser for the doOpen function.
         var fileChooser = docById('myOpenFile');
@@ -120,22 +113,21 @@ define(MYDEFINES, function (compatibility) {
         var logo;
         var clearBox;
         var utilityBox;
+        var playbackBox = null;
         var thumbnails;
         var buttonsVisible = true;
         var headerContainer = null;
-        var toolbarButtonsVisible = true;
         var menuButtonsVisible = true;
         var menuContainer = null;
         var scrollBlockContainer = false;
-        var currentKey = '';
         var currentKeyCode = 0;
-        var lastKeyCode = 0;
         var pasteContainer = null;
         var pasteImage = null;
+        var gridContainer = null;
+        var gridButtonLabel = null;
+        var gridImages = [];
         var chartBitmap = null;
-        if (_THIS_IS_TURTLE_BLOCKS_) {
-            var saveBox;
-        }
+        var saveBox;
 
         // Calculate the palette colors.
         for (var p in PALETTECOLORS) {
@@ -162,19 +154,9 @@ define(MYDEFINES, function (compatibility) {
         var macroDict = {};
 
         var stopTurtleContainer = null;
-        var stopTurtleContainerX = 0;
-        var stopTurtleContainerY = 0;
         var homeButtonContainers = [];
-        var homeButtonContainersX = 0;
-        var homeButtonContainersY = 0;
 
         var cameraID = null;
-        var toLang = null;
-        var fromLang = null;
-
-        // initial scroll position
-        var scrollX = 0;
-        var scrollY = 0;
 
         // default values
         const DEFAULTDELAY = 500; // milleseconds
@@ -185,12 +167,6 @@ define(MYDEFINES, function (compatibility) {
         if (blockscale === -1) {
             blockscale = 1;
         }
-
-        // Time when we hit run
-        var time = 0;
-
-        // Used by pause block
-        var waitTime = {};
 
         // Used to track mouse state for mouse button block
         var stageMouseDown = false;
@@ -207,6 +183,7 @@ define(MYDEFINES, function (compatibility) {
         var onscreenButtons = [];
         var onscreenMenu = [];
         var utilityButton = null;
+        var playbackButton = null;
         var saveButton = null;
 
         var helpContainer = null;
@@ -215,16 +192,22 @@ define(MYDEFINES, function (compatibility) {
 
         pluginsImages = {};
 
-        // Sometimes (race condition?) Firefox does not properly
-        // initialize strings in musicutils. These methods ensure that
-        // the names are never null.
-        console.log('initing i18n for music terms');
-        initDrumI18N();
-        initModeI18N();
-        initVoiceI18N();
+        if (_THIS_IS_MUSIC_BLOCKS_) {
+            // Sometimes (race condition?) Firefox does not properly
+            // initialize strings in musicutils. These methods ensure that
+            // the names are never null.
+            console.log('initing i18n for music terms');
+            initDrumI18N();
+            initModeI18N();
+            initVoiceI18N();
+            initFilterI18N();
+            initOscI18N();
+        }
 
         window.onblur = function () {
-            logo.doStopTurtle();
+            if (!logo.runningLilypond) {
+                logo.doStopTurtle();
+            }
         };
 
         function _findBlocks() {
@@ -236,9 +219,45 @@ define(MYDEFINES, function (compatibility) {
             palettes.updatePalettes();
             var x = 100 * turtleBlocksScale;
             var y = 100 * turtleBlocksScale;
+
+            // First start blocks
             for (var blk in blocks.blockList) {
                 if (!blocks.blockList[blk].trash) {
                     var myBlock = blocks.blockList[blk];
+                    if (myBlock.name !== 'start') {
+                        continue;
+                    };
+
+                    if (myBlock.connections[0] == null) {
+                        var dx = x - myBlock.container.x;
+                        var dy = y - myBlock.container.y;
+                        blocks.moveBlockRelative(blk, dx, dy);
+                        blocks.findDragGroup(blk);
+                        if (blocks.dragGroup.length > 0) {
+                            for (var b = 0; b < blocks.dragGroup.length; b++) {
+                                var bblk = blocks.dragGroup[b];
+                                if (b !== 0) {
+                                    blocks.moveBlockRelative(bblk, dx, dy);
+                                }
+                            }
+                        }
+                        x += 200 * turtleBlocksScale;
+                        if (x > (canvas.width - 100) / (turtleBlocksScale)) {
+                            x = 100 * turtleBlocksScale;
+                            y += 100 * turtleBlocksScale;
+                        }
+                    }
+                }
+            }
+
+            // The everything else
+            for (var blk in blocks.blockList) {
+                if (!blocks.blockList[blk].trash) {
+                    var myBlock = blocks.blockList[blk];
+                    if (myBlock.name === 'start') {
+                        continue;
+                    };
+
                     if (myBlock.connections[0] == null) {
                         var dx = x - myBlock.container.x;
                         var dy = y - myBlock.container.y;
@@ -267,6 +286,79 @@ define(MYDEFINES, function (compatibility) {
             boundary.hide();
         };
 
+        function _printBlockSVG() {
+            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + logo.canvas.width + '" height="' + logo.canvas.height + '">';
+            for (var i = 0; i < blocks.blockList.length; i++) {
+                if (blocks.blockList[i].name === 'hidden') {
+                    continue;
+                }
+
+                if (blocks.blockList[i].name === 'hiddennoflow') {
+                    continue;
+                }
+
+                if (blocks.blockList[i].trash) {
+                    continue;
+                }
+
+                var parts = blocks.blockArt[i].split('><');
+                svg += '<g transform="translate(' + blocks.blockList[i].container.x + ', ' + blocks.blockList[i].container.y + ')">';
+                switch(blocks.blockList[i].name) {
+                case 'text':
+                case 'solfege':
+                case 'eastindiansolfege':
+                case 'notename':
+                case 'rest':
+                case 'number':
+                case 'modename':
+                case 'voicename':
+                case 'drumname':
+                    for (var p = 1; p < parts.length; p++) {
+                        // FIXME: This is fragile.
+                        if (p === 1) {
+                            svg += '<' +  parts[p] + '><';
+                        } else if (p === 2) {
+                            // skip filter
+                        } else if (p === 3) {
+                            svg += parts[p].replace('filter:url(#dropshadow);', '') + '><';
+                        } else if (p === 5) {
+                            // Add block value to SVG between tspans
+                            svg += parts[p] + '>' + blocks.blockList[i].value + '<';
+                        } else if (p === parts.length - 2) {
+                            svg += parts[p] + '>';
+                        } else if (p === parts.length - 1) {
+                            // skip final </svg>
+                        } else {
+                            svg += parts[p] + '><';
+                        }
+                    }
+                    break;
+                default:
+                    for (var p = 1; p < parts.length; p++) {
+                        // FIXME: This is fragile.
+                        if (p === 1) {
+                            svg += '<' +  parts[p] + '><';
+                        } else if (p === 2) {
+                            // skip filter
+                        } else if (p === 3) {
+                            svg += parts[p].replace('filter:url(#dropshadow);', '') + '><';
+                        } else if (p === parts.length - 2) {
+                            svg += parts[p] + '>';
+                        } else if (p === parts.length - 1) {
+                            // skip final </svg>
+                        } else {
+                            svg += parts[p] + '><';
+                        }
+                    }
+                    break;
+                }
+                svg += '</g>';
+            }
+            svg += '</svg>';
+            download('blockArtwork.svg', 'data:image/svg+xml;utf8,' + svg, 'blockArtwork.svg', '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
+
+        }
+
         function _allClear() {
             if (chartBitmap != null) {
                 stage.removeChild(chartBitmap);
@@ -277,11 +369,11 @@ define(MYDEFINES, function (compatibility) {
             logo.time = 0;
             hideMsgs();
             logo.setBackgroundColor(-1);
-            logo.lilypondOutput = LILYPONDHEADER;
+            logo.notationOutput = LILYPONDHEADER;
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 logo.turtleHeaps[turtle] = [];
-                logo.lilypondStaging[turtle] = [];
-                turtles.turtleList[turtle].doClear(true, true);
+                logo.notationStaging[turtle] = [];
+                turtles.turtleList[turtle].doClear(true, true, true);
             }
 
             blocksContainer.x = 0;
@@ -334,7 +426,6 @@ define(MYDEFINES, function (compatibility) {
                         if (tempo.isMoving) {
                             tempo.pause();
                         }
-
                         tempo.resume();
                     }
 
@@ -363,7 +454,7 @@ define(MYDEFINES, function (compatibility) {
                 logo.runLogoCommands(null, env);
             } else {
                 if (currentDelay !== 0) {
-                    // keep playing at full speep
+                    // keep playing at full speed
                     console.log('running from step');
                     logo.step();
                 } else {
@@ -391,10 +482,7 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _doStepButton() {
-            var turtleCount = 0;
-            for (var turtle in logo.stepQueue) {
-                turtleCount += 1;
-            }
+            var turtleCount = Object.keys(logo.stepQueue).length;
 
             if (turtleCount === 0 || logo.turtleDelay !== TURTLESTEP) {
                 // Either we haven't set up a queue or we are
@@ -424,10 +512,7 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _doStepMusicButton() {
-            var turtleCount = 0;
-            for (var turtle in logo.stepQueue) {
-                turtleCount += 1;
-            }
+            var turtleCount = Object.keys(logo.stepQueue).length;
 
             if (turtleCount === 0 || logo.TurtleDelay !== TURTLESTEP) {
                 // Either we haven't set up a queue or we are
@@ -444,34 +529,42 @@ define(MYDEFINES, function (compatibility) {
             }
         };
 
-        var stopTurtle = false;
 
         function doStopButton() {
             logo.doStopTurtle();
         };
 
-        var cartesianVisible = false;
-
-        function _doCartesian() {
-            if (cartesianVisible) {
+        function _doCartesianPolar() {
+            if (cartesianBitmap.visible && polarBitmap.visible) {
                 _hideCartesian();
-                cartesianVisible = false;
-            } else {
-                _showCartesian();
-                cartesianVisible = true;
-            }
-        };
-
-        var polarVisible = false;
-
-        function _doPolar() {
-            if (polarVisible) {
+                //.TRANS: hide Polar coordinate overlay grid
+                gridButtonLabel.text = _('hide grid');
+                gridImages[1].visible = false;
+                gridImages[2].visible = false;
+                gridImages[3].visible = true;
+            } else if (!cartesianBitmap.visible && polarBitmap.visible) {
                 _hidePolar();
-                polarVisible = false;
-            } else {
+                //.TRANS: show Cartesian coordinate overlay grid
+                gridButtonLabel.text = _('Cartesian');
+                gridImages[1].visible = false;
+                gridImages[2].visible = false;
+                gridImages[3].visible = false;
+            } else if (!cartesianBitmap.visible && !polarBitmap.visible) {
+                _showCartesian();
+                gridButtonLabel.text = _('Cartesian') + ' + ' + _('Polar');
+                gridImages[1].visible = true;
+                gridImages[2].visible = false;
+                gridImages[3].visible = false;
+            } else if (cartesianBitmap.visible && !polarBitmap.visible) {
                 _showPolar();
-                polarVisible = true;
+                //.TRANS: show Polar coordinate overlay grid
+                gridButtonLabel.text = _('Polar');
+                gridImages[1].visible = false;
+                gridImages[2].visible = true;
+                gridImages[3].visible = false;
             }
+
+            update = true;
         };
 
         function toggleScroller() {
@@ -552,14 +645,57 @@ define(MYDEFINES, function (compatibility) {
             }
         };
 
+        function getPlaybackQueueStatus () {
+            return Object.keys(logo.playbackQueue).length > 0;
+        };
+        
+        function setPlaybackStatus () {
+            if (playbackBox != null) {
+                playbackBox.setPlaybackStatus();
+            }
+        };
+
+        function doPausePlayback () {
+            logo.playback(-1);
+            playbackBox.playButton.visible = true;
+            playbackBox.pauseButton.visible = false;
+        };
+
+        function doPlayback() {
+            logo.playback(-1);
+            playbackBox.playButton.visible = false;
+            playbackBox.pauseButton.visible = true;
+            playbackBox.norewindButton.visible = false;
+            playbackBox.rewindButton.visible = true;
+        };
+
+        function doRestartPlayback() {
+            logo.doStopTurtle();
+
+            setTimeout(function () {
+                // logo.playback(-1);
+                playbackBox.playButton.visible = true;
+                playbackBox.pauseButton.visible = false;
+                playbackBox.norewindButton.visible = true;
+                playbackBox.rewindButton.visible = false;
+            }, 500);
+        };
+
+        function doCompile() {
+            // Show busy cursor.
+            document.body.style.cursor = 'wait';
+
+            console.log('Compiling music for playback');
+            // Suppress music and turtle output when generating
+            // compiled output.
+            logo.playbackQueue = {};
+            logo.compiling = true;
+            logo.runLogoCommands();
+        };
+
+
         // Do we need to update the stage?
         var update = true;
-
-        // The dictionary of action name: block
-        var actions = {};
-
-        // The dictionary of box name: value
-        var boxes = {};
 
         // Coordinate grid
         var cartesianBitmap = null;
@@ -573,6 +709,7 @@ define(MYDEFINES, function (compatibility) {
         // ErrorMsg block
         var errorMsgText = null;
         var errorMsgArrow = null;
+        var errorMsgTimeoutID = null;
         var errorArtwork = {};
         const ERRORARTWORK = ['emptybox', 'emptyheap', 'negroot', 'noinput', 'zerodivide', 'notanumber', 'nostack', 'notastring', 'nomicrophone'];
 
@@ -646,6 +783,7 @@ define(MYDEFINES, function (compatibility) {
                 .setUpdateStage(stage.update)
                 .setGetStageScale(getStageScale)
                 .setTurtles(turtles)
+                .setSetPlaybackStatus(setPlaybackStatus)
                 .setErrorMsg(errorMsg);
             blocks.makeCopyPasteButtons(_makeButton, updatePasteButton);
 
@@ -681,6 +819,7 @@ define(MYDEFINES, function (compatibility) {
                 .setGetCurrentKeyCode(getCurrentKeyCode)
                 .setClearCurrentKeyCode(clearCurrentKeyCode)
                 .setMeSpeak(meSpeak)
+                .setSetPlaybackStatus(setPlaybackStatus)
                 .setSaveLocally(saveLocally);
 
             blocks.setLogo(logo);
@@ -695,20 +834,24 @@ define(MYDEFINES, function (compatibility) {
                 .setRefreshCanvas(refreshCanvas)
                 .setClear(sendAllToTrash);
 
-            if (_THIS_IS_TURTLE_BLOCKS_) {
-		saveBox = new SaveBox();
-		saveBox
-                    .setCanvas(canvas)
-                    .setStage(stage)
-                    .setRefreshCanvas(refreshCanvas)
-                    .setSaveTB(doSaveTB)
-                    .setSaveSVG(doSaveSVG)
-                    .setSavePNG(doSavePNG)
-                    .setSavePlanet(doUploadToPlanet)
-                    .setSaveFB(doShareOnFacebook);
+            saveBox = new SaveBox();
+            saveBox
+                .setCanvas(canvas)
+                .setStage(stage)
+                .setRefreshCanvas(refreshCanvas)
+                .setSaveTB(doSaveTB)
+                .setSaveSVG(doSaveSVG)
+                .setSavePNG(doSavePNG)
+                .setSavePlanet(doUploadToPlanet)
+                .setSaveBlockArtwork(doSaveBlockArtwork);
+
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                saveBox.setSaveLilypond(doSaveLilypond);
+            } else {
+                saveBox.setSaveFB(doShareOnFacebook);
             }
 
-	    utilityBox = new UtilityBox();
+            utilityBox = new UtilityBox();
             utilityBox
                 .setStage(stage)
                 .setRefreshCanvas(refreshCanvas)
@@ -717,6 +860,16 @@ define(MYDEFINES, function (compatibility) {
                 .setPlugins(doOpenPlugin)
                 .setStats(doAnalytics)
                 .setScroller(toggleScroller);
+
+            playbackBox = new PlaybackBox();
+            playbackBox
+                .setStage(stage)
+                .setRefreshCanvas(refreshCanvas)
+                .setQueueStatus(getPlaybackQueueStatus)
+                .setPlay(doPlayback)
+                .setCompile(doCompile)
+                .setPause(doPausePlayback)
+                .setRewind(doRestartPlayback);
 
             thumbnails = new SamplesViewer();
             thumbnails
@@ -764,26 +917,39 @@ define(MYDEFINES, function (compatibility) {
                 reader.onload = (function (theFile) {
                     // Show busy cursor.
                     document.body.style.cursor = 'wait';
+
                     setTimeout(function () {
                         var rawData = reader.result;
-                        var cleanData = rawData.replace('\n', ' ');
-                        var obj = JSON.parse(cleanData);
-                        // First, hide the palettes as they will need updating.
-                        for (var name in blocks.palettes.dict) {
-                            blocks.palettes.dict[name].hideMenu(true);
+                        if (rawData == null || rawData === '') {
+                            errorMsg(_('Cannot load project from the file. Please check the file type.'));
+                        } else {
+                            var cleanData = rawData.replace('\n', ' ');
+
+                            try {
+                                var obj = JSON.parse(cleanData);
+                                // First, hide the palettes as they will need updating.
+                                for (var name in blocks.palettes.dict) {
+                                    blocks.palettes.dict[name].hideMenu(true);
+                                }
+
+                                sendAllToTrash(false, false);
+                                refreshCanvas();
+
+                                logo.playbackQueue = {};
+                                blocks.loadNewBlocks(obj);
+                                setPlaybackStatus();
+                            } catch (e) {
+                                errorMsg(_('Cannot load project from the file. Please check the file type.'));
+                            }
                         }
 
-                        refreshCanvas();
-
-                        blocks.loadNewBlocks(obj);
-                        // Restore default cursor.
                         document.body.style.cursor = 'default';
                     }, 200);
                 });
 
                 reader.readAsText(fileChooser.files[0]);
             }, false);
-
+        
             function handleFileSelect (event) {
                 event.stopPropagation();
                 event.preventDefault();
@@ -791,38 +957,44 @@ define(MYDEFINES, function (compatibility) {
                 var files = event.dataTransfer.files;
                 var reader = new FileReader();
 
-                reader.onload = (function(theFile) {
+                reader.onload = (function (theFile) {
                     document.body.style.cursor = 'wait';
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         var rawData = reader.result;
-                        if (rawData == null || rawData == '') {
-                            alert(_('Cannot load project. Please check the file type.'));
+                        if (rawData == null || rawData === '') {
+                            errorMsg(_('Cannot load project from the file. Please check the file type.'));
+                        } else {
+                            var cleanData = rawData.replace('\n', ' ');
+
+                            try {
+                                var obj = JSON.parse(cleanData);
+                                for (var name in blocks.palettes.dict) {
+                                    blocks.palettes.dict[name].hideMenu(true);
+                                }
+   
+                                sendAllToTrash(false, false);
+                                refreshCanvas();
+    
+                                logo.playbackQueue = {};
+                                blocks.loadNewBlocks(obj);
+                                setPlaybackStatus();
+                            } catch (e) {
+                                errorMsg(_('Cannot load project from the file. Please check the file type.'));
+                            }
+                     
                         }
-
-                        var cleanData = rawData.replace('\n', ' ');
-                        try {
-                            var obj = JSON.parse(cleanData);
-                        } catch (e) {
-                            alert(_('Failed to load file data.'));
-                            document.body.style.cursor = 'default';
-                            return;
-                        }
-                        for (var name in blocks.palettes.dict) {
-                            blocks.palettes.dict[name].hideMenu(true);
-                        }
-
-                        sendAllToTrash(false, false);
-                        refreshCanvas();
-
-                        blocks.loadNewBlocks(obj);
-
+                        
                         document.body.style.cursor = 'default';
                     }, 200);
                 });
 
-                reader.readAsText(files[0]);
-                window.scroll(0, 0)
+                // Work-around in case the handler is called by the
+                // widget drag & drop code.
+                if (files[0] != undefined) {
+                    reader.readAsText(files[0]);
+                    window.scroll(0, 0)
+                }
             };
 
             function handleDragOver (event) {
@@ -898,7 +1070,8 @@ define(MYDEFINES, function (compatibility) {
             var projectName = null;
             var runProjectOnLoad = false;
 
-            _setupAndroidToolbar();
+            // This happens in the resize code.
+            // _setupAndroidToolbar();
 
             // Scale the canvas relative to the screen size.
             _onResize();
@@ -981,7 +1154,6 @@ define(MYDEFINES, function (compatibility) {
 
             this.document.onkeydown = __keyPressed;
             _hideStopButton();
-
         };
 
         function _setupBlocksContainerEvents() {
@@ -998,8 +1170,10 @@ define(MYDEFINES, function (compatibility) {
                     stage.on('stagemouseup', function (event) {
                         stageMouseDown = false;
                     });
+
                     return;
                 }
+
                 moving = true;
                 lastCords = {
                     x: event.stageX,
@@ -1010,11 +1184,7 @@ define(MYDEFINES, function (compatibility) {
                     if (!moving) {
                         return;
                     }
-                    if (blocks.inLongPress) {
-                        blocks.saveStackButton.visible = false;
-                        blocks.dismissButton.visible = false;
-                        blocks.inLongPress = false;
-                    }
+
                     if (scrollBlockContainer) {
                         blocksContainer.x += event.stageX - lastCords.x;
                         blocksContainer.y += event.stageY - lastCords.y;
@@ -1022,6 +1192,7 @@ define(MYDEFINES, function (compatibility) {
                             x: event.stageX,
                             y: event.stageY
                         };
+
                         refreshCanvas();
                     }
                 });
@@ -1029,7 +1200,7 @@ define(MYDEFINES, function (compatibility) {
                 stage.on('stagemouseup', function (event) {
                     stageMouseDown = false;
                     moving = false;
-                }, null, true); // once = true
+                });
             });
         };
 
@@ -1210,10 +1381,12 @@ define(MYDEFINES, function (compatibility) {
 
             const BACKSPACE = 8;
             const TAB = 9;
+                        /*
             if (event.keyCode === TAB || event.keyCode === BACKSPACE) {
                 // Prevent browser from grabbing TAB key
                 event.preventDefault();
             }
+                        */
 
             const ESC = 27;
             const ALT = 18;
@@ -1231,6 +1404,9 @@ define(MYDEFINES, function (compatibility) {
 
             if (event.altKey) {
                 switch (event.keyCode) {
+                case 66: // 'B'
+                    _printBlockSVG();
+                    break;
                 case 69: // 'E'
                     _allClear();
                     break;
@@ -1239,6 +1415,9 @@ define(MYDEFINES, function (compatibility) {
                     break;
                 case 83: // 'S'
                     logo.doStopTurtle();
+                    break;
+                case 80: // 'P'
+                    logo.playback(-1);  // play all
                     break;
                 }
             } else if (event.ctrlKey) {
@@ -1255,7 +1434,7 @@ define(MYDEFINES, function (compatibility) {
                     } else if (palettes.activePalette != null) {
                         palettes.activePalette.scrollEvent(STANDARDBLOCKHEIGHT, 1);
                     } else if (scrollBlockContainer) {
-                        blocksContainer.y -= 21;
+                        blocksContainer.y -= 20;
                     }
                     break;
                 case KEYCODE_DOWN:
@@ -1269,7 +1448,7 @@ define(MYDEFINES, function (compatibility) {
                     } else if (palettes.activePalette != null) {
                         palettes.activePalette.scrollEvent(-STANDARDBLOCKHEIGHT, 1);
                     } else if (scrollBlockContainer) {
-                        blocksContainer.y += 21;
+                        blocksContainer.y += 20;
                     }
                     break;
                 case KEYCODE_LEFT:
@@ -1278,7 +1457,7 @@ define(MYDEFINES, function (compatibility) {
                         blocks.blockMoved(blocks.activeBlock);
                         blocks.adjustDocks(blocks.activeBlock, true);
                     } else if (scrollBlockContainer) {
-                        blocksContainer.x -= 21;
+                        blocksContainer.x -= 20;
                     }
                     break;
                 case KEYCODE_RIGHT:
@@ -1287,7 +1466,7 @@ define(MYDEFINES, function (compatibility) {
                         blocks.blockMoved(blocks.activeBlock);
                         blocks.adjustDocks(blocks.activeBlock, true);
                     } else if (scrollBlockContainer) {
-                        blocksContainer.x += 21;
+                        blocksContainer.x += 20;
                     }
                     break;
                 case HOME:
@@ -1312,13 +1491,10 @@ define(MYDEFINES, function (compatibility) {
                     logo.runLogoCommands();
                     break;
                 default:
-                    // currentKey = String.fromCharCode(event.keyCode);
-                    // currentKeyCode = event.keyCode;
                     break;
                 }
                 // Always store current key so as not to mask it from
                 // the keyboard block.
-                currentKey = String.fromCharCode(event.keyCode);
                 currentKeyCode = event.keyCode;
             }
         };
@@ -1371,10 +1547,11 @@ define(MYDEFINES, function (compatibility) {
 
             /*
             console.log('Resize: scale ' + turtleBlocksScale +
-            ', windowW ' + w + ', windowH ' + h +
+            ', stageW ' + w + ', stageH ' + h +
             ', canvasW ' + canvas.width + ', canvasH ' + canvas.height +
             ', screenW ' + screen.width + ', screenH ' + screen.height);
             */
+
             turtles.setScale(turtleBlocksScale);
             blocks.setScale(turtleBlocksScale);
             boundary.setScale(w, h, turtleBlocksScale);
@@ -1403,10 +1580,11 @@ define(MYDEFINES, function (compatibility) {
             }
 
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                turtles.turtleList[turtle].doClear(false, false);
+                turtles.turtleList[turtle].doClear(false, false, true);
             }
 
             var artcanvas = document.getElementById("overlayCanvas");
+            // Workaround for #795
             if (mobileSize) {
                 artcanvas.width = w * 2;
                 artcanvas.height = h * 2;
@@ -1525,6 +1703,10 @@ define(MYDEFINES, function (compatibility) {
             utilityBox.init(turtleBlocksScale, utilityButton.x - 27, utilityButton.y, _makeButton);
         };
 
+        function _doPlaybackBox() {
+            playbackBox.init(turtleBlocksScale, playbackButton.x - 27, playbackButton.y, _makeButton, logo);
+        };
+
         function sendAllToTrash(addStartBlock, doNotSave) {
             // First, hide the palettes as they will need updating.
             for (var name in blocks.palettes.dict) {
@@ -1561,7 +1743,9 @@ define(MYDEFINES, function (compatibility) {
             }
 
             if (addStartBlock) {
+                logo.playbackQueue = {};
                 blocks.loadNewBlocks(DATAOBJS);
+                setPlaybackStatus();
             } else if (!doNotSave) {
                 // Overwrite session data too.
                 saveLocally();
@@ -1608,6 +1792,7 @@ define(MYDEFINES, function (compatibility) {
             // TODO: plugin support
             if (stopTurtleContainer.visible) {
                 _hideStopButton();
+                setPlaybackStatus();
             }
         };
 
@@ -1636,6 +1821,7 @@ define(MYDEFINES, function (compatibility) {
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 localStorage.setItem('isMatrixHidden', docById('ptmDiv').style.visibility);
                 localStorage.setItem('isStaircaseHidden', docById('pscDiv').style.visibility);
+                localStorage.setItem('isTimbreHidden', docById('timbreDiv').style.visibility);
                 localStorage.setItem('isPitchDrumMatrixHidden', docById('pdmDiv').style.visibility);
                 localStorage.setItem('isRhythmRulerHidden', docById('rulerDiv').style.visibility);
                 localStorage.setItem('isModeWidgetHidden', docById('modeDiv').style.visibility);
@@ -1664,6 +1850,12 @@ define(MYDEFINES, function (compatibility) {
                     docById('pscDiv').style.visibility = 'hidden';
                     docById('pscTableDiv').style.visibility = 'hidden';
                     docById('pscButtonsDiv').style.visibility = 'hidden';
+                }
+
+                if (docById('timbreDiv').style.visibility !== 'hidden') {
+                    docById('timbreDiv').style.visibility = 'hidden';
+                    docById('timbreTableDiv').style.visibility = 'hidden';
+                    docById('timbreButtonsDiv').style.visibility = 'hidden';
                 }
 
                 if (docById('statusDiv').style.visibility !== 'hidden') {
@@ -1702,13 +1894,13 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function doSave() {
-            if (_THIS_IS_MUSIC_BLOCKS_) {
-                console.log('Saving .tb file');
-                var name = 'My Project';
-                download(name + '.tb', 'data:text/plain;charset=utf-8,' + prepareExport());
-            } else {
+            // if (_THIS_IS_MUSIC_BLOCKS_) {
+            //     console.log('Saving .tb file');
+            //     var name = 'My Project';
+            //     download(name + '.tb', 'data:text/plain;charset=utf-8,' + prepareExport());
+            // } else {
                 saveBox.init(turtleBlocksScale, saveButton.x - 27, saveButton.y - 97, _makeButton);
-            }
+            // }
         };
 
         function doSaveTB() {
@@ -1730,6 +1922,10 @@ define(MYDEFINES, function (compatibility) {
                 var svg = doSVG(logo.canvas, logo, logo.turtles, logo.canvas.width, logo.canvas.height, 1.0);
                 download(filename, 'data:image/svg+xml;utf8,' + svg, filename, '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
             }
+        };
+
+        function doSaveBlockArtwork() {
+            _printBlockSVG();
         };
 
         function doSavePNG() {
@@ -1758,6 +1954,10 @@ define(MYDEFINES, function (compatibility) {
             window.scroll(0, 0);
         };
 
+        function doSaveLilypond() {
+            _doLilypond();
+        };
+
         function _doLilypond() {
             // Show busy cursor.
             document.body.style.cursor = 'wait';
@@ -1766,12 +1966,35 @@ define(MYDEFINES, function (compatibility) {
             // Suppress music and turtle output when generating
             // Lilypond output.
             logo.runningLilypond = true;
-            logo.lilypondOutput = LILYPONDHEADER;
-            logo.lilypondNotes = {};
+            logo.notationOutput = LILYPONDHEADER;
+            logo.notationNotes = {};
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                logo.lilypondStaging[turtle] = [];
-                turtles.turtleList[turtle].doClear(true, true);
+                logo.notationStaging[turtle] = [];
+                turtles.turtleList[turtle].doClear(true, true, true);
             }
+
+            logo.runLogoCommands();
+        };
+
+        function doSaveAbc() {
+            _doAbc();
+        };
+
+        function _doAbc() {
+            // Show busy cursor.
+            document.body.style.cursor = 'wait';
+
+            console.log('Saving .ly file');
+            // Suppress music and turtle output when generating
+            // Abc output.
+            logo.runningLilypond = true;
+            logo.notationOutput = ABCHEADER;
+            logo.notationNotes = {};
+            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                logo.notationStaging[turtle] = [];
+                turtles.turtleList[turtle].doClear(true, true, true);
+            }
+
             logo.runLogoCommands();
         };
 
@@ -1831,7 +2054,7 @@ define(MYDEFINES, function (compatibility) {
             }
         };
 
-        function runProject(env){
+        function runProject (env) {
             console.log("Running Project from Event");
             document.removeEventListener("finishedLoading", runProject);
             setTimeout(function () {
@@ -1841,7 +2064,7 @@ define(MYDEFINES, function (compatibility) {
             }, 5000);
         }
 
-        function loadProject(projectName, run, env) {
+        function loadProject (projectName, run, env) {
             //set default value of run
             run = typeof run !== 'undefined' ? run : false;
             // Show busy cursor.
@@ -1855,6 +2078,7 @@ define(MYDEFINES, function (compatibility) {
 
                 try {
                     try {
+                        console.log('testing httpGet');
                         httpGet(null);
                         console.log('running from server or the user can access to examples.');
                         server = true;
@@ -1864,6 +2088,7 @@ define(MYDEFINES, function (compatibility) {
                     }
 
                     if (server) {
+                        console.log('testing server');
                         var rawData = httpGet(projectName);
                         var cleanData = rawData.replace('\n', '');
                     }
@@ -1874,7 +2099,9 @@ define(MYDEFINES, function (compatibility) {
                     }
 
                     var obj = JSON.parse(cleanData);
+                    logo.playbackQueue = {};
                     blocks.loadNewBlocks(obj);
+                    setPlaybackStatus();
                     saveLocally();
                 } catch (e) {
                     console.log(e);
@@ -1888,15 +2115,36 @@ define(MYDEFINES, function (compatibility) {
 
             if (run && firstRun) {
                 if (document.addEventListener) {
-                    document.addEventListener('finishedLoading', function (){runProject(env);}, false);
+                    document.addEventListener('finishedLoading', function () {
+                        setTimeout(function () {
+                            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                                turtles.turtleList[turtle].doClear(true, true, false);
+                            }
+                            runProject(env);
+                        }, 1000);
+                    }, false);
                 } else {
-                    document.attachEvent('finishedLoading', function (){runProject(env);});
+                    document.attachEvent('finishedLoading', function () {
+                        setTimeout(function () {
+                            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                                turtles.turtleList[turtle].doClear(true, true, false);
+                            }
+                            runProject(env);
+                        }, 1000);
+                    });
                 }
             }
+
             firstRun = false;
         };
 
         function loadRawProject(data) {
+            if (data == undefined) {
+                console.log('loadRawProject: data is undefined... punting');
+                errorMsg('loadRawProject: project undefined');
+                return;
+            }
+
             console.log('loadRawProject ' + data);
             document.body.style.cursor = 'wait';
             _allClear();
@@ -1906,8 +2154,16 @@ define(MYDEFINES, function (compatibility) {
                 blocks.palettes.dict[name].hideMenu(true);
             }
 
-            var obj = JSON.parse(data);
-            blocks.loadNewBlocks(obj);
+            try {
+                var obj = JSON.parse(data);
+                logo.playbackQueue = {};
+                blocks.loadNewBlocks(obj);
+                setPlaybackStatus();
+            } catch (e) {
+                console.log('loadRawProject: could not parse project data');
+                errorMsg(e);
+            }
+
             document.body.style.cursor = 'default';
         };
 
@@ -1976,7 +2232,9 @@ define(MYDEFINES, function (compatibility) {
             console.log('LOAD START')
             justLoadStart = function () {
                 console.log('loading start and a matrix');
+                logo.playbackQueue = {};
                 blocks.loadNewBlocks(DATAOBJS);
+                setPlaybackStatus();
             };
 
             if (sugarizerCompatibility.isInsideSugarizer()) {
@@ -1987,9 +2245,35 @@ define(MYDEFINES, function (compatibility) {
             }
 
             sessionData = null;
+
             // Try restarting where we were when we hit save.
             var currentProject = storage.currentProject;
             sessionData = storage['SESSION' + currentProject];
+
+            // After we have finished loading the project, clear all
+            // to ensure a clean start.
+            if (document.addEventListener) {
+                document.addEventListener('finishedLoading', function () {
+                    setTimeout(function () {
+                        for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                            logo.turtleHeaps[turtle] = [];
+                            logo.notationStaging[turtle] = [];
+                            turtles.turtleList[turtle].doClear(true, true, false);
+                        }
+                    }, 1000);
+                });
+            } else {
+                document.attachEvent('finishedLoading', function () {
+                    setTimeout(function () {
+                        for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                            logo.turtleHeaps[turtle] = [];
+                            logo.notationStaging[turtle] = [];
+                            turtles.turtleList[turtle].doClear(true, true, false);
+                        }
+                    }, 1000);
+                });
+            }
+
             if (sessionData) {
                 try {
                     if (sessionData === 'undefined' || sessionData === '[]') {
@@ -2002,7 +2286,9 @@ define(MYDEFINES, function (compatibility) {
                             blocks.palettes.dict[name].hideMenu(true);
                         }
 
+                        logo.playbackQueue = {};
                         blocks.loadNewBlocks(JSON.parse(sessionData));
+                        setPlaybackStatus();
                     }
                 } catch (e) {
                     console.log(e);
@@ -2012,8 +2298,6 @@ define(MYDEFINES, function (compatibility) {
             }
 
             update = true;
-
-
         };
 
         function hideMsgs() {
@@ -2041,7 +2325,11 @@ define(MYDEFINES, function (compatibility) {
             stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
         };
 
-        function errorMsg(msg, blk, text) {
+        function errorMsg(msg, blk, text, timeout) {
+            if (errorMsgTimeoutID != null) {
+                clearTimeout(errorMsgTimeoutID);
+            }
+
              _hideStopButton(); //Hide the button, as the program is going to be terminated
             if (errorMsgText == null) {
                 // The container may not be ready yet... so do nothing
@@ -2126,6 +2414,18 @@ define(MYDEFINES, function (compatibility) {
                 stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
                 errorMsgContainer.updateCache();
                 break;
+            }
+
+            if (timeout != undefined) {
+                var myTimeout = timeout;
+            } else {
+                var myTimeout = _ERRORMSGTIMEOUT_;
+            }
+
+            if (myTimeout > 0) {
+                errorMsgTimeoutID = setTimeout(function () {
+                    hideMsgs();
+                }, myTimeout);
             }
 
             update = true;
@@ -2273,6 +2573,19 @@ define(MYDEFINES, function (compatibility) {
                 data.push([blockMap.indexOf(blk), [myBlock.name, args], myBlock.container.x, myBlock.container.y, connections]);
             }
 
+            // Next, save the playback queue.
+            var i = data.length;
+            if (i > 0) {
+                for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                    if (turtle in logo.playbackQueue) {
+                        for (var j = 0; j < logo.playbackQueue[turtle].length; j++) {
+                            data.push([i, turtle, logo.playbackQueue[turtle][j]]);
+                            i += 1;
+                        }
+                    }
+                }
+            }
+
             return JSON.stringify(data);
         };
 
@@ -2291,8 +2604,6 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _hideStopButton() {
-            // stopTurtleContainer.x = stopTurtleContainerX;
-            // stopTurtleContainer.y = stopTurtleContainerY;
             stopTurtleContainer.visible = false;
         };
 
@@ -2325,6 +2636,7 @@ handleComplete);
                         bitmap.scaleX = cellSize / originalSize;
                         bitmap.scaleY = cellSize / originalSize;
                     }
+
                     bitmap.regX = halfSize / bitmap.scaleX;
                     bitmap.regY = halfSize / bitmap.scaleY;
                     pasteContainer.addChild(bitmap);
@@ -2340,6 +2652,8 @@ handleComplete);
         };
 
         function _setupAndroidToolbar(showPalettesPopover) {
+            // NOTE: see getMainToolbarButtonNames in turtledefs.js
+
             if (headerContainer !== undefined) {
                 stage.removeChild(headerContainer);
                 for (var i in onscreenButtons) {
@@ -2415,13 +2729,9 @@ handleComplete);
 
                 if (buttonNames[i][0] === 'stop-turtle') {
                     stopTurtleContainer = container;
-                    stopTurtleContainerX = x;
-                    stopTurtleContainerY = y;
                 } else if (buttonNames[i][0] === 'go-home') {
                     homeButtonContainers = [];
                     homeButtonContainers.push(container);
-                    homeButtonContainersX = x;
-                    homeButtonContainersY = y;
                     var container2 = _makeButton('go-home-faded-button', _('Home'), x, y, btnSize, 0);
                     _loadButtonDragHandler(container2, x, y, buttonNames[i][1], null, null, null, null);
                     homeButtonContainers.push(container2);
@@ -2447,16 +2757,16 @@ handleComplete);
                 }
             }
 
+            // NOTE: see getAuxToolbarButtonNames in turtledefs.js
             // Misc. other buttons
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 var menuNames = [
                     ['planet', _doOpenSamples, _('Load samples from server')],
                     ['open', doLoad, _('Load project from files')],
                     ['save', doSave, _('Save project')],
-                    ['lilypond', _doLilypond, _('Save sheet music')],
-                    ['paste-disabled', pasteStack, _('Paste')],
-                    ['Cartesian', _doCartesian, _('Cartesian')],
-                    ['polar', _doPolar, _('Polar')],
+                    ['paste-disabled', pasteStack, _('Long press on block(s) to copy. Click here to paste.')],
+                    ['Cartesian', _doCartesianPolar, _('Cartesian') + '/' + _('Polar')],
+                    ['compile', _doPlaybackBox, _('playback')],
                     ['utility', _doUtilityBox, _('Settings')],
                     ['empty-trash', _deleteBlocksBox, _('Delete all')],
                     ['restore-trash', _restoreTrash, _('Undo')]
@@ -2467,8 +2777,8 @@ handleComplete);
                     ['open', doLoad, _('Load project from files')],
                     ['save', doSave, _('Save project')],
                     ['paste-disabled', pasteStack, _('Paste')],
-                    ['Cartesian', _doCartesian, _('Cartesian')],
-                    ['polar', _doPolar, _('Polar')],
+                    ['Cartesian', _doCartesianPolar, _('Cartesian') + '/' + _('Polar')],
+                    ['compile', _doPlaybackBox, _('playback')],
                     ['utility', _doUtilityBox, _('Settings')],
                     ['empty-trash', _deleteBlocksBox, _('Delete all')],
                     ['restore-trash', _restoreTrash, _('Undo')]
@@ -2498,12 +2808,25 @@ handleComplete);
                 x += dx;
                 y += dy;
                 var container = _makeButton(menuNames[i][0] + '-button', menuNames[i][2], x, y, btnSize, 0);
+                if (menuNames[i][0] === 'paste-disabled') {
+                    pasteContainer = container;
+                } else if (menuNames[i][0] === 'Cartesian') {
+                    gridContainer = container;
+
+                    var gridButtons = ['header-icons/Cartesian-polar-button.svg', 'header-icons/polar-button.svg', 'header-icons/no-grid-button.svg'];
+                    for (var j = 0; j < gridButtons.length; j++) {
+                        _makeExtraGridButtons(gridButtons[j], 250 + j * 250);
+                    }
+                }
+
                 _loadButtonDragHandler(container, x, y, menuNames[i][1], null, null, null, null);
                 onscreenMenu.push(container);
                 if (menuNames[i][0] === 'utility') {
                     utilityButton = container;
                 } else if (menuNames[i][0] === 'save') {
                     saveButton = container;
+                } else if (menuNames[i][0] === 'compile') {
+                    playbackButton = container;
                 }
 
                 container.visible = false;
@@ -2514,6 +2837,33 @@ handleComplete);
                     onscreenMenu[button].visible = true;
                 }
             }
+        };
+
+        function _makeExtraGridButtons(name, delay) {
+            setTimeout(function () {
+                var img = new Image();
+
+                img.onload = function () {
+                    var originalSize = 55;
+                    var halfSize = Math.floor(cellSize / 2);
+
+                    var bitmap = new createjs.Bitmap(img);
+                    if (cellSize !== originalSize) {
+                        bitmap.scaleX = cellSize / originalSize;
+                        bitmap.scaleY = cellSize / originalSize;
+                    }
+
+                    bitmap.regX = halfSize / bitmap.scaleX;
+                    bitmap.regY = halfSize / bitmap.scaleY;
+                    gridContainer.addChild(bitmap);
+                    bitmap.visible = false;
+                    gridImages.push(bitmap);
+
+                    update = true;
+                };
+
+                img.src = name;
+            }, delay);
         };
 
         function doPopdownPalette() {
@@ -2685,9 +3035,6 @@ handleComplete);
 
         function _makeButton(name, label, x, y, size, rotation, parent) {
             var container = new createjs.Container();
-            if (name === 'paste-disabled-button') {
-                pasteContainer = container;
-            }
 
             if (parent == undefined) {
                 stage.addChild(container);
@@ -2761,6 +3108,12 @@ handleComplete);
                 bitmap.cache(0, 0, size, size);
                 bitmap.updateCache();
                 update = true;
+
+                if (name === 'Cartesian-button') {
+                    gridButtonLabel = text;
+                    gridImages = [bitmap];
+                }
+
             };
 
             img.src = 'header-icons/' + name + '.svg';
@@ -2784,22 +3137,29 @@ handleComplete);
 
             // Long and extra-long press variables declaration
             var pressTimer = null;
-	    var isLong = false;
-	    var pressTimerExtra = null;
-	    var isExtraLong = false;
+            var isLong = false;
+            var pressTimerExtra = null;
+            var isExtraLong = false;
 
             var formerContainer = container;
 
             container.on('mousedown', function (event) {
                 if (locked) {
                     return;
-		} else {
-		    locked = true;
+                } else {
+                    locked = true;
 
                     lockTimer = setTimeout(function () {
                         locked = false;
-                    }, 1000);
-		}
+                        clearTimeout(pressTimer);
+                        clearTimeout(pressTimerExtra);
+                        if (longImg !== null || extraLongImg !== null) {
+                            container.visible = false;
+                            container = formerContainer;
+                            container.visible = true;
+                        }
+                    }, 1500);
+                }
 
                 var mousedown = true;
 
@@ -2860,7 +3220,7 @@ handleComplete);
                 isLong = false;
                 isExtraLong = false;
             });
-
         };
+
     };
 });

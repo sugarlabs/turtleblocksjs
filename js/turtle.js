@@ -70,8 +70,8 @@ function Turtle (name, turtles, drum) {
     this.penState = true;
     this.font = DEFAULTFONT;
     this.media = [];  // Media (text, images) we need to remove on clear.
-    var canvas = document.getElementById("overlayCanvas");
-    var ctx = canvas.getContext("2d");
+    var canvas = document.getElementById('overlayCanvas');
+    var ctx = canvas.getContext('2d');
     // Simulate an arc with line segments since Tinkercad cannot
     // import SVG arcs reliably.
     this._svgArc = function(nsteps, cx, cy, radius, sa, ea) {
@@ -111,7 +111,7 @@ function Turtle (name, turtles, drum) {
             var savedStroke = this.stroke;
             this.stroke = 1;
             ctx.lineWidth = this.stroke;
-            ctx.lineCap = "round";
+            ctx.lineCap = 'round';
             // Draw a hollow line.
             if (savedStroke < 3) {
                 var step = 0.5;
@@ -131,7 +131,7 @@ function Turtle (name, turtles, drum) {
             degreesFinal = 180 * degreesFinal / Math.PI;
             if (degreesFinal < 0) { degreesFinal += 360; }
 
-            // We also need to calculate the deltas for the "caps" at each end.
+            // We also need to calculate the deltas for the 'caps' at each end.
             var capAngleRadiansInitial = (degreesInitial - 90) * Math.PI / 180.0;
             var dxi = step * Math.sin(capAngleRadiansInitial);
             var dyi = -step * Math.cos(capAngleRadiansInitial);
@@ -139,7 +139,7 @@ function Turtle (name, turtles, drum) {
             var dxf = step * Math.sin(capAngleRadiansFinal);
             var dyf = -step * Math.cos(capAngleRadiansFinal);
 
-            // The four "corners"
+            // The four 'corners'
             var ax = ix - dxi;
             var ay = iy - dyi;
             var axScaled = ax * this.turtles.scale;
@@ -201,19 +201,14 @@ function Turtle (name, turtles, drum) {
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
-            ctx.lineCap = "round";
+            ctx.lineCap = 'round';
             ctx.moveTo(fx,fy);
             this.x = x2;
             this.y = y2;
         } else if (this.penState) {
-            if (this.canvasColor[0] === "#") {
-                this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
-            }
-            var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
-            ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-            ctx.fillStyle = subrgb + this.canvasAlpha + ")";
+            this.processColor();
             ctx.lineWidth = this.stroke;
-            ctx.lineCap = "round";
+            ctx.lineCap = 'round';
             ctx.beginPath();
             ctx.moveTo(this.container.x, this.container.y);
 
@@ -397,6 +392,10 @@ function Turtle (name, turtles, drum) {
         }
     };
 
+    this.getNumber = function () {
+        return this.turtles.turtleList.indexOf(this);
+    };
+
     this.rename = function(name) {
         this.name = name;
 
@@ -443,7 +442,7 @@ function Turtle (name, turtles, drum) {
             var savedStroke = this.stroke;
             this.stroke = 1;
             ctx.lineWidth = this.stroke;
-            ctx.lineCap = "round";
+            ctx.lineCap = 'round';
             // Draw a hollow line.
             if (savedStroke < 3) {
                 var step = 0.5;
@@ -497,7 +496,7 @@ function Turtle (name, turtles, drum) {
             // restore stroke.
             this.stroke = savedStroke;
             ctx.lineWidth = this.stroke;
-            ctx.lineCap = "round";
+            ctx.lineCap = 'round';
             ctx.moveTo(nx,ny);
         } else if (this.penState) {
             ctx.arc(cx, cy, radius, sa, ea, anticlockwise);
@@ -536,11 +535,14 @@ function Turtle (name, turtles, drum) {
     };
 
     // Turtle functions
-    this.doClear = function(resetPen, resetSkin) {
+    this.doClear = function(resetPen, resetSkin, resetPosition) {
         // Reset turtle.
-        this.x = 0;
-        this.y = 0;
-        this.orientation = 0.0;
+        if (resetPosition) {
+            this.x = 0;
+            this.y = 0;
+            this.orientation = 0.0;
+        }
+
         if (resetPen) {
             var i = this.turtles.turtleList.indexOf(this) % 10;
             this.color = i * 10;
@@ -589,8 +591,8 @@ function Turtle (name, turtles, drum) {
         this.hollowState = false;
 
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        if (this.canvasColor[0] === "#") {
-            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+        if (this.canvasColor[0] === '#') {
+            this.canvasColor = hex2rgb(this.canvasColor.split('#')[1]);
         }
 
         this.svgOutput = '';
@@ -608,16 +610,15 @@ function Turtle (name, turtles, drum) {
         this.hollowState = false;
 
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        if (this.canvasColor[0] === "#") {
-            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
+        if (this.canvasColor[0] === '#') {
+            this.canvasColor = hex2rgb(this.canvasColor.split('#')[1]);
         }
+
         ctx.beginPath();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
-        ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-        ctx.fillStyle = subrgb + this.canvasAlpha + ")";
+        this.processColor();
         ctx.lineWidth = this.stroke;
-        ctx.lineCap = "round";
+        ctx.lineCap = 'round';
         ctx.beginPath();
         this.penstrokes.image = canvas;
         this.svgOutput = '';
@@ -626,15 +627,10 @@ function Turtle (name, turtles, drum) {
     };
 
     this.doForward = function(steps) {
+        this.processColor();
         if (!this.fillState) {
-            if (this.canvasColor[0] === "#") {
-                this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
-            }
-            var subrgb = this.canvasColor.substr(0, this.canvasColor.length - 2);
-            ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-            ctx.fillStyle = subrgb + this.canvasAlpha + ")";
             ctx.lineWidth = this.stroke;
-            ctx.lineCap = "round";
+            ctx.lineCap = 'round';
             ctx.beginPath();
             ctx.moveTo(this.container.x, this.container.y);
         }
@@ -653,15 +649,10 @@ function Turtle (name, turtles, drum) {
     };
 
     this.doSetXY = function(x, y) {
+        this.processColor();
         if (!this.fillState) {
-            if (this.canvasColor[0] === "#") {
-                this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
-            }
-            var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
-            ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-            ctx.fillStyle = subrgb + this.canvasAlpha + ")";
             ctx.lineWidth = this.stroke;
-            ctx.lineCap = "round";
+            ctx.lineCap = 'round';
             ctx.beginPath();
             ctx.moveTo(this.container.x, this.container.y);
         }
@@ -702,15 +693,10 @@ function Turtle (name, turtles, drum) {
     };
 
     this._doArcPart = function(angle, radius) {
+        this.processColor();
         if (!this.fillState) {
-            if (this.canvasColor[0] === "#") {
-                this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
-            }
-            var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
-            ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-            ctx.fillStyle = subrgb + this.canvasAlpha + ")";
             ctx.lineWidth = this.stroke;
-            ctx.lineCap = "round";
+            ctx.lineCap = 'round';
             ctx.beginPath();
             ctx.moveTo(this.container.x, this.container.y);
         }
@@ -911,7 +897,6 @@ function Turtle (name, turtles, drum) {
         this.updateCache();
     };
 
-
     this.doSetColor = function(color) {
         // Color sets hue but also selects maximum chroma.
         this.closeSVG();
@@ -920,57 +905,42 @@ function Turtle (name, turtles, drum) {
         this.canvasValue = results[0];
         this.canvasChroma = results[1];
         this.canvasColor = results[2];
-        if (this.canvasColor[0] === "#") {
-            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
-        }
-
-        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
-        ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-        ctx.fillStyle = subrgb + this.canvasAlpha + ")";
+        this.processColor();
     };
 
     this.doSetPenAlpha = function(alpha) {
         this.canvasAlpha = alpha;
     };
 
+    this.processColor = function() {
+        if (this.canvasColor[0] === '#') {
+            this.canvasColor = hex2rgb(this.canvasColor.split('#')[1]);
+        }
+
+        var subrgb = this.canvasColor.substr(0, this.canvasColor.length - 2);
+        ctx.strokeStyle = subrgb + this.canvasAlpha + ')';
+        ctx.fillStyle = subrgb + this.canvasAlpha + ')';
+    };
+
     this.doSetHue = function(hue) {
         this.closeSVG();
         this.color = Number(hue);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        if (this.canvasColor[0] === "#") {
-            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
-        }
-
-        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
-        ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-        ctx.fillStyle = subrgb + this.canvasAlpha + ")";
+        this.processColor();
     };
 
     this.doSetValue = function(shade) {
         this.closeSVG();
         this.value = Number(shade);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        if (this.canvasColor[0] === "#") {
-            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
-        }
-
-        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
-        ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-        ctx.fillStyle = subrgb + this.canvasAlpha + ")";
+        this.processColor();
     };
 
     this.doSetChroma = function(chroma) {
         this.closeSVG();
         this.chroma = Number(chroma);
         this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        this.canvasColor = getMunsellColor(this.color, this.value, this.chroma);
-        if (this.canvasColor[0] === "#") {
-            this.canvasColor = hex2rgb(this.canvasColor.split("#")[1]);
-        }
-
-        var subrgb = this.canvasColor.substr(0, this.canvasColor.length-2);
-        ctx.strokeStyle = subrgb + this.canvasAlpha + ")";
-        ctx.fillStyle = subrgb + this.canvasAlpha + ")";
+        this.processColor();
     };
 
     this.doSetPensize = function(size) {
@@ -1018,7 +988,7 @@ function Turtle (name, turtles, drum) {
             // rgb();fill-opacity:1 and rgb();stroke-opacity:1
 
             var svgColor = this.canvasColor.replace(/rgba/g, 'rgb');
-	    svgColor = svgColor.substr(0, this.canvasColor.length - 4) + ');';
+            svgColor = svgColor.substr(0, this.canvasColor.length - 4) + ');';
 
             this.svgOutput += '" style="stroke-linecap:round;fill:';
             if (this.fillState) {
@@ -1065,29 +1035,52 @@ function Turtle (name, turtles, drum) {
         }
     };
 
-    this.blink = function(duration,volume) {
+    this.blink = function(duration, volume) {
         var turtle = this;
-        var sizeinuse;
-        if (this.blinkFinished == false){
-            sizeinuse = this.beforeBlinkSize;
-        } else {
-            sizeinuse = turtle.bitmap.scaleX;
-            this.beforeBlinkSize = sizeinuse;
+        var sizeInUse;
+        this._blinkTimeout = null;
+
+        if (this.beforeBlinkSize == null) {
+            this.beforeBlinkSize = turtle.bitmap.scaleX;
         }
+
+        if (this.blinkFinished){
+            sizeInUse = turtle.bitmap.scaleX;
+        } else {
+            sizeInUse = this.beforeBlinkSize;
+        }
+
+        if (this._blinkTimeout != null || !this.blinkFinished) {
+            clearTimeout(this._blinkTimeout);
+            this._blinkTimeout = null;
+
+            turtle.bitmap.alpha = 1.0;
+            turtle.bitmap.scaleX = sizeInUse;
+            turtle.bitmap.scaleY = turtle.bitmap.scaleX;
+            turtle.bitmap.scale = turtle.bitmap.scaleX;
+            turtle.bitmap.rotation = turtle.orientation;
+            turtle.skinChanged = isSkinChanged;
+            var bounds = turtle.container.getBounds();
+            turtle.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+            turtle.blinkFinished = true;
+        }
+
         this.blinkFinished = false;
         turtle.container.uncache();
         var scalefactor = 60 / 55;
         var volumescalefactor = 4 * (volume + 200) / 1000;
-        //Conversion: volume of 1 = 0.804, volume of 50 = 1, volume of 100 = 1.1
+        // Conversion: volume of 1 = 0.804, volume of 50 = 1, volume of 100 = 1.1
         turtle.bitmap.alpha = 0.5;
-        turtle.bitmap.scaleX = sizeinuse * scalefactor * volumescalefactor;
+        turtle.bitmap.scaleX = sizeInUse * scalefactor * volumescalefactor;
         turtle.bitmap.scaleY = turtle.bitmap.scaleX;
         turtle.bitmap.scale = turtle.bitmap.scaleX;
         var isSkinChanged = turtle.skinChanged;
         turtle.skinChanged = true;
-        createjs.Tween.get(turtle.bitmap).to({alpha: 1, scaleX: sizeinuse, scaleY: sizeinuse, scale: sizeinuse}, 500 / duration);
-        setTimeout(function() {
-            turtle.bitmap.scaleX = sizeinuse;
+        createjs.Tween.get(turtle.bitmap).to({alpha: 1, scaleX: sizeInUse, scaleY: sizeInUse, scale: sizeInUse}, 500 / duration);
+
+        this._blinkTimeout = setTimeout(function () {
+            turtle.bitmap.alpha = 1.0;
+            turtle.bitmap.scaleX = sizeInUse;
             turtle.bitmap.scaleY = turtle.bitmap.scaleX;
             turtle.bitmap.scale = turtle.bitmap.scaleX;
             turtle.bitmap.rotation = turtle.orientation;
@@ -1196,7 +1189,7 @@ function Turtles () {
         hitArea.y = 0;
         myTurtle.container.hitArea = hitArea;
 
-        function __processTurtleBitmap(turtles, name, bitmap, startBlock) {
+        function __processTurtleBitmap(that, name, bitmap, startBlock) {
             myTurtle.bitmap = bitmap;
             myTurtle.bitmap.regX = 27 | 0;
             myTurtle.bitmap.regY = 27 | 0;
@@ -1227,7 +1220,7 @@ function Turtles () {
                 startBlock.updateCache();
             }
 
-            turtles.refreshCanvas();
+            that.refreshCanvas();
         };
 
         if (this._drum) {
@@ -1244,48 +1237,48 @@ function Turtles () {
 
         myTurtle.color = i * 10;
         myTurtle.canvasColor = getMunsellColor(myTurtle.color, DEFAULTVALUE, DEFAULTCHROMA);
-        var turtles = this;
+        var that = this;
 
         myTurtle.container.on('mousedown', function (event) {
-            if (turtles._rotating) {
+            if (that._rotating) {
                 return;
             }
 
             var offset = {
-                x: myTurtle.container.x - (event.stageX / turtles.scale),
-                y: myTurtle.container.y - (event.stageY / turtles.scale)
+                x: myTurtle.container.x - (event.stageX / that.scale),
+                y: myTurtle.container.y - (event.stageY / that.scale)
             }
 
             myTurtle.container.on('pressmove', function (event) {
                 if (myTurtle.running) {
                     return;
                 }
-                myTurtle.container.x = (event.stageX / turtles.scale) + offset.x;
-                myTurtle.container.y = (event.stageY / turtles.scale) + offset.y;
-                myTurtle.x = turtles.screenX2turtleX(myTurtle.container.x);
-                myTurtle.y = turtles.screenY2turtleY(myTurtle.container.y);
-                turtles.refreshCanvas();
+                myTurtle.container.x = (event.stageX / that.scale) + offset.x;
+                myTurtle.container.y = (event.stageY / that.scale) + offset.y;
+                myTurtle.x = that.screenX2turtleX(myTurtle.container.x);
+                myTurtle.y = that.screenY2turtleY(myTurtle.container.y);
+                that.refreshCanvas();
             });
         });
 
         myTurtle.container.on('click', function (event) {
             // If turtles listen for clicks then they can be used as buttons.
             console.log('--> [click' + myTurtle.name + ']');
-            turtles.stage.dispatchEvent('click' + myTurtle.name);
+            that.stage.dispatchEvent('click' + myTurtle.name);
         });
 
         myTurtle.container.on('mouseover', function (event) {
             myTurtle.bitmap.scaleX = 1.2;
             myTurtle.bitmap.scaleY = 1.2;
             myTurtle.bitmap.scale = 1.2;
-            turtles.refreshCanvas();
+            that.refreshCanvas();
         });
 
         myTurtle.container.on('mouseout', function (event) {
             myTurtle.bitmap.scaleX = 1;
             myTurtle.bitmap.scaleY = 1;
             myTurtle.bitmap.scale = 1;
-            turtles.refreshCanvas();
+            that.refreshCanvas();
         });
 
         document.getElementById('loader').className = '';
@@ -1305,12 +1298,12 @@ function Turtles () {
         // Async creation of bitmap from SVG data
         // Works with Chrome, Safari, Firefox (untested on IE)
         var img = new Image();
-        var turtles = this;
+        var that = this;
 
         img.onload = function () {
             complete = true;
             var bitmap = new createjs.Bitmap(img);
-            callback(turtles, name, bitmap, extras);
+            callback(that, name, bitmap, extras);
         };
 
         img.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(data)));

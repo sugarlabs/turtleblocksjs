@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -25,6 +23,22 @@
   </metadata>
   <defs
      id="defs2386" />
+  <path
+     d="m 50.021437,27.5 a 22.521437,21.843301 0 1 1 -45.0428736,0 22.521437,21.843301 0 1 1 45.0428736,0 z"
+     id="path3157"
+     style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#c0c0c0;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <g
+     style="stroke:#ffffff;stroke-opacity:1"
+     id="g4286">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3168-7"
+       d="M 27.5,1.0000002 V 54" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3170-5"
+       d="M 54,27.5 H 0.9999998" />
+  </g>
   <rect
      width="42.056076"
      height="42.056076"
@@ -32,12 +46,4 @@
      y="6.471962"
      id="rect2394"
      style="fill:none;stroke:#ffffff;stroke-width:2.94392514;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-  <path
-     d="m 27.329296,1.745963 0,51.508074"
-     id="path3168"
-     style="fill:none;stroke:#ffffff;stroke-width:3.49192572;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-  <path
-     d="m 53.254037,27.329296 -51.5080741,0"
-     id="path3170"
-     style="fill:none;stroke:#ffffff;stroke-width:3.49192572;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
 </svg>

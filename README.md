@@ -17,14 +17,19 @@ which will challenge the more adventurous student.
 Using Turtle Art JS
 -------------------
 
-Turtle Blocks Javascript is designed to run in a browser. Most of the
-development has been done in Chrome, but it should also work in
-Firefox. You can run it directly from index.html, from a [server
-maintained by Sugar Labs](http://turtle.sugarlabs.org), from the
-[github
+Turtle Blocks JS (Javascript) is designed to run in a browser. Most of
+the development has been done in Chrome, but it should also work in
+Firefox, Opera, and Safari. You can run it directly from index.html,
+from a [server maintained by Sugar Labs](http://turtle.sugarlabs.org),
+from the [github
 repo](http://rawgit.com/walterbender/turtleblocksjs/master/index.html),
 or by setting up a [local
 server](https://github.com/walterbender/turtleblocksjs/blob/master/server.md).
+
+Sugar users can run Turtle Blocks JS as an app embedded in the Browse
+activity (See [Turtle Blocks
+Embedded](https://github.com/sugarlabs/turtle-blocks-embedded-activity))
+or simply open Turtle Blocks JS in Browse.
 
 Once you've launched it in your browser, start by clicking on (or
 dragging) blocks from the Turtle palette. Use multiple blocks to

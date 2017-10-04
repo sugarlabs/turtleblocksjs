@@ -1164,22 +1164,26 @@ define(MYDEFINES, function (compatibility) {
                 stageY = event.stageY;
             });
 
+            function __stageMouseUpHandler (event) {
+                stageMouseDown = false;
+                moving = false;
+            };
+
             stage.on('stagemousedown', function (event) {
                 stageMouseDown = true;
                 if (stage.getObjectUnderPoint() != null | turtles.running()) {
-                    stage.on('stagemouseup', function (event) {
-                        stageMouseDown = false;
-                    });
-
+                    stage.removeAllEventListeners('stagemouseup');
+                    stage.on('stagemouseup', __stageMouseUpHandler);
                     return;
                 }
 
                 moving = true;
-                lastCords = {
+                var lastCords = {
                     x: event.stageX,
                     y: event.stageY
                 };
 
+                stage.removeAllEventListeners('stagemousemove');
                 stage.on('stagemousemove', function (event) {
                     if (!moving) {
                         return;
@@ -1197,10 +1201,8 @@ define(MYDEFINES, function (compatibility) {
                     }
                 });
 
-                stage.on('stagemouseup', function (event) {
-                    stageMouseDown = false;
-                    moving = false;
-                });
+                stage.removeAllEventListeners('stagemouseup');
+                stage.on('stagemouseup', __stageMouseUpHandler);
             });
         };
 
@@ -3151,6 +3153,7 @@ handleComplete);
 
                     lockTimer = setTimeout(function () {
                         locked = false;
+
                         clearTimeout(pressTimer);
                         clearTimeout(pressTimerExtra);
                         if (longImg !== null || extraLongImg !== null) {
@@ -3186,7 +3189,7 @@ handleComplete);
 
                 var circles = showButtonHighlight(ox, oy, cellSize / 2, event, turtleBlocksScale, stage);
 
-                container.on('pressup', function (event) {
+                function __pressupFunction (event) {
                     clearTimeout(lockTimer);
 
                     hideButtonHighlight(circles, stage);
@@ -3215,7 +3218,12 @@ handleComplete);
                     }
 
                     mousedown = false;
-                });
+                };
+
+                // Remove the previous listener, if any, so we don't
+                // get multiple listeners added to the event.
+                container.removeAllEventListeners('pressup');
+                var closure = container.on('pressup', __pressupFunction);
 
                 isLong = false;
                 isExtraLong = false;

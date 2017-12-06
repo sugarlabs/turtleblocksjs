@@ -2753,6 +2753,7 @@ function Blocks () {
 
         // Auto-select stack for copying -- no need to actually click on
         // the copy button.
+        console.log(this.activeBlock);
         var topBlock = this.findTopBlock(this.activeBlock);
         this.selectedStack = topBlock;
 

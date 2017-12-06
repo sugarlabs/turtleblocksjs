@@ -1222,7 +1222,9 @@ function Block(protoblock, blocks, overrideName) {
         this._calculateBlockHitArea();
 
         this.container.on('mouseover', function (event) {
+            console.log('MOUSEOVER');
             that.blocks.highlight(thisBlock, true);
+            console.log('assigning active block ' + thisBlock);
             that.blocks.activeBlock = thisBlock;
             that.blocks.refreshCanvas();
         });
@@ -1488,6 +1490,7 @@ function Block(protoblock, blocks, overrideName) {
                 // this.blocks.refreshCanvas();
             }
 
+            console.log('setting active block to null');
             this.blocks.activeBlock = null;
         }
     };

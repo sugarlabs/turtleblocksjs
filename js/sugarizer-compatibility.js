@@ -1,4 +1,4 @@
-define(["sugar-web/env", "sugar-web/activity/activity"], function (env, activity) {
+define(["sugar-web/env", "sugar-web/activity/activity", "sugar-web/datastore"], function (env, activity, datastore) {
 
     var sugarizerCompatibility = {
         activity: activity,
@@ -47,7 +47,23 @@ define(["sugar-web/env", "sugar-web/activity/activity"], function (env, activity
             document.getElementById("stop-button").click();
         },
 
+        getLanguage: function () {
+            var defaultSettings = {
+                name: "",
+                language: (typeof chrome != 'undefined' && chrome.app && chrome.app.runtime) ? chrome.i18n.getUILanguage() : navigator.language
+            };
+
+            if (!env.isSugarizer()) {
+                callback();
+                return defaultSettings.language;
+            }
+
+	    var loadedSettings = datastore.localStorage.getValue('sugar_settings');
+            return loadedSettings.language;
+	},
+
         setup: function () {
+            console.log('insideSugarizer? ' + this.isInsideSugarizer());
             if (this.isInsideSugarizer() === false) {
                 return;
             }

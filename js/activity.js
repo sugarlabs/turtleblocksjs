@@ -20,7 +20,6 @@ const _THIS_IS_TURTLE_BLOCKS_ = !_THIS_IS_MUSIC_BLOCKS_;
 
 const _ERRORMSGTIMEOUT_ = 15000;
 
-
 if (_THIS_IS_TURTLE_BLOCKS_) {
     function facebookInit() {
         window.fbAsyncInit = function () {
@@ -68,9 +67,13 @@ define(MYDEFINES, function (compatibility) {
     // Manipulate the DOM only when it is ready.
     require(['domReady!','activity/sugarizer-compatibility'], function (doc) {
         if (sugarizerCompatibility.isInsideSugarizer()) {
-            sugarizerCompatibility.loadData(function () {
-                domReady(doc);
+            window.addEventListener('localized', function () {
+                sugarizerCompatibility.loadData(function () {
+                    domReady(doc);
+                });
             });
+
+            document.webL10n.setLanguage(sugarizerCompatibility.getLanguage());
         } else {
             domReady(doc);
         }
@@ -85,6 +88,11 @@ define(MYDEFINES, function (compatibility) {
         try {
             meSpeak.loadConfig('lib/mespeak_config.json');
             var lang = document.webL10n.getLanguage();
+            if (sugarizerCompatibility.isInsideSugarizer()) {
+                lang = sugarizerCompatibility.getLanguage();
+
+            }
+
             if (['es', 'ca', 'de', 'el', 'eo', 'fi', 'fr', 'hu', 'it', 'kn', 'la', 'lv', 'nl', 'pl', 'pt', 'ro', 'sk', 'sv', 'tr', 'zh'].indexOf(lang) !== -1) {
                 meSpeak.loadVoice('lib/voices/' + lang + '.json');
             } else {
@@ -93,6 +101,8 @@ define(MYDEFINES, function (compatibility) {
         } catch (e) {
             console.log(e);
         }
+
+        document.title = TITLESTRING;
 
         var canvas = docById('myCanvas');
 
@@ -128,6 +138,8 @@ define(MYDEFINES, function (compatibility) {
         var gridImages = [];
         var chartBitmap = null;
         var saveBox;
+        var merging = false;
+        var searchWidget = docById('search');
 
         // Calculate the palette colors.
         for (var p in PALETTECOLORS) {
@@ -197,6 +209,7 @@ define(MYDEFINES, function (compatibility) {
             // initialize strings in musicutils. These methods ensure that
             // the names are never null.
             console.log('initing i18n for music terms');
+            initIntervalI18N();
             initDrumI18N();
             initModeI18N();
             initVoiceI18N();
@@ -392,13 +405,13 @@ define(MYDEFINES, function (compatibility) {
                 }
             };
 
-            var table = document.getElementById("myTable");
+            var table = docById('myTable');
             if(table != null) {
                 table.remove();
             }
 
             /*
-            var canvas = document.getElementById("music");
+            var canvas = docById("music");
             var context = canvas.getContext("2d");
             context.clearRect(0, 0, canvas.width, canvas.height);
             */
@@ -648,7 +661,7 @@ define(MYDEFINES, function (compatibility) {
         function getPlaybackQueueStatus () {
             return Object.keys(logo.playbackQueue).length > 0;
         };
-        
+
         function setPlaybackStatus () {
             if (playbackBox != null) {
                 playbackBox.setPlaybackStatus();
@@ -681,7 +694,10 @@ define(MYDEFINES, function (compatibility) {
             }, 500);
         };
 
-        function doCompile() {
+        function doCompile(recording) {
+            if (recording === undefined) {
+                recording = false;
+            }
             // Show busy cursor.
             document.body.style.cursor = 'wait';
 
@@ -689,10 +705,11 @@ define(MYDEFINES, function (compatibility) {
             // Suppress music and turtle output when generating
             // compiled output.
             logo.playbackQueue = {};
+            logo.playbackTime = 0;
             logo.compiling = true;
+            logo.recording = recording;
             logo.runLogoCommands();
         };
-
 
         // Do we need to update the stage?
         var update = true;
@@ -842,6 +859,7 @@ define(MYDEFINES, function (compatibility) {
                 .setSaveTB(doSaveTB)
                 .setSaveSVG(doSaveSVG)
                 .setSavePNG(doSavePNG)
+                .setSaveWAV(doSaveWAV)
                 .setSavePlanet(doUploadToPlanet)
                 .setSaveBlockArtwork(doSaveBlockArtwork);
 
@@ -859,6 +877,7 @@ define(MYDEFINES, function (compatibility) {
                 .setSmaller(doSmallerFont)
                 .setPlugins(doOpenPlugin)
                 .setStats(doAnalytics)
+                .setSearch(showSearchWidget)
                 .setScroller(toggleScroller);
 
             playbackBox = new PlaybackBox();
@@ -932,12 +951,28 @@ define(MYDEFINES, function (compatibility) {
                                     blocks.palettes.dict[name].hideMenu(true);
                                 }
 
-                                sendAllToTrash(false, false);
+                                stage.removeAllEventListeners('trashsignal');
+
+                                if (!merging) {
+                                    // Wait for the old blocks to be removed.
+                                    var __listener = function (event) {
+                                        logo.playbackQueue = {};
+                                        blocks.loadNewBlocks(obj);
+                                        setPlaybackStatus();
+
+                                        stage.removeAllEventListeners('trashsignal');
+                                    };
+
+                                    stage.addEventListener('trashsignal', __listener, false);
+                                    sendAllToTrash(false, false);
+                                } else {
+                                    merging = false;
+                                    logo.playbackQueue = {};
+                                    blocks.loadNewBlocks(obj);
+                                    setPlaybackStatus();
+                                }
                                 refreshCanvas();
 
-                                logo.playbackQueue = {};
-                                blocks.loadNewBlocks(obj);
-                                setPlaybackStatus();
                             } catch (e) {
                                 errorMsg(_('Cannot load project from the file. Please check the file type.'));
                             }
@@ -949,7 +984,7 @@ define(MYDEFINES, function (compatibility) {
 
                 reader.readAsText(fileChooser.files[0]);
             }, false);
-        
+
             function handleFileSelect (event) {
                 event.stopPropagation();
                 event.preventDefault();
@@ -972,19 +1007,19 @@ define(MYDEFINES, function (compatibility) {
                                 for (var name in blocks.palettes.dict) {
                                     blocks.palettes.dict[name].hideMenu(true);
                                 }
-   
+
                                 sendAllToTrash(false, false);
                                 refreshCanvas();
-    
+
                                 logo.playbackQueue = {};
                                 blocks.loadNewBlocks(obj);
                                 setPlaybackStatus();
                             } catch (e) {
                                 errorMsg(_('Cannot load project from the file. Please check the file type.'));
                             }
-                     
+
                         }
-                        
+
                         document.body.style.cursor = 'default';
                     }, 200);
                 });
@@ -1003,7 +1038,7 @@ define(MYDEFINES, function (compatibility) {
                 event.dataTransfer.dropEffect = 'copy';
             };
 
-            var dropZone = document.getElementById('canvasHolder');
+            var dropZone = docById('canvasHolder');
             dropZone.addEventListener('dragover', handleDragOver, false);
             dropZone.addEventListener('drop', handleFileSelect, false);
 
@@ -1068,7 +1103,7 @@ define(MYDEFINES, function (compatibility) {
 
             var URL = window.location.href;
             var projectName = null;
-            var runProjectOnLoad = false;
+            var flags = {run: false, show: false, collapse: false};
 
             // This happens in the resize code.
             // _setupAndroidToolbar();
@@ -1092,7 +1127,15 @@ define(MYDEFINES, function (compatibility) {
                                 break;
                             case 'run':
                                 if (args[1].toLowerCase() === 'true')
-                                    runProjectOnLoad = true;
+                                    flags.run = true;
+                                break;
+                            case 'show':
+                                if (args[1].toLowerCase() === 'true')
+                                    flags.show = true;
+                                break;
+                            case 'collapse':
+                                if (args[1].toLowerCase() === 'true')
+                                    flags.collapse = true;
                                 break;
                             case 'inurl':
                                 var url = args[1];
@@ -1124,7 +1167,7 @@ define(MYDEFINES, function (compatibility) {
                                 var url = args[1];
                                 break;
                             default:
-                                errorMsg("Invalid parameters");
+                                errorMsg('Invalid parameters');
                             }
                         }
                     }
@@ -1141,7 +1184,7 @@ define(MYDEFINES, function (compatibility) {
             if (projectName != null) {
                 setTimeout(function () {
                     console.log('loading ' + projectName);
-                    loadStartWrapper(loadProject, projectName, runProjectOnLoad, env);
+                    loadStartWrapper(loadProject, projectName, flags, env);
                 }, 2000);
             } else {
                 setTimeout(function () {
@@ -1327,7 +1370,7 @@ define(MYDEFINES, function (compatibility) {
 
             var img = new Image();
             img.onload = function () {
-                // console.log('creating error message artwork for ' + img.src);
+                console.log('creating error message artwork for ' + img.src);
                 var artwork = new createjs.Bitmap(img);
                 container.addChild(artwork);
                 var text = new createjs.Text('', '20px Sans', '#000000');
@@ -1356,6 +1399,86 @@ define(MYDEFINES, function (compatibility) {
             };
 
             img.src = 'images/' + name + '.svg';
+        };
+
+        // Prepare the search widget
+        searchWidget.style.visibility = "hidden";
+        var searchBlockPosition = [100, 100];
+
+        var searchSuggestions = [];
+        var deprecatedBlockNames = [];
+
+        for (var i in blocks.protoBlockDict) {
+            var blockLabel = blocks.protoBlockDict[i].staticLabels[0];
+            if (blockLabel) {
+                if (blocks.protoBlockDict[i].hidden) {
+                    deprecatedBlockNames.push(blockLabel);
+                } else {
+                    searchSuggestions.push(blockLabel);
+                }
+            }
+        }
+
+        searchSuggestions = searchSuggestions.reverse();
+
+        searchWidget.onclick = function(){
+            doSearch();
+        };
+
+        function showSearchWidget() {
+            if (searchWidget.style.visibility === 'visible') {
+                searchWidget.style.visibility = 'hidden';
+            } else {
+                searchWidget.style.visibility = 'visible';
+                searchWidget.style.left = docById('myCanvas').width / 3.5 * turtleBlocksScale + 'px';
+                searchWidget.style.top = docById('myCanvas').height / 4.5 * turtleBlocksScale + 'px';
+
+                searchBlockPosition = [100, 100];
+
+                // Give the browser time to update before selecting
+                // focus.
+                setTimeout(function () {
+                    searchWidget.focus();
+                    doSearch();
+                }, 500);
+            }
+        };
+
+        function doSearch() {
+            var $j = jQuery.noConflict();
+
+            $j('#search').autocomplete({
+                source: searchSuggestions
+            });
+
+            $j('#search').autocomplete('widget').addClass('scrollSearch');
+
+            var searchInput = searchWidget.value;
+            var obj = palettes.getProtoNameAndPalette(searchInput);
+            var protoblk = obj[0];
+            var paletteName = obj[1];
+            var protoName = obj[2];
+
+            var searchResult = blocks.protoBlockDict.hasOwnProperty(protoName);
+
+            if (searchInput.length > 0) {
+                if (searchResult) {
+                    palettes.dict[paletteName].makeBlockFromSearch(protoblk, protoName, function (newBlock) {
+                        blocks._moveBlock(newBlock, searchBlockPosition[0] - blocksContainer.x, searchBlockPosition[1] - blocksContainer.y);
+                    });
+
+                    // Move the position of the next newly created block.
+                    searchBlockPosition[0] += STANDARDBLOCKHEIGHT;
+                    searchBlockPosition[1] += STANDARDBLOCKHEIGHT;
+                } else if (deprecatedBlockNames.indexOf(searchInput) > -1) {
+                    blocks.errorMsg(_('This block is deprecated.'));
+                } else {
+                    blocks.errorMsg(_('Block cannot be found.'));
+                }
+
+                searchWidget.value = '';
+                update = true;
+            }
         };
 
         function __keyPressed(event) {
@@ -1485,12 +1608,21 @@ define(MYDEFINES, function (compatibility) {
                 case TAB:
                     break;
                 case ESC:
-                    // toggle full screen
-                    _toggleToolbar();
+                    if (searchWidget.style.visibility === 'visible') {
+                        searchWidget.style.visibility = 'hidden';
+                    } else {
+                        // toggle full screen
+                        _toggleToolbar();
+                    }
                     break;
                 case RETURN:
                     // toggle run
-                    logo.runLogoCommands();
+                    if (docById('search').value.length > 0){
+                        doSearch();
+                    }
+                    else{
+                        logo.runLogoCommands();
+                    }
                     break;
                 default:
                     break;
@@ -1585,7 +1717,7 @@ define(MYDEFINES, function (compatibility) {
                 turtles.turtleList[turtle].doClear(false, false, true);
             }
 
-            var artcanvas = document.getElementById("overlayCanvas");
+            var artcanvas = docById('overlayCanvas');
             // Workaround for #795
             if (mobileSize) {
                 artcanvas.width = w * 2;
@@ -1714,8 +1846,10 @@ define(MYDEFINES, function (compatibility) {
             for (var name in blocks.palettes.dict) {
                 blocks.palettes.dict[name].hideMenu(true);
             }
+
             refreshCanvas();
 
+            var actionBlockCounter = 0;
             var dx = 0;
             var dy = cellSize * 3;
             for (var blk in blocks.blockList) {
@@ -1736,6 +1870,7 @@ define(MYDEFINES, function (compatibility) {
                 } else if (blocks.blockList[blk].name === 'action') {
                     if (!blocks.blockList[blk].trash) {
                         blocks.deleteActionBlock(blocks.blockList[blk]);
+                        actionBlockCounter += 1;
                     }
                 }
 
@@ -1752,6 +1887,12 @@ define(MYDEFINES, function (compatibility) {
                 // Overwrite session data too.
                 saveLocally();
             }
+
+            // Wait for palette to clear (#891)
+            // We really need to signal when each palette item is deleted
+            setTimeout(function() {
+                stage.dispatchEvent('trashsignal');
+           }, 1000 * actionBlockCounter);
 
             update = true;
         };
@@ -1935,8 +2076,16 @@ define(MYDEFINES, function (compatibility) {
             if (fileExt(filename) !== 'png') {
                 filename += '.png';
             }
-            var data = document.getElementById("overlayCanvas").toDataURL('image/png');
+            var data = docById('overlayCanvas').toDataURL('image/png');
             download(filename, data);
+        };
+
+        function doSaveWAV() {
+            //document.body.style.cursor = 'wait';
+            console.log('Recording');
+            //logo.recording = true;
+            //logo.runLogoCommands();
+            doCompile(true);
         };
 
         function doUploadToPlanet() {
@@ -1945,11 +2094,22 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function doShareOnFacebook() {
-            alert("Facebook Sharing : disabled");    // remove when add fb share link
+            alert('Facebook Sharing : disabled');    // remove when add fb share link
             // add code for facebook share link
         };
 
-        function doLoad() {
+        function doLoad(merge) {
+            if (merge === undefined) {
+                merge = false;
+            }
+
+            if (merge) {
+                console.log('merge load');
+                merging = true;
+            } else {
+                merging = false;
+            }
+
             console.log('Loading .tb file');
             document.querySelector('#myOpenFile').focus();
             document.querySelector('#myOpenFile').click();
@@ -2057,18 +2217,18 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function runProject (env) {
-            console.log("Running Project from Event");
-            document.removeEventListener("finishedLoading", runProject);
+            console.log('Running Project from Event');
+            document.removeEventListener('finishedLoading', runProject);
             setTimeout(function () {
-                console.log("Run");
+                console.log('Run');
                 _changeBlockVisibility();
                 _doFastButton(env);
             }, 5000);
         }
 
-        function loadProject (projectName, run, env) {
+        function loadProject (projectName, flags, env) {
             //set default value of run
-            run = typeof run !== 'undefined' ? run : false;
+            flags = typeof flags !== 'undefined' ? flags : {run: false, show: false, collapse: false};
             // Show busy cursor.
             document.body.style.cursor = 'wait';
             // palettes.updatePalettes();
@@ -2115,29 +2275,38 @@ define(MYDEFINES, function (compatibility) {
                 update = true;
             }, 200);
 
-            if (run && firstRun) {
-                if (document.addEventListener) {
-                    document.addEventListener('finishedLoading', function () {
-                        setTimeout(function () {
-                            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                                turtles.turtleList[turtle].doClear(true, true, false);
-                            }
-                            runProject(env);
-                        }, 1000);
-                    }, false);
-                } else {
-                    document.attachEvent('finishedLoading', function () {
-                        setTimeout(function () {
-                            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                                turtles.turtleList[turtle].doClear(true, true, false);
-                            }
-                            runProject(env);
-                        }, 1000);
-                    });
-                }
+            var run = flags.run;
+            var show = flags.show;
+            var collapse = flags.collapse;
+
+            var functionload = function () {
+                setTimeout(function () {
+                    if (!collapse){
+                        _toggleCollapsibleStacks();
+                    }
+                    if (run && firstRun){
+                        for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                            turtles.turtleList[turtle].doClear(true, true, false);
+                        }
+                        runProject(env);
+                        if (show){
+                            _changeBlockVisibility();
+                        }
+                        if (!collapse){
+                            _toggleCollapsibleStacks();
+                        }
+                    } else if (!show){
+                        _changeBlockVisibility();
+                    }
+                    firstRun = false;
+                }, 1000);
             }
 
-            firstRun = false;
+            if (document.addEventListener) {
+                document.addEventListener('finishedLoading', functionload, false);
+            } else {
+                document.attachEvent('finishedLoading', functionload);
+            }
         };
 
         function loadRawProject(data) {
@@ -2222,7 +2391,7 @@ define(MYDEFINES, function (compatibility) {
         };
 
         // Hides the loading animation and unhides the background.
-        function showContents(){
+        function showContents() {
             docById('loading-image-container').style.display = 'none';
             // docById('canvas').style.display = 'none';
             docById('hideContents').style.display = 'block';
@@ -2556,7 +2725,8 @@ define(MYDEFINES, function (compatibility) {
                     }
                 } else if (myBlock.name === 'matrixData') {
                     var args = {
-                        'notes': window.savedMatricesNotes, 'count': window.savedMatricesCount
+                        'notes': window.savedMatricesNotes,
+                        'count': window.savedMatricesCount
                     }
                     hasMatrixDataBlock = true;
                 } else {
@@ -2676,7 +2846,7 @@ handleComplete);
             // name / onpress function / label / onlongpress function / onextralongpress function / onlongpress icon / onextralongpress icon
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 var buttonNames = [
-                    ['run', _doFastButton, _('Run fast / long press to run slowly / extra-long press to run music slowly'), _doSlowButton, _doSlowMusicButton, 'slow-button', 'slow-music-button'],
+                    ['run', _doFastButton, _('Run fast') + ' / ' + _('long press to run slowly') + ' / ' + _('extra-long press to run music slowly'), _doSlowButton, _doSlowMusicButton, 'slow-button', 'slow-music-button'],
                     ['step', _doStepButton, _('Run step by step'), null, null, null, null],
                     ['step-music', _doStepMusicButton, _('Run note by note'), null, null, null, null],
                     ['stop-turtle', doStopButton, _('Stop'), null, null, null, null],
@@ -2689,7 +2859,7 @@ handleComplete);
                 ];
             } else {
                 var buttonNames = [
-                    ['run', _doFastButton, _('Run fast / long press to run slowly'), _doSlowButton, null, 'slow-button', null],
+                    ['run', _doFastButton, _('Run fast') + ' / ' + _('long press to run slowly'), _doSlowButton, null, 'slow-button', null],
                     ['step', _doStepButton, _('Run step by step'), null, null, null, null],
                     ['stop-turtle', doStopButton, _('Stop'), null, null, null, null],
                     ['clear', _allClear, _('Clean'), null, null, null, null],
@@ -2706,11 +2876,11 @@ handleComplete);
                     sugarizerCompatibility.saveLocally(function () {
                         sugarizerCompatibility.sugarizerStop();
                     });
-                }])
+                }, 'Stop', null, null, null, null]);
             }
 
             if (showPalettesPopover) {
-                buttonNames.unshift(['popdown-palette', doPopdownPalette])
+                buttonNames.unshift(['popdown-palette', doPopdownPalette]);
             }
 
             var btnSize = cellSize;
@@ -2751,6 +2921,11 @@ handleComplete);
             _setupRightMenu(turtleBlocksScale);
         };
 
+        function _doMergeLoad() {
+            console.log('merge load');
+            doLoad(true);
+        }
+
         function _setupRightMenu(turtleBlocksScale) {
             if (menuContainer !== undefined) {
                 stage.removeChild(menuContainer);
@@ -2761,29 +2936,30 @@ handleComplete);
 
             // NOTE: see getAuxToolbarButtonNames in turtledefs.js
             // Misc. other buttons
+            // name / onpress function / label / onlongpress function / onextralongpress function / onlongpress icon / onextralongpress icon
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 var menuNames = [
-                    ['planet', _doOpenSamples, _('Load samples from server')],
-                    ['open', doLoad, _('Load project from files')],
-                    ['save', doSave, _('Save project')],
-                    ['paste-disabled', pasteStack, _('Long press on block(s) to copy. Click here to paste.')],
-                    ['Cartesian', _doCartesianPolar, _('Cartesian') + '/' + _('Polar')],
-                    ['compile', _doPlaybackBox, _('playback')],
-                    ['utility', _doUtilityBox, _('Settings')],
-                    ['empty-trash', _deleteBlocksBox, _('Delete all')],
-                    ['restore-trash', _restoreTrash, _('Undo')]
+                    ['planet', _doOpenSamples, _('Load samples from server'), null, null, null, null],
+                    ['open', doLoad, _('Load project from files'), _doMergeLoad, _doMergeLoad, 'open-merge-button', 'open-merge-button'],
+                    ['save', doSave, _('Save project'), null, null, null, null],
+                    ['paste-disabled', pasteStack, _('Long press on blocks to copy.') + ' ' + _('Click here to paste.'), null, null, null, null],
+                    ['Cartesian', _doCartesianPolar, _('Cartesian') + '/' + _('Polar'), null, null, null, null],
+                    ['compile', _doPlaybackBox, _('playback'), null, null, null, null],
+                    ['utility', _doUtilityBox, _('Settings'), null, null, null, null],
+                    ['empty-trash', _deleteBlocksBox, _('Delete all'), null, null, null, null],
+                    ['restore-trash', _restoreTrash, _('Undo'), null, null, null, null]
                 ];
             } else {
                 var menuNames = [
-                    ['planet', _doOpenSamples, _('Load samples from server')],
-                    ['open', doLoad, _('Load project from files')],
-                    ['save', doSave, _('Save project')],
-                    ['paste-disabled', pasteStack, _('Paste')],
-                    ['Cartesian', _doCartesianPolar, _('Cartesian') + '/' + _('Polar')],
-                    ['compile', _doPlaybackBox, _('playback')],
-                    ['utility', _doUtilityBox, _('Settings')],
-                    ['empty-trash', _deleteBlocksBox, _('Delete all')],
-                    ['restore-trash', _restoreTrash, _('Undo')]
+                    ['planet', _doOpenSamples, _('Load samples from server'), null, null, null, null],
+                    ['open', doLoad, _('Load project from files'), _doMergeLoad, _doMergeLoad, 'open-merge-button', 'open-merge-button'],
+                    ['save', doSave, _('Save project'), null, null, null, null],
+                    ['paste-disabled', pasteStack, _('Paste'), null, null, null, null],
+                    ['Cartesian', _doCartesianPolar, _('Cartesian') + '/' + _('Polar'), null, null, null, null],
+                    ['compile', _doPlaybackBox, _('playback'), null, null, null, null],
+                    ['utility', _doUtilityBox, _('Settings'), null, null, null, null],
+                    ['empty-trash', _deleteBlocksBox, _('Delete all'), null, null, null, null],
+                    ['restore-trash', _restoreTrash, _('Undo'), null, null, null, null]
                 ];
             }
 
@@ -2821,7 +2997,7 @@ handleComplete);
                     }
                 }
 
-                _loadButtonDragHandler(container, x, y, menuNames[i][1], null, null, null, null);
+                _loadButtonDragHandler(container, x, y, menuNames[i][1],menuNames[i][3],menuNames[i][4],menuNames[i][5],menuNames[i][6]);
                 onscreenMenu.push(container);
                 if (menuNames[i][0] === 'utility') {
                     utilityButton = container;
@@ -2890,13 +3066,23 @@ handleComplete);
                             helpContainer.visible = false;
                             docById('helpElem').style.visibility = 'hidden';
                         } else {
-                            helpIdx += 1;
-                            if (helpIdx >= HELPCONTENT.length) {
-                                helpIdx = 0;
+                            if (event.stageX < helpContainer.x + bounds.width / 2) {
+                                if (helpIdx === 0) {
+                                    helpIdx = 0;
+                                } else {
+                                    helpIdx -= 1;
+                                }
+                            } else {
+                                helpIdx += 1;
+                                if (helpIdx >= HELPCONTENT.length) {
+                                    helpIdx = 0;
+                                }
                             }
+
                             var imageScale = 55 * turtleBlocksScale;
                             helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
                         }
+
                         update = true;
                     });
 
@@ -2904,17 +3090,11 @@ handleComplete);
                     img.onload = function () {
                         console.log(turtleBlocksScale);
                         var bitmap = new createjs.Bitmap(img);
-                        /*
-                        if (turtleBlocksScale > 1) {
-                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = turtleBlocksScale;
-                        } else {
-                            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 1.125;
-                        }
-                        */
                         if (helpContainer.children.length > 0) {
                             console.log('delete old help container');
                             helpContainer.removeChild(helpContainer.children[0]);
                         }
+
                         helpContainer.addChild(bitmap)
 
                         var bounds = helpContainer.getBounds();
@@ -2928,6 +3108,7 @@ handleComplete);
                         if (!doneTour) {
                             docById('helpElem').style.visibility = 'visible';
                         }
+
                         update = true;
                     };
 
@@ -2956,7 +3137,6 @@ handleComplete);
                         // bitmap.scaleX = bitmap.scaleY = bitmap.scale = turtleBlocksScale;
                     }
                 }
-
             }
 
             doneTour = storage.doneTour === 'true';
@@ -2970,6 +3150,7 @@ handleComplete);
                 } else {
                     storage.doneTour = 'true';
                 }
+
                 docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
                 docById('helpElem').style.visibility = 'visible';
                 helpContainer.visible = true;
@@ -3145,6 +3326,14 @@ handleComplete);
 
             var formerContainer = container;
 
+            container.on('mouseover', function (event) {
+                document.body.style.cursor = 'pointer';
+            });
+
+            container.on('mouseout', function (event) {
+                document.body.style.cursor = 'default';
+            });
+		 
             container.on('mousedown', function (event) {
                 if (locked) {
                     return;

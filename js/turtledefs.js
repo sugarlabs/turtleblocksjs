@@ -15,6 +15,8 @@ const NUMBERBLOCKDEFAULT = 100;
 
 const DEFAULTPALETTE = 'turtle';
 
+const TITLESTRING = _('Turtle Blocks');
+
 // We don't include 'extras' since we want to be able to delete
 // plugins from the extras palette.
 BUILTINPALETTES = ['turtle', 'pen', 'number', 'boolean', 'flow', 'boxes', 'action', 'media', 'sensors', 'heap', 'extras'];
@@ -23,7 +25,7 @@ const BUILTINPALETTESL23N = [_('turtle'), _('pen'), _('number'), _('boolean'), _
 
 
 function getMainToolbarButtonNames(name) {
-    return (['popdown-palette', 'run', 'step', 'stop-turtle', 'clear', 'palette', 'hide-blocks', 'collapse-blocks', 'go-home', 'help'].indexOf(name) > -1);
+    return (['popdown-palette', 'run', 'step', 'stop-turtle', 'clear', 'palette', 'hide-blocks', 'collapse-blocks', 'go-home', 'help', 'sugarizer-stop'].indexOf(name) > -1);
 };
 
 

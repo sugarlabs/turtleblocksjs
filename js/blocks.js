@@ -48,6 +48,10 @@ function Blocks () {
     this.mouseDownTime = 0;
     this.longPressTimeout = null;
 
+    // Paste offset is used to ensure pasted blocks don't overlap.
+    this._pasteDX = 0;
+    this._pasteDY = 0;
+
     // "Copy stack" selects a stack for pasting. Are we selecting?
     this.selectingStack = false;
     // and what did we select?
@@ -279,6 +283,8 @@ function Blocks () {
             }
             if (this.protoBlockDict[proto].style === 'argflowclamp') {
                 this.clampBlocks.push(this.protoBlockDict[proto].name);
+                this.argClampBlocks.push(this.protoBlockDict[proto].name);
+                this.argBlocks.push(this.protoBlockDict[proto].name);
             }
             if (this.protoBlockDict[proto].style === 'argclamparg') {
                 this.argClampBlocks.push(this.protoBlockDict[proto].name);
@@ -415,11 +421,13 @@ function Blocks () {
             if (c != null) {
                 size = Math.max(this._getBlockSize(c), 1);
             }
+
             if (slotList[i] !== size) {
                 slotList[i] = size;
                 update = true;
             }
         }
+
         if (update) {
             myBlock.updateArgSlots(slotList);
         }
@@ -1524,15 +1532,16 @@ function Blocks () {
                 label += attr;
             }
         } else {
-            if(typeof myBlock.value !== 'string'){
-               var label = myBlock.value.toString(); 
+            if (myBlock.value == null) {
+               var label = '';
+            } else if (typeof myBlock.value !== 'string'){
+               var label = myBlock.value.toString();
             } else {
-                var label = myBlock.value;  
+                var label = myBlock.value;
             }
-            
         }
 
-        if (label.length > maxLength) {
+        if (myBlock.name !== 'intervalname' && label.length > maxLength) {
             label = label.substr(0, maxLength - 1) + '...';
         }
 
@@ -1686,6 +1695,8 @@ function Blocks () {
     this._searchForArgFlow = function () {
         for (var blk = 0; blk < this.blockList.length; blk++) {
             if (this.blockList[blk].isArgFlowClampBlock()) {
+                this._searchCounter = 0;
+                this._searchForExpandables(blk);
                 this._expandablesList.push(blk);
             }
         }
@@ -1976,7 +1987,7 @@ function Blocks () {
                 that.blockList[thisBlock].container.updateCache();
             };
 
-            postProcessArg = [thisBlock, 'highpass'];    
+            postProcessArg = [thisBlock, 'highpass'];
         } else if (name === 'oscillatortype') {
             postProcess = function (args) {
                 var thisBlock = args[0];
@@ -1986,7 +1997,7 @@ function Blocks () {
                 that.blockList[thisBlock].container.updateCache();
             };
 
-            postProcessArg = [thisBlock, 'sine']; 
+            postProcessArg = [thisBlock, 'sine'];
         } else if (name === 'voicename') {
             postProcess = function (args) {
                 var thisBlock = args[0];
@@ -2006,7 +2017,17 @@ function Blocks () {
                 that.blockList[thisBlock].container.updateCache();
             };
 
-            postProcessArg = [thisBlock, 'Major'];
+            postProcessArg = [thisBlock, DEFAULTMODE];
+        } else if (name === 'intervalname') {
+            postProcess = function (args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                that.blockList[thisBlock].value = value;
+                that.blockList[thisBlock].text.text = value;
+                that.blockList[thisBlock].container.updateCache();
+            };
+
+            postProcessArg = [thisBlock, DEFAULTINTERVAL];
         } else if (name === 'number') {
             postProcess = function (args) {
                 var thisBlock = args[0];
@@ -2131,7 +2152,7 @@ function Blocks () {
                         var value = args[1];
                         that.blockList[thisBlock].value = value;
                         var label = value.toString();
-                        if (label.length > 8) {
+                        if (that.blockList[thisBlock].name !== 'intervalname' && label.length > 8) {
                             label = label.substr(0, 7) + '...';
                         }
                         that.blockList[thisBlock].text.text = label;
@@ -2155,7 +2176,7 @@ function Blocks () {
                     var value = args[1];
                     that.blockList[thisBlock].value = value;
                     var label = value.toString();
-                    if (label.length > 8) {
+                    if (that.blockList[thisBlock].name !== 'intervalname' && label.length > 8) {
                         label = label.substr(0, 7) + '...';
                     }
                     that.blockList[thisBlock].text.text = label;
@@ -2226,6 +2247,11 @@ function Blocks () {
 
     this.findDragGroup = function (blk) {
         // Generate a drag group from blocks connected to blk
+        if (blk == null) {
+            console.log('null block passed to findDragGroup');
+            return;
+        }
+
         this.dragLoopCounter = 0;
         this.dragGroup = [];
         this._calculateDragGroup(blk);
@@ -2753,7 +2779,11 @@ function Blocks () {
 
         // Auto-select stack for copying -- no need to actually click on
         // the copy button.
-        console.log(this.activeBlock);
+        if (this.activeBlock == null) {
+            console.log('null block passed to triggerLongPress');
+            return;
+        }
+
         var topBlock = this.findTopBlock(this.activeBlock);
         this.selectedStack = topBlock;
 
@@ -2762,6 +2792,9 @@ function Blocks () {
 
         // Update the paster button to indicate a block is selected.
         this.updatePasteButton();
+        // Reset paste offset
+        this._pasteDX = 0;
+        this._pasteDY = 0;
 
         // We display some extra buttons when we long-press an action block.
         if (myBlock.name === 'action') {
@@ -2792,8 +2825,10 @@ function Blocks () {
         }
 
         // Reposition the paste location relative to the stage position.
-        this.selectedBlocksObj[0][2] = 75 - this.stage.x;
-        this.selectedBlocksObj[0][3] = 75 - this.stage.y;
+        this.selectedBlocksObj[0][2] = 75 - this.stage.x + this._pasteDX;
+        this.selectedBlocksObj[0][3] = 75 - this.stage.y + this._pasteDY;
+        this._pasteDX += 21;
+        this._pasteDY += 21;
         this.loadNewBlocks(this.selectedBlocksObj);
     };
 
@@ -2856,7 +2891,7 @@ function Blocks () {
                     blockItem = [b, [myBlock.name, null], x, y, []];
                     break;
                 default:
-                    blockItem = [b, [myBlock.name, myBlock.value], x, y, []];
+                    blockItem = [b, [myBlock.name, {'value': myBlock.value}], x, y, []];
                     break;
                 }
             } else if (['namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg', 'namedarg'].indexOf(myBlock.name) !== -1) {
@@ -2949,7 +2984,7 @@ function Blocks () {
 
             if (this.blockList[b].name === 'action') {
                 if (this.blockList[b].connections[1] != null) {
-                    console.log(this.blockList[this.blockList[b].connections[1]].value);
+                    // console.log(this.blockList[this.blockList[b].connections[1]].value);
                     currentActionNames.push(this.blockList[this.blockList[b].connections[1]].value);
                 }
             } else if (this.blockList[b].name === 'storein') {
@@ -3174,19 +3209,15 @@ function Blocks () {
 
             switch (name) {
             case 'articulation':
-            case 'augmented':
             case 'backward':
             case 'crescendo':
-            case 'diminished':
-            case 'dividebeatfactor':
             case 'drift':
             case 'duplicatenotes':
+            case 'interval':
             case 'invert1':
             case 'fill':
             case 'flat':
             case 'hollowline':
-            case 'major':
-            case 'minor':
             case 'multiplybeatfactor':
             case 'note':
             case 'newnote':
@@ -3195,11 +3226,12 @@ function Blocks () {
             case 'newswing':
             case 'newswing2':
             case 'osctime':
-            case 'perfect':
             case 'pluck':
             case 'rhythmicdot':
+            case 'semitoneinterval':
             case 'setbpm':
             case 'setnotevolume2':
+            case 'setscalartransposition':
             case 'settransposition':
             case 'setvoice':
             case 'sharp':
@@ -3349,8 +3381,13 @@ function Blocks () {
 
             if (blkInfo[1] == null) {
                 var value = null;
+                var text = '';
             } else {
                 var value = blkInfo[1]['value'];
+                var text = blkInfo[1]['text'];
+                if (text == null) {
+                    text = '';
+                }
             }
 
             if (name in NAMEDICT) {
@@ -3607,6 +3644,15 @@ function Blocks () {
                 };
                 this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                 break;
+            case 'intervalname':
+                postProcess = function (args) {
+                    var thisBlock = args[0];
+                    var value = args[1];
+                    that.blockList[thisBlock].value = value;
+                    that.updateBlockText(thisBlock);
+                };
+                this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+                break;
             case 'drumname':
                 postProcess = function (args) {
                     var thisBlock = args[0];
@@ -3630,7 +3676,7 @@ function Blocks () {
                     that.updateBlockText(thisBlock);
                 };
                 this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
-                break; 
+                break;
             case 'oscillatortype':
                 postProcess = function (args) {
                     var thisBlock = args[0];
@@ -3639,7 +3685,7 @@ function Blocks () {
                     that.updateBlockText(thisBlock);
                 };
                 this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
-                break;        
+                break;
             case 'voicename':
                 postProcess = function (args) {
                     var thisBlock = args[0];
@@ -3739,55 +3785,6 @@ function Blocks () {
 
                 this._makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
                 break;
-            case 'leftpos':
-                postProcess = function (thisBlock) {
-                    that.blockList[thisBlock].value = -(canvas.width / 2);
-                    that.updateBlockText(thisBlock);
-                };
-
-                this._makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'rightpos':
-                postProcess = function (thisBlock) {
-                    that.blockList[thisBlock].value = (canvas.width / 2);
-                    that.updateBlockText(thisBlock);
-                };
-
-                this._makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'toppos':
-                postProcess = function (thisBlock) {
-                    that.blockList[thisBlock].value = (canvas.height / 2);
-                    that.updateBlockText(thisBlock);
-                };
-
-                this._makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'botpos':
-            case 'bottompos':
-                postProcess = function (thisBlock) {
-                    that.blockList[thisBlock].value = -(canvas.height / 2);
-                    that.updateBlockText(thisBlock);
-                };
-
-                this._makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'width':
-                postProcess = function (thisBlock) {
-                    that.blockList[thisBlock].value = canvas.width;
-                    that.updateBlockText(thisBlock);
-                };
-
-                this._makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
-            case 'height':
-                postProcess = function (thisBlock) {
-                    that.blockList[thisBlock].value = canvas.height;
-                    that.updateBlockText(thisBlock);
-                };
-
-                this._makeNewBlockWithConnections('number', blockOffset, blkData[4], postProcess, thisBlock);
-                break;
             case 'loadFile':
                 postProcess = function (args) {
                     that.blockList[args[0]].value = args[1];
@@ -3850,9 +3847,8 @@ function Blocks () {
                 // sure that the playback queue does not reference turtles
                 // that are not known to us.
 
-                var firstTurtle = 0;
                 // Find the first turtle not in the trash.
-                for (firstTurtle = 0; firstTurtle < that.turtles.turtleList.length; firstTurtie++) {
+                for (var firstTurtle = 0; firstTurtle < that.turtles.turtleList.length; firstTurtle++) {
                     if (!that.turtles.turtleList[firstTurtle].trash) {
                         break;
                     }
@@ -3983,16 +3979,15 @@ function Blocks () {
         }
 
         for (var blk = 0; blk < this._adjustTheseDocks.length; blk++) {
-            // console.log('Adjust Docks: ' + this.blockList[this._adjustTheseDocks[blk]].name);
             this.adjustDocks(this._adjustTheseDocks[blk], true);
             // blockBlocks._expandTwoArgs();
             this._expandClamps();
         }
 
         for (var blk = 0; blk < this._adjustTheseStacks.length; blk++) {
-            // console.log('Adjust Stack: ' + this.blockList[this._adjustTheseStacks[blk]].name);
             this.raiseStackToTop(this._adjustTheseStacks[blk]);
         }
+
     };
 
     this.actionHasReturn = function (blk) {

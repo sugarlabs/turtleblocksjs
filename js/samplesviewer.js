@@ -22,9 +22,9 @@ window.server = SERVER; 'https://turtle.sugarlabs.org/server/'; // '/server/';
 
 //{NAME} will be replaced with project name
 if (_THIS_IS_MUSIC_BLOCKS_) {
-    var SHAREURL = 'https://walterbender.github.io/musicblocks/index.html?file={name}&run=True';
+    var SHAREURL = 'https://walterbender.github.io/musicblocks/index.html?file={name}';
 } else {
-    var SHAREURL = 'https://walterbender.github.io/turtleblocksjs/index.html?file={name}&run=True';
+    var SHAREURL = 'https://walterbender.github.io/turtleblocksjs/index.html?file={name}';
 }
 
 const NAMESUBTEXT = '{name}';
@@ -73,33 +73,64 @@ const LOCAL_PROJECT_TEMPLATE ='\
         <img class="open icon" title="' + _('Open') + '" alt="' + _('Open') + '" src="header-icons/edit.svg" /> \
         <img class="delete icon" title="' + _('Delete') + '" alt="' + _('Delete') + '" src="header-icons/delete.svg" /> \
         <img class="publish icon" title="' + _('Publish') + '" alt="' + _('Publish') + '" src="header-icons/publish.svg" /> \
-        <span class="shareurlspan"> \
+        <span class="shareurlspan" id="shareurlspan_NUM_"> \
         <img class="share icon" title="' + _('Share') + '" alt="' + _('Share') + '" src="header-icons/share.svg" /> \
         <div class="tooltiptriangle" id="shareurltri_NUM_"></div> \
         <div class="shareurltext" id="shareurldiv_NUM_"> \
-            Copy the link to share your project:\
-            <input type="text" name="shareurl" id="shareurlbox_NUM_" value="url here" style="margin-top:5px;width: 350px;text-align:left;" onblur="document.getElementById(\'shareurldiv_NUM_\').style.visibility = \'hidden\';document.getElementById(\'shareurlbox_NUM_\').style.visibility = \'hidden\';document.getElementById(\'shareurltri_NUM_\').style.visibility = \'hidden\';"/> \
+            <div style="float:left">' + _('Copy this link to share your project.') + '</div> \
+            <button style="float:right" onclick="toggle(\'checkboxdiv_NUM_\');">' + _('Advanced options') + '</button> \
+            <input type="text" name="shareurl" id="shareurlbox_NUM_" value="url here" style="margin-top:5px;width: 350px;text-align:left;"/> \
+            <div id="checkboxdiv_NUM_" style="display:none;"> \
+                <h4 style="margin-top: 10px;margin-bottom: 5px;">' + _('Advanced options') + '</h4> \
+                <div><input type="checkbox" name="run" id="checkbox_NUM_run" onchange="updateCheckboxes(\'shareurldiv_NUM_\');"><label for="checkbox_NUM_run">' + _('Run project on startup.') + '</label></div> \
+                <div><input type="checkbox" name="show" id="checkbox_NUM_show" onchange="updateCheckboxes(\'shareurldiv_NUM_\');"><label for="checkbox_NUM_show">' + _('Show code blocks on startup.') + '</label></div> \
+                <div><input type="checkbox" name="collapse" id="checkbox_NUM_collapse" onchange="updateCheckboxes(\'shareurldiv_NUM_\');"><label for="checkbox_NUM_collapse">' + _('Collapse code blocks on startup.') + '</label></div> \
+            </div> \
         </div> \
         </span> \
         <img class="download icon" title="' + _('Download') + '" alt="' + _('Download') + '" src="header-icons/download.svg" /> \
+        <img class="merge icon" title="' + _('Merge with current project') + '" alt="' + _('Merge with current project') + '" src="header-icons/download-merge.svg" /> \
     </div> \
 </li>'
 
 const GLOBAL_PROJECT_TEMPLATE = '\
 <img class="thumbnail" src="{img}" /> \
 <div class="options"> \
-    <span>{title}</span><br/> \
-    <span class="shareurlspan"> \
+    <span class="projectname">{title}</span><br/> \
+    <span class="shareurlspan" id="plshareurlspan_NUM_"> \
     <img class="share icon" title="' + _('Share') + '" alt="' + _('Share') + '" src="header-icons/share.svg" /> \
     <div class="tooltiptriangle" id="plshareurltri_NUM_"></div> \
     <div class="shareurltext" id="plshareurldiv_NUM_"> \
-        Copy the link to share your project:\
-        <input type="text" name="shareurl" id="plshareurlbox_NUM_" value="url here" style="margin-top:5px;width: 350px;text-align:left;" onblur="document.getElementById(\'plshareurldiv_NUM_\').style.visibility = \'hidden\';document.getElementById(\'plshareurlbox_NUM_\').style.visibility = \'hidden\';document.getElementById(\'plshareurltri_NUM_\').style.visibility = \'hidden\';"/> \
+        <div style="float:left">Copy the link to share your project:</div> \
+        <button style="float:right" onclick="toggle(\'plcheckboxdiv_NUM_\');">Advanced</button> \
+        <input type="text" name="shareurl" id="plshareurlbox_NUM_" value="url here" style="margin-top:5px;width: 350px;text-align:left;"/> \
+        <div id="plcheckboxdiv_NUM_" style="display:none;"> \
+            <h4 style="margin-top: 10px;margin-bottom: 5px;">Set Options</h4> \
+            <div><input type="checkbox" name="run" id="plcheckbox_NUM_run" onchange="updateCheckboxes(\'plshareurldiv_NUM_\');"><label for="checkbox_NUM_run">Run project on startup</label></div> \
+            <div><input type="checkbox" name="show" id="plcheckbox_NUM_show" onchange="updateCheckboxes(\'plshareurldiv_NUM_\');"><label for="checkbox_NUM_show">Show code blocks on startup</label></div> \
+            <div><input type="checkbox" name="collapse" id="plcheckbox_NUM_collapse" onchange="updateCheckboxes(\'plshareurldiv_NUM_\');"><label for="checkbox_NUM_collapse">Collapse code blocks on startup</label></div> \
+        </div> \
     </div> \
     </span> \
     <img class="download icon" title="' + _('Download') + '" alt="' + _('Download') + '" src="header-icons/download.svg" /> \
+    <img class="merge icon" title="' + _('Merge with current project') + '" alt="' + _('Merge with current project') + '" src="header-icons/download-merge.svg" /> \
 </div>';
 
+//Helper functions for share box
+function toggle(id){
+    var d = document.getElementById(id);
+    d.style.display = d.style.display == "none" ? "block" : "none";
+}
+
+function updateCheckboxes(id){
+    var elements = document.getElementById(id).querySelectorAll('input:checked');
+    var urlel = document.getElementById(id).querySelectorAll('input[type=text]')[0];
+    var url = urlel.getAttribute("data-originalurl");
+    for (var i = 0; i<elements.length; i++){
+        url+="&"+elements[i].name+"=True";
+    }
+    urlel.value = url;
+}
 
 function PlanetModel(controller) {
     this.controller = controller;
@@ -126,7 +157,7 @@ function PlanetModel(controller) {
         var myNode = document.querySelector('.planet .content.w');
         while (myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
-        } 
+        }
         this.redoLocalStorageData();
         model.updated();
         this.downloadWorldWideProjects();
@@ -172,14 +203,14 @@ function PlanetModel(controller) {
 
         var mbcheck = false;
         if (_THIS_IS_MUSIC_BLOCKS_) {
-            if (name.slice(0, MUSICBLOCKSPREFIX.length) === MUSICBLOCKSPREFIX){
+            if (name.slice(0, MUSICBLOCKSPREFIX.length) === MUSICBLOCKSPREFIX) {
                 name = name.substring(MUSICBLOCKSPREFIX.length);
                 mbcheck = true;
             }
         }
 
         if (model.globalImagesCache[image] !== undefined) {
-            model.globalProjects.push({title: name, img: model.globalImagesCache[image]});
+            model.globalProjects.push({title: name, img: model.globalImagesCache[image], musicblocks: mbcheck});
             model.addGlobalElement(model.globalProjects[model.globalProjects.length-1], model.count);
             model.count++;
             model.getImages(todo);
@@ -200,7 +231,7 @@ function PlanetModel(controller) {
                 }
 
                 model.globalImagesCache[image] = d;
-                model.globalProjects.push({title: name, img: d, url: image});
+                model.globalProjects.push({title: name, img: d, url: image, musicblocks: mbcheck});
                 model.addGlobalElement(model.globalProjects[model.globalProjects.length-1], model.count);
                 model.count++;
                 model.getImages(todo);
@@ -287,14 +318,21 @@ function PlanetModel(controller) {
     };
 
     //Opens up projects in the "On my device" section
-    this.open = function (name, data) {
+    this.open = function (name, data, merge) {
+        if (merge === undefined) {
+            merge = false;
+        }
+
         localStorage.currentProject = name;
-        model.controller.sendAllToTrash(false, true);
+        if (!merge) {
+            model.controller.sendAllToTrash(false, true);
+        }
+
         model.controller.loadRawProject(data);
         model.stop = true;
     };
 
-    //Adds the project from "Worldwide" to the "On my deivce" 
+    //Adds the project from "Worldwide" to the "On my deivce"
     //section when download button is clicked
     this.prepLoadingProject = function (name) {
         localStorage.currentProject = name;
@@ -304,9 +342,15 @@ function PlanetModel(controller) {
         localStorage.allProjects = JSON.stringify(l);
     };
 
-    this.load = function (name) {
+    this.load = function (name, merge) {
+        if (merge === undefined) {
+            merge = false;
+        }
+
         model.prepLoadingProject(name);
-        model.controller.sendAllToTrash(false, false);
+        if (!merge) {
+            model.controller.sendAllToTrash(false, false);
+        }
 
         jQuery.ajax({
             url: SERVER + name + '.tb',
@@ -412,6 +456,8 @@ function PlanetView(model, controller) {
                     .addEventListener('click', planet.share(ele,i));
                 ele.querySelector('.download')
                    .addEventListener('click', planet.download(ele));
+                ele.querySelector('.merge')
+                   .addEventListener('click', planet.open(ele, true));
                 ele.querySelector('.delete')
                    .addEventListener('click', planet.delete(ele));
                 ele.querySelector('input')
@@ -423,10 +469,11 @@ function PlanetView(model, controller) {
         }
     };
 
-    this.addGlobalElement = function (glob, i){
+    this.addGlobalElement = function (glob, i) {
         var d = document.createElement('li');
         d.setAttribute('url', glob.url);
         d.setAttribute('title', glob.title);
+        d.setAttribute('data-ismb', glob.musicblocks.toString());
         html = '';
         html += format(GLOBAL_PROJECT_TEMPLATE, glob).replace(new RegExp('_NUM_', 'g'), i.toString());
         d.innerHTML = html;
@@ -436,14 +483,20 @@ function PlanetView(model, controller) {
             .addEventListener('click', planet.load(htmldata));
         htmldata.querySelector('.download')
             .addEventListener('click', planet.load(htmldata));
+        htmldata.querySelector('.merge')
+            .addEventListener('click', planet.load(htmldata, true));
         htmldata.querySelector('.share')
             .addEventListener('click', planet.planetshare(htmldata,i));
         document.querySelector('.planet .content.w').appendChild(htmldata);
     }
 
-    this.load = function (ele) {
+    this.load = function (ele, merge) {
         return function () {
-            planet.model.load(ele.attributes.title.value);
+            if (merge === undefined) {
+                merge = false;
+            }
+
+            planet.model.load(ele.attributes.title.value, merge);
             planet.controller.hide();
         }
     };
@@ -456,6 +509,36 @@ function PlanetView(model, controller) {
         }
     };
 
+    //https://stackoverflow.com/a/3028037/3575587
+    function hideOnClickOutside(selector,planet) {
+        var append="";
+        if (planet){
+            append="pl";
+        }
+        const outsideClickListener = (event) => {
+            var id;
+            if (planet){
+                id = selector.substring(14);
+            } else {
+                id = selector.substring(12);
+            }
+            if (!jQuery(event.target).closest(selector).length&&!jQuery(event.target).closest("#"+append+"shareurlspan"+id).length) {
+                if (jQuery(selector).is(':visible')) {
+                    docById(append+'shareurldiv'+id).style.visibility = 'hidden';
+                    docById(append+'shareurlbox'+id).style.visibility = 'hidden';
+                    docById(append+'shareurltri'+id).style.visibility = 'hidden';
+                    removeClickListener();
+                }
+            }
+        }
+
+        const removeClickListener = () => {
+            document.removeEventListener('click', outsideClickListener);
+        }
+
+        document.addEventListener('click', outsideClickListener);
+    }
+
     this.share = function (ele, i) {
         return function () {
             planet.model.publish(ele.attributes.title.value, ele.attributes.data.value, ele.querySelector('img').src);
@@ -464,28 +547,60 @@ function PlanetView(model, controller) {
             } else {
                 var url = SHAREURL.replace(NAMESUBTEXT, planet.model.getPublishableName(ele.attributes.title.value) + '.tb');
             }
+
             var n = i.toString();
-            docById('shareurldiv'+n).style.visibility = 'visible';
-            docById('shareurlbox'+n).style.visibility = 'visible';
-            docById('shareurltri'+n).style.visibility = 'visible';
-            docById('shareurlbox'+n).value = url;
-            docById('shareurlbox'+n).focus();
-            docById('shareurlbox'+n).select();
+            var box = document.getElementById('shareurldiv' + n);
+            var rect = box.getBoundingClientRect();
+            if (rect.left + window.pageXOffset < 0){
+                box.style.left = 'auto';
+            }
+            if (rect.right + window.pageXOffset > window.innerWidth){
+                box.style.left = '-255px';
+            }
+            hideOnClickOutside('#shareurldiv' + n, false);
+            docById('shareurldiv' + n).style.visibility = 'visible';
+            docById('shareurlbox' + n).style.visibility = 'visible';
+            docById('shareurltri' + n).style.visibility = 'visible';
+            docById('shareurlbox' + n).value = url;
+            docById('shareurlbox' + n).setAttribute('data-originalurl', url);
+            document.getElementById('checkbox' + n + 'run').checked = true;
+            document.getElementById('checkbox' + n + 'show').checked = false;
+            document.getElementById('checkbox' + n + 'collapse').checked = false;
+            updateCheckboxes('shareurldiv' + n);
+            docById('shareurlbox' + n).focus();
+            docById('shareurlbox' + n).select();
         };
     };
 
     this.planetshare = function (ele, i) {
         return function () {
-            if (_THIS_IS_MUSIC_BLOCKS_) {
+            if (_THIS_IS_MUSIC_BLOCKS_&&ele.attributes['data-ismb'].value=='true') {
                 var url = SHAREURL.replace(NAMESUBTEXT, MUSICBLOCKSPREFIX + planet.model.getPublishableName(ele.attributes.title.value) + '.tb');
             } else {
                 var url = SHAREURL.replace(NAMESUBTEXT, planet.model.getPublishableName(ele.attributes.title.value) + '.tb');
             }
+
             var n = i.toString();
+            var box = document.getElementById('plshareurldiv' + n);
+            var rect = box.getBoundingClientRect();
+            if (rect.left + window.pageXOffset < 0){
+                box.style.left = 'auto';
+            }
+
+            if (rect.right + window.pageXOffset > window.innerWidth) {
+                box.style.left = '-255px';
+            }
+
+            hideOnClickOutside('#plshareurldiv' + n, true);
             docById('plshareurldiv'+n).style.visibility = 'visible';
             docById('plshareurlbox'+n).style.visibility = 'visible';
             docById('plshareurltri'+n).style.visibility = 'visible';
             docById('plshareurlbox'+n).value = url;
+            docById('plshareurlbox'+n).setAttribute('data-originalurl', url);
+            document.getElementById('plcheckbox' + n + 'run').checked = true;
+            document.getElementById('plcheckbox' + n + 'show').checked = false;
+            document.getElementById('plcheckbox' + n + 'collapse').checked = false;
+            updateCheckboxes('plshareurldiv'+n);
             docById('plshareurlbox'+n).focus();
             docById('plshareurlbox'+n).select();
         };
@@ -498,28 +613,35 @@ function PlanetView(model, controller) {
         }
     };
 
-    this.open = function (ele) {
+    this.open = function (ele, merge) {
         return function () {
+            if (merge === undefined) {
+                merge = false;
+            }
+
             docById('statusDiv').style.visibility = localStorage.getItem('isStatusHidden');
             docById('statusButtonsDiv').style.visibility = localStorage.getItem('isStatusHidden');
             docById('statusTableDiv').style.visibility = localStorage.getItem('isStatusHidden');
 
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 docById('ptmDiv').style.visibility = localStorage.getItem('isMatrixHidden');
-                docById('ptmButtonsDiv').style.visibility = localStorage.getItem('isMatrixHidden'); 
-                docById('ptmTableDiv').style.visibility = localStorage.getItem('isMatrixHidden'); 
+                docById('ptmButtonsDiv').style.visibility = localStorage.getItem('isMatrixHidden');
+                docById('ptmTableDiv').style.visibility = localStorage.getItem('isMatrixHidden');
                 docById('pscDiv').style.visibility = localStorage.getItem('isStaircaseHidden');
-                docById('pscButtonsDiv').style.visibility = localStorage.getItem('isStaircaseHidden'); 
-                docById('pscTableDiv').style.visibility = localStorage.getItem('isStaircaseHidden'); 
+                docById('pscButtonsDiv').style.visibility = localStorage.getItem('isStaircaseHidden');
+                docById('pscTableDiv').style.visibility = localStorage.getItem('isStaircaseHidden');
+                docById('timbreDiv').style.visibility = localStorage.getItem('isTimbreHidden');
+                docById('timbreButtonsDiv').style.visibility = localStorage.getItem('isTimbreHidden');
+                docById('timbreTableDiv').style.visibility = localStorage.getItem('isTimbreHidden');
                 docById('sliderDiv').style.visibility = localStorage.getItem('isSliderHidden');
                 docById('sliderButtonsDiv').style.visibility = localStorage.getItem('isSliderHidden');
                 docById('sliderTableDiv').style.visibility = localStorage.getItem('isSliderHidden');
                 docById('pdmDiv').style.visibility = localStorage.getItem('isPitchDrumMatrixHidden');
                 docById('pdmButtonsDiv').style.visibility = localStorage.getItem('isPitchDrumMatrixHidden');
                 docById('pdmTableDiv').style.visibility = localStorage.getItem('isPitchDrumMatrixHidden');
-                docById('rulerDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden'); 
-                docById('rulerButtonsDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden'); 
-                docById('rulerTableDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden'); 
+                docById('rulerDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden');
+                docById('rulerButtonsDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden');
+                docById('rulerTableDiv').style.visibility = localStorage.getItem('isRhythmRulerHidden');
                 docById('modeDiv').style.visibility = localStorage.getItem('isModeWidgetHidden');
                 docById('modeButtonsDiv').style.visibility = localStorage.getItem('isModeWidgetHidden');
                 docById('modeTableDiv').style.visibility = localStorage.getItem('isModeWidgetHidden');
@@ -532,8 +654,8 @@ function PlanetView(model, controller) {
                 planet.controller.hide();
                 return;
             }
-            
-            planet.model.open(ele.attributes.title.value, ele.attributes.data.value);
+
+            planet.model.open(ele.attributes.title.value, ele.attributes.data.value, merge);
             planet.controller.hide();
         }
     };
@@ -610,6 +732,7 @@ function SamplesViewer () {
         document.querySelector('.planet').style.display = 'none';
         document.querySelector('body').classList.remove('samples-shown');
         document.querySelector('.canvasHolder').classList.remove('hide');
+        document.querySelector('#canvas').style.display = '';
         document.querySelector('#theme-color').content = platformColor.header;
         this.samples._stage.enableDOMEvents(true);
         window.scroll(0, 0);
@@ -619,6 +742,7 @@ function SamplesViewer () {
         document.querySelector('.planet').style.display = '';
         document.querySelector('body').classList.add('samples-shown');
         document.querySelector('.canvasHolder').classList.add('hide');
+        document.querySelector('#canvas').style.display = 'none';
         document.querySelector('#theme-color').content = '#8bc34a';
         var that = this;
 
@@ -639,12 +763,12 @@ function validateImageData(d) {
     if(d === undefined) {
         return false;
     }
-    
-    if(d.indexOf('data:image') !== 0){
+
+    if(d.indexOf('data:image') !== 0) {
         return false;
     } else {
         var data = d.split(',');
-        if(data[1].length == 0){
+        if(data[1].length == 0) {
             return false;
         }
     }

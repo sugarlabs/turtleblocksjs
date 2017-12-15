@@ -65,9 +65,6 @@ Stop the current project running.
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/clear-button.png' />
 Clear the screen and return the turtles to their initial positions.
 
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/hide-just-blocks-button.png' />
-Hide or show the block palettes.
-
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
 Hide or show the blocks and the palettes
 

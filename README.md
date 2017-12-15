@@ -38,9 +38,10 @@ lines are drawn.
 
 You add blocks to your program by clicking on or dragging them from
 the palette to the main area. You can delete a block by dragging it
-back onto the palette. Click anywhere on a "stack" of blocks to start
-executing that stack or by clicking in the Rabbit (fast) or Turtle
-(slow) on the Main Toolbar.
+back onto the palette. Click anywhere on a “stack” of blocks to start
+executing that stack or by clicking in the Big Play Button 
+(fast running) or press it for a long while for the Turtle
+to run (slowly) on the Main Toolbar.
 
 Getting Started Documentation
 -----------------------------

@@ -55,6 +55,9 @@ A quick start:
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/updated-fast-button.png' />
 Click to run the project in fast mode. Long press to run the project in slow mode.
 
+<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/step-button.png' />
+Click to run the project step by step.
+
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/stop-turtle-button.png' />
 Stop the current project running.
 

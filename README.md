@@ -16,7 +16,7 @@ which will challenge the more adventurous student.
 ![Turtle Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/screenshots/updatedscreenshot.png "Turtle Blocks")
 
 Using Turtle Art JS
--------------------
+------------------- 
 
 Turtle Blocks JS (Javascript) is designed to run in a browser. Most of
 the development has been done in Chrome, but it should also work in

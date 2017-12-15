@@ -1,5 +1,6 @@
 TurtleBlocks JS
 ===============
+<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/activity/logo.png' />
 
 Turtle Blocks Javascript is an activity with a
 Logo-inspired graphical "turtle" that draws colorful art based on

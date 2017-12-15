@@ -68,7 +68,7 @@ Clear the screen and return the turtles to their initial positions.
 Hide or show the block palettes.
 
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
-Hide or show the block palettes.
+Hide or show the blocks and the palettes
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/hide-blocks-button.png' />
 Hide or show the blocks and the palettes.

@@ -1,6 +1,6 @@
 TurtleBlocks JS
 ===============
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/activity/logo.png' />
+<img src='https://github.com/walterbender/turtleblocksjs/blob/master/activity/logo.png' />
 
 Turtle Blocks Javascript is an activity with a
 Logo-inspired graphical "turtle" that draws colorful art based on
@@ -13,7 +13,7 @@ which will challenge the more adventurous student.
 > Blocks, the version included in the Sugar distribution. Sugar users
 > probably want to use Turtle Blocks rather than Turtle Blocks JS.
 
-![Turtle Blocks](https://github.com/yudeelawson/turtleblocksjs/blob/master/screenshots/updatedscreenshot.png "Turtle Blocks")
+![Turtle Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/screenshots/updatedscreenshot.png "Turtle Blocks")
 
 Using Turtle Art JS
 -------------------
@@ -56,25 +56,25 @@ A quick start:
 <img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/updated-fast-button.png' />
 Click to run the project in fast mode. Long press to run the project in slow mode.
 
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/step-button.png' />
+<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/step-button.png' />
 Click to run the project step by step.
 
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/stop-turtle-button.png' />
+<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/stop-turtle-button.png' />
 Stop the current project running.
 
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/clear-button.png' />
+<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/clear-button.png' />
 Clear the screen and return the turtles to their initial positions.
 
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
+<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
 Hide or show the blocks and the palettes
 
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
+<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
 Expand or collapse start and action stacks.
 
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/home-button.png' />
+<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/home-button.png' />
 Return all blocks to the center of the screen.
 
-<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/forward.png' />
+<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/forward.png' />
 Moves turtle forward.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/right.svg' />

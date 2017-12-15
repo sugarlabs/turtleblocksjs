@@ -74,6 +74,9 @@ Hide or show the blocks and the palettes
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
 Expand or collapse start and action stacks.
 
+<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/home-button.png' />
+Return all blocks to the center of the screen.
+
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/forward.png' />
 Moves turtle forward.
 

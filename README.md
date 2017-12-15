@@ -52,6 +52,9 @@ A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](
 
 A quick start:
 
+<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/updated-fast-button.png />
+Tap once to run projects with full speed.Giving a long press run projects slowly
+
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/updated-fast-button.png' />
 Stop the current project running.
 

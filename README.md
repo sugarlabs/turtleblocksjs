@@ -74,7 +74,7 @@ Hide or show the blocks and the palettes
 <img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
 Expand or collapse start and action stacks.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/forward.svg' />
+<img src='https://github.com/yudeelawson/turtleblocksjs/blob/master/documentation/forward.png' />
 Moves turtle forward.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/right.svg' />

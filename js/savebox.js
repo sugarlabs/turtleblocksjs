@@ -116,13 +116,15 @@ function SaveBox () {
                 that._doSavePNG();
             });
 
-            this.saveWAV = makeButton('save-wav', _('Save as .wav'), this._container.x + 245, this._container.y + 85, 55, 0, this._stage);
-            this.saveWAV.visible = true;
-            this.positionHoverText(this.saveWAV);
-            this.saveWAV.on('click', function(event) {
-                that.hide();
-                that._doSaveWAV();
-            });
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                this.saveWAV = makeButton('save-wav', _('Save as .wav'), this._container.x + 245, this._container.y + 85, 55, 0, this._stage);
+                this.saveWAV.visible = true;
+                this.positionHoverText(this.saveWAV);
+                this.saveWAV.on('click', function(event) {
+                    that.hide();
+                    that._doSaveWAV();
+                });
+            }
 
             this.uploadToPlanet = makeButton('upload-planet', _('Upload to Planet'), this._container.x + 310, this._container.y + 85, 55, 0, this._stage);
             this.uploadToPlanet.visible = true;
@@ -184,11 +186,14 @@ function SaveBox () {
             this.saveTB.visible = false;
             this.saveSVG.visible = false;
             this.savePNG.visible = false;
-            this.saveWAV.visible = false;
             this.uploadToPlanet.visible = false;
-            // this.shareOnFb.visible = false;
             this.saveBlockArtwork.visible = false;
-            this.saveLilypond.visible = false;
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                this.saveLilypond.visible = false;
+                this.saveWAV.visible = false;
+            } else {
+                this.shareOnFb.visible = false;
+            }
             this._container.visible = false;
             this._refreshCanvas();
         }
@@ -199,11 +204,14 @@ function SaveBox () {
             this.saveTB.visible = true;
             this.saveSVG.visible = true;
             this.savePNG.visible = true;
-            this.saveWAV.visible = true;
             this.uploadToPlanet.visible = true;
-            // this.shareOnFb.visible = true;
             this.saveBlockArtwork.visible = true;
-            this.saveLilypond.visible = true;
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                this.saveLilypond.visible = true;
+                this.saveWAV.visible = true;
+            } else {
+                this.shareOnFb.visible = true;
+            }
             this._container.visible = true;
             this._refreshCanvas();
         }

@@ -29,6 +29,12 @@
 #: js/block.js:553
 #: js/block.js:535
 #: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
 msgid "rest"
 msgstr ""
 
@@ -229,7 +235,7 @@ msgstr ""
 #: js/activity.js:587
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:62
+#: js/turtledefs.js:61
 #.TRANS: show Cartesian coordinate overlay grid
 msgid "Cartesian"
 msgstr "Cartesiano"
@@ -238,7 +244,7 @@ msgstr "Cartesiano"
 #: js/activity.js:594
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:63
+#: js/turtledefs.js:61
 #.TRANS: show Polar coordinate overlay grid
 msgid "Polar"
 msgstr "Polare"
@@ -287,12 +293,12 @@ msgid "Run note by note"
 msgstr ""
 
 #: js/activity.js:3025
-#: js/activity.js:3039
+#: js/activity.js:3038
 msgid "Hard stop"
 msgstr ""
 
 #: js/activity.js:3026
-#: js/activity.js:3038
+#: js/activity.js:3039
 #: js/turtledefs.js:48
 msgid "Stop"
 msgstr "Interrompere"
@@ -304,50 +310,49 @@ msgid "Clean"
 msgstr "Pulire"
 
 #: js/activity.js:3028
-#: js/turtledefs.js:50
 msgid "Show/hide palettes"
 msgstr "Mostrare/nascondire tavolozze"
 
 #: js/activity.js:3029
 #: js/activity.js:3041
-#: js/turtledefs.js:51
+#: js/turtledefs.js:50
 msgid "Show/hide blocks"
 msgstr "Mostrare/Nascondire blocchi"
 
 #: js/activity.js:3030
 #: js/activity.js:3042
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand/collapse collapsable blocks"
 msgstr "Espandire/collassare blocchi collassabili"
 
 #: js/activity.js:3031
 #: js/activity.js:3043
 #: js/activity.js:3085
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Home"
 msgstr ""
 
 #: js/activity.js:3032
 #: js/activity.js:3044
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Help"
 msgstr "Aiuto"
 
 #: js/activity.js:3126
 #: js/activity.js:3138
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "Load samples from server"
 msgstr "Aprire esempi dal server"
 
 #: js/activity.js:3127
 #: js/activity.js:3139
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "Load project from files"
 msgstr ""
 
 #: js/activity.js:3128
 #: js/activity.js:3140
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save project"
 msgstr "Salvare il progetto"
 
@@ -366,19 +371,19 @@ msgstr ""
 
 #: js/activity.js:3132
 #: js/activity.js:3144
-#: js/turtledefs.js:64
+#: js/turtledefs.js:62
 msgid "Settings"
 msgstr ""
 
 #: js/activity.js:3133
 #: js/activity.js:3145
-#: js/turtledefs.js:70
+#: js/turtledefs.js:69
 msgid "Delete all"
 msgstr ""
 
 #: js/activity.js:3134
 #: js/activity.js:3146
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Undo"
 msgstr "disfare"
 
@@ -810,48 +815,57 @@ msgstr "Click per correre il progetto passo per passi"
 msgid "Stop the current project."
 msgstr "Fermare il progetto attuale."
 
+#: js/turtledefs.js:48
+msgid "You can also type Alt-S to stop."
+msgstr ""
+
 #: js/turtledefs.js:49
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr "Pulire lo schermo e retornare le tartaruge per i suoi posizioni iniziali."
 
 #: js/turtledefs.js:50
-msgid "Hide or show the block palettes."
-msgstr "Nascondire o mostrare i tavolozzi di blocchi."
-
-#: js/turtledefs.js:51
 msgid "Hide or show the blocks and the palettes."
 msgstr "Nascondere o mostrare i blocchi e le tavolozze"
 
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand or collapse start and action stacks."
 msgstr ""
 
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Return all blocks to the center of the screen."
 msgstr ""
 
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Show these messages."
 msgstr "Mostrare questi messagi."
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Expand/collapse option toolbar"
 msgstr "Espandire/collassare barra degli strumenti di opzioni"
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr "Click questo pulsante per espandire o collassare la barra degli strumenti assistente,"
 
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "This button opens a viewer for loading example projects."
 msgstr "Questo pulsante apre uno spettatore per aprire progetti di esempi."
 
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "You can also load projects from the file system."
 msgstr "Anche tu puoi aprire progetti dal filesystem."
 
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save your project to a file."
+msgstr ""
+
+#: js/turtledefs.js:58
+#: js/savebox.js:164
+msgid "Save sheet music"
+msgstr ""
+
+#: js/turtledefs.js:58
+msgid "Save your project to as a Lilypond file."
 msgstr ""
 
 #: js/turtledefs.js:59
@@ -859,32 +873,49 @@ msgid "Copy"
 msgstr ""
 
 #: js/turtledefs.js:59
-msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+msgid "To copy a stack to the clipboard, do a long press on the stack."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "You can also use Alt+C to copy a stack of blocks."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "The Paste Button will highlight."
 msgstr ""
 
 #: js/turtledefs.js:60
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr ""
 
-#: js/turtledefs.js:61
-#: js/blocks.js:308
-msgid "Save stack"
+#: js/turtledefs.js:60
+msgid "You can also use Alt+V to paste a stack of blocks. "
 msgstr ""
 
 #: js/turtledefs.js:61
-msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+msgid "Show or hide a coordinate grid."
 msgstr ""
 
 #: js/turtledefs.js:62
-msgid "Show or hide a Cartesian-coordinate grid."
-msgstr "Mostrare o nascondire una griglia di coordinate Cartesiane."
+msgid "Open a panel for configuring Music Blocks."
+msgstr ""
 
 #: js/turtledefs.js:63
-msgid "Show or hide a polar-coordinate grid."
-msgstr "Mostrare o nascondire una grigia di coordinate polari."
+#: js/utilitybox.js:153
+msgid "Search"
+msgstr ""
+
+#: js/turtledefs.js:63
+msgid "You can search for blocks by name."
+msgstr ""
 
 #: js/turtledefs.js:64
-msgid "Open a panel for configuring Turtle Blocks."
+#: js/utilitybox.js:130
+msgid "Enable scrolling"
+msgstr ""
+
+#: js/turtledefs.js:64
+msgid "You can scroll the blocks on the canvas."
 msgstr ""
 
 #: js/turtledefs.js:65
@@ -911,7 +942,7 @@ msgid "Display statistics"
 msgstr ""
 
 #: js/turtledefs.js:67
-msgid "Display statistics about your Turtle project."
+msgid "Display statistics about your Music project."
 msgstr ""
 
 #: js/turtledefs.js:68
@@ -924,27 +955,18 @@ msgid "You can load new blocks from the file system."
 msgstr "Tu puoi aprire nuovi blocchi dal filesystem."
 
 #: js/turtledefs.js:69
-#: js/utilitybox.js:130
-msgid "Enable scrolling"
-msgstr ""
-
-#: js/turtledefs.js:69
-msgid "You can scroll the blocks on the canvas."
-msgstr ""
-
-#: js/turtledefs.js:70
 msgid "Remove all content on the canvas, including the blocks."
 msgstr "Rimuovere tutti il contenuto del canovaccio, compreso i blocchi."
 
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Restore blocks from the trash."
 msgstr "Restaurare blocchi dalla spazzatura."
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "Congratulations."
 msgstr "Felicitazioni."
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "Tu hai finito il tour. Per favore godi Turtle Blocks!"
 
@@ -1895,10 +1917,6 @@ msgstr ""
 msgid "Disable scrolling"
 msgstr ""
 
-#: js/utilitybox.js:153
-msgid "Search"
-msgstr ""
-
 #: js/savebox.js:110
 msgid "Save as .tb"
 msgstr ""
@@ -1917,10 +1935,6 @@ msgstr ""
 
 #: js/savebox.js:153
 msgid "Upload to Planet"
-msgstr ""
-
-#: js/savebox.js:164
-msgid "Save sheet music"
 msgstr ""
 
 #: js/savebox.js:172
@@ -2025,6 +2039,10 @@ msgstr ""
 
 #: js/lilypond.js:19
 msgid "bt"
+msgstr ""
+
+#: js/blocks.js:308
+msgid "Save stack"
 msgstr ""
 
 #: js/blocks.js:2837
@@ -2883,8 +2901,10 @@ msgstr ""
 #~msgid "Click to run the project in slow mode."
 #~msgstr "Click per correre il progetto in modalità lenta"
 
-#~msgid "hspace"
-#~msgstr ""
+#: js/turtledefs.js:50
+
+#~msgid "Hide or show the block palettes."
+#~msgstr "Nascondire o mostrare i tavolozzi di blocchi."
 
 #~msgid "vspace"
 #~msgstr ""
@@ -2929,16 +2949,16 @@ msgstr ""
 #~msgid "blocks"
 #~msgstr "blocchi"
 
-#~msgid "eatme"
-#~msgstr "mangiame"
+#: js/turtledefs.js:67
 
-#: js/palette.js:1782
-
-#~msgid "la"
+#~msgid "Display statistics about your Turtle project."
 #~msgstr ""
 
 #~msgid "food"
 #~msgstr "cibo"
+
+#~msgid "eatme"
+#~msgstr "mangiame"
 
 #: js/palette.js:1802
 
@@ -2948,20 +2968,40 @@ msgstr ""
 #~msgid "maths"
 #~msgstr "matematica"
 
-#~msgid "This button opens and closes the primary toolbar."
-#~msgstr "Questo pulsante apre e chiude la barra di strumenti principali."
+#: js/turtledefs.js:61
+
+#~msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#~msgid "hspace"
+#~msgstr ""
 
 #~msgid "mashape"
 #~msgstr "mashape"
 
+#: js/turtledefs.js:59
+
+#~msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#: js/turtledefs.js:64
+
+#~msgid "Open a panel for configuring Turtle Blocks."
+#~msgstr ""
+
 #~msgid "Expand/collapse toolbar"
 #~msgstr "Espandere/collassare la barra degli strumenti"
 
-#~msgid "see distance"
-#~msgstr "guardare distancia"
+#: js/turtledefs.js:63
+
+#~msgid "Show or hide a polar-coordinate grid."
+#~msgstr "Mostrare o nascondire una grigia di coordinate polari."
 
 #~msgid "logic"
 #~msgstr "logica"
+
+#~msgid "see distance"
+#~msgstr "guardare distancia"
 
 #: js/basicblocks.js:1105
 
@@ -2988,6 +3028,9 @@ msgstr ""
 #~msgid "Run music slow"
 #~msgstr ""
 
+#~msgid "This button opens and closes the primary toolbar."
+#~msgstr "Questo pulsante apre e chiude la barra di strumenti principali."
+
 #: js/palette.js:599
 
 #: js/palette.js:1795
@@ -2996,4 +3039,14 @@ msgstr ""
 
 #~msgid "sol"
 #~msgstr ""
+
+#: js/palette.js:1782
+
+#~msgid "la"
+#~msgstr ""
+
+#: js/turtledefs.js:62
+
+#~msgid "Show or hide a Cartesian-coordinate grid."
+#~msgstr "Mostrare o nascondire una griglia di coordinate Cartesiane."
 

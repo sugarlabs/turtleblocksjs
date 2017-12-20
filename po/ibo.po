@@ -18,6 +18,12 @@
 #: js/block.js:553
 #: js/block.js:535
 #: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
 msgid "rest"
 msgstr ""
 
@@ -218,7 +224,7 @@ msgstr ""
 #: js/activity.js:587
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:62
+#: js/turtledefs.js:61
 #.TRANS: show Cartesian coordinate overlay grid
 msgid "Cartesian"
 msgstr "Cartesian"
@@ -227,7 +233,7 @@ msgstr "Cartesian"
 #: js/activity.js:594
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:63
+#: js/turtledefs.js:61
 #.TRANS: show Polar coordinate overlay grid
 msgid "Polar"
 msgstr "pola"
@@ -276,12 +282,12 @@ msgid "Run note by note"
 msgstr "Agba ọsọ dee site na ndetu"
 
 #: js/activity.js:3025
-#: js/activity.js:3039
+#: js/activity.js:3038
 msgid "Hard stop"
 msgstr ""
 
 #: js/activity.js:3026
-#: js/activity.js:3038
+#: js/activity.js:3039
 #: js/turtledefs.js:48
 msgid "Stop"
 msgstr "kwụsị"
@@ -293,50 +299,49 @@ msgid "Clean"
 msgstr "ọcha"
 
 #: js/activity.js:3028
-#: js/turtledefs.js:50
 msgid "Show/hide palettes"
 msgstr "Gosi / hide palettes"
 
 #: js/activity.js:3029
 #: js/activity.js:3041
-#: js/turtledefs.js:51
+#: js/turtledefs.js:50
 msgid "Show/hide blocks"
 msgstr "Gosi / hide blocks"
 
 #: js/activity.js:3030
 #: js/activity.js:3042
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand/collapse collapsable blocks"
 msgstr "Ịmụbawanye / daa collapsable blocks"
 
 #: js/activity.js:3031
 #: js/activity.js:3043
 #: js/activity.js:3085
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Home"
 msgstr ""
 
 #: js/activity.js:3032
 #: js/activity.js:3044
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Help"
 msgstr "Help"
 
 #: js/activity.js:3126
 #: js/activity.js:3138
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "Load samples from server"
 msgstr "Ibu Ibu n'omume site na ihe nkesa"
 
 #: js/activity.js:3127
 #: js/activity.js:3139
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "Load project from files"
 msgstr ""
 
 #: js/activity.js:3128
 #: js/activity.js:3140
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save project"
 msgstr "Save oru ngo"
 
@@ -355,19 +360,19 @@ msgstr ""
 
 #: js/activity.js:3132
 #: js/activity.js:3144
-#: js/turtledefs.js:64
+#: js/turtledefs.js:62
 msgid "Settings"
 msgstr "Ntọala"
 
 #: js/activity.js:3133
 #: js/activity.js:3145
-#: js/turtledefs.js:70
+#: js/turtledefs.js:69
 msgid "Delete all"
 msgstr "hichapụ niile"
 
 #: js/activity.js:3134
 #: js/activity.js:3146
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Undo"
 msgstr "Wepu"
 
@@ -799,82 +804,108 @@ msgstr "Pịa na-agba ọsọ ngo nzọụkwụ site nzọụkwụ"
 msgid "Stop the current project."
 msgstr "Kwụsị ugbu a oru ngo"
 
+#: js/turtledefs.js:48
+msgid "You can also type Alt-S to stop."
+msgstr ""
+
 #: js/turtledefs.js:49
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr "Clear the screen and return the turtles to their initial positions"
 
 #: js/turtledefs.js:50
-msgid "Hide or show the block palettes."
-msgstr "Zoo ma ọ bụ na-egosi na ngọngọ palettes"
-
-#: js/turtledefs.js:51
 msgid "Hide or show the blocks and the palettes."
 msgstr "Zoo ma ọ bụ na-egosi na blocks na palettes"
 
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand or collapse start and action stacks."
 msgstr "Ịmụbawanye ma ọ bụ daa stacks nke blocks, dịka, na-amalite na edinam stack"
 
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Return all blocks to the center of the screen."
 msgstr ""
 
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Show these messages."
 msgstr "Gosi ndị a ozi"
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Expand/collapse option toolbar"
 msgstr "Ịmụbawanye / daa nhọrọ toolbar"
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr "Pịa a button mụbaa ma ọ bụ daa na auxillary toolbar"
 
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "This button opens a viewer for loading example projects."
 msgstr "Nke a ga-emepe button a na-ekiri maka loading atụ oru ngo"
 
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "You can also load projects from the file system."
 msgstr "giwa nwekwara ike mara oru ngo si faịlụ usoro"
 
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save your project to a file."
 msgstr "Azọpụta gị oru ngo a faịlụ."
+
+#: js/turtledefs.js:58
+#: js/savebox.js:164
+msgid "Save sheet music"
+msgstr "Zọpụta mpempe akwụkwọ egwu"
+
+#: js/turtledefs.js:58
+msgid "Save your project to as a Lilypond file."
+msgstr "Azọpụta gị oru ngo ka a faịlụ Lilypond."
 
 #: js/turtledefs.js:59
 msgid "Copy"
 msgstr "Detuo"
 
 #: js/turtledefs.js:59
-msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+msgid "To copy a stack to the clipboard, do a long press on the stack."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "You can also use Alt+C to copy a stack of blocks."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "The Paste Button will highlight."
 msgstr ""
 
 #: js/turtledefs.js:60
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr "The tapawa button na-nyeere e nwere blocks depụtaghachiri n'elu clipboard"
 
-#: js/turtledefs.js:61
-#: js/blocks.js:308
-msgid "Save stack"
-msgstr "ịzọpụta tojupụtara"
+#: js/turtledefs.js:60
+msgid "You can also use Alt+V to paste a stack of blocks. "
+msgstr ""
 
 #: js/turtledefs.js:61
-msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+msgid "Show or hide a coordinate grid."
 msgstr ""
 
 #: js/turtledefs.js:62
-msgid "Show or hide a Cartesian-coordinate grid."
-msgstr "Egosi ma ọ bụ zoo a Cartesian-ahazi okporo"
+msgid "Open a panel for configuring Music Blocks."
+msgstr "Mepee a panel maka configuring mbe nkanka ."
 
 #: js/turtledefs.js:63
-msgid "Show or hide a polar-coordinate grid."
-msgstr "Egosi ma ọ bụ zoo a polar-ahazi okporo"
+#: js/utilitybox.js:153
+msgid "Search"
+msgstr ""
+
+#: js/turtledefs.js:63
+msgid "You can search for blocks by name."
+msgstr ""
 
 #: js/turtledefs.js:64
-msgid "Open a panel for configuring Turtle Blocks."
-msgstr "Mepee a panel maka configuring mbe nkanka ."
+#: js/utilitybox.js:130
+msgid "Enable scrolling"
+msgstr "Kwado pịgharịwa"
+
+#: js/turtledefs.js:64
+msgid "You can scroll the blocks on the canvas."
+msgstr "Ị nwere ike pịgharịa na blocks na kwaaji."
 
 #: js/turtledefs.js:65
 #: js/utilitybox.js:90
@@ -900,7 +931,7 @@ msgid "Display statistics"
 msgstr "Ngosipụta ọnụ ọgụgụ"
 
 #: js/turtledefs.js:67
-msgid "Display statistics about your Turtle project."
+msgid "Display statistics about your Music project."
 msgstr "Ngosipụta ọnụ ọgụgụ banyere gị mbe oru ngo."
 
 #: js/turtledefs.js:68
@@ -913,27 +944,18 @@ msgid "You can load new blocks from the file system."
 msgstr "I nwere ike mara ọhụrụ blocks si faịlụ usoro"
 
 #: js/turtledefs.js:69
-#: js/utilitybox.js:130
-msgid "Enable scrolling"
-msgstr "Kwado pịgharịwa"
-
-#: js/turtledefs.js:69
-msgid "You can scroll the blocks on the canvas."
-msgstr "Ị nwere ike pịgharịa na blocks na kwaaji."
-
-#: js/turtledefs.js:70
 msgid "Remove all content on the canvas, including the blocks."
 msgstr "Wepụ niile ọdịnaya na kwaaji, gụnyere blocks"
 
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Restore blocks from the trash."
 msgstr "Weghachi blocks si ahịhịa"
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "Congratulations."
 msgstr "ekele"
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "ị okokụre njegharị. Biko enwe mbe nkanka!"
 
@@ -1884,10 +1906,6 @@ msgstr ""
 msgid "Disable scrolling"
 msgstr ""
 
-#: js/utilitybox.js:153
-msgid "Search"
-msgstr ""
-
 #: js/savebox.js:110
 msgid "Save as .tb"
 msgstr ""
@@ -1907,10 +1925,6 @@ msgstr ""
 #: js/savebox.js:153
 msgid "Upload to Planet"
 msgstr ""
-
-#: js/savebox.js:164
-msgid "Save sheet music"
-msgstr "Zọpụta mpempe akwụkwọ egwu"
 
 #: js/savebox.js:172
 msgid "Share on Facebook"
@@ -2015,6 +2029,10 @@ msgstr ""
 #: js/lilypond.js:19
 msgid "bt"
 msgstr ""
+
+#: js/blocks.js:308
+msgid "Save stack"
+msgstr "ịzọpụta tojupụtara"
 
 #: js/blocks.js:2837
 #: js/blocks.js:2863
@@ -2870,8 +2888,10 @@ msgstr ""
 #~msgid "Click to run the project in slow mode."
 #~msgstr "Pịa-agba ọsọ ahụ oru ngo na-adịghị ngwa mode"
 
-#~msgid "hspace"
-#~msgstr ""
+#: js/turtledefs.js:50
+
+#~msgid "Hide or show the block palettes."
+#~msgstr "Zoo ma ọ bụ na-egosi na ngọngọ palettes"
 
 #~msgid "vspace"
 #~msgstr ""
@@ -2912,10 +2932,10 @@ msgstr ""
 #~msgid "blocks"
 #~msgstr "blocks"
 
-#: js/palette.js:1782
+#: js/turtledefs.js:67
 
-#~msgid "la"
-#~msgstr ""
+#~msgid "Display statistics about your Turtle project."
+#~msgstr "Ngosipụta ọnụ ọgụgụ banyere gị mbe oru ngo."
 
 #~msgid "food"
 #~msgstr "nri"
@@ -2931,20 +2951,40 @@ msgstr ""
 #~msgid "maths"
 #~msgstr "maths"
 
-#~msgid "This button opens and closes the primary toolbar."
-#~msgstr "Nke a button emepekwa na-emechi isi toolbar."
+#: js/turtledefs.js:61
+
+#~msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#~msgid "hspace"
+#~msgstr ""
 
 #~msgid "mashape"
 #~msgstr "ọdịdị"
 
+#: js/turtledefs.js:59
+
+#~msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#: js/turtledefs.js:64
+
+#~msgid "Open a panel for configuring Turtle Blocks."
+#~msgstr "Mepee a panel maka configuring mbe nkanka ."
+
 #~msgid "Expand/collapse toolbar"
 #~msgstr "Ịmụbawanye / ida toolbar"
 
-#~msgid "see distance"
-#~msgstr "ịhụ anya"
+#: js/turtledefs.js:63
+
+#~msgid "Show or hide a polar-coordinate grid."
+#~msgstr "Egosi ma ọ bụ zoo a polar-ahazi okporo"
 
 #~msgid "logic"
 #~msgstr "mgbagha"
+
+#~msgid "see distance"
+#~msgstr "ịhụ anya"
 
 #~msgid "end hollow line"
 #~msgstr ""
@@ -2966,6 +3006,9 @@ msgstr ""
 #~msgid "Run music slow"
 #~msgstr ""
 
+#~msgid "This button opens and closes the primary toolbar."
+#~msgstr "Nke a button emepekwa na-emechi isi toolbar."
+
 #: js/palette.js:599
 
 #: js/palette.js:1795
@@ -2974,4 +3017,14 @@ msgstr ""
 
 #~msgid "sol"
 #~msgstr ""
+
+#: js/palette.js:1782
+
+#~msgid "la"
+#~msgstr ""
+
+#: js/turtledefs.js:62
+
+#~msgid "Show or hide a Cartesian-coordinate grid."
+#~msgstr "Egosi ma ọ bụ zoo a Cartesian-ahazi okporo"
 

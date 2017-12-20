@@ -13,6 +13,12 @@
 #: js/block.js:553
 #: js/block.js:535
 #: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
 msgid "rest"
 msgstr "descanso"
 
@@ -213,7 +219,7 @@ msgstr "ocultar las rejillas de coordenadas"
 #: js/activity.js:587
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:62
+#: js/turtledefs.js:61
 #.TRANS: show Cartesian coordinate overlay grid
 msgid "Cartesian"
 msgstr "Cartesiano"
@@ -222,7 +228,7 @@ msgstr "Cartesiano"
 #: js/activity.js:594
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:63
+#: js/turtledefs.js:61
 #.TRANS: show Polar coordinate overlay grid
 msgid "Polar"
 msgstr "Polar"
@@ -271,12 +277,12 @@ msgid "Run note by note"
 msgstr "Reproducir nota a nota"
 
 #: js/activity.js:3025
-#: js/activity.js:3039
+#: js/activity.js:3038
 msgid "Hard stop"
 msgstr "Parar inmediatamente"
 
 #: js/activity.js:3026
-#: js/activity.js:3038
+#: js/activity.js:3039
 #: js/turtledefs.js:48
 msgid "Stop"
 msgstr "Detener"
@@ -288,50 +294,49 @@ msgid "Clean"
 msgstr "Limpiar"
 
 #: js/activity.js:3028
-#: js/turtledefs.js:50
 msgid "Show/hide palettes"
 msgstr "Mostrar u ocultar las paletas"
 
 #: js/activity.js:3029
 #: js/activity.js:3041
-#: js/turtledefs.js:51
+#: js/turtledefs.js:50
 msgid "Show/hide blocks"
 msgstr "Mostrar u ocultar los bloques."
 
 #: js/activity.js:3030
 #: js/activity.js:3042
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand/collapse collapsable blocks"
 msgstr "Expandir o colapsar los bloques colapsables\t"
 
 #: js/activity.js:3031
 #: js/activity.js:3043
 #: js/activity.js:3085
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Home"
 msgstr "Casa"
 
 #: js/activity.js:3032
 #: js/activity.js:3044
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Help"
 msgstr "Ayuda"
 
 #: js/activity.js:3126
 #: js/activity.js:3138
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "Load samples from server"
 msgstr "Cargar ejemplos desde el servidor"
 
 #: js/activity.js:3127
 #: js/activity.js:3139
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "Load project from files"
 msgstr "Cargar proyecto de archivos"
 
 #: js/activity.js:3128
 #: js/activity.js:3140
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save project"
 msgstr "Guardar proyecto"
 
@@ -350,19 +355,19 @@ msgstr "reproducir"
 
 #: js/activity.js:3132
 #: js/activity.js:3144
-#: js/turtledefs.js:64
+#: js/turtledefs.js:62
 msgid "Settings"
 msgstr "Configuración"
 
 #: js/activity.js:3133
 #: js/activity.js:3145
-#: js/turtledefs.js:70
+#: js/turtledefs.js:69
 msgid "Delete all"
 msgstr "Borrar todo"
 
 #: js/activity.js:3134
 #: js/activity.js:3146
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Undo"
 msgstr "Deshacer"
 
@@ -794,82 +799,108 @@ msgstr "Haz click para ejecutar el proyecto en modo paso a paso."
 msgid "Stop the current project."
 msgstr "Detener las tortugas."
 
+#: js/turtledefs.js:48
+msgid "You can also type Alt-S to stop."
+msgstr "También puede escribir Alt-S para detenerse."
+
 #: js/turtledefs.js:49
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr "Borrar la pantalla y volver a las tortugas a sus posiciones iniciales."
 
 #: js/turtledefs.js:50
-msgid "Hide or show the block palettes."
-msgstr "Ocultar o mostrar las paletas de bloques."
-
-#: js/turtledefs.js:51
 msgid "Hide or show the blocks and the palettes."
 msgstr "Ocultar o mostrar los bloques y las paletas."
 
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand or collapse start and action stacks."
 msgstr "Expandir o colapsar los bloques colapsables, cómo por ejemplo los bloques de empezar y los de acción."
 
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Return all blocks to the center of the screen."
 msgstr "Devolver todos los bloques para el centro de la pantalla."
 
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Show these messages."
 msgstr "Mostrar estos mensajes."
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Expand/collapse option toolbar"
 msgstr "Expandir/colapsar la barra de opciones."
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr "Haz click en este botón para expandir o colapsar la barra de herramientas auxiliar."
 
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "This button opens a viewer for loading example projects."
 msgstr "Este botón abre la pantalla de carga de proyectos de ejemplo."
 
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "You can also load projects from the file system."
 msgstr "También puede cargar proyectos desde el sistema de archivos."
 
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save your project to a file."
 msgstr "Guarde proyecto en archivo"
+
+#: js/turtledefs.js:58
+#: js/savebox.js:164
+msgid "Save sheet music"
+msgstr "Ahorre partituras"
+
+#: js/turtledefs.js:58
+msgid "Save your project to as a Lilypond file."
+msgstr "Guarde el proyecto como un archivo de LilyPond."
 
 #: js/turtledefs.js:59
 msgid "Copy"
 msgstr "Copiar"
 
 #: js/turtledefs.js:59
-msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+msgid "To copy a stack to the clipboard, do a long press on the stack."
 msgstr "Para copiar una pila en el portapapeles, hacer un \"pulsación larga \" en la pila."
+
+#: js/turtledefs.js:59
+msgid "You can also use Alt+C to copy a stack of blocks."
+msgstr "También puede usar Alt+C para copiar una pila de bloques."
+
+#: js/turtledefs.js:59
+msgid "The Paste Button will highlight."
+msgstr "El botón de pegar destacará."
 
 #: js/turtledefs.js:60
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr "El botón de pegar está activo, por lo tanto hay bloques copiados en el portapapeles."
 
-#: js/turtledefs.js:61
-#: js/blocks.js:308
-msgid "Save stack"
-msgstr "Guardar pila"
+#: js/turtledefs.js:60
+msgid "You can also use Alt+V to paste a stack of blocks. "
+msgstr "También puede usar Alt+V para pegar una pila de bloques."
 
 #: js/turtledefs.js:61
-msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
-msgstr "El bot�n de guardar-pila guarda una pila sobre una paleta personalizada."
+msgid "Show or hide a coordinate grid."
+msgstr "Mostrar u ocultar las rejillas de coordenadas."
 
 #: js/turtledefs.js:62
-msgid "Show or hide a Cartesian-coordinate grid."
-msgstr "Mostrar u ocultar cuadrícula en coordenadas cartesianas."
+msgid "Open a panel for configuring Music Blocks."
+msgstr "Abre el panel para configurar Bloques de Música."
 
 #: js/turtledefs.js:63
-msgid "Show or hide a polar-coordinate grid."
-msgstr "Mostrar u ocultar la rejilla de coordenadas polares."
+#: js/utilitybox.js:153
+msgid "Search"
+msgstr "Buscar"
+
+#: js/turtledefs.js:63
+msgid "You can search for blocks by name."
+msgstr "Puede buscar bloques por nombre."
 
 #: js/turtledefs.js:64
-msgid "Open a panel for configuring Turtle Blocks."
-msgstr "Abre el panel para configurar TortuBloques."
+#: js/utilitybox.js:130
+msgid "Enable scrolling"
+msgstr "Activar scroll"
+
+#: js/turtledefs.js:64
+msgid "You can scroll the blocks on the canvas."
+msgstr "Puedes mover los bloques por el área de trabajo"
 
 #: js/turtledefs.js:65
 #: js/utilitybox.js:90
@@ -895,7 +926,7 @@ msgid "Display statistics"
 msgstr "Analizar"
 
 #: js/turtledefs.js:67
-msgid "Display statistics about your Turtle project."
+msgid "Display statistics about your Music project."
 msgstr "Analizar los tipos de bloques usados."
 
 #: js/turtledefs.js:68
@@ -908,27 +939,18 @@ msgid "You can load new blocks from the file system."
 msgstr "Tu puedes cargar nuevos bloques desde un archivo."
 
 #: js/turtledefs.js:69
-#: js/utilitybox.js:130
-msgid "Enable scrolling"
-msgstr "Activar scroll"
-
-#: js/turtledefs.js:69
-msgid "You can scroll the blocks on the canvas."
-msgstr "Puedes mover los bloques por el área de trabajo"
-
-#: js/turtledefs.js:70
 msgid "Remove all content on the canvas, including the blocks."
 msgstr "Eliminar todo el contenido del canvas, incluyendo los bloques."
 
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Restore blocks from the trash."
 msgstr "Restaurar bloques de la papelera."
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "Congratulations."
 msgstr "Felicitaciones."
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "Ha terminado la gira. Por favor, disfrutar de TortuBloques"
 
@@ -1879,10 +1901,6 @@ msgstr ""
 msgid "Disable scrolling"
 msgstr "Desactivar scroll"
 
-#: js/utilitybox.js:153
-msgid "Search"
-msgstr "Buscar"
-
 #: js/savebox.js:110
 msgid "Save as .tb"
 msgstr "Guardar como .tb"
@@ -1902,10 +1920,6 @@ msgstr "Guardar como .wav"
 #: js/savebox.js:153
 msgid "Upload to Planet"
 msgstr "Subir al Planeta"
-
-#: js/savebox.js:164
-msgid "Save sheet music"
-msgstr "Ahorre partituras"
 
 #: js/savebox.js:172
 msgid "Share on Facebook"
@@ -2010,6 +2024,10 @@ msgstr ""
 #: js/lilypond.js:19
 msgid "bt"
 msgstr ""
+
+#: js/blocks.js:308
+msgid "Save stack"
+msgstr "Guardar pila"
 
 #: js/blocks.js:2837
 #: js/blocks.js:2863
@@ -2862,48 +2880,13 @@ msgstr "mover"
 msgid "You need to select a file."
 msgstr "Debe seleccionar un archivo."
 
-#: js/activity.js:1957
-
-#~msgid "Run music slow"
-#~msgstr "Música ejecute lentamente"
-
-#~msgid "blocks"
-#~msgstr "bloques"
-
-#~msgid "food"
-#~msgstr "alimentos"
-
 #~msgid "slow down"
 #~msgstr "retardar"
 
-#: js/turtledefs.js:21
+#: js/turtledefs.js:50
 
-#~msgid "widgets"
-#~msgstr "aparatos"
-
-#~msgid "eatme"
-#~msgstr "cómeme"
-
-#~msgid "maths"
-#~msgstr "matemáticas"
-
-#~msgid "undo"
-#~msgstr "anular"
-
-#: js/turtledefs.js:112
-
-#~msgid "This toolbar contains the palette buttons Matrix Notes Tone Turtle and more."
-#~msgstr "Esta barra de herramientas contiene los botones de la paleta de Matrix, Notas, Tono, Tortuga, y más."
-
-#: js/turtledefs.js:132
-
-#~msgid "It appears after a long press on a stack."
-#~msgstr "Aparece despu�s de una pulsaci�n larga en una pila."
-
-#: js/turtledefs.js:135
-
-#~msgid "Open a panel for configuring Music Blocks."
-#~msgstr "Abre el panel para configurar Bloques de Música."
+#~msgid "Hide or show the block palettes."
+#~msgstr "Ocultar o mostrar las paletas de bloques."
 
 #: js/logo.js:1464
 
@@ -2915,17 +2898,82 @@ msgstr "Debe seleccionar un archivo."
 #~msgid "Long press to run slow"
 #~msgstr "hacer un pulsación larga para ejecutar lentamente"
 
+#~msgid "play backward"
+#~msgstr "jugar hacia atrás"
+
+#~msgid "rodi"
+#~msgstr "RoDi"
+
+#~msgid "Save your project to a server."
+#~msgstr "Guarde proyecto en el servidor."
+
+#~msgid "blocks"
+#~msgstr "bloques"
+
+#: js/turtledefs.js:67
+
+#~msgid "Display statistics about your Turtle project."
+#~msgstr "Analizar los tipos de bloques usados."
+
+#~msgid "food"
+#~msgstr "alimentos"
+
+#~msgid "eatme"
+#~msgstr "cómeme"
+
+#~msgid "undo"
+#~msgstr "anular"
+
+#~msgid "maths"
+#~msgstr "matemáticas"
+
+#: js/turtledefs.js:112
+
+#~msgid "This toolbar contains the palette buttons Matrix Notes Tone Turtle and more."
+#~msgstr "Esta barra de herramientas contiene los botones de la paleta de Matrix, Notas, Tono, Tortuga, y más."
+
+#: js/turtledefs.js:21
+
+#~msgid "widgets"
+#~msgstr "aparatos"
+
+#: js/turtledefs.js:61
+
+#~msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+#~msgstr "El bot�n de guardar-pila guarda una pila sobre una paleta personalizada."
+
+#: js/turtledefs.js:59
+
+#~msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+#~msgstr "Para copiar una pila en el portapapeles, hacer un \"pulsación larga \" en la pila."
+
+#: js/turtledefs.js:64
+
+#~msgid "Open a panel for configuring Turtle Blocks."
+#~msgstr "Abre el panel para configurar TortuBloques."
+
+#: js/turtledefs.js:63
+
+#~msgid "Show or hide a polar-coordinate grid."
+#~msgstr "Mostrar u ocultar la rejilla de coordenadas polares."
+
+#: js/turtledefs.js:132
+
+#~msgid "It appears after a long press on a stack."
+#~msgstr "Aparece despu�s de una pulsaci�n larga en una pila."
+
 #: js/turtledefs.js:132
 
 #~msgid "The save-stack button saves a stack onto a custom palette."
 #~msgstr "El bot�n de guardar-pila guarda una pila sobre una paleta personalizada."
 
-#~msgid "Save your project to a server."
-#~msgstr "Guarde proyecto en el servidor."
+#: js/activity.js:1957
 
-#~msgid "rodi"
-#~msgstr "RoDi"
+#~msgid "Run music slow"
+#~msgstr "Música ejecute lentamente"
 
-#~msgid "play backward"
-#~msgstr "jugar hacia atrás"
+#: js/turtledefs.js:62
+
+#~msgid "Show or hide a Cartesian-coordinate grid."
+#~msgstr "Mostrar u ocultar cuadrícula en coordenadas cartesianas."
 

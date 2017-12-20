@@ -23,6 +23,12 @@
 #: js/block.js:553
 #: js/block.js:535
 #: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
 msgid "rest"
 msgstr ""
 
@@ -223,7 +229,7 @@ msgstr ""
 #: js/activity.js:587
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:62
+#: js/turtledefs.js:61
 #.TRANS: show Cartesian coordinate overlay grid
 msgid "Cartesian"
 msgstr "कार्टेसियन"
@@ -232,7 +238,7 @@ msgstr "कार्टेसियन"
 #: js/activity.js:594
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:63
+#: js/turtledefs.js:61
 #.TRANS: show Polar coordinate overlay grid
 msgid "Polar"
 msgstr "ध्रुवीय"
@@ -281,12 +287,12 @@ msgid "Run note by note"
 msgstr ""
 
 #: js/activity.js:3025
-#: js/activity.js:3039
+#: js/activity.js:3038
 msgid "Hard stop"
 msgstr ""
 
 #: js/activity.js:3026
-#: js/activity.js:3038
+#: js/activity.js:3039
 #: js/turtledefs.js:48
 msgid "Stop"
 msgstr "रूकें"
@@ -298,50 +304,49 @@ msgid "Clean"
 msgstr "साफ"
 
 #: js/activity.js:3028
-#: js/turtledefs.js:50
 msgid "Show/hide palettes"
 msgstr "पैलेट दिखाएँ /छुपाएं"
 
 #: js/activity.js:3029
 #: js/activity.js:3041
-#: js/turtledefs.js:51
+#: js/turtledefs.js:50
 msgid "Show/hide blocks"
 msgstr "पिण्ड दिखाएँ/छुपाएँ"
 
 #: js/activity.js:3030
 #: js/activity.js:3042
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand/collapse collapsable blocks"
 msgstr "खुलने और बंधने वाले ब्लॉक को खोलें या बंद करें"
 
 #: js/activity.js:3031
 #: js/activity.js:3043
 #: js/activity.js:3085
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Home"
 msgstr ""
 
 #: js/activity.js:3032
 #: js/activity.js:3044
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Help"
 msgstr "मदद"
 
 #: js/activity.js:3126
 #: js/activity.js:3138
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "Load samples from server"
 msgstr "सर्वर से नमूना लोड करें"
 
 #: js/activity.js:3127
 #: js/activity.js:3139
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "Load project from files"
 msgstr ""
 
 #: js/activity.js:3128
 #: js/activity.js:3140
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save project"
 msgstr "प्रोजेक्ट को संचय करे"
 
@@ -360,19 +365,19 @@ msgstr ""
 
 #: js/activity.js:3132
 #: js/activity.js:3144
-#: js/turtledefs.js:64
+#: js/turtledefs.js:62
 msgid "Settings"
 msgstr "सेटिंग"
 
 #: js/activity.js:3133
 #: js/activity.js:3145
-#: js/turtledefs.js:70
+#: js/turtledefs.js:69
 msgid "Delete all"
 msgstr "सब मिटाइए"
 
 #: js/activity.js:3134
 #: js/activity.js:3146
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Undo"
 msgstr "पूर्ववत् करें"
 
@@ -804,48 +809,57 @@ msgstr "प्रोजेक्ट को क्रमशः चलने क�
 msgid "Stop the current project."
 msgstr "ये प्रोजेक्ट बंद करे"
 
+#: js/turtledefs.js:48
+msgid "You can also type Alt-S to stop."
+msgstr ""
+
 #: js/turtledefs.js:49
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr "स्क्रीन साफ़ करके टर्टल को प्रारम्भिक स्थान पर लौटाएं"
 
 #: js/turtledefs.js:50
-msgid "Hide or show the block palettes."
-msgstr "ब्लॉक पैलेट दिखाएँ / छिपाएं   "
-
-#: js/turtledefs.js:51
 msgid "Hide or show the blocks and the palettes."
 msgstr "ब्लॉक्स एवं पलेटस को छिपाएं अथवा प्रदर्शित करें"
 
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand or collapse start and action stacks."
 msgstr "खोलें या बंद करे जैसे के चालु करे या क्रिया का ढेर"
 
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Return all blocks to the center of the screen."
 msgstr ""
 
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Show these messages."
 msgstr "यह सन्देश दिखाएँ"
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Expand/collapse option toolbar"
 msgstr "विकल्प पट्टी को खोलें या बंद करें"
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr "सहायक पट्टीको खोलने या बन्द करने के लिए यह बटन दबाएं"
 
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "This button opens a viewer for loading example projects."
 msgstr "यह बटन नमूने देखने के लिए एक खिड़की खोलता है"
 
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "You can also load projects from the file system."
 msgstr "फाइल सिस्टम से भी प्रोजेक्ट ले सकते है"
 
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save your project to a file."
+msgstr ""
+
+#: js/turtledefs.js:58
+#: js/savebox.js:164
+msgid "Save sheet music"
+msgstr ""
+
+#: js/turtledefs.js:58
+msgid "Save your project to as a Lilypond file."
 msgstr ""
 
 #: js/turtledefs.js:59
@@ -853,33 +867,50 @@ msgid "Copy"
 msgstr "नक़ल"
 
 #: js/turtledefs.js:59
-msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+msgid "To copy a stack to the clipboard, do a long press on the stack."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "You can also use Alt+C to copy a stack of blocks."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "The Paste Button will highlight."
 msgstr ""
 
 #: js/turtledefs.js:60
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr "जब क्लिपबोर्ड में ब्लॉक्स प्रतिलिपित होते हैं तब \"पेस्ट\" बटन सक्रिय होता है।"
 
-#: js/turtledefs.js:61
-#: js/blocks.js:308
-msgid "Save stack"
-msgstr "स्टैक को सेव करें"
+#: js/turtledefs.js:60
+msgid "You can also use Alt+V to paste a stack of blocks. "
+msgstr ""
 
 #: js/turtledefs.js:61
-msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+msgid "Show or hide a coordinate grid."
 msgstr ""
 
 #: js/turtledefs.js:62
-msgid "Show or hide a Cartesian-coordinate grid."
-msgstr "कर्टेसिअन ग्रिड दिखाएँ या छिपाएं"
+msgid "Open a panel for configuring Music Blocks."
+msgstr "कछुए ब्लाकों विन्यास के लिए एक पैनल खोलें।"
 
 #: js/turtledefs.js:63
-msgid "Show or hide a polar-coordinate grid."
-msgstr "ध्रुवीय समन्वय ग्रिड दिखाएँ या छिपाएं"
+#: js/utilitybox.js:153
+msgid "Search"
+msgstr ""
+
+#: js/turtledefs.js:63
+msgid "You can search for blocks by name."
+msgstr ""
 
 #: js/turtledefs.js:64
-msgid "Open a panel for configuring Turtle Blocks."
-msgstr "कछुए ब्लाकों विन्यास के लिए एक पैनल खोलें।"
+#: js/utilitybox.js:130
+msgid "Enable scrolling"
+msgstr ""
+
+#: js/turtledefs.js:64
+msgid "You can scroll the blocks on the canvas."
+msgstr ""
 
 #: js/turtledefs.js:65
 #: js/utilitybox.js:90
@@ -905,7 +936,7 @@ msgid "Display statistics"
 msgstr "आँकड़े प्रदर्शित करें"
 
 #: js/turtledefs.js:67
-msgid "Display statistics about your Turtle project."
+msgid "Display statistics about your Music project."
 msgstr "अपने टर्टल प्रोजेक्ट के आङ्कडे  देखें"
 
 #: js/turtledefs.js:68
@@ -918,27 +949,18 @@ msgid "You can load new blocks from the file system."
 msgstr "आप फाइल सिस्टम से नए ब्लॉक्स लोड कर सकते हैं"
 
 #: js/turtledefs.js:69
-#: js/utilitybox.js:130
-msgid "Enable scrolling"
-msgstr ""
-
-#: js/turtledefs.js:69
-msgid "You can scroll the blocks on the canvas."
-msgstr ""
-
-#: js/turtledefs.js:70
 msgid "Remove all content on the canvas, including the blocks."
 msgstr "कैनवास के ऊपर से सब साफ़ करें, ब्लॉक्स के साथ"
 
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Restore blocks from the trash."
 msgstr "डिलीट किये गए ब्लॉक्स वापस लाएं"
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "Congratulations."
 msgstr "गाओ"
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "आप टूर पूरा कर चुके। टर्टल ब्लॊक्स का आनन्द लें।"
 
@@ -1889,10 +1911,6 @@ msgstr ""
 msgid "Disable scrolling"
 msgstr ""
 
-#: js/utilitybox.js:153
-msgid "Search"
-msgstr ""
-
 #: js/savebox.js:110
 msgid "Save as .tb"
 msgstr ""
@@ -1911,10 +1929,6 @@ msgstr ""
 
 #: js/savebox.js:153
 msgid "Upload to Planet"
-msgstr ""
-
-#: js/savebox.js:164
-msgid "Save sheet music"
 msgstr ""
 
 #: js/savebox.js:172
@@ -2020,6 +2034,10 @@ msgstr ""
 #: js/lilypond.js:19
 msgid "bt"
 msgstr ""
+
+#: js/blocks.js:308
+msgid "Save stack"
+msgstr "स्टैक को सेव करें"
 
 #: js/blocks.js:2837
 #: js/blocks.js:2863
@@ -2877,8 +2895,10 @@ msgstr ""
 #~msgid "Click to run the project in slow mode."
 #~msgstr "प्रोजेक्ट को धीरे चलाने के लिये यँहा क्लिक करे"
 
-#~msgid "hspace"
-#~msgstr ""
+#: js/turtledefs.js:50
+
+#~msgid "Hide or show the block palettes."
+#~msgstr "ब्लॉक पैलेट दिखाएँ / छिपाएं   "
 
 #~msgid "vspace"
 #~msgstr ""
@@ -2923,16 +2943,16 @@ msgstr ""
 #~msgid "blocks"
 #~msgstr "ब्लॊक्स"
 
-#~msgid "eatme"
-#~msgstr "मुझे खाओ"
+#: js/turtledefs.js:67
 
-#: js/palette.js:1782
-
-#~msgid "la"
-#~msgstr ""
+#~msgid "Display statistics about your Turtle project."
+#~msgstr "अपने टर्टल प्रोजेक्ट के आङ्कडे  देखें"
 
 #~msgid "food"
 #~msgstr "खाना"
+
+#~msgid "eatme"
+#~msgstr "मुझे खाओ"
 
 #: js/palette.js:1802
 
@@ -2942,20 +2962,40 @@ msgstr ""
 #~msgid "maths"
 #~msgstr "गणित"
 
-#~msgid "This button opens and closes the primary toolbar."
-#~msgstr "यह बटन मुख्य उपकरण पट्टी को खोलता एवं  बंद करता है"
+#: js/turtledefs.js:61
+
+#~msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#~msgid "hspace"
+#~msgstr ""
 
 #~msgid "mashape"
 #~msgstr "आकार"
 
+#: js/turtledefs.js:59
+
+#~msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#: js/turtledefs.js:64
+
+#~msgid "Open a panel for configuring Turtle Blocks."
+#~msgstr "कछुए ब्लाकों विन्यास के लिए एक पैनल खोलें।"
+
 #~msgid "Expand/collapse toolbar"
 #~msgstr "उपकरण पट्टी को खोलें या बंद करें"
 
-#~msgid "see distance"
-#~msgstr "दूरी देखें"
+#: js/turtledefs.js:63
+
+#~msgid "Show or hide a polar-coordinate grid."
+#~msgstr "ध्रुवीय समन्वय ग्रिड दिखाएँ या छिपाएं"
 
 #~msgid "logic"
 #~msgstr "तर्क"
+
+#~msgid "see distance"
+#~msgstr "दूरी देखें"
 
 #: js/basicblocks.js:1105
 
@@ -2982,6 +3022,9 @@ msgstr ""
 #~msgid "Run music slow"
 #~msgstr ""
 
+#~msgid "This button opens and closes the primary toolbar."
+#~msgstr "यह बटन मुख्य उपकरण पट्टी को खोलता एवं  बंद करता है"
+
 #: js/palette.js:599
 
 #: js/palette.js:1795
@@ -2990,4 +3033,14 @@ msgstr ""
 
 #~msgid "sol"
 #~msgstr ""
+
+#: js/palette.js:1782
+
+#~msgid "la"
+#~msgstr ""
+
+#: js/turtledefs.js:62
+
+#~msgid "Show or hide a Cartesian-coordinate grid."
+#~msgstr "कर्टेसिअन ग्रिड दिखाएँ या छिपाएं"
 

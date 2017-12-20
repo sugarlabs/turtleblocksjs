@@ -23,6 +23,12 @@
 #: js/block.js:553
 #: js/block.js:535
 #: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
 msgid "rest"
 msgstr ""
 
@@ -223,7 +229,7 @@ msgstr ""
 #: js/activity.js:587
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:62
+#: js/turtledefs.js:61
 #.TRANS: show Cartesian coordinate overlay grid
 msgid "Cartesian"
 msgstr "קוארדינטות קרטזיות"
@@ -232,7 +238,7 @@ msgstr "קוארדינטות קרטזיות"
 #: js/activity.js:594
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:63
+#: js/turtledefs.js:61
 #.TRANS: show Polar coordinate overlay grid
 msgid "Polar"
 msgstr "קוארדינטות פולריות"
@@ -281,12 +287,12 @@ msgid "Run note by note"
 msgstr ""
 
 #: js/activity.js:3025
-#: js/activity.js:3039
+#: js/activity.js:3038
 msgid "Hard stop"
 msgstr ""
 
 #: js/activity.js:3026
-#: js/activity.js:3038
+#: js/activity.js:3039
 #: js/turtledefs.js:48
 msgid "Stop"
 msgstr "עצור"
@@ -298,50 +304,49 @@ msgid "Clean"
 msgstr "נקה"
 
 #: js/activity.js:3028
-#: js/turtledefs.js:50
 msgid "Show/hide palettes"
 msgstr "הצג/הראה "
 
 #: js/activity.js:3029
 #: js/activity.js:3041
-#: js/turtledefs.js:51
+#: js/turtledefs.js:50
 msgid "Show/hide blocks"
 msgstr "הצג או הסתר את הבלוקים"
 
 #: js/activity.js:3030
 #: js/activity.js:3042
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand/collapse collapsable blocks"
 msgstr "צמצם/הרחב את הבלוקים הניתנים לצמצום"
 
 #: js/activity.js:3031
 #: js/activity.js:3043
 #: js/activity.js:3085
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Home"
 msgstr ""
 
 #: js/activity.js:3032
 #: js/activity.js:3044
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Help"
 msgstr "עזרה"
 
 #: js/activity.js:3126
 #: js/activity.js:3138
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "Load samples from server"
 msgstr "העלאת דוגמאות מן השרת"
 
 #: js/activity.js:3127
 #: js/activity.js:3139
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "Load project from files"
 msgstr ""
 
 #: js/activity.js:3128
 #: js/activity.js:3140
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save project"
 msgstr "שמור פרויקט"
 
@@ -360,19 +365,19 @@ msgstr ""
 
 #: js/activity.js:3132
 #: js/activity.js:3144
-#: js/turtledefs.js:64
+#: js/turtledefs.js:62
 msgid "Settings"
 msgstr "הגדרות"
 
 #: js/activity.js:3133
 #: js/activity.js:3145
-#: js/turtledefs.js:70
+#: js/turtledefs.js:69
 msgid "Delete all"
 msgstr "מחק הכל"
 
 #: js/activity.js:3134
 #: js/activity.js:3146
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Undo"
 msgstr "לבטל"
 
@@ -804,48 +809,57 @@ msgstr "לחצו כדי להריץ את הפרויקט צעד אחרי צעד"
 msgid "Stop the current project."
 msgstr "עצור את הפרויקט הנוכחי"
 
+#: js/turtledefs.js:48
+msgid "You can also type Alt-S to stop."
+msgstr ""
+
 #: js/turtledefs.js:49
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr "נקה את המסך והחזר את הצבים למיקום הראשוני"
 
 #: js/turtledefs.js:50
-msgid "Hide or show the block palettes."
-msgstr "הצג או הסתר את סרגלי הכלים"
-
-#: js/turtledefs.js:51
 msgid "Hide or show the blocks and the palettes."
 msgstr "הצג או הסתר את הבלוקים ואת הכלים"
 
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand or collapse start and action stacks."
 msgstr "הרחב או צמצם קבוצת בלוקים כמו קבוצת התחל או פעולה"
 
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Return all blocks to the center of the screen."
 msgstr ""
 
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Show these messages."
 msgstr "הצג את הודעות אלה"
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Expand/collapse option toolbar"
 msgstr "הרחב/צמצם סרגל האפשרויות"
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr "לחצו על כפתור זה כדי להרחיב או לצמצם את סרגל כלי העזר"
 
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "This button opens a viewer for loading example projects."
 msgstr "כפתור זה פותח מציג להעלאת פרויקטים"
 
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "You can also load projects from the file system."
 msgstr "ניתן להעלות פרויקטים מתוך מערכת הקבצים"
 
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save your project to a file."
+msgstr ""
+
+#: js/turtledefs.js:58
+#: js/savebox.js:164
+msgid "Save sheet music"
+msgstr ""
+
+#: js/turtledefs.js:58
+msgid "Save your project to as a Lilypond file."
 msgstr ""
 
 #: js/turtledefs.js:59
@@ -853,33 +867,50 @@ msgid "Copy"
 msgstr "העתק"
 
 #: js/turtledefs.js:59
-msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+msgid "To copy a stack to the clipboard, do a long press on the stack."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "You can also use Alt+C to copy a stack of blocks."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "The Paste Button will highlight."
 msgstr ""
 
 #: js/turtledefs.js:60
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr "כפתור הדבק פעיל כאשר ישנם בלוקים שהועתקו אל הלוח"
 
-#: js/turtledefs.js:61
-#: js/blocks.js:308
-msgid "Save stack"
-msgstr "שמור את הקבוצה"
+#: js/turtledefs.js:60
+msgid "You can also use Alt+V to paste a stack of blocks. "
+msgstr ""
 
 #: js/turtledefs.js:61
-msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+msgid "Show or hide a coordinate grid."
 msgstr ""
 
 #: js/turtledefs.js:62
-msgid "Show or hide a Cartesian-coordinate grid."
-msgstr "הצג או הסתר רשת של קואורדינטות קרטזיות"
+msgid "Open a panel for configuring Music Blocks."
+msgstr "פתיחת פאנל להתאמת בלוקים"
 
 #: js/turtledefs.js:63
-msgid "Show or hide a polar-coordinate grid."
-msgstr "הצג או הסתר רשת קוארדינטות פולריות"
+#: js/utilitybox.js:153
+msgid "Search"
+msgstr ""
+
+#: js/turtledefs.js:63
+msgid "You can search for blocks by name."
+msgstr ""
 
 #: js/turtledefs.js:64
-msgid "Open a panel for configuring Turtle Blocks."
-msgstr "פתיחת פאנל להתאמת בלוקים"
+#: js/utilitybox.js:130
+msgid "Enable scrolling"
+msgstr ""
+
+#: js/turtledefs.js:64
+msgid "You can scroll the blocks on the canvas."
+msgstr ""
 
 #: js/turtledefs.js:65
 #: js/utilitybox.js:90
@@ -905,7 +936,7 @@ msgid "Display statistics"
 msgstr "הצג סטטיסטיקות"
 
 #: js/turtledefs.js:67
-msgid "Display statistics about your Turtle project."
+msgid "Display statistics about your Music project."
 msgstr "הצג סטטיסטיקות אודות פרויקט הצב שלך"
 
 #: js/turtledefs.js:68
@@ -918,27 +949,18 @@ msgid "You can load new blocks from the file system."
 msgstr "ניתן להעלות בלוקים חדשים מתוך מערכת הקבצים"
 
 #: js/turtledefs.js:69
-#: js/utilitybox.js:130
-msgid "Enable scrolling"
-msgstr ""
-
-#: js/turtledefs.js:69
-msgid "You can scroll the blocks on the canvas."
-msgstr ""
-
-#: js/turtledefs.js:70
 msgid "Remove all content on the canvas, including the blocks."
 msgstr "הסר את כל תוכן הקנבס, כולל הבלוקים"
 
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Restore blocks from the trash."
 msgstr "שחזור בלוקים מסל המחזור"
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "Congratulations."
 msgstr "איחולנו"
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "!Turtle Blocks סיימתם את הסיור. תהנו מ"
 
@@ -1889,10 +1911,6 @@ msgstr ""
 msgid "Disable scrolling"
 msgstr ""
 
-#: js/utilitybox.js:153
-msgid "Search"
-msgstr ""
-
 #: js/savebox.js:110
 msgid "Save as .tb"
 msgstr ""
@@ -1911,10 +1929,6 @@ msgstr ""
 
 #: js/savebox.js:153
 msgid "Upload to Planet"
-msgstr ""
-
-#: js/savebox.js:164
-msgid "Save sheet music"
 msgstr ""
 
 #: js/savebox.js:172
@@ -2020,6 +2034,10 @@ msgstr ""
 #: js/lilypond.js:19
 msgid "bt"
 msgstr ""
+
+#: js/blocks.js:308
+msgid "Save stack"
+msgstr "שמור את הקבוצה"
 
 #: js/blocks.js:2837
 #: js/blocks.js:2863
@@ -2877,8 +2895,10 @@ msgstr ""
 #~msgid "Click to run the project in slow mode."
 #~msgstr "לחצו כדי להריץ את הפרויקט במצב איטי"
 
-#~msgid "hspace"
-#~msgstr ""
+#: js/turtledefs.js:50
+
+#~msgid "Hide or show the block palettes."
+#~msgstr "הצג או הסתר את סרגלי הכלים"
 
 #~msgid "vspace"
 #~msgstr ""
@@ -2923,16 +2943,16 @@ msgstr ""
 #~msgid "blocks"
 #~msgstr "בלוקים"
 
-#~msgid "eatme"
-#~msgstr "לאכול"
+#: js/turtledefs.js:67
 
-#: js/palette.js:1782
-
-#~msgid "la"
-#~msgstr ""
+#~msgid "Display statistics about your Turtle project."
+#~msgstr "הצג סטטיסטיקות אודות פרויקט הצב שלך"
 
 #~msgid "food"
 #~msgstr "מזון"
+
+#~msgid "eatme"
+#~msgstr "לאכול"
 
 #: js/palette.js:1802
 
@@ -2942,20 +2962,40 @@ msgstr ""
 #~msgid "maths"
 #~msgstr "מתמטיקה"
 
-#~msgid "This button opens and closes the primary toolbar."
-#~msgstr "כפתור זה פותח וסוגר את סרגל הכלים הראשי"
+#: js/turtledefs.js:61
+
+#~msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#~msgid "hspace"
+#~msgstr ""
 
 #~msgid "mashape"
 #~msgstr ""
 
+#: js/turtledefs.js:59
+
+#~msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#: js/turtledefs.js:64
+
+#~msgid "Open a panel for configuring Turtle Blocks."
+#~msgstr "פתיחת פאנל להתאמת בלוקים"
+
 #~msgid "Expand/collapse toolbar"
 #~msgstr "הרחב/כווץ את סרגל הכלים"
 
-#~msgid "see distance"
-#~msgstr "ראה מרחק"
+#: js/turtledefs.js:63
+
+#~msgid "Show or hide a polar-coordinate grid."
+#~msgstr "הצג או הסתר רשת קוארדינטות פולריות"
 
 #~msgid "logic"
 #~msgstr "לוגיקה"
+
+#~msgid "see distance"
+#~msgstr "ראה מרחק"
 
 #: js/basicblocks.js:1105
 
@@ -2982,6 +3022,9 @@ msgstr ""
 #~msgid "Run music slow"
 #~msgstr ""
 
+#~msgid "This button opens and closes the primary toolbar."
+#~msgstr "כפתור זה פותח וסוגר את סרגל הכלים הראשי"
+
 #: js/palette.js:599
 
 #: js/palette.js:1795
@@ -2990,4 +3033,14 @@ msgstr ""
 
 #~msgid "sol"
 #~msgstr ""
+
+#: js/palette.js:1782
+
+#~msgid "la"
+#~msgstr ""
+
+#: js/turtledefs.js:62
+
+#~msgid "Show or hide a Cartesian-coordinate grid."
+#~msgstr "הצג או הסתר רשת של קואורדינטות קרטזיות"
 

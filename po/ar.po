@@ -19,6 +19,12 @@
 #: js/block.js:553
 #: js/block.js:535
 #: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
+#: js/block.js:535
+#: js/musicutils.js:43
 msgid "rest"
 msgstr ""
 
@@ -219,7 +225,7 @@ msgstr ""
 #: js/activity.js:587
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:62
+#: js/turtledefs.js:61
 #.TRANS: show Cartesian coordinate overlay grid
 msgid "Cartesian"
 msgstr "الديكارتي"
@@ -228,7 +234,7 @@ msgstr "الديكارتي"
 #: js/activity.js:594
 #: js/activity.js:3130
 #: js/activity.js:3142
-#: js/turtledefs.js:63
+#: js/turtledefs.js:61
 #.TRANS: show Polar coordinate overlay grid
 msgid "Polar"
 msgstr "قطبي"
@@ -277,12 +283,12 @@ msgid "Run note by note"
 msgstr ""
 
 #: js/activity.js:3025
-#: js/activity.js:3039
+#: js/activity.js:3038
 msgid "Hard stop"
 msgstr ""
 
 #: js/activity.js:3026
-#: js/activity.js:3038
+#: js/activity.js:3039
 #: js/turtledefs.js:48
 msgid "Stop"
 msgstr "أوقف"
@@ -294,50 +300,49 @@ msgid "Clean"
 msgstr "نظف"
 
 #: js/activity.js:3028
-#: js/turtledefs.js:50
 msgid "Show/hide palettes"
 msgstr "إظهار/ إخفاء اللوحات"
 
 #: js/activity.js:3029
 #: js/activity.js:3041
-#: js/turtledefs.js:51
+#: js/turtledefs.js:50
 msgid "Show/hide blocks"
 msgstr "إظهار/ إخفاء اللبنات"
 
 #: js/activity.js:3030
 #: js/activity.js:3042
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand/collapse collapsable blocks"
 msgstr "توسيع/ تقليص اللبنات القابلة للتقليص"
 
 #: js/activity.js:3031
 #: js/activity.js:3043
 #: js/activity.js:3085
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Home"
 msgstr ""
 
 #: js/activity.js:3032
 #: js/activity.js:3044
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Help"
 msgstr "المساعدة"
 
 #: js/activity.js:3126
 #: js/activity.js:3138
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "Load samples from server"
 msgstr "تحميل عينات من الخادم"
 
 #: js/activity.js:3127
 #: js/activity.js:3139
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "Load project from files"
 msgstr ""
 
 #: js/activity.js:3128
 #: js/activity.js:3140
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save project"
 msgstr "حفظ المشروع"
 
@@ -356,19 +361,19 @@ msgstr ""
 
 #: js/activity.js:3132
 #: js/activity.js:3144
-#: js/turtledefs.js:64
+#: js/turtledefs.js:62
 msgid "Settings"
 msgstr "الإعدادات"
 
 #: js/activity.js:3133
 #: js/activity.js:3145
-#: js/turtledefs.js:70
+#: js/turtledefs.js:69
 msgid "Delete all"
 msgstr "حذف الكل"
 
 #: js/activity.js:3134
 #: js/activity.js:3146
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Undo"
 msgstr "إلغاء الإجراء السابق"
 
@@ -800,48 +805,57 @@ msgstr "انقر لتنفيذ المشروع خطوةً خطوة."
 msgid "Stop the current project."
 msgstr "أوقف المشروع الحالي"
 
+#: js/turtledefs.js:48
+msgid "You can also type Alt-S to stop."
+msgstr ""
+
 #: js/turtledefs.js:49
 msgid "Clear the screen and return the turtles to their initial positions."
 msgstr "نظف الشاشة وأعد السلاحف إلى مكانها الأساسي."
 
 #: js/turtledefs.js:50
-msgid "Hide or show the block palettes."
-msgstr "إخفاء أو إظهار لوحات المنع."
-
-#: js/turtledefs.js:51
 msgid "Hide or show the blocks and the palettes."
 msgstr "إخفاء أو إظهار اللبنات أو اللوحات."
 
-#: js/turtledefs.js:52
+#: js/turtledefs.js:51
 msgid "Expand or collapse start and action stacks."
 msgstr "قم بتوسيع أو تقليص أكوام البدء والنشاط."
 
-#: js/turtledefs.js:53
+#: js/turtledefs.js:52
 msgid "Return all blocks to the center of the screen."
 msgstr ""
 
-#: js/turtledefs.js:54
+#: js/turtledefs.js:53
 msgid "Show these messages."
 msgstr "أظهر هذه الرسائل."
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Expand/collapse option toolbar"
 msgstr "توسيع/ تقليص شريط الأدوات"
 
-#: js/turtledefs.js:55
+#: js/turtledefs.js:54
 msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr "انقر على هذا الزر لتوسيع أو تقليص شريط الأدوات المساعد."
 
-#: js/turtledefs.js:56
+#: js/turtledefs.js:55
 msgid "This button opens a viewer for loading example projects."
 msgstr "يفتح هذا الزر شاشة عرض لتحميل أمثلة على المشاريع."
 
-#: js/turtledefs.js:57
+#: js/turtledefs.js:56
 msgid "You can also load projects from the file system."
 msgstr "يمكنك أيضاً تحميل المشاريع من نظام الملفّات."
 
-#: js/turtledefs.js:58
+#: js/turtledefs.js:57
 msgid "Save your project to a file."
+msgstr ""
+
+#: js/turtledefs.js:58
+#: js/savebox.js:164
+msgid "Save sheet music"
+msgstr ""
+
+#: js/turtledefs.js:58
+msgid "Save your project to as a Lilypond file."
 msgstr ""
 
 #: js/turtledefs.js:59
@@ -849,33 +863,50 @@ msgid "Copy"
 msgstr "نسخ"
 
 #: js/turtledefs.js:59
-msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+msgid "To copy a stack to the clipboard, do a long press on the stack."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "You can also use Alt+C to copy a stack of blocks."
+msgstr ""
+
+#: js/turtledefs.js:59
+msgid "The Paste Button will highlight."
 msgstr ""
 
 #: js/turtledefs.js:60
 msgid "The paste button is enabled when there are blocks copied onto the clipboard."
 msgstr "يتم تفعيل زر اللصق عندما يتم نسخ لبنات إلى الحافظة."
 
-#: js/turtledefs.js:61
-#: js/blocks.js:308
-msgid "Save stack"
-msgstr "قم بتخزين الكومة"
+#: js/turtledefs.js:60
+msgid "You can also use Alt+V to paste a stack of blocks. "
+msgstr ""
 
 #: js/turtledefs.js:61
-msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+msgid "Show or hide a coordinate grid."
 msgstr ""
 
 #: js/turtledefs.js:62
-msgid "Show or hide a Cartesian-coordinate grid."
-msgstr "إظهار أو إخفاء شبكة التنسيق الديكارتي."
+msgid "Open a panel for configuring Music Blocks."
+msgstr "افتح لوحة لتكوين لبنات السلحفاة."
 
 #: js/turtledefs.js:63
-msgid "Show or hide a polar-coordinate grid."
-msgstr "إخفاء أو إظهار شبكة التنسيق القطبي."
+#: js/utilitybox.js:153
+msgid "Search"
+msgstr ""
+
+#: js/turtledefs.js:63
+msgid "You can search for blocks by name."
+msgstr ""
 
 #: js/turtledefs.js:64
-msgid "Open a panel for configuring Turtle Blocks."
-msgstr "افتح لوحة لتكوين لبنات السلحفاة."
+#: js/utilitybox.js:130
+msgid "Enable scrolling"
+msgstr "تفعيل التمرير"
+
+#: js/turtledefs.js:64
+msgid "You can scroll the blocks on the canvas."
+msgstr "يمكنك تمرير اللبنات على اللوحات."
 
 #: js/turtledefs.js:65
 #: js/utilitybox.js:90
@@ -901,7 +932,7 @@ msgid "Display statistics"
 msgstr "أظهر الإحصاءات"
 
 #: js/turtledefs.js:67
-msgid "Display statistics about your Turtle project."
+msgid "Display statistics about your Music project."
 msgstr "اعرض الإحصائيات المتعلقة ببرنامج السلحفاة."
 
 #: js/turtledefs.js:68
@@ -914,27 +945,18 @@ msgid "You can load new blocks from the file system."
 msgstr "يمكنك تحميل لبنات جديدة من نظام الملفات."
 
 #: js/turtledefs.js:69
-#: js/utilitybox.js:130
-msgid "Enable scrolling"
-msgstr "تفعيل التمرير"
-
-#: js/turtledefs.js:69
-msgid "You can scroll the blocks on the canvas."
-msgstr "يمكنك تمرير اللبنات على اللوحات."
-
-#: js/turtledefs.js:70
 msgid "Remove all content on the canvas, including the blocks."
 msgstr "قم بإزالة المحتويات الموجودة على اللوحات, بما في ذلك اللبنات."
 
-#: js/turtledefs.js:71
+#: js/turtledefs.js:70
 msgid "Restore blocks from the trash."
 msgstr "إعادة اللبنات من سلة المهملات."
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "Congratulations."
 msgstr "تهانينا"
 
-#: js/turtledefs.js:72
+#: js/turtledefs.js:71
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr "لقد انتهت الجولة. الرجاء الاستمتاع بلبنات السلحفاة!"
 
@@ -1885,10 +1907,6 @@ msgstr ""
 msgid "Disable scrolling"
 msgstr ""
 
-#: js/utilitybox.js:153
-msgid "Search"
-msgstr ""
-
 #: js/savebox.js:110
 msgid "Save as .tb"
 msgstr ""
@@ -1907,10 +1925,6 @@ msgstr ""
 
 #: js/savebox.js:153
 msgid "Upload to Planet"
-msgstr ""
-
-#: js/savebox.js:164
-msgid "Save sheet music"
 msgstr ""
 
 #: js/savebox.js:172
@@ -2016,6 +2030,10 @@ msgstr ""
 #: js/lilypond.js:19
 msgid "bt"
 msgstr ""
+
+#: js/blocks.js:308
+msgid "Save stack"
+msgstr "قم بتخزين الكومة"
 
 #: js/blocks.js:2837
 #: js/blocks.js:2863
@@ -2873,8 +2891,10 @@ msgstr ""
 #~msgid "Click to run the project in slow mode."
 #~msgstr "انقر لتنفيذ المشروع بالعرض البطيء."
 
-#~msgid "hspace"
-#~msgstr "الفراغ الأفقي"
+#: js/turtledefs.js:50
+
+#~msgid "Hide or show the block palettes."
+#~msgstr "إخفاء أو إظهار لوحات المنع."
 
 #~msgid "vspace"
 #~msgstr "الفراغ العامودي"
@@ -2919,16 +2939,16 @@ msgstr ""
 #~msgid "blocks"
 #~msgstr "لبنات"
 
-#~msgid "eatme"
-#~msgstr "eatme"
+#: js/turtledefs.js:67
 
-#: js/palette.js:1782
-
-#~msgid "la"
-#~msgstr ""
+#~msgid "Display statistics about your Turtle project."
+#~msgstr "اعرض الإحصائيات المتعلقة ببرنامج السلحفاة."
 
 #~msgid "food"
 #~msgstr "الطعام"
+
+#~msgid "eatme"
+#~msgstr "eatme"
 
 #: js/palette.js:1802
 
@@ -2938,20 +2958,40 @@ msgstr ""
 #~msgid "maths"
 #~msgstr "الرياضيات"
 
-#~msgid "This button opens and closes the primary toolbar."
-#~msgstr "يقوم هذا الزر بفتح وإغلاق شريط الأدوات الأساسي."
+#: js/turtledefs.js:61
+
+#~msgid "The save-stack button saves a stack onto a custom palette. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#~msgid "hspace"
+#~msgstr "الفراغ الأفقي"
 
 #~msgid "mashape"
 #~msgstr "mashape"
 
+#: js/turtledefs.js:59
+
+#~msgid "The copy button copies a stack to the clipboard. It appears after a \"long press\" on a stack."
+#~msgstr ""
+
+#: js/turtledefs.js:64
+
+#~msgid "Open a panel for configuring Turtle Blocks."
+#~msgstr "افتح لوحة لتكوين لبنات السلحفاة."
+
 #~msgid "Expand/collapse toolbar"
 #~msgstr "توسيع/ تقليص شريط الأدوات"
 
-#~msgid "see distance"
-#~msgstr "حدد المسافة"
+#: js/turtledefs.js:63
+
+#~msgid "Show or hide a polar-coordinate grid."
+#~msgstr "إخفاء أو إظهار شبكة التنسيق القطبي."
 
 #~msgid "logic"
 #~msgstr "منطقي"
+
+#~msgid "see distance"
+#~msgstr "حدد المسافة"
 
 #: js/basicblocks.js:1105
 
@@ -2978,6 +3018,9 @@ msgstr ""
 #~msgid "Run music slow"
 #~msgstr ""
 
+#~msgid "This button opens and closes the primary toolbar."
+#~msgstr "يقوم هذا الزر بفتح وإغلاق شريط الأدوات الأساسي."
+
 #: js/palette.js:599
 
 #: js/palette.js:1795
@@ -2986,4 +3029,14 @@ msgstr ""
 
 #~msgid "sol"
 #~msgstr ""
+
+#: js/palette.js:1782
+
+#~msgid "la"
+#~msgstr ""
+
+#: js/turtledefs.js:62
+
+#~msgid "Show or hide a Cartesian-coordinate grid."
+#~msgstr "إظهار أو إخفاء شبكة التنسيق الديكارتي."
 

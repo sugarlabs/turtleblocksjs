@@ -52,9 +52,7 @@ function Blocks () {
     this._pasteDX = 0;
     this._pasteDY = 0;
 
-    // "Copy stack" selects a stack for pasting. Are we selecting?
-    this.selectingStack = false;
-    // and what did we select?
+    // What did we select?
     this.selectedStack = null;
     // and a copy of the selected stack for pasting.
     this.selectedBlocksObj = null;
@@ -121,6 +119,16 @@ function Blocks () {
     // We stage deletion of prototype action blocks on the palette so
     // as to avoid palette refresh race conditions.
     this.deleteActionTimeout = 0;
+
+    this.getLongPressStatus = function () {
+        return this.inLongPress;
+    };
+
+    this.clearLongPressButtons = function () {
+        this.saveStackButton.visible = false;
+        this.dismissButton.visible = false;
+        this.inLongPress = false;
+    };
 
     this.setSetPlaybackStatus = function (setPlaybackStatus) {
         this.setPlaybackStatus = setPlaybackStatus;
@@ -219,6 +227,57 @@ function Blocks () {
     this.setScale = function (scale) {
         this.blockScale = scale;
         return this;
+    };
+
+    this.extract = function () {
+        // Remove a single block from within a stack.
+        if (this.activeBlock != null) {
+            var blkObj = this.blockList[this.activeBlock];
+
+            if (blkObj.name !== 'number' && blkObj.name !== 'text') {
+                var firstConnection = blkObj.connections[0];
+                var lastConnection = last(blkObj.connections);
+
+                if (firstConnection != null) {
+                    var connectionIdx = this.blockList[firstConnection].connections.indexOf(this.activeBlock);
+                } else {
+                    var connectionIdx = null;
+                }
+
+                blkObj.connections[0] = null;
+                blkObj.connections[blkObj.connections.length - 1] = null;
+                if (firstConnection != null) {
+                    this.blockList[firstConnection].connections[connectionIdx] = lastConnection;
+                }
+
+                if (lastConnection != null) {
+                    this.blockList[lastConnection].connections[0] = firstConnection;
+                }
+
+                this.moveStackRelative(this.activeBlock, 4 * STANDARDBLOCKHEIGHT, 0);
+                this.blockMoved(this.activeBlock);
+
+                if (firstConnection != null) {
+                    this.blockMoved(firstConnection);
+                    this.adjustDocks(firstConnection, true);
+                    if (connectionIdx !== this.blockList[firstConnection].connections.length - 1) {
+                        this.clampThisToCheck = [[firstConnection, 0]];
+                        this.adjustExpandableClampBlock();
+                    }
+                }
+            }
+        }
+    };
+
+    this.bottomMostBlock = function () {
+        var maxy = -1000;
+        for (var blk in this.blockList) {
+            if (this.blockList[blk].container.y > maxy) {
+                var maxy = this.blockList[blk].container.y;
+            }
+        }
+
+        return maxy;
     };
 
     // Toggle state of collapsible blocks.
@@ -329,7 +388,7 @@ function Blocks () {
     // are inserted into (or removed from) the child flow. This is a
     // common operation for start and action blocks, but also for
     // repeat, forever, if, etc.
-    this._adjustExpandableClampBlock = function () {
+    this.adjustExpandableClampBlock = function () {
         if (this.clampBlocksToCheck.length === 0) {
             return;
         }
@@ -380,7 +439,7 @@ function Blocks () {
             // Recurse through the list.
             setTimeout(function () {
                 if (blocks.clampBlocksToCheck.length > 0) {
-                    blocks._adjustExpandableClampBlock();
+                    blocks.adjustExpandableClampBlock();
                 }
             }, 250);
         };
@@ -1325,7 +1384,7 @@ function Blocks () {
                 blk = that._insideExpandableBlock(blk);
             }
 
-            that._adjustExpandableClampBlock();
+            that.adjustExpandableClampBlock();
             that.refreshCanvas();
         }, 250);
     };
@@ -1469,9 +1528,7 @@ function Blocks () {
     this.moveBlockRelative = function (blk, dx, dy) {
         // Move a block (and its label) by dx, dy.
         if (this.inLongPress) {
-            this.saveStackButton.visible = false;
-            this.dismissButton.visible = false;
-            this.inLongPress = false;
+            this.clearLongPressButtons();
         }
 
         var myBlock = this.blockList[blk];
@@ -1756,7 +1813,7 @@ function Blocks () {
             }
         }
 
-        this._adjustExpandableClampBlock();
+        this.adjustExpandableClampBlock();
         this.refreshCanvas();
     };
 
@@ -2773,14 +2830,12 @@ function Blocks () {
         }
     };
 
-    this.triggerLongPress = function (myBlock) {
-        this.longPressTimeout = null;
-        this.inLongPress = true;
-
+    this.prepareStackForCopy = function () {
         // Auto-select stack for copying -- no need to actually click on
         // the copy button.
         if (this.activeBlock == null) {
-            console.log('null block passed to triggerLongPress');
+            this.errorMsg(_('There is no block selected.'));
+            console.log('No active block to copy.');
             return;
         }
 
@@ -2789,14 +2844,36 @@ function Blocks () {
 
         // Copy the selectedStack.
         this.selectedBlocksObj = JSON.parse(JSON.stringify(this._copyBlocksToObj()));
+        console.log(this.selectedBlocksObj);
 
-        // Update the paster button to indicate a block is selected.
+        // Update the paste button to indicate a block is selected.
         this.updatePasteButton();
-        // Reset paste offset
+        // ...and reset paste offset.
         this._pasteDX = 0;
         this._pasteDY = 0;
+    };
+
+    this.triggerLongPress = function () {
+        if (this.longPressTimeout != null) {
+            clearTimeout(this.longPressTimeout);
+            this.longPressTimeout = null;
+        }
+
+        if (this.activeBlock == null) {
+            this.errorMsg(_('There is no block selected.'));
+            console.log('No block associated with long press.');
+            return;
+        }
+
+        this.prepareStackForCopy();
+
+        // We need to set a flag to ensure:
+	// (1) we don't trigger a click and
+	// (2) we later remove the additional buttons for the action stack.
+        this.inLongPress = true;
 
         // We display some extra buttons when we long-press an action block.
+        var myBlock = this.blockList[this.activeBlock];
         if (myBlock.name === 'action') {
             var z = this.stage.getNumChildren() - 1;
             this.dismissButton.visible = true;
@@ -2903,6 +2980,7 @@ function Blocks () {
             blockMap[this.dragGroup[b]] = b;
             blockObjs.push(blockItem);
         }
+
         for (var b = 0; b < this.dragGroup.length; b++) {
             myBlock = this.blockList[this.dragGroup[b]];
             for (var c = 0; c < myBlock.connections.length; c++) {
@@ -3246,6 +3324,7 @@ function Blocks () {
                 if (last(blockObjs[b][4]) == null) {
                     // If there is no next block, add a hidden block;
                     console.log('last connection of ' + name + ' is null: adding hidden block');
+                    console.log(blockObjs[b][4]);
                     blockObjs[b][4][len - 1] = blockObjsLength + extraBlocksLength;
                     blockObjs.push([blockObjsLength + extraBlocksLength, 'hidden', 0, 0, [b, null]]);
                     extraBlocksLength += 1;
@@ -3954,6 +4033,7 @@ function Blocks () {
             }, 1500);
         }
         console.log("Finished block loading");
+	document.body.style.cursor = 'default';
 
         var myCustomEvent = new Event('finishedLoading');
         document.dispatchEvent(myCustomEvent);

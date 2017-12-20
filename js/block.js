@@ -1143,6 +1143,7 @@ function Block(protoblock, blocks, overrideName) {
                 if (that.blocks.longPressTimeout != null) {
                     clearTimeout(that.blocks.longPressTimeout);
                     that.blocks.longPressTimeout = null;
+                    that.blocks.clearLongPressButtons();
                 }
 
                 that.blocks.moveBlockRelative(thisBlock, dx, dy);
@@ -1261,11 +1262,7 @@ function Block(protoblock, blocks, overrideName) {
             hideDOMLabel();
 
             if ((!window.hasMouse && getInput) || (window.hasMouse && !moved)) {
-                if (that.blocks.selectingStack) {
-                    var topBlock = that.blocks.findTopBlock(thisBlock);
-                    that.blocks.selectedStack = topBlock;
-                    that.blocks.selectingStack = false;
-                } else if (that.name === 'media') {
+                if (that.name === 'media') {
                     that._doOpenMedia(thisBlock);
                 } else if (that.name === 'loadFile') {
                     that._doOpenMedia(thisBlock);
@@ -1275,7 +1272,7 @@ function Block(protoblock, blocks, overrideName) {
                     }
                 } else {
 
-                    if (!that.blocks.inLongPress) {
+                    if (!that.blocks.getLongPressStatus()) {
                         var topBlock = that.blocks.findTopBlock(thisBlock);
                         console.log('running from ' + that.blocks.blockList[topBlock].name);
                         if (that.blocks.turtles.running()) {
@@ -1300,7 +1297,7 @@ function Block(protoblock, blocks, overrideName) {
 
                 that.blocks.longPressTimeout = setTimeout(function () {
                     that.blocks.activeBlock = that.blocks.blockList.indexOf(that);
-                    that.blocks.triggerLongPress(that);
+                    that.blocks.triggerLongPress();
                 }, LONGPRESSTIME);
             }
 
@@ -1328,9 +1325,9 @@ function Block(protoblock, blocks, overrideName) {
 
             that.container.removeAllEventListeners('mouseout');
             that.container.on('mouseout', function (event) {
-		document.body.style.cursor = 'default';
-                if (!that.blocks.inLongPress) {
-                    that._mouseoutCallback(event, moved, haveClick, true);
+                document.body.style.cursor = 'default';
+                if (!that.blocks.getLongPressStatus()) {
+                    that._mouseoutCallback(event, moved, haveClick, false);
                 }
 
                 moved = false;
@@ -1338,7 +1335,7 @@ function Block(protoblock, blocks, overrideName) {
 
             that.container.removeAllEventListeners('pressup');
             that.container.on('pressup', function (event) {
-                if (!that.blocks.inLongPress) {
+                if (!that.blocks.getLongPressStatus()) {
                     that._mouseoutCallback(event, moved, haveClick, true);
                 }
 
@@ -1377,6 +1374,7 @@ function Block(protoblock, blocks, overrideName) {
                 if (that.blocks.longPressTimeout != null) {
                     clearTimeout(that.blocks.longPressTimeout);
                     that.blocks.longPressTimeout = null;
+                    that.blocks.clearLongPressButtons();
                 }
 
                 if (!moved && that.label != null) {
@@ -1421,16 +1419,20 @@ function Block(protoblock, blocks, overrideName) {
         });
 
         this.container.on('mouseout', function (event) {
-            if (!that.blocks.inLongPress) {
-                that._mouseoutCallback(event, moved, haveClick, true);
+            if (!that.blocks.getLongPressStatus()) {
+                that._mouseoutCallback(event, moved, haveClick, false);
+            } else {
+                that.blocks.clearLongPressButtons();
             }
 
             moved = false;
         });
 
         this.container.on('pressup', function (event) {
-            if (!that.blocks.inLongPress) {
+            if (!that.blocks.getLongPressStatus()) {
                 that._mouseoutCallback(event, moved, haveClick, false);
+            } else {
+                that.blocks.clearLongPressButtons();
             }
 
             moved = false;
@@ -1439,8 +1441,7 @@ function Block(protoblock, blocks, overrideName) {
 
     this._mouseoutCallback = function (event, moved, haveClick, hideDOM) {
         var thisBlock = this.blocks.blockList.indexOf(this);
-
-	document.body.style.cursor = 'default';
+        document.body.style.cursor = 'default';
 
         // Always hide the trash when there is no block selected.
         trashcan.hide();
@@ -1448,6 +1449,7 @@ function Block(protoblock, blocks, overrideName) {
         if (this.blocks.longPressTimeout != null) {
             clearTimeout(this.blocks.longPressTimeout);
             this.blocks.longPressTimeout = null;
+            that.blocks.clearLongPressButtons();
         }
 
         if (moved) {
@@ -1598,6 +1600,7 @@ function Block(protoblock, blocks, overrideName) {
             if (selectedattr === '') {
                 selectedattr = '♮';
             }
+
             labelHTML += '<select name="noteattr" id="noteattrLabel" style="position: absolute;  background-color: #88e20a; width: 60px;">';
             for (var i = 0; i < SOLFATTRS.length; i++) {
                 if (selectedattr === SOLFATTRS[i]) {
@@ -1635,6 +1638,7 @@ function Block(protoblock, blocks, overrideName) {
             if (selectedattr === '') {
                 selectedattr = '♮';
             }
+
             labelHTML += '<select name="noteattr" id="noteattrLabel" style="position: absolute;  background-color: #88e20a; width: 60px;">';
             for (var i = 0; i < SOLFATTRS.length; i++) {
                 if (selectedattr === SOLFATTRS[i]) {
@@ -1679,6 +1683,7 @@ function Block(protoblock, blocks, overrideName) {
             if (selectedattr === '') {
                 selectedattr = '♮';
             }
+
             labelHTML += '<select name="noteattr" id="noteattrLabel" style="position: absolute;  background-color: #88e20a; width: 60px;">';
 
             for (var i = 0; i < NOTEATTRS.length; i++) {
@@ -1926,7 +1931,7 @@ function Block(protoblock, blocks, overrideName) {
         // There may be a second select used for # and b.
         if (this.labelattr != null) {
             this.label.style.width = Math.round(60 * this.blocks.blockScale) * this.protoblock.scale / 2 + 'px';
-            this.labelattr.style.left = Math.round((x + this.blocks.stage.x + 60) * this.blocks.blockScale + canvasLeft) + 'px';
+            this.labelattr.style.left = Math.round((x + this.blocks.stage.x + 50) * this.blocks.blockScale + canvasLeft) + 'px';
             this.labelattr.style.top = Math.round((y + this.blocks.stage.y) * this.blocks.blockScale + canvasTop) + 'px';
             this.labelattr.style.width = Math.round(60 * this.blocks.blockScale) * this.protoblock.scale / 2 + 'px';
             this.labelattr.style.fontSize = Math.round(20 * this.blocks.blockScale * this.protoblock.scale / 2) + 'px';
@@ -1937,12 +1942,18 @@ function Block(protoblock, blocks, overrideName) {
         this.label.style.fontSize = Math.round(20 * this.blocks.blockScale * this.protoblock.scale / 2) + 'px';
         this.label.style.display = '';
         this.label.focus();
+        if (this.labelattr != null) {
+            this.labelattr.style.display = '';
+        }
 
         // Firefox fix
         setTimeout(function () {
             that.label.style.display = '';
             that.label.focus();
             focused = true;
+            if (that.labelattr != null) {
+                that.labelattr.style.display = '';
+            }
         }, 100);
     };
 

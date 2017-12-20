@@ -27,14 +27,17 @@ const THIRTYSECONDNOTE = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7
 
 const SIXTYFOURTHNOTE = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7.0080001 14.528" height="4.1001244mm" width="1.9778134mm"> <g transform="translate(-345.3223,-325.39492)"> <g transform="translate(3.1093785,1.6864426)" style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"> <path d="m 342.21292,337.13248 q 0,-0.832 0.816,-1.472 0.816,-0.656 1.728,-0.656 0.528,0 0.944,0.272 l 0,-11.568 0.336,0 q 0.064,0.64 0.384,1.104 0.336,0.464 0.752,0.768 0.416,0.304 0.832,0.656 0.416,0.336 0.688,0.928 0.288,0.592 0.288,1.44 0,0.24 -0.144,0.768 0.256,0.608 0.256,1.376 0,0.32 -0.16,0.896 0.224,0.416 0.224,0.912 0,0.496 -0.24,0.96 0.304,0.448 0.304,1.024 0,0.384 -0.08,0.688 -0.08,0.304 -0.16,0.448 -0.08,0.144 -0.368,0.608 l -0.384,0 q 0.08,-0.16 0.192,-0.368 0.112,-0.224 0.16,-0.32 0.064,-0.096 0.112,-0.24 0.064,-0.144 0.08,-0.288 0.016,-0.144 0.016,-0.32 0,-0.272 -0.096,-0.512 -0.08,-0.256 -0.176,-0.432 -0.096,-0.192 -0.32,-0.4 -0.224,-0.208 -0.368,-0.32 -0.144,-0.128 -0.464,-0.304 -0.304,-0.192 -0.432,-0.256 -0.128,-0.064 -0.48,-0.224 -0.336,-0.176 -0.4,-0.208 l 0,4.064 q 0,0.896 -0.784,1.488 -0.784,0.592 -1.728,0.592 -0.528,0 -0.928,-0.304 -0.4,-0.32 -0.4,-0.8 z m 6.352,-8.384 q 0,-0.352 -0.144,-0.688 -0.128,-0.352 -0.288,-0.576 -0.16,-0.224 -0.48,-0.496 -0.32,-0.272 -0.512,-0.4 -0.192,-0.144 -0.592,-0.384 -0.384,-0.24 -0.496,-0.32 0.032,0.432 0.352,0.832 0.32,0.384 0.704,0.656 0.4,0.272 0.816,0.72 0.432,0.432 0.624,0.912 0.016,-0.176 0.016,-0.256 z m 0.016,2.128 q 0,-0.208 -0.048,-0.4 -0.032,-0.192 -0.08,-0.336 -0.048,-0.16 -0.176,-0.336 -0.128,-0.176 -0.208,-0.288 -0.08,-0.112 -0.272,-0.272 -0.192,-0.176 -0.288,-0.256 -0.096,-0.08 -0.352,-0.256 -0.24,-0.176 -0.336,-0.224 -0.096,-0.064 -0.384,-0.24 -0.288,-0.192 -0.384,-0.256 0.032,0.464 0.368,0.88 0.336,0.416 0.736,0.704 0.4,0.272 0.816,0.688 0.416,0.416 0.576,0.864 0.032,-0.192 0.032,-0.272 z m -0.016,1.936 q 0,-0.848 -0.624,-1.504 -0.608,-0.672 -1.872,-1.392 0.064,0.464 0.384,0.896 0.336,0.416 0.72,0.688 0.4,0.272 0.8,0.704 0.4,0.416 0.576,0.88 0.016,-0.064 0.016,-0.272 z" /> </g> </g> </svg>';
 
+// is there a "proper" double-sharp symbol as well? I see this from wikipedia: U+1D12A 𝄪 MUSICAL SYMBOL DOUBLE SHARP (HTML &#119082;) (https://en.wikipedia.org/wiki/Double_sharp)
 const SHARP = '♯';
 const FLAT = '♭';
-const BTOFLAT = {'Eb': 'E♭', 'Gb': 'G♭', 'Ab': 'A♭', 'Bb': 'B♭', 'Db': 'D♭', 'Cb': 'B', 'Fb': 'E', 'eb': 'E♭', 'gb': 'G♭', 'ab': 'A♭', 'bb': 'B♭', 'db': 'D♭', 'cb': 'B', 'fb': 'E'};
-const STOSHARP = {'E#': 'F', 'G#': 'G♯', 'A#': 'A♯', 'B#': 'C', 'D#': 'D♯', 'C#': 'C♯', 'F#': 'F♯', 'e#': 'F', 'g#': 'G♯', 'a#': 'A♯', 'b#': 'C', 'd#': 'D♯', 'c#': 'C♯', 'f#': 'F♯'};
+const BTOFLAT = {'Eb': 'E♭', 'Gb': 'G♭', 'Ab': 'A♭', 'Bb': 'B♭', 'Db': 'D♭', 'Cb': 'C♭', 'Fb': 'F♭', 'eb': 'E♭', 'gb': 'G♭', 'ab': 'A♭', 'bb': 'B♭', 'db': 'D♭', 'cb': 'C♭', 'fb': 'F♭'};
+const STOSHARP = {'E#': 'E♯', 'G#': 'G♯', 'A#': 'A♯', 'B#': 'B♯', 'D#': 'D♯', 'C#': 'C♯', 'F#': 'F♯', 'e#': 'E♯', 'g#': 'G♯', 'a#': 'A♯', 'b#': 'B♯', 'd#': 'D♯', 'c#': 'C♯', 'f#': 'F♯'};
 const NOTESSHARP = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 const NOTESFLAT = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
 const NOTESFLAT2 = ['c', 'd♭', 'd', 'e♭', 'e', 'f', 'g♭', 'g', 'a♭', 'a', 'b♭', 'b'];
-const EQUIVALENTNOTES = {'C♯': 'D♭', 'D♯': 'E♭', 'F♯': 'G♭', 'G♯': 'A♭', 'A♯': 'B♭', 'D♭': 'C♯', 'E♭': 'D♯', 'G♭': 'F♯', 'A♭': 'G♯', 'B♭': 'A♯'};
+const EQUIVALENTFLATS = {'C♯': 'D♭', 'D♯': 'E♭', 'F♯': 'G♭', 'G♯': 'A♭', 'A♯': 'B♭'};
+const EQUIVALENTSHARPS = {'D♭': 'C♯', 'E♭': 'D♯', 'G♭': 'F♯', 'A♭': 'G♯', 'B♭': 'A♯'};
+const EQUIVALENTNATURALS = {'E♯': 'F', 'B♯': 'C', 'C♭': 'B', 'F♭': 'E'};
 const EXTRATRANSPOSITIONS = {'E♯': ['F', 0], 'B♯': ['C', 1], 'C♭': ['B', -1], 'F♭': ['E', 0], 'e♯': ['F', 0], 'b♯': ['C', 1], 'c♭': ['B', -1], 'f♭': ['E', 0]};
 const SOLFEGENAMES = ['do', 're', 'mi', 'fa', 'sol', 'la', 'ti'];
 const SOLFEGECONVERSIONTABLE = {'C': 'do', 'C♯': 'do' + '♯', 'D': 're', 'D♯': 're' + '♯', 'E': 'mi', 'F': 'fa', 'F♯': 'fa' + '♯', 'G': 'sol', 'G♯': 'sol' + '♯', 'A': 'la', 'A♯': 'la' + '♯', 'B': 'ti', 'D♭': 're' + '♭', 'E♭': 'mi' + '♭', 'G♭': 'sol' + '♭', 'A♭': 'la' + '♭', 'B♭': 'ti' + '♭', 'R': _('rest')};
@@ -44,20 +47,33 @@ const PITCHES = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', '
 const PITCHES1 = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const PITCHES2 = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 const PITCHES3 = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-const NOTESTABLE = {1: "do", 2: "do♯", 3: "re", 4: "re♯", 5: "mi", 6: "fa", 7: "fa♯", 8: "sol", 9: "sol♯", 10: "la", 11: "la♯", 0: "ti"};
+const NOTESTABLE = {1: 'do', 2: 'do♯', 3: 're', 4: 're♯', 5: 'mi', 6: 'fa', 7: 'fa♯', 8: 'sol', 9: 'sol♯', 10: 'la', 11: 'la♯', 0: 'ti'};
+const FIXEDSOLFEGE = {'do': 'C', 're': 'D', 'mi': 'E', 'fa': 'F', 'sol': 'G', 'la': 'A', 'ti': 'B'};
 const NOTESTEP = {'C': 1, 'D': 3, 'E': 5, 'F': 6, 'G': 8, 'A': 10, 'B': 12};
 
-// Halfsteps used in calculating absolute intervals
-const AUGMENTED = {1: 1, 2: 2, 3: 5, 4: 6, 5: 8, 6: 9, 7: 11, 8: 13};
-const PERFECT = {1: 0, 4: 5, 5: 7, 8: 12};
-const DIMINISHED = {1: -1, 2: 0, 3: 2, 4: 4, 5: 6, 6: 7, 7: 9, 8: 11};
-const MAJOR = {2: 2, 3: 4, 6: 9, 7: 11};
-const MINOR = {2: 1, 3: 3, 6: 8, 7: 10};
+// Preference for sharps or flats
+const SHARPPREFERENCE = ['g major', 'd major', 'a major', 'e major', 'b major', 'f# major', 'c# major', 'e minor', 'b minor', 'f# minor', 'c# minor', 'g# minor', 'd# minor'];
+const FLATPREFERENCE = ['f major', 'bb major', 'eb major', 'ab major', 'db major', 'gb major', 'cb major', 'd minor', 'g minor', 'c minor', 'f minor', 'bb minor', 'eb minor'];
 
 // SOLFNOTES is the internal representation used in selectors
 const SOLFNOTES = ['ti', 'la', 'sol', 'fa', 'mi', 're', 'do'];
 const EASTINDIANSOLFNOTES = ['ni', 'dha', 'pa', 'ma', 'ga', 're', 'sa']
+// const ARETINIANSOLFNOTES = ['si', 'la', 'sol', 'fa', 'mi', 're', 'ut']; //the "original solfege" https://en.wikipedia.org/wiki/Solf%C3%A8ge#Origin
+// const IROHASOLFNOTES = ['ro', 'i', 'to', 'he', 'ho', 'ni', 'ha']; //https://en.wikipedia.org/wiki/Iroha
+// const IROHASOLFNOTESJA = ['ロ','イ','ト','へ','ホ','二','ハ'];
 const SOLFATTRS = ['♯♯', '♯', '♮', '♭', '♭♭'];
+
+
+function getSharpFlatPreference (keySignature) {
+    if (SHARPPREFERENCE.indexOf(keySignature.toLowerCase()) !== -1) {
+        return 'sharp';
+    } else if (FLATPREFERENCE.indexOf(keySignature.toLowerCase()) !== -1) {
+        return 'flat';
+    } else {
+        return 'natural';
+    }
+};
+
 
 function mod12(a) {
     while (a < 0) {
@@ -66,62 +82,6 @@ function mod12(a) {
 
     return a % 12;
 }
-
-
-function calcAugmented(obj) {
-    var interval = obj[0];
-    var deltaOctave = obj[1];
-    if (interval < 0) {
-	return -AUGMENTED[-interval] + (12 * deltaOctave);
-    } else {
-	return AUGMENTED[interval] + (12 * deltaOctave);
-    }
-}
-
-
-function calcPerfect(obj) {
-    var interval = obj[0];
-    var deltaOctave = obj[1];
-    if (interval < 0) {
-	return -PERFECT[-interval] + (12 * deltaOctave);
-    } else {
-	return PERFECT[interval] + (12 * deltaOctave);
-    }
-}
-
-
-function calcDiminished(obj) {
-    var interval = obj[0];
-    var deltaOctave = obj[1];
-    if (interval < 0) {
-	return -DIMINISHED[-interval] + (12 * deltaOctave);
-    } else {
-	return DIMINISHED[interval] + (12 * deltaOctave);
-    }
-}
-
-
-function calcMajor(obj) {
-    var interval = obj[0];
-    var deltaOctave = obj[1];
-    if (interval < 0) {
-	return -MAJOR[-interval] + (12 * deltaOctave);
-    } else {
-	return MAJOR[interval] + (12 * deltaOctave);
-    }
-}
-
-
-function calcMinor(obj) {
-    var interval = obj[0];
-    var deltaOctave = obj[1];
-    if (interval < 0) {
-	return -MINOR[-interval] + (12 * deltaOctave);
-    } else {
-	return MINOR[interval] + (12 * deltaOctave);
-    }
-}
-
 
 const SEMITONES = 12;
 const POWER2 = [1, 2, 4, 8, 16, 32, 64, 128];
@@ -160,9 +120,71 @@ const sixtyfourthNoteImg = 'data:image/svg+xml;base64,' + window.btoa(unescape(e
 
 const NOTESYMBOLS = {1: wholeNoteImg, 2: halfNoteImg, 4: quarterNoteImg, 8: eighthNoteImg, 16: sixteenthNoteImg, 32: thirtysecondNoteImg, 64: sixtyfourthNoteImg};
 
+const INTERVALNAMES = [
+    [_('unison'), 'unison'],
+    [_('augmented') + ' 1', 'augmented 1'],
+    [_('diminished') + ' 2', 'diminished 2'],
+    [_('minor') + ' 2', 'minor 2'],
+    [_('major') + ' 2', 'major 2'],
+    [_('augmented') + ' 2', 'augmented 2'],
+    [_('diminished') + ' 3', 'diminished 3'],
+    [_('minor') + ' 3', 'minor 3'],
+    [_('major') + ' 3', 'major 3'],
+    [_('augmented') + ' 3', 'augmented 3'],
+    [_('diminished') + ' 4', 'diminished 4'],
+    [_('perfect') + ' 4', 'perfect 4'],
+    [_('augmented') + ' 4', 'augmented 4'],
+    [_('diminished') + ' 5', 'diminished 5'],
+    [_('perfect') + ' 5', 'perfect 5'],
+    [_('augmented') + ' 5', 'augmented 5'],
+    [_('diminished') + ' 6', 'diminished 6'],
+    [_('minor') + ' 6', 'minor 6'],
+    [_('major') + ' 6', 'major 6'],
+    [_('augmented') + ' 6', 'augmented 6'],
+    [_('diminished') + ' 7', 'diminished 7'],
+    [_('minor') + ' 7', 'minor 7'],
+    [_('major') + ' 7', 'major 7'],
+    [_('augmented') + ' 7', 'augmented 7'],
+    [_('diminished') + ' 8', 'diminished 8'],
+    [_('perfect') + ' 8', 'perfect 8'],
+    [_('augmented') + ' 8', 'augmented 8'],
+];
+
+// [semi-tones, direction -1 == down; 0 == neutral; 1 == up]
+const INTERVALVALUES = {
+    'unison': [0, 0],
+    'augmented 1': [1, 1],
+    'diminished 2': [0, -1],
+    'minor 2': [1, -1],
+    'major 2': [2, 1],
+    'augmented 2': [3, 1],
+    'diminished 3': [2, -1],
+    'minor 3': [3, -1],
+    'major 3': [4, 1],
+    'augmented 3': [5, 1],
+    'diminished 4': [4, -1],
+    'perfect 4': [5, 0],
+    'augmented 4': [6, 1],
+    'diminished 5': [6, -1],
+    'perfect 5': [7, 0],
+    'augmented 5': [8, 1],
+    'diminished 6': [7, -1],
+    'minor 6': [8, -1],
+    'major 6': [9, 1],
+    'augmented 6': [10, 1],
+    'diminished 7': [9, -1],
+    'minor 7': [10, -1],
+    'major 7': [11, 1],
+    'augmented 7': [12, 1],
+    'diminished 8': [11, -1],
+    'perfect 8': [12, 0],
+    'augmented 8': [13, 1]
+};
+
 // The table contains the intervals that define the modes.
 // All of these modes assume 12 semitones per octave.
-// See http://www.pianoscales.org
+// See http://www.pianoscales.org <== this is in no way definitive
+// TODO: better system of organizing and naming collections of pitches
 const MUSICALMODES = {
      // 12 notes in an octave
     'chromatic': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -175,12 +197,16 @@ const MUSICALMODES = {
 
      // 7 notes in an octave
     'major': [2, 2, 1, 2, 2, 2, 1],
+    'harmonic major': [2, 2, 1, 2, 1, 3, 1],
+    'natural minor': [2, 1, 2, 2, 1, 2, 2],
+    'harmonic minor': [2, 1, 2, 2, 1, 3, 1],
+    'melodic minor': [2, 1, 2, 2, 2, 2, 1],
+
     'ionian': [2, 2, 1, 2, 2, 2, 1],
     'dorian': [2, 1, 2, 2, 2, 1, 2],
     'phrygian': [1, 2, 2, 2, 1, 2, 2],
     'lydian': [2, 2, 2, 1, 2, 2, 1],
     'mixolydian': [2, 2, 1, 2, 2, 1, 2],
-    'minor': [2, 1, 2, 2, 1, 2, 2],
     'aeolian': [2, 1, 2, 2, 1, 2, 2],
     'locrian': [1, 2, 2, 1, 2, 2, 2],
 
@@ -198,20 +224,21 @@ const MUSICALMODES = {
     'romanian minor': [2, 1, 3, 1, 2, 1, 2],
     'spanish gypsy': [1, 3, 1, 2, 1, 2, 2],
 
-    // 6 notes in an octave
-    'blues': [3, 2, 1, 1, 3, 2],
+     // 6 notes in an octave
+    'minor blues': [3, 2, 1, 1, 3, 2],
     'major blues': [2, 1, 1, 3, 2, 2],
     'whole tone': [2, 2, 2, 2, 2, 2],
 
-    // 5 notes in an octave
-    'pentatonic': [3, 2, 2, 3, 2],
+     // 5 notes in an octave
+    'minor pentatonic': [3, 2, 2, 3, 2], //pentatonic is a general term that means "five note scale". This scale is typically known as "minor pentatonic"
     'chinese': [4, 2, 1, 4, 1],
     'egyptian': [2, 3, 2, 3, 2],
-    'hirajoshi': [1, 4, 1, 4, 2],
-    'japanese': [1, 4, 2, 3, 2],
+    'hirajoshi (Japan)': [1, 4, 1, 4, 2], //https://en.wikipedia.org/wiki/Hirajoshi_scale NOTE: There are three different versions of this scale
+    'in (Japan)': [1, 4, 2, 1, 4], //https://en.wikipedia.org/wiki/In_scale and https://en.wikipedia.org/wiki/Sakura_Sakura
+    'minyo (Japan)': [3, 2, 2, 3, 2], //https://en.wikipedia.org/wiki/Miny%C5%8D_scale
     'fibonacci': [1, 1, 2, 3, 5],
 
-    // User definition overrides this constant
+     // User definition overrides this constant
     'custom': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 };
 
@@ -238,6 +265,14 @@ var MODENAMES = [
     [_('octatonic'), 'octatonic'],
     //.TRANS: major scales in music
     [_('major'), 'major'],
+    //.TRANS: harmonic major scale in music
+    [_('harmonic major'), 'harmonic major'],
+    //.TRANS: natural minor scales in music
+    [_('natural minor'), 'natural minor'],
+    //.TRANS: harmonic minor scale in music
+    [_('harmonic minor'), 'harmonic minor'],
+    //.TRANS: melodic minor scale in music
+    [_('melodic minor'), 'melodic minor'],
     //.TRANS: modal scale for music
     [_('ionian'), 'ionian'],
     //.TRANS: modal scale for music
@@ -248,8 +283,6 @@ var MODENAMES = [
     [_('lydian'), 'lydian'],
     //.TRANS: modal scale for music
     [_('mixolydian'), 'mixolydian'],
-    //.TRANS: natural minor scales in music
-    [_('minor'), 'minor'],
     //.TRANS: modal scale for music
     [_('aeolian'), 'aeolian'],
     //.TRANS: modal scale for music
@@ -273,99 +306,108 @@ var MODENAMES = [
     //.TRANS: musical scale for Mid-Eastern music
     [_('maqam'), 'maqam'],
     //.TRANS: minor blues scale for music
-    [_('blues'), 'blues'],
+    [_('minor blues'), 'minor blues'],
     //.TRANS: major blues scale for music
     [_('major blues'), 'major blues'],
     [_('whole tone'), 'whole tone'],
     //.TRANS: pentatonic scale in music
-    [_('pentatonic'), 'pentatonic'],
+    [_('minor pentatonic'), 'minor pentatonic'],
     [_('chinese'), 'chinese'],
     [_('egyptian'), 'egyptian'],
     //.TRANS: Japanese pentatonic scale for music
-    [_('hirajoshi'), 'hirajoshi'],
+    [_('hirajoshi (Japan)'), 'hirajoshi (Japan)'],
+    [_('in (Japan)'), 'in (Japan)'],
+    [_('minyo (Japan)'), 'minyo (Japan)'],
     [_('japanese'), 'japanese'],
     //.TRANS: Italian mathematician
     [_('fibonacci'), 'fibonacci'],
     [_('custom'), 'custom'],
 ];
 
-var VOICENAMES = [
-    //.TRANS: musical instrument
-    [_('violin'), 'violin', 'images/voices.svg'],
-    //.TRANS: musical instrument
-    [_('cello'), 'cello', 'images/voices.svg'],
-    //.TRANS: musical instrument
-    // [_('basse'), 'basse', 'images/voices.svg'],
-    //.TRANS: polytone synthesizer
-    [_('poly'), 'poly', 'images/synth.svg'],
+
+var FILTERTYPES = [
+    //.TRANS: highpass filter
+    [_('highpass'), 'highpass'],
+    //.TRANS: lowpass filter
+    [_('lowpass'), 'lowpass'],
+    //.TRANS: bandpass filter
+    [_('bandpass'), 'bandpass'],
+    //.TRANS: highshelf filter
+    [_('highshelf'), 'highshelf'],
+    //.TRANS: lowshelf filter
+    [_('lowshelf'), 'lowshelf'],
+    //.TRANS: notch filter
+    [_('notch'), 'notch'],
+    //.TRANS: allpass filter
+    [_('allpass'), 'allpass'],
+    //.TRANS: peaking filter
+    [_('peaking'), 'peaking'],
+];
+
+var OSCTYPES = [
     //.TRANS: sine wave
-    [_('sine'), 'sine', 'images/synth.svg'],
+    [_('sine'), 'sine'],
     //.TRANS: square wave
-    [_('square'), 'square', 'images/synth.svg'],
-    //.TRANS: sawtooth wave
-    [_('sawtooth'), 'sawtooth', 'images/synth.svg'],
+    [_('square'), 'square'],
     //.TRANS: triangle wave
-    [_('triangle'), 'triangle', 'images/synth.svg'],
+    [_('triangle'), 'triangle'],
+    //.TRANS: sawtooth wave
+    [_('sawtooth'), 'sawtooth'],
 ];
 
-var DRUMNAMES = [
-    //.TRANS: musical instrument
-    [_('snare drum'), 'snare drum', 'images/snaredrum.svg'],
-    //.TRANS: musical instrument
-    [_('kick drum'), 'kick drum', 'images/kick.svg'],
-    //.TRANS: musical instrument
-    [_('tom tom'), 'tom tom', 'images/tom.svg'],
-    //.TRANS: musical instrument
-    [_('floor tom tom'), 'floor tom tom', 'images/floortom.svg'],
-    //.TRANS: a drum made from an inverted cup
-    [_('cup drum'), 'cup drum', 'images/cup.svg'],
-    //.TRANS: musical instrument
-    [_('darbuka drum'), 'darbuka drum', 'images/darbuka.svg'],
-    //.TRANS: musical instrument
-    [_('hi hat'), 'hi hat', 'images/hihat.svg'],
-    //.TRANS: a small metal bell
-    [_('ride bell'), 'ride bell', 'images/ridebell.svg'],
-    //.TRANS: musical instrument
-    [_('cow bell'), 'cow bell', 'images/cowbell.svg'],
-    //.TRANS: musical instrument
-    [_('triangle bell'), 'trianglebell', 'images/trianglebell.svg'],
-    //.TRANS: musical instrument
-    [_('finger cymbals'), 'finger cymbals', 'images/fingercymbals.svg'],
-    //.TRANS: a musically tuned set of bells
-    [_('chine'), 'chine', 'images/chine.svg'],
-    //.TRANS: sound effect
-    [_('clang'), 'clang', 'images/clang.svg'],
-    //.TRANS: sound effect
-    [_('crash'), 'crash', 'images/crash.svg'],
-    //.TRANS: sound effect
-    [_('bottle'), 'bottle', 'images/bottle.svg'],
-    //.TRANS: sound effect
-    [_('clap'), 'clap', 'images/clap.svg'],
-    //.TRANS: sound effect
-    [_('slap'), 'slap', 'images/slap.svg'],
-    //.TRANS: sound effect
-    [_('splash'), 'splash', 'images/splash.svg'],
-    //.TRANS: sound effect
-    [_('bubbles'), 'bubbles', 'images/bubbles.svg'],
-    //.TRANS: animal sound effect
-    [_('cat'), 'cat', 'images/cat.svg'],
-    //.TRANS: animal sound effect
-    [_('cricket'), 'cricket', 'images/cricket.svg'],
-    //.TRANS: animal sound effect
-    [_('dog'), 'dog', 'images/dog.svg'],
-    //.TRANS: animal sound effect
-    [_('duck'), 'duck', 'images/duck.svg'],
-];
-
+const DEFAULTINTERVAL = _('perfect') + ' 5';
 const DEFAULTVOICE = 'sine';
 const DEFAULTDRUM = 'kick drum';
 const DEFAULTMODE = 'major';
+const DEFAULTFILTERTYPE = 'highpass';
+const DEFAULTOSCILLATORTYPE = 'sine';
 
 var customMode = MUSICALMODES['custom'];
 
-// The sample has a pitch which is subsequently transposed. This
-// number is that starting pitch.
-const SAMPLECENTERNO = {'violin': 63, 'cello': 39, 'basse': 15};
+function getIntervalName(name) {
+    for (var interval in INTERVALNAMES) {
+        if (INTERVALNAMES[interval][0] === name || INTERVALNAMES[interval][1].toLowerCase() === name.toLowerCase()) {
+            if (INTERVALNAMES[interval][0] != '') {
+                return INTERVALNAMES[interval][0];
+            } else {
+                console.log('I18n for interval name is misbehaving.');
+                console.log(name + ' ' + name.toLowerCase() + ' ' + INTERVALNAMES[interval][0].toLowerCase() + ' ' + INTERVALNAMES[interval][1].toLowerCase());
+                return INTERVALNAMES[interval][1];
+            }
+        }
+    }
+
+    console.log(name + ' not found in INTERVALNAMES');
+    return name;
+};
+
+
+function getIntervalNumber(name) {
+    for (var interval in INTERVALNAMES) {
+        if (INTERVALNAMES[interval][0] === name) {
+	    return INTERVALVALUES[INTERVALNAMES[interval][1]][0];
+	} else if (INTERVALNAMES[interval][1] === name) {
+	    return INTERVALVALUES[INTERVALNAMES[interval][1]][0];
+	}
+    }
+
+    console.log(name + ' not found in INTERVALNAMES');
+    return 0;
+};
+
+
+function getIntervalDirection(name) {
+    for (var interval in INTERVALNAMES) {
+        if (INTERVALNAMES[interval][0] === name) {
+	    return INTERVALVALUES[INTERVALNAMES[interval][1]][1];
+	} else if (INTERVALNAMES[interval][1] === name) {
+	    return INTERVALVALUES[INTERVALNAMES[interval][1]][1];
+	}
+    }
+
+    console.log(name + ' not found in INTERVALNAMES');
+    return 0;
+};
 
 
 function getModeName(name) {
@@ -383,6 +425,45 @@ function getModeName(name) {
 
     console.log(name + ' not found in MODENAMES');
     return name;
+};
+
+
+function initIntervalI18N() {
+    for (var i = 0; i < INTERVALNAMES.length; i++) {
+      if (INTERVALNAMES[i][0] == null) {
+            INTERVALNAMES[i][0] = _(INTERVALNAMES[i][1]);
+          }
+
+        if (INTERVALNAMES[i][0] == null) {
+            INTERVALNAMES[i][0] = INTERVALNAMES[i][1];
+        }
+    }
+};
+
+
+function initFilterI18N() {
+    for (var i = 0; i < FILTERTYPES.length; i++) {
+      if (FILTERTYPES[i][0] == null) {
+            FILTERTYPES[i][0] = _(FILTERTYPES[i][1]);
+          }
+
+        if (FILTERTYPES[i][0] == null) {
+            FILTERTYPES[i][0] = FILTERTYPES[i][1];
+        }
+    }
+};
+
+
+function initOscI18N() {
+    for (var i = 0; i < OSCTYPES.length; i++) {
+      if (OSCTYPES[i][0] == null) {
+            OSCTYPES[i][0] = _(OSCTYPES[i][1]);
+          }
+
+        if (OSCTYPES[i][0] == null) {
+            OSCTYPES[i][0] = OSCTYPES[i][1];
+        }
+    }
 };
 
 
@@ -434,12 +515,52 @@ function getDrumName(name) {
     }
 
     for (var drum = 0; drum < DRUMNAMES.length; drum++) {
-	if (DRUMNAMES[drum][0].toLowerCase() === name.toLowerCase() || DRUMNAMES[drum][1].toLowerCase() === name.toLowerCase()) {
+        if (DRUMNAMES[drum][0].toLowerCase() === name.toLowerCase() || DRUMNAMES[drum][1].toLowerCase() === name.toLowerCase()) {
             if (DRUMNAMES[drum][0] != '') {
                 return DRUMNAMES[drum][0];
             } else {
                 console.log('I18n is misbehaving when parsing drum name: ' + name);
                 return DRUMNAMES[drum][1];
+            }
+        }
+    }
+
+    return null;
+};
+
+
+function getFilterTypes(name) {
+    if (name === '') {
+        console.log('getFiterType passed blank name. Returning ' + DEFAULTFILTERTYPE);
+        name = DEFAULTFILTERTYPE;
+    }
+    for (var type = 0; type < FILTERTYPES.length; type++) {
+        if (FILTERTYPES[type][0].toLowerCase() === name.toLowerCase() || FILTERTYPES[type][1].toLowerCase() === name.toLowerCase()) {
+            if (FILTERTYPES[type][0] != '') {
+                return FILTERTYPES[type][0];
+            } else {
+                console.log('I18n is misbehaving when parsing filter type: ' + name);
+                return FILTERTYPES[type][1];
+            }
+        }
+    }
+
+    return null;
+};
+
+
+function getOscillatorTypes(name) {
+    if (name === '') {
+        console.log('getOscillatorType passed blank name. Returning ' + DEFAULTOSCILLATORTYPE);
+        name = DEFAULTOSCILLATORTYPE;
+    }
+    for (var type = 0; type < OSCTYPES.length; type++) {
+        if (OSCTYPES[type][0].toLowerCase() === name.toLowerCase() || OSCTYPES[type][1].toLowerCase() === name.toLowerCase()) {
+            if (OSCTYPES[type][0] != '') {
+                return OSCTYPES[type][0];
+            } else {
+                console.log('I18n is misbehaving when parsing oscillator type: ' + name);
+                return OSCTYPES[type][1];
             }
         }
     }
@@ -584,7 +705,7 @@ function keySignatureToMode(keySignature) {
     }
 
     if (minorMode) {
-        return [key, 'minor'];
+        return [key, 'natural minor'];
     }
 
     // Reassemble remaining parts to get mode name
@@ -633,19 +754,26 @@ function getStepSizeDown(keySignature, pitch) {
 };
 
 
+function getModeLength(keySignature) {
+    var obj = _buildScale(keySignature);
+    return obj[1].length;
+};
+
+
 function _getStepSize(keySignature, pitch, direction) {
     // Returns how many half-steps to the next note in this key.
+    var thisPitch = pitch;
     var obj = _buildScale(keySignature);
     var scale = obj[0];
     var halfSteps = obj[1];
 
-    if (pitch in BTOFLAT) {
-        pitch = BTOFLAT[pitch];
-    } else if (pitch in STOSHARP) {
-        pitch = STOSHARP[pitch];
+    if (thisPitch in BTOFLAT) {
+        thisPitch = BTOFLAT[thisPitch];
+    } else if (thisPitch in STOSHARP) {
+        thisPitch = STOSHARP[thisPitch];
     }
 
-    ii = scale.indexOf(pitch);
+    var ii = scale.indexOf(thisPitch);
     if (ii !== -1) {
         if (direction === 'up') {
             return halfSteps[ii];
@@ -658,11 +786,24 @@ function _getStepSize(keySignature, pitch, direction) {
         }
     }
 
-    if (pitch in EQUIVALENTNOTES) {
-        pitch = EQUIVALENTNOTES[pitch];
+    if (ii === -1) {
+        if (thisPitch in EQUIVALENTFLATS) {
+            ii = scale.indexOf(EQUIVALENTFLATS[thisPitch]);
+        }
     }
 
-    ii = scale.indexOf(pitch);
+    if (ii === -1) {
+        if (thisPitch in EQUIVALENTSHARPS) {
+            ii = scale.indexOf(EQUIVALENTSHARPS[thisPitch]);
+        }
+    }
+
+    if (ii === -1) {
+        if (thisPitch in EQUIVALENTNATURALS) {
+            ii = scale.indexOf(EQUIVALENTNATURALS[thisPitch]);
+        }
+    }
+
     if (ii !== -1) {
         if (direction === 'up') {
             return halfSteps[ii];
@@ -675,10 +816,66 @@ function _getStepSize(keySignature, pitch, direction) {
         }
     }
 
-    // current Note not in the consonant scale if this key.
-    console.log(pitch + ' not found in key of ' + keySignature);
-    return 1;
+    // Pitch is not in the consonant scale of this key, so we need to
+    // shift up or down to the next note in the key.
+    var offset = 0;
+    var i = PITCHES.indexOf(thisPitch);
+    if (i !== -1) {
+        while (scale.indexOf(thisPitch) === -1) {
+            var i = PITCHES.indexOf(thisPitch);
+            if (i === -1) {
+		i = PITCHES2.indexOf(thisPitch);
+            }
+
+            if (direction === 'up') {
+                i += 1;
+                thisPitch = PITCHES[i % 12];
+                offset += 1;
+            } else {
+                i -= 1;
+                if (i < 0) {
+                    i += 12;
+                }
+
+                thisPitch = PITCHES[i];
+                offset -= 1;
+            }
+        }
+
+        return offset;
+    }
+
+    var i = PITCHES2.indexOf(thisPitch);
+    if (i !== -1) {
+        while (scale.indexOf(thisPitch) === -1) {
+            var i = PITCHES2.indexOf(thisPitch);
+            if (i === -1) {
+		i = PITCHES.indexOf(thisPitch);
+            }
+
+            if (direction === 'up') {
+                i += 1;
+                thisPitch = PITCHES2[i % 12];
+                offset += 1;
+            } else {
+                i -= 1;
+                if (i < 0) {
+                    i += 12;
+                }
+
+                thisPitch = PITCHES2[i];
+                offset -= 1;
+            }
+        }
+
+        return offset;
+    }
+
+    // Should never get here, but just in case.
+    console.log(thisPitch + ' not found');
+    return 0;
 };
+
 
 function _buildScale(keySignature) {
     var obj = keySignatureToMode(keySignature);
@@ -746,7 +943,7 @@ function getScaleAndHalfSteps(keySignature) {
             solfege.push('');
         }
     }
-    
+
     if (NOTESFLAT.indexOf(myKeySignature) !== -1) {
         var thisScale = NOTESFLAT;
     } else {
@@ -768,58 +965,129 @@ function getInterval (interval, keySignature, pitch) {
     var obj = _buildScale(keySignature);
     var scale = obj[0];
     var halfSteps = obj[1];
- 
-    if (pitch in BTOFLAT) {
-        pitch = BTOFLAT[pitch];
-        ii = scale.indexOf(pitch);
-    } else if (pitch in STOSHARP) {
-        pitch = STOSHARP[pitch];
-        ii = scale.indexOf(pitch);
-    } else if (scale.indexOf(pitch) !== -1) {
-        ii = scale.indexOf(pitch);
-    } else if (pitch in EQUIVALENTNOTES) {
-        pitch = EQUIVALENTNOTES[pitch];
-        if (scale.indexOf(pitch) !== -1) {
-            ii = scale.indexOf(pitch);
-        } else {
-            console.log('Note ' + pitch + ' not in scale ' + keySignature);
-            ii = 0;
-        }
-    } else {
-        // In case pitch is solfege, convert it.
-        var ii = SOLFEGENAMES.indexOf(pitch);
+    // Offet is used in the case that the pitch is not in the current scale.
+    var offset = 0;
+
+    if (SOLFEGENAMES.indexOf(pitch) !== -1) {
+        pitch = FIXEDSOLFEGE[pitch];
     }
 
-    if (interval > 0) {
-        var myOctave = Math.floor(interval / SEMITONES);
-        var myInterval = Math.floor(interval) % SEMITONES;
+    if (pitch in BTOFLAT) {
+        pitch = BTOFLAT[pitch];
+        var ii = scale.indexOf(pitch);
+    } else if (pitch in STOSHARP) {
+        pitch = STOSHARP[pitch];
+        var ii = scale.indexOf(pitch);
+    } else if (scale.indexOf(pitch) !== -1) {
+        var ii = scale.indexOf(pitch);
+    } else {  // if (PITCHES.indexOf(pitch) !== -1 || PITCHES1.indexOf(pitch) !== -1 || PITCHES2.indexOf(pitch) !== -1 || PITCHES3.indexOf(pitch) !== -1) {
+        var ii = scale.indexOf(pitch);
+        if (ii === -1) {
+            if (pitch in EQUIVALENTFLATS) {
+                ii = scale.indexOf(EQUIVALENTFLATS[pitch]);
+            }
+        }
+
+        if (ii === -1) {
+            if (pitch in EQUIVALENTSHARPS) {
+                ii = scale.indexOf(EQUIVALENTSHARPS[pitch]);
+            }
+        }
+
+        if (ii === -1) {
+            if (pitch in EQUIVALENTNATURALS) {
+                ii = scale.indexOf(EQUIVALENTNATURALS[pitch]);
+            }
+        }
+
+        if (ii === -1) {
+            // Pitch is not in the consonant scale of this key, so we need to
+            // shift up or down for a close match, step up or down, and then
+            // compensate for the shift.
+            var i = PITCHES.indexOf(pitch);
+            if (i !== -1) {
+                while (scale.indexOf(pitch) === -1) {
+                    var i = PITCHES.indexOf(pitch);
+                    if (interval > 0) {
+                        i += 1;
+                        pitch = PITCHES[i % 12];
+                        offset -= 1;
+                    } else {
+                        i -= 1;
+                        if (i < 0) {
+                            i += 12;
+                        }
+                        pitch = PITCHES[i];
+                        offset += 1;
+                    }
+                }
+
+                ii = scale.indexOf(pitch);
+            } else {
+                var i = PITCHES2.indexOf(pitch);
+                if (i !== -1) {
+                    while (scale.indexOf(pitch) === -1) {
+                        var i = PITCHES2.indexOf(pitch);
+                        if (interval > 0) {
+                            i += 1;
+                            pitch = PITCHES2[i % 12];
+                            offset -= 1;
+                        } else {
+                            i -= 1;
+                            if (i < 0) {
+                                i += 12;
+                            }
+                            pitch = PITCHES2[i];
+                            offset += 1;
+                        }
+                    }
+
+                    ii = scale.indexOf(pitch);
+                } else {
+                    // Should never happen.
+                    console.log(pitch + ' not found');
+                    return 0;
+                }
+            }
+        }
+    }
+
+    // What do we do with the offset? Is it ignored? Or does it count
+    // as one step in the interval?
+
+    if (interval === 0) {
+        return 0;
+    } else if (interval > 0) {
         var j = 0;
-        for (var i = 0; i < (myInterval - 1); i++) {
+        for (var i = 0; i < interval; i++) {
             j += halfSteps[(ii + i) % halfSteps.length];
         }
-        return j + myOctave * SEMITONES;
+        return j;
     } else {
-        var myOctave = Math.ceil(interval / SEMITONES);
-        var myInterval = Math.ceil(interval) % SEMITONES;
         var j = 0;
-        for (var i = 0; i > myInterval + 1; i--) {
+        for (var i = 0; i > interval; i--) {
             var z = (ii + i - 1) % halfSteps.length;
             while (z < 0) {
                 z += halfSteps.length;
             }
             j -= halfSteps[z];
         }
-        return j + myOctave * SEMITONES;
+        return j;
     }
 };
 
 
-function calcNoteValueToDisplay(a, b) {
+function calcNoteValueToDisplay(a, b, scale) {
     var noteValue = a / b;
     var noteValueToDisplay = null;
+    if (scale == undefined) {
+        var cellScale = 1.0;
+    } else {
+        var cellScale = scale;
+    }
 
     if (NOTESYMBOLS != undefined && noteValue in NOTESYMBOLS) {
-        noteValueToDisplay = '1<br>&mdash;<br>' + noteValue.toString() + '<br>' + '<img src="' + NOTESYMBOLS[noteValue] + '" height=' + (MATRIXBUTTONHEIGHT / 2) * this.cellScale + '>';
+        noteValueToDisplay = '1<br>&mdash;<br>' + noteValue.toString() + '<br>' + '<img src="' + NOTESYMBOLS[noteValue] + '" height=' + (MATRIXBUTTONHEIGHT / 2) + '>';
     } else {
         noteValueToDisplay = reducedFraction(b, a);
     }
@@ -827,16 +1095,17 @@ function calcNoteValueToDisplay(a, b) {
     if (parseInt(noteValue) < noteValue) {
         noteValueToDisplay = parseInt((noteValue * 1.5))
         if (NOTESYMBOLS != undefined && noteValueToDisplay in NOTESYMBOLS) {
-            noteValueToDisplay = '1.5<br>&mdash;<br>' + noteValueToDisplay.toString() + '<br>' + '<img src="' + NOTESYMBOLS[noteValueToDisplay] + '" height=' + (MATRIXBUTTONHEIGHT / 2) * this.cellScale + '> .';
+            noteValueToDisplay = '1.5<br>&mdash;<br>' + noteValueToDisplay.toString() + '<br>' + '<img src="' + NOTESYMBOLS[noteValueToDisplay] + '" height=' + (MATRIXBUTTONHEIGHT / 2) * cellScale + '> .';
         } else {
             noteValueToDisplay = parseInt((noteValue * 1.75))
             if (NOTESYMBOLS != undefined && noteValueToDisplay in NOTESYMBOLS) {
-                noteValueToDisplay = '1.75<br>&mdash;<br>' + noteValueToDisplay.toString() + '<br>' + '<img src="' + NOTESYMBOLS[noteValueToDisplay] + '" height=' + (MATRIXBUTTONHEIGHT / 2) * this.cellScale + '> ..';
+                noteValueToDisplay = '1.75<br>&mdash;<br>' + noteValueToDisplay.toString() + '<br>' + '<img src="' + NOTESYMBOLS[noteValueToDisplay] + '" height=' + (MATRIXBUTTONHEIGHT / 2) * cellScale + '> ..';
             } else {
                 noteValueToDisplay = reducedFraction(b, a);
             }
         }
     }
+
     return noteValueToDisplay;
 };
 
@@ -955,9 +1224,9 @@ function numberToPitch(i) {
             n += 1;  // Count octave bump ups.
         }
 
-	return [PITCHES[(i + PITCHES.indexOf('A')) % 12], Math.floor((i + PITCHES.indexOf('A')) / 12) - n];
+        return [PITCHES[(i + PITCHES.indexOf('A')) % 12], Math.floor((i + PITCHES.indexOf('A')) / 12) - n];
     } else {
-	return [PITCHES[(i + PITCHES.indexOf('A')) % 12], Math.floor((i + PITCHES.indexOf('A')) / 12)];
+        return [PITCHES[(i + PITCHES.indexOf('A')) % 12], Math.floor((i + PITCHES.indexOf('A')) / 12)];
     }
 };
 
@@ -1011,7 +1280,7 @@ function pitchToNumber(pitch, octave, keySignature) {
                 // Not sure this could occur... but just in case.
                 pitch = pitch.slice(0, len - 2);
             }
-	}
+        }
 
         if (pitch.length > 1) {
             var lastOne = pitch.slice(len - 1);
@@ -1065,7 +1334,7 @@ function getSolfege(note) {
 
 function i18nSolfege(note) {
     // solfnotes_ is used in the interface for i18n
-    //.TRANS: the note names must be separated by single spaces 
+    //.TRANS: the note names must be separated by single spaces
     var solfnotes_ = _('ti la sol fa mi re do').split(' ');
     var obj = splitSolfege(note);
 
@@ -1159,7 +1428,7 @@ function getNumNote(value, delta) {
 
     var note = NOTESTABLE[num];
 
-    if (note[num] === "ti") {
+    if (note[num] === 'ti') {
         octave -= 1;
     }
 
@@ -1204,10 +1473,10 @@ calcOctaveInterval = function (arg) {
         value = 0;
         break;
     case 2:
-	value = 2;
+        value = 2;
         break;
     case -2:
-	value = -2;
+        value = -2;
         break;
     default:
         console.log('Interval octave must be between -2 and 2.');
@@ -1220,9 +1489,7 @@ calcOctaveInterval = function (arg) {
 
 
 function isInt(value) {
-    return !isNaN(value) && 
-    parseInt(Number(value)) == value && 
-    !isNaN(parseInt(value, 10));
+    return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 };
 
 
@@ -1240,253 +1507,278 @@ function reducedFraction(a, b) {
 };
 
 
-function Synth () {
-    // Isolate synth functions here.
+getNote = function (noteArg, octave, transposition, keySignature, movable, direction, errorMsg) {
+    var sharpFlat = false;
 
-    if (_THIS_IS_MUSIC_BLOCKS_) {
-        // Using Tone.js
-        this.tone = new Tone();
+    octave = Math.round(octave);
+
+    if (transposition == undefined) {
+        transposition = 0;
     }
 
-    this.synthset = {
-        // builtin synths
-        'poly': [null, null],
-        'sine': [null, null],
-        'triangle': [null, null],
-        'sawtooth': [null, null],
-        'square': [null, null],
-        'pluck': [null, null],
-
-        // voiced samples
-        'violin': [VIOLINSOUNDSAMPLE, null],
-        'cello': [CELLOSOUNDSAMPLE, null],
-        'basse': [BASSESOUNDSAMPLE, null],
-
-        // drum samples
-        'bottle': [BOTTLESOUNDSAMPLE, null],
-        'clap': [CLAPSOUNDSAMPLE, null],
-        'darbuka drum': [DARBUKASOUNDSAMPLE, null],
-        'hi hat': [HIHATSOUNDSAMPLE, null],
-        'splash': [SPLASHSOUNDSAMPLE, null],
-        'bubbles': [BUBBLESSOUNDSAMPLE, null],
-        'cow bell': [COWBELLSOUNDSAMPLE, null],
-        'dog': [DOGSOUNDSAMPLE, null],
-        'kick drum': [KICKSOUNDSAMPLE, null],
-        'tom tom': [TOMSOUNDSAMPLE, null],
-        'cat': [CATSOUNDSAMPLE, null],
-        'crash': [CRASHSOUNDSAMPLE, null],
-        'duck': [DUCKSOUNDSAMPLE, null],
-        'ride bell': [RIDEBELLSOUNDSAMPLE, null],
-        'triangle bell': [TRIANGLESOUNDSAMPLE, null],
-        'chine': [CHINESOUNDSAMPLE, null],
-        'cricket': [CRICKETSOUNDSAMPLE, null],
-        'finger cymbals': [FINGERCYMBALSSOUNDSAMPLE, null],
-        'slap': [SLAPSOUNDSAMPLE, null],
-        'clang': [CLANGSOUNDSAMPLE, null],
-        'cup drum': [CUPSOUNDSAMPLE, null],
-        'floor tom tom': [FLOORTOMSOUNDSAMPLE, null],
-        'snare drum': [SNARESOUNDSAMPLE, null],
-    };
-
-    if (_THIS_IS_MUSIC_BLOCKS_) {
-        Tone.Buffer.onload = function (){
-            console.log('drum loaded');
-        };
+    transposition = Math.round(transposition);
+    if (typeof(noteArg) === 'number') {
+        noteArg = noteArg.toString();
     }
 
-    this.getSynthByName = function (name) {
-        if (name == null || name == undefined) {
-            return this.synthset['poly'][1];
+    // Check for double flat or double sharp.
+    var len = noteArg.length;
+    if (len > 2) {
+        var lastTwo = noteArg.slice(len - 2);
+        if (lastTwo === 'bb' || lastTwo === '♭♭') {
+            noteArg = noteArg.slice(0, len - 1);
+            transposition -= 1;
+        } else if (lastTwo === '##' || lastTwo === '♯♯') {
+            noteArg = noteArg.slice(0, len - 1);
+            transposition += 1;
+        } else if (lastTwo === '#b' || lastTwo === '♯♭' || lastTwo === 'b#' || lastTwo === '♭♯') {
+            // Not sure this could occur... but just in case.
+            noteArg = noteArg.slice(0, len - 2);
+        }
+    }
+
+    // Already a note? No need to convert from solfege.
+    if (noteArg in BTOFLAT) {
+        noteArg = BTOFLAT[noteArg];
+    } else if (noteArg in STOSHARP) {
+        noteArg = STOSHARP[noteArg];
+    }
+
+    if (noteArg in EXTRATRANSPOSITIONS) {
+        octave += EXTRATRANSPOSITIONS[noteArg][1];
+        var note = EXTRATRANSPOSITIONS[noteArg][0];
+    } else if (NOTESSHARP.indexOf(noteArg.toUpperCase()) !== -1) {
+        var note = noteArg.toUpperCase();
+    } else if (NOTESFLAT.indexOf(noteArg) !== -1) {
+        var note = noteArg;
+    } else if (NOTESFLAT2.indexOf(noteArg) !== -1) {
+        // Convert to uppercase, e.g., d♭ -> D♭.
+        var note = NOTESFLAT[notesFlat2.indexOf(noteArg)];
+    } else {
+        // Not a letter note, so convert from Solfege.
+        // Could be mi#<sub>4</sub> (from matrix) or mi# (from note).
+        if (noteArg.substr(-1) === '>') {
+            // Read octave and solfege from HTML
+            octave = parseInt(noteArg.slice(noteArg.indexOf('>') + 1, noteArg.indexOf('/') - 1));
+            noteArg = noteArg.substr(0, noteArg.indexOf('<'));
         }
 
-        switch (name) {    
-        case 'pluck':
-        case 'triangle':
-        case 'square':
-        case 'sawtooth':
-        case 'sine':
-            return this.synthset[name][1];
-            break;
-        case 'violin':
-        case 'cello':
-        case 'basse':
-            return this.synthset[name][1];
-            break;
-        case 'default':
-        case 'poly':
-            return this.synthset['poly'][1];
-            break;
-        default:
-            var drumName = getDrumSynthName(name);
-            if (name.slice(0, 4) == 'http') {
-                if (name in this.synthset) {
-                    return this.synthset[name][1];
-                } else {
-                    console.log('no synth by that name');
-                    return null;
-                }
-            } else if (drumName != null) {
-                return this.synthset[drumName][1];
-            } else if (name === 'drum') {
-                return this.synthset[DEFAULTDRUM][1];
-            }
-            break;
+        if (['#', '♯', '♭', 'b'].indexOf(noteArg.substr(-1)) !== -1) {
+            sharpFlat = true;
         }
 
-        // Use polysynth if all else fails.
-        return this.synthset['poly'][1];
-    };
-
-    this.loadSynth = function (name) {
-        var thisSynth = this.getSynthByName(name);
-        if (thisSynth == null) {
-            console.log('loading synth for ' + name);
-            switch (name) {
-            case 'pluck':
-                this.synthset['pluck'][1] = new Tone.PluckSynth();
-                break;
-            case 'triangle':
-            case 'square':
-            case 'sawtooth':
-            case 'sine':
-                var synthOptions = {
-                    oscillator: {
-                        type: name
-                    },
-                    envelope: {
-                        attack: 0.03,
-                        decay: 0,
-                        sustain: 1,
-                        release: 0.03
-                    },
-                };
-                this.synthset[name][1] = new Tone.Synth(synthOptions);
-                break;
-            case 'poly':
-            case 'default':
-                this.synthset['poly'][1] = new Tone.PolySynth(6, Tone.AMSynth);
-                break;
-            case 'violin':
-            case 'cello':
-            case 'basse':
-                this.synthset[name][1] = new Tone.Sampler(this.synthset[name][0]);
-                break;
-            default:
-                if (name.slice(0, 4) == 'http') {
-                    this.synthset[name] = [name, new Tone.Sampler(name)];
-                } else if (name.slice(0, 4) == 'file') {
-                    this.synthset[name] = [name, new Tone.Sampler(name)];
-                } else {
-                    this.synthset[name][1] = new Tone.Sampler(this.synthset[name][0]);
-                }
-                break;
-            }
+        if (!keySignature) {
+            keySignature = 'C major';
         }
 
-        this.getSynthByName(name).toMaster();
-    };
-
-    this.performNotes = function (synth, notes, beatValue, doVibrato, vibratoIntensity, vibratoFrequency) {
-        if (doVibrato) {
-            var vibrato = new Tone.Vibrato(1 / vibratoFrequency, vibratoIntensity);
-            synth.chain(vibrato, Tone.Master);
-            synth.triggerAttackRelease(notes, beatValue);
-            setTimeout(function () {
-                vibrato.dispose();
-            }, beatValue * 1000);  //disable vibrato effect when beat is over
+        if (movable) {
+            var obj = getScaleAndHalfSteps(keySignature);
         } else {
-            synth.triggerAttackRelease(notes, beatValue);
+            var obj = getScaleAndHalfSteps('C major');
+        }
+
+        var thisScale = obj[0];
+        var halfSteps = obj[1];
+        var myKeySignature = obj[2];
+        var mode = obj[3];
+
+        if (movable) {
+            // Ensure it is a valid key signature.
+            var offset = thisScale.indexOf(myKeySignature);
+            if (offset === -1) {
+                console.log('WARNING: Key ' + myKeySignature + ' not found in ' + thisScale + '. Using default of C');
+                offset = 0;
+                thisScale = NOTESSHARP;
+            }
+
+            // We need to set the octave relative to the tonic.
+            // Starting from C_4 (note_octave)
+            // All keys C# -- F# would remain in octave four
+            // All keys Gb -- B would be in octave three (since
+            // going down is closer than going up)
+            if (offset > 5) {
+                transposition -= 12;  // go down one octave
+            }
+        } else {
+            var offset = 0;
+        }
+
+        if (sharpFlat) {
+            if (noteArg.substr(-1) === '#') {
+                offset += 1;
+            } else if (noteArg.substr(-1) === '♯') {
+                offset += 1;
+            } else if (noteArg.substr(-1) === '♭') {
+                offset -= 1;
+            } else if (noteArg.substr(-1) === 'b') {
+                offset -= 1;
+            }
+        }
+
+        if (halfSteps.indexOf(noteArg.substr(0, 1).toLowerCase()) !== -1) {
+            var solfegePart = noteArg.substr(0, 1).toLowerCase();
+        } else if (halfSteps.indexOf(noteArg.substr(0, 2).toLowerCase()) !== -1) {
+            var solfegePart = noteArg.substr(0, 2).toLowerCase();
+        } else if (halfSteps.indexOf(noteArg.substr(0, 3).toLowerCase()) !== -1) {
+            var solfegePart = noteArg.substr(0, 3).toLowerCase();
+        } else {
+            // The note should already be translated, but just in case...
+            // Reverse any i18n
+            // solfnotes_ is used in the interface for i18n
+            //.TRANS: the note names must be separated by single spaces
+            var solfnotes_ = _('ti la sol fa mi re do').split(' ');
+            if (solfnotes_.indexOf(noteArg.substr(0, 1).toLowerCase()) !== -1) {
+                var solfegePart = SOLFNOTES[solfnotes_.indexOf(noteArg.substr(0, 2).toLowerCase())];
+            } else if (solfnotes_.indexOf(noteArg.substr(0, 2).toLowerCase()) !== -1) {
+                var solfegePart = SOLFNOTES[solfnotes_.indexOf(noteArg.substr(0, 2).toLowerCase())];
+            } else if (solfnotes_.indexOf(noteArg.substr(0, 3).toLowerCase()) !== -1) {
+                var solfegePart = SOLFNOTES[solfnotes_.indexOf(noteArg.substr(0, 3).toLowerCase())];
+            } else {
+                var solfegePart = noteArg.substr(0, 2).toLowerCase();
+            }
+        }
+
+        if (noteArg.toLowerCase().substr(0, 4) === 'rest' || noteArg.toLowerCase().substr(0, 4) === 'r') {
+            return ['R', ''];
+        } else if (halfSteps.indexOf(solfegePart) !== -1) {
+            var index = halfSteps.indexOf(solfegePart) + offset;
+            if (index > 11) {
+                index -= 12;
+                octave += 1;
+            }
+
+            var note = thisScale[index];
+        } else {
+            console.log(solfegePart);
+            console.log(halfSteps.indexOf(noteArg));
+            console.log('WARNING: Note [' + noteArg + '] not found in ' + halfSteps + '. Returning REST');
+            if (errorMsg != undefined) {
+                errorMsg(INVALIDPITCH, null);
+            }
+
+            return ['R', ''];
+        }
+
+        if (note in EXTRATRANSPOSITIONS) {
+            octave += EXTRATRANSPOSITIONS[note][1];
+            note = EXTRATRANSPOSITIONS[note][0];
         }
     }
 
-    this.trigger = function (notes, beatValue, name, vibratoArgs) {
-        var doVibrato = false;
-        var vibratoIntensity = 0;
-        var vibratoFrequency = 0;
-        if (vibratoArgs.length == 2 && vibratoArgs[0] != 0) {
-            doVibrato = true;
-            vibratoIntensity = vibratoArgs[0];
-            vibratoFrequency = vibratoArgs[1];
+    if (transposition && transposition !== 0) {
+        if (transposition < 0) {
+            var deltaOctave = -Math.floor(-transposition / 12);
+            var deltaNote = -(-transposition % 12);
+        } else {
+            var deltaOctave = Math.floor(transposition / 12);
+            var deltaNote = transposition % 12;
         }
 
-        switch (name) {
-        case 'pluck':
-        case 'triangle':
-        case 'square':
-        case 'sawtooth':
-        case 'sine':
-            if (typeof(notes) === 'object') {
-                var noteToPlay = notes[0];
+        octave += deltaOctave;
+
+        if (deltaNote > 0) {
+            if (NOTESSHARP.indexOf(note) !== -1) {
+                i = NOTESSHARP.indexOf(note);
+                i += deltaNote;
+                if (i < 0) {
+                    i += 12;
+                    octave -= 1;
+                } else if (i > 11) {
+                    i -= 12;
+                    octave += 1;
+                }
+
+                note = NOTESSHARP[i];
+            } else if (NOTESFLAT.indexOf(note) !== -1) {
+                i = NOTESFLAT.indexOf(note);
+                i += deltaNote;
+                if (i < 0) {
+                    i += 12;
+                    octave -= 1;
+                } else if (i > 11) {
+                    i -= 12;
+                    octave += 1;
+                }
+
+                note = NOTESFLAT[i];
             } else {
-                var noteToPlay = notes;
+                console.log('note not found? ' + note);
             }
-            this.performNotes(this.synthset[name][1], noteToPlay, beatValue, doVibrato, vibratoIntensity, vibratoFrequency);
+        } else if (deltaNote < 0) {
+            if (NOTESFLAT.indexOf(note) !== -1) {
+                i = NOTESFLAT.indexOf(note);
+                i += deltaNote;
+                if (i < 0) {
+                    i += 12;
+                    octave -= 1;
+                } else if (i > 11) {
+                    i -= 12;
+                    octave += 1;
+                }
+
+                note = NOTESFLAT[i];
+            } else if (NOTESSHARP.indexOf(note) !== -1) {
+                i = NOTESSHARP.indexOf(note);
+                i += deltaNote;
+                if (i < 0) {
+                    i += 12;
+                    octave -= 1;
+                } else if (i > 11) {
+                    i -= 12;
+                    octave += 1;
+                }
+
+                note = NOTESSHARP[i];
+            } else {
+                console.log('note not found? ' + note);
+            }
+        }
+    }
+
+    // Try to find a note in the current keySignature
+    switch (getSharpFlatPreference(keySignature)) {
+    case 'flat':
+        if (note in EQUIVALENTFLATS) {
+            note = EQUIVALENTFLATS[note];
+        }
+        break;
+    case 'sharp':
+        if (note in EQUIVALENTSHARPS) {
+            note = EQUIVALENTSHARPS[note];
+        }
+        break;
+    case 'natural':
+        if (note in EQUIVALENTNATURALS) {
+            note = EQUIVALENTNATURALS[note];
+        }
+        break;
+    default:
+        break;
+    }
+
+    // Finally consider the note direction (in the case of intervals)
+    if (direction != undefined) {
+        switch(direction) {
+        case -1:
+            if (note in EQUIVALENTFLATS) {
+                note = EQUIVALENTFLATS[note];
+            }
             break;
-        case 'violin':
-        case 'cello':
-        case 'basse':
-            // The violin sample is tuned to C6
-            // The cello sample is tuned to C4???
-            // The basse sample is tuned to C2???
-            var centerNo = SAMPLECENTERNO[name];
-            var obj = noteToPitchOctave(notes);
-            var noteNo = pitchToNumber(obj[0], obj[1], 'C Major');
-            this.performNotes(this.synthset[name][1], noteNo - centerNo, beatValue, doVibrato, vibratoIntensity, vibratoFrequency);
-            break;
-        case 'default':
-        case 'poly':
-            this.performNotes(this.synthset['poly'][1], notes, beatValue, doVibrato, vibratoIntensity, vibratoFrequency);
+        case 1:
+            if (note in EQUIVALENTSHARPS) {
+                note = EQUIVALENTSHARPS[note];
+            }
             break;
         default:
-            var drumName = getDrumSynthName(name);
-            if (drumName != null) {
-                // Work around i8n bug in Firefox.
-                if (drumName === '' && name in this.synthset) {
-                    this.synthset[name][1].triggerAttack(0, beatValue);
-                } else if (drumName in this.synthset) {
-                    if (this.synthset[drumName][1] == null) {
-                        console.log('Something has gone terribly wrong: ' + name + ', ' + drumName);
-                    } else {
-                        this.synthset[drumName][1].triggerAttack(0);
-                    }
-                } else if (name.slice(0, 4) == 'http') {
-                    this.synthset[name][1].triggerAttack(0, beatValue);
-                } else if (name.slice(0, 4) == 'file') {
-                    this.synthset[name][1].triggerAttack(0, beatValue);
-                } else {
-                    console.log('Something has gone terribly wrong: ' + name + ', ' + drumName);
-                }
-            } else if (name === 'drum') {
-                this.synthset[DEFAULTDRUM][1].triggerAttack(0, beatValue, 1);
-            } else if (name.slice(0, 4) == 'http') {
-                this.synthset[name][1].triggerAttack(0, beatValue, 1);
-            } else if (name.slice(0, 4) == 'file') {
-                this.synthset[name][1].triggerAttack(0, beatValue, 1);
-            } else {
-                this.performNotes(this.synthset['poly'][1], notes, beatValue, doVibrato, vibratoIntensity, vibratoFrequency);
-            }
             break;
         }
-    };
+    }
 
-    this.stopSound = function (name) {
-        this.getSynthByName(name).triggerRelease();
-    };
-
-    this.start = function () {
-        Tone.Transport.start();
-    };
-
-    this.stop = function () {
-        Tone.Transport.stop();
-    };
-
-    this.setVolume = function (vol) {
-        var db = this.tone.gainToDb(vol / 100);
-        Tone.Master.volume.rampTo(db, 0.01);
-    };
-
-    this.getOscillator = function (oscillatorName, frequency) {
-        return new Tone.Oscillator(oscillatorName, frequency).toMaster();
-    };
+    if (octave < 1) {
+        return [note, 1];
+    } else if (octave > 10) {
+        return [note, 10];
+    } else {
+        return [note, octave];
+    }
 };

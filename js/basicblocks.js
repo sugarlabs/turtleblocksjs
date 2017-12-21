@@ -1086,6 +1086,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     publishBlock.dockTypes[1] = 'textin';
     publishBlock.hidden = true;
 
+    /*
     var getyTurtleBlock = new ProtoBlock('yturtle');
     getyTurtleBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['yturtle'] = getyTurtleBlock;
@@ -1121,6 +1122,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     stopTurtleBlock.oneArgBlock();
     stopTurtleBlock.dockTypes[1] = 'anyin';
     stopTurtleBlock.defaults.push('0');
+    */
 
     var noBackgroundBlock = new ProtoBlock('nobackground');
     blocks.protoBlockDict['nobackground'] = noBackgroundBlock;
@@ -1183,6 +1185,118 @@ function initBasicProtoBlocks(palettes, blocks) {
     printBlock.oneArgBlock();
     printBlock.dockTypes[1] = 'anyin';
 
+    // Blocks for interacting between turtles
+
+    var stopTurtleBlock = new ProtoBlock('stopTurtle');
+    stopTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['stopTurtle'] = stopTurtleBlock;
+    stopTurtleBlock.staticLabels.push(_('stop turtle'));
+    stopTurtleBlock.adjustWidthToLabel();
+    stopTurtleBlock.oneArgBlock();
+    stopTurtleBlock.dockTypes[1] = 'anyin';
+    stopTurtleBlock.defaults.push('Yertle');
+
+    var startTurtleBlock = new ProtoBlock('startTurtle');
+    startTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['startTurtle'] = startTurtleBlock;
+    startTurtleBlock.staticLabels.push(_('start turtle'));
+    startTurtleBlock.adjustWidthToLabel();
+    startTurtleBlock.oneArgBlock();
+    startTurtleBlock.dockTypes[1] = 'anyin';
+    startTurtleBlock.defaults.push('Yertle');
+
+    var turtlecolorBlock = new ProtoBlock('turtlecolor');
+    turtlecolorBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtlecolor'] = turtlecolorBlock;
+    //.TRANS: pen color for this turtle
+    turtlecolorBlock.staticLabels.push(_('turtle color'));
+    turtlecolorBlock.adjustWidthToLabel();
+    turtlecolorBlock.oneArgMathBlock();;
+    turtlecolorBlock.dockTypes[1] = 'anyin';
+    turtlecolorBlock.defaults.push('Yertle');
+
+    var turtleheadingBlock = new ProtoBlock('turtleheading');
+    turtleheadingBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtleheading'] = turtleheadingBlock;
+    //.TRANS: heading (compass direction) for this turtle
+    turtleheadingBlock.staticLabels.push(_('turtle heading'));
+    turtleheadingBlock.oneArgMathBlock();;
+    turtleheadingBlock.adjustWidthToLabel();
+    turtleheadingBlock.dockTypes[1] = 'anyin';
+    turtleheadingBlock.defaults.push('Yertle');
+
+    var turtleyBlock = new ProtoBlock('yturtle');
+    turtleyBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['yturtle'] = turtleyBlock;
+    //.TRANS: y position for this turtle
+    turtleyBlock.staticLabels.push(_('turtle y'));
+    turtleyBlock.oneArgMathBlock();
+    turtleyBlock.adjustWidthToLabel();
+    turtleyBlock.dockTypes[1] = 'anyin';
+    turtleyBlock.defaults.push('Yertle');
+
+    var turtlexBlock = new ProtoBlock('xturtle');
+    turtlexBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['xturtle'] = turtlexBlock;
+    //.TRANS: x position for this turtle
+    turtlexBlock.staticLabels.push(_('turtle x'));
+    turtlexBlock.oneArgMathBlock();
+    turtlexBlock.adjustWidthToLabel();
+    turtlexBlock.dockTypes[1] = 'anyin';
+    turtlexBlock.defaults.push('Yertle');
+
+    var turtleElapsedNotes = new ProtoBlock('turtleelapsednotes');
+    turtleElapsedNotes.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtleelapsednotes'] = turtleElapsedNotes;
+    //.TRANS: notes played by this turtle
+    turtleElapsedNotes.staticLabels.push(_('notes played'));
+    turtleElapsedNotes.oneArgMathBlock();
+    turtleElapsedNotes.adjustWidthToLabel();
+    turtleElapsedNotes.dockTypes[1] = 'anyin';
+    turtleElapsedNotes.defaults.push('Yertle');
+    turtleElapsedNotes.hidden = true;
+
+    var turtlePitchBlock = new ProtoBlock('turtlepitch');
+    turtlePitchBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtlepitch'] = turtlePitchBlock;
+    //.TRANS: convert current note for this turtle to piano key (1-88)
+    turtlePitchBlock.staticLabels.push(_('pitch number'));
+    turtlePitchBlock.oneArgMathBlock();
+    turtlePitchBlock.adjustWidthToLabel();
+    turtlePitchBlock.dockTypes[1] = 'anyin';
+    turtlePitchBlock.defaults.push('Yertle');
+    turtlePitchBlock.hidden = true;
+
+    var turtleNoteBlock = new ProtoBlock('turtlenote');
+    turtleNoteBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtlenote'] = turtleNoteBlock;
+    turtleNoteBlock.staticLabels.push(_('note value'));
+    turtleNoteBlock.oneArgMathBlock();
+    turtleNoteBlock.adjustWidthToLabel();
+    turtleNoteBlock.dockTypes[1] = 'anyin';
+    turtleNoteBlock.defaults.push('Yertle');
+    turtleNoteBlock.hidden = true;
+
+    var turtleNoteBlock2 = new ProtoBlock('turtlenote2');
+    turtleNoteBlock2.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtlenote2'] = turtleNoteBlock2;
+    turtleNoteBlock2.staticLabels.push(_('note value'));
+    turtleNoteBlock2.oneArgMathBlock();
+    turtleNoteBlock2.adjustWidthToLabel();
+    turtleNoteBlock2.dockTypes[1] = 'anyin';
+    turtleNoteBlock2.defaults.push('Yertle');
+    turtleNoteBlock2.hidden = true;
+
+    var turtleSyncBlock = new ProtoBlock('turtlesync');
+    turtleSyncBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['turtlesync'] = turtleSyncBlock;
+    turtleSyncBlock.staticLabels.push(_('mouse sync'));
+    turtleSyncBlock.oneArgBlock();
+    turtleSyncBlock.adjustWidthToLabel();
+    turtleSyncBlock.dockTypes[1] = 'anyin';
+    turtleSyncBlock.defaults.push('Yertle');
+    turtleSyncBlock.hidden = true;
+
     var turtleNameBlock = new ProtoBlock('turtlename');
     turtleNameBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['turtlename'] = turtleNameBlock;
@@ -1201,8 +1315,18 @@ function initBasicProtoBlocks(palettes, blocks) {
     setTurtleName.twoArgBlock();
     setTurtleName.dockTypes[1] = 'anyin';
     setTurtleName.dockTypes[2] = 'anyin';
-    setTurtleName.defaults.push('0');
+    setTurtleName.defaults.push(-1);
     setTurtleName.defaults.push('Yertle');
+    setTurtleName.hidden = true;
+
+    var setTurtleName2 = new ProtoBlock('setturtlename2');
+    setTurtleName2.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['setturtlename2'] = setTurtleName2;
+    setTurtleName2.staticLabels.push(_('turtle name'));
+    setTurtleName2.adjustWidthToLabel();
+    setTurtleName2.oneArgBlock();
+    setTurtleName2.dockTypes[1] = 'anyin';
+    setTurtleName2.defaults.push('Yertle');
 
     var statusBlock = new ProtoBlock('status');
     statusBlock.palette = palettes.dict['extras'];
@@ -2074,6 +2198,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     notevolumeFactor.staticLabels.push(_('note volume'));
     notevolumeFactor.adjustWidthToLabel();
     notevolumeFactor.parameterBlock();
+    notevolumeFactor.hidden = true;
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {

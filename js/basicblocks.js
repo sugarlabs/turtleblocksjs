@@ -384,6 +384,11 @@ function initBasicProtoBlocks(palettes, blocks) {
     notBlock.staticLabels.push(_('not'));
     notBlock.booleanOneBooleanArgBlock();
 
+    var trueFalseBlock = new ProtoBlock('boolean');
+    trueFalseBlock.palette = palettes.dict['boolean'];
+    blocks.protoBlockDict['boolean'] = trueFalseBlock;
+    trueFalseBlock.booleanZeroArgBlock();
+
     var modBlock = new ProtoBlock('mod');
     modBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['mod'] = modBlock;
@@ -2017,6 +2022,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     intervalBlock.flowClampOneArgBlock();
     intervalBlock.defaults.push(5);
     intervalBlock.hidden = true;
+
+    var movableBlock = new ProtoBlock('movable');
+    movableBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['movable'] = movableBlock;
+    movableBlock.staticLabels.push(_('movable'));
+    movableBlock.adjustWidthToLabel();
+    movableBlock.oneBooleanArgBlock();
+    movableBlock.hidden = true;
 
     var drumnameBlock = new ProtoBlock('drumname');
     drumnameBlock.palette = palettes.dict['extras'];

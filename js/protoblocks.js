@@ -201,7 +201,7 @@ function ProtoBlock(name) {
     // E.g., wait for
     this.oneBooleanArgBlock = function () {
         this.args = 1;
-        this.size = 2.6;
+        this.size = 2;
         this.dockTypes.push('out');
         this.dockTypes.push('booleanin');
         this.dockTypes.push('in');
@@ -276,6 +276,39 @@ function ProtoBlock(name) {
         svg.setScale(this.scale);
         svg.setTab(true);
         svg.setInnies([true, true, true]);
+        svg.setSlot(true);
+        if (expandY) {
+            svg.setExpand(30 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
+        } else {
+            svg.setExpand(30 + this.extraWidth, 0, 0, 0);
+        }
+        if (this.fontsize) {
+            svg.setFontSize(this.fontsize);
+        }
+        var artwork = svg.basicBlock();
+        return [artwork, svg.docks];
+    };
+
+    this.fourArgBlock = function () {
+        this.expandable = true;
+        this.style = 'twoarg';
+        this.size = 4;
+        this.args = 4;
+        this.dockTypes.push('out');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('numberin');
+        this.dockTypes.push('in');
+        this.generator = this.fourArgBlockGenerator;
+    };
+
+    this.fourArgBlockGenerator = function (expandY) {
+        var svg = new SVG();
+        svg.init();
+        svg.setScale(this.scale);
+        svg.setTab(true);
+        svg.setInnies([true, true, true, true]);
         svg.setSlot(true);
         if (expandY) {
             svg.setExpand(30 + this.extraWidth, (expandY - 1) * STANDARDBLOCKHEIGHT / 2, 0, 0);
@@ -841,7 +874,7 @@ function ProtoBlock(name) {
         this.style = 'argflowclamp';
         this.expandable = true;
         this.size = 3;
-        this.args = 2;
+        this.args = 1;
         this.dockTypes.push('anyout');
         this.dockTypes.push('in');
         this.generator = this.argFlowClampGenerator;

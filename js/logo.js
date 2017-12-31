@@ -174,6 +174,7 @@ function Logo () {
     this.noteBeatValues = {};
     this.embeddedGraphics = {};
     this.lastNotePlayed = {};
+    this.previousNotePlayed = {};
     this.noteStatus = {};
     this.noteDirection = {};
     this.pitchNumberOffset = 39;  // C4
@@ -253,13 +254,10 @@ function Logo () {
 
     // parameters used by notations
     this.notationStaging = {};
-    if (_THIS_IS_MUSIC_BLOCKS_) {
-        this.notationOutput = getLilypondHeader();
-    } else {
-        this.notationOutput = '';
-    }
+    this.notationOutput = '';
     this.notationNotes = {};
     this.runningLilypond = false;
+    this.runningAbc = false;
     this.checkingCompletionState = false;
     this.compiling = false;
     this.recording = false;
@@ -634,6 +632,7 @@ function Logo () {
             case 'bpmfactor':
             case 'beatvalue':
             case 'measurevalue':
+            case 'deltapitch':
             case 'mypitch':
             case 'mynotevalue':
                 this.blocks.blockList[blk].text.text = '';
@@ -805,6 +804,24 @@ function Logo () {
             case 'notevolumefactor':  // master volume
                 value = last(this.masterVolume);
                 break;
+            case 'deltapitch':
+                if (this.lastNotePlayed[turtle] !== null && this.previousNotePlayed[turtle] !== null) {
+                    var len = this.previousNotePlayed[turtle][0].length;
+                    var pitch = this.previousNotePlayed[turtle][0].slice(0, len - 1);
+                    var octave = parseInt(this.previousNotePlayed[turtle][0].slice(len - 1));
+                    var obj = [pitch, octave];
+                    var previousValue = pitchToNumber(obj[0], obj[1], this.keySignature[turtle]);
+                    len = this.lastNotePlayed[turtle][0].length;
+                    pitch = this.lastNotePlayed[turtle][0].slice(0, len - 1);
+                    octave = parseInt(this.lastNotePlayed[turtle][0].slice(len - 1));
+                    obj = [pitch, octave];
+                    value = pitchToNumber(obj[0], obj[1], this.keySignature[turtle]) - previousValue;
+                } else {
+                    value = 0;
+                }
+
+                value = value.toString();
+                break;
             case 'mypitch':
                 if (this.lastNotePlayed[turtle] !== null) {
                     var len = this.lastNotePlayed[turtle][0].length;
@@ -930,6 +947,7 @@ function Logo () {
             this.noteCents[turtle] = {};
             this.noteHertz[turtle] = {};
             this.lastNotePlayed[turtle] = null;
+            this.previousNotePlayed[turtle] = null;
             this.noteStatus[turtle] = null;
             this.noteDirection[turtle] = 0;
             this.noteDrums[turtle] = {};
@@ -1005,7 +1023,7 @@ function Logo () {
             this.justMeasuring[turtle] = [];
             this.firstPitch[turtle] = [];
             this.lastPitch[turtle] = [];
-            this.suppressOutput[turtle] = this.runningLilypond || this.compiling;
+            this.suppressOutput[turtle] = this.runningLilypond || this.runningAbc || this.compiling;
             this.movable[turtle] = false;
 
             if (this.compiling) {
@@ -1246,10 +1264,10 @@ function Logo () {
 
         switch (this.blocks.blockList[blk].name) {
         case 'x':
-            turtleObj.doSetXY(value, turtleObj.x);
+            turtleObj.doSetXY(value, turtleObj.y);
             break;
         case 'y':
-            turtleObj.doSetXY(turtleObj.y, value);
+            turtleObj.doSetXY(turtleObj.x, value);
             break;
         case 'heading':
             turtleObj.doSetHeading(value);
@@ -1326,6 +1344,7 @@ function Logo () {
             }
             break;
         case 'mypitch':
+            this.previousNotePlayed[turtle] = this.lastNotePlayed[turtle];
             var obj = numberToPitch(value + this.pitchNumberOffset);
             this.lastNotePlayed[turtle] = [obj[0] + obj[1], this.lastNotePlayed[turtle][1]];
             break;
@@ -3507,6 +3526,7 @@ function Logo () {
             // If we are just counting notes we don't care about the pitch.
             if (that.justCounting[turtle].length > 0 && that.lastNotePlayed[turtle] == null) {
                 console.log('Just counting, so spoofing last note played.');
+                that.previousNotePlayed[turtle] = ['G4', 4];
                 that.lastNotePlayed[turtle] = ['G4', 4];
             }
 
@@ -3601,6 +3621,7 @@ function Logo () {
                 that.pitchTimeMatrix.rowLabels.push(noteObj1[0]);
                 that.pitchTimeMatrix.rowArgs.push(noteObj1[1]);
 
+                that.previousNotePlayed[turtle] = that.lastNotePlayed[turtle];
                 that.lastNotePlayed[turtle] = [noteObj1[0] + noteObj1[1], 4];
             }
 
@@ -3958,6 +3979,7 @@ function Logo () {
                     }
 
                     var noteObj = getNote(note, octave, transposition, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                    that.previousNotePlayed[turtle] = that.lastNotePlayed[turtle];
                     that.lastNotePlayed[turtle] = [noteObj[0] + noteObj[1], 4];
 
                     if (that.keySignature[turtle][0] === 'C' && that.keySignature[turtle][1].toLowerCase() === 'major' && noteIsSolfege(note)) {
@@ -5855,8 +5877,18 @@ function Logo () {
                     if (that.runningLilypond) {
                         console.log('saving lilypond output:');
                         console.log(that.notationStaging);
-                        saveLilypondOutput(that, _('My Project') + '.ly');
+                        var filename = docById('fileName').value;
+                        if (filename == undefined || filename.length === 0) {
+                            filename = _('My Project') + '.ly';
+                        }
+
+                        saveLilypondOutput(that, filename);
                         that.runningLilypond = false;
+                    } else if (that.runningAbc) {
+                        console.log('saving abc output:');
+                        console.log(that.notationStaging);
+                        saveAbcOutput(that, _('My Project') + '.abc');
+                        that.runningAbc = false;
                     } else if (that.suppressOutput[turtle]) {
                         console.log('finishing compiling');
                         that.setPlaybackStatus();
@@ -6312,6 +6344,18 @@ function Logo () {
 
             var that = this;
             __playnote = function () {
+                // If there are multiple notes, remove the rests.
+                if (that.notePitches[turtle][last(that.inNoteBlock[turtle])].length > 1) {
+                    while (that.notePitches[turtle][last(that.inNoteBlock[turtle])].indexOf('rest') !== -1) {
+                        that.notePitches[turtle][last(that.inNoteBlock[turtle])].splice(that.notePitches[turtle][last(that.inNoteBlock[turtle])].indexOf('rest'), 1);
+                    }
+                }
+
+                // If there is no note, add a rest.
+                if (that.notePitches[turtle][last(that.inNoteBlock[turtle])].length === 0) {
+                    that.notePitches[turtle][that.inNoteBlock[turtle][that.inNoteBlock[turtle].length - 1]].push('rest');
+                }
+
                 // Stop playing notes if the stop button is pressed.
                 if (that.stopTurtle) {
                     return;
@@ -6366,6 +6410,7 @@ function Logo () {
                     for (var i = 0; i < that.notePitches[turtle][last(that.inNoteBlock[turtle])].length; i++) {
                         if (that.notePitches[turtle][last(that.inNoteBlock[turtle])][i] === 'rest' || forceSilence) {
                             note = 'R';
+                            that.previousNotePlayed[turtle] = that.lastNotePlayed[turtle];
                         } else {
                             var noteObj = getNote(that.notePitches[turtle][last(that.inNoteBlock[turtle])][i], that.noteOctaves[turtle][last(that.inNoteBlock[turtle])][i], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
 
@@ -6410,9 +6455,17 @@ function Logo () {
 
                     var obj = rationalToFraction(1 / noteBeatValue);
                     if (that.justCounting[turtle].length === 0) {
-                        console.log('notes to play ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                        if (notes.length === 0) {
+                            console.log('notes to play: R ' + obj[0] + '/' + obj[1]);
+                        } else {
+                            console.log('notes to play: ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                        }
                     } else {
-                        console.log('notes to count ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                        if (notes.length === 0) {
+                            console.log('notes to count: R ' + obj[0] + '/' + obj[1]);
+                        } else {
+                            console.log('notes to count: ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                        }
                     }
 
                     if (!that.suppressOutput[turtle]) {
@@ -6550,6 +6603,7 @@ function Logo () {
                             }
                         }
 
+                        that.previousNotePlayed[turtle] = that.lastNotePlayed[turtle];
                         that.lastNotePlayed[turtle] = [notes[0], noteBeatValue];
                         that.noteStatus[turtle] = [notes, noteBeatValue];
                     }
@@ -8119,6 +8173,24 @@ function Logo () {
 
                     value = pitchToNumber(obj[0], obj[1], that.keySignature[turtle]) - that.pitchNumberOffset;
                     that.blocks.blockList[blk].value = value;
+                }
+                break;
+            case 'deltapitch':
+                if (that.inStatusMatrix && that.blocks.blockList[that.blocks.blockList[blk].connections[0]].name === 'print') {
+                    that.statusFields.push([blk, 'mypitch']);
+                } else if (that.previousNotePlayed[turtle] == null) {
+                    that.blocks.blockList[blk].value = 0;
+                } else {
+                    var len = that.previousNotePlayed[turtle][0].length;
+                    var pitch = that.previousNotePlayed[turtle][0].slice(0, len - 1);
+                    var octave = parseInt(that.previousNotePlayed[turtle][0].slice(len - 1));
+                    var obj = [pitch, octave];
+                    var previousValue = pitchToNumber(obj[0], obj[1], that.keySignature[turtle]);
+                    len = that.lastNotePlayed[turtle][0].length;
+                    pitch = that.lastNotePlayed[turtle][0].slice(0, len - 1);
+                    octave = parseInt(that.lastNotePlayed[turtle][0].slice(len - 1));
+                    obj = [pitch, octave];
+                    that.blocks.blockList[blk].value = pitchToNumber(obj[0], obj[1], that.keySignature[turtle]) - previousValue;
                 }
                 break;
             case 'mypitch':

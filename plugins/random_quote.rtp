@@ -33,10 +33,12 @@ fetch(url)
   }).then(function(responseText) {
     quote = JSON.parse(responseText.slice(2, -1)).quoteText;
 }).catch(function (err) {
-  quote = 'Failed loading quotes.'
+  quote = 'Failed loading quotes.';
+  console.err
 });
-
-while (true) {
+var startTimeMs = Date.now();
+var maxTimeOutMinutes = 2
+while ((Date.now() - startTimeMs) < (maxTimeOutMinutes * 60 * 1000)) {
   if (quote !== null) {
     block.value = quote;
     break;

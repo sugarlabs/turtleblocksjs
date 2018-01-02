@@ -3,8 +3,9 @@
         "external": "#000000"
     }, 
     "ARGPLUGINS": {
-        "quote": "var block = logo.blocks.blockList[blk];var url = 'https://cors.io/?https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=jsonp&jsonp=?';console.log('hello world');var quote = null;fetch(url)  .then(function (res) {    return res.text();  }).then(function(responseText) {    quote = JSON.parse(responseText.slice(2, -1)).quoteText;}).catch(function (err) {  quote = 'Failed loading quotes.';  console.err});var startTimeMs = Date.now();var maxTimeOutMinutes = 2while ((Date.now() - startTimeMs) < (maxTimeOutMinutes * 60 * 1000)) {  if (quote !== null) {    block.value = quote;    break;  }}"
+        "quote": "var block = logo.blocks.blockList[blk];var url = 'https://andruxnet-random-famous-quotes.p.mashape.com/?count=1';block.value = quote;fetch(url, {  headers: {    'X-Mashape-Key': 'vZ2AuJVfromshrdghHsLnN4Wb4vzp1xsFaBjsnY5gONqDNbeSi',    'Accept': 'application/json'  }  }).then(function (res) {    return res.json();  }).then(function(responseJSON) {    quote = responseJSON.quote;  }).catch(function (err) {    quote = '';    logo.errorMsg('Failed loading quotes.', blk);    console.error(err);});"
     }, 
+    "GLOBALS": "quote = 'I find that the harder I work, the more luck I seem to have.';", 
     "PALETTEHIGHLIGHTCOLORS": {
         "external": "#9DC4FF"
     }, 

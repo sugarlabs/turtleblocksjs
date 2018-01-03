@@ -182,6 +182,54 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     // PEN PALETTE
     
+    var purpleBlock = new ProtoBlock('purple');
+    purpleBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['purple'] = purpleBlock;
+    purpleBlock.staticLabels.push(_('purple'));
+    purpleBlock.zeroArgBlock();
+
+    var blueBlock = new ProtoBlock('blue');
+    blueBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['blue'] = blueBlock;
+    blueBlock.staticLabels.push(_('blue'));
+    blueBlock.zeroArgBlock();
+
+    var greenBlock = new ProtoBlock('green');
+    greenBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['green'] = greenBlock;
+    greenBlock.staticLabels.push(_('green'));
+    greenBlock.zeroArgBlock();
+
+    var yellowBlock = new ProtoBlock('yellow');
+    yellowBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['yellow'] = yellowBlock;
+    yellowBlock.staticLabels.push(_('yellow'));
+    yellowBlock.zeroArgBlock();
+
+    var orangeBlock = new ProtoBlock('orange');
+    orangeBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['orange'] = orangeBlock;
+    orangeBlock.staticLabels.push(_('orange'));
+    orangeBlock.zeroArgBlock();
+
+    var redBlock = new ProtoBlock('red');
+    redBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['red'] = redBlock;
+    redBlock.staticLabels.push(_('red'));
+    redBlock.zeroArgBlock();
+
+    var whiteBlock = new ProtoBlock('white');
+    whiteBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['white'] = whiteBlock;
+    whiteBlock.staticLabels.push(_('white'));
+    whiteBlock.zeroArgBlock();
+
+    var blackBlock = new ProtoBlock('black');
+    blackBlock.palette = palettes.dict['pen'];
+    blocks.protoBlockDict['black'] = blackBlock;
+    blackBlock.staticLabels.push(_('black'));
+    blackBlock.zeroArgBlock();
+
     var beginFillBlock = new ProtoBlock('beginfill');
     beginFillBlock.palette = palettes.dict['pen'];
     blocks.protoBlockDict['beginfill'] = beginFillBlock;

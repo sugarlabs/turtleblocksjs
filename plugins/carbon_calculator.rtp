@@ -18,7 +18,7 @@
 //* globals *//
 var carbonEmission = 0;
 var covertReadableCarbon = carbonEmission => {
-  if (carbonEmission < 1000) return `${carbonEmission} kg CO2`;
+  if (carbonEmission < 1000) return `${Math.round(carbonEmission * 1000) / 100} kg CO2`;
 
   var tonnes = Math.floor(carbonEmission / 1000);
   var kg = Math.round((carbonEmission % 1000) * 100) / 100;
@@ -77,18 +77,15 @@ block.value = bookNum * 10.2;
 var block = new ProtoBlock('car');
 block.palette = palettes.dict['co2'];
 blocks.protoBlockDict['car'] = block;
-block.staticLabels.push('car', 'mpg', 'miles');
+block.staticLabels.push('car trips');
 block.adjustWidthToLabel();
-block.twoArgMathBlock();
-block.defaults.push(24);
-block.defaults.push(9000);
+block.oneArgMathBlock();
+block.defaults.push(1);
 block.dockTypes[1] = 'numberin';
-block.dockTypes[2] = 'numberin';
 
 //* arg:car *//
-var mpg = +(logo.parseArg(logo, turtle, conns[1]));
-var miles = +(logo.parseArg(logo, turtle, conns[2]));
-block.value = (miles / mpg) * 14.3;
+var trip = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = trip * (5 / 24) * 14.3;
 
 //* block:electricity *//
 oneArgBlock('electricity', 'Electricity (in kWh)', 4800);
@@ -126,25 +123,67 @@ var litres = +(logo.parseArg(logo, turtle, conns[1]));
 block.value = litres * 0.10
 
 //* block:bus *//
-oneArgBlock('bus', 'Bus travel (in miles)', 10);
+oneArgBlock('bus', 'Bus trips');
 
 //* arg:bus *//
-var miles = +(logo.parseArg(logo, turtle, conns[1]));
-block.value = miles * 0.14
+var trips = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = trips * 5 * 0.14
 
 //* block:train *//
-oneArgBlock('train', 'Train travel (in miles)', 10);
+oneArgBlock('train', 'Train trips');
 
 //* arg:train *//
-var miles = +(logo.parseArg(logo, turtle, conns[1]));
-block.value = miles * 0.10
+var trips = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = trips * 5 * 0.10
 
 //* block:air *//
-oneArgBlock('air', 'Air travel (in miles)', 10);
+oneArgBlock('air', 'Air trips');
 
 //* arg:air *//
-var miles = +(logo.parseArg(logo, turtle, conns[1]));
-block.value = miles * 0.50
+var trips  = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = trips * 5 * 0.50
+
+//* block:walk *//
+oneArgBlock('walk', 'Walking trips');
+
+//* arg:walk *//
+var trips  = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = trips * 5 * 0.03
+
+//* block:bike *//
+oneArgBlock('bike', 'Bicycle trips');
+
+//* arg:bike *//
+var trips  = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = trips * 5 * 0.06
+
+//* block:walk *//
+oneArgBlock('walk', 'Walking trips');
+
+//* arg:walk *//
+var trips  = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = trips * 5 * 0.03
+
+//* block:ac *//
+oneArgBlock('ac', 'Air Conditioner (in hours)');
+
+//* arg:ac *//
+var hours  = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = ((120 * hours) / 1000) * 0.527
+
+//* block:led *//
+oneArgBlock('led', 'LED Light (in hours)');
+
+//* arg:led *//
+var hours  = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = ((6 * hours) / 1000) * 0.527
+
+//* block:lamp *//
+oneArgBlock('lamp', 'Fluorescent lamp (in hours)');
+
+//* arg:lamp *//
+var hours  = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = ((30 * hours) / 1000) * 0.527
 
 //* flow:consume_carbon *//
 var block = logo.blocks.blockList[blk];

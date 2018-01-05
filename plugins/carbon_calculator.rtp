@@ -15,14 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-TODO: description
-
 //* globals *//
 var carbonEmission = 0;
-var carbonEmissionMap = {
-  book_softcover: 5,
-  book_hardcover: 10.2,
+var covertReadableCarbon = carbonEmission => {
+  if (carbonEmission < 1000) return `${carbonEmission} kg CO2`;
+
+  var tonnes = Math.floor(carbonEmission / 1000);
+  var kg = Math.round((carbonEmission % 1000) * 100) / 100;
+  if (kg === 0) return `${tonnes} tonnes CO2`;
+  return `${tonnes} tonnes ${kg} kg CO2`;
 };
+
+//* block-globals *//
+var oneArgBlock = function(name, label, defaultValue) {
+  var block = new ProtoBlock(name);
+  block.palette = palettes.dict['co2'];
+  blocks.protoBlockDict[name] = block;
+  block.staticLabels.push(label);
+  block.adjustWidthToLabel();
+  block.oneArgMathBlock();
+  block.dockTypes[1] = 'anyin';
+  block.defaults.push(defaultValue || 1);
+};
+
+
+//* arg-globals *//
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
 
 //* flow-globals *//
 var block = logo.blocks.blockList[blk];
@@ -38,7 +57,94 @@ blocks.protoBlockDict['consume_carbon'] = block;
 block.staticLabels.push('consume carbon');
 block.adjustWidthToLabel();
 block.oneArgBlock();
-block.dockTypes[1] = 'anyin';
+block.dockTypes[1] = 'numberin';
+
+//* block:book_hardcover *//
+oneArgBlock('book_hardcover', 'Book (Hard Cover)');
+
+//* arg:book_hardcover *//
+var bookNum = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = bookNum * 5;
+
+//* block:book_softcover *//
+oneArgBlock('book_softcover', 'Book (Soft Cover)');
+
+//* arg:book_softcover *//
+var bookNum = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = bookNum * 10.2;
+
+//* block:car *//
+var block = new ProtoBlock('car');
+block.palette = palettes.dict['co2'];
+blocks.protoBlockDict['car'] = block;
+block.staticLabels.push('car', 'mpg', 'miles');
+block.adjustWidthToLabel();
+block.twoArgMathBlock();
+block.defaults.push(24);
+block.defaults.push(9000);
+block.dockTypes[1] = 'numberin';
+block.dockTypes[2] = 'numberin';
+
+//* arg:car *//
+var mpg = +(logo.parseArg(logo, turtle, conns[1]));
+var miles = +(logo.parseArg(logo, turtle, conns[2]));
+block.value = (miles / mpg) * 14.3;
+
+//* block:electricity *//
+oneArgBlock('electricity', 'Electricity (in kWh)', 4800);
+
+//* arg:electricity *//
+var kwh = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = kwh * 0.527
+
+//* block:natural_gas *//
+oneArgBlock('natural_gas', 'Natural Gas (in kWh)', 18000);
+
+//* arg:natural_gas *//
+var kwh = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = kwh * 0.203
+
+//* block:oil *//
+oneArgBlock('oil', 'Oil (in litres)', 10);
+
+//* arg:oil *//
+var litres = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = litres * 2.96
+
+//* block:coal *//
+oneArgBlock('coal', 'Coal (in litres)', 10);
+
+//* arg:coal *//
+var litres = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = litres * 3.26
+
+//* block:wood *//
+oneArgBlock('wood', 'Wood (in litres)', 10);
+
+//* arg:wood *//
+var litres = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = litres * 0.10
+
+//* block:bus *//
+oneArgBlock('bus', 'Bus travel (in miles)', 10);
+
+//* arg:bus *//
+var miles = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = miles * 0.14
+
+//* block:train *//
+oneArgBlock('train', 'Train travel (in miles)', 10);
+
+//* arg:train *//
+var miles = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = miles * 0.10
+
+//* block:air *//
+oneArgBlock('air', 'Air travel (in miles)', 10);
+
+//* arg:air *//
+var miles = +(logo.parseArg(logo, turtle, conns[1]));
+block.value = miles * 0.50
 
 //* flow:consume_carbon *//
 var block = logo.blocks.blockList[blk];
@@ -55,7 +161,7 @@ block.parameterBlock();
 
 //* arg:get_carbon *//
 var block = logo.blocks.blockList[blk];
-block.value = carbonEmission
+block.value = covertReadableCarbon(carbonEmission)
 
 //* block:clear_carbon *//
 var block = new ProtoBlock('clear_carbon');
@@ -66,23 +172,8 @@ block.adjustWidthToLabel();
 block.zeroArgBlock();
 
 //* flow:clear_carbon *//
-carbonEmission = 0
+carbonEmission = 0;
 
-//* block:book_hardcover *//
-var block = new ProtoBlock('book_hardcover');
-block.palette = palettes.dict['co2'];
-blocks.protoBlockDict['book_hardcover'] = block;
-block.staticLabels.push('Books (Hard Cover)');
-block.adjustWidthToLabel();
-block.oneArgMathBlock();
-block.dockTypes[1] = 'anyin';
-block.defaults.push(1);
-
-//* arg:book_hardcover *//
-var block = logo.blocks.blockList[blk];
-var conns = block.connections;
-var bookNum = +(logo.parseArg(logo, turtle, conns[1]));
-block.value = bookNum * carbonEmissionMap[block.name];
 //* palette-icon:co2 *//
 <svg width="100%" height="100%" viewBox="0 0 55 55" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><g transform="matrix(1,0,0,1,-13,18)"><path d="M15.176,12.766C15.176,11.224 15.426,9.516 15.926,7.641C16.426,5.766 17.155,4.026 18.113,2.422C19.072,0.818 20.259,-0.526 21.676,-1.609C23.093,-2.693 24.738,-3.234 26.613,-3.234C27.572,-3.359 28.343,-3.266 28.926,-2.953C29.509,-2.641 29.957,-2.151 30.27,-1.484C30.582,-0.818 30.79,-0.057 30.895,0.797C30.999,1.651 31.061,2.526 31.082,3.422C31.103,4.318 31.103,5.151 31.082,5.922C31.061,6.693 31.093,7.328 31.176,7.828L29.613,7.828C29.572,7.578 29.499,6.984 29.395,6.047C29.29,5.109 29.113,4.141 28.863,3.141C28.613,2.141 28.27,1.245 27.832,0.453C27.395,-0.339 26.78,-0.734 25.988,-0.734C24.822,-0.734 23.728,-0.276 22.707,0.641C21.686,1.557 20.801,2.661 20.051,3.953C19.301,5.245 18.697,6.578 18.238,7.953C17.78,9.328 17.551,10.474 17.551,11.391C17.593,12.432 17.738,13.568 17.988,14.797C18.238,16.026 18.645,17.141 19.207,18.141C19.77,19.141 20.509,19.953 21.426,20.578C22.343,21.203 23.468,21.391 24.801,21.141C25.801,21.141 26.759,20.932 27.676,20.516C28.593,20.099 29.488,19.661 30.363,19.203C31.238,18.745 32.124,18.307 33.02,17.891C33.915,17.474 34.863,17.266 35.863,17.266C35.863,18.349 35.468,19.297 34.676,20.109C33.884,20.922 32.915,21.578 31.77,22.078C30.624,22.578 29.415,22.953 28.145,23.203C26.874,23.453 25.801,23.578 24.926,23.578C23.509,23.578 22.207,23.286 21.02,22.703C19.832,22.12 18.801,21.338 17.926,20.359C17.051,19.38 16.374,18.234 15.895,16.922C15.415,15.609 15.176,14.224 15.176,12.766Z" style="fill:white;fill-rule:nonzero;"/><path d="M38.926,12.016C38.926,11.057 39.009,9.943 39.176,8.672C39.343,7.401 39.613,6.12 39.988,4.828C40.363,3.536 40.832,2.266 41.395,1.016C41.957,-0.234 42.634,-1.349 43.426,-2.328C44.218,-3.307 45.134,-4.099 46.176,-4.703C47.218,-5.307 48.384,-5.609 49.676,-5.609C51.009,-5.609 52.249,-5.151 53.395,-4.234C54.54,-3.318 55.52,-2.13 56.332,-0.672C57.145,0.786 57.759,2.411 58.176,4.203C58.593,5.995 58.759,7.745 58.676,9.453C58.676,11.953 58.197,14.182 57.238,16.141C56.28,18.099 55.061,19.682 53.582,20.891C52.103,22.099 50.52,22.911 48.832,23.328C47.145,23.745 45.561,23.63 44.082,22.984C42.603,22.338 41.374,21.12 40.395,19.328C39.415,17.536 38.926,15.099 38.926,12.016ZM41.238,12.266C41.363,14.807 41.801,16.766 42.551,18.141C43.301,19.516 44.207,20.422 45.27,20.859C46.332,21.297 47.488,21.307 48.738,20.891C49.988,20.474 51.155,19.734 52.238,18.672C53.322,17.609 54.249,16.276 55.02,14.672C55.79,13.068 56.218,11.266 56.301,9.266C56.384,7.766 56.27,6.307 55.957,4.891C55.645,3.474 55.207,2.213 54.645,1.109C54.082,0.005 53.395,-0.87 52.582,-1.516C51.77,-2.162 50.843,-2.484 49.801,-2.484C48.801,-2.484 47.905,-2.234 47.113,-1.734C46.322,-1.234 45.603,-0.557 44.957,0.297C44.311,1.151 43.759,2.12 43.301,3.203C42.843,4.286 42.457,5.37 42.145,6.453C41.832,7.536 41.603,8.588 41.457,9.609C41.311,10.63 41.238,11.516 41.238,12.266Z" style="fill:white;fill-rule:nonzero;"/></g><g transform="matrix(1,0,0,1,-6,29)"><text x="50.859px" y="16.635px" style="font-family:'AnnieUseYourTelescope-Regular';font-size:18px;fill:white;">2</text></g></svg>
 //* palette-fill:co2 *// #D5D5D5

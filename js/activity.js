@@ -2471,33 +2471,39 @@ define(MYDEFINES, function (compatibility) {
             var show = flags.show;
             var collapse = flags.collapse;
 
-            var functionload = function () {
+            var __functionload = function () {
                 setTimeout(function () {
-                    if (!collapse){
+                    if (!collapse && firstRun) {
+                        console.log('collapsing blocks when loading');
                         _toggleCollapsibleStacks();
                     }
+
                     if (run && firstRun){
                         for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                             turtles.turtleList[turtle].doClear(true, true, false);
                         }
+
                         runProject(env);
                         if (show){
                             _changeBlockVisibility();
                         }
+
                         if (!collapse){
                             _toggleCollapsibleStacks();
                         }
                     } else if (!show){
                         _changeBlockVisibility();
                     }
+
+		    document.removeEventListener('finishedLoading', __functionload);
                     firstRun = false;
                 }, 1000);
             }
 
             if (document.addEventListener) {
-                document.addEventListener('finishedLoading', functionload, false);
+                document.addEventListener('finishedLoading', __functionload, false);
             } else {
-                document.attachEvent('finishedLoading', functionload);
+                document.attachEvent('finishedLoading', __functionload);
             }
         };
 

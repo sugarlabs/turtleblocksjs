@@ -58,9 +58,9 @@ if (lang.indexOf('-') !== -1) {
 
 if (_THIS_IS_MUSIC_BLOCKS_) {
     var MYDEFINES = ["activity/sugarizer-compatibility", 'utils/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'Tone.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'dsp', 'utils/utils', 'activity/artwork', 'widgets/status', 'utils/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'widgets/modewidget', 'widgets/pitchtimematrix', 'widgets/pitchdrummatrix', 'widgets/rhythmruler', 'widgets/pitchstaircase', 'widgets/tempo', 'widgets/pitchslider', 'widgets/timbre', 'activity/macros', 'utils/musicutils', 'utils/synthutils', 'activity/lilypond', 'activity/abc', 'activity/playbackbox', 'prefixfree.min'];
-    MYDEFINES = MYDEFINES.concat(SOUNDSAMPLESDEFINES);
+    MYDEFINES = MYDEFINES
 } else {
-    var MYDEFINES = ["activity/sugarizer-compatibility", 'utils/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'utils/utils', 'activity/artwork', 'widgets/status', 'utils/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/macros', 'utils/musicutils', 'utils/synthutils', 'activity/playbackbox', 'prefixfree.min'];
+    var MYDEFINES = ["activity/sugarizer-compatibility", 'utils/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'Tone.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'dsp', 'utils/utils', 'activity/artwork', 'widgets/status', 'utils/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/macros', 'utils/musicutils', 'utils/synthutils', 'activity/playbackbox', 'prefixfree.min'];
 }
 
 define(MYDEFINES, function (compatibility) {
@@ -393,9 +393,7 @@ define(MYDEFINES, function (compatibility) {
             logo.time = 0;
             hideMsgs();
             logo.setBackgroundColor(-1);
-            if (_THIS_IS_MUSIC_BLOCKS_) {
-                logo.notationOutput = LILYPONDHEADER;
-            }
+            logo.notationOutput = '';
 
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 logo.turtleHeaps[turtle] = [];
@@ -888,6 +886,7 @@ define(MYDEFINES, function (compatibility) {
                 .setSaveBlockArtwork(doSaveBlockArtwork);
 
             if (_THIS_IS_MUSIC_BLOCKS_) {
+                saveBox.setSaveAbc(doSaveAbc);
                 saveBox.setSaveLilypond(doSaveLilypond);
             } else {
                 saveBox.setSaveFB(doShareOnFacebook);
@@ -1460,7 +1459,7 @@ define(MYDEFINES, function (compatibility) {
 
         function hideSearchWidget() {
             // Hide the jQuery search results widget
-            var obj = docByClass('ui-helper-hidden-accessible');
+            var obj = docByClass('ui-menu');
             if (obj.length > 0) {
                 obj[0].style.visibility = 'hidden';
             }
@@ -1472,6 +1471,12 @@ define(MYDEFINES, function (compatibility) {
             if (searchWidget.style.visibility === 'visible') {
                 hideSearchWidget();
             } else {
+                var obj = docByClass('ui-menu');
+                if (obj.length > 0) {
+                    obj[0].style.visibility = 'visible';
+                }
+
+                searchWidget.value = null;
                 docById('searchResults').style.visibility = 'visible';
                 searchWidget.style.visibility = 'visible';
                 searchWidget.style.left = (utilityBox.getPos()[0] + 10) * turtleBlocksScale + 'px';
@@ -1625,7 +1630,13 @@ define(MYDEFINES, function (compatibility) {
             const KEYCODE_L = 76; // la
             const KEYCODE_T = 84; // ti
 
-            if (event.altKey) {
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                var disableKeys = docById('lilypondModal').style.display === 'block' || searchWidget.style.visibility === 'visible';
+            } else {
+                var disableKeys = searchWidget.style.visibility === 'visible';
+            }
+
+            if (event.altKey && !disableKeys) {
                 switch (event.keyCode) {
                 case 66: // 'B'
                     _printBlockSVG();
@@ -1649,8 +1660,8 @@ define(MYDEFINES, function (compatibility) {
                     blocks.pasteStack();
                     break;
                 }
-            } else if (event.ctrlKey) {
-            } else if (event.shiftKey){
+            } else if (event.ctrlKey && !disableKeys) {
+            } else if (event.shiftKey && !disableKeys){
                 switch (event.keyCode) {
                 case KEYCODE_D:
                     if (_THIS_IS_MUSIC_BLOCKS_) {
@@ -1689,6 +1700,7 @@ define(MYDEFINES, function (compatibility) {
                     break;
                 }
             } else {
+              if (!disableKeys){
                 switch (event.keyCode) {
                 case END:
                     blocksContainer.y = -blocks.bottomMostBlock() + logo.canvas.height / 2;
@@ -1824,6 +1836,7 @@ define(MYDEFINES, function (compatibility) {
                 // Always store current key so as not to mask it from
                 // the keyboard block.
                 currentKeyCode = event.keyCode;
+              }
             }
         };
 
@@ -2244,17 +2257,18 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function doSaveTB() {
-            var filename = prompt('Filename:', 'untitled.tb');  // default filename = untitled
+            var filename = prompt('Filename:', _('untitled') + '.tb');
             if (filename != null) {
                 if (fileExt(filename) !== 'tb') {
                     filename += '.tb';
                 }
+
                 download(filename, 'data:text/plain;charset=utf-8,' + encodeURIComponent(prepareExport()));
             }
         };
 
         function doSaveSVG() {
-            var filename = prompt('Filename:', 'untitled.svg');
+            var filename = prompt('Filename:', _('untitled') + '.svg');
             if (filename != null) {
                 if (fileExt(filename) !== 'svg') {
                     filename += '.svg';
@@ -2269,7 +2283,7 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function doSavePNG() {
-            var filename = prompt('Filename:', 'untitled.png');
+            var filename = prompt('Filename:', _('untitled') + '.png');
             if (fileExt(filename) !== 'png') {
                 filename += '.png';
             }
@@ -2308,6 +2322,8 @@ define(MYDEFINES, function (compatibility) {
             document.querySelector('#myOpenFile').focus();
             document.querySelector('#myOpenFile').click();
             window.scroll(0, 0);
+            doStopButton();
+            _allClear();
         };
 
         function doSaveLilypond() {
@@ -2315,19 +2331,97 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _doLilypond() {
-            document.body.style.cursor = 'wait';
             console.log('Saving .ly file');
-            // Suppress music and turtle output when generating
-            // Lilypond output.
-            logo.runningLilypond = true;
-            logo.notationOutput = LILYPONDHEADER;
-            logo.notationNotes = {};
-            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                logo.notationStaging[turtle] = [];
-                turtles.turtleList[turtle].doClear(true, true, true);
+            docById('lilypondModal').style.display = 'block';
+            var projectTitle, projectAuthor, MIDICheck, guitarCheck;
+
+            //.TRANS: File name prompt for save as Lilypond
+            docById('fileNameText').textContent = _('File name');
+            //.TRANS: Project title prompt for save as Lilypond
+            docById('titleText').textContent = _('Project title');
+            //.TRANS: Project title prompt for save as Lilypond
+            docById('authorText').textContent = _('Project author');
+            //.TRANS: MIDI prompt for save as Lilypond
+            docById('MIDIText').textContent = _('Include MIDI output?');
+            //.TRANS: Guitar prompt for save as Lilypond
+            docById('guitarText').textContent = _('Include guitar tablature output?');
+            //.TRANS: Lilypond is a scripting language for generating sheet music
+            docById('submitLilypond').textContent = _('Save as Lilypond');
+
+            //TRANS: default file name when saving as Lilypond
+            docById('fileName').value = _('My Project') + '.ly';
+            //TRANS: default project title when saving as Lilypond
+            docById('title').value = _('My Music Blocks Creation');
+
+            // Load custom author saved in local storage.
+            var customAuthorData = storage.getItem('customAuthor');
+            if (customAuthorData != undefined) {
+                docById('author').value = JSON.parse(customAuthorData);
+            } else {
+                //.TRANS: default project author when saving as Lilypond
+                docById('author').value = _('Mr. Mouse');
             }
 
-            logo.runLogoCommands();
+            docById('submitLilypond').onclick = function () {
+                var filename = docById('fileName').value;
+                projectTitle = docById('title').value;
+                projectAuthor = docById('author').value;
+
+                // Save the author in local storage.
+                storage.setItem('customAuthor', JSON.stringify(projectAuthor));
+
+                MIDICheck = docById('MIDICheck').checked;
+                guitarCheck = docById('guitarCheck').checked;
+
+                if (filename != null) {
+                    if (fileExt(filename) !== 'ly') {
+                        filename += '.ly';
+                    }
+                }
+
+                var mapLilypondObj = {
+                    'My Music Blocks Creation': projectTitle,
+                    'Mr. Mouse': projectAuthor
+                };
+
+                LILYPONDHEADER = LILYPONDHEADER.replace(/My Music Blocks Creation|Mr. Mouse/gi, function(matched){
+                    return mapLilypondObj[matched];
+                });
+
+                if (MIDICheck) {
+                    MIDIOutput = '% MIDI SECTION\n% MIDI Output included! \n\n\\midi {\n   \\tempo 4=90\n}\n\n\n}\n\n';
+                } else {
+                    MIDIOutput = '% MIDI SECTION\n% Delete the %{ and %} below to include MIDI output.\n%{\n\\midi {\n   \\tempo 4=90\n}\n%}\n\n}\n\n';
+                }
+
+                if (guitarCheck) {
+                    guitarOutputHead = '\n\n% GUITAR TAB SECTION\n% Guitar tablature output included!\n\n      \\new TabStaff = "guitar tab" \n      <<\n         \\clef moderntab\n';
+                    guitarOutputEnd = '      >>\n\n';
+                } else {
+                    guitarOutputHead = '\n\n% GUITAR TAB SECTION\n% Delete the %{ and %} below to include guitar tablature output.\n%{\n      \\new TabStaff = "guitar tab" \n      <<\n         \\clef moderntab\n';
+                    guitarOutputEnd = '      >>\n%}\n';
+                }
+
+                // Suppress music and turtle output when generating
+                // Lilypond output.
+                logo.runningLilypond = true;
+                logo.notationOutput = LILYPONDHEADER;
+                logo.notationNotes = {};
+                for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                    logo.notationStaging[turtle] = [];
+                    turtles.turtleList[turtle].doClear(true, true, true);
+                }
+
+                logo.runLogoCommands();
+
+                // Close the dialog box after hitting button.
+                docById('lilypondModal').style.display = 'none';
+            }
+
+            docByClass('close')[0].onclick = function () {
+                logo.runningLilypond = false;
+                docById('lilypondModal').style.display = 'none';
+            }
         };
 
         function doSaveAbc() {
@@ -2337,16 +2431,15 @@ define(MYDEFINES, function (compatibility) {
         function _doAbc() {
             document.body.style.cursor = 'wait';
             console.log('Saving .abc file');
-            // Suppress music and turtle output when generating
+            //Suppress music and turtle output when generating
             // Abc output.
-            logo.runningLilypond = true;
+            logo.runningAbc = true;
             logo.notationOutput = ABCHEADER;
             logo.notationNotes = {};
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 logo.notationStaging[turtle] = [];
                 turtles.turtleList[turtle].doClear(true, true, true);
             }
-
             logo.runLogoCommands();
         };
 
@@ -2473,17 +2566,16 @@ define(MYDEFINES, function (compatibility) {
 
             var __functionload = function () {
                 setTimeout(function () {
-                    if (!collapse && firstRun) {
-                        console.log('collapsing blocks when loading');
+                    if (!collapse && firstRun){
                         _toggleCollapsibleStacks();
                     }
-
                     if (run && firstRun){
                         for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                             turtles.turtleList[turtle].doClear(true, true, false);
                         }
 
                         runProject(env);
+
                         if (show){
                             _changeBlockVisibility();
                         }
@@ -2495,7 +2587,7 @@ define(MYDEFINES, function (compatibility) {
                         _changeBlockVisibility();
                     }
 
-		    document.removeEventListener('finishedLoading', __functionload);
+                    document.removeEventListener('finishedLoading', __functionload);
                     firstRun = false;
                 }, 1000);
             }

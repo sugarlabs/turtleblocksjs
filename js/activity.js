@@ -160,6 +160,7 @@ define(MYDEFINES, function (compatibility) {
             'FLOWPLUGINS': {},
             'ARGPLUGINS': {},
             'BLOCKPLUGINS': {},
+            'MACROPLUGINS': {},
             'ONLOAD': {},
             'ONSTART': {},
             'ONSTOP': {}
@@ -937,7 +938,7 @@ define(MYDEFINES, function (compatibility) {
             // Load any plugins saved in local storage.
             pluginData = storage.plugins;
             if (pluginData != null) {
-                var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
+                var obj = processPluginData(pluginData, palettes, blocks, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList, palettes.pluginMacros);
                 updatePluginObj(obj);
             }
 
@@ -1091,11 +1092,11 @@ define(MYDEFINES, function (compatibility) {
                     document.body.style.cursor = 'wait';
 
                     setTimeout(function () {
-                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList);
+                        obj = processRawPluginData(reader.result, palettes, blocks, errorMsg, logo.evalFlowDict, logo.evalArgDict, logo.evalParameterDict, logo.evalSetterDict, logo.evalOnStartList, logo.evalOnStopList, palettes.pluginMacros);
                         // Save plugins to local storage.
                         if (obj != null) {
                             var pluginObj = preparePluginExports(obj);
-                            console.log(pluginObj);
+                            // console.log(pluginObj);
                             storage.plugins = pluginObj; // preparePluginExports(obj));
                         }
 

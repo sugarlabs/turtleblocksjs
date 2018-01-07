@@ -75,7 +75,7 @@ pictureBlock('book_hardcover', 'Book (HC)', 5 );
 block.value = 5;
 
 //* macro:book_hardcover *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["book_hardcover", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 5}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["book_hardcover", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:book_softcover *//
 pictureBlock('book_softcover', 'Book (SC)', 10.2);
@@ -84,7 +84,7 @@ pictureBlock('book_softcover', 'Book (SC)', 10.2);
 block.value =  10.2;
 
 //* macro:book_softcover *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["book_softcover", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 5}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["book_softcover", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:car *//
 pictureBlock('car', 'Car Trips', (5 / 24) * 14.3);
@@ -93,7 +93,7 @@ pictureBlock('car', 'Car Trips', (5 / 24) * 14.3);
 block.value =  (5 / 24) * 14.3;
 
 //* macro:car *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["car", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 2}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["car", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:electricity *//
 pictureBlock('electricity', 'Electricity (in kWh)', 0.527);
@@ -120,7 +120,7 @@ pictureBlock('oil', 'Oil (in litres)', 2.96);
 block.value = 2.96
 
 //* macro:oil *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["oil", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 10}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["oil", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:coal *//
 pictureBlock('coal', 'Coal (in kg)', 3.26);
@@ -129,7 +129,7 @@ pictureBlock('coal', 'Coal (in kg)', 3.26);
 block.value = 3.26
 
 //* macro:coal *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["coal", {"value": 2}], 0, 0, [0]], [2, ["number", {"value": 10}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["coal", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:wood *//
 pictureBlock('wood', 'wood (in kg)', 0.10);
@@ -138,7 +138,7 @@ pictureBlock('wood', 'wood (in kg)', 0.10);
 block.value =  0.10
 
 //* macro:wood *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["wood", {"value": 2}], 0, 0, [0]], [2, ["number", {"value": 10}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["wood", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:bus *//
 pictureBlock('bus', 'bus trip', 5 * 0.14);
@@ -147,7 +147,7 @@ pictureBlock('bus', 'bus trip', 5 * 0.14);
 block.value = 5 * 0.14;
 
 //* macro:bus *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["bus", {"value": 2}], 0, 0, [0]], [2, ["number", {"value": 2}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["bus", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:train *//
 pictureBlock('train', 'Train trips');
@@ -156,7 +156,7 @@ pictureBlock('train', 'Train trips');
 block.value =   5 * 0.10
 
 //* macro:train *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["train", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 2}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["train", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:air *//
 pictureBlock('air', 'Air trips');
@@ -165,7 +165,7 @@ pictureBlock('air', 'Air trips');
 block.value =  5 * 0.50
 
 //* macro:air *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["air", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 2}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["air", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:walk *//
 pictureBlock('walk', 'Walking trips');
@@ -174,7 +174,7 @@ pictureBlock('walk', 'Walking trips');
 block.value =  5 * 0.03
 
 //* macro:walk *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["walk", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 2}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["walk", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:bike *//
 pictureBlock('bike', 'Bicycle trips');
@@ -183,7 +183,7 @@ pictureBlock('bike', 'Bicycle trips');
 block.value =  5 * 0.06
 
 //* macro:bike *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["bike", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 2}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["bike", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:walk *//
 pictureArgBlock('walk', 'Walking trips');
@@ -192,7 +192,7 @@ pictureArgBlock('walk', 'Walking trips');
 block.value = 5 * 0.03
 
 //* macro:walk *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["walk", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 2}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["walk", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:ac *//
 pictureBlock('ac', 'Air Conditioner (in hours)');
@@ -201,7 +201,7 @@ pictureBlock('ac', 'Air Conditioner (in hours)');
 block.value = (120 / 1000) * 0.527
 
 //* macro:ac *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["ac", {"value": 2}], 0, 0, [0]], [2, ["number", {"value": 7}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["ac", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:led *//
 pictureBlock('led', 'LED Light (in hours)');
@@ -210,7 +210,7 @@ pictureBlock('led', 'LED Light (in hours)');
 block.value = (6 / 1000) * 0.527
 
 //* macro:led *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["led", {"value": 2}], 0, 0, [0]], [2, ["number", {"value": 7}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["led", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:lamp *//
 pictureBlock('lamp', 'Fluorescent lamp (in hours)');
@@ -219,7 +219,7 @@ pictureBlock('lamp', 'Fluorescent lamp (in hours)');
 block.value = (30  / 1000) * 0.527
 
 /* macro:lamp *//
-[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["lamp", {"value": 2}], 0, 0, [0]], [2, ["number", {"value": 7}], 0, 0, [0]]]
+[[0, "multiply", 0, 0, [null, 1, 2]], [1, ["lamp", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* flow:consume_carbon *//
 var block = logo.blocks.blockList[blk];

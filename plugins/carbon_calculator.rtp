@@ -196,7 +196,7 @@ block.value = (120 / 1000) * 0.527
 pictureBlock('led', 'LED Light (in hours)');
 
 //* arg:led *//
-block.value = (6 / 1000) * 0.527
+block.value = (6 / 1000) * 0.527;
 
 //* macro:led *//
 [[0, "multiply", 0, 0, [null, 1, 2]], [1, ["led", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
@@ -207,7 +207,7 @@ pictureBlock('lamp', 'Fluorescent lamp (in hours)');
 //* arg:lamp *//
 block.value = (30  / 1000) * 0.527
 
-/* macro:lamp *//
+//* macro:lamp *//
 [[0, "multiply", 0, 0, [null, 1, 2]], [1, ["lamp", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* flow:consume_carbon *//

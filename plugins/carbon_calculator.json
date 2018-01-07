@@ -13,7 +13,7 @@
         "train": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value =   5 * 0.10", 
         "lamp": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = (30  / 1000) * 0.527/* macro:lamp *//[[0, \"multiply\", 0, 0, [null, 1, 2]], [1, [\"lamp\", {\"value\": 1}], 0, 0, [0]], [2, [\"number\", {\"value\": 1}], 0, 0, [0]]]", 
         "get_carbon": "var block = logo.blocks.blockList[blk];var conns = block.connections;var block = logo.blocks.blockList[blk];block.value = covertReadableCarbon(carbonEmission)", 
-        "air": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value =  5 * 0.50", 
+        "air": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value =  2 * 0.50", 
         "coal": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = 3.26", 
         "natural_gas": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = 0.203", 
         "wood": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value =  0.10", 

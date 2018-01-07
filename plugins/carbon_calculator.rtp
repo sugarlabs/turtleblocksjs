@@ -162,7 +162,7 @@ block.value =   5 * 0.10
 pictureBlock('air', 'Air trips');
 
 //* arg:air *//
-block.value =  5 * 0.50
+block.value =  2 * 0.50
 
 //* macro:air *//
 [[0, "multiply", 0, 0, [null, 1, 2]], [1, ["air", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]

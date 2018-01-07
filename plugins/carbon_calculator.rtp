@@ -27,17 +27,6 @@ var covertReadableCarbon = carbonEmission => {
 };
 
 //* block-globals *//
-var oneArgBlock = function(name, label, defaultValue) {
-  var block = new ProtoBlock(name);
-  block.palette = palettes.dict['co2'];
-  blocks.protoBlockDict[name] = block;
-  block.staticLabels.push(label);
-  block.adjustWidthToLabel();
-  block.oneArgMathBlock();
-  block.dockTypes[1] = 'anyin';
-  block.defaults.push(defaultValue || 1);
-};
-
 var pictureBlock = function(name, label, defaultValue) {
   var block = new ProtoBlock(name);
   block.palette = palettes.dict['co2'];

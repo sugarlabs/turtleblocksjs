@@ -14,22 +14,27 @@ Resets carbon emission back to zero, in other words clean the carbon from enviro
 
 ### Carbon Products
 
-| Carbon Products    | Input                                                                     |
-| ----------------   | ------------------------------------------------------------------------- |
-| Book (Hard Cover)  | Takes no. of books as input                                               |
-| Book (Soft Cover)  | Takes no. of books as input                                               |
-| Car                | Takes no. of trips as input (1 hours of trip is considered a single trip) |
-| Electricity        | Takes KWH of elictricity as input                                         |
-| Natural Gas        | Takes kg of gas as input                                                  |
-| Oil                | Takes liters of oil as input                                              |
-| Coal               | Takes kg's of coal as input                                               |
-| Wood               | Takes kg's of wood as input                                               |
-| Bus                | Takes no. of trips as input (1 hours of trip is considered a single trip) |
-| Train              | Takes no. of trips as input (1 hours of trip is considered a single trip) |
-| Flight             | Takes no. of trips as input (1 hours of trip is considered a single trip) |
-| Walk               | Takes no. of trips as input (1 hours of trip is considered a single trip) |
-| Bike               | Takes no. of trips as input (1 hours of trip is considered a single trip) |
-| Air Conditioner    | Takes no. of hours as input                                               |
-| LED lights         | Takes no. of hours as input                                               |
-| Fluroscent Lamps   | Takes no. of hours as input                                               |
-| Incandescent Lamps | Takes no. of hours as input                                               |
+| Carbon Products    | Input                                                       |
+| ----------------   | ----------------------------------------------------------- |
+| electricity        | kilo-watt hours of electricity                              |
+| natural gas        | kilograms of gas                                            |
+| oil                | liters of oil                                               |
+| coal               | kilograms of coal                                           |
+| wood               | kilograms of wood                                           |
+|  |  |
+| car                | no. of trips (1 hour of travel is considered a single trip) |
+| bus                | no. of trips (1 hour of travel is considered a single trip) |
+| train              | no. of trips (1 hour of travel is considered a single trip) |
+| air travel         | no. of trips (1 hour of travel is considered a single trip) |
+| walk               | no. of trips (1 hour of travel is considered a single trip) |
+| bike               | no. of trips (1 hour of travel is considered a single trip) |
+|  |  |
+| LED light          | no. of hours                                                |
+| fluroscent lamp    | no. of hours                                                |
+| incandescent lamp  | no. of hours                                                |
+<!--
+|  |  |
+| book (hard cover)  | no. of books                                                |
+| book (soft cover)  | no. of books                                                |
+| air conditioner    | no. of hours                                                |
+-->

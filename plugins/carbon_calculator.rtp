@@ -27,7 +27,7 @@ var covertReadableCarbon = carbonEmission => {
 };
 
 //* block-globals *//
-var pictureBlock = function(name, label, defaultValue) {
+var pictureBlock = function(name, label, defaultValue, hidden) {
   var block = new ProtoBlock(name);
   block.palette = palettes.dict['co2'];
   blocks.protoBlockDict[name] = block;
@@ -35,6 +35,9 @@ var pictureBlock = function(name, label, defaultValue) {
   block.mediaBlock();
   block.dockTypes[0] = 'numberout';
   block.defaults.push(defaultValue || 1);
+  if (hidden != undefined) {
+    block.hidden = true;
+  }
 };
 
 //* arg-globals *//
@@ -52,13 +55,13 @@ function showMsg(data) {
 var block = new ProtoBlock('consume_carbon');
 block.palette = palettes.dict['co2'];
 blocks.protoBlockDict['consume_carbon'] = block;
-block.staticLabels.push('consume carbon');
+block.staticLabels.push(_('consume carbon'));
 block.adjustWidthToLabel();
 block.oneArgBlock();
 block.dockTypes[1] = 'numberin';
 
 //* block:book_hardcover *//
-pictureBlock('book_hardcover', 'Book (HC)', 5 );
+pictureBlock('book_hardcover', 'Book (HC)', 5, true);
 
 //* arg:book_hardcover *//
 block.value = 5;
@@ -67,7 +70,7 @@ block.value = 5;
 [[0, "multiply", 0, 0, [null, 1, 2]], [1, ["book_hardcover", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:book_softcover *//
-pictureBlock('book_softcover', 'Book (SC)', 10.2);
+pictureBlock('book_softcover', 'Book (SC)', 10.2, true);
 
 //* arg:book_softcover *//
 block.value =  10.2;
@@ -184,7 +187,7 @@ block.value = 5 * 0.03
 [[0, "multiply", 0, 0, [null, 1, 2]], [1, ["walk", {"value": 1}], 0, 0, [0]], [2, ["number", {"value": 1}], 0, 0, [0]]]
 
 //* block:ac *//
-pictureBlock('ac', 'Air Conditioner (in hours)');
+pictureBlock('ac', 'Air Conditioner (in hours)', 1, true);
 
 //* arg:ac *//
 block.value = (120 / 1000) * 0.527
@@ -228,7 +231,7 @@ carbonEmission += (logo.parseArg(logo, turtle, conns[1]))
 var block = new ProtoBlock('get_carbon');
 block.palette = palettes.dict['co2'];
 blocks.protoBlockDict['get_carbon'] = block;
-block.staticLabels.push('get carbon');
+block.staticLabels.push(_('get carbon'));
 block.adjustWidthToLabel();
 block.parameterBlock();
 
@@ -240,7 +243,7 @@ block.value = covertReadableCarbon(carbonEmission)
 var block = new ProtoBlock('clear_carbon');
 block.palette = palettes.dict['co2'];
 blocks.protoBlockDict['clear_carbon'] = block;
-block.staticLabels.push('clear carbon');
+block.staticLabels.push(_('clear carbon'));
 block.adjustWidthToLabel();
 block.zeroArgBlock();
 

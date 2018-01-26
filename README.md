@@ -101,15 +101,27 @@ Manual](http://people.sugarlabs.org/walter/TurtleBlocksIntroductoryManual.pdf)
 and [Turtle Blocks: A Manual for Advanced
 Blocks](http://people.sugarlabs.org/walter/TurtleBlocksAdvancedBlocksManual.pdf)
 
+Music Blocks
+------------
+
+[Music Blocks](https://github.com/walterbender/musicblocks) is fork of
+Turtle Blocks with additional blocks for programming music.
+
 Reporting Bugs
 --------------
 
-Bugs can be reported in the [Sugar Labs bug
-tracker](https://bugs.sugarlabs.org/newticket?component=Turtleart) or
-in the [issues
-section](https://github.com/walterbender/turtleblocksjs/issues) of
+Bugs can be reported in the
+[issues section](https://github.com/walterbender/turtleblocksjs/issues) of
 this repository.
 
+Contributing
+------------
+
+Please consider contributing to the project, with your ideas, your
+artwork, your lesson plans, and your code.
+
+Programmers, please follow these general
+[guidelines for contributions](https://github.com/sugarlabs/sugar-docs/blob/master/contributing.md).
 
 Advanced Features
 -----------------
@@ -119,22 +131,22 @@ blocks. You can learn more about how to use plugins (and how to write
 them) from the [Plugins
 Guide](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/README.md).
 
-
 List of Plugins
 ---------------
 
 * [Mindstorms](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorms robotics kit
-* [RoDi](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
-* [Maths](https://github.com/walterbender/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
-* [Translate](https://github.com/walterbender/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
-* [Dictionary](https://github.com/walterbender/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions
-* [Weather](https://github.com/walterbender/turtleblocksjs/blob/master/weather.json): blocks to retrieve global weather forecasts
-* [Logic](https://github.com/walterbender/turtleblocksjs/blob/master/logic.json): blocks for bitwise Boolean operations
-* [Finance](https://github.com/walterbender/turtleblocksjs/blob/master/finance.json): a block for looking up market prices
-* [Bitcoin](https://github.com/walterbender/turtleblocksjs/blob/master/bitcoin.json): a block for looking up bitcoin exchange rates
-* [Nutrition](https://github.com/walterbender/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
-* [Facebook](https://github.com/walterbender/turtleblocksjs/blob/master/facebook.json): a block for publishing a project to Facebook
-* [Heap](https://github.com/walterbender/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data
-* [Accelerometer](https://github.com/walterbender/turtleblocksjs/blob/master/accelerometer.json): blocks for accessing an accelerometer
-* [Turtle](https://github.com/walterbender/turtleblocksjs/blob/master/turtle.json): blocks to support advanced features when using multiple turtles
-* [Gmap](https://github.com/walterbender/turtleblocksjs/blob/master/gmap.json): blocks to support generation of Google maps.
+* [RoDi](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
+* [Carbon Calculator]((https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/carbon_calculator.json): blocks for exploring your carbon footprint
+* [Maths](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
+* [Translate](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
+* [Dictionary](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions
+* [Weather](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/weather.json): blocks to retrieve global weather forecasts
+* [Logic](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/logic.json): blocks for bitwise Boolean operations
+* [Finance](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/finance.json): a block for looking up market prices
+* [Bitcoin](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/bitcoin.json): a block for looking up bitcoin exchange rates
+* [Nutrition](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
+* [Facebook](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/facebook.json): a block for publishing a project to Facebook
+* [Heap](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data
+* [Accelerometer](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/accelerometer.json): blocks for accessing an accelerometer
+* [Turtle](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/turtle.json): blocks to support advanced features when using multiple turtles
+* [Gmap](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/gmap.json): blocks to support generation of Google maps.

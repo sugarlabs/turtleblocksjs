@@ -40,12 +40,11 @@ the palettes and blocks.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/fast-button.png' />
 
-Run the blocks fast.
+Click on the *Run* button to run the blocks fast.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/slow-button.png' />
-
-Run the blocks slowly. When running slowly, the values of parameter
-boxes are shown as an additional debugging aid.
+Long-press to run the blocks slowly. When running
+slowly, the values of parameter boxes are shown as an additional
+debugging aid.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/step-button.png' />
 
@@ -59,10 +58,6 @@ Stop running the current project.
 
 Clear the screen and return the turtles to their initial positions in
 the center of the screen.
-
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/palette-button.png' />
-
-Hide or show the block palettes.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/hide-blocks-button.png' />
 
@@ -93,35 +88,31 @@ show/hide the Auxillary toolbar.
 
 Open a viewer for loading example projects.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/copy-button.png' />
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/open-file.png' />
 
-Copy blocks onto the clipboard. (This button appears at the top of a
-stack after a "long press".)
+Open a project from the local file system.
 
-Also shown on after a long press is the Save Action-stack button. This
-will save an action stack on the custom palette for use in other
-projects.
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/save-button.png' />
+
+Open a panel with save options.
 
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/paste-button.png' />
 
 Paste blocks from the clipboard. (This button is highlighted only when
-there are blocks available on the clipboard to paste.)
+there are blocks available on the clipboard to paste.) Copy is enabled
+by a long press on a block.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/Cartesian-button.png' />
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/coordinates-button.png' />
 
-Show or hide a Cartesian-coordinate grid.
+Show or hide polar and Cartesian-coordinate grids.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/polar-button.png' />
-
-Show or hide a polar-coordinate grid.
-
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/utility-button.svg' />
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/utility-button.png' />
 
 Open utility panel to access controls for changing block size, loading
 plugins, looking at project statistics, and enabling/disabling
 scrolling.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/empty-trash-button.png' />
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/trash-button.png' />
 
 Remove all blocks.
 

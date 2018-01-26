@@ -145,6 +145,22 @@ Load new blocks from plugins (previously downloaded to the file system).
 
 Enable/disable scrolling.
 
+Keyboard shortcuts
+------------------
+
+There are several keyboard shortcuts:
+
+*PgUp* and *PgDn* will scroll the screen vertically. This is useful for
+creating long stacks of blocks.
+
+You can use the arrow keys to move blocks and the *Delete* key to
+remove an individual block from a stack.
+
+*Enter* is the equivalent of clicking the *Run* button.
+
+*Alt-C* is copy and *Alt-V* is paste. Be sure that the cursor is
+highlighting the block(s) you want to copy.
+
 Block Palettes
 --------------
 

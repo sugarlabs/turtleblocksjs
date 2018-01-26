@@ -150,3 +150,4 @@ List of Plugins
 * [Accelerometer](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/accelerometer.json): blocks for accessing an accelerometer
 * [Turtle](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/turtle.json): blocks to support advanced features when using multiple turtles
 * [Gmap](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/gmap.json): blocks to support generation of Google maps.
+* [Random quote](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/random_quote.json): returns random quote of the day

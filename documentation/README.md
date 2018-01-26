@@ -137,7 +137,7 @@ Increase the size of the blocks.
 
 Show project statistics.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/plugin-button.png' />
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/plugins-button.svg' />
 
 Load new blocks from plugins (previously downloaded to the file system).
 

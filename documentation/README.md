@@ -15,13 +15,34 @@ dragging) blocks from the Turtle palette. Use multiple blocks to
 create drawings; as the turtle moves under your control, colorful
 lines are drawn.
 
-You add blocks to your program by clicking on or dragging them from
-the palette to the main area. You can delete a block by dragging it
-back onto the palette. Click anywhere on a "stack" of blocks to start
-executing that stack or by clicking on the rabbit (fast) or snail
-(slow) on the Main Toolbar. To maximize screen real estate, Turtle
-Blocks overlays the program elements (stacks of blocks) on top of the
-canvas. These blocks can be hidden at any time will running the program.
+To write your own programs, drag blocks from their respective palettes
+on the left side of the screen. Use multiple blocks in stack(s) to
+create drawings; as the turtle moves under your control,
+colorful lines are drawn.
+
+Note that blocks either snap together vertically or
+horizontally. Vertical connections indicate program (and temporal)
+flow. Code is executed from the top to bottom of a stack of
+blocks. Horizontal connections are used for parameters and arguments,
+e.g., the name of a pitch, the duration of a note, the numerator and
+denominator of a division. From the shape of the block, it should be
+apparent whether they connect vertically or horizontally.
+
+Some blocks, referred to as "clamp" blocks have an
+interior&mdash;child&mdash;flow. This might be code that is run *if* a
+condition is true, or, more common, the code that is run over the
+duration of a note.
+
+For the most part, any combination of blocks will run (although there
+is no guarantee that they will produce music). Illegal combinations
+of blocks will be flag by a warning on the screen as the program runs.
+
+You can delete a block by dragging it back into the trash area that
+appear at the bottom of the screen.
+
+To maximize screen real estate, Music Blocks overlays the program
+elements (stacks of blocks) on top of the canvas. These blocks can be
+hidden at any time while running the program.
 
 Toolbars
 --------
@@ -171,9 +192,9 @@ Block Palettes
 The block palettes are displayed on the left side of the screen. The
 palette button on the Main toolbar show and hide the block
 palettes. These palettes contain the blocks used to create
-programs. See the [Programming Guide]
-(http://github.com/walterbender/turtleblocksjs/tree/master/guide) for
-more details on how to use the blocks.
+programs. See the
+[Programming Guide](http://github.com/walterbender/turtleblocksjs/tree/master/guide/README.md)
+for more details on how to use the blocks.
 
 Turtle Palette
 --------------

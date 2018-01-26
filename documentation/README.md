@@ -67,6 +67,10 @@ Hide or show the blocks and the block palettes.
 
 Expand or collapse stacks of blocks (start and action stacks).
 
+<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/home-button.png' />
+
+Bring all blocks back to the home screen.
+
 <img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/help-button.png' />
 
 Show the help messages.

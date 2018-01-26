@@ -24,9 +24,9 @@ Note that blocks either snap together vertically or
 horizontally. Vertical connections indicate program (and temporal)
 flow. Code is executed from the top to bottom of a stack of
 blocks. Horizontal connections are used for parameters and arguments,
-e.g., the name of a pitch, the duration of a note, the numerator and
-denominator of a division. From the shape of the block, it should be
-apparent whether they connect vertically or horizontally.
+e.g., the distance to go forward, the degrees to rotate right, the
+numerator and denominator of a division. From the shape of the block,
+it should be apparent whether they connect vertically or horizontally.
 
 Some blocks, referred to as "clamp" blocks have an
 interior&mdash;child&mdash;flow. This might be code that is run *if* a

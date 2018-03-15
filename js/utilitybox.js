@@ -1,4 +1,4 @@
-// Copyright (c) 2015-16 Walter Bender
+// Copyright (c) 2015-2018 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -16,8 +16,8 @@ function UtilityBox () {
     const BOXBUTTONOFFSET = 40;
     const BOXBUTTONSPACING = 65;
 
-    // 6 buttons, 5 intrabuttons spaces, 2 extrabutton spaces
-    var boxwidth = 6 * 55 + 5 * 10 + 2 * 20;
+    // 8 buttons, 7 intrabuttons spaces, 2 extrabutton spaces
+    var boxwidth = 8 * 55 + 7 * 10 + 2 * 20;
     var boxwidth2 = boxwidth - 1.5;
     var boxclose = boxwidth - 55;
 
@@ -28,11 +28,16 @@ function UtilityBox () {
     this._doBigger = null;
     this._doSmaller = null;
     this._doPlugins = null;
+    this._deletePlugin = null;
     this._doStats = null;
     this._doScroller = null;
+    this._doLanguageBox = null;
+    this._languageBox = null;
     this._toggleSearch = null;
     this._hideSearch = null;
     this._scrollStatus = false;
+    this._increaseStatus = true;
+    this._decreaseStatus = true;
     this._container = null;
     this._scale = 1;
 
@@ -61,8 +66,19 @@ function UtilityBox () {
         return this;
     };
 
+    this.deletePlugins = function (plugin) {
+        this._deletePlugin = plugin;
+        return this;
+    };
+
     this.setStats = function (stats) {
         this._doStats = stats;
+        return this;
+    };
+
+    this.setLanguage = function (doLanguageBox, languageBox) {
+        this._doLanguageBox = doLanguageBox;
+        this._languageBox = languageBox;
         return this;
     };
 
@@ -81,18 +97,36 @@ function UtilityBox () {
         return [this._container.x, this._container.y];
     };
 
-    this.init = function (scale, x, y, makeButton) {
+    this.init = function (scale, x, y, makeButton, status) {
         if (this._container === null) {
             this._createBox(scale, x, y);
             var that = this;
             var dx = BOXBUTTONOFFSET;
+
+            this._languageButton = makeButton('language-button', _('Select language'), this._container.x + dx, this._container.y + 85, 55, 0, this._stage);
+            this._languageButton.visible = true;
+            this._positionHoverText(this._languageButton);
+            this._languageButton.on('click', function (event) {
+                that._doLanguageBox();
+                that.hide();
+            });
+
+            dx += BOXBUTTONSPACING;
 
             this._smallerButton = makeButton('smaller-button', _('Decrease block size'), this._container.x + dx, this._container.y + 85, 55, 0, this._stage);
             this._smallerButton.visible = true;
             this._positionHoverText(this._smallerButton);
             this._smallerButton.on('click', function (event) {
                 that._doSmaller();
-                that._hide();
+                that.hide();
+            });
+
+            this._smallerButton2 = makeButton('smaller-disable-button', _('Cannot be further decreased'), this._container.x + dx, this._container.y + 85, 55, 0, this._stage);
+            this._smallerButton2.visible = false;
+            this._positionHoverText(this._smallerButton2);
+            this._smallerButton2.on('click', function (event) {
+                that._doSmaller();
+                that.hide();
             });
 
             dx += BOXBUTTONSPACING;
@@ -102,7 +136,15 @@ function UtilityBox () {
             this._positionHoverText(this._biggerButton);
             this._biggerButton.on('click', function (event) {
                 that._doBigger();
-                that._hide();
+                that.hide();
+            });
+
+            this._biggerButton2 = makeButton('bigger-disable-button', _('Cannot be further increased'), this._container.x + dx, this._container.y + 85, 55, 0, this._stage);
+            this._biggerButton2.visible = false;
+            this._positionHoverText(this._biggerButton2);
+            this._biggerButton2.on('click', function (event) {
+                that._doBigger();
+                that.hide();
             });
 
             dx += BOXBUTTONSPACING;;
@@ -112,17 +154,31 @@ function UtilityBox () {
             this._positionHoverText(this._statsButton);
             this._statsButton.on('click', function (event) {
                 that._doStats();
-                that._hide();
+                that.hide();
             });
 
             dx += BOXBUTTONSPACING;;
 
-            this.pluginsButton = makeButton('plugins-button', _('Load plugin from file'), this._container.x + dx, this._container.y + 85, 55, 0, this._stage);
-            this.pluginsButton.visible = true;
-            this._positionHoverText(this.pluginsButton);
-            this.pluginsButton.on('click', function (event) {
+            this._pluginsButton = makeButton('plugins-button', _('Load plugin from file'), this._container.x + dx, this._container.y + 85, 55, 0, this._stage);
+            this._pluginsButton.visible = true;
+            this._positionHoverText(this._pluginsButton);
+            this._pluginsButton.on('click', function (event) {
                 that._doPlugins();
-                that._hide();
+                that.hide();
+            });
+
+            dx += BOXBUTTONSPACING;;
+
+            this._pluginsDeleteButton = makeButton('plugins-delete-disabled-button', '', this._container.x + dx, this._container.y + 85, 55, 0, this._stage);
+            this._pluginsDeleteButton.visible = !status;
+            this._positionHoverText(this._pluginsDeleteButton);
+
+            this._pluginsDeleteButton2 = makeButton('plugins-delete-button', _('Delete plugin'), this._container.x + dx, this._container.y + 85, 55, 0, this._stage);
+            this._pluginsDeleteButton2.visible = status;
+            this._positionHoverText(this._pluginsDeleteButton2);
+            this._pluginsDeleteButton2.on('click', function (event) {
+                that._deletePlugin();
+                that.hide();
             });
 
             dx += BOXBUTTONSPACING;;
@@ -132,7 +188,7 @@ function UtilityBox () {
             this._positionHoverText(this._scrollButton);
             this._scrollButton.on('click', function (event) {
                 that._doScroller();
-                that._hide();
+                that.hide();
                 that._scrollStatus = !that._scrollStatus;
             });
 
@@ -143,8 +199,8 @@ function UtilityBox () {
             this._scrollButton2.visible = false;
             this._positionHoverText(this._scrollButton2);
             this._scrollButton2.on('click', function (event) {
-                that._toggleScroller();
-                that._hide();
+                that._doScroller();
+                that.hide();
                 that._scrollStatus = !that._scrollStatus;
             });
 
@@ -157,7 +213,7 @@ function UtilityBox () {
                 that._toggleSearch();
             });
         } else {
-            this._show();
+            this._show(status);
         }
     };
 
@@ -176,12 +232,17 @@ function UtilityBox () {
         }
     };
 
-    this._hide = function () {
+    this.hide = function () {
         if (this._container !== null) {
+            this._languageButton.visible = false;
             this._smallerButton.visible = false;
+            this._smallerButton2.visible = false;
             this._biggerButton.visible = false;
+            this._biggerButton2.visible = false;
             this._statsButton.visible = false;
-            this.pluginsButton.visible = false;
+            this._pluginsButton.visible = false;
+            this._pluginsDeleteButton.visible = false;
+            this._pluginsDeleteButton2.visible = false;
             this._scrollButton.visible = false;
             this._scrollButton2.visible = false;
             this._searchButton.visible = false;
@@ -191,12 +252,17 @@ function UtilityBox () {
         }
     };
 
-    this._show = function () {
+    this._show = function (status) {
         if (this._container !== null) {
-            this._smallerButton.visible = true;
-            this._biggerButton.visible = true;
+            this._languageButton.visible = true;
+            this._smallerButton.visible = this._decreaseStatus;
+            this._smallerButton2.visible = !this._decreaseStatus;
+            this._biggerButton.visible = this._increaseStatus;
+            this._biggerButton2.visible = !this._increaseStatus;
             this._statsButton.visible = true;
-            this.pluginsButton.visible = true;
+            this._pluginsButton.visible = true;
+            this._pluginsDeleteButton.visible = !status;
+            this._pluginsDeleteButton2.visible = status;
             this._scrollButton.visible = !this._scrollStatus;
             this._scrollButton2.visible = this._scrollStatus;
             this._searchButton.visible = true;
@@ -268,7 +334,7 @@ function UtilityBox () {
             var y = (event.stageY / that._scale) - that._container.y;
 
             if (y < 55) {
-                that._hide();
+                that.hide();
             }
         });
     };

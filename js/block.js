@@ -1,4 +1,4 @@
-// Copyright (c) 2014-17 Walter Bender
+// Copyright (c) 2014-18 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -14,7 +14,9 @@
 const LONGPRESSTIME = 1500;
 const COLLAPSABLES = ['drum', 'start', 'action', 'matrix', 'pitchdrummatrix', 'rhythmruler', 'timbre', 'status', 'pitchstaircase', 'tempo', 'pitchslider', 'modewidget'];
 const NOHIT = ['hidden', 'hiddennoflow'];
-const SPECIALINPUTS = ['text', 'number', 'solfege', 'eastindiansolfege', 'notename', 'voicename', 'modename', 'drumname', 'filtertype', 'oscillatortype', 'boolean', 'intervalname'];
+const SPECIALINPUTS = ['text', 'number', 'solfege', 'eastindiansolfege', 'notename', 'voicename', 'modename', 'drumname', 'filtertype', 'oscillatortype', 'boolean', 'intervalname', 'invertmode', 'accidentalname'];
+const WIDENAMES = ['intervalname', 'accidentalname', 'drumname', 'voicename', 'modename'];
+const EXTRAWIDENAMES = ['modename'];
 
 // Define block instance objects and any methods that are intra-block.
 function Block(protoblock, blocks, overrideName) {
@@ -43,6 +45,9 @@ function Block(protoblock, blocks, overrideName) {
     // All blocks have at a container and least one bitmap.
     this.container = null;
     this.bounds = null;
+    this.width = 0;
+    this.height = 0;
+    this.hitHeight = 0;
     this.bitmap = null;
     this.highlightBitmap = null;
 
@@ -76,28 +81,31 @@ function Block(protoblock, blocks, overrideName) {
 
     // Internal function for creating cache.
     // Includes workaround for a race condition.
-    this._createCache = function () {
+    this._createCache = function (callback, args) {
         var that = this;
         this.bounds = this.container.getBounds();
 
         if (this.bounds == null) {
             setTimeout(function () {
-                that._createCache();
-            }, 200);
+                that._createCache(callback, args);
+            }, 100);
         } else {
             this.container.cache(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
+            callback(this, args);
         }
     };
 
     // Internal function for creating cache.
     // Includes workaround for a race condition.
+    // Does this race condition still occur?
     this.updateCache = function () {
         var that = this;
 
         if (this.bounds == null) {
             setTimeout(function () {
+                console.log('CACHE NOT READY');
                 that.updateCache();
-            }, 300);
+            }, 200);
         } else {
             this.container.updateCache();
             this.blocks.refreshCanvas();
@@ -145,6 +153,7 @@ function Block(protoblock, blocks, overrideName) {
                 }
             }
         }
+
         this.updateCache();
     };
 
@@ -168,6 +177,7 @@ function Block(protoblock, blocks, overrideName) {
                 }
             }
         }
+
         this.updateCache();
     };
 
@@ -193,7 +203,7 @@ function Block(protoblock, blocks, overrideName) {
         this.postProcess = function (that) {
             if (that.imageBitmap !== null) {
                 that._positionMedia(that.imageBitmap, that.imageBitmap.image.width, that.imageBitmap.image.height, scale);
-                z = that.container.getNumChildren() - 1;
+                z = that.container.children.length - 1;
                 that.container.setChildIndex(that.imageBitmap, z);
             }
 
@@ -207,6 +217,7 @@ function Block(protoblock, blocks, overrideName) {
                     }
                 }
             }
+
             that.updateCache();
             that._calculateBlockHitArea();
 
@@ -233,10 +244,11 @@ function Block(protoblock, blocks, overrideName) {
                 that.expandBitmap.scaleX = that.expandBitmap.scaleY = that.expandBitmap.scale = scale / 2;
 
                 that._positionCollapseContainer(that.protoblock.scale);
-                var bounds = that.collapseContainer.getBounds();
-                that.collapseContainer.cache(bounds.x, bounds.y, bounds.width, bounds.height);
 
-                // that._positionCollapseContainer(that.protoblock.scale);
+                // bounds is not calculating correctly -- see #1142 --
+                // so sizing cache by hand.
+                that.collapseContainer.cache(0, 0, 55 * scale / 2, 55 * scale / 2);
+                that._positionCollapseContainer(that.protoblock.scale);
                 that._calculateCollapseHitArea();
             };
 
@@ -269,6 +281,7 @@ function Block(protoblock, blocks, overrideName) {
             case 'less':
                 var obj = this.protoblock.generator(this.clampCount[0]);
                 break;
+            case 'makeblock':
             case 'calcArg':
             case 'doArg':
             case 'namedcalcArg':
@@ -315,6 +328,7 @@ function Block(protoblock, blocks, overrideName) {
 
             this.docks.push([obj[1][3][0], obj[1][3][1], 'in']);
             break;
+        case 'makeblock':
         case 'calcArg':
             this.docks.push([obj[1][1][0], obj[1][1][1], this.protoblock.dockTypes[1]]);
             for (var i = 2; i < obj[1].length; i++) {
@@ -331,6 +345,10 @@ function Block(protoblock, blocks, overrideName) {
             this.docks[i][0] = obj[1][i][0];
             this.docks[i][1] = obj[1][i][1];
         }
+
+        this.width = obj[2];
+        this.height = obj[3];
+        this.hitHeight = obj[4];
     };
 
     this.imageLoad = function () {
@@ -359,6 +377,7 @@ function Block(protoblock, blocks, overrideName) {
             that.imageBitmap = bitmap;
             that.updateCache();
         };
+
         image.src = this.image;
     };
 
@@ -393,7 +412,7 @@ function Block(protoblock, blocks, overrideName) {
         var block_label = '';
 
         // Create the highlight bitmap for the block.
-        function __processHighlightBitmap(name, bitmap, that) {
+        var __processHighlightBitmap = function (name, bitmap, that) {
             if (that.highlightBitmap != null) {
                 that.container.removeChild(that.highlightBitmap);
             }
@@ -413,41 +432,46 @@ function Block(protoblock, blocks, overrideName) {
                 that.container.uncache();
             }
 
-            that._createCache();
-            that.blocks.refreshCanvas();
+            __callback = function (that, firstTime) {
+                that.blocks.refreshCanvas();
+                var thisBlock = that.blocks.blockList.indexOf(that);
 
-            if (firstTime) {
-                that._loadEventHandlers();
-                if (that.image !== null) {
-                    that._addImage();
+                if (firstTime) {
+                    that._loadEventHandlers();
+                    if (that.image !== null) {
+                        that._addImage();
+                    }
+
+                    that._finishImageLoad();
+                } else {
+                    if (that.name === 'start' || that.name === 'drum') {
+                        that._ensureDecorationOnTop();
+                    }
+
+                    // Adjust the docks.
+                    that.blocks.adjustDocks(thisBlock, true);
+
+                    // Adjust the text position.
+                    that._positionText(that.protoblock.scale);
+
+                    if (COLLAPSABLES.indexOf(that.name) !== -1) {
+                        that.bitmap.visible = !that.collapsed;
+                        that.highlightBitmap.visible = false;
+                        that.updateCache();
+                    }
+
+                    if (that.postProcess != null) {
+                        that.postProcess(that.postProcessArg);
+                        that.postProcess = null;
+                    }
                 }
-                that._finishImageLoad();
-            } else {
-                if (that.name === 'start' || that.name === 'drum') {
-                    that._ensureDecorationOnTop();
-                }
+            };
 
-                // Adjust the docks.
-                that.blocks.adjustDocks(thisBlock, true);
-
-                // Adjust the text position.
-                that._positionText(that.protoblock.scale);
-
-                if (COLLAPSABLES.indexOf(that.name) !== -1) {
-                    that.bitmap.visible = !that.collapsed;
-                    that.highlightBitmap.visible = false;
-                    that.updateCache();
-                }
-
-                if (that.postProcess != null) {
-                    that.postProcess(that.postProcessArg);
-                    that.postProcess = null;
-                }
-            }
+            that._createCache(__callback, firstTime);
         };
 
         // Create the bitmap for the block.
-        function __processBitmap(name, bitmap, that) {
+        var __processBitmap = function (name, bitmap, that) {
             if (that.bitmap != null) {
                 that.container.removeChild(that.bitmap);
             }
@@ -461,9 +485,9 @@ function Block(protoblock, blocks, overrideName) {
             that.blocks.refreshCanvas();
 
             if (that.protoblock.disabled) {
-                var artwork = that.artwork.replace(/fill_color/g, DISABLEDFILLCOLOR).replace(/stroke_color/g, DISABLEDSTROKECOLOR).replace('block_label', block_label);
+                var artwork = that.artwork.replace(/fill_color/g, DISABLEDFILLCOLOR).replace(/stroke_color/g, DISABLEDSTROKECOLOR).replace('block_label', safeSVG(block_label));
             } else {
-                var artwork = that.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[that.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[that.protoblock.palette.name]).replace('block_label', block_label);
+                var artwork = that.artwork.replace(/fill_color/g, PALETTEHIGHLIGHTCOLORS[that.protoblock.palette.name]).replace(/stroke_color/g, HIGHLIGHTSTROKECOLORS[that.protoblock.palette.name]).replace('block_label', safeSVG(block_label));
             }
 
             for (var i = 1; i < that.protoblock.staticLabels.length; i++) {
@@ -475,7 +499,7 @@ function Block(protoblock, blocks, overrideName) {
         };
 
         if (this.overrideName) {
-            if (['nameddo', 'nameddoArg', 'namedcalc', 'namedcalcArg'].indexOf(this.name) !== -1) {
+            if (['storein2', 'nameddo', 'nameddoArg', 'namedcalc', 'namedcalcArg'].indexOf(this.name) !== -1) {
                 block_label = this.overrideName;
                 if (block_label.length > 8) {
                     block_label = block_label.substr(0, 7) + '...';
@@ -494,17 +518,23 @@ function Block(protoblock, blocks, overrideName) {
 
         if (firstTime) {
             // Create artwork and dock.
+            this.protoblock.scale = this.blocks.blockScale;
+
             var obj = this.protoblock.generator();
             this.artwork = obj[0];
             for (var i = 0; i < obj[1].length; i++) {
                 this.docks.push([obj[1][i][0], obj[1][i][1], this.protoblock.dockTypes[i]]);
             }
+
+            this.width = obj[2];
+            this.height = obj[3];
+            this.hitHeight = obj[4];
         }
 
         if (this.protoblock.disabled) {
-            var artwork = this.artwork.replace(/fill_color/g, DISABLEDFILLCOLOR).replace(/stroke_color/g, DISABLEDSTROKECOLOR).replace('block_label', block_label);
+            var artwork = this.artwork.replace(/fill_color/g, DISABLEDFILLCOLOR).replace(/stroke_color/g, DISABLEDSTROKECOLOR).replace('block_label', safeSVG(block_label));
         } else {
-            var artwork = this.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', block_label);
+            var artwork = this.artwork.replace(/fill_color/g, PALETTEFILLCOLORS[this.protoblock.palette.name]).replace(/stroke_color/g, PALETTESTROKECOLORS[this.protoblock.palette.name]).replace('block_label', safeSVG(block_label));
         }
 
         for (var i = 1; i < this.protoblock.staticLabels.length; i++) {
@@ -543,8 +573,14 @@ function Block(protoblock, blocks, overrideName) {
                 case 'modename':
                     this.value = getModeName(DEFAULTMODE);
                     break;
+                case 'accidentalname':
+                    this.value = DEFAULTACCIDENTAL;
+                    break;
                 case 'intervalname':
                     this.value = getIntervalName(DEFAULTINTERVAL);
+                    break;
+                case 'invertmode':
+                    this.value = getInvertMode(DEFAULTINVERT);
                     break;
                 case 'voicename':
                     this.value = getVoiceName(DEFAULTVOICE);
@@ -578,10 +614,14 @@ function Block(protoblock, blocks, overrideName) {
                     label += attr;
                 }
             } else {
-                var label = this.value.toString();
+                if (this.value !== null) {
+                    var label = this.value.toString();
+                } else {
+                    var label = '???';
+                }
             }
 
-            if (this.name !== 'intervalname' && label.length > 8) {
+            if (WIDENAMES.indexOf(this.name) === -1 && label.length > 8) {
                 label = label.substr(0, 7) + '...';
             }
 
@@ -603,6 +643,10 @@ function Block(protoblock, blocks, overrideName) {
 
             this.blocks.refreshCanvas();
             this.blocks.cleanupAfterLoad(this.name);
+            if (this.trash) {
+                this.collapseContainer.visible = false;
+                this.collapseText.visible = false;
+            }
         } else {
             // Start blocks and Action blocks can collapse, so add an
             // event handler.
@@ -630,7 +674,7 @@ function Block(protoblock, blocks, overrideName) {
         var that = this;
         var thisBlock = this.blocks.blockList.indexOf(this);
 
-        function __processHighlightCollapseBitmap(name, bitmap, that) {
+        var __processHighlightCollapseBitmap = function (name, bitmap, that) {
             that.highlightCollapseBlockBitmap = bitmap;
             that.highlightCollapseBlockBitmap.name = 'highlight_collapse_' + thisBlock;
             that.container.addChild(that.highlightCollapseBlockBitmap);
@@ -684,9 +728,7 @@ function Block(protoblock, blocks, overrideName) {
 
             that._positionCollapseLabel(that.protoblock.scale);
             that.collapseText.visible = that.collapsed;
-
             that._ensureDecorationOnTop();
-
             that.updateCache();
 
             that.collapseContainer = new createjs.Container();
@@ -720,13 +762,17 @@ function Block(protoblock, blocks, overrideName) {
 
                     that.blocks.refreshCanvas();
                     that.blocks.cleanupAfterLoad(that.name);
+                    if (that.trash) {
+                        that.collapseContainer.visible = false;
+                        that.collapseText.visible = false;
+                    }
                 };
 
                 image.src = 'images/expand.svg';
             }
         };
 
-        function __processCollapseBitmap(name, bitmap, that) {
+        var __processCollapseBitmap = function (name, bitmap, that) {
             that.collapseBlockBitmap = bitmap;
             that.collapseBlockBitmap.name = 'collapse_' + thisBlock;
             that.container.addChild(that.collapseBlockBitmap);
@@ -814,7 +860,7 @@ function Block(protoblock, blocks, overrideName) {
     };
 
     this.removeChildBitmap = function (name) {
-        for (var child = 0; child < this.container.getNumChildren(); child++) {
+        for (var child = 0; child < this.container.children.length; child++) {
             if (this.container.children[child].name === name) {
                 this.container.removeChild(this.container.children[child]);
                 break;
@@ -877,7 +923,7 @@ function Block(protoblock, blocks, overrideName) {
         var fileChooser = docById('myOpenAll');
         var that = this;
 
-        readerAction = function (event) {
+        var __readerAction = function (event) {
             window.scroll(0, 0);
 
             var reader = new FileReader();
@@ -898,10 +944,10 @@ function Block(protoblock, blocks, overrideName) {
             else {
                 reader.readAsText(fileChooser.files[0]);
             }
-            fileChooser.removeEventListener('change', readerAction);
+            fileChooser.removeEventListener('change', __readerAction);
         };
 
-        fileChooser.addEventListener('change', readerAction, false);
+        fileChooser.addEventListener('change', __readerAction, false);
         fileChooser.focus();
         fileChooser.click();
         window.scroll(0, 0)
@@ -913,7 +959,7 @@ function Block(protoblock, blocks, overrideName) {
         var thisBlock = this.blocks.blockList.indexOf(this);
         this.blocks.findDragGroup(thisBlock);
 
-        function __toggle() {
+        var __toggle = function () {
             var collapse = that.collapsed;
             if (that.collapseBitmap === null) {
                 console.log('collapse bitmap not ready');
@@ -952,7 +998,7 @@ function Block(protoblock, blocks, overrideName) {
             }
 
             // Make sure the text is on top.
-            var z = that.container.getNumChildren() - 1;
+            var z = that.container.children.length - 1;
             that.container.setChildIndex(that.collapseText, z);
 
             // Set collapsed state of blocks in drag group.
@@ -983,12 +1029,14 @@ function Block(protoblock, blocks, overrideName) {
         if (SPECIALINPUTS.indexOf(this.name) !== -1) {
             this.text.textAlign = 'center';
             this.text.x = VALUETEXTX * blockScale / 2.;
-            if (this.name === 'intervalname') {
+            if (EXTRAWIDENAMES.indexOf(this.name) !== -1) {
+                this.text.x *= 3.0;
+            } else if (WIDENAMES.indexOf(this.name) !== -1) {
                 this.text.x *= 1.75;
             }
         } else if (this.protoblock.args === 0) {
             var bounds = this.container.getBounds();
-            this.text.x = bounds.width - 25;
+            this.text.x = this.width - 25;
         } else {
             this.text.textAlign = 'left';
             if (this.docks[0][2] === 'booleanout') {
@@ -997,7 +1045,7 @@ function Block(protoblock, blocks, overrideName) {
         }
 
         // Ensure text is on top.
-        z = this.container.getNumChildren() - 1;
+        z = this.container.children.length - 1;
         this.container.setChildIndex(this.text, z);
         this.updateCache();
     };
@@ -1013,10 +1061,9 @@ function Block(protoblock, blocks, overrideName) {
     };
 
     this._calculateCollapseHitArea = function () {
-        var bounds = this.collapseContainer.getBounds();
         var hitArea = new createjs.Shape();
-        var w2 = bounds.width;
-        var h2 = bounds.height;
+        var w2 = STANDARDBLOCKHEIGHT * this.collapseBitmap.scaleX;
+        var h2 = this.hitHeight;
 
         hitArea.graphics.beginFill('#FFF').drawRect(0, 0, w2, h2);
         hitArea.x = 0;
@@ -1029,7 +1076,7 @@ function Block(protoblock, blocks, overrideName) {
         this.collapseText.y = COLLAPSETEXTY * blockScale / 2;
 
         // Ensure text is on top.
-        z = this.container.getNumChildren() - 1;
+        z = this.container.children.length - 1;
         this.container.setChildIndex(this.collapseText, z);
     };
 
@@ -1086,7 +1133,7 @@ function Block(protoblock, blocks, overrideName) {
             // Raise entire stack to the top.
             that.blocks.raiseStackToTop(thisBlock);
             // And the collapse button
-            that.blocks.stage.setChildIndex(that.collapseContainer, that.blocks.stage.getNumChildren() - 1);
+            that.blocks.stage.setChildIndex(that.collapseContainer, that.blocks.stage.children.length - 1);
             moved = false;
             var original = {
                 x: event.stageX / that.blocks.getStageScale(),
@@ -1203,27 +1250,7 @@ function Block(protoblock, blocks, overrideName) {
 
     this._calculateBlockHitArea = function () {
         var hitArea = new createjs.Shape();
-        var bounds = this.container.getBounds()
-
-        if (bounds === null) {
-            this._createCache();
-            bounds = this.bounds;
-        }
-
-        // Since hitarea is concave, we only detect hits on top
-        // section of block. Otherwise we would not be able to grab
-        // blocks placed inside of clamps.
-        if (this.isClampBlock() || this.isArgClamp()) {
-            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, STANDARDBLOCKHEIGHT * this.blocks.blockScale * 0.5);
-        } else if (this.isNoHitBlock()) {
-            // No hit area
-            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, 0, 0);
-        } else {
-            // Shrinking the height makes it easier to grab blocks below
-            // in the stack.
-            hitArea.graphics.beginFill('#FFF').drawRect(0, 0, bounds.width, bounds.height * 0.75);
-        }
-
+        hitArea.graphics.beginFill('#FFF').drawRect(0, 0, this.width, this.hitHeight);
         this.container.hitArea = hitArea;
     };
 
@@ -1271,7 +1298,6 @@ function Block(protoblock, blocks, overrideName) {
                         that._changeLabel();
                     }
                 } else {
-
                     if (!that.blocks.getLongPressStatus()) {
                         var topBlock = that.blocks.findTopBlock(thisBlock);
                         console.log('running from ' + that.blocks.blockList[topBlock].name);
@@ -1309,7 +1335,7 @@ function Block(protoblock, blocks, overrideName) {
 
             // And possibly the collapse button.
             if (that.collapseContainer != null) {
-                that.blocks.stage.setChildIndex(that.collapseContainer, that.blocks.stage.getNumChildren() - 1);
+                that.blocks.stage.setChildIndex(that.collapseContainer, that.blocks.stage.children.length - 1);
             }
 
             moved = false;
@@ -1346,6 +1372,11 @@ function Block(protoblock, blocks, overrideName) {
             that.container.on('pressmove', function (event) {
                 // FIXME: More voodoo
                 event.nativeEvent.preventDefault();
+
+                // Don't allow silence block to be dragged out of a note.
+                if (that.name === 'rest2') {
+                    return;
+                }
 
                 if (window.hasMouse) {
                     moved = true;
@@ -1392,7 +1423,7 @@ function Block(protoblock, blocks, overrideName) {
 
                 if (that.isValueBlock() && that.name !== 'media') {
                     // Ensure text is on top
-                    var z = that.container.getNumChildren() - 1;
+                    var z = that.container.children.length - 1;
                     that.container.setChildIndex(that.text, z);
                 } else if (that.collapseContainer != null) {
                     that._positionCollapseContainer(that.protoblock.scale);
@@ -1492,7 +1523,7 @@ function Block(protoblock, blocks, overrideName) {
         if (hideDOM) {
             // Did the mouse move out off the block? If so, hide the
             // label DOM element.
-            if (this.bounds != null && (event.stageX / this.blocks.getStageScale() < this.container.x || event.stageX / this.blocks.getStageScale() > this.container.x + this.bounds.width || event.stageY < this.container.y || event.stageY > this.container.y + this.bounds.height)) {
+            if ((event.stageX / this.blocks.getStageScale() < this.container.x || event.stageX / this.blocks.getStageScale() > this.container.x + this.width || event.stageY < this.container.y || event.stageY > this.container.y + this.hitHeight)) {
                 this._labelChanged();
                 hideDOMLabel();
                 this.blocks.unhighlight(null);
@@ -1513,25 +1544,25 @@ function Block(protoblock, blocks, overrideName) {
 
     this._ensureDecorationOnTop = function () {
         // Find the turtle decoration and move it to the top.
-        for (var child = 0; child < this.container.getNumChildren(); child++) {
+        for (var child = 0; child < this.container.children.length; child++) {
             if (this.container.children[child].name === 'decoration') {
                 // Drum block in collapsed state is less wide.
                 if (this.name === 'drum') {
-                    var bounds = this.container.getBounds();
                     if (this.collapsed) {
                         var dx = 25 * this.protoblock.scale / 2;
                     } else {
                         var dx = 0;
                     }
+
                     for (var turtle = 0; turtle < this.blocks.turtles.turtleList.length; turtle++) {
                         if (this.blocks.turtles.turtleList[turtle].startBlock === this) {
-                            this.blocks.turtles.turtleList[turtle].decorationBitmap.x = bounds.width - dx - 50 * this.protoblock.scale / 2;
+                            this.blocks.turtles.turtleList[turtle].decorationBitmap.x = this.width - dx - 50 * this.protoblock.scale / 2;
                             break;
                         }
                     }
                 }
 
-                this.container.setChildIndex(this.container.children[child], this.container.getNumChildren() - 1);
+                this.container.setChildIndex(this.container.children[child], this.container.children.length - 1);
                 break;
             }
         }
@@ -1545,6 +1576,8 @@ function Block(protoblock, blocks, overrideName) {
         var canvasLeft = this.blocks.canvas.offsetLeft + 28 * this.blocks.blockScale;
         var canvasTop = this.blocks.canvas.offsetTop + 6 * this.blocks.blockScale;
 
+        var selectorWidth = 100;
+
         var movedStage = false;
         if (!window.hasMouse && this.blocks.stage.y + y > 75) {
             movedStage = true;
@@ -1553,18 +1586,10 @@ function Block(protoblock, blocks, overrideName) {
         }
 
         // A place in the DOM to put modifiable labels (textareas).
-        if (this.name === 'intervalname') {
-            if (this.label != null) {
-                var labelValue = this.label.value
-            } else {
-                var labelValue = this.value;
-            }
+        if (this.label != null) {
+            var labelValue = this.label.value
         } else {
-            if (this.label != null) {
-                var labelValue = this.label.value
-            } else {
-                var labelValue = this.value;
-            }
+            var labelValue = this.value;
         }
 
         var labelElem = docById('labelDiv');
@@ -1655,7 +1680,7 @@ function Block(protoblock, blocks, overrideName) {
         } else if (this.name === 'notename') {
             var type = 'notename';
             const NOTENOTES = ['B', 'A', 'G', 'F', 'E', 'D', 'C'];
-            const NOTEATTRS = ['♯♯', '♯', '♮', '♭', '♭♭'];
+            const NOTEATTRS = ['𝄪', '♯', '♮', '♭', '𝄫'];
             if (this.value != null) {
                 var selectednote = this.value[0];
                 if (this.value.length === 1) {
@@ -1663,7 +1688,7 @@ function Block(protoblock, blocks, overrideName) {
                 } else if (this.value.length === 2) {
                     var selectedattr = this.value[1];
                 } else {
-                    var selectedattr = this.value[1] + this.value[1];
+                    var selectedattr = this.value[1] + this.value[2];
                 }
             } else {
                 var selectednote = 'G';
@@ -1706,7 +1731,7 @@ function Block(protoblock, blocks, overrideName) {
                 var selectedmode = getModeName(DEFAULTMODE);
             }
 
-            var labelHTML = '<select name="modename" id="modenameLabel" style="position: absolute;  background-color: #88e20a; width: 60px;">'
+            var labelHTML = '<select name="modename" id="modenameLabel" style="position: absolute;  background-color: #3ea4a3; width: 150px;">'
             for (var i = 0; i < MODENAMES.length; i++) {
                 if (MODENAMES[i][0].length === 0) {
                     // work around some weird i18n bug
@@ -1723,6 +1748,28 @@ function Block(protoblock, blocks, overrideName) {
             labelHTML += '</select>';
             labelElem.innerHTML = labelHTML;
             this.label = docById('modenameLabel');
+            selectorWidth = 150;
+        } else if (this.name === 'accidentalname') {
+            var type = 'accidentalname';
+            if (this.value != null) {
+                var selectedaccidental = this.value[0];
+            } else {
+                var selectedaccidental = DEFAULTACCIDENTAL;
+            }
+
+            var labelHTML = '<select name="accidentalname" id="accidentalnameLabel" style="position: absolute;  background-color: #88e20a; width: 90px;">'
+            for (var i = 0; i < ACCIDENTALNAMES.length; i++) {
+                if (selectedaccidental === ACCIDENTALNAMES[i]) {
+                    labelHTML += '<option value="' + selectedaccidental + '" selected>' + selectedaccidental + '</option>';
+                } else {
+                    labelHTML += '<option value="' + ACCIDENTALNAMES[i] + '">' + ACCIDENTALNAMES[i] + '</option>';
+                }
+            }
+
+            labelHTML += '</select>';
+            labelElem.innerHTML = labelHTML;
+            this.label = docById('accidentalnameLabel');
+            selectorWidth = 150;
         } else if (this.name === 'intervalname') {
             var type = 'intervalname';
             if (this.value != null) {
@@ -1731,7 +1778,7 @@ function Block(protoblock, blocks, overrideName) {
                 var selectedinterval = getIntervalName(DEFAULTINTERVAL);
             }
 
-            var labelHTML = '<select name="intervalname" id="intervalnameLabel" style="position: absolute;  background-color: #3ea4a3; width: 60px;">'
+            var labelHTML = '<select name="intervalname" id="intervalnameLabel" style="position: absolute;  background-color: #3ea4a3; width: 90px;">'
             for (var i = 0; i < INTERVALNAMES.length; i++) {
                 if (INTERVALNAMES[i][0].length === 0) {
                     // work around some weird i18n bug
@@ -1748,6 +1795,33 @@ function Block(protoblock, blocks, overrideName) {
             labelHTML += '</select>';
             labelElem.innerHTML = labelHTML;
             this.label = docById('intervalnameLabel');
+            selectorWidth = 150;
+        } else if (this.name === 'invertmode') {
+            var type = 'invertmode';
+            if (this.value != null) {
+                var selectedinvert = this.value;
+            } else {
+                var selectedinvert = getInvertMode(DEFAULTINVERT);
+            }
+
+            var labelHTML = '<select name="invertmode" id="invertModeLabel" style="position: absolute;  background-color: #3ea4a3; width: 60px;">'
+            for (var i = 0; i < INVERTMODES.length; i++) {
+                if (INVERTMODES[i][0].length === 0) {
+                    // work around some weird i18n bug
+                    labelHTML += '<option value="' + INVERTMODES[i][1] + '">' + INVERTMODES[i][1] + '</option>';
+                } else if (selectedinvert === INVERTMODES[i][0]) {
+                    labelHTML += '<option value="' + selectedinvert + '" selected>' + selectedinvert + '</option>';
+                } else if (selectedinvert === INVERTMODES[i][1]) {
+                    labelHTML += '<option value="' + selectedinvert + '" selected>' + selectedinvert + '</option>';
+                } else {
+                    labelHTML += '<option value="' + INVERTMODES[i][0] + '">' + INVERTMODES[i][0] + '</option>';
+                }
+            }
+
+            labelHTML += '</select>';
+            labelElem.innerHTML = labelHTML;
+            this.label = docById('invertModeLabel');
+            selectorWidth = 150;
         } else if (this.name === 'drumname') {
             var type = 'drumname';
             if (this.value != null) {
@@ -1773,6 +1847,7 @@ function Block(protoblock, blocks, overrideName) {
             labelHTML += '</select>';
             labelElem.innerHTML = labelHTML;
             this.label = docById('drumnameLabel');
+            selectorWidth = 150;
         } else if (this.name === 'filtertype') {
             var type = 'filtertype';
             if (this.value != null) {
@@ -1798,6 +1873,7 @@ function Block(protoblock, blocks, overrideName) {
             labelHTML += '</select>';
             labelElem.innerHTML = labelHTML;
             this.label = docById('filtertypeLabel');
+            selectorWidth = 150;
         } else if (this.name === 'oscillatortype') {
             var type = 'oscillatortype';
             if (this.value != null) {
@@ -1823,6 +1899,7 @@ function Block(protoblock, blocks, overrideName) {
             labelHTML += '</select>';
             labelElem.innerHTML = labelHTML;
             this.label = docById('oscillatortypeLabel');
+            selectorWidth = 150;
         } else if (this.name === 'voicename') {
             var type = 'voicename';
             if (this.value != null) {
@@ -1848,6 +1925,7 @@ function Block(protoblock, blocks, overrideName) {
             labelHTML += '</select>';
             labelElem.innerHTML = labelHTML;
             this.label = docById('voicenameLabel');
+            selectorWidth = 150;
         } else if (this.name === 'boolean') {
             var type = 'boolean';
             if (this.value != null) {
@@ -1925,18 +2003,18 @@ function Block(protoblock, blocks, overrideName) {
             });
         }
 
-        this.label.style.left = Math.round((x + this.blocks.stage.x) * this.blocks.blockScale + canvasLeft) + 'px';
-        this.label.style.top = Math.round((y + this.blocks.stage.y) * this.blocks.blockScale + canvasTop) + 'px';
+        this.label.style.left = Math.round((x + this.blocks.stage.x) * this.blocks.getStageScale() + canvasLeft) + 'px';
+        this.label.style.top = Math.round((y + this.blocks.stage.y) * this.blocks.getStageScale() + canvasTop) + 'px';
 
         // There may be a second select used for # and b.
         if (this.labelattr != null) {
             this.label.style.width = Math.round(60 * this.blocks.blockScale) * this.protoblock.scale / 2 + 'px';
-            this.labelattr.style.left = Math.round((x + this.blocks.stage.x + 50) * this.blocks.blockScale + canvasLeft) + 'px';
-            this.labelattr.style.top = Math.round((y + this.blocks.stage.y) * this.blocks.blockScale + canvasTop) + 'px';
+            this.labelattr.style.left = Math.round((x + this.blocks.stage.x + 50) * this.blocks.getStageScale() + canvasLeft) + 'px';
+            this.labelattr.style.top = Math.round((y + this.blocks.stage.y) * this.blocks.getStageScale() + canvasTop) + 'px';
             this.labelattr.style.width = Math.round(60 * this.blocks.blockScale) * this.protoblock.scale / 2 + 'px';
             this.labelattr.style.fontSize = Math.round(20 * this.blocks.blockScale * this.protoblock.scale / 2) + 'px';
         } else {
-            this.label.style.width = Math.round(100 * this.blocks.blockScale) * this.protoblock.scale / 2 + 'px';
+            this.label.style.width = Math.round(selectorWidth * this.blocks.blockScale) * this.protoblock.scale / 2 + 'px';
         }
 
         this.label.style.fontSize = Math.round(20 * this.blocks.blockScale * this.protoblock.scale / 2) + 'px';
@@ -1982,9 +2060,9 @@ function Block(protoblock, blocks, overrideName) {
         if (this.labelattr != null) {
             var attrValue = this.labelattr.value;
             switch (attrValue) {
-            case '♯♯':
+            case '𝄪':
             case '♯':
-            case '♭♭':
+            case '𝄫':
             case '♭':
                 newValue = newValue + attrValue;
                 break;
@@ -2058,11 +2136,13 @@ function Block(protoblock, blocks, overrideName) {
             if (attr !== '♮') {
                 label += attr;
             }
+        } else if (this.name === 'modename') {
+            var label = this.value + ' ' + getModeNumbers(this.value);
         } else {
             var label = this.value.toString();
         }
 
-        if (this.name !== 'intervalname' && label.length > 8) {
+        if (WIDENAMES.indexOf(this.name) === -1 && label.length > 8) {
             label = label.substr(0, 7) + '...';
         }
 
@@ -2072,7 +2152,7 @@ function Block(protoblock, blocks, overrideName) {
         this.label.style.display = 'none';
 
         // Make sure text is on top.
-        var z = this.container.getNumChildren() - 1;
+        var z = this.container.children.length - 1;
         this.container.setChildIndex(this.text, z);
         this.updateCache();
 
@@ -2102,7 +2182,7 @@ function Block(protoblock, blocks, overrideName) {
                     }
                     else {
                         if (block.name === 'nameddo' && block.defaults[0] === oldValue) {
-                            blockPalette.remove(block,oldValue);
+                            blockPalette.remove(block, oldValue);
                         }
                     }
                 }
@@ -2121,11 +2201,16 @@ function Block(protoblock, blocks, overrideName) {
                 // associated box this.blocks and the palette buttons.
                 if (this.value !== 'box') {
                     this.blocks.newStoreinBlock(this.value);
+                    this.blocks.newStorein2Block(this.value);
                     this.blocks.newNamedboxBlock(this.value);
                 }
+
                 // Rename both box <- name and namedbox blocks.
                 this.blocks.renameBoxes(oldValue, newValue);
                 this.blocks.renameNamedboxes(oldValue, newValue);
+                this.blocks.renameStoreinBoxes(oldValue, newValue);
+                this.blocks.renameStorein2Boxes(oldValue, newValue);
+
                 this.blocks.palettes.hide();
                 this.blocks.palettes.updatePalettes('boxes');
                 this.blocks.palettes.show();

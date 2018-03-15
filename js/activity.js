@@ -1,4 +1,4 @@
-// Copyright (c) 2014-17 Walter Bender
+// Copyright (c) 2014-18 Walter Bender
 // Copyright (c) Yash Khandelwal, GSoC'15
 // Copyright (c) 2016 Tymon Radzik
 //
@@ -50,17 +50,34 @@ if (_THIS_IS_TURTLE_BLOCKS_) {
     };
 }
 
-var lang = document.webL10n.getLanguage();
-if (lang.indexOf('-') !== -1) {
-    lang = lang.slice(0, lang.indexOf("-"));
-    document.webL10n.setLanguage(lang);
+try{
+    console.log(localStorage.languagePreference);
+
+    if (localStorage.languagePreference) {
+        console.log('setting language from local storage');
+        try {
+            lang = localStorage.languagePreference;
+            document.webL10n.setLanguage(lang);
+        } catch (e) {
+            console.log(e);
+        }
+    } else {
+        var lang = document.webL10n.getLanguage();
+        if (lang.indexOf('-') !== -1) {
+            lang = lang.slice(0, lang.indexOf('-'));
+            document.webL10n.setLanguage(lang);
+        }
+    }
+} catch (e) {
+    console.log(e);
 }
 
+
 if (_THIS_IS_MUSIC_BLOCKS_) {
-    var MYDEFINES = ["activity/sugarizer-compatibility", 'utils/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'Tone.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'dsp', 'utils/utils', 'activity/artwork', 'widgets/status', 'utils/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'widgets/modewidget', 'widgets/pitchtimematrix', 'widgets/pitchdrummatrix', 'widgets/rhythmruler', 'widgets/pitchstaircase', 'widgets/tempo', 'widgets/pitchslider', 'widgets/timbre', 'activity/macros', 'utils/musicutils', 'utils/synthutils', 'activity/lilypond', 'activity/abc', 'activity/playbackbox', 'prefixfree.min'];
+    var MYDEFINES = ['activity/sugarizer-compatibility', 'utils/platformstyle', 'easeljs.min', 'tweenjs.min', 'preloadjs.min', 'Tone.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'utils/utils', 'activity/artwork', 'widgets/status', 'utils/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/pastebox', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'widgets/modewidget', 'widgets/pitchtimematrix', 'widgets/pitchdrummatrix', 'widgets/rhythmruler', 'widgets/pitchstaircase', 'widgets/tempo', 'widgets/pitchslider', 'widgets/timbre', 'activity/macros', 'utils/musicutils', 'utils/synthutils', 'activity/lilypond', 'activity/abc', 'activity/playbackbox', 'activity/languagebox', 'prefixfree.min'];
     MYDEFINES = MYDEFINES
 } else {
-    var MYDEFINES = ["activity/sugarizer-compatibility", 'utils/platformstyle', 'easeljs-0.8.2.min', 'tweenjs-0.6.2.min', 'preloadjs-0.6.2.min', 'Tone.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'dsp', 'utils/utils', 'activity/artwork', 'widgets/status', 'utils/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/macros', 'utils/musicutils', 'utils/synthutils', 'activity/playbackbox', 'prefixfree.min'];
+    var MYDEFINES = ['activity/sugarizer-compatibility', 'utils/platformstyle', 'easeljs.min', 'tweenjs.min', 'preloadjs.min', 'Tone.min', 'howler', 'p5.min', 'p5.sound.min', 'p5.dom.min', 'mespeak', 'Chart', 'utils/utils', 'activity/artwork', 'widgets/status', 'utils/munsell', 'activity/trash', 'activity/boundary', 'activity/turtle', 'activity/palette', 'activity/protoblocks', 'activity/blocks', 'activity/block', 'activity/turtledefs', 'activity/logo', 'activity/pastebox', 'activity/clearbox', 'activity/savebox', 'activity/utilitybox', 'activity/samplesviewer', 'activity/basicblocks', 'activity/blockfactory', 'activity/analytics', 'activity/macros', 'utils/musicutils', 'utils/synthutils', 'activity/playbackbox', 'activity/languagebox', 'prefixfree.min'];
 }
 
 define(MYDEFINES, function (compatibility) {
@@ -123,7 +140,9 @@ define(MYDEFINES, function (compatibility) {
         var blocks;
         var logo;
         var clearBox;
+        var pasteBox;
         var utilityBox;
+        var languageBox = null;
         var playbackBox = null;
         var thumbnails;
         var buttonsVisible = true;
@@ -134,6 +153,8 @@ define(MYDEFINES, function (compatibility) {
         var currentKeyCode = 0;
         var pasteContainer = null;
         var pasteImage = null;
+        // For updatePasteButton function
+        var bitmapActivePaste, bitmapDisablePaste;
         var gridContainer = null;
         var gridButtonLabel = null;
         var gridImages = [];
@@ -141,8 +162,20 @@ define(MYDEFINES, function (compatibility) {
         var saveBox;
         var merging = false;
         var loading = false;
+
         var searchWidget = docById('search');
         searchWidget.style.visibility = 'hidden';
+
+        var progressBar = docById('myProgress');
+        progressBar.style.visibility = 'hidden';
+
+        new createjs.DOMElement(docById('paste'));
+        var paste = docById('paste');
+        var pasteX = canvas.width;
+        var pasteY = canvas.height;
+        paste.style.left = pasteX / 2.5 * turtleBlocksScale + 'px';
+        paste.style.top = pasteY / 3.5 * turtleBlocksScale + 'px';
+        paste.style.visibility = 'hidden';
 
         // Calculate the palette colors.
         for (var p in PALETTECOLORS) {
@@ -224,13 +257,7 @@ define(MYDEFINES, function (compatibility) {
         }
 
         window.onblur = function () {
-            if (_THIS_IS_MUSIC_BLOCKS_) {
-                if (!logo.runningLilypond) {
-                    doHardStopButton();
-                }
-            } else {
-                doHardStopButton();
-            }
+            doHardStopButton(true);
         };
 
         function _findBlocks() {
@@ -241,7 +268,8 @@ define(MYDEFINES, function (compatibility) {
             palettes.initial_y = 55;
             palettes.updatePalettes();
             var x = 100 * turtleBlocksScale;
-            var y = 100 * turtleBlocksScale;
+            var y = 50 * turtleBlocksScale;
+            var even = true;
 
             // First start blocks
             for (var blk in blocks.blockList) {
@@ -264,10 +292,16 @@ define(MYDEFINES, function (compatibility) {
                                 }
                             }
                         }
-                        x += 200 * turtleBlocksScale;
-                        if (x > (canvas.width - 100) / (turtleBlocksScale)) {
-                            x = 100 * turtleBlocksScale;
-                            y += 100 * turtleBlocksScale;
+                        x += 150 * turtleBlocksScale;
+                        if (x > (canvas.width - 200) / (turtleBlocksScale)) {
+                            even = !even;
+                            if (even) {
+                                x = 100 * turtleBlocksScale;
+                            } else {
+                                x = 150 * turtleBlocksScale;
+                            }
+
+                            y += 50 * turtleBlocksScale;
                         }
                     }
                 }
@@ -294,10 +328,16 @@ define(MYDEFINES, function (compatibility) {
                                 }
                             }
                         }
-                        x += 200 * turtleBlocksScale;
-                        if (x > (canvas.width - 100) / (turtleBlocksScale)) {
-                            x = 100 * turtleBlocksScale;
-                            y += 100 * turtleBlocksScale;
+                        x += 150 * turtleBlocksScale;
+                        if (x > (canvas.width - 200) / (turtleBlocksScale)) {
+                            even = !even;
+                            if (even) {
+                                x = 100 * turtleBlocksScale;
+                            } else {
+                                x = 150 * turtleBlocksScale;
+                            }
+
+                            y += 50 * turtleBlocksScale;
                         }
                     }
                 }
@@ -310,7 +350,9 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _printBlockSVG() {
-            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + logo.canvas.width + '" height="' + logo.canvas.height + '">';
+            var svg = '';
+            var xMax = 0;
+            var yMax = 0;
             for (var i = 0; i < blocks.blockList.length; i++) {
                 if (blocks.blockList[i].name === 'hidden') {
                     continue;
@@ -324,19 +366,17 @@ define(MYDEFINES, function (compatibility) {
                     continue;
                 }
 
+                if (blocks.blockList[i].container.x + blocks.blockList[i].width > xMax) {
+                    xMax = blocks.blockList[i].container.x + blocks.blockList[i].width;
+                }
+
+                if (blocks.blockList[i].container.y + blocks.blockList[i].height > yMax) {
+                    yMax = blocks.blockList[i].container.y + blocks.blockList[i].height;
+                }
+
                 var parts = blocks.blockArt[i].split('><');
                 svg += '<g transform="translate(' + blocks.blockList[i].container.x + ', ' + blocks.blockList[i].container.y + ')">';
-                switch(blocks.blockList[i].name) {
-                case 'text':
-                case 'boolean':
-                case 'solfege':
-                case 'eastindiansolfege':
-                case 'notename':
-                case 'rest':
-                case 'number':
-                case 'modename':
-                case 'voicename':
-                case 'drumname':
+                if (SPECIALINPUTS.indexOf(blocks.blockList[i].name) !== -1) { 
                     for (var p = 1; p < parts.length; p++) {
                         // FIXME: This is fragile.
                         if (p === 1) {
@@ -356,8 +396,7 @@ define(MYDEFINES, function (compatibility) {
                             svg += parts[p] + '><';
                         }
                     }
-                    break;
-                default:
+                } else {
                     for (var p = 1; p < parts.length; p++) {
                         // FIXME: This is fragile.
                         if (p === 1) {
@@ -374,14 +413,13 @@ define(MYDEFINES, function (compatibility) {
                             svg += parts[p] + '><';
                         }
                     }
-                    break;
                 }
                 svg += '</g>';
             }
-            svg += '</svg>';
-            download('blockArtwork.svg', 'data:image/svg+xml;utf8,' + svg, 'blockArtwork.svg', '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
 
-        }
+            svg += '</svg>';
+            download('blockArtwork.svg', 'data:image/svg+xml;utf8,' + '<svg xmlns="http://www.w3.org/2000/svg" width="' + xMax + '" height="' + yMax + '">' + svg, 'blockArtwork.svg', '"width=' + logo.canvas.width + ', height=' + logo.canvas.height + '"');
+        };
 
         function _allClear() {
             if (chartBitmap != null) {
@@ -394,10 +432,10 @@ define(MYDEFINES, function (compatibility) {
             hideMsgs();
             logo.setBackgroundColor(-1);
             logo.notationOutput = '';
-
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 logo.turtleHeaps[turtle] = [];
                 logo.notationStaging[turtle] = [];
+                logo.notationDrumStaging[turtle] = [];
                 turtles.turtleList[turtle].doClear(true, true, true);
             }
 
@@ -441,21 +479,22 @@ define(MYDEFINES, function (compatibility) {
 
                 if (docById('pscDiv').style.visibility === 'visible') {
                     playingWidget = true;
-                    pitchstaircase.playUpAndDown();
+                    logo.pitchStaircase.playUpAndDown();
                 }
 
                 if (docById('rulerDiv').style.visibility === 'visible') {
                     // If the tempo widget is open, sync it up with the
                     // rhythm ruler.
                     if (docById('tempoDiv').style.visibility === 'visible') {
-                        if (tempo.isMoving) {
-                            tempo.pause();
+                        if (logo.tempo.isMoving) {
+                            logo.tempo.pause();
                         }
-                        tempo.resume();
+
+                        logo.tempo.resume();
                     }
 
                     playingWidget = true;
-                    rhythmruler.playAll();
+                    logo.rhythmRuler.playAll();
                 }
 
                 // We were using the run button to play a widget, not
@@ -466,16 +505,17 @@ define(MYDEFINES, function (compatibility) {
 
                 // Restart tempo widget and run blocks.
                 if (docById('tempoDiv').style.visibility === 'visible') {
-                    if (tempo.isMoving) {
-                        tempo.pause();
+                    if (logo.tempo.isMoving) {
+                        logo.tempo.pause();
                     }
 
-                    tempo.resume();
+                    logo.tempo.resume();
                 }
             }
 
             if (!turtles.running()) {
                 console.log('running');
+                logo.hideBlocks(true);
                 logo.runLogoCommands(null, env);
             } else {
                 if (currentDelay !== 0) {
@@ -554,9 +594,24 @@ define(MYDEFINES, function (compatibility) {
             }
         };
 
-        function doHardStopButton() {
+        function doHardStopButton(onblur) {
+            if (onblur == undefined) {
+                onblur = false;
+            }
+
+            if (onblur && _THIS_IS_MUSIC_BLOCKS_ && logo.recordingStatus()) {
+                console.log('ignoring hard stop due to blur');
+                return;
+            }
+
             logo.doStopTurtle();
             logo._setMasterVolume(0);
+
+            if (docById('tempoDiv') != null && docById('tempoDiv').style.visibility === 'visible') {
+                if (logo.tempo.isMoving) {
+                    logo.tempo.pause();
+                }
+            }
         };
 
         function doStopButton() {
@@ -565,7 +620,16 @@ define(MYDEFINES, function (compatibility) {
 
         function doMuteButton() {
             logo._setMasterVolume(0);
-        }
+        };
+
+        function _hideBoxes() {
+            pasteBox.hide();
+            clearBox.hide();
+            saveBox.hide();
+            languageBox.hide();
+            utilityBox.hide();
+            playbackBox.hide();
+        };
 
         function _doCartesianPolar() {
             if (cartesianBitmap.visible && polarBitmap.visible) {
@@ -667,17 +731,41 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function doBiggerFont() {
+            hideDOMLabel();
+
             if (blockscale < BLOCKSCALES.length - 1) {
                 blockscale += 1;
                 blocks.setBlockScale(BLOCKSCALES[blockscale]);
             }
+
+            if (BLOCKSCALES[blockscale] > 1) {
+                utilityBox._decreaseStatus = true;
+            }
+
+            if (BLOCKSCALES[blockscale] == 4) {
+                utilityBox._increaseStatus = false;
+            }
         };
 
         function doSmallerFont() {
+            hideDOMLabel();
+
             if (blockscale > 0) {
                 blockscale -= 1;
                 blocks.setBlockScale(BLOCKSCALES[blockscale]);
             }
+
+            if (BLOCKSCALES[blockscale] == 1) {
+                utilityBox._decreaseStatus = false;
+            }
+
+            if (BLOCKSCALES[blockscale] < 4) {
+                utilityBox._increaseStatus = true;
+            } 
+        };
+
+        function deletePlugin() {
+            palettes.paletteObject._promptPaletteDelete();
         };
 
         function getPlaybackQueueStatus () {
@@ -691,12 +779,16 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function doPausePlayback () {
+            logo.restartPlayback = false;
             logo.playback(-1);
             playbackBox.playButton.visible = true;
             playbackBox.pauseButton.visible = false;
         };
 
         function doPlayback() {
+            progressBar.style.visibility = 'visible';
+            progressBar.style.left = (playbackBox.getPos()[0] + 10) * turtleBlocksScale + 'px';
+            progressBar.style.top = (playbackBox.getPos()[1] + 10) * turtleBlocksScale + 'px';
             logo.playback(-1);
             playbackBox.playButton.visible = false;
             playbackBox.pauseButton.visible = true;
@@ -706,7 +798,8 @@ define(MYDEFINES, function (compatibility) {
 
         function doRestartPlayback() {
             logo.doStopTurtle();
-
+            logo.restartPlayback = true;
+            
             setTimeout(function () {
                 // logo.playback(-1);
                 playbackBox.playButton.visible = true;
@@ -720,12 +813,13 @@ define(MYDEFINES, function (compatibility) {
             if (recording === undefined) {
                 recording = false;
             }
-
+            logo.restartPlayback = true;
             document.body.style.cursor = 'wait';
             console.log('Compiling music for playback');
 
             // Suppress music and turtle output when generating
             // compiled output.
+            logo.setTurtleDelay(0);  // Compile at full speed.
             logo.playbackQueue = {};
             logo.playbackTime = 0;
             logo.compiling = true;
@@ -866,6 +960,13 @@ define(MYDEFINES, function (compatibility) {
             // Set the default background color...
             logo.setBackgroundColor(-1);
 
+            pasteBox = new PasteBox();
+            pasteBox
+                .setCanvas(canvas)
+                .setStage(stage)
+                .setRefreshCanvas(refreshCanvas)
+                .setPaste(paste);
+
             clearBox = new ClearBox();
             clearBox
                 .setCanvas(canvas)
@@ -892,6 +993,13 @@ define(MYDEFINES, function (compatibility) {
                 saveBox.setSaveFB(doShareOnFacebook);
             }
 
+            languageBox = new LanguageBox();
+            languageBox
+                .setCanvas(canvas)
+                .setStage(stage)
+                .setMessage(errorMsg)
+                .setRefreshCanvas(refreshCanvas);
+
             utilityBox = new UtilityBox();
             utilityBox
                 .setStage(stage)
@@ -899,9 +1007,11 @@ define(MYDEFINES, function (compatibility) {
                 .setBigger(doBiggerFont)
                 .setSmaller(doSmallerFont)
                 .setPlugins(doOpenPlugin)
+                .deletePlugins(deletePlugin)
                 .setStats(doAnalytics)
                 .setSearch(showSearchWidget, hideSearchWidget)
-                .setScroller(toggleScroller);
+                .setScroller(toggleScroller)
+                .setLanguage(doLanguageBox, languageBox);
 
             playbackBox = new PlaybackBox();
             playbackBox
@@ -1008,7 +1118,7 @@ define(MYDEFINES, function (compatibility) {
                 reader.readAsText(fileChooser.files[0]);
             }, false);
 
-            function handleFileSelect (event) {
+            var __handleFileSelect = function (event) {
                 event.stopPropagation();
                 event.preventDefault();
 
@@ -1061,15 +1171,15 @@ define(MYDEFINES, function (compatibility) {
                 }
             };
 
-            function handleDragOver (event) {
+            var __handleDragOver = function (event) {
                 event.stopPropagation();
                 event.preventDefault();
                 event.dataTransfer.dropEffect = 'copy';
             };
 
             var dropZone = docById('canvasHolder');
-            dropZone.addEventListener('dragover', handleDragOver, false);
-            dropZone.addEventListener('drop', handleFileSelect, false);
+            dropZone.addEventListener('dragover', __handleDragOver, false);
+            dropZone.addEventListener('drop', __handleFileSelect, false);
 
             allFilesChooser.addEventListener('click', function (event) {
                 this.value = null;
@@ -1120,23 +1230,20 @@ define(MYDEFINES, function (compatibility) {
             // createjs.LoadQueue(true, null, true);
 
             // Enable touch interactions if supported on the current device.
-            // FIXME: voodoo
-            // createjs.Touch.enable(stage, false, true);
+            createjs.Touch.enable(stage, false, true);
+
             // Keep tracking the mouse even when it leaves the canvas.
             stage.mouseMoveOutside = true;
+
             // Enabled mouse over and mouse out events.
             stage.enableMouseOver(10); // default is 20
 
             cartesianBitmap = _createGrid('images/Cartesian.svg');
-
             polarBitmap = _createGrid('images/polar.svg');
 
             var URL = window.location.href;
             var projectName = null;
             var flags = {run: false, show: false, collapse: false};
-
-            // This happens in the resize code.
-            // _setupAndroidToolbar();
 
             // Scale the canvas relative to the screen size.
             _onResize();
@@ -1232,12 +1339,45 @@ define(MYDEFINES, function (compatibility) {
         function _setupBlocksContainerEvents() {
             var moving = false;
 
+            var __wheelHandler = function (event) {
+                //Vertical Scroll
+                if (event.deltaY != 0 && event.axis==event.VERTICAL_AXIS) { 
+                    if (palettes.paletteVisible) {
+                        if (event.clientX > cellSize + MENUWIDTH) {
+                            blocksContainer.y -= event.deltaY;
+                        }    
+                    } else {
+                        if (event.clientX > cellSize) {
+                            blocksContainer.y -= event.deltaY;
+                        }
+                    }   
+                }
+                //Horizontal scroll 
+                if (scrollBlockContainer) {
+                    if (event.deltaX != 0 && event.axis==event.HORIZONTAL_AXIS) { 
+                        if (palettes.paletteVisible) {
+                            if (event.clientX > cellSize + MENUWIDTH) {
+                                blocksContainer.x -= event.deltaX;
+                            }    
+                        } else {
+                            if (event.clientX > cellSize) {
+                                blocksContainer.x -= event.deltaX;
+                            }
+                        }   
+                    }
+                } else {
+                    event.preventDefault();
+                } 
+            };
+
+            docById('myCanvas').addEventListener('wheel', __wheelHandler, false);
+
             stage.on('stagemousemove', function (event) {
                 stageX = event.stageX;
                 stageY = event.stageY;
             });
 
-            function __stageMouseUpHandler (event) {
+            var __stageMouseUpHandler = function (event) {
                 stageMouseDown = false;
                 moving = false;
             };
@@ -1434,7 +1574,7 @@ define(MYDEFINES, function (compatibility) {
         };
 
         // Prepare the search widget
-        searchWidget.style.visibility = "hidden";
+        searchWidget.style.visibility = 'hidden';
         var searchBlockPosition = [100, 100];
 
         var searchSuggestions = [];
@@ -1513,7 +1653,7 @@ define(MYDEFINES, function (compatibility) {
             if (searchInput.length > 0) {
                 if (searchResult) {
                     palettes.dict[paletteName].makeBlockFromSearch(protoblk, protoName, function (newBlock) {
-                        blocks._moveBlock(newBlock, searchBlockPosition[0] - blocksContainer.x, searchBlockPosition[1] - blocksContainer.y);
+                        blocks.moveBlock(newBlock, searchBlockPosition[0] - blocksContainer.x, searchBlockPosition[1] - blocksContainer.y);
                     });
 
                     // Move the position of the next newly created block.
@@ -1598,12 +1738,13 @@ define(MYDEFINES, function (compatibility) {
 
             const BACKSPACE = 8;
             const TAB = 9;
-                        /*
+
+            /*
             if (event.keyCode === TAB || event.keyCode === BACKSPACE) {
                 // Prevent browser from grabbing TAB key
                 event.preventDefault();
             }
-                        */
+            */
 
             const ESC = 27;
             const ALT = 18;
@@ -1620,6 +1761,7 @@ define(MYDEFINES, function (compatibility) {
             const KEYCODE_UP = 38;
             const KEYCODE_DOWN = 40;
             const DEL = 46;
+            const V = 86;
 
             // Shortcuts for creating new notes
             const KEYCODE_D = 68; // do
@@ -1630,8 +1772,15 @@ define(MYDEFINES, function (compatibility) {
             const KEYCODE_L = 76; // la
             const KEYCODE_T = 84; // ti
 
+            // Check for RETURN in search widget ahead of other events.
+            if (event.keyCode === RETURN && docById('search').value.length > 0) {
+                doSearch();
+                palettes.hide();
+                palettes.show();
+            }
+
             if (_THIS_IS_MUSIC_BLOCKS_) {
-                var disableKeys = docById('lilypondModal').style.display === 'block' || searchWidget.style.visibility === 'visible';
+                var disableKeys = docById('lilypondModal').style.display === 'block' || searchWidget.style.visibility === 'visible' || docById('planetdiv').style.display === '' || docById('paste').style.visibility === 'visible';
             } else {
                 var disableKeys = searchWidget.style.visibility === 'visible';
             }
@@ -1660,7 +1809,16 @@ define(MYDEFINES, function (compatibility) {
                     blocks.pasteStack();
                     break;
                 }
-            } else if (event.ctrlKey && !disableKeys) {
+            } else if (event.ctrlKey) {
+                switch (event.keyCode) {
+                case V:
+                    pasteBox.createBox(turtleBlocksScale, pasteX / 2.5 * turtleBlocksScale, pasteY / 3.5 * turtleBlocksScale);
+                    pasteBox.show();
+                    docById('paste').focus();
+                    docById('paste').style.visibility = 'visible';
+                    update = true;
+                    break;
+                }
             } else if (event.shiftKey && !disableKeys){
                 switch (event.keyCode) {
                 case KEYCODE_D:
@@ -1700,7 +1858,11 @@ define(MYDEFINES, function (compatibility) {
                     break;
                 }
             } else {
-              if (!disableKeys){
+                if (docById('paste').style.visibility === 'visible' && event.keyCode === RETURN) {
+                    if (docById('paste').value.length > 0){
+                        pasted();
+                    }
+                } else if (!disableKeys) {
                 switch (event.keyCode) {
                 case END:
                     blocksContainer.y = -blocks.bottomMostBlock() + logo.canvas.height / 2;
@@ -1715,7 +1877,7 @@ define(MYDEFINES, function (compatibility) {
                     blocks.extract();
                     break;
                 case KEYCODE_UP:
-                    if (_THIS_IS_MUSIC_BLOCKS_ && docById('sliderDiv').style.visibility === 'visible') {
+                    if (_THIS_IS_MUSIC_BLOCKS_ && (docById('sliderDiv').style.visibility === 'visible' || docById('tempoDiv').style.visibility === 'visible')) {
                     } else if (blocks.activeBlock != null) {
                         blocks.moveStackRelative(blocks.activeBlock, 0, -STANDARDBLOCKHEIGHT / 2);
                         blocks.blockMoved(blocks.activeBlock);
@@ -1730,7 +1892,7 @@ define(MYDEFINES, function (compatibility) {
                     }
                     break;
                 case KEYCODE_DOWN:
-                    if (_THIS_IS_MUSIC_BLOCKS_ && docById('sliderDiv').style.visibility === 'visible') {
+                    if (_THIS_IS_MUSIC_BLOCKS_ && (docById('sliderDiv').style.visibility === 'visible' || docById('tempoDiv').style.visibility === 'visible')) {
                     } else if (blocks.activeBlock != null) {
                         blocks.moveStackRelative(blocks.activeBlock, 0, STANDARDBLOCKHEIGHT / 2);
                         blocks.blockMoved(blocks.activeBlock);
@@ -1745,7 +1907,7 @@ define(MYDEFINES, function (compatibility) {
                     }
                     break;
                 case KEYCODE_LEFT:
-                    if (_THIS_IS_MUSIC_BLOCKS_ && docById('sliderDiv').style.visibility === 'visible') {
+                    if (_THIS_IS_MUSIC_BLOCKS_ && (docById('sliderDiv').style.visibility === 'visible' || docById('tempoDiv').style.visibility === 'visible')) {
                     } else if (blocks.activeBlock != null) {
                         blocks.moveStackRelative(blocks.activeBlock, -STANDARDBLOCKHEIGHT / 2, 0);
                         blocks.blockMoved(blocks.activeBlock);
@@ -1755,7 +1917,7 @@ define(MYDEFINES, function (compatibility) {
                     }
                     break;
                 case KEYCODE_RIGHT:
-                    if (_THIS_IS_MUSIC_BLOCKS_ && docById('sliderDiv').style.visibility === 'visible') {
+                    if (_THIS_IS_MUSIC_BLOCKS_ && (docById('sliderDiv').style.visibility === 'visible' || docById('tempoDiv').style.visibility === 'visible')) {
                     } else if (blocks.activeBlock != null) {
                         blocks.moveStackRelative(blocks.activeBlock, STANDARDBLOCKHEIGHT / 2, 0);
                         blocks.blockMoved(blocks.activeBlock);
@@ -1786,7 +1948,7 @@ define(MYDEFINES, function (compatibility) {
                     }
                     break;
                 case RETURN:
-                    if (_THIS_IS_MUSIC_BLOCKS_ && docById('sliderDiv').style.visibility === 'visible') {
+                    if (_THIS_IS_MUSIC_BLOCKS_ && (docById('sliderDiv').style.visibility === 'visible' || docById('tempoDiv').style.visibility === 'visible')) {
                     } else if (docById('search').value.length > 0){
                         doSearch();
                     } else {
@@ -2037,15 +2199,24 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _deleteBlocksBox() {
+            _hideBoxes();
             clearBox.createBox(turtleBlocksScale, deleteAllButton.x - 27, deleteAllButton.y - 55);
             clearBox.show();
         };
 
+        function doLanguageBox() {
+            _hideBoxes();
+            languageBox.createBox(turtleBlocksScale, saveButton.x - 27, saveButton.y - 55);
+            languageBox.show();
+        };
+
         function _doUtilityBox() {
-            utilityBox.init(turtleBlocksScale, utilityButton.x - 27, utilityButton.y, _makeButton);
+            _hideBoxes();
+            utilityBox.init(turtleBlocksScale, utilityButton.x - 27, utilityButton.y, _makeButton, palettes.pluginsDeleteStatus);
         };
 
         function _doPlaybackBox() {
+            _hideBoxes();
             playbackBox.init(turtleBlocksScale, playbackButton.x - 27, playbackButton.y, _makeButton, logo);
         };
 
@@ -2055,6 +2226,7 @@ define(MYDEFINES, function (compatibility) {
                 blocks.palettes.dict[name].hideMenu(true);
             }
 
+            hideDOMLabel();
             refreshCanvas();
 
             var actionBlockCounter = 0;
@@ -2123,6 +2295,7 @@ define(MYDEFINES, function (compatibility) {
                     stage.removeChild(chartBitmap);
                     chartBitmap = null;
                 }
+
                 logo.showBlocks();
                 palettes.show();
                 palettes.bringToTop();
@@ -2252,7 +2425,8 @@ define(MYDEFINES, function (compatibility) {
             //     var name = 'My Project';
             //     download(name + '.tb', 'data:text/plain;charset=utf-8,' + prepareExport());
             // } else {
-                saveBox.init(turtleBlocksScale, saveButton.x - 27, saveButton.y - 97, _makeButton);
+            _hideBoxes();
+            saveBox.init(turtleBlocksScale, saveButton.x - 27, saveButton.y - 97, _makeButton);
             // }
         };
 
@@ -2409,6 +2583,7 @@ define(MYDEFINES, function (compatibility) {
                 logo.notationNotes = {};
                 for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                     logo.notationStaging[turtle] = [];
+                    logo.notationDrumStaging[turtle] = [];
                     turtles.turtleList[turtle].doClear(true, true, true);
                 }
 
@@ -2438,6 +2613,7 @@ define(MYDEFINES, function (compatibility) {
             logo.notationNotes = {};
             for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                 logo.notationStaging[turtle] = [];
+                logo.notationDrumStaging[turtle] = [];
                 turtles.turtleList[turtle].doClear(true, true, true);
             }
             logo.runLogoCommands();
@@ -2480,6 +2656,7 @@ define(MYDEFINES, function (compatibility) {
 
             var img = new Image();
             var svgData = doSVG(canvas, logo, turtles, 320, 240, 320 / canvas.width);
+            /*
             img.onload = function () {
                 var bitmap = new createjs.Bitmap(img);
                 var bounds = bitmap.getBounds();
@@ -2493,7 +2670,16 @@ define(MYDEFINES, function (compatibility) {
 
             img.src = 'data:image/svg+xml;base64,' +
             window.btoa(unescape(encodeURIComponent(svgData)));
-            // console.log(img.src);
+            */
+
+            // Don't bother to convert the session image to PNG. Just
+            // save it as svg.
+            try {
+                storage['SESSIONIMAGE' + p] = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svgData)));
+            } catch (e) {
+                console.log(e);
+            }
+
             if (sugarizerCompatibility.isInsideSugarizer()) {
                 sugarizerCompatibility.saveLocally();
             }
@@ -2689,6 +2875,13 @@ define(MYDEFINES, function (compatibility) {
             docById('loading-image-container').style.display = 'none';
             // docById('canvas').style.display = 'none';
             docById('hideContents').style.display = 'block';
+
+            // Warn the user -- chrome only -- if the browser level is
+            // not set to 100%
+            if (window.innerWidth !== window.outerWidth) {
+                blocks.errorMsg(_('Please set browser zoom level to 100%'));
+                console.log('zoom level is not 100%: ' + window.innerWidth + ' !== ' + window.outerWidth);
+            }
         };
 
         function _loadStart() {
@@ -2719,13 +2912,16 @@ define(MYDEFINES, function (compatibility) {
             // to ensure a clean start.
             if (document.addEventListener) {
                 document.addEventListener('finishedLoading', function () {
-                    setTimeout(function () {
-                        for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                            logo.turtleHeaps[turtle] = [];
-                            logo.notationStaging[turtle] = [];
-                            turtles.turtleList[turtle].doClear(true, true, false);
-                        }
-                    }, 1000);
+                    if (!turtles.running()) {
+                        setTimeout(function () {
+                            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
+                                logo.turtleHeaps[turtle] = [];
+                                logo.notationStaging[turtle] = [];
+                                logo.notationDrumStaging[turtle] = [];
+                                turtles.turtleList[turtle].doClear(true, true, false);
+                            }
+                        }, 1000);
+                    }
                 });
             } else {
                 document.attachEvent('finishedLoading', function () {
@@ -2733,6 +2929,7 @@ define(MYDEFINES, function (compatibility) {
                         for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                             logo.turtleHeaps[turtle] = [];
                             logo.notationStaging[turtle] = [];
+                            logo.notationDrumStaging[turtle] = [];
                             turtles.turtleList[turtle].doClear(true, true, false);
                         }
                     }, 1000);
@@ -2787,7 +2984,7 @@ define(MYDEFINES, function (compatibility) {
             msgContainer.visible = true;
             msgText.text = msg;
             msgContainer.updateCache();
-            stage.setChildIndex(msgContainer, stage.getNumChildren() - 1);
+            stage.setChildIndex(msgContainer, stage.children.length - 1);
         };
 
         function errorMsg(msg, blk, text, timeout) {
@@ -2814,7 +3011,7 @@ define(MYDEFINES, function (compatibility) {
                 var line = new createjs.Shape();
                 errorMsgArrow.addChild(line);
                 line.graphics.setStrokeStyle(4).beginStroke('#ff0031').moveTo(fromX, fromY).lineTo(toX, toY);
-                stage.setChildIndex(errorMsgArrow, stage.getNumChildren() - 1);
+                stage.setChildIndex(errorMsgArrow, stage.children.length - 1);
 
                 var angle = Math.atan2(toX - fromX, fromY - toY) / Math.PI * 180;
                 var head = new createjs.Shape();
@@ -2828,19 +3025,19 @@ define(MYDEFINES, function (compatibility) {
             switch (msg) {
             case NOMICERRORMSG:
                 errorArtwork['nomicrophone'].visible = true;
-                stage.setChildIndex(errorArtwork['nomicrophone'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['nomicrophone'], stage.children.length - 1);
                 break;
             case NOSTRINGERRORMSG:
                 errorArtwork['notastring'].visible = true;
-                stage.setChildIndex(errorArtwork['notastring'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['notastring'], stage.children.length - 1);
                 break;
             case EMPTYHEAPERRORMSG:
                 errorArtwork['emptyheap'].visible = true;
-                stage.setChildIndex(errorArtwork['emptyheap'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['emptyheap'], stage.children.length - 1);
                 break;
             case NOSQRTERRORMSG:
                 errorArtwork['negroot'].visible = true;
-                stage.setChildIndex(errorArtwork['negroot'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['negroot'], stage.children.length - 1);
                 break;
             case NOACTIONERRORMSG:
                 if (text == null) {
@@ -2849,7 +3046,7 @@ define(MYDEFINES, function (compatibility) {
                 errorArtwork['nostack'].children[1].text = text;
                 errorArtwork['nostack'].visible = true;
                 errorArtwork['nostack'].updateCache();
-                stage.setChildIndex(errorArtwork['nostack'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['nostack'], stage.children.length - 1);
                 break;
             case NOBOXERRORMSG:
                 if (text == null) {
@@ -2858,25 +3055,25 @@ define(MYDEFINES, function (compatibility) {
                 errorArtwork['emptybox'].children[1].text = text;
                 errorArtwork['emptybox'].visible = true;
                 errorArtwork['emptybox'].updateCache();
-                stage.setChildIndex(errorArtwork['emptybox'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['emptybox'], stage.children.length - 1);
                 break;
             case ZERODIVIDEERRORMSG:
                 errorArtwork['zerodivide'].visible = true;
-                stage.setChildIndex(errorArtwork['zerodivide'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['zerodivide'], stage.children.length - 1);
                 break;
               case NANERRORMSG:
                 errorArtwork['notanumber'].visible = true;
-                stage.setChildIndex(errorArtwork['notanumber'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['notanumber'], stage.children.length - 1);
                 break;
             case NOINPUTERRORMSG:
                 errorArtwork['noinput'].visible = true;
-                stage.setChildIndex(errorArtwork['noinput'], stage.getNumChildren() - 1);
+                stage.setChildIndex(errorArtwork['noinput'], stage.children.length - 1);
                 break;
             default:
                 var errorMsgContainer = errorMsgText.parent;
                 errorMsgContainer.visible = true;
                 errorMsgText.text = msg;
-                stage.setChildIndex(errorMsgContainer, stage.getNumChildren() - 1);
+                stage.setChildIndex(errorMsgContainer, stage.children.length - 1);
                 errorMsgContainer.updateCache();
                 break;
             }
@@ -2951,80 +3148,82 @@ define(MYDEFINES, function (compatibility) {
                     var args = {
                         'value': myBlock.value
                     };
-                } else if (myBlock.name === 'start' || myBlock.name === 'drum') {
-                    // Find the turtle associated with this block.
-                    var turtle = turtles.turtleList[myBlock.value];
-                    if (turtle == null) {
-                        var args = {
-                            'collapsed': false,
-                            'xcor': 0,
-                            'ycor': 0,
-                            'heading': 0,
-                            'color': 0,
-                            'shade': 50,
-                            'pensize': 5,
-                            'grey': 100
-                        };
-                    } else {
-                        var args = {
-                            'collapsed': myBlock.collapsed,
-                            'xcor': turtle.x,
-                            'ycor': turtle.y,
-                            'heading': turtle.orientation,
-                            'color': turtle.color,
-                            'shade': turtle.value,
-                            'pensize': turtle.stroke,
-                            'grey': turtle.chroma
-                        };
-                    }
-                } else if (myBlock.name === 'action') {
-                    var args = {
-                        'collapsed': myBlock.collapsed
-                    }
-                } else if(myBlock.name === 'matrix') {
-                    var args = {
-                        'collapsed' : myBlock.collapsed
-                    }
-                } else if(myBlock.name === 'pitchdrummatrix') {
-                    var args = {
-                        'collapsed' : myBlock.collapsed
-                    }
-                } else if(myBlock.name === 'status') {
-                    var args = {
-                        'collapsed' : myBlock.collapsed
-                    }
-                } else if (myBlock.name === 'namedbox') {
-                    var args = {
-                        'value': myBlock.privateData
-                    }
-                } else if (myBlock.name === 'nameddo') {
-                    var args = {
-                        'value': myBlock.privateData
-                    }
-                } else if (myBlock.name === 'nameddoArg') {
-                    var args = {
-                        'value': myBlock.privateData
-                    }
-                } else if (myBlock.name === 'namedcalc') {
-                    var args = {
-                        'value': myBlock.privateData
-                    }
-                } else if (myBlock.name === 'namedcalcArg') {
-                    var args = {
-                        'value': myBlock.privateData
-                    }
-                } else if (myBlock.name === 'namedarg') {
-                    var args = {
-                        'value': myBlock.privateData
-                    }
-                } else if (myBlock.name === 'matrixData') {
-                    var args = {
-                        'notes': window.savedMatricesNotes,
-                        'count': window.savedMatricesCount
-                    }
-                    hasMatrixDataBlock = true;
                 } else {
-                    var args = {}
+                    switch (myBlock.name) {
+                    case 'start':
+                    case 'drum':
+                        // Find the turtle associated with this block.
+                        var turtle = turtles.turtleList[myBlock.value];
+                        if (turtle == null) {
+                            var args = {
+                                'collapsed': false,
+                                'xcor': 0,
+                                'ycor': 0,
+                                'heading': 0,
+                                'color': 0,
+                                'shade': 50,
+                                'pensize': 5,
+                                'grey': 100
+                            };
+                        } else {
+                            var args = {
+                                'collapsed': myBlock.collapsed,
+                                'xcor': turtle.x,
+                                'ycor': turtle.y,
+                                'heading': turtle.orientation,
+                                'color': turtle.color,
+                                'shade': turtle.value,
+                                'pensize': turtle.stroke,
+                                'grey': turtle.chroma
+                            };
+                        }
+                        break;
+                    case 'action':
+                    case 'matrix':
+                    case 'pitchdrummatrix':
+                    case 'rhythmruler':
+                    case 'timbre':
+                    case 'pitchstaircase':
+                    case 'tempo':
+                    case 'pitchslider':
+                    case 'modewidget':
+                    case 'status':
+                        var args = {
+                            'collapsed': myBlock.collapsed
+                        }
+                        break;
+                    case 'namedbox':
+                    case 'storein2':
+                    case 'nameddo':
+                    case 'nameddoArg':
+                    case 'namedcalc':
+                    case 'namedcalcArg':
+                    case 'namedArg':
+                        var args = {
+                            'value': myBlock.privateData
+                        }
+                        break;
+                    case 'nopValueBlock':
+                    case 'nopZeroArgBlock':
+                    case 'nopOneArgBlock':
+                    case 'nopTwoArgBlock':
+                    case 'nopThreeArgBlock':
+                        // restore original block name
+                        myBlock.name = myBlock.privateData;
+                        var args = {}
+                        break;
+                    case 'matrixData':
+                        // deprecated
+                        var args = {
+                            'notes': window.savedMatricesNotes,
+                            'count': window.savedMatricesCount
+                        }
+                        hasMatrixDataBlock = true;
+                        break;
+                    default:
+                        var args = {}
+                        break;
+                    }
                 }
 
                 connections = [];
@@ -3091,6 +3290,30 @@ handleComplete);
         };
 
         function updatePasteButton() {
+            if (blocks.selectedBlocksObj == null) {
+                pasteContainer.removeAllChildren();
+                var img = new Image();
+
+                img.onload = function () {
+                    var originalSize = 55; // this is the original svg size
+                    var halfSize = Math.floor(cellSize / 2);
+
+                    bitmapDisablePaste = new createjs.Bitmap(img);
+                    if (cellSize !== originalSize) {
+                        bitmapDisablePaste.scaleX = cellSize / originalSize;
+                        bitmapDisablePaste.scaleY = cellSize / originalSize;
+                    }
+
+                    bitmapDisablePaste.regX = halfSize / bitmapDisablePaste.scaleX;
+                    bitmapDisablePaste.regY = halfSize / bitmapDisablePaste.scaleY;
+                    pasteContainer.addChild(bitmapDisablePaste);
+
+                    update = true;
+                };
+
+                img.src = 'header-icons/paste-disabled-button.svg';
+                return;
+            }
             if (pasteImage === null) {
                 console.log('Updating paste button');
                 var img = new Image();
@@ -3099,22 +3322,23 @@ handleComplete);
                     var originalSize = 55; // this is the original svg size
                     var halfSize = Math.floor(cellSize / 2);
 
-                    var bitmap = new createjs.Bitmap(img);
+                    bitmapActivePaste = new createjs.Bitmap(img);
                     if (cellSize !== originalSize) {
-                        bitmap.scaleX = cellSize / originalSize;
-                        bitmap.scaleY = cellSize / originalSize;
+                        bitmapActivePaste.scaleX = cellSize / originalSize;
+                        bitmapActivePaste.scaleY = cellSize / originalSize;
                     }
 
-                    bitmap.regX = halfSize / bitmap.scaleX;
-                    bitmap.regY = halfSize / bitmap.scaleY;
-                    pasteContainer.addChild(bitmap);
-                    pasteImage = bitmap;
+                    bitmapActivePaste.regX = halfSize / bitmapActivePaste.scaleX;
+                    bitmapActivePaste.regY = halfSize / bitmapActivePaste.scaleY;
+                    pasteContainer.addChild(bitmapActivePaste);
+                    pasteImage = bitmapActivePaste;
 
                     update = true;
                 };
 
                 img.src = 'header-icons/paste-button.svg';
             } else {
+                pasteContainer.addChild(bitmapActivePaste);
                 console.log('Blinking paste button');
                 blinkPasteButton(pasteImage);
             }
@@ -3365,6 +3589,32 @@ handleComplete);
         function _showHelp(firstTime) {
             helpIdx = 0;
 
+            var __setHelpHTML = function (helpIdx, imageScale) {
+                if (HELPCONTENT[helpIdx].length > 4) {
+                    try {
+                        var helpLang = localStorage.languagePreference;
+                    } catch (e) {
+                        var helpLang = 'en';
+                    }
+
+                    if (_THIS_IS_MUSIC_BLOCKS_) {
+                        switch (helpLang) {
+                        case 'ja':
+                            docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p><p><a href="' + HELPCONTENT[helpIdx][3] + '-ja" target="_blank">' + HELPCONTENT[helpIdx][4] + '</a></p>';
+                            break;
+                        default:
+                            docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p><p><a href="' + HELPCONTENT[helpIdx][3] + '" target="_blank">' + HELPCONTENT[helpIdx][4] + '</a></p>';
+                            break;
+                        }
+                    } else {
+                        docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p><p><a href="' + HELPCONTENT[helpIdx][3] + '" target="_blank">' + HELPCONTENT[helpIdx][4] + '</a></p>';
+                    }
+                } else {
+
+                    docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
+                }
+            };
+
             if (firstTime) {
                 if (helpContainer == null) {
                     helpContainer = new createjs.Container();
@@ -3392,7 +3642,7 @@ handleComplete);
                             }
 
                             var imageScale = 55 * turtleBlocksScale;
-                            helpElem.innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '" style="height:' + imageScale + 'px; width: auto"></img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
+                            __setHelpHTML(helpIdx, imageScale);
                         }
 
                         update = true;
@@ -3416,7 +3666,9 @@ handleComplete);
                         hitArea.y = 0;
                         helpContainer.hitArea = hitArea;
 
-                        docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
+                        var imageScale = 55 * turtleBlocksScale;
+                        __setHelpHTML(helpIdx, imageScale);
+
                         if (!doneTour) {
                             docById('helpElem').style.visibility = 'visible';
                         }
@@ -3463,7 +3715,8 @@ handleComplete);
                     storage.doneTour = 'true';
                 }
 
-                docById('helpElem').innerHTML = '<img src ="' + HELPCONTENT[helpIdx][2] + '"</img> <h2>' + HELPCONTENT[helpIdx][0] + '</h2><p>' + HELPCONTENT[helpIdx][1] + '</p>';
+                var imageScale = 55 * turtleBlocksScale;
+                __setHelpHTML(helpIdx, imageScale);
                 docById('helpElem').style.visibility = 'visible';
                 helpContainer.visible = true;
                 update = true;
@@ -3485,6 +3738,10 @@ handleComplete);
             var bitmap = last(menuContainer.children);
             if (bitmap != null) {
                 var r = bitmap.rotation;
+                if (r % 90 !== 0) {
+                    return;
+                }
+
                 createjs.Tween.get(bitmap)
                     .to({
                         rotation: r
@@ -3639,7 +3896,9 @@ handleComplete);
             var formerContainer = container;
 
             container.on('mouseover', function (event) {
-                document.body.style.cursor = 'pointer';
+                if (!loading) {
+                    document.body.style.cursor = 'pointer';
+                }
             });
 
             container.on('mouseout', function (event) {
@@ -3732,6 +3991,31 @@ handleComplete);
                 isExtraLong = false;
             });
         };
+
+        function pasted() {
+            var pasteinput = docById('paste').value;
+            var rawData = pasteinput;
+            if (rawData == null || rawData == '') {
+                return;
+            }
+
+            var cleanData = rawData.replace('\n', ' ');
+            try {
+                var obj = JSON.parse(cleanData);
+            } catch (e) {
+                errorMsg(_('Could not parse JSON input.'));
+                return;
+            }
+
+            for (var name in blocks.palettes.dict) {
+                blocks.palettes.dict[name].hideMenu(true);
+            }
+
+            refreshCanvas();
+
+            blocks.loadNewBlocks(obj);
+            pasteBox.hide();
+       };
 
     };
 });

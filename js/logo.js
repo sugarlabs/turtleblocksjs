@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Walter Bender
+// Copyright (c) 2014-2018 Walter Bender
 // Copyright (c) 2015 Yash Khandelwal
 //
 // This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ const NOTATIONDURATION = 1;
 const NOTATIONDOTCOUNT = 2;
 const NOTATIONTUPLETVALUE = 3;
 const NOTATIONROUNDDOWN = 4;
-const NOTATIONINSIDECHORD = 5;
+const NOTATIONINSIDECHORD = 5;  // deprecated
 const NOTATIONSTACCATO = 6;
 
 function Logo () {
@@ -58,6 +58,7 @@ function Logo () {
     this.clearCurrentKeyCode = null;
     this.meSpeak = null;
     this.saveLocally = null;
+    this.showBlocksAfterRun = false;
 
     this.pitchTimeMatrix = null;
     this.pitchDrumMatrix = null;
@@ -94,6 +95,7 @@ function Logo () {
     this.turtleHeaps = {};
     this.invertList = {};
     this.beatList = {};
+    this.factorList = {};
 
     // We store each case arg and flow by switch block no. and turtle.
     this.switchCases = {};
@@ -119,8 +121,8 @@ function Logo () {
     this.notesPlayed = {};
     this.whichNoteToCount = {};
 
-    // Movable solfege?
-    this.movable = {};
+    // Moveable solfege?
+    this.moveable = {};
 
     // When you run Music Blocks, you are "compiling" your code. The
     // compiled code is stored in the playbackQueue, which can be used
@@ -137,7 +139,7 @@ function Logo () {
     this.inPitchStaircase = false;
     this.inTempo = false;
     this.inPitchSlider = false;
-    this._currentDrumBlock = null;
+    this._currentDrumlock = null;
     this.inTimbre = false;
     this.inSetTimbre = {};
 
@@ -161,6 +163,7 @@ function Logo () {
     this._masterBPM = TARGETBPM;
     this.defaultBPMFactor = TONEBPM / this._masterBPM;
 
+    this.register = {};
     this.beatFactor = {};
     this.dotCount = {};
     this.noteBeat = {};
@@ -174,11 +177,21 @@ function Logo () {
     this.noteBeatValues = {};
     this.embeddedGraphics = {};
     this.lastNotePlayed = {};
+    this.lastPitchPlayed = {}; //For a stand-alone pitch block. 
     this.previousNotePlayed = {};
     this.noteStatus = {};
     this.noteDirection = {};
-    this.pitchNumberOffset = 39;  // C4
+    this.pitchNumberOffset = [];  // 39, C4
     this.currentOctave = {};
+    this.currentCalculatedOctave = {}; //For a stand-alone pitch block.
+    this.currentNote = {};
+    this.inHarmonic = {};
+    this.partials = {};
+    this.inNeighbor = [];
+    this.neighborStepPitch = {};
+    this.neighborNoteValue = {};
+    this.inDefineMode = {};
+    this.defineMode = {};
 
     // parameters used in time signature
     this.pickup = {};
@@ -207,13 +220,18 @@ function Logo () {
     this.crescendoInitialVolume = {};
     this.intervals = {};  // relative interval (based on scale degree)
     this.semitoneIntervals = {};  // absolute interval (based on semitones)
+    this.markup = {};
     this.staccato = {};
+    this.glide = {};
+    this.glideOverride = {};
     this.swing = {};
     this.swingTarget = {};
     this.swingCarryOver = {};
     this.tie = {};
-    this.tieNote = {};
+    this.tieNotePitches = {};
+    this.tieNoteExtras = {};
     this.tieCarryOver = {};
+    this.tieFirstDrums = {};
     this.masterVolume = [];
     this.synthVolume = {};
     this.validNote = true;
@@ -234,6 +252,10 @@ function Logo () {
     this.chorusRate = {};
     this.delayTime = {};
     this.chorusDepth = {};
+    this.neighborArgNote1 = {};
+    this.neighborArgNote2 = {};
+    this.neighborArgBeat = {};
+    this.neighborArgCurrentBeat = {};
 
     // When counting notes, measuring intervals, or generating lilypond output
     this.justCounting = {};
@@ -254,14 +276,24 @@ function Logo () {
 
     // parameters used by notations
     this.notationStaging = {};
+    this.notationDrumStaging = {};
     this.notationOutput = '';
     this.notationNotes = {};
+    this.pickupPOW2 = {};
+    this.pickupPoint = {};
     this.runningLilypond = false;
     this.runningAbc = false;
     this.checkingCompletionState = false;
     this.compiling = false;
     this.recording = false;
-
+    this.lastNote = {};
+    this.restartPlayback = true;
+    //variables for progress bar
+    var progressBar = document.getElementById("myBar");   
+    var width = 0;
+    var turtleLength = 0;
+    var inLoop = 0;
+    var progressBarDivision;
     // A place to save turtle state in order to store it after a compile
     this._saveX = {};
     this._saveY = {};
@@ -276,7 +308,6 @@ function Logo () {
     if (_THIS_IS_MUSIC_BLOCKS_) {
         // Load the default synthesizer
         this.synth = new Synth();
-        this.synth.createDefaultSynth();
     }
     else {
         this.turtleOscs = {};
@@ -304,23 +335,9 @@ function Logo () {
     this.svgOutput = '';
     this.svgBackground = true;
 
-    if (_THIS_IS_MUSIC_BLOCKS_) {
-        this.mic = new Tone.UserMedia();
-        this.limit = 1024;
-        this.analyser = new Tone.Analyser({
-                        "type" : "waveform",
-                        "size" : this.limit
-        });
-        this.mic.connect(this.analyser);
-    } else {
-        try {
-            this.mic = new p5.AudioIn()
-        } catch (e) {
-            console.log(e);
-            console.log(NOMICERRORMSG);
-            this.mic = null;
-        }
-    }
+    this.mic = null;
+    this.volumeAnalyser = null;
+    this.pitchAnalyser = null;
 
     this.setSetPlaybackStatus = function (setPlaybackStatus) {
         this.setPlaybackStatus = setPlaybackStatus;
@@ -528,6 +545,10 @@ function Logo () {
         };
     };
 
+    this.recordingStatus = function () {
+        return this.recording || this.runningLilypond || this.runningAbc;
+    };
+
     this.doStopTurtle = function () {
         // The stop button was pressed. Stop the turtle and clean up a
         // few odds and ends.
@@ -542,7 +563,12 @@ function Logo () {
         this.sounds = [];
 
         if (_THIS_IS_MUSIC_BLOCKS_) {
-            this.synth.stopSound('default');
+            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+                for (var instrumentName in instruments[turtle]) {
+                    this.synth.stopSound(turtle, instrumentName);
+                }
+            }
+
             this.synth.stop();
         }
 
@@ -559,6 +585,12 @@ function Logo () {
         this._restoreConnections();
 
         document.body.style.cursor = 'default';
+        if (this.showBlocksAfterRun) {
+            console.log('SHOW BLOCKS');
+            this.showBlocks();
+        }
+
+        this.showBlocksAfterRun = false;
     };
 
     this._restoreConnections = function () {
@@ -755,12 +787,23 @@ function Logo () {
                     if (_THIS_IS_TURTLE_BLOCKS) {
                         value = Math.round(this.mic.getLevel() * 1000);
                     } else {
-                        var values = this.analyser.analyse();
+                        if (this.volumeAnalyser == null) {
+                            this.volumeAnalyser = new Tone.Analyser({
+                                'type': 'waveform',
+                                'size': this.limit
+                            });
+
+                            this.mic.connect(this.volumeAnalyser);
+                        }
+
+                        var values = that.volumeAnalyser.getValue();
                         var sum = 0;
-                        for (var k = 0; k < this.limit; k++) {
+                        for(var k = 0; k < that.limit; k++) {
                             sum += (values[k] * values[k]);
                         }
-                        value = Math.round(Math.sqrt(sum / this.limit));
+
+                        var rms = Math.sqrt(sum / that.limit);
+                        that.blocks.blockList[blk].value = Math.round(rms * 100);
                     }
                 }
                 break;
@@ -825,7 +868,7 @@ function Logo () {
             case 'mypitch':
                 if (this.lastNotePlayed[turtle] !== null) {
                     var len = this.lastNotePlayed[turtle][0].length;
-                    value = pitchToNumber(this.lastNotePlayed[turtle][0].slice(0, len - 1), parseInt(this.lastNotePlayed[turtle][0].slice(len - 1)), this.keySignature[turtle]) - this.pitchNumberOffset;
+                    value = pitchToNumber(this.lastNotePlayed[turtle][0].slice(0, len - 1), parseInt(this.lastNotePlayed[turtle][0].slice(len - 1)), this.keySignature[turtle]) - this.pitchNumberOffset[turtle];
                 } else {
                     value = pitchToNumber('G', 4, this.keySignature[turtle])  - this.pitchNumberOffset;
                 }
@@ -843,13 +886,13 @@ function Logo () {
                 }
                 break;
             case 'beatvalue':
-                value = this.currentBeat[turtle];
+                value = this.currentBeat[turtle].toString();
                 break;
             case 'synthname':
                 value = last(this.instrumentNames[turtle]);
                 break;
             case 'measurevalue':
-                value = this.currentMeasure[turtle];
+                value = this.currentMeasure[turtle].toString();
                 break;
             case 'mynotevalue':
                 value = null;
@@ -891,6 +934,36 @@ function Logo () {
         }
     };
 
+    this.initMediaDevices = function () {
+        var that = this;
+        console.log('INIT MICROPHONE');
+        if (_THIS_IS_MUSIC_BLOCKS_) {
+            var mic = new Tone.UserMedia();
+            try {
+                mic.open();
+            } catch (e) {
+                console.log('MIC NOT FOUND');
+                console.log(e.name + ': ' + e.message);
+
+                console.log(mic);
+                that.errorMsg(NOMICERRORMSG);
+                mic = null;
+            }
+
+            this.mic = mic;
+            this.limit = 1024;
+        } else {
+            try {
+                this.mic = new p5.AudioIn()
+                that.mic.start();
+            } catch (e) {
+                console.log(e);
+                this.errorMsg(NOMICERRORMSG);
+                this.mic = null;
+            }
+        }
+    };
+
     this.runLogoCommands = function (startHere, env) {
         // Restore any broken connections.
         this._restoreConnections();
@@ -924,6 +997,15 @@ function Logo () {
         this.masterVolume = [DEFAULTVOLUME];
         this.checkingCompletionState = false;
 
+        this.embeddedGraphicsFinished = {};
+
+        if (_THIS_IS_MUSIC_BLOCKS_) {
+            this._prepSynths();
+        }
+
+        this.notationStaging = {};
+        this.notationDrumStaging = {};
+
         // Each turtle needs to keep its own wait time and music
         // states.
         for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
@@ -954,12 +1036,15 @@ function Logo () {
             this.notePitches[turtle] = {};
             this.noteOctaves[turtle] = {};
             this.currentOctave[turtle] = 4;
+            this.register[turtle] = 0;
             this.noteBeatValues[turtle] = {};
             this.embeddedGraphics[turtle] = {};
+            this.embeddedGraphicsFinished[turtle] = true;
             this.beatFactor[turtle] = 1;
             this.dotCount[turtle] = 0;
             this.invertList[turtle] = [];
             this.beatList[turtle] = [];
+            this.factorList[turtle] = [];
             this.switchCases[turtle] = {};
             this.switchBlocks[turtle] = [];
             this.connectionStore[turtle] = {};
@@ -968,7 +1053,7 @@ function Logo () {
             this.inDuplicate[turtle] = false;
             this.skipFactor[turtle] = 1;
             this.skipIndex[turtle] = 0;
-            this.notesPlayed[turtle] = 0;
+            this.notesPlayed[turtle] = [0, 1];
             this.whichNoteToCount[turtle] = 1;
             this.playbackQueue[turtle] = [];
             this.keySignature[turtle] = 'C ' + _('major');
@@ -982,13 +1067,18 @@ function Logo () {
             this.crescendoInitialVolume[turtle] = {'default': [DEFAULTVOLUME]};
             this.intervals[turtle] = [];
             this.semitoneIntervals[turtle] = [];
+            this.markup[turtle] = [];
             this.staccato[turtle] = [];
+            this.glide[turtle] = [];
+            this.glideOverride[turtle] = 0;
             this.swing[turtle] = [];
             this.swingTarget[turtle] = [];
             this.swingCarryOver[turtle] = 0;
             this.tie[turtle] = false;
-            this.tieNote[turtle] = [];
+            this.tieNotePitches[turtle] = [];
+            this.tieNoteExtras[turtle] = [];
             this.tieCarryOver[turtle] = 0;
+            this.tieFirstDrums[turtle] = [];
             this.drift[turtle] = 0;
             this.drumStyle[turtle] = [];
             this.voices[turtle] = [];
@@ -1009,22 +1099,34 @@ function Logo () {
             this.chorusRate[turtle] = [];
             this.delayTime[turtle] = [];
             this.chorusDepth[turtle] = [];
+            this.neighborArgNote1[turtle] = [];
+            this.neighborArgNote2[turtle] = [];
+            this.neighborArgBeat[turtle] = [];
+            this.neighborArgCurrentBeat[turtle] = [];
+            this.inDefineMode[turtle] = false;
+            this.defineMode[turtle] = [];
             this.dispatchFactor[turtle] = 1;
             this.pickup[turtle] = 0;
-            this.synthVolume[turtle] = {'default': [DEFAULTVOLUME],
-                                        'noise1': [DEFAULTVOLUME],
-                                        'noise2': [DEFAULTVOLUME],
-                                        'noise3': [DEFAULTVOLUME]};
             this.beatsPerMeasure[turtle] = 4;  // Default is 4/4 time.
             this.noteValuePerBeat[turtle] = 4;
             this.currentBeat[turtle] = 0;
             this.currentMeasure[turtle] = 0;
             this.justCounting[turtle] = [];
             this.justMeasuring[turtle] = [];
+            this.notationStaging[turtle] = [];
+            this.notationDrumStaging[turtle] = [];
+            this.pickupPoint[turtle] = null;
+            this.pickupPOW2[turtle] = false;
             this.firstPitch[turtle] = [];
             this.lastPitch[turtle] = [];
+            this.pitchNumberOffset[turtle] = 39; // C4
             this.suppressOutput[turtle] = this.runningLilypond || this.runningAbc || this.compiling;
-            this.movable[turtle] = false;
+            this.moveable[turtle] = false;
+            this.inNeighbor[turtle] = [];
+            this.neighborStepPitch[turtle] = [];
+            this.neighborNoteValue[turtle] = [];
+            this.inHarmonic[turtle] = [];
+            this.partials[turtle] = [];
 
             if (this.compiling) {
                 this._saveX[turtle] = this.turtles.turtleList[turtle].x;
@@ -1036,17 +1138,6 @@ function Logo () {
                 this._saveCanvasAlpha[turtle] = this.turtles.turtleList[turtle].canvasAlpha;
                 this._saveOrientation[turtle] = this.turtles.turtleList[turtle].orientation;
                 this._savePenState[turtle] = this.turtles.turtleList[turtle].penState;
-            }
-        }
-
-        this.pitchNumberOffset = 39;  // C4
-
-        if (!this.suppressOutput[turtle]) {
-            this._setMasterVolume(DEFAULTVOLUME);
-            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
-                for (var synth in this.synthVolume[turtle]) {
-                    this._setSynthVolume(synth, DEFAULTVOLUME);
-                }
             }
         }
 
@@ -1069,19 +1160,6 @@ function Logo () {
             }
 
             this.turtles.turtleList[turtle].listeners = {};
-        }
-
-        // First we need to reconcile the values in all the value
-        // blocks with their associated textareas.
-        // FIXME: Do we still need this check???
-        for (var blk = 0; blk < this.blocks.blockList.length; blk++) {
-            if (this.blocks.blockList[blk].label != null) {
-                if (this.blocks.blockList[blk].labelattr != null && this.blocks.blockList[blk].labelattr.value !== '♮') {
-                    this.blocks.blockList[blk].value = this.blocks.blockList[blk].label.value + this.blocks.blockList[blk].labelattr.value;
-                } else {
-                    this.blocks.blockList[blk].value = this.blocks.blockList[blk].label.value;
-                }
-            }
         }
 
         // Init the graphic state.
@@ -1265,24 +1343,43 @@ function Logo () {
         switch (this.blocks.blockList[blk].name) {
         case 'x':
             turtleObj.doSetXY(value, turtleObj.y);
+            if (this.justCounting[turtle].length === 0) {
+                this.playbackQueue[turtle].push([this.previousTurtleTime[turtle], 'setxy', value, turtleObj.y]);
+            }
             break;
         case 'y':
             turtleObj.doSetXY(turtleObj.x, value);
+            if (this.justCounting[turtle].length === 0) {
+                this.playbackQueue[turtle].push([this.previousTurtleTime[turtle], 'setxy', turtleObj.x, value]);
+            }
             break;
         case 'heading':
             turtleObj.doSetHeading(value);
+            this.playbackQueue[turtle].push([this.previousTurtleTime[turtle] + waitTime / 1000, 'setheading', value]);
             break;
         case 'color':
             turtleObj.doSetColor(value);
+            if (this.justCounting[turtle].length === 0) {
+                this.playbackQueue[turtle].push([this.previousTurtleTime[turtle], 'setcolor', value]);
+            }
             break;
         case 'shade':
             turtleObj.doSetValue(value);
+            if (this.justCounting[turtle].length === 0) {
+                this.playbackQueue[turtle].push([this.previousTurtleTime[turtle], 'setshade', value]);
+            }
             break;
         case 'grey':
             turtleObj.doSetChroma(value);
+            if (this.justCounting[turtle].length === 0) {
+                this.playbackQueue[turtle].push([this.previousTurtleTime[turtle], 'setgrey', value]);
+            }
             break;
         case 'pensize':
             turtleObj.doSetPensize(value);
+            if (this.justCounting[turtle].length === 0) {
+                this.playbackQueue[turtle].push([this.previousTurtleTime[turtle], 'setpensize', value]);
+            }
             break;
         case 'namedbox':
             var name = this.blocks.blockList[blk].privateData;
@@ -1345,7 +1442,7 @@ function Logo () {
             break;
         case 'mypitch':
             this.previousNotePlayed[turtle] = this.lastNotePlayed[turtle];
-            var obj = numberToPitch(value + this.pitchNumberOffset);
+            var obj = numberToPitch(value + this.pitchNumberOffset[turtle]);
             this.lastNotePlayed[turtle] = [obj[0] + obj[1], this.lastNotePlayed[turtle][1]];
             break;
         case 'notevolumefactor':  // master volume
@@ -1670,12 +1767,18 @@ function Logo () {
                 that._doWait(turtle, args[0]);
             }
             break;
+        case 'comment':
+            if (args[0] !== null && !that.suppressOutput[turtle] && that.turtleDelay > 0) {
+                that.textMsg(args[0].toString());
+            }
+            break;
         case 'print':
             if (!that.inStatusMatrix) {
                 if (args.length === 1) {
                     if (args[0] !== null) {
                         if (that.inNoteBlock[turtle].length > 0) {
                             that.embeddedGraphics[turtle][last(that.inNoteBlock[turtle])].push(blk);
+                            that.markup[turtle].push(args[0].toString());
                         } else {
                             if (!that.suppressOutput[turtle]) {
                                 that.textMsg(args[0].toString());
@@ -1760,9 +1863,9 @@ function Logo () {
                 }
             }
             break;
-        case 'movable':
+        case 'movable':  // legacy typo
             if (args.length === 1) {
-                that.movable[turtle] = args[0];
+                that.moveable[turtle] = args[0];
             }
             break;
         case 'waitFor':
@@ -1785,6 +1888,17 @@ function Logo () {
                             that.turtles.turtleList[turtle].queue.pop();
                         }
                     }
+
+                    // We need to reset the turtle time.
+                    if (that.firstNoteTime == null) {
+                        var d = new Date();
+                        that.firstNoteTime = d.getTime();
+                    }
+
+                    var d = new Date();
+                    var elapsedTime = (d.getTime() - this.firstNoteTime) / 1000;
+                    that.turtleTime[turtle] = elapsedTime;
+                    that.previousTurtleTime[turtle] = elapsedTime;
                 }
             }
             break;
@@ -1844,6 +1958,11 @@ function Logo () {
                         }
                     }
                 }
+            }
+            break;
+        case 'storein2':
+            if (args.length === 1) {
+                that.boxes[that.blocks.blockList[blk].privateData] = args[0];
             }
             break;
         case 'storein':
@@ -2760,11 +2879,19 @@ function Logo () {
                 var idx = Math.floor(args[0]);
                 if (idx < 1) {
                     that.errorMsg(_('Index must be > 0.'))
+                    idx = 1;
                 }
+
+                if (idx > 1000) {
+                    that.errorMsg(_('Maximum heap size is 1000.'))
+                    idx = 1000;
+                }
+
                 // If index > heap length, grow the heap.
                 while (that.turtleHeaps[turtle].length < idx) {
-                    that.turtleHeaps[turtle].push(null);
+                    that.turtleHeaps[turtle].push(0);
                 }
+
                 that.turtleHeaps[turtle][idx - 1] = args[1];
             }
             break;
@@ -2793,7 +2920,7 @@ function Logo () {
 
             if (that.inTimbre) {
                 that.timbre.amSynthParamvals['harmonicity'] = harmonicity;
-                that.synth.createSynth(that.timbre.instrumentName, 'amsynth', that.timbre.amSynthParamvals);
+                that.synth.createSynth(turtle, that.timbre.instrumentName, 'amsynth', that.timbre.amSynthParamvals);
 
                 that.timbre.AMSynthesizer.push(blk);
                 that.timbre.AMSynthParams.push(harmonicity);
@@ -2817,7 +2944,7 @@ function Logo () {
 
             if (that.inTimbre) {
                 that.timbre.fmSynthParamvals['modulationIndex'] = modulationIndex;
-                that.synth.createSynth(that.timbre.instrumentName, 'fmsynth', that.timbre.fmSynthParamvals);
+                that.synth.createSynth(turtle, that.timbre.instrumentName, 'fmsynth', that.timbre.fmSynthParamvals);
 
                 that.timbre.FMSynthesizer.push(blk);
                 that.timbre.FMSynthParams.push(modulationIndex);
@@ -2842,7 +2969,7 @@ function Logo () {
             if (that.inTimbre) {
                 that.timbre.duoSynthParamVals['vibratoRate'] = synthVibratoRate;
                 that.timbre.duoSynthParamVals['vibratoAmount'] = synthVibratoAmount;
-                that.synth.createSynth(that.timbre.instrumentName, 'duosynth', that.timbre.duoSynthParamVals);
+                that.synth.createSynth(turtle, that.timbre.instrumentName, 'duosynth', that.timbre.duoSynthParamVals);
 
                 that.timbre.duoSynthesizer.push(blk);
                 that.timbre.duoSynthParams.push(synthVibratoRate);
@@ -2876,10 +3003,65 @@ function Logo () {
                 if (turtle in that.transposition) {
                     var noteObj = getNote(args[0], 4, that.transposition[turtle], that.keySignature[turtle], false, null, that.errorMsg);
                     that.keySignature[turtle] = noteObj[0] + ' ' + modename;
+                    that.notationKey(turtle, noteObj[0], modename);
                 } else {
                     that.keySignature[turtle] = args[0] + ' ' + modename;
+                    that.notationKey(turtle, args[0], modename);
                 }
             }
+            break;
+        case 'definemode':
+            that.inDefineMode[turtle] = true;
+            that.defineMode[turtle] = [];
+
+            var modeName = args[0].toLowerCase();
+
+            childFlow = args[1];
+            childFlowCount = 1;
+
+            var listenerName = '_definemode_' + turtle;
+            that._setDispatchBlock(blk, turtle, listenerName);
+
+            var __listener = function (event) {
+                MUSICALMODES[modeName] = [];
+                if (that.defineMode[turtle].indexOf(0) === -1) {
+                    that.defineMode[turtle].push(0);
+                    that.errorMsg(_('Adding missing pitch number 0.'));
+                }
+
+                var pitchNumbers = that.defineMode[turtle].sort(
+                    function(a, b) {
+                        return a[0] - b[0];
+                    });
+
+                for (var i = 0; i < pitchNumbers.length; i++) {
+                    if (pitchNumbers[i] < 0 || pitchNumbers[i] > 11) {
+                        that.errorMsg(_('Ignoring pitch numbers less than zero or greater than eleven.'));
+                        continue;
+                    }
+
+                    if (i > 0 && pitchNumbers[i] === pitchNumbers[i - 1]) {
+                        that.errorMsg(_('Ignoring duplicate pitch numbers.'));
+                        continue;
+                    }
+
+                    if (i < pitchNumbers.length - 1) {
+                        MUSICALMODES[modeName].push(pitchNumbers[i + 1] - pitchNumbers[i]);
+                    } else {
+                        MUSICALMODES[modeName].push(12 - pitchNumbers[i]);
+                    }
+                }
+
+                console.log(MUSICALMODES[modeName]);
+                var cblk = that.blocks.blockList[blk].connections[1];
+                if (that.blocks.blockList[cblk].name === 'modename') {
+                    that.blocks.updateBlockText(cblk);
+                }
+
+                that.inDefineMode[turtle] = false;
+            };
+
+            that._setListener(turtle, listenerName, __listener);
             break;
         case 'rhythmruler2':
         case 'rhythmruler':
@@ -2914,6 +3096,7 @@ function Logo () {
             }
 
             that.pitchStaircase.Stairs = [];
+            that.pitchStaircase.stairPitchBlocks = [];
 
             childFlow = args[0];
             childFlowCount = 1;
@@ -3012,13 +3195,13 @@ function Logo () {
             if (typeof(args[0]) === 'string') {
                 // CLear out the instrument because we will recreate it in the widget.
                 that.timbre.instrumentName = args[0];
-                instrumentsEffects[that.timbre.instrumentName] = {};
-                instrumentsEffects[that.timbre.instrumentName]['vibratoActive'] = false;
-                instrumentsEffects[that.timbre.instrumentName]['distortionActive'] = false;
-                instrumentsEffects[that.timbre.instrumentName]['tremoloActive'] = false;
-                instrumentsEffects[that.timbre.instrumentName]['phaserActive'] = false;
-                instrumentsEffects[that.timbre.instrumentName]['chorusActive'] = false;
-                instrumentsFilters[that.timbre.instrumentName] = [];
+                instrumentsEffects[turtle][that.timbre.instrumentName] = {};
+                instrumentsEffects[turtle][that.timbre.instrumentName]['vibratoActive'] = false;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['distortionActive'] = false;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['tremoloActive'] = false;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['phaserActive'] = false;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['chorusActive'] = false;
+                instrumentsFilters[turtle][that.timbre.instrumentName] = [];
             } else {
                 that.errorMsg(NOINPUTERRORMSG, blk);
                 that.stopTurtle = true;
@@ -3145,6 +3328,7 @@ function Logo () {
                     that._masterBPM = bpm;
                 }
 
+                that.notationTempo(turtle, args[0], args[1]);
                 that.defaultBPMFactor = TONEBPM / that._masterBPM;
             }
 
@@ -3165,6 +3349,7 @@ function Logo () {
                     bpm = 1000;
                 }
 
+                that.notationTempo(turtle, args[0], args[1]);
                 that.bpm[turtle].push(bpm);
 
                 childFlow = args[2];
@@ -3233,6 +3418,7 @@ function Logo () {
                     that.errorMsg(_('You must have at least one pitch block and one rhythm block in the matrix.'), blk);
                 } else {
                     // Process queued up rhythms.
+                    that.pitchTimeMatrix.sorted = false;
                     that.pitchTimeMatrix.init(that);
 
                     for (var i = 0; i < that.tupletRhythms.length; i++) {
@@ -3294,7 +3480,7 @@ function Logo () {
                     that.errorMsg(_('You are adding multiple envelope blocks.'));
                 } else {
                     // Create the synth for the instrument.
-                    that.synth.createSynth(that.timbre.instrumentName, that.timbre.synthVals['oscillator']['source'], that.timbre.synthVals);
+                    that.synth.createSynth(turtle, that.timbre.instrumentName, that.timbre.synthVals['oscillator']['source'], that.timbre.synthVals);
                 }
 
                 that.timbre.env.push(blk);
@@ -3327,11 +3513,11 @@ function Logo () {
                 freq = args[2];
 
                 if (that.inTimbre) {
-                    if (!(that.timbre.instrumentName in instrumentsFilters)) {
-                        instrumentsFilters[that.timbre.instrumentName] = [];
+                    if (!(that.timbre.instrumentName in instrumentsFilters[turtle])) {
+                        instrumentsFilters[turtle][that.timbre.instrumentName] = [];
                     }
                     // Add the filter to the instrument
-                    instrumentsFilters[that.timbre.instrumentName].push({'filterType': filtertype, 'filterRolloff': rollOff, 'filterFrequency': freq});
+                    instrumentsFilters[turtle][that.timbre.instrumentName].push({'filterType': filtertype, 'filterRolloff': rollOff, 'filterFrequency': freq});
 
                     that.timbre.fil.push(blk);
                     that.timbre.filterParams.push(filtertype);
@@ -3361,7 +3547,7 @@ function Logo () {
                     that.errorMsg(_('You are adding multiple oscillator blocks.'));
                 } else {
                     that.timbre.oscParams = [];
-                    that.synth.createSynth(that.timbre.instrumentName, oscillatorType, that.timbre.synthVals);
+                    that.synth.createSynth(turtle, that.timbre.instrumentName, oscillatorType, that.timbre.synthVals);
                 }
 
                 that.timbre.osc.push(blk);
@@ -3380,14 +3566,14 @@ function Logo () {
 
             if (args[2] === _('even')) {
                 args2 = 'even';
-            }
-
-            if (args[2] === _('odd')) {
+            } else if (args[2] === _('odd')) {
                 args2 = 'odd';
+            } else if (args[2] === _('scalar')) {
+                args2 = 'scalar';
             }
 
-            if (args[2] === 'even' || args[2] === 'odd') {
-                var octave = calcOctave(that.currentOctave[turtle], args[1]);
+            if (args[2] === 'even' || args[2] === 'odd' || args[2] === 'scalar') {
+                var octave = calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], args[0]);
                 that.invertList[turtle].push([args[0], octave, args[2]]);
             } else {
                 that.errorMsg(NOINPUTERRORMSG, blk);
@@ -3524,7 +3710,7 @@ function Logo () {
         case 'steppitch':
             // Similar to pitch but calculated from previous note played.
             if (!that.inMatrix && that.inNoteBlock[turtle].length === 0) {
-                that.errorMsg(_('The Step Pitch Block must be used inside of a Note Block.'), blk);
+                that.errorMsg(_('The Scalar Step Block must be used inside of a Note Block.'), blk);
                 that.stopTurtle = true;
                 break;
             }
@@ -3543,13 +3729,14 @@ function Logo () {
             }
 
             if (that.lastNotePlayed[turtle] == null) {
-                that.errorMsg('The Step Pitch Block must be preceded by a Pitch Block.', blk);
+                that.errorMsg('The Scalar Step Block must be preceded by a Pitch Block.', blk);
                 that.stopTurtle = true;
                 break;
             }
 
             function addPitch(note, octave, cents, direction) {
-                var noteObj = getNote(note, octave, transposition, that.keySignature[turtle], true, direction, that.errorMsg);
+                t = transposition + that.register[turtle] * 12;
+                var noteObj = getNote(note, octave, t, that.keySignature[turtle], true, direction, that.errorMsg);
 
                 if (that.drumStyle[turtle].length > 0) {
                     var drumname = last(that.drumStyle[turtle]);
@@ -3571,48 +3758,12 @@ function Logo () {
             }
 
             var len = that.lastNotePlayed[turtle][0].length;
-            if (args[0] >= 1) {
-                var n = Math.floor(args[0]);
-                // add on any scalar transposition
-                n += that.scalarTransposition[turtle];
 
-                var value = getStepSizeUp(that.keySignature[turtle], that.lastNotePlayed[turtle][0].slice(0, len - 1));
-                var noteObj = getNote(that.lastNotePlayed[turtle][0].slice(0, len - 1), parseInt(that.lastNotePlayed[turtle][0].slice(len - 1)), value, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                for (var i = 1; i < n; i++) {
-                    var value = getStepSizeUp(that.keySignature[turtle], noteObj[0]);
-                    noteObj = getNote(noteObj[0], noteObj[1], value, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                }
-            } else if (args[0] <= -1) {
-                var n = -Math.ceil(args[0]);
-                // add on any scalar transposition
-                n += that.scalarTransposition[turtle];
-
-                value = getStepSizeDown(that.keySignature[turtle], that.lastNotePlayed[turtle][0].slice(0, len - 1));
-                var noteObj = getNote(that.lastNotePlayed[turtle][0].slice(0, len - 1), parseInt(that.lastNotePlayed[turtle][0].slice(len - 1)), value, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                for (var i = 1; i < n; i++) {
-                    var value = getStepSizeDown(that.keySignature[turtle], noteObj[0]);
-                    noteObj = getNote(noteObj[0], noteObj[1], value, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                }
-            } else {  // Repeat last pitch played.
-                var noteObj = getNote(that.lastNotePlayed[turtle][0].slice(0, len - 1), parseInt(that.lastNotePlayed[turtle][0].slice(len - 1)), 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-            }
+            var noteObj = that._addScalarTransposition(turtle, that.lastNotePlayed[turtle][0].slice(0, len - 1), parseInt(that.lastNotePlayed[turtle][0].slice(len - 1)), args[0]);
 
             var delta = 0;
             if (!(that.invertList[turtle].length === 0)) {
-                var len = that.invertList[turtle].length;
-                var note1 = getNote(noteObj[0], noteObj[1], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                var num1 = getNumber(note1[0], note1[1]);
-                for (var i = len - 1; i > -1; i--) {
-                    var note2 = getNote(that.invertList[turtle][i][0], that.invertList[turtle][i][1], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                    var num2 = getNumber(note2[0], note2[1]);
-                    // var a = getNumNote(num1, 0);
-                    if (that.invertList[turtle][i][2] === 'even') {
-                        delta += num2 - num1;
-                    } else {  // odd
-                        delta += num2 - num1 + 0.5;
-                    }
-                    num1 += 2 * delta;
-                }
+                delta += that._calculateInvert(turtle, noteObj[0], noteObj[1]);
             }
 
             var transposition = 2 * delta;
@@ -3640,14 +3791,14 @@ function Logo () {
             if (turtle in that.intervals && that.intervals[turtle].length > 0) {
                 for (var i = 0; i < that.intervals[turtle].length; i++) {
                     var ii = getInterval(that.intervals[turtle][i], that.keySignature[turtle], noteObj1[0]);
-                    var noteObj2 = getNote(noteObj1[0], noteObj1[1], ii, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                    var noteObj2 = getNote(noteObj1[0], noteObj1[1], ii, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                     addPitch(noteObj2[0], noteObj2[1], 0);
                 }
             }
 
             if (turtle in that.semitoneIntervals && that.semitoneIntervals[turtle].length > 0) {
                 for (var i = 0; i < that.semitoneIntervals[turtle].length; i++) {
-                    var noteObj2 = getNote(noteObj1[0], noteObj1[1], that.semitoneIntervals[turtle][i][0], that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                    var noteObj2 = getNote(noteObj1[0], noteObj1[1], that.semitoneIntervals[turtle][i][0], that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                     addPitch(noteObj2[0], noteObj2[1], 0, that.semitoneIntervals[turtle][i][1]);
                 }
             }
@@ -3728,9 +3879,8 @@ function Logo () {
                 that.stopTurtle = true;
                 break;
             }
-
-            var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1]));
-            that.pitchNumberOffset = pitchToNumber(args[0], octave, that.keySignature[turtle]);
+            var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], args[0]));
+            that.pitchNumberOffset[turtle] = pitchToNumber(args[0], octave, that.keySignature[turtle]);
             break;
         case 'pitchnumber':
         case 'scaledegree':
@@ -3748,12 +3898,19 @@ function Logo () {
                     break;
                 }
 
-                // In number to pitch we assume A0 == 0. Here we
-                // assume that C4 == 0, so we need an offset of 39.
-                var obj = numberToPitch(Math.floor(args[0] + that.pitchNumberOffset));
-                note = obj[0];
-                octave = obj[1];
-                cents = 0;
+                if (that.inDefineMode[turtle]) {
+                    that.defineMode[turtle].push(Math.floor(args[0]));
+                    break;
+                } else {
+                    // In number to pitch we assume A0 == 0. Here we
+                    // assume that C4 == 0, so we need an offset of 39.
+                    var obj = numberToPitch(Math.floor(args[0] + that.pitchNumberOffset[turtle]));
+
+                    note = obj[0];
+                    octave = obj[1];
+                    cents = 0;
+                    that.currentNote = note;
+                }
             } else {
                 if (args.length !== 2 || args[0] == null || args[1] == null) {
                     that.errorMsg(NOINPUTERRORMSG, blk);
@@ -3771,13 +3928,15 @@ function Logo () {
                         note = '?'; // throws an error
                     } else if (args[0] < 13) { // moveable solfege
                         note = scaleDegreeToPitch(that.keySignature[turtle], Math.floor(args[0]));
-                        var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1]));
+                        that.currentNote = note;
+                        var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], that.currentNote));
                         var cents = 0;
                     } else if (args[0] < A0 || args[0] > C8) {
                         note = '?'; // throws an error
                     } else {
                         var obj = frequencyToPitch(args[0]);
                         var note = obj[0];
+                        that.currentNote = note;
                         var octave = obj[1];
                         var cents = obj[2];
                     }
@@ -3814,12 +3973,14 @@ function Logo () {
                                 scaleDegree = modeLength - scaleDegree + 2;
                             }
                             note = scaleDegreeToPitch(that.keySignature[turtle], scaleDegree);
+                            that.currentNote = note;
                             var deltaOctave = Math.floor((args[0] + modeLength - 2) / modeLength);
-                            var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1])) - deltaOctave;
+                            var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], that.currentNote)) - deltaOctave;
                         } else {
                             note = scaleDegreeToPitch(that.keySignature[turtle], scaleDegree);
+                            that.currentNote = note;
                             var deltaOctave = Math.floor((args[0] - 1) / modeLength);
-                            var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1])) + deltaOctave;
+                            var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], that.currentNote)) + deltaOctave;
                         }
                         var cents = 0;
                     }
@@ -3832,43 +3993,40 @@ function Logo () {
                 } else {
                     var cents = 0;
                     var note = args[0];
-                    if (calcOctave(that.currentOctave[turtle], args[1]) < 0) {
+                    that.currentNote = note;
+                    if (calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], that.currentNote) < 0) {
                         console.log('minimum allowable octave is 0');
                         var octave = 0;
-                    } else if (calcOctave(that.currentOctave[turtle], args[1]) > 10) {
+                    } else if (calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], that.currentNote) > 9) {
                         // Humans can only hear 10 octaves.
-                        console.log('clipping octave at 10');
-                        var octave = 10;
+                        console.log('clipping octave at 9');
+                        var octave = 9;
                     } else {
                         // Octave must be a whole number.
-                        var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1]));
+                        var octave = Math.floor(calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], that.currentNote));
                     }
                 }
             }
 
-            // Add scalar transposition
-            if (that.scalarTransposition[turtle] > 0) {
-                var n = that.scalarTransposition[turtle];
-                var noteObj = getNote(note, octave, 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-
-                for (var i = 0; i < n; i++) {
-                    var value = getStepSizeUp(that.keySignature[turtle], noteObj[0]);
-                    noteObj = getNote(noteObj[0], noteObj[1], value, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+            if (that.inNeighbor[turtle].length > 0) {
+                var noteObj = getNote(note, octave, that.scalarTransposition[turtle], that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
+                that.neighborArgNote1[turtle].push(noteObj[0] + noteObj[1]);
+                if (that.blocks.blockList[last(that.inNeighbor[turtle])].name === 'neighbor2') {
+                    var noteObj2 = that._addScalarTransposition(turtle, note, octave, parseInt(that.neighborStepPitch[turtle]));
+                    if (that.scalarTransposition[turtle] !== 0) {
+                        noteObj2 = getNote(noteObj2[0], noteObj2[1], that.scalarTransposition[turtle], that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
+                    }
+                } else {
+                    var noteObj2 = getNote(note, octave, that.scalarTransposition[turtle] + parseInt(that.neighborStepPitch[turtle]), that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                 }
 
-                note = noteObj[0];
-                octave = noteObj[1];
-            } else if (that.scalarTransposition[turtle] < 0) {
-                var n = that.scalarTransposition[turtle];
-                var noteObj = getNote(note, octave, 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-
-                for (var i = 0; i < -n; i++) {
-                    var value = getStepSizeDown(that.keySignature[turtle], noteObj[0]);
-                    noteObj = getNote(noteObj[0], noteObj[1], value, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                }
-                note = noteObj[0];
-                octave = noteObj[1];
+                that.neighborArgNote2[turtle].push(noteObj2[0] + noteObj2[1]);
             }
+
+            var noteObj = that._addScalarTransposition(turtle, note, octave, that.scalarTransposition[turtle]);
+            note = noteObj[0];
+            that.currentNote = note;
+            octave = noteObj[1];
 
             var delta = 0;
 
@@ -3878,7 +4036,7 @@ function Logo () {
                     transposition += that.transposition[turtle];
                 }
 
-                var noteObj = getNote(note, octave, transposition, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                var noteObj = getNote(note, octave, transposition, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                 if (!that.validNote) {
                     that.errorMsg(INVALIDPITCH, blk);
                     that.stopTurtle = true;
@@ -3886,7 +4044,7 @@ function Logo () {
                 }
 
                 var n = that.justMeasuring[turtle].length;
-                var pitchNumber = pitchToNumber(noteObj[0], noteObj[1], that.keySignature[turtle]) - that.pitchNumberOffset;
+                var pitchNumber = pitchToNumber(noteObj[0], noteObj[1], that.keySignature[turtle]) - that.pitchNumberOffset[turtle];
                 if (that.firstPitch[turtle].length < n) {
                     that.firstPitch[turtle].push(pitchNumber);
                 } else if (that.lastPitch[turtle].length < n) {
@@ -3901,26 +4059,7 @@ function Logo () {
                 }
 
                 if (!(that.invertList[turtle].length === 0)) {
-                    var delta = 0;
-                    var len = that.invertList[turtle].length;
-                    // Get an anchor note and its corresponding
-                    // number, which is used to calculate delta.
-                    var note1 = getNote(note, octave, 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-
-                    var num1 = that.getNumber(note1[0], note1[1]);
-                    for (var i = len - 1; i > -1; i--) {
-                        // Note from which delta is calculated.
-                        var note2 = getNote(that.invertList[turtle][i][0], that.invertList[turtle][i][1], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                        var num2 = getNumber(note2[0], note2[1]);
-                        // var a = getNumNote(num1, 0);
-                        if (that.invertList[turtle][i][2] === 'even') {
-                            delta += num2 - num1;
-                        } else {  // odd
-                            delta += num2 - num1 + 0.5;
-                        }
-
-                        num1 += 2 * delta;
-                    }
+                    delta += that._calculateInvert(turtle, note, octave);
                 }
 
                 if (that.duplicateFactor[turtle].length > 0) {
@@ -3936,7 +4075,7 @@ function Logo () {
                         transposition += that.transposition[turtle];
                     }
 
-                    var nnote = getNote(note, octave, transposition, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                    var nnote = getNote(note, octave, transposition, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                     if (noteIsSolfege(note)) {
                         nnote[0] = getSolfege(nnote[0]);
                     }
@@ -3957,25 +4096,7 @@ function Logo () {
                 }
 
                 if (!(that.invertList[turtle].length === 0)) {
-                    var delta = 0;
-                    var len = that.invertList[turtle].length;
-                    // Get an anchor note and its corresponding
-                    // number, which is used to calculate delta.
-                    var note1 = getNote(note, octave, 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-
-                    var num1 = that.getNumber(note1[0], note1[1]);
-                    for (var i = len - 1; i > -1; i--) {
-                        // Note from which delta is calculated.
-                        var note2 = getNote(that.invertList[turtle][i][0], that.invertList[turtle][i][1], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                        var num2 = getNumber(note2[0], note2[1]);
-                        // var a = getNumNote(num1, 0);
-                        if (that.invertList[turtle][i][2] === 'even') {
-                            delta += num2 - num1;
-                        } else {  // odd
-                            delta += num2 - num1 + 0.5;
-                        }
-                        num1 += 2 * delta;
-                    }
+                    delta += that._calculateInvert(turtle, note, octave);
                 }
 
                 if (that.duplicateFactor[turtle].length > 0) {
@@ -3990,7 +4111,7 @@ function Logo () {
                         transposition += that.transposition[turtle];
                     }
 
-                    var noteObj = getNote(note, octave, transposition, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                    var noteObj = getNote(note, octave, transposition, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                     that.previousNotePlayed[turtle] = that.lastNotePlayed[turtle];
                     that.lastNotePlayed[turtle] = [noteObj[0] + noteObj[1], 4];
 
@@ -4011,7 +4132,8 @@ function Logo () {
             } else if (that.inNoteBlock[turtle].length > 0) {
 
                 function addPitch(note, octave, cents, direction) {
-                    var noteObj = getNote(note, octave, transposition, that.keySignature[turtle], that.movable[turtle], direction, that.errorMsg);
+                    t = transposition + that.register[turtle] * 12;
+                    var noteObj = getNote(note, octave, t, that.keySignature[turtle], that.moveable[turtle], direction, that.errorMsg);
                     if (!that.validNote) {
                         that.errorMsg(INVALIDPITCH, blk);
                         that.stopTurtle = true;
@@ -4035,20 +4157,7 @@ function Logo () {
                 }
 
                 if (!(that.invertList[turtle].length === 0)) {
-                    var len = that.invertList[turtle].length;
-                    var note1 = getNote(note, octave, 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                    var num1 = getNumber(note1[0], note1[1]);
-                    for (var i = len - 1; i > -1; i--) {
-                        var note2 = getNote(that.invertList[turtle][i][0], that.invertList[turtle][i][1], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                        var num2 = getNumber(note2[0], note2[1]);
-                        // var a = getNumNote(num1, 0);
-                        if (that.invertList[turtle][i][2] === 'even') {
-                            delta += num2 - num1;
-                        } else {  // odd
-                            delta += num2 - num1 + 0.5;
-                        }
-                        num1 += 2 * delta;
-                    }
+                    delta += that._calculateInvert(turtle, note, octave);
                 }
 
                 var transposition = 2 * delta;
@@ -4063,14 +4172,14 @@ function Logo () {
                 if (turtle in that.intervals && that.intervals[turtle].length > 0) {
                     for (var i = 0; i < that.intervals[turtle].length; i++) {
                         var ii = getInterval(that.intervals[turtle][i], that.keySignature[turtle], noteObj1[0]);
-                        var noteObj2 = getNote(noteObj1[0], noteObj1[1], ii, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                        var noteObj2 = getNote(noteObj1[0], noteObj1[1], ii, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                         addPitch(noteObj2[0], noteObj2[1], cents);
                     }
                 }
 
                 if (turtle in that.semitoneIntervals && that.semitoneIntervals[turtle].length > 0) {
                     for (var i = 0; i < that.semitoneIntervals[turtle].length; i++) {
-                        var noteObj2 = getNote(noteObj1[0], noteObj1[1], that.semitoneIntervals[turtle][i][0], that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                        var noteObj2 = getNote(noteObj1[0], noteObj1[1], that.semitoneIntervals[turtle][i][0], that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                         addPitch(noteObj2[0], noteObj2[1], cents, that.semitoneIntervals[turtle][i][1]);
                     }
                 }
@@ -4082,11 +4191,12 @@ function Logo () {
                 that.pushedNote[turtle] = true;
             } else if (that.drumStyle[turtle].length > 0) {
                 var drumname = last(that.drumStyle[turtle]);
-                var noteObj1 = getNote(note, octave, transposition, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                var noteObj1 = getNote(note, octave, transposition, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                 that.pitchDrumTable[turtle][noteObj1[0] + noteObj1[1]] = drumname;
             } else if (that.inPitchStaircase) {
-                var frequency = pitchToFrequency(args[0], calcOctave(that.currentOctave[turtle], args[1]), 0, that.keySignature[turtle]);
-                var noteObj1 = getNote(args[0], calcOctave(that.currentOctave[turtle], args[1]), 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                var frequency = pitchToFrequency(args[0], calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], args[0]), 0, that.keySignature[turtle]);
+                var noteObj1 = getNote(args[0], calcOctave(that.currentOctave[turtle], args[1], that.lastNotePlayed[turtle], args[0]), 0, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
+
                 var flag = 0;
 
                 for (var i = 0 ; i < that.pitchStaircase.Stairs.length; i++) {
@@ -4106,9 +4216,49 @@ function Logo () {
                 if (flag === 0) {
                     that.pitchStaircase.Stairs.push([noteObj1[0], noteObj1[1], parseFloat(frequency), 1, 1]);
                 }
-            }
-            else {
-                that.errorMsg(_('Pitch Block: Did you mean to use a Note block?'), blk);
+
+                that.pitchStaircase.stairPitchBlocks.push(blk);
+            } else {
+                if (that.blocks.blockList[blk].connections[0] == null && last(that.blocks.blockList[blk].connections) == null) {
+                    // Play a stand-alone pitch block as a quarter note.
+                    that.clearNoteParams(turtle, blk, []);
+                    if (that.currentCalculatedOctave[turtle] == undefined) {
+                        that.currentCalculatedOctave[turtle] = 4;
+                    }
+                    var noteObj = getNote(args[0], calcOctave(that.currentCalculatedOctave[turtle], args[1], that.lastPitchPlayed[turtle], args[0]), 0, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
+                    if (!that.validNote) {
+                        that.errorMsg(INVALIDPITCH, blk);
+                        that.stopTurtle = true;
+                    }
+
+                    that.inNoteBlock[turtle].push(blk);
+                    that.notePitches[turtle][last(that.inNoteBlock[turtle])].push(noteObj[0]);
+                    that.noteOctaves[turtle][last(that.inNoteBlock[turtle])].push(noteObj[1]);
+                    that.noteCents[turtle][last(that.inNoteBlock[turtle])].push(cents);
+                    if (cents !== 0) {
+                        that.noteHertz[turtle][last(that.inNoteBlock[turtle])].push(pitchToFrequency(noteObj[0], noteObj[1], cents, that.keySignature[turtle]));
+                    } else {
+                        that.noteHertz[turtle][last(that.inNoteBlock[turtle])].push(0);
+                    }
+
+                    if (that.bpm[turtle].length > 0) {
+                        var bpmFactor = TONEBPM / last(that.bpm[turtle]);
+                    } else {
+                        var bpmFactor = TONEBPM / that._masterBPM;
+                    }
+
+                    var noteBeatValue = 4;
+                    var beatValue = bpmFactor / noteBeatValue;
+
+                    __callback = function () {
+                        var j = that.inNoteBlock[turtle].indexOf(blk);
+                        that.inNoteBlock[turtle].splice(j, 1);
+                    };
+
+                    that._processNote(noteBeatValue, blk, turtle, __callback);
+                } else {
+                    that.errorMsg(_('Pitch Block: Did you mean to use a Note block?'), blk);
+                }
             }
             break;
         case 'rhythm2':
@@ -4125,8 +4275,11 @@ function Logo () {
                 var noteBeatValue = args[1];
             }
 
-            if (that.inMatrix) {
-                that.pitchTimeMatrix.addColBlock(blk, args[0]);
+            if (that.inMatrix || that.tuplet) {
+                if (that.inMatrix) {
+                    that.pitchTimeMatrix.addColBlock(blk, args[0]);
+                }
+
                 for (var i = 0; i < args[0]; i++) {
                     that._processNote(noteBeatValue, blk, turtle);
                 }
@@ -4159,11 +4312,51 @@ function Logo () {
                     }
                 }
             } else {
-                that.errorMsg(_('Rhythm Block: Did you mean to use a Matrix block?'), blk);
+                // Play rhythm block as if it were a drum.
+                if (that.drumStyle[turtle].length > 0) {
+                    that.clearNoteParams(turtle, blk, that.drumStyle[turtle]);
+                } else {
+                    that.clearNoteParams(turtle, blk, [DEFAULTDRUM]);
+                }
+
+                that.inNoteBlock[turtle].push(blk);
+
+                if (that.bpm[turtle].length > 0) {
+                    var bpmFactor = TONEBPM / last(that.bpm[turtle]);
+                } else {
+                    var bpmFactor = TONEBPM / that._masterBPM;
+                }
+
+                var beatValue = bpmFactor / noteBeatValue;
+
+                __rhythmPlayNote = function (thisBeat, blk, turtle, callback, timeout) {
+                    setTimeout(function () {
+                        that._processNote(thisBeat, blk, turtle, callback);
+                    }, timeout);
+                };
+
+                for (var i = 0; i < args[0]; i++) {
+                    if (i === args[0] - 1) {
+
+                        __callback = function () {
+                            delete that.noteDrums[turtle][blk];
+                            var j = that.inNoteBlock[turtle].indexOf(blk);
+                            that.inNoteBlock[turtle].splice(j, 1);
+                        };
+
+                    } else {
+                        __callback = null;
+                    }
+                     
+                    __rhythmPlayNote(noteBeatValue, blk, turtle, __callback, i * beatValue * 1000);
+                }
+                
+                that._doWait(turtle, (args[0] - 1) * beatValue);
             }
             break;
 
             // &#x1D15D; &#x1D15E; &#x1D15F; &#x1D160; &#x1D161; &#x1D162; &#x1D163; &#x1D164;
+            // deprecated
         case 'wholeNote':
             that._processNote(1, blk, turtle);
             break;
@@ -4185,6 +4378,7 @@ function Logo () {
         case 'sixtyfourthNote':
             that._processNote(64, blk, turtle);
             break;
+
         case 'pickup':
             if (args.length !== 1 || typeof(args[0]) !== 'number') {
                 that.errorMsg(NOINPUTERRORMSG, blk);
@@ -4256,7 +4450,11 @@ function Logo () {
                     var eventName = '__beat_' + args[0] + '_' + turtle + '__';
                     that._setListener(turtle, eventName, __listener);
 
-                    that.beatList[turtle].push(args[0]);
+                    if (args[0] > that.beatsPerMeasure[turtle]) {
+                        that.factorList[turtle].push(args[0]);
+                    } else {
+                        that.beatList[turtle].push(args[0]);
+                    }
                 }
             }
             break;
@@ -4296,12 +4494,12 @@ function Logo () {
 
             // Use the outer most note when nesting to determine the beat.
             if (that.inNoteBlock[turtle].length === 0) {
-                if (that.notesPlayed[turtle] < that.pickup[turtle]) {
+                if (that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1] < that.pickup[turtle]) {
                     var beatValue = 0;
                     var measureValue = 0;
                 } else {
-                    var beatValue = (((that.notesPlayed[turtle] - that.pickup[turtle]) * that.noteValuePerBeat[turtle]) % that.beatsPerMeasure[turtle]) + 1;
-                    var measureValue = Math.floor(((that.notesPlayed[turtle] - that.pickup[turtle]) * that.noteValuePerBeat[turtle]) / that.beatsPerMeasure[turtle]) + 1;
+                    var beatValue = (((that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1] - that.pickup[turtle]) * that.noteValuePerBeat[turtle]) % that.beatsPerMeasure[turtle]) + 1;
+                    var measureValue = Math.floor(((that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1] - that.pickup[turtle]) * that.noteValuePerBeat[turtle]) / that.beatsPerMeasure[turtle]) + 1;
                 }
 
                 that.currentBeat[turtle] = beatValue;
@@ -4314,10 +4512,10 @@ function Logo () {
             // And only trigger from the outer most note when nesting.
             if (that.inNoteBlock[turtle].length === 0) {
                 // Queue any beat actions.
+                // Put the childFlow into the queue before the beat action
+                // so that the beat action is at the end of the FILO.
+                // Note: The offbeat cannot be Beat 1.
                 if (that.beatList[turtle].indexOf(beatValue) !== -1) {
-                    // Put the childFlow into the queue before the beat
-                    // action so that the beat action is at the end of the
-                    // FILO.
                     var queueBlock = new Queue(childFlow, childFlowCount, blk, receivedArg);
                     that.parentFlowQueue[turtle].push(blk);
                     that.turtles.turtleList[turtle].queue.push(queueBlock);
@@ -4325,10 +4523,7 @@ function Logo () {
 
                     var eventName = '__beat_' + beatValue + '_' + turtle + '__';
                     that.stage.dispatchEvent(eventName);
-                } else if (that.beatList[turtle].indexOf('offbeat') !== -1) {
-                    // Put the childFlow into the queue before the beat
-                    // action so that the beat action is at the end of the
-                    // FILO.
+                } else if (beatValue > 1 && that.beatList[turtle].indexOf('offbeat') !== -1) {
                     var queueBlock = new Queue(childFlow, childFlowCount, blk, receivedArg);
                     that.parentFlowQueue[turtle].push(blk);
                     that.turtles.turtleList[turtle].queue.push(queueBlock);
@@ -4337,21 +4532,26 @@ function Logo () {
                     var eventName = '__offbeat_' + turtle + '__';
                     that.stage.dispatchEvent(eventName);
                 }
+
+                var thisBeat = beatValue + that.beatsPerMeasure[turtle] * (that.currentMeasure[turtle] - 1);
+                for (var f = 0; f < that.factorList[turtle].length; f++) {
+                    var factor = thisBeat / that.factorList[turtle][f];
+                    if (factor === Math.floor(factor)) {
+                        var queueBlock = new Queue(childFlow, childFlowCount, blk, receivedArg);
+                        that.parentFlowQueue[turtle].push(blk);
+                        that.turtles.turtleList[turtle].queue.push(queueBlock);
+                        childFlow = null;
+
+                        var eventName = '__beat_' + that.factorList[turtle][f] + '_' + turtle + '__';
+                        that.stage.dispatchEvent(eventName);
+                    }
+                }
             }
 
             // A note can contain multiple pitch blocks to create
             // a chord. The chord is accumuated in these arrays,
             // which are used when we play the note.
-            that.oscList[turtle][blk] = [];
-            that.noteBeat[turtle][blk] = [];
-            that.noteBeatValues[turtle][blk] = [];
-            that.noteValue[turtle][blk] = null;
-            that.notePitches[turtle][blk] = [];
-            that.noteOctaves[turtle][blk] = [];
-            that.noteCents[turtle][blk] = [];
-            that.noteHertz[turtle][blk] = [];
-            that.noteDrums[turtle][blk] = [];
-            that.embeddedGraphics[turtle][blk] = [];
+            that.clearNoteParams(turtle, blk, []);
 
             // Ensure that note duration is positive.
             if (args[0] > 0) {
@@ -4383,6 +4583,14 @@ function Logo () {
                 }
 
                 if (that.inNoteBlock[turtle].length > 0) {
+                    if (that.inNeighbor[turtle].length > 0) {
+                        var neighborNoteValue = that.neighborNoteValue[turtle];
+                        that.neighborArgBeat[turtle].push(that.beatFactor[turtle] * (1 / neighborNoteValue));
+
+                        var nextBeat = (1 / noteBeatValue) - (2 * (that.neighborNoteValue[turtle]));
+                        that.neighborArgCurrentBeat[turtle].push(that.beatFactor[turtle] * (1 / nextBeat));
+                    }
+
                     that._processNote(1 / that.noteValue[turtle][last(that.inNoteBlock[turtle])], last(that.inNoteBlock[turtle]), turtle);
                 }
 
@@ -4411,14 +4619,36 @@ function Logo () {
             that._setListener(turtle, listenerName, __listener);
             break;
         case 'rhythmicdot':
+        case 'rhythmicdot2':
             // Dotting a note will increase its play time by
             // a(2 - 1/2^n)
+            if (that.blocks.blockList[blk].name === 'rhythmicdot') {
+                var arg = 1;
+            } else {
+                if (args[0] == null) {
+                    that.errorMsg(NOINPUTERRORMSG, blk);
+                    var arg = 0;
+                } else {
+                    var arg = args[0];
+                }
+            }
+
             var currentDotFactor = 2 - (1 / Math.pow(2, that.dotCount[turtle]));
             that.beatFactor[turtle] *= currentDotFactor;
-            that.dotCount[turtle] += 1;
+            if (arg >= 0) {
+                that.dotCount[turtle] += arg;
+            } else if (arg === -1) {
+                that.errorMsg(_('An argument of -1 results in a note value of 0.'), blk);
+                console.log('ignoring dot arg of -1');
+                arg = 0;
+            } else {
+                that.dotCount[turtle] += 1 / arg;
+            }
+
             var newDotFactor = 2 - (1 / Math.pow(2, that.dotCount[turtle]));
             that.beatFactor[turtle] /= newDotFactor;
-            childFlow = args[0];
+
+            childFlow = args[1];
             childFlowCount = 1;
 
             var listenerName = '_dot_' + turtle;
@@ -4427,7 +4657,12 @@ function Logo () {
             var __listener = function (event) {
                 var currentDotFactor = 2 - (1 / Math.pow(2, that.dotCount[turtle]));
                 that.beatFactor[turtle] *= currentDotFactor;
-                that.dotCount[turtle] -= 1;
+                if (arg >= 0) {
+                    that.dotCount[turtle] -= arg;
+                } else {
+                    that.dotCount[turtle] -= 1 / arg;
+                }
+
                 var newDotFactor = 2 - (1 / Math.pow(2, that.dotCount[turtle]));
                 that.beatFactor[turtle] /= newDotFactor;
             };
@@ -4454,7 +4689,7 @@ function Logo () {
                 }
 
                 that.instrumentNames[turtle].push(synth);
-                that.synth.loadSynth(synth);
+                that.synth.loadSynth(turtle, synth);
 
                 if (that.synthVolume[turtle][synth] == undefined) {
                     that.synthVolume[turtle][synth] = [DEFAULTVOLUME];
@@ -4651,12 +4886,12 @@ function Logo () {
             that._setListener(turtle, listenerName, __listener);
 
             if (that.inTimbre) {
-                instrumentsEffects[that.timbre.instrumentName]['vibratoActive'] = true;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['vibratoActive'] = true;
                 that.timbre.vibratoEffect.push(blk);
                 that.timbre.vibratoParams.push(last(that.vibratoIntensity[turtle]) * 100);
-                instrumentsEffects[that.timbre.instrumentName]['vibratoIntensity'] = that.vibratoIntensity[turtle];
+                instrumentsEffects[turtle][that.timbre.instrumentName]['vibratoIntensity'] = that.vibratoIntensity[turtle];
                 that.timbre.vibratoParams.push(last(that.vibratoRate[turtle]));
-                instrumentsEffects[that.timbre.instrumentName]['vibratoFrequency'] = rate;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['vibratoFrequency'] = rate;
             }
             break;
         case 'dis':
@@ -4680,10 +4915,10 @@ function Logo () {
             that._setListener(turtle, listenerName, __listener);
 
             if (that.inTimbre) {
-                instrumentsEffects[that.timbre.instrumentName]['distortionActive'] = true;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['distortionActive'] = true;
                 that.timbre.distortionEffect.push(blk);
                 that.timbre.distortionParams.push(last(that.distortionAmount[turtle]) * 100);
-                instrumentsEffects[that.timbre.instrumentName]['distortionAmount'] = distortion;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['distortionAmount'] = distortion;
             }
             break;
         case 'tremolo':
@@ -4712,12 +4947,12 @@ function Logo () {
 
             that._setListener(turtle, listenerName, __listener);
             if (that.inTimbre) {
-                instrumentsEffects[that.timbre.instrumentName]['tremoloActive'] = true;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['tremoloActive'] = true;
                 that.timbre.tremoloEffect.push(blk);
                 that.timbre.tremoloParams.push(last(that.tremoloFrequency[turtle]));
-                instrumentsEffects[that.timbre.instrumentName]['tremoloFrequency'] = frequency;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['tremoloFrequency'] = frequency;
                 that.timbre.tremoloParams.push(last(that.tremoloDepth[turtle]) * 100);
-                instrumentsEffects[that.timbre.instrumentName]['tremoloDepth'] = depth;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['tremoloDepth'] = depth;
             }
             break;
         case 'phaser':
@@ -4743,14 +4978,14 @@ function Logo () {
 
             that._setListener(turtle, listenerName, __listener);
             if (that.inTimbre) {
-                instrumentsEffects[that.timbre.instrumentName]['phaserActive'] = true;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['phaserActive'] = true;
                 that.timbre.phaserEffect.push(blk);
                 that.timbre.phaserParams.push(last(that.rate[turtle]));
-                instrumentsEffects[that.timbre.instrumentName]['rate'] = rate;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['rate'] = rate;
                 that.timbre.phaserParams.push(last(that.octaves[turtle]));
-                instrumentsEffects[that.timbre.instrumentName]['octaves'] = octaves;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['octaves'] = octaves;
                 that.timbre.phaserParams.push(last(that.baseFrequency[turtle]));
-                instrumentsEffects[that.timbre.instrumentName]['baseFrequency'] = baseFrequency;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['baseFrequency'] = baseFrequency;
             }
             break;
         case 'chorus':
@@ -4783,15 +5018,107 @@ function Logo () {
             that._setListener(turtle, listenerName, __listener);
 
             if (that.inTimbre) {
-                instrumentsEffects[that.timbre.instrumentName]['chorusActive'] = true;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['chorusActive'] = true;
                 that.timbre.chorusEffect.push(blk);
                 that.timbre.chorusParams.push(last(that.chorusRate[turtle]));
-                instrumentsEffects[that.timbre.instrumentName]['chorusRate'] = chorusRate;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['chorusRate'] = chorusRate;
                 that.timbre.chorusParams.push(last(that.delayTime[turtle]));
-                instrumentsEffects[that.timbre.instrumentName]['delayTime'] = delayTime;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['delayTime'] = delayTime;
                 that.timbre.chorusParams.push(last(that.chorusDepth[turtle]) * 100);
-                instrumentsEffects[that.timbre.instrumentName]['chorusDepth'] = chorusDepth;
+                instrumentsEffects[turtle][that.timbre.instrumentName]['chorusDepth'] = chorusDepth;
             }
+            break;
+        case 'harmonic2':
+            if (typeof(args[0]) !== 'number' || args[0] < 0) {
+                //.TRANS: partials components in a harmonic series
+                that.errorMsg(_('Partial must be greater than or equal to 0.'));
+                that.stopTurtle = true;
+                break;
+            }
+
+            that.inHarmonic[turtle].push(blk);
+            that.partials[turtle].push([]);
+            var n = that.partials[turtle].length - 1;
+
+            for (var i = 0; i < args[0]; i++) {
+                that.partials[turtle][n].push(0);
+            }
+
+            that.partials[turtle][n].push(1);
+            that.notationBeginHarmonics(turtle);
+
+            childFlow = args[1];
+            childFlowCount = 1;
+
+            var listenerName = '_harmonic_' + turtle + '_' + blk;
+            that._setDispatchBlock(blk, turtle, listenerName);
+
+            var __listener = function (event) {
+                that.inHarmonic[turtle].pop();
+                that.partials[turtle].pop();
+                that.notationEndHarmonics(turtle);
+            };
+
+            that._setListener(turtle, listenerName, __listener);
+            break;
+        case 'harmonic':
+            that.inHarmonic[turtle].push(blk);
+            that.partials[turtle].push([]);
+
+            childFlow = args[0];
+            childFlowCount = 1;
+
+            var listenerName = '_harmonic_' + turtle + '_' + blk;
+            that._setDispatchBlock(blk, turtle, listenerName);
+
+            var __listener = function (event) {
+                that.inHarmonic[turtle].pop();
+                that.partials[turtle].pop();
+            };
+
+            that._setListener(turtle, listenerName, __listener);
+            break;
+        case 'partial':
+            if (typeof(args[0]) !== 'number' || args[0] > 1 || args[0] < 0) {
+                //.TRANS: partials are weighted components in a harmonic series
+                that.errorMsg(_('Partial weight must be between 0 and 1.'));
+                that.stopTurtle = true;
+                break;
+            }
+
+            if (that.inHarmonic[turtle].length > 0) {
+                var n = that.inHarmonic[turtle].length - 1;
+                that.partials[turtle][n].push(args[0]);
+            } else {
+                //.TRANS: partials are weighted components in a harmonic series
+                that.errorMsg(_('Partial block should be used inside of a Weighted-partials block.'));
+            }
+            break;
+        case 'neighbor':  // semi-tone step
+        case 'neighbor2':  // scalar step
+            if (typeof(args[0]) !== 'number' || typeof(args[1]) !== 'number') {
+                that.errorMsg(NANERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            that.inNeighbor[turtle].push(blk);
+            that.neighborStepPitch[turtle].push(args[0]);
+            that.neighborNoteValue[turtle].push(args[1]);
+
+            childFlow = args[2];
+            childFlowCount = 1;
+
+            var listenerName = '_neighbor_' + turtle + '_' + blk;
+            that._setDispatchBlock(blk, turtle, listenerName);
+
+            var __listener = function (event) {
+                that.inNeighbor[turtle].pop();
+                that.neighborStepPitch[turtle].pop();
+                that.neighborNoteValue[turtle].pop();
+            };
+
+            that._setListener(turtle, listenerName, __listener);
             break;
         case 'interval':
             if (typeof(args[0]) !== 'number') {
@@ -4874,10 +5201,10 @@ function Logo () {
         case 'newslur':
         case 'slur':
             if (args.length > 1) {
-                if (that.blocks.blockList[blk].name === 'newslur') {
-                    that.staccato[turtle].push(-1 / args[0]);
-                } else {
+                if (that.blocks.blockList[blk].name === 'slur') {
                     that.staccato[turtle].push(-args[0]);
+                } else {
+                    that.staccato[turtle].push(-1 / args[0]);
                 }
 
                 if (that.justCounting[turtle].length === 0) {
@@ -4900,6 +5227,40 @@ function Logo () {
                 that._setListener(turtle, listenerName, __listener);
             }
             break;
+        case 'glide':
+            // TODO: Duration should be the sum of all the notes (like
+            // in a tie). If we set the synth portamento and use
+            // setNote for all but the first note, it should produce a
+            // glissando.
+            if (args.length > 1) {
+                if (that.blocks.blockList[blk].name === 'glide') {
+                    that.glide[turtle].push(args[0]);
+                }
+
+                if (that.justCounting[turtle].length === 0) {
+                    that.notationBeginSlur(turtle);
+                }
+
+                childFlow = args[1];
+                childFlowCount = 1;
+
+                that.glideOverride[turtle] = that._noteCounter(turtle, childFlow);
+                console.log('length of glide ' + that.glideOverride[turtle]);
+
+                var listenerName = '_glide_' + turtle;
+                that._setDispatchBlock(blk, turtle, listenerName);
+
+                var __listener = function (event) {
+                    if (that.justCounting[turtle].length === 0) {
+                        that.notationEndSlur(turtle);
+                    }
+
+                    that.glide[turtle].pop();
+                };
+
+                that._setListener(turtle, listenerName, __listener);
+            }
+            break;
         case 'drift':
             that.drift[turtle] += 1;
             childFlow = args[0];
@@ -4917,8 +5278,10 @@ function Logo () {
         case 'tie':
             // Tie notes together in pairs.
             that.tie[turtle] = true;
-            that.tieNote[turtle] = [];
+            that.tieNotePitches[turtle] = [];
+            that.tieNoteExtras[turtle] = [];
             that.tieCarryOver[turtle] = 0;
+            that.tieFirstDrums[turtle] = [];
             childFlow = args[0];
             childFlowCount = 1;
 
@@ -4927,20 +5290,65 @@ function Logo () {
 
             var __listener = function (event) {
                 that.tie[turtle] = false;
+
                 // If tieCarryOver > 0, we have one more note to
                 // play.
                 if (that.tieCarryOver[turtle] > 0) {
                     if (that.justCounting[turtle].length === 0) {
-                        // Remove the note from the Lilypond list.
-                        for (var i = 0; i < that.notePitches[turtle][last(that.inNoteBlock[turtle])].length; i++) {
-                            that.notationRemoveTie(turtle);
+                        var lastNote = last(that.inNoteBlock[turtle]);
+                        if (lastNote != null && lastNote in that.notePitches[turtle]) {
+                            // Remove the note from the Lilypond list.
+                            for (var i = 0; i < that.notePitches[turtle][last(that.inNoteBlock[turtle])].length; i++) {
+                                that.notationRemoveTie(turtle);
+                            }
                         }
                     }
+
+                    // Restore the extra note and play it
+                    var saveBlk = that.tieNoteExtras[turtle][0];
                     var noteValue = that.tieCarryOver[turtle];
                     that.tieCarryOver[turtle] = 0;
-                    that._processNote(noteValue, blk, turtle);
+
+                    that.inNoteBlock[turtle].push(saveBlk);
+
+                    that.notePitches[turtle][saveBlk] = [];
+                    that.noteOctaves[turtle][saveBlk] = [];
+                    that.noteCents[turtle][saveBlk] = [];
+                    that.noteHertz[turtle][saveBlk] = [];
+                    for (var i = 0; i < that.tieNotePitches[turtle].length; i++) {
+                        that.notePitches[turtle][saveBlk].push(that.tieNotePitches[turtle][i][0]);
+                        that.noteOctaves[turtle][saveBlk].push(that.tieNotePitches[turtle][i][1]);
+                        that.noteCents[turtle][saveBlk].push(that.tieNotePitches[turtle][i][2]);
+                        that.noteHertz[turtle][saveBlk].push(that.tieNotePitches[turtle][i][3]);
+                    }
+
+                    that.oscList[turtle][saveBlk] = that.tieNoteExtras[turtle][1];
+                    that.noteBeat[turtle][saveBlk] = that.tieNoteExtras[turtle][2];
+                    that.noteBeatValues[turtle][saveBlk] = that.tieNoteExtras[turtle][3];
+                    that.noteDrums[turtle][saveBlk] = that.tieNoteExtras[turtle][4];
+                    // Graphics will have already been rendered.
+                    that.embeddedGraphics[turtle][saveBlk] = [];
+
+                    that._processNote(noteValue, saveBlk, turtle);
+
+                    that.inNoteBlock[turtle].pop();
+
+                    delete that.notePitches[turtle][saveBlk];
+                    delete that.noteOctaves[turtle][saveBlk];
+                    delete that.noteCents[turtle][saveBlk];
+                    delete that.noteHertz[turtle][saveBlk];
+                    delete that.oscList[turtle][saveBlk];
+                    delete that.noteBeat[turtle][saveBlk];
+                    delete that.noteBeatValues[turtle][saveBlk];
+                    delete that.noteDrums[turtle][saveBlk];
+                    delete that.embeddedGraphics[turtle][saveBlk];
+
+                    // Remove duplicate note
+                    that.notationStaging[turtle].pop();
                 }
-                that.tieNote[turtle] = [];
+
+                that.tieNotePitches[turtle] = [];
+                that.tieNoteExtras[turtle] = [];
             };
 
             that._setListener(turtle, listenerName, __listener);
@@ -4950,14 +5358,20 @@ function Logo () {
         case 'swing':
             // Grab a bit from the next note to give to the current note.
             if (that.blocks.blockList[blk].name === 'newswing2') {
-                that.swing[turtle].push(1 / args[0]);
-                that.swingTarget[turtle].push(1 / args[1]);
+                if (that.suppressOutput[turtle]) {
+                    that.notationSwing(turtle);
+                } else {
+                    that.swing[turtle].push(1 / args[0]);
+                    that.swingTarget[turtle].push(1 / args[1]);
+                }
                 childFlow = args[2];
             } else if (that.blocks.blockList[blk].name === 'newswing') {
+                // deprecated
                 that.swing[turtle].push(1 / args[0]);
                 that.swingTarget[turtle].push(null);
                 childFlow = args[1];
             } else {
+                // deprecated
                 that.swing[turtle].push(args[0]);
                 that.swingTarget[turtle].push(null);
                 childFlow = args[1];
@@ -4970,8 +5384,11 @@ function Logo () {
             that._setDispatchBlock(blk, turtle, listenerName);
 
             var __listener = function (event) {
-                that.swingTarget[turtle].pop();
-                that.swing[turtle].pop();
+                if (!that.suppressOutput[turtle]) {
+                    that.swingTarget[turtle].pop();
+                    that.swing[turtle].pop();
+                }
+
                 that.swingCarryOver[turtle] = 0;
             };
 
@@ -5172,6 +5589,11 @@ function Logo () {
 
             that._setListener(turtle, listenerName, __listener);
             break;
+        case 'register':
+            if (typeof(args[0]) === 'number') {
+                that.register[turtle] = Math.floor(args[0]);
+            }
+            break;
         case 'settransposition':
             var transValue = args[0];
             if (!(that.invertList[turtle].length === 0)) {
@@ -5199,6 +5621,7 @@ function Logo () {
 
             that._setListener(turtle, listenerName, __listener);
             break;
+            // deprecated
         case 'sharp':
             if (!(that.invertList[turtle].length === 0)) {
                 that.transposition[turtle] -= 1;
@@ -5222,6 +5645,7 @@ function Logo () {
 
             that._setListener(turtle, listenerName, __listener);
             break;
+            // deprecated
         case 'flat':
             if (!(that.invertList[turtle].length === 0)) {
                 that.transposition[turtle] += 1;
@@ -5240,6 +5664,46 @@ function Logo () {
                     that.transposition[turtle] -= 1;
                 } else {
                     that.transposition[turtle] += 1;
+                }
+            };
+
+            that._setListener(turtle, listenerName, __listener);
+            break;
+        case 'accidental':
+            var i = ACCIDENTALNAMES.indexOf(args[0]);
+            if (i === -1) {
+                switch (args[0]) {
+                case _('sharp'):
+                    value = 1;
+                    break;
+                case _('flat'):
+                    value = -1;
+                    break;
+                default:
+                    value = 0;
+                    break;
+                }
+            } else {
+                value = ACCIDENTALVALUES[i];
+            }
+
+            if (!(that.invertList[turtle].length === 0)) {
+                that.transposition[turtle] -= value;
+            } else {
+                that.transposition[turtle] += value;
+            }
+
+            childFlow = args[1];
+            childFlowCount = 1;
+
+            var listenerName = '_accidental_' + turtle + '_' + blk;
+            that._setDispatchBlock(blk, turtle, listenerName);
+
+            var __listener = function (event) {
+                if (!(that.invertList[turtle].length === 0)) {
+                    that.transposition[turtle] += value;
+                } else {
+                    that.transposition[turtle] -= value;
                 }
             };
 
@@ -5264,7 +5728,7 @@ function Logo () {
                     }
 
                     if (!this.suppressOutput[turtle]) {
-                        that._setSynthVolume(synth, newVolume);
+                        that._setSynthVolume(turtle, synth, newVolume);
                     }
                 }
 
@@ -5285,7 +5749,7 @@ function Logo () {
                 var __listener = function (event) {
                     for (var synth in that.synthVolume[turtle]) {
                         that.synthVolume[turtle][synth].pop();
-                        that._setSynthVolume(synth, last(that.synthVolume[turtle][synth]));
+                        that._setSynthVolume(turtle, synth, last(that.synthVolume[turtle][synth]));
                         that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'setsynthvolume', synth, last(that.synthVolume[turtle][synth])]);
                     }
 
@@ -5390,7 +5854,7 @@ function Logo () {
 
                     that.synthVolume[turtle][synth].push(args[1]);
                     if (!this.suppressOutput[turtle]) {
-                        that._setSynthVolume(synth, args[1]);
+                        that._setSynthVolume(turtle, synth, args[1]);
                     }
 
                     if (that.justCounting[turtle].length === 0) {
@@ -5445,7 +5909,7 @@ function Logo () {
 
                 that.synthVolume[turtle][synth].push(args[1]);
                 if (!this.suppressOutput[turtle]) {
-                    that._setSynthVolume(synth, args[1]);
+                    that._setSynthVolume(turtle, synth, args[1]);
                 }
 
                 if (that.justCounting[turtle].length === 0) {
@@ -5462,7 +5926,7 @@ function Logo () {
                     that.synthVolume[turtle][synth].pop();
                     // Restore previous volume.
                     if (that.justCounting[turtle].length === 0 && that.synthVolume[turtle][synth].length > 0) {
-                        that._setSynthVolume(synth, last(that.synthVolume[turtle][synth]));
+                        that._setSynthVolume(turtle, synth, last(that.synthVolume[turtle][synth]));
                         that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'setsynthvolume', synth, last(that.synthVolume[turtle][synth])]);
                     }
                 };
@@ -5516,10 +5980,10 @@ function Logo () {
                 that.stopTurtle = true;
             } else if (that.justMeasuring[turtle].length > 0) {
                 // TODO: account for cents
-                var noteObj = getNote(note, octave, 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                var noteObj = getNote(note, octave, 0, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
 
                 var n = that.justMeasuring[turtle].length;
-                var pitchNumber = pitchToNumber(noteObj[0], noteObj[1], that.keySignature[turtle]) - that.pitchNumberOffset;
+                var pitchNumber = pitchToNumber(noteObj[0], noteObj[1], that.keySignature[turtle]) - that.pitchNumberOffset[turtle];
                 if (that.firstPitch[turtle].length < n) {
                     that.firstPitch[turtle].push(pitchNumber);
                 } else if (that.lastPitch[turtle].length < n) {
@@ -5536,7 +6000,8 @@ function Logo () {
             } else if (that.inNoteBlock[turtle].length > 0) {
 
                 function addPitch(note, octave, cents, frequency, direction) {
-                    var noteObj = getNote(note, octave, transposition, that.keySignature[turtle], that.movable[turtle], direction, that.errorMsg);
+                    t = transposition + that.register[turtle] * 12;
+                    var noteObj = getNote(note, octave, t, that.keySignature[turtle], that.moveable[turtle], direction, that.errorMsg);
                     if (that.drumStyle[turtle].length > 0) {
                         var drumname = last(that.drumStyle[turtle]);
                         that.pitchDrumTable[turtle][noteObj[0] + noteObj[1]] = drumname;
@@ -5549,20 +6014,7 @@ function Logo () {
                 }
 
                 if (!(that.invertList[turtle].length === 0)) {
-                    var len = that.invertList[turtle].length;
-                    var noteObj1 = getNote(note, octave, 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                    var num1 = getNumber(noteObj1[0], noteObj1[1]);
-                    for (var i = len - 1; i > -1; i--) {
-                        var noteObj2 = getNote(that.invertList[turtle][i][0], that.invertList[turtle][i][1], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-                        var num2 = getNumber(noteObj2[0], noteObj2[1]);
-                        // var a = getNumNote(num1, 0);
-                        if (that.invertList[turtle][i][2] === 'even') {
-                            delta += num2 - num1;
-                        } else {  // odd
-                            delta += num2 - num1 + 0.5;
-                        }
-                        num1 += 2 * delta;
-                    }
+                    delta += that._calculateInvert(turtle, note, octave);
                 }
 
                 var noteObj1 = addPitch(note, octave, cents, args[0]);
@@ -5570,14 +6022,14 @@ function Logo () {
                 if (turtle in that.intervals && that.intervals[turtle].length > 0) {
                     for (var i = 0; i < that.intervals[turtle].length; i++) {
                         var ii = getInterval(that.intervals[turtle][i], that.keySignature[turtle], noteObj1[0]);
-                        var noteObj2 = getNote(noteObj1[0], noteObj1[1], ii, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                        var noteObj2 = getNote(noteObj1[0], noteObj1[1], ii, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                         addPitch(noteObj2[0], noteObj2[1], cents, 0);
                     }
                 }
 
                 if (turtle in that.semitoneIntervals && that.semitoneIntervals[turtle].length > 0) {
                     for (var i = 0; i < that.semitoneIntervals[turtle].length; i++) {
-                        var noteObj2 = getNote(noteObj1[0], noteObj1[1], that.semitoneIntervals[turtle][i][0], that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                        var noteObj2 = getNote(noteObj1[0], noteObj1[1], that.semitoneIntervals[turtle][i][0], that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                         addPitch(noteObj2[0], noteObj2[1], cents, 0, that.semitoneIntervals[turtle][i][1]);
                     }
                 }
@@ -5605,6 +6057,8 @@ function Logo () {
                 if (flag === 0) {
                     that.pitchStaircase.Stairs.push([note[0], note[1], parseFloat(frequency)]);
                 }
+
+                that.pitchStaircase.stairPitchBlocks.push(blk);
             } else if (that.inPitchSlider) {
                 that.pitchSlider.Sliders.push([args[0], 0, 0]);
             } else {
@@ -5657,16 +6111,17 @@ function Logo () {
             that._runFromBlock(that, turtle, args[0]);
             break;
         case 'stuplet':
-            if (that.inMatrix) {
+            var noteBeatValue = (1 / args[1]) * that.beatFactor[turtle];
+            if (that.inMatrix || that.tuplet) {
                 that.pitchTimeMatrix.addColBlock(blk, args[0]);
-                var noteBeatValue = (1 / args[1]) * that.beatFactor[turtle];
-                if (that.tuplet === true) {
+                if (that.tuplet) {
                     // The simple-tuplet block is inside.
                     for (var i = 0; i < args[0]; i++) {
                         if (!that.addingNotesToTuplet) {
                             that.tupletRhythms.push(['notes', 0]);
                             that.addingNotesToTuplet = true;
                         }
+
                         that._processNote(noteBeatValue, blk, turtle);
                     }
                 } else {
@@ -5677,8 +6132,50 @@ function Logo () {
                     }
                     that.tupletRhythms.push(obj);
                 }
+            } else {
+                // Play rhythm block as if it were a drum.
+                if (that.drumStyle[turtle].length > 0) {
+                    that.clearNoteParams(turtle, blk, that.drumStyle[turtle]);
+                } else {
+                    that.clearNoteParams(turtle, blk, [DEFAULTDRUM]);
+                }
+
+                that.inNoteBlock[turtle].push(blk);
+
+                if (that.bpm[turtle].length > 0) {
+                    var bpmFactor = TONEBPM / last(that.bpm[turtle]);
+                } else {
+                    var bpmFactor = TONEBPM / that._masterBPM;
+                }
+
+                var beatValue = (bpmFactor / noteBeatValue) / args[0];
+
+                __rhythmPlayNote = function (thisBeat, blk, turtle, callback, timeout) {
+                    setTimeout(function () {
+                        that._processNote(thisBeat, blk, turtle, callback);
+                    }, timeout);
+                };
+
+                for (var i = 0; i < args[0]; i++) {
+                    if (i === args[0] - 1) {
+
+                        __callback = function () {
+                            delete that.noteDrums[turtle][blk];
+                            var j = that.inNoteBlock[turtle].indexOf(blk);
+                            that.inNoteBlock[turtle].splice(j, 1);
+                        };
+
+                    } else {
+                        __callback = null;
+                    }
+                     
+                    __rhythmPlayNote(noteBeatValue * args[0], blk, turtle, __callback, i * beatValue * 1000);
+                }
+
+                that._doWait(turtle, (args[0] - 1) * beatValue);
             }
             break;
+            // deprecated
         case 'tuplet2':
         case 'tuplet3':
             if (that.inMatrix) {
@@ -5687,11 +6184,11 @@ function Logo () {
                 } else {
                     that.tupletParams.push([args[0], args[1] * that.beatFactor[turtle]]);
                 }
+
                 that.tuplet = true;
                 that.addingNotesToTuplet = false;
-            } else {
-                that.errorMsg(_('Tuplet Block: Did you mean to use a Matrix block?'), blk);
             }
+
             childFlow = args[2];
             childFlowCount = 1;
 
@@ -5709,13 +6206,14 @@ function Logo () {
             that._setListener(turtle, listenerName, __listener);
             break;
         case 'tuplet4':
-            if (that.inMatrix) {
-                that.tupletParams.push([1, (1 / args[0]) * that.beatFactor[turtle]]);
-                that.tuplet = true;
-                that.addingNotesToTuplet = false;
-            } else {
-                that.errorMsg(_('Tuplet Block: Did you mean to use a Matrix block?'), blk);
+            if (!that.inMatrix) {
+                that.tupletRhythms = [];
+                that.tupletParams = [];
             }
+
+            that.tuplet = true;
+            that.addingNotesToTuplet = false;
+            that.tupletParams.push([1, (1 / args[0]) * that.beatFactor[turtle]]);
             childFlow = args[1];
             childFlowCount = 1;
 
@@ -5723,14 +6221,239 @@ function Logo () {
             that._setDispatchBlock(blk, turtle, listenerName);
 
             var __listener = function (event) {
-                if (that.inMatrix) {
-                    that.tuplet = false;
-                    that.addingNotesToTuplet = false;
-                } else {
+                that.tuplet = false;
+                that.addingNotesToTuplet = false;
+                if (!that.inMatrix) {
+                    var beatValues = [];
+
+                    for (var i = 0; i < that.tupletRhythms.length; i++) {
+                        var tupletParam = [that.tupletParams[that.tupletRhythms[i][1]]];
+                        tupletParam.push([]);
+                        var tupletBeats = 0;
+                        for (var j = 2; j < that.tupletRhythms[i].length; j++) {
+                            tupletBeats += (1 / that.tupletRhythms[i][j]);
+                            tupletParam[1].push(that.tupletRhythms[i][j]);
+                        }
+
+                        var factor = tupletParam[0][0] / (tupletParam[0][1] * tupletBeats);
+                        for (var j = 2; j < that.tupletRhythms[i].length; j++) {
+                            beatValues.push(that.tupletRhythms[i][j] / factor);
+                        }
+                    }
+
+                    // Play rhythm block as if it were a drum.
+                    if (that.drumStyle[turtle].length > 0) {
+                        that.clearNoteParams(turtle, blk, that.drumStyle[turtle]);
+                    } else {
+                        that.clearNoteParams(turtle, blk, [DEFAULTDRUM]);
+                    }
+
+                    that.inNoteBlock[turtle].push(blk);
+
+                    if (that.bpm[turtle].length > 0) {
+                        var bpmFactor = TONEBPM / last(that.bpm[turtle]);
+                    } else {
+                        var bpmFactor = TONEBPM / that._masterBPM;
+                    }
+
+                    var totalBeats = 0;
+
+                    __tupletPlayNote = function (thisBeat, blk, turtle, callback, timeout) {
+                        setTimeout(function () {
+                            that._processNote(thisBeat, blk, turtle, callback);
+                        }, timeout);
+                    };
+
+                    var timeout = 0;
+                    for (var i = 0; i < beatValues.length; i++) {
+                        var thisBeat = beatValues[i];
+                        var beatValue = bpmFactor / thisBeat;
+
+                        if (i === beatValues.length - 1) {
+
+                            __callback = function () {
+                                delete that.noteDrums[turtle][blk];
+                                var j = that.inNoteBlock[turtle].indexOf(blk);
+                                that.inNoteBlock[turtle].splice(j, 1);
+                            };
+
+                        } else {
+                            __callback = null;
+                        }
+
+                        __tupletPlayNote(thisBeat, blk, turtle, __callback, timeout);
+
+                        timeout += beatValue * 1000;
+                        totalBeats += beatValue
+                    }
+
+                    that._doWait(turtle, totalBeats - beatValue);
                 }
             };
 
             that._setListener(turtle, listenerName, __listener);
+            break;
+        case 'deleteblock':
+            if (args.length < 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            if (args[0] < 0 || args[0] > that.blocks.blockList.length - 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            // Is the block already in the trash?
+            if (that.blocks.blockList[args[0]].trash) {
+                break;
+            }
+
+            // Disconnect the block.
+            var c = that.blocks.blockList[args[0]].connections[0];
+            that.blocks.blockList[args[0]].connections[0] = null;
+            if (c !== null) {
+                for (var i = 0; i < that.blocks.blockList[c].connections.length; i++) {
+                    if (that.blocks.blockList[c].connections[i] === args[0]) {
+                        that.blocks.blockList[c].connections[i] = null;
+                    }
+                }
+            }
+
+            // Send it to the trash.
+            that.blocks.sendStackToTrash(that.blocks.blockList[args[0]]);
+
+            // And adjust the docs of the former connection
+            that.blocks.adjustDocks(c, true);
+            break;
+        case 'moveblock':
+            if (args.length < 3) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            if (args[0] < 0 || args[0] > that.blocks.blockList.length - 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            var x = that.turtles.turtleX2screenX(args[1]);
+            var y = that.turtles.turtleY2screenY(args[2]);
+            that.blocks.moveBlock(args[0], x, y);
+            break;
+        case 'runblock':
+            if (args.length < 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            if (args[0] < 0 || args[0] > that.blocks.blockList.length - 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            childFlow = args[0];
+            childFlowCount = 1;
+            break;
+        case 'dockblock':
+            if (args.length < 3) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            if (args[0] < 0 || args[0] > that.blocks.blockList.length - 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            if (args[0] === args[2]) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            if (args[2] < 0 || args[2] > that.blocks.blockList.length - 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            if (args[1] < 1 || args[1] > that.blocks.blockList[args[0]].connections.length - 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            // Make sure there is not another block already connected.
+            if (args[1] === -1) {
+                // Find the last connection.
+                args[1] = that.blocks.blockList[args[0]].connections.length - 1;
+            }
+
+            var c = that.blocks.blockList[args[0]].connections[args[1]];
+            if (c !== null) {
+                if (that.blocks.blockList[c].name === 'hidden') {
+                    // Dock to the hidden block.
+                    args[0] = c;
+                    args[1] = 1;
+                } else {
+                    // Or disconnection the old connection.
+                    for (var i = 0; i < that.blocks.blockList[c].connections.length; i++) {
+                        if (that.blocks.blockList[c].connections[i] === args[0]) {
+                            that.blocks.blockList[c].connections[i] = null;
+                            break;
+                        }
+                    }
+
+                    that.blocks.blockList[args[0]].connections[args][1] = null;
+                }
+            }
+
+            that.blocks.blockList[args[0]].connections[args[1]] = args[2];
+            that.blocks.blockList[args[2]].connections[0] = args[0];
+
+            that.blocks.adjustDocks(args[0], true);
+            break;
+        case 'openpalette':
+            if (args.length < 1) {
+                that.errorMsg(NOINPUTERRORMSG, blk);
+                that.stopTurtle = true;
+                break;
+            }
+
+            for (var p in that.blocks.palettes.dict) {
+                if (_(that.blocks.palettes.dict[p].name) === args[0].toLowerCase()) {
+                    that.blocks.palettes.hide();
+                    that.blocks.palettes.dict[p].show();
+                    that.blocks.palettes.show();
+                    break;
+                }
+            }
+            break;
+        case 'setxyturtle':
+            var targetTurtle = that._getTargetTurtle(args);
+            if (targetTurtle == null) {
+                if (_THIS_IS_MUSIC_BLOCKS_) {
+                    that.errorMsg(_('Cannot find mouse') + ' ' + args[0], blk)
+                } else {
+                    that.errorMsg(_('Cannot find turtle') + ' ' + args[0], blk)
+                }
+            } else if (args.length === 3) {
+                if (typeof(args[1]) === 'string' || typeof(args[2]) === 'string') {
+                    that.errorMsg(NANERRORMSG, blk);
+                    that.stopTurtle = true;
+                } else {
+                    that.turtles.turtleList[targetTurtle].doSetXY(args[1], args[2]);
+                }
+            }
             break;
         default:
             if (that.blocks.blockList[blk].name in that.evalFlowDict) {
@@ -5888,7 +6611,6 @@ function Logo () {
                 if (!that.turtles.running() && queueStart === 0 && that.justCounting[turtle].length === 0) {
                     if (that.runningLilypond) {
                         console.log('saving lilypond output:');
-                        console.log(that.notationStaging);
                         var filename = docById('fileName').value;
                         if (filename == undefined || filename.length === 0) {
                             filename = _('My Project') + '.ly';
@@ -5898,11 +6620,14 @@ function Logo () {
                         that.runningLilypond = false;
                     } else if (that.runningAbc) {
                         console.log('saving abc output:');
-                        console.log(that.notationStaging);
                         saveAbcOutput(that, _('My Project') + '.abc');
                         that.runningAbc = false;
                     } else if (that.suppressOutput[turtle]) {
                         console.log('finishing compiling');
+                        if (!that.recording) {
+                            that.errorMsg(_('Playback is ready.')); 
+                        }
+
                         that.setPlaybackStatus();
                         that.compiling = false;
                         for (t in that.turtles.turtleList) {
@@ -5920,12 +6645,12 @@ function Logo () {
 
                     // Give the last note time to play.
                     setTimeout(function () {
-                        if (that.suppressOutput[turtle]&&that.recording) {
+                        if (that.suppressOutput[turtle] && that.recording) {
                             that.suppressOutput[turtle] = false;
                             that.checkingCompletionState = false;
                             that.saveLocally();
-                            that.playback(-1,true);
-                            that.recording = false;
+                            that.playback(-1, true);
+                            // that.recording = false;
                         } else {
                             that.suppressOutput[turtle] = false;
                             that.checkingCompletionState = false;
@@ -5971,7 +6696,7 @@ function Logo () {
                 }
 
                 // Make sure the turtles are on top.
-                var i = that.stage.getNumChildren() - 1;
+                var i = that.stage.children.length - 1;
                 that.stage.setChildIndex(that.turtles.turtleList[turtle].container, i);
                 that.refreshCanvas();
             }
@@ -5982,6 +6707,16 @@ function Logo () {
 
             if (!that.turtles.running() && queueStart === 0) {
                 // TODO: Enable playback button here
+                if (that.showBlocksAfterRun) {
+                    // If this is a status stack, not run showBlocks.
+                    if (blk !== null && that.blocks.blockList[blk].connections[0] !== null && that.blocks.blockList[that.blocks.blockList[blk].connections[0]].name === 'status') {
+                        console.log('running status block');
+                    } else {
+                        that.showBlocks();
+                        that.showBlocksAfterRun = false;
+                    }
+                }
+
                 console.log('fin');
             }
         }
@@ -5999,7 +6734,7 @@ function Logo () {
         }
     };
 
-    this._setSynthVolume = function (synth, volume) {
+    this._setSynthVolume = function (turtle, synth, volume) {
         if (volume > 100) {
             volume = 100;
         } else if (volume < 0) {
@@ -6012,16 +6747,16 @@ function Logo () {
             case 'noise2':
             case 'noise3':
                 // Noise is very very loud.
-                this.synth.setVolume(synth, volume / 25);
+                this.synth.setVolume(turtle, synth, volume / 25);
                 break;
             default:
-                this.synth.setVolume(synth, volume);
+                this.synth.setVolume(turtle, synth, volume);
                 break;
             }
         }
     };
 
-    this._processNote = function (noteValue, blk, turtle) {
+    this._processNote = function (noteValue, blk, turtle, callback) {
         if (this.bpm[turtle].length > 0) {
             var bpmFactor = TONEBPM / last(this.bpm[turtle]);
         } else {
@@ -6051,19 +6786,25 @@ function Logo () {
         var chorusRate = 0;
         var delayTime = 0;
         var chorusDepth = 0;
+        var partials = [];
+        var neighborArgNote1 = [];
+        var neighborArgNote2 = [];
+        var neighborArgBeat = 0;
+        var neighborArgCurrentBeat = 0;
         var doVibrato = false;
         var doDistortion = false;
         var doTremolo = false;
         var doPhaser = false;
         var doChorus = false;
+        var doNeighbor = false;
         var filters = null;
 
         // Apply any effects and filters associated with a custom timbre.
         if (this.inSetTimbre[turtle] && (turtle in this.instrumentNames) && last(this.instrumentNames[turtle])) {
             var name = last(this.instrumentNames[turtle]);
 
-            if (name in instrumentsEffects) {
-                var timbreEffects = instrumentsEffects[name];
+            if (name in instrumentsEffects[turtle]) {
+                var timbreEffects = instrumentsEffects[turtle][name];
 
                 if (timbreEffects['vibratoActive']) {
                     vibratoRate = timbreEffects['vibratoRate'];
@@ -6097,8 +6838,8 @@ function Logo () {
                 }
             }
 
-            if (name in instrumentsFilters) {
-                filters = instrumentsFilters[name];
+            if (name in instrumentsFilters[turtle]) {
+                filters = instrumentsFilters[turtle][name];
             }
         }
 
@@ -6134,12 +6875,34 @@ function Logo () {
             doChorus = true;
         }
 
+        partials = [1];
+        if (this.inHarmonic[turtle].length > 0) {
+            if (partials.length === 0) {
+                //.TRANS: partials are weighted components in a harmonic series
+                this.errorMsg(_('You must have at least one Partial block inside of a Weighted-partial block'));
+            } else {
+                partials = last(this.partials[turtle]);
+            }
+        }
+
+        if (this.inNeighbor[turtle].length > 0) {
+            var len = this.neighborArgNote1[turtle].length;
+            for (var i = 0; i < len; i++) {
+                neighborArgNote1.push(this.neighborArgNote1[turtle].pop());
+                neighborArgNote2.push(this.neighborArgNote2[turtle].pop());
+            }
+
+            neighborArgBeat = bpmFactor / last(this.neighborArgBeat[turtle]);
+            neighborArgCurrentBeat = bpmFactor / last(this.neighborArgCurrentBeat[turtle]);
+            doNeighbor = true;
+        }
+
         var carry = 0;
 
         if (this.inCrescendo[turtle].length > 0 && this.crescendoDelta[turtle].length === 0) {
             this.inCrescendo[turtle].pop();
             for (var synth in this.synthVolume[turtle]) {
-                this._setSynthVolume('default', last(this.synthVolume[turtle][synth]));
+                this._setSynthVolume(turtle, 'default', last(this.synthVolume[turtle][synth]));
                 this.playbackQueue[turtle].push([this.previousTurtleTime[turtle], 'setsynthvolume', synth, last(this.synthVolume[turtle][synth])]);
             }
         } else if (this.crescendoDelta[turtle].length > 0) {
@@ -6153,15 +6916,17 @@ function Logo () {
                 console.log(synth + '= ' + this.synthVolume[turtle][synth][len - 1]);
                 this.playbackQueue[turtle].push([this.previousTurtleTime[turtle], 'setsynthvolume', synth, last(this.synthVolume[turtle][synth])]);
                 if (!this.suppressOutput[turtle]) {
-                    this._setSynthVolume(synth, last(this.synthVolume[turtle][synth]));
+                    this._setSynthVolume(turtle, synth, last(this.synthVolume[turtle][synth]));
                 }
             }
         }
 
         if (this.inTimbre) {
-            var noteObj = getNote(this.notePitches[turtle][last(this.inNoteBlock[turtle])][0], this.noteOctaves[turtle][last(this.inNoteBlock[turtle])][0], 0, this.keySignature[turtle], that.movable[turtle], null, this.errorMsg);
+            var noteObj = getNote(this.notePitches[turtle][last(this.inNoteBlock[turtle])][0], this.noteOctaves[turtle][last(this.inNoteBlock[turtle])][0], 0, this.keySignature[turtle], this.moveable[turtle], null, this.errorMsg);
             this.timbre.notesToPlay.push([noteObj[0] + noteObj[1], 1 / noteBeatValue]);
-        } else if (this.inMatrix) {
+            this.previousNotePlayed[turtle] = this.lastNotePlayed[turtle];
+            this.lastNotePlayed[turtle] = [noteObj[0] + noteObj[1], noteBeatValue];
+        } else if (this.inMatrix || this.tuplet) {
             if (this.inNoteBlock[turtle].length > 0) {
                 this.pitchTimeMatrix.addColBlock(blk, 1);
                 for (var i = 0; i < this.pitchBlocks.length; i++) {
@@ -6174,7 +6939,7 @@ function Logo () {
             }
 
             noteBeatValue *= this.beatFactor[turtle];
-            if (this.tuplet === true) {
+            if (this.tuplet) {
                 if (this.addingNotesToTuplet) {
                     var i = this.tupletRhythms.length - 1;
                     this.tupletRhythms[i].push(noteBeatValue);
@@ -6199,91 +6964,142 @@ function Logo () {
             var elapsedTime = (d.getTime() - this.firstNoteTime) / 1000;
             if (this.drift[turtle] === 0) {
                 // How far behind is this turtle lagging?
-                var turtleLag = elapsedTime - this.turtleTime[turtle];
+                var turtleLag = Math.max(elapsedTime - this.turtleTime[turtle], 0);
             } else {
                 // When we are "drifting", we don't bother with lag.
                 var turtleLag = 0;
             }
 
-            // If we are in a tie, depending upon parity, we either
-            // add the duration from the previous note to the current
-            // note, or we cache the duration and set the wait to
-            // zero. FIXME: Will not work when using dup and skip.
+            // Delay running graphics from second note in tie.
             if (this.tie[turtle]) {
-                // We need to check to see if we are tying together
-                // similar notes.
+                var tieDelay = this.tieCarryOver[turtle];
+            } else {
+                var tieDelay = 0;
+            }
+
+            // If we are in a tie, depending upon parity, we either
+            // add the duration from the prvious note to the current
+            // note, or we cache the duration and set the wait to
+            // zero. TESTME: May not work when using dup and skip.
+            if (this.tie[turtle]) {
+                var saveBlk = last(this.inNoteBlock[turtle]);
+
                 if (this.tieCarryOver[turtle] > 0) {
+                    // We need to check to see if we are tying together
+                    // similar notes.
+
                     var match = true;
-                    if (this.tieNote[turtle].length !== this.notePitches[turtle][last(this.inNoteBlock[turtle])].length) {
+                    if (this.tieNotePitches[turtle].length !== this.notePitches[turtle][last(this.inNoteBlock[turtle])].length) {
                         match = false;
                     } else {
-                        for (var i = 0; i < this.tieNote[turtle].length; i++) {
-                            if (this.tieNote[turtle][i][0] != this.notePitches[turtle][last(this.inNoteBlock[turtle])][i]) {
+                        // FIXME: This check assumes that the order of
+                        // the pitch blocks in a chord are the same.
+                        for (var i = 0; i < this.tieNotePitches[turtle].length; i++) {
+                            if (this.tieNotePitches[turtle][i][0] != this.notePitches[turtle][last(this.inNoteBlock[turtle])][i]) {
                                 match = false;
                                 break;
                             }
 
-                            if (this.tieNote[turtle][i][1] != this.noteOctaves[turtle][last(this.inNoteBlock[turtle])][i]) {
+                            if (this.tieNotePitches[turtle][i][1] != this.noteOctaves[turtle][last(this.inNoteBlock[turtle])][i]) {
                                 match = false;
                                 break;
                             }
                         }
                     }
+
                     if (!match) {
-                        var tmpBeatValue = this.tieCarryOver[turtle];
-                        this.tieCarryOver[turtle] = 0;
-                        this.tie[turtle] = false;
+                        // If we don't have a match, then we need to
+                        // play the previous note.
+                        this.errorMsg(_('You can only tie notes of the same pitch. Did you mean to use slur?'), saveBlk);
 
                         // Save the current note.
-                        var saveNote = [];
-                        for (var i = 0; i < this.notePitches[turtle][last(this.inNoteBlock[turtle])].length; i++) {
-                            saveNote.push([this.notePitches[turtle][last(this.inNoteBlock[turtle])][i], this.noteOctaves[turtle][last(this.inNoteBlock[turtle])][i], this.noteCents[turtle][last(this.inNoteBlock[turtle])][i], this.noteHertz[turtle][last(this.inNoteBlock[turtle])][i]]);
+                        var saveCurrentNote = [];
+                        var saveCurrentExtras = [];
+                        for (var i = 0; i < this.notePitches[turtle][last(this.inNoteBlock[turtle])].length; i++)
+                        {
+                            saveCurrentNote.push([this.notePitches[turtle][saveBlk][i], this.noteOctaves[turtle][saveBlk][i], this.noteCents[turtle][saveBlk][i], this.noteHertz[turtle][saveBlk][i], saveBlk]);
                         }
+
+                        saveCurrentExtras = [saveBlk, this.oscList[turtle][saveBlk], this.noteBeat[turtle][saveBlk], this.noteBeatValues[turtle][saveBlk], this.noteDrums[turtle][saveBlk], this.embeddedGraphics[turtle][saveBlk]];
 
                         // Swap in the previous note.
-                        this.notePitches[turtle][last(this.inNoteBlock[turtle])] = [];
-                        this.noteOctaves[turtle][last(this.inNoteBlock[turtle])] = [];
-                        this.noteCents[turtle][last(this.inNoteBlock[turtle])] = [];
-                        this.noteHertz[turtle][last(this.inNoteBlock[turtle])] = [];
-                        for (var i = 0; i < this.tieNote[turtle].length; i++) {
-                            this.notePitches[turtle][last(this.inNoteBlock[turtle])].push(this.tieNote[turtle][i][0]);
-                            this.noteOctaves[turtle][last(this.inNoteBlock[turtle])].push(this.tieNote[turtle][i][1]);
-                            this.noteCents[turtle][last(this.inNoteBlock[turtle])].push(this.tieNote[turtle][i][2]);
-                            this.noteHertz[turtle][last(this.inNoteBlock[turtle])].push(this.tieNote[turtle][i][3]);
+                        saveBlk = this.tieNoteExtras[turtle][0];
+                        this.inNoteBlock[turtle].push(saveBlk);
+
+                        this.notePitches[turtle][saveBlk] = [];
+                        this.noteOctaves[turtle][saveBlk] = [];
+                        this.noteCents[turtle][saveBlk] = [];
+                        this.noteHertz[turtle][saveBlk] = [];
+                        for (var i = 0; i < this.tieNotePitches[turtle].length; i++) {
+                            this.notePitches[turtle][saveBlk].push(this.tieNotePitches[turtle][i][0]);
+                            this.noteOctaves[turtle][saveBlk].push(this.tieNotePitches[turtle][i][1]);
+                            this.noteCents[turtle][saveBlk].push(this.tieNotePitches[turtle][i][2]);
+                            this.noteHertz[turtle][saveBlk].push(this.tieNotePitches[turtle][i][3]);
                         }
 
-                        this.tieNote[turtle] = [];
+                        this.oscList[turtle][saveBlk] = this.tieNoteExtras[turtle][1];
+                        this.noteBeat[turtle][saveBlk] = this.tieNoteExtras[turtle][2];
+                        this.noteBeatValues[turtle][saveBlk] = this.tieNoteExtras[turtle][3];
+                        this.noteDrums[turtle][saveBlk] = this.tieNoteExtras[turtle][4];
+                        this.embeddedGraphics[turtle][saveBlk] = this.tieNoteExtras[turtle][5];
 
-                        if (this.justCounting[turtle].length === 0) {
+                         if (this.justCounting[turtle].length === 0) {
                             // Remove the note from the Lilypond list.
-                            for (var i = 0; i < this.notePitches[turtle][last(this.inNoteBlock[turtle])].length; i++) {
+                            for (var i = 0; i < this.notePitches[turtle][saveBlk].length; i++) {
                                 this.notationRemoveTie(turtle);
                             }
                         }
 
-                        this._processNote(tmpBeatValue, blk, turtle);
+                        // Play previous note.
+                        this.tie[turtle] = false;
+                        tieDelay = 0;
+                        this._processNote(this.tieCarryOver[turtle], saveBlk, turtle);
+
+                        this.inNoteBlock[turtle].pop();
+
+                        if (!this.suppressOutput[turtle]) {
+                            this._doWait(turtle, Math.max(((bpmFactor / this.tieCarryOver[turtle]) + (this.noteDelay / 1000)) - turtleLag, 0));
+                        }
+
+                        tieDelay = this.tieCarryOver[turtle];
+                        this.tieCarryOver[turtle] = 0;
+                        this.tie[turtle] = true;
 
                         // Restore the current note.
-                        this.tie[turtle] = true;
-                        this.notePitches[turtle][last(this.inNoteBlock[turtle])] = [];
-                        this.noteOctaves[turtle][last(this.inNoteBlock[turtle])] = [];
-                        this.noteCents[turtle][last(this.inNoteBlock[turtle])] = [];
-                        this.noteHertz[turtle][last(this.inNoteBlock[turtle])] = [];
-                        for (var i = 0; i < saveNote.length; i++) {
-                            this.notePitches[turtle][last(this.inNoteBlock[turtle])].push(saveNote[i][0]);
-                            this.noteOctaves[turtle][last(this.inNoteBlock[turtle])].push(saveNote[i][1]);
-                            this.noteCents[turtle][last(this.inNoteBlock[turtle])].push(saveNote[i][2]);
-                            this.noteHertz[turtle][last(this.inNoteBlock[turtle])].push(saveNote[i][3]);
+                        saveBlk = saveCurrentExtras[0];
+                        this.notePitches[turtle][saveBlk] = [];
+                        this.noteOctaves[turtle][saveBlk] = [];
+                        this.noteCents[turtle][saveBlk] = [];
+                        this.noteHertz[turtle][saveBlk] = [];
+                        for (var i = 0; i < saveCurrentNote.length; i++) {
+                            this.notePitches[turtle][saveBlk].push(saveCurrentNote[i][0]);
+                            this.noteOctaves[turtle][saveBlk].push(saveCurrentNote[i][1]);
+                            this.noteCents[turtle][saveBlk].push(saveCurrentNote[i][2]);
+                            this.noteHertz[turtle][saveBlk].push(saveCurrentNote[i][3]);
                         }
+
+                        this.oscList[turtle][saveBlk] = saveCurrentExtras[1];
+                        this.noteBeat[turtle][saveBlk] = saveCurrentExtras[2];
+                        this.noteBeatValues[turtle][saveBlk] = saveCurrentExtras[3];
+                        this.noteDrums[turtle][saveBlk] = saveCurrentExtras[4];
+                        this.embeddedGraphics[turtle][saveBlk] = saveCurrentExtras[5];
                     }
                 }
 
                 if (this.tieCarryOver[turtle] === 0) {
-                    this.tieNote[turtle] = [];
+                    // We need to save the first note in the pair.
+                    this.tieNotePitches[turtle] = [];
                     this.tieCarryOver[turtle] = noteBeatValue;
-                    for (var i = 0; i < this.notePitches[turtle][last(this.inNoteBlock[turtle])].length; i++) {
-                        this.tieNote[turtle].push([this.notePitches[turtle][last(this.inNoteBlock[turtle])][i], this.noteOctaves[turtle][last(this.inNoteBlock[turtle])][i], this.noteCents[turtle][last(this.inNoteBlock[turtle])][i], this.noteHertz[turtle][last(this.inNoteBlock[turtle])][i]]);
+
+                    for (var i = 0; i < this.notePitches[turtle][saveBlk].length; i++) {
+                        this.tieNotePitches[turtle].push([this.notePitches[turtle][saveBlk][i], this.noteOctaves[turtle][saveBlk][i], this.noteCents[turtle][saveBlk][i], this.noteHertz[turtle][saveBlk][i]]);
                     }
+
+                    this.tieNoteExtras[turtle] = [saveBlk, this.oscList[turtle][saveBlk], this.noteBeat[turtle][saveBlk], this.noteBeatValues[turtle][saveBlk], this.noteDrums[turtle][saveBlk], []];
+
+                    // We play any drums in the first tied note along
+                    // with the drums in the second tied note.
+                    this.tieFirstDrums[turtle] = this.noteDrums[turtle][saveBlk];
                     noteBeatValue = 0;
                 } else {
                     carry = this.tieCarryOver[turtle];
@@ -6298,7 +7114,7 @@ function Logo () {
             // initial notevalue. When that notevalue is encountered
             // again, the swing terminates, e.g., 8->4->4->4->8
             // 8->4->4->4->8
-            // FIXME: Could behave weirdly with tie.
+            // TESTME: Could behave weirdly with tie.
             if (this.swing[turtle].length > 0) {
                 // Deprecated
                 // newswing2 takes the target as an argument
@@ -6354,17 +7170,21 @@ function Logo () {
                 this.skipIndex[turtle] += 1;
             }
 
+            var chordNotes = [];
+            var chordDrums = [];
             var that = this;
             __playnote = function () {
+                var thisBlk = last(that.inNoteBlock[turtle]);
+
                 // If there are multiple notes, remove the rests.
-                if (that.notePitches[turtle][last(that.inNoteBlock[turtle])].length > 1) {
-                    while (that.notePitches[turtle][last(that.inNoteBlock[turtle])].indexOf('rest') !== -1) {
-                        that.notePitches[turtle][last(that.inNoteBlock[turtle])].splice(that.notePitches[turtle][last(that.inNoteBlock[turtle])].indexOf('rest'), 1);
+                if (that.notePitches[turtle][thisBlk].length > 1) {
+                    while (that.notePitches[turtle][thisBlk].indexOf('rest') !== -1) {
+                        that.notePitches[turtle][thisBlk].splice(that.notePitches[turtle][thisBlk].indexOf('rest'), 1);
                     }
                 }
 
                 // If there is no note, add a rest.
-                if (that.notePitches[turtle][last(that.inNoteBlock[turtle])].length === 0) {
+                if (that.notePitches[turtle][thisBlk].length === 0) {
                     that.notePitches[turtle][that.inNoteBlock[turtle][that.inNoteBlock[turtle].length - 1]].push('rest');
                 }
 
@@ -6374,13 +7194,13 @@ function Logo () {
                 }
 
                 if (that.inNoteBlock[turtle].length === that.whichNoteToCount[turtle]) {
-                    that.notesPlayed[turtle] += (1 / noteValue);
+                    that.notesPlayed[turtle] = rationalSum(that.notesPlayed[turtle], [1, noteValue]);
                 }
 
                 var notes = [];
                 var drums = [];
                 var insideChord = -1;
-                if ((that.notePitches[turtle][last(that.inNoteBlock[turtle])].length + that.oscList[turtle][last(that.inNoteBlock[turtle])].length) > 1) {
+                if ((that.notePitches[turtle][thisBlk].length + that.oscList[turtle][thisBlk].length) > 1) {
                     if (turtle in that.notationStaging && that.justCounting[turtle].length === 0) {
                         var insideChord = that.notationStaging[turtle].length + 1;
                     } else {
@@ -6398,11 +7218,17 @@ function Logo () {
 
                 // Use the beatValue of the first note in
                 // the group since there can only be one.
+                if (that.glide[turtle].length > 0) {
+                    var portamento = last(that.glide[turtle]);
+                } else {
+                    var portamento = 0;
+                }
+
                 if (that.staccato[turtle].length > 0) {
                     var staccatoBeatValue = last(that.staccato[turtle]);
                     if (staccatoBeatValue < 0) {
                         // slur
-                        var beatValue = bpmFactor / (noteBeatValue + (bpmFactor / -staccatoBeatValue));
+                        var beatValue = bpmFactor * ((1 / noteBeatValue) - (1 / staccatoBeatValue));
                     } else if (staccatoBeatValue > noteBeatValue) {
                         // staccato
                         var beatValue = bpmFactor / staccatoBeatValue;
@@ -6417,23 +7243,44 @@ function Logo () {
                     vibratoValue = beatValue * (duration / vibratoRate);
                 }
 
+                // Check to see if we need any courtesy accidentals:
+                // e.g., are there any combinations of natural and
+                // sharp or natural and flat notes?
+                var courtesy = [];
+                for (var i = 0; i < that.notePitches[turtle][thisBlk].length; i++) {
+                    var n = that.notePitches[turtle][thisBlk][i];
+                    var thisCourtesy = false;
+                    if (n.length === 1) {
+                        for (j = 0; j < that.notePitches[turtle][thisBlk].length; j++) {
+                            if (i === j || that.noteOctaves[turtle][thisBlk][i] !== that.noteOctaves[turtle][thisBlk][j]) {
+                                continue;
+                            }
+
+                            if (n + '♯' === that.notePitches[turtle][thisBlk][j] || n + '♭' === that.notePitches[turtle][thisBlk][j]) {
+                                thisCourtesy = true;
+                            }
+                        }
+                    }
+
+                    courtesy.push(thisCourtesy);
+                }
+
                 // Process pitches
-                if (that.notePitches[turtle][last(that.inNoteBlock[turtle])].length > 0) {
-                    for (var i = 0; i < that.notePitches[turtle][last(that.inNoteBlock[turtle])].length; i++) {
-                        if (that.notePitches[turtle][last(that.inNoteBlock[turtle])][i] === 'rest' || forceSilence) {
+                if (that.notePitches[turtle][thisBlk].length > 0) {
+                    for (var i = 0; i < that.notePitches[turtle][thisBlk].length; i++) {
+                        if (that.notePitches[turtle][thisBlk][i] === 'rest' || forceSilence) {
                             note = 'R';
                             that.previousNotePlayed[turtle] = that.lastNotePlayed[turtle];
                         } else {
-                            var noteObj = getNote(that.notePitches[turtle][last(that.inNoteBlock[turtle])][i], that.noteOctaves[turtle][last(that.inNoteBlock[turtle])][i], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
-
+                            var noteObj = getNote(that.notePitches[turtle][thisBlk][i], that.noteOctaves[turtle][thisBlk][i], 0, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                             // If the cents for this note != 0, then
                             // we need to convert to frequency and add
                             // in the cents.
-                            if (that.noteCents[turtle][last(that.inNoteBlock[turtle])][i] !== 0) {
-                                if (that.noteHertz[turtle][last(that.inNoteBlock[turtle])][i] !== 0) {
-                                    var note = that.noteHertz[turtle][last(that.inNoteBlock[turtle])][i];
+                            if (that.noteCents[turtle][thisBlk][i] !== 0) {
+                                if (that.noteHertz[turtle][thisBlk][i] !== 0) {
+                                    var note = that.noteHertz[turtle][thisBlk][i];
                                 } else {
-                                    var note = Math.floor(pitchToFrequency(noteObj[0], noteObj[1], that.noteCents[turtle][last(that.inNoteBlock[turtle])][i], that.keySignature[turtle]));
+                                    var note = Math.floor(pitchToFrequency(noteObj[0], noteObj[1], that.noteCents[turtle][thisBlk][i], that.keySignature[turtle]));
                                 }
                             } else {
                                 var note = noteObj[0] + noteObj[1];
@@ -6441,6 +7288,12 @@ function Logo () {
                         }
 
                         if (note !== 'R') {
+                            // Apply harmonic here instead of in synth.
+                            var p = partials.indexOf(1);
+                            if (p > 0) {
+                                note = noteToFrequency(note, that.keySignature[turtle]) * (p + 1);
+                            }
+
                             notes.push(note);
                         }
 
@@ -6456,27 +7309,69 @@ function Logo () {
                             }
 
                             if (that.justCounting[turtle].length === 0) {
-                                that.updateNotation(note, originalDuration, turtle, insideChord);
+                                if (that.noteDrums[turtle][thisBlk].length > 0) {
+                                    if (chordNotes.indexOf(note) === -1) {
+                                        chordNotes.push(note);
+                                    }
+
+                                    if (chordDrums.indexOf(that.noteDrums[turtle][thisBlk][0]) === -1) {
+                                        chordDrums.push(that.noteDrums[turtle][thisBlk][0]);
+                                    }
+                                } else {
+                                    if (courtesy[i]) {
+                                        if (chordNotes.indexOf(note + '♮') === -1) {
+                                            chordNotes.push(note + '♮');
+                                        }
+                                    } else {
+                                        if (chordNotes.indexOf(note) === -1) {
+                                            chordNotes.push(note);
+                                        }
+                                    }
+                                }
                             }
                         } else if (that.tieCarryOver[turtle] > 0) {
                             if (that.justCounting[turtle].length === 0) {
-                                that.updateNotation(note, that.tieCarryOver[turtle], turtle, insideChord);
+                                if (courtesy[i]) {
+                                    if (chordNotes.indexOf(note) === -1) {
+                                        chordNotes.push(note);
+                                    }
+                                } else {
+                                    if (chordNotes.indexOf(note) === -1) {
+                                        chordNotes.push(note);
+                                    }
+                                }
                             }
+                        }
+
+                        if (i === that.notePitches[turtle][thisBlk].length - 1) {
+                            if (duration > 0) {
+                                if (carry > 0) {
+                                    var d = 1 / ((1 / duration) - (1 / carry));
+                                } else {
+                                    var d = duration;
+                                }
+                            } else if (that.tieCarryOver[turtle] > 0) {
+                                var d = that.tieCarryOver[turtle];
+                            }
+
+                            that.updateNotation(chordNotes, d, turtle, -1, chordDrums);
                         }
                     }
 
                     var obj = rationalToFraction(1 / noteBeatValue);
-                    if (that.justCounting[turtle].length === 0) {
-                        if (notes.length === 0) {
-                            console.log('notes to play: R ' + obj[0] + '/' + obj[1]);
+                    if (obj[0] > 0) {
+                        if (that.justCounting[turtle].length === 0) {
+                            if (notes.length === 0) {
+                                console.log('notes to play: R ' + obj[0] + '/' + obj[1]);
+                            } else {
+                                console.log('notes to play: ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                            }
                         } else {
-                            console.log('notes to play: ' + notes + ' ' + obj[0] + '/' + obj[1]);
-                        }
-                    } else {
-                        if (notes.length === 0) {
-                            console.log('notes to count: R ' + obj[0] + '/' + obj[1]);
-                        } else {
-                            console.log('notes to count: ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                            if (notes.length === 0) {
+                                console.log('notes to count: R ' + obj[0] + '/' + obj[1]);
+                            } else {
+                                console.log('notes to count: ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                            }
                         }
                     }
 
@@ -6486,11 +7381,10 @@ function Logo () {
 
                     if (notes.length > 0) {
                         var len = notes[0].length;
-
-                        if (typeof(notes[i]) === 'string') {
-                            that.currentOctave[turtle] = parseInt(notes[0].slice(len - 1));
-                        }
-
+              
+                        that.currentOctave[turtle] = parseInt(notes[0].slice(len - 1));
+                        that.currentCalculatedOctave[turtle] = that.currentOctave[turtle];
+                        
                         if (that.turtles.turtleList[turtle].drum) {
                             for (var i = 0; i < notes.length; i++) {
                                 notes[i] = notes[i].replace(/♭/g, 'b').replace(/♯/g, '#'); // 'C2'; // Remove pitch
@@ -6508,11 +7402,14 @@ function Logo () {
                             if (_THIS_IS_MUSIC_BLOCKS_ && !forceSilence) {
                                 // Parameters related to effects
                                 var paramsEffects = {
-                                    'doVibrato': false,
-                                    'doDistortion': false,
-                                    'doTremolo': false,
-                                    'doPhaser': false,
-                                    'doChorus': false,
+                                    'doVibrato': doVibrato,
+                                    'doDistortion': doDistortion,
+                                    'doTremolo': doTremolo,
+                                    'doPhaser': doPhaser,
+                                    'doChorus': doChorus,
+                                    'doPartials': true,
+                                    'doPortamento': true,
+                                    'doNeighbor': doNeighbor,
                                     'vibratoIntensity': vibratoIntensity,
                                     'vibratoFrequency': vibratoValue,
                                     'distortionAmount': distortionAmount,
@@ -6523,32 +7420,30 @@ function Logo () {
                                     'baseFrequency': baseFrequency,
                                     'chorusRate': chorusRate,
                                     'delayTime': delayTime,
-                                    'chorusDepth': chorusDepth
+                                    'chorusDepth': chorusDepth,
+                                    'partials': partials,
+                                    'portamento': portamento,
+                                    'neighborArgNote1': neighborArgNote1,
+                                    'neighborArgNote2': neighborArgNote2,
+                                    'neighborArgBeat': neighborArgBeat,
+                                    'neighborArgCurrentBeat': neighborArgCurrentBeat
                                 };
 
-                                __hasParamEffect = function () {
-                                    return paramsEffects.doVibrato || paramsEffects.doDistortion || paramsEffects.doTremolo || paramsEffects.doPhaser || paramsEffects.doChous;
-                                }
-
-                                if (that.oscList[turtle][last(that.inNoteBlock[turtle])].length > 0) {
+                                if (that.oscList[turtle][thisBlk].length > 0) {
                                     if (notes.length > 1) {
-                                        that.errorMsg(last(that.oscList[turtle][last(that.inNoteBlock[turtle])]) + ': ' +  _('synth cannot play chords.'), blk);
+                                        that.errorMsg(last(that.oscList[turtle][thisBlk]) + ': ' +  _('synth cannot play chords.'), blk);
                                     }
 
                                     if (!that.suppressOutput[turtle]) {
-                                        that.synth.trigger(notes, beatValue, last(that.oscList[turtle][last(that.inNoteBlock[turtle])]), paramsEffects, null);
+                                        that.synth.trigger(turtle, notes, beatValue, last(that.oscList[turtle][thisBlk]), paramsEffects, null, false);
                                     }
 
                                     if (that.justCounting[turtle].length === 0) {
-                                        if (__hasParamEffect()) {
-                                            that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes, beatValue, last(that.oscList[turtle][last(that.inNoteBlock[turtle])]), paramsEffects, null]);
-                                        } else {
-                                            that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes, beatValue, last(that.oscList[turtle][last(that.inNoteBlock[turtle])]), null, null]);
-                                        }
+                                        that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes, beatValue, last(that.oscList[turtle][thisBlk]), paramsEffects, null]);
                                     }
                                 } else if (that.drumStyle[turtle].length > 0) {
                                     if (!that.suppressOutput[turtle]) {
-                                        that.synth.trigger(notes, beatValue, last(that.drumStyle[turtle]), null, null);
+                                        that.synth.trigger(turtle, notes, beatValue, last(that.drumStyle[turtle]), null, null, false);
                                     }
 
                                     if (that.justCounting[turtle].length === 0) {
@@ -6556,7 +7451,7 @@ function Logo () {
                                     }
                                 } else if (that.turtles.turtleList[turtle].drum) {
                                     if (!that.suppressOutput[turtle]) {
-                                        that.synth.trigger(notes, beatValue, 'drum', null, null);
+                                        that.synth.trigger(turtle, notes, beatValue, 'drum', null, null, false);
                                     }
 
                                     if (that.justCounting[turtle].length === 0) {
@@ -6566,7 +7461,8 @@ function Logo () {
                                     for (var d = 0; d < notes.length; d++) {
                                         if (notes[d] in that.pitchDrumTable[turtle]) {
                                             if (!that.suppressOutput[turtle]) {
-                                                that.synth.trigger(notes[d], beatValue, that.pitchDrumTable[turtle][notes[d]], null, null);
+                                                console.log(that.glide[turtle].length);
+                                                that.synth.trigger(turtle, notes[d], beatValue, that.pitchDrumTable[turtle][notes[d]], null, null, false);
                                             }
 
                                             if (that.justCounting[turtle].length === 0) {
@@ -6574,39 +7470,42 @@ function Logo () {
                                             }
                                         } else if (turtle in that.instrumentNames && last(that.instrumentNames[turtle])) {
                                             if (!that.suppressOutput[turtle]) {
-                                                that.synth.trigger(notes[d], beatValue, last(that.instrumentNames[turtle]), paramsEffects, filters);
+                                                // If we are in a glide, use setNote after the first note.
+                                                if (that.glide[turtle].length > 0) {
+                                                    if (that.glideOverride[turtle] === 0) {
+                                                        console.log('glide note ' + beatValue);
+                                                        that.synth.trigger(turtle, notes[d], beatValue, last(that.instrumentNames[turtle]), paramsEffects, filters, true);
+                                                    } else {
+                                                        // trigger first note for entire duration of the glissando
+                                                        var beatValueOverride = bpmFactor / that.glideOverride[turtle];
+                                                        console.log('first glide note: ' + that.glideOverride[turtle] + ' ' + beatValueOverride);
+                                                        that.synth.trigger(turtle, notes[d], beatValueOverride, last(that.instrumentNames[turtle]), paramsEffects, filters, false);
+                                                        that.glideOverride[turtle] = 0;
+                                                    }
+                                                } else {
+                                                    that.synth.trigger(turtle, notes[d], beatValue, last(that.instrumentNames[turtle]), paramsEffects, filters, false);
+                                                }
                                             }
 
                                             if (that.justCounting[turtle].length === 0) {
-                                                if (__hasParamEffect()) {
-                                                    that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.instrumentNames[turtle]), paramsEffects, filters]);
-                                                } else {
-                                                    that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.instrumentNames[turtle]), null, filters]);
-                                                }
+                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.instrumentNames[turtle]), paramsEffects, filters]);
                                             }
                                         } else if (turtle in that.voices && last(that.voices[turtle])) {
                                             if (!that.suppressOutput[turtle]) {
-                                                that.synth.trigger(notes[d], beatValue, last(that.voices[turtle]), paramsEffects, null);
+                                                console.log(that.glide[turtle].length);
+                                                that.synth.trigger(turtle, notes[d], beatValue, last(that.voices[turtle]), paramsEffects, null, false);
                                             }
 
                                             if (that.justCounting[turtle].length === 0) {
-                                                if (__hasParamEffect()) {
-                                                    that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.voices[turtle]), paramsEffects, null]);
-                                                } else {
-                                                    that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.voices[turtle]), null, null]);
-                                                }
+                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.voices[turtle]), paramsEffects, null]);
                                             }
                                         } else {
                                             if (!that.suppressOutput[turtle]) {
-                                                that.synth.trigger(notes[d], beatValue, 'default', paramsEffects, null);
+                                                that.synth.trigger(turtle, notes[d], beatValue, 'default', paramsEffects, null, false);
                                             }
 
                                             if (that.justCounting[turtle].length === 0) {
-                                                if (__hasParamEffect()) {
-                                                    that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, 'default', paramsEffects, null]);
-                                                } else {
-                                                    that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, 'default', null, null]);
-                                                }
+                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, 'default', paramsEffects, null]);
                                             }
                                         }
                                     }
@@ -6618,23 +7517,32 @@ function Logo () {
                         that.previousNotePlayed[turtle] = that.lastNotePlayed[turtle];
                         that.lastNotePlayed[turtle] = [notes[0], noteBeatValue];
                         that.noteStatus[turtle] = [notes, noteBeatValue];
+                        that.lastPitchPlayed[turtle] = that.lastNotePlayed[turtle]; //For a stand-alone pitch block.
                     }
                 }
 
                 // Process drums
-                if (that.noteDrums[turtle][last(that.inNoteBlock[turtle])].length > 0) {
-                    for (var i = 0; i < that.noteDrums[turtle][last(that.inNoteBlock[turtle])].length; i++) {
-                        drums.push(that.noteDrums[turtle][last(that.inNoteBlock[turtle])][i]);
+                if (that.noteDrums[turtle][thisBlk].length > 0) {
+                    for (var i = 0; i < that.noteDrums[turtle][thisBlk].length; i++) {
+                        drums.push(that.noteDrums[turtle][thisBlk][i]);
+                    }
+
+                    for (var i = 0; i < that.tieFirstDrums[turtle].length; i++) {
+                        if (drums.indexOf(that.tieFirstDrums[turtle][i]) === -1) {
+                            drums.push(that.tieFirstDrums[turtle][i]);
+                        }
                     }
 
                     // If it is > 0, we already counted this note
                     // (e.g. pitch & drum combination).
-                    if (that.notePitches[turtle][last(that.inNoteBlock[turtle])].length === 0) {
+                    if (that.notePitches[turtle][thisBlk].length === 0) {
                         var obj = rationalToFraction(1 / noteBeatValue);
-                        if (that.justCounting[turtle].length === 0) {
-                            console.log('notes to play ' + notes + ' ' + obj[0] + '/' + obj[1]);
-                        } else {
-                            console.log('notes to count ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                        if (obj[0] > 0) {
+                            if (that.justCounting[turtle].length === 0) {
+                                console.log('drums to play ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                            } else {
+                                console.log('drums to count ' + notes + ' ' + obj[0] + '/' + obj[1]);
+                            }
                         }
 
                         if (!that.suppressOutput[turtle]) {
@@ -6642,24 +7550,37 @@ function Logo () {
                         }
                     }
 
-                    if (duration > 0) {
-                        if (_THIS_IS_MUSIC_BLOCKS_ && !forceSilence) {
-                            for (var i = 0; i < drums.length; i++) {
-                                if (that.drumStyle[turtle].length > 0) {
-                                    if (!that.suppressOutput[turtle]) {
-                                        that.synth.trigger(['C2'], beatValue, last(that.drumStyle[turtle]), null, null);
-                                    }
+                    if ((that.tie[turtle] && that.tieCarryOver[turtle] > 0) || duration > 0) {
+                        // If we are in a tie, play the drum as if it
+                        // were tied.
+                        if (that.tie[turtle] && noteBeatValue === 0) {
+                            var newBeatValue = 0;
+                        } else {
+                            var newBeatValue = beatValue;
+                            if (tieDelay > 0) {
+                                that.tieFirstDrums[turtle] = [];
+                            }
+                        }
 
-                                    if (that.justCounting[turtle].length === 0) {
-                                        that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', ['C2'], beatValue, last(that.drumStyle[turtle]), null, null]);
-                                    }
-                                } else {
-                                    if (!that.suppressOutput[turtle]) {
-                                        that.synth.trigger(['C2'], beatValue, drums[i], null, null);
-                                    }
+                        if (newBeatValue > 0) {
+                            if (_THIS_IS_MUSIC_BLOCKS_ && !forceSilence) {
+                                for (var i = 0; i < drums.length; i++) {
+                                    if (that.drumStyle[turtle].length > 0) {
+                                        if (!that.suppressOutput[turtle]) {
+                                            that.synth.trigger(turtle, ['C2'], newBeatValue, last(that.drumStyle[turtle]), null, null, false);
+                                        }
 
-                                    if (that.justCounting[turtle].length === 0) {
-                                        that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', ['C2'], beatValue, drums[i], null, null]);
+                                        if (that.justCounting[turtle].length === 0) {
+                                            that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', ['C2'], newBeatValue, last(that.drumStyle[turtle]), null, null]);
+                                        }
+                                    } else {
+                                        if (!that.suppressOutput[turtle]) {
+                                            that.synth.trigger(turtle, ['C2'], newBeatValue, drums[i], null, null, false);
+                                        }
+
+                                        if (that.justCounting[turtle].length === 0) {
+                                            that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', ['C2'], newBeatValue, drums[i], null, null]);
+                                        }
                                     }
                                 }
                             }
@@ -6673,7 +7594,22 @@ function Logo () {
                     }
                 }
 
-                that._dispatchTurtleSignals(turtle, beatValue, blk, noteBeatValue);
+                // While we tie notes together, we don't want to tie
+                // the corresponding graphics.
+                if (that.tie[turtle] && noteBeatValue === 0) {
+                    if (tieDelay > 0) {
+                        that._dispatchTurtleSignals(turtle, bpmFactor / that.tieCarryOver[turtle], blk, bpmFactor / tieDelay);
+                    } else {
+                        that._dispatchTurtleSignals(turtle, bpmFactor / that.tieCarryOver[turtle], blk, 0);
+                    }
+                } else {
+                    if (tieDelay > 0) {
+                        that._dispatchTurtleSignals(turtle, beatValue - bpmFactor / tieDelay, blk, bpmFactor / tieDelay);
+                    } else {
+                        that._dispatchTurtleSignals(turtle, beatValue, blk, 0);
+                    }
+                }
+
                 // After the note plays, clear the embedded graphics queue.
                 that.embeddedGraphics[turtle][blk] = [];
 
@@ -6685,25 +7621,39 @@ function Logo () {
                 }, beatValue * 1000);
             };
 
-            if (this.noteDelay === 0 || !this.suppressOutput[turtle]) {
-                __playnote();
-            } else {
-                setTimeout(function () {
+            if (last(that.inNoteBlock[turtle]) != null) {
+                if (this.noteDelay === 0 || !this.suppressOutput[turtle]) {
                     __playnote();
-                }, this.noteDelay);
+                } else {
+                    setTimeout(function () {
+                       __playnote();
+                    }, this.noteDelay);
+                }
             }
         }
 
         this.pushedNote[turtle] = false;
+
+        if (callback !== undefined && callback !== null) {
+            callback();
+        }
     };
 
     this.playback = function (whichMouse, recording) {
+        if (this.restartPlayback) {
+            width = 0;
+        }
+
         if (recording === undefined) {
             recording = false;
         }
+
+        this.recording = recording;
+
         if (recording){
             this.playbackTime = 0;
         }
+
         if (this.turtles.running()) {
             if (this.playbackTime === 0) {
                 return;
@@ -6714,6 +7664,9 @@ function Logo () {
         } else if (this.playbackTime === 0) {
             var inFillClamp = false;
             var inHollowLineClamp = false;
+
+            this.hideBlocks();
+            this.showBlocksAfterRun = true;
         }
 
         // We need to sort the playback queue by time (as graphics
@@ -6744,9 +7697,33 @@ function Logo () {
         this.firstNoteTime = d.getTime() - 1000 * this.playbackTime;
 
         var that = this;
+        var l = 0;
+        if (width >= 100) {
+            width = 0;
+        }
+        for (var turtle in this.playbackQueue) {   //For multiple voices
+            l = l + this.playbackQueue[turtle].length;
+        }
+        progressBarDivision = 100 / (that.playbackQueue[t].length);
+        turtleLength = 0;
+        inLoop = 0;
 
         __playbackLoop = function (turtle, idx) {
+            inLoop++;
             that.playbackTime = that.playbackQueue[turtle][idx][0];
+            width = width + (progressBarDivision/turtleLength)
+
+            if (inLoop == l || width > 100) {
+                width = 100;
+            }
+
+            if (width == NaN) {
+                //Not sure if this happens...but just in case
+                progressBar.style.visibility = 'hidden';
+            }
+
+            progressBar.style.width = width + '%'; 
+            progressBar.innerHTML = parseInt(width * 1)  + '%';
 
             if (!that.stopTurtle) {
                 switch(that.playbackQueue[turtle][idx][1]) {
@@ -6771,7 +7748,8 @@ function Logo () {
                 case 'notes':
                     if (_THIS_IS_MUSIC_BLOCKS_) {
                         that.turtles.turtleList[turtle].blink(that.playbackQueue[turtle][idx][3], 50);
-                        that.synth.trigger(that.playbackQueue[turtle][idx][2], that.playbackQueue[turtle][idx][3], that.playbackQueue[turtle][idx][4], that.playbackQueue[turtle][idx][5], that.playbackQueue[turtle][idx][6]);
+                        that.lastNote[turtle] = that.playbackQueue[turtle][idx][3];
+                        that.synth.trigger(turtle, that.playbackQueue[turtle][idx][2], that.playbackQueue[turtle][idx][3], that.playbackQueue[turtle][idx][4], that.playbackQueue[turtle][idx][5], that.playbackQueue[turtle][idx][6]);
                     }
                     break;
                 case 'controlpoint1':
@@ -6798,7 +7776,7 @@ function Logo () {
                     that._setMasterVolume(that.playbackQueue[turtle][idx][2]);
                     break;
                 case 'setsynthvolume':
-                    that._setSynthVolume(that.playbackQueue[turtle][idx][2], that.playbackQueue[turtle][idx][3]);
+                    that._setSynthVolume(turtle, that.playbackQueue[turtle][idx][2], that.playbackQueue[turtle][idx][3]);
                     break;
                 case 'arc':
                     that.turtles.turtleList[turtle].doArc(that.playbackQueue[turtle][idx][2], that.playbackQueue[turtle][idx][3]);
@@ -6873,27 +7851,41 @@ function Logo () {
                         that.onStopTurtle();
                         that.playbackTime = 0;
                         if (recording){
+                            var lastNote = 0;
+                            for (var turtle in that.playbackQueue) {
+                                if (that.lastNote[turtle] > lastNote) {
+                                    lastNote = that.lastNote[turtle];
+                                }
+                            }
+
                             setTimeout(function(){
                                 console.log('finishing recording');
                                 that.synth.recorder.stop();
                                 that.synth.recorder.exportWAV(that.synth.download);
                                 that.recording = false;
-                            },2000);
+                            }, Math.max(2000, lastNote * 1000));
                         }
                     }
+
+                    that.showBlocks();
+                    that.showBlocksAfterRun = false;
                 }
             } else {
                 that.turtles.turtleList[turtle].running = false;
+                that.showBlocks();
+                that.showBlocksAfterRun = false;
             }
         };
 
         __playback = function (turtle) {
+            turtleLength++;
             setTimeout(function () {
                 __playbackLoop(turtle, 0);
             }, that.playbackQueue[turtle][0][0] * 1000);
         };
 
         __resumePlayback = function (turtle) {
+            turtleLength++;
             for (var idx = 0; idx < that.playbackQueue[turtle].length; idx++) {
                 if (that.playbackQueue[turtle][idx][0] >= that.playbackTime) {
                     break;
@@ -6907,6 +7899,10 @@ function Logo () {
             }
         };
 
+        if (_THIS_IS_MUSIC_BLOCKS_) {
+            this._prepSynths();
+        }
+
         this.onRunTurtle();
         this.stopTurtle = false;
 
@@ -6917,6 +7913,7 @@ function Logo () {
 
         if (whichMouse < 0) {
             for (var turtle in this.playbackQueue) {
+                this.lastNote[turtle] = 0;
                 if (this.playbackQueue[turtle].length > 0) {
                     if (turtle < this.turtles.turtleList.length) {
                         this.turtles.turtleList[turtle].running = true;
@@ -6939,13 +7936,20 @@ function Logo () {
         }
     };
 
-    this._dispatchTurtleSignals = function (turtle, beatValue, blk, noteBeatValue) {
+    this._dispatchTurtleSignals = function (turtle, beatValue, blk, delay) {
         // When turtle commands (forward, right, arc) are inside of notes,
         // they are run progressively over the course of the note duration.
         if (this.embeddedGraphics[turtle][blk].length === 0) {
             return;
         }
 
+        // If the previous note's graphics are not complete, add a
+        // slight delay before drawing any new graphics.
+        if (!this.embeddedGraphicsFinished[turtle]) {
+            delay += 0.1;
+        }
+
+        this.embeddedGraphicsFinished[turtle] = false;
         var that = this;
         var inFillClamp = false;
         var inHollowLineClamp = false;
@@ -7201,7 +8205,12 @@ function Logo () {
             }
         }
 
-        var stepTime = beatValue * 1000 / NOTEDIV;
+        // Cheat by 15% so that the mouse has time to complete its work.
+        // var stepTime = beatValue * 1000 / NOTEDIV;
+        var stepTime = (beatValue - delay) * 850 / NOTEDIV;
+        if (stepTime >= 0) {
+            stepTime = 0;
+        }
 
         // We do each graphics action sequentially, so we need to
         // divide stepTime by the length of the embedded graphics
@@ -7210,22 +8219,27 @@ function Logo () {
             var stepTime = stepTime / extendedGraphicsCounter;
         }
 
-        var waitTime = 0;
+        var waitTime = delay * 1000;
 
         // We want to update the turtle graphics every 50ms within a note.
         if (stepTime > 200) {
-            this.dispatchFactor[turtle] = 0.25;
+            this.dispatchFactor[turtle] = NOTEDIV / 32;
         } else if (stepTime > 100) {
-            this.dispatchFactor[turtle] = 0.5;
+            this.dispatchFactor[turtle] = NOTEDIV / 16;
         } else if (stepTime > 50) {
-            this.dispatchFactor[turtle] = 1;
+            this.dispatchFactor[turtle] = NOTEDIV / 8;
         } else if (stepTime > 25) {
-            this.dispatchFactor[turtle] = 2;
+            this.dispatchFactor[turtle] = NOTEDIV / 4;
         } else if (stepTime > 12.5) {
-            this.dispatchFactor[turtle] = 4;
+            this.dispatchFactor[turtle] = NOTEDIV / 2;
         } else {
-            this.dispatchFactor[turtle] = 8;
+            this.dispatchFactor[turtle] = NOTEDIV;
         }
+
+        // Mark the end time of this note's graphics operations.
+        setTimeout(function() {
+            that.embeddedGraphicsFinished[turtle] = true;
+        }, beatValue * 1000);
 
         for (var i = 0; i < this.embeddedGraphics[turtle][blk].length; i++) {
             var b = this.embeddedGraphics[turtle][blk][i];
@@ -7421,6 +8435,19 @@ function Logo () {
         }
     };
 
+    this.resetSynth = function (turtle) {
+        if (!('default' in instruments[turtle])) {
+            this.synth.createDefaultSynth(turtle);
+        }
+
+        this._setMasterVolume(DEFAULTVOLUME);
+        for (var synth in this.synthVolume[turtle]) {
+            this._setSynthVolume(turtle, synth, DEFAULTVOLUME);
+        }
+
+        this.synth.start();
+    };
+
     this._processSpeak = function (text) {
         var new_text = '';
         for (var i = 0; i < text.length; i++) {
@@ -7571,7 +8598,7 @@ function Logo () {
 
             if (that.blocks.blockList[blk].name in that.evalArgDict) {
                 eval(that.evalArgDict[that.blocks.blockList[blk].name]);
-	    }
+            }
 
             return that.blocks.blockList[blk].value;
         } else if (that.blocks.blockList[blk].name === 'boolean') {
@@ -7583,63 +8610,55 @@ function Logo () {
         } else if (that.blocks.blockList[blk].isArgBlock() || that.blocks.blockList[blk].isArgClamp() || that.blocks.blockList[blk].isArgFlowClampBlock() || ['anyout', 'numberout', 'textout'].indexOf(that.blocks.blockList[blk].protoblock.dockTypes[0]) !== -1) {
             switch (that.blocks.blockList[blk].name) {
             case 'pitchness':
-                // Experimental
-                if (_THIS_IS_TURTLE_BLOCKS_) {
-                    // FIXME
+                if (this.mic === null || _THIS_IS_TURTLE_BLOCKS_) {
                     that.blocks.blockList[blk].value = 440;
                 } else {
-                    var signal = that.analyser.analyse();
-                    var dft = new DFT(that.limit, 44100);
-                    dft.forward(signal);
-                    var values = dft.spectrum;
+                    if (this.pitchAnalyser == null) {
+                        this.pitchAnalyser = new Tone.Analyser({
+                            'type': 'fft',
+                            'size': this.limit
+                        });
 
-                    try {
-                        if (!that.mic.open()) {
-                            that.mic.open();
-                            that.blocks.blockList[blk].value = 0;
-                        } else {
-                            that.blocks.blockList[blk].value = values[0];
-                        }
-                    } catch (e) {
-                        console.log(e);
-                        that.mic.open();
-                        that.blocks.blockList[blk].value = values[0];
+                        this.mic.connect(this.pitchAnalyser);
                     }
+
+                    var values = that.pitchAnalyser.getValue();
+                    var max = 0;
+                    var idx = 0;
+                    for (var i = 0; i < this.limit; i++) {
+                        var v2 = values[i] * values[i];
+                        if (v2 > max) {
+                            max = v2;
+                            idx = i;
+                        }
+                    }
+
+                    that.blocks.blockList[blk].value = idx;
                 }
                 break;
             case 'loudness':
-                if (_THIS_IS_TURTLE_BLOCKS_) {
-                    try {
-                        if (!that.mic.enabled) {
-                            that.mic.start();
-                            that.blocks.blockList[blk].value = 0;
-                        } else {
-                            that.blocks.blockList[blk].value = Math.round(that.mic.getLevel() * 1000);
-                        }
-                    } catch (e) {
-                        console.log(e);
-                        that.mic.start();
-                        that.blocks.blockList[blk].value = Math.round(that.mic.getLevel() * 1000);
-                    }
+                if (this.mic === null) {
+                    that.blocks.blockList[blk].value = 0;
+                } else if (_THIS_IS_TURTLE_BLOCKS_) {
+                    that.blocks.blockList[blk].value = Math.round(that.mic.getLevel() * 1000);
                 } else {
-                    var values = that.analyser.analyse();
+                    if (this.volumeAnalyser == null) {
+                        this.volumeAnalyser = new Tone.Analyser({
+                            'type': 'waveform',
+                            'size': this.limit
+                        });
+
+                        this.mic.connect(this.volumeAnalyser);
+                    }
+
+                    var values = that.volumeAnalyser.getValue();
                     var sum = 0;
-                    for(var k=0; k<that.limit; k++) {
-                            sum += (values[k] * values[k]);
+                    for(var k = 0; k < that.limit; k++) {
+                        sum += (values[k] * values[k]);
                     }
-                    var rms = Math.sqrt(sum/that.limit);
-                    try {
-                        if (!that.mic.open()) {
-                            that.mic.open();
-                            that.blocks.blockList[blk].value = 0;
-                        } else {
-                            that.blocks.blockList[blk].value = Math.round(rms);
-                        }
-                    } catch (e) {  // MORE DEBUGGING
-                        console.log(e);
-                        that.mic.open();
-                        that.blocks.blockList[blk].value = Math.round(rms);
-                    }
+
+                    var rms = Math.sqrt(sum / that.limit);
+                    that.blocks.blockList[blk].value = Math.round(rms * 100);
                 }
                 break;
             /*
@@ -7655,14 +8674,16 @@ function Logo () {
             case 'arg':
                 var cblk = that.blocks.blockList[blk].connections[1];
                 var name = that.parseArg(that, turtle, cblk, blk, receivedArg);
-                var action_args=receivedArg
-                if (action_args.length >= Number(name)) {
-                    var value = action_args[Number(name)-1];
+                var action_args = receivedArg
+                if (action_args && action_args.length >= Number(name)) {
+                    var value = action_args[Number(name) - 1];
                     that.blocks.blockList[blk].value = value;
-                }else {
-                    that.errorMsg('Invalid argument',blk);
+                } else {
+                    that.errorMsg('Invalid argument', blk);
                     that.stopTurtle = true;
+                    return 0;
                 }
+
                 return that.blocks.blockList[blk].value;
                 break;
             case 'box':
@@ -7695,19 +8716,19 @@ function Logo () {
                 break;
             case 'namedarg':
                 var name = that.blocks.blockList[blk].privateData;
-                var action_args = receivedArg;
+                var actionArgs = receivedArg;
 
                 // If an action block with an arg is clicked,
                 // the arg will have no value.
-                if (action_args == null) {
+                if (actionArgs == null) {
                     that.errorMsg('Invalid argument', blk);
                     that.stopTurtle = true;
                     that.blocks.blockList[blk].value = null;
                     return;
                 }
 
-                if (action_args.length >= Number(name)) {
-                    var value = action_args[Number(name)-1];
+                if (actionArgs.length >= Number(name)) {
+                    var value = actionArgs[Number(name)-1];
                     that.blocks.blockList[blk].value = value;
                 } else {
                     that.errorMsg('Invalid argument', blk);
@@ -7805,8 +8826,36 @@ function Logo () {
                 } else {
                     var cblk1 = that.blocks.blockList[blk].connections[1];
                     var cblk2 = that.blocks.blockList[blk].connections[2];
-                    var a = that.parseArg(that, turtle, cblk1, blk, receivedArg);
-                    var b = that.parseArg(that, turtle, cblk2, blk, receivedArg);
+                    if (cblk1 === null || cblk2 === null) {
+                        that.errorMsg(NOINPUTERRORMSG, blk);
+                    }
+
+                    // We have a special case for certain keywords
+                    // associated with octaves: current, next, and
+                    // previous. In the case of plus, since we use it
+                    // for string concatenation as well, we check to
+                    // see if the block is connected to a pitch block
+                    // before assuming octave.
+
+                    var cblk0 = that.blocks.blockList[blk].connections[0];
+                    if (cblk0 !== null && that.blocks.blockList[cblk0].name === 'pitch') {
+                        var noteBlock = that.blocks.blockList[cblk0].connections[1];
+                        if (typeof(that.blocks.blockList[cblk1].value) === 'string') {
+                            var a = calcOctave(that.currentOctave[turtle], that.blocks.blockList[cblk1].value, that.lastNotePlayed[turtle], that.blocks.blockList[noteBlock].value);
+                        } else {
+                            var a = that.parseArg(that, turtle, cblk1, blk, receivedArg);
+                        }
+
+                        if (typeof(that.blocks.blockList[cblk2].value) === 'string') {
+                            var b = calcOctave(that.currentOctave[turtle], that.blocks.blockList[cblk2].value, that.lastNotePlayed[turtle], that.blocks.blockList[noteBlock].value);
+                        } else {
+                            var b = that.parseArg(that, turtle, cblk2, blk, receivedArg);
+                        }
+                    } else {
+                        var a = that.parseArg(that, turtle, cblk1, blk, receivedArg);
+                        var b = that.parseArg(that, turtle, cblk2, blk, receivedArg);
+                    }
+
                     that.blocks.blockList[blk].value = that._doPlus(a, b);
                 }
                 break;
@@ -7816,8 +8865,27 @@ function Logo () {
                 } else {
                     var cblk1 = that.blocks.blockList[blk].connections[1];
                     var cblk2 = that.blocks.blockList[blk].connections[2];
-                    var a = that.parseArg(that, turtle, cblk1, blk, receivedArg);
-                    var b = that.parseArg(that, turtle, cblk2, blk, receivedArg);
+                    var cblk0 = that.blocks.blockList[blk].connections[0];
+                    var noteBlock = that.blocks.blockList[cblk0].connections[1];
+                    if (cblk1 === null || cblk2 === null) {
+                        that.errorMsg(NOINPUTERRORMSG, blk);
+                    }
+
+                    // We have a special case for certain keywords
+                    // associated with octaves: current, next, and
+                    // previous.
+                    if (typeof(that.blocks.blockList[cblk1].value) === 'string') {
+                        var a = calcOctave(that.currentOctave[turtle], that.blocks.blockList[cblk1].value, that.lastNotePlayed[turtle], that.blocks.blockList[noteBlock].value);
+                    } else {
+                        var a = that.parseArg(that, turtle, cblk1, blk, receivedArg);
+                    }
+
+                    if (typeof(that.blocks.blockList[cblk2].value) === 'string') {
+                        var b = calcOctave(that.currentOctave[turtle], that.blocks.blockList[cblk2].value, that.lastNotePlayed[turtle], that.blocks.blockList[noteBlock].value);
+                    } else {
+                        var b = that.parseArg(that, turtle, cblk2, blk, receivedArg);
+                    }
+
                     that.blocks.blockList[blk].value = that._doMultiply(a, b);
                 }
                 break;
@@ -7849,8 +8917,27 @@ function Logo () {
                 } else {
                     var cblk1 = that.blocks.blockList[blk].connections[1];
                     var cblk2 = that.blocks.blockList[blk].connections[2];
-                    var a = that.parseArg(that, turtle, cblk1, blk, receivedArg);
-                    var b = that.parseArg(that, turtle, cblk2, blk, receivedArg);
+                    var cblk0 = that.blocks.blockList[blk].connections[0];
+                    var noteBlock = that.blocks.blockList[cblk0].connections[1];
+                    if (cblk1 === null || cblk2 === null) {
+                        that.errorMsg(NOINPUTERRORMSG, blk);
+                    }
+
+                    // We have a special case for certain keywords
+                    // associated with octaves: current, next, and
+                    // previous.
+                    if (typeof(that.blocks.blockList[cblk1].value) === 'string') {
+                        var a = calcOctave(that.currentOctave[turtle], that.blocks.blockList[cblk1].value, that.lastNotePlayed[turtle],  that.blocks.blockList[noteBlock].value);
+                    } else {
+                        var a = that.parseArg(that, turtle, cblk1, blk, receivedArg);
+                    }
+
+                    if (typeof(that.blocks.blockList[cblk2].value) === 'string') {
+                        var b = calcOctave(that.currentOctave[turtle], that.blocks.blockList[cblk2].value, that.lastNotePlayed[turtle],  that.blocks.blockList[noteBlock].value);
+                    } else {
+                        var b = that.parseArg(that, turtle, cblk2, blk, receivedArg);
+                    }
+
                     that.blocks.blockList[blk].value = that._doMinus(a, b);
                 }
                 break;
@@ -8083,7 +9170,7 @@ function Logo () {
                     if (notevalue == null || notevalue === 0) {
                         that.blocks.blockList[blk].value = 0;
                     } else {
-                        that.blocks.blockList[blk].value = that.notesPlayed[turtle] / notevalue;
+                        that.blocks.blockList[blk].value = (that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1]) / notevalue;
                     }
                 }
                 break;
@@ -8091,7 +9178,7 @@ function Logo () {
                 if (that.inStatusMatrix && that.blocks.blockList[that.blocks.blockList[blk].connections[0]].name === 'print') {
                     that.statusFields.push([blk, 'elapsednotes']);
                 } else {
-                    that.blocks.blockList[blk].value = that.notesPlayed[turtle];
+                    that.blocks.blockList[blk].value = that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1];
                 }
                 break;
             case 'turtleelapsednotes':
@@ -8101,7 +9188,7 @@ function Logo () {
                 for (var i = 0; i < that.turtles.turtleList.length; i++) {
                     var thisTurtle = that.turtles.turtleList[i];
                     if (targetTurtle === thisTurtle.name) {
-                        value = that.notesPlayed[i];
+                        value = that.notesPlayed[i][0] / that.notesPlayed[i][1];
                         that.blocks.blockList[blk].value = value;
                         break;
                     }
@@ -8114,7 +9201,7 @@ function Logo () {
                         that.errorMsg(_('Cannot find turtle') + ' ' + targetTurtle, blk);
                     }
 
-                    that.blocks.blockList[blk].value = that.notesPlayed[turtle];
+                    that.blocks.blockList[blk].value = that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1];
                 }
                 break;
             case 'beatfactor':
@@ -8129,7 +9216,7 @@ function Logo () {
                 var cblk = that.blocks.blockList[blk].connections[1];
                 var num = that.parseArg(that, turtle, cblk, blk, receivedArg);
                 if (num != null && typeof(num) === 'number') {
-                    var obj = numberToPitch(num + that.pitchNumberOffset);
+                    var obj = numberToPitch(num + that.pitchNumberOffset[turtle]);
                     if (that.blocks.blockList[blk].name === 'number2pitch') {
                         that.blocks.blockList[blk].value = obj[0];
                     } else {
@@ -8154,14 +9241,14 @@ function Logo () {
 
                             var obj = [pitch, octave];
                         } else if (that.notePitches[i].length > 0) {
-                            var obj = getNote(that.notePitches[i][0], that.noteOctaves[i][0], 0, that.keySignature[i], that.movable[turtle], null, that.errorMsg);
+                            var obj = getNote(that.notePitches[i][0], that.noteOctaves[i][0], 0, that.keySignature[i], that.moveable[turtle], null, that.errorMsg);
                         } else {
                             console.log('Cannot find a note for mouse ' + turtle);
                             that.errorMsg(INVALIDPITCH, blk);
                             var obj = ['G', 4];
                         }
 
-                        value = pitchToNumber(obj[0], obj[1], that.keySignature[i]) - that.pitchNumberOffset;
+                        value = pitchToNumber(obj[0], obj[1], that.keySignature[i]) - that.pitchNumberOffset[turtle];
                         that.blocks.blockList[blk].value = value;
                         break;
                     }
@@ -8180,14 +9267,14 @@ function Logo () {
                         var octave = parseInt(that.lastNotePlayed[turtle][0].slice(len - 1));
                         var obj = [pitch, octave];
                     } else if (that.notePitches[turtle].length > 0) {
-                        var obj = getNote(that.notePitches[turtle][last(that.inNoteBlock[turtle])][0], that.noteOctaves[turtle][last(that.inNoteBlock[turtle])][0], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                        var obj = getNote(that.notePitches[turtle][last(that.inNoteBlock[turtle])][0], that.noteOctaves[turtle][last(that.inNoteBlock[turtle])][0], 0, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                     } else {
                         console.log('Cannot find a note for mouse ' + turtle);
                         that.errorMsg(INVALIDPITCH, blk);
                         var obj = ['G', 4];
                     }
 
-                    value = pitchToNumber(obj[0], obj[1], that.keySignature[turtle]) - that.pitchNumberOffset;
+                    value = pitchToNumber(obj[0], obj[1], that.keySignature[turtle]) - that.pitchNumberOffset[turtle];
                     that.blocks.blockList[blk].value = value;
                 }
                 break;
@@ -8220,14 +9307,14 @@ function Logo () {
                         var octave = parseInt(that.lastNotePlayed[turtle][0].slice(len - 1));
                         var obj = [pitch, octave];
                     } else if (that.inNoteBlock[turtle] in that.notePitches[turtle] && that.notePitches[turtle][last(that.inNoteBlock[turtle])].length > 0) {
-                        var obj = getNote(that.notePitches[turtle][last(that.inNoteBlock[turtle])][0], that.noteOctaves[turtle][last(that.inNoteBlock[turtle])][0], 0, that.keySignature[turtle], that.movable[turtle], null, that.errorMsg);
+                        var obj = getNote(that.notePitches[turtle][last(that.inNoteBlock[turtle])][0], that.noteOctaves[turtle][last(that.inNoteBlock[turtle])][0], 0, that.keySignature[turtle], that.moveable[turtle], null, that.errorMsg);
                     } else {
                         console.log('Cannot find a note ');
                         that.errorMsg(INVALIDPITCH, blk);
                         var obj = ['G', 4];
                     }
 
-                    value = pitchToNumber(obj[0], obj[1], that.keySignature[turtle]) - that.pitchNumberOffset;
+                    value = pitchToNumber(obj[0], obj[1], that.keySignature[turtle]) - that.pitchNumberOffset[turtle];
                     that.blocks.blockList[blk].value = value;
                 }
                 break;
@@ -8235,10 +9322,10 @@ function Logo () {
                 if (that.inStatusMatrix && that.blocks.blockList[that.blocks.blockList[blk].connections[0]].name === 'print') {
                     that.statusFields.push([blk, 'beatvalue']);
                 } else {
-                    if (that.notesPlayed[turtle] < that.pickup[turtle]) {
+                    if (that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1] < that.pickup[turtle]) {
                         that.blocks.blockList[blk].value = 0;
                     } else {
-                        that.blocks.blockList[blk].value = (((that.notesPlayed[turtle] - that.pickup[turtle]) * that.noteValuePerBeat[turtle]) % that.beatsPerMeasure[turtle]) + 1;
+                        that.blocks.blockList[blk].value = (((that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1] - that.pickup[turtle]) * that.noteValuePerBeat[turtle]) % that.beatsPerMeasure[turtle]) + 1;
                     }
                 }
                 break;
@@ -8246,10 +9333,10 @@ function Logo () {
                 if (that.inStatusMatrix && that.blocks.blockList[that.blocks.blockList[blk].connections[0]].name === 'print') {
                     that.statusFields.push([blk, 'measurevalue']);
                 } else {
-                    if (that.notesPlayed[turtle] < that.pickup[turtle]) {
+                    if (that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1] < that.pickup[turtle]) {
                         that.blocks.blockList[blk].value = 0;
                     } else {
-                        that.blocks.blockList[blk].value = Math.floor(((that.notesPlayed[turtle] - that.pickup[turtle]) * that.noteValuePerBeat[turtle]) / that.beatsPerMeasure[turtle]) + 1;
+                        that.blocks.blockList[blk].value = Math.floor(((that.notesPlayed[turtle][0] / that.notesPlayed[turtle][1] - that.pickup[turtle]) * that.noteValuePerBeat[turtle]) / that.beatsPerMeasure[turtle]) + 1;
                     }
                 }
                 break;
@@ -8469,7 +9556,7 @@ function Logo () {
                     var cblk1 = that.blocks.blockList[blk].connections[1];
                     var cblk2 = that.blocks.blockList[blk].connections[2];
                     var note = that.parseArg(that, turtle, cblk1, blk, receivedArg);
-                    var octave = Math.floor(calcOctave(that.currentOctave[turtle], that.parseArg(that, turtle, cblk2, blk, receivedArg)));
+                    var octave = Math.floor(calcOctave(that.currentOctave[turtle], that.parseArg(that, turtle, cblk2, blk, receivedArg), that.lastNotePlayed[turtle], note));
                     block.value = Math.round(pitchToFrequency(note, octave, 0, that.keySignature[turtle]));
                 } else {
                     const NOTENAMES = ['A', 'B♭', 'B', 'C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭'];
@@ -8523,10 +9610,22 @@ function Logo () {
                 if (!(turtle in that.turtleHeaps)) {
                     that.turtleHeaps[turtle] = [];
                 }
+
+                if (a < 1) {
+                    a = 1;
+                    that.errorMsg(_('Index must be > 0.'))
+                }
+
+                if (a > 1000) {
+                    a = 1000;
+                    that.errorMsg(_('Maximum heap size is 1000.'))
+                }
+
                 // If index > heap length, grow the heap.
                 while (that.turtleHeaps[turtle].length < a) {
-                    that.turtleHeaps[turtle].push(null);
+                    that.turtleHeaps[turtle].push(0);
                 }
+
                 block.value = that.turtleHeaps[turtle][a - 1];
                 break;
             case 'heapLength':
@@ -8546,74 +9645,7 @@ function Logo () {
                 break;
             case 'notecounter':
                 var cblk = that.blocks.blockList[blk].connections[1];
-                if (cblk == null) {
-                    that.blocks.blockList[blk].value = 0;
-                } else {
-                    var saveSuppressStatus = that.suppressOutput[turtle];
-
-                    // We need to save the state of the boxes and heap
-                    // although there is a potential of a boxes
-                    // collision with other turtles.
-                    var saveBoxes = JSON.stringify(that.boxes);
-                    var saveTurtleHeaps = JSON.stringify(that.turtleHeaps[turtle]);
-                    // And the turtle state
-                    var saveX = that.turtles.turtleList[turtle].x;
-                    var saveY = that.turtles.turtleList[turtle].y;
-                    var saveColor = that.turtles.turtleList[turtle].color;
-                    var saveValue = that.turtles.turtleList[turtle].value;
-                    var saveChroma = that.turtles.turtleList[turtle].chroma;
-                    var saveStroke = that.turtles.turtleList[turtle].stroke;
-                    var saveCanvasAlpha = that.turtles.turtleList[turtle].canvasAlpha;
-                    var saveOrientation = that.turtles.turtleList[turtle].orientation;
-                    var savePenState = that.turtles.turtleList[turtle].penState;
-
-                    var saveWhichNoteToCount = that.whichNoteToCount[turtle];
-
-                    that.suppressOutput[turtle] = true;
-                    that.justCounting[turtle].push(true);
-
-                    for (var b in that.endOfClampSignals[turtle]) {
-                        that.butNotThese[turtle][b] = [];
-                        for (var i = 0; i < that.endOfClampSignals[turtle][b].length; i++) {
-                            that.butNotThese[turtle][b].push(i);
-                        }
-                    }
-
-                    var actionArgs = [];
-                    var saveNoteCount = that.notesPlayed[turtle];
-                    that.turtles.turtleList[turtle].running = true;
-
-                    // FIXME: Test to see if this nests properly.
-                    if (that.inNoteBlock[turtle]) {
-                        that.whichNoteToCount[turtle] += 1;
-                    }
-
-                    that._runFromBlockNow(that, turtle, cblk, true, actionArgs, that.turtles.turtleList[turtle].queue.length);
-                    that.blocks.blockList[blk].value = that.notesPlayed[turtle] - saveNoteCount;
-                    that.notesPlayed[turtle] = saveNoteCount;
-
-                    // Restore previous state
-                    that.boxes = JSON.parse(saveBoxes);
-                    that.turtleHeaps[turtle] = JSON.parse(saveTurtleHeaps);
-
-                    that.turtles.turtleList[turtle].doPenUp();
-                    that.turtles.turtleList[turtle].doSetXY(saveX, saveY);
-                    that.turtles.turtleList[turtle].color = saveColor;
-                    that.turtles.turtleList[turtle].value = saveValue;
-                    that.turtles.turtleList[turtle].chroma = saveChroma;
-                    that.turtles.turtleList[turtle].stroke = saveStroke;
-                    that.turtles.turtleList[turtle].canvasAlpha = saveCanvasAlpha;
-                    that.turtles.turtleList[turtle].doSetHeading(saveOrientation);
-                    that.turtles.turtleList[turtle].penState = savePenState;
-
-                    that.whichNoteToCount[turtle] = saveWhichNoteToCount;
-
-                    that.justCounting[turtle].pop();
-                    that.suppressOutput[turtle] = saveSuppressStatus;
-
-                    // FIXME: we need to handle cascading.
-                    that.butNotThese[turtle] = {};
-                }
+                that.blocks.blockList[blk].value = that._noteCounter(turtle, cblk);
                 break;
             case 'measureintervalsemitones':
                 var cblk = that.blocks.blockList[blk].connections[1];
@@ -8728,43 +9760,7 @@ function Logo () {
                     that._runFromBlockNow(that, turtle, cblk, true, actionArgs, that.turtles.turtleList[turtle].queue.length);
 
                     if (that.firstPitch[turtle].length > 0 && that.lastPitch[turtle].length > 0) {
-                        // Rather than just countinf the semitones, we
-                        // need to count the steps in the current key
-                        // needed to get from first pitch to last
-                        // pitch.
-                        if (last(that.lastPitch[turtle]) === last(that.firstPitch[turtle])) {
-                            that.blocks.blockList[blk].value = 0;
-                        } else if (last(that.lastPitch[turtle]) > last(that.firstPitch[turtle])) {
-                            var noteObj = numberToPitch(last(that.firstPitch[turtle]) + that.pitchNumberOffset);
-                            var i = 0;
-                            var n = last(that.firstPitch[turtle]) + that.pitchNumberOffset;
-                            while (i < 100) {
-                                n += getStepSizeUp(that.keySignature[turtle], noteObj[0]);
-                                i += 1;
-                                if (n >= last(that.lastPitch[turtle]) + that.pitchNumberOffset) {
-                                    break;
-                                }
-
-                                noteObj = numberToPitch(n);
-                            }
-
-                            that.blocks.blockList[blk].value = i;
-                        } else {
-                            var noteObj = numberToPitch(last(that.lastPitch[turtle]) + that.pitchNumberOffset);
-                            var i = 0;
-                            var n = last(that.lastPitch[turtle]) + that.pitchNumberOffset;
-                            while (i < 100) {
-                                n += getStepSizeUp(that.keySignature[turtle], noteObj[0]);
-                                i += 1;
-                                if (n >= last(that.firstPitch[turtle]) + that.pitchNumberOffset) {
-                                    break;
-                                }
-
-                                noteObj = numberToPitch(n);
-                            }
-
-                            that.blocks.blockList[blk].value = -i;
-                        }
+                        that.blocks.blockList[blk].value = that._scalarDistance(turtle, last(that.firstPitch[turtle]), last(that.lastPitch[turtle]));
 
                         that.firstPitch[turtle].pop();
                         that.lastPitch[turtle].pop();
@@ -8881,6 +9877,85 @@ function Logo () {
                     that.blocks.blockList[blk].value = 0;
                 }
                 break;
+            case 'makeblock':
+                that.showBlocks();  // Force blocks to be visible.
+                var blockArgs = [null];
+                if (that.blocks.blockList[blk].argClampSlots.length > 0) {
+                    for (var i = 0; i < that.blocks.blockList[blk].argClampSlots.length; i++) {
+                        var t = (that.parseArg(that, turtle, that.blocks.blockList[blk].connections[i + 2], blk, receivedArg));
+                        blockArgs.push(t);
+                    }
+                }
+                var cblk = that.blocks.blockList[blk].connections[1];
+                var name = that.parseArg(that, turtle, cblk, blk, receivedArg);
+                var blockNumber = that.blocks.blockList.length;
+
+                var x = that.turtles.turtleX2screenX(that.turtles.turtleList[turtle].x);
+                var y = that.turtles.turtleY2screenY(that.turtles.turtleList[turtle].y);
+
+                // We special case note blocks.
+                //.TRANS: a musical note consisting of pitch and duration
+                if (name === _('note')) {
+                    switch(blockArgs.length) {
+                    case 1:
+                        var p = 'sol';
+                        var o = 4;
+                        var v = 4;
+                        break;
+                    case 2:
+                        var p = blockArgs[1];
+                        var o = 4;
+                        var v = 4;
+                        break;
+                    case 3:
+                        var p = blockArgs[1];
+                        var o = blockArgs[2];
+                        var v = 4;
+                        break;
+                    default:
+                        var p = blockArgs[1];
+                        var o = blockArgs[2];
+                        var v = blockArgs[3];
+                        break;
+                    }
+
+                    var newNote = [[0, 'newnote', x, y, [null, 1, 4, 8]], [1, 'divide', 0, 0, [0, 2, 3]], [2, ['number', {'value': 1}], 0, 0, [1]], [3, ['number', {'value': v}], 0, 0, [1]], [4, 'vspace', 0, 0, [0, 5]], [5, 'pitch', 0, 0, [4, 6, 7, null]], [6, ['solfege', {'value': p}], 0, 0, [5]], [7, ['number', {'value': o}], 0, 0, [5]], [8, 'hidden', 0, 0, [0, null]]];
+                    that.blocks.loadNewBlocks(newNote);
+                    that.blocks.blockList[blk].value = blockNumber;
+                } else {
+                    var obj = that.blocks.palettes.getProtoNameAndPalette(name);
+                    var protoblk = obj[0];
+                    var protoName = obj[2];
+                    if (protoblk === null) {
+                        that.errorMsg(_('Cannot find block') + ' ' + name);
+                    } else {
+                        var newBlock = [[0, protoName, x, y, [null]]];
+                        for (var i = 1; i < that.blocks.protoBlockDict[protoblk].dockTypes.length; i++) {
+                            // FIXME: type check args
+                            if (i < blockArgs.length) {
+                                if (typeof(blockArgs[i]) === 'number') {
+                                    if (['anyin', 'numberin'].indexOf(that.blocks.protoBlockDict[protoblk].dockTypes[i]) === -1) {
+                                        that.errorMsg(_('Warning: block argument type mismatch'));
+                                    }
+                                    newBlock.push([i, ['number', {'value': blockArgs[i]}], 0, 0, [0]]);
+                                } else {
+                                    if (['anyin', 'textin'].indexOf(that.blocks.protoBlockDict[protoblk].dockTypes[i]) === -1) {
+                                        that.errorMsg(_('Warning: block argument type mismatch'));
+                                    }
+                                    newBlock.push([i, ['string', {'value': blockArgs[i]}], 0, 0, [0]]);
+                                }
+
+                                newBlock[0][4].push(i);
+                            } else {
+                                newBlock[0][4].push(null);
+                            }
+                    }
+
+                    that.blocks.loadNewBlocks(newBlock);
+                    that.blocks.blockList[blk].value = blockNumber;
+                    }
+                }
+                break;
             default:
                 if (that.blocks.blockList[blk].name in that.evalArgDict) {
                     eval(that.evalArgDict[that.blocks.blockList[blk].name]);
@@ -8894,6 +9969,84 @@ function Logo () {
         } else {
             return blk;
         }
+    };
+
+    this._noteCounter = function (turtle, cblk) {
+        if (cblk == null) {
+            return 0;
+        } else {
+            var saveSuppressStatus = this.suppressOutput[turtle];
+
+            // We need to save the state of the boxes and heap
+            // although there is a potential of a boxes collision with
+            // other turtles.
+            var saveBoxes = JSON.stringify(this.boxes);
+            var saveTurtleHeaps = JSON.stringify(this.turtleHeaps[turtle]);
+            // And the turtle state
+            var saveX = this.turtles.turtleList[turtle].x;
+            var saveY = this.turtles.turtleList[turtle].y;
+            var saveColor = this.turtles.turtleList[turtle].color;
+            var saveValue = this.turtles.turtleList[turtle].value;
+            var saveChroma = this.turtles.turtleList[turtle].chroma;
+            var saveStroke = this.turtles.turtleList[turtle].stroke;
+            var saveCanvasAlpha = this.turtles.turtleList[turtle].canvasAlpha;
+            var saveOrientation = this.turtles.turtleList[turtle].orientation;
+            var savePenState = this.turtles.turtleList[turtle].penState;
+
+            var saveWhichNoteToCount = this.whichNoteToCount[turtle];
+
+            var savePrevTurtleTime = this.previousTurtleTime[turtle];
+            var saveTurtleTime = this.turtleTime[turtle];
+
+            this.suppressOutput[turtle] = true;
+            this.justCounting[turtle].push(true);
+
+            for (var b in this.endOfClampSignals[turtle]) {
+                this.butNotThese[turtle][b] = [];
+                for (var i = 0; i < this.endOfClampSignals[turtle][b].length; i++) {
+                    this.butNotThese[turtle][b].push(i);
+                }
+            }
+
+            var actionArgs = [];
+            var saveNoteCount = this.notesPlayed[turtle];
+            this.turtles.turtleList[turtle].running = true;
+
+            if (this.inNoteBlock[turtle]) {
+                this.whichNoteToCount[turtle] += this.inNoteBlock[turtle].length;
+            }
+
+            this._runFromBlockNow(this, turtle, cblk, true, actionArgs, this.turtles.turtleList[turtle].queue.length);
+
+            var returnValue = rationalSum(this.notesPlayed[turtle], [-saveNoteCount[0], saveNoteCount[1]]);
+            this.notesPlayed[turtle] = saveNoteCount;
+
+            // Restore previous state
+            this.boxes = JSON.parse(saveBoxes);
+            this.turtleHeaps[turtle] = JSON.parse(saveTurtleHeaps);
+
+            this.turtles.turtleList[turtle].doPenUp();
+            this.turtles.turtleList[turtle].doSetXY(saveX, saveY);
+            this.turtles.turtleList[turtle].color = saveColor;
+            this.turtles.turtleList[turtle].value = saveValue;
+            this.turtles.turtleList[turtle].chroma = saveChroma;
+            this.turtles.turtleList[turtle].stroke = saveStroke;
+            this.turtles.turtleList[turtle].canvasAlpha = saveCanvasAlpha;
+            this.turtles.turtleList[turtle].doSetHeading(saveOrientation);
+            this.turtles.turtleList[turtle].penState = savePenState;
+
+            this.previousTurtleTime[turtle] = savePrevTurtleTime;
+            this.turtleTime[turtle] = saveTurtleTime;
+
+            this.whichNoteToCount[turtle] = saveWhichNoteToCount;
+
+            this.justCounting[turtle].pop();
+            this.suppressOutput[turtle] = saveSuppressStatus;
+
+            this.butNotThese[turtle] = {};
+        }
+
+        return returnValue;
     };
 
     this._doWait = function (turtle, secs) {
@@ -9020,10 +10173,11 @@ function Logo () {
         this.cameraID = id;
     };
 
-    this.hideBlocks = function () {
+    this.hideBlocks = function (show) {
         // Hide all the blocks.
         this.blocks.hide();
         this.refreshCanvas();
+        this.showBlocksAfterRun = show !== undefined && show;
     };
 
     this.showBlocks = function () {
@@ -9033,24 +10187,263 @@ function Logo () {
         this.refreshCanvas();
     };
 
-    this.updateNotation = function (note, duration, turtle, insideChord) {
-        var obj = durationToNoteValue(duration);
-        if (!(turtle in this.notationStaging)) {
-            this.notationStaging[turtle] = [];
+    this._calculateInvert = function (turtle, note, octave) {
+        var delta = 0;
+        var len = this.invertList[turtle].length;
+        var note1 = getNote(note, octave, 0, this.keySignature[turtle], this.moveable[turtle], null, this.errorMsg);
+        var num1 = pitchToNumber(note1[0], note1[1], this.keySignature[turtle]) - this.pitchNumberOffset[turtle];
+
+        for (var i = len - 1; i > -1; i--) {
+            var note2 = getNote(this.invertList[turtle][i][0], this.invertList[turtle][i][1], 0, this.keySignature[turtle], this.moveable[turtle], null, this.errorMsg);
+            var num2 = pitchToNumber(note2[0], note2[1], this.keySignature[turtle]) - this.pitchNumberOffset[turtle];
+            if (this.invertList[turtle][i][2] === 'even') {
+                delta += num2 - num1;
+                num1 += 2 * delta;
+            } else if (this.invertList[turtle][i][2] === 'odd') {
+                delta += num2 - num1 + 0.5;
+                num1 += 2 * delta;
+            } else {
+                // We need to calculate the scalar difference.
+                var scalarSteps = this._scalarDistance(turtle, num2, num1);
+                var note3 = this._addScalarTransposition(turtle, note2[0], note2[1], -scalarSteps);
+                var num3 = pitchToNumber(note3[0], note3[1], this.keySignature[turtle]) - this.pitchNumberOffset[turtle];
+                delta += (num3 - num1) / 2;
+                num1 = num3;
+            }
         }
 
+        return delta;
+    };
+
+    this._addScalarTransposition = function (turtle, note, octave, n) {
+        if (n > 0) {
+            var noteObj = getNote(note, octave, 0, this.keySignature[turtle], this.moveable[turtle], null, this.errorMsg);
+
+            for (var i = 0; i < n; i++) {
+                var value = getStepSizeUp(this.keySignature[turtle], noteObj[0]);
+                noteObj = getNote(noteObj[0], noteObj[1], value, this.keySignature[turtle], this.moveable[turtle], null, this.errorMsg);
+            }
+
+        } else if (n < 0) {
+            var noteObj = getNote(note, octave, 0, this.keySignature[turtle], this.moveable[turtle], null, this.errorMsg);
+
+            for (var i = 0; i < -n; i++) {
+                var value = getStepSizeDown(this.keySignature[turtle], noteObj[0]);
+                noteObj = getNote(noteObj[0], noteObj[1], value, this.keySignature[turtle], this.moveable[turtle], null, this.errorMsg);
+            }
+        } else {
+            var noteObj = [note, octave];
+        }
+
+        return noteObj;
+    };
+
+    this._scalarDistance = function (turtle, firstNote, lastNote) {
+        // Rather than just counting the semitones, we need to count
+        // the steps in the current key needed to get from firstNote pitch
+        // to lastNote pitch.
+
+        if (lastNote === firstNote) {
+            return 0;
+        } else if (lastNote > firstNote) {
+            var noteObj = numberToPitch(firstNote + this.pitchNumberOffset[turtle]);
+            var i = 0;
+            var n = firstNote + this.pitchNumberOffset[turtle];
+            while (i < 100) {
+                n += getStepSizeUp(this.keySignature[turtle], noteObj[0]);
+                i += 1;
+                if (n >= lastNote + this.pitchNumberOffset[turtle]) {
+                    break;
+                }
+
+                noteObj = numberToPitch(n);
+            }
+
+            return i;
+        } else {
+            var noteObj = numberToPitch(lastNote + this.pitchNumberOffset[turtle]);
+            var i = 0;
+            var n = lastNote + this.pitchNumberOffset[turtle];
+            while (i < 100) {
+                n += getStepSizeUp(this.keySignature[turtle], noteObj[0]);
+                i += 1;
+                if (n >= firstNote + this.pitchNumberOffset[turtle]) {
+                    break;
+                }
+
+                noteObj = numberToPitch(n);
+            }
+
+            return -i;
+        }
+    };
+
+    this._prepSynths = function () {
+        // Prep synths for each turtle.
+        for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+            if (!(turtle in instruments)) {
+                instruments[turtle] = {};
+                instrumentsFilters[turtle] = {};
+                instrumentsEffects[turtle] = {};
+            }
+
+            // Make sure there is a default synth for each turtle
+            if (!('default' in instruments[turtle])) {
+                this.synth.createDefaultSynth(turtle);
+            }
+
+            // Copy any preloaded synths from the default turtle
+            for (var instrumentName in instruments[0]) {
+                if (!(instrumentName in instruments[turtle])) {
+                    this.synth.loadSynth(turtle, instrumentName);
+
+                    // Copy any filters
+                    if (instrumentName in instrumentsFilters[0]) {
+                        instrumentsFilters[turtle][instrumentName] = instrumentsFilters[0][instrumentName];
+                    }
+
+                    // and any effects
+                    if (instrumentName in instrumentsEffects[0]) {
+                        instrumentsEffects[turtle][instrumentName] = instrumentsEffects[0][instrumentName];
+                    }
+                }
+            }
+
+            this.synthVolume[turtle] = {'default': [DEFAULTVOLUME],
+                                        'noise1': [DEFAULTVOLUME],
+                                        'noise2': [DEFAULTVOLUME],
+                                        'noise3': [DEFAULTVOLUME]};
+        }
+
+        if (!this.suppressOutput[turtle]) {
+            this._setMasterVolume(DEFAULTVOLUME);
+            for (var turtle = 0; turtle < this.turtles.turtleList.length; turtle++) {
+                for (var synth in this.synthVolume[turtle]) {
+                    this._setSynthVolume(turtle, synth, DEFAULTVOLUME);
+                }
+            }
+        }
+    };
+
+    this.clearNoteParams = function (turtle, blk, drums) {
+        this.oscList[turtle][blk] = [];
+        this.noteBeat[turtle][blk] = [];
+        this.noteBeatValues[turtle][blk] = [];
+        this.noteValue[turtle][blk] = null;
+        this.notePitches[turtle][blk] = [];
+        this.noteOctaves[turtle][blk] = [];
+        this.noteCents[turtle][blk] = [];
+        this.noteHertz[turtle][blk] = [];
+        this.embeddedGraphics[turtle][blk] = [];
+        if (drums !== null) {
+            this.noteDrums[turtle][blk] = drums;
+        } else {
+            this.noteDrums[turtle][blk] = [];
+        }
+    };
+
+    this.updateNotation = function (note, duration, turtle, insideChord, drum, split) {
+        // Don't split the note if we are already splitting the note.
+        if (split == undefined) {
+            split = true;
+        }
+
+        // Check to see if this note straddles a measure boundary.
+        if (this.pickupPOW2[turtle]) {
+            var a = this.notesPlayed[turtle][0] / this.notesPlayed[turtle][1] - this.pickup[turtle];
+        } else {
+            var a = this.notesPlayed[turtle][0] / this.notesPlayed[turtle][1] + (1 - this.pickup[turtle]);
+        }
+
+        var b = this.noteValuePerBeat[turtle] / this.beatsPerMeasure[turtle];
+        var c = a * b;
+        var measureValue = Math.floor(a * b) + 1;
+        var d = (a * b) + 1 - measureValue;
+        var d2 = (1 / duration) - d;
+        
+        // If the note won't fit in this measure, split it with a tie.
+        if (split && d > 0 && d2 > 0 && b > 0 && duration > 0 && 1 / duration > d) {
+            console.log('splitting note across measure boundary.');
+            var obj = rationalToFraction(d);
+            var obj2 = rationalToFraction(d2);
+
+            if (obj2[0] > 0) {
+                var i = 0;
+                while (d2 > b) {
+                    i += 1;
+                    d2 -= b;
+                }
+
+                var obj2 = rationalToFraction(d2);
+                console.log(obj2[0] + '/' + obj2[1]);
+                this.updateNotation(note, obj2[1] / obj2[0], turtle, insideChord, drum, false);
+                if (i > 0 || obj[0] > 0) {
+                    this.notationInsertTie(turtle);
+                    this.notationDrumStaging[turtle].push('tie');
+                    var obj2 = rationalToFraction(b);
+                }
+
+                while (i > 0) {
+                    i -= 1;
+                    console.log(obj2[0] + '/' + obj2[1]);
+                    this.updateNotation(note, obj2[1] / obj2[0], turtle, insideChord, drum, false);
+                    if (obj[0] > 0) {
+                        this.notationInsertTie(turtle);
+                        this.notationDrumStaging[turtle].push('tie');
+                    }
+                }
+
+            }
+
+            if (obj[0] > 0) {
+                console.log(obj[0] + '/' + obj[1]);
+                this.updateNotation(note, obj[1] / obj[0], turtle, insideChord, drum, false);
+            }
+
+            this.notesPlayed[turtle]  = rationalSum(this.notesPlayed[turtle], [-obj2[0], obj2[1]]);
+            return;
+        }
+
+        // Otherwise proceed as normal.
+        var obj = durationToNoteValue(duration);
+
+        // Deprecated
         if (this.turtles.turtleList[turtle].drum) {
-            note = "c'";
+            note = 'c2';
         }
 
         this.notationStaging[turtle].push([note, obj[0], obj[1], obj[2], obj[3], insideChord, this.staccato[turtle].length > 0 && last(this.staccato[turtle]) > 0]);
+
+        // If no drum is specified, add a rest to the drum
+        // line. Otherwise, add the drum.
+        if (drum.length === 0) {
+            this.notationDrumStaging[turtle].push([['R'], obj[0], obj[1], obj[2], obj[3], insideChord, false]);
+        } else {
+            var drumSymbol = getDrumSymbol(drum[0]);
+            this.notationDrumStaging[turtle].push([[drumSymbol], obj[0], obj[1], obj[2], obj[3], insideChord, false]);
+        }
+
+        this.pickupPoint[turtle] = null;
+
+        if (this.markup[turtle].length > 0) {
+            var markup = '';
+            for (var i = 0; i < this.markup[turtle].length; i++) {
+                markup += this.markup[turtle][i];
+                if (i < this.markup[turtle].length - 1) {
+                    markup += ' ';
+                }
+            }
+
+            this.notationMarkup(turtle, markup, true);
+            this.markup[turtle] = [];
+        }
+
+        if (typeof(note) === 'number') {
+            this.notationMarkup(turtle, toFixed2(note), false);
+        }
     };
 
     this.notationVoices = function (turtle, arg) {
-        if (this.notationStaging[turtle] == undefined) {
-            this.notationStaging[turtle] = [];
-        }
-
         switch(arg) {
         case 1:
             this.notationStaging[turtle].push('voice one');
@@ -9068,54 +10461,116 @@ function Logo () {
             this.notationStaging[turtle].push('one voice');
             break;
         }
+
+        this.pickupPoint[turtle] = null;
     }
 
-    this.notationMeter = function (turtle, count, value) {
-        if (this.notationStaging[turtle] == undefined) {
-            this.notationStaging[turtle] = [];
+    this.notationMarkup = function (turtle, markup, below) {
+        if (below) {
+            this.notationStaging[turtle].push('markdown', markup);
+        } else {
+            this.notationStaging[turtle].push('markup', markup);
         }
 
-        this.notationStaging[turtle].push('meter', count, value);
+        this.pickupPoint[turtle] = null;
+    };
+
+    this.notationKey = function (turtle, key, mode) {
+        this.notationStaging[turtle].push('key', key, mode);
+        this.pickupPoint[turtle] = null;
+    };
+
+    this.notationMeter = function (turtle, count, value) {
+        if (this.pickupPoint[turtle] != null) {
+            // Lilypond prefers meter to be before partials.
+            var d = this.notationStaging[turtle].length - this.pickupPoint[turtle];
+            var pickup = [];
+            for (var i = 0; i < d; i++) {
+                pickup.push(this.notationStaging[turtle].pop());
+            }
+
+            this.notationStaging[turtle].push('meter', count, value);
+            for (var i = 0; i < d; i++) {
+                this.notationStaging[turtle].push(pickup.pop());
+            }
+        } else {
+            this.notationStaging[turtle].push('meter', count, value);
+        }
+
+        this.pickupPoint[turtle] = null;
+    };
+
+    this.notationSwing = function (turtle) {
+        this.notationStaging[turtle].push('swing');
+    };
+
+    this.notationTempo = function (turtle, bpm, beatValue) {
+        var beat = convertFactor(beatValue);
+        if (beat !== null) {
+            this.notationStaging[turtle].push('tempo', bpm, beat);
+        } else {
+            obj = rationalToFraction(factor);
+            this.errorMsg(_('Lilypond cannot process tempo of ') + obj[0] + '/' + obj[1] + ' = ' + bpm);
+        }
     };
 
     this.notationPickup = function (turtle, factor) {
-        if (this.notationStaging[turtle] == undefined) {
-            this.notationStaging[turtle] = [];
+        if (factor === 0) {
+            console.log('ignoring pickup of 0');
+            return;
         }
 
-        this.notationStaging[turtle].push('pickup', 1 / factor);
+        var pickupPoint = this.notationStaging[turtle].length;
+
+        // Lilypond partial must be a combination of powers of two.
+        var partial =  1 / factor;
+        var beat = convertFactor(factor);
+        if (beat !== null) {
+            this.notationStaging[turtle].push('pickup', beat);
+            this.pickupPOW2[turtle] = true;
+        } else {
+            if (this.runningLilypond) {
+                obj = rationalToFraction(factor);
+                this.errorMsg(_('Lilypond cannot process pickup of ') + obj[0] + '/' + obj[1]);
+            }
+
+            obj = rationalToFraction(1 - factor);
+            for (var i = 0; i < obj[0]; i++) {
+                this.updateNotation(['R'], obj[1], turtle, false, '');
+            }
+        }
+
+        this.pickupPoint[turtle] = pickupPoint;
+    };
+
+    this.notationHarmonic = function (turtle) {
+        this.notationStaging.push('harmonic');
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationLineBreak = function (turtle) {
-        if (this.notationStaging[turtle] == undefined) {
-            this.notationStaging[turtle] = [];
-        }
-
         // this.notationStaging[turtle].push('break');
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationBeginArticulation = function (turtle) {
-        if (this.notationStaging[turtle] == undefined) {
-            this.notationStaging[turtle] = [];
-        }
-
         this.notationStaging[turtle].push('begin articulation');
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationEndArticulation = function (turtle) {
         this.notationStaging[turtle].push('end articulation');
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationBeginCrescendo = function (turtle, factor) {
-        if (this.notationStaging[turtle] == undefined) {
-            this.notationStaging[turtle] = [];
-        }
-
         if (factor > 0) {
             this.notationStaging[turtle].push('begin crescendo');
         } else {
             this.notationStaging[turtle].push('begin decrescendo');
         }
+
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationEndCrescendo = function (turtle, factor) {
@@ -9124,29 +10579,37 @@ function Logo () {
         } else {
             this.notationStaging[turtle].push('end decrescendo');
         }
+
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationBeginSlur = function (turtle) {
-        if (this.notationStaging[turtle] == undefined) {
-            this.notationStaging[turtle] = [];
-        }
-
         this.notationStaging[turtle].push('begin slur');
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationEndSlur = function (turtle) {
         this.notationStaging[turtle].push('end slur');
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationInsertTie = function (turtle) {
-        if (this.notationStaging[turtle] == undefined) {
-            this.notationStaging[turtle] = [];
-        }
-
         this.notationStaging[turtle].push('tie');
+        this.pickupPoint[turtle] = null;
     };
 
     this.notationRemoveTie = function (turtle) {
         this.notationStaging[turtle].pop();
+        this.pickupPoint[turtle] = null;
+    };
+
+    this.notationBeginHarmonics = function (turtle) {
+        this.notationStaging[turtle].push('begin harmonics');
+        this.pickupPoint[turtle] = null;
+    };
+
+    this.notationEndHarmonics = function (turtle) {
+        this.notationStaging[turtle].push('end harmonics');
+        this.pickupPoint[turtle] = null;
     };
 };

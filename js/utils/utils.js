@@ -1,4 +1,4 @@
-// Copyright (c) 2014-17 Walter Bender
+// Copyright (c) 2014-18 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -445,9 +445,6 @@ function processPluginData (pluginData, palettes, blocks, evalFlowDict, evalArgD
 
     palettes.updatePalettes();
 
-    // Populate the lists of block types.
-    blocks.findBlockTypes();
-
     // Return the object in case we need to save it to local storage.
     return obj;
 };
@@ -741,6 +738,18 @@ function displayMsg (blocks, text) {
 };
 
 
+function safeSVG (label) {
+    if (typeof(label) === 'string') {
+        return label
+	    .replace(/&/, '&amp;')
+	    .replace(/</, '&lt;')
+	    .replace(/>/, '&gt;');
+    } else {
+        return label;
+    }
+};
+
+
 function toFixed2 (d) {
     // Return number as fixed 2 precision
     if (typeof(d) === 'number') {
@@ -794,7 +803,7 @@ function LCD (a, b) {
 };
 
 
-function GCD( a, b) {
+function GCD (a, b) {
     a = Math.abs(a);
     b = Math.abs(b);
 
@@ -805,6 +814,18 @@ function GCD( a, b) {
     }
 
     return a;
+};
+
+
+function rationalSum (a, b) {
+    if (a === 0 || b === 0) {
+        console.log('divide by zero?');
+        return [0, 1];
+    }
+
+    var lcd = LCD(a[1], b[1]);
+    var c0 = a[0] * lcd / a[1] + b[0] * lcd / b[1];
+    return [a[0] * lcd / a[1] + b[0] * lcd / b[1], lcd];
 };
 
 

@@ -388,7 +388,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     greaterBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['greater'] = greaterBlock;
     greaterBlock.fontsize = 14;
-    greaterBlock.staticLabels.push('&gt;');
+    greaterBlock.staticLabels.push('>');
     greaterBlock.extraWidth = 20;
     greaterBlock.booleanTwoArgBlock();
 
@@ -396,7 +396,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     lessBlock.palette = palettes.dict['boolean'];
     blocks.protoBlockDict['less'] = lessBlock;
     lessBlock.fontsize = 14;
-    lessBlock.staticLabels.push('&lt;');
+    lessBlock.staticLabels.push('<');
     lessBlock.extraWidth = 20;
     lessBlock.booleanTwoArgBlock();
 

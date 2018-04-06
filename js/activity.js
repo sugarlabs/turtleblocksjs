@@ -78,7 +78,6 @@ var MYDEFINES = [
     'easeljs.min',
     'tweenjs.min',
     'preloadjs.min',
-    'Tone.min',
     'howler',
     'p5.min',
     'p5.sound.min',
@@ -116,6 +115,7 @@ var MYDEFINES = [
 
 if (_THIS_IS_MUSIC_BLOCKS_) {
     var MUSICBLOCKS_EXTRAS = [
+        'Tone.min',
         'widgets/modewidget',
         'widgets/pitchtimematrix',
         'widgets/pitchdrummatrix',

@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Walter Bender
+// Copyright (c) 2015-2018 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -8,7 +8,6 @@
 // You should have received a copy of the GNU Affero General Public
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
-//
 
 // FIXME: Use busy cursor
 
@@ -29,14 +28,14 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
 
     this.setServer = function(server) {
         this.server = server;
-    }
+    };
 
     this.hide = function() {
         if (this.container !== null) {
             this.container.visible = false;
             this.refreshCanvas();
         }
-    }
+    };
 
     this.show = function(scale) {
         this.scale = scale;
@@ -97,11 +96,14 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
                         viewer.completeInit();
                         loadThumbnailContainerHandler(viewer);
                         return true;
-                    }
+                    };
+
                     makeViewerBitmap(viewer, NEXTBUTTON, 'viewer', processNext, null);
-                }
+                };
+
                 makeViewerBitmap(viewer, PREVBUTTON, 'viewer', processPrev, null);
-            }
+            };
+
             makeViewerBitmap(this, BACKGROUND, 'viewer', processBackground, null);
         } else {
             this.container.visible = true;
@@ -109,7 +111,7 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
             this.completeInit();
             return true;
         }
-    }
+    };
 
     this.downloadImage = function(p, prepareNextImage) {
         var header = 'data:image/svg+xml;utf8,';
@@ -141,14 +143,15 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
             if (prepareNextImage !== null) {
                 prepareNextImage(viewer, p + 1);
             }
-        }
+        };
+
         image.src = data;
-    }
+    };
 
     this.completeInit = function() {
         var p = 0;
         this.prepareNextImage(this, p);
-    }
+    };
 
     this.prepareNextImage = function(viewer, p) {
         // TODO: this.pluginFiles.sort()
@@ -173,8 +176,8 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
             }
             viewer.refreshCanvas();
         }
-    }
-}
+    };
+};
 
 
 function hideCurrentPage(viewer) {
@@ -199,7 +202,7 @@ function hideCurrentPage(viewer) {
         viewer.dict[viewer.pluginFiles[p]].visible = true;
     }
     viewer.refreshCanvas();
-}
+};
 
 
 function showNextPage(viewer) {
@@ -217,7 +220,7 @@ function showNextPage(viewer) {
     }
     viewer.prepareNextImage(viewer, max);
     viewer.refreshCanvas();
-}
+};
 
 
 function viewerClicked(viewer, event) {
@@ -243,7 +246,7 @@ function viewerClicked(viewer, event) {
             viewer.loadPlugin(viewer.pluginFiles[p] + '.json');
         }
     }
-}
+};
 
 
 function loadThumbnailContainerHandler(viewer) {
@@ -297,7 +300,7 @@ function loadThumbnailContainerHandler(viewer) {
             viewerClicked(viewer, event)
         }
     });
-}
+};
 
 
 function makeViewerBitmap(viewer, data, name, callback, extras) {
@@ -307,7 +310,8 @@ function makeViewerBitmap(viewer, data, name, callback, extras) {
     img.onload = function() {
         bitmap = new createjs.Bitmap(img);
         callback(viewer, name, bitmap, extras);
-    }
+    };
+
     img.src = 'data:image/svg+xml;base64,' + window.btoa(
         unescape(encodeURIComponent(data)));
-}
+};

@@ -13,6 +13,9 @@
 // connecting them.
 const MINIMUMDOCKDISTANCE = 400;
 
+// Soft limit on the number of blocks in a single stack.
+const LONGSTACK = 300;
+
 // Special value flags to uniquely identify these media blocks.
 const CAMERAVALUE = '##__CAMERA__##';
 const VIDEOVALUE = '##__VIDEO__##';
@@ -780,8 +783,8 @@ function Blocks () {
                     that.blockList[parentblk].connections[1] = blk;
                     that.blockList[blk].value = that.findUniqueActionName(_('action'));
                     var label = that.blockList[blk].value;
-                    if (label.length > 8) {
-                        label = label.substr(0, 7) + '...';
+                    if (getTextWidth(label, 'bold 20pt Sans') > 60) {
+                        label = label.substr(0, 5) + '...';
                     }
                     that.blockList[blk].text.text = label;
                     that.blockList[blk].container.updateCache();
@@ -830,8 +833,8 @@ function Blocks () {
                     that.blockList[parentblk].connections[1] = blk;
                     that.blockList[blk].value = _('box');
                     var label = that.blockList[blk].value;
-                    if (label.length > 8) {
-                        label = label.substr(0, 7) + '...';
+                    if (getTextWidth(label, 'bold 20pt Sans') > 60) {
+                        label = label.substr(0, 5) + '...';
                     }
                     that.blockList[blk].text.text = label;
                     that.blockList[blk].container.updateCache();
@@ -1153,6 +1156,11 @@ function Blocks () {
         }
 
         if (newBlock != null) {
+            var n = this._countBlocksInStack(this.findTopBlock(newBlock));
+            if (n > LONGSTACK) {
+		this.errorMsg(_('Consider breaking this stack into parts.'));
+            }
+
             // We found a match.
             myBlock.connections[0] = newBlock;
             var connection = this.blockList[newBlock].connections[newConnection];
@@ -1292,8 +1300,8 @@ function Blocks () {
                             if (name !== myBlock.value) {
                                 myBlock.value = name;
                                 var label = name;
-                                if (label.length > 8) {
-                                    label = label.substr(0, 7) + '...';
+                                if (getTextWidth(label, 'bold 20pt Sans') > 60) {
+                                    label = label.substr(0, 5) + '...';
                                 }
                                 myBlock.text.text = label;
                                 myBlock.container.updateCache();
@@ -1376,8 +1384,8 @@ function Blocks () {
                             if (this.blockList[this.blockList[b].connections[1]].value === this.blockList[thisBlock].value) {
                                 this.blockList[thisBlock].value = this.findUniqueActionName(this.blockList[thisBlock].value);
                                 var label = this.blockList[thisBlock].value;
-                                if (label.length > 8) {
-                                    label = label.substr(0, 7) + '...';
+                                if (getTextWidth(label, 'bold 20pt Sans') > 60) {
+                                    label = label.substr(0, 5) + '...';
                                 }
                                 this.blockList[thisBlock].text.text = label;
                                 this.blockList[thisBlock].container.updateCache();
@@ -1834,6 +1842,20 @@ function Blocks () {
             myBlock = this.blockList[blk];
         }
         return blk;
+    };
+
+    this._countBlocksInStack = function (blk) {
+        // Counts blocks in a stack starting from blk.
+        var c = 0;
+        if (blk !== null) {
+            c += 1;
+
+            for (var i = 1; i < this.blockList[blk].connections.length; i++) {
+                c += this._countBlocksInStack(this.blockList[blk].connections[i]);
+            }
+        }
+
+        return c;
     };
 
     this.findStacks = function () {
@@ -2297,8 +2319,8 @@ function Blocks () {
                         var value = args[1];
                         that.blockList[thisBlock].value = value;
                         var label = value.toString();
-                        if (WIDENAMES.indexOf(that.blockList[thisBlock].name) === -1 && label.length > 8) {
-                            label = label.substr(0, 7) + '...';
+                        if (WIDENAMES.indexOf(that.blockList[thisBlock].name) === -1 && getTextWidth(label, 'bold 20pt Sans') > 60) {
+                            label = label.substr(0, 5) + '...';
                         }
                         that.blockList[thisBlock].text.text = label;
                         that.blockList[thisBlock].container.updateCache();
@@ -2321,8 +2343,8 @@ function Blocks () {
                     var value = args[1];
                     that.blockList[thisBlock].value = value;
                     var label = value.toString();
-                    if (WIDENAMES.indexOf(that.blockList[thisBlock].name) === -1 && label.length > 8) {
-                        label = label.substr(0, 7) + '...';
+                    if (WIDENAMES.indexOf(that.blockList[thisBlock].name) === -1 && getTextWidth(label, 'bold 20pt Sans') > 60) {
+                        label = label.substr(0, 5) + '...';
                     }
                     that.blockList[thisBlock].text.text = label;
                 };
@@ -2639,8 +2661,8 @@ function Blocks () {
             if (blockValue === oldName) {
                 myBlock.value = newName;
                 var label = myBlock.value;
-                if (label.length > 8) {
-                    label = label.substr(0, 7) + '...';
+                if (getTextWidth(label, 'bold 20pt Sans') > 60) {
+                    label = label.substr(0, 5) + '...';
                 }
                 myBlock.text.text = label;
                 myBlock.container.updateCache();
@@ -2659,8 +2681,8 @@ function Blocks () {
                 if (this.blockList[blk].privateData === oldName) {
                     this.blockList[blk].privateData = newName;
                     var label = newName;
-                    if (label.length > 8) {
-                        label = label.substr(0, 7) + '...';
+                    if (getTextWidth(label, 'bold 20pt Sans') > 60) {
+                        label = label.substr(0, 5) + '...';
                     }
 
                     this.blockList[blk].overrideName = label;

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-16 Walter Bender
+// Copyright (c) 2014-2018 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -841,9 +841,9 @@ function Turtle (name, turtles, drum) {
                 that.startBlock.container.addChild(that.decorationBitmap);
                 that.decorationBitmap.name = 'decoration';
 
-                var bounds = that.startBlock.container.getBounds();
+                var width = that.startBlock.width;
                 // FIXME: Why is the position off? Does it need a scale factor?
-                that.decorationBitmap.x = bounds.width - 50 * that.startBlock.protoblock.scale / 2;
+                that.decorationBitmap.x = width - 50 * that.startBlock.protoblock.scale / 2;
                 that.decorationBitmap.y = 20 * that.startBlock.protoblock.scale / 2;
                 that.decorationBitmap.scaleX = (27.5 / image.width) * that.startBlock.protoblock.scale / 2;
                 that.decorationBitmap.scaleY = (27.5 / image.height) * that.startBlock.protoblock.scale / 2;
@@ -1212,16 +1212,16 @@ function Turtles () {
                 newTurtle.decorationBitmap = newTurtle.bitmap.clone();
                 startBlock.container.addChild(newTurtle.decorationBitmap);
                 newTurtle.decorationBitmap.name = 'decoration';
-                var bounds = startBlock.container.getBounds();
+                var width = startBlock.width;
 
                 // Race condition with collapse/expand bitmap generation.
-                if (startBlock.expandBitmap == null) {
-                    var offset = 75;
-                } else {
-                    var offset = 40;
-                }
+                // if (startBlock.expandBitmap == null) {
+                //     var offset = 75;
+                // } else {
+                var offset = 40;
+                // }
 
-                newTurtle.decorationBitmap.x = bounds.width - offset * startBlock.protoblock.scale / 2;
+                newTurtle.decorationBitmap.x = width - offset * startBlock.protoblock.scale / 2;
 
                 newTurtle.decorationBitmap.y = 35 * startBlock.protoblock.scale / 2;
                 newTurtle.decorationBitmap.scaleX = newTurtle.decorationBitmap.scaleY = newTurtle.decorationBitmap.scale = 0.5 * startBlock.protoblock.scale / 2
@@ -1257,7 +1257,7 @@ function Turtles () {
                 y: newTurtle.container.y - (event.stageY / that.scale)
             }
 
-	    newTurtle.container.removeAllEventListeners('pressmove');
+            newTurtle.container.removeAllEventListeners('pressmove');
             newTurtle.container.on('pressmove', function (event) {
                 if (newTurtle.running) {
                     return;
@@ -1278,16 +1278,24 @@ function Turtles () {
         });
 
         newTurtle.container.on('mouseover', function (event) {
-            newTurtle.bitmap.scaleX *= 1.2;
-            newTurtle.bitmap.scaleY = newTurtle.bitmap.scaleX;
-            newTurtle.bitmap.scale = newTurtle.bitmap.scaleX;
+            if (newTurtle.running) {
+                return;
+            }
+
+            newTurtle.container.scaleX *= 1.2;
+            newTurtle.container.scaleY = newTurtle.container.scaleX;
+            newTurtle.container.scale = newTurtle.container.scaleX;
             that.refreshCanvas();
         });
 
         newTurtle.container.on('mouseout', function (event) {
-            newTurtle.bitmap.scaleX /= 1.2;
-            newTurtle.bitmap.scaleY = newTurtle.bitmap.scaleX;
-            newTurtle.bitmap.scale = newTurtle.bitmap.scaleX;
+            if (newTurtle.running) {
+                return;
+            }
+
+            newTurtle.container.scaleX /= 1.2;
+            newTurtle.container.scaleY = newTurtle.container.scaleX;
+            newTurtle.container.scale = newTurtle.container.scaleX;
             that.refreshCanvas();
         });
 

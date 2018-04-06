@@ -30,7 +30,7 @@ function getMainToolbarButtonNames(name) {
 
 
 function getAuxToolbarButtonNames(name) {
-    return (['planet', 'open', 'save', 'paste-disabled', 'Cartesian', 'polar', 'utility', 'empty-trash', 'restore-trash'].indexOf(name) > -1);
+    return (['planet', 'open', 'save', 'paste-disabled', 'Cartesian', 'polar', 'utility', 'new-project', 'restore-trash'].indexOf(name) > -1);
 }
 
 

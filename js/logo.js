@@ -289,7 +289,7 @@ function Logo () {
     this.lastNote = {};
     this.restartPlayback = true;
     //variables for progress bar
-    var progressBar = document.getElementById("myBar");   
+    var progressBar = docById('myBar');
     var width = 0;
     var turtleLength = 0;
     var inLoop = 0;
@@ -2766,7 +2766,7 @@ function Logo () {
                 if (that.svgBackground) {
                     that.svgOutput = '<rect x="0" y="0" height="' + that.canvas.height + '" width="' + that.canvas.width + '" fill="' + body.style.background + '"/> ' + that.svgOutput;
                 }
-                doSaveSVG(that, args[0]);
+                save.saveSVG(args[0]);
             }
             break;
         case 'showHeap':
@@ -2790,17 +2790,8 @@ function Logo () {
             }
             break;
         case 'saveHeap':
-            function downloadFile(filename, mimetype, content) {
-                var download = document.createElement('a');
-                download.setAttribute('href', 'data:' + mimetype + ';charset-utf-8,' + content);
-                download.setAttribute('download', filename);
-                document.body.appendChild(download);
-                download.click();
-                document.body.removeChild(download);
-            };
-
             if (args[0] && turtle in that.turtleHeaps) {
-                downloadFile(args[0], 'text/json', JSON.stringify(that.turtleHeaps[turtle]));
+                save.download('json', 'data:text/json;charset-utf-8,'+JSON.stringify(that.turtleHeaps[turtle]), args[0]);
             }
             break;
         case 'loadHeap':
@@ -2902,7 +2893,7 @@ function Logo () {
             // Actions for music-related blocks
         case 'savelilypond':
             if (args.length === 1) {
-                saveLilypondOutput(that, args[0]);
+                save.afterSaveLilypond(args[0]);
             }
             break;
         case 'amsynth':
@@ -2981,7 +2972,7 @@ function Logo () {
             break;
         case 'saveabc':
             if (args.length === 1) {
-                saveAbcOutput(that, args[0]);
+                save.afterSaveAbc(args[0]);
             }
             break;
 
@@ -2995,7 +2986,7 @@ function Logo () {
             if (args.length === 2) {
                 var modename = 'major';
                 for (var i = 0; i < MODENAMES.length; i++) {
-                    if (MODENAMES[i][0] === args[1]) {
+                    if (MODENAMES[i][0] === args[1] || MODENAMES[i][1] === args[1]) {
                         modename = MODENAMES[i][1];
                         that._modeBlock = that.blocks.blockList[blk].connections[2];
                         break;
@@ -3055,7 +3046,6 @@ function Logo () {
                     }
                 }
 
-                console.log(MUSICALMODES[modeName]);
                 var cblk = that.blocks.blockList[blk].connections[1];
                 if (that.blocks.blockList[cblk].name === 'modename') {
                     that.blocks.updateBlockText(cblk);
@@ -3262,7 +3252,6 @@ function Logo () {
             that._setDispatchBlock(blk, turtle, listenerName);
 
             var __listener = function (event) {
-                console.log(that.keySignature[turtle]);
                 that.modeWidget.init(that, that._modeBlock);
             }
 
@@ -6614,16 +6603,11 @@ function Logo () {
                 if (!that.turtles.running() && queueStart === 0 && that.justCounting[turtle].length === 0) {
                     if (that.runningLilypond) {
                         console.log('saving lilypond output:');
-                        var filename = docById('fileName').value;
-                        if (filename == undefined || filename.length === 0) {
-                            filename = _('My Project') + '.ly';
-                        }
-
-                        saveLilypondOutput(that, filename);
+                        save.afterSaveLilypond();
                         that.runningLilypond = false;
                     } else if (that.runningAbc) {
                         console.log('saving abc output:');
-                        saveAbcOutput(that, _('My Project') + '.abc');
+                        save.afterSaveAbc();
                         that.runningAbc = false;
                     } else if (that.suppressOutput[turtle]) {
                         console.log('finishing compiling');
@@ -7384,8 +7368,12 @@ function Logo () {
 
                     if (notes.length > 0) {
                         var len = notes[0].length;
-              
-                        that.currentOctave[turtle] = parseInt(notes[0].slice(len - 1));
+                        if (typeof(notes[0]) === 'number') {
+                            var obj = frequencyToPitch(notes[0]);
+                            that.currentOctave[turtle] = obj[1];
+                        } else {
+                            that.currentOctave[turtle] = parseInt(notes[0].slice(len - 1));
+                        }
                         that.currentCalculatedOctave[turtle] = that.currentOctave[turtle];
                         
                         if (that.turtles.turtleList[turtle].drum) {
@@ -7402,6 +7390,14 @@ function Logo () {
                         }
 
                         if (duration > 0) {
+                            var __getParamsEffects = function (paramsEffects) {
+                                if (!paramsEffects.doVibrato && !paramsEffects.doDistortion && !paramsEffects.doTremolo && !paramsEffects.doPhaser && !paramsEffects.Chorus && paramsEffects.partials.length === 1 && paramsEffects.partials[1] === 1) {
+                                    return null;
+                                } else {
+                                    return paramsEffects;
+                                }
+                            };
+
                             if (_THIS_IS_MUSIC_BLOCKS_ && !forceSilence) {
                                 // Parameters related to effects
                                 var paramsEffects = {
@@ -7442,7 +7438,7 @@ function Logo () {
                                     }
 
                                     if (that.justCounting[turtle].length === 0) {
-                                        that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes, beatValue, last(that.oscList[turtle][thisBlk]), paramsEffects, null]);
+                                        that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes, beatValue, last(that.oscList[turtle][thisBlk]), __getParamsEffects(paramsEffects), null]);
                                     }
                                 } else if (that.drumStyle[turtle].length > 0) {
                                     if (!that.suppressOutput[turtle]) {
@@ -7491,7 +7487,7 @@ function Logo () {
                                             }
 
                                             if (that.justCounting[turtle].length === 0) {
-                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.instrumentNames[turtle]), paramsEffects, filters]);
+                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.instrumentNames[turtle]), __getParamsEffects(paramsEffects), filters]);
                                             }
                                         } else if (turtle in that.voices && last(that.voices[turtle])) {
                                             if (!that.suppressOutput[turtle]) {
@@ -7500,7 +7496,7 @@ function Logo () {
                                             }
 
                                             if (that.justCounting[turtle].length === 0) {
-                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.voices[turtle]), paramsEffects, null]);
+                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, last(that.voices[turtle]), __getParamsEffects(paramsEffects), null]);
                                             }
                                         } else {
                                             if (!that.suppressOutput[turtle]) {
@@ -7508,7 +7504,7 @@ function Logo () {
                                             }
 
                                             if (that.justCounting[turtle].length === 0) {
-                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, 'default', paramsEffects, null]);
+                                                that.playbackQueue[turtle].push([that.previousTurtleTime[turtle], 'notes', notes[d], beatValue, 'default', __getParamsEffects(paramsEffects), null]);
                                             }
                                         }
                                     }
@@ -7677,22 +7673,24 @@ function Logo () {
         if (this.turtles.turtleList.length > 0) {
             var that = this;
             for (t in this.turtles.turtleList) {
-                var playbackList = [];
-                for (var i = 0; i < this.playbackQueue[t].length; i++) {
-                    playbackList.push([i, this.playbackQueue[t][i]]);
-                }
-
-                var sortedList = playbackList.sort(
-                    function(a, b) {
-                        if (a[1][0] === b[1][0]) {
-                            // Preserve original order if the events
-                            // have the same time stamp.
-                            return a[0] - b[0];
-                        } else {
-                            return a[1][0] - b[1][0];
-                        }
+                if (t in this.playbackQueue) {
+                    var playbackList = [];
+                    for (var i = 0; i < this.playbackQueue[t].length; i++) {
+                        playbackList.push([i, this.playbackQueue[t][i]]);
                     }
-                );
+
+                    var sortedList = playbackList.sort(
+                        function(a, b) {
+                            if (a[1][0] === b[1][0]) {
+                                // Preserve original order if the events
+                                // have the same time stamp.
+                                return a[0] - b[0];
+                            } else {
+                                return a[1][0] - b[1][0];
+                            }
+                        }
+                    );
+                }
             }
         }
 
@@ -7704,9 +7702,11 @@ function Logo () {
         if (width >= 100) {
             width = 0;
         }
+
         for (var turtle in this.playbackQueue) {   //For multiple voices
             l = l + this.playbackQueue[turtle].length;
         }
+
         progressBarDivision = 100 / (that.playbackQueue[t].length);
         turtleLength = 0;
         inLoop = 0;
@@ -7864,7 +7864,7 @@ function Logo () {
                             setTimeout(function(){
                                 console.log('finishing recording');
                                 that.synth.recorder.stop();
-                                that.synth.recorder.exportWAV(that.synth.download);
+                                that.synth.recorder.exportWAV(save.afterSaveWAV.bind(save));
                                 that.recording = false;
                             }, Math.max(2000, lastNote * 1000));
                         }

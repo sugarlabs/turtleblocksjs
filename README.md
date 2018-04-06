@@ -1,6 +1,6 @@
 TurtleBlocks JS
 ===============
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/activity/logo.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' />
 
 Turtle Blocks Javascript is an activity with a
 Logo-inspired graphical "turtle" that draws colorful art based on
@@ -13,7 +13,7 @@ which will challenge the more adventurous student.
 > Blocks, the version included in the Sugar distribution. Sugar users
 > probably want to use Turtle Blocks rather than Turtle Blocks JS.
 
-![Turtle Blocks](https://github.com/walterbender/turtleblocksjs/blob/master/screenshots/updatedscreenshot.png "Turtle Blocks")
+![Turtle Blocks](https://github.com/sugarlabs/turtleblocksjs/blob/master/screenshots/updatedscreenshot.png "Turtle Blocks")
 
 Using Turtle Art JS
 ------------------- 
@@ -23,9 +23,9 @@ the development has been done in Chrome, but it should also work in
 Firefox, Opera, and Safari. You can run it directly from index.html,
 from a [server maintained by Sugar Labs](http://turtle.sugarlabs.org),
 from the [github
-repo](http://rawgit.com/walterbender/turtleblocksjs/master/index.html),
+repo](http://rawgit.com/sugarlabs/turtleblocksjs/master/index.html),
 or by setting up a [local
-server](https://github.com/walterbender/turtleblocksjs/blob/master/server.md).
+server](https://github.com/sugarlabs/turtleblocksjs/blob/master/server.md).
 
 Sugar users can run Turtle Blocks JS as an app embedded in the Browse
 activity (See [Turtle Blocks
@@ -47,52 +47,52 @@ to run (slowly) on the Main Toolbar.
 Getting Started Documentation
 -----------------------------
 
-The basic buttons and basic blocks are explained in detail in [Documentation](https://github.com/walterbender/turtleblocksjs/blob/master/documentation/README.md).
+The basic buttons and basic blocks are explained in detail in [Documentation](https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/README.md).
 
-A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](https://github.com/walterbender/turtleblocksjs/blob/master/guide/README.md).
+A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/README.md).
 
 A quick start:
 
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/updated-fast-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/updated-fast-button.png' />
 Click to run the project in fast mode. Long press to run the project in slow mode.
 
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/step-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/step-button.png' />
 Click to run the project step by step.
 
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/stop-turtle-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/stop-turtle-button.png' />
 Stop the current project running.
 
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/clear-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/clear-button.png' />
 Clear the screen and return the turtles to their initial positions.
 
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
 Hide or show the blocks and the palettes
 
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
 Expand or collapse start and action stacks.
 
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/home-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/home-button.png' />
 Return all blocks to the center of the screen.
 
-<img src='https://github.com/walterbender/turtleblocksjs/blob/master/documentation/forward.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/forward.png' />
 Moves turtle forward.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/right.svg' />
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/right.svg' />
 Turns turtle clockwise (angle in degrees).
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_color.svg' />
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/set_color.svg' />
 Sets color of the line drawn by the turtle.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/set_pen_size.svg' />
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/set_pen_size.svg' />
 Sets size of the line drawn by the turtle.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/repeat.svg' />
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/repeat.svg' />
 Loops specified number of times.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/action_flow.svg' />
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/action_flow.svg' />
 Top of nameable action stack.
 
-<img src='https://rawgithub.com/walterbender/turtleblocksjs/master/documentation/action.svg' />
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/action.svg' />
 Invokes named action stack.
 
 Google Code-in participant Jasmine Park has created some guides to
@@ -104,14 +104,14 @@ Blocks](http://people.sugarlabs.org/walter/TurtleBlocksAdvancedBlocksManual.pdf)
 Music Blocks
 ------------
 
-[Music Blocks](https://github.com/walterbender/musicblocks) is fork of
+[Music Blocks](https://github.com/sugarlabs/musicblocks) is fork of
 Turtle Blocks with additional blocks for programming music.
 
 Reporting Bugs
 --------------
 
 Bugs can be reported in the
-[issues section](https://github.com/walterbender/turtleblocksjs/issues) of
+[issues section](https://github.com/sugarlabs/turtleblocksjs/issues) of
 this repository.
 
 Contributing
@@ -129,25 +129,25 @@ Advanced Features
 Turtle Blocks has a plugin mechanism that is used to add new
 blocks. You can learn more about how to use plugins (and how to write
 them) from the [Plugins
-Guide](https://github.com/walterbender/turtleblocksjs/blob/master/plugins/README.md).
+Guide](https://github.com/sugarlabs/turtleblocksjs/blob/master/plugins/README.md).
 
 List of Plugins
 ---------------
 
 * [Mindstorms](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorms robotics kit
-* [RoDi](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
-* [Carbon Calculator]((https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/carbon_calculator.json): blocks for exploring your carbon footprint
-* [Maths](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
-* [Translate](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
-* [Dictionary](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions
-* [Weather](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/weather.json): blocks to retrieve global weather forecasts
-* [Logic](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/logic.json): blocks for bitwise Boolean operations
-* [Finance](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/finance.json): a block for looking up market prices
-* [Bitcoin](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/bitcoin.json): a block for looking up bitcoin exchange rates
-* [Nutrition](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
-* [Facebook](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/facebook.json): a block for publishing a project to Facebook
-* [Heap](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data
-* [Accelerometer](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/accelerometer.json): blocks for accessing an accelerometer
-* [Turtle](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/turtle.json): blocks to support advanced features when using multiple turtles
-* [Gmap](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/gmap.json): blocks to support generation of Google maps.
-* [Random quote](https://raw.githubusercontent.com/walterbender/turtleblocksjs/blob/master/random_quote.json): returns random quote of the day
+* [RoDi](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
+* [Carbon Calculator]((https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/carbon_calculator.json): blocks for exploring your carbon footprint
+* [Maths](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
+* [Translate](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
+* [Dictionary](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions
+* [Weather](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/weather.json): blocks to retrieve global weather forecasts
+* [Logic](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/logic.json): blocks for bitwise Boolean operations
+* [Finance](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/finance.json): a block for looking up market prices
+* [Bitcoin](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/bitcoin.json): a block for looking up bitcoin exchange rates
+* [Nutrition](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
+* [Facebook](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/facebook.json): a block for publishing a project to Facebook
+* [Heap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data
+* [Accelerometer](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/accelerometer.json): blocks for accessing an accelerometer
+* [Turtle](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/turtle.json): blocks to support advanced features when using multiple turtles
+* [Gmap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/gmap.json): blocks to support generation of Google maps.
+* [Random quote](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/random_quote.json): returns random quote of the day

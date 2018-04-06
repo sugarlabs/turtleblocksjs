@@ -22,9 +22,9 @@ window.server = SERVER; 'https://turtle.sugarlabs.org/server/'; // '/server/';
 
 //{NAME} will be replaced with project name
 if (_THIS_IS_MUSIC_BLOCKS_) {
-    var SHAREURL = 'https://walterbender.github.io/musicblocks/index.html?file={name}';
+    var SHAREURL = 'https://musicblocks.sugarlabs.org/index.html?file={name}';
 } else {
-    var SHAREURL = 'https://walterbender.github.io/turtleblocksjs/index.html?file={name}';
+    var SHAREURL = 'https://turtle.sugarlabs.org/index.html?file={name}';
 }
 
 const NAMESUBTEXT = '{name}';

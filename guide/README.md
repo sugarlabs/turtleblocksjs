@@ -71,44 +71,52 @@ then we start in with programming with Turtle Blocks.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics1.svg' />
 
-A single line of length 100 [RUN LIVE](https://turtle.sugarlabs.org/?file=Forward_100.tb&run=True)
+A single line of length 100 [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523359934621848&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics2.svg' />
 
-Changing the line length to 200 [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_2&run=True)
+Changing the line length to 200 [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523360071975585&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics3.svg' />
 
 Adding a right turn of 90 degrees. Running this stack four times
-produces a square. [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_3&run=True)
+produces a square. [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523360268417654&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics4.svg' />
 
-Forward, right, forward, right, ... [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_4&run=True)
+Forward, right, forward, right, ... [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523360327901636&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics5.svg' />
 
-Using the *Repeat* block from the *Flow* palette [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_5&run=True)
+Using the *Repeat* block from the *Flow* palette [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523294074349148&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics6.svg' />
 
-Using the *Arc* block to make rounded corners [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_6&run=True)
+Using the *Arc* block to make rounded corners [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523360547665676&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics7.svg' />
 
 Using the *Fill* blocks from the Pen palette to make a solid square
 (what ever is drawn inside the *Fill* clamp will be filled upon
-exiting the clamp.) [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_7&run=True)
+exiting the clamp.) [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523360674936456&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics8.svg' />
 
 Changing the color to 70 (blue) using the *Set Color* block from the
-*Pen* palette [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_8&run=True)
+*Pen* palette [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523360821674406&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics9.svg' />
 
 Using the *Random* block from the *Numbers* palette to select a random
-color (0 to 100) [RUN LIVE](https://turtle.sugarlabs.org/?file=Basic_9&run=True)
+color (0 to 100) [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523360917773878&run=True)
 
 A SHOEBOX
 ---------
@@ -135,13 +143,17 @@ block, the value is larger.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/boxes1.svg' />
 
-Putting a value in a *Box* and then referring to the value in *Box* [RUN LIVE](https://turtle.sugarlabs.org/?file=Boxes_1&run=True)
+Putting a value in a *Box* and then referring to the value in *Box*
+[RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523361053378823&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/boxes2.svg' />
 
 We can change the value in a *Box* as the program runs. Here we add 10
 to the value in the *Box* with each iteration. The result in this case
-is a spiral, since the turtle goes forward further with each step. [RUN LIVE](https://turtle.sugarlabs.org/?file=Boxes_2&run=True)
+is a spiral, since the turtle goes forward further with each
+step. [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523361248940557&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/boxes3.svg' />
 
@@ -153,11 +165,12 @@ geometrically instead of arithmetically.
 
 In practice, the use of boxes is not unlike the use of keyword-value
 pairs in text-based programming languages. The keyword is the name of
-the *Box* and the value associated with the keyword is the value stored
-in the *Box*. You can have as many boxes as you'd like (until you run
-out of memory) and treat the boxes as if they were a dictionary. Note
-that the boxes are global, meaning all turtles and all action stacks
-share the same collection of boxes. [RUN LIVE](https://turtle.sugarlabs.org/?file=Boxes_3&run=True)
+the *Box* and the value associated with the keyword is the value
+stored in the *Box*. You can have as many boxes as you'd like (until
+you run out of memory) and treat the boxes as if they were a
+dictionary. Note that the boxes are global, meaning all turtles and
+all action stacks share the same collection of boxes. [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523368886737682&run=True)
 
 3. Action Stacks
 ----------------
@@ -176,17 +189,17 @@ block.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/actions1.svg' />
 
-Defining an action to create a new block, "*Square*" [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_1&run=True)
+Defining an action to create a new block, "*Square*" [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523369101107025&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/actions2.svg' />
 
-Using the "*Square*" block [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_2&run=True)
+Using the "*Square*" block [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523369182696942&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/actions3.svg' />
 
 The *Do* block lets you specify an action by name. In this example, we
 choose "one of" two names, "*Square*" and "*Triangle*" to determine which
-action to take. [RUN LIVE](https://turtle.sugarlabs.org/?file=Actions_3&run=True)
+action to take. [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523369272178072&run=True)
 
 4. Parameters
 -------------
@@ -200,29 +213,29 @@ their values with the *Add* block or with the corresponding set blocks.
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/parameters1.svg' />
 
 Using the *Heading* parameter, which changes each time the turtle
-changes direction, to change the color of a spiral [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_1&run=True)
+changes direction, to change the color of a spiral [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523369515049913&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/parameters2.svg' />
 
 "Squiral" by Brian Silverman uses the *Heading* and *X* parameter
 blocks. [RUN
-LIVE](https://turtle.sugarlabs.org/?file=Card-36.tb&run=True)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523044463956129&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/parameters3.svg' />
 
 Often you want to just increment a parameter by 1. For this, use the
-*Add-1-to* block. [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_3&run=True)
+*Add-1-to* block. [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523369660208921&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/parameters4.svg' />
 
 To increment (or decrement) a parameter by an arbitrary value, use the
-*Add-to* block. [RUN LIVE](https://turtle.sugarlabs.org/?file=parameters_4&run=True)
+*Add-to* block. [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523370184642548&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/parameters5.svg' />
 
 To make other changes to a parameter based on the current value, use
 the parameter's *Set* block. In this example, the pen size is doubled
-with each step in the iteration. [RUN LIVE](https://turtle.sugarlabs.org/?file=Parameters_5&run=True)
+with each step in the iteration. [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523370273985275&run=True)
 
 5. Conditionals
 ---------------
@@ -238,19 +251,19 @@ and not.
 
 Using a conditonal to select a color: Once the heading > 179, the
 color changes. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Conditionals-1.tb&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523370501577900&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/conditionals2.svg' />
 
 Conditionals along with the *Random* block can be used to simulate a
 coin toss. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Conditionals_2&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523370743897698&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/conditionals3.svg' />
 
 A coin toss is such a common operation that we added the *One-of* block
 as a convenience. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Conditionals_3&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523370862902481&run=True)
 
 6. Multimedia
 -------------
@@ -267,7 +280,7 @@ tone generation, and video playback.
 
 Using the *Show* block to display text; the orientation of the text
 matches the orientation of the turtle. [RUN
-LIVE](https://turtle.sugarlabs.org/?file=Media-1.tb&run=True)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523370990567304&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/media2.svg' />
 
@@ -280,13 +293,13 @@ block (left) will open a file browser. After selecting an image file
 
 The *Show* block in combination with the *Camera* block will capture and
 display an image from a webcam. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Media_3&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523371139976408&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/media4.svg' />
 
 The *Show* block can also be used in conjunction with a URL that
 points to media. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Media_4&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523371406381048&run=True)
 
 7. Sensors
 ----------
@@ -349,25 +362,25 @@ paint program, they become deeply engaged. How will you modify paint?
 
 In its simplest form, paint is just a matter of moving the turtle to
 whereever the mouse is positioned. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Paint_1&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523371509276932&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/paint2.svg' />
 
 Adding a test for the mouse button lets us move the turtle without
 leaving a trail of ink. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Paint_2&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523371673939089&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/paint3.svg' />
 
 In this example, we change the pen size based on the volume of
 microphone input. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Paint_3&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523371754657228&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/paint4.svg' />
 
 In another example, inspired by a student in a workshop in Colombia,
 we use time to change both the pen color and the pen size. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Paint-4.tb&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523371935195761&run=True)
 
 Example: Slide Show
 -------------------
@@ -388,13 +401,13 @@ Example: Keyboard
 In order to grab keycodes from the keyboard, you need to use a *While*
 block. In the above example, we store the keyboard value in a box,
 test it, and if it is > 0, return the value. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Keyboard_1&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523376704342158&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/keyboard2.svg' />
 
 If you want to convert the keycode to a alphanumeric character, you
 need to use the *To ASCII* block. E.g., *toASCII(65) = A* [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Keyboard_2&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523377042822413&run=True)
 
 8. Turtles, Sprites, Buttons, and Events
 ----------------------------------------
@@ -406,14 +419,15 @@ their code in parallel with each other whenever the *Run* button is
 clicked. Each turtle maintains its own set of parameters for position,
 color, pen size, pen state, etc. In this example, three different
 turtles draw three different shapes. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Turtles_1&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523377203344616&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/turtles2.svg' />
 
 Custom graphics can be applied to the turtles, using the *Shell*block
 on the *Media* palette. Thus you can treat turtles as sprites that can
 be moved around the screen. In this example, the sprite changes back
-and forth between two states as it moves across the screen.
+and forth between two states as it moves across the screen. [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523377357693679&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/turtles3.svg' />
 
@@ -421,14 +435,15 @@ Turtles can be programmed to respond to a "click" event, so they can
 be used as buttons. In this example, each time the turtle is clicked,
 the action is run, which move the turtle to a random location on the
 screen. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Turtles_3&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523377513682595&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/turtles4.svg' />
 
 Events can be broadcast as well. In this example, another variant on
 Paint, turtle "buttons", which listen for "click" events, are used to
 broadcast change-color events. The turtle used as the paintbrush is
-listening for these events.
+listening for these events. [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523378142359724&run=True)
 
 9. Advanced Actions
 --------------------
@@ -445,7 +460,7 @@ distance of the turtle from the center of the screen. Renaming an
 action stack that has a *Return* block will cause the creation of a new
 block in the *Actions* palette that can be used to reference the return
 value: in this case, a *Distance* block is created. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Actions_4&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523383380320451&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/actions6.svg' />
 
@@ -457,7 +472,7 @@ block. You add additional arguments by dragging them into the "clamp".
 Note that args are local to *Action* stacks, but boxes are not. If you
 planned to use an action in a recursive function, you had best avoid
 boxes. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Actions_6&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523382801625028&run=True)
 
 Example: Fibonacci
 ------------------
@@ -471,7 +486,7 @@ argument - 2.
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/fibonacci1.svg' />
 
 Calculating Fibonacci [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Fibonacci-1.tb&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523388667520324&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/fibonacci2.svg' />
 
@@ -479,7 +494,7 @@ In the second example, we use a *Repeat* loop to generate the first six
 Fibonacci numbers and use them to draw a nautilus.
 
 Draw a nautilus [RUN
-LIVE](http://turtle.sugarlabs.org/?file=nautilus.tb&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523388775236172&run=True)
 
 Example: Reflection Paint
 -------------------------
@@ -492,7 +507,8 @@ quadrants.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/turtles5.svg' />
 
-Reflection Paint [RUN LIVE](http://turtle.sugarlabs.org/?file=Reflection-Paint.tb&run=true)
+Reflection Paint [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523389168734406&run=True)
 
 10. Advanced Boxes
 ------------------
@@ -530,7 +546,7 @@ accumulated number of times that the dice toss resulted in a 2; when
 the value in the *Index Box* is 3, the turtle goes forward by the value
 in *Box 3*, which is the accumulated number of times that the dice toss
 resulted in a 3; etc. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Advanced_Boxes&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523299313972510&run=True)
 
 11. The Heap
 ------------
@@ -561,25 +577,26 @@ the drawing by popping points off of the heap.
 
 In the first example, we simply push the turtle position whenever we
 draw, along with the pen state. Note since we pop in the reverse order
-that we push, we push y, then x, then the mouse state. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Heaps_1&run=true)
+that we push, we push y, then x, then the mouse state.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/heap2.svg' />
 
 In the second example, we pop pen state, x, and y off of the heap and
 playback our drawing. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Heaps_2&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523389420306919&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/heap3.svg' />
 
 Use the *Save Heap* block to save the state of the heap to a file. In
 this example, we save our drawing to a file for playback later. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Heaps_3&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523390553182986&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/heap4.svg' />
 
-Use the *Load Heap* block to load the heap from data saved in a file. In
-this example, we playback the drawing from data stored in a file.
+Use the *Load Heap* block to load the heap from data saved in a
+file. In this example, we playback the drawing from data stored in a
+file. [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523389601597904&run=True)
 
 12. Extras
 ----------
@@ -599,7 +616,7 @@ fill in the SVG output; (2) *Hollow lines* are used to make graphic have
 dimension; and (3) the *Save as SVG* block writes to the Downloads
 directory on your computer. (Josh Burker introduced me to Tinkercad, a
 website that can be used to convert SVG to STL.) [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Extras_1&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523390883477748&run=True)
 
 13. Debugging Aids
 ------------------
@@ -614,7 +631,7 @@ monitor progress through a program.
 In this example, we use the addition operator to concatinate strings
 in a print statement. The mouse x + ", " + mouse y are printed in the
 inner loop. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Debug_1&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523391206069261&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/status1.svg' />
 
@@ -622,7 +639,7 @@ LIVE](http://turtle.sugarlabs.org/?file=Debug_1&run=true)
 
 There is also a *Status* widget that can be programmed to show various
 paramters as per the figures above. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Status_1&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523391401761720&run=True)
 
 Parameter blocks, boxes, arithmetic and boolean operators, and many
 sensor blocks will print their current value as the program runs when
@@ -642,7 +659,7 @@ proceeds at a slower pace an the block values are shown.
 A *Show* block is used to slow down execution of the code in an *Action*
 stack in order to facilitate debugging. In this case, we slow down
 during playback in order to watch the values popped off the heap. [RUN
-LIVE](http://turtle.sugarlabs.org/?file=Debug_2&run=true)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523391034295213&run=True)
 
 14. Advanced Color
 ------------------
@@ -673,7 +690,7 @@ Color* block.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/color1.svg' />
 
-Color vs. hue example [RUN LIVE](https://turtle.sugarlabs.org/?file=Color-vs-Hue.tb&run=true)
+Color vs. hue example [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523391601724568&run=True)
 
 To set the background color, use the *Background* block. It will set the
 background to the current hue/value/chroma triplet.

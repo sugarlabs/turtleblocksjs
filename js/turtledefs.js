@@ -66,7 +66,7 @@ function createHelpContent() {
         [_('Display statistics'), _('Display statistics about your Turtle project.'), 'header-icons/stats-button.svg'],
         [_('Load plugin from file'), _('You can load new blocks from the file system.'), 'header-icons/plugins-button.svg'],
         [_('Delete all'), _('Remove all content on the canvas, including the blocks.'), 'header-icons/empty-trash-button.svg'],
-        [_('Undo'), _('Restore blocks from the trash.'), 'header-icons/restore-trash-button.svg'],
+        [_('Restore'), _('Restore blocks from the trash.'), 'header-icons/restore-trash-button.svg'],
         [_('Guide'), _('A detailed guide to Turtle Blocks is available.'), 'activity/activity-icon-color.svg', 'https://sugarlabs.github.io/turtleblocksjs/guide', _('Turtle Blocks Guide')],
         [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']
     ];

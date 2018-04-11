@@ -1,4 +1,4 @@
-// Copyright (c) 2016-17 Walter Bender
+// Copyright (c) 2016-18 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -19,6 +19,7 @@ function StatusMatrix() {
     const ICONSIZE = 32;
     const OUTERWINDOWWIDTH = 620;
     const INNERWINDOWWIDTH = OUTERWINDOWWIDTH - BUTTONSIZE * 1.5;
+    var x, y;  //Drop coordinates of statusDiv
 
     docById('statusDiv').style.visibility = 'hidden';
 
@@ -38,8 +39,6 @@ function StatusMatrix() {
         var statusDiv = docById('statusDiv');
         statusDiv.style.visibility = 'visible';
         statusDiv.setAttribute('draggable', 'true');
-        statusDiv.style.left = '200px';
-        statusDiv.style.top = '150px';
 
         // The status buttons
         var statusButtonsDiv = docById('statusButtonsDiv');
@@ -93,9 +92,9 @@ function StatusMatrix() {
         canvas.ondrop = function(e) {
             if (that._dragging) {
                 that._dragging = false;
-                var x = e.clientX - that._dx;
+                x = e.clientX - that._dx;
                 statusDiv.style.left = x + 'px';
-                var y = e.clientY - that._dy;
+                y = e.clientY - that._dy;
                 statusDiv.style.top = y + 'px';
                 dragCell.innerHTML = that._dragCellHTML;
             }
@@ -108,9 +107,9 @@ function StatusMatrix() {
         statusDiv.ondrop = function(e) {
             if (that._dragging) {
                 that._dragging = false;
-                var x = e.clientX - that._dx;
+                x = e.clientX - that._dx;
                 statusDiv.style.left = x + 'px';
-                var y = e.clientY - that._dy;
+                y = e.clientY - that._dy;
                 statusDiv.style.top = y + 'px';
                 dragCell.innerHTML = that._dragCellHTML;
             }
@@ -261,6 +260,8 @@ function StatusMatrix() {
     this.updateAll = function() {
         // Update status of all of the voices in the matrix.
         var table = docById('statusTable');
+        statusDiv.style.top = y + 'px';
+        statusDiv.style.left = x + 'px';
 
 	this._logo.updatingStatusMatrix = true;
 
@@ -281,6 +282,14 @@ function StatusMatrix() {
                 case 'heading':
                     var value = this._logo.blocks.blockList[this._logo.statusFields[i][0]].value.toFixed(2);
                     break;
+                case 'mynotevalue':
+                    var value = mixedNumber(this._logo.blocks.blockList[this._logo.statusFields[i][0]].value);
+                case 'elapsednotes2':
+                    var blk = this._logo.statusFields[i][0];
+                    var cblk = this._logo.blocks.blockList[blk].connections[1];
+                    var notevalue = this._logo.parseArg(this._logo, turtle, cblk, blk, null);
+                    var value = mixedNumber(this._logo.blocks.blockList[this._logo.statusFields[i][0]].value) + ' × ' + mixedNumber(notevalue);
+                    break;
                 case 'elapsednotes':
                     var value = mixedNumber(this._logo.blocks.blockList[this._logo.statusFields[i][0]].value);
                     break;
@@ -291,6 +300,12 @@ function StatusMatrix() {
                     } else {
                         var value = '';
                     }
+                    break;
+                case 'beatvalue':
+                    var value = mixedNumber(this._logo.currentBeat[turtle]);
+                    break;
+                case 'measurevalue':
+                    var value = this._logo.currentMeasure[turtle];
                     break;
                 default:
                     var value = this._logo.blocks.blockList[this._logo.statusFields[i][0]].value;
@@ -313,10 +328,11 @@ function StatusMatrix() {
                 if (this._logo.noteStatus[turtle] != null) {
                     var notes = this._logo.noteStatus[turtle][0];
                     for (var j = 0; j < notes.length; j++) {
-                        note += notes[j];
                         if (typeof(notes[j]) === 'number') {
+                            note += toFixed2(notes[j]);
                             note += 'Hz ';
                         } else {
+                            note += notes[j];
                             note += ' ';
                         }
                     }
@@ -328,7 +344,7 @@ function StatusMatrix() {
 
                 var cell = table.rows[activeTurtles + 1].cells[i + 1];
                 if (cell != null) {
-                    cell.innerHTML = note.replace(/#/g, '♯').replace(/b/, '♭');
+                    cell.innerHTML = note.replace(/#/g, '♯').replace(/b/g, '♭');
                 }
             }
 
@@ -344,7 +360,7 @@ function StatusMatrix() {
         cell.style.width = BUTTONSIZE + 'px';
         cell.style.minWidth = cell.style.width;
         cell.style.maxWidth = cell.style.width;
-        cell.style.height = cell.style.width; 
+        cell.style.height = cell.style.width;
         cell.style.minHeight = cell.style.height;
         cell.style.maxHeight = cell.style.height;
         cell.style.backgroundColor = MATRIXBUTTONCOLOR;

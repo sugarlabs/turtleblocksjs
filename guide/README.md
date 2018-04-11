@@ -219,7 +219,7 @@ changes direction, to change the color of a spiral [RUN LIVE](https://turtle.sug
 
 "Squiral" by Brian Silverman uses the *Heading* and *X* parameter
 blocks. [RUN
-LIVE](https://turtle.sugarlabs.org/index.html?id=1523044463956129&run=True)
+LIVE](https://walterbender.github.io/musicblocks/index.html?id=1523410445476847&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/parameters3.svg' />
 
@@ -249,7 +249,7 @@ and not.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/conditionals1.svg' />
 
-Using a conditonal to select a color: Once the heading > 179, the
+Using a conditional to select a color: Once the heading > 179, the
 color changes. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523370501577900&run=True)
 
@@ -361,7 +361,7 @@ paint program, they become deeply engaged. How will you modify paint?
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/paint1.svg' />
 
 In its simplest form, paint is just a matter of moving the turtle to
-whereever the mouse is positioned. [RUN
+wherever the mouse is positioned. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523371509276932&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/paint2.svg' />
@@ -423,7 +423,7 @@ LIVE](https://turtle.sugarlabs.org/index.html?id=1523377203344616&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/turtles2.svg' />
 
-Custom graphics can be applied to the turtles, using the *Shell*block
+Custom graphics can be applied to the turtles, using the *Shell* block
 on the *Media* palette. Thus you can treat turtles as sprites that can
 be moved around the screen. In this example, the sprite changes back
 and forth between two states as it moves across the screen. [RUN
@@ -477,7 +477,7 @@ LIVE](https://turtle.sugarlabs.org/index.html?id=1523382801625028&run=True)
 Example: Fibonacci
 ------------------
 
-Calculating the Fibonacci sequence is often done using a resursive
+Calculating the Fibonacci sequence is often done using a recursive
 method. In the example below, we pass an argument to the *Fib* action,
 which returns a value if the argument is &lt; 2; otherwise it returns
 the sum of the result of calling the *Fib* action with argument - 1 and
@@ -518,7 +518,7 @@ specify it explicitly. (Note that the *Do* block affords a similar
 mechanism for computing the names of actions.)
 
 In the following examples, we use this to accumulate the results of
-toss a pair of dice 100 times (example inspired by Tony Forster).
+toss a pair of dice 1600 times (example inspired by Tony Forster).
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/boxes4.svg' />
 
@@ -529,7 +529,7 @@ of the current value in the counter and store in that box a value of
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/boxes5.svg' />
 
-Next we add an *Action* to toss the dice 100 times. To simulate tossing
+Next we add an *Action* to toss the dice 1600 times. To simulate tossing
 a pair of dice, we sum two random numbers between 1 and 6. We use the
 result as the name of the box we want to increment. So for example, if
 we throw a 7, we add one to the *Box* named 7. In this way we increment
@@ -679,7 +679,7 @@ color).
 
 A note about Chroma: In the Munsell system, the maximum chroma of
 each hue varies with value. To simplify the model, if the chroma
-specified is greated than the maximum chroma available for a hue/value
+specified is greater than the maximum chroma available for a hue/value
 pair, the maximum chroma available is used.
 
 The *Set Color* block maps the three dimensions of the Munsell color

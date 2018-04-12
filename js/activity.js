@@ -1190,7 +1190,11 @@ define(MYDEFINES, function (compatibility) {
                 this.showPlanet = function(){
                     this.planet.open(this.mainCanvas.toDataURL('image/png'));
                     this.iframe.style.display = 'block';
-                    this.iframe.contentWindow.document.getElementById('local-tab').click();
+                    try {
+			this.iframe.contentWindow.document.getElementById('local-tab').click();
+		    } catch (e) {
+                        console.log(e);
+		    }
                 }
 
                 this.hidePlanet = function(){
@@ -1330,8 +1334,7 @@ define(MYDEFINES, function (compatibility) {
                         this.planet.setLoadProjectFromFile(this.loadProjectFromFile.bind(this));
                         this.planet.setOnConverterLoad(this.onConverterLoad.bind(this));
                     } catch (e) {
-                        console.log('Planet unavailable');
-                        errorMsg(_('The planet is unavailable.'));
+                        console.log('Planet not available');
                         this.planet = null;
                     }
 
@@ -1340,10 +1343,12 @@ define(MYDEFINES, function (compatibility) {
                 }
             }
 
-            if (this.planet != null) {
+            try {
                 planet = new PlanetInterface(storage);
                 planet.init();
-            }
+            } catch (e) {
+                planet = undefined;
+	    }
 
             save = new SaveInterface(planet);
             save.setVariables([
@@ -1354,7 +1359,7 @@ define(MYDEFINES, function (compatibility) {
             ]);
             save.init();
 
-            if (this.planet != null) {
+            if (planet != undefined) {
                 saveLocally = planet.saveLocally.bind(planet);
             } else {
 

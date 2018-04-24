@@ -733,7 +733,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     blocks.protoBlockDict['nameddo'] = namedDoBlock;
     namedDoBlock.hidden = true;
     namedDoBlock.staticLabels.push(_('action'));
-    namedDoBlock.extraWidth = 10;
+    namedDoBlock.extraWidth = 40;
     namedDoBlock.adjustWidthToLabel();
     namedDoBlock.zeroArgBlock();
 
@@ -995,6 +995,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var textBlock = new ProtoBlock('text');
     textBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['text'] = textBlock;
+    textBlock.extraWidth = 30;
     textBlock.valueBlock();
     textBlock.dockTypes[0] = 'textout';
 
@@ -1451,6 +1452,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     statusBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['status'] = statusBlock;
     statusBlock.staticLabels.push(_('status'));
+    statusBlock.extraWidth = 10;
     statusBlock.adjustWidthToLabel();
     statusBlock.stackClampZeroArgBlock();
 

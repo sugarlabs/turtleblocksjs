@@ -3689,15 +3689,14 @@ function Logo () {
             that._setListener(turtle, listenerName, __listener);
             break;
         case 'rest2':
-            that.notePitches[turtle][last(that.inNoteBlock[turtle])].push('rest');
-            that.noteOctaves[turtle][last(that.inNoteBlock[turtle])].push(4);
-            that.noteCents[turtle][last(that.inNoteBlock[turtle])].push(0);
-            that.noteHertz[turtle][last(that.inNoteBlock[turtle])].push(0);
             if (that.inNoteBlock[turtle].length > 0) {
+                that.notePitches[turtle][last(that.inNoteBlock[turtle])].push('rest');
+                that.noteOctaves[turtle][last(that.inNoteBlock[turtle])].push(4);
+                that.noteCents[turtle][last(that.inNoteBlock[turtle])].push(0);
+                that.noteHertz[turtle][last(that.inNoteBlock[turtle])].push(0);
                 that.noteBeatValues[turtle][last(that.inNoteBlock[turtle])].push(that.beatFactor[turtle]);
+                that.pushedNote[turtle] = true;
             }
-
-            that.pushedNote[turtle] = true;
             break;
         case 'steppitch':
             // Similar to pitch but calculated from previous note played.
@@ -4680,12 +4679,14 @@ function Logo () {
                     }
                 }
 
-                that.instrumentNames[turtle].push(synth);
-                that.synth.loadSynth(turtle, synth);
+                if (that.instrumentNames[turtle].indexOf(synth) === -1) {
+                    that.instrumentNames[turtle].push(synth);
+                    that.synth.loadSynth(turtle, synth);
 
-                if (that.synthVolume[turtle][synth] == undefined) {
-                    that.synthVolume[turtle][synth] = [DEFAULTVOLUME];
-                    that.crescendoInitialVolume[turtle][synth] = [DEFAULTVOLUME];
+                    if (that.synthVolume[turtle][synth] == undefined) {
+                        that.synthVolume[turtle][synth] = [DEFAULTVOLUME];
+                        that.crescendoInitialVolume[turtle][synth] = [DEFAULTVOLUME];
+                    }
                 }
 
                 childFlow = args[1];
@@ -5844,6 +5845,16 @@ function Logo () {
                         synth = 'default';
                     }
 
+                    if (that.instrumentNames[turtle].indexOf(synth) === -1) {
+                        that.instrumentNames[turtle].push(synth);
+                        that.synth.loadSynth(turtle, synth);
+
+                        if (that.synthVolume[turtle][synth] == undefined) {
+                            that.synthVolume[turtle][synth] = [DEFAULTVOLUME];
+                            that.crescendoInitialVolume[turtle][synth] = [DEFAULTVOLUME];
+                        }
+                    }
+
                     that.synthVolume[turtle][synth].push(args[1]);
                     if (!this.suppressOutput[turtle]) {
                         that._setSynthVolume(turtle, synth, args[1]);
@@ -5897,6 +5908,16 @@ function Logo () {
                 if (synth == null) {
                     that.errorMsg(synth + 'not found', blk);
                     synth = 'default';
+                }
+
+                if (that.instrumentNames[turtle].indexOf(synth) === -1) {
+                    that.instrumentNames[turtle].push(synth);
+                    that.synth.loadSynth(turtle, synth);
+
+                    if (that.synthVolume[turtle][synth] == undefined) {
+                        that.synthVolume[turtle][synth] = [DEFAULTVOLUME];
+                        that.crescendoInitialVolume[turtle][synth] = [DEFAULTVOLUME];
+                    }
                 }
 
                 that.synthVolume[turtle][synth].push(args[1]);
@@ -6355,41 +6376,44 @@ function Logo () {
             break;
         case 'dockblock':
             if (args.length < 3) {
+                console.log(args.length + ' < 3');
                 that.errorMsg(NOINPUTERRORMSG, blk);
                 that.stopTurtle = true;
                 break;
             }
 
             if (args[0] < 0 || args[0] > that.blocks.blockList.length - 1) {
+                console.log(args[0] + ' > ' + that.blocks.blockList.length - 1);
                 that.errorMsg(NOINPUTERRORMSG, blk);
                 that.stopTurtle = true;
                 break;
             }
 
             if (args[0] === args[2]) {
+                console.log(args[0] + ' == ' + args[2]);
                 that.errorMsg(NOINPUTERRORMSG, blk);
                 that.stopTurtle = true;
                 break;
             }
 
             if (args[2] < 0 || args[2] > that.blocks.blockList.length - 1) {
+                console.log(args[2] + ' > ' + that.blocks.blockList.length - 1);
                 that.errorMsg(NOINPUTERRORMSG, blk);
                 that.stopTurtle = true;
                 break;
             }
 
-            if (args[1] < 1 || args[1] > that.blocks.blockList[args[0]].connections.length - 1) {
+            if (args[1] === -1) {
+                // Find the last connection.
+                args[1] = that.blocks.blockList[args[0]].connections.length - 1;
+            } else if (args[1] < 1 || args[1] > that.blocks.blockList[args[0]].connections.length - 1) {
+                console.log(args[1] + ' out of bounds');
                 that.errorMsg(NOINPUTERRORMSG, blk);
                 that.stopTurtle = true;
                 break;
             }
 
             // Make sure there is not another block already connected.
-            if (args[1] === -1) {
-                // Find the last connection.
-                args[1] = that.blocks.blockList[args[0]].connections.length - 1;
-            }
-
             var c = that.blocks.blockList[args[0]].connections[args[1]];
             if (c !== null) {
                 if (that.blocks.blockList[c].name === 'hidden') {
@@ -9925,6 +9949,10 @@ function Logo () {
                     var newNote = [[0, 'newnote', x, y, [null, 1, 4, 8]], [1, 'divide', 0, 0, [0, 2, 3]], [2, ['number', {'value': 1}], 0, 0, [1]], [3, ['number', {'value': v}], 0, 0, [1]], [4, 'vspace', 0, 0, [0, 5]], [5, 'pitch', 0, 0, [4, 6, 7, null]], [6, ['solfege', {'value': p}], 0, 0, [5]], [7, ['number', {'value': o}], 0, 0, [5]], [8, 'hidden', 0, 0, [0, null]]];
                     that.blocks.loadNewBlocks(newNote);
                     that.blocks.blockList[blk].value = blockNumber;
+                } else if (name === _('silence')) {  // FIXME: others too
+                    var newBlock = [[0, 'rest2', x, y, [null, null]]];
+                    that.blocks.loadNewBlocks(newBlock);
+                    that.blocks.blockList[blk].value = blockNumber;
                 } else {
                     var obj = that.blocks.palettes.getProtoNameAndPalette(name);
                     var protoblk = obj[0];
@@ -9941,11 +9969,13 @@ function Logo () {
                                         that.errorMsg(_('Warning: block argument type mismatch'));
                                     }
                                     newBlock.push([i, ['number', {'value': blockArgs[i]}], 0, 0, [0]]);
-                                } else {
+                                } else if (typeof(blockArgs[i]) === 'string') {
                                     if (['anyin', 'textin'].indexOf(that.blocks.protoBlockDict[protoblk].dockTypes[i]) === -1) {
                                         that.errorMsg(_('Warning: block argument type mismatch'));
                                     }
                                     newBlock.push([i, ['string', {'value': blockArgs[i]}], 0, 0, [0]]);
+                                } else {
+                                    newBlock[0][4].push(null);
                                 }
 
                                 newBlock[0][4].push(i);
@@ -10178,6 +10208,7 @@ function Logo () {
 
     this.hideBlocks = function (show) {
         // Hide all the blocks.
+        this.blocks.palettes.hide();
         this.blocks.hide();
         this.refreshCanvas();
         this.showBlocksAfterRun = show !== undefined && show;
@@ -10185,6 +10216,7 @@ function Logo () {
 
     this.showBlocks = function () {
         // Show all the blocks.
+        this.blocks.palettes.show();
         this.blocks.show();
         this.blocks.bringToTop();
         this.refreshCanvas();

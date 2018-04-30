@@ -16,7 +16,6 @@
 var NAMEDICT = {
     'fullscreen': 'vspace',
     'fillscreen2': 'fillscreen',
-    'comment': 'print',
     'sandwichclampcollapsed': 'clamp',
     'ifelse': 'ifthenelse',
     'xcor': 'x',
@@ -1437,6 +1436,14 @@ function initBasicProtoBlocks(palettes, blocks) {
     waitBlock.adjustWidthToLabel();
     waitBlock.oneArgBlock();
     waitBlock.defaults.push(1);
+
+    var commentBlock = new ProtoBlock('comment');
+    printBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['print'] = printBlock;
+    printBlock.staticLabels.push(_('comment'));
+    printBlock.adjustWidthToLabel();
+    printBlock.oneArgBlock();
+    printBlock.dockTypes[1] = 'anyin';
 
     var printBlock = new ProtoBlock('print');
     printBlock.palette = palettes.dict['extras'];

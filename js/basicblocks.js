@@ -1438,12 +1438,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     waitBlock.defaults.push(1);
 
     var commentBlock = new ProtoBlock('comment');
-    printBlock.palette = palettes.dict['extras'];
-    blocks.protoBlockDict['print'] = printBlock;
-    printBlock.staticLabels.push(_('comment'));
-    printBlock.adjustWidthToLabel();
-    printBlock.oneArgBlock();
-    printBlock.dockTypes[1] = 'anyin';
+    commentBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['comment'] = commentBlock;
+    commentBlock.staticLabels.push(_('comment'));
+    commentBlock.adjustWidthToLabel();
+    commentBlock.oneArgBlock();
+    commentBlock.dockTypes[1] = 'anyin';
 
     var printBlock = new ProtoBlock('print');
     printBlock.palette = palettes.dict['extras'];

@@ -381,6 +381,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     intBlock.staticLabels.push(_('int'));
     intBlock.adjustWidthToLabel();
     intBlock.oneArgMathBlock();
+    intBlock.dockTypes[1] = 'anyin';
     intBlock.defaults.push(100)
 
     var greaterBlock = new ProtoBlock('greater');
@@ -1295,6 +1296,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     foundTurtleBlock.adjustWidthToLabel();
     foundTurtleBlock.extraWidth = 50;
     foundTurtleBlock.booleanOneArgBlock();
+    foundTurtleBlock.dockTypes[1] = 'anyin';
     foundTurtleBlock.defaults.push('Yertle');
 
     var setTurtleBlock = new ProtoBlock('setturtle');
@@ -1305,6 +1307,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     setTurtleBlock.flowClampOneArgBlock();
     setTurtleBlock.dockTypes[1] = 'anyin';
     setTurtleBlock.defaults.push('Yertle');
+
+    var newTurtle = new ProtoBlock('newturtle');
+    newTurtle.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['newturtle'] = newTurtle;
+    newTurtle.staticLabels.push(_('new turtle'));
+    newTurtle.adjustWidthToLabel();
+    newTurtle.oneArgBlock();
+    newTurtle.dockTypes[1] = 'anyin';
+    newTurtle.defaults.push('Yertle');
 
     var turtleNameBlock = new ProtoBlock('turtlename');
     turtleNameBlock.palette = palettes.dict['extras'];

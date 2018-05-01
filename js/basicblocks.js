@@ -381,6 +381,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     intBlock.staticLabels.push(_('int'));
     intBlock.adjustWidthToLabel();
     intBlock.oneArgMathBlock();
+    intBlock.dockTypes[1] = 'anyin';
     intBlock.defaults.push(100)
 
     var greaterBlock = new ProtoBlock('greater');

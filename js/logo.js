@@ -8812,7 +8812,7 @@ function Logo () {
                 }
 
                 if (actionArgs.length >= Number(name)) {
-                    var value = actionArgs[Number(name)-1];
+                    var value = actionArgs[Number(name) - 1];
                     that.blocks.blockList[blk].value = value;
                 } else {
                     that.errorMsg('Invalid argument', blk);
@@ -8849,7 +8849,16 @@ function Logo () {
                 } else {
                     var cblk = that.blocks.blockList[blk].connections[1];
                     var a = that.parseArg(that, turtle, cblk, blk, receivedArg);
-                    that.blocks.blockList[blk].value = Math.floor(a);
+                    if (typeof(a) === 'number') {
+                        that.blocks.blockList[blk].value = Math.floor(a);
+                    } else {
+                        try {
+                            that.blocks.blockList[blk].value = Math.floor(Number(a));
+                        } catch (e) {
+                            that.errorMsg(NANERRORMSG, blk);
+                            that.blocks.blockList[blk].value = 0;
+                        }
+                    }
                 }
                 break;
             case 'mod':

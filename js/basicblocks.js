@@ -1288,6 +1288,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     setTurtleXYBlock.defaults.push('Yertle', 0, 0);
     setTurtleXYBlock.hidden = true;
 
+    var foundTurtleBlock = new ProtoBlock('foundturtle');
+    foundTurtleBlock.palette = palettes.dict['extras'];
+    blocks.protoBlockDict['foundturtle'] = foundTurtleBlock;
+    foundTurtleBlock.staticLabels.push(_('found turtle'));
+    foundTurtleBlock.adjustWidthToLabel();
+    foundTurtleBlock.extraWidth = 50;
+    foundTurtleBlock.booleanOneArgBlock();
+    foundTurtleBlock.defaults.push('Yertle');
+
     var setTurtleBlock = new ProtoBlock('setturtle');
     setTurtleBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['setturtle'] = setTurtleBlock;

@@ -8553,12 +8553,15 @@ function Logo () {
         }
 
         for (var i = 0; i < this.turtles.turtleList.length; i++) {
-            var turtleName = this.turtles.turtleList[i].name;
-            if (typeof(turtleName) === 'number') {
-                turtleName = turtleName.toString();
-            }
-            if (turtleName === targetTurtle) {
-                return i;
+            if (!this.turtles.turtleList[i].trash) {
+                var turtleName = this.turtles.turtleList[i].name;
+                if (typeof(turtleName) === 'number') {
+                    turtleName = turtleName.toString();
+                }
+
+                if (turtleName === targetTurtle) {
+                    return i;
+                }
             }
         }
 
@@ -9541,10 +9544,10 @@ function Logo () {
                 that.blocks.blockList[blk].value = (that.turtles._canvas.width / (2.0 * that.turtles.scale));
                 break;
             case 'leftpos':
-                that.blocks.blockList[blk].value = -1*(that.turtles._canvas.width / (2.0 * that.turtles.scale));
+                that.blocks.blockList[blk].value = -1 * (that.turtles._canvas.width / (2.0 * that.turtles.scale));
                 break;
             case 'bottompos':
-                that.blocks.blockList[blk].value = -1*(that.turtles._canvas.height / (2.0 * that.turtles.scale));
+                that.blocks.blockList[blk].value = -1 * (that.turtles._canvas.height / (2.0 * that.turtles.scale));
                 break;
             case 'width':
                 that.blocks.blockList[blk].value = (that.turtles._canvas.width / (that.turtles.scale));
@@ -9554,6 +9557,11 @@ function Logo () {
                 break;
             case 'mousebutton':
                 that.blocks.blockList[blk].value = that.getStageMouseDown();
+                break;
+            case 'foundturtle':
+                var cblk = that.blocks.blockList[blk].connections[1];
+                var targetTurtle = that.parseArg(that, turtle, cblk, blk, receivedArg);
+                that.blocks.blockList[blk].value = (that._getTargetTurtle(targetTurtle) !== null);
                 break;
             case 'keyboard':
                 that.lastKeyCode = that.getCurrentKeyCode();

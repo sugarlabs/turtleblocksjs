@@ -1317,7 +1317,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var setTurtleName = new ProtoBlock('setturtlename');
     setTurtleName.palette = palettes.dict['extras'];
     blocks.protoBlockDict['setturtlename'] = setTurtleName;
-    setTurtleName.staticLabels.push(_('turtle name'));
+    setTurtleName.staticLabels.push(_('set name'));
     setTurtleName.staticLabels.push(_('source'));
     setTurtleName.staticLabels.push(_('target'));
     setTurtleName.adjustWidthToLabel();
@@ -1331,7 +1331,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     var setTurtleName2 = new ProtoBlock('setturtlename2');
     setTurtleName2.palette = palettes.dict['extras'];
     blocks.protoBlockDict['setturtlename2'] = setTurtleName2;
-    setTurtleName2.staticLabels.push(_('set turtle name'));
+    setTurtleName2.staticLabels.push(_('set name'));
     setTurtleName2.adjustWidthToLabel();
     setTurtleName2.oneArgBlock();
     setTurtleName2.dockTypes[1] = 'anyin';

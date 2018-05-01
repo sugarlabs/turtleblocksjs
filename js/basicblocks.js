@@ -1296,6 +1296,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     foundTurtleBlock.adjustWidthToLabel();
     foundTurtleBlock.extraWidth = 50;
     foundTurtleBlock.booleanOneArgBlock();
+    foundTurtleBlock.dockTypes[1] = 'anyin';
     foundTurtleBlock.defaults.push('Yertle');
 
     var setTurtleBlock = new ProtoBlock('setturtle');

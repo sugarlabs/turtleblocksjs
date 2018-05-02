@@ -625,7 +625,8 @@ then set on a random walk across the screen. Note that the *Found
 Turtle* block is used to ensure that the each new turtle is *ready*
 before issuing commands. (Creating a turtle is not instantaneous and
 the *New Turtle* block does not block program flow waiting for the
-turtle to be created.)
+turtle to be created.) [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1525211505767290&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/extras2.svg' />
 

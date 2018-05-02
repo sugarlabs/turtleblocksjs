@@ -630,6 +630,10 @@ LIVE](https://turtle.sugarlabs.org/index.html?id=1525211505767290&run=True)
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/extras2.svg' />
 
+An alternative to using the *Found Turtle* block is to use the *Event* block. When a new turtle is created, an event with the name of the turtle is broadcast (See the example below).
+
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/extras3.svg' />
+
 13. Debugging Aids
 ------------------
 

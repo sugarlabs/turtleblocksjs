@@ -1840,6 +1840,7 @@ function Logo () {
                 }, 100);
             } else {
                 console.log('Turtle ' + turtleName + ' already exists.');
+                that.stage.dispatchEvent(turtleName);
             }
             break;
         case 'setturtle':

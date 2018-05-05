@@ -452,7 +452,15 @@ function initBasicProtoBlocks(palettes, blocks) {
     sqrtBlock.adjustWidthToLabel();
     sqrtBlock.oneArgMathBlock();
     sqrtBlock.defaults.push(100)
-
+    
+    var absBlock = new ProtoBlock('abs');
+    absBlock.palette = palettes.dict['number'];
+    blocks.protoBlockDict['abs'] = absBlock;
+    // TRANS: absolute value function in mathematics
+    absBlock.staticLabels.push(_('abs'));
+    absBlock.adjustWidthToLabel();
+    absBlock.oneArgMathBlock();
+    
     var divideBlock = new ProtoBlock('divide');
     divideBlock.palette = palettes.dict['number'];
     blocks.protoBlockDict['divide'] = divideBlock;

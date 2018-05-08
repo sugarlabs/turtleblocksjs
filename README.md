@@ -121,7 +121,7 @@ Please consider contributing to the project, with your ideas, your
 artwork, your lesson plans, and your code.
 
 Programmers, please follow these general
-[guidelines for contributions](https://github.com/sugarlabs/sugar-docs/blob/master/contributing.md).
+[guidelines for contributions](https://github.com/sugarlabs/sugar-docs/blob/master/src/contributing.md).
 
 Advanced Features
 -----------------
@@ -136,7 +136,7 @@ List of Plugins
 
 * [Mindstorms](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorms robotics kit
 * [RoDi](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
-* [Carbon Calculator]((https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/carbon_calculator.json): blocks for exploring your carbon footprint
+* [Carbon Calculator](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/carbon_calculator.json): blocks for exploring your carbon footprint
 * [Maths](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
 * [Translate](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
 * [Dictionary](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions

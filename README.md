@@ -1,40 +1,42 @@
-TurtleBlocks JS
-===============
+TurtleBlocks (the JavaScrict version)
+=====================================
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' />
 
-Turtle Blocks Javascript is an activity with a
-Logo-inspired graphical "turtle" that draws colorful art based on
-snap-together visual programming elements. Its "low floor" provides an
-easy entry point for beginners. It also has "high ceiling"
-programming, graphics, mathematics, and Computer Science features
-which will challenge the more adventurous student.
+Turtle Blocks is an activity with a Logo-inspired graphical "turtle"
+that draws colorful art based on snap-together visual programming
+elements. Its "low floor" provides an easy entry point for
+beginners. It also has "high ceiling" programming, graphics,
+mathematics, and Computer Science features which will challenge the
+more adventurous student.
 
-> Note: Turtle Blocks JS closely parallels the Python version of Turtle
-> Blocks, the version included in the Sugar distribution. Sugar users
-> probably want to use Turtle Blocks rather than Turtle Blocks JS.
+> Note: The JavaScript version of Turtle Blocks closely parallels the
+> Python version of Turtle Blocks, which is included in the Sugar
+> distribution. Sugar users probably want to use the Python version
+> rather than the JavaScript version. (The JavaScript version is
+> included in Sugarizer.)
 
 ![Turtle Blocks](https://github.com/sugarlabs/turtleblocksjs/blob/master/screenshots/updatedscreenshot.png "Turtle Blocks")
 
-Using Turtle Art JS
+Using Turtle Blocks
 ------------------- 
 
-Turtle Blocks JS (Javascript) is designed to run in a browser. Most of
-the development has been done in Chrome, but it should also work in
-Firefox, Opera, and Safari. You can run it directly from index.html,
-from a [server maintained by Sugar Labs](http://turtle.sugarlabs.org),
-from the [github
-repo](http://rawgit.com/sugarlabs/turtleblocksjs/master/index.html),
+The Javascript version of Turtle Blocks is designed to run in a
+browser. Most of the development has been done in Chrome, but it
+should also work in Firefox, Opera, and Safari. You can run it
+directly from index.html, from a [server maintained by Sugar
+Labs](https://turtle.sugarlabs.org), from the [github
+repo](https://rawgit.com/sugarlabs/turtleblocksjs/master/index.html),
 or by setting up a [local
 server](https://github.com/sugarlabs/turtleblocksjs/blob/master/server.md).
 
-Sugar users can run Turtle Blocks JS as an app embedded in the Browse
+Sugar users can run Turtle Blocks as an app embedded in the Browse
 activity (See [Turtle Blocks
 Embedded](https://github.com/sugarlabs/turtle-blocks-embedded-activity))
-or simply open Turtle Blocks JS in Browse.
+or simply open Turtle Blocks in the Browse activity itself.
 
-Once you've launched it in your browser, start by clicking on (or
-dragging) blocks from the Turtle palette. Use multiple blocks to
-create drawings; as the turtle moves under your control, colorful
+Once you've launched Turtle Blocks in your browser, start by clicking
+on (or dragging) blocks from the Turtle palette. Use multiple blocks
+to create drawings; as the turtle moves under your control, colorful
 lines are drawn.
 
 You add blocks to your program by clicking on or dragging them from
@@ -100,6 +102,15 @@ using Turtle Blocks: [Turtle Blocks: An Introductory
 Manual](http://people.sugarlabs.org/walter/TurtleBlocksIntroductoryManual.pdf)
 and [Turtle Blocks: A Manual for Advanced
 Blocks](http://people.sugarlabs.org/walter/TurtleBlocksAdvancedBlocksManual.pdf)
+
+Turtle Confusion
+----------------
+
+Turtle Confusion presents 40 shape challenges to the learner that must
+be completed using basic Logo-blocks. The challenges are based on
+Barry Newell’s 1988 book, *Turtle Confusion: Logo Puzzles and
+Riddles*. You can access these puzzles from the [Turtle Confusion
+page](https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/Confusion.md).
 
 Music Blocks
 ------------

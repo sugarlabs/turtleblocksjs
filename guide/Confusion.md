@@ -54,3 +54,30 @@ The Challenges
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion19.png' />](https://turtle.sugarlabs.org/index.html?id=1526559804645285)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion20.png' />](https://turtle.sugarlabs.org/index.html?id=1526504055444851)
 
+----
+20 additional challenges will be added soon.
+----
+
+Writing your own challenges
+---------------------------
+
+To create your own challenges, you need to use [Music Blocks](https://musicblocks.sugarlabs.org).
+
+1. Create a project in Music Blocks.
+
+2. Back up your project by saving it locally to the file system.
+
+3. Run your project.
+
+4. Drag all of the blocks from your project to the trash, except for
+one *Start* block.
+
+5. Save your project to the Planet.
+
+6. Open your challenge in Turtle Blocks from the Planet.
+
+What the above steps do is create a "compiled" image of your project,
+which can be run without referring to the blocks used to create the
+project. "Compiling" is a feature of Music Blocks that is disabled in
+Turtle Blocks. But you can run "compiled" projects in Turtle Blocks by
+typing Alt-P.

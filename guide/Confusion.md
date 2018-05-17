@@ -23,6 +23,8 @@ moving the Logo turtle.
 2. Use blocks from the various Turtle Block palettes to instruct the
 Logo turtle to replicate the pattern.
 
+3. You can redisplay the challenge image at any time by typing "Alt-P".
+
 Most of the challenges are problems of symmetry and geometry which
 typically can be solved by using a combination of rotations and repeat
 blocks. You may have to use the *Pen Up* and *Pen Down* blocks on

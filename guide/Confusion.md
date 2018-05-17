@@ -11,9 +11,9 @@ book](http://constructingmodernknowledge.com/tcbook.pdf) (with
 permission of the author) ([en
 español](http://github.com/downloads/humitos/turtle-confusion-es/la-confusion-de-la-tortuga.pdf)).
 
-Below is a collections of Turtle Blocks projects stored on
-the Planet that presents 40 shape challenges to be programmed by
-moving the Logo turtle.
+Below is a collections of Turtle Blocks projects stored on the Planet
+that presents shape challenges to be programmed by moving the Logo
+turtle.
 
 ----
 
@@ -53,9 +53,16 @@ The Challenges
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion18.png' />](https://turtle.sugarlabs.org/index.html?id=1526560085438667)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion19.png' />](https://turtle.sugarlabs.org/index.html?id=1526559804645285)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion20.png' />](https://turtle.sugarlabs.org/index.html?id=1526504055444851)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion21.png' />](https://turtle.sugarlabs.org/index.html?id=1526590074923969)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion22.png' />](https://turtle.sugarlabs.org/index.html?id=1526590637187609)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion23.png' />](https://turtle.sugarlabs.org/index.html?id=1526590758964313)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion24.png' />](https://turtle.sugarlabs.org/index.html?id=1526590916526401)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion25.png' />](https://turtle.sugarlabs.org/index.html?id=1526591187886095)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion26.png' />](https://turtle.sugarlabs.org/index.html?id=1526591658158591)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion27.png' />](https://turtle.sugarlabs.org/index.html?id=1526591871020517)
 
 ----
-20 additional challenges will be added soon.
+Additional challenges will be added soon.
 ----
 
 Writing your own challenges

@@ -71,6 +71,7 @@ The Challenges
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion36.png' />](https://turtle.sugarlabs.org/index.html?id=1526600594394810)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion37.png' />](https://turtle.sugarlabs.org/index.html?id=1526601519424898)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion38.png' />](https://turtle.sugarlabs.org/index.html?id=1526602082360755)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion39.png' />](https://turtle.sugarlabs.org/index.html?id=1526605345312012)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion40.png' />](https://turtle.sugarlabs.org/index.html?id=1526603005243876)
 
 

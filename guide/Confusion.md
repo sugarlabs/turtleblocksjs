@@ -74,9 +74,6 @@ The Challenges
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion39.png' />](https://turtle.sugarlabs.org/index.html?id=1526605345312012)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion40.png' />](https://turtle.sugarlabs.org/index.html?id=1526603005243876)
 
-
-----
-Additional challenges will be added soon.
 ----
 
 Writing your own challenges

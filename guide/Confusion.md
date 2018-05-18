@@ -1,7 +1,7 @@
 Turtle Confusion
 ================
 
-<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/Turtle-a.png' /> <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/Turtle-b.png' />
+![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/Turtle-a.png "Turtle") ![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/Turtle-b.png "Confusion")
 
 Turtle Confusion presents 40 shape challenges to the learner that must
 be completed using basic Logo-blocks. The challenges are based on
@@ -33,48 +33,57 @@ occasion.
 The Challenges
 --------------
 
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion01.png' />](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion02.png' />](https://turtle.sugarlabs.org/index.html?id=1526567433188048)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion03.png' />](https://turtle.sugarlabs.org/index.html?id=1526567543153451)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion04.png' />](https://turtle.sugarlabs.org/index.html?id=1526564247350277)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion05.png' />](https://turtle.sugarlabs.org/index.html?id=1526567691148715)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion06.png' />](https://turtle.sugarlabs.org/index.html?id=1526567794575199)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion07.png' />](https://turtle.sugarlabs.org/index.html?id=1526563270062700)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion08.png' />](https://turtle.sugarlabs.org/index.html?id=1526563082052097)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion09.png' />](https://turtle.sugarlabs.org/index.html?id=1526562849050879)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion10.png' />](https://turtle.sugarlabs.org/index.html?id=1526568029056667)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion11.png' />](https://turtle.sugarlabs.org/index.html?id=1526568079924074)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion12.png' />](https://turtle.sugarlabs.org/index.html?id=1526568162465912)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion13.png' />](https://turtle.sugarlabs.org/index.html?id=1526568211317981)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion14.png' />](https://turtle.sugarlabs.org/index.html?id=1526568272338454)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion15.png' />](https://turtle.sugarlabs.org/index.html?id=1526561037040375)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion16.png' />](https://turtle.sugarlabs.org/index.html?id=1526560815211385)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion17.png' />](https://turtle.sugarlabs.org/index.html?id=1526560575701712)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion18.png' />](https://turtle.sugarlabs.org/index.html?id=1526560085438667)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion19.png' />](https://turtle.sugarlabs.org/index.html?id=1526559804645285)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion20.png' />](https://turtle.sugarlabs.org/index.html?id=1526504055444851)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion21.png' />](https://turtle.sugarlabs.org/index.html?id=1526590074923969)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion22.png' />](https://turtle.sugarlabs.org/index.html?id=1526590637187609)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion23.png' />](https://turtle.sugarlabs.org/index.html?id=1526590758964313)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion24.png' />](https://turtle.sugarlabs.org/index.html?id=1526590916526401)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion25.png' />](https://turtle.sugarlabs.org/index.html?id=1526591187886095)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion26.png' />](https://turtle.sugarlabs.org/index.html?id=1526591658158591)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion27.png' />](https://turtle.sugarlabs.org/index.html?id=1526591871020517)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion28.png' />](https://turtle.sugarlabs.org/index.html?id=1526592128125419)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion29.png' />](https://turtle.sugarlabs.org/index.html?id=1526598110382111)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion30.png' />](https://turtle.sugarlabs.org/index.html?id=1526598270830720)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion31.png' />](https://turtle.sugarlabs.org/index.html?id=1526598432196969)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion32.png' />](https://turtle.sugarlabs.org/index.html?id=1526599758237232)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion33.png' />](https://turtle.sugarlabs.org/index.html?id=1526600080947487)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion34.png' />](https://turtle.sugarlabs.org/index.html?id=1526599984856005)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion35.png' />](https://turtle.sugarlabs.org/index.html?id=1526600689524148)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion36.png' />](https://turtle.sugarlabs.org/index.html?id=1526600594394810)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion37.png' />](https://turtle.sugarlabs.org/index.html?id=1526601519424898)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion38.png' />](https://turtle.sugarlabs.org/index.html?id=1526602082360755)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion39.png' />](https://turtle.sugarlabs.org/index.html?id=1526605345312012)
-[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion40.png' />](https://turtle.sugarlabs.org/index.html?id=1526603005243876)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion01.png "1")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion02.png "2")](https://turtle.sugarlabs.org/index.html?id=1526567433188048)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion03.png "3")](https://turtle.sugarlabs.org/index.html?id=1526567543153451)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion04.png "4")](https://turtle.sugarlabs.org/index.html?id=1526564247350277)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion05.png "5")](https://turtle.sugarlabs.org/index.html?id=1526567691148715)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion06.png "6")](https://turtle.sugarlabs.org/index.html?id=1526567794575199)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion07.png "7")](https://turtle.sugarlabs.org/index.html?id=1526563270062700)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion08.png "8")](https://turtle.sugarlabs.org/index.html?id=1526563082052097)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion09.png "9")](https://turtle.sugarlabs.org/index.html?id=1526562849050879)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion10.png "10")](https://turtle.sugarlabs.org/index.html?id=1526568029056667)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion11.png "11")](https://turtle.sugarlabs.org/index.html?id=1526568079924074)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion12.png "12")](https://turtle.sugarlabs.org/index.html?id=1526568162465912)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion13.png "13")](https://turtle.sugarlabs.org/index.html?id=1526568211317981)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion14.png "14")](https://turtle.sugarlabs.org/index.html?id=1526568272338454)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion15.png "15")](https://turtle.sugarlabs.org/index.html?id=1526561037040375)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion16.png "16")](https://turtle.sugarlabs.org/index.html?id=1526560815211385)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion17.png "17")](https://turtle.sugarlabs.org/index.html?id=1526560575701712)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion18.png "18")](https://turtle.sugarlabs.org/index.html?id=1526560085438667)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion19.png "19")](https://turtle.sugarlabs.org/index.html?id=1526559804645285)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion20.png "20")](https://turtle.sugarlabs.org/index.html?id=1526504055444851)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion21.png "21")](https://turtle.sugarlabs.org/index.html?id=1526590074923969)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion22.png "22")](https://turtle.sugarlabs.org/index.html?id=1526590637187609)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion23.png "23")](https://turtle.sugarlabs.org/index.html?id=1526590758964313)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion24.png "24")](https://turtle.sugarlabs.org/index.html?id=1526590916526401)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion25.png "25")](https://turtle.sugarlabs.org/index.html?id=1526591187886095)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion26.png "26")](https://turtle.sugarlabs.org/index.html?id=1526591658158591)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion27.png "27")](https://turtle.sugarlabs.org/index.html?id=1526591871020517)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion28.png "28")](https://turtle.sugarlabs.org/index.html?id=1526592128125419)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion29.png "29")](https://turtle.sugarlabs.org/index.html?id=1526598110382111)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion30.png "30")](https://turtle.sugarlabs.org/index.html?id=1526598270830720)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion31.png "31")](https://turtle.sugarlabs.org/index.html?id=1526598432196969)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion32.png "32")](https://turtle.sugarlabs.org/index.html?id=1526599758237232)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion33.png "33")](https://turtle.sugarlabs.org/index.html?id=1526600080947487)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion34.png "34")](https://turtle.sugarlabs.org/index.html?id=1526599984856005)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion35.png "35")](https://turtle.sugarlabs.org/index.html?id=1526600689524148)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion36.png "36")](https://turtle.sugarlabs.org/index.html?id=1526600594394810)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion37.png "37")](https://turtle.sugarlabs.org/index.html?id=1526601519424898)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion38.png "38")](https://turtle.sugarlabs.org/index.html?id=1526602082360755)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion39.png "39")](https://turtle.sugarlabs.org/index.html?id=1526605345312012)
+[![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion40.png "40")](https://turtle.sugarlabs.org/index.html?id=1526603005243876)
 
 ----
+
+More project ideas
+------------------
+
+![alt tag](https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/pinterest.png "Pinterest")
+
+There is a [Turtle Art page on
+Pinterest](https://www.pinterest.com/walterbender/turtle-art/) that
+has many ideas for Turtle Blocks projects.
 
 Writing your own challenges
 ---------------------------

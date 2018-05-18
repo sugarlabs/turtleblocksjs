@@ -60,6 +60,19 @@ The Challenges
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion25.png' />](https://turtle.sugarlabs.org/index.html?id=1526591187886095)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion26.png' />](https://turtle.sugarlabs.org/index.html?id=1526591658158591)
 [<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion27.png' />](https://turtle.sugarlabs.org/index.html?id=1526591871020517)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion28.png' />](https://turtle.sugarlabs.org/index.html?id=1526592128125419)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion29.png' />](https://turtle.sugarlabs.org/index.html?id=1526598110382111)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion30.png' />](https://turtle.sugarlabs.org/index.html?id=1526598270830720)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion31.png' />](https://turtle.sugarlabs.org/index.html?id=1526598432196969)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion32.png' />](https://turtle.sugarlabs.org/index.html?id=1526599758237232)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion33.png' />](https://turtle.sugarlabs.org/index.html?id=1526600080947487)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion34.png' />](https://turtle.sugarlabs.org/index.html?id=1526599984856005)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion35.png' />](https://turtle.sugarlabs.org/index.html?id=1526600689524148)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion36.png' />](https://turtle.sugarlabs.org/index.html?id=1526600594394810)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion37.png' />](https://turtle.sugarlabs.org/index.html?id=1526601519424898)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion38.png' />](https://turtle.sugarlabs.org/index.html?id=1526602082360755)
+[<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/confusion40.png' />](https://turtle.sugarlabs.org/index.html?id=1526603005243876)
+
 
 ----
 Additional challenges will be added soon.

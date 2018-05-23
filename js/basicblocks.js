@@ -65,19 +65,19 @@ function initBasicProtoBlocks(palettes, blocks) {
     headingBlock.adjustWidthToLabel();
     headingBlock.parameterBlock();
 
-    var xBlock = new ProtoBlock('x');
-    xBlock.palette = palettes.dict['turtle'];
-    blocks.protoBlockDict['x'] = xBlock;
-    xBlock.staticLabels.push(_('x'));
-    xBlock.adjustWidthToLabel();
-    xBlock.parameterBlock();
-
     var yBlock = new ProtoBlock('y');
     yBlock.palette = palettes.dict['turtle'];
     blocks.protoBlockDict['y'] = yBlock;
     yBlock.staticLabels.push(_('y'));
     yBlock.adjustWidthToLabel();
     yBlock.parameterBlock();
+
+    var xBlock = new ProtoBlock('x');
+    xBlock.palette = palettes.dict['turtle'];
+    blocks.protoBlockDict['x'] = xBlock;
+    xBlock.staticLabels.push(_('x'));
+    xBlock.adjustWidthToLabel();
+    xBlock.parameterBlock();
 
     var clearBlock = new ProtoBlock('clear');
     clearBlock.palette = palettes.dict['turtle'];
@@ -731,7 +731,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     actionBlock.palette = palettes.dict['action'];
     blocks.protoBlockDict['action'] = actionBlock;
     actionBlock.staticLabels.push(_('action'));
-    actionBlock.extraWidth = 25;
+    actionBlock.extraWidth = 42;
     actionBlock.adjustWidthToLabel();
     actionBlock.stackClampOneArgBlock();
     actionBlock.defaults.push(_('action'));
@@ -873,13 +873,6 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     // MEDIA PALETTE
     
-    var leftposBlock = new ProtoBlock('leftpos');
-    leftposBlock.palette = palettes.dict['media'];
-    blocks.protoBlockDict['leftpos'] = leftposBlock;
-    leftposBlock.staticLabels.push(_('left'));
-    leftposBlock.adjustWidthToLabel();
-    leftposBlock.parameterBlock();
-
     var rightposBlock = new ProtoBlock('rightpos');
     rightposBlock.palette = palettes.dict['media'];
     blocks.protoBlockDict['rightpos'] = rightposBlock;
@@ -887,12 +880,12 @@ function initBasicProtoBlocks(palettes, blocks) {
     rightposBlock.adjustWidthToLabel();
     rightposBlock.parameterBlock();
 
-    var topposBlock = new ProtoBlock('toppos');
-    topposBlock.palette = palettes.dict['media'];
-    blocks.protoBlockDict['toppos'] = topposBlock;
-    topposBlock.staticLabels.push(_('top'));
-    topposBlock.adjustWidthToLabel();
-    topposBlock.parameterBlock();
+    var leftposBlock = new ProtoBlock('leftpos');
+    leftposBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['leftpos'] = leftposBlock;
+    leftposBlock.staticLabels.push(_('left'));
+    leftposBlock.adjustWidthToLabel();
+    leftposBlock.parameterBlock();
 
     var bottomposBlock = new ProtoBlock('bottompos');
     bottomposBlock.palette = palettes.dict['media'];
@@ -900,6 +893,13 @@ function initBasicProtoBlocks(palettes, blocks) {
     bottomposBlock.staticLabels.push(_('bottom'));
     bottomposBlock.adjustWidthToLabel();
     bottomposBlock.parameterBlock();
+
+    var topposBlock = new ProtoBlock('toppos');
+    topposBlock.palette = palettes.dict['media'];
+    blocks.protoBlockDict['toppos'] = topposBlock;
+    topposBlock.staticLabels.push(_('top'));
+    topposBlock.adjustWidthToLabel();
+    topposBlock.parameterBlock();
 
     var widthBlock = new ProtoBlock('width');
     widthBlock.palette = palettes.dict['media'];

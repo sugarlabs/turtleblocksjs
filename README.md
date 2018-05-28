@@ -146,19 +146,19 @@ List of Plugins
 ---------------
 
 * [Mindstorms](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorms robotics kit
-* [RoDi](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
-* [Carbon Calculator](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/carbon_calculator.json): blocks for exploring your carbon footprint
-* [Maths](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
-* [Translate](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
-* [Dictionary](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions
-* [Weather](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/weather.json): blocks to retrieve global weather forecasts
-* [Logic](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/logic.json): blocks for bitwise Boolean operations
-* [Finance](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/finance.json): a block for looking up market prices
-* [Bitcoin](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/bitcoin.json): a block for looking up bitcoin exchange rates
-* [Nutrition](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
-* [Facebook](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/facebook.json): a block for publishing a project to Facebook
-* [Heap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data
-* [Accelerometer](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/accelerometer.json): blocks for accessing an accelerometer
-* [Turtle](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/turtle.json): blocks to support advanced features when using multiple turtles
-* [Gmap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/gmap.json): blocks to support generation of Google maps.
-* [Random quote](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/random_quote.json): returns random quote of the day
+* [RoDi](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
+* [Carbon Calculator](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/carbon_calculator.json): blocks for exploring your carbon footprint
+* [Maths](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/maths.json): addition blocks for some more advanced mathematics
+* [Translate](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/translate.json): blocks for translating strings between languages, e.g., English to Spanish
+* [Dictionary](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/dictionary.json): a block to look up dictionary definitions
+* [Weather](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/weather.json): blocks to retrieve global weather forecasts
+* [Logic](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/logic.json): blocks for bitwise Boolean operations
+* [Finance](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/finance.json): a block for looking up market prices
+* [Bitcoin](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/bitcoin.json): a block for looking up bitcoin exchange rates
+* [Nutrition](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/nutrition.json): blocks for exploring the nutritional content of food
+* [Facebook](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/facebook.json): a block for publishing a project to Facebook
+* [Heap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/heap.json): blocks to support a heap and for loading and saving data
+* [Accelerometer](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/accelerometer.json): blocks for accessing an accelerometer
+* [Turtle](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/turtle.json): blocks to support advanced features when using multiple turtles
+* [Gmap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/gmap.json): blocks to support generation of Google maps.
+* [Random quote](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/random_quote.json): returns random quote of the day

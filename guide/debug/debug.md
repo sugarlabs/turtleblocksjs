@@ -97,10 +97,8 @@ displayed. There is one row per turtle in the status table.
 ![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/status-block.gif "using the Status block")
 
 Additional *Print* blocks can be added to the *Status* widget to
-display additional turtle factors, e.g., box values, pen-color,
-(#MORE-TRANSFORMATIONS), 
-(#MORE-TRANSFORMATIONS), and [graphics](#GRAPHICS) factors,
-e.g., x, y, heading, color, shade, grey, and pensize.
+display additional turtle factors and graphics factors 
+e.g.box values, x, y, heading, color, shade, grey, and pensize.
 
 ![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/status-parameter.gif "additional factors within the Status block")
 

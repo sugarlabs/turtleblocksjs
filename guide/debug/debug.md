@@ -85,26 +85,27 @@ LIVE](https://turtle.sugarlabs.org/index.html?id=1528365709862799&run=True)
 
 ## 3. Status widget
 
-![alt tag](https://rawgithub.com/sugarlabs/musicblocks/master/guide/status1.svg "given Music block")
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/status1.svg' />
 
-![alt tag](https://rawgithub.com/sugarlabs/musicblocks/master/guide/status2.svg "status in tabular form")
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/status2.svg' />
 
-The *Status widget* is a tool for inspecting the status of Music
-Blocks as it is running. By default, the key, BPM, and volume are
-displayed. Also, each note is displayed as it is played. There is one
-row per voice in the status table.
+The *Status widget* is a tool for inspecting the status of Turtle
+Blocks as it is running. By default the turtle co-ordinates and header are
+displayed. There is one row per turtle in the status table.
+
+
+![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/status-block.gif "using the Status block")
 
 Additional *Print* blocks can be added to the *Status* widget to
-display additional music factors, e.g., duplicate, transposition,
-skip, [staccato](#MORE-TRANSFORMATIONS),
-[slur](#MORE-TRANSFORMATIONS), and [graphics](#GRAPHICS) factors,
+display additional turtle factors, e.g., box values, pen-color,
+(#MORE-TRANSFORMATIONS), 
+(#MORE-TRANSFORMATIONS), and [graphics](#GRAPHICS) factors,
 e.g., x, y, heading, color, shade, grey, and pensize.
 
-![alt tag](https://rawgithub.com/sugarlabs/musicblocks/master/guide/status3.svg "additional programming within the Status block")
+![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/status-parameter.gif "additional factors within the Status block")
 
-You can do additional programming within the status block. In the
-example above, `whole notes played` is divided by `4` (e.g. quarter notes)
-before being displayed.
+You can also do additional programming within the status block. 
+
 
 ## 4. Playback modes
 

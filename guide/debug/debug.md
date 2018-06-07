@@ -49,21 +49,33 @@ one of the *Action* blocks.
 
 ## 2. Print and Comment blocks
 
+
+Probably the most oft-used debugging aid in any language is the print
+statement. In Turtle Blocks, it is also quite useful. You can use it
+to examine the value of parameters and variables (boxes) and to
+monitor progress through a program.
+
 The *Print* block (found on the *Extras* palette) can be used to print
 a message while running a program. It is useful to determine if a
 section of code is being executed when expected or if a box or
 parameter contains an expected value.
 
-![alt tag](https://github.com/sugarlabs/musicblocks/blob/master/images/print_example2_debug_guide.png "Print blocks")
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/debugging1.svg' />
 
-The *Print* block is used to display the number of whole notes played,
-in this case, `1/4 + 1/4 + 1/2`, which adds up to `1`, which is
-displayed at the top of the browser window.
+In this example, we use the addition operator to concatinate strings
+in a print statement. The mouse x + ", " + mouse y are printed in the
+inner loop. [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1523391206069261&run=True)
+
+<img src='https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/print-block.gif' />
+
 
 The *Comment* block (also found on the *Extras* palette) is similar to
 the *Print* block, except it only prints a message when the program is
 being run in *Playback Slow* mode (See below). Comments are also
 written to the browser console.
+
+
 
 ## 3. Status widget
 

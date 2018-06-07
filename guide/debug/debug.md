@@ -29,7 +29,7 @@ trying out ideas, etc.*&mdash;Cynthia Solomon
 
 ----
 
-Programming is hard.Art and Design is Fun. Both programming
+Programming is hard. Art and Design is Fun. Both programming
 and drawing involve some trial and error and serendipity. Inevitably
 you will make mistakes along the way. Turtle Blocks provides a number
 of mechanism, reviewed below, to help you explore ideas and find
@@ -146,4 +146,4 @@ browser console, such as the notes being played and comments (See the
 
 ![alt tag](https://github.com/sugarlabs/musicblocks/blob/master/images/browserconsole_debug_guide.png "Console blocks")
 
-Shown above is the console output from three notes: `sol mi sol`.
+Shown above is the console output from Example:.[10 turtle Experiment](https://turtle.sugarlabs.org/index.html?id=1525269509421918&run=True)

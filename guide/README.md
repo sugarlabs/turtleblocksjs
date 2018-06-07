@@ -655,7 +655,7 @@ LIVE](https://turtle.sugarlabs.org/index.html?id=1523391206069261&run=True)
 
 There is also a *Status* widget that can be programmed to show various
 paramters as per the figures above. [RUN
-LIVE](https://turtle.sugarlabs.org/index.html?id=1523391401761720&run=True)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1528388082677564&run=True)
 
 Parameter blocks, boxes, arithmetic and boolean operators, and many
 sensor blocks will print their current value as the program runs when

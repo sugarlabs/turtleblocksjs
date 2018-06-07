@@ -738,6 +738,10 @@ function PaletteModel(palette, palettes, name) {
             case 'voicename':
                 label = _('voice name');
                 break;
+            case 'temperamentname':
+                //TRANS: https://en.wikipedia.org/wiki/Musical_temperament
+                label = _('temperament');
+                break;
             case 'accidentalname':
                 //TRANS: accidental refers to sharps, flats, etc.
                 label = _('accidental');

@@ -144,6 +144,6 @@ browser console, such as the notes being played and comments (See the
 *Comment* block above). The console can be accessed by typing
 `Ctrl-Shift-J` on most web browsers.
 
-![alt tag](https://github.com/sugarlabs/musicblocks/blob/master/images/browserconsole_debug_guide.png "Console blocks")
+![alt tag]( https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/console-output.PNG "Console blocks")
 
 Shown above is the console output from Example:.[10 turtle Experiment](https://turtle.sugarlabs.org/index.html?id=1525269509421918&run=True)

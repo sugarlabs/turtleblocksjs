@@ -73,7 +73,7 @@ LIVE](https://turtle.sugarlabs.org/index.html?id=1523391206069261&run=True)
 The *Comment* block (also found on the *Extras* palette) is similar to
 the *Print* block, except it only prints a message when the program is
 being run in *Playback Slow* mode (See below). Comments are also
-written to the [browser console].(#-6-browser-console)
+written to the [browser console].(https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/debug.md#6-browser-console)
 
 In this example, we use the comment block to get the value returned by the random block. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1528365709862799&run=True)

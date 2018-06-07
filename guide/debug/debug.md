@@ -73,7 +73,7 @@ LIVE](https://turtle.sugarlabs.org/index.html?id=1523391206069261&run=True)
 The *Comment* block (also found on the *Extras* palette) is similar to
 the *Print* block, except it only prints a message when the program is
 being run in *Playback Slow* mode (See below). Comments are also
-written to the browser console.
+written to the [browser console].(#-6-browser-console)
 
 In this example, we use the comment block to get the value returned by the random block. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1528365709862799&run=True)
@@ -110,10 +110,6 @@ You can also do additional programming within the status block.
 
 ## 4. Playback modes
 
-Clicking on the *Play* button will play your program at full
-speed. (It will also hide the blocks while the program runs, which
-improves performance.) 
-
 A "long press" on the *Play* button will invoke *Playback Slow*
 mode. The program will pause between the execution of each block and
 the block being executed will be highlighted. This is useful for
@@ -123,7 +119,17 @@ or parameter is displayed on the block as the program runs, so you can
 "inspect" program elements as the program runs.
 
 
- *Run Step by Step*  advance one block or one note per button press.
+ *Run Step by Step*  advance one block per button press.
+ 
+ 
+Clicking on the *Play* button will play your program at full
+speed. (It will also hide the blocks while the program runs, which
+improves performance.) 
+
+![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/playback-buttons.gif "PlayBack Modes")
+The above example show all the playback modes in order mentioned above.
+First we started with *Playback Slow* moved on to  *Run Step by Step*  and finaly ended execution of remaining code with *play*
+
 
 ## 5. Show and Hide blocks
 

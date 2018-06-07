@@ -45,7 +45,7 @@ code, or, as in the example below, you can play a single voice by
 clicking on one of the *Start* blocks or single phase by clicking on
 one of the *Action* blocks.
 
-![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/action-block.gif "Start blocks")
+![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/actionblock-card.gif "Start blocks")
 
 ## 2. Print and Comment blocks
 

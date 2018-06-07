@@ -102,6 +102,9 @@ e.g.box values, x, y, heading, color, shade, grey, and pensize.
 
 ![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/status-parameter.gif "additional factors within the Status block")
 
+In this example, we use the status block to get the value of x,y,heading and colour . [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1528365709862799&run=True)
+
 You can also do additional programming within the status block. 
 
 
@@ -109,7 +112,7 @@ You can also do additional programming within the status block.
 
 Clicking on the *Play* button will play your program at full
 speed. (It will also hide the blocks while the program runs, which
-improves performance.) But there are four other playback modes.
+improves performance.) 
 
 A "long press" on the *Play* button will invoke *Playback Slow*
 mode. The program will pause between the execution of each block and
@@ -119,13 +122,8 @@ executed is what you expect. In addition, the value stored in any box
 or parameter is displayed on the block as the program runs, so you can
 "inspect" program elements as the program runs.
 
-An "extra long press" on the *Play* button will invoke *Playback Music
-Slow* mode. This mode is similar to *Playback Slow* mode, only the
-pause is only inserted between *Note Value* blocks. All other blocks
-are run at full speed.
 
-Two other modes, *Run Step by Step* and *Run Note by Note* advance one
-block or one note per button press.
+ *Run Step by Step*  advance one block or one note per button press.
 
 ## 5. Show and Hide blocks
 
@@ -141,7 +139,7 @@ blocks are hidden and the program resumes running at full speed.
 
 ## 6. Browser console
 
-As Music Blocks runs, some debugging information is written to the
+As Turtle Blocks runs, some debugging information is written to the
 browser console, such as the notes being played and comments (See the
 *Comment* block above). The console can be accessed by typing
 `Ctrl-Shift-J` on most web browsers.

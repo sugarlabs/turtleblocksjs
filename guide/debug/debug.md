@@ -67,7 +67,7 @@ in a print statement. The mouse x + ", " + mouse y are printed in the
 inner loop. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523391206069261&run=True)
 
-<img src='https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/print-block.gif' />
+<img src='https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/print-blockd.gif' />
 
 
 The *Comment* block (also found on the *Extras* palette) is similar to

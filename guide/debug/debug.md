@@ -152,4 +152,4 @@ browser console, such as the notes being played and comments (See the
 
 ![alt tag]( https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/console-output.PNG "Console blocks")
 
-Shown above is the console output from Example:.[10 turtle Experiment](https://turtle.sugarlabs.org/index.html?id=1525269509421918&run=True)
+Shown above is the console output from Example:[10 turtle Experiment](https://turtle.sugarlabs.org/index.html?id=1525269509421918&run=True)

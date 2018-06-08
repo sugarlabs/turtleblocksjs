@@ -1,40 +1,42 @@
-TurtleBlocks JS
-===============
+TurtleBlocks (the JavaScript version)
+=====================================
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' />
 
-Turtle Blocks Javascript is an activity with a
-Logo-inspired graphical "turtle" that draws colorful art based on
-snap-together visual programming elements. Its "low floor" provides an
-easy entry point for beginners. It also has "high ceiling"
-programming, graphics, mathematics, and Computer Science features
-which will challenge the more adventurous student.
+Turtle Blocks is an activity with a Logo-inspired graphical "turtle"
+that draws colorful art based on snap-together visual programming
+elements. Its "low floor" provides an easy entry point for
+beginners. It also has "high ceiling" programming, graphics,
+mathematics, and Computer Science features which will challenge the
+more adventurous student.
 
-> Note: Turtle Blocks JS closely parallels the Python version of Turtle
-> Blocks, the version included in the Sugar distribution. Sugar users
-> probably want to use Turtle Blocks rather than Turtle Blocks JS.
+> Note: The JavaScript version of Turtle Blocks closely parallels the
+> Python version of Turtle Blocks, which is included in the Sugar
+> distribution. Sugar users probably want to use the Python version
+> rather than the JavaScript version. (The JavaScript version is
+> included in Sugarizer.)
 
 ![Turtle Blocks](https://github.com/sugarlabs/turtleblocksjs/blob/master/screenshots/updatedscreenshot.png "Turtle Blocks")
 
-Using Turtle Art JS
+Using Turtle Blocks
 ------------------- 
 
-Turtle Blocks JS (Javascript) is designed to run in a browser. Most of
-the development has been done in Chrome, but it should also work in
-Firefox, Opera, and Safari. You can run it directly from index.html,
-from a [server maintained by Sugar Labs](http://turtle.sugarlabs.org),
-from the [github
-repo](http://rawgit.com/sugarlabs/turtleblocksjs/master/index.html),
+The Javascript version of Turtle Blocks is designed to run in a
+browser. Most of the development has been done in Chrome, but it
+should also work in Firefox, Opera, and Safari. You can run it
+directly from index.html, from a [server maintained by Sugar
+Labs](https://turtle.sugarlabs.org), from the [github
+repo](https://rawgit.com/sugarlabs/turtleblocksjs/master/index.html),
 or by setting up a [local
 server](https://github.com/sugarlabs/turtleblocksjs/blob/master/server.md).
 
-Sugar users can run Turtle Blocks JS as an app embedded in the Browse
+Sugar users can run Turtle Blocks as an app embedded in the Browse
 activity (See [Turtle Blocks
 Embedded](https://github.com/sugarlabs/turtle-blocks-embedded-activity))
-or simply open Turtle Blocks JS in Browse.
+or simply open Turtle Blocks in the Browse activity itself.
 
-Once you've launched it in your browser, start by clicking on (or
-dragging) blocks from the Turtle palette. Use multiple blocks to
-create drawings; as the turtle moves under your control, colorful
+Once you've launched Turtle Blocks in your browser, start by clicking
+on (or dragging) blocks from the Turtle palette. Use multiple blocks
+to create drawings; as the turtle moves under your control, colorful
 lines are drawn.
 
 You add blocks to your program by clicking on or dragging them from
@@ -53,7 +55,7 @@ A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](
 
 A quick start:
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/updated-fast-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/fast-button.png' />
 Click to run the project in fast mode. Long press to run the project in slow mode.
 
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/step-button.png' />
@@ -101,6 +103,15 @@ Manual](http://people.sugarlabs.org/walter/TurtleBlocksIntroductoryManual.pdf)
 and [Turtle Blocks: A Manual for Advanced
 Blocks](http://people.sugarlabs.org/walter/TurtleBlocksAdvancedBlocksManual.pdf)
 
+Turtle Confusion
+----------------
+
+Turtle Confusion presents 40 shape challenges to the learner that must
+be completed using basic Logo-blocks. The challenges are based on
+Barry Newell’s 1988 book, *Turtle Confusion: Logo Puzzles and
+Riddles*. You can access these puzzles from the [Turtle Confusion
+page](https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/Confusion.md).
+
 Music Blocks
 ------------
 
@@ -121,7 +132,7 @@ Please consider contributing to the project, with your ideas, your
 artwork, your lesson plans, and your code.
 
 Programmers, please follow these general
-[guidelines for contributions](https://github.com/sugarlabs/sugar-docs/blob/master/contributing.md).
+[guidelines for contributions](https://github.com/sugarlabs/sugar-docs/blob/master/src/contributing.md).
 
 Advanced Features
 -----------------
@@ -135,19 +146,19 @@ List of Plugins
 ---------------
 
 * [Mindstorms](https://github.com/SAMdroid-apps/turtlestorm): blocks to interact with the LEGO Mindstorms robotics kit
-* [RoDi](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
-* [Carbon Calculator]((https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/carbon_calculator.json): blocks for exploring your carbon footprint
-* [Maths](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/maths.json): addition blocks for some more advanced mathematics
-* [Translate](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/translate.json): blocks for translating strings between languages, e.g., English to Spanish
-* [Dictionary](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/dictionary.json): a block to look up dictionary definitions
-* [Weather](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/weather.json): blocks to retrieve global weather forecasts
-* [Logic](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/logic.json): blocks for bitwise Boolean operations
-* [Finance](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/finance.json): a block for looking up market prices
-* [Bitcoin](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/bitcoin.json): a block for looking up bitcoin exchange rates
-* [Nutrition](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/nutrition.json): blocks for exploring the nutritional content of food
-* [Facebook](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/facebook.json): a block for publishing a project to Facebook
-* [Heap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/heap.json): blocks to support a heap and for loading and saving data
-* [Accelerometer](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/accelerometer.json): blocks for accessing an accelerometer
-* [Turtle](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/turtle.json): blocks to support advanced features when using multiple turtles
-* [Gmap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/gmap.json): blocks to support generation of Google maps.
-* [Random quote](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/blob/master/random_quote.json): returns random quote of the day
+* [RoDi](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/rodi.json): blocks to interact with RoDi wireless robot
+* [Carbon Calculator](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/carbon_calculator.json): blocks for exploring your carbon footprint
+* [Maths](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/maths.json): addition blocks for some more advanced mathematics
+* [Translate](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/translate.json): blocks for translating strings between languages, e.g., English to Spanish
+* [Dictionary](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/dictionary.json): a block to look up dictionary definitions
+* [Weather](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/weather.json): blocks to retrieve global weather forecasts
+* [Logic](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/logic.json): blocks for bitwise Boolean operations
+* [Finance](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/finance.json): a block for looking up market prices
+* [Bitcoin](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/bitcoin.json): a block for looking up bitcoin exchange rates
+* [Nutrition](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/nutrition.json): blocks for exploring the nutritional content of food
+* [Facebook](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/facebook.json): a block for publishing a project to Facebook
+* [Heap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/heap.json): blocks to support a heap and for loading and saving data
+* [Accelerometer](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/accelerometer.json): blocks for accessing an accelerometer
+* [Turtle](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/turtle.json): blocks to support advanced features when using multiple turtles
+* [Gmap](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/gmap.json): blocks to support generation of Google maps.
+* [Random quote](https://raw.githubusercontent.com/sugarlabs/turtleblocksjs/master/plugins/random_quote.json): returns random quote of the day

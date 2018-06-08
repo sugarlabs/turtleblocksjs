@@ -965,11 +965,6 @@ function Blocks () {
             this._deletePitchBlocks(thisBlock);
             return this.blockList[thisBlock].connections[0];
         } else {
-            if (thisBlockobj && thisBlockobj.connections.length === 1) {
-                console.log('Value block encountered? ' + thisBlockobj.name);
-                return;
-            }
-
             while (thisBlockobj.connections[0] != null) {
                 var i = thisBlockobj.connections[0];
                 if (NOTEBLOCKS.indexOf(this.blockList[i].name) !== -1) {
@@ -1158,7 +1153,7 @@ function Blocks () {
         if (newBlock != null) {
             var n = this._countBlocksInStack(this.findTopBlock(newBlock));
             if (n > LONGSTACK) {
-		this.errorMsg(_('Consider breaking this stack into parts.'));
+                this.errorMsg(_('Consider breaking this stack into parts.'));
             }
 
             // We found a match.
@@ -1364,7 +1359,7 @@ function Blocks () {
 
             // Remove the silence block (if it is present) after
             // adding a new block inside of a note block.
-            if (this._insideNoteBlock(thisBlock) != null) {
+            if (this._insideNoteBlock(thisBlock) != null && this.blockList[thisBlock].connections.length > 1) {
                 // If blocks are inserted above the silence block.
                 if (insertAfterDefault) {
                     newBlock = this.deletePreviousDefault(thisBlock);
@@ -1666,14 +1661,16 @@ function Blocks () {
             return;
         }
 
-        if (myBlock.name === 'loadFile') {
+        switch (myBlock.name) {
+        case 'loadFile':
             try {
                 var label = myBlock.value[0].toString();
             } catch (e) {
                 var label = _('open file');
             }
             maxLength = 10;
-        } else if (myBlock.name === 'solfege') {
+            break;
+        case 'solfege':
             var obj = splitSolfege(myBlock.value);
             var label = i18nSolfege(obj[0]);
             var attr = obj[1];
@@ -1681,7 +1678,8 @@ function Blocks () {
             if (attr !== '♮') {
                 label += attr;
             }
-        } else if (myBlock.name === 'eastindiansolfege') {
+            break;
+        case 'eastindiansolfege':
             var obj = splitSolfege(myBlock.value);
             var label = WESTERN2EISOLFEGENAMES[obj[0]];
             var attr = obj[1];
@@ -1689,9 +1687,40 @@ function Blocks () {
             if (attr !== '♮') {
                 label += attr;
             }
-        } else if (myBlock.name === 'modename') {
-            var label = myBlock.value + ' ' + getModeNumbers(myBlock.value);
-        } else {
+            break;
+        case 'modename':
+            var label = _(myBlock.value) + ' ' + getModeNumbers(myBlock.value);
+            break;
+        case 'accidentalname':
+        case 'intervalname':
+            var obj = myBlock.value.split(' ');
+            var label = _(obj[0]) + ' ' + obj[1];
+            break;
+        case 'filtertype':
+        case 'drumname':
+        case 'voicename':
+        case 'oscillatortype':
+        case 'invertmode':
+            var label = _(myBlock.value);
+            break;
+        case 'temperamentname':
+            var label = _(TEMPERAMENTS[0][1]);  // equal by default
+            for (var i = 0; i < TEMPERAMENTS.length; i++) {
+                if (TEMPERAMENTS[i][1] === myBlock.value) {
+		    label = TEMPERAMENTS[i][0];
+		    break;
+		}
+	    }
+            break;
+        case 'boolean':
+            if (myBlock.value) {
+                var label = _('true');
+	    } else {
+                var label = _('false');
+	    }
+
+            break;
+        default:
             if (myBlock.value == null) {
                var label = '';
             } else if (typeof myBlock.value !== 'string'){
@@ -1699,6 +1728,7 @@ function Blocks () {
             } else {
                 var label = myBlock.value;
             }
+            break;
         }
 
         if (WIDENAMES.indexOf(myBlock.name) === -1 && label.length > maxLength) {
@@ -2107,32 +2137,57 @@ function Blocks () {
         // Make a new block from a proto block.
         // Called from palettes.
 
-        if (name === 'text') {
-            console.log('makeBlock ' + name + ' ' + arg);
-        } else if (name === 'storein2') {
-            console.log('makeBlock ' + name + ' ' + arg);
-        }
+        // console.log('makeBlock ' + name + ' ' + arg);
 
         var postProcess = function (args) {
-                var thisBlock = args[0];
-                var value = args[1];
-                that.blockList[thisBlock].value = value;
+            var thisBlock = args[0];
+            var value = args[1];
+            that.blockList[thisBlock].value = value;
+            switch (that.blockList[thisBlock].name) {
+            case 'drumname':
+            case 'voicename':
+            case 'filtertype':
+            case 'oscillatortype':
+            case 'invertmode':
+                that.blockList[thisBlock].text.text = _(value);
+                break;
+            case 'temperamentname':
+		that.blockList[thisBlock].text.text = _(TEMPERAMENTS[0][1]);
+		for (var i = 0; i < TEMPERAMENTS.length; i++) {
+                    if (TEMPERAMENTS[i][1] === value) {
+			that.blockList[thisBlock].text.text = TEMPERAMENTS[i][0];
+			break;
+		    }
+		}
+		break;
+            case 'boolean':
+                if (value) {
+                    that.blockList[thisBlock].text.text = _('true');
+		} else {
+                    that.blockList[thisBlock].text.text = _('false');
+		}
+
+		break;
+            default:
                 that.blockList[thisBlock].text.text = value;
-                that.blockList[thisBlock].container.updateCache();
-            };
+                break;
+            }
+
+            that.blockList[thisBlock].container.updateCache();
+        };
 
         var postProcessArg = null;
         var that = this;
         var thisBlock = this.blockList.length;
         if (name === 'start') {
-            postProcess = function (thisBlock) {
+            var postProcess = function (thisBlock) {
                 that.blockList[thisBlock].value = that.turtles.turtleList.length;
                 that.turtles.addTurtle(that.blockList[thisBlock]);
             };
 
             postProcessArg = thisBlock;
         } else if (name === 'drum') {
-            postProcess = function (thisBlock) {
+            var postProcess = function (thisBlock) {
                 that.blockList[thisBlock].value = that.turtles.turtleList.length;
                 that.turtles.addDrum(that.blockList[thisBlock]);
             };
@@ -2141,11 +2196,10 @@ function Blocks () {
         } else if (name === 'text') {
             postProcessArg = [thisBlock, _('text')];
         } else if (name === 'boolean') {
-            postProcessArg = [thisBlock, _('true')];
+            console.log('boolean' + ' ' + true);
+            postProcessArg = [thisBlock, true];
         } else if (name === 'solfege') {
             postProcessArg = [thisBlock, 'sol'];
-        } else if (name === 'eastindiansolfege') {
-            postProcessArg = [thisBlock, 'pa'];
         } else if (name === 'notename') {
             postProcessArg = [thisBlock, 'G'];
         } else if (name === 'drumname') {
@@ -2156,8 +2210,18 @@ function Blocks () {
             postProcessArg = [thisBlock, DEFAULTOSCILLATORTYPE];
         } else if (name === 'voicename') {
             postProcessArg = [thisBlock, DEFAULTVOICE];
+        } else if (name === 'eastindiansolfege') {
+            var postProcess = function (args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                that.blockList[thisBlock].value = value;
+                that.blockList[thisBlock].text.text =  WESTERN2EISOLFEGENAMES[value];
+                that.blockList[thisBlock].container.updateCache();
+            };
+
+            postProcessArg = [thisBlock, 'sol'];
         } else if (name === 'modename') {
-            postProcess = function (args) {
+            var postProcess = function (args) {
                 var thisBlock = args[0];
                 var value = args[1];
                 that.blockList[thisBlock].value = value;
@@ -2167,13 +2231,33 @@ function Blocks () {
 
             postProcessArg = [thisBlock, DEFAULTMODE];
         } else if (name === 'accidentalname') {
+            var postProcess = function (args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                that.blockList[thisBlock].value = value;
+                var obj = value.split(' ');
+                that.blockList[thisBlock].text.text = _(obj[0]) + ' ' + obj[1];
+                that.blockList[thisBlock].container.updateCache();
+            };
+
             postProcessArg = [thisBlock, DEFAULTACCIDENTAL];
         } else if (name === 'intervalname') {
+            var postProcess = function (args) {
+                var thisBlock = args[0];
+                var value = args[1];
+                that.blockList[thisBlock].value = value;
+                var obj = value.split(' ');
+                that.blockList[thisBlock].text.text = _(obj[0]) + ' ' + obj[1];
+                that.blockList[thisBlock].container.updateCache();
+            };
+
             postProcessArg = [thisBlock, DEFAULTINTERVAL];
+        } else if (name === 'temperamentname') {
+            postProcessArg = [thisBlock, DEFAULTTEMPERAMENT];
         } else if (name === 'invertmode') {
             postProcessArg = [thisBlock, DEFAULTINVERT];
         } else if (name === 'number') {
-            postProcess = function (args) {
+            var postProcess = function (args) {
                 var thisBlock = args[0];
                 var value = Number(args[1]);
                 that.blockList[thisBlock].value = value;
@@ -2183,11 +2267,11 @@ function Blocks () {
 
             postProcessArg = [thisBlock, NUMBERBLOCKDEFAULT];
         } else if (name === 'loudness' || name === 'pitchness') {
-            postProcess = function () {
+            var postProcess = function () {
                 that.logo.initMediaDevices();
             };
         } else if (name === 'media') {
-            postProcess = function (args) {
+            var postProcess = function (args) {
                 var thisBlock = args[0];
                 var value = args[1];
                 that.blockList[thisBlock].value = value;
@@ -2200,7 +2284,7 @@ function Blocks () {
 
             postProcessArg = [thisBlock, null];
         } else if (name === 'camera') {
-            postProcess = function (args) {
+            var postProcess = function (args) {
                 console.log('post process camera ' + args[1]);
                 var thisBlock = args[0];
                 var value = args[1];
@@ -2214,7 +2298,7 @@ function Blocks () {
 
             postProcessArg = [thisBlock, null];
         } else if (name === 'video') {
-            postProcess = function (args) {
+            var postProcess = function (args) {
                 var thisBlock = args[0];
                 var value = args[1];
                 that.blockList[thisBlock].value = VIDEOVALUE;
@@ -2227,20 +2311,20 @@ function Blocks () {
 
             postProcessArg = [thisBlock, null];
         } else if (name === 'loadFile') {
-            postProcess = function (args) {
+            var postProcess = function (args) {
                 that.updateBlockText(args[0]);
             };
 
             postProcessArg = [thisBlock, null];
         } else if (['storein2', 'namedbox', 'nameddo', 'namedcalc', 'nameddoArg', 'namedcalcArg', 'namedarg'].indexOf(name) !== -1) {
-            postProcess = function (args) {
+            var postProcess = function (args) {
                 that.blockList[thisBlock].value = null;
                 that.blockList[thisBlock].privateData = args[1];
             };
 
             postProcessArg = [thisBlock, arg];
         } else {
-            postProcess = null;
+            var postProcess = null;
         }
 
         var protoFound = false;
@@ -2261,7 +2345,7 @@ function Blocks () {
                         break;
                     }
                 } else if (name === 'storein2') {
-                    postProcess = function (args) {
+                    var postProcess = function (args) {
                         var c = that.blockList[thisBlock].connections[0];
                         if (args[1] === _('store in box')) {
                             that.blockList[c].privateData = _('box');
@@ -2314,7 +2398,7 @@ function Blocks () {
                 if (value == null) {
                     console.log('cannot set default value');
                 } else if (typeof(value) === 'string') {
-                    postProcess = function (args) {
+                    var postProcess = function (args) {
                         var thisBlock = args[0];
                         var value = args[1];
                         that.blockList[thisBlock].value = value;
@@ -2328,7 +2412,7 @@ function Blocks () {
 
                     this.makeNewBlock('text', postProcess, [thisBlock, value]);
                 } else {
-                    postProcess = function (args) {
+                    var postProcess = function (args) {
                         var thisBlock = args[0];
                         var value = Number(args[1]);
                         that.blockList[thisBlock].value = value;
@@ -2338,7 +2422,7 @@ function Blocks () {
                     this.makeNewBlock('number', postProcess, [thisBlock, value]);
                 }
             } else if (myBlock.docks[i + 1][2] === 'textin') {
-                postProcess = function (args) {
+                var postProcess = function (args) {
                     var thisBlock = args[0];
                     var value = args[1];
                     that.blockList[thisBlock].value = value;
@@ -2351,7 +2435,7 @@ function Blocks () {
 
                 this.makeNewBlock('text', postProcess, [thisBlock, value]);
             } else if (myBlock.docks[i + 1][2] === 'solfegein') {
-                postProcess = function (args) {
+                var postProcess = function (args) {
                     var thisBlock = args[0];
                     var value = args[1];
                     that.blockList[thisBlock].value = value;
@@ -2361,7 +2445,7 @@ function Blocks () {
 
                 this.makeNewBlock('solfege', postProcess, [thisBlock, value]);
             } else if (myBlock.docks[i + 1][2] === 'notein') {
-                postProcess = function (args) {
+                var postProcess = function (args) {
                     var thisBlock = args[0];
                     var value = args[1];
                     that.blockList[thisBlock].value = value;
@@ -2371,7 +2455,7 @@ function Blocks () {
 
                 this.makeNewBlock('notename', postProcess, [thisBlock, value]);
             } else if (myBlock.docks[i + 1][2] === 'mediain') {
-                postProcess = function (args) {
+                var postProcess = function (args) {
                     var thisBlock = args[0];
                     var value = args[1];
                     that.blockList[thisBlock].value = value;
@@ -2382,12 +2466,12 @@ function Blocks () {
 
                 this.makeNewBlock('media', postProcess, [thisBlock, value]);
             } else if (myBlock.docks[i + 1][2] === 'filein') {
-                postProcess = function (blk) {
+                var postProcess = function (blk) {
                     that.updateBlockText(blk);
                 }
                 this.makeNewBlock('loadFile', postProcess, thisBlock);
             } else {
-                postProcess = function (args) {
+                var postProcess = function (args) {
                     var thisBlock = args[0];
                     var value = args[1];
                     that.blockList[thisBlock].value = value;
@@ -2859,14 +2943,11 @@ function Blocks () {
         }
 
         if (hasReturn && hasArgs) {
-            this.newNamedcalcArgBlock(name);
-            return true;
+            return this.newNamedcalcArgBlock(name);
         } else if (!hasReturn && hasArgs) {
-            this.newNameddoArgBlock(name);
-            return true;
+            return this.newNameddoArgBlock(name);
         } else if (hasReturn && !hasArgs) {
-            this.newNamedcalcBlock(name);
-            return true;
+            return this.newNamedcalcBlock(name);
         } else if (this.protoBlockDict['myDo_' + name] === undefined) {
             var myDoBlock = new ProtoBlock('nameddo');
             this.protoBlockDict['myDo_' + name] = myDoBlock;
@@ -2884,7 +2965,6 @@ function Blocks () {
 
     this.newNamedcalcBlock = function (name) {
         if (this.protoBlockDict['myCalc_' + name] === undefined) {
-            // console.log('creating myCalc_' + name);
             var myCalcBlock = new ProtoBlock('namedcalc');
             this.protoBlockDict['myCalc_' + name] = myCalcBlock;
             myCalcBlock.palette = this.palettes.dict['action'];
@@ -2893,14 +2973,14 @@ function Blocks () {
             myCalcBlock.zeroArgBlock();
             // Add the new block to the top of the palette.
             myCalcBlock.palette.add(myCalcBlock, true);
-        // } else {
-        //     console.log('myCalc_' + name + ' already exists.');
+            return true;
         }
+
+        return false;
     };
 
     this.newNameddoArgBlock = function (name) {
         if (this.protoBlockDict['myDoArg_' + name] === undefined) {
-            // console.log('creating myDoArg_' + name);
             var myDoArgBlock = new ProtoBlock('nameddoArg');
             this.protoBlockDict['myDoArg_' + name] = myDoArgBlock;
             myDoArgBlock.palette = this.palettes.dict['action'];
@@ -2909,14 +2989,14 @@ function Blocks () {
             myDoArgBlock.zeroArgBlock();
             // Add the new block to the top of the palette.
             myDoArgBlock.palette.add(myDoArgBlock, true);
-        // } else {
-        //     console.log('myDoArg_' + name + ' already exists.');
+            return true;
         }
+
+        return false;
     };
 
     this.newNamedcalcArgBlock = function (name) {
         if (this.protoBlockDict['myCalcArg_' + name] === undefined) {
-            // console.log('creating myCalcArg_' + name);
             var myCalcArgBlock = new ProtoBlock('namedcalcArg');
             this.protoBlockDict['myCalcArg_' + name] = myCalcArgBlock;
             myCalcArgBlock.palette = this.palettes.dict['action'];
@@ -2925,9 +3005,10 @@ function Blocks () {
             myCalcArgBlock.zeroArgBlock();
             // Add the new block to the top of the palette.
             myCalcArgBlock.palette.add(myCalcArgBlock, true);
-        // } else {
-        //     console.log('myCalcArg_' + name + ' already exists.');
+            return true;
         }
+
+        return false;
     };
 
     this._insideArgClamp = function (blk) {
@@ -2998,6 +3079,47 @@ function Blocks () {
                 }
             } else {
                 return this._insideNoteBlock(cblk);
+            }
+        }
+    };
+
+    this.findPitchOctave = function (blk) {
+        // Returns octave associated with pitch block.
+        if (blk === null) {
+            return 4;
+        }
+
+        if (['pitch', 'setpitchnumberoffset', 'invert1', 'tofrequency'].indexOf(this.blockList[blk].name) !== -1) {
+            var oblk = this.blockList[blk].connections[2];
+            if (oblk === null) {
+                return 4;
+            } else if (this.blockList[oblk].name === 'number') {
+                return this.blockList[oblk].value;
+            } else {
+                return 4;
+            }
+        } else {
+            return 4;
+        }
+    };
+
+    this.setPitchOctave = function (blk, octave) {
+        // Set octave associated with pitch block
+        if (blk === null) {
+            return;
+        }
+
+        if (['pitch', 'setpitchnumberoffset', 'invert1', 'tofrequency'].indexOf(this.blockList[blk].name) !== -1) {
+            var oblk = this.blockList[blk].connections[2];
+            if (oblk !== null && this.blockList[oblk].name === 'number') {
+                var thisBlock = this.blockList[oblk];
+                thisBlock.value = octave;
+                thisBlock.text.text = octave.toString();
+
+                // Make sure text is on top.
+                var z = thisBlock.container.children.length - 1;
+                thisBlock.container.setChildIndex(thisBlock.text, z);
+                thisBlock.container.updateCache();
             }
         }
     };
@@ -3849,16 +3971,17 @@ function Blocks () {
                 this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
                 break;
             case 'text':
-            case 'boolean':
             case 'solfege':
             case 'eastindiansolfege':
             case 'notename':
             case 'modename':
-            case 'accidentalname':
-            case 'intervalname':
+            case 'temperamentname':
             case 'invertmode':
             case 'filtertype':
             case 'oscillatortype':
+            case 'accidentalname':
+            case 'intervalname':
+            case 'boolean':
                 var postProcess = function (args) {
                     var thisBlock = args[0];
                     var value = args[1];
@@ -4229,6 +4352,7 @@ function Blocks () {
                 that.palettes.show();
             }, 1500);
         }
+
         console.log("Finished block loading");
         document.body.style.cursor = 'default';
 

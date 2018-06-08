@@ -618,6 +618,22 @@ directory on your computer. (Josh Burker introduced me to Tinkercad, a
 website that can be used to convert SVG to STL.) [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523390883477748&run=True)
 
+The *New Turtle* block is used to create new turtles on the fly. The
+*Set Turtle* block is used to run blocks by a selected turtle. In the
+example below, 10 turtles are created on the fly and each turtle is
+then set on a random walk across the screen. Note that the *Found
+Turtle* block is used to ensure that the each new turtle is *ready*
+before issuing commands. (Creating a turtle is not instantaneous and
+the *New Turtle* block does not block program flow waiting for the
+turtle to be created.) [RUN
+LIVE](https://turtle.sugarlabs.org/index.html?id=1525211505767290&run=True)
+
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/extras2.svg' />
+
+An alternative to using the *Found Turtle* block is to use the *Event* block. When a new turtle is created, an event with the name of the turtle is broadcast (See the example below).
+
+<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/extras3.svg' />
+
 13. Debugging Aids
 ------------------
 
@@ -639,7 +655,7 @@ LIVE](https://turtle.sugarlabs.org/index.html?id=1523391206069261&run=True)
 
 There is also a *Status* widget that can be programmed to show various
 paramters as per the figures above. [RUN
-LIVE](https://turtle.sugarlabs.org/index.html?id=1523391401761720&run=True)
+LIVE](https://turtle.sugarlabs.org/index.html?id=1528388082677564&run=True)
 
 Parameter blocks, boxes, arithmetic and boolean operators, and many
 sensor blocks will print their current value as the program runs when

@@ -226,15 +226,14 @@ function Palettes () {
     };
 
     this.getProtoNameAndPalette = function (name) {
-        var obj = [null, null, null];
         for (var b in this.blocks.protoBlockDict) {
             // Don't return deprecated blocks.
             if (name === this.blocks.protoBlockDict[b].staticLabels[0] && !this.blocks.protoBlockDict[b].hidden) {
-                obj = [b, this.blocks.protoBlockDict[b].palette.name, this.blocks.protoBlockDict[b].name];
+                return [b, this.blocks.protoBlockDict[b].palette.name, this.blocks.protoBlockDict[b].name];
             }
         }
 
-        return obj;
+        return [null, null, null];
     };
 
     this.makePalettes = function (hide) {
@@ -738,6 +737,10 @@ function PaletteModel(palette, palettes, name) {
                 break;
             case 'voicename':
                 label = _('voice name');
+                break;
+            case 'temperamentname':
+                //TRANS: https://en.wikipedia.org/wiki/Musical_temperament
+                label = _('temperament');
                 break;
             case 'accidentalname':
                 //TRANS: accidental refers to sharps, flats, etc.

@@ -295,24 +295,12 @@ define(MYDEFINES, function (compatibility) {
 
         pluginsImages = {};
 
-        if (_THIS_IS_MUSIC_BLOCKS_) {
-            // Sometimes (race condition?) Firefox does not properly
-            // initialize strings in musicutils. These methods ensure that
-            // the names are never null.
-            console.log('initing i18n for music terms');
-            initIntervalI18N();
-            initDrumI18N();
-            initModeI18N();
-            initVoiceI18N();
-            initFilterI18N();
-            initOscI18N();
-        }
-
         window.onblur = function () {
             doHardStopButton(true);
         };
 
         function _findBlocks() {
+            hideDOMLabel();
             logo.showBlocks();
             blocksContainer.x = 0;
             blocksContainer.y = 0;
@@ -475,6 +463,8 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _allClear() {
+            hideDOMLabel();
+
             if (chartBitmap != null) {
                 stage.removeChild(chartBitmap);
                 chartBitmap = null;
@@ -515,6 +505,13 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _doFastButton(env) {
+            hideDOMLabel();
+
+            stage.on('stagemousemove', function (event) {
+                stageX = event.stageX;
+                stageY = event.stageY;
+            });
+
             var currentDelay = logo.turtleDelay;
             var playingWidget = false;
             logo.setTurtleDelay(0);
@@ -585,6 +582,13 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _doSlowButton() {
+            hideDOMLabel();
+
+            stage.on('stagemousemove', function (event) {
+                stageX = event.stageX;
+                stageY = event.stageY;
+            });
+
             logo.setTurtleDelay(DEFAULTDELAY);
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 logo.synth.resume();
@@ -600,6 +604,13 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _doStepButton() {
+            hideDOMLabel();
+
+            stage.on('stagemousemove', function (event) {
+                stageX = event.stageX;
+                stageY = event.stageY;
+            });
+
             var turtleCount = Object.keys(logo.stepQueue).length;
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 logo.synth.resume();
@@ -621,6 +632,13 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _doSlowMusicButton() {
+            hideDOMLabel();
+
+            stage.on('stagemousemove', function (event) {
+                stageX = event.stageX;
+                stageY = event.stageY;
+            });
+
             logo.setNoteDelay(DEFAULTDELAY);
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 logo.synth.resume();
@@ -636,6 +654,13 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _doStepMusicButton() {
+            hideDOMLabel();
+
+            stage.on('stagemousemove', function (event) {
+                stageX = event.stageX;
+                stageY = event.stageY;
+            });
+
             var turtleCount = Object.keys(logo.stepQueue).length;
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 logo.synth.resume();
@@ -657,6 +682,8 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function doHardStopButton(onblur) {
+            hideDOMLabel();
+
             if (onblur == undefined) {
                 onblur = false;
             }
@@ -685,6 +712,8 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _hideBoxes() {
+            hideDOMLabel();
+
             pasteBox.hide();
             clearBox.hide();
             saveBox.hide();
@@ -1063,12 +1092,26 @@ define(MYDEFINES, function (compatibility) {
                 .setPause(doPausePlayback)
                 .setRewind(doRestartPlayback);
 
+            playbackOnLoad = function() {
+                if (_THIS_IS_TURTLE_BLOCKS_) {
+                    // Play playback queue if there is one.
+                    for (turtle in logo.playbackQueue) {
+                        if (logo.playbackQueue[turtle].length > 0) {
+                            setTimeout(function () {
+                                logo.playback(-1);
+                            }, 3000);
+                            break;
+                        }
+                    }
+                }
+            };
+
             function PlanetInterface(storage) {
                 this.planet = null;
                 this.iframe = null;
                 this.mainCanvas = null;
 
-                this.hideMusicBlocks = function(){
+                this.hideMusicBlocks = function() {
                     hideSearchWidget();
                     if (_THIS_IS_MUSIC_BLOCKS_) {
                         storage.setItem('isMatrixHidden', docById('ptmDiv').style.visibility);
@@ -1187,40 +1230,42 @@ define(MYDEFINES, function (compatibility) {
                     window.scroll(0, 0);
                 };
 
-                this.showPlanet = function(){
+                this.showPlanet = function() {
                     this.planet.open(this.mainCanvas.toDataURL('image/png'));
                     this.iframe.style.display = 'block';
                     try {
-			this.iframe.contentWindow.document.getElementById('local-tab').click();
-		    } catch (e) {
+                        this.iframe.contentWindow.document.getElementById('local-tab').click();
+                    } catch (e) {
                         console.log(e);
-		    }
-                }
+                    }
+                };
 
-                this.hidePlanet = function(){
+                this.hidePlanet = function() {
                     this.iframe.style.display = 'none';
-                }
+                };
 
-                this.openPlanet = function(){
+                this.openPlanet = function() {
                     console.log('save locally');
                     this.saveLocally();
                     this.hideMusicBlocks();
                     this.showPlanet();
-                }
+                };
 
-                this.closePlanet = function(){
+                this.closePlanet = function() {
                     this.hidePlanet();
                     this.showMusicBlocks();
-                }
+                };
 
-                this.loadProjectFromData = function(data, merge){
-                    if (merge===undefined){
+                this.loadProjectFromData = function(data, merge) {
+                    if (merge===undefined) {
                         merge=false;
                     }
+
                     this.closePlanet();
-                    if (!merge){
+                    if (!merge) {
                         sendAllToTrash(false, true);
                     }
+
                     if (data == undefined) {
                         console.log('loadRawProject: data is undefined... punting');
                         errorMsg('loadRawProject: project undefined');
@@ -1237,11 +1282,24 @@ define(MYDEFINES, function (compatibility) {
                         blocks.palettes.dict[name].hideMenu(true);
                     }
 
+                    var __afterLoad = function () {
+                        playbackOnLoad();
+                        document.removeEventListener('finishedLoading', __afterLoad);
+                    };
+
+                    if (document.addEventListener) {
+                        document.addEventListener('finishedLoading', __afterLoad);
+                    } else {
+                        document.attachEvent('finishedLoading', __afterLoad);
+                    }
+
                     try {
                         var obj = JSON.parse(data);
                         logo.playbackQueue = {};
                         blocks.loadNewBlocks(obj);
                         setPlaybackStatus();
+
+
                     } catch (e) {
                         console.log('loadRawProject: could not parse project data');
                         errorMsg(e);
@@ -1249,24 +1307,25 @@ define(MYDEFINES, function (compatibility) {
 
                     loading = false;
                     document.body.style.cursor = 'default';
-                }
+                };
 
-                this.loadProjectFromFile = function(){
+                this.loadProjectFromFile = function() {
+                    console.log('OPEN');
                     document.querySelector('#myOpenFile').focus();
                     document.querySelector('#myOpenFile').click();
                     window.scroll(0, 0);
-                }
+                };
 
-                this.newProject = function(){
+                this.newProject = function() {
                     this.closePlanet();
                     this.initialiseNewProject();
-                }
+                };
 
-                this.initialiseNewProject = function(name){
+                this.initialiseNewProject = function(name) {
                     this.planet.ProjectStorage.initialiseNewProject(name);
                     blocks.trashStacks = [];
                     this.saveLocally();
-                }
+                };
 
                 this.saveLocally = function() {
                     console.log('overwriting session data');
@@ -1282,7 +1341,6 @@ define(MYDEFINES, function (compatibility) {
                             var bounds = bitmap.getBounds();
                             bitmap.cache(bounds.x, bounds.y, bounds.width, bounds.height);
                             try {
-                                console.log(bitmap.bitmapCache.getCacheDataURL());
                                 t.planet.ProjectStorage.saveLocally(data, bitmap.bitmapCache.getCacheDataURL());
                             } catch (e) {
                                 console.log(e);
@@ -1293,37 +1351,37 @@ define(MYDEFINES, function (compatibility) {
                     //if (sugarizerCompatibility.isInsideSugarizer()) {
                     //    sugarizerCompatibility.saveLocally();
                     //}
-                }
+                };
 
-                this.openCurrentProject = function(){
+                this.openCurrentProject = function() {
                     return this.planet.ProjectStorage.getCurrentProjectData();
-                }
+                };
 
-                this.openProjectFromPlanet = function(id,error){
+                this.openProjectFromPlanet = function(id,error) {
                     this.planet.openProjectFromPlanet(id,error);
-                }
+                };
 
-                this.onConverterLoad = function(){
+                this.onConverterLoad = function() {
                     window.Converter = this.planet.Converter;
-                }
+                };
 
-                this.getCurrentProjectName = function(){
+                this.getCurrentProjectName = function() {
                     return this.planet.ProjectStorage.getCurrentProjectName();
-                }
+                };
 
-                this.getCurrentProjectDescription = function(){
+                this.getCurrentProjectDescription = function() {
                     return this.planet.ProjectStorage.getCurrentProjectDescription();
-                }
+                };
 
-                this.getCurrentProjectImage = function(){
+                this.getCurrentProjectImage = function() {
                     return this.planet.ProjectStorage.getCurrentProjectImage();
-                }
+                };
 
-                this.getTimeLastSaved = function(){
+                this.getTimeLastSaved = function() {
                     return this.planet.ProjectStorage.TimeLastSaved;
-                }
+                };
 
-                this.init = function(){
+                this.init = function() {
                     this.iframe = document.getElementById('planet-iframe');
                     try {
                         this.iframe.contentWindow.makePlanet(_THIS_IS_MUSIC_BLOCKS_, storage);
@@ -1340,15 +1398,15 @@ define(MYDEFINES, function (compatibility) {
 
                     window.Converter = this.planet.Converter;
                     this.mainCanvas = canvas;
-                }
-            }
+                };
+            };
 
             try {
                 planet = new PlanetInterface(storage);
                 planet.init();
             } catch (e) {
                 planet = undefined;
-	    }
+            }
 
             save = new SaveInterface(planet);
             save.setVariables([
@@ -1508,7 +1566,7 @@ define(MYDEFINES, function (compatibility) {
                             var cleanData = rawData.replace('\n', ' ');
 
                             try {
-                                if (cleanData.includes('html')){
+                                if (cleanData.includes('html')) {
                                     var obj = JSON.parse(cleanData.match('<div class="code">(.+?)<\/div>')[1]);
                                 } else {
                                     var obj = JSON.parse(cleanData);
@@ -1575,7 +1633,7 @@ define(MYDEFINES, function (compatibility) {
                             var cleanData = rawData.replace('\n', ' ');
 
                             try {
-                                if (cleanData.includes('html')){
+                                if (cleanData.includes('html')) {
                                     dat = cleanData.match('<div class="code">(.+?)<\/div>');
                                     var obj = JSON.parse(dat[1]);
                                 } else {
@@ -1587,21 +1645,35 @@ define(MYDEFINES, function (compatibility) {
 
                                 stage.removeAllEventListeners('trashsignal');
 
+                                var __afterLoad = function () {
+                                    playbackOnLoad();
+                                    document.removeEventListener('finishedLoading', __afterLoad);
+                                };
+
                                 // Wait for the old blocks to be removed.
                                 var __listener = function (event) {
                                     logo.playbackQueue = {};
                                     blocks.loadNewBlocks(obj);
                                     setPlaybackStatus();
                                     stage.removeAllEventListeners('trashsignal');
+
+                                    if (document.addEventListener) {
+                                        document.addEventListener('finishedLoading', __afterLoad);
+                                    } else {
+                                        document.attachEvent('finishedLoading', __afterLoad);
+                                    }
                                 };
 
                                 stage.addEventListener('trashsignal', __listener, false);
                                 sendAllToTrash(false, false);
-                                planet.initialiseNewProject(files[0].name.substr(0, files[0].name.lastIndexOf('.')));
+                                if (planet !== undefined) {
+                                    planet.initialiseNewProject(files[0].name.substr(0, files[0].name.lastIndexOf('.')));
+                                }
 
                                 loading = false;
                                 refreshCanvas();
                             } catch (e) {
+                                console.log(e);
                                 errorMsg(_('Cannot load project from the file. Please check the file type.'));
                                 document.body.style.cursor = 'default';
                                 loading = false;
@@ -1826,11 +1898,6 @@ define(MYDEFINES, function (compatibility) {
 
             docById('myCanvas').addEventListener('wheel', __wheelHandler, false);
 
-            stage.on('stagemousemove', function (event) {
-                stageX = event.stageX;
-                stageY = event.stageY;
-            });
-
             var __stageMouseUpHandler = function (event) {
                 stageMouseDown = false;
                 moving = false;
@@ -2047,7 +2114,7 @@ define(MYDEFINES, function (compatibility) {
 
         searchSuggestions = searchSuggestions.reverse();
 
-        searchWidget.onclick = function(){
+        searchWidget.onclick = function() {
             doSearch();
         };
 
@@ -2124,7 +2191,7 @@ define(MYDEFINES, function (compatibility) {
             }
         };
 
-        function __makeNewNote(octave, solf){
+        function __makeNewNote(octave, solf) {
             var newNote = [
                 [0, 'newnote', 300 - blocksContainer.x, 300 - blocksContainer.y, [null, 1, 4, 8]],
                 [1, 'divide', 0, 0, [0, 2, 3]],
@@ -2138,13 +2205,13 @@ define(MYDEFINES, function (compatibility) {
             ];
 
             blocks.loadNewBlocks(newNote);
-            if (blocks.activeBlock !== null){
+            if (blocks.activeBlock !== null) {
                 // Connect the newly created block to the active block
                 // (if it is a hidden block at the end of a new note
                 // block).
                 var bottom = blocks.findBottomBlock(blocks.activeBlock);
                 console.log(blocks.activeBlock + ' ' + bottom);
-                if (blocks.blockList[bottom].name === 'hidden' && blocks.blockList[blocks.blockList[bottom].connections[0]].name === 'newnote'){
+                if (blocks.blockList[bottom].name === 'hidden' && blocks.blockList[blocks.blockList[bottom].connections[0]].name === 'newnote') {
 
                     // The note block macro creates nine blocks.
                     var newlyCreatedBlock = blocks.blockList.length - 9;
@@ -2240,7 +2307,7 @@ define(MYDEFINES, function (compatibility) {
             }
 
             if (_THIS_IS_MUSIC_BLOCKS_) {
-                var disableKeys = docById('lilypondModal').style.display === 'block' || searchWidget.style.visibility === 'visible' || docById('planet-iframe').style.display === '' || docById('paste').style.visibility === 'visible' || logo.turtles.running();
+                var disableKeys = docById('lilypondModal').style.display === 'block' || searchWidget.style.visibility === 'visible' || docById('planet-iframe').style.display === '' || docById('paste').style.visibility === 'visible' || docById('wheelDiv').style.display === '' || logo.turtles.running();
             } else {
                 var disableKeys = searchWidget.style.visibility === 'visible' || docById('paste').style.visibility === 'visible' || logo.turtles.running();
             }
@@ -2283,7 +2350,7 @@ define(MYDEFINES, function (compatibility) {
                     update = true;
                     break;
                 }
-            } else if (event.shiftKey && !disableKeys){
+            } else if (event.shiftKey && !disableKeys) {
                 switch (event.keyCode) {
                 case KEYCODE_D:
                     if (_THIS_IS_MUSIC_BLOCKS_) {
@@ -2323,7 +2390,7 @@ define(MYDEFINES, function (compatibility) {
                 }
             } else {
                 if (docById('paste').style.visibility === 'visible' && event.keyCode === RETURN) {
-                    if (docById('paste').value.length > 0){
+                    if (docById('paste').value.length > 0) {
                         pasted();
                     }
                 } else if (!disableKeys) {
@@ -2413,7 +2480,7 @@ define(MYDEFINES, function (compatibility) {
                         break;
                     case RETURN:
                         if (disableArrowKeys) {
-                        } else if (docById('search').value.length > 0){
+                        } else if (docById('search').value.length > 0) {
                             doSearch();
                         } else {
                             if (blocks.activeBlock == null || SPECIALINPUTS.indexOf(blocks.blockList[blocks.activeBlock].name) === -1) {
@@ -2752,6 +2819,8 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _changeBlockVisibility() {
+            hideDOMLabel();
+
             if (blocks.visible) {
                 logo.hideBlocks();
                 palettes.hide();
@@ -2771,6 +2840,8 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function _toggleCollapsibleStacks() {
+            hideDOMLabel();
+
             if (blocks.visible) {
                 console.log('calling toggleCollapsibles');
                 blocks.toggleCollapsibles();
@@ -2865,7 +2936,7 @@ define(MYDEFINES, function (compatibility) {
             // palettes.updatePalettes();
             setTimeout(function () {
                 try {
-                    planet.openProjectFromPlanet(projectID,function(){loadStartWrapper(_loadStart);});
+                    planet.openProjectFromPlanet(projectID, function() {loadStartWrapper(_loadStart);});
                 } catch (e) {
                     console.log(e);
                     console.log('_loadStart on error');
@@ -2885,24 +2956,25 @@ define(MYDEFINES, function (compatibility) {
 
             var __functionload = function () {
                 setTimeout(function () {
-                    if (!collapse && firstRun){
+                    if (!collapse && firstRun) {
                         _toggleCollapsibleStacks();
                     }
-                    if (run && firstRun){
+
+                    if (run && firstRun) {
                         for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                             turtles.turtleList[turtle].doClear(true, true, false);
                         }
 
                         runProject(env);
 
-                        if (show){
+                        if (show) {
                             _changeBlockVisibility();
                         }
 
-                        if (!collapse){
+                        if (!collapse) {
                             _toggleCollapsibleStacks();
                         }
-                    } else if (!show){
+                    } else if (!show) {
                         _changeBlockVisibility();
                     }
 
@@ -2965,34 +3037,31 @@ define(MYDEFINES, function (compatibility) {
                 sessionData = storage['SESSION' + currentProject];
             }
 
-            // After we have finished loading the project, clear all
-            // to ensure a clean start.
-            if (document.addEventListener) {
-                document.addEventListener('finishedLoading', function () {
-                    if (!turtles.running()) {
-                        setTimeout(function () {
-                            console.log('reset turtles ' + turtles.turtleList.length);
-                            for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
-                                logo.turtleHeaps[turtle] = [];
-                                logo.notationStaging[turtle] = [];
-                                logo.notationDrumStaging[turtle] = [];
-                                turtles.turtleList[turtle].doClear(true, true, false);
-                            }
-                        }, 1000);
-                    }
-                });
-            } else {
-                document.attachEvent('finishedLoading', function () {
-                    setTimeout(function () {
+            var __afterLoad = function () {
+                if (!turtles.running()) {
+                    setTimeout(function() { 
                         console.log('reset turtles ' + turtles.turtleList.length);
+                 
                         for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
                             logo.turtleHeaps[turtle] = [];
                             logo.notationStaging[turtle] = [];
                             logo.notationDrumStaging[turtle] = [];
                             turtles.turtleList[turtle].doClear(true, true, false);
                         }
+
+                        playbackOnLoad();
                     }, 1000);
-                });
+                }
+
+                document.removeEventListener('finishedLoading', __afterLoad);
+            };
+
+            // After we have finished loading the project, clear all
+            // to ensure a clean start.
+            if (document.addEventListener) {
+                document.addEventListener('finishedLoading', __afterLoad);
+            } else {
+                document.attachEvent('finishedLoading', __afterLoad);
             }
 
             if (sessionData) {
@@ -3303,7 +3372,13 @@ define(MYDEFINES, function (compatibility) {
                 data.push([blockMap.indexOf(blk), [myBlock.name, args], myBlock.container.x, myBlock.container.y, connections]);
             }
 
-            // Next, save the playback queue.
+            // Next, save the playback queue, but don't save the
+            // playback queue if we are saving to Lilypond.
+
+            if (logo.runningLilypond) {
+                logo.playbackQueue = {};
+            }
+
             var i = data.length;
             if (i > 0) {
                 for (var turtle = 0; turtle < turtles.turtleList.length; turtle++) {
@@ -3483,7 +3558,7 @@ handleComplete);
 
                 if (buttonNames[i][0] === 'stop-turtle') {
                     stopTurtleContainer = container;
-                } else if (buttonNames[i][0] === 'hard-stop-turtle'){
+                } else if (buttonNames[i][0] === 'hard-stop-turtle') {
                     console.log('hard stop turtle');
                     hardStopTurtleContainer = container;
                 } else if (buttonNames[i][0] === 'go-home') {
@@ -3501,7 +3576,7 @@ handleComplete);
 
                 // Ensure that stop-turtle button is placed on top of
                 // hard-stop-turtle button.
-                if (!(buttonNames[i][0] === 'hard-stop-turtle' && buttonNames[i + 1][0] === 'stop-turtle')){
+                if (!(buttonNames[i][0] === 'hard-stop-turtle' && buttonNames[i + 1][0] === 'stop-turtle')) {
                     x += dx;
                     y += dy;
                 }

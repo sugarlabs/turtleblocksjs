@@ -403,6 +403,11 @@ function processPluginData (pluginData, palettes, blocks, evalFlowDict, evalArgD
     }
 
     // Create the plugin protoblocks.
+    // FIXME: On Chrome, plugins are broken (They still work on Firefox):
+    // EvalError: Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src 'self' blob: filesystem: chrome-extension-resource:".
+    // Maybe:
+    // var g = (function() { return this ? this : typeof self !== 'undefined' ? self : undefined})() || Function("return this")();
+
     if ('BLOCKPLUGINS' in obj) {
         for (var block in obj['BLOCKPLUGINS']) {
             console.log('adding plugin block ' + block);
@@ -774,6 +779,37 @@ function rationalSum (a, b) {
         return [0, 1];
     }
 
+    // Make sure a and b components are integers.
+    if (Math.floor(a[0]) !== a[0]) {
+        var obja0 = rationalToFraction(a[0]);
+    } else {
+        var obja0 = [a[0], 1];
+    }
+
+    if (Math.floor(b[0]) !== b[0]) {
+        var objb0 = rationalToFraction(b[0]);
+    } else {
+        var objb0 = [b[0], 1];
+    }
+
+    if (Math.floor(a[1]) !== a[1]) {
+        var obja1 = rationalToFraction(a[1]);
+    } else {
+        var obja1 = [a[1], 1];
+    }
+
+    if (Math.floor(b[1]) !== b[1]) {
+        var objb1 = rationalToFraction(b[1]);
+    } else {
+        var objb1 = [b[1], 1];
+    }
+
+    a[0] = obja0[0] * obja1[1];
+    a[1] = obja0[1] * obja1[0];
+    b[0] = objb0[0] * objb1[1];
+    b[1] = objb0[1] * objb1[0];
+
+    // Find the least common denomenator
     var lcd = LCD(a[1], b[1]);
     var c0 = a[0] * lcd / a[1] + b[0] * lcd / b[1];
     return [a[0] * lcd / a[1] + b[0] * lcd / b[1], lcd];

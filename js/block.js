@@ -3757,11 +3757,6 @@ function Block(protoblock, blocks, overrideName) {
         docById('wheelDiv').style.display = 'none';
 
         var oldValue = this.value;
-
-        if (this.label.value === '') {
-            this.label.value = '_';
-        }
-
         var newValue = this.label.value;
 
         if (this.labelattr != null) {
@@ -3789,7 +3784,8 @@ function Block(protoblock, blocks, overrideName) {
         }
 
         var c = this.connections[0];
-        if (this.name === 'text' && c != null) { // && closeInput) {
+        if (this.name === 'text' && c != null) {
+            console.log('[' + newValue + ']');
             var cblock = this.blocks.blockList[c];
             switch (cblock.name) {
             case 'action':
@@ -3880,7 +3876,8 @@ function Block(protoblock, blocks, overrideName) {
         this.container.setChildIndex(this.text, z);
         this.updateCache();
 
-        if (this.name === 'text' && c != null) { // && closeInput) {
+        if (this.name === 'text' && c != null) {
+            console.log('[' + newValue + ']');
             var cblock = this.blocks.blockList[c];
             switch (cblock.name) {
             case 'action':

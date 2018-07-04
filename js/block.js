@@ -3816,7 +3816,12 @@ function Block(protoblock, blocks, overrideName) {
 
         // Update the block value and block text.
         if (this.name === 'number') {
-            this.value = Number(newValue);
+            if (this.value === '-') {
+                this.value = -1;
+            } else {
+                this.value = Number(newValue);
+            }
+
             if (isNaN(this.value)) {
                 var thisBlock = this.blocks.blockList.indexOf(this);
                 this.blocks.errorMsg(newValue + ': Not a number', thisBlock);

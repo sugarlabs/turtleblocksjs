@@ -59,10 +59,14 @@ Make the turtle move north West by 200 units using the blocks you learned about 
 | [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage7.jpg "7")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage8.jpg "8")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage9.jpg "9")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
 :-------------------------:|:-------------------------:|:-------------------------:
 *Stage 7:* **The Pen Color Block**           |*Stage 8:* **The Background Block**         |*Stage 9:* **The If Else Block**
-Change  the color of the pen and complete the specified task . The Pen color Block is available in the pen palette . |  The Background Block  in the pen palette is used to change the background of the Canvas .|Conditionals are a powerful tool in computing.The basic idea is that if a condition is true, then take some action.Variants include  if-then-else,while,until,and forever. 
+Change  the color of the pen and complete the specified task . The Pen color Block is available in the pen palette . |  Using the Fill blocks from the Pen palette to make a solid square (what ever is drawn inside the Fill clamp will be filled upon exiting the clamp.)|Conditionals are a powerful tool in computing.The basic idea is that if a condition is true, then take some action.Variants include  if-then-else,while,until,and forever. 
 
 
 
+| [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage10.jpg "10")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage11.jpg "11")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage12.jpg "12")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
+:-------------------------:|:-------------------------:|:-------------------------:
+*Stage 10:* **The Repeat Block **           |*Stage 11:* **The Circle**         |*Stage 12:* **Last Stage-Easy**
+sequence of instructions are continually repeated for times|  Adhoc implementation using Forward and Right Button|Bonus Challenge : last stage 
 
 
 ###END EXERCISES

@@ -1,5 +1,5 @@
 -------------
-## Level 1: Medium
+## Level 2: Medium
 Trace the challenge shape to complete the stage 
 
 | [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/l2stage1.png "1")](https://turtle.sugarlabs.org/index.html?id=1529494618643297&run=True)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/l2stage2.png "2")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/l2stage3.png "3")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)

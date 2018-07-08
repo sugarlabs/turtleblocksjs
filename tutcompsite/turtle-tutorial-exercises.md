@@ -66,7 +66,7 @@ Change  the color of the pen and complete the specified task . The Pen color Blo
 | [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage10.png "10")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage11.png "11")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage12.png "12")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
 :-------------------------:|:-------------------------:|:-------------------------:
 *Stage 11:* **The Square:Repeat Block**            |*Stage 11:* **The Circle**         |*Stage 12:* **Last Stage-Easy**
-The Sequence of instructions are continually repeated for number of times passed as argument|  Adhoc implementation using Forward and Right Button.   Repeat360 [Forward 1  Right 1]|Bonus Challenge : last stage Implemnt what you have learned in earlier stages and trace the stage :)
+The Sequence of instructions are continually repeated for number of times passed as argument|  Adhoc implementation using Forward and Right Button.   Repeat360 [Forward 1  Right 1]|Bonus Challenge : last stage Implement what you have learned in earlier stages and trace the stage to complete.
 
 
 ###END EXERCISES

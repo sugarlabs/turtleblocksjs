@@ -63,10 +63,10 @@ Change  the color of the pen and complete the specified task . The Pen color Blo
 
 
 
-| [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage10.jpg "10")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage11.jpg "11")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage12.jpg "12")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
+| [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage10.png "10")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage11.png "11")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage12.png "12")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
 :-------------------------:|:-------------------------:|:-------------------------:
-*Stage 10:* **The Repeat Block **           |*Stage 11:* **The Circle**         |*Stage 12:* **Last Stage-Easy**
-sequence of instructions are continually repeated for times|  Adhoc implementation using Forward and Right Button|Bonus Challenge : last stage 
+*Stage 11:* **The Square:Repeat Block**            |*Stage 11:* **The Circle**         |*Stage 12:* **Last Stage-Easy**
+The Sequence of instructions are continually repeated for number of times passed as argument|  Adhoc implementation using Forward and Right Button.   Repeat360 [Forward 1  Right 1]|Bonus Challenge : last stage Implemnt what you have learned in earlier stages and trace the stage :)
 
 
 ###END EXERCISES

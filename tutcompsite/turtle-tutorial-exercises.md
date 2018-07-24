@@ -56,7 +56,7 @@ Change  the color of the pen and complete the specified task . The Pen color Blo
 The Sequence of instructions are continually repeated for number of times passed as argument| Fill blocks from the Pen palette to make a solid square (what ever is drawn inside the Fill clamp will be filled upon exiting the clamp.|Bonus Challenge : last stage Implement what you have learned in earlier stages and trace the stage to complete.
 
 
---------------------------
+
 
 -------------
 ## Level 2: Medium
@@ -76,5 +76,6 @@ Trace the steps. |  Trace the Parallelogram. | Trace the Hexagon.
 *Stage 10:* **Circle**            |*Stage 11:* **Star**         |*Stage 12:* **Dotted Line Square**
 Draw a circle using the pseudocode | Trace the star |Bonus Challenge :Use Pen Up and Down
 
+-------------
 
 #to add advanced Exercises

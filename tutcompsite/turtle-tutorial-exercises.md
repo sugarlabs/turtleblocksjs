@@ -86,7 +86,7 @@ Draw a circle using the pseudocode | Trace the star |Bonus Challenge :Use Pen Up
 Trace the star to complete the stage.  | Use properties of a triangle and trace the angle bisector |Fill the shape with coloured boxes specified in clockwise order.
 | [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level3stage4.png "4")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level3stage5.png "5")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level3stage6.png "6")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
 *stage 4:* **Wind Mill**           |*stage 5:* **The Square Painting**         |*stage 6:* **Sandwich**
-Trace the Wind Mill. |  Trace the square painting. | Trace the grilled sandwitch pattern.
+Trace the Wind Mill. |  Trace the square painting. | Trace the grilled sandwich pattern.
 | [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level3stage7.png "7")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level3stage8.png "8")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level3stage9.png "9")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
 *stage 7:* **Adhoc Pattern**           |*stage 8:* **Octagon Flower**         |*stage 9:* **Pentagon Ring**
 Trace the  pattern. |  Trace the  pattern. |Trace the  pattern.  

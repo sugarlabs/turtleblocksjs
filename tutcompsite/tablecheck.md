@@ -13,5 +13,5 @@ TRY Yourself: Use the Print Block from Extras Palette |TRY Yourself: Use the Sho
 *Stage 7:* **The Steps**           |*Stage 8:* **The Parallelogram**         |*Stage 9:* **The Hexagon**
 Trace the steps. |  Trace the Parallelogram. | Trace the Hexagon.
 | [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage11.png "10")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/l2stage11.png "11")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/l2stage12.png "12")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
-*Stage 11:* **Circle **            |*Stage 11:* **Star**         |*Stage 12:* **Dotted Line Square**
+*Stage 10:* **Circle**            |*Stage 11:* **Star**         |*Stage 12:* **Dotted Line Square**
 Draw a circle using the pseudocode | Trace the star |Bonus Challenge :Use Pen Up and Down

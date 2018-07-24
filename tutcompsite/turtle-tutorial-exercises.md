@@ -44,7 +44,7 @@ Learn to program in turtleblocks with step by step tutorials learning the basics
 | [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage1.jpg "1")](https://turtle.sugarlabs.org/index.html?id=1529494618643297&run=True)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage2.jpg "2")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage3.jpg "3")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
 :-------------------------:|:-------------------------:|:-------------------------:
 *Stage 1:* **The forward Block**           |*Stage 2:* **The Right Block**         |*Stage 3:* **Other Side**
-The forward block in the turtle palette is used to move the turtle forward by units passed as argument to the block.It is one of the basic turtle command.  |  The Right Block in the turtle palette is used to rotate the turtle right by given degree units passed as argument to the block.It is one of the basic turtle command.|Make the turtle move north east by 200 units using the blocks you learned about the previous two stages that is both the forward and right block.
+The forward block in the turtle palette is used to move the turtle forward by units passed as argument to the block.It is one of the basic turtle command.  |  The Right Block in the turtle palette is used to rotate the turtle right by given degree units passed as argument to the block.It is one of the basic turtle command.|Make the turtle move West by 200 units using the blocks you learned about the previous two stages that is both the forward and Left block.
 
 
 
@@ -65,8 +65,8 @@ Change  the color of the pen and complete the specified task . The Pen color Blo
 
 | [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage10.png "10")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)       |   [![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage11.png "11")](https://turtle.sugarlabs.org/index.html?id=1526567252260030) |[![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage12.png "12")](https://turtle.sugarlabs.org/index.html?id=1526567252260030)
 :-------------------------:|:-------------------------:|:-------------------------:
-*Stage 10:* **The Square:Repeat Block**            |*Stage 11:* **The Circle**         |*Stage 12:* **Last Stage-Easy**
-The Sequence of instructions are continually repeated for number of times passed as argument|  Adhoc implementation using Forward and Right Button.   Repeat360 [Forward 1  Right 1]|Bonus Challenge : last stage Implement what you have learned in earlier stages and trace the stage to complete.
+*Stage 10:* **The Square:Repeat Block**            |*Stage 11:* **Fill Square**         |*Stage 12:* **Last Stage-Easy**
+The Sequence of instructions are continually repeated for number of times passed as argument| Fill blocks from the Pen palette to make a solid square (what ever is drawn inside the Fill clamp will be filled upon exiting the clamp.|Bonus Challenge : last stage Implement what you have learned in earlier stages and trace the stage to complete.
 
 --------------------------
 ## Level 2: Medium

@@ -33,10 +33,17 @@ occasion.
 
 The Exercises
 --------------
-| ![](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/basic.PNG)            |    ![](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/mediumformatted.PNG) |![](https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/advanced.PNG)
+
+| **EASY**  |  **MEDIUM** |**HARD**
 :-------------------------:|:-------------------------:|:-------------------------:
+Intro to TurtleBlocksJS | Make Shapes | Complex Patterns and Shapes
+Basic Programming concepts | Solve Geometric Puzzles| Ad Hoc Designs
+Conditional Statements |  Functions using Action Blocks| Recursion
+Flow Statements | Lines,Triangles,Polygons| Media Blocks
+Start here | Implement here| Solve Here
+LEVEL 1  | LEVEL 2 | Level 3
 Learn to program in turtleblocks with step by step tutorials learning the basics of Logo as well as computing along the way  |  Apply the concepts learned in easy by solve the puzzles along the way with fun filled exercises on shapes, geometry andpolygons |Hard challenges introducing you to advanced programming concepts with challenging mathematical,art and design problems
-**EASY**  |  **MEDIUM**|  **ADVANCED**
+
 
 -------------
 ## Level 1: Easy

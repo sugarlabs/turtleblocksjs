@@ -34,7 +34,7 @@ occasion.
 The Exercises
 --------------
 
-| <img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/easy1.PNG" alt="" height="75%" width="335" >| <img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/medium2.PNG" alt="" height="75%" width="335">|<img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/advanced3.PNG" alt="" height="75%" width="335">
+| <img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/easy1.PNG" alt="" height="60%" width="335" >| <img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/medium2.PNG" alt="" height="60%" width="335">|<img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/advanced3.PNG" alt="" height="60%" width="335">
 :-------------------------:|:-------------------------:|:-------------------------:
 **LEVEL 1**  | **LEVEL 2** | **Level 3**
 Learn to program in turtleblocks with step by step tutorials learning the basics of Logo as well as computing along the way  |  Apply the concepts learned in easy by solve the puzzles along the way with fun filled exercises on shapes, geometry andpolygons |Hard challenges introducing you to advanced programming concepts with challenging mathematical,art and design problems

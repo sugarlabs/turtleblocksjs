@@ -2,22 +2,12 @@
 
  | <a href="https://turtle.sugarlabs.org/index.html?id=1529494618643297&amp;run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage1.PNG" alt="alt tag" height="300" width="300" title="1" /></a>       |   <a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage2.PNG" alt="alt tag" height="300" width="300" title="2" /></a> |<a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage3.PNG" alt="alt tag" height="300" width="300" title="3" /></a>
 :-------------------------:|:-------------------------:|:-------------------------:
-<em>stage 1:</em> <strong>The Star </strong>           |<em>stage 2:</em> <strong>Angle Bisector</strong>         |<em>stage 3:</em> <strong>4 Coloured Boxes</strong>
-Trace the star to complete the stage.  | Use properties of a triangle and trace the angle bisector |Fill the shape with coloured boxes specified in clockwise order.
-
+<em>stage 1:</em> <strong>The Complex Star </strong>           |<em>stage 2:</em> <strong>Angle Bisector</strong>         |<em>stage 3:</em> <strong>4 Coloured Boxes</strong>
 | <a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage4.PNG" alt="alt tag" height="300" width="300" title="4" /></a>       |   <a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage5.PNG" alt="alt tag" height="300" width="300" title="5" /></a> |<a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage6.PNG" alt="alt tag" height="300" width="300" title="6" /></a>
-:-------------------------:|:-------------------------:|:-------------------------:
 <em>stage 4:</em> <strong>Wind Mill</strong>           |<em>stage 5:</em> <strong>The Square Painting</strong>         |<em>stage 6:</em> <strong>Sandwich</strong>
-Trace the Wind Mill. |  Trace the square painting. | Trace the grilled sandwich pattern.
-
 | <a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage7.PNG" alt="alt tag" height="300" width="300" title="7" /></a>       |   <a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage8.PNG" alt="alt tag" height="300" width="300" title="8" /></a> |<a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage9.PNG" alt="alt tag" height="300" width="300" title="9" /></a>
-:-------------------------:|:-------------------------:|:-------------------------:
-<em>stage 7:</em> <strong>Adhoc Pattern</strong>           |<em>stage 8:</em> <strong>Octagon Flower</strong>         |<em>stage 9:</em> <strong>Pentagon Ring</strong>
-Trace the  pattern. |  Trace the  pattern. |Trace the  pattern. <br />
-
+<em>stage 7:</em> <strong>Triangular Pattern</strong>           |<em>stage 8:</em> <strong>Octagon Flower</strong>         |<em>stage 9:</em> <strong>Pentagon Ring</strong>
 | <a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage10.PNG" alt="alt tag" height="300" width="300" title="10" /></a>       |   <a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage11.PNG" alt="alt tag" height="300" width="300" title="11" /></a> |<a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage12.PNG" alt="alt tag" height="300" width="300" title="12" /></a>
-:-------------------------:|:-------------------------:|:-------------------------:
 <em>stage 10:</em> <strong>Recursion:tree</strong>            |<em>stage 11:</em> <strong>The Rasengan</strong>         |<em>stage 12:</em> <strong>Boss Stage</strong>
-Trace the tree using recursion| Trace the  pattern |Bonus Challenge : Trace the  pattern.  
 
 to do Bonus challenges

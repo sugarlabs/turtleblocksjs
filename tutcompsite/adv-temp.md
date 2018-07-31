@@ -14,4 +14,4 @@ Trace the  pattern. |  Trace the  pattern. |Trace the  pattern. <br />
 <em>stage 10:</em> <strong>Recursion:tree</strong>            |<em>stage 11:</em> <strong>The Rasengan</strong>         |<em>stage 12:</em> <strong>Boss Stage</strong>
 Trace the tree using recursion| Trace the  pattern |Bonus Challenge : Trace the  pattern.  
 
-Bonus challenges
+to do Bonus challenges

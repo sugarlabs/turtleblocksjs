@@ -81,7 +81,6 @@ Draw a circle using the pseudocode | Trace the star |Bonus Challenge :Use Pen Up
 -------------
 
 ## Level 3: Advanced Level Challenges
-<h2 id="level3advancedlevelchallenges">Level 3: Advanced Level Challenges</h2>
 
  | <a href="https://turtle.sugarlabs.org/index.html?id=1529494618643297&amp;run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage1.PNG" alt="alt tag" height="260" width="300" title="1" /></a>       |   <a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage2.PNG" alt="alt tag" height="260" width="300" title="2" /></a> |<a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite//level3stage3.PNG" alt="alt tag" height="260" width="300" title="3" /></a>
 :-------------------------:|:-------------------------:|:-------------------------:

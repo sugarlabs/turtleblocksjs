@@ -41,7 +41,6 @@ Learn to program in turtleblocks with step by step tutorials learning the basics
 
 -------------
 ## Level 1: Beginner
-<h2><a id="Level_1_Beginner_0"></a>Level 1: Beginner</h2>
 <table class="table table-striped table-bordered">
 <thead>
 <tr>

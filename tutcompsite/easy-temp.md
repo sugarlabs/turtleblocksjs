@@ -14,8 +14,8 @@
 <td style="text-align:center"><em>Stage 3:</em> <strong>Other Side</strong></td>
 </tr>
 <tr>
-<td style="text-align:center">The forward block in the turtle palette is used to move the turtle forward by units passed as argument to the <a href="http://block.It">block.It</a> is one of the basic turtle command.</td>
-<td style="text-align:center">The Right Block in the turtle palette is used to rotate the turtle right by given degree units passed as argument to the <a href="http://block.It">block.It</a> is one of the basic turtle command.</td>
+<td style="text-align:center">The forward block in the turtle palette is used to move the turtle forward by units passed as argument to the block. It is one of the basic turtle command.</td>
+<td style="text-align:center">The Right Block in the turtle palette is used to rotate the turtle right by given degree units passed as argument to the block. It is one of the basic turtle command.</td>
 <td style="text-align:center">Make the turtle move West by 200 units using the blocks you learned about the previous two stages .</td>
 </tr>
 <tr>
@@ -30,7 +30,7 @@
 </tr>
 <tr>
 <td style="text-align:center">Make the turtle move north West by 200 units using the blocks you learned about the previous two stages that is both the forward and right block.</td>
-<td style="text-align:center">The SETXY Block in the turtle palette is used to move the turtle to the given co-ordinates passed as an argument to the <a href="http://block.It">block.It</a> is one of the basic turtle command.</td>
+<td style="text-align:center">The SETXY Block in the turtle palette is used to move the turtle to the given co-ordinates passed as an argument to the block. It is one of the basic turtle command.</td>
 <td style="text-align:center">Boxes let you store an object, e.g., a number, and then refer to the object by using the name of the box.Learn about boxes by using them in the above exercise.</td>
 </tr>
 <tr>

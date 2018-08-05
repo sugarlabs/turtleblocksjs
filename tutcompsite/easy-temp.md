@@ -34,9 +34,9 @@
 <td style="text-align:center">Boxes let you store an object, e.g., a number, and then refer to the object by using the name of the box.Learn about boxes by using them in the above exercise.</td>
 </tr>
 <tr>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level1stage7.png" alt="alt tag" title="7"></a></td>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage8.jpg" alt="alt tag" title="8"></a></td>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level1stage9.jpg" alt="alt tag" title="9"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1530010705468568&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level1stage7.png" alt="alt tag" title="7"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1532404284328755&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage8.jpg" alt="alt tag" title="8"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1529996693043801&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level1stage9.jpg" alt="alt tag" title="9"></a></td>
 </tr>
 <tr>
 <td style="text-align:center"><em>Stage 7:</em> <strong>The Pen Color Block</strong></td>
@@ -49,9 +49,9 @@
 <td style="text-align:center">Conditionals are a powerful tool in computing.The basic idea is that if a condition is true, then take some action.Variants include  if-then-else,while,until,and forever.</td>
 </tr>
 <tr>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage10.png" alt="alt tag" title="10"></a></td>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/levlel1stage11.png" alt="alt tag" title="11"></a></td>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage12.png" alt="alt tag" title="12"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1530703065912071&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage10.png" alt="alt tag" title="10"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1530704836261237&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/levlel1stage11.png" alt="alt tag" title="11"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1531038526882610&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage12.png" alt="alt tag" title="12"></a></td>
 </tr>
 <tr>
 <td style="text-align:center"><em>Stage 10:</em> <strong>The Square:Repeat Block</strong></td>

@@ -19,9 +19,9 @@
 <td style="text-align:center">Make the turtle move West by 200 units using the blocks you learned about the previous two stages .</td>
 </tr>
 <tr>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage4.jpg" alt="alt tag" title="4"></a></td>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level1stage5.png" alt="alt tag" title="5"></a></td>
-<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level1stage6.png" alt="alt tag" title="6"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1532401058366612&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage4.jpg" alt="alt tag" title="4"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1529670536128785&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level1stage5.png" alt="alt tag" title="5"></a></td>
+<td style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1532403377143927&run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/level1stage6.png" alt="alt tag" title="6"></a></td>
 </tr>
 <tr>
 <td style="text-align:center"><em>Stage 4:</em> <strong>North West</strong></td>

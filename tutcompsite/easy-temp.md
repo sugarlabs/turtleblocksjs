@@ -2,9 +2,9 @@
 <table class="table table-striped table-bordered">
 <thead>
 <tr>
-<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1529494618643297&amp;run=True"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage1.jpg" alt="alt tag" title="1"></a></th>
-<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage2.jpg" alt="alt tag" title="2"></a></th>
-<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1526567252260030"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage3.jpg" alt="alt tag" title="3"></a></th>
+<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1533476258710765&run=True"  target="_blank"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage1.jpg" alt="alt tag" title="1"></a></th>
+<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1529504877741843&run=True" target="_blank"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage2.jpg" alt="alt tag" title="2"></a></th>
+<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1532400645981354&run=True" target="_blank"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage3.jpg" alt="alt tag" title="3"></a></th>
 </tr>
 </thead>
 <tbody>

@@ -1120,7 +1120,7 @@ function initBasicProtoBlocks(palettes, blocks) {
     openPaletteBlock.adjustWidthToLabel();
     openPaletteBlock.oneArgBlock();
     openPaletteBlock.dockTypes[1] = 'textin';
-    openPaletteBlock.defaults.push(_('Rhythm'));
+    openPaletteBlock.defaults.push(_('Turtle'));
 
     var deleteBlock = new ProtoBlock('deleteblock');
     deleteBlock.palette = palettes.dict['extras'];

@@ -33,7 +33,7 @@ occasion.
 The Exercises
 --------------
 
-| <img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/easy1.PNG" alt="" height="60%" width="335" >| <img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/medium2.PNG" alt="" height="60%" width="335">|<img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutfrontend/tutcompsite/advanced3.PNG" alt="" height="60%" width="335">
+| <img src="tutcompsite/easy1.PNG" alt="" height="60%" width="335" >| <img src="tutcompsite/medium2.PNG" alt="" height="60%" width="335">|<img src="tutcompsite/advanced3.PNG" alt="" height="60%" width="335">
 :-------------------------:|:-------------------------:|:-------------------------:
 **LEVEL 1**  | **LEVEL 2** | **Level 3**
 Learn to program in turtleblocks with step by step tutorials learning the basics of Logo as well as computing along the way  |  Apply the concepts learned in easy by solve the puzzles along the way with fun filled exercises on shapes, geometry andpolygons |Hard challenges introducing you to advanced programming concepts with challenging mathematical,art and design problems
@@ -45,8 +45,8 @@ Learn to program in turtleblocks with step by step tutorials learning the basics
 <thead>
 <tr>
 <th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1533476258710765&run=True"  target="_blank"><img src="/tutcompsite/stage1.jpg" alt="alt tag" title="1"></a></th>
-<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1529504877741843&run=True" target="_blank"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage2.jpg" alt="alt tag" title="2"></a></th>
-<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1532400645981354&run=True" target="_blank"><img src="https://github.com/vaibhavdaren/turtleblocksjs/blob/tutorials/tutcompsite/stage3.jpg" alt="alt tag" title="3"></a></th>
+<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1529504877741843&run=True" target="_blank"><img src="tutcompsite/stage2.jpg" alt="alt tag" title="2"></a></th>
+<th style="text-align:center"><a href="https://turtle.sugarlabs.org/index.html?id=1532400645981354&run=True" target="_blank"><img src="tutcompsite/stage3.jpg" alt="alt tag" title="3"></a></th>
 </tr>
 </thead>
 <tbody>

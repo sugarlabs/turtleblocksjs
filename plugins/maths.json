@@ -3,18 +3,19 @@
         "maths": "#000000"
     }, 
     "ARGPLUGINS": {
-        "asin": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.asin(logo.parseArg(logo, turtle, conns[1]));", 
-        "cos": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.cos(logo.parseArg(logo, turtle, conns[1]));", 
+        "pi": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.PI;", 
         "e": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.E;", 
         "power": "var block = logo.blocks.blockList[blk];var conns = block.connections;var base = logo.parseArg(logo, turtle, conns[1]);var exp  = logo.parseArg(logo, turtle, conns[2]);block.value = Math.pow(base, exp);", 
+        "sin": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.sin(logo.parseArg(logo, turtle, conns[1]));",
+        "cos": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.cos(logo.parseArg(logo, turtle, conns[1]));", 
+        "tan": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.tan(logo.parseArg(logo, turtle, conns[1]));", 
+        "asin": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.asin(logo.parseArg(logo, turtle, conns[1]));", 
+        "acos": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.acos(logo.parseArg(logo, turtle, conns[1]));", 
         "atan": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.atan(logo.parseArg(logo, turtle, conns[1]));", 
         "floor": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.floor(logo.parseArg(logo, turtle, conns[1]));", 
         "ceiling": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.ceil(logo.parseArg(logo, turtle, conns[1]));", 
         "radians": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = logo.parseArg(logo, turtle, conns[1]) * (Math.PI/180);", 
-        "degrees": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = logo.parseArg(logo, turtle, conns[1]) * (180/Math.PI);", 
-        "acos": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.acos(logo.parseArg(logo, turtle, conns[1]));", 
-        "pi": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.PI;", 
-        "sin": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = Math.tan(logo.parseArg(logo, turtle, conns[1]));"
+        "degrees": "var block = logo.blocks.blockList[blk];var conns = block.connections;block.value = logo.parseArg(logo, turtle, conns[1]) * (180/Math.PI);"
     }, 
     "PALETTEHIGHLIGHTCOLORS": {
         "maths": "#ffb1b3"

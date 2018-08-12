@@ -821,6 +821,11 @@ define(MYDEFINES, function (compatibility) {
             myRadarChart = new Chart(ctx).Radar(data, options);
         };
 
+        function doOptimize (state) {
+            console.log('Setting optimize to ' + state);
+            logo.setOptimize(state);
+        };
+
         function doBiggerFont() {
             hideDOMLabel();
 
@@ -952,8 +957,8 @@ define(MYDEFINES, function (compatibility) {
             createjs.Touch.enable(stage);
 
             createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
-            createjs.Ticker.setFPS(30);
-            createjs.Ticker.addEventListener('tick', stage);
+            createjs.Ticker.framerate = 30;
+            // createjs.Ticker.addEventListener('tick', stage);
             createjs.Ticker.addEventListener('tick', __tick);
 
             _createMsgContainer('#ffffff', '#7a7a7a', function (text) {
@@ -1070,6 +1075,7 @@ define(MYDEFINES, function (compatibility) {
                 .setRefreshCanvas(refreshCanvas);
 
             utilityBox = new UtilityBox();
+            console.log(utilityBox);
             utilityBox
                 .setStage(stage)
                 .setRefreshCanvas(refreshCanvas)
@@ -1080,7 +1086,8 @@ define(MYDEFINES, function (compatibility) {
                 .setStats(doAnalytics)
                 .setSearch(showSearchWidget, hideSearchWidget)
                 .setScroller(toggleScroller)
-                .setLanguage(doLanguageBox, languageBox);
+                .setLanguage(doLanguageBox, languageBox)
+                .setOptimize(doOptimize);
 
             playbackBox = new PlaybackBox();
             playbackBox
@@ -1509,7 +1516,9 @@ define(MYDEFINES, function (compatibility) {
 
             var __clearFunction = function () {
                 sendAllToTrash(true, false);
-                planet.initialiseNewProject.bind(planet);
+                if (planet !== undefined) {
+                    planet.initialiseNewProject.bind(planet);
+		}
             };
 
             clearBox = new ClearBox();
@@ -2558,7 +2567,7 @@ define(MYDEFINES, function (compatibility) {
 
             var smallSide = Math.min(w, h);
 
-            if (smallSide < cellSize * 11) {
+            if (smallSide < cellSize * 9) {
                 var mobileSize = true;
                 if (w < cellSize * 10) {
                     turtleBlocksScale = smallSide / (cellSize * 11);
@@ -2871,7 +2880,7 @@ define(MYDEFINES, function (compatibility) {
         function __tick(event) {
             // This set makes it so the stage only re-renders when an
             // event handler indicates a change has happened.
-            if (update) {
+            if (update || createjs.Tween.hasActiveTweens()) {
                 update = false; // Only update once
                 stage.update(event);
             }
@@ -3116,6 +3125,10 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function errorMsg(msg, blk, text, timeout) {
+            if (logo.optimize) {
+		return;
+	    }
+
             if (errorMsgTimeoutID != null) {
                 clearTimeout(errorMsgTimeoutID);
             }
@@ -3618,7 +3631,7 @@ handleComplete);
                     ['Cartesian', _doCartesianPolar, _('Cartesian') + '/' + _('Polar'), null, null, null, null],
                     ['compile', _doPlaybackBox, _('playback'), null, null, null, null],
                     ['utility', _doUtilityBox, _('Settings'), null, null, null, null],
-                    ['new-project', _deleteBlocksBox, _('New Project'), null, null, null, null],
+                    ['new', _deleteBlocksBox, _('New Project'), null, null, null, null],
                     ['restore-trash', _restoreTrash, _('Restore'), null, null, null, null]
                 ];
             } else {
@@ -3630,7 +3643,7 @@ handleComplete);
                     ['Cartesian', _doCartesianPolar, _('Cartesian') + '/' + _('Polar'), null, null, null, null],
                     ['compile', _doPlaybackBox, _('playback'), null, null, null, null],
                     ['utility', _doUtilityBox, _('Settings'), null, null, null, null],
-                    ['new-project', _deleteBlocksBox, _('Delete all'), null, null, null, null],
+                    ['new', _deleteBlocksBox, _('Delete all'), null, null, null, null],
                     ['restore-trash', _restoreTrash, _('Restore'), null, null, null, null]
                 ];
             }
@@ -3678,7 +3691,7 @@ handleComplete);
                     saveButton = container;
                 } else if (menuNames[i][0] === 'compile') {
                     playbackButton = container;
-                } else if (menuNames[i][0] === 'new-project') {
+                } else if (menuNames[i][0] === 'new') {
                     deleteAllButton = container;
                 }
 
@@ -3954,19 +3967,26 @@ handleComplete);
 
             text.visible = false;
 
+            var circles;
             container.on('mouseover', function (event) {
                 for (var c = 0; c < container.children.length; c++) {
                     if (container.children[c].text != undefined) {
                         container.children[c].visible = true;
+                        stage.update();
                         break;
                     }
                 }
+
+                var r = size / 2;
+                circles = showButtonHighlight(container.x, container.y, r, event, palettes.scale, stage);
             });
 
             container.on('mouseout', function (event) {
+                hideButtonHighlight(circles, stage);
                 for (var c = 0; c < container.children.length; c++) {
                     if (container.children[c].text != undefined) {
                         container.children[c].visible = false;
+                        stage.update();
                         break;
                     }
                 }

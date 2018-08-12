@@ -1893,7 +1893,7 @@ function Block(protoblock, blocks, overrideName) {
                     this._piemenuNumber([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], this.value);
                     break;
                 case 'pitchnumber':
-                    this._piemenuNumber([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], this.value);
+                    this._piemenuNumber([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], this.value);
                     break;
                 case 'steppitch':
                     this._piemenuNumber([-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7], this.value);
@@ -3012,7 +3012,7 @@ function Block(protoblock, blocks, overrideName) {
         this._booleanWheel.slicePathCustom.maxRadiusPercent = 0.6;
         this._booleanWheel.sliceSelectedPathCustom = this._booleanWheel.slicePathCustom;
         this._booleanWheel.sliceInitPathCustom = this._booleanWheel.slicePathCustom;
-        this._booleanWheel.titleRotateAngle = 0;
+        // this._booleanWheel.titleRotateAngle = 0;
         this._booleanWheel.animatetime = 300;
         this._booleanWheel.createWheel(labels);
 
@@ -3919,24 +3919,28 @@ function Block(protoblock, blocks, overrideName) {
                 this.blocks.palettes.show();
                 break;
             case 'storein':
-                if (closeInput) {
-                // If the label was the name of a storein, update the
-                // associated box this.blocks and the palette buttons.
-                if (this.value !== 'box') {
-                    this.blocks.newStoreinBlock(this.value);
-                    this.blocks.newStorein2Block(this.value);
-                    this.blocks.newNamedboxBlock(this.value);
-                }
+		// Check to see which connection we are using in
+                // cblock.  We only do something if blk is attached to
+                // the name connection (1).
+                blk = this.blocks.blockList.indexOf(this);
+                if (cblock.connections[1] === blk && closeInput) {
+                    // If the label was the name of a storein, update the
+                    // associated box this.blocks and the palette buttons.
+                    if (this.value !== 'box') {
+			this.blocks.newStoreinBlock(this.value);
+			this.blocks.newStorein2Block(this.value);
+			this.blocks.newNamedboxBlock(this.value);
+                    }
 
-                // Rename both box <- name and namedbox blocks.
-                this.blocks.renameBoxes(oldValue, newValue);
-                this.blocks.renameNamedboxes(oldValue, newValue);
-                this.blocks.renameStoreinBoxes(oldValue, newValue);
-                this.blocks.renameStorein2Boxes(oldValue, newValue);
+                    // Rename both box <- name and namedbox blocks.
+                    this.blocks.renameBoxes(oldValue, newValue);
+                    this.blocks.renameNamedboxes(oldValue, newValue);
+                    this.blocks.renameStoreinBoxes(oldValue, newValue);
+                    this.blocks.renameStorein2Boxes(oldValue, newValue);
 
-                this.blocks.palettes.hide();
-                this.blocks.palettes.updatePalettes('boxes');
-                this.blocks.palettes.show();
+                    this.blocks.palettes.hide();
+                    this.blocks.palettes.updatePalettes('boxes');
+                    this.blocks.palettes.show();
                 }
                 break;
             case 'setdrum':

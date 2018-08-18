@@ -1306,6 +1306,8 @@ function Block(protoblock, blocks, overrideName) {
         this._calculateBlockHitArea();
 
         this.container.on('mouseover', function (event) {
+            docById('contextWheelDiv').style.display = 'none';
+
             if (!that.blocks.logo.runningLilypond) {
                 document.body.style.cursor = 'pointer';
             }
@@ -1349,7 +1351,7 @@ function Block(protoblock, blocks, overrideName) {
                         }
                     }
                 } else {
-                    if (!that.blocks.getLongPressStatus()) {
+                    if (!that.blocks.getLongPressStatus() && !that.blocks.rightClick) {
                         var topBlock = that.blocks.findTopBlock(thisBlock);
                         console.log('running from ' + that.blocks.blockList[topBlock].name);
                         if (_THIS_IS_MUSIC_BLOCKS_) {
@@ -1371,6 +1373,8 @@ function Block(protoblock, blocks, overrideName) {
         });
 
         this.container.on('mousedown', function (event) {
+            docById('contextWheelDiv').style.display = 'none';
+
             // Track time for detecting long pause...
             // but only for top block in stack.
             if (that.connections[0] == null) {
@@ -1656,7 +1660,6 @@ function Block(protoblock, blocks, overrideName) {
 
         var labelElem = docById('labelDiv');
 
-        console.log('CHANGE LABEL');
         if (this.name === 'text') {
             labelElem.innerHTML = '<input id="textLabel" style="position: absolute; -webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" class="text" type="text" value="' + labelValue + '" />';
             labelElem.classList.add('hasKeyboard');

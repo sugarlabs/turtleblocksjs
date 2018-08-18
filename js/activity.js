@@ -50,7 +50,21 @@ if (_THIS_IS_TURTLE_BLOCKS_) {
     };
 }
 
-try{
+try {
+    console.log(localStorage.beginnerMode);
+
+    if (localStorage.beginnerMode !== null) {
+        console.log('setting mode from local storage');
+        beginnerMode = (localStorage.beginnerMode == 'true');
+    } else {
+        beginnerMode = true;
+    }
+} catch (e) {
+    console.log(e);
+    beginnerMode = true;
+}
+
+try {
     console.log(localStorage.languagePreference);
 
     if (localStorage.languagePreference) {
@@ -228,6 +242,100 @@ define(MYDEFINES, function (compatibility) {
         new createjs.DOMElement(docById('paste'));
         var paste = docById('paste');
         paste.style.visibility = 'hidden';
+
+        closeContextWheel = function () {
+            // docById('contextWheelDiv').style.display = 'none';
+        };
+
+        piemenuContext = function (activeBlock) {
+            if (activeBlock === null) {
+                return;
+            }
+
+            // piemenu version of ruler
+            docById('contextWheelDiv').style.display = '';
+            docById('contextWheelDiv').style.position = 'absolute';
+            docById('contextWheelDiv').style.left = ((blocks.getStageScale() * blocks.blockList[activeBlock].container.x) - 150) + 'px';
+            docById('contextWheelDiv').style.top = ((blocks.getStageScale() * blocks.blockList[activeBlock].container.y) - 150) + 'px';
+            labels = ['imgsrc:header-icons/copy-button.svg',
+                    'imgsrc:header-icons/paste-disabled-button.svg',
+                    'imgsrc:header-icons/empty-trash-button.svg',
+                    'imgsrc:header-icons/cancel-button.svg'];
+
+            if (blocks.blockList[activeBlock].name === 'action') {
+                labels.push('imgsrc:header-icons/save-blocks-button.svg');
+            }
+
+            var wheel = new wheelnav('contextWheelDiv', null, 150, 150);
+            wheel.colors = ['#808080', '#909090', '#808080', '#909090', '#707070'];
+            wheel.slicePathFunction = slicePath().DonutSlice;
+            wheel.slicePathCustom = slicePath().DonutSliceCustomization();
+            wheel.slicePathCustom.minRadiusPercent = 0.4;
+            wheel.slicePathCustom.maxRadiusPercent = 1.0;
+            wheel.sliceSelectedPathCustom = wheel.slicePathCustom;
+            wheel.sliceInitPathCustom = wheel.slicePathCustom;
+            wheel.clickModeRotate = false;
+            wheel.initWheel(labels);
+            wheel.createWheel();
+
+            wheel.navItems[0].setTooltip(_('Copy'));
+            wheel.navItems[1].setTooltip(_('Paste'));
+            wheel.navItems[2].setTooltip(_('Move to trash'));
+            wheel.navItems[3].setTooltip(_('Close'));
+            if (blocks.blockList[activeBlock].name === 'action') {
+                wheel.navItems[4].setTooltip(_('Save stack'));
+            }
+
+            wheel.navItems[0].selected = false;
+
+            wheel.navItems[0].navigateFunction = function () {
+                blocks.activeBlock = activeBlock;
+                blocks.prepareStackForCopy();
+                wheel.navItems[1].setTitle('imgsrc:header-icons/paste-button.svg');
+                wheel.navItems[1].refreshNavItem(true);
+                wheel.refreshWheel();
+            };
+
+            wheel.navItems[1].navigateFunction = function () {
+                blocks.pasteStack();
+            };
+
+            wheel.navItems[2].navigateFunction = function () {
+                blocks.sendStackToTrash(blocks.blockList[activeBlock]);
+                docById('contextWheelDiv').style.display = 'none';
+            };
+
+            wheel.navItems[3].navigateFunction = function () {
+                docById('contextWheelDiv').style.display = 'none';
+            };
+
+            if (blocks.blockList[activeBlock].name === 'action') {
+                wheel.navItems[4].navigateFunction = function () {
+                    blocks.activeBlock = activeBlock;
+                    blocks.saveStack();
+                };
+            }
+
+            setTimeout(function () {
+                blocks.rightClick = false;
+            }, 500);
+        };
+
+        // Do something on right click
+        document.addEventListener("contextmenu", function(e) {
+            if (blocks.activeBlocks === null) {
+                blocks.rightClick = false;
+                return;
+            }
+
+            blocks.rightClick = true;
+            var activeBlock = blocks.activeBlock;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            piemenuContext(activeBlock);
+        }, false);
 
         // Calculate the palette colors.
         for (var p in PALETTECOLORS) {
@@ -703,6 +811,16 @@ define(MYDEFINES, function (compatibility) {
             }
         };
 
+        function _doSwitchMode() {
+            if (beginnerMode) {
+                textMsg(_('Refresh your browser to change to advanced mode.'));
+                localStorage.setItem('beginnerMode', false);
+            } else {
+                textMsg(_('Refresh your browser to change to beginner mode.'));
+                localStorage.setItem('beginnerMode', true);
+            }
+        };
+
         function doStopButton() {
             logo.doStopTurtle();
         };
@@ -1018,7 +1136,8 @@ define(MYDEFINES, function (compatibility) {
                 .setGetStageScale(getStageScale)
                 .setTurtles(turtles)
                 .setSetPlaybackStatus(setPlaybackStatus)
-                .setErrorMsg(errorMsg);
+                .setErrorMsg(errorMsg)
+                .setContextMenu(piemenuContext);
             blocks.makeCopyPasteButtons(_makeButton, updatePasteButton);
 
             turtles.setBlocks(blocks);
@@ -1518,7 +1637,7 @@ define(MYDEFINES, function (compatibility) {
                 sendAllToTrash(true, false);
                 if (planet !== undefined) {
                     planet.initialiseNewProject.bind(planet);
-		}
+                }
             };
 
             clearBox = new ClearBox();
@@ -1528,7 +1647,12 @@ define(MYDEFINES, function (compatibility) {
                 .setRefreshCanvas(refreshCanvas)
                 .setClear(__clearFunction);
 
-            initBasicProtoBlocks(palettes, blocks);
+            // FIXME: Third arg indicates beginner mode
+            if (_THIS_IS_MUSIC_BLOCKS_) {
+                initBasicProtoBlocks(palettes, blocks, beginnerMode);
+            } else {
+                initBasicProtoBlocks(palettes, blocks);
+            }
 
             // Load any macros saved in local storage.
             macroData = storage.macros;
@@ -2046,8 +2170,10 @@ define(MYDEFINES, function (compatibility) {
                     if (errorMsgArrow != null) {
                         errorMsgArrow.removeAllChildren(); // Hide the error arrow.
                     }
+
                     update = true;
                 });
+
                 callback(text);
                 blocks.setMsgText(text);
             };
@@ -2412,11 +2538,11 @@ define(MYDEFINES, function (compatibility) {
                         break;
                     case PAGE_UP:
                         blocksContainer.y += logo.canvas.height / 2;
-			stage.update();
+                        stage.update();
                         break;
                     case PAGE_DOWN:
                         blocksContainer.y -= logo.canvas.height / 2;
-			stage.update();
+                        stage.update();
                         break;
                     case DEL:
                         blocks.extract();
@@ -2435,7 +2561,7 @@ define(MYDEFINES, function (compatibility) {
                         } else if (scrollBlockContainer) {
                             blocksContainer.y -= 20;
                         }
-			stage.update();
+                        stage.update();
                         break;
                     case KEYCODE_DOWN:
                         if (disableArrowKeys) {
@@ -2451,7 +2577,7 @@ define(MYDEFINES, function (compatibility) {
                         } else if (scrollBlockContainer) {
                             blocksContainer.y += 20;
                         }
-			stage.update();
+                        stage.update();
                         break;
                     case KEYCODE_LEFT:
                         if (disableArrowKeys) {
@@ -2462,7 +2588,7 @@ define(MYDEFINES, function (compatibility) {
                         } else if (scrollBlockContainer) {
                             blocksContainer.x -= 20;
                         }
-			stage.update();
+                        stage.update();
                         break;
                     case KEYCODE_RIGHT:
                         if (disableArrowKeys) {
@@ -2473,7 +2599,7 @@ define(MYDEFINES, function (compatibility) {
                         } else if (scrollBlockContainer) {
                             blocksContainer.x += 20;
                         }
-			stage.update();
+                        stage.update();
                         break;
                     case HOME:
                         if (palettes.mouseOver) {
@@ -2485,7 +2611,7 @@ define(MYDEFINES, function (compatibility) {
                         } else {
                             _findBlocks();
                         }
-			stage.update();
+                        stage.update();
                         break;
                     case TAB:
                         break;
@@ -2593,8 +2719,22 @@ define(MYDEFINES, function (compatibility) {
                 }
             }
 
+            console.log('=====================');
+            console.log(turtleBlocksScale);
+            if (turtleBlocksScale < 0.5) {
+              turtleBlocksScale = 0.5;
+           } else if (turtleBlocksScale < 1) {
+              turtleBlocksScale = 1;
+           } else if (turtleBlocksScale < 1,5) {
+              turtleBlocksScale = 1.5;
+           } else {
+              turtleBlocksScale = 2;
+           }
+
             stage.scaleX = turtleBlocksScale;
             stage.scaleY = turtleBlocksScale;
+            console.log(turtleBlocksScale);
+            console.log('=====================')
 
             stage.canvas.width = w;
             stage.canvas.height = h;
@@ -3110,6 +3250,7 @@ define(MYDEFINES, function (compatibility) {
         };
 
         function hideMsgs() {
+            console.log('hiding messages');
             errorMsgText.parent.visible = false;
             if (errorMsgArrow != null) {
                 errorMsgArrow.removeAllChildren();
@@ -3120,6 +3261,8 @@ define(MYDEFINES, function (compatibility) {
             for (var i in errorArtwork) {
                 errorArtwork[i].visible = false;
             }
+
+            refreshCanvas();
         };
 
         function textMsg(msg) {
@@ -3136,8 +3279,8 @@ define(MYDEFINES, function (compatibility) {
 
         function errorMsg(msg, blk, text, timeout) {
             if (logo.optimize) {
-		return;
-	    }
+                return;
+            }
 
             if (errorMsgTimeoutID != null) {
                 clearTimeout(errorMsgTimeoutID);
@@ -3534,8 +3677,15 @@ handleComplete);
                     ['hide-blocks', _changeBlockVisibility, _('Show/hide blocks'), null, null, null, null],
                     ['collapse-blocks', _toggleCollapsibleStacks, _('Expand/collapse collapsable blocks'), null, null, null, null],
                     ['go-home', _findBlocks, _('Home') + ' [HOME]', null, null, null, null],
-                    ['help', _showHelp, _('Help'), null, null, null, null]
                 ];
+
+                if (beginnerMode) {
+                    buttonNames.push(['beginner', _doSwitchMode, _('Switch to advanced mode'), null, null, null, null]);
+                } else {
+                    buttonNames.push(['advanced', _doSwitchMode, _('Switch to beginner mode'), null, null, null, null]);
+                }
+
+                buttonNames.push(['help', _showHelp, _('Help'), null, null, null, null]);
             } else {
                 var buttonNames = [
                     ['run', _doFastButton, _('Run fast') + ' / ' + _('long press to run slowly') + ' [ENTER]', _doSlowButton, null, 'slow-button', null],

@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -11,22 +9,26 @@
    width="55"
    height="55"
    viewBox="0 0 55 55"
-   xml:space="preserve"><g
-     id="edit-copy"
-     style="display:block"><g
-       id="g3027"><polygon
-         points="23.614,28.824 23.614,20.318 15.101,28.826 "
-         style="fill:#ffffff" /><polygon
-         points="37.936,19.444 26.601,19.444 26.601,31.812 14.227,31.812 14.227,49.417 37.936,49.417 "
-         style="fill:#ffffff" /></g><polygon
-       points="22.727,18.311 22.727,35.914 43.449,35.914 43.449,8.928 32.113,8.928 "
-       style="fill:#ffffff;stroke:#00abff;stroke-width:3;stroke-opacity:1" /><polyline
-       points="22.727,18.311 32.113,18.311 32.113,8.928    "
-       style="fill:none;stroke:#00abff;stroke-width:2.98670006;stroke-opacity:1" /><line
-       x1="16.712999"
-       x2="16.712999"
-       y1="6"
-       y2="18.164"
-       style="fill:none;stroke:#ffffff;stroke-width:2.98670006;stroke-linecap:round;stroke-linejoin:round" /><polyline
-       points="     11.583,12.083 16.713,6 21.843,12.083    "
-       style="fill:none;stroke:#ffffff;stroke-width:2.98670006;stroke-linecap:round;stroke-linejoin:round" /></g></svg>
+   id="svg2"
+   xml:space="preserve"><metadata
+     id="metadata22"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs20" /><g
+     id="g827"><polygon
+       style="fill:none"
+       id="polygon8"
+       points="11.386,36.159 32.109,36.159 32.109,9.173 20.773,9.173 11.386,18.559 "
+       transform="translate(0.7787924,0.4360678)" /><polygon
+       style="fill:none;stroke:#ffffff;stroke-width:2.98670006;stroke-linecap:round;stroke-opacity:1"
+       id="polygon10"
+       points="11.386,36.159 32.109,36.159 32.109,9.173 20.773,9.173 11.386,18.559 "
+       transform="translate(0.7787924,0.4360678)" /><polyline
+       points="11.386,18.559 20.773,18.559 20.773,9.173    "
+       id="polyline12"
+       style="fill:none;stroke:#ffffff;stroke-width:2.98670006;stroke-opacity:1"
+       transform="translate(0.7787924,0.4360678)" /><polygon
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:2.98670006;stroke-linecap:round;stroke-opacity:1"
+       id="polygon10-3"
+       points="11.386,36.159 32.109,36.159 32.109,9.173 20.773,9.173 11.386,18.559 "
+       transform="translate(10.726208,9.2319322)" /></g></svg>

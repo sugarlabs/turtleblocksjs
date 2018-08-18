@@ -39,6 +39,9 @@ function Blocks () {
     this.trashcan = null;
     this.updateStage = null;
     this.getStageScale = null;
+    this.contextMenu = null;
+    // Did the user right cick?
+    this.rightClick = false;
 
     // We keep a list of stacks in the trash.
     this.trashStacks = [];
@@ -115,9 +118,14 @@ function Blocks () {
     };
 
     this.clearLongPressButtons = function () {
-        this.saveStackButton.visible = false;
-        this.dismissButton.visible = false;
+        // this.saveStackButton.visible = false;
+        // this.dismissButton.visible = false;
         this.inLongPress = false;
+    };
+
+    this.setContextMenu = function (contextMenu) {
+        this.contextMenu = contextMenu;
+        return this;
     };
 
     this.setSetPlaybackStatus = function (setPlaybackStatus) {
@@ -328,6 +336,7 @@ function Blocks () {
         var that = this;
         this.updatePasteButton = updatePasteButton;
 
+        /*
         this.dismissButton = makeButton('cancel-button', '', 0, 0, 55, 0, this.stage);
         this.dismissButton.visible = false;
 
@@ -351,6 +360,7 @@ function Blocks () {
             that.saveStack();
             that.refreshCanvas();
         });
+        */
     };
 
     this._actionBlock = function (name) {
@@ -1707,17 +1717,17 @@ function Blocks () {
             var label = _(TEMPERAMENTS[0][1]);  // equal by default
             for (var i = 0; i < TEMPERAMENTS.length; i++) {
                 if (TEMPERAMENTS[i][1] === myBlock.value) {
-		    label = TEMPERAMENTS[i][0];
-		    break;
-		}
-	    }
+                    label = TEMPERAMENTS[i][0];
+                    break;
+                }
+            }
             break;
         case 'boolean':
             if (myBlock.value) {
                 var label = _('true');
-	    } else {
+            } else {
                 var label = _('false');
-	    }
+            }
 
             break;
         default:
@@ -2152,22 +2162,22 @@ function Blocks () {
                 that.blockList[thisBlock].text.text = _(value);
                 break;
             case 'temperamentname':
-		that.blockList[thisBlock].text.text = _(TEMPERAMENTS[0][1]);
-		for (var i = 0; i < TEMPERAMENTS.length; i++) {
+                that.blockList[thisBlock].text.text = _(TEMPERAMENTS[0][1]);
+                for (var i = 0; i < TEMPERAMENTS.length; i++) {
                     if (TEMPERAMENTS[i][1] === value) {
-			that.blockList[thisBlock].text.text = TEMPERAMENTS[i][0];
-			break;
-		    }
-		}
-		break;
+                        that.blockList[thisBlock].text.text = TEMPERAMENTS[i][0];
+                        break;
+                    }
+                }
+                break;
             case 'boolean':
                 if (value) {
                     that.blockList[thisBlock].text.text = _('true');
-		} else {
+                } else {
                     that.blockList[thisBlock].text.text = _('false');
-		}
+                }
 
-		break;
+                break;
             default:
                 that.blockList[thisBlock].text.text = value;
                 break;
@@ -3164,7 +3174,7 @@ function Blocks () {
             this.longPressTimeout = null;
         }
 
-        if (this.activeBlock == null) {
+        if (this.activeBlock === null) {
             this.errorMsg(_('There is no block selected.'));
             console.log('No block associated with long press.');
             return;
@@ -3176,7 +3186,9 @@ function Blocks () {
         // (1) we don't trigger a click and
         // (2) we later remove the additional buttons for the action stack.
         this.inLongPress = true;
+        this.contextMenu(this.activeBlock);
 
+        /*
         // We display some extra buttons when we long-press an action block.
         var myBlock = this.blockList[this.activeBlock];
         if (myBlock.name === 'action') {
@@ -3190,7 +3202,7 @@ function Blocks () {
             this.saveStackButton.y = myBlock.container.y - 27;
             this.stage.setChildIndex(this.saveStackButton, z - 2);
         }
-
+        */
         this.refreshCanvas();
     };
 

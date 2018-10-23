@@ -41,7 +41,7 @@ function Blocks () {
     this.getStageScale = null;
     this.contextMenu = null;
     // Did the user right cick?
-    this.rightClick = false;
+    this.stageClick = false;
 
     // We keep a list of stacks in the trash.
     this.trashStacks = [];
@@ -52,6 +52,7 @@ function Blocks () {
     this.blockList = [];
 
     this.blockArt = {};
+    this.blockCollapseArt = {};
 
     // Track the time with mouse down.
     this.mouseDownTime = 0;
@@ -108,6 +109,7 @@ function Blocks () {
 
     // We need to know if we are processing a copy or save stack command.
     this.inLongPress = false;
+    this.customTemperamentDefined = false;
 
     // We stage deletion of prototype action blocks on the palette so
     // as to avoid palette refresh race conditions.
@@ -117,15 +119,8 @@ function Blocks () {
         return this.inLongPress;
     };
 
-    this.clearLongPressButtons = function () {
-        // this.saveStackButton.visible = false;
-        // this.dismissButton.visible = false;
+    this.clearLongPress = function () {
         this.inLongPress = false;
-    };
-
-    this.setContextMenu = function (contextMenu) {
-        this.contextMenu = contextMenu;
-        return this;
     };
 
     this.setSetPlaybackStatus = function (setPlaybackStatus) {
@@ -226,6 +221,12 @@ function Blocks () {
         return this;
     };
 
+    // We need to access the right-click (and long press) context menu.
+    this.setContextMenu = function (contextMenu) {
+        this.contextMenu = contextMenu;
+        return this;
+    };
+
     // The scale of the graphics is determined by screen size.
     this.setScale = function (scale) {
         // this.blockScale = scale;
@@ -234,7 +235,10 @@ function Blocks () {
 
     this.extract = function () {
         if (this.activeBlock != null) {
-            this._extractBlock(this.activeBlock, true);
+            // Don't extract silence blocks.
+            if (this.blockList[this.activeBlock].name !== 'rest2') {
+                this._extractBlock(this.activeBlock, true);
+            }
         }
     };
 
@@ -242,7 +246,10 @@ function Blocks () {
         // Remove a single block from within a stack.
         var blkObj = this.blockList[blk];
 
-        if (blkObj.name !== 'number' && blkObj.name !== 'text') {
+        if (SPECIALINPUTS.indexOf(blkObj.name) === -1) {
+            var clampList = [];
+            this.findNestedClampBlocks(blk, clampList);
+
             var firstConnection = blkObj.connections[0];
             var lastConnection = last(blkObj.connections);
 
@@ -254,6 +261,7 @@ function Blocks () {
 
             blkObj.connections[0] = null;
             blkObj.connections[blkObj.connections.length - 1] = null;
+
             if (firstConnection != null) {
                 this.blockList[firstConnection].connections[connectionIdx] = lastConnection;
             }
@@ -268,11 +276,21 @@ function Blocks () {
             if (adjustDock && firstConnection != null) {
                 this.blockMoved(firstConnection);
                 this.adjustDocks(firstConnection, true);
-                if (connectionIdx !== this.blockList[firstConnection].connections.length - 1) {
-                    this.clampThisToCheck = [[firstConnection, 0]];
+                if (clampList.length > 0) {
+                    this.clampBlocksToCheck = clampList;
                     this.adjustExpandableClampBlock();
                 }
             }
+        } else {
+            var firstConnection = blkObj.connections[0];
+            if (firstConnection != null) {
+                var connectionIdx = this.blockList[firstConnection].connections.indexOf(blk);
+                this.blockList[firstConnection].connections[connectionIdx] = null;
+                blkObj.connections[0] = null;
+            }
+
+            this.moveStackRelative(blk, 4 * STANDARDBLOCKHEIGHT, 0);
+            this.blockMoved(blk);
         }
     };
 
@@ -287,13 +305,18 @@ function Blocks () {
         return maxy;
     };
 
-    // Toggle state of collapsible blocks.
+    // Toggle state of collapsible blocks, except note blocks, which
+    // are handled separately.
     this.toggleCollapsibles = function () {
         var allCollapsed = true;
         var someCollapsed = false;
         for (var blk in this.blockList) {
             var myBlock = this.blockList[blk];
-            if (COLLAPSABLES.indexOf(myBlock.name) !== -1 && !myBlock.trash) {
+            if (myBlock.name === 'newnote' || myBlock.name === 'interval') {
+                continue;
+            }
+
+            if (COLLAPSIBLES.indexOf(myBlock.name) !== -1 && !myBlock.trash) {
                 if (myBlock.collapsed) {
                     someCollapsed = true;
                 } else {
@@ -307,7 +330,11 @@ function Blocks () {
             // If any blocks are collapsed, collapse them all.
             for (var blk in this.blockList) {
                 var myBlock = this.blockList[blk];
-                if (COLLAPSABLES.indexOf(myBlock.name) !== -1 && !myBlock.trash) {
+                if (myBlock.name === 'newnote' || myBlock.name === 'interval') {
+                    continue;
+                }
+
+                if (COLLAPSIBLES.indexOf(myBlock.name) !== -1 && !myBlock.trash) {
                     myBlock.collapseToggle();
                 }
             }
@@ -315,7 +342,11 @@ function Blocks () {
             // If no blocks are collapsed, collapse them all.
             for (var blk in this.blockList) {
                 var myBlock = this.blockList[blk];
-                if (COLLAPSABLES.indexOf(myBlock.name) !== -1 && !myBlock.trash) {
+                if (myBlock.name === 'newnote' || myBlock.name === 'interval') {
+                    continue;
+                }
+
+                if (COLLAPSIBLES.indexOf(myBlock.name) !== -1 && !myBlock.trash) {
                     if (!myBlock.collapsed) {
                         myBlock.collapseToggle();
                     }
@@ -325,42 +356,10 @@ function Blocks () {
     };
 
     // We need access to the go-home buttons and boundary.
-    this.setHomeContainers = function (containers, boundary) {
-        this._homeButtonContainers = containers;
+    this.setHomeContainers = function (setContainers, boundary) {
+        this._setHomeButtonContainers = setContainers;
         this.boundary = boundary;
         return this;
-    };
-
-    // set up copy/paste, dismiss, and copy-stack buttons
-    this.makeCopyPasteButtons = function (makeButton, updatePasteButton) {
-        var that = this;
-        this.updatePasteButton = updatePasteButton;
-
-        /*
-        this.dismissButton = makeButton('cancel-button', '', 0, 0, 55, 0, this.stage);
-        this.dismissButton.visible = false;
-
-        this.saveStackButton = makeButton('save-blocks-button', _('Save stack'), 0, 0, 55, 0, this.stage);
-        this.saveStackButton.visible = false;
-
-        this.dismissButton.on('click', function (event) {
-            that.saveStackButton.visible = false;
-            that.dismissButton.visible = false;
-            that.inLongPress = false;
-            that.refreshCanvas();
-        });
-
-        this.saveStackButton.on('click', function (event) {
-            // Only invoked from action blocks.
-            var topBlock = that.findTopBlock(that.activeBlock);
-            that.inLongPress = false;
-            that.selectedStack = topBlock;
-            that.saveStackButton.visible = false;
-            that.dismissButton.visible = false;
-            that.saveStack();
-            that.refreshCanvas();
-        });
-        */
     };
 
     this._actionBlock = function (name) {
@@ -411,7 +410,6 @@ function Blocks () {
             // First we need to count up the number of (and size of) the
             // blocks inside the clamp; The child flow is usually the
             // second-to-last argument.
-
             if (myBlock.isArgFlowClampBlock()) {
                 var c = 1;  // 0: outie; and 1: child flow
             } else if (clamp === 0) {
@@ -448,6 +446,10 @@ function Blocks () {
     // Returns the block size.
     this._getBlockSize = function (blk) {
         var myBlock = this.blockList[blk];
+        if ((myBlock.name === 'newnote' || myBlock.name === 'interval') && myBlock.collapsed) {
+            return 1;
+        }
+
         return myBlock.size;
     };
 
@@ -575,8 +577,8 @@ function Blocks () {
                 var lastDock = last(thisBlock.docks);
                 var dx = lastDock[0] - vspaceBlock.docks[0][0];
                 var dy = lastDock[1] - vspaceBlock.docks[0][1];
-                vspaceBlock.container.x = thisBlock.container.x + dx;
-                vspaceBlock.container.y = thisBlock.container.y + dy;
+                vspaceBlock.container.x = thisBlock.container.x + dx; // Math.floor(thisBlock.container.x + dx + 0.5);
+                vspaceBlock.container.y = thisBlock.container.y + dy; // Math.floor(thisBlock.container.y + dy + 0.5);
                 vspaceBlock.connections[0] = that.blockList.indexOf(thisBlock);
                 vspaceBlock.connections[1] = nextBlock;
                 thisBlock.connections[thisBlock.connections.length - 1] = vspace;
@@ -622,6 +624,7 @@ function Blocks () {
                 if (cblk != null) {
                     csize = this._getStackSize(cblk);
                 }
+
                 if (csize === 0) {
                     size = 1; // minimum of 1 slot in clamp
                 } else {
@@ -652,6 +655,11 @@ function Blocks () {
             size = myBlock.size;
         }
 
+        // If the note value block is collapsed, spoof size.
+        if ((myBlock.name === 'newnote' || myBlock.name === 'interval') && myBlock.collapsed) {
+            size = 1
+        }
+
         // check on any connected block
         if (myBlock.connections.length > 1) {
             var cblk = last(myBlock.connections);
@@ -659,6 +667,7 @@ function Blocks () {
                 size += this._getStackSize(cblk);
             }
         }
+
         return size;
     };
 
@@ -703,12 +712,16 @@ function Blocks () {
 
         // Walk through each connection except the parent block; the
         // exception being the parent block of boolean 2arg blocks,
-        // since the dock[0] position can change.
+        // since the dock[0] position can change; and only check the
+        // last connection of collapsed blocks.
         if (myBlock.isTwoArgBooleanBlock()) {
             var start = 0;
+        } else if (myBlock.isInlineCollapsible() && myBlock.collapsed) {
+            var start = myBlock.connections.length - 1;
         } else {
             var start = 1;
         }
+
         for (var c = start; c < myBlock.connections.length; c++) {
             // Get the dock position for this connection.
             var bdock = myBlock.docks[c];
@@ -716,12 +729,12 @@ function Blocks () {
             // Find the connecting block.
             var cblk = myBlock.connections[c];
             // Nothing connected here so continue to the next connection.
-            if (cblk == null) {
+            if (cblk === null) {
                 continue;
             }
 
             // Another database integrety check.
-            if (this.blockList[cblk] == null) {
+            if (this.blockList[cblk] === null) {
                 console.log('This is not good: we encountered a null block: ' + cblk);
                 continue;
             }
@@ -744,20 +757,29 @@ function Blocks () {
             }
 
             var cdock = this.blockList[cblk].docks[b];
-
             if (c > 0) {
-                // Move the connected block...
                 var dx = bdock[0] - cdock[0];
-                var dy = bdock[1] - cdock[1];
+
+                if (myBlock.isInlineCollapsible() && myBlock.collapsed) {
+                    // If the block is collapsed, determine the new
+                    // dock position.
+                    var n = myBlock.docks.length;
+                    var dd = myBlock.docks[n - 1][1] - myBlock.docks[n - 2][1];
+                    var dy = bdock[1] - dd - cdock[1];
+                } else {
+                    var dy = bdock[1] - cdock[1];
+                }
+
                 if (myBlock.container == null) {
                     console.log('Does this ever happen any more?')
                 } else {
                     var nx = myBlock.container.x + dx;
                     var ny = myBlock.container.y + dy;
                 }
+
                 this._moveBlock(cblk, nx, ny);
             } else {
-                // or it's parent.
+                console.log('Move the parent block');
                 var dx = cdock[0] - bdock[0];
                 var dy = cdock[1] - bdock[1];
                 var nx = this.blockList[cblk].container.x + dx;
@@ -809,10 +831,10 @@ function Blocks () {
                                 setTimeout(function () {
                                     blockPalette.remove(protoblock, that.blockList[oldBlock].value);
                                     delete that.protoBlockDict['myDo_' + that.blockList[oldBlock].value];
-                                    that.palettes.hide();
+                                    // that.palettes.hide();
                                     that.palettes.updatePalettes('action');
-                                    that.palettes.show();
-                                }, 500);
+                                    // that.palettes.show();
+                                }, 50); // 500
 
                                 break;
                             }
@@ -829,7 +851,7 @@ function Blocks () {
                     that.adjustDocks(parentblk, true);
                 };
 
-                this._makeNewBlockWithConnections('text', 0, [parentblk], postProcess, [parentblk, oldBlock], false);
+                this._makeNewBlockWithConnections('text', 0, [parentblk], postProcess, [parentblk, oldBlock]);
             }
         } else if (this.blockList[parentblk].name === 'storein') {
             var cblk = this.blockList[parentblk].connections[1];
@@ -852,7 +874,7 @@ function Blocks () {
                     that.adjustDocks(parentblk, true);
                 };
 
-                this._makeNewBlockWithConnections('text', 0, [parentblk], postProcess, [parentblk, oldBlock], false);
+                this._makeNewBlockWithConnections('text', 0, [parentblk], postProcess, [parentblk, oldBlock]);
             }
         } else if (NOTEBLOCKS.indexOf(this.blockList[parentblk].name) !== -1) {
             var cblk = this.blockList[parentblk].connections[2];
@@ -1006,6 +1028,7 @@ function Blocks () {
     this.blockMoved = function (thisBlock) {
         // When a block is moved, we have lots of things to check:
         // (0) Is it inside of a expandable block?
+        //     Is it connected to a collapsed block?
         //     Is it an arg inside an arg clamp?
         // (1) Is it an arg block connected to a two-arg block?
         // (2) Disconnect its connection[0];
@@ -1028,7 +1051,7 @@ function Blocks () {
             return;
         }
 
-        var blk = this._insideExpandableBlock(thisBlock);
+        var blk = this.insideExpandableBlock(thisBlock);
         var expandableLoopCounter = 0;
 
         var parentblk = null;
@@ -1046,7 +1069,7 @@ function Blocks () {
             }
 
             this.clampBlocksToCheck.push([blk, 0]);
-            blk = this._insideExpandableBlock(blk);
+            blk = this.insideExpandableBlock(blk);
         }
 
         this._checkTwoArgBlocks = [];
@@ -1086,6 +1109,7 @@ function Blocks () {
                     break;
                 }
             }
+
             myBlock.connections[0] = null;
             this.raiseStackToTop(thisBlock);
         }
@@ -1111,7 +1135,7 @@ function Blocks () {
             }
 
             // Don't connect to a collapsed block.
-            if (this.blockList[b].collapsed) {
+            if (this.blockList[b].inCollapsed) {
                 continue;
             }
 
@@ -1120,7 +1144,17 @@ function Blocks () {
                 continue;
             }
 
-            for (var i = 1; i < this.blockList[b].connections.length; i++) {
+            // Does this every happen? Or is there always a hidden
+            // block below?
+            if (this.blockList[b].isInlineCollapsible() && this.blockList[b].collapsed) {
+                // Only try docking to last connection of inline
+                // collapsed blocks.
+                var start = this.blockList[b].connections.length - 1;
+            } else {
+                var start = 1;
+            }
+
+            for (var i = start; i < this.blockList[b].connections.length; i++) {
                 // When converting from Python projects to JS format,
                 // sometimes extra null connections are added. We need
                 // to ignore them.
@@ -1332,8 +1366,8 @@ function Blocks () {
                                             delete that.protoBlockDict['myDo_' + that.blockList[connection].value];
                                             that.palettes.hide();
                                             that.palettes.updatePalettes('action');
-                                            that.palettes.show();
-                                        }, 500);
+                                            // that.palettes.show();
+                                        }, 50); // 500
 
                                         break;
                                     }
@@ -1341,7 +1375,7 @@ function Blocks () {
 
                                 that.renameNameddos(that.blockList[connection].value, myBlock.value);
                                 that.renameDos(that.blockList[connection].value, myBlock.value);
-                            }, 750);
+                            }, 75); // 750
                         }
                     } else if (this.blockList[newBlock].name === 'storein') {
                         // We may need to add new storein and namedo
@@ -1352,10 +1386,10 @@ function Blocks () {
                             this.newNamedboxBlock(myBlock.value);
                             var that = this;
                             setTimeout(function () {
-                                that.palettes.hide();
+                                // that.palettes.hide();
                                 that.palettes.updatePalettes('boxes');
-                                that.palettes.show();
-                            }, 500);
+                                // that.palettes.show();
+                            }, 50); // 500
                          }
                     }
                 } else if (!this.blockList[thisBlock].isArgFlowClampBlock()) {
@@ -1465,7 +1499,7 @@ function Blocks () {
 
         // Next, recheck if the connection is inside of a
         // expandable block.
-        var blk = this._insideExpandableBlock(thisBlock);
+        var blk = this.insideExpandableBlock(thisBlock);
         var expandableLoopCounter = 0;
         while (blk != null) {
             // Extra check for malformed data.
@@ -1483,7 +1517,7 @@ function Blocks () {
                 this.clampBlocksToCheck.push([blk, 0]);
             }
 
-            blk = this._insideExpandableBlock(blk);
+            blk = this.insideExpandableBlock(blk);
         }
 
         this.adjustExpandableClampBlock();
@@ -1568,14 +1602,6 @@ function Blocks () {
 
         for (var blk in this.blockList) {
             var myBlock = this.blockList[blk];
-            /*
-            this.stage.removeChild(myBlock.container);
-            this.stage.addChild(myBlock.container);
-            if (myBlock.collapseContainer != null) {
-                this.stage.removeChild(myBlock.collapseContainer);
-                this.stage.addChild(myBlock.collapseContainer);
-            }
-            */
             if (myBlock.connections[0] == null) {
                 this._adjustTheseStacks.push(blk);
             }
@@ -1593,17 +1619,16 @@ function Blocks () {
         for (var blk = 0; blk < this.blockList.length; blk++) {
             if (this.blockList[blk].connections[0] == null) {
                 if (this.blockList[blk].offScreen(this.boundary)) {
-                    this._homeButtonContainers[0].visible = true;
-                    this._homeButtonContainers[1].visible = false;
-                    this.boundary.show();
+                    this._setHomeButtonContainers(true, false);
+		    // Just highlight the button.
+                    // this.boundary.show();
                     onScreen = false;
                     break;
                 }
             }
         }
         if (onScreen) {
-            this._homeButtonContainers[0].visible = false;
-            this._homeButtonContainers[1].visible = true;
+            this._setHomeButtonContainers(false, true);
             this.boundary.hide();
         }
     };
@@ -1617,13 +1642,9 @@ function Blocks () {
         // Move a block (and its label) to x, y.
         var myBlock = this.blockList[blk];
         if (myBlock.container != null) {
-            myBlock.container.x = x;
-            myBlock.container.y = y;
-
-            if (myBlock.collapseContainer != null) {
-                myBlock.collapseContainer.x = x + COLLAPSEBUTTONXOFF * (this.blockList[blk].protoblock.scale / 2);
-                myBlock.collapseContainer.y = y + COLLAPSEBUTTONYOFF * (this.blockList[blk].protoblock.scale / 2);
-            }
+            // Round position so font renders clearly.
+            myBlock.container.x = Math.floor(x + 0.5);
+            myBlock.container.y = Math.floor(y + 0.5);
 
             this.checkBounds();
         } else {
@@ -1633,19 +1654,13 @@ function Blocks () {
 
     this.moveBlockRelative = function (blk, dx, dy) {
         // Move a block (and its label) by dx, dy.
-        if (this.inLongPress) {
-            this.clearLongPressButtons();
-        }
+        this.inLongPress = false;
 
         var myBlock = this.blockList[blk];
         if (myBlock.container != null) {
-            myBlock.container.x += dx;
-            myBlock.container.y += dy;
-
-            if (myBlock.collapseContainer != null) {
-                myBlock.collapseContainer.x += dx;
-                myBlock.collapseContainer.y += dy;
-            }
+            // Seems we don't need to round again here.
+            myBlock.container.x += dx; // Math.floor(dx + 0.5);
+            myBlock.container.y += dy; // Math.floor(dy + 0.5);
 
             this.checkBounds();
         } else {
@@ -1689,6 +1704,9 @@ function Blocks () {
                 label += attr;
             }
             break;
+        case 'customNote':
+            var label = _(myBlock.value);
+            break;
         case 'eastindiansolfege':
             var obj = splitSolfege(myBlock.value);
             var label = WESTERN2EISOLFEGENAMES[obj[0]];
@@ -1712,6 +1730,9 @@ function Blocks () {
         case 'oscillatortype':
         case 'invertmode':
             var label = _(myBlock.value);
+            break;
+        case 'noisename':
+            var label = getNoiseName(myBlock.value);
             break;
         case 'temperamentname':
             var label = _(TEMPERAMENTS[0][1]);  // equal by default
@@ -2028,10 +2049,12 @@ function Blocks () {
         } else {
             var thisBlock = this.highlightedBlock;
         }
+
         if (thisBlock != null) {
 
             this.blockList[thisBlock].unhighlight();
         }
+
         if (this.highlightedBlock = thisBlock) {
             this.highlightedBlock = null;
         }
@@ -2064,17 +2087,17 @@ function Blocks () {
         this.visible = true;
     };
 
-    this._makeNewBlockWithConnections = function (name, blockOffset, connections, postProcess, postProcessArg, collapsed) {
+    this._makeNewBlockWithConnections = function (name, blockOffset, connections, postProcess, postProcessArg) {
         if (typeof(collapsed) === 'undefined') {
             collapsed = false
         }
+
         myBlock = this.makeNewBlock(name, postProcess, postProcessArg);
         if (myBlock == null) {
             console.log('could not make block ' + name);
             return;
         }
 
-        // myBlock.collapsed = !collapsed;
         for (var c = 0; c < connections.length; c++) {
             if (c === myBlock.docks.length) {
                 break;
@@ -2156,10 +2179,14 @@ function Blocks () {
             switch (that.blockList[thisBlock].name) {
             case 'drumname':
             case 'voicename':
-            case 'filtertype':
             case 'oscillatortype':
             case 'invertmode':
+            case 'filtertype':
+                console.log(value + ' ' + _(value));
                 that.blockList[thisBlock].text.text = _(value);
+                break;
+            case 'noisename':
+                var label = getNoiseName(value);
                 break;
             case 'temperamentname':
                 that.blockList[thisBlock].text.text = _(TEMPERAMENTS[0][1]);
@@ -2210,6 +2237,9 @@ function Blocks () {
             postProcessArg = [thisBlock, true];
         } else if (name === 'solfege') {
             postProcessArg = [thisBlock, 'sol'];
+        } else if (name === 'customNote') {
+            var len = this.logo.synth.startingPitch.length;
+            postProcessArg = [thisBlock, this.logo.synth.startingPitch.substring(0, len - 1) + '(+0)'];
         } else if (name === 'notename') {
             postProcessArg = [thisBlock, 'G'];
         } else if (name === 'drumname') {
@@ -2220,6 +2250,8 @@ function Blocks () {
             postProcessArg = [thisBlock, DEFAULTOSCILLATORTYPE];
         } else if (name === 'voicename') {
             postProcessArg = [thisBlock, DEFAULTVOICE];
+        } else if (name === 'noisename') {
+            postProcessArg = [thisBlock, DEFAULTNOISE];
         } else if (name === 'eastindiansolfege') {
             var postProcess = function (args) {
                 var thisBlock = args[0];
@@ -2333,6 +2365,12 @@ function Blocks () {
             };
 
             postProcessArg = [thisBlock, arg];
+        } else if (name === 'newnote') {
+            var postProcess = function (args) {
+                var thisBlock = args[0];
+            };
+
+            postProcessArg = [thisBlock, null];
         } else {
             var postProcess = null;
         }
@@ -2396,9 +2434,9 @@ function Blocks () {
                 if (value !== _('action')) {
                     // TODO: are there return or arg blocks?
                     this.newNameddoBlock(value, false, false);
-                    this.palettes.hide();
+                    // this.palettes.hide();
                     this.palettes.updatePalettes('action');
-                    this.palettes.show();
+                    // this.palettes.show();
                 }
             }
 
@@ -2577,9 +2615,9 @@ function Blocks () {
 
         // Force an update if the name has changed.
         if (stateChanged) {
-            this.palettes.hide();
+            // this.palettes.hide();
             this.palettes.updatePalettes('action');
-            this.palettes.show();
+            // this.palettes.show();
         }
     };
 
@@ -2609,12 +2647,50 @@ function Blocks () {
         return value;
     };
 
+    this.findUniqueCustomName = function (name) {
+        var noteNames = [];
+        for (var blk = 0; blk < this.blockList.length; blk++) {
+            if (this.blockList[blk].name === 'text' && !this.blockList[blk].trash) {
+                var c = this.blockList[blk].connections[0];
+                if (c != null && this.blockList[c].name === 'pitch' && !this.blockList[c].trash) {
+                    noteNames.push(this.blockList[blk].value);
+                }
+            }
+        }
+        var i = 1;
+        var value = name;
+        while (noteNames.indexOf(value) !== -1) {
+            value = name + i.toString();
+            i += 1;
+        }
+        return value;
+    }
+
+    this.findUniqueTemperamentName = function (name) {
+        var temperamentNames = [];
+        for (var blk = 0; blk < this.blockList.length; blk++) {
+            if (this.blockList[blk].name === 'text' && !this.blockList[blk].trash) {
+                var c = this.blockList[blk].connections[0];
+                if (c != null && this.blockList[c].name === 'temperament1' && !this.blockList[c].trash) {
+                    temperamentNames.push(this.blockList[blk].value);
+                }
+            }
+        }
+        var i = 1;
+        var value = name;
+        while (temperamentNames.indexOf(value) !== -1) {
+            value = name + i.toString();
+            i += 1;
+        }
+        return value;
+    }
+
     this._findDrumURLs = function () {
         // Make sure we initialize any drum with a URL name.
         for (var blk = 0; blk < this.blockList.length; blk++) {
             if (this.blockList[blk].name === 'text' || this.blockList[blk].name === 'string') {
                 var c = this.blockList[blk].connections[0];
-                if (c != null && ['playdrum', 'setdrum', 'setvoice'].indexOf(this.blockList[c].name) !== -1) {
+                if (c != null && ['playdrum', 'setdrum', 'playnoise', 'setvoice'].indexOf(this.blockList[c].name) !== -1) {
                     if (this.blockList[blk].value.slice(0, 4) === 'http') {
                         if (_THIS_IS_MUSIC_BLOCKS_) {
                             this.logo.synth.loadSynth(0, this.blockList[blk].value);
@@ -2800,9 +2876,9 @@ function Blocks () {
 
         // Force an update if the name has changed.
         if (nameChanged) {
-            this.palettes.hide();
+            // this.palettes.hide();
             this.palettes.updatePalettes('action');
-            this.palettes.show();
+            // this.palettes.show();
         }
     };
 
@@ -2915,10 +2991,10 @@ function Blocks () {
         // Add delay to avoid race condition.
         var that = this;
         setTimeout(function () {
-            that.palettes.hide();
+            // that.palettes.hide();
             that.palettes.updatePalettes('action');
-            that.palettes.show();
-        }, 500);
+            // that.palettes.show();
+        }, 100); // 500
     };
 
     this._removeNamedoEntries = function (name) {
@@ -3039,7 +3115,35 @@ function Blocks () {
         }
     };
 
-    this._insideExpandableBlock = function (blk) {
+    this.findNestedClampBlocks = function (blk, clampList) {
+        // Returns a list of containing clamp block or []
+        if (this.blockList[blk] == null) {
+            console.log('null block in blockList? ' + blk);
+            return [];
+        } else if (this.blockList[blk].connections[0] == null) {
+            // We reached the end, so return the list.
+            return clampList;
+        } else {
+            // If we find a clamp block, add it to the list.
+            var cblk = this.blockList[blk].connections[0];
+            console.log(this.blockList[cblk].name);
+            if (this.blockList[cblk].isClampBlock()) {
+                console.log('is a clamp block');
+                if (this.blockList[cblk].isDoubleClampBlock()) {
+                    // Just check them both.
+                    clampList.push([cblk, 0]);
+                    clampList.push([cblk, 1]);
+                } else {
+                    clampList.push([cblk, 0]);
+                }
+            }
+
+            // Keep looking.
+            return this.findNestedClampBlocks(cblk, clampList);
+        }
+    };
+
+    this.insideExpandableBlock = function (blk) {
         // Returns a containing expandable block or null
         if (this.blockList[blk] == null) {
             // race condition?
@@ -3054,12 +3158,12 @@ function Blocks () {
                 if (this.blockList[cblk].isArgFlowClampBlock()) {
                     return cblk;
                 } else if (blk === last(this.blockList[cblk].connections)) {
-                    return this._insideExpandableBlock(cblk);
+                    return this.insideExpandableBlock(cblk);
                 } else {
                     return cblk;
                 }
             } else {
-                return this._insideExpandableBlock(cblk);
+                return this.insideExpandableBlock(cblk);
             }
         }
     };
@@ -3104,6 +3208,83 @@ function Blocks () {
         return false;
     };
 
+    this.insideInlineCollapsibleBlock = function (blk) {
+        // Return the first containing note block, if any.
+        if (blk === null) {
+            return null;
+        }
+
+        c0 = this.blockList[blk].connections[0];
+        if (c0 === null) {
+            return null;
+        }
+
+        // If we are connected to a note block arg or child flow,
+        // return the note block. If we are connected to the flow, we
+        // are not inside, so keep looking.
+        if (this.blockList[c0].isInlineCollapsible() && blk !== last(this.blockList[c0].connections)) {
+            return c0;
+        }
+
+        return this.insideInlineCollapsibleBlock(c0);
+    };
+
+    this.findNoteBlock = function (blk) {
+        // Returns first note block found.
+        if (blk === null) {
+            return null;
+        }
+
+        if (this.blockList[blk].name === 'newnote') {
+            return blk;
+        }
+
+        if (this.blockList[blk].isClampBlock()) {
+            var n = this.blockList[blk].connections.length - 2;
+            var c = this.blockList[blk].connections[n];
+        } else {
+            var c = last(this.blockList[blk].connections);
+        }
+
+        return this.findNoteBlock(c);
+    };
+
+    this.findNestedIntervalBlock = function (blk) {
+        // Returns first interval block found.
+        if (blk === null) {
+            return null;
+        }
+
+        if (this.blockList[blk].name === 'interval') {
+            return blk;
+        }
+
+        if (this.blockList[blk].isClampBlock()) {
+            var n = this.blockList[blk].connections.length - 2;
+            var c = this.blockList[blk].connections[n];
+        } else {
+            var c = last(this.blockList[blk].connections);
+        }
+
+        return this.findNestedIntervalBlock(c);
+    };
+
+    this.findFirstPitchBlock = function (blk) {
+        // Returns first pitch block found.
+        if (blk === null) {
+            return null;
+        }
+
+        if (PITCHBLOCKS.indexOf(this.blockList[blk].name) !== -1) {
+            return blk;
+        } else if (this.blockList[blk].name === 'rest2') {
+            return blk;
+        }
+
+        var c = last(this.blockList[blk].connections);
+        return this.findFirstPitchBlock(c);
+    };
+
     this.findPitchOctave = function (blk) {
         // Returns octave associated with pitch block.
         if (blk === null) {
@@ -3145,6 +3326,188 @@ function Blocks () {
         }
     };
 
+    this.intervalModifierNumber = function (blk) {
+        // Is a number block being used as an addant to an
+        // interval (or transpose) block?
+
+        if (blk === null) {
+            return false;
+        }
+
+        var myBlock = this.blockList[blk];
+        var pblk = myBlock.connections[0];
+        // Are we connected to a plus block?
+        if (myBlock.name === 'number' && pblk !== null && this.blockList[pblk].name === 'plus') {
+            // Is the plus block connected to an interval block?
+            var c = this.blockList[pblk].connections[0];
+            if (c === null) {
+                return false;
+            }
+
+            if (['interval', 'setscalartransposition', 'semitoneinterval', 'settransposition'].indexOf(this.blockList[c].name) === -1) {
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    };
+
+    this.octaveModifierNumber = function (blk) {
+        // Is a number block being used as multipicant with a
+        // modelength block?
+
+        if (blk === null) {
+            return false;
+        }
+
+        var myBlock = this.blockList[blk];
+        var mblk = myBlock.connections[0];
+        // Are we connected to a multiply block?
+        if (myBlock.name === 'number' && mblk !== null && this.blockList[mblk].name === 'multiply') {
+            if (this.blockList[mblk].connections[1] === blk) {
+                var cblk = this.blockList[mblk].connections[2];
+            } else {
+                var cblk = this.blockList[mblk].connections[1];
+            }
+
+            if (this.blockList[cblk].name === 'modelength') {
+                return true;
+            }
+
+            // Special case: 1 / 12
+            if (this.blockList[cblk].name === 'number' && this.blockList[cblk].value === 12) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    this.noteValueNumber = function (blk, c) {
+        // Is a number block being used as a note value denominator
+        // argument?
+        if (blk === null) {
+            return false;
+        }
+
+        var myBlock = this.blockList[blk];
+        var dblk = myBlock.connections[0];
+        // Are we connected to a divide block?
+        if (myBlock.name === 'number' && dblk !== null && this.blockList[dblk].name === 'divide') {
+            // Are we the denominator (c == 2) or numerator (c == 1)?
+            if (this.blockList[dblk].connections[c] === this.blockList.indexOf(myBlock)) {
+                // Is the divide block connected to a note value block?
+                cblk = this.blockList[dblk].connections[0];
+                if (cblk !== null) {
+                    // Is it the first or second arg?
+                    switch (this.blockList[cblk].name) {
+                    case 'newnote':
+                    case 'pickup':
+                    case 'tuplet4':
+                    case 'newstaccato':
+                    case 'newslur':
+                    case 'elapsednotes2':
+                        if (this.blockList[cblk].connections[1] === dblk) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                        break;
+                    case 'meter':
+                    case 'setbpm2':
+                    case 'setmasterbpm2':
+                    case 'stuplet':
+                    case 'rhythm2':
+                    case 'newswing2':
+                    case 'vibrato':
+                    case 'neighbor':
+                    case 'neighbor2':
+                        if (this.blockList[cblk].connections[2] === dblk) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                        break;
+                    default:
+                        return false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return false;
+    };
+
+    this.noteValueValue = function (blk) {
+        // Return the number block value being used as a note value
+        // denominator argument.
+        if (blk === null) {
+            return 1;
+        }
+
+        var myBlock = this.blockList[blk];
+        var dblk = myBlock.connections[0];
+        // We are connected to a divide block.
+        // Is the divide block connected to a note value block?
+        cblk = this.blockList[dblk].connections[0];
+        if (cblk !== null) {
+            // Is it the first or second arg?
+            switch (this.blockList[cblk].name) {
+            case 'newnote':
+            case 'pickup':
+            case 'tuplet4':
+            case 'newstaccato':
+            case 'newslur':
+            case 'elapsednotes2':
+                if (this.blockList[cblk].connections[1] === dblk) {
+                    cblk = this.blockList[dblk].connections[2];
+                    return this.blockList[cblk].value;
+                } else {
+                    return 1;
+                }
+                break;
+            case 'meter':
+            case 'setbpm2':
+            case 'setmasterbpm2':
+            case 'stuplet':
+            case 'rhythm2':
+            case 'newswing2':
+            case 'vibrato':
+            case 'neighbor':
+            case 'neighbor2':
+                if (this.blockList[cblk].connections[2] === dblk) {
+                    if (this.blockList[cblk].connections[1] === dblk) {
+                        cblk = this.blockList[dblk].connections[2];
+                        return this.blockList[cblk].value;
+                    } else {
+                        return 1;
+                    }
+                } else {
+                    return 1;
+                }
+                break;
+            default:
+                return 1;
+                break;
+            }
+        }
+
+        return 1;
+    };
+
+    this.octaveNumber = function (blk) {
+        // Is this a number block being used as an octave argument?
+        if (blk === null) {
+            return false;
+        }
+
+        var myBlock = this.blockList[blk];
+        return (myBlock.name === 'number' && myBlock.connections[0] !== null && ['pitch', 'setpitchnumberoffset', 'invert1', 'tofrequency', 'scaledegree'].indexOf(this.blockList[myBlock.connections[0]].name) !== -1 && this.blockList[myBlock.connections[0]].connections[2] === blk);
+    };
+
     this.prepareStackForCopy = function () {
         // Auto-select stack for copying -- no need to actually click on
         // the copy button.
@@ -3161,9 +3524,7 @@ function Blocks () {
         this.selectedBlocksObj = JSON.parse(JSON.stringify(this._copyBlocksToObj()));
         console.log(this.selectedBlocksObj);
 
-        // Update the paste button to indicate a block is selected.
-        this.updatePasteButton();
-        // ...and reset paste offset.
+        // Reset paste offset.
         this._pasteDX = 0;
         this._pasteDY = 0;
     };
@@ -3174,36 +3535,8 @@ function Blocks () {
             this.longPressTimeout = null;
         }
 
-        if (this.activeBlock === null) {
-            this.errorMsg(_('There is no block selected.'));
-            console.log('No block associated with long press.');
-            return;
-        }
-
-        this.prepareStackForCopy();
-
-        // We need to set a flag to ensure:
-        // (1) we don't trigger a click and
-        // (2) we later remove the additional buttons for the action stack.
         this.inLongPress = true;
         this.contextMenu(this.activeBlock);
-
-        /*
-        // We display some extra buttons when we long-press an action block.
-        var myBlock = this.blockList[this.activeBlock];
-        if (myBlock.name === 'action') {
-            var z = this.stage.children.length - 1;
-            this.dismissButton.visible = true;
-            this.dismissButton.x = myBlock.container.x - 27;
-            this.dismissButton.y = myBlock.container.y - 27;
-            this.stage.setChildIndex(this.dismissButton, z - 1);
-            this.saveStackButton.visible = true;
-            this.saveStackButton.x = myBlock.container.x + 27;
-            this.saveStackButton.y = myBlock.container.y - 27;
-            this.stage.setChildIndex(this.saveStackButton, z - 2);
-        }
-        */
-        this.refreshCanvas();
     };
 
     this.pasteStack = function () {
@@ -3221,13 +3554,11 @@ function Blocks () {
         // Reposition the paste location relative to the stage position.
         console.log(this.selectedBlocksObj);
         if (this.selectedBlocksObj != null) {
-            this.selectedBlocksObj[0][2] = 75 - this.stage.x + this._pasteDX;
+            this.selectedBlocksObj[0][2] = 175 - this.stage.x + this._pasteDX;
             this.selectedBlocksObj[0][3] = 75 - this.stage.y + this._pasteDY;
             this._pasteDX += 21;
             this._pasteDY += 21;
             this.loadNewBlocks(this.selectedBlocksObj);
-            this.updatePasteButton();
-
         }
     };
 
@@ -3238,7 +3569,7 @@ function Blocks () {
             return;
         }
 
-        this.palettes.hide();
+        // this.palettes.hide();
 
         var blockObjs = this._copyBlocksToObj();
         // The first block is an action block. Its first connection is
@@ -3332,6 +3663,16 @@ function Blocks () {
         this.protoBlockDict[blkName].palette.add(this.protoBlockDict[blkName]);
     };
 
+    this.findBlockInstance = function (blkName) {
+        // Returns true if block of name blkName is loaded.
+        for (var blk = 0; blk < this.blockList.length; blk++) {
+            if (this.blockList[blk].name === blkName && !this.blockList[blk].trash) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     this.loadNewBlocks = function (blockObjs) {
         var playbackQueueStartsHere = null;
 
@@ -3408,7 +3749,7 @@ function Blocks () {
         var storeinNames = {}; // storein block: label block
         var doNames = {}; // do block: label block, nameddo block value
 
-        // action and start blocks that need to be collapsed.
+        // widget, note, action, and start blocks that need to be collapsed.
         this.blocksToCollapse = [];
 
         // Scan for any new action and storein blocks to identify
@@ -3483,7 +3824,7 @@ function Blocks () {
                 break;
             }
 
-            if (COLLAPSABLES.indexOf(name) !== -1) {
+            if (COLLAPSIBLES.indexOf(name) !== -1) {
                 if (typeof(blkData[1]) === 'object' && blkData[1].length > 1 && typeof(blkData[1][1]) === 'object' && 'collapsed' in blkData[1][1]) {
                     if (blkData[1][1]['collapsed']) {
                         this.blocksToCollapse.push(this.blockList.length + b);
@@ -3574,9 +3915,9 @@ function Blocks () {
         }
 
         if (updatePalettes) {
-            this.palettes.hide();
+            // this.palettes.hide();
             this.palettes.updatePalettes('action');
-            this.palettes.show();
+            // this.palettes.show();
         }
 
 
@@ -3684,7 +4025,7 @@ function Blocks () {
                         extraBlocksLength += 2;
                     }
 
-                    // (3) create a newnote block instead.
+                    // (3) create a "newnote" block instead.
                     if (typeof(blockObjs[b][1]) === 'object') {
                         blockObjs[b][1][0] = 'new' + name;
                     } else {
@@ -3746,7 +4087,7 @@ function Blocks () {
                     var blkInfo = [blkData[1][0], {'value': null}];
                 } else if (['number', 'string'].indexOf(typeof(blkData[1][1])) !== -1) {
                     var blkInfo = [blkData[1][0], {'value': blkData[1][1]}];
-                    if (COLLAPSABLES.indexOf(blkData[1][0]) !== -1) {
+                    if (COLLAPSIBLES.indexOf(blkData[1][0]) !== -1) {
                         blkInfo[1]['collapsed'] = false;
                     }
                 } else {
@@ -3754,7 +4095,7 @@ function Blocks () {
                 }
             } else {
                 var blkInfo = [blkData[1], {'value': null}];
-                if (COLLAPSABLES.indexOf(blkData[1]) !== -1) {
+                if (COLLAPSIBLES.indexOf(blkData[1]) !== -1) {
                     blkInfo[1]['collapsed'] = false;
                 }
             }
@@ -3762,7 +4103,7 @@ function Blocks () {
             var name = blkInfo[0];
 
             var collapsed = false;
-            if (COLLAPSABLES.indexOf(name) !== -1) {
+            if (COLLAPSIBLES.indexOf(name) !== -1) {
                 collapsed = blkInfo[1]['collapsed'];
             }
 
@@ -3783,9 +4124,12 @@ function Blocks () {
 
             var that = this;
 
+            if (this.findBlockInstance('temperament1')) {
+                this.customTemperamentDefined = true;
+            }
+
             // A few special cases.
             switch (name) {
-                // Only add 'collapsed' arg to start, action blocks.
             case 'start':
                 blkData[4][0] = null;
                 blkData[4][2] = null;
@@ -3796,7 +4140,7 @@ function Blocks () {
                     that.turtles.addTurtle(that.blockList[thisBlock], blkInfo);
                 };
 
-                this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, blkInfo[1]], collapsed);
+                this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, blkInfo[1]]);
                 break;
             case 'drum':
                 blkData[4][0] = null;
@@ -3808,7 +4152,7 @@ function Blocks () {
                     that.turtles.addDrum(that.blockList[thisBlock], blkInfo);
                 };
 
-                this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, blkInfo[1]], collapsed);
+                this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, blkInfo[1]]);
 
                 if (_THIS_IS_MUSIC_BLOCKS_) {
                     // Load the synth for this drum
@@ -3819,7 +4163,24 @@ function Blocks () {
             case 'hat':
                 blkData[4][0] = null;
                 blkData[4][3] = null;
-                this._makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null, collapsed);
+                this._makeNewBlockWithConnections('action', blockOffset, blkData[4], null, null);
+                break;
+
+             case 'temperament1':
+                var postProcess = function (args) {
+                    var thisBlock = args[0];
+                    var value = args[1];
+                    if (value.customTemperamentNotes !== undefined) {
+                        TEMPERAMENT['custom'] = value.customTemperamentNotes;
+                        TEMPERAMENT['custom']['pitchNumber'] = value.customTemperamentNotes.length;
+                        that.logo.synth.startingPitch = value.startingPitch;
+                        OCTAVERATIO = value.octaveSpace;
+                        console.log(TEMPERAMENT['custom']);
+                        that.logo.customTemperamentDefined = true;     //This is for custom pitch pie menu
+                    }
+                   
+                };
+                this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, blkInfo[1]]);
                 break;
 
                 // Named boxes and dos need private data.
@@ -3995,6 +4356,7 @@ function Blocks () {
                 break;
             case 'text':
             case 'solfege':
+            case 'customNote':
             case 'eastindiansolfege':
             case 'notename':
             case 'modename':
@@ -4043,6 +4405,26 @@ function Blocks () {
                     // Load the synth for this voice
                     try {
                         this.logo.synth.loadSynth(0, getVoiceSynthName(value));
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
+                break;
+
+            case 'noisename':
+                var postProcess = function (args) {
+                    var thisBlock = args[0];
+                    var value = args[1];
+                    that.blockList[thisBlock].value = value;
+                    that.updateBlockText(thisBlock);
+                };
+
+                this._makeNewBlockWithConnections(name, blockOffset, blkData[4], postProcess, [thisBlock, value]);
+
+                if (_THIS_IS_MUSIC_BLOCKS_) {
+                    // Load the synth for this noise
+                    try {
+                        this.logo.synth.loadSynth(0, getNoiseSynthName(value));
                     } catch (e) {
                         console.log(e)
                     }
@@ -4245,15 +4627,14 @@ function Blocks () {
 
             if (thisBlock === this.blockList.length - 1) {
                 if (this.blockList[thisBlock].connections[0] == null) {
-                    this.blockList[thisBlock].container.x = blkData[2];
-                    this.blockList[thisBlock].container.y = blkData[3];
+                    this.blockList[thisBlock].container.x = blkData[2]; // Math.floor(blkData[2] + 0.5);
+                    this.blockList[thisBlock].container.y = blkData[3]; // Math.floor(blkData[3] + 0.5);
                     this._adjustTheseDocks.push(thisBlock);
                     if (blkData[4][0] == null) {
                         this._adjustTheseStacks.push(thisBlock);
                     }
                     if (blkData[2] < 0 || blkData[3] < 0 || blkData[2] > canvas.width || blkData[3] > canvas.height) {
-                        this._homeButtonContainers[0].visible = true;
-                        this._homeButtonContainers[1].visible = false;
+                        this._setHomeButtonContainers(true, false);
                     }
                 }
             }
@@ -4312,13 +4693,6 @@ function Blocks () {
 
         this.blocksToCollapse = [];
 
-        for (var blk = 0; blk < this.blockList.length; blk++) {
-            if (this.blockList[blk].collapseContainer != null) {
-                this.blockList[blk].collapseContainer.x = this.blockList[blk].container.x + COLLAPSEBUTTONXOFF * (this.blockList[blk].protoblock.scale / 2);
-                this.blockList[blk].collapseContainer.y = this.blockList[blk].container.y + COLLAPSEBUTTONYOFF * (this.blockList[blk].protoblock.scale / 2);
-            }
-        }
-
         this.refreshCanvas();
 
         // Do a final check on the action and boxes palettes.
@@ -4336,10 +4710,10 @@ function Blocks () {
             }
         }
         if (updatePalettes) {
-            this.palettes.hide();
+            // this.palettes.hide();
             this.palettes.updatePalettes('action');
             // this.palettes.dict['action'].hide();
-            this.palettes.show();
+            // this.palettes.show();
         }
 
         var updatePalettes = false;
@@ -4369,11 +4743,11 @@ function Blocks () {
             // the actions update.
             var that = this;
             setTimeout(function () {
-                that.palettes.hide();
+                // that.palettes.hide();
                 that.palettes.updatePalettes('boxes');
                 // that.palettes.dict['boxes'].hide();
-                that.palettes.show();
-            }, 1500);
+                // that.palettes.show();
+            }, 150); // 1500
         }
 
         console.log("Finished block loading");
@@ -4450,9 +4824,6 @@ function Blocks () {
         var z = this.stage.children.length - 1;
         for (var b = 0; b < this.dragGroup.length; b++) {
             this.stage.setChildIndex(this.blockList[this.dragGroup[b]].container, z);
-            if (this.blockList[this.dragGroup[b]].collapseContainer !== null) {
-                this.stage.setChildIndex(this.blockList[this.dragGroup[b]].collapseContainer, z);
-            };
 
             z -= 1;
         }
@@ -4519,7 +4890,7 @@ function Blocks () {
                 }
 
                 if (blockValue === actionName) {
-                    thisBlock.hide();
+                    // thisBlock.hide();
                     thisBlock.trash = true;
                     if (argBlock !== null) {
                         argBlock.hide();
@@ -4530,11 +4901,11 @@ function Blocks () {
 
             // Delete action blocks from action palette.
             // Use a timeout to avoid palette refresh race condition.
-            this.deleteActionTimeout += 500;
+            this.deleteActionTimeout += 50; // 500
             var timeout = this.deleteActionTimeout;
             var that = this;
             setTimeout(function () {
-                that.deleteActionTimeout -= 500;
+                that.deleteActionTimeout -= 50; // 500
                 that.palettes.removeActionPrototype(actionName);
             }, timeout);
         }
@@ -4626,6 +4997,7 @@ function Blocks () {
                     this._checkArgClampBlocks.push(blk);
                 }
             }
+
             this._cleanupStacks();
             this.refreshCanvas();
         }

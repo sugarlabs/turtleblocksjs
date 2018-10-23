@@ -56,6 +56,7 @@ function ProtoBlock(name) {
     this.disabled = false;
     //Stores the width of the text component
     this.textWidth = 0;
+    this.labelOffset = 0;
 
     this.adjustWidthToLabel = function () {
         if (this.staticLabels.length === 0) {
@@ -212,7 +213,7 @@ function ProtoBlock(name) {
     // E.g., wait for
     this.oneBooleanArgBlock = function () {
         this.args = 1;
-        this.size = 2;
+        this.size = 1;
         this.dockTypes.push('out');
         this.dockTypes.push('booleanin');
         this.dockTypes.push('in');
@@ -233,7 +234,7 @@ function ProtoBlock(name) {
         }
 
         svg.setExpand(30 + this.extraWidth, 0, 0, 0);
-        var artwork = svg.basicClamp();
+        var artwork = svg.basicBlock();
         return [artwork, svg.docks, svg.getWidth(), svg.getHeight(), svg.getHeight()];
     };
 
@@ -519,6 +520,7 @@ function ProtoBlock(name) {
         svg.setCap(true);
         svg.setTail(true);
         svg.setExpand(20 + this.extraWidth, 0, 0, 0);
+        svg.setLabelOffset(this.labelOffset);
 
         if (slots) {
             svg.setClampSlots(0, slots);
@@ -589,6 +591,7 @@ function ProtoBlock(name) {
         svg.setTab(true);
         svg.setSlot(true);
         svg.setInnies([true]);
+        svg.setLabelOffset(this.labelOffset);
         svg.setExpand(20 + this.extraWidth, 0, 0, 0);
 
         if (slots) {
@@ -605,7 +608,8 @@ function ProtoBlock(name) {
         return [artwork, svg.docks, svg.getWidth(), svg.getHeight(), svg.docks[2][1]];
     };
 
-    // E.g., tuplet, which takes two args plus an interior flow. There is a flow above and below.
+    // E.g., tuplet, which takes two args plus an interior flow.
+    // There is a flow above and below.
     this.flowClampTwoArgBlock = function () {
         this.style = 'clamp';
         this.expandable = true;
@@ -995,6 +999,7 @@ function ProtoBlock(name) {
         svg.setTail(true);
         svg.setInnies([true]);
         svg.setExpand(10 + this.extraWidth, 0, 0, 0);
+        svg.setLabelOffset(this.labelOffset);
 
         if (slots) {
             svg.setClampSlots(0, slots);

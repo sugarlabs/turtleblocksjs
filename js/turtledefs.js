@@ -88,8 +88,7 @@ function createHelpContent() {
     if (beginnerMode) {
         HELPCONTENT = [
             [_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
-            [_('Meet Mr. Mouse!'), _('Mr Mouse is our Music Blocks conductor.') + ' ' + _('Mr Mouse encourages you to explore Music Blocks.') + ' ' + _('Let us start our tour!'), 'activity/activity-icon-mouse-color.svg'],
-            [_('Palette buttons'), _('This toolbar contains the palette buttons, including Rhythm Pitch Tone Action and more.') + ' ' + _('Click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
+            [_('Palette buttons'), _('This toolbar contains the palette buttons, including Flow Turtle Pen Action and more.') + ' ' + _('Click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
             [_('Play'), _('Click the run button to run the project in fast mode.'), 'header-icons/run-button.svg'],
             [_('Stop'), _('Stop the music (and the mice).') + ' ' + _('You can also type Alt-S to stop.'), 'header-icons/stop-turtle-button.svg'],
             [_('New Project'), _('Initialise a new project.'), 'header-icons/new-button.svg'],
@@ -104,7 +103,7 @@ function createHelpContent() {
             [_('Expand/collapse collapsable blocks'), _('Expand or collapse start and action stacks.'), 'header-icons/collapse-blocks-button.svg'],
             [_('Home'), _('Return all blocks to the center of the screen.'), 'header-icons/go-home-button.svg'],
             [_('Cartesian') + '/' + _('Polar'), _('Show or hide a coordinate grid.'), 'header-icons/Cartesian-polar-button.svg'],
-            [_('Settings'), _('Open a panel for configuring Music Blocks.'), 'header-icons/utility-button.svg'],
+            [_('Settings'), _('Open a panel for configuring Turrle Blocks.'), 'header-icons/utility-button.svg'],
             [_('Restore'), _('Restore blocks from the trash.'), 'header-icons/restore-trash-button.svg'],
             [_('Switch mode'), _('Switch between beginner and advance modes.'), 'header-icons/advanced-button.svg'],
             [_('Select language'), _('Select your language preference.'), 'header-icons/language-button.svg'],
@@ -113,13 +112,12 @@ function createHelpContent() {
             [_('Clean'), _('Clear the screen and return the mice to their initial positions.'), 'header-icons/clear-button.svg'],
             [_('Collapse'), _('Collapse the graphics window.'), 'header-icons/collapse-button.svg'],
             [_('Keyboard shortcuts'), _('You can type "d" to create a "do" block, "r" to create a "re" block, etc.'), 'header-icons/type-icon.svg'],
-            [_('Guide'), _('A detailed guide to Music Blocks is available.'), 'activity/activity-icon-mouse-color.svg', 'https://sugarlabs.github.io/musicblocks/guide', _('Music Blocks Guide')],
-            [_('Congratulations.'), _('You have finished the tour. Please enjoy Music Blocks!'), 'activity/activity-icon-mouse-color.svg']
+            [_('Guide'), _('A detailed guide to Turtle Blocks is available.'), 'activity/activity-icon-color.svg', 'https://sugarlabs.github.io/turtleblocks/guide', _('Turtle Blocks Guide')],
+            [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']
         ];
     } else {
         HELPCONTENT = [
-            [_('Welcome to Music Blocks'), _('Music Blocks is a collection of manipulative tools for exploring fundamental musical concepts in an integrative and fun way.'), 'activity/activity-icon-mouse-color.svg'],
-            [_('Meet Mr. Mouse!'), _('Mr Mouse is our Music Blocks conductor.') + ' ' + _('Mr Mouse encourages you to explore Music Blocks.') + ' ' + _('Let us start our tour!'), 'activity/activity-icon-mouse-color.svg'],
+            [_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
             //.TRANS: the buttons used to open various palettes of blocks
             [_('Palette buttons'),
              //.TRANS: Please add commas to list: Rhythm, Pitch, Tone, Action, and more.
@@ -143,23 +141,20 @@ function createHelpContent() {
             [_('Load project from file'), _('You can also load projects from the file system.'), 'header-icons/open-button.svg'],
             [_('Save project'), _('Save your project to a file.'), 'header-icons/save-button.svg'],
             [_('Load samples from server'), _('This button opens a viewer for loading example projects.'), 'header-icons/planet-button.svg'],
-            [_('Save sheet music'), _('Save your project to as a Lilypond file.'), 'header-icons/lilypond-button.svg'],
             // [_('Copy'), _('To copy a stack to the clipboard, right-click on the stack.') + ' ' + _('You can also use Alt+C to copy a stack of blocks.') + ' ' + _('The Paste Button will highlight.'), 'header-icons/paste-button.svg'],
             // [_('Paste'), _('The paste button is enabled when there are blocks copied onto the clipboard.') + ' ' + _('You can also use Alt+V to paste a stack of blocks. '), 'header-icons/paste-disabled-button.svg'],
             [_('Cartesian') + '/' + _('Polar'), _('Show or hide a coordinate grid.'), 'header-icons/Cartesian-polar-button.svg'],
             // [_('Polar'), _('Show or hide a polar-coordinate grid.'), 'header-icons/polar-button.svg'],
-            [_('Settings'), _('Open a panel for configuring Music Blocks.'), 'header-icons/utility-button.svg'],
-            [_('Switch mode'), _('Switch between beginner and advance modes.'), 'header-icons/advanced-button.svg'],
+            [_('Settings'), _('Open a panel for configuring Turtle Blocks.'), 'header-icons/utility-button.svg'],
             [_('Enable scrolling'), _('You can scroll the blocks on the canvas.'), 'header-icons/scroll-unlock-button.svg'],
             [_('Decrease block size'), _('Decrease the size of the blocks.'), 'header-icons/smaller-button.svg'],
             [_('Increase block size'), _('Increase the size of the blocks.'), 'header-icons/bigger-button.svg'],
-            [_('Display statistics'), _('Display statistics about your Music project.'), 'header-icons/stats-button.svg'],
+            [_('Display statistics'), _('Display statistics about your Turtle project.'), 'header-icons/stats-button.svg'],
             [_('Delete plugin'), _('Delete a selected plugin.'), 'header-icons/plugins-delete-button.svg'],
             [_('Select language'), _('Select your language preference.'), 'header-icons/language-button.svg'],
             [_('Restore'), _('Restore blocks from the trash.'), 'header-icons/restore-trash-button.svg'],
-            [_('Keyboard shortcuts'), _('You can type "d" to create a "do" block, "r" to create a "re" block, etc.'), 'header-icons/type-icon.svg'],
-            [_('Guide'), _('A detailed guide to Music Blocks is available.'), 'activity/activity-icon-mouse-color.svg', 'https://sugarlabs.github.io/musicblocks/guide', _('Music Blocks Guide')],
-            [_('Congratulations.'), _('You have finished the tour. Please enjoy Music Blocks!'), 'activity/activity-icon-mouse-color.svg']
+            [_('Guide'), _('A detailed guide to Turtle Blocks is available.'), 'activity/activity-icon-color.svg', 'https://sugarlabs.github.io/turtleblocks/guide', _('Turtle Blocks Guide')],
+            [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']
         ];
     }
 

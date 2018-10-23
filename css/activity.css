@@ -454,11 +454,30 @@ table {
     border-spacing: 1px 1px;
 }
 
-.helpDiv {
-    float: right;
+#helpDiv {
     position: absolute;
-    margin-top: 57px;
-    z-index: -1;
+    top: 20%;
+    left: 20%;
+    width: 350px;
+    height: 400px;
+    background: rgba(196, 196, 196, 1.0) !important;
+    overflow-y: auto;
+    -webkit-user-select: none;
+}
+
+#helpButtonsDiv {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    border: 0 !important;
+}
+
+#helpBodyDiv {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    border: 0 !important;
+    overflow-x: auto;
 }
 
 #canvas {

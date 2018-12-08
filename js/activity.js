@@ -1545,6 +1545,8 @@ define(MYDEFINES, function (compatibility) {
 
                 this.initialiseNewProject = function(name) {
                     this.planet.ProjectStorage.initialiseNewProject(name);
+                    sendAllToTrash();
+                    refreshCanvas();
                     blocks.trashStacks = [];
                     this.saveLocally();
                 };

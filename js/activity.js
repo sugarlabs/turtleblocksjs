@@ -1547,6 +1547,7 @@ define(MYDEFINES, function (compatibility) {
                     this.planet.ProjectStorage.initialiseNewProject(name);
                     sendAllToTrash();
                     refreshCanvas();
+                    _loadStart();
                     blocks.trashStacks = [];
                     this.saveLocally();
                 };

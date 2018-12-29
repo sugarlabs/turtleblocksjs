@@ -15,6 +15,8 @@ const DEFAULTVALUE = 50;
 const DEFAULTCHROMA = 100;
 const DEFAULTSTROKE = 5;
 const DEFAULTFONT = 'sans-serif';
+// What is the scale factor when stage is shrunk?
+const SCALEFACTOR = 4
 
 // Turtle sprite
 const TURTLEBASEPATH = 'images/';
@@ -41,6 +43,9 @@ function Turtle (name, turtles, drum) {
     this.skinChanged = false;  // Should we reskin the turtle on clear?
     this.shellSize = 55;
     this.blinkFinished = true;
+    this.isSkinChanged = false;
+    this._sizeInUse = 1;
+    this._isSkinChanged = false;
     this.beforeBlinkSize = null;
 
     // Which start block is assocated with this turtle?
@@ -73,9 +78,35 @@ function Turtle (name, turtles, drum) {
     this.media = [];  // Media (text, images) we need to remove on clear.
     var canvas = document.getElementById('overlayCanvas');
     var ctx = canvas.getContext('2d');
-    // Simulate an arc with line segments since Tinkercad cannot
-    // import SVG arcs reliably.
+    console.log(ctx.canvas.width + ' x ' + ctx.canvas.height);
+
+    this.doScrollXY = function(dx, dy) {
+        // FIXME: how big?
+        var imgData = ctx.getImageData(0, 0, ctx.canvas.width + dx, ctx.canvas.height + dx);
+        ctx.putImageData(imgData, dx, dy);
+
+        // Draw under the turtle as the canvas moves.
+        for (var t = 0; t < this.turtles.turtleList.length; t++) {
+            if (this.turtles.turtleList[t].trash) {
+                continue;
+            }
+
+            if (this.turtles.turtleList[t].penState) {
+                this.turtles.turtleList[t].processColor();
+                ctx.lineWidth = this.turtles.turtleList[t].stroke;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(this.turtles.turtleList[t].container.x + dx, this.turtles.turtleList[t].container.y + dy);
+                ctx.lineTo(this.turtles.turtleList[t].container.x, this.turtles.turtleList[t].container.y);
+                ctx.stroke();
+                ctx.closePath();
+            }
+        }
+    };
+
     this._svgArc = function(nsteps, cx, cy, radius, sa, ea) {
+        // Simulate an arc with line segments since Tinkercad cannot
+        // import SVG arcs reliably.
         var a = sa;
         if (ea == null) {
             var da = Math.PI / nsteps;
@@ -634,6 +665,7 @@ function Turtle (name, turtles, drum) {
     };
 
     this.doForward = function(steps) {
+
         this.processColor();
         if (!this.fillState) {
             ctx.lineWidth = this.stroke;
@@ -862,22 +894,33 @@ function Turtle (name, turtles, drum) {
     };
 
     this.doShowText = function(size, myText) {
-        // Add a text or image object to the canvas
+        // Add a text object to the canvas
+        if (myText === null) {
+            return;
+        }
+
+        if (typeof(myText) !== 'string') {
+            var textList = [myText.toString()];
+        } else {
+            var textList = myText.split('\\n');
+        }
 
         var textSize = size.toString() + 'px ' + this.font;
-        var text = new createjs.Text(myText.toString(), textSize, this.canvasColor);
-        text.textAlign = 'left';
-        text.textBaseline = 'alphabetic';
-        this.turtles.stage.addChild(text);
-        this.media.push(text);
-        text.x = this.container.x;
-        text.y = this.container.y;
-        text.rotation = this.orientation;
-        var xScaled = text.x * this.turtles.scale;
-        var yScaled = text.y * this.turtles.scale;
-        var sizeScaled = size * this.turtles.scale;
-        this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "' + this.font + '" font-size = "' + sizeScaled + '">' + myText + '</text>';
-        this.turtles.refreshCanvas();
+        for (i = 0; i < textList.length; i++) {
+            var text = new createjs.Text(textList[i], textSize, this.canvasColor);
+            text.textAlign = 'left';
+            text.textBaseline = 'alphabetic';
+            this.turtles.stage.addChild(text);
+            this.media.push(text);
+            text.x = this.container.x;
+            text.y = this.container.y + i * size;
+            text.rotation = this.orientation;
+            var xScaled = text.x * this.turtles.scale;
+            var yScaled = text.y * this.turtles.scale;
+            var sizeScaled = size * this.turtles.scale;
+            this.svgOutput += '<text x="' + xScaled + '" y = "' + yScaled + '" fill="' + this.canvasColor + '" font-family = "' + this.font + '" font-size = "' + sizeScaled + '">' + myText + '</text>';
+            this.turtles.refreshCanvas();
+        }
     };
 
     this.doRight = function(degrees) {
@@ -1052,74 +1095,157 @@ function Turtle (name, turtles, drum) {
         }
     };
 
+    this.stopBlink = function() {
+        if (this._blinkTimeout != null || !this.blinkFinished) {
+            clearTimeout(this._blinkTimeout);
+            this._blinkTimeout = null;
+
+            this.container.visible = true;
+            this.turtles.refreshCanvas();
+            this.blinkFinished = true;
+
+            /*
+            this.bitmap.alpha = 1.0;
+            this.bitmap.scaleX = this._sizeInUse;
+            this.bitmap.scaleY = this.bitmap.scaleX;
+            this.bitmap.scale = this.bitmap.scaleX;
+            this.bitmap.rotation = this.orientation;
+            this.skinChanged = this._isSkinChanged;
+            var bounds = this.container.getBounds();
+            this.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
+            this.container.visible = true;
+            this.turtles.refreshCanvas();
+            this.blinkFinished = true;
+            */
+        }
+    };
+
     this.blink = function(duration, volume) {
         var that = this;
-        var sizeInUse;
+        this._sizeInUse = that.bitmap.scaleX;
         this._blinkTimeout = null;
+
+        //
+        if (duration > 16) {
+            return;
+        }
+
+        this.stopBlink();
+
+        this.container.visible = false;
+        this._blinkTimeout = setTimeout(function () {
+            that.container.visible = true;
+            that.turtles.refreshCanvas();
+        }, 100);
+        this.turtles.refreshCanvas();
+
+        /*
 
         if (this.beforeBlinkSize == null) {
             this.beforeBlinkSize = that.bitmap.scaleX;
         }
 
-        if (this.blinkFinished){
-            sizeInUse = that.bitmap.scaleX;
+        if (this.blinkFinished) {
+            this._sizeInUse = that.bitmap.scaleX;
         } else {
-            sizeInUse = this.beforeBlinkSize;
+            this._sizeInUse = this.beforeBlinkSize;
         }
 
-        if (this._blinkTimeout != null || !this.blinkFinished) {
-            clearTimeout(this._blinkTimeout);
-            this._blinkTimeout = null;
-
-            that.bitmap.alpha = 1.0;
-            that.bitmap.scaleX = sizeInUse;
-            that.bitmap.scaleY = that.bitmap.scaleX;
-            that.bitmap.scale = that.bitmap.scaleX;
-            that.bitmap.rotation = that.orientation;
-            that.skinChanged = isSkinChanged;
-            var bounds = that.container.getBounds();
-            that.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
-            that.blinkFinished = true;
-        }
-
+        this.stopBlink();
         this.blinkFinished = false;
-        that.container.uncache();
+        this.container.uncache();
         var scalefactor = 60 / 55;
         var volumescalefactor = 4 * (volume + 200) / 1000;
         // Conversion: volume of 1 = 0.804, volume of 50 = 1, volume of 100 = 1.1
-        that.bitmap.alpha = 0.5;
-        that.bitmap.scaleX *= scalefactor * volumescalefactor;  // sizeInUse * scalefactor * volumescalefactor;
-        that.bitmap.scaleY = that.bitmap.scaleX;
-        that.bitmap.scale = that.bitmap.scaleX;
-        var isSkinChanged = that.skinChanged;
-        that.skinChanged = true;
-        createjs.Tween.get(that.bitmap).to({alpha: 1, scaleX: sizeInUse, scaleY: sizeInUse, scale: sizeInUse}, 500 / duration);
+        this.bitmap.alpha = 0.5;
+        this.bitmap.scaleX *= scalefactor * volumescalefactor;  // sizeInUse * scalefactor * volumescalefactor;
+        this.bitmap.scaleY = this.bitmap.scaleX;
+        this.bitmap.scale = this.bitmap.scaleX;
+        this._isSkinChanged = this.skinChanged;
+        this.skinChanged = true;
+        createjs.Tween.get(this.bitmap).to({alpha: 1, scaleX: this._sizeInUse, scaleY: this._sizeInUse, scale: this._sizeInUse}, 500 / duration);
 
         this._blinkTimeout = setTimeout(function () {
             that.bitmap.alpha = 1.0;
-            that.bitmap.scaleX = sizeInUse;
+            that.bitmap.scaleX = that._sizeInUse;
             that.bitmap.scaleY = that.bitmap.scaleX;
             that.bitmap.scale = that.bitmap.scaleX;
             that.bitmap.rotation = that.orientation;
-            that.skinChanged = isSkinChanged;
+            that.skinChanged = that._isSkinChanged;
             var bounds = that.container.getBounds();
             that.container.cache(bounds.x, bounds.y, bounds.width, bounds.height);
             that.blinkFinished = true;
+            that.turtles.refreshCanvas();
         }, 500 / duration);  // 500 / duration == (1000 * (1 / duration)) / 2
+        */
     };
 };
 
 
 function Turtles () {
+    this.masterStage = null;
+    this.doClear = null;
+    this.hideMenu = null;
+    this.doGrid = null;
+    this.hideGrids = null;
     this.stage = null;
     this.refreshCanvas = null;
     this.scale = 1.0;
+    this.w = 1200;
+    this.h = 900;
+    this.backgroundColor = platformColor.background;
     this._canvas = null;
     this._rotating = false;
     this._drum = false;
 
+    this._borderContainer = new createjs.Container();
+    this._expandedBoundary = null;
+    this._collapsedBoundary = null;
+    this.isShrunk = false;
+    this._expandButton = null;
+    this._expandLabel = null;
+    this._expandLabelBG = null;
+    this._collapseButton = null;
+    this._collapseLabel = null;
+    this._collapseLabelBG = null;
+    this._clearButton = null;
+    this._clearLabel = null;
+    this._clearLabelBG = null;
+    this._gridLabel = null;
+    this._gridLabelBG = null;
+
+
     // The list of all of our turtles, one for each start block.
     this.turtleList = [];
+
+    this.setGridLabel = function (text) {
+        this._gridLabel.text = text;
+    };
+
+    this.setMasterStage = function (stage) {
+        this.masterStage = stage;
+        return this;
+    };
+
+    this.setClear = function (doClear) {
+        this.doClear = doClear;
+        return this;
+    };
+
+    this.setDoGrid = function (doGrid) {
+        this.doGrid = doGrid;
+        return this;
+    };
+
+    this.setHideGrids = function (hideGrids) {
+        this.hideGrids = hideGrids;
+        return this;
+    };
+
+    this.setHideMenu = function (hideMenu) {
+        this.hideMenu = hideMenu;
+        return this;
+    };
 
     this.setCanvas = function (canvas) {
         this._canvas = canvas;
@@ -1128,7 +1254,14 @@ function Turtles () {
 
     this.setStage = function (stage) {
         this.stage = stage;
+        this.stage.addChild(this._borderContainer);
         return this;
+    };
+
+    this.scaleStage = function (scale) {
+        this.stage.scaleX = scale;
+        this.stage.scaleY = scale;
+        this.refreshCanvas();
     };
 
     this.setRefreshCanvas = function (refreshCanvas) {
@@ -1136,9 +1269,446 @@ function Turtles () {
         return this;
     };
 
-    this.setScale = function (scale) {
+    this.setScale = function (w, h, scale) {
         this.scale = scale;
+        this.w = w / scale;
+        this.h = h / scale;
+
+        this.makeBackground();
+    };
+
+    this.deltaY = function (dy) {
+        this.stage.y += dy;
+    };
+
+    this.makeBackground = function (setCollapsed) {
+        if (setCollapsed === undefined) {
+            var doCollapse = false;
+        } else {
+            var doCollapse = setCollapsed;
+        }
+
+        // Remove any old background containers.
+        for (var i = 0; i < this._borderContainer.children.length; i++) {
+            this._borderContainer.children[i].visible = false;
+            this._borderContainer.removeChild(this._borderContainer.children[i]);
+        }
+
+        // We put the buttons on the stage so they will be on top.
+        if (this._expandButton !== null) {
+            this.stage.removeChild(this._expandButton);
+        }
+
+        if (this._collapseButton !== null) {
+            this.stage.removeChild(this._collapseButton);
+        }
+
+        if (this._clearButton !== null) {
+            this.stage.removeChild(this._clearButton);
+        }
+
+        if (this._gridButton !== null) {
+            this.stage.removeChild(this._gridButton);
+        }
+
+        var that = this;
+
+        function __makeBoundary() {
+            var img = new Image();
+            img.onload = function () {
+                if (that._expandedBoundary !== null) {
+                    that._expandedBoundary.visible = false;
+                }
+
+                that._expandedBoundary = new createjs.Bitmap(img);
+                that._expandedBoundary.x = 0;
+                that._expandedBoundary.y = 55 + LEADING;
+                that._borderContainer.addChild(that._expandedBoundary);
+                __makeBoundary2();
+            };
+
+            var dx = that.w - 5;
+            var dy = that.h - 55 - LEADING;
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(MBOUNDARY.replace('HEIGHT', that.h).replace('WIDTH', that.w).replace('Y', 10 / SCALEFACTOR).replace('X', 10 / SCALEFACTOR).replace('DY', dy).replace('DX', dx).replace('stroke_color', platformColor.ruleColor).replace('fill_color', that.backgroundColor).replace('STROKE', 20 / SCALEFACTOR))));
+        };
+
+        function __makeBoundary2() {
+            var img = new Image();
+            img.onload = function () {
+                if (that._collapsedBoundary !== null) {
+                    that._collapsedBoundary.visible = false;
+                }
+
+                that._collapsedBoundary = new createjs.Bitmap(img);
+                that._collapsedBoundary.x = 0;
+                that._collapsedBoundary.y = 55 + LEADING;
+                that._borderContainer.addChild(that._collapsedBoundary);
+                that._collapsedBoundary.visible = false;
+
+                __makeExpandButton();
+            };
+
+            var dx = that.w - 20;
+            var dy = that.h - 55 - LEADING;
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(MBOUNDARY.replace('HEIGHT', that.h).replace('WIDTH', that.w).replace('Y', 10).replace('X', 10).replace('DY', dy).replace('DX', dx).replace('stroke_color', platformColor.ruleColor).replace('fill_color', that.backgroundColor).replace('STROKE', 20))));
+        };
+
+        function __makeExpandButton() {
+            that._expandButton = new createjs.Container();
+            that._expandLabel = null;
+            that._expandLabelBG = null;
+
+            that._expandLabel = new createjs.Text(_('Expand'), '14px Sans', '#282828');
+            that._expandLabel.textAlign = 'center';
+            that._expandLabel.x = 11.5;
+            that._expandLabel.y = 55;
+            that._expandLabel.visible = false;
+
+            var img = new Image();
+            img.onload = function () {
+                if (that._expandButton !== null) {
+                    that._expandButton.visible = false;
+                }
+
+                var bitmap = new createjs.Bitmap(img);
+                that._expandButton.addChild(bitmap);
+                bitmap.visible = true;
+                that._expandButton.addChild(that._expandLabel);
+
+                that._expandButton.x = that.w - 10 - 4 * 55;
+                that._expandButton.y = 55 + LEADING + 6;
+                that._expandButton.scaleX = SCALEFACTOR;
+                that._expandButton.scaleY = SCALEFACTOR;
+                that._expandButton.scale = SCALEFACTOR;
+                that._expandButton.visible = false;
+                // that._borderContainer.addChild(that._expandButton);
+                that.stage.addChild(that._expandButton);
+
+                that._expandButton.removeAllEventListeners('mouseover');
+                that._expandButton.on('mouseover', function (event) {
+                    if (that._expandLabel !== null) {
+                        that._expandLabel.visible = true;
+
+                        if (that._expandLabelBG === null) {
+                            var b = that._expandLabel.getBounds();
+                            that._expandLabelBG = new createjs.Shape();
+                            that._expandLabelBG.graphics.beginFill('#FFF').drawRoundRect(that._expandLabel.x + b.x - 8, that._expandLabel.y + b.y - 2, b.width + 16, b.height + 8, 10, 10, 10, 10);
+                            that._expandButton.addChildAt(that._expandLabelBG, 0);
+                        } else {
+                            that._expandLabelBG.visible = true;
+                        }
+                    }
+
+                    that.refreshCanvas();
+                });
+
+                that._expandButton.removeAllEventListeners('mouseout');
+                that._expandButton.on('mouseout', function (event) {
+                    if (that._expandLabel !== null) {
+                        that._expandLabel.visible = false;
+                        that._expandLabelBG.visible = false;
+                        that.refreshCanvas();
+                    }
+                });
+
+                that._expandButton.removeAllEventListeners('pressmove');
+                that._expandButton.on('pressmove', function (event) {
+                    var w = (that.w - 10 - SCALEFACTOR * 55) / SCALEFACTOR;
+                    var x = event.stageX / that.scale - w;
+                    var y = event.stageY / that.scale - 16;
+                    that.stage.x = Math.max(0, Math.min(that.w * 3 / 4, x));
+                    that.stage.y = Math.max(55, Math.min(that.h * 3 / 4, y));
+                    that.refreshCanvas();
+                });
+
+                that._expandButton.removeAllEventListeners('click');
+                that._expandButton.on('click', function (event) {
+                    that.hideMenu();
+                    that.scaleStage(1.0);
+                    that._expandedBoundary.visible = true;
+                    that._collapseButton.visible = true;
+                    that._collapsedBoundary.visible = false;
+                    that._expandButton.visible = false;
+                    that.stage.x = 0;
+                    that.stage.y = 0;
+                    that.isShrunk = false;
+                    for (var i = 0; i < that.turtleList.length; i++) {
+                        that.turtleList[i].container.scaleX = 1;
+                        that.turtleList[i].container.scaleY = 1;
+                        that.turtleList[i].container.scale = 1;
+                    }
+
+                    that._clearButton.scaleX = 1;
+                    that._clearButton.scaleY = 1;
+                    that._clearButton.scale = 1;
+                    that._clearButton.x = that.w - 5 - 2 * 55;
+
+                    that._gridButton.scaleX = 1;
+                    that._gridButton.scaleY = 1;
+                    that._gridButton.scale = 1;
+                    that._gridButton.x = that.w - 10 - 3 * 55;
+                    that._gridButton.visible = true;
+
+                    // remove the stage and add it back in position 0
+                    that.masterStage.removeChild(that.stage);
+                    that.masterStage.addChildAt(that.stage, 0);
+                });
+
+                __makeCollapseButton();
+            };
+
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(EXPANDBUTTON)));
+        };
+
+        function __makeCollapseButton() {
+            that._collapseButton = new createjs.Container();
+            that._collapseLabel = null;
+            that._collapseLabelBG = null;
+
+            that._collapseLabel = new createjs.Text(_('Collapse'), '14px Sans', '#282828');
+            that._collapseLabel.textAlign = 'center';
+            that._collapseLabel.x = 11.5;
+            that._collapseLabel.y = 55;
+            that._collapseLabel.visible = false;
+
+            var img = new Image();
+            img.onload = function () {
+                if (that._collapseButton !== null) {
+                    that._collapseButton.visible = false;
+                }
+
+                var bitmap = new createjs.Bitmap(img);
+                that._collapseButton.addChild(bitmap);
+                bitmap.visible = true;
+                that._collapseButton.addChild(that._collapseLabel);
+
+                // that._borderContainer.addChild(that._collapseButton);
+                that.stage.addChild(that._collapseButton);
+
+                that._collapseButton.visible = true;
+                that._collapseButton.x = that.w - 55;
+                that._collapseButton.y = 55 + LEADING + 6;
+                that.refreshCanvas();
+
+                that._collapseButton.removeAllEventListeners('click');
+                that._collapseButton.on('click', function (event) {
+                    that.collapse();
+                });
+
+                that._collapseButton.removeAllEventListeners('mouseover');
+                that._collapseButton.on('mouseover', function (event) {
+                    if (that._collapseLabel !== null) {
+                        that._collapseLabel.visible = true;
+
+                        if (that._collapseLabelBG === null) {
+                            var b = that._collapseLabel.getBounds();
+                            that._collapseLabelBG = new createjs.Shape();
+                            that._collapseLabelBG.graphics.beginFill('#FFF').drawRoundRect(that._collapseLabel.x + b.x - 8, that._collapseLabel.y + b.y - 2, b.width + 16, b.height + 8, 10, 10, 10, 10);
+                            that._collapseButton.addChildAt(that._collapseLabelBG, 0);
+                        } else {
+                            that._collapseLabelBG.visible = true;
+                        }
+                    }
+
+                    that.refreshCanvas();
+                });
+
+                that._collapseButton.removeAllEventListeners('mouseout');
+                that._collapseButton.on('mouseout', function (event) {
+                  if (that._collapseLabel !== null) {
+                     that._collapseLabel.visible = false;
+                     that._collapseLabelBG.visible = false;
+                     that.refreshCanvas();
+                  }
+                });
+
+                __makeClearButton();
+            };
+
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(COLLAPSEBUTTON)))
+        };
+
+        function __makeClearButton() {
+            that._clearButton = new createjs.Container();
+            that._clearLabel = null;
+            that._clearLabelBG = null;
+
+            that._clearButton.removeAllEventListeners('click');
+            that._clearButton.on('click', function (event) {
+                that.doClear();
+            });
+
+            that._clearLabel = new createjs.Text(_('Clean'), '14px Sans', '#282828');
+            that._clearLabel.textAlign = 'center';
+            that._clearLabel.x = 27.5;
+            that._clearLabel.y = 55;
+            that._clearLabel.visible = false;
+
+            var img = new Image();
+            img.onload = function () {
+                var bitmap = new createjs.Bitmap(img);
+                that._clearButton.addChild(bitmap);
+                that._clearButton.addChild(that._clearLabel);
+
+                bitmap.visible = true;
+                that._clearButton.x = that.w - 5 - 2 * 55;
+                that._clearButton.y = 55 + LEADING + 6;
+                that._clearButton.visible = true;
+
+                // that._borderContainer.addChild(that._clearButton);
+                that.stage.addChild(that._clearButton);
+                that.refreshCanvas();
+
+                that._clearButton.removeAllEventListeners('mouseover');
+                that._clearButton.on('mouseover', function (event) {
+                    if (that._clearLabel !== null) {
+                        that._clearLabel.visible = true;
+
+                        if (that._clearLabelBG === null) {
+                            var b = that._clearLabel.getBounds();
+                            that._clearLabelBG = new createjs.Shape();
+                            that._clearLabelBG.graphics.beginFill('#FFF').drawRoundRect(that._clearLabel.x + b.x - 8, that._clearLabel.y + b.y - 2, b.width + 16, b.height + 8, 10, 10, 10, 10);
+                            that._clearButton.addChildAt(that._clearLabelBG, 0);
+                        } else {
+                            that._clearLabelBG.visible = true;
+                        }
+                    }
+
+                    that.refreshCanvas();
+                });
+
+                that._clearButton.removeAllEventListeners('mouseout');
+                that._clearButton.on('mouseout', function (event) {
+                    if (that._clearLabel !== null) {
+                        that._clearLabel.visible = false;
+                    }
+
+                    if (that._clearLabelBG !== null) {
+                        that._clearLabelBG.visible = false;
+                    }
+
+                    that.refreshCanvas();
+                });
+
+                if (doCollapse) {
+                    that.collapse();
+                }
+
+                __makeGridButton();
+            };
+
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(CLEARBUTTON)));
+        };
+
+        function __makeGridButton() {
+            that._gridButton = new createjs.Container();
+            that._gridLabel = null;
+            that._gridLabelBG = null;
+
+            that._gridButton.removeAllEventListeners('click');
+            that._gridButton.on('click', function (event) {
+                that.doGrid();
+            });
+
+            that._gridLabel = new createjs.Text(_('Cartesian'), '14px Sans', '#282828');
+            that._gridLabel.textAlign = 'center';
+            that._gridLabel.x = 27.5;
+            that._gridLabel.y = 55;
+            that._gridLabel.visible = false;
+
+            var img = new Image();
+            img.onload = function () {
+                var bitmap = new createjs.Bitmap(img);
+                that._gridButton.addChild(bitmap);
+                that._gridButton.addChild(that._gridLabel);
+
+                bitmap.visible = true;
+                that._gridButton.x = that.w - 10 - 3 * 55;
+                that._gridButton.y = 55 + LEADING + 6;
+                that._gridButton.visible = true;
+
+                // that._borderContainer.addChild(that._gridButton);
+                that.stage.addChild(that._gridButton);
+                that.refreshCanvas();
+
+                that._gridButton.removeAllEventListeners('mouseover');
+                that._gridButton.on('mouseover', function (event) {
+                    if (that._gridLabel !== null) {
+                        that._gridLabel.visible = true;
+
+                        if (that._gridLabelBG === null) {
+                            var b = that._gridLabel.getBounds();
+                            that._gridLabelBG = new createjs.Shape();
+                            that._gridLabelBG.graphics.beginFill('#FFF').drawRoundRect(that._gridLabel.x + b.x - 8, that._gridLabel.y + b.y - 2, b.width + 16, b.height + 8, 10, 10, 10, 10);
+                            that._gridButton.addChildAt(that._gridLabelBG, 0);
+                        } else {
+                            that._gridLabelBG.visible = true;
+                        }
+                    }
+
+                    that.refreshCanvas();
+                });
+
+                that._gridButton.removeAllEventListeners('mouseout');
+                that._gridButton.on('mouseout', function (event) {
+                    if (that._gridLabel !== null) {
+                        that._gridLabel.visible = false;
+                        that._gridLabelBG.visible = false;
+                        that.refreshCanvas();
+                    }
+                });
+
+                if (doCollapse) {
+                    that.collapse();
+                }
+            };
+
+            img.src = 'data:image/svg+xml;base64,' + window.btoa(
+                unescape(encodeURIComponent(CARTESIANBUTTON)));
+        };
+
+        __makeBoundary();
         return this;
+    };
+
+    this.collapse = function () {
+        this.hideMenu();
+        this.hideGrids();
+        this.scaleStage(0.25);
+        this._collapsedBoundary.visible = true;
+        this._expandButton.visible = true;
+        this._expandedBoundary.visible = false;
+        this._collapseButton.visible = false;
+        this.stage.x = (this.w * 3 / 4) - 10;
+        this.stage.y = 55 + LEADING + 6;
+        this.isShrunk = true;
+        for (var i = 0; i < this.turtleList.length; i++) {
+            this.turtleList[i].container.scaleX = SCALEFACTOR;
+            this.turtleList[i].container.scaleY = SCALEFACTOR;
+            this.turtleList[i].container.scale = SCALEFACTOR;
+        }
+
+        this._clearButton.scaleX = SCALEFACTOR;
+        this._clearButton.scaleY = SCALEFACTOR;
+        this._clearButton.scale = SCALEFACTOR;
+        this._clearButton.x = this.w - 5 - 8 * 55;
+
+        this._gridButton.scaleX = SCALEFACTOR;
+        this._gridButton.scaleY = SCALEFACTOR;
+        this._gridButton.scale = SCALEFACTOR;
+        this._gridButton.x = this.w - 10 - 12 * 55;
+        this._gridButton.visible = false;
+
+        // remove the stage and add it back at the top
+        this.masterStage.removeChild(this.stage);
+        this.masterStage.addChild(this.stage);
+
+        this.refreshCanvas();
     };
 
     this.setBlocks = function (blocks) {
@@ -1154,6 +1724,12 @@ function Turtles () {
     this.addTurtle = function (startBlock, infoDict) {
         this._drum = false;
         this.add(startBlock, infoDict);
+        if (this.isShrunk) {
+            var t = last(this.turtleList);
+            t.container.scaleX = SCALEFACTOR;
+            t.container.scaleY = SCALEFACTOR;
+            t.container.scale = SCALEFACTOR;
+        }
     };
 
     this.add = function (startBlock, infoDict) {
@@ -1200,6 +1776,16 @@ function Turtles () {
         newTurtle.container.x = this.turtleX2screenX(newTurtle.x);
         newTurtle.container.y = this.turtleY2screenY(newTurtle.y);
 
+        // Ensure that the buttons are on top.
+        this.stage.removeChild(this._expandButton);
+        this.stage.addChild(this._expandButton);
+        this.stage.removeChild(this._collapseButton);
+        this.stage.addChild(this._collapseButton);
+        this.stage.removeChild(this._clearButton);
+        this.stage.addChild(this._clearButton);
+        this.stage.removeChild(this._gridButton);
+        this.stage.addChild(this._gridButton);
+
         var hitArea = new createjs.Shape();
         hitArea.graphics.beginFill('#FFF').drawEllipse(-27, -27, 55, 55);
         hitArea.x = 0;
@@ -1221,13 +1807,7 @@ function Turtles () {
                 startBlock.container.addChild(newTurtle.decorationBitmap);
                 newTurtle.decorationBitmap.name = 'decoration';
                 var width = startBlock.width;
-
-                // Race condition with collapse/expand bitmap generation.
-                // if (startBlock.expandBitmap == null) {
-                //     var offset = 75;
-                // } else {
                 var offset = 40;
-                // }
 
                 newTurtle.decorationBitmap.x = width - offset * startBlock.protoblock.scale / 2;
 
@@ -1308,6 +1888,7 @@ function Turtles () {
         });
 
         document.getElementById('loader').className = '';
+
         setTimeout(function () {
             if (blkInfoAvailable) {
                 newTurtle.doSetHeading(infoDict['heading']);
@@ -1317,6 +1898,7 @@ function Turtles () {
                 newTurtle.doSetColor(infoDict['color']);
             }
         }, 1000);
+
         this.refreshCanvas();
     };
 
@@ -1358,7 +1940,11 @@ function Turtles () {
     this.markAsStopped = function () {
         for (var turtle in this.turtleList) {
             this.turtleList[turtle].running = false;
+            // Make sure the blink is really stopped.
+            // this.turtleList[turtle].stopBlink();
         }
+
+        this.refreshCanvas();
     };
 
     this.running = function () {

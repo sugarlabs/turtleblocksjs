@@ -75,7 +75,8 @@ function Palettes () {
     this.visible = true;
     this.scale = 1.0;
     this.mobile = false;
-    this.top = 2 * 55 + 10 + LEADING;
+    // Top of the palette
+    this.top = 55 + 20 + LEADING;
     this.current = DEFAULTPALETTE;
     this.x = [];  // We track x and y for each of the multipalettes
     this.y = [];
@@ -103,7 +104,7 @@ function Palettes () {
             this._makeSelectorButton(i);
             this.x.push(0);
             // This is the top of the palette buttons stack
-            this.y.push((3.5 * this.cellSize + 2 * LEADING) / PALETTE_SCALE_FACTOR);
+            this.y.push((this.top + LEADING) / PALETTE_SCALE_FACTOR);
         }
     };
 
@@ -586,6 +587,7 @@ function Palettes () {
     // Palette Button event handlers
     this._loadPaletteButtonHandler = function (name) {
         var locked = false;
+        var searchlocked = false;
         var scrolling = false;
         var that = this;
 
@@ -599,7 +601,11 @@ function Palettes () {
             // Add a background
             that.paletteHighlight = new createjs.Shape();
             that.paletteHighlight.graphics.f(platformColor.paletteSelected).r(that.buttons[name].x + 2, that.buttons[name].y + 2, Math.max(3, MULTIPALETTES.length) * STANDARDBLOCKHEIGHT - 4, that.cellSize).ef();
-            that.stage.addChildAt(that.paletteHighlight, 2);
+            if (name === 'search') {
+                that.stage.addChildAt(that.paletteHighlight, 1);
+            } else {
+                that.stage.addChildAt(that.paletteHighlight, 2);
+            }
         });
 
         this.buttons[name].on('pressup', function (event) {
@@ -615,22 +621,49 @@ function Palettes () {
             that.stage.removeChild(that.paletteHighlight);
         });
 
+
         this.buttons[name].on('click', function (event) {
-            if (locked) {
-                return;
-            }
-            locked = true;
+            var clickOutside = function(event) {                
+                setTimeout(function () {
+                    searchlocked = false;
+                }, 500);
 
-            setTimeout(function () {
-                locked = false;
-            }, 500);
+                if (!that.dict['search'].visible && searchlocked) {
+                    that.showPalette('search');
+                } else { 
+                    document.removeEventListener('click', clickOutside);
+                    that.dict['search'].hide();
+                }
 
-            if (!that.dict[name].visible) {
-                that.showPalette(name);
+                that.refreshCanvas();
+            };
+
+            if (name === "search") {
+                searchlocked = true;
+                document.addEventListener("click", clickOutside);
             } else {
-                that.dict[name].hide();
+                if (locked) {
+                    return;
+                }
+
+                locked = true;
+                searchlocked = false;
+
+                setTimeout(function () {
+                    locked = false;
+                }, 500);
+
+                if (!that.dict[name].visible && name !== 'search') {
+                    that.dict['search'].hide();                        
+                    if (!searchlocked) {
+                        that.showPalette(name);
+                    }
+                } else { 
+                    that.dict[name].hide();
+                }
+
+                that.refreshCanvas();
             }
-            that.refreshCanvas();
         });
     };
 
@@ -784,6 +817,9 @@ function PaletteModel(palette, palettes, name) {
             case 'drumname':
                 label = _('drum');
                 break;
+            case 'effectsname':
+                label = _('effect');
+                break;    
             case 'solfege':
                 label = i18nSolfege('sol');
                 break;
@@ -957,7 +993,24 @@ function PopdownPalette(palettes) {
             html += '<div class="palette">';
             var icon = PALETTEICONS[name].replace(/#f{3,6}/gi, PALETTEFILLCOLORS[name]);
             //.TRANS: popout: to detach as a separate window
-            html += format('<h2 data-name="{n}"> \
+            var language = localStorage.languagePreference;
+            if (language === 'ja') {
+                //.TRANS: show2 is show as in make visible (the opposite of hide)
+                html += format('<h2 data-name="{n}"> \
+                                {i}<span>{n}</span> \
+                                <img class="hide-button" src="header-icons/hide.svg" \
+                                     alt="{' + _('hide') + '}" \
+                                     title="{' + _('hide') + '}" /> \
+                                <img class="show-button" src="header-icons/show.svg" \
+                                     alt="{' + _('show2') + '}" \
+                                     title="{' + _('show2') + '}" /> \
+                                <img class="popout-button" src="header-icons/popout.svg" \
+                                     alt="{' + _('popout') + '}" \
+                                     title="{' + _('popout') + '}" /> \
+                            </h2>',
+                               {i: icon, n: toTitleCase(_(name))});
+            } else {
+                html += format('<h2 data-name="{n}"> \
                                 {i}<span>{n}</span> \
                                 <img class="hide-button" src="header-icons/hide.svg" \
                                      alt="{' + _('hide') + '}" \
@@ -969,7 +1022,8 @@ function PopdownPalette(palettes) {
                                      alt="{' + _('popout') + '}" \
                                      title="{' + _('popout') + '}" /> \
                             </h2>',
-                           {i: icon, n: toTitleCase(_(name))});
+                               {i: icon, n: toTitleCase(_(name))});
+             }
             html += '<ul>';
             this.models[name].update();
 
@@ -1764,6 +1818,7 @@ function Palette(palettes, name) {
             if (locked) {
                 return;
             }
+            
             locked = true;
             setTimeout(function () {
                 locked = false;

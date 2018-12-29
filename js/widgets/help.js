@@ -25,11 +25,11 @@ function HelpWidget () {
         var canvas = docById('myCanvas');
 
         // help page
-	var page = 0;
+        var page = 0;
 
         // Position the widget and make it visible.
         var helpDiv = docById('helpDiv');
-	helpDiv.style.display = '';
+        helpDiv.style.display = '';
         helpDiv.style.visibility = 'visible';
         helpDiv.setAttribute('draggable', 'true');
         helpDiv.style.left = '200px';
@@ -49,62 +49,70 @@ function HelpWidget () {
         // For the button callbacks
         var that = this;
 
-	if (blocks === null) {
-            var cell = this._addButton(row, 'up.svg', ICONSIZE, _('previous page'));
+        if (blocks === null) {
+            var cell = this._addButton(row, 'up.svg', ICONSIZE, _('Previous page'));
 
             cell.onclick=function() {
-		page = page - 1;
-		if (page < 0) {
-		    page = HELPCONTENT.length - 1;
-		}
+                page = page - 1;
+                if (page < 0) {
+                    page = HELPCONTENT.length - 1;
+                }
 
-		that._showPage(page);
+                that._showPage(page);
             };
 
             cell.onmouseover=function() {
-		this.style.backgroundColor = MATRIXBUTTONCOLORHOVER;
+                this.style.backgroundColor = platformColor.selectorSelected;
             };
 
             cell.onmouseout=function() {
-		this.style.backgroundColor = MATRIXBUTTONCOLOR;
+                this.style.backgroundColor = platformColor.selectorBackground;
             };
 
-            var cell = this._addButton(row, 'down.svg', ICONSIZE, _('next page'));
+            var cell = this._addButton(row, 'down.svg', ICONSIZE, _('Next page'));
 
             cell.onclick=function() {
-		page = page + 1;
-		if (page === HELPCONTENT.length) {
-		    page = 0;
-		}
+                page = page + 1;
+                if (page === HELPCONTENT.length) {
+                    page = 0;
+                }
 
-		that._showPage(page);
+                that._showPage(page);
             };
 
             cell.onmouseover=function() {
-		this.style.backgroundColor = MATRIXBUTTONCOLORHOVER;
+                this.style.backgroundColor = platformColor.selectorSelected;
             };
 
             cell.onmouseout=function() {
-		this.style.backgroundColor = MATRIXBUTTONCOLOR;
+                this.style.backgroundColor = platformColor.selectorBackground;
             };
+        } else {
+            if (blocks.activeBlock.name === null) {
+                helpDiv.style.display = 'none';
+            } else {
+                var label = blocks.blockList[blocks.activeBlock].protoblock.staticLabels[0];
+	    }
+
+            var cell = this._addLabel(row, ICONSIZE, label);
 	}
 
-        var cell = this._addButton(row, 'close-button.svg', ICONSIZE, _('close'));
+        var cell = this._addButton(row, 'close-button.svg', ICONSIZE, _('Close'));
 
         cell.onclick=function() {
             helpDiv.style.display = 'none';
         };
 
         cell.onmouseover=function() {
-            this.style.backgroundColor = MATRIXBUTTONCOLORHOVER;
+            this.style.backgroundColor = platformColor.selectorSelected;
         };
 
         cell.onmouseout=function() {
-            this.style.backgroundColor = MATRIXBUTTONCOLOR;
+            this.style.backgroundColor = platformColor.selectorBackground;
         };
 
         // We use this cell as a handle for dragging.
-        var dragCell = this._addButton(row, 'grab.svg', ICONSIZE, _('drag'));
+        var dragCell = this._addButton(row, 'grab.svg', ICONSIZE, _('Drag'));
         dragCell.style.cursor = 'move';
 
         this._dx = dragCell.getBoundingClientRect().left - helpDiv.getBoundingClientRect().left;
@@ -133,9 +141,9 @@ function HelpWidget () {
         canvas.ondrop = function(e) {
             if (that._dragging) {
                 that._dragging = false;
-                var x = e.clientX - that._dx;
+                var x = e.clientX - (dragCell.getBoundingClientRect().left - helpDiv.getBoundingClientRect().left) - BUTTONSIZE/2;
                 helpDiv.style.left = x + 'px';
-                var y = e.clientY - that._dy;
+                var y = e.clientY - (dragCell.getBoundingClientRect().top - helpDiv.getBoundingClientRect().top) - BUTTONSIZE/2;
                 helpDiv.style.top = y + 'px';
                 dragCell.innerHTML = that._dragCellHTML;
             }
@@ -148,9 +156,9 @@ function HelpWidget () {
         helpDiv.ondrop = function(e) {
             if (that._dragging) {
                 that._dragging = false;
-                var x = e.clientX - that._dx;
+                var x = e.clientX - (dragCell.getBoundingClientRect().left - helpDiv.getBoundingClientRect().left) - BUTTONSIZE/2;
                 helpDiv.style.left = x + 'px';
-                var y = e.clientY - that._dy;
+                var y = e.clientY - (dragCell.getBoundingClientRect().top - helpDiv.getBoundingClientRect().top) - BUTTONSIZE/2;
                 helpDiv.style.top = y + 'px';
                 dragCell.innerHTML = that._dragCellHTML;
             }
@@ -170,60 +178,77 @@ function HelpWidget () {
         };
 
         if (blocks === null) {
-	    // display help menu
-	    this._showPage(0);
-	} else {
-	    // display help for this block
-	    if (blocks.activeBlock.name === null) {
-		helpDiv.style.display = 'none';
-	    } else {
-		var name = blocks.blockList[blocks.activeBlock].name;
+            // display help menu
+            this._showPage(0);
+        } else {
+            // display help for this block
+            if (blocks.activeBlock.name === null) {
+                helpDiv.style.display = 'none';
+            } else {
+                var name = blocks.blockList[blocks.activeBlock].name;
 
-		if (name in BLOCKHELP) {
-		    var helpBody = docById('helpBodyDiv');
+                if (name in BLOCKHELP) {
+                    var helpBody = docById('helpBodyDiv');
 
-		    body = '';
-		    if (BLOCKHELP[name].length > 1) {
-			var path = BLOCKHELP[name][1];
-			if (localStorage.languagePreference == 'ja') {
-			    if (localStorage.kanaPreference == 'kana') {
-				path = path + '-kana';
-			    } else {
-				path = path + '-ja';
-			    }
-			}
+                    body = '';
+                    if (BLOCKHELP[name].length > 1) {
+                        var path = BLOCKHELP[name][1];
+                        // We need to add a case here whenever we add
+                        // help artwor support for a new language.
+                        // e.g., documentation-es
+                        switch(localStorage.languagePreference) {
+                        case 'ja':
+                            if (localStorage.kanaPreference == 'kana') {
+                                path = path + '-kana';
+                            } else {
+                                path = path + '-ja';
+                            }
+                            break;
+                        case 'es':
+                            path = path + '-es';
+                            break;
+                        default:
+                            break;
+                        }
 
-			body = body + '<p><img src="' + path + '/' + BLOCKHELP[name][2] + '"></p>';
-		    }
+                        body = body + '<p><img src="' + path + '/' + BLOCKHELP[name][2] + '"></p>';
+                    }
 
-		    body = body + '<p>' + BLOCKHELP[name][0] + '</p>';
-		    helpBody.innerHTML = body;
-		} else {
-		    helpDiv.style.display = 'none';
-		}
-	    }
-	}
+                    body = body + '<p>' + BLOCKHELP[name][0] + '</p>';
+                    helpBody.innerHTML = body;
+                } else {
+                    helpDiv.style.display = 'none';
+                }
+            }
+        }
     };
 
     this._showPage = function(page) {
-	var helpBody = docById('helpBodyDiv');
-	var body = '';
-	body = body + '<p><img src="' + HELPCONTENT[page][2] + '"></p>';
-	body = body + '<h1>' + HELPCONTENT[page][0] + '</h1>';
-	body = body + '<p>' + HELPCONTENT[page][1] + '</p>';
+        var helpBody = docById('helpBodyDiv');
+        var body = '';
+        body = body + '<p>&nbsp;<img src="' + HELPCONTENT[page][2] + '"></p>';
+        body = body + '<h1>' + HELPCONTENT[page][0] + '</h1>';
+        body = body + '<p>' + HELPCONTENT[page][1] + '</p>';
 
         if (HELPCONTENT[page].length > 3) {
-	    var link = HELPCONTENT[page][3];
-	    // FIXME
-	    if (localStorage.languagePreference == 'ja') {
-		link = link + '-ja';
-	    }
+            var link = HELPCONTENT[page][3];
+	    console.log(page + ' ' + link);
+            // We need to add a case here whenever we add
+            // a guide a new language.
+            // e.g., guide-es
+            body = body + '<p><a href="' + link + '" target="_blank">' + HELPCONTENT[page][4] + '</a></p>';
+        }
 
-	    body = body + '<p><a href="' + link + '" target="_blank">' + HELPCONTENT[page][4] + '</a></p>';
-	}
-
-	helpBody.innerHTML = body;
+    helpBody.innerHTML = body;
     };
+
+    this.showPageByName = function(pageName) {
+        for (var i = 0; i < HELPCONTENT.length; i++) {
+            if (HELPCONTENT[i].includes(pageName)) {
+                this._showPage(i);
+            }
+        }
+};
 
     this._addButton = function(row, icon, iconSize, label) {
         var cell = row.insertCell(-1);
@@ -234,15 +259,26 @@ function HelpWidget () {
         cell.style.height = cell.style.width;
         cell.style.minHeight = cell.style.height;
         cell.style.maxHeight = cell.style.height;
-        cell.style.backgroundColor = MATRIXBUTTONCOLOR;
+        cell.style.backgroundColor = platformColor.selectorBackground;
 
         cell.onmouseover=function() {
-            this.style.backgroundColor = MATRIXBUTTONCOLORHOVER;
+            this.style.backgroundColor = platformColor.selectorSelected;
         }
 
         cell.onmouseout=function() {
-            this.style.backgroundColor = MATRIXBUTTONCOLOR;
+            this.style.backgroundColor = platformColor.selectorBackground;
         }
+
+        return cell;
+    };
+
+    this._addLabel = function(row, iconSize, label) {
+        var cell = row.insertCell(-1);
+        cell.innerHTML = '&nbsp;&nbsp;' + label + '&nbsp;&nbsp;';
+        cell.style.height = cell.style.width;
+        cell.style.minHeight = cell.style.height;
+        cell.style.maxHeight = cell.style.height;
+        cell.style.backgroundColor = platformColor.selectorBackground;
 
         return cell;
     };

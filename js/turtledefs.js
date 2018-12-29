@@ -10,11 +10,23 @@
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 //
 
+const LOGODEFAULT = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100" viewBox="0 0 55 55" style="fill:#ffffff;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"> <path d="m 53.481267,28.305392 c -0.209367,-1.54431 -0.683684,-3.963142 -2.434581,-4.798755 -1.109828,-0.528975 -7.180267,0.535648 -11.31572,0.588453 0.144519,2.488312 -0.778093,5.155238 -3.939898,9.809475 -1.886409,3.241636 -10.411329,3.515578 -10.800417,3.494271 L 1.4324287,37.296302 c 1.1691172,1.648067 3.6860922,3.761922 6.4671469,4.112101 -0.7457525,0.657744 -3.0978837,3.276679 -3.2729735,6.681202 -0.00463,0.07596 0.00185,0.409469 0,0.409469 l 7.4343649,0 c 0.254761,-1.852802 0.9755,-5.273073 2.895929,-6.51445 1.432215,-0.0083 2.73844,-0.166752 3.757481,-0.1158 2.352131,0.116727 7.112904,-0.04725 10.314545,-0.276067 0.02409,0.01297 0.03891,0.273288 0.06392,0.28811 2.092739,1.107049 2.853314,4.766332 3.119191,6.619133 l 7.434366,0 c -9.27e-4,0 0.0056,-0.333504 9.26e-4,-0.409469 -0.173237,-3.361908 -3.144204,-6.569107 -4.146569,-7.513109 2.836638,-1.260832 7.123094,-5.459279 8.243113,-6.678423 0.294595,-0.318681 1.391453,-1.678638 2.22614,-2.303032 0.782809,-0.584558 3.337822,-0.893976 4.296647,-0.935664 0.960677,-0.04169 3.004317,0.407616 3.004317,0.407616 0,0 0.306638,-2.060315 0.210294,-2.762527 z" style="stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" /> <circle cx="59.484001" cy="37.223999" r="1.109" transform="matrix(0.92640065,0,0,0.92640065,-6.9147758,-8.3090122)" style="stroke-width:1.18739116;stroke-miterlimit:4;stroke-dasharray:none" /> <g transform="matrix(1.0320878,0,0,0.99904752,-0.184081,0.02418615)"> <path d="m 10.571891,36.919704 5.798216,-14.14899 -5.012466,-5.534784 c -1.4233734,1.718282 -2.480637,3.711241 -2.8150389,5.046387 -0.451356,1.79814 0,7.96332 0.5856365,10.1437 l -2.8182215,4.571955 4.0512949,-0.148486 z" style="fill:#186dee;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" /> <path d="m 15.827351,23.138991 12.64663,-0.323916 3.118775,-3.975828 c -0.869792,-1.299255 -2.013342,-2.558133 -3.475701,-3.315433 -4.355888,-2.256648 -8.269084,-3.109957 -13.966045,-0.280847 -1.311618,0.652319 -1.961058,1.152293 -2.772806,1.934717 z" style="fill:#ffb504;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" /> <path d="M 28.827609,22.944786 16.350738,23.050047 10.704106,37.127591 29.0947,37.332873 c 3.504125,-0.134986 4.499519,-1.032283 5.462399,-1.962597 z" style="fill:#009a57;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" /> <path d="m 34.981054,23.766238 c 0,0 -2.011809,-2.505097 -3.098182,-4.441418 l -2.902193,3.701262 5.37511,12.556508 c 0.907909,-0.615531 2.256487,-2.511987 2.898435,-3.491812 2.418679,-3.238079 2.693228,-7.998903 2.693228,-7.998903 z" style="fill:#d8432e;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" /> </g> </svg>'
+const LOGOJA1 = LOGODEFAULT;
+const LOGOJA = LOGODEFAULT;
+
+//.TRANS: put the URL to the guide here, e.g., https://github.com/sugarlabs/turtleblocksjs/tree/master/guide/README.md
+var GUIDEURL = _('guide url');
+
+if (GUIDEURL === 'guide url' || GUIDEURL === '') {
+    GUIDEURL = 'https://github.com/sugarlabs/turtleblocksjs/tree/master/guide/README.md';
+}
+
 const NUMBERBLOCKDEFAULT = 100;
 
 const DEFAULTPALETTE = 'turtle';
 
-const TITLESTRING = _('Turtle Blocks');
+const TITLESTRING = _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.');
+const VERSION = '2.71';
 
 // We don't include 'extras' since we want to be able to delete
 // plugins from the extras palette.
@@ -32,136 +44,80 @@ const SKIPPALETTES = ['heap', 'extras'];
 const MULTIPALETTEICONS = ['logic', 'artwork'];
 const MULTIPALETTENAMES = [_('logic'), _('artwork')];
 
+
 function getMainToolbarButtonNames(name) {
-   return (['popdown-palette', 'run', 'step', 'step-music', 'stop-turtle', 'hard-stop-turtle', 'palette', 'help', 'sugarizer-stop', 'beginner', 'advanced', 'planet', 'planet-disabled', 'open', 'save', 'new'].indexOf(name) > -1);
+    return (['popdown-palette', 'run', 'step', 'step-music', 'stop-turtle', 'hard-stop-turtle', 'palette', 'help', 'sugarizer-stop', 'beginner', 'advanced', 'planet', 'planet-disabled', 'open', 'save', 'new'].indexOf(name) > -1);
 };
 
 
 function getAuxToolbarButtonNames(name) {
-<<<<<<< HEAD
-    return (['planet', 'planet-disabled', 'open', 'save', 'paste-disabled', 'Cartesian', 'polar', 'utility', 'new', 'restore-trash'].indexOf(name) > -1);
-}
-=======
-   return (['paste-disabled', 'Cartesian', 'compile', 'utility', 'restore-trash', 'hide-blocks', 'collapse-blocks', 'go-home'].indexOf(name) > -1);
+    return (['paste-disabled', 'Cartesian', 'compile', 'utility', 'restore-trash', 'hide-blocks', 'collapse-blocks', 'go-home'].indexOf(name) > -1);
 };
 
 
 function beginnerBlock(name) {
-   // Only these blocks appear on the palette in beginner mode.
-   return ['newnote', 'note4', 'rest2', 'mynotevalue',  // notes palette
-           'meter', 'setbpm3', 'setmasterbpm2', 'everybeatdo', 'beatvalue', 'elapsednotes2', // meter palette
-           'pitch', 'pitch2', 'pitchnumber', 'hertz', 'steppitch', 'fourth', 'fifth', 'mypitch', 'pitchinhertz', // pitch palette
-           'setkey2', 'modelength', 'thirdinterval', 'sixthinterval', 'chordI', 'chordIV', 'chordV', 'settemperament', // interval palette
-           'settimbre', 'newstaccato', 'newslur', 'vibrato', 'chorus', 'tremolo', 'neighbor2', // tone palette
-           'crescendo', 'decrescendo', 'setnotevolume', 'setsynthvolume', 'setdrumvolume', // volume palette
-           'playdrum', 'setdrum', // drum palette
-           'if', 'ifthenelse', 'repeat', 'forever', 'backward', // flow palette
-           'action', 'start', 'do', 'dispatch', 'listen',  // action palette
-           'storebox1', 'box1', 'storebox2', 'box2', 'increment', 'incrementOne', 'storein', 'namedbox',  // boxes palette
-           'status', 'matrix', 'rhythmruler2', 'pitchslider', 'rhythm2', 'stuplet', 'musickeyboard', 'tempo', 'modewidget', 'matrixcmajor', 'matrixgmajor', // widgets palette
-           'forward', 'back', 'left', 'right', 'setxy', 'arc', 'x', 'y', 'heading', 'scrollxy',  // mouse palette
-           'setpensize', 'penup', 'pendown', 'color', 'setcolor', 'setshade',  // pen palette
-           'number', 'random', 'oneOf', 'plus', 'minus', 'multiply', 'divide',  // number palette
-           'equal', 'less', 'greater',  // boolean palette
-           'text', 'media', 'show', 'turtleshell', 'speak', 'height', 'width', 'bottompos', 'toppos', 'leftpos', 'rightpos',  // media palette
-           'mousebutton', 'mousex', 'mousey', 'myclick', // sensor palette
-           'push', 'pop', 'setHeapEntry', 'indexHeap', 'reverseHeap', 'emptyHeap', 'heapEmpty', 'heapLength', 'showHeap',  // heap palette
-           'setturtlename2', 'turtlename', // mice palette
-           'print',  // extras palette
-          ].indexOf(name) !== -1
+    // Only these blocks appear on the palette in beginner mode.
+    return true;
 };
->>>>>>> 2ac86deb8be0fe337859f5fcc6a8a447857ab2ce
 
 
 function createDefaultStack() {
-   DATAOBJS =
-       [[0, 'start', screen.width / 3, 100, [null, 1, null]],
+    DATAOBJS =
+	[[0, 'start', screen.width / 3, 100, [null, 1, null]],
 
-        [1, 'repeat', 0, 0, [0, 2, 4, 3]],
-        [2, ['number', {'value': 4}], 0, 0, [1]],
-        [3, 'hidden', 0, 0, [1, null]],
+         [1, 'repeat', 0, 0, [0, 2, 4, 3]],
+         [2, ['number', {'value': 4}], 0, 0, [1]],
+         [3, 'hidden', 0, 0, [1, null]],
 
-        [4, 'forward', 0, 0, [1, 5, 6]],
-        [5, ['number', {'value': 100}], 0, 0, [4]],
-        [6, 'right', 0, 0, [4, 7, null]],
-        [7, ['number', {'value': 90}], 0, 0, [6]],
-       ];
+         [4, 'forward', 0, 0, [1, 5, 6]],
+         [5, ['number', {'value': 100}], 0, 0, [4]],
+         [6, 'right', 0, 0, [4, 7, null]],
+         [7, ['number', {'value': 90}], 0, 0, [6]],
+	];
 };
 
 
 function createHelpContent() {
-    if (beginnerMode) {
-        HELPCONTENT = [
-            [_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
-            [_('Palette buttons'), _('This toolbar contains the palette buttons, including Flow Turtle Pen Action and more.') + ' ' + _('Click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
-            [_('Play'), _('Click the run button to run the project in fast mode.'), 'header-icons/run-button.svg'],
-            [_('Stop'), _('Stop the music (and the mice).') + ' ' + _('You can also type Alt-S to stop.'), 'header-icons/stop-turtle-button.svg'],
-            [_('New Project'), _('Initialise a new project.'), 'header-icons/new-button.svg'],
-            [_('Load project from file'), _('You can also load projects from the file system.'), 'header-icons/open-button.svg'],
-            [_('Save project'), _('Save your project to a file.'), 'header-icons/save-button.svg'],
-            [_('Find and share projects'), _('This button opens a viewer for sharing projects and for finding example projects.'), 'header-icons/planet-button.svg'],
-            [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxillary toolbar.'), 'header-icons/menu-button.svg'],
-            [_('Help'), _('Show these messages.'), 'header-icons/help-button.svg'],
-            [_('Run slow'), _('Click to run the project in slow mode.'), 'header-icons/slow-button.svg'],
-            [_('Run step by step'), _('Click to run the project step by step.'), 'header-icons/step-button.svg'],
-            [_('Show/hide blocks'), _('Hide or show the blocks and the palettes.'), 'header-icons/hide-blocks-button.svg'],
-            [_('Expand/collapse collapsable blocks'), _('Expand or collapse start and action stacks.'), 'header-icons/collapse-blocks-button.svg'],
-            [_('Home'), _('Return all blocks to the center of the screen.'), 'header-icons/go-home-button.svg'],
-            [_('Cartesian') + '/' + _('Polar'), _('Show or hide a coordinate grid.'), 'header-icons/Cartesian-polar-button.svg'],
-            [_('Settings'), _('Open a panel for configuring Turrle Blocks.'), 'header-icons/utility-button.svg'],
-            [_('Restore'), _('Restore blocks from the trash.'), 'header-icons/restore-trash-button.svg'],
-            [_('Switch mode'), _('Switch between beginner and advance modes.'), 'header-icons/advanced-button.svg'],
-            [_('Select language'), _('Select your language preference.'), 'header-icons/language-button.svg'],
-            [_('Decrease block size'), _('Decrease the size of the blocks.'), 'header-icons/smaller-button.svg'],
-            [_('Increase block size'), _('Increase the size of the blocks.'), 'header-icons/bigger-button.svg'],
-            [_('Clean'), _('Clear the screen and return the mice to their initial positions.'), 'header-icons/clear-button.svg'],
-            [_('Collapse'), _('Collapse the graphics window.'), 'header-icons/collapse-button.svg'],
-            [_('Keyboard shortcuts'), _('You can type "d" to create a "do" block, "r" to create a "re" block, etc.'), 'header-icons/type-icon.svg'],
-            [_('Guide'), _('A detailed guide to Turtle Blocks is available.'), 'activity/activity-icon-color.svg', 'https://sugarlabs.github.io/turtleblocks/guide', _('Turtle Blocks Guide')],
-            [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']
-        ];
+    var language = localStorage.languagePreference;
+    if (language == 'ja') {
+        var LOGO = LOGOJA;
     } else {
-        HELPCONTENT = [
-            [_('Welcome to Turtle Blocks'), _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.'), 'activity/activity-icon-color.svg'],
-            //.TRANS: the buttons used to open various palettes of blocks
-            [_('Palette buttons'),
-             //.TRANS: Please add commas to list: Rhythm, Pitch, Tone, Action, and more.
-             _('This toolbar contains the palette buttons, including Rhythm Pitch Tone Action and more.') + ' ' + _('Click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'images/icons.svg'],
-            // [_('Play music'), _('Click to run the music note by note.') + ' ' + _('Alternatively, you can hit the ENTER or RETURN key.'), 'header-icons/play-button.svg'],
-            [_('Run fast'), _('Click the run button to run the project in fast mode.'), 'header-icons/run-button.svg'],
-            [_('Run slow'), _('Click to run the project in slow mode.'), 'header-icons/slow-button.svg'],
-            // [_('Run music slow'), _('Extra-long press the run button to run the music in slow mode.'), 'header-icons/slow-music-button.svg'],
-            [_('Run step by step'), _('Click to run the project step by step.'), 'header-icons/step-button.svg'],
-            // [_('Run note by note'), _('Click to run the music note by note.'), 'header-icons/step-music-button.svg'],
-            [_('Stop'), _('Stop the music (and the mice).') + ' ' + _('You can also type Alt-S to stop.'), 'header-icons/stop-turtle-button.svg'],
-            [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxiliary toolbar.'), 'header-icons/menu-button.svg'],
-            [_('Help'), _('Show these messages.'), 'header-icons/help-button.svg'],
-            [_('Clean'), _('Clear the screen and return the mice to their initial positions.'), 'header-icons/clear-button.svg'],
-            [_('Collapse'), _('Collapse the graphics window.'), 'header-icons/collapse-button.svg'],
-            [_('Show/hide blocks'), _('Hide or show the blocks and the palettes.'), 'header-icons/hide-blocks-button.svg'],
-            [_('Expand/collapse collapsible blocks'), _('Expand or collapse start and action stacks.'), 'header-icons/collapse-blocks-button.svg'],
-            [_('Home'), _('Return all blocks to the center of the screen.'), 'header-icons/go-home-button.svg'],
-            [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxiliary toolbar.'), 'header-icons/menu-button.svg'],
-            [_('New Project'), _('Initialize a new project.'), 'header-icons/new-button.svg'],
-            [_('Load project from file'), _('You can also load projects from the file system.'), 'header-icons/open-button.svg'],
-            [_('Save project'), _('Save your project to a file.'), 'header-icons/save-button.svg'],
-            [_('Load samples from server'), _('This button opens a viewer for loading example projects.'), 'header-icons/planet-button.svg'],
-            // [_('Copy'), _('To copy a stack to the clipboard, right-click on the stack.') + ' ' + _('You can also use Alt+C to copy a stack of blocks.') + ' ' + _('The Paste Button will highlight.'), 'header-icons/paste-button.svg'],
-            // [_('Paste'), _('The paste button is enabled when there are blocks copied onto the clipboard.') + ' ' + _('You can also use Alt+V to paste a stack of blocks. '), 'header-icons/paste-disabled-button.svg'],
-            [_('Cartesian') + '/' + _('Polar'), _('Show or hide a coordinate grid.'), 'header-icons/Cartesian-polar-button.svg'],
-            // [_('Polar'), _('Show or hide a polar-coordinate grid.'), 'header-icons/polar-button.svg'],
-            [_('Settings'), _('Open a panel for configuring Turtle Blocks.'), 'header-icons/utility-button.svg'],
-            [_('Enable scrolling'), _('You can scroll the blocks on the canvas.'), 'header-icons/scroll-unlock-button.svg'],
-            [_('Decrease block size'), _('Decrease the size of the blocks.'), 'header-icons/smaller-button.svg'],
-            [_('Increase block size'), _('Increase the size of the blocks.'), 'header-icons/bigger-button.svg'],
-            [_('Display statistics'), _('Display statistics about your Turtle project.'), 'header-icons/stats-button.svg'],
-            [_('Delete plugin'), _('Delete a selected plugin.'), 'header-icons/plugins-delete-button.svg'],
-            [_('Select language'), _('Select your language preference.'), 'header-icons/language-button.svg'],
-            [_('Restore'), _('Restore blocks from the trash.'), 'header-icons/restore-trash-button.svg'],
-            [_('Guide'), _('A detailed guide to Turtle Blocks is available.'), 'activity/activity-icon-color.svg', 'https://sugarlabs.github.io/turtleblocks/guide', _('Turtle Blocks Guide')],
-            [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'activity/activity-icon-color.svg']
-        ];
+        var LOGO = LOGODEFAULT;
     }
+
+    HELPCONTENT = [
+        [_('Welcome to Turtle Blocks'), TITLESTRING, 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(LOGO)))],
+        [_('Play'), _('Click the run button to run the project in fast mode.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(RUNBUTTON)))],
+        [_('Stop'), _('Stop the turtle.') + ' ' + _('You can also type Alt-S to stop.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(STOPTURTLEBUTTON)))],
+        [_('New project'), _('Initialize a new project.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(NEWBUTTON)))],
+        [_('Load project from file'), _('You can also load projects from the file system.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(LOADBUTTON)))],
+        [_('Save project'), _('Save your project to a file.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(SAVEBUTTON)))],
+        [_('Find and share projects'), _('This button opens a viewer for sharing projects and for finding example projects.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(PLANETBUTTON)))],
+
+        [_('Palette buttons'), _('This toolbar contains the palette buttons including Flow Action Pen and more.') + ' ' + _('Click to show the palettes of blocks and drag blocks from the palettes onto the canvas to use them.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(RHYTHMPALETTEICON)))],
+
+        [_('Cartesian/Polar'), _('Show or hide a coordinate grid.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(CARTESIANBUTTON)))],
+        [_('Clean'), _('Clear the screen and return the mice to their initial positions.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(CLEARBUTTON)))],
+        [_('Collapse'), _('Collapse the graphics window.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(COLLAPSEBUTTON)))],
+
+        [_('Home'), _('Return all blocks to the center of the screen.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(GOHOMEBUTTON)))],
+        [_('Show/hide blocks'), _('Hide or show the blocks and the palettes.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(HIDEBLOCKSBUTTON)))],
+        [_('Expand/collapse collapsable blocks'), _('Expand or collapse start and action stacks.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(COLLAPSEBLOCKSBUTTON)))],
+        [_('Decrease block size'), _('Decrease the size of the blocks.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(SMALLERBUTTON)))],
+        [_('Increase block size'), _('Increase the size of the blocks.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(BIGGERBUTTON)))],
+
+        [_('Expand/collapse option toolbar'), _('Click this button to expand or collapse the auxillary toolbar.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(MENUBUTTON)))],
+        [_('Run slow'), _('Click to run the project in slow mode.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(SLOWBUTTON)))],
+        [_('Run step by step'), _('Click to run the project step by step.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(STEPBUTTON)))],
+        [_('Restore'), _('Restore blocks from the trash.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(RESTORETRASHBUTTON)))],
+        [_('Select language'), _('Select your language preference.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(LANGUAGEBUTTON)))],
+
+        [_('Keyboard shortcuts'), _('You can type d to create a do block and r to create a re block etc.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(SHORTCUTSBUTTON)))],
+        [_('Guide'), _('A detailed guide to Turtle Blocks is available.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(LOGO))), GUIDEURL, _('Turtle Blocks Guide')],
+        [_('Help'), _('Show these messages.'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(HELPBUTTON)))],
+        [_('About'), _('Turtle Blocks is an open source collection of tools for exploring musical concepts.') + ' ' + _('A full list of contributors can be found in the Turtle Blocks GitHub repository.') + ' ' + _('Turtle Blocks is licensed under the AGPL.') + ' ' + _('The current version is') + ' ' + VERSION, 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(LOGO))), 'https://github.com/sugarlabs/turtleblocksjs', _('Turtle Blocks GitHub repository')],
+        [_('Congratulations.'), _('You have finished the tour. Please enjoy Turtle Blocks!'), 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(LOGO)))]
+    ];
 
     BLOCKHELP = {
         // Rhythm palette
@@ -222,7 +178,7 @@ function createHelpContent() {
         'backward': [_('The Backward block runs code in reverse order (Musical retrograde).'), 'documentation', 'box-1-block.svg'],
         // Action palette
         'action': [_('The Action block is used to group together blocks so that they can be used more than once.') + ' ' + _('It is often used for storing a phrase of music that is repeated.'), 'documentation', 'action-block.svg'],
-        'start': [_('Each Start block is a separate voice.') + ' ' + _('All of the Start blocks run at the same time when the Play button is pressed.'), 'documentation', 'repeat-block.svg'],
+        'start': [_('Each Start block is a separate turtle.') + ' ' + _('All of the Start blocks run at the same time when the Play button is pressed.'), 'documentation', 'repeat-block.svg'],
         'listen': [_('The Listen block is used to listen for an event such as a mouse click.') + ' ' + _('When the event happens, an action is taken.'), 'documentation', 'broadcast-block.svg'],
         'dispatch': [_('The Dispatch block is used to trigger an event.'), 'documentation', 'broadcast.svg'],
         'do': [_('The Do block is used to initiate an action.') + ' ' + _('In the example, it is used with the One of block to choose a random phase.'), 'documentation', 'do-block.svg'],

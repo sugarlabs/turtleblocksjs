@@ -43,6 +43,12 @@ function SaveInterface(PlanetInterface) {
             filename = defaultfilename;
         }
 
+        console.log(filename);
+        if (filename === null) {
+            console.log('save cancelled');
+            return;
+        }
+
         if (fileExt(filename) != extension) {
             filename += '.' + extension;
         }

@@ -1024,6 +1024,23 @@ function initBasicProtoBlocks(palettes, blocks) {
     hiddenBlock.hidden = true;
     hiddenBlock.hiddenBlockFlow();
 
+    var backwardBlock = new ProtoBlock('backward');
+    backwardBlock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['backward'] = backwardBlock;
+    //.TRANS: run code backward
+    backwardBlock.staticLabels.push(_('backward'));
+    backwardBlock.adjustWidthToLabel();
+    backwardBlock.flowClampZeroArgBlock();
+
+    var newblock = new ProtoBlock('duplicatenotes');
+    newblock.palette = palettes.dict['flow'];
+    blocks.protoBlockDict['duplicatenotes'] = newblock;
+    //.TRANS: run each block more than once
+    newblock.staticLabels.push(_('duplicate'));
+    newblock.adjustWidthToLabel();
+    newblock.flowClampOneArgBlock();
+    newblock.defaults.push(2);
+
     var defaultBlock = new ProtoBlock('defaultcase');
     defaultBlock.palette = palettes.dict['flow'];
     blocks.protoBlockDict['defaultcase'] = defaultBlock;
@@ -2087,14 +2104,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     setbpmBlock.defaults.push(90);
     setbpmBlock.hidden = true;
 
-    var backwardBlock = new ProtoBlock('backward');
-    backwardBlock.palette = palettes.dict['extras'];
-    blocks.protoBlockDict['backward'] = backwardBlock;
-    backwardBlock.staticLabels.push(_('backward'));
-    backwardBlock.adjustWidthToLabel();
-    backwardBlock.flowClampZeroArgBlock();
-    backwardBlock.hidden = true;
-
     var skipNotesBlock = new ProtoBlock('skipnotes');
     skipNotesBlock.palette = palettes.dict['extras'];
     blocks.protoBlockDict['skipnotes'] = skipNotesBlock;
@@ -2103,15 +2112,6 @@ function initBasicProtoBlocks(palettes, blocks) {
     skipNotesBlock.flowClampOneArgBlock();
     skipNotesBlock.defaults.push(2);
     skipNotesBlock.hidden = true;
-
-    var duplicateNotesBlock = new ProtoBlock('duplicatenotes');
-    duplicateNotesBlock.palette = palettes.dict['extras'];
-    blocks.protoBlockDict['duplicatenotes'] = duplicateNotesBlock;
-    duplicateNotesBlock.staticLabels.push(_('duplicate notes'));
-    duplicateNotesBlock.adjustWidthToLabel();
-    duplicateNotesBlock.flowClampOneArgBlock();
-    duplicateNotesBlock.defaults.push(2);
-    duplicateNotesBlock.hidden = true;
 
     var beatFactorBlock = new ProtoBlock('multiplybeatfactor');
     beatFactorBlock.palette = palettes.dict['extras'];
@@ -2404,6 +2404,7 @@ function initBasicProtoBlocks(palettes, blocks) {
 
     // Push protoblocks onto their palettes.
     for (var protoblock in blocks.protoBlockDict) {
+	console.log(protoblock);
         if (blocks.protoBlockDict[protoblock].palette != null) {
             blocks.protoBlockDict[protoblock].palette.add(blocks.protoBlockDict[protoblock]);
         }

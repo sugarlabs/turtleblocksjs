@@ -30,12 +30,12 @@ const VERSION = '2.72';
 
 // We don't include 'extras' since we want to be able to delete
 // plugins from the extras palette.
-const BUILTINPALETTES = ['search', 'flow', 'action', 'boxes', 'turtle', 'pen', 'number', 'boolean', 'media', 'sensors', 'heap', 'extras'];
+const BUILTINPALETTES = ['search', 'flow', 'action', 'boxes', 'turtle', 'pen', 'number', 'boolean', 'media', 'sensors', 'heap', 'extras', 'myblocks'];
 
-const BUILTINPALETTESFORL23N = [_('search'), _('flow'), _('action'), _('boxes'), _('turtle'), _('pen'), _('number'), _('boolean'), _('media'), _('sensors'), _('heap'), _('extras')];
+const BUILTINPALETTESFORL23N = [_('search'), _('flow'), _('action'), _('boxes'), _('turtle'), _('pen'), _('number'), _('boolean'), _('media'), _('sensors'), _('heap'), _('extras'), _('myblocks')];
 
 // We put the palette buttons into groups.
-const MULTIPALETTES = [['flow', 'action', 'boxes', 'number', 'boolean', 'heap', 'extras'], ['turtle', 'pen', 'media', 'sensors']];
+const MULTIPALETTES = [['flow', 'action', 'boxes', 'number', 'boolean', 'heap', 'extras', 'myblocks'], ['turtle', 'pen', 'media', 'sensors']];
 
 // Skip these palettes in beginner mode.
 const SKIPPALETTES = ['heap', 'extras'];

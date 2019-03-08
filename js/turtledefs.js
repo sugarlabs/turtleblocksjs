@@ -35,14 +35,14 @@ const BUILTINPALETTES = ['search', 'flow', 'action', 'boxes', 'turtle', 'pen', '
 const BUILTINPALETTESFORL23N = [_('search'), _('flow'), _('action'), _('boxes'), _('turtle'), _('pen'), _('number'), _('boolean'), _('media'), _('sensors'), _('heap'), _('extras'), _('myblocks')];
 
 // We put the palette buttons into groups.
-const MULTIPALETTES = [['flow', 'action', 'boxes', 'number', 'boolean', 'heap', 'extras', 'myblocks'], ['turtle', 'pen', 'media', 'sensors']];
+const MULTIPALETTES = [['turtle', 'pen', 'media', 'sensors'], ['flow', 'action', 'boxes', 'number', 'boolean', 'heap', 'extras', 'myblocks']];
 
 // Skip these palettes in beginner mode.
 const SKIPPALETTES = ['heap', 'extras'];
 
 // Icons used to select between multipalettes.
-const MULTIPALETTEICONS = ['logic', 'artwork'];
-const MULTIPALETTENAMES = [_('logic'), _('artwork')];
+const MULTIPALETTEICONS = ['artwork', 'logic'];
+const MULTIPALETTENAMES = [_('artwork'), _('logic')];
 
 
 function getMainToolbarButtonNames(name) {

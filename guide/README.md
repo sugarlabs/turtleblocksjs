@@ -66,7 +66,7 @@ rare occasions that the group includes a final "turn right (or left)
 orientation. At this point I introduce the concept of "repeat" and
 then we start in with programming with Turtle Blocks.
 
-1. Turtle Basics
+I. Turtle Basics
 ----------------
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/basics1.svg' />
@@ -129,8 +129,8 @@ someone put a different number in the shoebox. Again I ask, "What is
 the number in the box?" The power of the box is that you can refer to
 it multiple times from multiple places in your program.
 
-2. Boxes
---------
+II. Boxes
+---------
 
 Boxes let you store an object, e.g., a number, and then refer to the
 object by using the name of the box. (Whenever you name a box, a new
@@ -172,8 +172,8 @@ dictionary. Note that the boxes are global, meaning all turtles and
 all action stacks share the same collection of boxes. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523368886737682&run=True)
 
-3. Action Stacks
-----------------
+III. Action Stacks
+------------------
 
 With Turtle Blocks there is an opportunity for the learner to expand
 upon the language, taking the conversation in directions unanticipated
@@ -201,8 +201,8 @@ The *Do* block lets you specify an action by name. In this example, we
 choose "one of" two names, "*Square*" and "*Triangle*" to determine which
 action to take. [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523369272178072&run=True)
 
-4. Parameters
--------------
+IV. Parameters
+--------------
 
 Parameter blocks hold a value that represents the state of some turtle
 attribute, e.g., the x or y position of the turtle, the heading of the
@@ -237,7 +237,7 @@ To make other changes to a parameter based on the current value, use
 the parameter's *Set* block. In this example, the pen size is doubled
 with each step in the iteration. [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523370273985275&run=True)
 
-5. Conditionals
+V. Conditionals
 ---------------
 
 Conditionals are a powerful tool in computing. They let your program
@@ -265,8 +265,8 @@ A coin toss is such a common operation that we added the *One-of* block
 as a convenience. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523370862902481&run=True)
 
-6. Multimedia
--------------
+VI. Multimedia
+--------------
 
 Turtle Blocks provides rich-media tools that enable the incorporation
 of sound, typography, images, and video.
@@ -301,8 +301,8 @@ The *Show* block can also be used in conjunction with a URL that
 points to media. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523371406381048&run=True)
 
-7. Sensors
-----------
+VII. Sensors
+------------
 
 Seymour Papert’s idea of learning through making is well supported in
 Turtle Blocks. According to Papert, “learning happens especially
@@ -409,8 +409,8 @@ If you want to convert the keycode to a alphanumeric character, you
 need to use the *To ASCII* block. E.g., *toASCII(65) = A* [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523377042822413&run=True)
 
-8. Turtles, Sprites, Buttons, and Events
-----------------------------------------
+VIII. Turtles, Sprites, Buttons, and Events
+-------------------------------------------
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/turtles1.svg' />
 
@@ -445,7 +445,7 @@ broadcast change-color events. The turtle used as the paintbrush is
 listening for these events. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523378142359724&run=True)
 
-9. Advanced Actions
+IX. Advanced Actions
 --------------------
 
 Sometime you might want an action to not just run a stack of blocks
@@ -510,8 +510,8 @@ quadrants.
 Reflection Paint [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523389168734406&run=True)
 
-10. Advanced Boxes
-------------------
+X. Advanced Boxes
+-----------------
 
 Sometimes it is more convenient to compute the name of a *Box* than to
 specify it explicitly. (Note that the *Do* block affords a similar
@@ -548,7 +548,7 @@ in *Box 3*, which is the accumulated number of times that the dice toss
 resulted in a 3; etc. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523299313972510&run=True)
 
-11. The Heap
+XI. The Heap
 ------------
 
 Sometimes you need a place to temporarily store data. One way to do it
@@ -598,8 +598,8 @@ file. In this example, we playback the drawing from data stored in a
 file. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523389601597904&run=True)
 
-12. Extras
-----------
+XII. Extras
+-----------
 
 The *Extras* palette is full of utilities that help you use your
 project's output in different ways.
@@ -634,8 +634,8 @@ An alternative to using the *Found Turtle* block is to use the *Event* block. Wh
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/extras3.svg' />
 
-13. Debugging Aids
-------------------
+XIII. Debugging Aids
+--------------------
 
 Probably the most oft-used debugging aid in any language is the print
 statement. In Turtle Blocks, it is also quite useful. You can use it
@@ -677,8 +677,8 @@ stack in order to facilitate debugging. In this case, we slow down
 during playback in order to watch the values popped off the heap. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523391034295213&run=True)
 
-14. Advanced Color
-------------------
+XIV. Advanced Color
+-------------------
 
 The internal representation of color in Turtle Blocks is based on the
 [Munsell color
@@ -711,7 +711,7 @@ Color vs. hue example [RUN LIVE](https://turtle.sugarlabs.org/index.html?id=1523
 To set the background color, use the *Background* block. It will set the
 background to the current hue/value/chroma triplet.
 
-15. Plugins
+XV. Plugins
 -----------
 
 There are a growing number of extensions to Turtle Blocks in the from

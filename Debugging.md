@@ -45,7 +45,7 @@ code, or, as in the example below, you can play a single voice by
 clicking on one of the *Start* blocks or single phase by clicking on
 one of the *Action* blocks.
 
-![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/actionblock-card.gif "Start blocks")
+![alt tag](https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/debug/actionblock-card.gif "Start blocks")
 
 ## 2. Print and Comment blocks
 
@@ -67,7 +67,7 @@ in a print statement. The mouse x + ", " + mouse y are printed in the
 inner loop. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523391206069261&run=True)
 
-<img src='https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/print-blockd.gif' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/debug/print-block.gif' />
 
 
 The *Comment* block (also found on the *Extras* palette) is similar to
@@ -78,7 +78,7 @@ written to the [browser console](https://github.com/vaibhavdaren/turtleblocksjs/
 In this example, we use the comment block to get the value returned by the random block. [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1528365709862799&run=True)
 
-![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/comment-block.gif "Comment block")
+![alt tag](https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/debug/comment-block.gif "Comment block")
 
 
 
@@ -94,13 +94,13 @@ Blocks as it is running. By default the turtle co-ordinates and header are
 displayed. There is one row per turtle in the status table.
 
 
-![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/status-block.gif "using the Status block")
+![alt tag](https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/debug/status-block.gif "using the Status block")
 
 Additional *Print* blocks can be added to the *Status* widget to
 display additional turtle factors and graphics factors 
 e.g.box values, x, y, heading, color, shade, grey, and pensize.
 
-![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/status-parameter.gif "additional factors within the Status block")
+![alt tag](https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/debug/status-parameter.gif "additional factors within the Status block")
 
 In this example, we use the status block to get the value of x,y,heading and colour . [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1528365709862799&run=True)
@@ -126,7 +126,7 @@ Clicking on the *Play* button will play your program at full
 speed. (It will also hide the blocks while the program runs, which
 improves performance.) 
 
-![alt tag](https://github.com/vaibhavdaren/turtleblocksjs/blob/master/guide/debug/playback-buttons.gif "PlayBack Modes")
+![alt tag](https://github.com/sugarlabs/turtleblocksjs/blob/master/guide/debug/playback-button.gif "PlayBack Modes")
 The above example show all the playback modes in order mentioned above.
 First we started with *Playback Slow* moved on to  *Run Step by Step*  and finaly ended execution of remaining code with *play*
 

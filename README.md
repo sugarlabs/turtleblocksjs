@@ -15,7 +15,7 @@ more adventurous student.
 > rather than the JavaScript version. (The JavaScript version is
 > included in Sugarizer.)
 
-![Turtle Blocks](https://github.com/sugarlabs/turtleblocksjs/blob/master/screenshots/updatedscreenshot.png "Turtle Blocks")
+![Turtle Blocks](https://github.com/Abhay-dot/turtleblocksjs/blob/updateReadme/screenshots/screenshot-2019-12-4%20Turtle%20Block%20JS.gif "Turtle Blocks")
 
 Using Turtle Blocks
 ------------------- 

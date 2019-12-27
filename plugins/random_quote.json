@@ -3,7 +3,7 @@
         "external": "#000000"
     }, 
     "ARGPLUGINS": {
-        "quote": "var block = logo.blocks.blockList[blk];var url = 'https://andruxnet-random-famous-quotes.p.mashape.com/?count=1';block.value = quote;fetch(url, {  headers: {    'X-Mashape-Key': 'vZ2AuJVfromshrdghHsLnN4Wb4vzp1xsFaBjsnY5gONqDNbeSi',    'Accept': 'application/json'  }  }).then(function (res) {    return res.json();  }).then(function(responseJSON) {    quote = responseJSON.quote;  }).catch(function (err) {    quote = '';    logo.errorMsg('Failed loading quotes.', blk);    console.error(err);});"
+        "quote": "var block = logo.blocks.blockList[blk];var url = 'https://mb-test-api.samyok.us/api/quote';block.value = quote;fetch(url).then(function (res) {    return res.json();  }).then(function(responseJSON) {    quote = responseJSON.quote;  }).catch(function (err) {    quote = '';    logo.errorMsg('Failed loading quotes.', blk);    console.error(err);});"
     }, 
     "GLOBALS": "quote = 'I find that the harder I work, the more luck I seem to have.';", 
     "PALETTEHIGHLIGHTCOLORS": {

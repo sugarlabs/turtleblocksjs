@@ -612,8 +612,8 @@ programs, e.g., Inkscape. In the example above, we use it to save a
 design in a from that can be converted to STL, a common file format
 used by 3D printers. A few things to take note of: (1) the *No
 Background* block is used to suppress the inclusion of the background
-fill in the SVG output; (2) *Hollow lines* are used to make graphic have
-dimension; and (3) the *Save as SVG* block writes to the Downloads
+fill in the SVG output; (2)If you want to set a background color,you can use the *Background* block,but at the same if you want to draw something use *Set color* block,otherwise the pen color will be as same as background color and we won't be able to see the lines that we draw; (3) *Hollow lines* are used to make graphic have
+dimension; and (4) the *Save as SVG* block writes to the Downloads
 directory on your computer. (Josh Burker introduced me to Tinkercad, a
 website that can be used to convert SVG to STL.) [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523390883477748&run=True)

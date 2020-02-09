@@ -119,7 +119,7 @@ color (0 to 100) [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523360917773878&run=True)
 
 
-<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/guide/background.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/background.png' />
 Use the *Background* block to set the background color to the current pen color. Note that if you do not change the pen color using the *set color* block after you set the background, you will not be able to see what you are drawing as your "ink" will be the same color as your "paper".
 <a href="https://turtle.sugarlabs.org/index.html?id=1523360917773878&run=True"> RUN LIVE </a>
 

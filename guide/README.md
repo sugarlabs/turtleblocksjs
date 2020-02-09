@@ -118,6 +118,9 @@ Using the *Random* block from the *Numbers* palette to select a random
 color (0 to 100) [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523360917773878&run=True)
 
+Note that Use the *Background* block to set the background color to the current pen color. Note that if you do not change the pen color using the *set pen color* block after you set the background, you will not be able to see what you are drawing as your "ink" will be the same color as your "paper".
+
+
 A SHOEBOX
 ---------
 
@@ -612,8 +615,8 @@ programs, e.g., Inkscape. In the example above, we use it to save a
 design in a from that can be converted to STL, a common file format
 used by 3D printers. A few things to take note of: (1) the *No
 Background* block is used to suppress the inclusion of the background
-fill in the SVG output; (2) If you want to set a background color,you can use the *Background* block,but at the same time if you want to draw something use *Set color* block,otherwise the pen color will be as same as background color,so we won't be able to see the lines that we draw; (3) *Hollow lines* are used to make graphic have
-dimension; and (4) the *Save as SVG* block writes to the Downloads
+fill in the SVG output; (2) *Hollow lines* are used to make graphic have
+dimension; and (3) the *Save as SVG* block writes to the Downloads
 directory on your computer. (Josh Burker introduced me to Tinkercad, a
 website that can be used to convert SVG to STL.) [RUN
 LIVE](https://turtle.sugarlabs.org/index.html?id=1523390883477748&run=True)

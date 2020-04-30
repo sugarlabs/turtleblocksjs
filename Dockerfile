@@ -1,20 +1,14 @@
-FROM treehouses/alpine:3.9
+FROM treehouses/nginx:alpine3.11-rpi
 
 RUN apk --no-cache upgrade
-RUN apk add --no-cache apache2 curl git
-# Create directory for apache2 to store PID file
-RUN mkdir -p /run/apache2
+RUN apk add --no-cache curl git
 
-WORKDIR /var/www/localhost
-RUN rm -rf htdocs
-RUN git clone https://github.com/sugarlabs/turtleblocksjs.git
-RUN mv -f turtleblocksjs htdocs
 
+WORKDIR /var/lib/nginx
+RUN rm -rf html
+RUN git clone --depth=1 https://github.com/sugarlabs/turtleblocksjs.git
+RUN mv -f turtleblocksjs html
 
 EXPOSE 80 443
 
-
-CMD ["-D","FOREGROUND"]
-
-# Srart httpd when container runs
-ENTRYPOINT ["/usr/sbin/httpd"]
+CMD ["nginx", "-g", "daemon off;"]

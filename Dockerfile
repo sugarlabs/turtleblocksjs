@@ -1,4 +1,4 @@
-FROM treehouses/nginx:alpine3.11-rpi
+FROM treehouses/nginx:3.11
 
 RUN apk --no-cache upgrade
 RUN apk add --no-cache curl git

@@ -1,0 +1,39 @@
+sudo: required
+addons:
+  apt:
+    update: true
+    packages:
+    - docker-ce
+services:
+- docker
+script:
+- export DOCKER_CLI_EXPERIMENTAL=enabled
+- source sha_function.sh
+- flag=$(is_base "treehouse/turtleblocksjs:latest" "treehouse/nginx:latest")
+- echo $flag
+- echo "$DOCKERPASS" | docker login -u treehouse --password-stdin
+- docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+- "./docker-build.sh treehouse/nginx:latest arm"
+- "./docker-build.sh treehouse/nginx:latest arm64"
+- "./docker-build.sh treehouse/nginx:latest amd64"
+before_deploy:
+- timetag=$(date +%Y%m%d%H%M)
+- echo $timetag
+- tag1="latest"
+- tag2=$timetag
+- echo "timetag is $tag2"
+- create_manifest treehouse/turtleblocksjs $tag1 $tag2 treehouse/turtleblocksjs-tags:amd64
+  treehouse/turtleblocksjs-tags:arm treehouse/turtleblocksjs-tags:arm64
+- docker manifest inspect treehouse/turtleblocksjs:$tag1
+- docker manifest inspect treehouse/turtleblocksjs:$tag2
+deploy:
+- provider: script
+  script: docker manifest push treehouse/turtleblocksjs:$tag1; docker manifest push treehouse/turtleblocksjs:$tag2
+  skip_cleanup: true
+  on:
+    all_branches: true
+    condition: "$flag = true"
+env:
+  global:
+     secure: XAEoP7xphWKmKA+OEBi+pr1wbrHMkbZR4efjWab0XqULfTN/8xtUMJ8NXs/dTIy3c/24uZxDA8kFc7cdALnH4tooX2emmgSMtw5tXdlU+LGlw1cBFSahSrV7ayaYCrOisLsVWVR9SgH3Etmi5/vHoIpgPW2c/6cdaWNjV4lnXB3SFXlnP6iQylH9BzkxNJaKqCY9i/As4TWAYUbl8xjIhKEU35CzdjyruDsrBHxywcq03jdQR6vGRGeFUsCYN/ec+Cy+v6qGTbIDPtNF9MaZOPBcodlYJhgWLS1zRdAwj+hmnCdbXp9yRzN0l+dwkYM0ZfyVN82g3I2A/k8UeuPiNOEnmxKMMSGGOAIypiIr33WNfTpC8DNTAMn5h4SlZlN0/jQTPMp37llkmWYhr2+Iq9G1e3gOMqaYSol21Q+UJjHm7qn7rim0CYkpt21gxMWNztufLAzr02tMGIHgPWWw1q4oafWpyQHUOaA7oJMzBZSbBsMHzHXz0VLetSi9U8Q1f5S8ijo+YuOgsjG3jDpcaNh/FG52ENwfdcwUwkKOUgIkzfkxxRxGmAun+BoxZWn2iozAgmFz74DsgcGqSZAsdtwukLhrS1eMT68U3mSatVxmFOwkTQXAUwk8QQZsswMOdm9p1mF8kzTLNz/vXGm2ycLXNiaeTsGfv9M4lczXebk=
+

@@ -7,14 +7,14 @@ if [ $# -le 1 ]; then
 fi
 
 dir=$(dirname $0)
-sha=$($dir/manifest-alpine-sha.sh $@)       # $1 vmnet8/nginx:latest  amd64|arm|arm64
+sha=$($dir/manifest-nginx-sha.sh $@)       # $1 treehouses/nginx:latest  amd64|arm|arm64
 echo $sha
-base_image="vmnet8/nginx@$sha"
+base_image="treehouses/nginx@$sha"
 echo $base_image
 arch=$2   # arm arm64 amd64
 
 if [ -n "$sha" ]; then
-        tag=vmnet8/turtleblocksjs-tags:$arch
+        tag=treehouses/turtleblocksjs-tags:$arch
         #sed "s|{{base_image}}|$base_image|g" Dockerfile.template > /tmp/Dockerfile.$arch
         sed "s|{{base_image}}|$base_image|g" Dockerfile.template > Dockerfile.$arch
         #cat /tmp/Dockerfile.$arch

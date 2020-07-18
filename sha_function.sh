@@ -6,12 +6,10 @@ get_sha(){
     #sha=$(docker image inspect $1 |jq .[0].RootFS.Layers |grep sha)
     sha=$(docker image inspect $1 | jq --raw-output '.[0].RootFS.Layers|.[]')   # [0] means first element of list,[]means all the elments of lists
     echo $sha
-    #read -a base_sha <<< $base_sha
-    #sha_arr=($sha)
 }
 is_base (){
-    local base_sha    # nginx 
-    local image_sha   # turtleblock
+    local base_sha    # nginx
+    local image_sha   # turtleblocksjs
     base_repo=$1
     image_repo=$2
     base_sha=$(get_sha $1)

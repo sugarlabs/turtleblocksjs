@@ -11,12 +11,13 @@ script:
 - source sha_function.sh
 - flag=$(is_base "treehouse/turtleblocksjs:latest" "treehouse/nginx:latest")
 - echo $flag
-- echo "$DOCKERPASS" | docker login -u treehouse --password-stdin
+- echo "$DOCKERPASS" | docker login -u sevevseas --password-stdin
 - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 - "./docker-build.sh treehouse/nginx:latest arm"
 - "./docker-build.sh treehouse/nginx:latest arm64"
 - "./docker-build.sh treehouse/nginx:latest amd64"
 before_deploy:
+
 - timetag=$(date +%Y%m%d%H%M)
 - echo $timetag
 - tag1="latest"
@@ -28,12 +29,12 @@ before_deploy:
 - docker manifest inspect treehouse/turtleblocksjs:$tag2
 deploy:
 - provider: script
-  script: docker manifest push treehouse/turtleblocksjs:$tag1; docker manifest push treehouse/turtleblocksjs:$tag2
+  script: docker manifest push treehouse/turtleblocksjs:$tag1; docker manifest push
+    treehouse/turtleblocksjs:$tag2
   skip_cleanup: true
   on:
     all_branches: true
     condition: "$flag = true"
 env:
   global:
-     secure: XAEoP7xphWKmKA+OEBi+pr1wbrHMkbZR4efjWab0XqULfTN/8xtUMJ8NXs/dTIy3c/24uZxDA8kFc7cdALnH4tooX2emmgSMtw5tXdlU+LGlw1cBFSahSrV7ayaYCrOisLsVWVR9SgH3Etmi5/vHoIpgPW2c/6cdaWNjV4lnXB3SFXlnP6iQylH9BzkxNJaKqCY9i/As4TWAYUbl8xjIhKEU35CzdjyruDsrBHxywcq03jdQR6vGRGeFUsCYN/ec+Cy+v6qGTbIDPtNF9MaZOPBcodlYJhgWLS1zRdAwj+hmnCdbXp9yRzN0l+dwkYM0ZfyVN82g3I2A/k8UeuPiNOEnmxKMMSGGOAIypiIr33WNfTpC8DNTAMn5h4SlZlN0/jQTPMp37llkmWYhr2+Iq9G1e3gOMqaYSol21Q+UJjHm7qn7rim0CYkpt21gxMWNztufLAzr02tMGIHgPWWw1q4oafWpyQHUOaA7oJMzBZSbBsMHzHXz0VLetSi9U8Q1f5S8ijo+YuOgsjG3jDpcaNh/FG52ENwfdcwUwkKOUgIkzfkxxRxGmAun+BoxZWn2iozAgmFz74DsgcGqSZAsdtwukLhrS1eMT68U3mSatVxmFOwkTQXAUwk8QQZsswMOdm9p1mF8kzTLNz/vXGm2ycLXNiaeTsGfv9M4lczXebk=
-
+  - secure: p/oMr9+Zmk991tu7JiNx1ySJ0LhzBFKHIGHJwhjSK0Cz0vhLv2Jw2ii9iW169mCFEut9LlGXwb8LeP54g/ZKfdj+RP+SsvrcUMyyZQaMQ12Fa0dC1hRu2+ovu+uffoH4IgoRt2Lc2YGi/Etr9QYLLdu6BD1Sx6KaSweEne1RCfXj2EyGsMqWWkE+N4xqhPsVICdjnmCXeg+ROVgOobtFjGn3BAujDsQBqpELWRAydGQNGgvYca8RQlLSnSTDNqrLEo4NyjyqKbvgAmp5UNDo6yA9MIQTUbbP7habpkrtAzR0+ilUAzsAc9x/6B0ua/eDaRVon5peIHnoM+kt5P5wNsZFt9spB1qsp/TL5Vif2wjvF9sMHO8baCOBI6yqc149Fmcpd6/JdQvyHt3vol8j9BcSG8y9Tr2GiceuwRTLWqgN6xHDFYsrOiSwddyY+BxK/Uqh50CZLKn/IQePfg/Hz+Qy1wRhiFiE9mYmcJ2BApc4hYT5LZ63KjeoJzoH6dP+p+AvXWeRAmYFvZiKtlPWJ9nEex+EhQ7d71icbBNxCmPcESoDgk6oHgA2qeThtXFUj8ApjuGsqNhJsXu6epHE+PnFB5+jllXNolo3sPDKB6cq1POzxb2AJDkzw56kxT3hzmyssBg0MqXZ46mpUOio233nEsuLpRAC8iIF+SeScKs=

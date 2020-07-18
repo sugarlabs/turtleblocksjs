@@ -9,27 +9,27 @@ services:
 script:
 - export DOCKER_CLI_EXPERIMENTAL=enabled
 - source sha_function.sh
-- flag=$(is_base "treehouse/turtleblocksjs:latest" "treehouse/nginx:latest")
+- flag=$(is_base "treehouses/turtleblocksjs:latest" "treehouses/nginx:latest")
 - echo $flag
 - echo "$DOCKERPASS" | docker login -u sevenseas --password-stdin
 - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-- "./docker-build.sh treehouse/nginx:latest arm"
-- "./docker-build.sh treehouse/nginx:latest arm64"
-- "./docker-build.sh treehouse/nginx:latest amd64"
+- "./docker-build.sh treehouses/nginx:latest arm"
+- "./docker-build.sh treehouses/nginx:latest arm64"
+- "./docker-build.sh treehouses/nginx:latest amd64"
 before_deploy:
 - timetag=$(date +%Y%m%d%H%M)
 - echo $timetag
 - tag1="latest"
 - tag2=$timetag
 - echo "timetag is $tag2"
-- create_manifest treehouse/turtleblocksjs $tag1 $tag2 treehouse/turtleblocksjs-tags:amd64
-  treehouse/turtleblocksjs-tags:arm treehouse/turtleblocksjs-tags:arm64
-- docker manifest inspect treehouse/turtleblocksjs:$tag1
-- docker manifest inspect treehouse/turtleblocksjs:$tag2
+- create_manifest treehouses/turtleblocksjs $tag1 $tag2 treehouses/turtleblocksjs-tags:amd64
+  treehouses/turtleblocksjs-tags:arm treehouses/turtleblocksjs-tags:arm64
+- docker manifest inspect treehouses/turtleblocksjs:$tag1
+- docker manifest inspect treehouses/turtleblocksjs:$tag2
 deploy:
 - provider: script
-  script: docker manifest push treehouse/turtleblocksjs:$tag1; docker manifest push
-    treehouse/turtleblocksjs:$tag2
+  script: docker manifest push treehouses/turtleblocksjs:$tag1; docker manifest push
+    treehouses/turtleblocksjs:$tag2
   skip_cleanup: true
   on:
     all_branches: true

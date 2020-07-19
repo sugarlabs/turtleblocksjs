@@ -1,0 +1,367 @@
+//* comment *//
+
+Copyright (C) 2015 Hitesh Agarwal
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+//* arg-globals *//
+var block = logo.blocks.blockList[blk];
+var conns = block.connections;
+
+//* block-globals *//
+var convertBlock = function (name, label, arg1, arg2) {
+    var protoblock = new ProtoBlock(name);
+    protoblock.palette = palettes.dict['converter'];
+    blocks.protoBlockDict[name] = protoblock;
+    protoblock.staticLabels.push(label, _('number'), _('unit to convert'));
+    protoblock.adjustWidthToLabel();
+    protoblock.twoArgMathBlock();
+    protoblock.dockTypes[2] = 'anyin';
+    protoblock.defaults.push(arg1);
+    protoblock.defaults.push(arg2);
+};
+
+
+
+//* block:from_mm *//
+convertBlock('from_mm', 'from mm', 1000, 'mm');
+
+//* arg:from_mm *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg);
+}
+if (unit == 'cm'){
+    block.value = (arg*1/10);
+}
+if (unit == 'm'){
+    block.value = (arg*1/1000);
+}
+if (unit == 'km'){
+    block.value = (arg*1/1000000);
+}
+if (unit == 'in'){
+    block.value = (arg*1/25.4);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/304.8);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/914.4);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/1609344);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/1852000);
+}
+
+
+
+//* block:from_cm *//
+convertBlock('from_cm', 'from cm', 1000, 'cm');
+
+//* arg:from_cm *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg*1/0.1);
+}
+if (unit == 'cm'){
+    block.value = (arg);
+}
+if (unit == 'm'){
+    block.value = (arg*1/100);
+}
+if (unit == 'km'){
+    block.value = (arg*1/100000);
+}
+if (unit == 'in'){
+    block.value = (arg*1/2.54);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/30.48);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/91.44);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/160934.4);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/185200);
+}
+
+
+
+//* block:from_m *//
+convertBlock('from_m', 'from m', 1000, 'm');
+
+//* arg:from_m *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg*1/0.001);
+}
+if (unit == 'cm'){
+    block.value = (arg*1/0.01);
+}
+if (unit == 'm'){
+    block.value = (arg*1/1);
+}
+if (unit == 'km'){
+    block.value = (arg*1/1000);
+}
+if (unit == 'in'){
+    block.value = (arg*1/0.0254);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/0.3048);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/0.9144);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/1609.344);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/1852);
+}
+
+
+
+//* block:from_km *//
+convertBlock('from_km', 'from km', 1000, 'km');
+
+//* arg:from_km *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg*1/0.000001);
+}
+if (unit == 'cm'){
+    block.value = (arg*1/0.00001);
+}
+if (unit == 'm'){
+    block.value = (arg*1/0.001);
+}
+if (unit == 'km'){
+    block.value = (arg*1/1);
+}
+if (unit == 'in'){
+    block.value = (arg*1/0.0000254);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/0.0003048);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/0.0009144);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/1.609344);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/1.852);
+}
+
+
+
+//* block:from_in *//
+convertBlock('from_in', 'from in', 1000, 'in');
+
+//* arg:from_in *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg*1/0.039370078740157);
+}
+if (unit == 'cm'){
+    block.value = (arg*1/0.39370078740157);
+}
+if (unit == 'm'){
+    block.value = (arg*1/39.370078740157);
+}
+if (unit == 'km'){
+    block.value = (arg*1/39370.078740157);
+}
+if (unit == 'in'){
+    block.value = (arg*1/1);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/12);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/36);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/63360);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/72913.385826772);
+}
+
+
+
+//* block:from_ft *//
+convertBlock('from_ft', 'from ft', 1000, 'ft');
+
+//* arg:from_ft *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg*1/0.0032808398950131);
+}
+if (unit == 'cm'){
+    block.value = (arg*1/0.032808398950131);
+}
+if (unit == 'm'){
+    block.value = (arg*1/3.2808398950131);
+}
+if (unit == 'km'){
+    block.value = (arg*1/3280.8398950131  );
+}
+if (unit == 'in'){
+    block.value = (arg*1/0.083333333333333);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/1);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/3);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/5280);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/ 6076.1154855643);
+}
+
+
+
+//* block:from_yd *//
+convertBlock('from_yd', 'from yd', 1000, 'yd');
+
+//* arg:from_yd *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg*1/0.0010936132983377);
+}
+if (unit == 'cm'){
+    block.value = (arg*1/0.0.010936132983377);
+}
+if (unit == 'm'){
+    block.value = (arg*1/1.0936132983377);
+}
+if (unit == 'km'){
+    block.value = (arg*1/1093.6132983377);
+}
+if (unit == 'in'){
+    block.value = (arg*1/0.027777777777778);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/0.33333333333333);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/1);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/1760);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/ 2025.3718285214);
+}
+
+
+
+//* block:from_mi *//
+convertBlock('from_mi', 'from mi', 1000, 'mi');
+
+//* arg:from_mi *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg*1/0.00000062137119223733);
+}
+if (unit == 'cm'){
+    block.value = (arg*1/0.0000062137119223733);
+}
+if (unit == 'm'){
+    block.value = (arg*1/0.00062137119223733);
+}
+if (unit == 'km'){
+    block.value = (arg*1/0.62137119223733);
+}
+if (unit == 'in'){
+    block.value = (arg*1/0.000015782828282828);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/0.00018939393939394);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/0.00056818181818182);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/1);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/1.1507794480235);
+}
+
+
+
+//* block:from_nmi *//
+convertBlock('from_nmi', 'from nmi', 1000, 'nmi');
+
+//* arg:from_nmi *//
+var arg = logo.parseArg(logo, turtle, conns[1]);
+var unit = logo.parseArg(logo, turtle, conns[2]);
+if (unit == 'mm'){
+    block.value = (arg*1/0.00000053995680345572);
+}
+if (unit == 'cm'){
+    block.value = (arg*1/0.0000053995680345572);
+}
+if (unit == 'm'){
+    block.value = (arg*1/0.00053995680345572);
+}
+if (unit == 'km'){
+    block.value = (arg*1/0.53995680345572);
+}
+if (unit == 'in'){
+    block.value = (arg*1/0.000013714902807775);
+}
+if (unit == 'ft'){
+    block.value = (arg*1/0.0001645788336933);
+}
+if (unit == 'yd'){
+    block.value = (arg*1/0.00049373650107991);
+}
+if (unit == 'mi'){
+    block.value = (arg*1/0.86897624190065);
+}
+if (unit == 'nmi'){
+    block.value = (arg*1/1);
+}
+
+
+//* palette-icon:converter *//
+<svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55"><g transform="matrix(1.25 0 0 1.25-7.5-6.25)"><g font-family="Sans" word-spacing="0" line-height="125%" letter-spacing="0" font-size="20"><text x="10" y="10"><tspan x="20" y="35" fill="#fff">len</tspan></text></g></g><g fill="#fff" stroke="#fff"><path d="m10.5 14.5h35"/><path d="m15.5 44.5v-35"/></g></svg>
+
+//* palette-fill:converter *// #ff00ff
+//* palette-stroke:converter *// #C700D3
+//* palette-highlight:converter *// #FF9FFF
+//* palette-stroke-highlight:converter *// #000000

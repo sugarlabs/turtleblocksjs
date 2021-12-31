@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2018 Walter Bender
+// Copyright (c) 2015-2019 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -12,81 +12,85 @@
 // FIXME: Use busy cursor
 
 // A viewer for Turtle Blocks plugins
-function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
-    this.canvas = canvas;
-    this.stage = stage;
-    this.refreshCanvas = refreshCanvas;
-    this.closeViewer = close;
-    this.loadPlugin = load;
-    this.dict = {};
-    this.pluginFiles = [];
-    this.container = null;
-    this.prev = null;
-    this.next = null;
-    this.page = 0; // 4x4 image matrix per page
-    this.server = true;
+class PluginsViewer {
+    constructor(canvas, stage, refreshCanvas, close, load) {
+        this.canvas = canvas;
+        this.stage = stage;
+        this.refreshCanvas = refreshCanvas;
+        this.closeViewer = close;
+        this.loadPlugin = load;
+        this.dict = {};
+        this.pluginFiles = [];
+        this.container = null;
+        this.prev = null;
+        this.next = null;
+        this.page = 0; // 4x4 image matrix per page
+        this.server = true;
+    }
 
-    this.setServer = function(server) {
+    setServer(server) {
         this.server = server;
-    };
+    }
 
-    this.hide = function() {
+    hide() {
         if (this.container !== null) {
             this.container.visible = false;
             this.refreshCanvas();
         }
-    };
+    }
 
-    this.show = function(scale) {
+    show(scale) {
         this.scale = scale;
         this.page = 0;
         if (this.server) {
             try {
-                var rawData = httpGet();
-                var obj = JSON.parse(rawData);
-                // console.log('json parse: ' + obj);
+                const rawData = httpGet();
+                const obj = JSON.parse(rawData);
+                // console.debug('json parse: ' + obj);
                 // Look for svg
-                for (var file in obj) {
-                    if (fileExt(obj[file]) === 'svg') {
-                        var name = fileBasename(obj[file]);
+                for (const file in obj) {
+                    if (fileExt(obj[file]) === "svg") {
+                        const name = fileBasename(obj[file]);
                         if (this.pluginFiles.indexOf(name) === -1) {
                             this.pluginFiles.push(name);
                         }
                     }
                 }
                 // and corresponding .json files
-                for (var file in this.pluginFiles) {
-                    var tbfile = this.pluginFiles[file] + '.json';
+                for (const file in this.pluginFiles) {
+                    const tbfile = this.pluginFiles[file] + ".json";
                     if (!tbfile in obj) {
                         this.pluginFiles.remove(this.pluginFiles[file]);
                     }
                 }
             } catch (e) {
-                console.log(e);
+                console.debug(e);
                 return false;
             }
         } else {
             // FIXME: grab files from a local server?
             this.pluginFiles = SAMPLEPLUGINS;
         }
-        console.log('found these projects: ' + this.pluginFiles.sort());
+        console.debug("found these projects: " + this.pluginFiles.sort());
 
         if (this.container === null) {
             this.container = new createjs.Container();
             this.stage.addChild(this.container);
-            this.container.x = Math.floor(((this.canvas.width / scale) - 650) / 2);
+            this.container.x = Math.floor(
+                (this.canvas.width / scale - 650) / 2
+            );
             this.container.y = 27;
 
-            function processBackground(viewer, name, bitmap, extras) {
+            const processBackground = (viewer, name, bitmap, extras) => {
                 viewer.container.addChild(bitmap);
 
-                function processPrev(viewer, name, bitmap, extras) {
+                const processPrev = (viewer, name, bitmap, extras) => {
                     viewer.prev = bitmap;
                     viewer.container.addChild(viewer.prev);
                     viewer.prev.x = 270;
                     viewer.prev.y = 535;
 
-                    function processNext(viewer, name, bitmap, scale) {
+                    const processNext = (viewer, name, bitmap, scale) => {
                         viewer.next = bitmap;
                         viewer.container.addChild(viewer.next);
                         viewer.next.x = 325;
@@ -97,35 +101,31 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
                         loadThumbnailContainerHandler(viewer);
                         return true;
                     };
-
-                    makeViewerBitmap(viewer, NEXTBUTTON, 'viewer', processNext, null);
+                    makeViewerBitmap(viewer,NEXTBUTTON,"viewer",processNext,null);
                 };
-
-                makeViewerBitmap(viewer, PREVBUTTON, 'viewer', processPrev, null);
+                makeViewerBitmap(viewer,PREVBUTTON,"viewer",processPrev,null);
             };
-
-            makeViewerBitmap(this, BACKGROUND, 'viewer', processBackground, null);
+            makeViewerBitmap(this,BACKGROUND,"viewer",processBackground,null);
         } else {
             this.container.visible = true;
             this.refreshCanvas();
             this.completeInit();
             return true;
         }
-    };
+    }
 
-    this.downloadImage = function(p, prepareNextImage) {
-        var header = 'data:image/svg+xml;utf8,';
-        var name = this.pluginFiles[p] + '.svg';
-        // console.log('getting ' + name + ' from samples');
+    downloadImage(p, prepareNextImage) {
+        const header = "data:image/svg+xml;utf8,";
+        const name = this.pluginFiles[p] + ".svg";
+        // console.debug('getting ' + name + ' from samples');
+        let data = header + SAMPLESSVG[name];
         if (this.server) {
-            var data = header + httpGet(name);
-        } else {
-            var data = header + SAMPLESSVG[name];
+            data = header + httpGet(name);
         }
-        var image = new Image();
-        var viewer = this;
+        const image = new Image();
+        const viewer = this;
 
-        image.onload = function() {
+        image.onload = () => {
             bitmap = new createjs.Bitmap(data);
             bitmap.scaleX = 0.5;
             bitmap.scaleY = 0.5;
@@ -146,24 +146,24 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
         };
 
         image.src = data;
-    };
+    }
 
-    this.completeInit = function() {
-        var p = 0;
+    completeInit() {
+        const p = 0;
         this.prepareNextImage(this, p);
-    };
+    }
 
-    this.prepareNextImage = function(viewer, p) {
+    prepareNextImage(viewer, p) {
         // TODO: this.pluginFiles.sort()
         // Only download the images on the first page.
-        if (p < viewer.pluginFiles.length && p < (viewer.page * 16 + 16)) {
+        if (p < viewer.pluginFiles.length && p < viewer.page * 16 + 16) {
             if (viewer.pluginFiles[p] in viewer.dict) {
                 x = 5 + (p % 4) * 160;
                 y = 55 + Math.floor((p % 16) / 4) * 120;
                 viewer.dict[viewer.pluginFiles[p]].x = x;
                 viewer.dict[viewer.pluginFiles[p]].y = y;
                 viewer.dict[viewer.pluginFiles[p]].visible = true;
-                viewer.prepareNextImage(viewer, p + 1)
+                viewer.prepareNextImage(viewer, p + 1);
             } else {
                 viewer.downloadImage(p, viewer.prepareNextImage);
             }
@@ -176,15 +176,14 @@ function PluginsViewer(canvas, stage, refreshCanvas, close, load) {
             }
             viewer.refreshCanvas();
         }
-    };
-};
-
+    }
+}
 
 function hideCurrentPage(viewer) {
-    var min = viewer.page * 16;
-    var max = Math.min(viewer.pluginFiles.length, (viewer.page + 1) * 16);
+    let min = viewer.page * 16;
+    let max = Math.min(viewer.pluginFiles.length, (viewer.page + 1) * 16);
     // Hide the current page.
-    for (var p = min; p < max; p++) {
+    for (let p = min; p < max; p++) {
         viewer.dict[viewer.pluginFiles[p]].visible = false;
     }
     // Go back to previous page.
@@ -196,20 +195,19 @@ function hideCurrentPage(viewer) {
         viewer.next.visible = true;
     }
     // Show the current page.
-    var min = viewer.page * 16;
-    var max = Math.min(viewer.pluginFiles.length, (viewer.page + 1) * 16);
+    min = viewer.page * 16;
+    max = Math.min(viewer.pluginFiles.length, (viewer.page + 1) * 16);
     for (var p = min; p < max; p++) {
         viewer.dict[viewer.pluginFiles[p]].visible = true;
     }
     viewer.refreshCanvas();
-};
-
+}
 
 function showNextPage(viewer) {
-    var min = viewer.page * 16;
-    var max = Math.min(viewer.pluginFiles.length, (viewer.page + 1) * 16);
+    const min = viewer.page * 16;
+    const max = Math.min(viewer.pluginFiles.length, (viewer.page + 1) * 16);
     // Hide the current page.
-    for (var p = min; p < max; p++) {
+    for (let p = min; p < max; p++) {
         viewer.dict[viewer.pluginFiles[p]].visible = false;
     }
     // Advance to next page.
@@ -220,12 +218,11 @@ function showNextPage(viewer) {
     }
     viewer.prepareNextImage(viewer, max);
     viewer.refreshCanvas();
-};
-
+}
 
 function viewerClicked(viewer, event) {
-    var x = (event.stageX / viewer.scale) - viewer.container.x;
-    var y = (event.stageY / viewer.scale) - viewer.container.y;
+    const x = event.stageX / viewer.scale - viewer.container.x;
+    const y = event.stageY / viewer.scale - viewer.container.y;
     if (x > 600 && y < 55) {
         viewer.hide();
         viewer.closeViewer();
@@ -233,54 +230,53 @@ function viewerClicked(viewer, event) {
         if (viewer.prev.visible && x < 325) {
             hideCurrentPage(viewer);
         } else if (viewer.next.visible && x > 325) {
-            showNextPage(viewer)
+            showNextPage(viewer);
         }
     } else {
         // Select a plugin.
-        var col = Math.floor((x - 5) / 160);
-        var row = Math.floor((y - 55) / 120);
-        var p = row * 4 + col + 16 * viewer.page;
+        const col = Math.floor((x - 5) / 160);
+        const row = Math.floor((y - 55) / 120);
+        const p = row * 4 + col + 16 * viewer.page;
         if (p < viewer.pluginFiles.length) {
             viewer.hide();
             viewer.closeViewer();
-            viewer.loadPlugin(viewer.pluginFiles[p] + '.json');
+            viewer.loadPlugin(viewer.pluginFiles[p] + ".json");
         }
     }
-};
-
+}
 
 function loadThumbnailContainerHandler(viewer) {
-    var hitArea = new createjs.Shape();
-    var w = 650;
-    var h = 590;
-    var startX, startY, endX, endY;
-    hitArea.graphics.beginFill('#FFF').drawRect(0, 0, w, h);
+    const hitArea = new createjs.Shape();
+    const w = 650;
+    const h = 590;
+    let startX, startY, endX, endY;
+    hitArea.graphics.beginFill("#FFF").drawRect(0, 0, w, h);
     hitArea.x = 0;
     hitArea.y = 0;
     viewer.container.hitArea = hitArea;
 
-    var locked = false;
+    let locked = false;
 
-    viewer.container.on('click', function(event) {
+    viewer.container.on("click", (event) => {
         // We need a lock to "debouce" the click.
         if (locked) {
-            console.log('debouncing click');
+            console.debug("debouncing click");
             return;
         }
         locked = true;
-        setTimeout(function() {
+        setTimeout(() => {
             locked = false;
         }, 500);
-        viewerClicked(viewer, event)
+        viewerClicked(viewer, event);
     });
 
-    viewer.container.on('mousedown', function(event) {
+    viewer.container.on("mousedown", (event) => {
         startX = event.stageX;
         startY = event.stageY;
         locked = true;
     });
 
-    viewer.container.on('pressup', function(event) {
+    viewer.container.on("pressup", (event) => {
         endX = event.stageX;
         endY = event.stageY;
         if (endY > startY + 30 || endX > startX + 30) {
@@ -288,30 +284,27 @@ function loadThumbnailContainerHandler(viewer) {
             if (viewer.next.visible) {
                 showNextPage(viewer);
             }
-        }
-        else if(endY < startY - 30 || endX < startX - 30) {
+        } else if (endY < startY - 30 || endX < startX - 30) {
             // Up or left
             if (viewer.prev.visible) {
                 hideCurrentPage(viewer);
             }
-        }
-        else {
+        } else {
             locked = false;
-            viewerClicked(viewer, event)
+            viewerClicked(viewer, event);
         }
     });
-};
-
+}
 
 function makeViewerBitmap(viewer, data, name, callback, extras) {
     // Async creation of bitmap from SVG data
     // Works with Chrome, Safari, Firefox (untested on IE)
-    var img = new Image();
-    img.onload = function() {
+    const img = new Image();
+    img.onload = () => {
         bitmap = new createjs.Bitmap(img);
         callback(viewer, name, bitmap, extras);
     };
 
-    img.src = 'data:image/svg+xml;base64,' + window.btoa(
-        unescape(encodeURIComponent(data)));
-};
+    img.src ="data:image/svg+xml;base64," +
+        window.btoa(unescape(encodeURIComponent(data)));
+}

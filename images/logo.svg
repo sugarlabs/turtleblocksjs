@@ -1,3 +1,16 @@
+<!--
+About this file:
+
+This is an animated version of "activity-icon-color.svg".  It includes the
+<animate> elements inside the main turtle parts.  If you change the
+"activity-icon-color.svg" you should copy across the changes but keep the
+<animate> elements in this file.
+
+You also need to update the image included in the "index.html".  To do so, you
+need to use SVGCleaner (Complete preset) to minify the file, then base64 encode
+it and include it in the data url.
+-->
+
 <svg
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
@@ -18,15 +31,31 @@
      transform="matrix(1.0320878,0,0,0.99904752,-0.184081,0.02418615)">
     <path
        d="m 10.571891,36.919704 5.798216,-14.14899 -5.012466,-5.534784 c -1.4233734,1.718282 -2.480637,3.711241 -2.8150389,5.046387 -0.451356,1.79814 0,7.96332 0.5856365,10.1437 l -2.8182215,4.571955 4.0512949,-0.148486 z"
-       style="fill:#186dee;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#186dee;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" >
+      <!-- BLUE SHELL -->
+      <animate attributeType="CSS" attributeName="fill" repeatCount="indefinite"
+       values="#186dee;#ffb504;#d8432e;#009a57;#186dee" dur="4s" />
+    </path>
     <path
        d="m 15.827351,23.138991 12.64663,-0.323916 3.118775,-3.975828 c -0.869792,-1.299255 -2.013342,-2.558133 -3.475701,-3.315433 -4.355888,-2.256648 -8.269084,-3.109957 -13.966045,-0.280847 -1.311618,0.652319 -1.961058,1.152293 -2.772806,1.934717 z"
-       style="fill:#ffb504;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#ffb504;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" >
+      <!-- YELLOW SHELL -->
+      <animate attributeType="CSS" attributeName="fill" repeatCount="indefinite"
+       values="#ffb504;#d8432e;#009a57;#186dee;#ffb504" dur="4s" />
+    </path>
     <path
        d="M 28.827609,22.944786 16.350738,23.050047 10.704106,37.127591 29.0947,37.332873 c 3.504125,-0.134986 4.499519,-1.032283 5.462399,-1.962597 z"
-       style="fill:#009a57;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#009a57;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" >
+      <!-- GREEN SHELL -->
+      <animate attributeType="CSS" attributeName="fill" repeatCount="indefinite"
+       values="#009a57;#186dee;#ffb504;#d8432e;#009a57" dur="4s" />
+    </path>
     <path
        d="m 34.981054,23.766238 c 0,0 -2.011809,-2.505097 -3.098182,-4.441418 l -2.902193,3.701262 5.37511,12.556508 c 0.907909,-0.615531 2.256487,-2.511987 2.898435,-3.491812 2.418679,-3.238079 2.693228,-7.998903 2.693228,-7.998903 z"
-       style="fill:#d8432e;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#d8432e;fill-opacity:1;stroke-width:1.92499995;stroke-miterlimit:4;stroke-dasharray:none" >
+      <!-- RED SHELL -->
+      <animate attributeType="CSS" attributeName="fill" repeatCount="indefinite"
+       values="#d8432e;#009a57;#186dee;#ffb504;#d8432e" dur="4s" />
+    </path>
   </g>
 </svg>

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 Walter Bender
+// Copyright (c) 2016-2020 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -14,40 +14,66 @@
 // trash and hidden. There is a menu button that can be used to
 // restore trash.
 
-function Boundary () {
-    this._stage = null;
-    this._container = null;
+/*
+   global createjs, BOUNDARY
+*/
 
-    this.setStage = function (stage) {
-        this._stage = stage;
-        return this;
-    };
+/* exported Boundary */
+class Boundary {
 
-    this.resizeEvent = function (scale) {
-    };
-
-    this.init = function () {
+    /**
+     * @constructor
+     * @param {Object} stage 
+     */
+    constructor(stage) {
         this._container = new createjs.Container();
+        this._stage = stage;
         this._stage.addChild(this._container);
         this._stage.setChildIndex(this._container, 0);
-    };
+    }
 
-    this.setScale = function (w, h, scale) {
+    // resizeEvent(scale) {};
+    
+    /**
+     * @public
+     * @param {number} w 
+     * @param {number} h 
+     * @param {number} scale 
+     * @returns {void}
+     */
+    setScale(w, h, scale) {
         this.destroy();
         this.create(w, h, scale);
-    };
+    }
 
-    this.destroy = function () {
+    /**
+     * @public
+     * @returns {void}
+     */
+    destroy() {
         if (this._container.children.length > 0) {
             this._container.removeChild(this._container.children[0]);
         }
-    };
+    }
 
-    this.offScreen = function (x, y) {
-        return (x < this.x || x > this.x + this.dx || y < this.y || y > this.y + this.dy);
-    };
+    /**
+     * @public
+     * @param {number} x 
+     * @param {number} y 
+     * @returns {number}
+     */
+    offScreen(x, y) {
+        return x < this.x || x > this.x + this.dx || y < this.y || y > this.y + this.dy;
+    }
 
-    this.create = function (w, h, scale) {
+    /**
+     * @public
+     * @param {number} w 
+     * @param {number} h 
+     * @param {number} scale 
+     * @returns {void}
+     */
+    create(w, h, scale) {
         this.w = w / scale;
         this.x = 55 + 13;
         this.dx = this.w - (110 + 26);
@@ -56,27 +82,45 @@ function Boundary () {
         this.y = 55 + 13;
         this.dy = this.h - (55 + 26);
 
-        that = this;
-
-        function __makeBoundary() {
-            var img = new Image();
-            img.onload = function () {
-                bitmap = new createjs.Bitmap(img);
-                that._container.addChild(bitmap);
+        const __makeBoundary = () => {
+            const img = new Image();
+            img.onload = () => {
+                const bitmap = new createjs.Bitmap(img);
+                this._container.addChild(bitmap);
             };
-
-            img.src = 'data:image/svg+xml;base64,' + window.btoa(
-                unescape(encodeURIComponent(BOUNDARY.replace('HEIGHT', that.h).replace('WIDTH', that.w).replace('Y', that.y).replace('X', that.x).replace('DY', that.dy).replace('DX', that.dx).replace('stroke_color', '#e08080'))));
+            img.src =
+                "data:image/svg+xml;base64," +
+                window.btoa(
+                    unescape(
+                        encodeURIComponent(
+                            BOUNDARY.replace("HEIGHT", this.h)
+                                .replace("WIDTH", this.w)
+                                .replace("Y", this.y)
+                                .replace("X", this.x)
+                                .replace("DY", this.dy)
+                                .replace("DX", this.dx)
+                                .replace("stroke_color", "#e08080")
+                        )
+                    )
+                );
         };
 
         __makeBoundary();
-    };
+    }
 
-    this.hide = function () {
+    /**
+     * @public
+     * @returns {void}
+     */
+    hide() {
         this._container.visible = false;
-    };
+    }
 
-    this.show = function () {
+    /**
+     * @public
+     * @returns {void}
+     */
+    show() {
         this._container.visible = true;
-    };
-};
+    }
+}

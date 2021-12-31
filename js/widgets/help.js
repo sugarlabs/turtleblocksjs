@@ -1,4 +1,4 @@
-// Copyright (c) 2016-18 Walter Bender
+// Copyright (c) 2016-20 Walter Bender
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
 // License as published by the Free Software Foundation; either
@@ -10,289 +10,544 @@
 
 // This widget displays help about a block or a button.
 
+/* global
 
-function HelpWidget () {
-    const BUTTONDIVWIDTH = 476;  // 8 buttons 476 = (55 + 4) * 8
-    const BUTTONSIZE = 53;
-    const ICONSIZE = 32;
-    const HELPWIDTH = 400;
-    const HELPHEIGHT = 600;
+   _, docById, getMacroExpansion, HELPCONTENT,
+*/
+/*
+     Globals locations
+     
+     - js/utils/utils.js
+        _, docById
+     
+     - js/macros.js
+        getMacroExpansion
+    
+     - js/turtledefs.js
+        HELPCONTENT
+ */
 
-    this.init = function (blocks) {
-        var w = window.innerWidth;
-        var iconSize = ICONSIZE;
+/*exported HelpWidget*/
+class HelpWidget {
+    static ICONSIZE = 32;
 
-        var canvas = docById('myCanvas');
+    /**
+     * @param {Activity} activity
+     */
+    constructor(activity, useActiveBlock) {
+        this.activity = activity;
+        this.beginnerBlocks = [];
+        this.advancedBlocks = [];
+        this.appendedBlockList = [];
+        this.index = 0;
+        this.isOpen = true;
 
-        // help page
-        var page = 0;
-
+        const widgetWindow = window.widgetWindows.windowFor(this, "help", "help", false);
+        widgetWindow.getWidgetBody().style.overflowY = "auto";
+        // const canvasHeight = docById("myCanvas").getBoundingClientRect().height;
+        widgetWindow.getWidgetBody().style.maxHeight = "500px";
+        this.widgetWindow = widgetWindow;
+        widgetWindow.clear();
+        widgetWindow.show();
+        widgetWindow.onClose = () => {
+            this.isOpen = false;
+            this.destroy();
+        };
         // Position the widget and make it visible.
-        var helpDiv = docById('helpDiv');
-        helpDiv.style.display = '';
-        helpDiv.style.visibility = 'visible';
-        helpDiv.setAttribute('draggable', 'true');
-        helpDiv.style.left = '200px';
-        helpDiv.style.top = '150px';
+        this._helpDiv = document.createElement("div");
 
-        // The widget buttons
-        var widgetButtonsDiv = docById('helpButtonsDiv');
-        widgetButtonsDiv.style.display = 'inline';
-        widgetButtonsDiv.style.visibility = 'visible';
-        widgetButtonsDiv.style.width = BUTTONDIVWIDTH;
-        widgetButtonsDiv.innerHTML = '<table cellpadding="0px" id="helpButtonTable"></table>';
+        // Give the DOM time to create the div.
+        setTimeout(() => this._setup(useActiveBlock), 0);
 
-        var buttonTable = docById('helpButtonTable');
-        var header = buttonTable.createTHead();
-        var row = header.insertRow(0);
+        // Position center
+        setTimeout(this.widgetWindow.sendToCenter, 50);
+    }
 
-        // For the button callbacks
-        var that = this;
+    /**
+     * @private
+     * @param {useActiveBlock} Show help for the active block.
+     * @returns {void}
+     */
+    _setup(useActiveBlock) {
+        const iconSize = HelpWidget.ICONSIZE;
+        // Which help page are we on?
+        let page = 0;
 
-        if (blocks === null) {
-            var cell = this._addButton(row, 'up.svg', ICONSIZE, _('Previous page'));
+        this._helpDiv.style.width = iconSize * 2 + 425 + "px";
+        this._helpDiv.style.backgroundColor = "#e8e8e8";
+        // this._helpDiv.style.maxHeight = "100%";
+        // this._helpDiv.style.overflowY = "auto";
+        this._helpDiv.innerHTML =
+            '<div id="right-arrow" class="hover" tabindex="-1"></div><div id="left-arrow" class="hover" tabindex="-1"></div><div id="helpButtonsDiv" tabindex="-1"></div><div id="helpBodyDiv" tabindex="-1"></div>';
 
-            cell.onclick=function() {
+        this.widgetWindow.getWidgetBody().append(this._helpDiv);
+
+        let leftArrow, rightArrow;
+        if (!useActiveBlock) {
+            this.widgetWindow.updateTitle(_("Take a tour"));
+            rightArrow = document.getElementById("right-arrow");
+            rightArrow.style.display = "block";
+            rightArrow.classList.add("hover");
+
+            leftArrow = document.getElementById("left-arrow");
+            leftArrow.style.display = "block";
+            leftArrow.classList.add("hover");
+
+            let cell = docById("left-arrow");
+
+            cell.onclick = () => {
                 page = page - 1;
                 if (page < 0) {
                     page = HELPCONTENT.length - 1;
                 }
 
-                that._showPage(page);
+                this._showPage(page);
             };
 
-            cell.onmouseover=function() {
-                this.style.backgroundColor = platformColor.selectorSelected;
-            };
+            cell = docById("right-arrow");
 
-            cell.onmouseout=function() {
-                this.style.backgroundColor = platformColor.selectorBackground;
-            };
-
-            var cell = this._addButton(row, 'down.svg', ICONSIZE, _('Next page'));
-
-            cell.onclick=function() {
+            cell.onclick = () => {
                 page = page + 1;
                 if (page === HELPCONTENT.length) {
                     page = 0;
                 }
 
-                that._showPage(page);
-            };
-
-            cell.onmouseover=function() {
-                this.style.backgroundColor = platformColor.selectorSelected;
-            };
-
-            cell.onmouseout=function() {
-                this.style.backgroundColor = platformColor.selectorBackground;
+                this._showPage(page);
             };
         } else {
-            if (blocks.activeBlock.name === null) {
-                helpDiv.style.display = 'none';
-            } else {
-                var label = blocks.blockList[blocks.activeBlock].protoblock.staticLabels[0];
-	    }
-
-            var cell = this._addLabel(row, ICONSIZE, label);
-	}
-
-        var cell = this._addButton(row, 'close-button.svg', ICONSIZE, _('Close'));
-
-        cell.onclick=function() {
-            helpDiv.style.display = 'none';
-        };
-
-        cell.onmouseover=function() {
-            this.style.backgroundColor = platformColor.selectorSelected;
-        };
-
-        cell.onmouseout=function() {
-            this.style.backgroundColor = platformColor.selectorBackground;
-        };
-
-        // We use this cell as a handle for dragging.
-        var dragCell = this._addButton(row, 'grab.svg', ICONSIZE, _('Drag'));
-        dragCell.style.cursor = 'move';
-
-        this._dx = dragCell.getBoundingClientRect().left - helpDiv.getBoundingClientRect().left;
-        this._dy = dragCell.getBoundingClientRect().top - helpDiv.getBoundingClientRect().top;
-        this._dragging = false;
-        this._target = false;
-        this._dragCellHTML = dragCell.innerHTML;
-
-        dragCell.onmouseover = function(e) {
-            // In order to prevent the dragged item from triggering a
-            // browser reload in Firefox, we empty the cell contents
-            // before dragging.
-            dragCell.innerHTML = '';
-        };
-
-        dragCell.onmouseout = function(e) {
-            if (!that._dragging) {
-                dragCell.innerHTML = that._dragCellHTML;
+            if (this.activity.blocks.activeBlock.name !== null) {
+                const label = this.activity.blocks.blockList[this.activity.blocks.activeBlock]
+                    .protoblock.staticLabels[0];
+                this.widgetWindow.updateTitle(_(label));
             }
-        };
 
-        canvas.ondragover = function(e) {
-            e.preventDefault();
-        };
+            rightArrow = document.getElementById("right-arrow");
+            rightArrow.style.display = "none";
+            rightArrow.classList.remove("hover");
 
-        canvas.ondrop = function(e) {
-            if (that._dragging) {
-                that._dragging = false;
-                var x = e.clientX - (dragCell.getBoundingClientRect().left - helpDiv.getBoundingClientRect().left) - BUTTONSIZE/2;
-                helpDiv.style.left = x + 'px';
-                var y = e.clientY - (dragCell.getBoundingClientRect().top - helpDiv.getBoundingClientRect().top) - BUTTONSIZE/2;
-                helpDiv.style.top = y + 'px';
-                dragCell.innerHTML = that._dragCellHTML;
-            }
-        };
+            leftArrow = document.getElementById("left-arrow");
+            leftArrow.style.display = "none";
+            leftArrow.classList.remove("hover");
+        }
 
-        helpDiv.ondragover = function(e) {
-            e.preventDefault();
-        };
-
-        helpDiv.ondrop = function(e) {
-            if (that._dragging) {
-                that._dragging = false;
-                var x = e.clientX - (dragCell.getBoundingClientRect().left - helpDiv.getBoundingClientRect().left) - BUTTONSIZE/2;
-                helpDiv.style.left = x + 'px';
-                var y = e.clientY - (dragCell.getBoundingClientRect().top - helpDiv.getBoundingClientRect().top) - BUTTONSIZE/2;
-                helpDiv.style.top = y + 'px';
-                dragCell.innerHTML = that._dragCellHTML;
-            }
-        };
-
-        helpDiv.onmousedown = function(e) {
-            that._dragging = true;
-            that._target = e.target;
-        };
-
-        helpDiv.ondragstart = function(e) {
-            if (dragCell.contains(that._target)) {
-                e.dataTransfer.setData('text/plain', '');
-            } else {
-                e.preventDefault();
-            }
-        };
-
-        if (blocks === null) {
+        if (!useActiveBlock) {
             // display help menu
+            docById("helpBodyDiv").style.height = "325px";
+            docById("helpBodyDiv").style.width = "400px";
             this._showPage(0);
         } else {
             // display help for this block
-            if (blocks.activeBlock.name === null) {
-                helpDiv.style.display = 'none';
-            } else {
-                var name = blocks.blockList[blocks.activeBlock].name;
+            if (this.activity.blocks.activeBlock.name !== null) {
+                const name = this.activity.blocks.blockList[this.activity.blocks.activeBlock].name;
 
-                if (name in BLOCKHELP) {
-                    var helpBody = docById('helpBodyDiv');
+                const advIcon =
+                    '<a\
+                class="tooltipped"\
+                data-toggle="tooltip"\
+                title="This block is only available in advance mode"\
+                data-position="bottom"\
+                ><i\
+                    id="advIconText"\
+                    class="material-icons md-48"\
+                    >star</i\
+                ></a\
+                >';
 
-                    body = '';
-                    if (BLOCKHELP[name].length > 1) {
-                        var path = BLOCKHELP[name][1];
+                const findIcon =
+                    '<a\
+            class="tooltipped"\
+            data-toggle="tooltip"\
+            title="Show Palette containing the block"\
+            data-position="bottom"\
+            ><i\
+            style="margin-right: 10px"\
+                id="findIcon"\
+                class="material-icons md-48"\
+                >search</i\
+            ></a\
+            >';
+
+                // Each block's help entry contains a help string, the
+                // path of the help svg, an override name for the help
+                // svg file, and an optional macro name for generating
+                // the help output.
+                const message = this.activity.blocks.blockList[this.activity.blocks.activeBlock]
+                    .protoblock.helpString;
+
+                if (message) {
+                    const helpBody = docById("helpBodyDiv");
+                    helpBody.style.height = "";
+
+                    let body = "";
+                    if (message.length > 1) {
+                        let path = message[1];
                         // We need to add a case here whenever we add
-                        // help artwor support for a new language.
+                        // help artwort support for a new language.
                         // e.g., documentation-es
-                        switch(localStorage.languagePreference) {
-                        case 'ja':
-                            if (localStorage.kanaPreference == 'kana') {
-                                path = path + '-kana';
-                            } else {
-                                path = path + '-ja';
-                            }
-                            break;
-                        case 'es':
-                            path = path + '-es';
-                            break;
-                        default:
-                            break;
+                        let language = localStorage.languagePreference;
+                        if (language === undefined) {
+                            language = navigator.language;
                         }
 
-                        body = body + '<p><img src="' + path + '/' + BLOCKHELP[name][2] + '"></p>';
+                        switch (language) {
+                            case "ja":
+                                if (localStorage.kanaPreference == "kana") {
+                                    path = path + "-kana";
+                                } else {
+                                    path = path + "-ja";
+                                }
+                                break;
+                            case "es":
+                                path = path + "-es";
+                                break;
+                            case "pt":
+                                path = path + "-pt";
+                                break;
+                            default:
+                                break;
+                        }
+
+                        body = body + '<p><img src="' + path + "/" + name + '_block.svg"></p>';
                     }
 
-                    body = body + '<p>' + BLOCKHELP[name][0] + '</p>';
+                    body = body + "<p>" + message[0] + "</p>";
+
+                    body +=
+                        '<i style="margin-right: 10px" id="loadButton" data-toggle="tooltip" title="Load this block" class="material-icons md-48">get_app</i>';
+
                     helpBody.innerHTML = body;
-                } else {
-                    helpDiv.style.display = 'none';
+                    helpBody.innerHTML += findIcon;
+
+                    if (
+                        !this.activity.blocks.blockList[this.activity.blocks.activeBlock].protoblock
+                            .beginnerModeBlock
+                    ) {
+                        helpBody.innerHTML += advIcon;
+                    }
+
+                    const object = this.activity.blocks.palettes.getProtoNameAndPalette(name);
+
+                    const loadButton = docById("loadButton");
+                    if (loadButton !== null) {
+                        loadButton.onclick = () => {
+                            if (message.length < 4) {
+                                // If there is nothing specified, just load the block.
+                                // console.debug("CLICK: " + name);
+
+                                const protoblk = object[0];
+                                const paletteName = object[1];
+                                const protoName = object[2];
+
+                                const protoResult = Object.prototype.hasOwnProperty.call(
+                                    this.activity.blocks.protoBlockDict,
+                                    protoName
+                                );
+                                if (protoResult) {
+                                    this.activity.blocks.palettes.dict[
+                                        paletteName
+                                    ].makeBlockFromSearch(protoblk, protoName, (newBlock) => {
+                                        this.activity.blocks.moveBlock(newBlock, 100, 100);
+                                    });
+                                }
+                            } else if (typeof message[3] === "string") {
+                                // If it is a string, load the macro
+                                // assocuated with this block
+                                const blocksToLoad = getMacroExpansion(message[3], 100, 100);
+                                // console.debug("CLICK: " + blocksToLoad);
+                                this.activity.blocks.loadNewBlocks(blocksToLoad);
+                            } else {
+                                // Load the blocks.
+                                const blocksToLoad = message[3];
+                                // console.debug("CLICK: " + blocksToLoad);
+                                this.activity.blocks.loadNewBlocks(blocksToLoad);
+                            }
+                        };
+                    }
+                    const findIconMethod = docById("findIcon");
+
+                    findIconMethod.onclick = () => {
+                        this.activity.blocks.palettes.showPalette(object[1]);
+                    };
                 }
             }
         }
-    };
 
-    this._showPage = function(page) {
-        var helpBody = docById('helpBodyDiv');
-        var body = '';
-        body = body + '<p>&nbsp;<img src="' + HELPCONTENT[page][2] + '"></p>';
-        body = body + '<h1>' + HELPCONTENT[page][0] + '</h1>';
-        body = body + '<p>' + HELPCONTENT[page][1] + '</p>';
+        this.widgetWindow.takeFocus();
+    }
+
+    /**
+     * @private
+     * @param {number} page
+     * @returns {void}
+     */
+    _showPage(page) {
+        const helpBody = docById("helpBodyDiv");
+        let body = "";
+        if (
+            [
+                _("Welcome to Music Blocks"),
+                _("Meet Mr. Mouse!"),
+                _("Guide"),
+                _("About"),
+                _("Congratulations.")
+            ].indexOf(HELPCONTENT[page][0]) !== -1
+        ) {
+            body = body + '<p>&nbsp;<img src="' + HELPCONTENT[page][2] + '"></p>';
+        } else {
+            body =
+                body +
+                '<p>&nbsp;<img src="' +
+                HELPCONTENT[page][2] +
+                '"width="64px" height="64px"></p>';
+        }
+        body = body + "<h1>" + HELPCONTENT[page][0] + "</h1>";
+        body = body + "<p>" + HELPCONTENT[page][1] + "</p>";
 
         if (HELPCONTENT[page].length > 3) {
-            var link = HELPCONTENT[page][3];
-	    console.log(page + ' ' + link);
-            // We need to add a case here whenever we add
-            // a guide a new language.
-            // e.g., guide-es
-            body = body + '<p><a href="' + link + '" target="_blank">' + HELPCONTENT[page][4] + '</a></p>';
+            const link = HELPCONTENT[page][3];
+            // console.debug(page + " " + link);
+            body =
+                body +
+                '<p><a href="' +
+                link +
+                '" target="_blank">' +
+                HELPCONTENT[page][4] +
+                "</a></p>";
         }
 
-    helpBody.innerHTML = body;
-    };
+        if ([_("Congratulations.")].indexOf(HELPCONTENT[page][0]) !== -1) {
+            const cell = docById("right-arrow");
 
-    this.showPageByName = function(pageName) {
-        for (var i = 0; i < HELPCONTENT.length; i++) {
+            cell.onclick = () => {
+                this._prepareBlockList();
+            };
+        }
+
+        helpBody.style.color = "#505050";
+        helpBody.innerHTML = body;
+
+        this.widgetWindow.takeFocus();
+    }
+
+    /**
+     * Prepare a list of beginner and advanced blocks and cycle through their help
+     * @private
+     * @returns {void}
+     */
+    _prepareBlockList() {
+        for (const key in this.activity.blocks.protoBlockDict) {
+            if (
+                this.activity.blocks.protoBlockDict[key].beginnerModeBlock === true &&
+                this.activity.blocks.protoBlockDict[key].helpString !== undefined &&
+                this.activity.blocks.protoBlockDict[key].helpString.length !== 0
+            ) {
+                this.beginnerBlocks.push(key);
+            }
+        }
+
+        for (const key in this.activity.blocks.protoBlockDict) {
+            if (
+                this.activity.blocks.protoBlockDict[key].beginnerModeBlock === false &&
+                this.activity.blocks.protoBlockDict[key].helpString !== undefined &&
+                this.activity.blocks.protoBlockDict[key].helpString.length !== 0
+            ) {
+                this.advancedBlocks.push(key);
+            }
+        }
+
+        // Array containing list of all blocks (Beginner blocks first)
+
+        this.appendedBlockList.push(...this.beginnerBlocks);
+        this.appendedBlockList.push(...this.advancedBlocks);
+
+        this._blockHelp(this.activity.blocks.protoBlockDict[this.appendedBlockList[0]]);
+    }
+
+    /**
+     * Function to display help related to a single block
+     * called recursively to cycle through help string of all blocks (Beginner Blocks First)
+     * @private
+     * @param {ProtoBlock} block
+     * @returns {void}
+     */
+    _blockHelp(block) {
+        const widgetWindow = window.widgetWindows.windowFor(this, "help", "help");
+        this.widgetWindow = widgetWindow;
+        widgetWindow.clear();
+        this._helpDiv = document.createElement("div");
+
+        this._helpDiv.style.width = "500px";
+        this._helpDiv.style.height = "500px";
+        this._helpDiv.style.backgroundColor = "#e8e8e8";
+        this._helpDiv.innerHTML =
+            '<div id="right-arrow" class="hover" tabindex="-1"></div><div id="left-arrow" class="hover" tabindex="-1"></div><div id="helpButtonsDiv" tabindex="-1"></div><div id="helpBodyDiv" tabindex="-1"></div>';
+
+        this.widgetWindow.getWidgetBody().append(this._helpDiv);
+        this.widgetWindow.sendToCenter();
+        let cell = docById("right-arrow");
+        cell.onclick = () => {
+            if (this.index !== this.appendedBlockList.length - 1) {
+                this.index += 1;
+            }
+            this._blockHelp(
+                this.activity.blocks.protoBlockDict[this.appendedBlockList[this.index]]
+            );
+        };
+
+        cell = docById("left-arrow");
+
+        cell.onclick = () => {
+            if (this.index !== 0) {
+                this.index -= 1;
+            }
+
+            this._blockHelp(
+                this.activity.blocks.protoBlockDict[this.appendedBlockList[this.index]]
+            );
+        };
+        if (block.name !== null) {
+            const label = block.staticLabels[0];
+            this.widgetWindow.updateTitle(_(label));
+        }
+
+        if (block.name !== null) {
+            const name = block.name;
+            const advIcon =
+                '<a\
+            class="tooltipped"\
+            data-toggle="tooltip"\
+            title="This block is only available in advance mode"\
+            data-position="bottom"\
+            ><i\
+                id="advIconText"\
+                class="material-icons md-48"\
+                >star</i\
+            ></a\
+        >';
+
+            const findIcon =
+                '<a\
+            class="tooltipped"\
+            data-toggle="tooltip"\
+            title="Show Palette containing the block"\
+            data-position="bottom"\
+            ><i\
+            style="margin-right: 10px"\
+                id="findIcon"\
+                class="material-icons md-48"\
+                >search</i\
+            ></a\
+        >';
+
+            const message = block.helpString;
+
+            const helpBody = docById("helpBodyDiv");
+            helpBody.style.height = "500px";
+            helpBody.style.backgroundColor = "#e8e8e8";
+            if (message) {
+                let body = "";
+                if (message.length > 1) {
+                    let path = message[1];
+                    // We need to add a case here whenever we add
+                    // help artwort support for a new language.
+                    // e.g., documentation-es
+                    let language = localStorage.languagePreference;
+                    if (language === undefined) {
+                        language = navigator.language;
+                    }
+
+                    switch (language) {
+                        case "ja":
+                            if (localStorage.kanaPreference == "kana") {
+                                path = path + "-kana";
+                            } else {
+                                path = path + "-ja";
+                            }
+                            break;
+                        case "es":
+                            path = path + "-es";
+                            break;
+                        case "pt":
+                            path = path + "-pt";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    body = body + '<p><img src="' + path + "/" + name + '_block.svg"></p>';
+                }
+
+                body = body + "<p>" + message[0] + "</p>";
+
+                body +=
+                    '<i style="margin-right: 10px" id="loadButton" data-toggle="tooltip" title="Load this block" class="material-icons md-48">get_app</i>';
+
+                helpBody.innerHTML = body;
+                helpBody.innerHTML += findIcon;
+
+                if (!block.beginnerModeBlock) {
+                    helpBody.innerHTML += advIcon;
+                }
+
+                const findIconMethod = docById("findIcon");
+
+                findIconMethod.onclick = () => {
+                    block.palette.palettes.showPalette(block.palette.name);
+                };
+
+                const loadButton = docById("loadButton");
+                if (loadButton !== null) {
+                    loadButton.onclick = () => {
+                        if (message.length < 4) {
+                            // If there is nothing specified, just
+                            // load the block.
+                            // console.debug("CLICK: " + name);
+                            const obj = this.activity.blocks.palettes.getProtoNameAndPalette(name);
+                            const protoblk = obj[0];
+                            const paletteName = obj[1];
+                            const protoName = obj[2];
+
+                            const protoResult = Object.prototype.hasOwnProperty.call(
+                                this.activity.blocks.protoBlockDict,
+                                protoName
+                            );
+                            if (protoResult) {
+                                this.activity.blocks.palettes.dict[paletteName].makeBlockFromSearch(
+                                    protoblk,
+                                    protoName,
+                                    (newBlock) => {
+                                        this.activity.blocks.moveBlock(newBlock, 100, 100);
+                                    }
+                                );
+                            }
+                        } else if (typeof message[3] === "string") {
+                            // If it is a string, load the macro
+                            // assocuated with this block
+                            const blocksToLoad = getMacroExpansion(message[3], 100, 100);
+                            // console.debug("CLICK: " + blocksToLoad);
+                            this.activity.blocks.loadNewBlocks(blocksToLoad);
+                        } else {
+                            // Load the blocks.
+                            const blocksToLoad = message[3];
+                            // console.debug("CLICK: " + blocksToLoad);
+                            this.activity.blocks.loadNewBlocks(blocksToLoad);
+                        }
+                    };
+                }
+            }
+        }
+
+        this.widgetWindow.takeFocus();
+    }
+
+    /**
+     * @deprecated
+     */
+    showPageByName(pageName) {
+        for (let i = 0; i < HELPCONTENT.length; i++) {
             if (HELPCONTENT[i].includes(pageName)) {
                 this._showPage(i);
             }
         }
-};
-
-    this._addButton = function(row, icon, iconSize, label) {
-        var cell = row.insertCell(-1);
-        cell.innerHTML = '&nbsp;&nbsp;<img src="header-icons/' + icon + '" title="' + label + '" alt="' + label + '" height="' + iconSize + '" width="' + iconSize + '" vertical-align="middle" align-content="center">&nbsp;&nbsp;';
-        cell.style.width = BUTTONSIZE + 'px';
-        cell.style.minWidth = cell.style.width;
-        cell.style.maxWidth = cell.style.width;
-        cell.style.height = cell.style.width;
-        cell.style.minHeight = cell.style.height;
-        cell.style.maxHeight = cell.style.height;
-        cell.style.backgroundColor = platformColor.selectorBackground;
-
-        cell.onmouseover=function() {
-            this.style.backgroundColor = platformColor.selectorSelected;
-        }
-
-        cell.onmouseout=function() {
-            this.style.backgroundColor = platformColor.selectorBackground;
-        }
-
-        return cell;
-    };
-
-    this._addLabel = function(row, iconSize, label) {
-        var cell = row.insertCell(-1);
-        cell.innerHTML = '&nbsp;&nbsp;' + label + '&nbsp;&nbsp;';
-        cell.style.height = cell.style.width;
-        cell.style.minHeight = cell.style.height;
-        cell.style.maxHeight = cell.style.height;
-        cell.style.backgroundColor = platformColor.selectorBackground;
-
-        return cell;
-    };
-
-    this.hide = function () {
-        docById('helpDiv').style.visibility = 'hidden';
-        docById('helpButtonsDiv').style.visibility = 'hidden';
-
-        for (var i = 0; i < this.BPMs.length; i++) {
-            docById('helpCanvas' + i).style.visibility = 'hidden';
-        }
-
-        if (this._intervalID != null) {
-            clearInterval(this._intervalID);
-        }
     }
-};
+}

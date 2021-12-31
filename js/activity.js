@@ -3731,13 +3731,11 @@ function Activity() {
      * Shows help page
      */
     const showHelp = function (activity) {
-	console.log("SHOW HELP");
         activity._showHelp();
     };
 
     this._showHelp = function () {
         // Will show welcome page by default.
-	console.log("_SHOW HELP");
         new HelpWidget(this, false);
     };
 
@@ -3745,13 +3743,11 @@ function Activity() {
      * Shows about page
      */
     const showAboutPage = function (activity) {
-	console.log("SHOW ABOUT");
         activity._showAboutPage();
     };
 
     this._showAboutPage = function () {
         // Will show welcome page by default.
-	console.log("SHOW ABOUT");
         new HelpWidget(this, false);
     };
 

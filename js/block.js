@@ -35,7 +35,7 @@
    SCALENOTES, SHARP, SOLFATTRS, SOLFNOTES, splitScaleDegree,
    splitSolfege, STANDARDBLOCKHEIGHT, TEXTX, TEXTY,
    topBlock, updateTemperaments, VALUETEXTX,
-   VOICENAMES, WESTERN2EISOLFEGENAMES
+   VOICENAMES, WESTERN2EISOLFEGENAMES, _THIS_IS_TURTLE_BLOCKS_
  */
 
 /*
@@ -3422,18 +3422,28 @@ class Block {
         } else if (this.name === "grid") {
             selectedValue = this.value;
 
-            const gridLabels = [
-                _("Cartesian"),
-                _("polar"),
-                _("Cartesian+polar"),
-                _("treble"),
-                _("grand staff"),
-                _("mezzo-soprano"),
-                _("alto"),
-                _("tenor"),
-                _("bass"),
-                _("none")
-            ];
+	    let gridLabels = [];
+	    if (_THIS_IS_TURTLE_BLOCKS_) {
+		gridLabels = [
+                    _("Cartesian"),
+                    _("polar"),
+                    _("Cartesian+polar"),
+                    _("none")
+		];
+            } else {
+		gridLabels = [
+                    _("Cartesian"),
+                    _("polar"),
+                    _("Cartesian+polar"),
+                    _("treble"),
+                    _("grand staff"),
+                    _("mezzo-soprano"),
+                    _("alto"),
+                    _("tenor"),
+                    _("bass"),
+                    _("none")
+		];
+            }
             const gridValues = gridLabels;
 
             piemenuBasic(this, gridLabels, gridValues, selectedValue, platformColor.piemenuBasic);

@@ -271,7 +271,6 @@ function Activity() {
      */
     this.setupDependencies = function () {
         createDefaultStack();
-	console.log("HHHEEELLLPPP CONTENT");
         createHelpContent(this);
         window.scroll(0, 0);
 

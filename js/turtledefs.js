@@ -48,7 +48,7 @@ const DEFAULTPALETTE = "turtle";
 let HELPCONTENT;
 let DATAOBJS;
 const TITLESTRING = _('Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks.');
-const VERSION = "3.5.2";
+const VERSION = "3.5.2.2";
 
 // We don't include 'extras' since we want to be able to delete
 // plugins from the extras palette.

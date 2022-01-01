@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /**
  * @file This contains the encapsulation related to notations (used for lilypond, abc, etc/).
  * @author Walter Bender

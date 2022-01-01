@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 // Copyright (c) 2014-2021 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
@@ -93,7 +92,6 @@ const processLilypondNotes = function (lilypond, logo, turtle) {
     let keySignature;
     let key;
     let mode;
-    let obj;
     let note;
     let notes;
 

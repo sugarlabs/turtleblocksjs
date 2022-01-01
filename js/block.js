@@ -1,5 +1,4 @@
-﻿/* eslint-disable no-unused-vars */
-// Copyright (c) 2014-21 Walter Bender
+﻿// Copyright (c) 2014-21 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -3664,11 +3663,13 @@ class Block {
 
             this.label.style.left =
                 Math.round(
-                    (x + this.activity.blocksContainer.x) * this.activity.getStageScale() + canvasLeft
+                    (x + this.activity.blocksContainer.x) * this.activity.getStageScale()
+                        + canvasLeft
                 ) + "px";
             this.label.style.top =
                 Math.round(
-                    (y + this.activity.blocksContainer.y) * this.activity.getStageScale() + canvasTop
+                    (y + this.activity.blocksContainer.y) * this.activity.getStageScale()
+                        + canvasTop
                 ) + "px";
             this.label.style.width =
                 Math.round((selectorWidth * this.blocks.blockScale * this.protoblock.scale) / 2) +

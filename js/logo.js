@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 // Copyright (c) 2014-2021 Walter Bender
 // Copyright (c) 2015 Yash Khandelwal
 // Copyright (c) 2020 Anindya Kundu
@@ -765,7 +764,14 @@ class Logo {
                 while (i > 0) {
                     i -= 1;
                     if (obj2[0] !== 0) {
-                        this.updateNotation(note, obj2[1] / obj2[0], turtle, insideChord, drum, false);
+                        this.updateNotation(
+                            note,
+                            obj2[1] / obj2[0],
+                            turtle,
+                            insideChord,
+                            drum,
+                            false
+                        );
                     }
                     if (obj[0] > 0) {
                         if (note[0] !== "R") {

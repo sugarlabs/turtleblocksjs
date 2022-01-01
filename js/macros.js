@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Copyright (c) 2017-20 Walter Bender
 //
 // This program is free software; you can redistribute it and/or

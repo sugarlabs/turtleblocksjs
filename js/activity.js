@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Copyright (c) 2014-21 Walter Bender
 // Copyright (c) Yash Khandelwal, GSoC'15
 //

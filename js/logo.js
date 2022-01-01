@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Copyright (c) 2014-2021 Walter Bender
 // Copyright (c) 2015 Yash Khandelwal
 // Copyright (c) 2020 Anindya Kundu
@@ -15,7 +16,7 @@
    global
 
    _, Notation, Synth, instruments, instrumentsFilters,
-   instrumentsEffects, Singer, Tone, p5, CAMERAVALUE, doUseCamera,
+   instrumentsEffects, Singer, Tone, CAMERAVALUE, doUseCamera,
    VIDEOVALUE, last, getIntervalDirection, getIntervalNumber,
    mixedNumber, rationalToFraction, doStopVideoCam, StatusMatrix,
    getStatsFromNotation, delayExecution

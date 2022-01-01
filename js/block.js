@@ -1,4 +1,5 @@
-﻿// Copyright (c) 2014-21 Walter Bender
+﻿/* eslint-disable no-unused-vars */
+// Copyright (c) 2014-21 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -3422,16 +3423,16 @@ class Block {
         } else if (this.name === "grid") {
             selectedValue = this.value;
 
-	    let gridLabels = [];
-	    if (_THIS_IS_TURTLE_BLOCKS_) {
-		gridLabels = [
+            let gridLabels = [];
+            if (_THIS_IS_TURTLE_BLOCKS_) {
+                gridLabels = [
                     _("Cartesian"),
                     _("polar"),
                     _("Cartesian+polar"),
                     _("none")
-		];
+                ];
             } else {
-		gridLabels = [
+                gridLabels = [
                     _("Cartesian"),
                     _("polar"),
                     _("Cartesian+polar"),
@@ -3442,7 +3443,7 @@ class Block {
                     _("tenor"),
                     _("bass"),
                     _("none")
-		];
+                ];
             }
             const gridValues = gridLabels;
 

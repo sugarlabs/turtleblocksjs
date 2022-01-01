@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Copyright (c) 2018,19 Euan Ong
 //
 // This program is free software; you can redistribute it and/or

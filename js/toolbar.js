@@ -725,7 +725,7 @@ class Toolbar {
             chooseKeyIcon.onclick = () => {
                 onclick(this.activity);
             };
-	}
+        }
     }
 
     /**

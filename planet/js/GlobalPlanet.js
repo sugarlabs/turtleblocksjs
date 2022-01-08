@@ -9,13 +9,19 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+
 function GlobalPlanet(Planet) {
     this.ProjectViewer = null;
-    this.offlineHTML = '<div class="container center-align">' + _('Feature unavailable - cannot connect to server. Reload Music Blocks to try again.') + '</div>';
+    if (Planet.IsMusicBlocks) {
+        this.offlineHTML = '<div class="container center-align">' + _('Feature unavailable - cannot connect to server. Reload Music Blocks to try again.') + '</div>';
+    } else {
+        this.offlineHTML = '<div class="container center-align">' + _('Feature unavailable - cannot connect to server. Reload Turtle Blocks to try again.') + '</div>';
+    }
     this.noProjects = '<div class="container center-align">' + _('No results found.') + '</div>';
     this.tags = [];
     this.specialTags = null;
-    this.defaultTag = null;
+    this.defaultTag = false;
+    this.defaultMainTags = [];
     this.searchMode = null;
     this.index = 0;
     this.page = 24;
@@ -30,8 +36,9 @@ function GlobalPlanet(Planet) {
     this.remixPrefix = _('Remix of');
 
     this.initTagList = function() {
-        for (var i = 0; i < this.specialTags.length; i++) {
-            var t = new GlobalTag(Planet);
+        let t;
+        for (let i = 0; i < this.specialTags.length; i++) {
+            t = new GlobalTag(Planet);
             t.init(this.specialTags[i]);
             this.tags.push(t);
             if (this.specialTags[i].defaultTag === true) {
@@ -39,19 +46,32 @@ function GlobalPlanet(Planet) {
             }
         }
 
-        var keys = Object.keys(Planet.TagsManifest);
-        for (var i = 0; i < keys.length; i++) {
-            var t = new GlobalTag(Planet);
+        let tagsToInitialise = [];
+
+        let keys = Object.keys(Planet.TagsManifest);
+        for (let i = 0; i < keys.length; i++) {
+            t = new GlobalTag(Planet);
             t.init({'id': keys[i]});
             this.tags.push(t);
+            if (this.defaultMainTags.indexOf(Planet.TagsManifest[keys[i]].TagName)!=-1){
+                t.selected=true;  
+                tagsToInitialise.push(t);
+            }
         }
 
         this.sortBy = document.getElementById('sort-select').value;
-        this.selectSpecialTag(this.defaultTag);
+        if (this.defaultTag!=false){
+            this.selectSpecialTag(this.defaultTag);
+        }
+
+        for (let i = 0; i<tagsToInitialise.length; i++){
+            tagsToInitialise[i].select();
+        }
+        this.refreshTagList();
     };
 
     this.selectSpecialTag = function(tag) {
-        for (var i = 0; i < this.tags.length; i++) {
+        for (let i = 0; i < this.tags.length; i++) {
             this.tags[i].unselect();
         }
         tag.select();
@@ -59,7 +79,7 @@ function GlobalPlanet(Planet) {
     };
 
     this.unselectSpecialTags = function() {
-        for (var i = 0; i < this.tags.length; i++) {
+        for (let i = 0; i < this.tags.length; i++) {
             if (this.tags[i].specialTag) {
                 this.tags[i].unselect();
             }
@@ -67,8 +87,8 @@ function GlobalPlanet(Planet) {
     };
 
     this.refreshTagList = function() {
-        var tagids = [];
-        for (var i = 0; i < this.tags.length; i++) {
+        let tagids = [];
+        for (let i = 0; i < this.tags.length; i++) {
             if (this.tags[i].specialTag === false && this.tags[i].selected === true) {
                 tagids.push(this.tags[i].id);
             }
@@ -157,8 +177,8 @@ function GlobalPlanet(Planet) {
     };
 
     this.addProjects = function(data) {
-        var toDownload = [];
-        for (var i = 0; i < data.length; i++) {
+        let toDownload = [];
+        for (let i = 0; i < data.length; i++) {
             if (this.cache.hasOwnProperty(data[i][0])) {
                 if (this.cache[data[i][0]].ProjectLastUpdated !== data[i][1]) {
                     toDownload.push(data[i]);
@@ -169,7 +189,7 @@ function GlobalPlanet(Planet) {
         }
 
         this.loadCount = toDownload.length;
-        var l = data.length;
+        let l = data.length;
         if (l === this.page + 1) {
             data.pop();
         }
@@ -197,11 +217,12 @@ function GlobalPlanet(Planet) {
 
     this.downloadProjectsToCache = function(data, callback) {
         this.loadCount = data.length;
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             (function() {
-                var id = data[i][0];
+                let id = data[i][0];
                 Planet.ServerInterface.getProjectDetails(id, function(d) {
-                    var tempid = id;this.addProjectToCache(tempid, d, callback)
+                    let tempid = id;
+                    this.addProjectToCache(tempid, d, callback)
                 }.bind(this));
             }.bind(this))();
         }
@@ -278,9 +299,9 @@ function GlobalPlanet(Planet) {
     };
 
     this.render = function(data) {
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (this.cache.hasOwnProperty(data[i][0])) {
-                var g = new GlobalCard(Planet);
+                let g = new GlobalCard(Planet);
                 g.init(data[i][0]);
                 g.render();
                 this.cards.push(g);
@@ -328,7 +349,7 @@ function GlobalPlanet(Planet) {
     };
 
     this.showLoadMore = function() {
-        var l = document.getElementById('load-more-projects');
+        let l = document.getElementById('load-more-projects');
         l.style.display = 'block';
         l.classList.remove('disabled');
         this.loadButtonShown = true;
@@ -347,13 +368,13 @@ function GlobalPlanet(Planet) {
             error = null;
         }
 
-        var that = this;
-        this.getData(id, function(data) {
-            if (id in that.cache) {
-                var remixedName = that.remixPrefix + ' ' + that.cache[id].ProjectName;
-                Planet.ProjectStorage.initialiseNewProject(remixedName, data, that.cache[id].ProjectImage);
+        this.getData(id, (data) => {
+            let remixedName;
+            if (id in this.cache) {
+                remixedName = this.remixPrefix + ' ' + this.cache[id].ProjectName;
+                Planet.ProjectStorage.initialiseNewProject(remixedName, data, this.cache[id].ProjectImage);
             } else {
-                var remixedName = that.remixPrefix + ' ' + _('My Project');
+                remixedName = this.remixPrefix + ' ' + _('My Project');
                 Planet.ProjectStorage.initialiseNewProject(remixedName, data, null);
             }
 
@@ -361,41 +382,81 @@ function GlobalPlanet(Planet) {
         }, error);
     };
 
+    this.mergeGlobalProject = function(id, error) {
+        if (error === undefined) {
+            error = null;
+        }
+
+        this.getData(id, (data) => {
+            let remixedName;
+            if (id in this.cache) {
+                remixedName = Planet.ProjectStorage.getCurrentProjectName();
+                Planet.ProjectStorage.initialiseNewProject(remixedName, data, this.cache[id].ProjectImage);
+            } else {
+                remixedName = this.remixPrefix + ' ' + _('My Project');
+                Planet.ProjectStorage.initialiseNewProject(remixedName, data, null);
+            }
+
+            Planet.loadProjectFromData(data, true);
+        }, error);
+    };
+    
     this.init = function() {
         if (!Planet.ConnectedToServer) {
             document.getElementById('globaltitle').textContent = _('Cannot connect to server');
             document.getElementById('globalcontents').innerHTML = this.offlineHTML;
         } else {
-            var that = this;
-            jQuery('#sort-select').material_select(function (evt) {
-                that.sortBy = document.getElementById('sort-select').value;
-                that.refreshProjects();
+
+            jQuery('#sort-select').material_select( (evt) => {
+                this.sortBy = document.getElementById('sort-select').value;
+                this.refreshProjects();
             });
 
-            this.specialTags = 
+
+            if (Planet.IsMusicBlocks){
+                this.defaultMainTags = ["Music"];
+                this.specialTags = 
                 [{'name': 'All Projects', 'func': this.searchAllProjects.bind(this), 'defaultTag': true}, 
-                 {'name': 'My Projects', 'func': this.searchMyProjects.bind(this)}];
+                 {'name': 'My Projects', 'func': this.searchMyProjects.bind(this), 'defaultTag': false}];
+            } else {
+                this.defaultMainTags = [];
+                this.specialTags = 
+                [{'name': 'All Projects', 'func': this.searchAllProjects.bind(this), 'defaultTag': true}, 
+                 {'name': 'My Projects', 'func': this.searchMyProjects.bind(this), 'defaultTag': false}];
+            }
+
             this.initTagList();
 
-            var that = this;
-            document.getElementById('load-more-projects').addEventListener('click',  function (evt) {
-                if (that.loadButtonShown) {
-                    that.loadMoreProjects();
+            document.getElementById('load-more-projects').addEventListener('click',  (evt) => {
+                if (this.loadButtonShown) {
+                    this.loadMoreProjects();
                 }
             });
 
-            var debouncedfunction = debounce(this.search.bind(this), 250);
-            document.getElementById('global-search').addEventListener('input',  function (evt) {
-                that.searchString = this.value;
+            let debouncedfunction = debounce(this.search.bind(this), 250);
+
+            document.getElementById('global-search').addEventListener('input',  (evt) => {
+                this.searchString = document.getElementById('global-search').value;
                 debouncedfunction();
             });
 
-            document.getElementById('search-close').addEventListener('click', function (evt) {
+            document.getElementById('search-close').addEventListener('click',  (evt) => {
                 document.getElementById('global-search').value = '';
-                that.searchString = '';
-                this.style.display = 'none';
+                this.searchString = '';
+                document.getElementById('search-close').style.display = 'none';
                 debouncedfunction();
             });
+            
+            document.body.onscroll =  () => {
+                currentUserScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+                maxScrollPos = Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+                
+                if ((currentUserScrollPos/maxScrollPos) * 100 >= 75) {
+                    if (this.loadButtonShown) {
+                        this.loadMoreProjects();
+                    }
+               }
+            };
 
             this.ProjectViewer = new ProjectViewer(Planet);
             this.ProjectViewer.init();

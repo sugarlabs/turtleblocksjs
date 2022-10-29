@@ -57,7 +57,7 @@ A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](
 
 A quick start:
 
-| ![]('https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/fast-button.png')       | <mark style="color:purple;">`Click to run the project in fast mode. Long press to run the project in slow mode.`</mark>      |
+|       <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/fast-button.png' />        |        <mark style="color:purple;">`Click to run the project in fast mode. Long press to run the project in slow mode.`</mark>         |
 
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/fast-button.png' />
 Click to run the project in fast mode. Long press to run the project in slow mode.

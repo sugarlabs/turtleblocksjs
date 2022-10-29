@@ -1,7 +1,7 @@
 TurtleBlocks (the JavaScript version)
 =====================================
 <div style="text-align:center;">
-    <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' alt="logo" />
+    <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' alt="logo" align="center"/>
 </div>
 
 Turtle Blocks is an activity with a Logo-inspired graphical "turtle"

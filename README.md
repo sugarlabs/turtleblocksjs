@@ -1,8 +1,8 @@
 TurtleBlocks (the JavaScript version)
 =====================================
-<div style="text-align:center;">
-    <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' alt="logo" align="center"/>
-</div>
+<p align="center">
+    <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' alt="logo"/>
+</p>
 
 Turtle Blocks is an activity with a Logo-inspired graphical "turtle"
 that draws colorful art based on snap-together visual programming

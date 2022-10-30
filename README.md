@@ -72,13 +72,13 @@ Clear the screen and return the turtles to their initial positions.
 <img src='./bg-removed-images/5th.png' />
 Hide or show the blocks and the palettes
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
+<img src='./bg-removed-images/6th.png' />
 Expand or collapse start and action stacks.
 
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/home-button.png' />
 Return all blocks to the center of the screen.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/forward.png' />
+<img src='./bg-removed-images/forward.png' />
 Moves turtle forward.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/right.svg' />

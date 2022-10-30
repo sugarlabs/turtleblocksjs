@@ -57,19 +57,19 @@ A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](
 
 A quick start:
 
-<img src='https://o.remove.bg/downloads/c8dcd6e7-01a2-4ef7-b8b7-feb0a01a99ae/image-removebg-preview.png' />
+<img src='./bg-removed-images/1st.png' />
 Click to run the project in fast mode. Long press to run the project in slow mode.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/step-button.png' />
+<img src='./bg-removed-images/2nd.png' />
 Click to run the project step by step.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/stop-turtle-button.png' />
+<img src='./bg-removed-images/3rd.png' />
 Stop the current project running.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/clear-button.png' />
+<img src='./bg-removed-images/4th.png' />
 Clear the screen and return the turtles to their initial positions.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
+<img src='./bg-removed-images/5th.png' />
 Hide or show the blocks and the palettes
 
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />

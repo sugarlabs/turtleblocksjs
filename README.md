@@ -60,21 +60,6 @@ A quick start:
 <img src='./bg-removed-images/1st.png' />
 Click to run the project in fast mode. Long press to run the project in slow mode.
 
-<img src='./bg-removed-images/2nd.png' />
-Click to run the project step by step.
-
-<img src='./bg-removed-images/3rd.png' />
-Stop the current project running.
-
-<img src='./bg-removed-images/4th.png' />
-Clear the screen and return the turtles to their initial positions.
-
-<img src='./bg-removed-images/5th.png' />
-Hide or show the blocks and the palettes
-
-<img src='./bg-removed-images/6th.png' />
-Expand or collapse start and action stacks.
-
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/home-button.png' />
 Return all blocks to the center of the screen.
 

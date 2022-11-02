@@ -1,6 +1,8 @@
 TurtleBlocks (the JavaScript version)
 =====================================
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' />
+<p align="center">
+    <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' alt="logo"/>
+</p>
 
 Turtle Blocks is an activity with a Logo-inspired graphical "turtle"
 that draws colorful art based on snap-together visual programming
@@ -55,28 +57,13 @@ A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](
 
 A quick start:
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/fast-button.png' />
+<img src='./bg-removed-images/1st.png' />
 Click to run the project in fast mode. Long press to run the project in slow mode.
-
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/step-button.png' />
-Click to run the project step by step.
-
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/stop-turtle-button.png' />
-Stop the current project running.
-
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/clear-button.png' />
-Clear the screen and return the turtles to their initial positions.
-
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
-Hide or show the blocks and the palettes
-
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
-Expand or collapse start and action stacks.
 
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/home-button.png' />
 Return all blocks to the center of the screen.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/forward.png' />
+<img src='./bg-removed-images/forward.png' />
 Moves turtle forward.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/right.svg' />

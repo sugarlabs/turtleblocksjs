@@ -51,7 +51,8 @@
   convertFromSolfege, getPitchInfo, MATRIXBUTTONCOLOR, i18nSolfege,
   convertFactor, getOctaveRatio, setOctaveRatio, getTemperamentsList,
   addTemperamentToList, getTemperament, deleteTemperamentFromList,
-  addTemperamentToDictionary, buildScale
+  addTemperamentToDictionary, buildScale, CHORDNAMES, CHORDVALUES,
+  DEFAULTCHORD, DEFAULTVOICE
 */
 
 // Scalable sinewave graphic
@@ -777,6 +778,35 @@ const ACCIDENTALNAMES = [
 ];
 
 const ACCIDENTALVALUES = [2, 1, 0, -1, -2];
+
+const CHORDNAMES = [
+    _("major"),
+    _("minor"),
+    _("augmented"),
+    _("diminished"),
+    _("major 7th"),
+    _("minor 7th"),
+    _("dominant 7th"),
+    _("minor-major 7th"),
+    _("fully-diminished 7th"),
+    _("half-diminished 7th")
+];
+
+const DEFAULTCHORD = CHORDNAMES[0];
+
+// This list must follow the order of the CHORDNAMES list.
+const CHORDVALUES = [
+    [4, 7],
+    [3, 7],
+    [4, 8],
+    [3, 6],
+    [4, 7, 11],
+    [3, 7, 10],
+    [4, 7, 10],
+    [3, 7, 11],
+    [3, 6, 9],
+    [3, 6, 10]
+];
 
 const INVERTMODES = [
     [_("even"), "even"],
@@ -3191,12 +3221,17 @@ function _calculate_pitch_number(activity, np, tur) {
             activity.errorMsg
         );
     } else {
-        if (tur.singer.lastNotePlayed !== null) {
-            // eslint-disable-next-line no-console
-            console.debug("Cannot find a note ");
+        try {
+            if (typeof np === "string") {
+                obj = noteToObj(np);
+            } else {
+                // Hertz
+                obj = frequencyToPitch(np);
+            }
+        } catch (e) {
             activity.errorMsg(INVALIDPITCH);
+            obj = ["G", 4];
         }
-        obj = ["G", 4];
     }
     return pitchToNumber(obj[0], obj[1], tur.singer.keySignature) - tur.singer.pitchNumberOffset;
 }
@@ -3295,7 +3330,32 @@ function _getStepSize(keySignature, pitch, direction, transposition, temperament
         thisPitch = STOSHARP[thisPitch];
     }
 
-    let ii = scale.indexOf(thisPitch);
+    function logicalEquals(s1, s2) {
+        // console.debug(s1,s2);
+        if (s1 == s2) {
+            return true;
+        } else if (s1 == "E♯" && s2 == "F") {
+            return true;
+        } else if (s1 == "E" && s2 == "F♭") {
+            return true;
+        } else if (s1 == "F" && s2 == "E♯") {
+            return true;
+        } else if (s1 == "F♭" && s2 == "E") {
+            return true;
+        } else if (s1 == "B♯" && s2 == "C") {
+            return true;
+        } else if (s1 == "B" && s2 == "C♭") {
+            return true;
+        } else if (s1 == "C" && s2 == "B♯") {
+            return true;
+        } else if (s1 == "C♭" && s2 == "B") {
+            return true;
+        }
+        return false;
+    }
+
+    let ii = scale.findIndex((scale) => logicalEquals(scale, pitch)); //indexOf() replaced by findIndex()
+    // let ii = scale.indexOf(thisPitch);
     if (ii !== -1) {
         if (direction === "up") {
             return halfSteps[ii];
@@ -4275,6 +4335,13 @@ function getPitchInfo(activity, type, notePlayed, tur) {
                 if (tur.singer.moveable === false) {
                     return SOLFEGECONVERSIONTABLE[np];
                 }
+                if (buildScale(tur.singer.keySignature)[0].indexOf(np) === -1) {
+                    if (np in EQUIVALENTFLATS) {
+                        np = EQUIVALENTFLATS[np]
+                    } else if (np in EQUIVALENTSHARPS) {
+                        np = EQUIVALENTSHARPS[np]
+                    }
+                }
                 return SOLFEGENAMES[buildScale(tur.singer.keySignature)[0].indexOf(np)];
             case "pitch class":
                 // If it is a frequency, convert it to a pitch/octave.
@@ -4333,7 +4400,18 @@ function getPitchInfo(activity, type, notePlayed, tur) {
                 if (Number(np)) {
                     [np, octave] = frequencyToPitch(np);
                 } else {
-                    np = notePlayed[0];
+                    // First, remove the octave
+                    np = np.substr(0, np.length - 1);
+                    np = np.replace("#", SHARP).replace("b", FLAT);
+                    // Try to map to the current scale
+                    if (buildScale(tur.singer.keySignature)[0].indexOf(np) === -1) {
+                        if (np in EQUIVALENTFLATS) {
+                            np = EQUIVALENTFLATS[np]
+                        } else if (np in EQUIVALENTSHARPS) {
+                            np = EQUIVALENTSHARPS[np]
+                        }
+                    }
+                    np = np[0];
                     octave = notePlayed.length === 2 ? notePlayed[1] : notePlayed[2];
                 }
                 // these numbers are subject to staff artwork

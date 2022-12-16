@@ -2376,7 +2376,7 @@ function Blocks(activity) {
             case "audiofile":
                 try {
                     if (myBlock.value[0] === null) {
-                        label = _("audio file1");
+                        label = _("audio file");
                     } else {
                         label = myBlock.value[0].toString();
                         if (getTextWidth(label, "bold 20pt Sans") > TEXTWIDTH) {
@@ -2384,7 +2384,7 @@ function Blocks(activity) {
                         }
                     }
                 } catch (e) {
-                    label = _("audio file2");
+                    label = _("audio file");
                 }
                 break;
             case "solfege":
@@ -2422,6 +2422,12 @@ function Blocks(activity) {
                     myBlock.value = DEFAULTMODE;
                 }
                 label = _(myBlock.value); // + ' ' + getModeNumbers(myBlock.value);
+                break;
+            case "chordname":
+                if (myBlock.value === null) {
+                    myBlock.value = DEFAULTCHORD;
+                }
+                label = _(myBlock.value);
                 break;
             case "accidentalname":
             case "intervalname":
@@ -3153,7 +3159,7 @@ function Blocks(activity) {
             const len = this.activity.logo.synth.startingPitch.length;
             postProcessArg = [
                 thisBlock,
-                this.activity.logo.synth.startingPitch.substring(0, len - 1) + "(+0)"
+                this.activity.logo.synth.startingPitch.substring(0, len - 1) + "(+0%)"
             ];
         } else if (name === "notename") {
             postProcessArg = [thisBlock, "G"];
@@ -3189,6 +3195,16 @@ function Blocks(activity) {
             };
 
             postProcessArg = [thisBlock, DEFAULTMODE];
+        } else if (name === "chordname") {
+            postProcess = (args) => {
+                const b = args[0];
+                const v = args[1];
+                that.blockList[b].value = v;
+                that.blockList[b].text.text = v;
+                that.blockList[b].container.updateCache();
+            };
+
+            postProcessArg = [thisBlock, DEFAULTCHORD];
         } else if (name === "accidentalname") {
             postProcess = function (args) {
                 const b = args[0];
@@ -5971,6 +5987,7 @@ function Blocks(activity) {
                 case "eastindiansolfege":
                 case "notename":
                 case "modename":
+                case "chordname":
                 case "temperamentname":
                 case "invertmode":
                 case "filtertype":

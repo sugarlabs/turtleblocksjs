@@ -48,7 +48,7 @@
 
 const LEADING = 0;
 const BLOCKSCALES = [1, 1.5, 2, 3, 4];
-const _THIS_IS_MUSIC_BLOCKS_ = false;
+const _THIS_IS_MUSIC_BLOCKS_ = true;
 const _THIS_IS_TURTLE_BLOCKS_ = !_THIS_IS_MUSIC_BLOCKS_;
 
 const _ERRORMSGTIMEOUT_ = 15000;
@@ -1631,6 +1631,9 @@ function Activity() {
                                 break;
                             case "modename":
                                 label = _("mode name");
+                                break;
+                            case "chordname":
+                                label = _("chord name");
                                 break;
                             case "intervalname":
                                 label = _("interval name");

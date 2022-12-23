@@ -79,7 +79,7 @@ There are some buttons at the top of the canvas:
 
 There are some buttons on the bottom of the canvas:
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/home-hide-collapse.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/header-icons/home-hide-collapse.png' />
 The Home buttom returns the blocks the center of the screen. The Hide button hides (or reveals) the blocks. The Collapse button collapses (or expands) stacks of blocks. The Shrink and Grow buttons change the size of the blocks.
 
 Some basic blocks include:

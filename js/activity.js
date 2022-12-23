@@ -1825,9 +1825,9 @@ function Activity() {
             this.searchBlockPosition[0] += STANDARDBLOCKHEIGHT;
             this.searchBlockPosition[1] += STANDARDBLOCKHEIGHT;
         } else if (this.deprecatedBlockNames.indexOf(searchInput) > -1) {
-            this.blocks.errorMsg(_("This block is deprecated."));
+            this.errorMsg(_("This block is deprecated."));
         } else {
-            this.blocks.errorMsg(_("Block cannot be found."));
+            this.errorMsg(_("Block cannot be found."));
         }
 
         this.searchWidget.value = "";
@@ -2891,7 +2891,7 @@ function Activity() {
                 } else {
                     // eslint-disable-next-line no-console
                     console.log(
-                        "%cTurtle Blocks is a collection of tools for exploring xsconcepts from Logo in a fun way.",
+                        "%cTurtle Blocks is a collection of tools for exploring concepts from Logo in a fun way.",
                         "font-size: 16px; font-family: sans-serif; font-weight: bold;"
                     );
                 }

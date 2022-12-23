@@ -55,26 +55,41 @@ A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](
 
 A quick start:
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/fast-button.png' />
-Click to run the project in fast mode. Long press to run the project in slow mode.
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/header-icons/play.png' />
+Click to run the project at full speed.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/step-button.png' />
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/stop.png' />
+Stop the current project running.
+
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/new-project.png' />
+To start a new project.
+
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/save-project.png' />
+To save a saved project.
+
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/open-project.png' />
+To open a saved project.
+
+Under the secondary menu <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/header-icons/secondary-menu.png' /> there are additional play buttons.
+
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/header-icons/play-slow.png' />
+Click to run the project slowly.
+
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/header-icons/step.png' />
 Click to run the project step by step.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/stop-turtle-button.png' />
-Stop the current project running.
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/header-icons/advanced-mode.png' />
+Use advanced mode to expose many additional blocks and features.
 
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/clear-button.png' />
 Clear the screen and return the turtles to their initial positions.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/hide-blocks-button.png' />
-Hide or show the blocks and the palettes
+There are some buttons on the bottom of the canvas:
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/collapse-blocks-button.png' />
-Expand or collapse start and action stacks.
+<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/home-hide-collapse.png' />
+The Home buttom returns the blocks and turtles to the center of the screen. The Hide button hides (or reveals) the blocks. The Collapse button collapses (or expands) stacks of blocks. The Shrink and Grow buttons change the size of the blocks.
 
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/home-button.png' />
-Return all blocks to the center of the screen.
+Some basic blocks include:
 
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/documentation/forward.png' />
 Moves turtle forward.

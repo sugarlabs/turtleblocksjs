@@ -61,7 +61,7 @@ A quick start:
 
 <img src='./header-icons/new-project.png' /> To start a new project.
 
-<img src='./header-icons/save-project.png' /> To save a saved project.
+<img src='./header-icons/save-project.png' /> To save a project.
 
 <img src='./header-icons/open-project.png' /> To open a saved project.
 

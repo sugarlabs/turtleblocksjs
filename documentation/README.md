@@ -59,21 +59,15 @@ Main toolbar
 The Main toolbar is used to run programs, erase the screen, and hide
 the palettes and blocks.
 
-<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/fast-button.png' />
+<img src='../header-icons/play.png' /> Click on the *Run* button to run the blocks.
 
-Click on the *Run* button to run the blocks fast.
+Under the secondary menu are additonal buttons to run the blocks slowly. When running slowly, the values of parameter boxes are shown as an additional debugging aid.
 
-Long-press to run the blocks slowly. When running
-slowly, the values of parameter boxes are shown as an additional
-debugging aid.
+<img src='../header-icons/play-slow.png' /> Click on the *Run* button to run the blocks.
 
-<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/step-button.png' />
+Or to play step-by-step (one block will run with each button press): <img src='../header-icons/step.png' />
 
-Run the blocks step by step (one block is executed per turtle per click).
-
-<img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/stop-turtle-button.png' />
-
-Stop running the current project.
+<img src='../header-icon/stop.png' /> Stop running the current project.
 
 <img src='https://rawgithub.com/sugarlabs/turtleblocksjs/master/documentation/clear-button.png' />
 

@@ -87,6 +87,9 @@ On the right side of the main menu:
 
 <img src='./help-button.png' /> Show the help messages.
 
+Canvas Toolbars
+---------------
+
 There are some additional buttons at the top of the canvas:
 
 <img src='../header-icons/erase.png' />
@@ -109,9 +112,10 @@ And there are some buttons on the bottom of the canvas:
 
 * The Shrink and Grow (magnifying glass) buttons change the size of the blocks.
 
-
 Auxillary toolbar
 -----------------
+
+In addition to the run-slowly and step buttons described above:
 
 <img src='./paste-button.png' />
 
@@ -126,8 +130,6 @@ Remove all blocks.
 <img src='./restore-trash-button.png' />
 
 Restore blocks from the trash.
-
-Increase the size of the blocks.
 
 <img src='./stats-button.svg' />
 

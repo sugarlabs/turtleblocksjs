@@ -126,9 +126,9 @@ In addition to the run-slowly and step buttons described above:
 
 <img src='./remove-plugin.png' /> Removes a plugin.
 
-<img src='./merge-project.svg' /> Load a new project without removing the current blocks (AKA, "merge").
+<img src='./merge-project.png' /> Load a new project without removing the current blocks (AKA, "merge").
 
-<img src='./horizontal-scrolling.svg' /> Enable/disable horizontal scrolling.
+<img src='./horizontal-scrolling.png' /> Enable/disable horizontal scrolling.
 
 <img src='./js.png' /> Open the JavaScript editor. (Your blocks program will be transcribed into JavaScript.)
 
@@ -139,7 +139,7 @@ Block Pie Menu
 
 When you "long-press" or "right-click" on a block, a pie menu appears.
 
-<img src='block-pie-menu' />
+<img src='block-pie-menu.png' />
 
 Going clockwise from the top:
 

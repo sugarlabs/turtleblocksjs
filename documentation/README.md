@@ -56,8 +56,9 @@ blocks. There is also a utility panel with additional controls.
 Main toolbar
 ------------
 
-The Main toolbar is used to run programs, erase the screen, and hide
-the palettes and blocks.
+The Main toolbar is used to run programs and to save and load projects.
+
+On the left side of the main menu:
 
 <img src='../header-icons/play.png' /> Click on the *Run* button to run the blocks.
 
@@ -68,9 +69,11 @@ are additonal buttons to run the blocks slowly. When running slowly,
 the values of parameter boxes are shown as an additional debugging
 aid.
 
-<img src='../header-icons/play-slow.png' /> Click on the *Run* button to run the blocks.
+<img src='../header-icons/play-slow.png' /> to play back slowly.
 
 <img src='../header-icons/step.png' /> to play step-by-step (one block will run with each button press).
+
+On the right side of the main menu:
 
 <img src='../header-icons/new-project.png' /> To start a new project.
 

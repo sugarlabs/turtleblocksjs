@@ -55,31 +55,31 @@ A guide to programming with Turtle Blocks is available in [Turtle Blocks Guide](
 
 A quick start:
 
-<img src='./header-icons/play.png' /> Click to run the project at full speed.
+<img src='./documentation/play.png' /> Click to run the project at full speed.
 
-<img src='./header-icons/stop.png' /> Stop the current project running.
+<img src='./documentation/stop.png' /> Stop the current project running.
 
-<img src='./header-icons/new-project.png' /> To start a new project.
+<img src='./documentation/new-project.png' /> To start a new project.
 
-<img src='./header-icons/save-project.png' /> To save a project.
+<img src='./documentation/save-project.png' /> To save a project.
 
-<img src='./header-icons/open-project.png' /> To open a saved project.
+<img src='./documentation/open-project.png' /> To open a saved project.
 
-Under the secondary menu <img src='./header-icons/hamburger.png' /> there are additional play buttons.
+Under the secondary menu <img src='./documentation/hamburger.png' /> there are additional play buttons.
 
-<img src='./header-icons/play-slow.png' /> Click to run the project slowly.
+<img src='./documentation/play-slow.png' /> Click to run the project slowly.
 
-<img src='./header-icons/step.png' /> Click to run the project step by step.
+<img src='./documentation/step.png' /> Click to run the project step by step.
 
-<img src='./header-icons/advanced-mode.png' /> Use advanced mode to expose many additional blocks and features.
+<img src='./documentation/advanced-mode.png' /> Use advanced mode to expose many additional blocks and features.
 
 There are some buttons at the top of the canvas:
 
-<img src='./header-icons/erase.png' /> The Show (or hide) grid button will display a pie menu with a variety of grid options. The Erase button will clear the screen and return the turtles to the center of the screen. The Screen button will shrink (or expand) the graphics area.
+<img src='./documentation/erase.png' /> The Show (or hide) grid button will display a pie menu with a variety of grid options. The Erase button will clear the screen and return the turtles to the center of the screen. The Screen button will shrink (or expand) the graphics area.
 
 There are some buttons on the bottom of the canvas:
 
-<img src='./header-icons/home-hide-collapse.png' />
+<img src='./documentation/home-hide-collapse.png' />
 The Home buttom returns the blocks the center of the screen. The Hide button hides (or reveals) the blocks. The Collapse button collapses (or expands) stacks of blocks. The Shrink and Grow buttons change the size of the blocks.
 
 Some basic blocks include:

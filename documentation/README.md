@@ -60,30 +60,30 @@ The Main toolbar is used to run programs and to save and load projects.
 
 On the left side of the main menu:
 
-<img src='../header-icons/play.png' /> Click on the *Run* button to run the blocks.
+<img src='./play.png' /> Click on the *Run* button to run the blocks.
 
-<img src='../header-icons/stop.png' /> Stop running the current project.
+<img src='./stop.png' /> Stop running the current project.
 
-Under the secondary menu <img src='../header-icons/hamburger.png' />
+Under the secondary menu <img src='./hamburger.png' />
 are additonal buttons to run the blocks slowly. When running slowly,
 the values of parameter boxes are shown as an additional debugging
 aid.
 
-<img src='../header-icons/play-slow.png' /> to play back slowly.
+<img src='./play-slow.png' /> to play back slowly.
 
-<img src='../header-icons/step.png' /> to play step-by-step (one block will run with each button press).
+<img src='./step.png' /> to play step-by-step (one block will run with each button press).
 
 On the right side of the main menu:
 
-<img src='../header-icons/new-project.png' /> To start a new project.
+<img src='./new-project.png' /> To start a new project.
 
-<img src='../header-icons/save-project.png' /> To save a project to the local file system of your computer.
+<img src='./save-project.png' /> To save a project to the local file system of your computer.
 
-<img src='../header-icons/open-project.png' /> To open a saved project.
+<img src='./open-project.png' /> To open a saved project.
 
 <img src='./planet-button.png' /> To open a viewer for loading example projects and projects made by other Turtle Blocks users.
 
-<img src='../header-icons/hamburger.png' /> Expand (or collapse) the auxillary toolbar.
+<img src='./hamburger.png' /> Expand (or collapse) the auxillary toolbar.
 
 <img src='./help-button.png' /> Show the help messages.
 
@@ -92,7 +92,7 @@ Canvas Toolbars
 
 There are some additional buttons at the top of the canvas:
 
-<img src='../header-icons/erase.png' />
+<img src='./erase.png' />
 
 * The Show (or hide) grid button will display a pie menu with a variety of grid options.
 
@@ -102,7 +102,7 @@ There are some additional buttons at the top of the canvas:
 
 And there are some buttons on the bottom of the canvas:
 
-<img src='../header-icons/home-hide-collapse.png' />
+<img src='./home-hide-collapse.png' />
 
 * The Home buttom returns the blocks the center of the screen.
 

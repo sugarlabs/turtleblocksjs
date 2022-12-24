@@ -50,7 +50,7 @@ Toolbars
 There are three toolbars: (1) the main toolbar across the top of the
 screen; (2) the secondary toolbar on the right side of the screen; and
 (3) the palette toolbar on the left side of the screen. An additional
-menu appears when a "long press" (or "right click") is applied to a stack of
+toolbar appears when a "long press" (or "right click") is applied to a stack of
 blocks. There is also a utility panel with additional controls.
 
 Main toolbar
@@ -58,13 +58,13 @@ Main toolbar
 
 The Main toolbar is used to run programs and to save and load projects.
 
-On the left side of the main menu:
+On the left side of the main toolbar:
 
 <img src='./play.png' /> Click on the *Run* button to run the blocks.
 
 <img src='./stop.png' /> Stop running the current project.
 
-Under the secondary menu <img src='./hamburger.png' />
+Under the secondary toolbar <img src='./hamburger.png' />
 are additonal buttons to run the blocks slowly. When running slowly,
 the values of parameter boxes are shown as an additional debugging
 aid.
@@ -73,7 +73,7 @@ aid.
 
 <img src='./step.png' /> to play step-by-step (one block will run with each button press).
 
-On the right side of the main menu:
+On the right side of the main toolbar:
 
 <img src='./new-project.png' /> To start a new project.
 
@@ -81,11 +81,12 @@ On the right side of the main menu:
 
 <img src='./open-project.png' /> To open a saved project.
 
-<img src='./planet-button.png' /> To open a viewer for loading example projects and projects made by other Turtle Blocks users.
+<img src='./planet.png' /> To open a viewer for loading example projects and projects made by other Turtle Blocks users.
 
-<img src='./hamburger.png' /> Expand (or collapse) the auxillary toolbar.
+<img src='./hamburger.png' /> Expand the auxillary toolbar. The <img src='./secondary-menu.png' /> button closes the auxillary toolbar.
 
-<img src='./help-button.png' /> Show the help messages.
+
+<img src='./help.png' /> Show the help messages.
 
 Canvas Toolbars
 ---------------
@@ -117,31 +118,40 @@ Auxillary toolbar
 
 In addition to the run-slowly and step buttons described above:
 
-<img src='./paste-button.png' />
+<img src='./restore-trash.png' /> Restore blocks from the trash.
 
-Paste blocks from the clipboard. (This button is highlighted only when
-there are blocks available on the clipboard to paste.) Copy is enabled
-by a long press on a block.
+<img src='./stats.png' /> Show project statistics.
 
-<img src='./trash-button.png' />
+<img src='./add-plugin.png' /> Load new blocks/palettes from plugins (previously downloaded to the file system).
 
-Remove all blocks.
+<img src='./remove-plugin.png' /> Removes a plugin.
 
-<img src='./restore-trash-button.png' />
+<img src='./merge-project.svg' /> Load a new project without removing the current blocks (AKA, "merge").
 
-Restore blocks from the trash.
+<img src='./horizontal-scrolling.svg' /> Enable/disable horizontal scrolling.
 
-<img src='./stats-button.svg' />
+<img src='./js.png' /> Open the JavaScript editor. (Your blocks program will be transcribed into JavaScript.)
 
-Show project statistics.
+<img src='./language.png' /> Select a language, e.g., Spanish, for the interface.
 
-<img src='./plugins-button.svg' />
+Block Pie Menu
+--------------
 
-Load new blocks from plugins (previously downloaded to the file system).
+When you "long-press" or "right-click" on a block, a pie menu appears.
 
-<img src='./scrolllock-button.svg' />
+<img src='block-pie-menu' />
 
-Enable/disable scrolling.
+Going clockwise from the top:
+
+* Block help
+
+* Copy block
+
+* Extract block (from a stack of blocks)
+
+* Put block in the trash
+
+* Close the pie menu
 
 Keyboard shortcuts
 ------------------

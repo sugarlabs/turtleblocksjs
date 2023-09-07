@@ -2,287 +2,282 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 00:30-0500\n"
-"PO-Revision-Date: 2017-08-03 06:11+0000\n"
-"Last-Translator: Liang <1656703453@qq.com>\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: zh_CN\n"
+"Language: kab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.5.1.1\n"
-"X-POOTLE-MTIME: 1501740710.000000\n"
+"X-Generator: ini-to-pot script\n"
 
 msgid "clear"
-msgstr "清屏"
+msgstr ""
 
 msgid "forward"
-msgstr "前进"
+msgstr ""
 
 msgid "right"
-msgstr "右边"
+msgstr ""
 
 msgid "back"
-msgstr "后退"
+msgstr ""
 
 msgid "left"
-msgstr "左边"
+msgstr ""
 
 msgid "arc"
-msgstr "走弧形"
+msgstr ""
 
 msgid "angle"
-msgstr "角度"
+msgstr ""
 
 msgid "radius"
-msgstr "半径"
+msgstr ""
 
 msgid "set heading"
-msgstr "设置朝向"
+msgstr ""
 
 msgid "heading"
-msgstr "朝向"
+msgstr ""
 
 msgid "set xy"
-msgstr "设置 坐标"
+msgstr ""
 
 msgid "x"
-msgstr "横"
+msgstr ""
 
 msgid "y"
-msgstr "纵"
+msgstr ""
 
 msgid "set color"
-msgstr "设置颜色"
+msgstr ""
 
 msgid "color"
-msgstr "颜色"
+msgstr ""
 
 msgid "set hue"
 msgstr ""
 
 msgid "set shade"
-msgstr "设置深度"
+msgstr ""
 
 msgid "shade"
-msgstr "深度"
+msgstr ""
 
 msgid "set grey"
-msgstr "设置灰度"
+msgstr ""
 
 msgid "grey"
-msgstr "灰度"
+msgstr ""
 
 msgid "set pen size"
-msgstr "设置笔的粗细"
+msgstr ""
 
 msgid "pen size"
-msgstr "笔的粗细"
+msgstr ""
 
 msgid "pen up"
-msgstr "抬笔"
+msgstr ""
 
 msgid "pen down"
-msgstr "落笔"
+msgstr ""
 
 msgid "begin fill"
-msgstr "开始填充"
+msgstr ""
 
 msgid "end fill"
-msgstr "完成填充"
+msgstr ""
 
 msgid "background"
-msgstr "涂满全屏"
+msgstr ""
 
 msgid "random"
-msgstr "随机值"
+msgstr ""
 
 msgid "min"
-msgstr "最小值"
+msgstr ""
 
 msgid "max"
-msgstr "最大值"
+msgstr ""
 
 msgid "sqrt"
-msgstr "平方根"
+msgstr ""
 
 msgid "mod"
-msgstr "同余"
+msgstr ""
 
 msgid "and"
-msgstr "与"
+msgstr ""
 
 msgid "or"
-msgstr "或"
+msgstr ""
 
 msgid "not"
-msgstr "非"
+msgstr ""
 
 msgid "store in"
-msgstr "放入"
+msgstr ""
 
 msgid "name"
-msgstr "名"
+msgstr ""
 
 msgid "value"
-msgstr "值"
+msgstr ""
 
 msgid "box"
-msgstr "盒子"
+msgstr ""
 
 msgid "action"
-msgstr "动作"
+msgstr ""
 
 msgid "do"
-msgstr "办"
+msgstr ""
 
 msgid "start"
-msgstr "开始"
+msgstr ""
 
 msgid "add 1 to"
-msgstr "加1"
+msgstr ""
 
 msgid "add"
-msgstr "加"
+msgstr ""
 
 msgid "to"
-msgstr "于"
+msgstr ""
 
 msgid "speak"
-msgstr "朗读"
+msgstr ""
 
 msgid "show"
-msgstr "显示"
+msgstr ""
 
 msgid "size"
-msgstr "尺寸"
+msgstr ""
 
 msgid "obj"
-msgstr "对象"
+msgstr ""
 
 msgid "text"
-msgstr "文本"
+msgstr ""
 
 msgid "shell"
-msgstr "海龟外壳"
+msgstr ""
 
 msgid "image"
-msgstr "图片"
+msgstr ""
 
 msgid "stop media"
-msgstr "停止媒体"
+msgstr ""
 
 msgid "repeat"
-msgstr "重复"
+msgstr ""
 
 msgid "forever"
-msgstr "永远执行"
+msgstr ""
 
 msgid "stop"
-msgstr "停止动作"
+msgstr ""
 
 msgid "if"
-msgstr "如果"
+msgstr ""
 
 msgid "then"
-msgstr "那么"
+msgstr ""
 
 msgid "until"
-msgstr "直到"
+msgstr ""
 
 msgid "wait for"
-msgstr "等待"
+msgstr ""
 
 msgid "while"
-msgstr "当"
+msgstr ""
 
 msgid "else"
-msgstr "否则"
+msgstr ""
 
 msgid "wait"
-msgstr "等待"
+msgstr ""
 
 msgid "print"
-msgstr "打印"
+msgstr ""
 
 msgid "time"
-msgstr "时间"
+msgstr ""
 
 msgid "mouse x"
-msgstr "鼠标X坐标"
+msgstr ""
 
 msgid "mouse y"
-msgstr "鼠标Y坐标"
+msgstr ""
 
 msgid "mouse button"
-msgstr "鼠标按下"
+msgstr ""
 
 msgid "keyboard"
-msgstr "查询键盘"
+msgstr ""
 
 msgid "pixel color"
-msgstr "读取像素"
+msgstr ""
 
 msgid "unknown"
-msgstr "未知"
+msgstr ""
 
-# 不。这是搭积木的游戏
 msgid "Welcome to Turtle Blocks"
-msgstr "欢迎来到海龟积木"
+msgstr ""
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr "海龟积木是一个标志灵感的海龟，运用可视化编程模块来画出丰富多彩的图片。"
+msgstr ""
 
 msgid "Palette buttons"
-msgstr "画板按钮"
+msgstr ""
 
 msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
-"该工具栏包含调色板按钮：点击以显示或隐藏积木的调色板（海龟、钢笔、数字、布尔值、流量、积木、媒体、传感器和附加物）。一旦打开，你可以拖动来自画板的积木放置"
-"在画布上使用它们。"
 
 msgid "Expand/collapse toolbar"
-msgstr "展开/折叠工具栏"
+msgstr ""
 
 msgid "This button opens and closes the primary toolbar."
-msgstr "此按钮打开或关闭主工具栏。"
+msgstr ""
 
 msgid "Run fast"
-msgstr "快速运行"
+msgstr ""
 
 msgid "Click to run the project in fast mode."
-msgstr "点击使该工程在快速模式中运行。"
+msgstr ""
 
 msgid "Run slow"
-msgstr "缓慢运行"
+msgstr ""
 
 msgid "Click to run the project in slow mode."
-msgstr "点击使该工程在缓慢模式中运行。"
+msgstr ""
 
 msgid "Run step by step"
-msgstr "一步步运行"
+msgstr ""
 
 msgid "Click to run the project step by step."
-msgstr "点击使该工程一步步运行"
+msgstr ""
 
 msgid "Stop"
-msgstr "停止"
+msgstr ""
 
 msgid "Stop the current project."
-msgstr "停止当前工程"
+msgstr ""
 
 msgid "Clean"
-msgstr "清理"
+msgstr ""
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr "清理屏幕并使海龟回到它们的初始位置。"
+msgstr ""
 
 msgid "Show/hide palettes"
-msgstr "显示/隐藏海龟"
+msgstr ""
 
 msgid "Hide or show the block palettes."
-msgstr "隐藏或显示积木海龟。"
+msgstr ""
 
 msgid "Show/hide blocks"
 msgstr ""
@@ -297,10 +292,10 @@ msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
 msgstr ""
 
 msgid "Help"
-msgstr "帮助"
+msgstr ""
 
 msgid "Show these messages."
-msgstr "显示这些信息。"
+msgstr ""
 
 msgid "Expand/collapse option toolbar"
 msgstr ""
@@ -309,7 +304,7 @@ msgid "Click this button to expand or collapse the auxillary toolbar."
 msgstr ""
 
 msgid "Paste"
-msgstr "粘贴"
+msgstr ""
 
 msgid "The paste button is enabled then there are blocks copied onto the clipboard."
 msgstr ""
@@ -369,61 +364,61 @@ msgid "You have finished the tour. Please enjoy Turtle Blocks!"
 msgstr ""
 
 msgid "hide blocks"
-msgstr "隐藏积木块"
+msgstr ""
 
 msgid "loudness"
-msgstr "音量"
+msgstr ""
 
 msgid "publish"
-msgstr "发布"
+msgstr ""
 
 msgid "comment"
-msgstr "注释"
+msgstr ""
 
 msgid "play back"
-msgstr "发挥媒体"
+msgstr ""
 
 msgid "save svg"
-msgstr "保存SVG"
+msgstr ""
 
 msgid "title"
-msgstr "标题"
+msgstr ""
 
 msgid "eval"
 msgstr ""
 
 msgid "show blocks"
-msgstr "显示积木块"
+msgstr ""
 
 msgid "stop play"
-msgstr "停止媒体"
+msgstr ""
 
 msgid "turtle"
-msgstr "海龟"
+msgstr ""
 
 msgid "pen"
-msgstr "钢笔"
+msgstr ""
 
 msgid "number"
-msgstr "数字"
+msgstr ""
 
 msgid "boolean"
-msgstr "布尔"
+msgstr ""
 
 msgid "flow"
-msgstr "流程"
+msgstr ""
 
 msgid "blocks"
-msgstr "拼块"
+msgstr ""
 
 msgid "media"
-msgstr "多媒体"
+msgstr ""
 
 msgid "sensors"
-msgstr "传感器"
+msgstr ""
 
 msgid "extras"
-msgstr "额外的"
+msgstr ""
 
 msgid "open file"
 msgstr ""
@@ -456,7 +451,7 @@ msgid "currency"
 msgstr ""
 
 msgid "Google map"
-msgstr "Mapa de Google"
+msgstr ""
 
 msgid "coordinates"
 msgstr ""
@@ -663,7 +658,7 @@ msgid "translate"
 msgstr ""
 
 msgid "hello"
-msgstr "你好"
+msgstr ""
 
 msgid "detect lang"
 msgstr ""

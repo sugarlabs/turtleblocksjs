@@ -2,698 +2,700 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 00:30-0500\n"
-"PO-Revision-Date: 2017-08-03 06:11+0000\n"
-"Last-Translator: Liang <1656703453@qq.com>\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2017-06-07 06:23+0000\n"
+"Last-Translator: chanchumgpa <chanchumgpa@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: zh_CN\n"
+"Language: ach\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.1.1\n"
-"X-POOTLE-MTIME: 1501740710.000000\n"
+"X-POOTLE-MTIME: 1496816582.000000\n"
 
 msgid "clear"
-msgstr "清屏"
+msgstr "ywe"
 
 msgid "forward"
-msgstr "前进"
+msgstr "anyim"
 
 msgid "right"
-msgstr "右边"
+msgstr "tung cem"
 
 msgid "back"
-msgstr "后退"
+msgstr "cen"
 
 msgid "left"
-msgstr "左边"
+msgstr "tung cam"
 
 msgid "arc"
-msgstr "走弧形"
+msgstr "arc"
 
 msgid "angle"
-msgstr "角度"
+msgstr "tike"
 
 msgid "radius"
-msgstr "半径"
+msgstr "radias"
 
 msgid "set heading"
-msgstr "设置朝向"
+msgstr "ter wie madongo"
 
 msgid "heading"
-msgstr "朝向"
+msgstr "radias"
 
 msgid "set xy"
-msgstr "设置 坐标"
+msgstr "ter xy"
 
 msgid "x"
-msgstr "横"
+msgstr "x"
 
 msgid "y"
-msgstr "纵"
+msgstr "y"
 
 msgid "set color"
-msgstr "设置颜色"
+msgstr "ter rangi"
 
 msgid "color"
-msgstr "颜色"
+msgstr "rangi"
 
 msgid "set hue"
-msgstr ""
+msgstr "ter gi lingo"
 
 msgid "set shade"
-msgstr "设置深度"
+msgstr "ter puu"
 
 msgid "shade"
-msgstr "深度"
+msgstr "puu"
 
 msgid "set grey"
-msgstr "设置灰度"
+msgstr "ter buruburu"
 
 msgid "grey"
-msgstr "灰度"
+msgstr "buruburu"
 
 msgid "set pen size"
-msgstr "设置笔的粗细"
+msgstr "ter cajji pa kalam"
 
 msgid "pen size"
-msgstr "笔的粗细"
+msgstr "cajji pa kalam"
 
 msgid "pen up"
-msgstr "抬笔"
+msgstr "coo"
 
 msgid "pen down"
-msgstr "落笔"
+msgstr "pe i coo"
 
 msgid "begin fill"
-msgstr "开始填充"
+msgstr "cak pong"
 
 msgid "end fill"
-msgstr "完成填充"
+msgstr "gik pong"
 
 msgid "background"
-msgstr "涂满全屏"
+msgstr "cal ma i yonge"
 
 msgid "random"
-msgstr "随机值"
+msgstr "cudo"
 
 msgid "min"
-msgstr "最小值"
+msgstr "mamite"
 
 msgid "max"
-msgstr "最大值"
+msgstr "mamite kikome"
 
 msgid "sqrt"
-msgstr "平方根"
+msgstr "sqrt"
 
 msgid "mod"
-msgstr "同余"
+msgstr "mod"
 
 msgid "and"
-msgstr "与"
+msgstr "ki"
 
 msgid "or"
-msgstr "或"
+msgstr "ki"
 
 msgid "not"
-msgstr "非"
+msgstr "pe"
 
 msgid "store in"
-msgstr "放入"
+msgstr "gwok ii"
 
 msgid "name"
-msgstr "名"
+msgstr "nying"
 
 msgid "value"
-msgstr "值"
+msgstr "berne"
 
 msgid "box"
-msgstr "盒子"
+msgstr "canduk"
 
 msgid "action"
-msgstr "动作"
+msgstr "tute"
 
 msgid "do"
-msgstr "办"
+msgstr "tim"
 
 msgid "start"
-msgstr "开始"
+msgstr "cak"
 
 msgid "add 1 to"
-msgstr "加1"
+msgstr "med 1 bot"
 
 msgid "add"
-msgstr "加"
+msgstr "med"
 
 msgid "to"
-msgstr "于"
+msgstr "bot"
 
 msgid "speak"
-msgstr "朗读"
+msgstr "lok"
 
 msgid "show"
-msgstr "显示"
+msgstr "nyut"
 
 msgid "size"
-msgstr "尺寸"
+msgstr "cajji"
 
 msgid "obj"
-msgstr "对象"
+msgstr "obj"
 
 msgid "text"
-msgstr "文本"
+msgstr "nyig coc"
 
 msgid "shell"
-msgstr "海龟外壳"
+msgstr "gure"
 
 msgid "image"
-msgstr "图片"
+msgstr "cal"
 
 msgid "stop media"
-msgstr "停止媒体"
+msgstr "juk kakube"
 
 msgid "repeat"
-msgstr "重复"
+msgstr "nwo"
 
 msgid "forever"
-msgstr "永远执行"
+msgstr "pinaka"
 
 msgid "stop"
-msgstr "停止动作"
+msgstr "juk"
 
 msgid "if"
-msgstr "如果"
+msgstr "ka"
 
 msgid "then"
-msgstr "那么"
+msgstr "eka"
 
 msgid "until"
-msgstr "直到"
+msgstr "nioo"
 
 msgid "wait for"
-msgstr "等待"
+msgstr "kur pi"
 
 msgid "while"
-msgstr "当"
+msgstr "kun"
 
 msgid "else"
-msgstr "否则"
+msgstr "mukene"
 
 msgid "wait"
-msgstr "等待"
+msgstr "kur manok"
 
 msgid "print"
-msgstr "打印"
+msgstr "goo"
 
 msgid "time"
-msgstr "时间"
+msgstr "caa"
 
 msgid "mouse x"
-msgstr "鼠标X坐标"
+msgstr "ladic x"
 
 msgid "mouse y"
-msgstr "鼠标Y坐标"
+msgstr "ladic y"
 
 msgid "mouse button"
-msgstr "鼠标按下"
+msgstr "mapeca me diyo"
 
 msgid "keyboard"
-msgstr "查询键盘"
+msgstr "keyboard"
 
 msgid "pixel color"
-msgstr "读取像素"
+msgstr "dul rangi"
 
 msgid "unknown"
-msgstr "未知"
+msgstr "pengene"
 
-# 不。这是搭积木的游戏
 msgid "Welcome to Turtle Blocks"
-msgstr "欢迎来到海龟积木"
+msgstr "Wajoli i Bulok me Tuku"
 
 msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
-msgstr "海龟积木是一个标志灵感的海龟，运用可视化编程模块来画出丰富多彩的图片。"
+msgstr ""
+"Bulok me Tuku obedo Logo-ocukuro cwiny tuku magoyo cal maleng adada ki cal-"
+"kacel bulok me miyo purugram-kompiuta."
 
 msgid "Palette buttons"
-msgstr "画板按钮"
+msgstr "mapeca me kagwoko"
 
 msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
 msgstr ""
-"该工具栏包含调色板按钮：点击以显示或隐藏积木的调色板（海龟、钢笔、数字、布尔值、流量、积木、媒体、传感器和附加物）。一旦打开，你可以拖动来自画板的积木放置"
-"在画布上使用它们。"
+"Barjami tic man tye ki mapeca me gwoko: dii nyut nyo kaan kagwok me buke ("
+"Tuku, Kalam, Namba, Boolean, Mol, Bulok, Kakube, Lapoo wic, ki Mukene mapol)"
+". Teki oyabo, i twero diro bulok aa ki kagwoko i kom kanvas pi tic kwedgi."
 
 msgid "Expand/collapse toolbar"
-msgstr "展开/折叠工具栏"
+msgstr "Nyaa ie/bar me tic ma obale"
 
 msgid "This button opens and closes the primary toolbar."
-msgstr "此按钮打开或关闭主工具栏。"
+msgstr "Mapeca man yabo ki loro woko jami tic matye."
 
 msgid "Run fast"
-msgstr "快速运行"
+msgstr "Wot madwir"
 
 msgid "Click to run the project in fast mode."
-msgstr "点击使该工程在快速模式中运行。"
+msgstr "Dii wek i ket purujek ii kit madwir adada."
 
 msgid "Run slow"
-msgstr "缓慢运行"
+msgstr "Wot mot"
 
 msgid "Click to run the project in slow mode."
-msgstr "点击使该工程在缓慢模式中运行。"
+msgstr "Dii wek mii purujek wot maber ii kit me motmot."
 
 msgid "Run step by step"
-msgstr "一步步运行"
+msgstr "Wot yadi acel acel"
 
 msgid "Click to run the project step by step."
-msgstr "点击使该工程一步步运行"
+msgstr "Dii wek mii purujek tii yadi acel acel."
 
 msgid "Stop"
-msgstr "停止"
+msgstr "Juk"
 
 msgid "Stop the current project."
-msgstr "停止当前工程"
+msgstr "Juk purujek matye."
 
 msgid "Clean"
-msgstr "清理"
+msgstr "Jwaa"
 
 msgid "Clear the screen and return the turtles to their initial positions."
-msgstr "清理屏幕并使海龟回到它们的初始位置。"
+msgstr "Jwa wang kio ci i dwogo tuku i kabedo mamegi kikome."
 
 msgid "Show/hide palettes"
-msgstr "显示/隐藏海龟"
+msgstr "Nyut/kan lingo"
 
 msgid "Hide or show the block palettes."
-msgstr "隐藏或显示积木海龟。"
+msgstr "Kan nyo nyut geng lingo."
 
 msgid "Show/hide blocks"
-msgstr ""
+msgstr "Nyut/kan geng"
 
 msgid "Hide or show the blocks and the palettes."
-msgstr ""
+msgstr "Kan nyo nyut geng ki lingo."
 
 msgid "Expand/collapse collapsable blocks"
-msgstr ""
+msgstr "Nyaa ie/bal geng matwero bale"
 
 msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
-msgstr ""
+msgstr "Nyaa nyo bal omoko pi geng, lapore, cak ki tute omoko."
 
 msgid "Help"
-msgstr "帮助"
+msgstr "Kony"
 
 msgid "Show these messages."
-msgstr "显示这些信息。"
+msgstr "Nyut kwena magi."
 
 msgid "Expand/collapse option toolbar"
-msgstr ""
+msgstr "Nyaa/bal bar me jamitic me ayera"
 
 msgid "Click this button to expand or collapse the auxillary toolbar."
-msgstr ""
+msgstr "Dii mapeca wek nyaa nyo bal cwak me bar jamitic."
 
 msgid "Paste"
-msgstr "粘贴"
+msgstr "Dan"
 
 msgid "The paste button is enabled then there are blocks copied onto the clipboard."
-msgstr ""
+msgstr "Mapeca me dan tye katic eka tye ie geng ma gikobo i kom bao me coc."
 
 msgid "Cartesian"
-msgstr ""
+msgstr "Cartesian"
 
 msgid "Show or hide a Cartesian-coordinate grid."
-msgstr ""
+msgstr "Nyut nyo kan Jo marwato-kubo layin maogire."
 
 msgid "Polar"
-msgstr ""
+msgstr "Pola"
 
 msgid "Show or hide a polar-coordinate grid."
-msgstr ""
+msgstr "Nyut nyo kan pola-kub layin."
 
 msgid "Load samples from server"
-msgstr ""
+msgstr "Pang lapor aa kii lapok tic"
 
 msgid "This button opens a viewer for loading example projects."
-msgstr ""
+msgstr "Mapeca man yabo gineno pi pango purujek ma lapor."
 
 msgid "Load project from file"
-msgstr ""
+msgstr "Pang purujek aa ki pwail"
 
 msgid "You can also load projects from the file system."
-msgstr ""
+msgstr "I twero dang pango purujek aa ki i katic me pwail."
 
 msgid "Load plugin from file"
-msgstr ""
+msgstr "Pang rwakyie aa ki pwail"
 
 msgid "You can load new blocks from the file system."
-msgstr ""
+msgstr "I twero pango geng manyen aa ki i katic pa pwail."
 
 msgid "Delete all"
-msgstr ""
+msgstr "Jwa lung"
 
 msgid "Remove all content on the canvas, including the blocks."
-msgstr ""
+msgstr "Kwany lung jami ma ie i kom kanvas, medo ie geng mdpol."
 
 msgid "Undo"
-msgstr ""
+msgstr "Pe itim"
 
 msgid "Restore blocks from the trash."
-msgstr ""
+msgstr "Dwogo geng aa ki i bur yugi."
 
 msgid "Save project"
-msgstr ""
+msgstr "Gwok purujek"
 
 msgid "Save your project to a server."
-msgstr ""
+msgstr "Gwok purujek bot lapok tic."
 
 msgid "Congratulations."
-msgstr ""
+msgstr "Pwoc madit."
 
 msgid "You have finished the tour. Please enjoy Turtle Blocks!"
-msgstr ""
+msgstr "I tyeko dong limo piny. Tim ber i cam kwo i Bulok me Tuku!"
 
 msgid "hide blocks"
-msgstr "隐藏积木块"
+msgstr "kan bulok"
 
 msgid "loudness"
-msgstr "音量"
+msgstr "dwon malo"
 
 msgid "publish"
-msgstr "发布"
+msgstr "ket i wiyamo"
 
 msgid "comment"
-msgstr "注释"
+msgstr "tam amia"
 
 msgid "play back"
-msgstr "发挥媒体"
+msgstr "tuk cen"
 
 msgid "save svg"
-msgstr "保存SVG"
+msgstr "gwok svg"
 
 msgid "title"
-msgstr "标题"
+msgstr "nying amia"
 
 msgid "eval"
-msgstr ""
+msgstr "eval"
 
 msgid "show blocks"
-msgstr "显示积木块"
+msgstr "nyut bulok"
 
 msgid "stop play"
-msgstr "停止媒体"
+msgstr "juk tuku"
 
 msgid "turtle"
-msgstr "海龟"
+msgstr "nyang"
 
 msgid "pen"
-msgstr "钢笔"
+msgstr "kalam"
 
 msgid "number"
-msgstr "数字"
+msgstr "namba"
 
 msgid "boolean"
-msgstr "布尔"
+msgstr "boolean"
 
 msgid "flow"
-msgstr "流程"
+msgstr "mol"
 
 msgid "blocks"
-msgstr "拼块"
+msgstr "buloke"
 
 msgid "media"
-msgstr "多媒体"
+msgstr "kakube"
 
 msgid "sensors"
-msgstr "传感器"
+msgstr "lapoo wic"
 
 msgid "extras"
-msgstr "额外的"
+msgstr "extras"
 
 msgid "open file"
-msgstr ""
+msgstr "yab pwail"
 
 msgid "motion z"
-msgstr ""
+msgstr "woti z"
 
 msgid "motion y"
-msgstr ""
+msgstr "woti y"
 
 msgid "motion x"
-msgstr ""
+msgstr "woti x"
 
 msgid "bitcoin"
-msgstr ""
+msgstr "bitkoin"
 
 msgid "from"
-msgstr ""
+msgstr "ki"
 
 msgid "mashape"
-msgstr ""
+msgstr "mashape"
 
 msgid "define"
-msgstr ""
+msgstr "gony te"
 
 msgid "stock price"
-msgstr ""
+msgstr "wel jami"
 
 msgid "currency"
-msgstr ""
+msgstr "cente"
 
 msgid "Google map"
-msgstr "Mapa de Google"
+msgstr "Google map"
 
 msgid "coordinates"
-msgstr ""
+msgstr "kubo"
 
 msgid "zoom factor"
-msgstr ""
+msgstr "kwot ginmo"
 
 msgid "zoom"
-msgstr ""
+msgstr "Kwot"
 
 msgid "latitude"
-msgstr ""
+msgstr "tung malu ki tung piny"
 
 msgid "longitude"
-msgstr ""
+msgstr "tung wok ceng ki poto ceng"
 
 msgid "show heap"
-msgstr ""
+msgstr "nyut dure"
 
 msgid "pop"
-msgstr ""
+msgstr "pye"
 
 msgid "empty heap"
-msgstr ""
+msgstr "dure manono"
 
 msgid "save heap"
-msgstr ""
+msgstr "gwok dure"
 
 msgid "load heap"
-msgstr ""
+msgstr "pang dure"
 
 msgid "push"
-msgstr ""
+msgstr "cor"
 
 msgid "logic"
-msgstr ""
+msgstr "diro moo"
 
 msgid "power"
-msgstr ""
+msgstr "mac"
 
 msgid "base"
-msgstr ""
+msgstr "kema"
 
 msgid "exp"
-msgstr ""
+msgstr "exp"
 
 msgid "floor"
-msgstr ""
+msgstr "diiot"
 
 msgid "ceiling"
-msgstr ""
+msgstr "ropo"
 
 msgid "degrees"
-msgstr ""
+msgstr "digri"
 
 msgid "to degrees"
-msgstr ""
+msgstr "i digri"
 
 msgid "radians"
-msgstr ""
+msgstr "radians"
 
 msgid "to radians"
-msgstr ""
+msgstr "i radians"
 
 msgid "maths"
-msgstr ""
+msgstr "cura"
 
 msgid "cheese"
-msgstr ""
+msgstr "cak"
 
 msgid "apple"
-msgstr ""
+msgstr "apul"
 
 msgid "get fat"
-msgstr ""
+msgstr "nong dwolo"
 
 msgid "fish"
-msgstr ""
+msgstr "rec"
 
 msgid "get calories"
-msgstr ""
+msgstr "nong gupu"
 
 msgid "protein"
-msgstr ""
+msgstr "protein"
 
 msgid "chicken"
-msgstr ""
+msgstr "gweno"
 
 msgid "digest meal"
-msgstr ""
+msgstr "pok yii cam"
 
 msgid "get fiber"
-msgstr ""
+msgstr "nong lwit yat"
 
 msgid "carbs"
-msgstr ""
+msgstr "carbs"
 
 msgid "eat"
-msgstr ""
+msgstr "cam"
 
 msgid "rice and beans"
-msgstr ""
+msgstr "mucere ki muranga"
 
 msgid "orange"
-msgstr ""
+msgstr "macunga"
 
 msgid "banana"
-msgstr ""
+msgstr "labolo"
 
 msgid "tamale"
-msgstr ""
+msgstr "tamale"
 
 msgid "fiber"
-msgstr ""
+msgstr "lwit yat"
 
 msgid "corn"
-msgstr ""
+msgstr "nywagi mutwo"
 
 msgid "fat"
-msgstr ""
+msgstr "dwolo"
 
 msgid "get carbs"
-msgstr ""
+msgstr "nong cam me kom"
 
 msgid "water"
-msgstr ""
+msgstr "pii"
 
 msgid "cookie"
-msgstr ""
+msgstr "kooki"
 
 msgid "sweet potato"
-msgstr ""
+msgstr "layata"
 
 msgid "broccoli"
-msgstr ""
+msgstr "pot dek"
 
 msgid "wheat bread"
-msgstr ""
+msgstr "mukati ngano"
 
 msgid "tomato"
-msgstr ""
+msgstr "nyanya"
 
 msgid "beef"
-msgstr ""
+msgstr "ringo dyang"
 
 msgid "potato"
-msgstr ""
+msgstr "layata"
 
 msgid "calories"
-msgstr ""
+msgstr "gupu"
 
 msgid "get name"
-msgstr ""
+msgstr "nong nying"
 
 msgid "cake"
-msgstr ""
+msgstr "mugati"
 
 msgid "get protein"
-msgstr ""
+msgstr "nong protein"
 
 msgid "food"
-msgstr ""
+msgstr "dek"
 
 msgid "eatme"
-msgstr ""
+msgstr "cama"
 
 msgid "sense left"
-msgstr ""
+msgstr "giweko woko dul kom mapire tego"
 
 msgid "see distance"
-msgstr ""
+msgstr "nen bor piny"
 
 msgid "sense right"
-msgstr ""
+msgstr "dul kom tung cem"
 
 msgid "sing"
-msgstr ""
+msgstr "wer"
 
 msgid "note"
-msgstr ""
+msgstr "mak maber"
 
 msgid "duration"
-msgstr ""
+msgstr "kare"
 
 msgid "move"
-msgstr ""
+msgstr "dir"
 
 msgid "blink (ms)"
-msgstr ""
+msgstr "ryeny (ms)"
 
 msgid "rodi"
-msgstr ""
+msgstr "rodi"
 
 msgid "set lang"
-msgstr ""
+msgstr "ter nying pen"
 
 msgid "source"
-msgstr ""
+msgstr "kama aa ie"
 
 msgid "target"
-msgstr ""
+msgstr "taget"
 
 msgid "translate"
-msgstr ""
+msgstr "gony"
 
 msgid "hello"
-msgstr "你好"
+msgstr "hello"
 
 msgid "detect lang"
-msgstr ""
+msgstr "kwed nying pen"
 
 msgid "turtle x"
-msgstr ""
+msgstr "tuku nyang x"
 
 msgid "turtle y"
-msgstr ""
+msgstr "tuku nyang y"
 
 msgid "stop turtle"
-msgstr ""
+msgstr "juk tuku nyang woko"
 
 msgid "turtle name"
-msgstr ""
+msgstr "nying tuku nyang"
 
 msgid "start turtle"
-msgstr ""
+msgstr "cak tuku nyang"
 
 msgid "forecast"
-msgstr ""
+msgstr "lok i gin mapwud pe gineno"
 
 msgid "city"
-msgstr ""
+msgstr "boma madwong"
 
 msgid "day"
-msgstr ""
+msgstr "nino"
 
 msgid "low"
-msgstr ""
+msgstr "piny"
 
 msgid "high"
-msgstr ""
+msgstr "malo"

@@ -1,0 +1,707 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2017-03-03 03:18+0000\n"
+"Last-Translator: MartínOesterreich <martin.otte80@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: gug\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1488511093.000000\n"
+
+msgid "clear"
+msgstr "Mopotĩ."
+
+msgid "forward"
+msgstr "Tenondépe."
+
+msgid "right"
+msgstr "Akatúa. "
+
+msgid "back"
+msgstr "Tapykuépe."
+
+msgid "left"
+msgstr "Asúpe."
+
+msgid "arc"
+msgstr "Yvyrapã."
+
+msgid "angle"
+msgstr "Takamby."
+
+msgid "radius"
+msgstr "Mbyteguisẽha."
+
+msgid "set heading"
+msgstr "Amoĩ tape."
+
+msgid "heading"
+msgstr "Tape."
+
+msgid "set xy"
+msgstr "Amoĩ xy."
+
+msgid "x"
+msgstr "X."
+
+msgid "y"
+msgstr "Y."
+
+msgid "set color"
+msgstr "Amoĩ sa'y."
+
+msgid "color"
+msgstr "Sa'y."
+
+msgid "set hue"
+msgstr "Amoĩ sa'y ambuevýva."
+
+msgid "set shade"
+msgstr "Amoĩ kuarahy'ã."
+
+msgid "shade"
+msgstr "Kuarahy'ã."
+
+msgid "set grey"
+msgstr "Amoĩ hungy."
+
+msgid "grey"
+msgstr "Hungy."
+
+msgid "set pen size"
+msgstr "Amoĩ tague."
+
+msgid "pen size"
+msgstr "Tuichakue tague."
+
+msgid "pen up"
+msgstr "Jupi tague."
+
+msgid "pen down"
+msgstr "Guejy tague."
+
+msgid "begin fill"
+msgstr "Ñepyru myenyhe."
+
+msgid "end fill"
+msgstr "Japopa myenyhe."
+
+msgid "background"
+msgstr "Myenyhe Tendahesaperã."
+
+msgid "random"
+msgstr "Sapy'agua."
+
+msgid "min"
+msgstr "Min."
+
+msgid "max"
+msgstr "Max."
+
+msgid "sqrt"
+msgstr "Tapo."
+
+msgid "mod"
+msgstr "Pehẽngue."
+
+msgid "and"
+msgstr "Ha."
+
+msgid "or"
+msgstr "Tera."
+
+msgid "not"
+msgstr "Nahániri."
+
+msgid "store in"
+msgstr "Ñongatu pe."
+
+msgid "name"
+msgstr "Téra."
+
+msgid "value"
+msgstr "Py'aguasu."
+
+msgid "box"
+msgstr "Ryru."
+
+msgid "action"
+msgstr "Tembiapo."
+
+msgid "do"
+msgstr "Japo."
+
+msgid "start"
+msgstr "Ñepyrũ."
+
+msgid "add 1 to"
+msgstr "Moîve 1 pe."
+
+msgid "add"
+msgstr "Moĩve."
+
+msgid "to"
+msgstr "Pe."
+
+msgid "speak"
+msgstr "Ñe'ẽ."
+
+msgid "show"
+msgstr "Hechauka."
+
+msgid "size"
+msgstr "Tuichakue."
+
+msgid "obj"
+msgstr "Mba'e."
+
+msgid "text"
+msgstr "Tembihai."
+
+msgid "shell"
+msgstr "Ape."
+
+msgid "image"
+msgstr "Ta'anga."
+
+msgid "stop media"
+msgstr "Mombyta Pytyvõrã.."
+
+msgid "repeat"
+msgstr "Ha'ejevy."
+
+msgid "forever"
+msgstr "Akói rehe."
+
+msgid "stop"
+msgstr "Mombyta."
+
+msgid "if"
+msgstr "Hẽe."
+
+msgid "then"
+msgstr "Upéicharõ."
+
+msgid "until"
+msgstr "Peve."
+
+msgid "wait for"
+msgstr "Ha'arõ peve."
+
+msgid "while"
+msgstr "Jave."
+
+msgid "else"
+msgstr "Pokatu."
+
+msgid "wait"
+msgstr "Ha'arõ."
+
+msgid "print"
+msgstr "Kuatiajopy."
+
+msgid "time"
+msgstr "Ára."
+
+msgid "mouse x"
+msgstr "Oisambyhy."
+
+msgid "mouse y"
+msgstr "Oisambyhy y."
+
+msgid "mouse button"
+msgstr "Botõ anguja mbae."
+
+msgid "keyboard"
+msgstr "Votõ."
+
+msgid "pixel color"
+msgstr "Sa'y pixel."
+
+msgid "unknown"
+msgstr "Jekuaa'ỹva."
+
+msgid "Welcome to Turtle Blocks"
+msgstr "Tereg̃uaheporãite karumbe amongora pe."
+
+msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
+msgstr ""
+"Karumbe amongora ha'e peteĩ karumbe py'amongetaha pe ñe'ẽ ha ojapo "
+"ta'ãngahaipyrekuera mbosa'ypapyre ypýpe amongora ndive japopa jejaporã "
+"ojehecháva."
+
+msgid "Palette buttons"
+msgstr "Votõkuera tatapyñaha."
+
+msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgstr ""
+"Ko pehẽ tembipuru jejoko votõkuera tatapyñaha: Háse click hechauka haguã "
+"mo'ã tatapyñaha amongora (Karumbe, Haiha, Papahakuera, Booleanos, Pytyvõrã, "
+"Tembiporu ha Ijykepegua). Peteĩ jevy jái, ija guive mbotyryry amongora "
+"tatapyñaha pe ao oipuru haguã."
+
+msgid "Expand/collapse toolbar"
+msgstr "Moasãi terã mboapa pehẽ."
+
+msgid "This button opens and closes the primary toolbar."
+msgstr "Ko votõ oipe'a ha omboty pe pehẽ tembipuru tenondevegua."
+
+msgid "Run fast"
+msgstr "Japo pya'e."
+
+msgid "Click to run the project in fast mode."
+msgstr "Ejapo click japopa haguã tape pe kokatu pya´e."
+
+msgid "Run slow"
+msgstr "Japo mbeguekatu."
+
+msgid "Click to run the project in slow mode."
+msgstr "Ejapo click japopa haguã tape pe kokatu mbegue."
+
+msgid "Run step by step"
+msgstr "Japo pyrũ pe pyrũ."
+
+msgid "Click to run the project step by step."
+msgstr "Ejapo click japopa haguã tape pe kokatu pyrũ pe pyrũ."
+
+msgid "Stop"
+msgstr "Mombyta."
+
+msgid "Stop the current project."
+msgstr "Mombyta pe jejaporâ ko'agagua."
+
+msgid "Clean"
+msgstr "Mopotî."
+
+msgid "Clear the screen and return the turtles to their initial positions."
+msgstr "Mbogue tendahesaperã ha jujey karumbekuera tenda ypykuera."
+
+msgid "Show/hide palettes"
+msgstr "Hechauka mo'ã pe tatapyñaha."
+
+msgid "Hide or show the block palettes."
+msgstr "Mo'ã térâ hechauka  pe tatapyñaha amongora."
+
+msgid "Show/hide blocks"
+msgstr "Hechauka terá mo'ã pe amongorakuera."
+
+msgid "Hide or show the blocks and the palettes."
+msgstr "Mo'ã térâ hechauka pe amongora ha tatapyñahakuera."
+
+msgid "Expand/collapse collapsable blocks"
+msgstr "Moasãi terá mboapa ko amongora je'ara."
+
+msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
+msgstr ""
+"Moasãi terá mboapa ko amongora je'ara, icha techapyrâgui pe amongora ñepyru "
+"ha pe tembiapo."
+
+msgid "Help"
+msgstr "Pytyvô."
+
+msgid "Show these messages."
+msgstr "Pe hechauka ko ñe'émondo."
+
+msgid "Expand/collapse option toolbar"
+msgstr "Moasãi/mboapa ko pehẽ rekokuaa."
+
+msgid "Click this button to expand or collapse the auxillary toolbar."
+msgstr "Ejapo click ko votó rehe moasãi/mboapa ko pehẽ tembipuru pytyvõhára."
+
+msgid "Paste"
+msgstr "Mboja. "
+
+msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgstr ""
+"Ko votõ mbojaha oî kyre'ỹ, terã sapy'agua oĩ amongora haijevypapyre pe "
+"kuatiareko."
+
+msgid "Cartesian"
+msgstr "Cartesiano."
+
+msgid "Show or hide a Cartesian-coordinate grid."
+msgstr "Hechauka terã mo'ã koty'i pe hai ñeñocartesianas."
+
+msgid "Polar"
+msgstr "Tu'ã."
+
+msgid "Show or hide a polar-coordinate grid."
+msgstr "Hechauka terã mo'ã ko yvesé pe haiñeno tu’ãkuera."
+
+msgid "Load samples from server"
+msgstr "Hupi techapyrãkuera pe pytyvô guive."
+
+msgid "This button opens a viewer for loading example projects."
+msgstr "Ko votõ oipe'a tendahesaperã jokuapy jejaporâkuera techapyragui."
+
+msgid "Load project from file"
+msgstr "Hupi jejaporâ ñongatuha guive."
+
+msgid "You can also load projects from the file system."
+msgstr "Avei ikatu ehupi jejapora mbo'e guive pe ñongatuha."
+
+msgid "Load plugin from file"
+msgstr "Hupi plugin ñongatuha guive."
+
+msgid "You can load new blocks from the file system."
+msgstr "Nde ikatu ehupi pyahu amongora peteĩ ñongatuha guive."
+
+msgid "Delete all"
+msgstr "Mbogue pa."
+
+msgid "Remove all content on the canvas, including the blocks."
+msgstr "Aipe'a pa pe jokopapyre canvas, emoinge ichupe ko mongorakuera."
+
+msgid "Undo"
+msgstr "Mosarambi."
+
+msgid "Restore blocks from the trash."
+msgstr "Myatyrõ mongorakuera pe kuatiarenda."
+
+msgid "Save project"
+msgstr "Ñongatu jejapora."
+
+msgid "Save your project to a server."
+msgstr "Añongatu jejapora pytyvô pe."
+
+msgid "Congratulations."
+msgstr "Roguerohory."
+
+msgid "You have finished the tour. Please enjoy Turtle Blocks!"
+msgstr "Opama pe tour. Ñaha'arõ ha reporuvy'a karumbe mongora."
+
+msgid "hide blocks"
+msgstr "Mo'ã mongorakuera."
+
+msgid "loudness"
+msgstr "Tuichakue."
+
+msgid "publish"
+msgstr "Mbojekuaa."
+
+msgid "comment"
+msgstr "Myesakã."
+
+msgid "play back"
+msgstr "Haijevy."
+
+msgid "save svg"
+msgstr "Ñongatu mba'éicha SVG."
+
+msgid "title"
+msgstr "Téra."
+
+msgid "eval"
+msgstr "Jakatura´ã."
+
+msgid "show blocks"
+msgstr "Hechauka mongorakuera."
+
+msgid "stop play"
+msgstr "Mombyta."
+
+msgid "turtle"
+msgstr "Karumbe."
+
+msgid "pen"
+msgstr "Tague."
+
+msgid "number"
+msgstr "Papaha."
+
+msgid "boolean"
+msgstr "Booleano."
+
+msgid "flow"
+msgstr "Syry."
+
+msgid "blocks"
+msgstr "Mongorakuera."
+
+msgid "media"
+msgstr "Pytyvõrã."
+
+msgid "sensors"
+msgstr "Mba'e."
+
+msgid "extras"
+msgstr "Ijykepegua."
+
+msgid "open file"
+msgstr "Pe'a ñongatuha."
+
+msgid "motion z"
+msgstr "Z Mýi."
+
+msgid "motion y"
+msgstr "Y Mỹi."
+
+msgid "motion x"
+msgstr "X Mỹí."
+
+msgid "bitcoin"
+msgstr "Bitcoin."
+
+msgid "from"
+msgstr "Guive."
+
+msgid "mashape"
+msgstr "Mashape."
+
+msgid "define"
+msgstr "Myesakã."
+
+msgid "stock price"
+msgstr "Py'aguasu tembiapogui."
+
+msgid "currency"
+msgstr "Pirapire."
+
+msgid "Google map"
+msgstr "Yvy ra'anga googlegui."
+
+msgid "coordinates"
+msgstr "Hai ñeno."
+
+msgid "zoom factor"
+msgstr "Ypy zoomgui."
+
+msgid "zoom"
+msgstr "Zoom."
+
+msgid "latitude"
+msgstr "Pekue."
+
+msgid "longitude"
+msgstr "Pukukue."
+
+msgid "show heap"
+msgstr "Hechauka aty."
+
+msgid "pop"
+msgstr "Nohẽ."
+
+msgid "empty heap"
+msgstr "Monandi aty."
+
+msgid "save heap"
+msgstr "Ñongatu aty."
+
+msgid "load heap"
+msgstr "Hupi aty."
+
+msgid "push"
+msgstr "Mbyaty."
+
+msgid "logic"
+msgstr "Kuaa rape."
+
+msgid "power"
+msgstr "Ikatu."
+
+msgid "base"
+msgstr "Topyta. "
+
+msgid "exp"
+msgstr "Exp."
+
+msgid "floor"
+msgstr "Yvy atã."
+
+msgid "ceiling"
+msgstr "Ogahoja."
+
+msgid "degrees"
+msgstr "Mbovykuera."
+
+msgid "to degrees"
+msgstr "Pe mbovykuera."
+
+msgid "radians"
+msgstr "Radianes."
+
+msgid "to radians"
+msgstr "Pe radianes."
+
+msgid "maths"
+msgstr "Mba'ekuaa porã."
+
+msgid "cheese"
+msgstr "Kesu."
+
+msgid "apple"
+msgstr "Masã."
+
+msgid "get fat"
+msgstr "Hupytu kyrakuera."
+
+msgid "fish"
+msgstr "Pira."
+
+msgid "get calories"
+msgstr "Hupytu ku'erã."
+
+msgid "protein"
+msgstr "Guypegua."
+
+msgid "chicken"
+msgstr "Ryguasu."
+
+msgid "digest meal"
+msgstr "Mboguapy."
+
+msgid "get fiber"
+msgstr "Hupytu tyvi."
+
+msgid "carbs"
+msgstr "Ku'erã."
+
+msgid "eat"
+msgstr "Karu."
+
+msgid "rice and beans"
+msgstr "Avati'i ha kumanda."
+
+msgid "orange"
+msgstr "Narã."
+
+msgid "banana"
+msgstr "Pakova. "
+
+msgid "tamale"
+msgstr "Tamal."
+
+msgid "fiber"
+msgstr "Tyvi."
+
+msgid "corn"
+msgstr "Avati."
+
+msgid "fat"
+msgstr "Kyra."
+
+msgid "get carbs"
+msgstr "Hupyty ku'erã."
+
+msgid "water"
+msgstr "Y."
+
+msgid "cookie"
+msgstr "Mbujape."
+
+msgid "sweet potato"
+msgstr "Jety. "
+
+msgid "broccoli"
+msgstr "Brócoli."
+
+msgid "wheat bread"
+msgstr "Tembi'u týra."
+
+msgid "tomato"
+msgstr "Toma."
+
+msgid "beef"
+msgstr "Mymba ro'o. "
+
+msgid "potato"
+msgstr "Yvy'a."
+
+msgid "calories"
+msgstr "Ku'erã."
+
+msgid "get name"
+msgstr "Hupytu téra."
+
+msgid "cake"
+msgstr "Chipa so'o."
+
+msgid "get protein"
+msgstr "Hupity guypegua."
+
+msgid "food"
+msgstr "Hi'upy."
+
+msgid "eatme"
+msgstr "Che umina."
+
+msgid "sense left"
+msgstr "Andupáva asúpe."
+
+msgid "see distance"
+msgstr "Andupava mbyryguĩ."
+
+msgid "sense right"
+msgstr "Andupáva akatúa."
+
+msgid "sing"
+msgstr "Purahéi."
+
+msgid "note"
+msgstr "Ohesaho."
+
+msgid "duration"
+msgstr "Hi'are."
+
+msgid "move"
+msgstr "Mongu'e."
+
+msgid "blink (ms)"
+msgstr "Mimbi (ms)."
+
+msgid "rodi"
+msgstr "RoDi."
+
+msgid "set lang"
+msgstr "Moambue ñe'ê. "
+
+msgid "source"
+msgstr "Ñepyrũ."
+
+msgid "target"
+msgstr "Amondo."
+
+msgid "translate"
+msgstr "Mbojere."
+
+msgid "hello"
+msgstr "Maitei."
+
+msgid "detect lang"
+msgstr "Juhuka ñe'ê."
+
+msgid "turtle x"
+msgstr "Karumbe x."
+
+msgid "turtle y"
+msgstr "Karumbe y."
+
+msgid "stop turtle"
+msgstr "Mombyta."
+
+msgid "turtle name"
+msgstr "Mbohéra jey karumbe."
+
+msgid "start turtle"
+msgstr "Ñepyrû karumbe."
+
+msgid "forecast"
+msgstr "Ha'uvõ."
+
+msgid "city"
+msgstr "Táva."
+
+msgid "day"
+msgstr "Ára."
+
+msgid "low"
+msgstr "Karape."
+
+msgid "high"
+msgstr "Yvate."

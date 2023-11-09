@@ -377,7 +377,12 @@ class Palettes {
     _loadPaletteButtonHandler(name, row) {
         // eslint-disable-next-line no-unused-vars
         row.onmouseover = (event) => {
-            document.body.style.cursor="pointer";
+            if(name == "search"){
+                document.body.style.cursor = "text";
+            }
+            else{
+                document.body.style.cursor = "pointer";
+            }
         };
 
         // eslint-disable-next-line no-unused-vars

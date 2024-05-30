@@ -229,7 +229,7 @@ class Turtle {
 
         this.singer.notesPlayed = [0, 1];
         this.singer.whichNoteToCount = 1;
-        this.singer.moveable = false;
+        this.singer.movable = false;
 
         this.singer.bpm = [];
         this.singer.previousTurtleTime = 0;
@@ -302,7 +302,6 @@ class Turtle {
 
         this.singer.runningFromEvent = false;
 
-        this.activity.logo.turtleDicts[this.activity.turtles.turtleList.indexOf(this)] = [];
     }
 
     // ================================ CONTROLLER ============================
@@ -920,6 +919,6 @@ Turtle.TurtleView = class {
             activity.refreshCanvas();
         };
 
-        img.src = "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(data)));
+        img.src = "data:image/svg+xml;base64," + window.btoa(base64Encode(data));
     }
 };

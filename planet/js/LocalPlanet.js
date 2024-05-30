@@ -9,104 +9,133 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
-function LocalPlanet(Planet) {
-    this.CookieDuration = 3650;
-    this.ProjectTable = null;
-    this.projects = null;
-    this.DeleteModalID = null;
-    this.Publisher = null;
-    this.currentProjectImage = null;
-    this.currentProjectID = null;
+/*
+   global
 
-    this.updateProjects = function() {
-        jQuery('.tooltipped').tooltip('remove');
+   jQuery, LocalCard, Publisher
+*/
+/*
+   exported
+
+   LocalPlanet
+*/
+
+class LocalPlanet {
+
+    constructor(Planet) {
+        this.Planet = Planet ;
+        this.CookieDuration = 3650;
+        this.ProjectTable = null;
+        this.projects = null;
+        this.DeleteModalID = null;
+        this.Publisher = null;
+        this.currentProjectImage = null;
+        this.currentProjectID = null;
+    }
+
+    updateProjects() {
+        jQuery(".tooltipped").tooltip("remove");
         this.refreshProjectArray();
         this.initCards();
         this.renderAllProjects();
     };
 
-    this.setCurrentProjectImage = function(image) {
+    setCurrentProjectImage(image)  {
         this.currentProjectImage = image;
-        this.currentProjectID = Planet.ProjectStorage.getCurrentProjectID();
+        this.currentProjectID = this.Planet.ProjectStorage.getCurrentProjectID();
     };
 
-    this.refreshProjectArray = function() {
+    refreshProjectArray() {
         this.projects = [];
-        for (let project in this.ProjectTable) {
+
+        for (const project in this.ProjectTable) {
+            // eslint-disable-next-line no-prototype-builtins
             if (this.ProjectTable.hasOwnProperty(project)) {
                 this.projects.push([project,null]);
             }
         }
 
-        let that = this;
-
-        this.projects.sort(function(a, b) {
-            return that.ProjectTable[b[0]].DateLastModified - that.ProjectTable[a[0]].DateLastModified;
-	});
+        this.projects.sort((a, b) => {
+            // eslint-disable-next-line max-len
+            return this.ProjectTable[b[0]].DateLastModified - this.ProjectTable[a[0]].DateLastModified;
+        });
     };
 
-    this.initCards = function() {
+    initCards() {
         for (let i = 0; i < this.projects.length; i++) {
+            const Planet = this.Planet ;
             this.projects[i][1] = new LocalCard(Planet);
             this.projects[i][1].init(this.projects[i][0]);
         }
     };
 
-    this.renderAllProjects = function() {
-        document.getElementById('local-projects').innerHTML = '';
+    renderAllProjects() {
+        document.getElementById("local-projects").innerHTML = "";
+
         let index = -1;
         for (let i = 0; i < this.projects.length; i++) {
             this.projects[i][1].render();
-            if (this.projects[i][0] === this.currentProjectID) {
+            if (this.projects[i][0] === this.currentProjectID)
                 index = i;
-            }
         }
+
         if (index!=-1) {
-            let id = 'local-project-image-' + this.projects[index][0];
-            console.log(id);
-            let cardimg = document.getElementById(id);
+            const id = `local-project-image-${this.projects[index][0]}`;
+            // eslint-disable-next-line no-console
+            const cardimg = document.getElementById(id);
             cardimg.src=this.currentProjectImage;
         }
-        jQuery('.tooltipped').tooltip({delay: 50});
+
+        jQuery(".tooltipped").tooltip({delay: 50});
     };
 
-    this.initDeleteModal = function() {
-        let t = this;
-        document.getElementById('deleter-button').addEventListener('click', function (evt) {
-            if (t.DeleteModalID !== null) {
-                Planet.ProjectStorage.deleteProject(t.DeleteModalID);
+    initDeleteModal() {
+        const t = this;
+
+        document.getElementById("deleter-button").addEventListener(
+            "click",
+            // eslint-disable-next-line no-unused-vars
+            function (evt) {
+                if (t.DeleteModalID !== null) {
+                    t.Planet.ProjectStorage.deleteProject(t.DeleteModalID);
+                }
             }
-        });
+        );
     };
 
-    this.openDeleteModal = function(id) {
+    openDeleteModal(id)  {
         this.DeleteModalID = id;
-        let name = this.ProjectTable[id].ProjectName;
-        document.getElementById('deleter-title').textContent = name;
-        document.getElementById('deleter-name').textContent = name;
-        jQuery('#deleter').modal('open');
+        const name = this.ProjectTable[id].ProjectName;
+        document.getElementById("deleter-title").textContent = name;
+        document.getElementById("deleter-name").textContent = name;
+        jQuery("#deleter").modal("open");
     };
 
-    this.openProject = function(id) {
+    openProject(id) {
+        const Planet = this.Planet ;
         Planet.ProjectStorage.setCurrentProjectID(id);
         Planet.loadProjectFromData(this.ProjectTable[id].ProjectData);
     };
 
-    this.mergeProject = function(id) {
-        let d = this.ProjectStorage.getCurrentProjectData();
+    mergeProject(id) {
+        const Planet = this.Planet ;
+        const d = this.ProjectStorage.getCurrentProjectData();
+
         if (d === null) {
             this.ProjectStorage.initialiseNewProject();
             Planet.loadProjectFromData(this.ProjectTable[id].ProjectData);
-        } else {
-            Planet.loadProjectFromData(this.ProjectTable[id].ProjectData, true);
         }
+        else Planet.loadProjectFromData(this.ProjectTable[id].ProjectData, true);
     };
 
-    this.init = function() {
+    init() {
+        const Planet = this.Planet ;
+
         this.ProjectTable = Planet.ProjectStorage.data.Projects;
         this.refreshProjectArray();
         this.initDeleteModal();
         this.Publisher = new Publisher(Planet);
         this.Publisher.init();
     };
-};
+
+}

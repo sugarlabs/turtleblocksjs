@@ -1,4 +1,4 @@
-// Copyright (c) 2016-21 Walter Bender
+// Copyright (c) 2016-23 Walter Bender
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -52,14 +52,24 @@
   convertFactor, getOctaveRatio, setOctaveRatio, getTemperamentsList,
   addTemperamentToList, getTemperament, deleteTemperamentFromList,
   addTemperamentToDictionary, buildScale, CHORDNAMES, CHORDVALUES,
-  DEFAULTCHORD, DEFAULTVOICE
+  DEFAULTCHORD, DEFAULTVOICE, setCustomChord, EQUIVALENTACCIDENTALS,
+  INTERVALVALUES, getIntervalRatio, frequencyToPitch, NOTESTEP,
+  GetNotesForInterval,ALLNOTESTEP,NOTENAMES,SEMITONETOINTERVALMAP
 */
 
-// Scalable sinewave graphic
+/**
+ * Scalable sinewave graphic.
+ * @const
+ * @type {string}
+ */
 const SYNTHSVG =
     '<?xml version="1.0" encoding="UTF-8" standalone="no"?> <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" y="0px" xml:space="preserve" x="0px" width="SVGWIDTHpx" viewBox="0 0 SVGWIDTH 55" version="1.1" height="55px" enable-background="new 0 0 SVGWIDTH 55"><g transform="scale(XSCALE,1)"><path d="m 1.5,27.5 c 0,0 2.2,-17.5 6.875,-17.5 4.7,0.0 6.25,11.75 6.875,17.5 0.75,6.67 2.3,17.5 6.875,17.5 4.1,0.0 6.25,-13.6 6.875,-17.5 C 29.875,22.65 31.1,10 35.875,10 c 4.1,0.0 5.97,13.0 6.875,17.5 1.15,5.7 1.75,17.5 6.875,17.5 4.65,0.0 6.875,-17.5 6.875,-17.5" style="stroke:#90c100;fill-opacity:1;fill:none;stroke-width:STROKEWIDTHpx;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" /></g></svg>';
 
-// Notes graphics
+/**
+ * Notes graphics.
+ * @const
+ * @type {string}
+ */
 const WHOLENOTE =
     '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg6468" viewBox="0 0 5.1680003 12.432" height="12.432" width="5.1680002"> <g transform="translate(-375.23523,-454.37592)"> <g transform="translate(7.9606,5.6125499)" style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"> <path d="m 369.80263,457.99537 q 1.104,0 1.872,0.432 0.768,0.416 0.768,1.2 0,0.752 -0.752,1.168 -0.752,0.4 -1.808,0.4 -1.104,0 -1.856,-0.416 -0.752,-0.416 -0.752,-1.232 0,-0.576 0.464,-0.944 0.48,-0.368 1.008,-0.48 0.528,-0.128 1.056,-0.128 z m -0.864,1.136 q 0,0.672 0.304,1.184 0.304,0.512 0.784,0.512 0.736,0 0.736,-0.8 0,-0.64 -0.304,-1.136 -0.288,-0.512 -0.8,-0.512 -0.72,0 -0.72,0.752 z" /> </g> </g> </svg>';
 
@@ -82,16 +92,60 @@ const SIXTYFOURTHNOTE =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7.0080001 14.528" height="4.1001244mm" width="1.9778134mm"> <g transform="translate(-345.3223,-325.39492)"> <g transform="translate(3.1093785,1.6864426)" style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"> <path d="m 342.21292,337.13248 q 0,-0.832 0.816,-1.472 0.816,-0.656 1.728,-0.656 0.528,0 0.944,0.272 l 0,-11.568 0.336,0 q 0.064,0.64 0.384,1.104 0.336,0.464 0.752,0.768 0.416,0.304 0.832,0.656 0.416,0.336 0.688,0.928 0.288,0.592 0.288,1.44 0,0.24 -0.144,0.768 0.256,0.608 0.256,1.376 0,0.32 -0.16,0.896 0.224,0.416 0.224,0.912 0,0.496 -0.24,0.96 0.304,0.448 0.304,1.024 0,0.384 -0.08,0.688 -0.08,0.304 -0.16,0.448 -0.08,0.144 -0.368,0.608 l -0.384,0 q 0.08,-0.16 0.192,-0.368 0.112,-0.224 0.16,-0.32 0.064,-0.096 0.112,-0.24 0.064,-0.144 0.08,-0.288 0.016,-0.144 0.016,-0.32 0,-0.272 -0.096,-0.512 -0.08,-0.256 -0.176,-0.432 -0.096,-0.192 -0.32,-0.4 -0.224,-0.208 -0.368,-0.32 -0.144,-0.128 -0.464,-0.304 -0.304,-0.192 -0.432,-0.256 -0.128,-0.064 -0.48,-0.224 -0.336,-0.176 -0.4,-0.208 l 0,4.064 q 0,0.896 -0.784,1.488 -0.784,0.592 -1.728,0.592 -0.528,0 -0.928,-0.304 -0.4,-0.32 -0.4,-0.8 z m 6.352,-8.384 q 0,-0.352 -0.144,-0.688 -0.128,-0.352 -0.288,-0.576 -0.16,-0.224 -0.48,-0.496 -0.32,-0.272 -0.512,-0.4 -0.192,-0.144 -0.592,-0.384 -0.384,-0.24 -0.496,-0.32 0.032,0.432 0.352,0.832 0.32,0.384 0.704,0.656 0.4,0.272 0.816,0.72 0.432,0.432 0.624,0.912 0.016,-0.176 0.016,-0.256 z m 0.016,2.128 q 0,-0.208 -0.048,-0.4 -0.032,-0.192 -0.08,-0.336 -0.048,-0.16 -0.176,-0.336 -0.128,-0.176 -0.208,-0.288 -0.08,-0.112 -0.272,-0.272 -0.192,-0.176 -0.288,-0.256 -0.096,-0.08 -0.352,-0.256 -0.24,-0.176 -0.336,-0.224 -0.096,-0.064 -0.384,-0.24 -0.288,-0.192 -0.384,-0.256 0.032,0.464 0.368,0.88 0.336,0.416 0.736,0.704 0.4,0.272 0.816,0.688 0.416,0.416 0.576,0.864 0.032,-0.192 0.032,-0.272 z m -0.016,1.936 q 0,-0.848 -0.624,-1.504 -0.608,-0.672 -1.872,-1.392 0.064,0.464 0.384,0.896 0.336,0.416 0.72,0.688 0.4,0.272 0.8,0.704 0.4,0.416 0.576,0.88 0.016,-0.064 0.016,-0.272 z" /> </g> </g> </svg>';
 
 // Is there a "proper" double-sharp symbol as well? I see this from wikipedia: U+1D12A 𝄪 MUSICAL SYMBOL DOUBLE SHARP (HTML &#119082;) (https://en.wikipedia.org/wiki/Double_sharp)
-const SHARP = "♯";
-const FLAT = "♭";
-const NATURAL = "♮";
-const DOUBLESHARP = "𝄪";
-const DOUBLEFLAT = "𝄫";
-// note symbols
-const NSYMBOLS = { 1: "𝅝", 2: "𝅗𝅥", 4: "♩", 8: "♪", 16: "𝅘𝅥𝅯" };
-// rest symbols
-const RSYMBOLS = { 1: "𝄻", 2: "𝄼", 4: "𝄽" };
 
+/**
+ * Symbol for a sharp note.
+ * @constant {string}
+ * @default
+ */
+const SHARP = "♯";
+
+/**
+ * Symbol for a flat note.
+ * @constant {string}
+ * @default
+ */
+const FLAT = "♭";
+
+/**
+ * Symbol for a natural note.
+ * @constant {string}
+ * @default
+ */
+const NATURAL = "♮";
+
+/**
+ * Symbol for a double sharp note.
+ * @constant {string}
+ * @default
+ */
+const DOUBLESHARP = "𝄪";
+
+/**
+ * Symbol for a double flat note.
+ * @constant {string}
+ * @default
+ */
+const DOUBLEFLAT = "𝄫";
+
+/**
+ * Symbols representing different note durations.
+ * @constant {Object.<number, string>}
+ * @default
+ */
+const NSYMBOLS = { 1: "𝅝", 2: "𝅗𝅥", 4: "♩", 8: "♪", 16: "𝅘𝅥𝅯" };
+
+/**
+ * Symbols representing different rest durations.
+ * @constant {Object.<number, string>}
+ * @default
+ */
+const RSYMBOLS = { 1: "𝄻", 2: "𝄼", 4: "𝄽",8: "𝄾", 16: "𝄿" };
+
+/**
+ * Maps from notes with flats to their corresponding notes with '♭' (flat) symbol.
+ * @constant {Object.<string, string>}
+ */
 const BTOFLAT = {
     Eb: "E" + FLAT,
     Gb: "G" + FLAT,
@@ -109,6 +163,10 @@ const BTOFLAT = {
     fb: "F" + FLAT
 };
 
+/**
+ * Maps from notes with flats to their corresponding notes with '♯' (sharp) symbol.
+ * @constant {Object.<string, string>}
+ */
 const STOSHARP = {
     "E#": "E" + SHARP,
     "G#": "G" + SHARP,
@@ -126,6 +184,10 @@ const STOSHARP = {
     "f#": "F" + SHARP
 };
 
+/**
+ * Array of notes with sharps.
+ * @constant {string[]}
+ */
 const NOTESSHARP = [
     "C",
     "C" + SHARP,
@@ -141,6 +203,11 @@ const NOTESSHARP = [
     "B"
 ];
 
+
+/**
+ * Array of notes with flats.
+ * @constant {string[]}
+ */
 const NOTESFLAT = [
     "C",
     "D" + FLAT,
@@ -156,6 +223,10 @@ const NOTESFLAT = [
     "B"
 ];
 
+/**
+ * Array of lowercase notes with flats.
+ * @constant {string[]}
+ */
 const NOTESFLAT2 = [
     "c",
     "d" + FLAT,
@@ -171,6 +242,11 @@ const NOTESFLAT2 = [
     "b"
 ];
 
+/**
+ * Equivalent flats for various notes.
+ * @const
+ * @type {Object.<string, string>}
+ */
 const EQUIVALENTFLATS = {
     "C♯": "D" + FLAT,
     "D♯": "E" + FLAT,
@@ -178,6 +254,12 @@ const EQUIVALENTFLATS = {
     "G♯": "A" + FLAT,
     "A♯": "B" + FLAT
 };
+
+/**
+ * Equivalent sharps for various notes.
+ * @const
+ * @type {Object.<string, string>}
+ */
 const EQUIVALENTSHARPS = {
     "D♭": "C" + SHARP,
     "E♭": "D" + SHARP,
@@ -185,9 +267,84 @@ const EQUIVALENTSHARPS = {
     "A♭": "G" + SHARP,
     "B♭": "A" + SHARP
 };
+
+/**
+ * Maps from notes with specific accidentals to their equivalent natural notes.
+ * @constant {Object.<string, string>}
+ */
 const EQUIVALENTNATURALS = { "E♯": "F", "B♯": "C", "C♭": "B", "F♭": "E" };
+
+/**
+ * Maps from natural notes to their equivalent notes with specific accidentals.
+ * @constant {Object.<string, string>}
+ */
 const EQUIVALENTACCIDENTALS = { F: "E♯", C: "B♯", B: "C♭", E: "F♭", G: "F𝄪", D: "C𝄪", A: "G𝄪" };
 
+/**
+ * Converts a note down to a flat note.
+ * @const
+ * @type {Object.<string, string>}
+ */
+const CONVERT_DOWN = {
+    "C": "B" + SHARP,
+    "C♭": "B",
+    "D♭": "C" + SHARP,
+    "E♭": "D" + SHARP,
+    "F": "E" + SHARP,
+    "F♭": "E",
+    "G♭": "F" + SHARP,
+    "A♭": "G" + SHARP,
+    "B♭": "A" + SHARP
+};
+
+/**
+ * Maps from notes with specific accidentals to their equivalent notes after a double-down transposition.
+ * @constant {Object.<string, string>}
+ */
+const CONVERT_DOUBLE_DOWN = {
+    "C♯": "B" + DOUBLESHARP,
+    "D": "C" + DOUBLESHARP,
+    "E": "D" + DOUBLESHARP,
+    "F♯": "E" + DOUBLESHARP,
+    "G": "F" + DOUBLESHARP,
+    "A": "G" + DOUBLESHARP,
+    "B": "A" + DOUBLESHARP
+};
+
+/**
+ * Maps from notes with specific accidentals to their equivalent notes after an up transposition.
+ * @constant {Object.<string, string>}
+ */
+const CONVERT_UP = {
+    "C♯": "D" + FLAT,
+    "D♯": "E" + FLAT,
+    "E♯": "F",
+    "E": "F" + FLAT,
+    "F♯": "G" + FLAT,
+    "G♯": "A" + FLAT,
+    "A♯": "B" + FLAT,
+    "B♯": "C",
+    "B": "C" + FLAT,
+};
+
+/**
+ * Maps from notes with specific accidentals to their equivalent notes after a double-up transposition.
+ * @constant {Object.<string, string>}
+ */
+const CONVERT_DOUBLE_UP = {
+    "C": "D" + DOUBLEFLAT,
+    "D": "E" + DOUBLEFLAT,
+    "E♭": "F" + DOUBLEFLAT,
+    "F": "G" + DOUBLEFLAT,
+    "G": "A" + DOUBLEFLAT,
+    "A": "B" + DOUBLEFLAT,
+    "B♭": "C" + DOUBLEFLAT
+};
+
+/**
+ * Extra transpositions for specific notes with accidentals.
+ * @constant {Object.<string, [string, number]>}
+ */
 const EXTRATRANSPOSITIONS = {
     "E♯": ["F", 0],
     "B♯": ["C", 1],
@@ -198,7 +355,17 @@ const EXTRATRANSPOSITIONS = {
     "c♭": ["B", -1],
     "f♭": ["E", 0]
 };
+
+/**
+ * Array containing the solfege names for the diatonic scale.
+ * @constant {string[]}
+ */
 const SOLFEGENAMES = ["do", "re", "mi", "fa", "sol", "la", "ti"];
+
+/**
+ * Array containing the solfege names for the chromatic scale.
+ * @constant {string[]}
+ */
 const SOLFEGENAMES1 = [
     "do",
     "do" + SHARP,
@@ -228,7 +395,17 @@ const SOLFEGENAMES1 = [
     "ti" + FLAT,
     "ti"
 ];
+
+/**
+ * Array containing the basic note names (without accidentals).
+ * @constant {string[]}
+ */
 const NOTENAMES = ["C", "D", "E", "F", "G", "A", "B"];
+
+/**
+ * Array containing all possible note names, including double sharps/flats and triple sharps/flats.
+ * @constant {string[]}
+ */
 const ALLNOTENAMES = [
     "C",
     "C#",
@@ -266,6 +443,11 @@ const ALLNOTENAMES = [
     "Cbb",
     "Cb"
 ];
+
+/**
+ * Array containing note names with various accidentals (sharps and flats).
+ * @constant {string[]}
+ */
 const NOTENAMES1 = [
     "C",
     "C" + SHARP,
@@ -296,6 +478,10 @@ const NOTENAMES1 = [
     "B"
 ];
 
+/**
+ * Maps from Western note names to their corresponding solfege names.
+ * @constant {Object.<string, string>}
+ */
 const SOLFEGECONVERSIONTABLE = {
     "C": "do",
     "C♯": "do" + SHARP,
@@ -317,6 +503,10 @@ const SOLFEGECONVERSIONTABLE = {
     "R": _("rest")
 };
 
+/**
+ * Maps from Western solfege names to their corresponding Carnatic solfege names.
+ * @constant {Object.<string, string>}
+ */
 const WESTERN2EISOLFEGENAMES = {
     do: "sa",
     re: "re",
@@ -327,6 +517,10 @@ const WESTERN2EISOLFEGENAMES = {
     ti: "ni"
 };
 
+/**
+ * Array containing pitches with flats.
+ * @constant {string[]}
+ */
 const PITCHES = [
     "C",
     "D" + FLAT,
@@ -342,8 +536,16 @@ const PITCHES = [
     "B"
 ];
 
+/**
+ * Array containing pitches with flats and sharps.
+ * @constant {string[]}
+ */
 const PITCHES1 = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
 
+/**
+ * Array containing pitches with sharps.
+ * @constant {string[]}
+ */
 const PITCHES2 = [
     "C",
     "C" + SHARP,
@@ -359,8 +561,16 @@ const PITCHES2 = [
     "B"
 ];
 
+/**
+ * Array containing pitches with sharps.
+ * @constant {string[]}
+ */
 const PITCHES3 = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
+/**
+ * Maps from numerical values to solfege names.
+ * @constant {Object.<number, string>}
+ */
 const NOTESTABLE = {
     1: "do",
     2: "do" + SHARP,
@@ -376,6 +586,10 @@ const NOTESTABLE = {
     0: "ti"
 };
 
+/**
+ * Maps from fixed solfege names to their corresponding Western note names.
+ * @constant {Object.<string, string>}
+ */
 const FIXEDSOLFEGE = {
     do: "C",
     re: "D",
@@ -386,6 +600,10 @@ const FIXEDSOLFEGE = {
     ti: "B"
 };
 
+/**
+ * Maps from fixed solfege names with accidentals to their corresponding Western note names.
+ * @constant {Object.<string, string>}
+ */
 const FIXEDSOLFEGE1 = {
     "do𝄫": "B",
     "do♭": "C" + FLAT,
@@ -425,9 +643,75 @@ const FIXEDSOLFEGE1 = {
     "R": _("rest")
 };
 
+/**
+ * Maps from note names to their corresponding step numbers.
+ * @constant {Object.<string, number>}
+ */
 const NOTESTEP = { C: 1, D: 3, E: 5, F: 6, G: 8, A: 10, B: 12 };
 
-// Preference for sharps or flats
+/**
+ * Maps note names to their corresponding step numbers, including enharmonic equivalents.
+ * @constant {Object.<number, string>}
+ */
+const ALLNOTESTEP = {
+    "Cb": 0,
+    "C": 1,
+    "C#": 2,
+    "Db": 2,
+    "D": 3,
+    "D#": 4,
+    "Eb": 4,
+    "E": 5,
+    "E#": 6,
+    "Fb": 5,
+    "F": 6,
+    "F#": 7,
+    "Gb": 7,
+    "G": 8,
+    "G#": 9,
+    "Ab": 9,
+    "A": 10,
+    "A#": 11,
+    "Bb": 11,
+    "B": 12,
+    "B#": 0
+};
+
+
+/**
+ * semitone/intervalnumber --> lettergap/notenamesgap -->intervalnames
+ * @constant {Object.<number, Object.<number,string>}
+ */
+
+const SEMITONETOINTERVALMAP = {
+     0: { 0: _("Perfect unison"), 1: _("Diminished second") },
+     1: { 1: _("Minor second"), 0: _("Augmented unison") },
+     2: { 1: _("Major second"), 2: _("Diminished third") },
+     3: { 2: _("Minor third"), 1: _("Augmented second") },
+     4: { 2: _("Major third"), 3: _("Diminished fourth") },
+     5: { 3: _("Perfect fourth"), 2: _("Augmented third") },
+     6: { 4: _("Diminished fifth"), 3: _("Augmented fourth") },
+     7: { 4: _("Perfect fifth"), 5: _("Diminished sixth") },
+     8: { 5: _("Minor sixth"), 4: _("Augmented fifth") },
+     9: { 5: _("Major sixth"), 6: _("Diminished seventh") },
+     10: { 6: _("Minor seventh"), 5: _("Augmented sixth") },
+     11: { 6: _("Major seventh"), 0: _("Diminished octave") },
+     12: { 0: _("Perfect octave"), 6: _("Augmented seventh") },
+     13: { 1: _("Minor ninth"), 0: _("Augmented octave") },
+     14: { 1: _("Major ninth"), 2: _("Diminished tenth") },
+     15: { 2: _("Minor tenth"), 1: _("Augmented ninth") },
+     16: { 2: _("Major tenth"), 3: _("Diminished eleventh") },
+     17: { 3: _("Perfect eleventh"), 2: _("Augmented tenth") },
+     18: { 4: _("Diminished twelfth"), 3: _("Augmented eleventh") },
+     19: { 4: _("Perfect twelfth"), 5: _("Diminished thirteenth") },
+     20: { 5: _("Minor thirteenth"), 4: _("Augmented fifth, plus an octave") },
+     21: { 5: _("Major thirteenth"), 6: _("Diminished seventh, plus an octave") },
+ };
+
+/**
+ * Array containing preferences for keys with sharps.
+ * @constant {string[]}
+ */
 const SHARPPREFERENCE = [
     "g major",
     "d major",
@@ -444,6 +728,10 @@ const SHARPPREFERENCE = [
     "d# minor"
 ];
 
+/**
+ * Array containing preferences for keys with flats.
+ * @constant {string[]}
+ */
 const FLATPREFERENCE = [
     "f major",
     "bb major",
@@ -466,16 +754,34 @@ const FLATPREFERENCE = [
     "eb harmonic minor"
 ];
 
-// SOLFNOTES is the internal representation used in selectors
+/**
+ * Internal representation of solfege notes used in selectors.
+ * @constant {string[]}
+ */
 const SOLFNOTES = ["ti", "la", "sol", "fa", "mi", "re", "do"];
+
+/**
+ * Scale notes used in selectors.
+ * @constant {string[]}
+ */
 const SCALENOTES = ["7", "6", "5", "4", "3", "2", "1"];
+
+/**
+ * Carnatic solfege notes.
+ * @constant {string[]}
+ */
 const EASTINDIANSOLFNOTES = ["ni", "dha", "pa", "ma", "ga", "re", "sa"];
 
+/**
+ * Drum names used in selectors.
+ * @constant {string[]}
+ */
 const DRUMS = [
     "snare drum",
     "kick drum",
     "tom tom",
-    "floor tom tom",
+    "floor tom",
+    "bass drum",
     "cup drum",
     "darbuka drum",
     "japanese drum",
@@ -492,6 +798,10 @@ const DRUMS = [
     "slap"
 ];
 
+/**
+ * Graphics names used in selectors.
+ * @constant {string[]}
+ */
 const GRAPHICS = [
     "forward",
     "back",
@@ -512,59 +822,169 @@ const GRAPHICS = [
 // const IROHASOLFNOTES = ['ro', 'i', 'to', 'he', 'ho', 'ni', 'ha'];
 // const IROHASOLFNOTESJA = ['ロ','イ','ト','へ','ホ','二','ハ'];
 
+/**
+ * Solfège attributes including double sharp, sharp, natural, flat, and double flat.
+ * @constant {string[]}
+ */
 const SOLFATTRS = [DOUBLESHARP, SHARP, NATURAL, FLAT, DOUBLEFLAT];
 
 //.TRANS: ordinal number. Please keep exactly one space between each number.
+/**
+ * Ordinal numbers for degrees.
+ * @constant {string}
+ */
 const DEGREES = _("1st 2nd 3rd 4th 5th 6th 7th 8th 9th 10th 11th 12th");
 
+/**
+ * Number of semitones in an octave.
+ * @constant {number}
+ */
 const SEMITONES = 12;
+
+/**
+ * Array representing powers of 2.
+ * @constant {number[]}
+ */
 const POWER2 = [1, 2, 4, 8, 16, 32, 64, 128];
+
 // eslint-disable-next-line no-loss-of-precision
 const TWELTHROOT2 = 1.0594630943592953;
 // eslint-disable-next-line no-loss-of-precision
 const TWELVEHUNDRETHROOT2 = 1.0005777895065549;
 const A0 = 27.5;
 const C8 = 4186.01;
+
+/**
+ * Octave ratio.
+ * @type {number}
+ */
 let octaveRatio = 2;
 
+/**
+ * Height of the rhythm ruler.
+ * @constant {number}
+ */
 const RHYTHMRULERHEIGHT = 100;
 
+/**
+ * Height of a staff note.
+ * @constant {number}
+ */
 const YSTAFFNOTEHEIGHT = 12.5;
+
+/**
+ * Height of a staff octave.
+ * @constant {number}
+ */
 const YSTAFFOCTAVEHEIGHT = 87.5;
 
+/**
+ * Height of a slider.
+ * @constant {number}
+ */
 const SLIDERHEIGHT = 200;
+
+/**
+ * Width of a slider.
+ * @constant {number}
+ */
 const SLIDERWIDTH = 50;
 
+/**
+ * Color of matrix buttons.
+ * @constant {string}
+ */
 const MATRIXBUTTONCOLOR = "#c374e9";
+
+/**
+ * Color of matrix labels.
+ * @constant {string}
+ */
 const MATRIXLABELCOLOR = "#90c100";
+
+/**
+ * Color of matrix note cells.
+ * @constant {string}
+ */
 const MATRIXNOTECELLCOLOR = "#b1db00";
+
+/**
+ * Color of matrix tuplet cells.
+ * @constant {string}
+ */
 const MATRIXTUPLETCELLCOLOR = "#57e751";
+
+/**
+ * Color of matrix rhythm cells.
+ * @constant {string}
+ */
 const MATRIXRHYTHMCELLCOLOR = "#c8c8c8";
 
+/**
+ * Hover color of matrix buttons.
+ * @constant {string}
+ */
 const MATRIXBUTTONCOLORHOVER = "#c894e0";
+
+/**
+ * Hover color of matrix note cells.
+ * @constant {string}
+ */
 const MATRIXNOTECELLCOLORHOVER = "#c2e820";
 
+/**
+ * Width of matrix solfege.
+ * @constant {number}
+ */
 const MATRIXSOLFEWIDTH = 52;
+
+/**
+ * Width of an eighth note.
+ * @constant {number}
+ */
 const EIGHTHNOTEWIDTH = 24;
+
+/**
+ * Height of matrix buttons.
+ * @constant {number}
+ */
 const MATRIXBUTTONHEIGHT = 40;
+
+/**
+ * Height of matrix buttons.
+ * @constant {number}
+ */
 const MATRIXBUTTONHEIGHT2 = 66;
+
+/**
+ * Height of matrix solfege.
+ * @constant {number}
+ */
 const MATRIXSOLFEHEIGHT = 30;
 
+/**
+ * Image URL for a whole note.
+ * @constant {string}
+ */
 const wholeNoteImg =
-    "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(WHOLENOTE)));
+    "data:image/svg+xml;base64," + window.btoa(base64Encode(WHOLENOTE));
 const halfNoteImg =
-    "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(HALFNOTE)));
+    "data:image/svg+xml;base64," + window.btoa(base64Encode(HALFNOTE));
 const quarterNoteImg =
-    "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(QUARTERNOTE)));
+    "data:image/svg+xml;base64," + window.btoa(base64Encode(QUARTERNOTE));
 const eighthNoteImg =
-    "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(EIGHTHNOTE)));
+    "data:image/svg+xml;base64," + window.btoa(base64Encode(EIGHTHNOTE));
 const sixteenthNoteImg =
-    "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(SIXTEENTHNOTE)));
+    "data:image/svg+xml;base64," + window.btoa(base64Encode(SIXTEENTHNOTE));
 const thirtysecondNoteImg =
-    "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(THIRTYSECONDNOTE)));
+    "data:image/svg+xml;base64," + window.btoa(base64Encode(THIRTYSECONDNOTE));
 const sixtyfourthNoteImg =
-    "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(SIXTYFOURTHNOTE)));
+    "data:image/svg+xml;base64," + window.btoa(base64Encode(SIXTYFOURTHNOTE));
 
+/**
+ * Map from note duration to corresponding note symbols.
+ * @constant {Object.<number, string>}
+ */    
 const NOTESYMBOLS = {
     1: wholeNoteImg,
     2: halfNoteImg,
@@ -575,7 +995,10 @@ const NOTESYMBOLS = {
     64: sixtyfourthNoteImg
 };
 
-// Musical terms that need translations
+/**
+ * Musical terms used in selectors that may require translation.
+ * @constant {Array<string>}
+ */
 const SELECTORSTRINGS = [
     //.TRANS: unison is a music term related to intervals
     _("unison"),
@@ -711,6 +1134,7 @@ const SELECTORSTRINGS = [
     _("kick drum"),
     _("tom tom"),
     _("floor tom"),
+    _("bass drum"),
     _("cup drum"),
     _("darbuka drum"),
     _("hi hat"),
@@ -758,28 +1182,8 @@ const SELECTORSTRINGS = [
     //.TRANS: sharp is a music term related to pitch
     _("sharp"),
     //.TRANS: double sharp is a music term related to pitch
-    _("double sharp")
-];
-
-const ACCIDENTALLABELS = [
-    _("double sharp") + " " + DOUBLESHARP,
-    _("sharp") + " " + SHARP,
-    _("natural") + " " + NATURAL,
-    _("flat") + " " + FLAT,
-    _("double flat") + " " + DOUBLEFLAT
-];
-
-const ACCIDENTALNAMES = [
-    "double sharp" + " " + DOUBLESHARP,
-    "sharp" + " " + SHARP,
-    "natural" + " " + NATURAL,
-    "flat" + " " + FLAT,
-    "double flat" + " " + DOUBLEFLAT
-];
-
-const ACCIDENTALVALUES = [2, 1, 0, -1, -2];
-
-const CHORDNAMES = [
+    _("double sharp"),
+    // Chord names
     _("major"),
     _("minor"),
     _("augmented"),
@@ -789,31 +1193,129 @@ const CHORDNAMES = [
     _("dominant 7th"),
     _("minor-major 7th"),
     _("fully-diminished 7th"),
-    _("half-diminished 7th")
+    _("half-diminished 7th"),
+    _("custom")
 ];
 
-const DEFAULTCHORD = CHORDNAMES[0];
+/**
+ * Labels for accidentals, including their names and symbols.
+ * @constant {Array<string>}
+ */
+const ACCIDENTALLABELS = [
+    _("double sharp") + " " + DOUBLESHARP,
+    _("sharp") + " " + SHARP,
+    _("natural") + " " + NATURAL,
+    _("flat") + " " + FLAT,
+    _("double flat") + " " + DOUBLEFLAT
+];
 
-// This list must follow the order of the CHORDNAMES list.
+/**
+ * Names and symbols for accidentals.
+ * @constant {Array<string>}
+ */
+const ACCIDENTALNAMES = [
+    "double sharp" + " " + DOUBLESHARP,
+    "sharp" + " " + SHARP,
+    "natural" + " " + NATURAL,
+    "flat" + " " + FLAT,
+    "double flat" + " " + DOUBLEFLAT
+];
+
+/**
+ * Numeric values associated with accidentals.
+ * @constant {Array<number>}
+ */
+const ACCIDENTALVALUES = [2, 1, 0, -1, -2];
+
+/**
+ * Names of various chord types.
+ * @constant {Array<string>}
+ */
+const CHORDNAMES = [
+    // scalar
+    "triad (root position)",
+    "triad (1st inversion)",
+    "triad (2nd inversion)",
+    "seventh (root position)",
+    "seventh (1st inversion)",
+    "seventh (2nd inversion)",
+    "seventh (3rd inversion)",
+    "ninth (root position)",
+    "thirteenth (root position)",
+    // semitone
+    "major",
+    "minor",
+    "augmented",
+    "diminished",
+    "major 7th",
+    "minor 7th",
+    "dominant 7th",
+    "minor-major 7th",
+    "fully-diminished 7th",
+    "half-diminished 7th",
+    // custom must always be at the end of the list.
+    "custom"
+];
+
+/**
+ * Default chord for the "major" scale.
+ * @constant {string}
+ */
+const DEFAULTCHORD = CHORDNAMES[9];
+
+/**
+ * Numeric values representing the intervals in different chords.
+ * @constant {Array<Array<Array<number>>>}
+ */
 const CHORDVALUES = [
-    [4, 7],
-    [3, 7],
-    [4, 8],
-    [3, 6],
-    [4, 7, 11],
-    [3, 7, 10],
-    [4, 7, 10],
-    [3, 7, 11],
-    [3, 6, 9],
-    [3, 6, 10]
+    //scalar
+    [[0, 0], [2, 0], [4, 0]],
+    [[2, 0], [4, 0], [7, 0]],
+    [[-3, 0], [0, 0], [2, 0]],
+    [[0, 0], [2, 0], [4, 0], [6, 0]],
+    [[2, 0], [4, 0], [6, 0], [7, 0]],
+    [[-3, 0], [-1, 0], [0, 0], [2, 0]],
+    [[-1, 0], [0, 0], [2, 0], [4, 0]],
+    [[0, 0], [2, 0], [4, 0], [6, 0], [8, 0]],
+    [[0, 0], [2, 0], [4, 0], [6, 0], [12, 0]],
+    //semitone
+    [[0, 0], [0, 4], [0, 7]],
+    [[0, 0], [0, 3], [0, 7]],
+    [[0, 0], [0, 4], [0, 8]],
+    [[0, 0], [0, 3], [0, 6]],
+    [[0, 0], [0, 4], [0, 7], [0, 11]],
+    [[0, 0], [0, 3], [0, 7], [0, 10]],
+    [[0, 0], [0, 4], [0, 7], [0, 10]],
+    [[0, 0], [0, 3], [0, 7], [0, 11]],
+    [[0, 0], [0, 3], [0, 6], [0, 9]],
+    [[0, 0], [0, 3], [0, 6], [0, 10]],
+    // custom is always at the end of the list
+    [[0, 0], [0, 4], [0, 7]],
 ];
 
+/**
+ * Set a custom chord.
+ * @function
+ * @param {Array<Array<number>>} chord - Custom chord values.
+ */
+const setCustomChord = (chord) => {
+    CHORDVALUES[CHORDVALUES.length - 1] = chord;
+};
+
+/**
+ * Modes for inverting chords.
+ * @constant {Array<Array<string>>}
+ */
 const INVERTMODES = [
     [_("even"), "even"],
     [_("odd"), "odd"],
     [_("scalar"), "scalar"]
 ];
 
+/**
+ * Musical intervals and their characteristics.
+ * @constant {Array<Array<string>>}
+ */
 const INTERVALS = [
     [_("perfect"), "perfect", [1, 4, 5, 8]],
     [_("minor"), "minor", [2, 3, 6, 7]],
@@ -822,40 +1324,48 @@ const INTERVALS = [
     [_("major"), "major", [2, 3, 6, 7]]
 ];
 
-// [semi-tones, direction -1 === down; 0 === neutral; 1 === up]
+/**
+ * Values associated with specific musical intervals.
+ * @constant {Object}
+ */
 const INTERVALVALUES = {
-    "perfect 1": [0, 0],
-    "augmented 1": [1, 1],
-    "diminished 2": [0, -1],
-    "minor 2": [1, -1],
-    "major 2": [2, 1],
-    "augmented 2": [3, 1],
-    "diminished 3": [2, -1],
-    "minor 3": [3, -1],
-    "major 3": [4, 1],
-    "augmented 3": [5, 1],
-    "diminished 4": [4, -1],
-    "perfect 4": [5, 0],
-    "augmented 4": [6, 1],
-    "diminished 5": [6, -1],
-    "perfect 5": [7, 0],
-    "augmented 5": [8, 1],
-    "diminished 6": [7, -1],
-    "minor 6": [8, -1],
-    "major 6": [9, 1],
-    "augmented 6": [10, 1],
-    "diminished 7": [9, -1],
-    "minor 7": [10, -1],
-    "major 7": [11, 1],
-    "augmented 7": [12, 1],
-    "diminished 8": [11, -1],
-    "perfect 8": [12, 0],
-    "augmented 8": [13, 1]
+    "perfect 1": [0, 0, 1 / 1],
+    "diminished 2": [0, -1, 128 / 125],
+    "augmented 1": [1, 1, 25 / 24],
+    "chromatic semitone": [1, 1, 25 / 24],
+    "minor 2": [1, -1, 16 / 15],
+    "major 2": [2, 1, 9 / 8],
+    "whole tone": [2, 1, 9 / 8],
+    "diminished 3": [2, -1, 144 / 125],
+    "augmented 2": [3, 1, 75 / 64],
+    "minor 3": [3, -1, 6 / 5],
+    "major 3": [4, 1, 5 / 4],
+    "diminished 4": [4, -1, 32 / 25],
+    "augmented 3": [5, 1, 125 / 96],
+    "perfect 4": [5, 0, 4 / 3],
+    "augmented 4": [6, 1, 25 / 18],
+    "diminished 5": [6, -1, 36 / 25],
+    "perfect 5": [7, 0, 3 / 2],
+    "diminished 6": [7, -1, 192 / 125],
+    "augmented 5": [8, 1, 25 / 16],
+    "minor 6": [8, -1, 8 / 5],
+    "major 6": [9, 1, 5 / 3],
+    "diminished 7": [9, -1, 9 / 5],
+    "augmented 6": [10, 1, 125 / 72],
+    "minor 7": [10, -1, 9 / 5],
+    "major 7": [11, 1, 15 / 8],
+    "diminished 8": [11, -1, 48 / 25],
+    "diminished octave": [11, -1, 48 / 25],
+    "augmented 7": [12, 1, 125 / 64],
+    "perfect 8": [12, 0, 2 / 1],
+    "octave": [12, 0, 2 / 1],
+    "augmented 8": [13, 1, 25 / 12]
 };
 
-// This list of modes is used in the pie menu associated with the mode
-// name block. The complete list of modes is available from the Mode
-// Widget.
+/**
+ * Modes available in the pie menu associated with the mode name block.
+ * @constant {Object}
+ */
 const MODE_PIE_MENUS = {
     "5": [
         "minor pentatonic",
@@ -995,6 +1505,10 @@ const MUSICALMODES = {
     "custom": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 };
 
+/**
+ * Maqam table mapping specific maqams to their corresponding keys.
+ * @constant {Object}
+ */
 const MAQAMTABLE = {
     "hijaz kar": "C maqam",
     "hijaz kar maqam": "C maqam",
@@ -1007,6 +1521,10 @@ const MAQAMTABLE = {
     "ajam maqam": "Bb maqam"
 };
 
+/**
+ * Filter types used in audio processing.
+ * @constant {Array<Array<string>>}
+ */
 const FILTERTYPES = [
     [_("highpass"), "highpass"],
     [_("lowpass"), "lowpass"],
@@ -1018,6 +1536,10 @@ const FILTERTYPES = [
     [_("peaking"), "peaking"]
 ];
 
+/**
+ * Oscillator types used in audio synthesis.
+ * @constant {Array<Array<string>>}
+ */
 const OSCTYPES = [
     [_("sine"), "sine"],
     [_("square"), "square"],
@@ -1025,6 +1547,10 @@ const OSCTYPES = [
     [_("sawtooth"), "sawtooth"]
 ];
 
+/**
+ * Initial temperaments available for selection.
+ * @constant {Array<Array<string>>}
+ */
 const INITIALTEMPERAMENTS = [
     [_("equal"), "equal", "equal"],
     [_("just intonation"), "just intonation", "just intonation"],
@@ -1033,6 +1559,10 @@ const INITIALTEMPERAMENTS = [
     [_("meantone") + " (1/4)", "1/4 comma meantone", "meantone (1/4)"]
 ];
 
+/**
+ * Array of available temperaments.
+ * @type {Array<Array<string>>}
+ */
 let TEMPERAMENTS = [
     [_("equal"), "equal", "equal"],
     [_("just intonation"), "just intonation", "just intonation"],
@@ -1042,6 +1572,10 @@ let TEMPERAMENTS = [
     [_("custom"), "custom", "custom"]
 ];
 
+/**
+ * Predefined temperaments for quick access.
+ * @constant {Object}
+ */
 const PreDefinedTemperaments = {
     "equal": true,
     "just intonation": true,
@@ -1050,6 +1584,10 @@ const PreDefinedTemperaments = {
     "1/4 comma meantone": true
 };
 
+/**
+ * Temperament settings and interval ratios.
+ * @constant {Object}
+ */
 const TEMPERAMENT = {
     "equal": {
         "perfect 1": Math.pow(2, 0 / 12),
@@ -1301,22 +1839,49 @@ const TEMPERAMENT = {
     }
 };
 
+/**
+ * Set the global octave ratio.
+ * @function
+ * @param {number} newOctaveRatio - The new octave ratio to set.
+ * @returns {void}
+ */
 const setOctaveRatio = (newOctaveRatio) => {
     octaveRatio = newOctaveRatio;
 };
 
+/**
+ * Get the current global octave ratio.
+ * @function
+ * @returns {number} The current octave ratio.
+ */
 const getOctaveRatio = () => {
     return octaveRatio;
 };
 
+/**
+ * Get the list of available temperaments.
+ * @function
+ * @returns {Array<Array<string>>} The list of available temperaments.
+ */
 const getTemperamentsList = () => {
     return TEMPERAMENTS;
 };
 
+/**
+ * Get the interval ratios for a specific temperament.
+ * @function
+ * @param {string} entry - The name of the temperament.
+ * @returns {Object} The interval ratios for the specified temperament.
+ */
 const getTemperament = (entry) => {
     return TEMPERAMENT[entry];
 };
 
+/**
+ * Get the keys of the temperament dictionary.
+ * @function
+ * @returns {Array<string>} The keys of the temperament dictionary.
+ */
 const getTemperamentKeys = () => {
     const keys = [];
     for (const k in TEMPERAMENT) {
@@ -1326,6 +1891,12 @@ const getTemperamentKeys = () => {
     return keys;
 };
 
+/**
+ * Add a new temperament entry to the list.
+ * @function
+ * @param {Array<string>} newEntry - The new temperament entry to add.
+ * @returns {void}
+ */
 const addTemperamentToList = (newEntry) => {
     for (let i = 0; i < TEMPERAMENTS.length; i++) {
         if (PreDefinedTemperaments[i] === newEntry) {
@@ -1335,14 +1906,32 @@ const addTemperamentToList = (newEntry) => {
     TEMPERAMENTS.push(newEntry);
 };
 
+/**
+ * Delete a temperament entry from the list.
+ * @function
+ * @param {string} oldEntry - The name of the temperament to delete.
+ * @returns {void}
+ */
 const deleteTemperamentFromList = (oldEntry) => {
     delete TEMPERAMENT[oldEntry];
 };
 
+/**
+ * Add a new temperament entry to the dictionary.
+ * @function
+ * @param {string} entryName - The name of the temperament.
+ * @param {Object} entryValue - The interval ratios for the temperament.
+ * @returns {void}
+ */
 const addTemperamentToDictionary = (entryName, entryValue) => {
     TEMPERAMENT[entryName] = entryValue;
 };
 
+/**
+ * Update the list of available temperaments.
+ * @function
+ * @returns {void}
+ */
 const updateTemperaments = () => {
     TEMPERAMENTS = [...INITIALTEMPERAMENTS];
     for (const i in TEMPERAMENT) {
@@ -1352,21 +1941,76 @@ const updateTemperaments = () => {
     }
 };
 
+
+/**
+ * Default invert mode.
+ * @constant {string}
+ */
 const DEFAULTINVERT = "even";
+/**
+ * Default interval for the mode.
+ * @constant {string}
+ */
 const DEFAULTINTERVAL = "perfect" + " 5";
+/**
+ * Default voice for audio synthesis.
+ * @constant {string}
+ */
 const DEFAULTVOICE = "electronic synth";
+/**
+ * Default noise type for audio synthesis.
+ * @constant {string}
+ */
 const DEFAULTNOISE = "noise1";
+/**
+ * Default drum type for audio synthesis.
+ * @constant {string}
+ */
 const DEFAULTDRUM = "kick drum";
+/**
+ * Default effect for audio synthesis.
+ * @constant {string}
+ */
 const DEFAULTEFFECT = "duck";
+/**
+ * Default musical mode.
+ * @constant {string}
+ */
 const DEFAULTMODE = "major";
+/**
+ * Default temperament.
+ * @constant {string}
+ */
 const DEFAULTTEMPERAMENT = "equal";
+/**
+ * Default filter type for audio processing.
+ * @constant {string}
+ */
 const DEFAULTFILTERTYPE = "highpass";
+/**
+ * Default oscillator type for audio synthesis.
+ * @constant {string}
+ */
 const DEFAULTOSCILLATORTYPE = "sine";
+/**
+ * Default accidental for musical notation.
+ * @constant {string}
+ */
 const DEFAULTACCIDENTAL = "natural" + " " + NATURAL;
 
+/**
+ * Custom mode from the musical modes dictionary.
+ * @constant {Object}
+ */
 const customMode = MUSICALMODES["custom"];
 
-function getInvertMode(name) {
+/**
+ * Get the invert mode name based on its identifier.
+ * @function
+ * @param {string} name - The identifier of the invert mode.
+ * @returns {string} The name of the invert mode.
+ */
+const getInvertMode = (name) => {
     for (const interval in INVERTMODES) {
         if (
             INVERTMODES[interval][0] === name ||
@@ -1382,18 +2026,41 @@ function getInvertMode(name) {
 
     // console.debug(name + " not found in INVERTMODES");
     return name;
-}
+};
 
-function getIntervalNumber(name) {
-    return INTERVALVALUES[name][0];
-}
+/**
+ * Get the number of semi-tones for a specific interval.
+ * @function
+ * @param {string} name - The name of the interval.
+ * @returns {number} The number of semi-tones for the interval.
+ */
+const getIntervalNumber = name => { return INTERVALVALUES[name][0]; };
 
-function getIntervalDirection(name) {
-    return INTERVALVALUES[name][1];
-}
+/**
+ * Get the direction of the interval (-1 down, 0 neutral, 1 up).
+ * @function
+ * @param {string} name - The name of the interval.
+ * @returns {number} The direction of the interval.
+ */
+const getIntervalDirection = name =>  { return INTERVALVALUES[name][1];};
 
-function getModeNumbers(name) {
-    const __convert = function (obj) {
+/**
+ * Get the ratio for a specific interval.
+ * @function
+ * @param {string} name - The name of the interval.
+ * @returns {number} The ratio for the interval.
+ */
+const getIntervalRatio = name => { return INTERVALVALUES[name][2];};
+
+
+/**
+ * Get the mode numbers for a specific mode name.
+ * @function
+ * @param {string} name - The name of the mode.
+ * @returns {string} The mode numbers.
+ */
+const getModeNumbers = (name) => {
+    const __convert =  obj => {
         let n = 0;
         let m = "";
         for (let i = 0; i < obj.length; i++) {
@@ -1416,9 +2083,15 @@ function getModeNumbers(name) {
 
     // console.debug(name + " not found in MUSICALMODES");
     return "";
-}
+};
 
-function getDrumIndex(name) {
+/**
+ * Get the drum index based on its name.
+ * @function
+ * @param {string} name - The name of the drum.
+ * @returns {number} The index of the drum, or -1 if not found.
+ */
+const getDrumIndex = (name) => {
     if (name === "") {
         // console.debug("getDrumName passed blank name. Returning " + DEFAULTDRUM);
         name = DEFAULTDRUM;
@@ -1435,9 +2108,15 @@ function getDrumIndex(name) {
     }
 
     return -1;
-}
+};
 
-function getDrumName(name) {
+/**
+ * Get the drum name based on its identifier.
+ * @function
+ * @param {string} name - The identifier of the drum.
+ * @returns {string|null} The name of the drum, or null if not found.
+ */
+const getDrumName = (name) => {
     if (name === "") {
         name = DEFAULTDRUM;
     } else if (name.slice(0, 4) === "http") {
@@ -1454,9 +2133,15 @@ function getDrumName(name) {
 
     // console.debug(name + ' not found in DRUMNAMES');
     return null;
-}
+};
 
-function getDrumSymbol(name) {
+/**
+ * Get the drum symbol based on its name.
+ * @function
+ * @param {string} name - The name of the drum.
+ * @returns {string} The symbol of the drum, or "hh" if not found.
+ */
+const getDrumSymbol = (name) => {
     if (name === "") {
         return "hh";
     }
@@ -1471,9 +2156,15 @@ function getDrumSymbol(name) {
 
     // console.debug(name + " not found in DRUMNAMES");
     return "hh";
-}
+};
 
-function getFilterTypes(name) {
+/**
+ * Get the filter type based on its name.
+ * @function
+ * @param {string} name - The name of the filter type.
+ * @returns {string} The filter type, or the default filter type if not found.
+ */
+const getFilterTypes = (name) => {
     if (name === "") {
         name = DEFAULTFILTERTYPE;
     }
@@ -1488,9 +2179,15 @@ function getFilterTypes(name) {
 
     // console.debug(name + " not found in FILTERTYPES");
     return DEFAULTFILTERTYPE;
-}
+};
 
-function getOscillatorTypes(name) {
+/**
+ * Get the oscillator type based on its name.
+ * @function
+ * @param {string} name - The name of the oscillator type.
+ * @returns {string|null} The oscillator type, or null if not found.
+ */
+const getOscillatorTypes = (name) => {
     if (name === "") {
         name = null; // DEFAULTOSCILLATORTYPE;
     }
@@ -1505,9 +2202,15 @@ function getOscillatorTypes(name) {
 
     // console.debug(name + " not found in OSCTYPES");
     return null; // DEFAULTOSCILLATORTYPE;
-}
+};
 
-function getDrumIcon(name) {
+/**
+ * Get the drum icon file path based on its name.
+ * @function
+ * @param {string} name - The name of the drum.
+ * @returns {string} The file path of the drum icon, or the default drum icon path if not found.
+ */
+const getDrumIcon = (name) => {
     if (name === "") {
         name = DEFAULTDRUM;
     } else if (name.slice(0, 4) === "http") {
@@ -1522,9 +2225,15 @@ function getDrumIcon(name) {
 
     // console.debug(name + " not found in DRUMNAMES");
     return "images/drum.svg";
-}
+};
 
-function getDrumSynthName(name) {
+/**
+ * Get the drum synth name based on its identifier.
+ * @function
+ * @param {string} name - The identifier of the drum synth.
+ * @returns {string|null} The name of the drum synth, or null if not found.
+ */
+const getDrumSynthName = (name) => {
     if (name === null || name === undefined) {
         // console.debug("getDrumSynthName passed null name. Returning null");
         return null;
@@ -1542,9 +2251,15 @@ function getDrumSynthName(name) {
 
     // console.debug(name + " not found in DRUMNAMES");
     return DEFAULTDRUM;
-}
+};
 
-function getNoiseName(name) {
+/**
+ * Get the noise name based on its identifier.
+ * @function
+ * @param {string} name - The identifier of the noise.
+ * @returns {string} The name of the noise, or the default noise if not found.
+ */
+const getNoiseName = (name) => {
     if (name === "") {
         name = DEFAULTNOISE;
     }
@@ -1561,9 +2276,16 @@ function getNoiseName(name) {
 
     // console.debug(name + " not found in NOISENAMES");
     return DEFAULTNOISE;
-}
+};
 
-function getNoiseIcon(name) {
+
+/**
+ * Get the noise icon file path based on its name.
+ * @function
+ * @param {string} name - The name of the noise.
+ * @returns {string} The file path of the noise icon, or the default noise icon path if not found.
+ */
+const getNoiseIcon = (name) => {
     if (name === "") {
         name = DEFAULTNOISE;
     } else if (name.slice(0, 4) === "http") {
@@ -1578,9 +2300,15 @@ function getNoiseIcon(name) {
 
     // console.debug(name + " not found in NOISENAMES");
     return "images/synth.svg";
-}
+};
 
-function getNoiseSynthName(name) {
+/**
+ * Get the noise synth name based on its identifier.
+ * @function
+ * @param {string|null} name - The identifier of the noise synth.
+ * @returns {string|null} The name of the noise synth, or null if not found.
+ */
+const getNoiseSynthName = (name) => {
     if (name === null || name === undefined) {
         return null;
     } else if (name === "") {
@@ -1595,9 +2323,15 @@ function getNoiseSynthName(name) {
 
     // console.debug(name + " not found in NOISENAMES");
     return DEFAULTNOISE;
-}
+};
 
-function getVoiceName(name) {
+/**
+ * Get the voice name based on its identifier.
+ * @function
+ * @param {string} name - The identifier of the voice.
+ * @returns {string|null} The name of the voice, or null if not found.
+ */
+const getVoiceName = (name) => {
     if (name === "") {
         name = DEFAULTVOICE;
     } else if (name.slice(0, 4) === "http") {
@@ -1616,9 +2350,15 @@ function getVoiceName(name) {
 
     // console.debug(name + " not found in VOICENAMES");
     return DEFAULTVOICE;
-}
+};
 
-function getVoiceIcon(name) {
+/**
+ * Get the voice icon file path based on its identifier.
+ * @function
+ * @param {string} name - The identifier of the voice.
+ * @returns {string} The file path of the voice icon, or the default voice icon path if not found.
+ */
+const getVoiceIcon = (name) => {
     if (name === "") {
         name = DEFAULTVOICE;
     } else if (name.slice(0, 4) === "http") {
@@ -1639,9 +2379,15 @@ function getVoiceIcon(name) {
 
     // console.debug(name + " not found in VOICENAMES");
     return "images/voices.svg";
-}
+};
 
-function getVoiceSynthName(name) {
+/**
+ * Get the voice synth name based on its identifier.
+ * @function
+ * @param {string|null} name - The identifier of the voice synth.
+ * @returns {string|null} The name of the voice synth, or null if not found.
+ */
+const getVoiceSynthName = (name) => {
     if (name === null || name === undefined) {
         return null;
     } else if (name === "") {
@@ -1658,13 +2404,25 @@ function getVoiceSynthName(name) {
 
     // console.debug(name + " not found in VOICENAMES");
     return DEFAULTVOICE;
-}
+};
 
+/**
+ * Check if a given temperament is custom.
+ * @function
+ * @param {string} temperament - The name of the temperament.
+ * @returns {boolean} True if the temperament is custom, false otherwise.
+ */
 const isCustomTemperament = (temperament) => {
     return !(temperament in PreDefinedTemperaments);
 };
 
-function getTemperamentName(name) {
+/**
+ * Get the name of a temperament based on its identifier.
+ * @function
+ * @param {string} name - The identifier of the temperament.
+ * @returns {string} The name of the temperament, or the default temperament name if not found.
+ */
+const getTemperamentName = (name) => {
     if (name === "") {
         name = DEFAULTTEMPERAMENT;
     }
@@ -1679,9 +2437,15 @@ function getTemperamentName(name) {
 
     // console.debug(name + " not found in TEMPERAMENTS");
     return DEFAULTTEMPERAMENT;
-}
+};
 
-function noteToObj(note) {
+/**
+ * Convert a note string to an object containing the note, octave, and cents.
+ * @function
+ * @param {string} note - The note string.
+ * @returns {Array} An array containing the note, octave, and cents.
+ */
+const noteToObj = (note) => {
     let octave = parseInt(note.slice(note.length - 1));
     if (isNaN(octave)) {
         octave = 4;
@@ -1689,26 +2453,35 @@ function noteToObj(note) {
         note = note.slice(0, note.length - 1);
     }
     return [note, octave];
-}
+};
 
-function frequencyToPitch(hz) {
+/**
+ * Convert a frequency to pitch, returning the note, octave, and cents.
+ * @function
+ * @param {number} hz - The frequency in hertz.
+ * @returns {Array} An array containing the note, octave, and cents.
+ */
+const frequencyToPitch = (hz) => {
     // Calculate the pitch and octave based on frequency, rounding to
     // the nearest cent.
 
     if (hz < A0) {
-        return ["A", 0];
+        return ["A", 0, 0];
     } else if (hz > C8) {
         // FIXME: set upper bound of C10
-        return ["C", 8];
+        return ["C", 8, 0];
     }
 
     // Calculate cents to keep track of drift
     let cents = 0;
-    for (let i = 0; i < 8800; i++) {
+    for (let i = 0; i < 8 * 1200; i++) {
         const f = A0 * Math.pow(TWELVEHUNDRETHROOT2, i);
         if (hz < f * 1.0003 && hz > f * 0.9997) {
             cents = i % 100;
-            const j = Math.floor(i / 100 + 0.5);
+            if (cents > 50) {
+                cents -= 100;
+            }
+            const j = Math.floor((i / 100) + 0.5);
             return [
                 PITCHES[(j + PITCHES.indexOf("A")) % 12],
                 Math.floor((j + PITCHES.indexOf("A")) / 12),
@@ -1719,9 +2492,15 @@ function frequencyToPitch(hz) {
 
     // console.debug("Could not find note/octave/cents for " + hz);
     return ["?", -1, 0];
-}
+};
 
-function getArticulation(note) {
+/**
+ * Get the articulation symbols from a note string.
+ * @function
+ * @param {string} note - The note string.
+ * @returns {string} The note string without articulation symbols.
+ */
+const getArticulation = (note) => {
     return note
         .replace("do", "")
         .replace("re", "")
@@ -1736,10 +2515,20 @@ function getArticulation(note) {
         .replace("D", "")
         .replace("E", "")
         .replace("F", "")
-        .replace("G", "");
-}
+        .replace("G", "")
+        .replace("^^", "")  // up/down from custom notes
+        .replace("vv", "")
+        .replace("^", "")
+        .replace("v", "");
+};
 
-function keySignatureToMode(keySignature) {
+/**
+ * Convert a key signature to mode, returning an array with the key and mode.
+ * @function
+ * @param {string} keySignature - The key signature string.
+ * @returns {Array} An array containing the key and mode.
+ */
+const keySignatureToMode = (keySignature) => {
     // Convert from "A Minor" to "A" and "MINOR"
     if (keySignature === "" || keySignature == null) {
         return ["C", "major"];
@@ -1774,6 +2563,13 @@ function keySignatureToMode(keySignature) {
     } else if (key == "B" + SHARP) {
         parts = keySignature.split(" ");
         key = "B" + SHARP;
+    } else if (key == "F" + FLAT) {
+        parts = keySignature.split(" ");
+        key = "F" + FLAT;
+    } else if (SOLFEGENAMES1.indexOf(key) !== -1) {
+        // This conversion will be a bit iffy depending upon the current mode.
+        // eslint-disable-next-line no-use-before-define
+        key = getNote(key, 4, 0, "C Major", false)[0];
     } else if (NOTESSHARP.indexOf(key) === -1 && NOTESFLAT.indexOf(key) === -1) {
         // eslint-disable-next-line no-console
         console.debug("Invalid key or missing name; reverting to C.");
@@ -1812,13 +2608,23 @@ function keySignatureToMode(keySignature) {
         console.debug("Invalid mode name: " + mode + " reverting to major.");
         return [key, "major"];
     }
-}
+};
 
-// Approximate mapping of mode to solfege (Used by modes where the
-// length !== 7).
+/**
+ * Approximate mapping of mode to solfege (Used by modes where the
+ * length !== 7).
+ * @constant
+ * @type {Array}
+ */
 const SOLFMAPPER = ["do", "do", "re", "re", "mi", "fa", "fa", "sol", "sol", "la", "la", "ti"];
 
-function getScaleAndHalfSteps(keySignature) {
+/**
+ * Get the scale and solfege with half-steps for a given key signature.
+ * @function
+ * @param {string} keySignature - The key signature string.
+ * @returns {Array} An array containing the scale notes, solfege with half-steps, key signature, and mode.
+ */
+const getScaleAndHalfSteps = (keySignature) => {
     // Determine scale and half-step pattern from key signature
     const obj = keySignatureToMode(keySignature);
     let myKeySignature = obj[0];
@@ -1882,9 +2688,16 @@ function getScaleAndHalfSteps(keySignature) {
     }
 
     return [thisScale, solfege, myKeySignature, obj[1]];
-}
+};
 
-const modeMapper = function (key, mode) {
+/**
+ * Map common modes into their major/minor equivalent.
+ * @function
+ * @param {string} key - The key of the mode.
+ * @param {string} mode - The mode to map.
+ * @returns {Array} An array containing the mapped key and mode.
+ */
+const modeMapper = (key, mode) => {
     // map common modes into their major/minor equivalent
     // console.debug(key + ' ' + mode + ' >>');
     key = key.toLowerCase();
@@ -2218,7 +3031,13 @@ const modeMapper = function (key, mode) {
     return [key, mode];
 };
 
-function getSharpFlatPreference(keySignature) {
+/**
+ * Get the preference for using sharp, flat, or natural based on the key signature.
+ * @function
+ * @param {string} keySignature - The key signature.
+ * @returns {string} The preference for using sharp, flat, or natural.
+ */
+const getSharpFlatPreference = (keySignature) => {
     const obj = keySignatureToMode(keySignature);
     const obj2 = modeMapper(obj[0], obj[1]);
     const ks = obj2[0] + " " + obj2[1];
@@ -2230,50 +3049,64 @@ function getSharpFlatPreference(keySignature) {
     } else {
         return "natural";
     }
-}
+};
 
-function getCustomNote(notes) {
-    // For custom temperament notes
-    if (notes instanceof Array) {
-        notes = notes[0];
+/**
+ * Get the custom note representation for a given note in a custom temperament.
+ * @function
+ * @param {string|Array} note - The note or an array representing the note and its attributes.
+ * @returns {string} The custom note representation.
+ */
+const getCustomNote = (note) => {
+    // For custom temperament note
+    if (note instanceof Array) {
+        note = note[0];
     }
 
     let centsInfo = "";
-    if (notes.indexOf("(") !== -1) {
-        centsInfo = notes.substring(notes.indexOf("("), notes.length);
+    if (note.indexOf("(") !== -1) {
+        centsInfo = note.substring(note.indexOf("("), note.length);
     }
 
-    notes = notes.replace(centsInfo, "");
-    const articulation = getArticulation(notes);
-    notes = notes.replace(articulation, "");
+    note = note.replace(centsInfo, "");
+    const articulation = getArticulation(note);
+    note = note.replace(articulation, "");
 
     switch (articulation) {
         case "bb":
         case DOUBLEFLAT:
-            notes = notes + "𝄫" + centsInfo;
+            note = note + "𝄫" + centsInfo;
             break;
         case "b":
         case FLAT:
-            notes = notes + "♭" + centsInfo;
+            note = note + "♭" + centsInfo;
             break;
         case "##":
         case "*":
         case "x":
         case DOUBLESHARP:
-            notes = notes + "𝄪" + centsInfo;
+            note = note + "𝄪" + centsInfo;
             break;
         case "#":
         case SHARP:
-            notes = notes + "♯" + centsInfo;
+            note = note + "♯" + centsInfo;
             break;
         default:
-            notes = notes + articulation + centsInfo;
+            note = note + articulation + centsInfo;
             break;
     }
-    return notes;
-}
+    return note;
+};
 
-function pitchToNumber(pitch, octave, keySignature) {
+/**
+ * Convert a pitch, octave, and key signature to a numeric representation.
+ * @function
+ * @param {string} pitch - The pitch name (e.g., C, D, E).
+ * @param {number} octave - The octave number.
+ * @param {string} keySignature - The key signature.
+ * @returns {number} The numeric representation of the pitch.
+ */
+const pitchToNumber = (pitch, octave, keySignature) => {
     // Calculate the pitch index based on pitch and octave.
     if (pitch.toUpperCase() === "R") {
         return 0;
@@ -2335,9 +3168,15 @@ function pitchToNumber(pitch, octave, keySignature) {
     }
     // We start at A0.
     return octave * 12 + pitchNumber - PITCHES.indexOf("A") + transposition;
-}
+};
 
-function numberToPitchSharp(i) {
+/**
+ * Convert a numeric representation to a pitch with sharps.
+ * @function
+ * @param {number} i - The numeric representation of the pitch.
+ * @returns {Array} An array containing the pitch and octave.
+ */
+const numberToPitchSharp = (i) => {
     // numbertoPitch return only flats
     // This function will return sharps.
     if (i < 0) {
@@ -2357,9 +3196,16 @@ function numberToPitchSharp(i) {
             Math.floor((i + PITCHES2.indexOf("A")) / 12)
         ];
     }
-}
+};
 
-function getNumber(notename, octave) {
+/**
+ * Convert a note and octave to a numeric representation.
+ * @function
+ * @param {string} notename - The note name (e.g., C, D, E, etc.).
+ * @param {number} octave - The octave number.
+ * @returns {number} The numeric representation of the note.
+ */
+const getNumber = (notename, octave) => {
     // Converts a note, e.g., C, and octave to a number
     let num;
     if (octave < 0) {
@@ -2388,9 +3234,16 @@ function getNumber(notename, octave) {
     }
 
     return num;
-}
+};
 
-function getNoteFromInterval(pitch, interval) {
+/**
+ * Get the note based on a given pitch and interval in the "C major" key signature.
+ * @function
+ * @param {string} pitch - The pitch, including the note name and octave (e.g., "C4").
+ * @param {string} interval - The interval for which the note needs to be determined (e.g., "major 3rd").
+ * @returns {Array} An array containing the note and octave.
+ */
+const getNoteFromInterval = (pitch, interval) => {
     const len = pitch.length;
     const pitch1 = pitch.substring(0, 1);
     const note1 = pitch.substring(0, len - 1);
@@ -2399,8 +3252,14 @@ function getNoteFromInterval(pitch, interval) {
     const pitches = ["C", "D", "E", "F", "G", "A", "B"];
     const priorAttrs = [DOUBLEFLAT, FLAT, "", SHARP, DOUBLESHARP];
     // let majorintervalNote;
-
-    function findMajorInterval(interval) {
+    
+    /**
+     * Find the note that corresponds to a major interval.
+     * @function
+     * @param {string} interval - The interval for which the note needs to be determined (e.g., "major 3rd").
+     * @returns {Array} An array containing the note and octave.
+     */
+    const findMajorInterval = (interval) => {
         //For eg. If you are asked to write a major 3rd then the
         //letters must be 3 apart.
         //Eg Ab - C or D - F. This is irrelevant of whether the first
@@ -2437,9 +3296,15 @@ function getNoteFromInterval(pitch, interval) {
                 return [note, octave];
             }
         }
-    }
-
-    function findOtherIntervals(interval) {
+    };
+    
+    /**
+     * Find notes for intervals other than major intervals.
+     * @function
+     * @param {string} interval - The interval for which the note needs to be determined.
+     * @returns {Array} An array containing the note and octave.
+     */
+    const findOtherIntervals = (interval) => {
         const num = interval.split(" ");
         let majorNote;
         let accidental;
@@ -2513,7 +3378,7 @@ function getNoteFromInterval(pitch, interval) {
         }
 
         return [majorNote[0].substring(0, 1) + accidental + "", majorNote[1]];
-    }
+    };
 
     if (
         interval === "major 2" ||
@@ -2529,9 +3394,18 @@ function getNoteFromInterval(pitch, interval) {
     } else {
         return findOtherIntervals(interval);
     }
-}
+};
 
-function numberToPitch(i, temperament, startPitch, offset) {
+/**
+ * Convert a pitch number to a pitch name (note and octave).
+ * @function
+ * @param {number} i - The pitch number.
+ * @param {string} [temperament="equal"] - The temperament to use (default is "equal").
+ * @param {string} [startPitch="A"] - The starting pitch name (default is "A").
+ * @param {number} [offset=0] - The offset value (default is 0).
+ * @returns {Array} An array containing the note and octave.
+ */
+const numberToPitch = (i, temperament, startPitch, offset) => {
     // Calculate the pitch and octave based on index.
     // We start at A0.
     if (temperament === undefined) {
@@ -2599,8 +3473,67 @@ function numberToPitch(i, temperament, startPitch, offset) {
         interval = TEMPERAMENT[temperament]["interval"][pitchNumber];
         return getNoteFromInterval(startPitch, interval);
     }
-}
+};
 
+/**
+ * Get notes based on the provided tuning object.
+ * @param {Object} tur - The tuning object containing singer information.
+ * @returns {Object} - An object containing the firstNote, secondNote, and octave.
+ */
+
+const GetNotesForInterval = (tur) => {
+    const noteStatus = tur.singer.noteStatus;
+    const notePitches = tur.singer.notePitches;
+    const intervals = tur.singer.intervals;
+    const noteOctave = tur.singer.noteOctaves;
+    let firstNote = "C",
+        secondNote = "C",
+        octave = 0;
+    if (noteStatus && noteStatus[0]) {
+        firstNote = noteStatus[0][0].replace(/\d/g,"");//removing all numbers like '1'
+        if (!noteStatus[0][1]) {
+            return { firstNote, secondNote: firstNote, octave };
+        }
+        secondNote = noteStatus[0][1].replace(/\d/g,"");
+        const octavea = parseInt(noteStatus[0][0].replace(/[^0-9]/g, ""));
+        const octaveb = parseInt(noteStatus[0][1].replace(/[^0-9]/g, ""));
+        octave = octaveb - octavea;
+    } else if (notePitches) {
+        const pitchBlk = notePitches[last(tur.singer.inNoteBlock)];
+        firstNote = pitchBlk[0];
+        secondNote = pitchBlk[pitchBlk.length - 1];
+    }
+
+    if (intervals && intervals.length) {
+        octave=Math.floor(intervals[0]/7);
+
+    } else if (noteOctave&&noteOctave[last(tur.singer.inNoteBlock)]) {
+        const octaveblk = noteOctave[last(tur.singer.inNoteBlock)];
+        octave = octaveblk[octaveblk.length - 1] - octaveblk[0];
+    }
+
+    firstNote = firstNote.replace("♭", "b");
+    secondNote = secondNote.replace("♭", "b");
+    firstNote = firstNote.replace("♯", "#");
+    secondNote = secondNote.replace("♯", "#");
+
+    return { firstNote, secondNote, octave };
+};
+
+
+/**
+ * Get the note based on various parameters.
+ * @function
+ * @param {string|number} noteArg - The note name or pitch number.
+ * @param {number} octave - The octave value.
+ * @param {number} transposition - The transposition value.
+ * @param {string} keySignature - The key signature (default is "C major").
+ * @param {boolean} movable - Whether the key signature is movable (default is false).
+ * @param {string} direction - The direction of the note (unused parameter).
+ * @param {string} errorMsg - The error message (unused parameter).
+ * @param {string} [temperament="equal"] - The temperament to use (default is "equal").
+ * @returns {Array} An array containing the note and octave.
+ */
 function getNote(
     noteArg,
     octave,
@@ -2615,41 +3548,82 @@ function getNote(
         temperament = "equal";
     }
 
-    // Could be mi#<sub>4</sub> (from matrix) or mi# (from note).
-    if (noteArg.substr(-1) === ">") {
-        // Read octave and solfege from HTML
-        octave = parseInt(noteArg.slice(noteArg.indexOf(">") + 1, noteArg.indexOf("/") - 1));
-        noteArg = noteArg.substr(0, noteArg.indexOf("<"));
-    }
-
     let sharpFlat = false;
     let rememberFlat = false;
     let rememberSharp = false;
-    if (typeof noteArg !== "number") {
-        if (
-            noteArg.toLowerCase().substr(0, 4) === "rest" ||
-            noteArg.toLowerCase().substr(0, 4) === "r"
-        ) {
-            return ["R", ""];
-        }
-    }
-
-    octave = Math.round(octave);
 
     if (transposition === undefined) {
         transposition = 0;
     }
 
     transposition = Math.round(transposition);
+
+    if (typeof noteArg !== "number") {
+        // Could be mi#<sub>4</sub> (from matrix) or mi# (from note).
+        if (noteArg.substr(-1) === ">") {
+            // Read octave and solfege from HTML
+            octave = parseInt(noteArg.slice(noteArg.indexOf(">") + 1, noteArg.indexOf("/") - 1));
+            noteArg = noteArg.substr(0, noteArg.indexOf("<"));
+        }
+        if (
+            noteArg.toLowerCase().substr(0, 4) === "rest" ||
+            noteArg.toLowerCase().substr(0, 4) === "r"
+        ) {
+            return ["R", ""];
+        }
+        // Could be a number as a string (with or without an accidental.
+        let noteAsNumber = noteArg;
+        if (["#", SHARP, FLAT, "b"].indexOf(noteArg.substr(-1)) !== -1) {
+            noteAsNumber = noteArg.slice(0, noteArg.length - 1);
+        }
+        if (!isNaN(noteAsNumber)) {
+            if (["#", SHARP].indexOf(noteArg.substr(-1)) !== -1) {
+                transposition += 1;
+            } else if (["b", FLAT].indexOf(noteArg.substr(-1)) !== -1) {
+                transposition -= 1;
+            }
+            noteArg = Number(noteAsNumber);
+        }
+    }
+
+    octave = Math.round(octave);
+
     if (typeof noteArg === "number") {
-        noteArg = noteArg.toString();
+        // Assume it is a pitch number.
+        if (!keySignature) {
+            keySignature = "C major";
+        }
+        let kOffset = 0;
+        if (movable) {
+            kOffset = PITCHES.indexOf(keySignature.split(" ")[0]);
+            if (kOffset === -1) {
+                kOffset = PITCHES.indexOf(keySignature.split(" ")[0]);
+            }
+            if (kOffset === -1) {
+                kOffset = PITCHES2.indexOf(keySignature.split(" ")[0]);
+            }
+            if (kOffset === -1) {
+                kOffset = 0;
+                // eslint-disable-next-line no-console
+                console.log(
+                    "Cannot find " +
+                    keySignature.split(" ")[0] +
+                    ". Reverting to C"
+                );
+            }
+        }
+        if (getSharpFlatPreference(keySignature) === "sharp") {
+            noteArg = PITCHES2[(noteArg + kOffset) % 12];
+        } else {
+            noteArg = PITCHES[(noteArg + kOffset) % 12];
+        }
     }
 
     let note;
     let articulation;
 
     if (temperament === "equal") {
-        // Check for double flat or double sharp. Since 𝄫 and 𝄪 behave
+        // Check for double flat or double sharp. Since bb and x behave
         // funny with string operations, we jump through some hoops.
         articulation = getArticulation(noteArg);
         noteArg = noteArg.replace(articulation, "");
@@ -2718,6 +3692,7 @@ function getNote(
             }
 
             let obj;
+
             if (movable) {
                 obj = getScaleAndHalfSteps(keySignature);
             } else {
@@ -3038,7 +4013,7 @@ function getNote(
         note = getCustomNote(noteArg);
         let pitchNumber = null;
         for (const number in TEMPERAMENT[temperament]) {
-            if (number !== "pitchNumber") {
+            if (number !== "pitchNumber" && number != "interval") {
                 if (note === TEMPERAMENT[temperament][number][3]) {
                     if (typeof number === "string") {
                         pitchNumber = Number(number);
@@ -3188,17 +4163,14 @@ function getNote(
 }
 
 /**
- * Converts the pitch value of the last note played into different formats
- * such as hertz, letter name, pitch number, et al.
- *
- * @param {String} type - required format: letter class, solfege syllable,
- * solfege class, pitch class, scalar class, scale degree, nth degree,
- * staff y, pitch number, pitch in hertz
- * @param {notePlayed} note - Argument which is to be converted
- * @param {tur} turtle - Current Turtle
+ * Calculate the pitch number based on the activity, pitch value, and tur parameters.
+ * @function
+ * @param {Object} activity - The activity object.
+ * @param {string|number} np - The pitch value (note name or frequency in Hertz).
+ * @param {Object} tur - The tur parameters containing singer information.
+ * @returns {number} The calculated pitch number.
  */
-
-function _calculate_pitch_number(activity, np, tur) {
+const _calculate_pitch_number = (activity, np, tur) => {
     let obj;
     if (tur.singer.lastNotePlayed !== null) {
         if (typeof np === "string") {
@@ -3216,7 +4188,7 @@ function _calculate_pitch_number(activity, np, tur) {
             tur.singer.noteOctaves[last(tur.singer.inNoteBlock)][0],
             0,
             tur.singer.keySignature,
-            tur.singer.moveable,
+            tur.singer.movable,
             null,
             activity.errorMsg
         );
@@ -3234,12 +4206,21 @@ function _calculate_pitch_number(activity, np, tur) {
         }
     }
     return pitchToNumber(obj[0], obj[1], tur.singer.keySignature) - tur.singer.pitchNumberOffset;
-}
+};
 
-function buildScale(keySignature) {
+/**
+ * Build the scale based on the given key signature.
+ * @function
+ * @param {string} keySignature - The key signature.
+ * @returns {Array} An array containing the scale and the corresponding intervals.
+ */
+const buildScale = (keySignature) => {
     // FIX ME: temporary hard-coded fix to avoid errors in pitch preview
     if (keySignature == "C♭ major") {
-        const scale = ["C♭", "D♭", "E♭", "F♭", "G♭", "A♭", "B♭", "C♭"];
+        const scale = ["C" + FLAT, "D" + FLAT, "E" + FLAT, "F" + FLAT, "G" + FLAT, "A" + FLAT, "B" + FLAT, "C" + FLAT];
+        return [scale, [2, 2, 1, 2, 2, 2, 1]];
+    } else if (keySignature == "F♭ major") {
+        const scale = ["F" + FLAT, "G" + FLAT, "A" + FLAT, "B" + DOUBLEFLAT, "C" + FLAT, "D" + FLAT, "E" + FLAT, "F" + FLAT];
         return [scale, [2, 2, 1, 2, 2, 2, 1]];
     }
 
@@ -3285,31 +4266,71 @@ function buildScale(keySignature) {
     }
 
     // Make sure there are no repeated letter names for seven step scales
-    if (scale.length === 8) {
-        for (let n = 0; n < 7; n++) {
-            if (scale[n][0] === scale[n + 1][0]) {
-                if (scale[n] in EQUIVALENTACCIDENTALS) {
-                    scale[n] = EQUIVALENTACCIDENTALS[scale[n]];
-                } else if (scale[n] in EQUIVALENTNATURALS) {
-                    scale[n] = EQUIVALENTNATURALS[scale[n]];
+    if (scale.length < 9) {
+        for (let i = 0; i < scale.length - 1; i++) {
+            if (i === 0) {
+                if (scale[i][0] === scale[i + 1][0]) {
+                    if (scale[i + 1] in CONVERT_UP) {
+                        scale[i + 1] = CONVERT_UP[scale[i + 1]];
+                    }
+                }
+            } else {
+                // Do we go up or down?
+                if (thisScale === NOTESSHARP) {
+                    if (scale[i][0] === scale[i + 1][0]) {
+                        // We need to go down.
+                        if (scale[i] in CONVERT_DOWN) {
+                            scale[i] = CONVERT_DOWN[scale[i]];
+                        }
+                    }
+                } else {
+                    if (scale[i - 1][0] === scale[i][0]) {
+                        // We need to go up.
+                        if (scale[i] in CONVERT_UP) {
+                            scale[i] = CONVERT_UP[scale[i]];
+                        }
+                    }
                 }
             }
         }
-        // Two passes because we may have collisions.
-        for (let n = 0; n < 7; n++) {
-            if (scale[n][0] === scale[n + 1][0]) {
-                if (scale[n] in EQUIVALENTACCIDENTALS) {
-                    scale[n] = EQUIVALENTACCIDENTALS[scale[n]];
-                } else if (scale[n] in EQUIVALENTNATURALS) {
-                    scale[n] = EQUIVALENTNATURALS[scale[n]];
+        // Final check -- we may need to use double sharps or double flats.
+        if (myKeySignature.length === 2 && myKeySignature[1] === SHARP) {
+            for (let i = scale.length - 1; i > 0; i--) {
+                if (scale[i][0] === scale[i - 1][0]) {
+                    if (scale[i - 1] in CONVERT_DOWN) {
+                        scale[i - 1] = CONVERT_DOWN[scale[i - 1]];
+                    } else if (scale[i - 1] in CONVERT_DOUBLE_DOWN) {
+                        scale[i - 1] = CONVERT_DOUBLE_DOWN[scale[i - 1]];
+                    }
+                }
+            }
+        } else if (myKeySignature.length === 2 && myKeySignature[1] === FLAT) {
+            for (let i = 0; i < scale.length - 2; i++) {
+                if (scale[i][0] === scale[i + 1][0]) {
+                    if (scale[i + 1] in CONVERT_UP) {
+                        scale[i + 1] = CONVERT_UP[scale[i + 1]];
+                    } else if (scale[i + 1] in CONVERT_DOUBLE_UP) {
+                        scale[i + 1] = CONVERT_DOUBLE_UP[scale[i + 1]];
+                    }
                 }
             }
         }
     }
+ 
     return [scale, halfSteps];
-}
+};
 
-function _getStepSize(keySignature, pitch, direction, transposition, temperament) {
+/**
+ * Get the step size (number of half-steps) to the next note in the given key signature.
+ * @function
+ * @param {string} keySignature - The key signature.
+ * @param {string} pitch - The pitch (note name).
+ * @param {string} direction - The direction of the step ("up" or "down").
+ * @param {number} transposition - The transposition value.
+ * @param {string} temperament - The temperament used for pitch calculation.
+ * @returns {number} The step size in half-steps.
+ */
+const _getStepSize = (keySignature, pitch, direction, transposition, temperament) => {
     // Returns how many half-steps to the next note in this key.
     if (temperament === undefined) {
         temperament = "equal";
@@ -3329,33 +4350,42 @@ function _getStepSize(keySignature, pitch, direction, transposition, temperament
     } else if (thisPitch in STOSHARP) {
         thisPitch = STOSHARP[thisPitch];
     }
-
-    function logicalEquals(s1, s2) {
-        // console.debug(s1,s2);
+    
+    /**
+     * Check if two pitches are logically equivalent.
+     * @function
+     * @param {string} s1 - The first pitch.
+     * @param {string} s2 - The second pitch.
+     * @returns {boolean} True if the pitches are logically equivalent, otherwise false.
+     */
+    const logicalEquals = (s1, s2) => {
         if (s1 == s2) {
             return true;
-        } else if (s1 == "E♯" && s2 == "F") {
+        } else if (s1 == "E" + SHARP && s2 == "F") {
             return true;
-        } else if (s1 == "E" && s2 == "F♭") {
+        } else if (s1 == "E" && s2 == "F" + FLAT) {
             return true;
         } else if (s1 == "F" && s2 == "E♯") {
             return true;
-        } else if (s1 == "F♭" && s2 == "E") {
+        } else if (s1 == "F" + FLAT && s2 == "E") {
             return true;
-        } else if (s1 == "B♯" && s2 == "C") {
+        } else if (s1 == "B" + SHARP && s2 == "C") {
             return true;
-        } else if (s1 == "B" && s2 == "C♭") {
+        } else if (s1 == "B" && s2 == "C" + FLAT) {
             return true;
         } else if (s1 == "C" && s2 == "B♯") {
             return true;
-        } else if (s1 == "C♭" && s2 == "B") {
+        } else if (s1 == "C" + FLAT && s2 == "B") {
+            return true;
+        } else if (s1 == "B" + DOUBLEFLAT && s2 == "A") {
+            return true;
+        } else if (s1 == "F" + DOUBLESHARP && s2 == "G") {
             return true;
         }
         return false;
-    }
+    };
 
-    let ii = scale.findIndex((scale) => logicalEquals(scale, pitch)); //indexOf() replaced by findIndex()
-    // let ii = scale.indexOf(thisPitch);
+    let ii = scale.findIndex((scale) => logicalEquals(scale, pitch));
     if (ii !== -1) {
         if (direction === "up") {
             return halfSteps[ii];
@@ -3457,23 +4487,53 @@ function _getStepSize(keySignature, pitch, direction, transposition, temperament
     // eslint-disable-next-line no-console
     console.debug(thisPitch + " not found");
     return 0;
-}
+};
 
-function getStepSizeUp(keySignature, pitch, transposition, temperament) {
+/**
+ * Get the step size (number of half-steps) to the next note in the upward direction.
+ * @function
+ * @param {string} keySignature - The key signature.
+ * @param {string} pitch - The pitch (note name).
+ * @param {number} transposition - The transposition value.
+ * @param {string} temperament - The temperament used for pitch calculation.
+ * @returns {number} The step size in half-steps.
+ */
+const getStepSizeUp = (keySignature, pitch, transposition, temperament) => {
     return _getStepSize(keySignature, pitch, "up", transposition, temperament);
-}
+};
 
-function getStepSizeDown(keySignature, pitch, transposition, temperament) {
+/**
+ * Get the step size (number of half-steps) to the next note in the downward direction.
+ * @function
+ * @param {string} keySignature - The key signature.
+ * @param {string} pitch - The pitch (note name).
+ * @param {number} transposition - The transposition value.
+ * @param {string} temperament - The temperament used for pitch calculation.
+ * @returns {number} The step size in half-steps.
+ */
+const getStepSizeDown = (keySignature, pitch, transposition, temperament) => {
     return _getStepSize(keySignature, pitch, "down", transposition, temperament);
-}
+};
 
-function getModeLength(keySignature) {
-    return buildScale(keySignature)[1].length;
-}
 
-// A two-way function to get pitch according to scale degree and vice versa for a chosen mode
+/**
+ * Get the length of the mode (number of notes) for the given key signature.
+ * @function
+ * @param {string} keySignature - The key signature.
+ * @returns {number} The length of the mode.
+ */
+const getModeLength = keySignature => { return buildScale(keySignature)[1].length; };
 
-function scaleDegreeToPitchMapping(keySignature, scaleDegree, moveable, pitch) {
+/**
+ * Map scale degree to pitch or vice versa for a chosen mode.
+ * @function
+ * @param {string} keySignature - The key signature.
+ * @param {number} scaleDegree - The scale degree.
+ * @param {boolean} movable - Indicates if movable do is present.
+ * @param {string} pitch - The pitch (note name).
+ * @returns {string|Array} The pitch corresponding to the scale degree or vice versa.
+ */
+const scaleDegreeToPitchMapping = (keySignature, scaleDegree, movable, pitch) => {
     if (pitch === null) {
         scaleDegree -= 1;
     }
@@ -3496,8 +4556,8 @@ function scaleDegreeToPitchMapping(keySignature, scaleDegree, moveable, pitch) {
     let finalScale = [];
     const sd = [];
 
-    // if moveable do is present just return the major/perfect tones
-    if (moveable) {
+    // if movable do is present just return the major/perfect tones
+    if (movable) {
         finalScale = buildScale(chosenMode[0] + " major")[0];
 
         if (pitch === null) {
@@ -3748,11 +4808,19 @@ function scaleDegreeToPitchMapping(keySignature, scaleDegree, moveable, pitch) {
             }
         }
     }
-}
+};
 
-function nthDegreeToPitch(keySignature, scaleDegree) {
+/**
+ * Get the note corresponding to the nth scale degree in the given key signature.
+ * Used for movable solfege.
+ * @function
+ * @param {string} keySignature - The key signature.
+ * @param {number} scaleDegree - The scale degree.
+ * @returns {string} The note corresponding to the scale degree in the current key signature.
+ */
+const nthDegreeToPitch = (keySignature, scaleDegree) => {
     // Returns note corresponding to scale degree in current key
-    // signature. Used for moveable solfege.
+    // signature. Used for movable solfege.
     const scale = buildScale(keySignature)[0];
     // Scale degree is specified as do === 1, re === 2, etc., so we need
     // to subtract 1 to make it zero-based.
@@ -3763,11 +4831,18 @@ function nthDegreeToPitch(keySignature, scaleDegree) {
 
     scaleDegree %= scale.length - 1;
     return scale[scaleDegree];
-}
+};
 
-// Relative interval (used by the Interval Block) is based on the
-// steps within the current key and mode.
-function getInterval(interval, keySignature, pitch) {
+/**
+ * Get the relative interval (steps within the current key and mode) based on the
+ * position (pitch) in the scale.
+ * @function
+ * @param {number} interval - The interval value.
+ * @param {string} keySignature - The key signature.
+ * @param {string} pitch - The pitch (note name).
+ * @returns {number} The relative interval value.
+ */
+const getInterval = (interval, keySignature, pitch) => {
     // Step size interval based on the position (pitch) in the scale
     const obj = buildScale(keySignature);
     const scale = obj[0];
@@ -3889,10 +4964,17 @@ function getInterval(interval, keySignature, pitch) {
         }
         return j;
     }
-}
+};
 
-function reducedFraction(a, b) {
-    const greatestCommonMultiple = function (a, b) {
+/**
+ * Get the reduced fraction representation of a fraction.
+ * @function
+ * @param {number} a - The numerator.
+ * @param {number} b - The denominator.
+ * @returns {string} The reduced fraction as a string.
+ */
+const reducedFraction = (a, b) => {
+    const greatestCommonMultiple =  (a, b) => {
         return b === 0 ? a : greatestCommonMultiple(b, a % b);
     };
 
@@ -3903,9 +4985,15 @@ function reducedFraction(a, b) {
     } else {
         return a / gcm + "<br>&mdash;<br>" + b / gcm + "<br><br>";
     }
-}
+};
 
-function toFraction(d) {
+/**
+ * Convert a floating-point number to its approximate fractional representation.
+ * @function
+ * @param {number} d - The floating-point number.
+ * @returns {Array} An array containing the numerator and denominator of the fraction.
+ */
+const toFraction = (d) => {
     // Convert float to its approximate fractional representation.
     let flip = false;
     if (d > 1) {
@@ -3934,9 +5022,16 @@ function toFraction(d) {
     }
 
     return [top, bot];
-}
+};
 
-function calcNoteValueToDisplay(a, b) {
+/**
+ * Calculate the note value to display based on numerator and denominator.
+ * @function
+ * @param {number} a - The numerator.
+ * @param {number} b - The denominator.
+ * @returns {string} The note value to display.
+ */
+const calcNoteValueToDisplay = (a, b) => {
     const noteValue = a / b;
     let noteValueToDisplay = null;
 
@@ -3989,9 +5084,15 @@ function calcNoteValueToDisplay(a, b) {
     }
 
     return noteValueToDisplay;
-}
+};
 
-function durationToNoteValue(duration) {
+/**
+ * Convert a duration value to its note value representation.
+ * @function
+ * @param {number} duration - The duration value.
+ * @returns {Array} An array containing the note value, number of dots, and tuplet factor.
+ */
+const durationToNoteValue = (duration) => {
     // returns [note value, no. of dots, tuplet factor]
 
     let currentDotFactor;
@@ -4032,14 +5133,29 @@ function durationToNoteValue(duration) {
     j = j / 2;
 
     return [1, 0, [duration / j, j], roundDown];
-}
+};
 
-function noteToPitchOctave(note) {
+/**
+ * Convert a note string to pitch and octave.
+ * @function
+ * @param {string} note - The note string.
+ * @returns {Array} An array containing pitch and octave.
+ */
+const noteToPitchOctave = (note) => {
     const len = note.length;
     return [note.substring(0, len - 1), Number(last(note))];
-}
+};
 
-function pitchToFrequency(pitch, octave, cents, keySignature) {
+/**
+ * Calculate the frequency based on pitch, octave, cents, and key signature.
+ * @function
+ * @param {string} pitch - The pitch of the note.
+ * @param {number} octave - The octave of the note.
+ * @param {number} cents - The cents to adjust the frequency.
+ * @param {string} keySignature - The key signature.
+ * @returns {number} The calculated frequency.
+ */
+const pitchToFrequency = (pitch, octave, cents, keySignature) => {
     // Calculate the frequency based on pitch and octave.
     const pitchNumber = pitchToNumber(pitch, octave, keySignature);
 
@@ -4048,31 +5164,56 @@ function pitchToFrequency(pitch, octave, cents, keySignature) {
     } else {
         return A0 * Math.pow(TWELVEHUNDRETHROOT2, pitchNumber * 100 + cents);
     }
-}
+};
 
-function noteToFrequency(note, keySignature) {
+/**
+ * Convert a note string to frequency based on the key signature.
+ * @function
+ * @param {string} note - The note string.
+ * @param {string} keySignature - The key signature.
+ * @returns {number} The calculated frequency.
+ */
+const noteToFrequency = (note, keySignature) => {
     const obj = noteToPitchOctave(note);
     return pitchToFrequency(obj[0], obj[1], 0, keySignature);
-}
+};
 
-function noteIsSolfege(note) {
+/**
+ * Check if a note string is in solfege.
+ * @function
+ * @param {string} note - The note string.
+ * @returns {boolean} True if the note is in solfege, false otherwise.
+ */
+const noteIsSolfege = (note) => {
     if (SOLFEGECONVERSIONTABLE[note] === undefined) {
         return true;
     } else {
         return false;
     }
-}
+};
 
-function getSolfege(note) {
+/**
+ * Get the solfege representation of a note string.
+ * @function
+ * @param {string} note - The note string.
+ * @returns {string} The solfege representation.
+ */
+const getSolfege = (note) => {
     // FIXME: Use mode-specific conversion.
     if (noteIsSolfege(note)) {
         return note;
     } else {
         return SOLFEGECONVERSIONTABLE[note];
     }
-}
+};
 
-function splitSolfege(value) {
+/**
+ * Split a solfege value into pitch and attributes.
+ * @function
+ * @param {string} value - The solfege value.
+ * @returns {Array} An array containing pitch and attributes.
+ */
+const splitSolfege = (value) => {
     // Separate the pitch from any attributes, e.g., # or b
     if (value != null && typeof value === "string") {
         let note, attr;
@@ -4099,9 +5240,15 @@ function splitSolfege(value) {
     }
 
     return ["sol", ""];
-}
+};
 
-function i18nSolfege(note) {
+/**
+ * Internationalize a solfege note using i18n.
+ * @function
+ * @param {string} note - The solfege note.
+ * @returns {string} The internationalized solfege note.
+ */
+const i18nSolfege = (note) => {
     // solfnotes_ is used in the interface for i18n
     const solfnotes_ = _("ti la sol fa mi re do").split(" ");
     const obj = splitSolfege(note);
@@ -4113,9 +5260,15 @@ function i18nSolfege(note) {
         // Wasn't solfege so it doesn't need translation.
         return note;
     }
-}
+};
 
-function splitScaleDegree(value) {
+/**
+ * Split a scale degree value into note and attributes.
+ * @function
+ * @param {string} value - The scale degree value.
+ * @returns {Array} An array containing note and attributes.
+ */
+const splitScaleDegree = (value) => {
     if (!value) {
         return [5, NATURAL];
     }
@@ -4123,9 +5276,16 @@ function splitScaleDegree(value) {
     const note = value.slice(0, 1);
     const attr = value.slice(1);
     return [note, attr];
-}
+};
 
-function getNumNote(value, delta) {
+/**
+ * Convert a number to a note with octave.
+ * @function
+ * @param {number} value - The number representing the note.
+ * @param {number} delta - The delta to adjust the value.
+ * @returns {Array} An array containing the note and octave.
+ */
+const getNumNote = (value, delta) => {
     // Converts from number to note
     let num = value + delta;
     let octave = Math.floor(num / 12);
@@ -4138,9 +5298,18 @@ function getNumNote(value, delta) {
     }
 
     return [note, octave + 1];
-}
+};
 
-const calcOctave = function (currentOctave, arg, lastNotePlayed, currentNote) {
+/**
+ * Calculate the octave based on the current octave, argument, last note played, and current note.
+ * @function
+ * @param {number} currentOctave - The current octave.
+ * @param {(number|string)} arg - The argument for octave calculation.
+ * @param {Array} lastNotePlayed - The last note played.
+ * @param {string} currentNote - The current note.
+ * @returns {number} The calculated octave.
+ */
+const calcOctave = (currentOctave, arg, lastNotePlayed, currentNote) => {
     // Calculate the octave based on the current Octave and the arg,
     // which can be a number, a 'number' as a string, 'current',
     // 'previous', or 'next'.
@@ -4218,7 +5387,13 @@ const calcOctave = function (currentOctave, arg, lastNotePlayed, currentNote) {
     }
 };
 
-const calcOctaveInterval = function (arg) {
+/**
+ * Calculate the octave value based on the argument for intervals.
+ * @function
+ * @param {(number|string)} arg - The argument for interval octave calculation.
+ * @returns {number} The calculated octave value.
+ */
+const calcOctaveInterval = arg => {
     // Used by intervals to determine octave to use in an interval.
     let value = 0;
     switch (arg) {
@@ -4253,11 +5428,23 @@ const calcOctaveInterval = function (arg) {
     return value;
 };
 
-function isInt(value) {
+/**
+ * Check if a value is an integer.
+ * @function
+ * @param {*} value - The value to check.
+ * @returns {boolean} True if the value is an integer, false otherwise.
+ */
+const isInt = (value) => {
     return !isNaN(value) && parseInt(Number(value)) === value && !isNaN(parseInt(value, 10));
-}
+};
 
-function convertFromSolfege(note) {
+/**
+ * Convert a solfege note to a common letter class.
+ * @function
+ * @param {string} note - The solfege note.
+ * @returns {string} The converted note.
+ */
+const convertFromSolfege = (note) => {
     // Convert to common letter class
     if (note in FIXEDSOLFEGE1) {
         note = FIXEDSOLFEGE1[note];
@@ -4266,9 +5453,15 @@ function convertFromSolfege(note) {
         note = EQUIVALENTNATURALS[note];
     }
     return note;
-}
+};
 
-const convertFactor = function (factor) {
+/**
+ * Convert a duration factor to a string representation.
+ * @function
+ * @param {number} factor - The duration factor to convert.
+ * @returns {string|null} The string representation of the duration factor.
+ */
+const convertFactor = factor => {
     switch (factor) {
         case 0.0625: // 1/16
             return "16";
@@ -4311,7 +5504,16 @@ const convertFactor = function (factor) {
     }
 };
 
-function getPitchInfo(activity, type, currentNote, tur) {
+/**
+ * Get pitch information based on the activity, type, current note, and tur.
+ * @function
+ * @param {string} activity - The activity information.
+ * @param {string} type - The type of pitch information to retrieve.
+ * @param {string|number} currentNote - The current note or frequency.
+ * @param {*} tur - The tur object.
+ * @returns {*} The pitch information based on the specified type.
+ */
+const getPitchInfo = (activity, type, currentNote, tur) => {
     // A variety of conversions.
     let pitch;
     let octave;
@@ -4326,18 +5528,37 @@ function getPitchInfo(activity, type, currentNote, tur) {
         pitch = currentNote.substr(0, currentNote.length - 1);
         octave = currentNote[currentNote.length - 1];
     }
+    // Remap double sharps/double flats.
+    if (pitch.includes(DOUBLESHARP)) {
+        pitch = pitch.replace(DOUBLESHARP, "");
+        if (pitch === "B") {
+            pitch = "C" + SHARP;
+        } else {
+            pitch = NOTESSHARP[NOTESSHARP.indexOf(pitch) + 2];
+        }
+    } else if (pitch.includes(DOUBLEFLAT)) {
+        pitch = pitch.replace(DOUBLEFLAT, "");
+        if (pitch === "C") {
+            pitch = "B" + FLAT;
+        } else {
+            pitch = NOTESFLAT[NOTESFLAT.indexOf(pitch) - 2];
+        }
+    }
     // Map the pitch to the current scale.
     pitch = pitch.replace("#", SHARP).replace("b", FLAT);
     if (buildScale(tur.singer.keySignature)[0].indexOf(pitch) === -1) {
         if (pitch in EQUIVALENTFLATS) {
-            pitch = EQUIVALENTFLATS[pitch]
+            pitch = EQUIVALENTFLATS[pitch];
         } else if (pitch in EQUIVALENTSHARPS) {
-            pitch = EQUIVALENTSHARPS[pitch]
+            pitch = EQUIVALENTSHARPS[pitch];
         }
     }
 
     try {
         switch (type) {
+            case "alphabet":
+                return pitch;
+            case "alphabet class":
             case "letter class":
                 return pitch[0];
             case "solfege syllable":
@@ -4346,7 +5567,7 @@ function getPitchInfo(activity, type, currentNote, tur) {
                     // Remove sharps and flats.
                     pitch = pitch.replace(SHARP).replace(FLAT);
                 }
-                if (tur.singer.moveable === false) {
+                if (tur.singer.movable === false) {
                     return SOLFEGECONVERSIONTABLE[pitch];
                 }
                 return SOLFEGENAMES[buildScale(tur.singer.keySignature)[0].indexOf(pitch)];
@@ -4356,16 +5577,16 @@ function getPitchInfo(activity, type, currentNote, tur) {
                 return scaleDegreeToPitchMapping(
                     tur.singer.keySignature,
                     null,
-                    tur.singer.moveable,
+                    tur.singer.movable,
                     pitch
                 )[0];
             case "scale degree":
                 obj = scaleDegreeToPitchMapping(
-                        tur.singer.keySignature,
-                        null,
-                        tur.singer.moveable,
-                        pitch
-                    )
+                    tur.singer.keySignature,
+                    null,
+                    tur.singer.movable,
+                    pitch
+                );
                 return (obj[0] + obj[1]);
             case "nth degree":
                 return buildScale(tur.singer.keySignature)[0].indexOf(pitch);
@@ -4387,18 +5608,9 @@ function getPitchInfo(activity, type, currentNote, tur) {
                     return NOTESSHARP.indexOf(pitch) * 8.33;
                 } else if (NOTESFLAT.indexOf(pitch) !== -1) {
                     return NOTESFLAT.indexOf(pitch) * 8.33;
-                } else {
-                    if (pitch.includes(DOUBLESHARP)) {
-                        pitch = pitch.replace(DOUBLESHARP, "");
-                        return (NOTESSHARP.indexOf(pitch) + 2) * 8.33;
-                    } else if (pitch.includes(DOUBLEFLAT)) {
-                        pitch = pitch.replace(DOUBLEFLAT, "");
-                        return (NOTESFLAT.indexOf(pitch) - 2) * 8.33;
-                    } else {
-                        // eslint-disable-next-line no-console
-                        console.debug("Pitch not found: " + pitch);
-                    }
                 }
+                // eslint-disable-next-line no-console
+                console.debug("Pitch not found: " + pitch);
                 return 0;
             case "pitch to shade":
                 return octave * 12.5;
@@ -4409,4 +5621,4 @@ function getPitchInfo(activity, type, currentNote, tur) {
         // eslint-disable-next-line no-console
         console.debug("Waiting for note to play");
     }
-}
+};

@@ -89,6 +89,7 @@ window.platformColor = {
     pitchLabelBackground: "#77C428",
     graphicsLabelBackground: "#728FF9",
     rhythmcellcolor: "#c8c8c8",
+    stopIconcolor : "#ea174c",
     hitAreaGraphicsBeginFill: "#FFF",
     orange: "#e37a00", // 5YR
     piemenuBasic: ["#3ea4a3", "#60bfbc", "#1d8989", "#60bfbc", "#1d8989"],
@@ -178,7 +179,7 @@ document.querySelector("meta[name=theme-color]").content = platformColor.header;
  * @param  {Object} stage
  * @returns {Object}
  */
-function showButtonHighlight(x, y, r, event, scale, stage) {
+let showButtonHighlight = (x, y, r, event, scale, stage) => {
     if (platform.FFOS) return {};
     return showMaterialHighlight(x, y, r, event, scale, stage);
-}
+};

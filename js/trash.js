@@ -9,7 +9,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
-// The trashcan is an area at the bottom of the screen where stacks of
+// The trashcan is an area at the bottom-right of the screen where stacks of
 // blocks can be dragged. Once in the trash area, they are marked as
 // trash and hidden. There is a menu button that can be used to
 // restore trash.
@@ -84,7 +84,7 @@ class Trashcan {
         img.src =
             "data:image/svg+xml;base64," +
             window.btoa(
-                unescape(encodeURIComponent(BORDER.replace("stroke_color", highlightString)))
+                base64Encode(BORDER.replace("stroke_color", highlightString))
             );
     }
 
@@ -106,10 +106,8 @@ class Trashcan {
         img.src =
             "data:image/svg+xml;base64," +
             window.btoa(
-                unescape(
-                    encodeURIComponent(BORDER.replace("stroke_color", platformColor.trashBorder))
-                )
-            );
+                base64Encode(BORDER.replace("stroke_color", platformColor.trashBorder))
+                );
     }
 
     /**
@@ -133,10 +131,8 @@ class Trashcan {
         img.src =
             "data:image/svg+xml;base64," +
             window.btoa(
-                unescape(
-                    encodeURIComponent(TRASHICON.replace(/fill_color/g, platformColor.trashBorder))
-                )
-            );
+                base64Encode(TRASHICON.replace(/fill_color/g, platformColor.trashBorder))
+                );
     }
 
     /**
@@ -144,10 +140,37 @@ class Trashcan {
      * @param {number} scale
      * @returns {void}
      */
+    updateContainerPosition() {
+        this._container.x =
+            window.innerWidth / this._scale - Trashcan.TRASHWIDTH - 2 * this._iconsize;
+        this._container.y =
+            window.innerHeight / this._scale - Trashcan.TRASHHEIGHT - (5 / 4) * this._iconsize;
+    }
+
+    shouldResize(newWidth, newHeight) {
+        return this._container.x !== newWidth || this._container.y !== newHeight;
+    }
+
     resizeEvent(scale) {
         this._scale = scale;
-        this._container.x = (this.activity.canvas.width / this._scale - Trashcan.TRASHWIDTH) / 2;
-        this._container.y = this.activity.canvas.height / this._scale - Trashcan.TRASHHEIGHT;
+        this.updateContainerPosition();
+
+        const self = this; // Capture the current instance of 'this'
+        let resizeTimeout;
+
+        function delayedResize() {
+            const newWidth = (window.innerWidth / self._scale - Trashcan.TRASHWIDTH) / 2;
+            const newHeight = window.innerHeight / self._scale - Trashcan.TRASHHEIGHT;
+
+            if (self.shouldResize(newWidth, newHeight)) {
+                self.updateContainerPosition();
+            }
+        }
+
+        window.addEventListener("resize", function () {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(delayedResize, 300); // Delayed execution using debouncing
+        });
     }
 
     /**

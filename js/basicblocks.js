@@ -33,6 +33,10 @@
    initBasicProtoBlocks, BACKWARDCOMPATIBILIYDICT
  */
 
+/**
+ * Dictionary mapping old block names to their corresponding new block names for backward compatibility.
+ * @constant {Object<string, string>}
+ */
 const BACKWARDCOMPATIBILIYDICT = {
     fullscreen: "vspace",
     fillscreen2: "fillscreen",
@@ -77,7 +81,7 @@ const BACKWARDCOMPATIBILIYDICT = {
  * @param  {Object} blocks
  * @returns {void}
  */
-function initBasicProtoBlocks(activity) {
+const initBasicProtoBlocks = (activity) => {
     activity.blocks.palettes = activity.palettes;
     setupRhythmBlockPaletteBlocks(activity);
     setupRhythmBlocks(activity);
@@ -112,4 +116,4 @@ function initBasicProtoBlocks(activity) {
             );
         }
     }
-}
+};

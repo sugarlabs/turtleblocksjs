@@ -38,23 +38,23 @@
 
 // This header is prepended to the Lilypond output.
 const LILYPONDHEADER =
-    '\\version "2.18.2"\n\n% ****************************************************************\n% \n% WHAT IS THIS? -- This is a LilyPond file generated from Music\n% Blocks software (Read about it at www.musicblocks.net).\n% \n% DOWNLOAD LILYPOND -- In order to create notation with this file,\n% you will need to download and install LilyPond software onto your\n% computer (http://lilypond.org/download.html). Frescobaldi\n% software is also handy for editing LilyPond files\n% (http://frescobaldi.org/download).\n% \n% LILYPOND INSTRUCTIONS -- For instructions on how to further\n% manipulate musical notation using LilyPond software, please\n% read the Introduction (http://lilypond.org/text-input.html) and\n% the Manual\n% (http://lilypond.org/doc/v2.18/Documentation/learning/index.html).\n% \n% GLOSSARY -- A glossary with helpful examples may be found here\n% (http://www.lilypond.org/doc/v2.19/Documentation/music-glossary/).\n% \n% MUTOPIA -- You may also benefit from studying scores from the\n% Mutopia Project website, which has freely sharable music notation\n% generated with LilyPond (http://www.mutopiaproject.org/).\n% \n% HACKLILY / LILYBIN -- You can explore your Lilypond output in a web browser\n% at (http://hacklily.org/) or (http://lilybin.com/).\n% \n% COMMENTS -- Some of the code below is commented out. You can\n% enable it by deleting the % that precedes the text or, in the\n% case of a commented section, deleting the %{ and %} that surrounds\n% the section.\n% \n% ****************************************************************\n\n% Please add your own name, the title of your musical creation,\n% and the intended copyright below.\n% The copyright is great for sharing (and re-sharing)!\n% Read more about it here (http://creativecommons.org/licenses/by-sa/4.0/).\n% Of course, you can use any copyright you like -- you made it!\n\\header {\n   dedication = \\markup {\n      \\abs-fontsize #8 \\sans "Made with LilyPond and Music Blocks" \\with-url #"http://musicblocks.sugarlabs.org/" {\n         \\abs-fontsize #8 \\sans "(http://musicblocks.sugarlabs.org/)"\n      }\n   }\n   title = "My Music Blocks Creation"\n%   subtitle = "Subtitle"\n%   instrument = "Instrument"\n   composer = "Mr. Mouse"\n%   arranger = "Arranger"\n   copyright = "Mr. Mouse (c) 2020 -- CC-BY-SA"\n   tagline = "Made from Music Blocks v.2.2"\n   footer = \\markup {\n      \\with-url #"http://musicblocks.sugarlabs.org/" "Made with Music Blocks Software v.2.2" Engraved on \\simple #(strftime "%Y-%m-%d" (localtime (current-time)))\n   }\n   currentYear = \\markup {\n      \\simple #(strftime "%Y" (localtime (current-time)))\n   }\n   copyTag =  " free to distribute, modify, and perform"\n   copyType = \\markup {\n      \\with-url #"http://creativecommons.org/licenses/by-sa/3.0/" "Creative Commons Attribution ShareAlike 3.0 (Unported) License "\n   }\n   copyright = \\markup {\n      \\override #\'(baseline-skip . 0 ) \\right-column {\n         \\sans \\bold \\with-url #"http://musicblocks.net" {\n            \\abs-fontsize #9  "Music " \\concat {\n               \\abs-fontsize #12 \\with-color #white \\char ##x01C0 \\abs-fontsize #9 "Blocks "\n            }\n         }\n      }\n      \\override #\'(baseline-skip . 0 ) \\center-column {\n         \\abs-fontsize #11.9 \\with-color #grey \\bold {\n            \\char ##x01C0 \\char ##x01C0\n         }\n      }\n      \\override #\'(baseline-skip . 0 ) \\column {\n         \\abs-fontsize #8 \\sans \\concat {\n            " Typeset using " \\with-url #"http://www.lilypond.org" "LilyPond software " \\char ##x00A9 " " \\currentYear " by " \\composer " " \\char ##x2014 " " \\footer\n         }\n         \\concat {\n            \\concat {\n               \\abs-fontsize #8 \\sans {\n                  " " \\copyType \\char ##x2014 \\copyTag\n               }\n            }\n            \\abs-fontsize #13 \\with-color #white \\char ##x01C0\n         }\n      }\n   }\n   tagline = ##f\n}\n\n% To change the meter make adjustments in the following section.\n% You must also delete the % before \\meter everywhere it appears below.\nmeter = {\n%   \\time 3/4\n%   \\key c \\minor\n   \\numericTimeSignature\n%   \\partial 4 \n%   \\tempo "Andante" 4=90\n}\n\n';
+    '\\version "2.18.2"\n\n% ****************************************************************\n% \n% WHAT IS THIS? -- This is a LilyPond file generated from Music\n% Blocks software (Read about it at www.musicblocks.net).\n% \n% DOWNLOAD LILYPOND -- In order to create notation with this file,\n% you will need to download and install LilyPond software onto your\n% computer (http://lilypond.org/download.html). Frescobaldi\n% software is also handy for editing LilyPond files\n% (http://frescobaldi.org/download).\n% \n% LILYPOND INSTRUCTIONS -- For instructions on how to further\n% manipulate musical notation using LilyPond software, please\n% read the Introduction (http://lilypond.org/text-input.html) and\n% the Manual\n% (http://lilypond.org/doc/v2.18/Documentation/learning/index.html).\n% \n% GLOSSARY -- A glossary with helpful examples may be found here\n% (http://www.lilypond.org/doc/v2.19/Documentation/music-glossary/).\n% \n% MUTOPIA -- You may also benefit from studying scores from the\n% Mutopia Project website, which has freely sharable music notation\n% generated with LilyPond (http://www.mutopiaproject.org/).\n% \n% HACKLILY -- You can explore your Lilypond output in a web browser\n% at (http://hacklily.org/).\n% \n% COMMENTS -- Some of the code below is commented out. You can\n% enable it by deleting the % that precedes the text or, in the\n% case of a commented section, deleting the %{ and %} that surrounds\n% the section.\n% \n% ****************************************************************\n\n% Please add your own name, the title of your musical creation,\n% and the intended copyright below.\n% The copyright is great for sharing (and re-sharing)!\n% Read more about it here (http://creativecommons.org/licenses/by-sa/4.0/).\n% Of course, you can use any copyright you like -- you made it!\n\\header {\n   dedication = \\markup {\n      \\abs-fontsize #8 \\sans "Made with LilyPond and Music Blocks" \\with-url #"http://musicblocks.sugarlabs.org/" {\n         \\abs-fontsize #8 \\sans "(http://musicblocks.sugarlabs.org/)"\n      }\n   }\n   title = "My Music Blocks Creation"\n%   subtitle = "Subtitle"\n%   instrument = "Instrument"\n   composer = "Mr. Mouse"\n%   arranger = "Arranger"\n   copyright = "Mr. Mouse (c) 2020 -- CC-BY-SA"\n   tagline = "Made from Music Blocks v.2.2"\n   footer = \\markup {\n      \\with-url #"http://musicblocks.sugarlabs.org/" "Made with Music Blocks Software v.2.2" Engraved on \\simple #(strftime "%Y-%m-%d" (localtime (current-time)))\n   }\n   currentYear = \\markup {\n      \\simple #(strftime "%Y" (localtime (current-time)))\n   }\n   copyTag =  " free to distribute, modify, and perform"\n   copyType = \\markup {\n      \\with-url #"http://creativecommons.org/licenses/by-sa/3.0/" "Creative Commons Attribution ShareAlike 3.0 (Unported) License "\n   }\n   copyright = \\markup {\n      \\override #\'(baseline-skip . 0 ) \\right-column {\n         \\sans \\bold \\with-url #"http://musicblocks.net" {\n            \\abs-fontsize #9  "Music " \\concat {\n               \\abs-fontsize #12 \\with-color #white \\char ##x01C0 \\abs-fontsize #9 "Blocks "\n            }\n         }\n      }\n      \\override #\'(baseline-skip . 0 ) \\center-column {\n         \\abs-fontsize #11.9 \\with-color #grey \\bold {\n            \\char ##x01C0 \\char ##x01C0\n         }\n      }\n      \\override #\'(baseline-skip . 0 ) \\column {\n         \\abs-fontsize #8 \\sans \\concat {\n            " Typeset using " \\with-url #"http://www.lilypond.org" "LilyPond software " \\char ##x00A9 " " \\currentYear " by " \\composer " " \\char ##x2014 " " \\footer\n         }\n         \\concat {\n            \\concat {\n               \\abs-fontsize #8 \\sans {\n                  " " \\copyType \\char ##x2014 \\copyTag\n               }\n            }\n            \\abs-fontsize #13 \\with-color #white \\char ##x01C0\n         }\n      }\n   }\n   tagline = ##f\n}\n\n% To change the meter make adjustments in the following section.\n% You must also delete the % before \\meter everywhere it appears below.\nmeter = {\n%   \\time 3/4\n%   \\key c \\minor\n   \\numericTimeSignature\n%   \\partial 4 \n%   \\tempo "Andante" 4=90\n}\n\n';
 
 /**
  * @deprecated
  */
 // eslint-disable-next-line no-unused-vars
-const getLilypondHeader = function () {
+const getLilypondHeader = () => {
     return LILYPONDHEADER;
 };
 
-const processLilypondNotes = function (lilypond, logo, turtle) {
+const processLilypondNotes = (lilypond, logo, turtle) => {
     // obj = [instructions] or
     // obj = [note, duration, dotCount, tupletValue, roundDown, insideChord, staccato]
 
     logo.notationNotes[turtle] = "\\meter\n";
 
-    function __toLilynote(note) {
+    const __toLilynote = (note) => {
         // Lilypond notes use is for sharp, es for flat,
         // , and ' for shifts in octave.
         // Also, notes must be lowercase.
@@ -81,10 +81,12 @@ const processLilypondNotes = function (lilypond, logo, turtle) {
             .replace(/8/g, "''''''")
             .replace(/9/g, "'''''''")
             .toLowerCase();
-    }
+    };
 
     let noteCounter = 0;
     let queueSlur = false;
+    let queueCrescendo = false;
+    let queueDecrescendo = false;
     let articulation = false;
     let targetDuration = 0;
     let tupletDuration = 0;
@@ -95,7 +97,7 @@ const processLilypondNotes = function (lilypond, logo, turtle) {
     let note;
     let notes;
 
-    function __processTuplet(logo, turtle, i, count) {
+    const __processTuplet = (logo, turtle, i, count) => {
         let j = 0;
         let k = 0;
         let ii;
@@ -166,7 +168,7 @@ const processLilypondNotes = function (lilypond, logo, turtle) {
         }
 
         return j;
-    }
+    };
 
     for (let i = 0; i < logo.notation.notationStaging[turtle].length; i++) {
         let obj = logo.notation.notationStaging[turtle][i];
@@ -209,10 +211,12 @@ const processLilypondNotes = function (lilypond, logo, turtle) {
                     articulation = false;
                     break;
                 case "begin crescendo":
-                    logo.notationNotes[turtle] += "\\< ";
+                    logo.notationNotes[turtle] += "  ";
+                    queueCrescendo = true;
                     break;
                 case "begin decrescendo":
-                    logo.notationNotes[turtle] += "\\> ";
+                    logo.notationNotes[turtle] += "  ";
+                    queueDecrescendo = true;
                     break;
                 case "end crescendo":
                     logo.notationNotes[turtle] += "\\! ";
@@ -588,6 +592,15 @@ const processLilypondNotes = function (lilypond, logo, turtle) {
             if (queueSlur) {
                 queueSlur = false;
                 logo.notationNotes[turtle] += "(  ";
+            }
+            if (queueCrescendo) {
+                queueCrescendo = false;
+                logo.notationNotes[turtle] += "\\< ";
+            }
+            if (queueDecrescendo) {
+                queueDecrescendo = false;
+                logo.notationNotes[turtle] += "\\> ";
+
             }
         }
     }

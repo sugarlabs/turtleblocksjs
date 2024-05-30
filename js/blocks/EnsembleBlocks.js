@@ -570,7 +570,7 @@ function setupEnsembleBlocks(activity) {
         constructor() {
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 //.TRANS: notes played by this mouse
-                super("turtlelapsednotes", _("mouse notes played"));
+                super("turtleelapsednotes", _("mouse notes played"));
                 this.setHelpString([
                     _("The Mouse elapse notes block returns the number of notes played by the specified mouse."),
                     "documentation",
@@ -681,7 +681,7 @@ function setupEnsembleBlocks(activity) {
                             thisTurtle.singer.noteOctaves[0],
                             0,
                             thisTurtle.singer.keySignature,
-                            tur.singer.moveable,
+                            tur.singer.movable,
                             null,
                             activity.errorMsg,
                             logo.synth.inTemperament
@@ -720,7 +720,7 @@ function setupEnsembleBlocks(activity) {
                         tur.singer.noteOctaves[last(tur.singer.inNoteBlock)][0],
                         0,
                         tur.singer.keySignature,
-                        tur.singer.moveable,
+                        tur.singer.movable,
                         null,
                         activity.errorMsg,
                         logo.synth.inTemperament
@@ -1064,7 +1064,7 @@ function setupEnsembleBlocks(activity) {
                 .replace(/fill_color/g, fillColor)
                 .replace(/stroke_color/g, strokeColor);
 
-            tur.doTurtleShell(55, "data:image/svg+xml;base64," + window.btoa(unescape(encodeURIComponent(artwork))));
+            tur.doTurtleShell(55, "data:image/svg+xml;base64," + window.btoa(base64Encode(artwork)));
 
             // Restore the heading.
             if (heading != 0) {
@@ -1132,7 +1132,6 @@ function setupEnsembleBlocks(activity) {
             }
 
             this.setPalette("ensemble", activity);
-            this.hidden = this.lang === "ja";
 
             this.formBlock({
                 outType: "numberout"
@@ -1140,7 +1139,7 @@ function setupEnsembleBlocks(activity) {
         }
 
         arg() {
-            return activity.turtles.turtleList.length;
+            return activity.turtles.turtleCount();
         }
     }
 
@@ -1167,7 +1166,6 @@ function setupEnsembleBlocks(activity) {
             }
 
             this.setPalette("ensemble", activity);
-            this.hidden = this.lang === "ja";
 
             this.formBlock({
                 outType: "textout",

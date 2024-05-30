@@ -15,18 +15,30 @@
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
 
+/*
+   global
+
+   _, $
+*/
+/*
+   exported
+
+   debounce, getCookie, setCookie, hideOnClickOutside,
+   updateCheckboxes
+*/
+
 function debounce(func, wait, immediate) {
     let timeout;
-    return function () {
-        let context = this,
+    return () => {
+        const context = this,
             args = arguments;
 
-        let later = function () {
+        const later = () => {
             timeout = null;
             if (!immediate) func.apply(context, args);
         };
 
-        let callNow = immediate && !timeout;
+        const callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
@@ -35,112 +47,108 @@ function debounce(func, wait, immediate) {
 
 function getCookie(cname) {
     // from W3Schools
-    let name = cname + '=';
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
+    const name = `${cname}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(";");
+
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
-        while (c.charAt(0) === ' ') {
-            c = c.substring(1);
-        }
 
-        if (c.indexOf(name) === 0) {
+        while (c.charAt(0) === " ")
+            c = c.substring(1);
+
+        if (c.indexOf(name) === 0)
             return c.substring(name.length, c.length);
-        }
     }
-    return '';
+    return "";
 };
 
 function setCookie(cname, cvalue, exdays) {
     // from W3Schools
-    let d = new Date();
+    const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = 'expires=' + d.toUTCString();
-    document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+    const expires = `expires=${d.toUTCString()}`;
+    document.cookie = `${cname}=${cvalue};${expires};path=/` ;
 };
 
 function toggleSearch(on) {
-    if (on) {
-        document.getElementById('searchcontainer').style.display = 'block';
-    } else {
-        document.getElementById('searchcontainer').style.display = 'none';
-    }
+    const displayValue = on ? "block" : "none" ;
+    document.getElementById("searchcontainer").style.display = displayValue;
 };
 
 function toggleText(id, a, b) {
-    let t = document.getElementById(id).innerHTML;
-    if (t.indexOf(a) !== -1) {
-        document.getElementById(id).innerHTML = t.replace(a, b);
-    } else {
-        document.getElementById(id).innerHTML = t.replace(b, a);
-    }
+    const el = document.getElementById(id);
+
+    const prevHTML = el.innerHTML ;
+    const updatedHTML = prevHTML.indexOf(a) !== -1 ? prevHTML.replace(a,b) : prevHTML.replace(b,a) ;
+
+    el.innerHTML = "" ;
+    el.insertAdjacentHTML("afterbegin", updatedHTML) ;
 };
 
 function toggleExpandable(id, c) {
-    let d = document.getElementById(id).className;
-    if (d === c + ' open') {
-        document.getElementById(id).className = c;
-    } else {
-        document.getElementById(id).className = c + ' open';
-    }
+    const el = document.getElementById(id) ;
+    el.className = (el.className === `${c} open`) ? c : `${c} open` ;
 };
 
 function hideOnClickOutside(eles, other) {
     // if click not in id, hide
-    const outsideClickListener = function (event) {
-        let path = event.path || (event.composedPath && event.composedPath()) || composedPath(event.target);
+    const outsideClickListener = event => {
+        // eslint-disable-next-line max-len
+        const path = event.path || (event.composedPath && event.composedPath()) || event.composedPath(event.target);
         let ok = false;
-        for (let i = 0; i < eles.length; i++) {
-            if (path.indexOf(eles[i]) !== -1) {
+
+        for (let i = 0; i < eles.length; i++)
+            if (path.indexOf(eles[i]) !== -1)
                 ok = true;
-            }
-        }
 
         if (ok === false) {
-            document.getElementById(other).style.display = 'none';
+            document.getElementById(other).style.display = "none";
+            // eslint-disable-next-line no-use-before-define
             removeClickListener();
         }
     };
 
-    const removeClickListener = function () {
-        document.removeEventListener('click', outsideClickListener);
+    const removeClickListener = () => {
+        document.removeEventListener("click", outsideClickListener);
     };
 
-    document.addEventListener('click', outsideClickListener);
+    document.addEventListener("click", outsideClickListener);
 };
 
 function updateCheckboxes(id) {
-    let elements = document.getElementById(id).querySelectorAll('input:checked');
-    let urlel = document.getElementById(id).querySelectorAll('input[type=text]')[0];
-    let url = urlel.getAttribute('data-originalurl');
-    for (let i = 0; i < elements.length; i++) {
-        url += '&' + elements[i].name + '=True';
-    }
+    const elements = document.getElementById(id).querySelectorAll("input:checked");
+    const urlel = document.getElementById(id).querySelectorAll("input[type=text]")[0];
+    let url = urlel.getAttribute("data-originalurl");
+
+    for (let i = 0; i < elements.length; i++)
+        url += `&${elements[i].name}=True`;
 
     urlel.value = url;
 };
 
-$(document).ready(function () {
-    $('#publisher').modal();
-    $('#deleter').modal();
-    $('#projectviewer').modal();
-    document.getElementById('global-search').addEventListener('input', function (evt) {
-        if (this.value !== '') {
-            document.getElementById('search-close').style.display = 'initial';
-        } else {
-            document.getElementById('search-close').style.display = 'none';
-        }
+$(document).ready(() => {
+    $("#publisher").modal();
+    $("#deleter").modal();
+    $("#projectviewer").modal();
+    // eslint-disable-next-line no-unused-vars
+    document.getElementById("global-search").addEventListener("input", (evt) => {
+        document.getElementById("search-close")
+                .style.display = this.value === "" ? "none" : "initial" ;
     });
-    document.getElementById('local-tab').addEventListener('click', function (evt) {
+    // eslint-disable-next-line no-unused-vars
+    document.getElementById("local-tab").addEventListener("click", (evt) => {
         toggleSearch(false);
     });
-    document.getElementById('global-tab').addEventListener('click', function (evt) {
+    // eslint-disable-next-line no-unused-vars
+    document.getElementById("global-tab").addEventListener("click", (evt) => {
         toggleSearch(true);
     });
-    document.getElementById('view-more-chips').addEventListener('click', function (evt) {
-        showMore = _('Show more tags');
-        showLess = _('Show fewer tags');
-        toggleExpandable('morechips', 'flexchips');
-        toggleText('view-more-chips', showMore, showLess);
+    // eslint-disable-next-line no-unused-vars
+    document.getElementById("view-more-chips").addEventListener("click", (evt) => {
+        const showMore = _("Show more tags") + " ▼";
+        const showLess = _("Show fewer tags" + " ▲");
+        toggleExpandable("morechips", "flexchips");
+        toggleText("view-more-chips", showMore, showLess);
     });
 });

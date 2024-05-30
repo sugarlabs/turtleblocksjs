@@ -31,7 +31,8 @@
     js/logo.js
         NOINPUTERRORMSG
     js/utils/musicutils.js
-        MUSICALMODES, MODE_PIE_MENUS, getNote, getModeLength
+        MUSICALMODES, MODE_PIE_MENUS, getNote, getModeLength, NOTESTEP,
+        GetNotesForInterval,ALLNOTESTEP,NOTENAMES,SEMITONETOINTERVALMAP
     js/turtle-singer.js
         Singer
     js/js-export/export.js
@@ -66,6 +67,83 @@ function setupIntervalsActions(activity) {
         }
 
         /**
+         * @static
+         * @param {number} turtle
+         * @returns {String}
+         */
+        static GetIntervalNumber(turtle) {
+            const tur = activity.turtles.ithTurtle(turtle);
+            let { firstNote, secondNote, octave } = GetNotesForInterval(tur);
+            let totalIntervals = Math.abs(ALLNOTESTEP[firstNote] - ALLNOTESTEP[secondNote]);
+
+            if (ALLNOTESTEP[secondNote] < ALLNOTESTEP[firstNote] && octave !== 0) totalIntervals = 12 - totalIntervals;
+
+            if (octave < 0 && totalIntervals !== 0 && totalIntervals !== 12) totalIntervals = 12 - totalIntervals;
+            
+            if (octave < -1 || totalIntervals === 0) octave = Math.abs(octave);
+            
+            while (octave > 0) {
+                totalIntervals += 12;
+                octave--;
+            }
+            
+            return totalIntervals;
+        }
+
+         /**
+         * @static
+         * @param {number} turtle
+         * @returns {String}
+         */
+
+        static GetCurrentInterval(turtle) {
+            const tur = activity.turtles.ithTurtle(turtle);
+
+            const { firstNote, secondNote, octave } = GetNotesForInterval(tur);
+
+            const index1 = NOTENAMES.indexOf(firstNote.substring(0, 1));
+            const index2 = NOTENAMES.indexOf(secondNote.substring(0, 1));
+            let lastWord = "";
+            let letterGap = Math.abs(index2 - index1);
+            
+            if (index1 > index2 && octave !== 0) letterGap = NOTENAMES.length - letterGap;
+
+            let totalIntervals = this.GetIntervalNumber(turtle);
+            
+            const numberToStringMap = [_('one'), _('two'), _('three'), _('four'), _('five'), _('six'), _('seven'), _('eight'), _('nine')]
+            const plural = (Math.abs(octave) > 1) ? _('octaves') : _('octave');
+            
+            let os = numberToStringMap[Math.abs(octave) - 1] || Math.abs(octave);
+            if (totalIntervals % 12 === 0 && letterGap === 0) {
+                if (octave < 0) {
+                    if(octave===-1)os = _('a')
+                    const a = os + " " + _('perfect') + " "+ plural + " " + _("below");
+                    return a.charAt(0).toUpperCase() + a.slice(1);
+                }
+                if (octave > 1) {
+                    const a = os + " " + _('perfect') + " " + plural + " " + _("above");
+                    return a.charAt(0).toUpperCase() + a.slice(1);
+                }
+            }
+            
+            if (totalIntervals > 21) {
+                if (octave >=1) {
+                    lastWord = ", " + _('plus') + " " + os + " " + plural;
+                }    
+                while (totalIntervals > 12) totalIntervals -= 12;
+            }
+            
+            if (octave < 0) {
+                letterGap = (letterGap !== 0) ? NOTENAMES.length - letterGap : letterGap;
+                if (octave < -1) lastWord = `,  ${os} ${plural}`;
+                lastWord += _(' below')
+            }
+            
+            let interval = (totalIntervals % 12 === 0 && letterGap === 0) ? SEMITONETOINTERVALMAP[totalIntervals][letterGap] : SEMITONETOINTERVALMAP[totalIntervals][letterGap] + lastWord;
+            return interval;
+        }
+        
+        /**
          * "set key" block.
          * Sets the key and mode.
          *
@@ -77,26 +155,19 @@ function setupIntervalsActions(activity) {
          */
         static setKey(key, mode, turtle) {
             const modename = Singer.IntervalsActions.GetModename(mode);
-
             const tur = activity.turtles.ithTurtle(turtle);
-            // Check to see if there are any transpositions on the key
-            if (tur.singer.transposition !== 0) {
-                const noteObj = getNote(
-                    key,
-                    4,
-                    tur.singer.transposition,
-                    tur.singer.keySignature,
-                    false,
-                    null,
-                    activity.errorMsg,
-                    activity.logo.synth.inTemperament
-                );
-                tur.singer.keySignature = noteObj[0] + " " + modename;
-                activity.logo.notation.notationKey(turtle, noteObj[0], modename);
-            } else {
-                tur.singer.keySignature = key + " " + modename;
-                activity.logo.notation.notationKey(turtle, key, modename);
-            }
+            const noteObj = getNote(
+                key,
+                4,
+                tur.singer.transposition,
+                tur.singer.keySignature,
+                false,
+                null,
+                activity.errorMsg,
+                activity.logo.synth.inTemperament
+            );
+            tur.singer.keySignature = noteObj[0] + " " + modename;
+            activity.logo.notation.notationKey(turtle, noteObj[0], modename);
         }
 
         /**
@@ -136,16 +207,16 @@ function setupIntervalsActions(activity) {
         }
 
         /**
-         * "moveable do" block.
+         * "movable do" block.
          * Attaches or detaches solfege names to specific pitches.
          *
          * @static
-         * @param {Boolean} moveable - whether solfeges are fixed or moveable
+         * @param {Boolean} movable - whether solfeges are fixed or movable
          * @param {Number} turtle - Turtle index in turtles.turtleList
          * @returns {void}
          */
-        static setMoveableDo(moveable, turtle) {
-            activity.turtles.ithTurtle(turtle).singer.moveable = moveable;
+        static setMovableDo(movable, turtle) {
+            activity.turtles.ithTurtle(turtle).singer.movable = movable;
         }
 
         /**
@@ -256,6 +327,40 @@ function setupIntervalsActions(activity) {
         }
 
         /**
+         * "chord interval" block.
+         * Calculates a scalar interval modified by a semitone interval
+         *
+         * @static
+         * @param {Object} value - interval array: [scalar, semitone]
+         * @param {Number} turtle - Turtle index in turtles.turtleList
+         * @param {Number|String} [blk] - corresponding Block index in blocks.blockList
+         * @returns {void}
+         */
+        static setChordInterval(obj, turtle, blk) {
+            let arg = obj;
+            if (arg === null) {
+                activity.errorMsg(NOINPUTERRORMSG, blk);
+                arg = [1, 0];
+            }
+
+            const tur = activity.turtles.ithTurtle(turtle);
+
+            tur.singer.chordIntervals.push(arg);
+
+            const listenerName = "_chord_interval_" + turtle;
+            if (blk !== undefined && blk in activity.blocks.blockList) {
+                activity.logo.setDispatchBlock(blk, turtle, listenerName);
+            } else if (MusicBlocks.isRun) {
+                const mouse = Mouse.getMouseFromTurtle(tur);
+                if (mouse !== null) mouse.MB.listeners.push(listenerName);
+            }
+
+            const __listener = () => tur.singer.chordIntervals.pop();
+
+            activity.logo.setTurtleListener(turtle, listenerName, __listener);
+        }
+
+        /**
          * "semi-tone interval" block.
          * Calculates a relative interval of half-steps for the notes with it.
          *
@@ -291,6 +396,38 @@ function setupIntervalsActions(activity) {
 
                 activity.logo.setTurtleListener(turtle, listenerName, __listener);
             }
+        }
+
+        /**
+         * "ratio interval" block.
+         * Calculates a relative interval based on a ratio.
+         *
+         * @static
+         * @param {Number} value - ratio
+         * @param {Number} turtle - Turtle index in turtles.turtleList
+         * @param {Number|String} [blk] - corresponding Block index in blocks.blockList
+         * @returns {void}
+         */
+        static setRatioInterval(value, turtle, blk) {
+            let arg = value;
+            if (arg === null || typeof arg !== "number") {
+                activity.errorMsg(NOINPUTERRORMSG, blk);
+                arg = 1;
+            }
+
+            const tur = activity.turtles.ithTurtle(turtle);
+            tur.singer.ratioIntervals.push(value);
+            const listenerName = "_ratio_interval_" + turtle;
+            if (blk !== undefined && blk in activity.blocks.blockList) {
+                activity.logo.setDispatchBlock(blk, turtle, listenerName);
+            } else if (MusicBlocks.isRun) {
+                const mouse = Mouse.getMouseFromTurtle(tur);
+                if (mouse !== null) mouse.MB.listeners.push(listenerName);
+            }
+
+            const __listener = () => tur.singer.ratioIntervals.pop();
+
+            activity.logo.setTurtleListener(turtle, listenerName, __listener);
         }
 
         /**

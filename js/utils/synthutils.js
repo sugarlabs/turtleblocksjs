@@ -40,8 +40,19 @@
    instrumentsEffects, instrumentsFilters, Synth
 */
 
+/**
+ * The number of voices in polyphony.
+ * @constant
+ * @type {number}
+ * @default 3
+ */
 const POLYCOUNT = 3;
 
+/**
+ * Array of names and details for various noise synthesizers.
+ * @constant
+ * @type {Array<Array<string>>}
+ */
 const NOISENAMES = [
     //.TRANS: white noise synthesizer
     [_("white noise"), "noise1", "images/synth.svg", "electronic"],
@@ -51,6 +62,11 @@ const NOISENAMES = [
     [_("pink noise"), "noise3", "images/synth.svg", "electronic"]
 ];
 
+/**
+ * Array of names and details for various musical instruments.
+ * @constant
+ * @type {Array<Array<string>>}
+ */
 const VOICENAMES = [
     //.TRANS: musical instrument
     [_("piano"), "piano", "images/voices.svg", "string"],
@@ -122,6 +138,11 @@ const VOICENAMES = [
 
 // drum symbols are from
 // http://lilypond.org/doc/v2.18/Documentation/notation/percussion-notes
+/**
+ * Array of names and details for various drum instruments.
+ * @constant
+ * @type {Array<Array<string>>}
+ */
 const DRUMNAMES = [
     //.TRANS: musical instrument
     [_("snare drum"), "snare drum", "images/snaredrum.svg", "sn", "drum"],
@@ -130,7 +151,9 @@ const DRUMNAMES = [
     //.TRANS: musical instrument
     [_("tom tom"), "tom tom", "images/tom.svg", "tomml", "drum"],
     //.TRANS: musical instrument
-    [_("floor tom"), "floor tom tom", "images/floortom.svg", "tomfl", "drum"],
+    [_("floor tom"), "floor tom", "images/floortom.svg", "tomfl", "drum"],
+    //.TRANS: musical instrument
+    [_("bass drum"), "bass drum", "images/kick.svg", "tomfl", "drum"],
     //.TRANS: a drum made from an inverted cup
     [_("cup drum"), "cup drum", "images/cup.svg", "hh", "drum"],
     //.TRANS: musical instrument
@@ -179,9 +202,18 @@ const DRUMNAMES = [
     [_("duck"), "duck", "images/duck.svg", "hh", "animal"]
 ];
 
-// Some "drums" are sound effects.
+/**
+ * Array of names for various sound effect presets.
+ * @constant
+ * @type {Array<string>}
+ */
 const EFFECTSNAMES = ["duck", "dog", "cricket", "cat", "bubbles", "splash", "bottle"];
 
+/**
+ * Array of file paths for different sound samples.
+ * @constant
+ * @type {Array<string>}
+ */
 const SOUNDSAMPLESDEFINES = [
     "samples/violin",
     "samples/cello",
@@ -214,6 +246,7 @@ const SOUNDSAMPLESDEFINES = [
     "samples/clang",
     "samples/cup",
     "samples/floortom",
+    "samples/bassdrum",
     "samples/snare",
     "samples/piano",
     "samples/acguit",
@@ -235,6 +268,11 @@ const SOUNDSAMPLESDEFINES = [
 ];
 
 // Some samples have a default volume other than 50 (See #1697)
+/**
+ * Default volume settings for different synth instruments.
+ * @constant
+ * @type {Object.<string, number>}
+ */
 const DEFAULTSYNTHVOLUME = {
     "flute": 90,
     "electronic synth": 90,
@@ -246,6 +284,7 @@ const DEFAULTSYNTHVOLUME = {
     "kick drum": 100,
     "tom tom": 100,
     "floor tom": 100,
+    "bass drum": 100,
     "cup drum": 100,
     "darbuka drum": 100,
     "hi hat": 100,
@@ -264,8 +303,12 @@ const DEFAULTSYNTHVOLUME = {
     "japanese drum": 90
 };
 
-// The sample has a pitch which is subsequently transposed.
-// This number is that starting pitch number. Reference function pitchToNumber
+/**
+ * The sample has a pitch which is subsequently transposed.
+ * This object defines the starting pitch number for different samples.
+ * @constant
+ * @type {Object.<string, [string, number]>}
+ */
 const SAMPLECENTERNO = {
     "piano": ["C4", 39], // pitchToNumber('C', 4, 'C Major')],
     "violin": ["C5", 51], // pitchToNumber('C', 5, 'C Major')],
@@ -292,14 +335,36 @@ const SAMPLECENTERNO = {
     "double bass": ["C4", 39]
 };
 
+
+/**
+ * Array to store custom samples.
+ * @constant
+ * @type {Array}
+ */
 const CUSTOMSAMPLES = [];
 
+/**
+ * Array of percussion instruments.
+ * @constant
+ * @type {Array<string>}
+ */
 const percussionInstruments = ["koto", "banjo", "dulcimer", "xylophone", "celeste"];
+
+/**
+ * Array of string instruments.
+ * @constant
+ * @type {Array<string>}
+ */
 const stringInstruments = ["piano", "guitar", "acoustic guitar", "electric guitar"];
 
-// Validate the passed on parameters in a function as per the default
-// parameters values
-function validateAndSetParams(defaultParams, params) {
+/**
+ * Validates and sets parameters for an instrument.
+ * @function
+ * @param {Object} defaultParams - The default parameters for the instrument.
+ * @param {Object} params - The parameters to be set for the instrument.
+ * @returns {Object} - The validated and set parameters.
+ */
+const validateAndSetParams = (defaultParams, params) => {
     if (defaultParams && defaultParams !== null && params && params !== undefined) {
         for (const key in defaultParams) {
             if (key in params && params[key] !== undefined) defaultParams[key] = params[key];
@@ -307,32 +372,47 @@ function validateAndSetParams(defaultParams, params) {
     }
 
     return defaultParams;
-}
+};
 
 // This object contains mapping between instrument name and
 // corresponding synth object.  The instrument name is the one that
 // the user sets in the "Timbre" clamp and uses in the "Set Timbre"
 // clamp; There is one instrument dictionary per turtle.
-
+/**
+ * Object containing mapping between turtle ID and instrument dictionaries.
+ * @type {Object.<number, Object>}
+ */
 const instruments = { 0: {} };
 
-// This object contains mapping between instrument name and its source
-// - (0->default, 1->drum, 2->voice, 3->builtin)
-// e.g. instrumentsSource['kick drum'] = [1, 'kick drum']
-
+/**
+ * Object containing mapping between instrument name and its source.
+ * @type {Object.<string, [number, string]>}
+ * e.g. instrumentsSource['kick drum'] = [1, 'kick drum']
+ */
 const instrumentsSource = {};
 
-// Effects associated with instruments in the timbre widget
-
+/**
+ * Object containing effects associated with instruments in the timbre widget.
+ * @type {Object.<number, Object>}
+ */
 const instrumentsEffects = { 0: {} };
 
-// Filters associated with instruments in the timbre widget
-
+/**
+ * Object containing filters associated with instruments in the timbre widget.
+ * @type {Object.<number, Object>}
+ */
 const instrumentsFilters = { 0: {} };
 
+/**
+ * Synth constructor function.
+ * @constructor
+ */
 function Synth() {
     // Isolate synth functions here.
-
+    /**
+     * Built-in synth types.
+     * @type {Object.<string, number>}
+     */
     const BUILTIN_SYNTHS = {
         "sine": 1,
         "triangle": 1,
@@ -349,7 +429,10 @@ function Synth() {
         "simple 4": 1,
         "custom": 1
     };
-
+    /**
+     * Custom synth types.
+     * @type {Object.<string, number>}
+     */
     const CUSTOM_SYNTHS = {
         amsynth: 1,
         fmsynth: 1,
@@ -360,24 +443,69 @@ function Synth() {
     // this.tone = new Tone();
     this.tone = null;
 
-    Tone.Buffer.onload = function () {
+    Tone.Buffer.onload = () => {
         // eslint-disable-next-line no-console
         console.debug("sample loaded");
     };
-
+    /**
+     * Object to store samples.
+     * @type {Object}
+     */
     this.samples = null;
+    /**
+     * Suffix for sample names.
+     * @type {string}
+     */
     this.samplesuffix = "_SAMPLE";
+    /**
+     * Manifest for sample loading.
+     * @type {Object}
+     */
     this.samplesManifest = null;
+    /**
+     * Flag to track changes in temperament.
+     * @type {boolean}
+     */
     this.changeInTemperament = false;
+    /**
+     * Current temperament.
+     * @type {string}
+     */
     this.inTemperament = "equal";
+    /**
+     * Starting pitch note.
+     * @type {string}
+     */
     this.startingPitch = "C4";
+    /**
+     * Frequencies of notes in the current temperament.
+     * @type {Object.<string, [number, number]>}
+     */
     this.noteFrequencies = {};
-
-    this.newTone = function () {
+    
+    /**
+     * Function to initialize a new Tone.js instance.
+     * @function
+     */
+    this.newTone = () => {
         this.tone = Tone;
     };
-
-    this.temperamentChanged = function (temperament, startingPitch) {
+    
+    /**
+     * Function to get the current temperament.
+     * @function
+     * @returns {string} - The current temperament.
+     */
+    this.whichTemperament = () => {
+        return this.inTemperament;
+    };
+    /**
+     * Function to handle temperament changes.
+     * @function
+     * @param {string} temperament - The new temperament.
+     * @param {string} startingPitch - The starting pitch note.
+     */
+    this.temperamentChanged = (temperament, startingPitch) => {
         let startPitch = startingPitch;
         const t = getTemperament(temperament);
         const len = startPitch.length;
@@ -509,12 +637,26 @@ function Synth() {
 
         this.changeInTemperament = false;
     };
-
-    this.getFrequency = function (notes, changeInTemperament) {
+    /**
+     * Function to get the frequency of notes.
+     * @function
+     * @param {string|number|string[]} notes - The notes to get frequencies for.
+     * @param {boolean} changeInTemperament - Whether there is a change in temperament.
+     * @returns {number|number[]} - The frequency or frequencies.
+     */
+    this.getFrequency = (notes, changeInTemperament) => {
         return this._getFrequency(notes, changeInTemperament);
     };
-
-    this._getFrequency = function (notes, changeInTemperament, temperament) {
+    /**
+     * Internal function to get the frequency of notes.
+     * @function
+     * @param {string|number|string[]} notes - The notes to get frequencies for.
+     * @param {boolean} changeInTemperament - Whether there is a change in temperament.
+     * @param {string} temperament - The temperament to use.
+     * @returns {number|number[]} - The frequency or frequencies.
+     * @private
+     */
+    this._getFrequency = (notes, changeInTemperament, temperament) => {
         if (changeInTemperament) {
             if (temperament === undefined) {
                 this.temperamentChanged(this.inTemperament, this.startingPitch);
@@ -585,9 +727,15 @@ function Synth() {
             return notes;
         }
     };
-
+    /**
+     * Function to get custom frequency for notes.
+     * @function
+     * @param {string|number|string[]} notes - The notes to get frequencies for.
+     * @param {string} customID - The custom temperament ID.
+     * @returns {number|number[]} - The frequency or frequencies.
+     */
     this.getCustomFrequency = (notes, customID) => {
-        const __getCustomFrequency = function (oneNote, startingPitch) {
+        const __getCustomFrequency = (oneNote, startingPitch) => {
             const octave = oneNote.slice(-1);
             oneNote = getCustomNote(oneNote.substring(0, oneNote.length - 1));
             const pitch = startingPitch;
@@ -637,8 +785,12 @@ function Synth() {
             return notes;
         }
     };
-
-    this.resume = function () {
+    
+    /**
+     * Function to resume the Tone.js context.
+     * @function
+     */
+    this.resume = () => {
         if (this.tone === null) {
             this.newTone();
         }
@@ -647,7 +799,11 @@ function Synth() {
     };
 
     /*eslint-disable no-undef*/
-    this.loadSamples = function () {
+    /**
+     * Function to load samples.
+     * @function
+     */
+    this.loadSamples = () => {
         this.samplesManifest = {
             voice: [
                 { name: "piano", data: PIANO_SAMPLE },
@@ -700,12 +856,13 @@ function Synth() {
                 // {'name': 'japanese bell', 'data': JAPANESE_BELL_SAMPLE},
                 { name: "clang", data: CLANG_SAMPLE },
                 { name: "cup drum", data: CUP_SAMPLE },
-                { name: "floor tom tom", data: FLOORTOM_SAMPLE },
+                { name: "floor tom", data: FLOORTOM_SAMPLE },
+                { name: "bass drum", data: BASSDRUM_SAMPLE },
                 { name: "snare drum", data: SNARE_SAMPLE }
             ]
         };
         /*eslint-enable no-undef*/
-        const data = function () {
+        const data = () => {
             return null;
         };
         this.samplesManifest.voice.push({ name: "empty", data: data });
@@ -721,7 +878,12 @@ function Synth() {
         }
     };
 
-    this._loadSample = function (sampleName) {
+    /**
+     * Loads samples into the Synth instance.
+     * @function
+     * @memberof Synth
+     */
+    this._loadSample = sampleName => {
         // let accounted = false;
         for (const type in this.samplesManifest) {
             if (this.samplesManifest.hasOwnProperty(type)) {
@@ -739,6 +901,11 @@ function Synth() {
         }
     };
 
+    /**
+     * Array to store samples that need to be loaded at start.
+     * @type {Array}
+     * @memberof Synth
+     */
     this.samplesQueue = []; // Samples that need to be loaded at start.
 
     require(SOUNDSAMPLESDEFINES, () => {
@@ -754,6 +921,11 @@ function Synth() {
         }
     });
 
+    /**
+     * Sets up the recorder for the Synth instance.
+     * @function
+     * @memberof Synth
+     */
     this.setupRecorder = () => {
         const cont = Tone.getContext();
         const dest = cont.createMediaStreamDestination();
@@ -800,8 +972,14 @@ function Synth() {
         // setTimeout(()=>{this.recorder.stop();},5000);
     };
 
-    // Function that provides default parameters for various synths
-    this.getDefaultParamValues = function (sourceName) {
+    /**
+     * Retrieves default parameter values for various synthesizers.
+     * @function
+     * @memberof Synth
+     * @param {string} sourceName - The name of the synthesizer.
+     * @returns {Object} - Default parameter values for the specified synthesizer.
+     */
+    this.getDefaultParamValues = sourceName => {
         // sourceName may need to be 'untranslated'
         let sourceNameLC = sourceName.toLowerCase();
         if (getOscillatorTypes(sourceNameLC) !== null) {
@@ -986,8 +1164,13 @@ function Synth() {
         return synthOptions;
     };
 
-    // Poly synth will be loaded as the default synth.
-    this.createDefaultSynth = function (turtle) {
+    /**
+     * Creates the default poly/default/custom synth for the specified turtle.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The turtle identifier.
+     */
+    this.createDefaultSynth = turtle => {
         // eslint-disable-next-line no-console
         console.debug("create default poly/default/custom synth for turtle " + turtle);
         const default_synth = new Tone.PolySynth(Tone.AMSynth, POLYCOUNT).toDestination();
@@ -997,9 +1180,16 @@ function Synth() {
         instrumentsSource["custom"] = [0, "custom"];
     };
 
-    // Function reponsible for creating the synth using the existing
-    // samples: drums and voices
-    this._createSampleSynth = function (turtle, instrumentName, sourceName) {
+    /**
+     * Creates a synth using existing samples: drums and voices.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The turtle identifier.
+     * @param {string} instrumentName - The name of the instrument.
+     * @param {string} sourceName - The name of the source.
+     * @returns {Tone.Sampler|Tone.Player} - The created synth.
+     */
+    this._createSampleSynth = (turtle, instrumentName, sourceName) => {
         let tempSynth;
         if (sourceName in this.samples.voice) {
             instrumentsSource[instrumentName] = [2, sourceName];
@@ -1028,8 +1218,16 @@ function Synth() {
 
         return tempSynth;
     };
-
-    this._parseSampleCenterNo = function (solfege, octave) {
+    
+    /**
+     * Parses solfege notation and octave to determine the pitch number.
+     * @function
+     * @memberof Synth
+     * @param {string} solfege - The solfege notation.
+     * @param {number} octave - The octave number.
+     * @returns {string} - The pitch number.
+     */
+    this._parseSampleCenterNo = (solfege, octave) => {
         // const pitchName = "C4";
         const solfegeDict = {"do":0, "re":2, "mi":4, "fa":5, "sol":7, "la":9, "ti":11};
         const letterDict = {"C":0, "D":2, "E":4, "F":5, "G":7, "A":9, "B":11};
@@ -1063,8 +1261,18 @@ function Synth() {
         return pitchNumber.toString();
     };
 
-    // Function using builtin synths from Tone.js
-    this._createBuiltinSynth = function (turtle, instrumentName, sourceName, params) {
+    
+    /**
+     * Creates a synth using builtin synths from Tone.js.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The turtle identifier.
+     * @param {string} instrumentName - The name of the instrument.
+     * @param {string} sourceName - The name of the source.
+     * @param {Object} params - Additional parameters for synth configuration.
+     * @returns {Tone.Synth|Tone.PolySynth|Tone.PluckSynth|Tone.NoiseSynth} - The created synth.
+     */
+    this._createBuiltinSynth = (turtle, instrumentName, sourceName, params) => {
         let synthOptions, builtin_synth;
         if (sourceName in BUILTIN_SYNTHS) {
             synthOptions = this.getDefaultParamValues(sourceName);
@@ -1115,9 +1323,15 @@ function Synth() {
         return builtin_synth;
     };
 
-    // Function reponsible for creating the custom synth using the
-    // Tonejs methods like AMSynth, FMSynth, etc.
-    this._createCustomSynth = function (sourceName, params) {
+    /**
+     * Creates a custom synth using Tone.js methods like AMSynth, FMSynth, etc.
+     * @function
+     * @memberof Synth
+     * @param {string} sourceName - The name of the source.
+     * @param {Object} params - Additional parameters for synth configuration.
+     * @returns {Tone.AMSynth|Tone.FMSynth|Tone.DuoSynth|Tone.PolySynth} - The created custom synth.
+     */
+    this._createCustomSynth = (sourceName, params) => {
         // Getting parameters for custom synth
         let synthOptions = this.getDefaultParamValues(sourceName);
         synthOptions = validateAndSetParams(synthOptions, params);
@@ -1135,8 +1349,17 @@ function Synth() {
 
         return tempSynth;
     };
-
-    this.__createSynth = function (turtle, instrumentName, sourceName, params) {
+    
+    /**
+     * Creates a synth based on the specified parameters, either using samples, built-in synths, or custom synths.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The turtle identifier.
+     * @param {string} instrumentName - The name of the instrument.
+     * @param {string} sourceName - The name of the source.
+     * @param {Object} params - Additional parameters for synth configuration.
+     */
+    this.__createSynth = (turtle, instrumentName, sourceName, params) => {
 
         this._loadSample(sourceName);
         if (sourceName in this.samples.voice || sourceName in this.samples.drum) {
@@ -1187,8 +1410,16 @@ function Synth() {
         }
     };
 
-    // Create the synth as per the user's input in the 'Timbre' clamp.
-    this.createSynth = function (turtle, instrumentName, sourceName, params) {
+    /**
+     * Creates a synth based on the user's input in the 'Timbre' clamp, handling race conditions with the samples loader.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The turtle identifier.
+     * @param {string} instrumentName - The name of the instrument.
+     * @param {string} sourceName - The name of the source.
+     * @param {Object} params - Additional parameters for synth configuration.
+     */
+    this.createSynth = (turtle, instrumentName, sourceName, params) => {
         // We may have a race condition with the samples loader.
         if (this.samples === null) {
             this.samplesQueue.push([instrumentName, sourceName, params]);
@@ -1200,8 +1431,16 @@ function Synth() {
             this.__createSynth(turtle, instrumentName, sourceName, params);
         }
     };
-
-    this.loadSynth = function (turtle, sourceName) {
+    
+    /**
+     * Loads a synth based on the user's input, creating and setting volume for the specified turtle.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The turtle identifier.
+     * @param {string} sourceName - The name of the source.
+     * @returns {Tone.Instrument|null} - The loaded synth or null if not loaded.
+     */
+    this.loadSynth = (turtle, sourceName) => {
         /* eslint-disable */
         if (sourceName in instruments[turtle]) {
             if (sourceName.substring(0,13) === "customsample_") {
@@ -1223,8 +1462,20 @@ function Synth() {
 
         return null;
     };
-
-    this._performNotes = function (synth, notes, beatValue, paramsEffects, paramsFilters, setNote) {
+    
+    /**
+     * Perform notes using the provided synth, notes, and parameters for effects and filters.
+     * @function
+     * @memberof Synth
+     * @param {Tone.Instrument} synth - The Tone.js instrument.
+     * @param {string|number} notes - The notes to be played or the number of notes.
+     * @param {number} beatValue - The duration of each beat.
+     * @param {Object|null} paramsEffects - Parameters for effects like vibrato, tremolo, etc.
+     * @param {Object|null} paramsFilters - Parameters for filters.
+     * @param {boolean} setNote - Indicates whether to set the note on the synth.
+     * @param {number} future - The time in the future when the notes should be played.
+     */
+    this._performNotes = (synth, notes, beatValue, paramsEffects, paramsFilters, setNote, future) => {
         if (this.inTemperament !== "equal" && !isCustomTemperament(this.inTemperament)) {
             if (typeof notes === "number") {
                 notes = notes;
@@ -1253,14 +1504,12 @@ function Synth() {
 
         if (isCustomTemperament(this.inTemperament)) {
             const notes1 = notes;
-            console.log(notes);
             if (notes.search("[+]") !== -1 || notes.search("[-]") !== -1) {
                 notes = this.getCustomFrequency(notes, this.inTemperament);
             }
             if (notes === undefined || notes === "undefined") {
                 notes = notes1;
             }
-            console.debug(notes);
             /* eslint-enable */
         }
 
@@ -1269,7 +1518,7 @@ function Synth() {
         if (paramsEffects === null && paramsFilters === null) {
             // See https://github.com/sugarlabs/musicblocks/issues/2951
             try {
-                synth.triggerAttackRelease(notes, beatValue, Tone.now() + 0.0);
+                synth.triggerAttackRelease(notes, beatValue, Tone.now() + future);
             } catch(e) {
                 // eslint-disable-next-line no-console
                 console.debug(e);
@@ -1384,7 +1633,7 @@ function Synth() {
                         );
                     }
 
-                    neighbor = new Tone.Part(function (time, value) {
+                    neighbor = new Tone.Part((time, value) => {
                         synth.triggerAttackRelease(value.note, value.duration, time);
                     }, obj).start();
                 }
@@ -1399,9 +1648,14 @@ function Synth() {
                             synth.voices[i].setNote(notes);
                         }
                     }
-                } else {
-                    synth.triggerAttackRelease(notes, beatValue);
-                }
+                } else {  
+                    Tone.ToneAudioBuffer.loaded().then(() => {
+                        synth.triggerAttackRelease(notes, beatValue, Tone.now() + future);
+                    }).catch((e) => {
+                    console.debug(e);
+                    })
+
+                }   
             }
 
             setTimeout(() => {
@@ -1441,15 +1695,29 @@ function Synth() {
     };
 
     // Generalised version of 'trigger and 'triggerwitheffects' functions
-    this.trigger = function (
+    /**
+     * Triggers notes on a specified turtle with the given parameters.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The name of the turtle.
+     * @param {string|Array} notes - The notes to be played.
+     * @param {number} beatValue - The duration of each beat.
+     * @param {string} instrumentName - The name of the instrument.
+     * @param {Object|null} paramsEffects - Parameters for effects like vibrato, tremolo, etc.
+     * @param {Object|null} paramsFilters - Parameters for filters.
+     * @param {boolean} setNote - Indicates whether to set the note on the synth.
+     * @param {number} future - The time in the future when the notes should be played.
+     */
+    this.trigger = (
         turtle,
         notes,
         beatValue,
         instrumentName,
         paramsEffects,
         paramsFilters,
-        setNote
-    ) {
+        setNote,
+        future
+    ) => {
         // eslint-disable-next-line no-console
         console.debug(
             turtle +
@@ -1464,7 +1732,9 @@ function Synth() {
                 " " +
                 paramsFilters +
                 " " +
-                setNote
+                setNote +
+                " " +
+                future
         );
         // Effects don't work with sine, sawtooth, et al.
         if (["sine", "sawtooth", "triangle", "square"].indexOf(instrumentName) !== -1) {
@@ -1509,18 +1779,21 @@ function Synth() {
         }
 
         // Get note values as per the source of the synth.
+        if (future === undefined) {
+            future = 0.0;
+        }
         switch (flag) {
             case 1: // drum
                 if (
                     instrumentName.slice(0, 4) === "http" ||
                     instrumentName.slice(0, 21) === "data:audio/wav;base64"
                 ) {
-                    tempSynth.start(Tone.now() + 0.0);
+                    tempSynth.start(Tone.now() + future);
                 } else if (instrumentName.slice(0, 4) === "file") {
-                    tempSynth.start(Tone.now() + 0.0);
+                    tempSynth.start(Tone.now() + future);
                 } else {
                     try {
-                        tempSynth.start(Tone.now() + 0.0);
+                        tempSynth.start(Tone.now() + future);
                     } catch (e) {
                         // Occasionally we see "Start time must be
                         // strictly greater than previous start time"
@@ -1536,7 +1809,8 @@ function Synth() {
                     beatValue,
                     paramsEffects,
                     paramsFilters,
-                    setNote
+                    setNote,
+                    future
                 );
                 break;
             case 3: // builtin synth
@@ -1550,11 +1824,12 @@ function Synth() {
                     beatValue,
                     paramsEffects,
                     paramsFilters,
-                    setNote
+                    setNote,
+                    future
                 );
                 break;
             case 4:
-                tempSynth.triggerAttackRelease("c2", beatValue);
+                tempSynth.triggerAttackRelease("c2", beatValue, Tone.now + future);
                 break;
             case 0: // default synth
             default:
@@ -1564,13 +1839,14 @@ function Synth() {
                     beatValue,
                     paramsEffects,
                     paramsFilters,
-                    setNote
+                    setNote,
+                    future
                 );
                 break;
         }
     };
 
-    this.startSound = function (turtle, instrumentName, note) {
+    this.startSound = (turtle, instrumentName, note) => {
         const flag = instrumentsSource[instrumentName][0];
         switch (flag) {
             case 1: // drum
@@ -1582,7 +1858,7 @@ function Synth() {
         }
     };
 
-    this.stopSound = function (turtle, instrumentName, note) {
+    this.stopSound = (turtle, instrumentName, note) => {
         const flag = instrumentsSource[instrumentName][0];
         switch (flag) {
             case 1: // drum
@@ -1598,7 +1874,7 @@ function Synth() {
         }
     };
 
-    this.loop = function (turtle, instrumentName, note, duration, start, bpm, velocity) {
+    this.loop = (turtle, instrumentName, note, duration, start, bpm, velocity) => {
         const synthA = instruments[turtle][instrumentName];
         const flag = instrumentsSource[instrumentName][0];
         const now = Tone.now();
@@ -1611,15 +1887,15 @@ function Synth() {
         return loopA;
     };
 
-    this.start = function () {
+    this.start = () => {
         Tone.Transport.start();
     };
 
-    this.stop = function () {
+    this.stop =  () => {
         Tone.Transport.stop();
     };
 
-    this.rampTo = function (turtle, instrumentName, oldVol, volume, rampTime) {
+    this.rampTo = (turtle, instrumentName, oldVol, volume, rampTime) => {
         if (
             percussionInstruments.includes(instrumentName) ||
             stringInstruments.includes(instrumentName)
@@ -1662,8 +1938,16 @@ function Synth() {
 
         synth.volume.linearRampToValueAtTime(db, Tone.now() + rampTime);
     };
-
-    this.setVolume = function (turtle, instrumentName, volume) {
+    
+    /**
+     * Sets the volume of a specific instrument for a given turtle.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The name of the turtle.
+     * @param {string} instrumentName - The name of the instrument.
+     * @param {number} volume - The volume level (0 to 100).
+     */
+    this.setVolume = (turtle, instrumentName, volume) => {
         // We pass in volume as a number from 0 to 100.
         // As per #1697, we adjust the volume of some instruments.
         let nv;
@@ -1686,8 +1970,16 @@ function Synth() {
         }
     };
 
-    // Unused and it is not clear that the return value is correct.
-    this.getVolume = function (turtle, instrumentName) {
+    /**
+     * Gets the volume of a specific instrument for a given turtle.
+     * @function
+     * @memberof Synth
+     * @param {string} turtle - The name of the turtle.
+     * @param {string} instrumentName - The name of the instrument.
+     * @returns {number} The volume level.
+     * @deprecated This method is currently unused and may not return correct values.
+     */
+    this.getVolume = (turtle, instrumentName) => {
         if (instrumentName in instruments[turtle]) {
             return instruments[turtle][instrumentName].volume.value;
         } else {
@@ -1696,8 +1988,14 @@ function Synth() {
             return 50;
         }
     };
-
-    this.setMasterVolume = function (volume) {
+    
+    /**
+     * Sets the master volume for all instruments.
+     * @function
+     * @memberof Synth
+     * @param {number} volume - The master volume level (0 to 100).
+     */
+    this.setMasterVolume = volume => {
         const db = Tone.gainToDb(volume / 100);
         Tone.Destination.volume.rampTo(db, 0.01);
     };

@@ -1,7 +1,7 @@
 {
-  "name": "Turtle Blocks",
-  "short_name": "TB",
-  "description": "Learn to program with snap-together blocks!",
+  "name": "Music Blocks",
+  "short_name": "MB",
+  "description": "Learn to program music with snap-together blocks!",
   "start_url": ".",
   "launch_path": "/index.html",
   "background_color": "white",

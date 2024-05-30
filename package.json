@@ -19,7 +19,7 @@
   },
   "scripts": {
     "lint": "eslint js/**/*.js",
-    "serve": "python -c \"import os, sys; os.system('python -m SimpleHTTPServer 3000 --bind 127.0.0.1') if sys.version_info.major==2 else os.system('python -m http.server 3000 --bind 127.0.0.1');\"",
+    "serve": "python3 -c \"import os, sys; os.system('python3 -m SimpleHTTPServer 3000 --bind 127.0.0.1') if sys.version_info.major==2 else os.system('python3 -m http.server 3000 --bind 127.0.0.1');\"",
     "winserve": "py -c \"import os, sys; os.system('py -m SimpleHTTPServer 3000') if sys.version_info.major==2 else os.system('py -m http.server 3000 --bind 127.0.0.1');\""
   },
   "devDependencies": {
@@ -41,10 +41,10 @@
     "gulp-uglify": "^3.0.2"
   },
   "dependencies": {
-    "autoprefixer": "^9.8.6",
-    "cssnano": "^4.1.10",
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.1",
     "gulp-concat": "^2.6.1",
-    "gulp-postcss": "^8.0.0",
+    "gulp-postcss": "^9.0.1",
     "gulp-replace": "^1.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^2.6.5",

@@ -1,4 +1,4 @@
-// Copyright (c) 2018,19 Austin George
+// COPYRIGHT (c) 2018,19 Austin George
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the The GNU Affero General Public
@@ -10,20 +10,21 @@
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
 /*
-   global _, jQuery, _THIS_IS_MUSIC_BLOCKS_, docById, doSVG
+  global _, jQuery, _THIS_IS_MUSIC_BLOCKS_, docById, doSVG, fnBrowserDetect,
+  RECORDBUTTON
  */
 
 /* exported Toolbar */
 
 let WRAP = true;
 const $j = jQuery.noConflict();
-
+let play_button_debounce_timeout = null;
 class Toolbar {
     /**
      * @constructor
      */
     constructor() {
-        this.stopIconColorWhenPlaying = "#ea174c";
+        this.stopIconColorWhenPlaying = window.platformColor.stopIconcolor;
         this.language = localStorage.languagePreference;
         if (this.language === undefined) {
             this.language = navigator.language;
@@ -45,6 +46,10 @@ class Toolbar {
                 ["mb-logo", _("About Music Blocks")],
                 ["play", _("Play")],
                 ["stop", _("Stop")],
+                ["record",_("Record")],
+                ["Full Screen", _("Full screen")],
+                ["FullScreen", _("Full screen")],
+		["Toggle Fullscreen", _("Toggle Fullscreen")],
                 ["newFile", _("New project")],
                 ["load", _("Load project from file")],
                 ["saveButton", _("Save project")],
@@ -62,7 +67,7 @@ class Toolbar {
                 ["disableHorizScrollIcon", _("Disable horizontal scrolling")],
                 ["mergeWithCurrentIcon", _("Merge with current project")],
                 ["chooseKeyIcon", _("Set Pitch Preview")],
-                ["toggleJavaScriptIcon", _("Toggle JavaScript Editor")],
+                ["toggleJavaScriptIcon", _("JavaScript Editor")],
                 ["restoreIcon", _("Restore")],
                 ["beginnerMode", _("Switch to beginner mode")],
                 ["advancedMode", _("Switch to advanced mode")],
@@ -93,6 +98,7 @@ class Toolbar {
                 ["hi", _("हिंदी"), "innerHTML"],
                 ["ibo", _("igbo"), "innerHTML"],
                 ["ar", _("عربى"), "innerHTML"],
+                ["te", _("తెలుగు"), "innerHTML"],
                 ["he", _("עִברִית"), "innerHTML"]
             ];
 
@@ -101,6 +107,10 @@ class Toolbar {
                 _("About Music Blocks"),
                 _("Play"),
                 _("Stop"),
+                _("Record"),
+                _("Full Screen"),
+                _("Full Screen"),
+                _("Toggle Fullscreen"),
                 _("New project"),
                 _("Load project from file"),
                 _("Save project"),
@@ -118,7 +128,7 @@ class Toolbar {
                 _("Disable horizontal scrolling"),
                 _("Merge with current project"),
                 _("Set Pitch Preview"),
-                _("Toggle JavaScript Editor"),
+                _("JavaScript Editor"),
                 _("Restore"),
                 _("Switch to beginner mode"),
                 _("Switch to advanced mode"),
@@ -131,13 +141,41 @@ class Toolbar {
                 _("Save sheet music as Lilypond"),
                 _("Save block artwork as SVG"),
                 _("Confirm"),
-                _("Select language")
+                _("Select language"),
+                _("Save project as HTML"),
+                _("Save turtle artwork as PNG"),
+                _("Save project as HTML"),
+                _("Save turtle artwork as SVG"),
+                _("Save turtle artwork as PNG"),
+                _("Save block artwork as SVG"),
+                _("Confirm"),
+                _("English (United States)"),
+                _("English (United Kingdom)"),
+                _("日本語"),
+                _("한국인"),
+                _("español"),
+                _("português"),
+                _("にほんご"),
+                _("中文"),
+                _("ภาษาไทย"),
+                _("aymara"),
+                _("quechua"),
+                _("guarani"),
+                _("हिंदी"),
+                _("తెలుగు"),
+                _("igbo"),
+                _("عربى"),
+                _("עִברִית")
             ];
         } else {
             strings = [
                 ["mb-logo", _("About Turtle Blocks")],
                 ["play", _("Play")],
                 ["stop", _("Stop")],
+                ["record", _("Record")],
+                ["Full Screen", _("Full Screen")],
+                ["FullScreen", _("Full Screen")],
+		["Toggle Fullscreen", _("Toggle Fullscreen")],
                 ["newFile", _("New project")],
                 ["load", _("Load project from file")],
                 ["saveButton", _("Save project")],
@@ -154,7 +192,7 @@ class Toolbar {
                 ["enableHorizScrollIcon", _("Enable horizontal scrolling")],
                 ["disableHorizScrollIcon", _("Disable horizontal scrolling")],
                 ["mergeWithCurrentIcon", _("Merge with current project")],
-                ["toggleJavaScriptIcon", _("Toggle JavaScript Editor")],
+                ["toggleJavaScriptIcon", _("JavaScript Editor")],
                 ["restoreIcon", _("Restore")],
                 ["beginnerMode", _("Switch to beginner mode")],
                 ["advancedMode", _("Switch to advanced mode")],
@@ -181,6 +219,7 @@ class Toolbar {
                 ["hi", _("हिंदी"), "innerHTML"],
                 ["ibo", _("igbo"), "innerHTML"],
                 ["ar", _("عربى"), "innerHTML"],
+                ["te", _("తెలుగు"), "innerHTML"],
                 ["he", _("עִברִית"), "innerHTML"]
             ];
 
@@ -189,6 +228,10 @@ class Toolbar {
                 _("About Turtle Blocks"),
                 _("Play"),
                 _("Stop"),
+                _("Record"),
+                _("Full Screen"),
+                _("Full Screen"),
+                _("Toggle Fullscreen"),
                 _("New project"),
                 _("Load project from file"),
                 _("Save project"),
@@ -205,7 +248,7 @@ class Toolbar {
                 _("Enable horizontal scrolling"),
                 _("Disable horizontal scrolling"),
                 _("Merge with current project"),
-                _("Toggle JavaScript Editor"),
+                _("JavaScript Editor"),
                 _("Restore"),
                 _("Switch to beginner mode"),
                 _("Switch to advanced mode"),
@@ -230,6 +273,7 @@ class Toolbar {
                 _("quechua"),
                 _("guarani"),
                 _("हिंदी"),
+                _("తెలుగు"),
                 _("igbo"),
                 _("عربى"),
                 _("עִברִית")
@@ -251,9 +295,13 @@ class Toolbar {
             const trans = strings_[i];
             const elem = docById(obj[0]);
             if (strings[i].length === 3) {
-                elem.innerHTML = obj[1];
+                if (elem !== undefined && elem !== null) {
+                    elem.innerHTML = obj[1];
+                }
             } else {
-                elem.setAttribute("data-tooltip", trans);
+                if (elem !== undefined && elem !== null) {
+                    elem.setAttribute("data-tooltip", trans);
+                }
             }
         }
 
@@ -304,9 +352,37 @@ class Toolbar {
         const playIcon = docById("play");
         const stopIcon = docById("stop");
 
-        playIcon.onclick = () => {
+        let isPlayIconRunning = false;
+
+        function handleClick() {
+            if (!isPlayIconRunning) {
+                playIcon.onclick = null;
+                // eslint-disable-next-line no-console
+                console.log("Wait for next 2 seconds to play the music");
+            } else {
+                // eslint-disable-next-line no-use-before-define
+                playIcon.onclick = tempClick;
+                isPlayIconRunning = false;
+            }
+        }
+
+        var tempClick = playIcon.onclick = () => {
+            const hideMsgs = () => {
+                this.activity.hideMsgs();
+            };
+            isPlayIconRunning = false;
             onclick(this.activity);
+            handleClick();
             stopIcon.style.color = this.stopIconColorWhenPlaying;
+            isPlayIconRunning = true;
+            play_button_debounce_timeout = setTimeout(function() { handleClick(); }, 2000);
+
+            stopIcon.addEventListener("click", function(){
+                clearTimeout(play_button_debounce_timeout);
+                isPlayIconRunning = true;
+                hideMsgs();
+                handleClick();
+            });
         };
     }
 
@@ -317,7 +393,6 @@ class Toolbar {
      */
     renderStopIcon(onclick) {
         const stopIcon = docById("stop");
-
         stopIcon.onclick = () => {
             onclick(this.activity);
             stopIcon.style.color = "white";
@@ -369,8 +444,22 @@ class Toolbar {
             WRAP = !WRAP;
             if (WRAP) {
                 wrapButtonTooltipData = _("Turtle Wrap Off");
+                this.activity.helpfulWheelItems.forEach(ele => {
+                    if (ele.label === "Turtle Wrap Off") {
+                        ele.display = true;
+                    } else if (ele.label === "Turtle Wrap On") {
+                        ele.display = false;
+                    }
+                })
             } else {
                 wrapButtonTooltipData = _("Turtle Wrap On");
+                this.activity.helpfulWheelItems.forEach(ele => {
+                    if (ele.label === "Turtle Wrap Off") {
+                        ele.display = false;
+                    } else if (ele.label === "Turtle Wrap On") {
+                        ele.display = true;
+                    }
+                })
             }
 
             wrapIcon.setAttribute("data-tooltip", wrapButtonTooltipData);
@@ -379,6 +468,46 @@ class Toolbar {
                 delay: 100
             });
         };
+    }
+
+    /**
+     * @public
+     * @returns {void}
+     */
+    changeWrap(activity) {
+        const wrapIcon = docById("wrapTurtle");
+        let wrapButtonTooltipData = "";
+
+        WRAP = !WRAP;
+        if (WRAP) {
+            wrapButtonTooltipData = _("Turtle Wrap Off");
+            activity.helpfulWheelItems.forEach(ele => {
+                if (ele.label === "Turtle Wrap Off") {
+                    ele.display = true;
+                } else if (ele.label === "Turtle Wrap On") {
+                    ele.display = false;
+                }
+            })
+        } else {
+            wrapButtonTooltipData = _("Turtle Wrap On");
+            activity.helpfulWheelItems.forEach(ele => {
+                if (ele.label === "Turtle Wrap Off") {
+                    ele.display = false;
+                } else if (ele.label === "Turtle Wrap On") {
+                    ele.display = true;
+                }
+            })
+        }
+
+        wrapIcon.setAttribute("data-tooltip", wrapButtonTooltipData);
+        $j(".tooltipped").tooltip({
+            html: true,
+            delay: 100
+        });
+
+        if (docById("helpfulWheelDiv").style.display !== "none") {
+            docById("helpfulWheelDiv").style.display = "none";
+        }
     }
 
     /**
@@ -499,7 +628,9 @@ class Toolbar {
                 if (_THIS_IS_MUSIC_BLOCKS_) {
                     saveWAV = docById("save-wav");
 
-                    saveWAV.onclick = wave_onclick;
+                    saveWAV.onclick = () => {
+                        wave_onclick(this.activity);
+                    };
 
                     saveLY = docById("save-ly");
 
@@ -560,6 +691,8 @@ class Toolbar {
         const menuIcon = docById("menu");
         const auxToolbar = docById("aux-toolbar");
         menuIcon.onclick = () => {
+            var searchBar = docById("search");
+            searchBar.classList.toggle("open");
             if (auxToolbar.style.display == "" || auxToolbar.style.display == "none") {
                 onclick(this.activity, false);
                 auxToolbar.style.display = "block";
@@ -570,6 +703,8 @@ class Toolbar {
                 auxToolbar.style.display = "none";
                 menuIcon.innerHTML = "menu";
                 docById("toggleAuxBtn").className -= "blue darken-1";
+                docById("chooseKeyDiv").style.display = "none";
+                docById("movable").style.display = "none";
             }
         };
     }
@@ -641,6 +776,7 @@ class Toolbar {
     }
     /**
      * @public
+     * @param  {Function} rec_onclick
      * @param  {Function} analytics_onclick
      * @param  {Function} openPlugin_onclick
      * @param  {Function} delPlugin_onclick
@@ -648,18 +784,32 @@ class Toolbar {
      * @returns {void}
      */
     renderAdvancedIcons(
+        rec_onclick,
         analytics_onclick,
         openPlugin_onclick,
         delPlugin_onclick,
         setScroller
     ) {
+        const RecIcon = docById("record");
         const displayStatsIcon = docById("displayStatsIcon");
         const loadPluginIcon = docById("loadPluginIcon");
         const delPluginIcon = docById("delPluginIcon");
         const enableHorizScrollIcon = docById("enableHorizScrollIcon");
         const disableHorizScrollIcon = docById("disableHorizScrollIcon");
+        const toggleJavaScriptIcon = docById("toggleJavaScriptIcon");
+        const browser = fnBrowserDetect();
+        const btn = document.getElementById("record");
+        const hideIn = ["firefox", "safari"];
+        if (hideIn.includes(browser)) {
+            btn.classList.add("hide");
+        }
 
         if (!this.activity.beginnerMode) {
+            RecIcon.innerHTML= `<i class=""material-icons main">${RECORDBUTTON}</i>`;
+            RecIcon.onclick = () => {
+                rec_onclick(this.activity);
+            };
+
             displayStatsIcon.onclick = () => {
                 analytics_onclick(this.activity);
             };
@@ -684,6 +834,7 @@ class Toolbar {
             loadPluginIcon.style.display = "none";
             delPluginIcon.style.display = "none";
             enableHorizScrollIcon.style.display = "none";
+            toggleJavaScriptIcon.style.display = "none";
         }
     }
 
@@ -833,6 +984,12 @@ class Toolbar {
 
             ar.onclick = () => {
                 languageBox.ar_onclick(this.activity);
+            };
+
+            const te = docById("te");
+
+            te.onclick = () => {
+                languageBox.te_onclick(this.activity);
             };
 
             const he = docById("he");

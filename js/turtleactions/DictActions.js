@@ -75,7 +75,7 @@ function setupDictActions(activity) {
             } else if (key === _("font")) {
                 return targetTur.painter.font;
             } else if (key === _("heading")) {
-                return targetTur.painter.turtle._orientation;
+                return targetTur.painter.turtle.orientation;
             } else if (key === "x") {
                 return activity.turtles.screenX2turtleX(targetTur.container.x);
             } else if (key === "y") {
@@ -100,7 +100,7 @@ function setupDictActions(activity) {
                         targetTur.singer.noteOctaves[0],
                         0,
                         targetTur.singer.keySignature,
-                        targetTur.singer.moveable,
+                        targetTur.singer.movable,
                         null,
                         activity.errorMsg,
                         activity.logo.synth.inTemperament
@@ -114,18 +114,7 @@ function setupDictActions(activity) {
                     pitchToNumber(obj[0], obj[1], targetTur.singer.keySignature) -
                     targetTur.singer.pitchNumberOffset
                 );
-            } else if (
-                target in activity.logo.turtleDicts &&
-                target in activity.logo.turtleDicts[target] &&
-                key in activity.logo.turtleDicts[target][target]
-            ) {
-                return activity.logo.turtleDicts[target][target][key];
-            } else {
-                if (target in activity.logo.turtleDicts[turtle]) {
-                    return activity.logo.turtleDicts[turtle][target][key];
-                }
             }
-            return 0;
         }
 
         /**
@@ -160,12 +149,7 @@ function setupDictActions(activity) {
             } else if (key === "x") {
                 const y = activity.turtles.screenY2turtleY(targetTur.container.y);
                 targetTur.painter.doSetXY(value, y);
-            } else {
-                if (!(target in activity.logo.turtleDicts[turtle])) {
-                    activity.logo.turtleDicts[turtle][target] = {};
-                }
-                activity.logo.turtleDicts[turtle][target][key] = value;
-            }
+            } 
         }
 
         /**
@@ -245,19 +229,15 @@ function setupDictActions(activity) {
          * @returns {void}
          */
         static setValue(dict, key, value, turtle) {
-            // Not sure this can happen.
-            if (!(turtle in activity.logo.turtleDicts)) return 0;
-
-            // Is the dictionary the same as a turtle name?
-            const target = getTargetTurtle(activity.turtles, dict);
-            if (target !== null) {
-                Turtle.DictActions.SetDictValue(target, turtle, key, value);
-            } else {
+            if (!(turtle in activity.logo.turtleDicts)) {
+                activity.logo.turtleDicts[turtle] = {};
+            }
                 if (!(dict in activity.logo.turtleDicts[turtle])) {
                     activity.logo.turtleDicts[turtle][dict] = {};
                 }
-                activity.logo.turtleDicts[turtle][dict][key] = value;
-            }
+                 activity.logo.turtleDicts[turtle][dict][key] = value;
+                 console.log(activity.logo.turtleDicts[turtle]);
+            
         }
 
         /**
@@ -271,15 +251,14 @@ function setupDictActions(activity) {
          * @returns {String|Number}
          */
         static getValue(dict, key, turtle, blk) {
-            // Not sure this can happen.
-            if (!(turtle in activity.logo.turtleDicts)) return 0;
-            // Is the dictionary the same as a turtle name?
-            const target = getTargetTurtle(activity.turtles, dict);
-            if (target !== null) {
-                return Turtle.DictActions._GetDict(target, turtle, key, blk);
-            } else if (!(dict in activity.logo.turtleDicts[turtle])) {
-                return 0;
-            }
+              if( ! (dict in activity.logo.turtleDicts[turtle]) ){
+                var msg=_("Dictionary with this name does not exist");
+                return msg;
+              }
+              else if(! (key in activity.logo.turtleDicts[turtle][dict])){
+                var msg=_("Key with this name does not exist in "+dict);
+                return msg;
+              }
 
             return activity.logo.turtleDicts[turtle][dict][key];
         }

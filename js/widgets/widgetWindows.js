@@ -76,6 +76,15 @@ class WidgetWindow {
         if (parent) parent.append(el);
         return el;
     }
+    
+    /**
+     * @private
+     * @param {HTMLElement} element
+     * @param {string} className
+     */
+    _toggleClass(element,className) {
+        element.classList.toggle(className);
+    }
 
     /**
      * @private
@@ -86,10 +95,11 @@ class WidgetWindow {
         this._frame = this._create("div", "windowFrame", windows);
         this._overlayframe = this._create("div", "windowFrame", windows);
         this._drag = this._create("div", "wfTopBar", this._frame);
-        this._handle = this._create("div", "wfHandle", this._drag);
-        // The handle needs the events bound as it's a sibling of the dragging div
-        // not a relative in either direciton.
-
+        this._drag.style.display = "flex";
+        this._drag.style.justifyContent = "space-between";
+        
+   
+       
         if (this._fullscreenEnabled) {
             this._drag.ondblclick = (e) => {
                 this._maximize();
@@ -99,8 +109,24 @@ class WidgetWindow {
                 e.stopImmediatePropagation();
             };
         }
+        const closeButton = this._create("div", "wftButton close", this._drag);
+        closeButton.onclick = (e) => {
+            this.onclose();
+            e.preventDefault();
+            e.stopPropagation();
+        };
 
-        this._drag.onmousedown = this._handle.onmousedown = (e) => {
+        this._nonclose=this._create("div","nonclose",this._drag);
+        this._nonclose.style.display="flex";
+        this._nonclose.justifyContent = "space-between";
+        this._nonclose.style.width="100%";
+        
+        const titleEl = this._create("div", "wftTitle", this._nonclose);
+        titleEl.innerHTML = "" ;
+        titleEl.insertAdjacentHTML("afterbegin", _(this._title));
+        titleEl.id = `${this._key}WidgetID` ;
+
+        this._nonclose.onmousedown = (e) => {
             this._dragging = true;
             if (this._maximized) {
                 // Perform special repositioning to make the drag feel right when
@@ -124,31 +150,30 @@ class WidgetWindow {
             e.preventDefault();
         };
 
-        const closeButton = this._create("div", "wftButton close", this._drag);
-        closeButton.onclick = (e) => {
-            this.close();
-
-            e.preventDefault();
-            e.stopPropagation();
-        };
-
-        const rollButton = this._create("div", "wftButton rollup", this._drag);
+      
+        this._nonclosebuttons=this._create("div","nonclosebuttons",this._nonclose);
+        this._nonclosebuttons.style.display="flex";
+        const rollButton = this._create("div", "wftButton rollup", this._nonclosebuttons);
         rollButton.onclick = (e) => {
-            if (this._rolled) this.unroll();
-            else this._rollup();
+            if (this._rolled) {
+                this.unroll();
+                this._toggleClass(rollButton, "plus");
+            }
+            else {
+                this._rollup();
+                this._toggleClass(rollButton, "plus");
+            }
             this.takeFocus();
-
+            this._frame.style.width = "auto";
+            this._frame.style.height = "auto";
+            this._frame.style.minHeight = "0px";
             e.preventDefault();
             e.stopPropagation();
         };
-
-        const titleEl = this._create("div", "wftTitle", this._drag);
-        titleEl.innerHTML = _(this._title);
-        titleEl.id = this._key + "WidgetID";
 
         if (this._fullscreenEnabled) {
-            const maxminButton = this._create("div", "wftButton wftMaxmin", this._drag);
-            maxminButton.onclick = maxminButton.onmousedown = (e) => {
+            const maxminButton = this._create("div", "wftButton wftMaxmin", this._nonclosebuttons);
+            maxminButton.onclick = (e) => {
                 if (this._maximized) {
                     this._restore();
                     this.sendToCenter();
@@ -214,7 +239,7 @@ class WidgetWindow {
             this._overlayframe.style.border = "0.25vw solid black";
             this._overlayframe.style.backgroundColor = "rgba(255,255,255,0.75)";
         } else {
-            this._frame.style.zIndex = "1";
+            this._frame.style.zIndex = "10000";
             this._overlayframe.style.border = "0px";
             this._overlayframe.style.zIndex = "-1";
             this._overlayframe.style.backgroundColor = "rgba(255,255,255,0)";
@@ -227,9 +252,9 @@ class WidgetWindow {
      * @returns {void}
      */
     _docMouseDownHandler(e) {
-        if (e.target === this._frame || this._frame.contains(e.target)) {
+        if (e.target === this._frame || this._frame.contains(e.target) || this._fullscreenEnabled) {
             this._frame.style.opacity = "1";
-            this._frame.style.zIndex = "1";
+            this._frame.style.zIndex = "10000";
         } else {
             this._frame.style.opacity = ".7";
             this._frame.style.zIndex = "0";
@@ -282,7 +307,8 @@ class WidgetWindow {
      */
     addInputButton(initial, parent) {
         const el = this._create("div", "wfbtItem", parent || this._toolbar);
-        el.innerHTML = '<input value="' + initial + '" />';
+        el.innerHTML = "" ;
+        el.insertAdjacentHTML("afterbegin", `<input value="${initial}" />` );
         return el.querySelector("input");
     }
 
@@ -297,17 +323,14 @@ class WidgetWindow {
      */
     addRangeSlider(initial, parent, min, max, classNm) {
         const el = this._create("div", "wfbtItem", parent || this._toolbar);
+        const elInput = `
+          <input type="range" class="${classNm}" min="${min}" max="${max}" value="${initial}" />
+        `;
+
         el.style.height = "250px";
-        el.innerHTML =
-            '<input type="range" class="' +
-            classNm +
-            '"  min="' +
-            min +
-            '" max="' +
-            max +
-            '" value="' +
-            initial +
-            '">';
+        el.innerHTML = "" ;
+        el.insertAdjacentHTML("afterbegin", elInput) ;
+
         const slider = el.querySelector("input");
         slider.style = " position:absolute;transform:rotate(270deg);height:10px;width:250px;";
         return slider;
@@ -318,7 +341,8 @@ class WidgetWindow {
      */
     addSelectorButton(list, initial, parent) {
         const el = this._create("div", "wfbtItem", parent || this._toolbar);
-        el.innerHTML = '<select value="' + initial + '" />';
+        el.innerHTML = "" ;
+        el.insertAdjacentHTML("afterbegin", `<select value="${initial}" />`) ;
         const selector = el.querySelector("select");
         for (const i of list) {
             const newOption = new Option("turtle " + i, i);
@@ -345,18 +369,12 @@ class WidgetWindow {
      * @returns {HTMLElement}
      */
     modifyButton(index, icon, iconSize, label) {
-        this._buttons[index].innerHTML =
-            '<img src="header-icons/' +
-            icon +
-            '" title="' +
-            label +
-            '" alt="' +
-            label +
-            '" height="' +
-            iconSize +
-            '" width="' +
-            iconSize +
-            '" />';
+        const innerHTML = `
+            <img src="header-icons/${icon}" title="${label}" alt="${label}" height="${iconSize}" width="${iconSize}"/> 
+            ` ;
+        
+        this._buttons[index].innerHTML = "" ;
+        this._buttons[index].insertAdjacentHTML("afterbegin", innerHTML) ;
         return this._buttons[index];
     }
 
@@ -390,9 +408,11 @@ class WidgetWindow {
         const siblings = windows.children;
         for (let i = 0; i < siblings.length; i++) {
             siblings[i].style.zIndex = "0";
-            siblings[i].style.opacity = ".7";
+            siblings[i].style.opacity = "0";
         }
-        this._frame.style.zIndex = "1";
+        
+        // When in focus, the zIndex of the help must be the highest. Even greater than the input search display block
+        this._frame.style.zIndex = "10000" ;
         this._frame.style.opacity = "1";
     }
 
@@ -406,18 +426,17 @@ class WidgetWindow {
      */
     addButton(icon, iconSize, label, parent) {
         const el = this._create("div", "wfbtItem", parent || this._toolbar);
-        el.innerHTML =
-            '<img src="header-icons/' +
-            icon +
-            '" title="' +
-            label +
-            '" alt="' +
-            label +
-            '" height="' +
-            iconSize +
-            '" width="' +
-            iconSize +
-            '" />';
+
+        const innerHTML =
+            `<img src="header-icons/${icon}" 
+                  title="${label}" 
+                  alt="${label}" 
+                  height="${iconSize}" 
+                  width="${iconSize}" 
+             />`;
+        
+        el.innerHTML = "";
+        el.insertAdjacentHTML("afterbegin", innerHTML) ;
         this._buttons.push(el);
         return el;
     }
@@ -462,6 +481,8 @@ class WidgetWindow {
         this._overlay(false);
         this._frame.style.width = "auto";
         this._frame.style.height = "auto";
+        this._frame.style.minHeight = "420px";
+        this._frame.style.minWidth = "470px";
     }
 
     /**
@@ -517,8 +538,12 @@ class WidgetWindow {
      * @returns {void}
      */
     destroy() {
-        this._frame.remove();
-        this._overlayframe.remove();
+        if (this._frame && this._frame.parentElement) {
+            this._frame.parentElement.removeChild(this._frame);
+        }
+        if (this._overlayframe && this._overlayframe.parentElement) {
+            this._overlayframe.parentElement.removeChild(this._overlayframe);
+        }
         window.widgetWindows.openWindows[this._key] = undefined;
     }
 
@@ -552,8 +577,8 @@ class WidgetWindow {
      * @returns {WidgetWindow} this
      */
     setPosition(x, y) {
-        this._frame.style.left = x + "px";
-        this._frame.style.top = Math.max(y, 64) + "px";
+        this._frame.style.left = `${x}px` ;
+        this._frame.style.top = `${Math.max(y, 64)}px`;
         window.widgetWindows._posCache[this._key] = [x, Math.max(y, 64)];
         return this;
     }

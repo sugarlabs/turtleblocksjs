@@ -9,74 +9,90 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, 51 Franklin Street, Suite 500 Boston, MA 02110-1335 USA
 
+/*
+   global
 
-function Planet(isMusicBlocks, storage) {
-    this.LocalPlanet = null;
-    this.GlobalPlanet = null;
-    this.ProjectStorage = null;
-    this.ServerInterface = null;
-    this.Converter = null;
-    this.SaveInterface = null;
-    this.LocalStorage = storage;
-    this.ConnectedToServer = null;
-    this.TagsManifest = null;
-    this.IsMusicBlocks = isMusicBlocks;
-    this.UserIDCookie = 'UserID';
-    this.UserID = null;
-    this.loadProjectFromData = null;
-    this.loadNewProject = null;
-    this.planetClose = null;
-    this.oldCurrentProjectID = null;
-    this.loadProjectFromFile = null;
+   setCookie, getCookie, StringHelper, ProjectStorage, ServerInterface,
+   Converter, SaveInterface, LocalPlanet, GlobalPlanet
+*/
+/*
+   exported
 
-    this.prepareUserID = function() {
+   Planet
+*/
+
+class Planet {
+
+    constructor(isMusicBlocks, storage) {
+        this.LocalPlanet = null;
+        this.GlobalPlanet = null;
+        this.ProjectStorage = null;
+        this.ServerInterface = null;
+        this.Converter = null;
+        this.SaveInterface = null;
+        this.LocalStorage = storage;
+        this.ConnectedToServer = null;
+        this.TagsManifest = null;
+        this.IsMusicBlocks = isMusicBlocks;
+        this.UserIDCookie = "UserID";
+        this.UserID = null;
+        this.loadProjectFromData = null;
+        this.loadNewProject = null;
+        this.planetClose = null;
+        this.oldCurrentProjectID = null;
+        this.loadProjectFromFile = null;
+    }
+
+    prepareUserID() {
         let id = getCookie(this.UserIDCookie);
-        if (id === ''){
+
+        if (id === ""){
             id = this.ProjectStorage.generateID();
             setCookie(this.UserIDCookie, id, 3650);
         }
+
         this.UserID = id;
     };
 
-    this.open = function(image) {
+    open(image) {
         this.LocalPlanet.setCurrentProjectImage(image);
         this.LocalPlanet.updateProjects();
         this.oldCurrentProjectID = this.ProjectStorage.getCurrentProjectID();
     };
 
-    this.saveLocally = function(data, image) {
+    saveLocally(data, image) {
         this.ProjectStorage.saveLocally(data, image);
     };
 
-    this.setAnalyzeProject = function(func) {
+    setAnalyzeProject(func) {
         this.analyzeProject = func;
     };
 
-    this.setLoadProjectFromData = function(func) {
+    setLoadProjectFromData(func) {
         this.loadProjectFromData = func;
     };
 
-    this.setPlanetClose = function(func) {
+    setPlanetClose(func) {
         this.planetClose = func;
     };
 
-    this.setLoadNewProject = function(func) {
+    setLoadNewProject(func) {
         this.loadNewProject = func;
     };
 
-    this.setLoadProjectFromFile = function(func) {
+    setLoadProjectFromFile(func) {
         this.loadProjectFromFile = func;
     };
 
-    this.setOnConverterLoad = function(func) {
+    setOnConverterLoad(func) {
         this.onConverterLoad = func;
     };
 
-    this.openProjectFromPlanet = function(id,error) {
+    openProjectFromPlanet(id,error) {
         this.GlobalPlanet.openGlobalProject(id,error);
     };
-
-    this.init = async function() {
+    
+    async init() {
         this.StringHelper = new StringHelper(this);
         this.StringHelper.init();
         this.ProjectStorage = new ProjectStorage(this);
@@ -85,43 +101,42 @@ function Planet(isMusicBlocks, storage) {
         this.ServerInterface = new ServerInterface(this);
         this.ServerInterface.init();
 
-        let that = this;
 
-        document.getElementById('close-planet').addEventListener('click', function (evt) {
-            that.closeButton();
+        // eslint-disable-next-line no-unused-vars
+        document.getElementById("close-planet").addEventListener("click", evt => {
+            this.closeButton();
         });
 
-        document.getElementById('planet-open-file').addEventListener('click', function (evt) {
-            that.loadProjectFromFile();
+        // eslint-disable-next-line no-unused-vars
+        document.getElementById("planet-open-file").addEventListener("click", evt => {
+            this.loadProjectFromFile();
         });
 
-        document.getElementById('planet-new-project').addEventListener('click', function (evt) {
-            that.loadNewProject();
-        })
-
-        this.ServerInterface.getTagManifest(function(data){this.initPlanets(data)}.bind(this));
-    };
-
-    this.closeButton = function() {
-        if (this.ProjectStorage.getCurrentProjectID() !== this.oldCurrentProjectID) {
-            let d = this.ProjectStorage.getCurrentProjectData();
-            if (d === null){
+        // eslint-disable-next-line no-unused-vars
+        document.getElementById("planet-new-project").addEventListener("click", evt => {
             this.loadNewProject();
-            } else {
-            this.loadProjectFromData(d);
-            }
-        } else {
-            this.planetClose();
-        }
+        });
+
+        this.ServerInterface.getTagManifest(
+            function(data) {
+                this.initPlanets(data);
+            }.bind(this)
+        );
     };
 
-    this.initPlanets = function(tags) {
-        if (!tags.success){
-            this.ConnectedToServer = false;
-        } else {
-            this.ConnectedToServer = true;
-            this.TagsManifest = tags.data;
+    closeButton() {
+        if (this.ProjectStorage.getCurrentProjectID() !== this.oldCurrentProjectID) {
+            const data = this.ProjectStorage.getCurrentProjectData() ;
+            (!data) ? this.loadNewProject() : this.loadProjectFromData(data) ;
         }
+        
+        else this.planetClose();
+    };
+    
+    initPlanets(tags) {
+        const status = tags.success || false ;
+        this.ConnectedToServer = status ;
+        if (status) this.TagsManifest = tags.data ;
 
         this.Converter = new Converter(this);
         this.Converter.init();
@@ -133,4 +148,5 @@ function Planet(isMusicBlocks, storage) {
         this.GlobalPlanet = new GlobalPlanet(this);
         this.GlobalPlanet.init();
     };
-};
+
+}

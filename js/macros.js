@@ -47,7 +47,7 @@
 
 /* exported getMacroExpansion, blockIsMacro */
 
-function blockIsMacro(activity, blkname) {
+const blockIsMacro = (activity, blkname) => {
     const protoBlock = activity.blocks.protoBlockDict[blkname];
     if (protoBlock && protoBlock.macroFunc) return true;
 
@@ -126,11 +126,13 @@ function blockIsMacro(activity, blkname) {
         "xyhelp"
     ];
     return BLOCKISMACRO.indexOf(blkname) > -1;
-}
+};
 
-function getMacroExpansion(activity, blkname, x, y) {
+const getMacroExpansion = (activity, blkname, x, y) => {
     const protoBlock = activity.blocks.protoBlockDict[blkname];
-    if (protoBlock && protoBlock.macroFunc) return protoBlock.macroFunc(x, y);
+    if (protoBlock && protoBlock.macroFunc) {
+        return protoBlock.macroFunc(x, y);
+    }
 
     // Some blocks are expanded on load.
     const ACTIONHELP = [
@@ -1754,4 +1756,4 @@ function getMacroExpansion(activity, blkname, x, y) {
     } else {
         return null;
     }
-}
+};

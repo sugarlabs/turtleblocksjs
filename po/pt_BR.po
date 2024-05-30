@@ -1,0 +1,705 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2018-11-05 13:37+0000\n"
+"Last-Translator: Paulo Francisco <slomp@ufrgs.br>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1541425071.000000\n"
+
+msgid "clear"
+msgstr "limpar"
+
+msgid "forward"
+msgstr "adiante"
+
+msgid "right"
+msgstr "direita"
+
+msgid "back"
+msgstr "para tras"
+
+msgid "left"
+msgstr "esquerda"
+
+msgid "arc"
+msgstr "arco"
+
+msgid "angle"
+msgstr "ângulo"
+
+msgid "radius"
+msgstr "raio"
+
+msgid "set heading"
+msgstr "definir título"
+
+msgid "heading"
+msgstr "título"
+
+msgid "set xy"
+msgstr "definir xy"
+
+msgid "x"
+msgstr "x"
+
+msgid "y"
+msgstr "y"
+
+msgid "set color"
+msgstr "definir cor"
+
+msgid "color"
+msgstr "cor"
+
+msgid "set hue"
+msgstr "definir a tonalidade"
+
+msgid "set shade"
+msgstr "definir sombra"
+
+msgid "shade"
+msgstr "sombra"
+
+msgid "set grey"
+msgstr "definir cinza"
+
+msgid "grey"
+msgstr "cinza"
+
+msgid "set pen size"
+msgstr "definir tamanho da caneta"
+
+msgid "pen size"
+msgstr "tamanho da caneta"
+
+msgid "pen up"
+msgstr "caneta para cima"
+
+msgid "pen down"
+msgstr "caneta para baixo"
+
+msgid "begin fill"
+msgstr "começar a preencher"
+
+msgid "end fill"
+msgstr "terminar de preencher"
+
+msgid "background"
+msgstr "plano de fundo"
+
+msgid "random"
+msgstr "aleatório"
+
+msgid "min"
+msgstr "minímo"
+
+msgid "max"
+msgstr "máximo"
+
+msgid "sqrt"
+msgstr "raíz"
+
+msgid "mod"
+msgstr "módulo"
+
+msgid "and"
+msgstr "e"
+
+msgid "or"
+msgstr "ou"
+
+msgid "not"
+msgstr "não"
+
+msgid "store in"
+msgstr "guardar em"
+
+msgid "name"
+msgstr "nome"
+
+msgid "value"
+msgstr "valor"
+
+msgid "box"
+msgstr "caixa"
+
+msgid "action"
+msgstr "ação"
+
+msgid "do"
+msgstr "fazer"
+
+msgid "start"
+msgstr "iniciar"
+
+msgid "add 1 to"
+msgstr "somar 1 a"
+
+msgid "add"
+msgstr "somar"
+
+msgid "to"
+msgstr "a"
+
+msgid "speak"
+msgstr "falar"
+
+msgid "show"
+msgstr "mostrar"
+
+msgid "size"
+msgstr "tamanho"
+
+msgid "obj"
+msgstr "objeto"
+
+msgid "text"
+msgstr "texto"
+
+msgid "shell"
+msgstr "concha"
+
+msgid "image"
+msgstr "imagem"
+
+msgid "stop media"
+msgstr "parar mídia"
+
+msgid "repeat"
+msgstr "repetir"
+
+msgid "forever"
+msgstr "para sempre"
+
+msgid "stop"
+msgstr "parar"
+
+msgid "if"
+msgstr "se"
+
+msgid "then"
+msgstr "então"
+
+msgid "until"
+msgstr "até"
+
+msgid "wait for"
+msgstr "esperar po"
+
+msgid "while"
+msgstr "enquanto"
+
+msgid "else"
+msgstr "senão"
+
+msgid "wait"
+msgstr "esperar"
+
+msgid "print"
+msgstr "imprimir"
+
+msgid "time"
+msgstr "tempo"
+
+msgid "mouse x"
+msgstr "mouse x"
+
+msgid "mouse y"
+msgstr "mouse y"
+
+msgid "mouse button"
+msgstr "botão do mouse"
+
+msgid "keyboard"
+msgstr "teclado"
+
+msgid "pixel color"
+msgstr "cor do pixel"
+
+msgid "unknown"
+msgstr "desconhecido"
+
+msgid "Welcome to Turtle Blocks"
+msgstr "Bem vindo ao TurtleBlocks"
+
+msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
+msgstr ""
+"Turtle Blocks é uma tartaruga inspirada em logo que desenha imagens "
+"coloridas com blocos de programação visual de encaixe."
+
+msgid "Palette buttons"
+msgstr "Botões da pleta"
+
+msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgstr ""
+"Esta barra de ferramentas contém os botões da paleta: clique para mostrar ou "
+"ocultar as paletas de blocos (Tartaruga, Caneta, Números, Booleano, Fluxo, "
+"Blocos, Mídia, Sensores e Extras). Uma vez aberto, você pode arrastar blocos "
+"das paletas para a tela e utilizá-los."
+
+msgid "Expand/collapse toolbar"
+msgstr "Expandir/recolher a barra de ferramentas"
+
+msgid "This button opens and closes the primary toolbar."
+msgstr "Esse botão abre e fecha a barra de ferramentas principal."
+
+msgid "Run fast"
+msgstr "Correr rápido"
+
+msgid "Click to run the project in fast mode."
+msgstr "Clique para rodar o projeto no modo rápido."
+
+msgid "Run slow"
+msgstr "Executar lentamente"
+
+msgid "Click to run the project in slow mode."
+msgstr "Clique para rodar o projeto no modo lento."
+
+msgid "Run step by step"
+msgstr "Rodar passo a passo"
+
+msgid "Click to run the project step by step."
+msgstr "Clique para rodar o projeto passo a passo."
+
+msgid "Stop"
+msgstr "Parar"
+
+msgid "Stop the current project."
+msgstr "Parar o projeto atual."
+
+msgid "Clean"
+msgstr "Limpar"
+
+msgid "Clear the screen and return the turtles to their initial positions."
+msgstr "Limpar a tela e retornar as tartarugas as suas posições iniciais."
+
+msgid "Show/hide palettes"
+msgstr "Mostrar/ocultar paletas"
+
+msgid "Hide or show the block palettes."
+msgstr "Esconde ou mostra o bloco de paletas."
+
+msgid "Show/hide blocks"
+msgstr "Mostrar/esconder blocos"
+
+msgid "Hide or show the blocks and the palettes."
+msgstr "Esconder ou mostrar os blocos e paletas."
+
+msgid "Expand/collapse collapsable blocks"
+msgstr "Expandir/recolher blocos recolhíveis"
+
+msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
+msgstr ""
+"Expandir ou recolher pilhas de blocos, por exemplo, pilhas de início e ação."
+
+msgid "Help"
+msgstr "Ajuda"
+
+msgid "Show these messages."
+msgstr "Mostrar essas mensagens."
+
+msgid "Expand/collapse option toolbar"
+msgstr "Expandir/recolher barra de ferramentas"
+
+msgid "Click this button to expand or collapse the auxillary toolbar."
+msgstr ""
+"Clique neste botão para expandir ou recolher a barra de ferramentas auxiliar."
+
+msgid "Paste"
+msgstr "Colar"
+
+msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgstr ""
+"Quando o botão colar é habilitado, blocos são copiados para a prancheta."
+
+msgid "Cartesian"
+msgstr "Cartesiano"
+
+msgid "Show or hide a Cartesian-coordinate grid."
+msgstr "Mostrar ou esconder uma grade de coordenadas cartesianas."
+
+msgid "Polar"
+msgstr "Polar"
+
+msgid "Show or hide a polar-coordinate grid."
+msgstr "Mostrar ou esconder um grade de coordenadas cartesianas."
+
+msgid "Load samples from server"
+msgstr "Carregar amostras do servidor"
+
+msgid "This button opens a viewer for loading example projects."
+msgstr "Esse botão abre um visualizador para carregar projetos exemplo."
+
+msgid "Load project from file"
+msgstr "Carregar projeto dos arquivos"
+
+msgid "You can also load projects from the file system."
+msgstr "Você também pode carregar projetos dos arquivos do sistema."
+
+msgid "Load plugin from file"
+msgstr "Carregar plugin dos arquivos"
+
+msgid "You can load new blocks from the file system."
+msgstr "Você pode carregar novos blocos dos arquivos do sistema."
+
+msgid "Delete all"
+msgstr "Deletar tudo"
+
+msgid "Remove all content on the canvas, including the blocks."
+msgstr "Remover todo o conteúdo da tela de pintura, incluindo os blocos."
+
+msgid "Undo"
+msgstr "Desfazer"
+
+msgid "Restore blocks from the trash."
+msgstr "Restaurar blocos do lixo."
+
+msgid "Save project"
+msgstr "Salve seu projeto"
+
+msgid "Save your project to a server."
+msgstr "Salve seu projeto em um servidor."
+
+msgid "Congratulations."
+msgstr "Parabéns."
+
+msgid "You have finished the tour. Please enjoy Turtle Blocks!"
+msgstr "Você terminou o tour. Aproveite o Turtle Blocks!"
+
+msgid "hide blocks"
+msgstr "esconder blocos"
+
+msgid "loudness"
+msgstr "sonoridade"
+
+msgid "publish"
+msgstr "publicar"
+
+msgid "comment"
+msgstr "comentar"
+
+msgid "play back"
+msgstr "reproduzir"
+
+msgid "save svg"
+msgstr "salvar svg"
+
+msgid "title"
+msgstr "título"
+
+msgid "eval"
+msgstr "avaliar"
+
+msgid "show blocks"
+msgstr "mostrar blocos"
+
+msgid "stop play"
+msgstr "parar"
+
+msgid "turtle"
+msgstr "tartaruga"
+
+msgid "pen"
+msgstr "caneta"
+
+msgid "number"
+msgstr "número"
+
+msgid "boolean"
+msgstr "boleano"
+
+msgid "flow"
+msgstr "fluxo"
+
+msgid "blocks"
+msgstr "blocos"
+
+msgid "media"
+msgstr "mídia"
+
+msgid "sensors"
+msgstr "sensores"
+
+msgid "extras"
+msgstr "extrar"
+
+msgid "open file"
+msgstr "abrir arquivo"
+
+msgid "motion z"
+msgstr "movimento z"
+
+msgid "motion y"
+msgstr "movimento y"
+
+msgid "motion x"
+msgstr "movimento x"
+
+msgid "bitcoin"
+msgstr "bitcoin"
+
+msgid "from"
+msgstr "de"
+
+msgid "mashape"
+msgstr "mashape"
+
+msgid "define"
+msgstr "definir"
+
+msgid "stock price"
+msgstr "preço das ações"
+
+msgid "currency"
+msgstr "moeda"
+
+msgid "Google map"
+msgstr "Mapa do google"
+
+msgid "coordinates"
+msgstr "coordenadas"
+
+msgid "zoom factor"
+msgstr "fator de aumento"
+
+msgid "zoom"
+msgstr "aumento"
+
+msgid "latitude"
+msgstr "latitude"
+
+msgid "longitude"
+msgstr "longitude"
+
+msgid "show heap"
+msgstr "mostrar pilha"
+
+msgid "pop"
+msgstr "aparecer"
+
+msgid "empty heap"
+msgstr "pilha vazia"
+
+msgid "save heap"
+msgstr "salvar pilha"
+
+msgid "load heap"
+msgstr "carregar pilha"
+
+msgid "push"
+msgstr "empurrar"
+
+msgid "logic"
+msgstr "lógica"
+
+msgid "power"
+msgstr "força"
+
+msgid "base"
+msgstr "base"
+
+msgid "exp"
+msgstr "exp"
+
+msgid "floor"
+msgstr "piso"
+
+msgid "ceiling"
+msgstr "teto"
+
+msgid "degrees"
+msgstr "graus"
+
+msgid "to degrees"
+msgstr "para graus"
+
+msgid "radians"
+msgstr "radianos"
+
+msgid "to radians"
+msgstr "para radianos"
+
+msgid "maths"
+msgstr "matemática"
+
+msgid "cheese"
+msgstr "queijo"
+
+msgid "apple"
+msgstr "maçã"
+
+msgid "get fat"
+msgstr "obter gordura"
+
+msgid "fish"
+msgstr "peixe"
+
+msgid "get calories"
+msgstr "obter calorias"
+
+msgid "protein"
+msgstr "proteína"
+
+msgid "chicken"
+msgstr "galinha"
+
+msgid "digest meal"
+msgstr "digerir refeição"
+
+msgid "get fiber"
+msgstr "obter fibra"
+
+msgid "carbs"
+msgstr "carboidratos"
+
+msgid "eat"
+msgstr "comer"
+
+msgid "rice and beans"
+msgstr "arroz e feijão"
+
+msgid "orange"
+msgstr "laranja"
+
+msgid "banana"
+msgstr "banana"
+
+msgid "tamale"
+msgstr "tamal"
+
+msgid "fiber"
+msgstr "fibra"
+
+msgid "corn"
+msgstr "milho"
+
+msgid "fat"
+msgstr "gordura"
+
+msgid "get carbs"
+msgstr "obter carboidratos"
+
+msgid "water"
+msgstr "água"
+
+msgid "cookie"
+msgstr "bolacha"
+
+msgid "sweet potato"
+msgstr "batata doce"
+
+msgid "broccoli"
+msgstr "brócolis"
+
+msgid "wheat bread"
+msgstr "pão"
+
+msgid "tomato"
+msgstr "tomate"
+
+msgid "beef"
+msgstr "carne"
+
+msgid "potato"
+msgstr "batata"
+
+msgid "calories"
+msgstr "calorias"
+
+msgid "get name"
+msgstr "obter nome"
+
+msgid "cake"
+msgstr "bolo"
+
+msgid "get protein"
+msgstr "obter proteína"
+
+msgid "food"
+msgstr "comida"
+
+msgid "eatme"
+msgstr "coma-me"
+
+msgid "sense left"
+msgstr "sentido esquerdo"
+
+msgid "see distance"
+msgstr "ver distancia"
+
+msgid "sense right"
+msgstr "sentido direito"
+
+msgid "sing"
+msgstr "calorias"
+
+msgid "note"
+msgstr "nota"
+
+msgid "duration"
+msgstr "duração"
+
+msgid "move"
+msgstr "mover"
+
+msgid "blink (ms)"
+msgstr "cintilar (ms)"
+
+msgid "rodi"
+msgstr "RoDi"
+
+msgid "set lang"
+msgstr "definir idioma"
+
+msgid "source"
+msgstr "fonte"
+
+msgid "target"
+msgstr "alvo"
+
+msgid "translate"
+msgstr "traduzir"
+
+msgid "hello"
+msgstr "olá"
+
+msgid "detect lang"
+msgstr "detectar idioma"
+
+msgid "turtle x"
+msgstr "tartaruga x"
+
+msgid "turtle y"
+msgstr "tartaruga y"
+
+msgid "stop turtle"
+msgstr "parar tartaruga"
+
+msgid "turtle name"
+msgstr "nome da tartaruga"
+
+msgid "start turtle"
+msgstr "iniciar tartaruga"
+
+msgid "forecast"
+msgstr "previsão"
+
+msgid "city"
+msgstr "cidade"
+
+msgid "day"
+msgstr "dia"
+
+msgid "low"
+msgstr "baixo"
+
+msgid "high"
+msgstr "alto"

@@ -1,0 +1,701 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2017-06-07 06:23+0000\n"
+"Last-Translator: chanchumgpa <chanchumgpa@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ach\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1496816582.000000\n"
+
+msgid "clear"
+msgstr "ywe"
+
+msgid "forward"
+msgstr "anyim"
+
+msgid "right"
+msgstr "tung cem"
+
+msgid "back"
+msgstr "cen"
+
+msgid "left"
+msgstr "tung cam"
+
+msgid "arc"
+msgstr "arc"
+
+msgid "angle"
+msgstr "tike"
+
+msgid "radius"
+msgstr "radias"
+
+msgid "set heading"
+msgstr "ter wie madongo"
+
+msgid "heading"
+msgstr "radias"
+
+msgid "set xy"
+msgstr "ter xy"
+
+msgid "x"
+msgstr "x"
+
+msgid "y"
+msgstr "y"
+
+msgid "set color"
+msgstr "ter rangi"
+
+msgid "color"
+msgstr "rangi"
+
+msgid "set hue"
+msgstr "ter gi lingo"
+
+msgid "set shade"
+msgstr "ter puu"
+
+msgid "shade"
+msgstr "puu"
+
+msgid "set grey"
+msgstr "ter buruburu"
+
+msgid "grey"
+msgstr "buruburu"
+
+msgid "set pen size"
+msgstr "ter cajji pa kalam"
+
+msgid "pen size"
+msgstr "cajji pa kalam"
+
+msgid "pen up"
+msgstr "coo"
+
+msgid "pen down"
+msgstr "pe i coo"
+
+msgid "begin fill"
+msgstr "cak pong"
+
+msgid "end fill"
+msgstr "gik pong"
+
+msgid "background"
+msgstr "cal ma i yonge"
+
+msgid "random"
+msgstr "cudo"
+
+msgid "min"
+msgstr "mamite"
+
+msgid "max"
+msgstr "mamite kikome"
+
+msgid "sqrt"
+msgstr "sqrt"
+
+msgid "mod"
+msgstr "mod"
+
+msgid "and"
+msgstr "ki"
+
+msgid "or"
+msgstr "ki"
+
+msgid "not"
+msgstr "pe"
+
+msgid "store in"
+msgstr "gwok ii"
+
+msgid "name"
+msgstr "nying"
+
+msgid "value"
+msgstr "berne"
+
+msgid "box"
+msgstr "canduk"
+
+msgid "action"
+msgstr "tute"
+
+msgid "do"
+msgstr "tim"
+
+msgid "start"
+msgstr "cak"
+
+msgid "add 1 to"
+msgstr "med 1 bot"
+
+msgid "add"
+msgstr "med"
+
+msgid "to"
+msgstr "bot"
+
+msgid "speak"
+msgstr "lok"
+
+msgid "show"
+msgstr "nyut"
+
+msgid "size"
+msgstr "cajji"
+
+msgid "obj"
+msgstr "obj"
+
+msgid "text"
+msgstr "nyig coc"
+
+msgid "shell"
+msgstr "gure"
+
+msgid "image"
+msgstr "cal"
+
+msgid "stop media"
+msgstr "juk kakube"
+
+msgid "repeat"
+msgstr "nwo"
+
+msgid "forever"
+msgstr "pinaka"
+
+msgid "stop"
+msgstr "juk"
+
+msgid "if"
+msgstr "ka"
+
+msgid "then"
+msgstr "eka"
+
+msgid "until"
+msgstr "nioo"
+
+msgid "wait for"
+msgstr "kur pi"
+
+msgid "while"
+msgstr "kun"
+
+msgid "else"
+msgstr "mukene"
+
+msgid "wait"
+msgstr "kur manok"
+
+msgid "print"
+msgstr "goo"
+
+msgid "time"
+msgstr "caa"
+
+msgid "mouse x"
+msgstr "ladic x"
+
+msgid "mouse y"
+msgstr "ladic y"
+
+msgid "mouse button"
+msgstr "mapeca me diyo"
+
+msgid "keyboard"
+msgstr "keyboard"
+
+msgid "pixel color"
+msgstr "dul rangi"
+
+msgid "unknown"
+msgstr "pengene"
+
+msgid "Welcome to Turtle Blocks"
+msgstr "Wajoli i Bulok me Tuku"
+
+msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
+msgstr ""
+"Bulok me Tuku obedo Logo-ocukuro cwiny tuku magoyo cal maleng adada ki cal-"
+"kacel bulok me miyo purugram-kompiuta."
+
+msgid "Palette buttons"
+msgstr "mapeca me kagwoko"
+
+msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgstr ""
+"Barjami tic man tye ki mapeca me gwoko: dii nyut nyo kaan kagwok me buke ("
+"Tuku, Kalam, Namba, Boolean, Mol, Bulok, Kakube, Lapoo wic, ki Mukene mapol)"
+". Teki oyabo, i twero diro bulok aa ki kagwoko i kom kanvas pi tic kwedgi."
+
+msgid "Expand/collapse toolbar"
+msgstr "Nyaa ie/bar me tic ma obale"
+
+msgid "This button opens and closes the primary toolbar."
+msgstr "Mapeca man yabo ki loro woko jami tic matye."
+
+msgid "Run fast"
+msgstr "Wot madwir"
+
+msgid "Click to run the project in fast mode."
+msgstr "Dii wek i ket purujek ii kit madwir adada."
+
+msgid "Run slow"
+msgstr "Wot mot"
+
+msgid "Click to run the project in slow mode."
+msgstr "Dii wek mii purujek wot maber ii kit me motmot."
+
+msgid "Run step by step"
+msgstr "Wot yadi acel acel"
+
+msgid "Click to run the project step by step."
+msgstr "Dii wek mii purujek tii yadi acel acel."
+
+msgid "Stop"
+msgstr "Juk"
+
+msgid "Stop the current project."
+msgstr "Juk purujek matye."
+
+msgid "Clean"
+msgstr "Jwaa"
+
+msgid "Clear the screen and return the turtles to their initial positions."
+msgstr "Jwa wang kio ci i dwogo tuku i kabedo mamegi kikome."
+
+msgid "Show/hide palettes"
+msgstr "Nyut/kan lingo"
+
+msgid "Hide or show the block palettes."
+msgstr "Kan nyo nyut geng lingo."
+
+msgid "Show/hide blocks"
+msgstr "Nyut/kan geng"
+
+msgid "Hide or show the blocks and the palettes."
+msgstr "Kan nyo nyut geng ki lingo."
+
+msgid "Expand/collapse collapsable blocks"
+msgstr "Nyaa ie/bal geng matwero bale"
+
+msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
+msgstr "Nyaa nyo bal omoko pi geng, lapore, cak ki tute omoko."
+
+msgid "Help"
+msgstr "Kony"
+
+msgid "Show these messages."
+msgstr "Nyut kwena magi."
+
+msgid "Expand/collapse option toolbar"
+msgstr "Nyaa/bal bar me jamitic me ayera"
+
+msgid "Click this button to expand or collapse the auxillary toolbar."
+msgstr "Dii mapeca wek nyaa nyo bal cwak me bar jamitic."
+
+msgid "Paste"
+msgstr "Dan"
+
+msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgstr "Mapeca me dan tye katic eka tye ie geng ma gikobo i kom bao me coc."
+
+msgid "Cartesian"
+msgstr "Cartesian"
+
+msgid "Show or hide a Cartesian-coordinate grid."
+msgstr "Nyut nyo kan Jo marwato-kubo layin maogire."
+
+msgid "Polar"
+msgstr "Pola"
+
+msgid "Show or hide a polar-coordinate grid."
+msgstr "Nyut nyo kan pola-kub layin."
+
+msgid "Load samples from server"
+msgstr "Pang lapor aa kii lapok tic"
+
+msgid "This button opens a viewer for loading example projects."
+msgstr "Mapeca man yabo gineno pi pango purujek ma lapor."
+
+msgid "Load project from file"
+msgstr "Pang purujek aa ki pwail"
+
+msgid "You can also load projects from the file system."
+msgstr "I twero dang pango purujek aa ki i katic me pwail."
+
+msgid "Load plugin from file"
+msgstr "Pang rwakyie aa ki pwail"
+
+msgid "You can load new blocks from the file system."
+msgstr "I twero pango geng manyen aa ki i katic pa pwail."
+
+msgid "Delete all"
+msgstr "Jwa lung"
+
+msgid "Remove all content on the canvas, including the blocks."
+msgstr "Kwany lung jami ma ie i kom kanvas, medo ie geng mdpol."
+
+msgid "Undo"
+msgstr "Pe itim"
+
+msgid "Restore blocks from the trash."
+msgstr "Dwogo geng aa ki i bur yugi."
+
+msgid "Save project"
+msgstr "Gwok purujek"
+
+msgid "Save your project to a server."
+msgstr "Gwok purujek bot lapok tic."
+
+msgid "Congratulations."
+msgstr "Pwoc madit."
+
+msgid "You have finished the tour. Please enjoy Turtle Blocks!"
+msgstr "I tyeko dong limo piny. Tim ber i cam kwo i Bulok me Tuku!"
+
+msgid "hide blocks"
+msgstr "kan bulok"
+
+msgid "loudness"
+msgstr "dwon malo"
+
+msgid "publish"
+msgstr "ket i wiyamo"
+
+msgid "comment"
+msgstr "tam amia"
+
+msgid "play back"
+msgstr "tuk cen"
+
+msgid "save svg"
+msgstr "gwok svg"
+
+msgid "title"
+msgstr "nying amia"
+
+msgid "eval"
+msgstr "eval"
+
+msgid "show blocks"
+msgstr "nyut bulok"
+
+msgid "stop play"
+msgstr "juk tuku"
+
+msgid "turtle"
+msgstr "nyang"
+
+msgid "pen"
+msgstr "kalam"
+
+msgid "number"
+msgstr "namba"
+
+msgid "boolean"
+msgstr "boolean"
+
+msgid "flow"
+msgstr "mol"
+
+msgid "blocks"
+msgstr "buloke"
+
+msgid "media"
+msgstr "kakube"
+
+msgid "sensors"
+msgstr "lapoo wic"
+
+msgid "extras"
+msgstr "extras"
+
+msgid "open file"
+msgstr "yab pwail"
+
+msgid "motion z"
+msgstr "woti z"
+
+msgid "motion y"
+msgstr "woti y"
+
+msgid "motion x"
+msgstr "woti x"
+
+msgid "bitcoin"
+msgstr "bitkoin"
+
+msgid "from"
+msgstr "ki"
+
+msgid "mashape"
+msgstr "mashape"
+
+msgid "define"
+msgstr "gony te"
+
+msgid "stock price"
+msgstr "wel jami"
+
+msgid "currency"
+msgstr "cente"
+
+msgid "Google map"
+msgstr "Google map"
+
+msgid "coordinates"
+msgstr "kubo"
+
+msgid "zoom factor"
+msgstr "kwot ginmo"
+
+msgid "zoom"
+msgstr "Kwot"
+
+msgid "latitude"
+msgstr "tung malu ki tung piny"
+
+msgid "longitude"
+msgstr "tung wok ceng ki poto ceng"
+
+msgid "show heap"
+msgstr "nyut dure"
+
+msgid "pop"
+msgstr "pye"
+
+msgid "empty heap"
+msgstr "dure manono"
+
+msgid "save heap"
+msgstr "gwok dure"
+
+msgid "load heap"
+msgstr "pang dure"
+
+msgid "push"
+msgstr "cor"
+
+msgid "logic"
+msgstr "diro moo"
+
+msgid "power"
+msgstr "mac"
+
+msgid "base"
+msgstr "kema"
+
+msgid "exp"
+msgstr "exp"
+
+msgid "floor"
+msgstr "diiot"
+
+msgid "ceiling"
+msgstr "ropo"
+
+msgid "degrees"
+msgstr "digri"
+
+msgid "to degrees"
+msgstr "i digri"
+
+msgid "radians"
+msgstr "radians"
+
+msgid "to radians"
+msgstr "i radians"
+
+msgid "maths"
+msgstr "cura"
+
+msgid "cheese"
+msgstr "cak"
+
+msgid "apple"
+msgstr "apul"
+
+msgid "get fat"
+msgstr "nong dwolo"
+
+msgid "fish"
+msgstr "rec"
+
+msgid "get calories"
+msgstr "nong gupu"
+
+msgid "protein"
+msgstr "protein"
+
+msgid "chicken"
+msgstr "gweno"
+
+msgid "digest meal"
+msgstr "pok yii cam"
+
+msgid "get fiber"
+msgstr "nong lwit yat"
+
+msgid "carbs"
+msgstr "carbs"
+
+msgid "eat"
+msgstr "cam"
+
+msgid "rice and beans"
+msgstr "mucere ki muranga"
+
+msgid "orange"
+msgstr "macunga"
+
+msgid "banana"
+msgstr "labolo"
+
+msgid "tamale"
+msgstr "tamale"
+
+msgid "fiber"
+msgstr "lwit yat"
+
+msgid "corn"
+msgstr "nywagi mutwo"
+
+msgid "fat"
+msgstr "dwolo"
+
+msgid "get carbs"
+msgstr "nong cam me kom"
+
+msgid "water"
+msgstr "pii"
+
+msgid "cookie"
+msgstr "kooki"
+
+msgid "sweet potato"
+msgstr "layata"
+
+msgid "broccoli"
+msgstr "pot dek"
+
+msgid "wheat bread"
+msgstr "mukati ngano"
+
+msgid "tomato"
+msgstr "nyanya"
+
+msgid "beef"
+msgstr "ringo dyang"
+
+msgid "potato"
+msgstr "layata"
+
+msgid "calories"
+msgstr "gupu"
+
+msgid "get name"
+msgstr "nong nying"
+
+msgid "cake"
+msgstr "mugati"
+
+msgid "get protein"
+msgstr "nong protein"
+
+msgid "food"
+msgstr "dek"
+
+msgid "eatme"
+msgstr "cama"
+
+msgid "sense left"
+msgstr "giweko woko dul kom mapire tego"
+
+msgid "see distance"
+msgstr "nen bor piny"
+
+msgid "sense right"
+msgstr "dul kom tung cem"
+
+msgid "sing"
+msgstr "wer"
+
+msgid "note"
+msgstr "mak maber"
+
+msgid "duration"
+msgstr "kare"
+
+msgid "move"
+msgstr "dir"
+
+msgid "blink (ms)"
+msgstr "ryeny (ms)"
+
+msgid "rodi"
+msgstr "rodi"
+
+msgid "set lang"
+msgstr "ter nying pen"
+
+msgid "source"
+msgstr "kama aa ie"
+
+msgid "target"
+msgstr "taget"
+
+msgid "translate"
+msgstr "gony"
+
+msgid "hello"
+msgstr "hello"
+
+msgid "detect lang"
+msgstr "kwed nying pen"
+
+msgid "turtle x"
+msgstr "tuku nyang x"
+
+msgid "turtle y"
+msgstr "tuku nyang y"
+
+msgid "stop turtle"
+msgstr "juk tuku nyang woko"
+
+msgid "turtle name"
+msgstr "nying tuku nyang"
+
+msgid "start turtle"
+msgstr "cak tuku nyang"
+
+msgid "forecast"
+msgstr "lok i gin mapwud pe gineno"
+
+msgid "city"
+msgstr "boma madwong"
+
+msgid "day"
+msgstr "nino"
+
+msgid "low"
+msgstr "piny"
+
+msgid "high"
+msgstr "malo"

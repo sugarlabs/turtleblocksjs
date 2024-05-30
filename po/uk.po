@@ -1,0 +1,711 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2017-04-17 14:08+0000\n"
+"Last-Translator: yurchor <yurchor@ukr.net>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1492438113.000000\n"
+
+msgid "clear"
+msgstr "спорожнити"
+
+msgid "forward"
+msgstr "вперед"
+
+msgid "right"
+msgstr "праворуч"
+
+msgid "back"
+msgstr "назад"
+
+msgid "left"
+msgstr "ліворуч"
+
+msgid "arc"
+msgstr "дуга"
+
+msgid "angle"
+msgstr "кут"
+
+msgid "radius"
+msgstr "радіус"
+
+msgid "set heading"
+msgstr "встановити напрямок голови"
+
+msgid "heading"
+msgstr "заголовок"
+
+msgid "set xy"
+msgstr "встановити xy"
+
+msgid "x"
+msgstr "x"
+
+msgid "y"
+msgstr "y"
+
+msgid "set color"
+msgstr "встановити колір"
+
+msgid "color"
+msgstr "колір"
+
+msgid "set hue"
+msgstr "встановити насиченість"
+
+msgid "set shade"
+msgstr "встановити відтінок"
+
+msgid "shade"
+msgstr "відтінок"
+
+msgid "set grey"
+msgstr "встановити сірий"
+
+msgid "grey"
+msgstr "сірий"
+
+msgid "set pen size"
+msgstr "встановити товщину пера"
+
+msgid "pen size"
+msgstr "товщина пера"
+
+msgid "pen up"
+msgstr "підняти перо"
+
+msgid "pen down"
+msgstr "опустити перо"
+
+msgid "begin fill"
+msgstr "почати заповнення"
+
+msgid "end fill"
+msgstr "завершити заповнення"
+
+msgid "background"
+msgstr "тло"
+
+msgid "random"
+msgstr "випадкове"
+
+msgid "min"
+msgstr "мін"
+
+msgid "max"
+msgstr "макс"
+
+msgid "sqrt"
+msgstr "корінь"
+
+msgid "mod"
+msgstr "модуль"
+
+msgid "and"
+msgstr "і"
+
+msgid "or"
+msgstr "або"
+
+msgid "not"
+msgstr "ні"
+
+msgid "store in"
+msgstr "зберегти у"
+
+msgid "name"
+msgstr "назва"
+
+msgid "value"
+msgstr "значення"
+
+msgid "box"
+msgstr "панель"
+
+msgid "action"
+msgstr "дія"
+
+msgid "do"
+msgstr "виконати"
+
+msgid "start"
+msgstr "почати"
+
+msgid "add 1 to"
+msgstr "додати 1 до"
+
+msgid "add"
+msgstr "додати"
+
+msgid "to"
+msgstr "до"
+
+msgid "speak"
+msgstr "вимовити"
+
+msgid "show"
+msgstr "показати"
+
+msgid "size"
+msgstr "розмір"
+
+msgid "obj"
+msgstr "об’єкт"
+
+msgid "text"
+msgstr "текст"
+
+msgid "shell"
+msgstr "панцир"
+
+msgid "image"
+msgstr "зображення"
+
+msgid "stop media"
+msgstr "зупинити відтворення"
+
+msgid "repeat"
+msgstr "повторити"
+
+msgid "forever"
+msgstr "назавжди"
+
+msgid "stop"
+msgstr "зупинити"
+
+msgid "if"
+msgstr "якщо"
+
+msgid "then"
+msgstr "тоді"
+
+msgid "until"
+msgstr "доки"
+
+msgid "wait for"
+msgstr "зачекати на"
+
+msgid "while"
+msgstr "поки"
+
+msgid "else"
+msgstr "інакше"
+
+msgid "wait"
+msgstr "чекай"
+
+msgid "print"
+msgstr "друкувати"
+
+msgid "time"
+msgstr "час"
+
+msgid "mouse x"
+msgstr "x миші"
+
+msgid "mouse y"
+msgstr "y миші"
+
+msgid "mouse button"
+msgstr "кнопка миші"
+
+msgid "keyboard"
+msgstr "клавіатура"
+
+msgid "pixel color"
+msgstr "колір пікселя"
+
+msgid "unknown"
+msgstr "невідомий"
+
+msgid "Welcome to Turtle Blocks"
+msgstr "Вітаємо у «Черепашиних блоках»"
+
+msgid "Turtle Blocks is a Logo-inspired turtle that draws colorful pictures with snap-together visual-programming blocks."
+msgstr ""
+"«Черепашині блоки» — керування черепашкою у стилі мови Лого для малювання "
+"кольорових малюнків із блоками програми, які зліплюються один із одним."
+
+msgid "Palette buttons"
+msgstr "Кнопки палітр"
+
+msgid "This toolbar contains the palette buttons: click to show or hide the palettes of blocks (Turtle, Pen, Numbers, Boolean, Flow, Blocks, Media, Sensors, and Extras). Once open, you can drag blocks from the palettes onto the canvas to use them."
+msgstr ""
+"На цій панелі інструментів містяться кнопки палітр: натисніть кнопку, щоб "
+"побачити або сховати палітри блоків (Черепашка, Перо, Числа, Булеве, "
+"Діаграма, Блоки, Мультимедіа, Датчики і Додаткові). Після відкриття палітри "
+"ви можете перетягувати з неї блоки на полотно, щоб скористатися ними для "
+"керування черепашкою."
+
+msgid "Expand/collapse toolbar"
+msgstr "Згорнути або розгорнути панель інструментів"
+
+msgid "This button opens and closes the primary toolbar."
+msgstr ""
+"За допомогою цієї кнопки можна згорнути або розгорнути основну панель "
+"інструментів."
+
+msgid "Run fast"
+msgstr "Виконати швидко"
+
+msgid "Click to run the project in fast mode."
+msgstr "Натисніть, щоб виконати проект у швидкому режимі."
+
+msgid "Run slow"
+msgstr "Виконати повільно"
+
+msgid "Click to run the project in slow mode."
+msgstr "Натисніть, щоб виконати проект у повільному режимі."
+
+msgid "Run step by step"
+msgstr "Виконати покроково"
+
+msgid "Click to run the project step by step."
+msgstr "Натисніть, щоб виконати проекту покроковому режимі."
+
+msgid "Stop"
+msgstr "Зупинити"
+
+msgid "Stop the current project."
+msgstr "Зупинити виконання поточного проекту."
+
+msgid "Clean"
+msgstr "Спорожнити"
+
+msgid "Clear the screen and return the turtles to their initial positions."
+msgstr "Спорожнити екран і повернути черепашок до початкових позицій."
+
+msgid "Show/hide palettes"
+msgstr "Показати або приховати палітри"
+
+msgid "Hide or show the block palettes."
+msgstr "Показати або приховати палітри блоків."
+
+msgid "Show/hide blocks"
+msgstr "Показати або приховати блоки"
+
+msgid "Hide or show the blocks and the palettes."
+msgstr "Приховати або показати блоки і палітри."
+
+msgid "Expand/collapse collapsable blocks"
+msgstr "Розгорнути або згорнути придатні до згортання блоки"
+
+msgid "Expand or collapse stacks of blocks, e.g, start and action stacks."
+msgstr "Розгорнути або згорнути стос блоків, наприклад стоси запуску і дій."
+
+msgid "Help"
+msgstr "Довідка"
+
+msgid "Show these messages."
+msgstr "Показати ці повідомлення."
+
+msgid "Expand/collapse option toolbar"
+msgstr "Згорнути або розгорнути допоміжну панель інструментів"
+
+msgid "Click this button to expand or collapse the auxillary toolbar."
+msgstr ""
+"Натисніть цю кнопку, щоб розгорнути або згорнути допоміжну панель "
+"інструментів."
+
+msgid "Paste"
+msgstr "Вставити"
+
+msgid "The paste button is enabled then there are blocks copied onto the clipboard."
+msgstr ""
+"Кнопку вставляння буде увімкнено, якщо до буфера обміну даними буде "
+"скопійовано блоки."
+
+msgid "Cartesian"
+msgstr "Прямокутні"
+
+msgid "Show or hide a Cartesian-coordinate grid."
+msgstr "Показати або приховати сітку прямокутної декартової системи координат."
+
+msgid "Polar"
+msgstr "Полярна"
+
+msgid "Show or hide a polar-coordinate grid."
+msgstr "Показати або приховати сітку полярної системи координат."
+
+msgid "Load samples from server"
+msgstr "Завантажити зразки з сервера"
+
+msgid "This button opens a viewer for loading example projects."
+msgstr ""
+"Натискання цієї кнопки відкриває панель завантаження прикладів проектів."
+
+msgid "Load project from file"
+msgstr "Завантажити проект з файла"
+
+msgid "You can also load projects from the file system."
+msgstr "Ви також можете завантажити проекти з файлової системи."
+
+msgid "Load plugin from file"
+msgstr "Завантажити додаток з файла"
+
+msgid "You can load new blocks from the file system."
+msgstr "Ви можете завантажити нові блоки з файлової системи."
+
+msgid "Delete all"
+msgstr "Вилучити все"
+
+msgid "Remove all content on the canvas, including the blocks."
+msgstr "Вилучити увесь вміст полотна, включно з блоками."
+
+msgid "Undo"
+msgstr "Скасувати"
+
+msgid "Restore blocks from the trash."
+msgstr "Відновити блоки зі смітника."
+
+msgid "Save project"
+msgstr "Зберегти проект"
+
+msgid "Save your project to a server."
+msgstr "Зберегти ваш проект на сервері."
+
+msgid "Congratulations."
+msgstr "Вітаємо."
+
+msgid "You have finished the tour. Please enjoy Turtle Blocks!"
+msgstr "Огляд завершено. Приємного користування «Черепашиними блоками»!"
+
+msgid "hide blocks"
+msgstr "приховати блоки"
+
+msgid "loudness"
+msgstr "гучність"
+
+msgid "publish"
+msgstr "оприлюднити"
+
+msgid "comment"
+msgstr "коментар"
+
+msgid "play back"
+msgstr "відтворити"
+
+msgid "save svg"
+msgstr "зберегти svg"
+
+msgid "title"
+msgstr "назва"
+
+msgid "eval"
+msgstr "обчислити"
+
+msgid "show blocks"
+msgstr "показати блоки"
+
+msgid "stop play"
+msgstr "зупинити відтворення"
+
+msgid "turtle"
+msgstr "черепашка"
+
+msgid "pen"
+msgstr "перо"
+
+msgid "number"
+msgstr "число"
+
+msgid "boolean"
+msgstr "булеве"
+
+msgid "flow"
+msgstr "обробка"
+
+msgid "blocks"
+msgstr "блоки"
+
+msgid "media"
+msgstr "мультимедіа"
+
+msgid "sensors"
+msgstr "датчики"
+
+msgid "extras"
+msgstr "додаткове"
+
+msgid "open file"
+msgstr "відкрити файл"
+
+msgid "motion z"
+msgstr "пересування за z"
+
+msgid "motion y"
+msgstr "пересування за y"
+
+msgid "motion x"
+msgstr "пересування за x"
+
+msgid "bitcoin"
+msgstr "біткойн"
+
+msgid "from"
+msgstr "від"
+
+msgid "mashape"
+msgstr "mashape"
+
+msgid "define"
+msgstr "визначити"
+
+msgid "stock price"
+msgstr "курс"
+
+msgid "currency"
+msgstr "валюта"
+
+msgid "Google map"
+msgstr "Карта Google"
+
+msgid "coordinates"
+msgstr "координати"
+
+msgid "zoom factor"
+msgstr "коефіцієнт масштабування"
+
+msgid "zoom"
+msgstr "масштаб"
+
+msgid "latitude"
+msgstr "широта"
+
+msgid "longitude"
+msgstr "Довгота"
+
+msgid "show heap"
+msgstr "показати купу"
+
+msgid "pop"
+msgstr "отримати"
+
+msgid "empty heap"
+msgstr "спорожнити купу"
+
+msgid "save heap"
+msgstr "зберегти купу"
+
+msgid "load heap"
+msgstr "завантажити купу"
+
+msgid "push"
+msgstr "надіслати"
+
+msgid "logic"
+msgstr "логіка"
+
+msgid "power"
+msgstr "степінь"
+
+msgid "base"
+msgstr "основа"
+
+msgid "exp"
+msgstr "exp"
+
+msgid "floor"
+msgstr "підлога"
+
+msgid "ceiling"
+msgstr "стеля"
+
+msgid "degrees"
+msgstr "градуси"
+
+msgid "to degrees"
+msgstr "у градуси"
+
+msgid "radians"
+msgstr "радіани"
+
+msgid "to radians"
+msgstr "у радіани"
+
+msgid "maths"
+msgstr "математика"
+
+msgid "cheese"
+msgstr "сир"
+
+msgid "apple"
+msgstr "яблуко"
+
+msgid "get fat"
+msgstr "отримати жирність"
+
+msgid "fish"
+msgstr "риба"
+
+msgid "get calories"
+msgstr "отримати калорії"
+
+msgid "protein"
+msgstr "протеїн"
+
+msgid "chicken"
+msgstr "курча"
+
+msgid "digest meal"
+msgstr "засвоїти їжу"
+
+msgid "get fiber"
+msgstr "отримати волокно"
+
+msgid "carbs"
+msgstr "вуглеводи"
+
+msgid "eat"
+msgstr "з’їсти"
+
+msgid "rice and beans"
+msgstr "рис і боби"
+
+msgid "orange"
+msgstr "апельсин"
+
+msgid "banana"
+msgstr "банан"
+
+msgid "tamale"
+msgstr "тамале"
+
+msgid "fiber"
+msgstr "волокно"
+
+msgid "corn"
+msgstr "зерно"
+
+msgid "fat"
+msgstr "жир"
+
+msgid "get carbs"
+msgstr "отримати вуглеводи"
+
+msgid "water"
+msgstr "вода"
+
+msgid "cookie"
+msgstr "кука"
+
+msgid "sweet potato"
+msgstr "батат"
+
+msgid "broccoli"
+msgstr "броколі"
+
+msgid "wheat bread"
+msgstr "білий хліб"
+
+msgid "tomato"
+msgstr "помідор"
+
+msgid "beef"
+msgstr "м’ясо"
+
+msgid "potato"
+msgstr "картоплина"
+
+msgid "calories"
+msgstr "калорії"
+
+msgid "get name"
+msgstr "отримати назву"
+
+msgid "cake"
+msgstr "торт"
+
+msgid "get protein"
+msgstr "отримати протеїн"
+
+msgid "food"
+msgstr "їжа"
+
+msgid "eatme"
+msgstr "з’їж мене"
+
+msgid "sense left"
+msgstr "перевірити ліворуч"
+
+msgid "see distance"
+msgstr "переглянути відстань"
+
+msgid "sense right"
+msgstr "перевірити праворуч"
+
+msgid "sing"
+msgstr "співати"
+
+msgid "note"
+msgstr "нота"
+
+msgid "duration"
+msgstr "тривалість"
+
+msgid "move"
+msgstr "рухатися"
+
+msgid "blink (ms)"
+msgstr "блимнути (у мс)"
+
+msgid "rodi"
+msgstr "rodi"
+
+msgid "set lang"
+msgstr "встановити мову"
+
+msgid "source"
+msgstr "джерело"
+
+msgid "target"
+msgstr "призначення"
+
+msgid "translate"
+msgstr "перекласти"
+
+msgid "hello"
+msgstr "привіт"
+
+msgid "detect lang"
+msgstr "визначити мову"
+
+msgid "turtle x"
+msgstr "x черепашки"
+
+msgid "turtle y"
+msgstr "y черепашки"
+
+msgid "stop turtle"
+msgstr "зупинити черепашку"
+
+msgid "turtle name"
+msgstr "ім’я черепашки"
+
+msgid "start turtle"
+msgstr "запустити черепашку"
+
+msgid "forecast"
+msgstr "прогноз"
+
+msgid "city"
+msgstr "місто"
+
+msgid "day"
+msgstr "день"
+
+msgid "low"
+msgstr "низький"
+
+msgid "high"
+msgstr "високий"

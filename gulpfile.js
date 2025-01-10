@@ -17,7 +17,7 @@ const postcss = require("gulp-postcss");
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
 const replace = require("gulp-replace");
-const minifyCSS = require("gulp-minify-css");
+const cleanCSS = require("gulp-clean-css");
 const gulp = require("gulp");
 const prettier = require("gulp-prettier");
 
@@ -40,7 +40,7 @@ const sassTask = () => {
 
 const cssTask = () => {
     return src(files.cssPath)
-        .pipe(minifyCSS({compatibility: "ie8"}))
+        .pipe(cleanCSS({compatibility: "ie8"}))
         .pipe(gulp.dest("dist/css"));
 };
 

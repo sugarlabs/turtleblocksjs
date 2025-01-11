@@ -33,10 +33,9 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
-    "gulp-minify-css": "^1.2.4",
     "gulp-prettier": "^3.0.0",
     "gulp-uglify": "^3.0.2"
   },
@@ -49,7 +48,6 @@
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "http-server": "^14.1.1",
-    "lodash.template": "^4.5.0",
-    "node-static": "^0.7.11"
+    "lodash.template": "^4.5.0"
   }
 }

@@ -47,7 +47,6 @@
     "gulp-replace": "^1.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^2.6.5",
-    "http-server": "^14.1.1",
-    "lodash.template": "^4.5.0"
+    "http-server": "^14.1.1"
   }
 }

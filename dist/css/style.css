@@ -17,3 +17,27 @@ input[type=range]{height:4px;-webkit-appearance:none;width:250px}input[type=rang
     position: absolute;
     cursor: pointer;
 }
+
+#aux-toolbar,
+#aux-toolbar.nav-wrapper {
+    display: none; 
+    overflow: hidden;
+    transform-origin: top center;
+    transform: scaleY(0);
+    opacity: 0;
+    transition: transform 400ms cubic-bezier(.2,.8,.2,1), opacity 400ms ease;
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+#aux-toolbar.open,
+#aux-toolbar.nav-wrapper.open {
+    display: block !important; 
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+#aux-toolbar > .nav-wrapper {
+    transform-origin: top center;
+}

@@ -46,6 +46,44 @@ executing that stack or by clicking in the Big Play Button
 (fast running) or press it for a long while for the Turtle
 to run (slowly) on the Main Toolbar.
 
+Installation & Setup (JavaScript Version)
+-----------------------------------------
+
+Turtle Blocks (JavaScript version) runs in a web browser and does not
+require Python or any build tools.
+
+This section explains how to run Turtle Blocks locally for development
+and testing.
+
+---
+
+### Prerequisites
+
+Make sure you have:
+- A modern web browser (Chrome, Firefox, Safari, or Edge)
+- Git (optional, for contributors)
+
+---
+
+### Option 1: Run Online (No Installation Required)
+
+You can use Turtle Blocks directly in your browser:
+
+https://turtle.sugarlabs.org
+
+This is the fastest way to try the project.
+
+---
+
+### Option 2: Run from the Repository (Local)
+
+Clone the repository:
+
+```bash
+git clone https://github.com/sugarlabs/turtleblocksjs.git
+cd turtleblocksjs
+
+
 Getting Started Documentation
 -----------------------------
 

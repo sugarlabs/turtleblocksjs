@@ -104,11 +104,8 @@
                 }
             }
         </script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                doSearch();
-            });
-        </script>
+        <!-- Removed erroneous doSearch() call - doSearch is a method of Activity class, not a global function.
+             See: https://github.com/sugarlabs/turtleblocksjs/issues/497 -->
     </head>
 
     <!-- #96D3F3-->

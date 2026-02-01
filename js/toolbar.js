@@ -688,26 +688,41 @@ class Toolbar {
      * @returns {void}
      */
     renderMenuIcon(onclick) {
-        const menuIcon = docById("menu");
-        const auxToolbar = docById("aux-toolbar");
-        menuIcon.onclick = () => {
-            var searchBar = docById("search");
-            searchBar.classList.toggle("open");
-            if (auxToolbar.style.display == "" || auxToolbar.style.display == "none") {
-                onclick(this.activity, false);
-                auxToolbar.style.display = "block";
-                menuIcon.innerHTML = "more_vert";
-                docById("toggleAuxBtn").className = "blue darken-1";
-            } else {
-                onclick(this.activity, true);
+    const menuIcon = docById("menu");
+    const auxToolbar = docById("aux-toolbar");
+    if (!auxToolbar._animInitialized) {
+        auxToolbar.addEventListener("transitionend", (e) => {
+            if (!auxToolbar.classList.contains("open")) {
                 auxToolbar.style.display = "none";
-                menuIcon.innerHTML = "menu";
-                docById("toggleAuxBtn").className -= "blue darken-1";
-                docById("chooseKeyDiv").style.display = "none";
-                docById("movable").style.display = "none";
             }
-        };
+        });
+        auxToolbar._animInitialized = true;
     }
+
+    menuIcon.onclick = () => {
+        var searchBar = docById("search");
+        searchBar.classList.toggle("open");
+        const isOpening = !auxToolbar.classList.contains("open");
+
+        if (isOpening) {
+            auxToolbar.style.display = "block";
+            auxToolbar.offsetHeight;
+            auxToolbar.classList.add("open");
+        } else {
+           auxToolbar.classList.remove("open");
+        }
+        onclick(this.activity, !isOpening);
+        menuIcon.innerHTML = isOpening ? "more_vert" : "menu";
+        const toggleBtn = docById("toggleAuxBtn");
+        if (isOpening) {
+            toggleBtn.classList.add("blue", "darken-1");
+        } else {
+            toggleBtn.classList.remove("blue", "darken-1");
+            docById("chooseKeyDiv").style.display = "none";
+            docById("movable").style.display = "none";
+        }
+    };
+}
 
     /**
      * @public
@@ -1017,12 +1032,14 @@ class Toolbar {
      */
     closeAuxToolbar = (onclick) => {
         const auxToolbar = docById("aux-toolbar");
-        if (auxToolbar.style.display === "block") {
+        const isVisible = auxToolbar.style.display === "block" || auxToolbar.classList.contains("open");
+        if (isVisible) {
             onclick(this.activity, false);
             const menuIcon = docById("menu");
-            auxToolbar.style.display = "none";
+            auxToolbar.classList.remove("open");
             menuIcon.innerHTML = "menu";
-            docById("toggleAuxBtn").className -= "blue darken-1";
+            const toggleBtn = docById("toggleAuxBtn");
+            if (toggleBtn) toggleBtn.classList.remove("blue", "darken-1");
         }
     };
 }

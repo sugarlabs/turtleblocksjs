@@ -5848,15 +5848,16 @@ class Activity {
 
 const activity = new Activity();
 
-require(["domReady!"], (doc) =>{
+
+
+// eslint-disable-next-line no-unused-vars
+define(MYDEFINES, (compatibility) =>{
+    require(["domReady!"], (doc) =>{
     setTimeout(() => {
         activity.setupDependencies();
         activity.domReady(doc);
     }, 5000);
-});
-
-// eslint-disable-next-line no-unused-vars
-define(MYDEFINES, (compatibility) =>{
+})
     activity.setupDependencies();
     activity.doContextMenus();
     activity.doPluginsAndPaletteCols();

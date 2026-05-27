@@ -1,6 +1,6 @@
 TurtleBlocks (the JavaScript version)
 =====================================
-<img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' />
+<img src='./images/turtleblocks.svg' />
 
 Turtle Blocks is an activity with a Logo-inspired graphical "turtle"
 that draws colorful art based on snap-together visual programming
@@ -84,7 +84,7 @@ The Home buttom returns the blocks the center of the screen. The Hide button hid
 
 Some basic blocks include:
 
-<img src='./documentation/forward.png' /> Moves turtle forward.
+<img src='./documentation/forward.svg' /> Moves turtle forward.
 
 <img src='./documentation/right.svg' /> Turns turtle clockwise (angle in degrees).
 

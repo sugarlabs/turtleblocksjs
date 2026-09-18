@@ -1,5 +1,10 @@
 TurtleBlocks (the JavaScript version)
 =====================================
+
+** NOTE: THIS REPOSITORY IS DEPRECATED. Please refer to the [musicblocks](https://github.com/sugarlabs/musicblocks) repo instead. ** 
+
+----
+
 <img src='https://github.com/sugarlabs/turtleblocksjs/blob/master/activity/logo.png' />
 
 Turtle Blocks is an activity with a Logo-inspired graphical "turtle"

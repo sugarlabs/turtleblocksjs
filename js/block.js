@@ -3959,7 +3959,7 @@ class Block {
             } else {
                 labelElem.innerHTML =
                     '<input id="numberLabel" style="position: absolute; -webkit-user-select: text;-moz-user-select: text;-ms-user-select: text;" class="number" type="number" value="' +
-                    labelValue +
+                    safetext(labelValue) +
                     '" />';
                 labelElem.classList.add("hasKeyboard");
                 this.label = docById("numberLabel");
